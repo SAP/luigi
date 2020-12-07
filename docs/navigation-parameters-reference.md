@@ -576,7 +576,7 @@ The global search is an input field available in the top navigation bar. The sea
     - **attributes**:
       - **element**
         - **type**: INPUT element
-        - **description**: the input element where the user digit the search text.
+        - **description**: the input element where the user enters the search text.
       - **visible**
         - **type**: boolean
         - **description**: specifies if the input text is visible or not.
