@@ -13,7 +13,12 @@ const getAllFiles = dir => {
    list.forEach(function (file) {
       file = dir + '/' + file;
       const stat = fs.statSync(file);
-      if (file.endsWith('node_modules') || file.indexOf('.git') !== -1) {
+      if (
+         file.endsWith('node_modules') ||
+         file.indexOf('.git') !== -1 ||
+         file.indexOf('/dist/') !== -1 ||
+         file.indexOf('\\dist\\') !== -1
+      ) {
          return [];
       }
 
@@ -98,12 +103,17 @@ const eslintFiles = async files => {
    let error = false;
    let report = '';
    for (const file of files) {
-      const result = await eslint.lintFiles(file);
-      error = error || result.some(res => res.errorCount > 0);
-      await ESLint.outputFixes(result);
-      const resultText = formatter.format(result);
-      if (!!resultText && resultText.trim().length > 0) {
-         report += resultText;
+      try {
+         const result = await eslint.lintFiles(file);
+         error = error || result.some(res => res.errorCount > 0);
+         await ESLint.outputFixes(result);
+         const resultText = formatter.format(result);
+         if (!!resultText && resultText.trim().length > 0) {
+            report += resultText;
+         }
+      } catch (exception) {
+         error = true;
+         report += 'Error in eslint file ' + file + ':\n' + exception;
       }
    }
 
@@ -144,7 +154,7 @@ const preCommit = async () => {
 const full = async () => {
    const files = getAllFiles(__dirname);
    const filesByExtension = groupFilesByExtension(files);
-   // prettyFiles(filesByExtension);
+   prettyFiles(filesByExtension);
 
    let error = false;
    let report = '';
@@ -190,7 +200,9 @@ const getOptions = () => {
       return await full();
    }
 
-   console.error('You need to pass application paramter -- mode=pre_commit|full');
+   console.error(
+      'You need to pass application paramter -- mode=pre_commit|full'
+   );
 })().catch(err => {
    console.log(err);
    process.exit(1);

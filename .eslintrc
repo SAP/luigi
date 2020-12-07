@@ -3,6 +3,7 @@
   "rules": {
     "semi": [2, "always"],
     "no-tabs": "off",
-    "indent": "off"
+    "indent": "off",
+    "no-ex-assign": "warn"
   }
 }
