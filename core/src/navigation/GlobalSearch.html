@@ -114,7 +114,7 @@
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
     let inputElement = inputElem;
-    let placeHolder = getSearchPlaceholder(search);
+    let placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {
       inputElement.placeholder = placeHolder;
     }
@@ -126,19 +126,19 @@
     );
   });
 
-  function getSearchPlaceholder({ searchProvider }) {
-    if (!search.searchProvider || !search.searchProvider.inputPlaceholder) {
+  function getSearchPlaceholder(searchProvider) {
+    if (!searchProvider || !searchProvider.inputPlaceholder) {
       return undefined;
     }
     const currentLocale = LuigiI18N.getCurrentLocale();
-    if (GenericHelpers.isFunction(search.searchProvider.inputPlaceholder)) {
-      return search.searchProvider.inputPlaceholder();
+    if (GenericHelpers.isFunction(searchProvider.inputPlaceholder)) {
+      return searchProvider.inputPlaceholder();
     }
-    if (typeof search.searchProvider.inputPlaceholder === 'string') {
-      return search.searchProvider.inputPlaceholder;
+    if (typeof searchProvider.inputPlaceholder === 'string') {
+      return searchProvider.inputPlaceholder;
     }
-    if (typeof search.searchProvider.inputPlaceholder === 'object') {
-      let placeholder = search.searchProvider.inputPlaceholder[currentLocale];
+    if (typeof searchProvider.inputPlaceholder === 'object') {
+      let placeholder = searchProvider.inputPlaceholder[currentLocale];
       return placeholder;
     }
   }
