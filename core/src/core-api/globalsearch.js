@@ -90,10 +90,10 @@ class LuigiGlobalSearch {
    * @memberof GlobalSearch
    * @param searchString search value
    * @since NEXTRELEASE
-   * @example Luigi.globalSearch().setSearchInputPlaceHolder('HERE input Placeholder');
+   * @example Luigi.globalSearch().setSearchInputPlaceholder('HERE input Placeholder');
    */
-  setSearchInputPlaceHolder(searchString) {
-    Luigi.setSearchInputPlaceHolder(searchString);
+  setSearchInputPlaceholder(searchString) {
+    Luigi.setSearchInputPlaceholder(searchString);
   }
 }
 export const globalSearch = new LuigiGlobalSearch();
