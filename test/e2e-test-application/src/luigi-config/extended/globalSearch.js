@@ -28,7 +28,7 @@ class GlobalSearch {
       //   type: 'info',
       //   closeAfter: 1500
       // });
-      inputElem.setAttribute('data-toggleSearch', fieldVisible?'open':'close');
+      inputElem.setAttribute('data-toggleSearch', fieldVisible ? 'open' : 'close');
     },
 
     onInput: () => {
