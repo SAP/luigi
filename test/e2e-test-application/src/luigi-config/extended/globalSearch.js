@@ -15,8 +15,8 @@ class GlobalSearch {
     // ) => {},
     // onSearchResultItemSelected: searchResultItem => {},
 
-    // inputPlaceHolder: 'Digit here text to search....',
-    // inputPlaceHolder: () => 'Digit here text to search....',
+    // inputPlaceholder: 'Digit here text to search....',
+    // inputPlaceholder: () => 'Digit here text to search....',
 
     inputPlaceholder: {
       en: 'Digit here text to search....'
