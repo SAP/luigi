@@ -17,7 +17,7 @@
       "eslint-plugin-node": "^11.1.0",
       "eslint-plugin-promise": "^4.2.1",
       "git-changed-files": "^1.0.0",
-      "husky": "^4.3.0",
+      "husky": "^4.3.5",
       "lerna": "^3.22.1",
       "lerna-changelog": "^1.0.1",
       "lodash": ">=4.17.13",
