@@ -7,4 +7,4 @@ export * from './navigation-helpers';
 export * from './routing-helpers';
 export * from './state-helpers';
 export * from './event-listener-helpers';
-export * from './storage-helper'
+export * from './storage-helper';
