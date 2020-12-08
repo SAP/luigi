@@ -24,11 +24,13 @@
         });
     }
 
-    function toggleOptions(event) {
-        const self = event.target.closest('.fd-popover__control');
-        closeAllCombos(self);
-        const currentState = self.getAttribute('aria-expanded') === 'true';
-        setExpandedState(self, !currentState);
+    function toggleOptions(event, editable) {
+        if (editable || editable === undefined) {
+            const self = event.target.closest('.fd-popover__control');
+            closeAllCombos(self);
+            const currentState = self.getAttribute('aria-expanded') === 'true';
+            setExpandedState(self, !currentState);
+        }
     }
 
     function setExpandedState(self, value) {
@@ -58,6 +60,10 @@
 
     .lui-value-container {
         grid-column: 2;
+    }
+
+    .lui-value-container>input[type="checkbox"] {
+        margin-top: 13px;
     }
 
     .lui-form-label {
@@ -112,23 +118,26 @@
                 <div class="lui-value-container">
                     {#if schemaItem.type==='string'}
                             <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label" data-testid="lui-us-input{i}"
-                            bind:value="{userSettings[userSettingsGroupSchema[0]][key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}" on:input="{() => updateSettingsObject()}">
+                            bind:value="{userSettings[userSettingsGroupSchema[0]][key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
                     {/if}
                     {#if schemaItem.type==='enum'}
                         <div>
                             <div class="fd-form-item">
                                 <div class="fd-popover">
                                     <div class="fd-popover__control" aria-expanded="false" aria-haspopup="true"
-                                        on:click|stopPropagation="{()=>toggleOptions(event)}">
+                                        on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}">
                                         <div class="fd-input-group fd-input-group--control">
-                                            <input type="text" class="fd-input fd-input-group__input" placeholder="{$getTranslation(userSettings[userSettingsGroupSchema[0]][key])}" data-testid="lui-us-input{i}">
+                                            <input type="text" class="fd-input fd-input-group__input" placeholder="{$getTranslation(userSettings[userSettingsGroupSchema[0]][key])}" data-testid="lui-us-input{i}"
+                                            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
                                             <span class="fd-input-group__addon fd-input-group__addon--button">
                                                 <button
                                                     aria-label="show/hide fruit options"
                                                     aria-expanded="false"
                                                     aria-haspopup="true"
-                                                    class="fd-input-group__button fd-button fd-button--transparent">
-                                                    <i class="sap-icon--navigation-down-arrow"></i></button>
+                                                    class="fd-input-group__button fd-button fd-button--transparent"
+                                                    disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
+                                                    <i class="sap-icon--navigation-down-arrow"></i>
+                                                </button>
                                             </span>
                                         </div>
                                     </div>
@@ -148,6 +157,12 @@
                                 </div>
                             </div>
                         </div>
+                    {/if}
+                    {#if schemaItem.type==='boolean'}
+                        <input type="checkbox"
+                            class="fd-checkbox"
+                            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                            bind:checked="{userSettings[userSettingsGroupSchema[0]][key]}"/>
                     {/if}
                 </div>
             {/each}

@@ -83,9 +83,11 @@ class Settings {
         icon: 'account',
         title: 'User Account',
         settings: {
-          name: { type: 'string', label: 'Name', isEditable: true },
+          name: { type: 'string', label: 'Name' },
           email: { type: 'string', label: 'E-Mail', isEditable: false },
-          server: { type: 'string', label: 'Server', isEditable: false }
+          server: { type: 'string', label: 'Server', isEditable: false },
+          checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
+          checkbox2: { type: 'boolean', label: 'Checkbox2' }
         }
       },
       language: {
@@ -98,7 +100,8 @@ class Settings {
             type: 'enum',
             label: 'Language and Region',
             options: ['German', 'English', 'Spanish', 'French'],
-            description: 'After you save your settings, the browser will refresh for the new language to take effect.'
+            description: 'After you save your settings, the browser will refresh for the new language to take effect.',
+            isEditable: false
           },
           date: { type: 'string', label: 'Date Format' },
           time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }

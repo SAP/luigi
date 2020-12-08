@@ -6,7 +6,7 @@
         beforeUpdate,
         getContext
     } from 'svelte';
-    import { NavigationHelpers } from './utilities/helpers';
+    import { NavigationHelpers, GenericHelpers } from './utilities/helpers';
     import UserSettingsEditor from './UserSettingsEditor.html';
     import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
@@ -46,6 +46,13 @@
                 storedUserSettings = userSettingsFromStorage;
             }
             openEditor([key, userSettingsData[0][key]]);
+        }).catch(error => {
+            if (error && error.msg) {
+                console.error(error.msg)
+            }
+            if (error && error.closeDialog) {
+                dispatch('close');
+            }
         });
     });
 
@@ -100,13 +107,13 @@
         height: 60vh;
     }
 
-    .user-settings__body {
+    .lui-usersettings__body {
         position: relative;
         padding-top: 0;
         padding-bottom: 0;
     }
 
-    .user-settings__leftnav {
+    .lui-usersettings__left-nav {
         position: absolute;
         top: 0;
         left: 0;
@@ -131,7 +138,7 @@
         padding: 20px;
     }
 
-    .userSettings-lui-burger {
+    .lui-usersettings__burger {
         margin-right: 16px;
         cursor: pointer;
         display: none;
@@ -156,7 +163,7 @@
         max-height: 18px;
     }
 
-    .us-lui-list-item-info-container {
+    .lui-usersettings-list-item__info-container {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -192,12 +199,12 @@
     }
 
     @media (max-width: 600px) {
-        .userSettings-lui-burger {
+        .lui-usersettings__burger {
             display: block;
             margin-left: 0px;
         }
 
-        :global(.usersettings-leftNavVisible) .user-settings__leftnav {
+        :global(.usersettings-leftNavVisible) .lui-usersettings__left-nav {
             width: 200px;
         }
 
@@ -205,7 +212,7 @@
             left: 0;
         }
 
-        .user-settings__leftnav {
+        .lui-usersettings__left-nav {
             width: 0;
             transition: 0.5s;
         }
@@ -221,7 +228,7 @@
         <div class="fd-dialog__header fd-bar fd-bar--header">
             <div class="fd-bar__left">
                 <div class="fd-bar__element">
-                    <button class="fd-shellbar__button fd-button sap-icon--menu2 userSettings-lui-burger"
+                    <button class="fd-shellbar__button fd-button sap-icon--menu2 lui-usersettings__burger"
                         on:click="{toggleNavMobile}" tabindex="0"></button>
                 </div>
                 <div class="fd-bar__element">
@@ -236,8 +243,8 @@
                 </div>
             </div>
         </div>
-        <div class="fd-dialog__body user-settings__body">
-            <div class="user-settings__leftnav">
+        <div class="fd-dialog__body lui-usersettings__body">
+            <div class="lui-usersettings__left-nav">
                 <div class="fd-side-nav">
                     <div class="fd-side-nav__main-navigation">
                         <div class="lui-fd-side-nav-wrapper">
@@ -246,7 +253,7 @@
                                     {#each Object.entries(userSettingsGroup) as userSettingsGroupProperty}
                                         <li class="fd-nested-list__item">
                                             <a class="fd-nested-list__link"  on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
-                                                <div class="us-lui-list-item-info-container">
+                                                <div class="lui-usersettings-list-item__info-container">
                                                     {#if userSettingsGroupProperty[1].icon}
                                                         {#if hasOpenUIicon(userSettingsGroupProperty[1])}
                                                             <span class="fd-nested-list__icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
