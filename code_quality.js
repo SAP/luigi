@@ -35,13 +35,15 @@ const getAllFiles = dir => {
 
 const fileToExclude = (file, stat) => {
    if (stat && stat.isDirectory()) {
-      return file.endsWith('node_modules') ||
-        file.indexOf('.git') !== -1 ||
-        file.indexOf('/dist/') !== -1 ||
-        file.indexOf('\\dist\\') !== -1;
+      return (
+         file.endsWith('node_modules') ||
+         file.indexOf('.git') !== -1 ||
+         file.indexOf('/dist/') !== -1 ||
+         file.indexOf('\\dist\\') !== -1
+      );
    }
    const fileName = path.basename(file);
-   return (/(.git|.min.css|.min.js)$/.test(fileName));
+   return /(.git|.min.css|.min.js)$/.test(fileName);
 };
 
 /**
@@ -151,18 +153,37 @@ const eslintFiles = async files => {
 };
 
 /**
- * Run `prettier` and `eslint` on changed files before commit;
- * You can also call this function using: npm run code-quality
+ * Run `prettier` on changed files before commit;
+ * You can also call this function using: npm run code-quality-prettier
  */
-const preCommit = async () => {
-   const files = await getChangedFiles();
-   if (!files) {
-      console.log("Couldn't find any file that hand been changed");
-      return;
+const preCommitPrettier = async filesByExtension => {
+   if (!filesByExtension) {
+      const files = await getChangedFiles();
+      if (!files) {
+         console.log("Couldn't find any file that hand been changed");
+         return;
+      }
+      console.log('File to be analyzed before commit:\n' + files.join('\n'));
+      filesByExtension = groupFilesByExtension(files);
    }
-   console.log('File to be analyzed before commit:\n' + files.join('\n'));
-   const filesByExtension = groupFilesByExtension(files);
+
    prettifyFiles(filesByExtension);
+};
+
+/**
+ * Run `eslint` on changed files before commit;
+ * You can also call this function using: npm run code-quality-eslint
+ */
+const preCommitEslint = async filesByExtension => {
+   if (!filesByExtension) {
+      const files = await getChangedFiles();
+      if (!files) {
+         console.log("Couldn't find any file that hand been changed");
+         return;
+      }
+      console.log('File to be analyzed before commit:\n' + files.join('\n'));
+      filesByExtension = groupFilesByExtension(files);
+   }
 
    const esLintResult = await eslintFilesByExtension(filesByExtension);
    if (esLintResult.error) {
@@ -174,6 +195,22 @@ const preCommit = async () => {
    } else {
       console.log('Eslint executed in ' + esLintResult.numberFiles + ' files ');
    }
+};
+
+/**
+ * Run `prettier` and `eslint` on changed files before commit;
+ * You can also call this function using: npm run code-quality
+ */
+const preCommit = async () => {
+   const files = await getChangedFiles();
+   if (!files) {
+      console.log("Couldn't find any file that hand been changed");
+      return;
+   }
+   console.log('File to be analyzed before commit:\n' + files.join('\n'));
+   const filesByExtension = groupFilesByExtension(files);
+   await preCommitPrettier(filesByExtension);
+   await preCommitEslint(filesByExtension);
 };
 
 /**
@@ -206,7 +243,32 @@ const eslintFilesByExtension = async filesByExtension => {
 const full = async () => {
    const files = getAllFiles(__dirname);
    const filesByExtension = groupFilesByExtension(files);
+   await fullPrettier(filesByExtension);
+   await fullEslint(filesByExtension);
+};
+
+/**
+ * Run `prettier` on all project files;
+ * You can also call this function using: npm run full-code-quality
+ */
+const fullPrettier = async filesByExtension => {
+   if (!filesByExtension) {
+      const files = getAllFiles(__dirname);
+      filesByExtension = groupFilesByExtension(files);
+   }
    prettifyFiles(filesByExtension);
+};
+
+/**
+ * Run `eslint` on all project files;
+ * You can also call this function using: npm run full-code-quality
+ */
+const fullEslint = async filesByExtension => {
+   if (!filesByExtension) {
+      const files = getAllFiles(__dirname);
+      filesByExtension = groupFilesByExtension(files);
+   }
+
    const esLintResult = await eslintFilesByExtension(filesByExtension);
    if (esLintResult.error) {
       console.log('Resume of ESLint analysis:\n' + esLintResult.report);
@@ -242,12 +304,25 @@ const getOptions = () => {
    if (options.mode === 'pre_commit') {
       return await preCommit();
    }
-
+   if (options.mode === 'pre_commit_prettier') {
+      return await preCommitPrettier();
+   }
+   if (options.mode === 'pre_commit_eslint') {
+      return await preCommitEslint();
+   }
    if (options.mode === 'full') {
       return await full();
    }
+   if (options.mode === 'full_prettier') {
+      return await fullPrettier();
+   }
+   if (options.mode === 'full_eslint') {
+      return await fullEslint();
+   }
 
-   console.error('You need to pass application parameter -- mode=pre_commit|full');
+   console.error(
+      'You need to pass application parameter -- mode=pre_commit|pre_commit-prettier|pre_commit-eslint|full|full-prettier|full-eslint'
+   );
 })().catch(err => {
    console.log(err);
    process.exit(1);
