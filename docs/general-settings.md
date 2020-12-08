@@ -116,6 +116,8 @@ To detect whether the user's browser supports the mechanism, use the script in t
 
 ### User settings
 
+These parameters can be used to configure the user settings menu in Luigi. You may also want to take a look at the [Luigi Core API](luigi-core-api.md) for additional options.
+
 * **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
 * **userSettingsProfileMenuEntry.icon** defines the profile navigation entry icon. By default it is SAP icon `settings`.
 
