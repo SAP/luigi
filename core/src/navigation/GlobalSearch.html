@@ -296,7 +296,7 @@
 
     if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
       const fieldVisible =
-        isSearchFieldVisible === undefined ? true : isSearchFieldVisible;
+        isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
       search.searchProvider.toggleSearch(inputElem, fieldVisible);
     }
   }
