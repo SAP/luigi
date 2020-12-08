@@ -114,7 +114,7 @@
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
     let inputElement = inputElem;
-    let placeHolder = getSearchPlaceholder(search.searchProvider);
+    const placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {
       inputElement.placeholder = placeHolder;
     }
