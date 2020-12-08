@@ -608,10 +608,8 @@
   };
 
   export const setSearchInputPlaceholder = placeholderString => {
-    if (checkSearchProvider(searchProvider)) {
-      if (inputElem) {
-        inputElem.placeholder = placeholderString;
-      }
+    if (checkSearchProvider(searchProvider) && inputElem) {
+      inputElem.placeholder = placeholderString;
     }
   };
 
