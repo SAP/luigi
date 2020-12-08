@@ -295,10 +295,9 @@
     });
 
     if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
-      const fieldVisible = !!isSearchFieldVisible
-        ? !isSearchFieldVisible
-        : true;
-      return search.searchProvider.toggleSearch(inputElem, fieldVisible);
+      const fieldVisible =
+        isSearchFieldVisible === undefined ? true : isSearchFieldVisible;
+      search.searchProvider.toggleSearch(inputElem, fieldVisible);
     }
   }
 </script>
