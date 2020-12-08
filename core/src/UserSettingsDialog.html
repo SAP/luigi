@@ -47,8 +47,8 @@
             }
             openEditor([key, userSettingsData[0][key]]);
         }).catch(error => {
-            if (error && error.msg) {
-                console.error(error.msg)
+            if (error && error.message) {
+                console.error(error.message)
             }
             if (error && error.closeDialog) {
                 dispatch('close');

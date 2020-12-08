@@ -75,6 +75,10 @@ class Settings {
     },
     readUserSettings: () => {
       return JSON.parse(sessionStorage.getItem('test'));
+      // let message = 'test';
+      // const error = new Error(message);
+      // error.closeDialog = true;
+      // throw error;
     },
     userSettingGroups: {
       userAccount: {
