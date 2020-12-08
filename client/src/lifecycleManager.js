@@ -442,8 +442,9 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Returns the currently user settings based on selected node.
+   * Returns the current user settings based on the selected node.
    * @returns {Object} current user settings
+   * @since NEXTRELEASE
    * @memberof Lifecycle
    * @example
    * const userSettings = LuigiClient.getUserSettings()
