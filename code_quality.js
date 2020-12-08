@@ -2,6 +2,7 @@ const gitChangedFiles = require('git-changed-files');
 const prettier = require('prettier');
 const prettierConfig = require('./prettier_config.json');
 const codeQualityConfig = require('./package.json').codeQuality || {};
+const path = require('path');
 
 const fs = require('fs');
 const { ESLint } = require('eslint');
@@ -18,15 +19,9 @@ const getAllFiles = dir => {
    list.forEach(function (file) {
       file = dir + '/' + file;
       const stat = fs.statSync(file);
-      if (
-         file.endsWith('node_modules') ||
-         file.indexOf('.git') !== -1 ||
-         file.indexOf('/dist/') !== -1 ||
-         file.indexOf('\\dist\\') !== -1
-      ) {
+      if (fileToExclude(file, stat)) {
          return [];
       }
-
       if (stat && stat.isDirectory()) {
          /* Recurse into a subdirectory */
          results = results.concat(getAllFiles(file));
@@ -36,6 +31,17 @@ const getAllFiles = dir => {
       }
    });
    return results;
+};
+
+const fileToExclude = (file, stat) => {
+   if (stat && stat.isDirectory()) {
+      return file.endsWith('node_modules') ||
+        file.indexOf('.git') !== -1 ||
+        file.indexOf('/dist/') !== -1 ||
+        file.indexOf('\\dist\\') !== -1;
+   }
+   const fileName = path.basename(file);
+   return (/(.git|.min.css|.min.js)$/.test(fileName));
 };
 
 /**
