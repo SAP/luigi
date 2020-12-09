@@ -22,14 +22,16 @@ const getAllFiles = () => {
       return getAllFilesRecoursive(__dirname);
    }
    const sourcePaths = getSourcePaths(options.sourcePaths);
-   const results = [];
-   sourcePaths.forEach(sourcePath => results.push(getAllFilesRecoursive));
+   let results = [];
+   sourcePaths.forEach(sourcePath => {
+      const files = getAllFilesRecoursive(sourcePath);
+      results = results.concat(files);
+   });
    return results;
 };
 
-const getSourcePaths = (sourcePaths) => {
-   return sourcePaths.split(',')
-     .map(sourcePath => path.resolve(__dirname, sourcePath.split('/')));
+const getSourcePaths = sourcePaths => {
+   return sourcePaths.split(',').map(sourcePath => path.resolve(__dirname, ...sourcePath.split('/')));
 };
 
 const getAllFilesRecoursive = dir => {
@@ -293,10 +295,7 @@ const fullEslint = async filesByExtension => {
    const options = getOptions();
    const reportFile = options.report || 'full_eslint_report.html';
    if (esLintResult.error) {
-      fs.writeFileSync(
-        reportFile,
-         ansiup.ansi_to_html(esLintResult.report).replace(/(?:\r\n|\r|\n)/g, '<br/>')
-      );
+      fs.writeFileSync(reportFile, ansiup.ansi_to_html(esLintResult.report).replace(/(?:\r\n|\r|\n)/g, '<br/>'));
       console.log('Wrote eslint report to file ' + path.resolve(reportFile));
    }
    console.log("Eslint executed in ' + esLintResult.numberFiles + ' files. Results written in 'full_eslint_report.html' ");
