@@ -247,6 +247,7 @@ const full = async () => {
    const files = getAllFiles(__dirname);
    const filesByExtension = groupFilesByExtension(files);
    await fullPrettier(filesByExtension);
+   console.log("Running EsLint on all files. Please wait...")
    await fullEslint(filesByExtension);
 };
 
