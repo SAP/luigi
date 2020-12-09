@@ -135,7 +135,7 @@
         overflow-y: scroll;
     }
 
-    .user-settings__content {
+    .lui-usersettings__content {
         position: absolute;
         left: 201px;
         top: 0;
@@ -215,7 +215,7 @@
             width: 200px;
         }
 
-        .user-settings__content {
+        .lui-usersettings__content {
             left: 0;
         }
 
@@ -286,7 +286,7 @@
                     </div>
                 </div>
             </div>
-            <div class="user-settings__content">
+            <div class="lui-usersettings__content">
                 {#if displayEditor}
                     <UserSettingsEditor userSettings={storedUserSettings} userSettingsGroupSchema={userSettingsSchema} on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
                 {/if}
