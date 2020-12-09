@@ -16,7 +16,23 @@ const ansiup = new AnsiUp();
  * @param dir: path from where recursively get all the files
  * @returns {[]}: list of files (absolut path)
  */
-const getAllFiles = dir => {
+const getAllFiles = () => {
+   const options = getOptions();
+   if (!options.sourcePaths) {
+      return getAllFilesRecoursive(__dirname);
+   }
+   const sourcePaths = getSourcePaths(options.sourcePaths);
+   const results = [];
+   sourcePaths.forEach(sourcePath => results.push(getAllFilesRecoursive));
+   return results;
+};
+
+const getSourcePaths = (sourcePaths) => {
+   return sourcePaths.split(',')
+     .map(sourcePath => path.resolve(__dirname, sourcePath.split('/')));
+};
+
+const getAllFilesRecoursive = dir => {
    let results = [];
    const list = fs.readdirSync(dir);
    list.forEach(function (file) {
@@ -27,7 +43,7 @@ const getAllFiles = dir => {
       }
       if (stat && stat.isDirectory()) {
          /* Recurse into a subdirectory */
-         results = results.concat(getAllFiles(file));
+         results = results.concat(getAllFilesRecoursive(file));
       } else {
          /* Is a file */
          results.push(file);
@@ -244,7 +260,7 @@ const eslintFilesByExtension = async filesByExtension => {
  * You can also call this function using: npm run full-code-quality
  */
 const full = async () => {
-   const files = getAllFiles(__dirname);
+   const files = getAllFiles();
    const filesByExtension = groupFilesByExtension(files);
    await fullPrettier(filesByExtension);
    console.log("Running EsLint on all files. Please wait...")
@@ -257,7 +273,7 @@ const full = async () => {
  */
 const fullPrettier = async filesByExtension => {
    if (!filesByExtension) {
-      const files = getAllFiles(__dirname);
+      const files = getAllFiles();
       filesByExtension = groupFilesByExtension(files);
    }
    prettifyFiles(filesByExtension);
@@ -269,17 +285,19 @@ const fullPrettier = async filesByExtension => {
  */
 const fullEslint = async filesByExtension => {
    if (!filesByExtension) {
-      const files = getAllFiles(__dirname);
+      const files = getAllFiles();
       filesByExtension = groupFilesByExtension(files);
    }
 
    const esLintResult = await eslintFilesByExtension(filesByExtension);
+   const options = getOptions();
+   const reportFile = options.report || 'full_eslint_report.html';
    if (esLintResult.error) {
       fs.writeFileSync(
-         'full_eslint_report.html',
+        reportFile,
          ansiup.ansi_to_html(esLintResult.report).replace(/(?:\r\n|\r|\n)/g, '<br/>')
       );
-      console.log('Wrote eslint report to file ' + path.resolve('full_eslint_report.html'));
+      console.log('Wrote eslint report to file ' + path.resolve(reportFile));
    }
    console.log("Eslint executed in ' + esLintResult.numberFiles + ' files. Results written in 'full_eslint_report.html' ");
 };
