@@ -290,7 +290,7 @@
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    Routing.navigateTo(path, isNavigationSyncEnabled);
+    Routing.navigateTo(path, true, isNavigationSyncEnabled);
   };
 
   const removeQueryParams = str => str.split('?')[0];
@@ -440,7 +440,7 @@
     );
 
     // subsequential route handling
-    RoutingHelpers.addRouteChangeListener(path => {
+    RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
       const pv = preservedViews;
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
@@ -450,7 +450,13 @@
 
       closeSplitView();
 
-      Routing.handleRouteChange(path, getComponentWrapper(), node, config);
+      Routing.handleRouteChange(
+        path,
+        getComponentWrapper(),
+        node,
+        config,
+        withoutSync
+      );
     });
   };
 
