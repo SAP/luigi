@@ -128,6 +128,6 @@ These parameters can be used to configure the user settings menu in Luigi. You m
 * **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to write the user settings object. The function takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings.
 If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
 
-* **readUserSettings** if this functions is implemented the default mechanism will be overridden and you can choose a custom storage to read the user settings object.
-If an error appears you have to possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition you can implement a `message` to display the error on the browser console log.
+* **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object.
+If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
 <!-- document the schema-->
