@@ -9,7 +9,6 @@ const { ESLint } = require('eslint');
 const eslint = new ESLint({ fix: true });
 
 const AnsiUp = require('ansi_up').default;
-// eslint-disable-next-line new-cap
 const ansiup = new AnsiUp();
 
 /**
