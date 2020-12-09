@@ -2,16 +2,14 @@
 import { navigation } from './navigation';
 import { routing } from './routing';
 import { settings } from './settings';
-import { search } from './search';
+import {globalSearch} from './globalSearch';
+import {communication} from './communication';
 
 Luigi.setConfig({
   // auth,
   navigation,
   routing,
   settings,
-  lifecycleHooks: {
-    luigiAfterInit: () => {
-      search.init();
-    }
-  }
+  globalSearch,
+  communication
 });

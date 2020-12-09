@@ -261,22 +261,24 @@ class NavigationHelpersClass {
 
   storeExpandedState(key, value, replace = false) {
     let expandedList = this.loadExpandedCategories();
-    
+
     //get conxtext for siblings
-    let context = key.split(':')[0]
+    let context = key.split(':')[0];
     if (value) {
       if (replace) {
         // Filter out other categories
-        expandedList = expandedList.filter(f => f.indexOf(context + ':') === -1)
-      } 
-      
+        expandedList = expandedList.filter(
+          f => f.indexOf(context + ':') === -1
+        );
+      }
+
       if (expandedList.indexOf(key) < 0) {
         expandedList.push(key);
       }
     } else {
       let index = expandedList.indexOf(key);
       if (index >= 0) {
-          expandedList.splice(index, 1);
+        expandedList.splice(index, 1);
       }
     }
     localStorage.setItem(this.EXP_CAT_KEY, JSON.stringify(expandedList));

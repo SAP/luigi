@@ -1,0 +1,15 @@
+{
+  "name": "@luigi-project/client-support-angular",
+  "version": "1.7.0",
+  "peerDependencies": {
+    "@angular/common": "^11.0.0",
+    "@angular/core": "^11.0.0",
+    "@luigi-project/client": "^1.5.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@luigi-project/client": "^1.5.0"
+  }
+}
