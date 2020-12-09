@@ -281,7 +281,7 @@ const fullEslint = async filesByExtension => {
       );
       console.log('Wrote eslint report to file ' + path.resolve('full_eslint_report.html'));
    }
-   console.log('Eslint executed in ' + esLintResult.numberFiles + ' files ');
+   console.log("Eslint executed in ' + esLintResult.numberFiles + ' files. Results written in 'full_eslint_report.html' ");
 };
 
 /**
