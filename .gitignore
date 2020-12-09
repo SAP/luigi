@@ -18,3 +18,4 @@ whitesource.config.json
 plugin*.js
 core/dev-tools/latest_build.log
 core/dev-tools/simple-app
+/full_eslint_report.html

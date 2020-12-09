@@ -8,6 +8,10 @@ const fs = require('fs');
 const { ESLint } = require('eslint');
 const eslint = new ESLint({ fix: true });
 
+const AU = require('ansi_up');
+// eslint-disable-next-line new-cap
+const ansiup = new AU.default();
+
 /**
  * Get all files, excluding automatically generated or imported from external libraries.
  * @param dir: path from where recursively get all the files
@@ -271,8 +275,11 @@ const fullEslint = async filesByExtension => {
 
    const esLintResult = await eslintFilesByExtension(filesByExtension);
    if (esLintResult.error) {
-      fs.writeFileSync('full_eslint_report.txt', esLintResult.report);
-      console.log('Wrote eslint report to file ' + path.resolve('full_eslint_report.txt'));
+      fs.writeFileSync(
+         'full_eslint_report.html',
+         ansiup.ansi_to_html(esLintResult.report).replace(/(?:\r\n|\r|\n)/g, '<br/>')
+      );
+      console.log('Wrote eslint report to file ' + path.resolve('full_eslint_report.html'));
    }
    console.log('Eslint executed in ' + esLintResult.numberFiles + ' files ');
 };
