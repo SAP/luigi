@@ -72,6 +72,10 @@ class Settings {
         alert('Are you sure');
       }
       sessionStorage.setItem('test', JSON.stringify(obj));
+      // let message = 'test';
+      // const error = new Error(message);
+      // error.closeDialog = false;
+      // throw error;
     },
     readUserSettings: () => {
       return JSON.parse(sessionStorage.getItem('test'));

@@ -80,6 +80,13 @@
     function storeUserSettings() {
         LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings).then(() => {
             dispatch('close');
+        }).catch(error => {
+            if (error && error.message) {
+                console.error(error.message)
+            }
+            if (error && error.closeDialog) {
+                dispatch('close');
+            }
         });
     }
 
