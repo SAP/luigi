@@ -271,7 +271,8 @@ const fullEslint = async filesByExtension => {
 
    const esLintResult = await eslintFilesByExtension(filesByExtension);
    if (esLintResult.error) {
-      console.log('Resume of ESLint analysis:\n' + esLintResult.report);
+      fs.writeFileSync('full_eslint_report.txt', esLintResult.report);
+      console.log('Wrote eslint report to file ' + path.resolve('full_eslint_report.txt'));
    }
    console.log('Eslint executed in ' + esLintResult.numberFiles + ' files ');
 };
