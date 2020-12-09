@@ -17,12 +17,14 @@ meta -->
 
 ## Overview
 
-Luigi is an open source JavaScript framework for micro frontends. Micro frontends can be used to divide big frontend monoliths into smaller, simpler, independent chunks.
+Luigi is an open source JavaScript framework for **micro frontends**. Micro frontends can be used to divide big frontend monoliths into smaller, simpler, independent chunks.
 
 <!-- add-attribute:class:success -->
 >**TIP:** Go to our [FAQ section](faq.md) to find more detailed answers to questions like *What are micro frontends?*
 
-The Luigi framework provides configuration options, API functions, and out-of-the-box features which make migrating to a micro frontend architecture easier. Furthermore, Luigi is technology-agnostic, which means you can use technologies like Angular, React, Vue, or anything else to create your frontend.
+The Luigi framework provides configuration options, API functions, and out-of-the-box features which make migrating to a micro frontend architecture easier.
+
+Furthermore, Luigi is **technology-agnostic**, which means you can use technologies like Angular, React, Vue, or anything else to create your frontend.
 
 ### Main features
 
@@ -30,15 +32,16 @@ The Luigi framework provides configuration options, API functions, and out-of-th
 
 Luigi consists of two main parts:
 
-* **Luigi Core** - refers to the "main app", in which your micro frontends (a.k.a. views) will be embedded. It offers some of the following configurable features:
-    * [Navigation](navigation-configuration.md) - consistent user navigation created using special Luigi [parameters](navigation-parameters-reference.md).
-    * [Authorization](authorization-configuration.md) - integration with an authentication provider, allowing users to log in.
-    * [Localization](i18n.md) - displaying an application in multiple languages.
-    * [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes, third-party cookie settings, and more.
-    * [API](luigi-core-api.md) - functions to help with almost every part of your app, from navigation and authorization to adding a [search box](luigi-core-api.md#globalsearch) or configuring a light/dark [theme](luigi-core-api.md#theming).
-* **Luigi Client** - refers to Luigi options related to micro frontends:
-    * [API](luigi-client-api.md)  - diverse API functions which can be used on the micro frontend side.
-    * [Communication](communication.md)  - sending messages between the micro frontend and the main application.
+**Luigi Core** - refers to the "main app", in which your micro frontends (a.k.a. views) will be embedded. It offers some of the following configurable features:
+* [Navigation](navigation-configuration.md) - consistent user navigation created using special Luigi [parameters](navigation-parameters-reference.md).
+* [Authorization](authorization-configuration.md) - integration with an authentication provider, allowing users to log in.
+* [Localization](i18n.md) - displaying an application in multiple languages.
+* [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes, third-party cookie settings, and more.
+* [API](luigi-core-api.md) - functions to help with almost every part of your app, from navigation and authorization to adding a [search box](luigi-core-api.md#globalsearch) or configuring a light/dark [theme](luigi-core-api.md#theming).
+
+**Luigi Client** - refers to Luigi options related to micro frontends:
+* [API](luigi-client-api.md)  - diverse API functions which can be used on the micro frontend side.
+* [Communication](communication.md)  - sending messages between the micro frontend and the main application.
 
 ## Setup
 
@@ -67,7 +70,7 @@ Follow these steps to add Luigi Client features to your existing **micro fronten
 
 ## Examples
 
-Here you can find some sample Luigi applications and scenarios, starting from simple to more complex:
+Here you can find some Luigi example applications and scenarios, starting from simple to more complex:
 
 <!-- accordion:start -->
 
