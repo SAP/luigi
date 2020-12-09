@@ -114,13 +114,13 @@
         height: 60vh;
     }
 
-    .lui-usersettings__body {
+    .lui-usersettings-body {
         position: relative;
         padding-top: 0;
         padding-bottom: 0;
     }
 
-    .lui-usersettings__left-nav {
+    .lui-usersettings-left-nav {
         position: absolute;
         top: 0;
         left: 0;
@@ -135,7 +135,7 @@
         overflow-y: scroll;
     }
 
-    .lui-usersettings__content {
+    .lui-usersettings-content {
         position: absolute;
         left: 201px;
         top: 0;
@@ -145,7 +145,7 @@
         padding: 20px;
     }
 
-    .lui-usersettings__burger {
+    .lui-usersettings-burger {
         margin-right: 16px;
         cursor: pointer;
         display: none;
@@ -178,7 +178,7 @@
         align-items: center;
     }
 
-    .lui-usersettings-list-item-title-container {
+    .lui-usersettings-list-item__title-container {
         display: flex;
         flex-direction: column;
         flex: auto;
@@ -187,7 +187,7 @@
         text-overflow: ellipsis;
     }
 
-    .lui-usersettings-list-item-title {
+    .lui-usersettings-list-item__title {
         font-size: .875rem;
         white-space: nowrap;
         overflow: hidden;
@@ -195,7 +195,7 @@
         flex: 1 1 auto;
     }
 
-    .lui-usersettings-list-item-subtitle {
+    .lui-usersettings-list-item__subtitle {
         font-size: .875rem;
         color: #6a6d70;
         white-space: nowrap;
@@ -206,20 +206,20 @@
     }
 
     @media (max-width: 600px) {
-        .lui-usersettings__burger {
+        .lui-usersettings-burger {
             display: block;
             margin-left: 0px;
         }
 
-        :global(.usersettings-leftNavVisible) .lui-usersettings__left-nav {
+        :global(.usersettings-leftNavVisible) .lui-usersettings-left-nav {
             width: 200px;
         }
 
-        .lui-usersettings__content {
+        .lui-usersettings-content {
             left: 0;
         }
 
-        .lui-usersettings__left-nav {
+        .lui-usersettings-left-nav {
             width: 0;
             transition: 0.5s;
         }
@@ -235,7 +235,7 @@
         <div class="fd-dialog__header fd-bar fd-bar--header">
             <div class="fd-bar__left">
                 <div class="fd-bar__element">
-                    <button class="fd-shellbar__button fd-button sap-icon--menu2 lui-usersettings__burger"
+                    <button class="fd-shellbar__button fd-button sap-icon--menu2 lui-usersettings-burger"
                         on:click="{toggleNavMobile}" tabindex="0"></button>
                 </div>
                 <div class="fd-bar__element">
@@ -250,11 +250,11 @@
                 </div>
             </div>
         </div>
-        <div class="fd-dialog__body lui-usersettings__body">
-            <div class="lui-usersettings__left-nav">
+        <div class="fd-dialog__body lui-usersettings-body">
+            <div class="lui-usersettings-left-nav">
                 <div class="fd-side-nav">
                     <div class="fd-side-nav__main-navigation">
-                        <div class="lui-fd-side-nav-wrapper">
+                        <div class="lui-fd-side__nav-wrapper">
                             <ul class="fd-nested-list lui-us-list">
                                 {#each Object.entries(userSettingsData) as [key, userSettingsGroup], index}
                                     {#each Object.entries(userSettingsGroup) as userSettingsGroupProperty}
@@ -272,9 +272,9 @@
                                                     {:else}
                                                     <span class="fd-nested-list__icon"></span>
                                                     {/if}
-                                                    <div class="lui-usersettings-list-item-title-container">
-                                                        <span class="lui-usersettings-list-item-title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
-                                                        <span class="lui-usersettings-list-item-subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
+                                                    <div class="lui-usersettings-list-item__title-container">
+                                                        <span class="lui-usersettings-list-item__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
+                                                        <span class="lui-usersettings-list-item__subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
                                                     </div>
                                                 </div>
                                             </a>
@@ -286,7 +286,7 @@
                     </div>
                 </div>
             </div>
-            <div class="lui-usersettings__content">
+            <div class="lui-usersettings-content">
                 {#if displayEditor}
                     <UserSettingsEditor userSettings={storedUserSettings} userSettingsGroupSchema={userSettingsSchema} on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
                 {/if}

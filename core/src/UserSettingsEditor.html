@@ -19,7 +19,7 @@
     }
 
     function closeAllCombos(self) {
-        document.querySelectorAll('.lui-usersettings__content .fd-popover__control').forEach(elem => {
+        document.querySelectorAll('.lui-usersettings-content .fd-popover__control').forEach(elem => {
             setExpandedState(elem, false);
         });
     }
@@ -53,7 +53,7 @@
         grid-template-columns: minmax(0, 1fr) 2fr;
     }
 
-    .lui-usersettings__content {
+    .lui-usersettings-content {
         overflow: auto;
         height: 100%;
     }
@@ -103,7 +103,7 @@
         color: var(--sapTextColor, #32363a);
     }
 </style>
-<div class="lui-usersettings__content">
+<div class="lui-usersettings-content">
     <div class="lui-us-content-header-container">
         <h1 class="lui-title lui-title--h1">
             {userSettingsGroupSchema[1].title?$getTranslation(userSettingsGroupSchema[1].title):''}

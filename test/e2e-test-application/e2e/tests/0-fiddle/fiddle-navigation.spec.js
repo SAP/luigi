@@ -609,7 +609,7 @@ describe('Fiddle', () => {
       cy.get('[data-testid="lui-us-header"]').should('be.visible');
       cy.get('[data-testid="lui-us-header"]').contains('User Settings');
 
-      cy.get('.lui-usersettings__left-nav')
+      cy.get('.lui-usersettings-left-nav')
         .contains('Language & Region')
         .click();
 
