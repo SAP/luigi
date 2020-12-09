@@ -8,9 +8,9 @@ const fs = require('fs');
 const { ESLint } = require('eslint');
 const eslint = new ESLint({ fix: true });
 
-const AU = require('ansi_up');
+const AnsiUp = require('ansi_up').default;
 // eslint-disable-next-line new-cap
-const ansiup = new AU.default();
+const ansiup = new AnsiUp();
 
 /**
  * Get all files, excluding automatically generated or imported from external libraries.
