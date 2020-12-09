@@ -1,5 +1,5 @@
 {
-  "extends": "standard",
+  "extends": ["standard", "plugin:cypress/recommended"],
   "rules": {
     "semi": [2, "always"],
     "no-tabs": "off",
