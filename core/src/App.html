@@ -9,6 +9,7 @@
     nodepath="{mfModal.nodepath}"
     on:close="{closeModal}"
     on:iframeCreated="{modalIframeCreated}"
+    on:wcCreated="{modalWCCreated}"
   ></Modal>
   {/if}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
@@ -45,6 +46,7 @@
       nodepath="{mfSplitView.nodepath}"
       on:iframeCreated="{splitViewIframeCreated}"
       on:statusChanged="{splitViewStatusChanged}"
+      on:wcCreated="{splitViewWCCreated}"
       disableBackdrop="{disableBackdrop}"
     ></SplitView>
     {/if}
@@ -160,6 +162,8 @@
   /// MFs
   let modalIframe;
   let modalIframeData;
+  let modalWC;
+  let modalWCData;
   let modal;
   let activeDrawer = false;
   let disableBackdrop;
@@ -168,6 +172,8 @@
   let drawer;
   let splitViewIframe;
   let splitViewIframeData;
+  let splitViewWC;
+  let splitViewWCData;
   let splitView;
   let context;
   let nodeParams;
@@ -358,6 +364,7 @@
           mfSplitView,
           splitViewValues,
           splitViewIframe,
+          splitViewWC,
           showLoadingIndicator,
           tabNav,
           isNavigateBack,
@@ -400,6 +407,8 @@
               splitViewValues = obj.splitViewValues;
             } else if (prop === 'splitViewIframe') {
               splitViewIframe = obj.splitViewIframe;
+            } else if (prop == 'splitViewWC') {
+              splitViewWC = obj.splitViewWC;
             } else if (prop === 'showLoadingIndicator') {
               showLoadingIndicator = obj.showLoadingIndicator;
             } else if (prop === 'tabNav') {
@@ -716,6 +725,12 @@
     }
   };
 
+  const splitViewWCCreated = event => {
+    splitViewWC = event.detail.splitViewWC;
+    splitViewWCData = event.detail.splitViewWCData;
+    $: mfSplitView.collapsed = event.detail.collapsed;
+  };
+
   /// RESIZING
 
   let hideNav;
@@ -916,11 +931,18 @@
     modalIframeData = event.detail.modalIframeData;
   };
 
+  const modalWCCreated = event => {
+    modalWC = event.detail.modalWC;
+    modalWCData = event.detail.modalWCData;
+  };
+
   const closeModal = event => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         resetMicrofrontendModalData();
       });
+    } else if (modalWC) {
+      resetMicrofrontendModalData();
     }
   };
 
