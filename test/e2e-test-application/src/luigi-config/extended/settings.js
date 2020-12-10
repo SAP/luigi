@@ -68,13 +68,26 @@ class Settings {
     },
     //functions to use a custom storage like sessionStorage
     storeUserSettings: (obj, previous) => {
-      if (JSON.stringify(obj) !== JSON.stringify(previous)) {
-        alert('Are you sure');
-      }
-      sessionStorage.setItem('test', JSON.stringify(obj));
+      return new Promise((resolve, reject) => {
+        if (JSON.stringify(obj) !== JSON.stringify(previous)) {
+          const settings = {
+            header: "Confirmation",
+            body: "Are you sure you want to do this?",
+            buttonConfirm: "Yes",
+            buttonDismiss: "No"
+          }
+          Luigi
+            .ux()
+            .showConfirmationModal(settings).then(() => {
+              sessionStorage.setItem('test', JSON.stringify(obj));
+              resolve();
+              Luigi.ux().closeUserSettings();
+            });
+        }
+      });
       // let message = 'test';
       // const error = new Error(message);
-      // error.closeDialog = false;
+      // error.closeDialog = true;
       // throw error;
     },
     readUserSettings: () => {
@@ -95,7 +108,8 @@ class Settings {
           email: { type: 'string', label: 'E-Mail', isEditable: false },
           server: { type: 'string', label: 'Server', isEditable: false },
           checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
-          checkbox2: { type: 'boolean', label: 'Checkbox2' }
+          checkbox2: { type: 'boolean', label: 'Checkbox2' },
+          checkbox3: { type: 'boolean', label: 'Checkbox23', isEditable: false }
         }
       },
       language: {
@@ -108,8 +122,7 @@ class Settings {
             type: 'enum',
             label: 'Language and Region',
             options: ['German', 'English', 'Spanish', 'French'],
-            description: 'After you save your settings, the browser will refresh for the new language to take effect.',
-            isEditable: false
+            description: 'After you save your settings, the browser will refresh for the new language to take effect.'
           },
           date: { type: 'string', label: 'Date Format' },
           time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
