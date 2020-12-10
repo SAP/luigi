@@ -22,11 +22,11 @@ class GlobalSearch {
     // },
 
     toggleSearch: (inputElem, fieldVisible) => {
-      Luigi.showAlert({
-        text: `In toggleSearch: element visible=${fieldVisible}`,
-        type: 'info',
-        closeAfter: 1500
-      });
+      // Luigi.showAlert({
+      //   text: `In toggleSearch: element visible=${fieldVisible}`,
+      //   type: 'info',
+      //   closeAfter: 1500
+      // });
       inputElem.setAttribute(
         'data-toggleSearch',
         fieldVisible ? 'open' : 'close'
