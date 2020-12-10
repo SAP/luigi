@@ -15,20 +15,22 @@ class GlobalSearch {
     // ) => {},
     // onSearchResultItemSelected: searchResultItem => {},
 
-    // inputPlaceholder: 'Digit here text to search....',
+    inputPlaceholder: 'Digit here text to search....',
     // inputPlaceholder: () => 'Digit here text to search....',
-
-    inputPlaceholder: {
-      en: 'Digit here text to search....'
-    },
+    // inputPlaceholder: {
+    //   en: 'Digit here text to search....'
+    // },
 
     toggleSearch: (inputElem, fieldVisible) => {
-      // Luigi.showAlert({
-      //   text: `In toggleSearch: element visible=${fieldVisible}`,
-      //   type: 'info',
-      //   closeAfter: 1500
-      // });
-      inputElem.setAttribute('data-toggleSearch', fieldVisible ? 'open' : 'close');
+      Luigi.showAlert({
+        text: `In toggleSearch: element visible=${fieldVisible}`,
+        type: 'info',
+        closeAfter: 1500
+      });
+      inputElem.setAttribute(
+        'data-toggleSearch',
+        fieldVisible ? 'open' : 'close'
+      );
     },
 
     onInput: () => {

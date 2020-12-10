@@ -135,6 +135,12 @@
       return searchProvider.inputPlaceholder();
     }
     if (typeof searchProvider.inputPlaceholder === 'string') {
+      const translated = LuigiI18N.getTranslation(
+        searchProvider.inputPlaceholder
+      );
+      if (!!translated && translated.trim().length > 0) {
+        return translated;
+      }
       return searchProvider.inputPlaceholder;
     }
     if (typeof searchProvider.inputPlaceholder === 'object') {
