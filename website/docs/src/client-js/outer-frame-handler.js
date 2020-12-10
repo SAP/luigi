@@ -9,7 +9,7 @@ import { isSearchBot } from './helpers';
 export class OuterFrameHandler {
   init() {
     if (this.outsideIframe() && !isSearchBot) {
-      const href = window.location.href;
+      const href = encodeURI(window.location.href);
       let newHref;
       if (href.includes('/docu-microfrontend')) {
         newHref = href.replace('/docu-microfrontend', '').replace('#', '?section=');
