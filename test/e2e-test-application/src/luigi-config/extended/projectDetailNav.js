@@ -78,7 +78,6 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'drawer',
     label: 'Drawer Example',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/drawer',
-    userSettingsGroup: 'language',
     drawer: {
       header: 'Test',
       backdrop: true,
@@ -123,6 +122,16 @@ export const projectDetailNavStructure = projectId => [
     label: 'Project Settings',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
+    userSettingsGroup: 'language',
+    testId: 'myTestId'
+  },
+  {
+    category: { label: 'Settings', icon: 'action-settings' },
+    pathSegment: 'user_settings',
+    label: 'User Settings',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings',
+    userSettingsGroup: 'userAccount',
     testId: 'myTestId'
   },
   {
@@ -141,6 +150,7 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     testId: 'myTestId',
+    userSettingsGroup: 'userAccount',
     visibleForFeatureToggles: ['!ft1']
   },
   {
@@ -160,7 +170,6 @@ export const projectDetailNavStructure = projectId => [
     label: 'Miscellaneous2',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     icon: 'sys-help',
-    userSettingsGroup: 'userAccount',
     openNodeInModal: true
   },
   {
