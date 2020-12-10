@@ -459,7 +459,7 @@ Navigates to the given path in the application. It contains either a full absolu
 ```javascript
 Luigi.navigation().navigate('/overview')
 Luigi.navigation().navigate('users/groups/stakeholders')
-Luigi.navigation().navigate('/settings', null, true) // preserve view
+Luigi.navigation().navigate('/settings', null, { title: "Settings Menu", size: "m" }) // preserve view
 ```
 
 #### openAsModal
