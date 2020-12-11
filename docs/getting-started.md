@@ -24,7 +24,7 @@ Luigi is an open source JavaScript framework for **micro frontends**. Micro fron
 
 The Luigi framework provides configuration options, API functions, and out-of-the-box features which make migrating to a micro frontend architecture easier.
 
-Furthermore, Luigi is **technology-agnostic**, which means you can use technologies like Angular, React, Vue, or anything else to create your frontend.
+Furthermore, Luigi is **technology-agnostic**, which means you can use toolkits like OpenUI5, Angular, React, Vue, or anything else to create your frontend.
 
 ### Main features
 
@@ -33,15 +33,15 @@ Furthermore, Luigi is **technology-agnostic**, which means you can use technolog
 Luigi consists of two main parts:
 
 **Luigi Core** - refers to the "main app", in which your micro frontends (a.k.a. views) will be embedded. It offers some of the following configurable features:
-* [Navigation](navigation-configuration.md) - consistent user navigation created using special Luigi [parameters](navigation-parameters-reference.md).
+* [Navigation](navigation-configuration.md) - consistent user navigation created using specific Luigi [parameters](navigation-parameters-reference.md).
 * [Authorization](authorization-configuration.md) - integration with an authentication provider, allowing users to log in.
 * [Localization](i18n.md) - displaying an application in multiple languages.
-* [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes, third-party cookie settings, and more.
-* [API](luigi-core-api.md) - functions to help with almost every part of your app, from navigation and authorization to adding a [search box](luigi-core-api.md#globalsearch) or configuring a light/dark [theme](luigi-core-api.md#theming).
+* [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes, third-party cookie configuration and more.
+* [API](luigi-core-api.md) - functions to help with almost every part of your app: navigation, authorization, adding a [search box](luigi-core-api.md#globalsearch), configuring a light/dark [theme](luigi-core-api.md#theming) and others.
 
 **Luigi Client** - refers to Luigi options related to micro frontends:
 * [API](luigi-client-api.md)  - diverse API functions which can be used on the micro frontend side.
-* [Communication](communication.md)  - sending messages between the micro frontend and the main application.
+* [Communication](communication.md)  - sending messages between the micro frontend and the main application (Luigi Core module).
 
 ## Setup
 
@@ -172,7 +172,7 @@ The whole tutorial should take about an hour to complete. The source code for th
 
 ### e2e example
 
-This example application was created for testing purposes and it includes all possible Luigi features in one place. This makes it complicated and unsuitable for beginners, but it can be useful if you want to explore our framework in more detail or [contribute](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md) to the Luigi project.
+This example application was created for testing purposes and it includes all possible Luigi features in one place. It might be complicated and unsuitable for beginners, but useful if you want to explore our framework in more detail or [contribute](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md) to the Luigi project.
 
 You can find the e2e test application and instructions on how to install it [here](https://github.com/SAP/luigi/tree/master/test/e2e-test-application#luigi-sample-and-e2e-test-application-written-in-angular).
 
