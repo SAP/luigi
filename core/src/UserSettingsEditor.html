@@ -53,11 +53,6 @@
         grid-template-columns: minmax(0, 1fr) 2fr;
     }
 
-    .lui-usersettings-content {
-        overflow: auto;
-        height: 100%;
-    }
-
     .lui-value-container {
         grid-column: 2;
     }
@@ -86,9 +81,8 @@
 
     }
 
-    .lui-title--h1 {
-        font-size: 2.25rem;
-        font-size: var(--sapFontHeader1Size, 2.25rem);
+    .lui-title--h2 {
+        font-size: var(--sapFontHeader2Size, 1.5rem);
     }
 
     .lui-title {
@@ -105,7 +99,7 @@
 </style>
 <div class="lui-usersettings-content">
     <div class="lui-us-content-header-container">
-        <h1 class="lui-title lui-title--h1">
+        <h1 class="lui-title lui-title--h2">
             {userSettingsGroupSchema[1].title?$getTranslation(userSettingsGroupSchema[1].title):''}
         </h1>
     </div>

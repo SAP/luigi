@@ -68,34 +68,30 @@ class Settings {
     },
     //functions to use a custom storage like sessionStorage
     storeUserSettings: (obj, previous) => {
-      return new Promise((resolve, reject) => {
-        if (JSON.stringify(obj) !== JSON.stringify(previous)) {
-          const settings = {
-            header: "Confirmation",
-            body: "Are you sure you want to do this?",
-            buttonConfirm: "Yes",
-            buttonDismiss: "No"
-          }
-          Luigi
-            .ux()
-            .showConfirmationModal(settings).then(() => {
-              sessionStorage.setItem('test', JSON.stringify(obj));
-              resolve();
-              Luigi.ux().closeUserSettings();
-            });
+      // return new Promise((resolve, reject) => {
+      if (JSON.stringify(obj) !== JSON.stringify(previous)) {
+        const settings = {
+          header: "Confirmation",
+          body: "Are you sure you want to do this?",
+          buttonConfirm: "Yes",
+          buttonDismiss: "No"
         }
-      });
-      // let message = 'test';
-      // const error = new Error(message);
-      // error.closeDialog = true;
-      // throw error;
+        // Luigi
+        //   .ux()
+        //   .showConfirmationModal(settings).then(() => {
+        sessionStorage.setItem('test', JSON.stringify(obj));
+        //     resolve();
+        //   }).catch(() => {
+        //     reject({ closeDialog: true, message: 'error' });
+        //   });
+      }
+      // });
     },
     readUserSettings: () => {
-      return JSON.parse(sessionStorage.getItem('test'));
-      // let message = 'test';
-      // const error = new Error(message);
-      // error.closeDialog = true;
-      // throw error;
+      // return new Promise((resolve, reject) => {
+      resolve(JSON.parse(sessionStorage.getItem('test')));
+      //reject({ closeDialog: true, message: 'error' });
+      // });
     },
     userSettingGroups: {
       userAccount: {

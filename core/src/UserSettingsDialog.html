@@ -78,7 +78,9 @@
     }
 
     function storeUserSettings() {
-        LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings).then(() => { }).catch(error => {
+        LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings).then(() => {
+            dispatch('close');
+        }).catch(error => {
             if (error && error.message) {
                 console.error(error.message)
             }
@@ -112,9 +114,9 @@
     }
 
     .dialog-size {
-        width: 60vw;
-        height: 60vh;
-        max-width: 1000px;
+        width: 58rem;
+        height: 42rem;
+        max-height: calc(100% - 2.5rem - 6%);
     }
 
     .lui-usersettings-body {
@@ -127,7 +129,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 200px;
+        width: 20rem;
         height: 100%;
         z-index: 2;
     }
@@ -140,12 +142,14 @@
 
     .lui-usersettings-content {
         position: absolute;
-        left: 201px;
+        left: 20rem;
         top: 0;
         height: 100%;
         right: 0;
         overflow-wrap: break-word;
         padding: 20px;
+        overflow: auto;
+        height: 100%;
     }
 
     .lui-usersettings-burger {
