@@ -10,13 +10,15 @@ Object.keys(productSwitcherItems[0]).length }
         <!-- default: sap-icon--grid -->
         {#if hasOpenUIicon(config)}
         <button
-          class="fd-button fd-button--transparent fd-product-switch__control sap-icon--{config.icon}"
+          class="fd-button fd-button--transparent fd-product-switch__control"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
           aria-haspopup="true"
           on:click|stopPropagation="{toggleDropdownState}"
           title="{config.label}"
           data-testid="{getTestId(config)}"
-        ></button>
+        >
+          <i class="sap-icon--{config.icon}"></i>
+        </button>
         {:else}
         <button
           class="fd-button fd-button--transparent fd-product-switch__control"
@@ -44,9 +46,10 @@ Object.keys(productSwitcherItems[0]).length }
               on:click="{() => onActionClick(productSwitcherItem)}"
               data-testid="{getTestId(productSwitcherItem)}"
             >
-              <div
-                class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
-              >
+              <div>
+                <i
+                  class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
+                ></i>
                 {#if !hasOpenUIicon(productSwitcherItem)}
                 <img
                   src="{productSwitcherItem.icon}"

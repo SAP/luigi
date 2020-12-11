@@ -18,9 +18,10 @@
             data-e2e="mobile-topnav-item"
             data-testid="{getTestId(node)}"
           >
-            <div
-              class="fd-product-switch__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
-            >
+            <div>
+              <i
+                class="fd-product-switch__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+              ></i>
               {#if !hasOpenUIicon(node)}
               <img
                 src="{node.icon}"

@@ -154,13 +154,14 @@
               role="button"
             >
               <button
-                class="fd-shellbar__button fd-button sap-icon--overflow"
+                class="fd-shellbar__button fd-button"
                 aria-controls="overflowPopover"
                 aria-expanded="{dropDownStates.overflowPopover || false}"
                 aria-haspopup="true"
                 on:click="{() => toggleDropdownState('overflowPopover')}"
                 data-testid="mobile-menu"
               >
+                <i class="sap-icon--overflow"></i>
                 <BadgeCounter node="{totalBadgeNode}" special="true"/>
               </button>
             </div>
@@ -346,13 +347,17 @@
               class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }"
             >
               <button
-                class="fd-shellbar__button fd-button {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                class="fd-shellbar__button fd-button"
                 style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
                 aria-expanded="{dropDownStates.profilePopover || false}"
                 aria-haspopup="true"
                 on:click="{() => toggleDropdownState('profilePopover')}"
                 title="{userInfo.name ? userInfo.name : userInfo.email}"
-              ></button>
+              >
+                <i
+                  class="{!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                ></i>
+              </button>
             </div>
             <div
               class="fd-popover__body fd-popover__body--right"
