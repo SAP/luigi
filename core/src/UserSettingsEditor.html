@@ -24,9 +24,19 @@
         });
     }
 
+    function closest(element, selector, max) {
+        console.log('TESTR');
+        if (element && max > 0) {
+            return element.matches(selector) ? element : closest(element.parentNode, selector, max - 1);
+        } else {
+            return undefined;
+        }
+    }
+
     function toggleOptions(event, editable) {
         if (editable || editable === undefined) {
-            const self = event.target.closest('.fd-popover__control');
+            console.log('test');
+            const self = closest(event.target, '.fd-popover__control', 20);
             closeAllCombos(self);
             const currentState = self.getAttribute('aria-expanded') === 'true';
             setExpandedState(self, !currentState);
