@@ -50,11 +50,14 @@
 <style>
     .lui-form-grid {
         display: grid;
+        display: -ms-grid;
         grid-template-columns: minmax(0, 1fr) 2fr;
+        -ms-grid-columns: minmax(0, 1fr) 2fr;
     }
 
     .lui-value-container {
         grid-column: 2;
+        -ms-grid-column: 2;
     }
 
     .lui-value-container>input[type="checkbox"] {
@@ -63,6 +66,7 @@
 
     .lui-form-label {
         grid-column: 1;
+        -ms-grid-column: 1;
         text-align: right;
         padding-top: 10px;
         overflow: hidden;
