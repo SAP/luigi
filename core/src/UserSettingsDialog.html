@@ -61,7 +61,7 @@
             document.querySelectorAll('.lui-us-list .fd-nested-list__link').forEach(elem => {
                 elem.classList.remove('is-selected');
             });
-            const link = event.target.closest('.fd-nested-list__link');
+            const link = closest(event.target, '.fd-nested-list__link', 20);
             link.classList.add("is-selected");
             if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
                 closeNavOnCategoryClickMobile();
@@ -88,6 +88,18 @@
                 dispatch('close');
             }
         });
+    }
+
+    function closest(element, selector, max) {
+        if (element && max > 0) {
+            if (GenericHelpers.isIE()) {
+                return element.msMatchesSelector(selector) ? element : closest(element.parentNode, selector, max - 1);
+            } else {
+                return element.matches(selector) ? element : closest(element.parentNode, selector, max - 1);
+            }
+        } else {
+            return undefined;
+        }
     }
 
     function closeNavOnCategoryClickMobile() {
