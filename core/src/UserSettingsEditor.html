@@ -1,6 +1,7 @@
 <svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window>
 <script>
     import { onMount, afterUpdate, beforeUpdate, createEventDispatcher, getContext } from 'svelte';
+    import { GenericHelpers } from './utilities/helpers';
     export let userSettingsGroupSchema;
     export let userSettingsGroupKey;
     export let userSettings;
@@ -27,7 +28,11 @@
     function closest(element, selector, max) {
         console.log('TESTR');
         if (element && max > 0) {
-            return element.matches(selector) ? element : closest(element.parentNode, selector, max - 1);
+            if (GenericHelpers.isIE()) {
+                return element.msMatchesSelector(selector) ? element : closest(element.parentNode, selector, max - 1);
+            } else {
+                return element.matches(selector) ? element : closest(element.parentNode, selector, max - 1);
+            }
         } else {
             return undefined;
         }
