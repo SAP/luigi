@@ -131,6 +131,7 @@ export const projectDetailNavStructure = projectId => [
     label: 'User Settings',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
+    isolateView: true,
     userSettingsGroup: 'userAccount',
     testId: 'myTestId'
   },
