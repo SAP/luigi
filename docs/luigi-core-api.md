@@ -190,7 +190,7 @@ Luigi.readUserSettings();
 
 #### storeUserSettings
 
-Reads the user settings object.
+Writes the user settings object.
 You can choose a custom storage to write the user settings by implementing the `userSetting.storeUserSettings` function in the settings section of the Luigi configuration
 By default, the user settings will be written from the **localStorage**
 
