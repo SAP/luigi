@@ -850,7 +850,7 @@ describe('Navigation', () => {
     });
   });
   describe('User settings', () => {
-    it('Display user settings info when userSettingsGroup provided', () => {
+    it('It should display user settings info when userSettingsGroup provided', () => {
       const userSettings =
         '{"userAccount":{"name":"Luigi","email":"luigi@luigi.de","server":"luigi.server"},"language":{"language":"Italian","date":"XXX?","time":"12 h"}}';
       localStorage.setItem('luigi.preferences.userSettings', userSettings);
@@ -858,6 +858,17 @@ describe('Navigation', () => {
       cy.visit('/projects/pr1/user_settings');
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody).should('contain', 'LuigiClient User Settings');
+      });
+      cy.clearLocalStorage('luigi.preferences.userSettings');
+    });
+
+    it('It should not display user settings info when userSettingsGroup not found', () => {
+      const userSettings = '{"mockGroup":{ name: "test"}}';
+      localStorage.setItem('luigi.preferences.userSettings', userSettings);
+
+      cy.visit('/projects/pr1/settings');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody).should('not.contain', 'LuigiClient User Settings');
       });
       cy.clearLocalStorage('luigi.preferences.userSettings');
     });
