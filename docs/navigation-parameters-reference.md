@@ -356,6 +356,8 @@ settings: {
 - **attributes**:
   - **id**: unique id of the web component
   - **type**: string, like `module`.
+  - **selfRegistered**: if it is `true`, the web component bundle will be added via script tag.
+  - **tagName**: tag name where web component is added to DOM. 
 - **since**: 1.7.0
 
 ### compound
