@@ -84,7 +84,7 @@
 </div>
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
-  import { LuigiAuth, LuigiConfig } from '../core-api';
+  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import {
@@ -114,6 +114,10 @@
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
     let inputElement = inputElem;
+    const placeHolder = getSearchPlaceholder(search.searchProvider);
+    if (placeHolder) {
+      inputElement.placeholder = placeHolder;
+    }
     isCustomSearchRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultRenderer
     );
@@ -121,6 +125,28 @@
       search.searchProvider.customSearchResultItemRenderer
     );
   });
+
+  function getSearchPlaceholder(searchProvider) {
+    if (!searchProvider || !searchProvider.inputPlaceholder) {
+      return undefined;
+    }
+    const currentLocale = LuigiI18N.getCurrentLocale();
+    if (GenericHelpers.isFunction(searchProvider.inputPlaceholder)) {
+      return searchProvider.inputPlaceholder();
+    }
+    if (typeof searchProvider.inputPlaceholder === 'string') {
+      const translated = LuigiI18N.getTranslation(
+        searchProvider.inputPlaceholder
+      );
+      if (!!translated && translated.trim().length > 0) {
+        return translated;
+      }
+      return searchProvider.inputPlaceholder;
+    }
+    if (typeof searchProvider.inputPlaceholder === 'object') {
+      return searchProvider.inputPlaceholder[currentLocale];
+    }
+  }
 
   function renderCustomSearchItem(item, slotContainer, index) {
     setTimeout(() => {
@@ -272,6 +298,12 @@
       inputElem,
       luigiCustomSearchRenderer__slot
     });
+
+    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
+      const fieldVisible =
+        isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
+      search.searchProvider.toggleSearch(inputElem, fieldVisible);
+    }
   }
 </script>
 <style type="text/scss">

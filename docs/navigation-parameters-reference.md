@@ -642,5 +642,22 @@ The global search is an input field available in the top navigation bar. The sea
     - **type**: Function
     - **description**: will be executed when the user clicks on a `searchResultItem`. 
     - **attribute** [searchResultItem](luigi-core-api.md#globalsearch)
-      
-          
+  - **inputPlaceholder**
+    - **type**: string
+    - **description**: This text will be used as placeholder in the search input field. 
+   - **inputPlaceholder**
+     - **type**: Function
+     - **description**: Output of this function will be used as placeholder in the search input field.
+   - **inputPlaceholder**
+     - **type**: Object
+     - **description**: Key value JSON object, where `key` is the language and `value` is the text used as placeholder in the search input field. This function doesn't have any input parameter.
+   - **toggleSearch**
+     - **type**: Function
+     - **description**: This function will be executed every time you click on the search icon.
+    - **attributes**:
+      - **element**
+        - **type**: INPUT element
+        - **description**: the input element where the user enters the search text.
+      - **visible**
+        - **type**: boolean
+        - **description**: specifies if the input text is visible or not.
