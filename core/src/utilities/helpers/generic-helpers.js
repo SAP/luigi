@@ -1,5 +1,6 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
 import { LuigiElements } from '../../core-api';
+import { LuigiConfig } from '../../core-api';
 
 class GenericHelpersClass {
   /**
@@ -318,6 +319,22 @@ class GenericHelpersClass {
       if (isNaN(na) && !isNaN(nb)) return -1;
     }
     return 0;
+  }
+
+  /**
+   * Checks, if an experimental feature is enabled under settings.experminental
+   *
+   * @param {*} expFeatureName the feature name to check for
+   * @param {*} showWarn if true, prints a warning on js console that feature is not enabled
+   *
+   * @returns true, if feature enabled, false otherwise.
+   */
+  requestExperimentalFeature(expFeatureName, showWarn) {
+    var val = LuigiConfig.getConfigValue('settings.experimental.' + expFeatureName);
+    if(showWarn && !val) {
+      console.warn("Experimental feature not enabled: ", expFeatureName);
+    }
+    return val;
   }
 }
 

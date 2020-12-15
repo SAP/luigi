@@ -6,7 +6,7 @@ import h from 'hastscript';
  * example markdown comment: <!-- keywords: key1, key2-->
  * result : <div class="keyword-container">
  *              <label class="keyword">key1</label>
- *              <label class="keyword">key2</label> 
+ *              <label class="keyword">key2</label>
  *          </div>
  */
 export default function addKeyWords() {
@@ -28,9 +28,9 @@ export default function addKeyWords() {
         // When the string is empty, split returns an array containing one empty string
         if (words[0] != '') {
             // create a div containing multiple labels
-            const newNodeData = h('div.keyword-container', 
+            const newNodeData = h('div.keyword-container',
                 words.map( word => {
-                    return h('label.keyword', [ word ] )
+                    return h('label.keyword', { onclick: 'searchTag(event, "'+ word+'")', style: 'cursor:pointer;'}, [ word ] )
                 })
             );
             Object.assign(node, newNodeData);
