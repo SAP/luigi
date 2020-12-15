@@ -122,13 +122,73 @@ To use this feature, you need to include the `webcomponents` parameter in your n
   },
 ```
 
-Web components can also have additional attributes such as `id`, `type`, `selfRegistered` and `tagName`:
+Luigi's web component example configuration to show 3 web components in a grid layout. In addition you'll see the configuration for the event bus. The "input" web component sends the typed input. The "header" web component listen listen to a "sendInput" event from a web component with the id "input1". In addition received data will be converted. An "update" event will be triggered and something will changed in the "header" web component where a "update" event listener is registered.
 
 ```javascript
-webcomponent: {
-          id: 'my-web-component',
-          type: 'module'
-          selfRegistered: true
-          tagName: 'web-component'
+{
+        pathSegment: 'wc_grid',
+        label: 'Grid',
+        category: {
+          label: 'Compound',
+          icon: 'attachment-html',
+          collapsible: true
         },
+        compound: {
+          renderer:
+          {
+            use: 'grid',
+            config: {
+              columns: '1fr 1fr 1fr',
+              /*rows: '150px',*/
+              /*gap: '30px',*/
+              layouts: [{
+                minWidth: 0,
+                maxWidth: 600,
+                columns: '1fr',
+                gap: 0
+              }, {
+                minWidth: 600,
+                maxWidth: 1024,
+                columns: '1fr 1fr',
+                gap: '30px'
+              }]
+            }
+          },
+          children: [{
+            viewUrl: 'URL_TO_HEADER_WEBCOMPONENT/panelHeader.js',
+            context: {
+              title: 'My Awesome Grid',
+              description: 'Really awesome'
+            },
+            layoutConfig: {
+              row: "1",
+              column: "1 / -1"
+            },
+            eventListeners: [{
+              source: 'input1',
+              name: 'sendInput',
+              action: 'update',
+              dataConverter: (data) => {
+                return 'new text: ' + data;
+              }
+            }]
+          }, {
+            id: 'input1',
+            viewUrl: 'URL_TO_SOME_WEBCOMPONENT/input.js',
+            context: {
+              title: 'Some input test',
+              instant: true
+            }
+          },
+          {
+            viewUrl: 'URL_TO_FOOTER_WEBCOMPONENT/panelFooter.js',
+            context: {
+              footer: 'This is the end of awesomeness'
+            },
+            layoutConfig: {
+              column: "1 / -1"
+            }
+          }]
+        }
+      }
 ```
