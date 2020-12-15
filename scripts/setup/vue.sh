@@ -19,8 +19,10 @@ fi
 vue create -d $folder && cd $folder
 
 # install dependencies
-npm i -P vue-router vuex @luigi-project/core @luigi-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content
-npm i copy-webpack-plugin@5 webpack webpack-cli @babel/core @babel/preset-env babel-loader sass-loader node-sass --save-dev
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/package.json > package.json
+npm i
+# as soon as new package.json under vue example released this line can be removed
+npm i webpack-cli@4.2.0 node-sass@4.14.1
 
 mkdir -p src/luigi-config src/assets/scss src/views public/assets
 
@@ -114,6 +116,6 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-exam
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
 
 # generic assets
-npm i
+
 npm run buildConfig
 npm run serve
