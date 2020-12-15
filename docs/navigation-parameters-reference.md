@@ -114,6 +114,18 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
   - **action**(string): defines an operation, i.e.: `display`, `approve` or `edit`. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical characters but also the underscore character.
   - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the Luigi configuration.
 
+### validWebcomponentUrls
+  - **type**: array
+  - **description**: a list of allowed web component urls. It is also possible to add a regular expressions as string to the array.
+  - **example**:
+```javascript
+settings: {
+  navigation: {
+    validWebcomponentUrls:[
+      'https\:\/\/YOURPROJECT\.gitlab\.io\/.?'
+    ]
+  }
+```
 
 ## Node parameters
 Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
@@ -338,6 +350,75 @@ settings: {
 - **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened. Note that this will be applied to its direct children.
 - **default**: `false`
 
+### webcomponent
+- **type**: boolean OR object
+- **description**: mark a node as web component either by setting this attribute to `true` or defining an object with the attributes like described below. The `viewUrl` attribute of the node must point to the web component js file in that case.
+- **attributes**:
+  - **id**: unique id of the web component
+  - **type**: string, like `module`.
+- **since**: 1.7.0
+
+### compound
+- **type**: object
+- **description**: It is possible to compound web components in one micro frontend. Within this object the layout of the web components can be defined. In addition you can configure nested web components. In that case the parent web component has to be defined a slot with a name to plug in the child web component. For example `<header><slot name="header">header</slot></header>`.
+Web components can communicate over an event bus.
+- **attributes**:
+  - **renderer**:
+    - **type**: object
+    - **description**: meta information about the layout of the compound web components
+    - **attributes**:
+      - **use**:
+        - **type**: string OR object
+        - **description**: You can define a css layout, like the css `grid` or implement an extended layout by defining an object using the `extends` property. In that case you have the possibility to implement the following functions the manipulate the standard renderer.
+        - **attributes**:
+          - **extends**
+            - **type**: string, e.g. `grid`
+            - **description**: 
+          - **createCompoundContainer**
+            - **type**: function
+            - **description**: This function gets the grid layout `config` object as parameter. 
+          - **createCompoundItemContainer**
+            - **type**: function
+            - **description** This function gets a the grid layout `config` object and the layout config object for the item.
+          - **attachCompoundItem**
+            - **type**: function
+            - **description** This function allows you to attach custom html to the item. This function gets the whole html container of the compound items and the item container as parameter.
+      - **config**:
+        - **type**: object
+        - **description**: defines the configuration object of the grid layout
+        - **attributes**:
+          - **columns**: represents the css `grid-template-columns`, e.g `1fr 2fr` .
+          - **rows**: represents the css `grid-template-rows`, e.g. `150px 150px`.
+          - **gap**: represents the css `grid-gap`, e.g. `auto`.
+          - **min-height** min height
+          - **layouts**
+            - **type**: array
+            - **description**: defines the configuration objects of the grid layout for media queries.
+            - **attributes**:
+              - **columns**: represents the css `grid-template-columns`, e.g `1fr 2fr` .
+              - **rows**: represents the css `grid-template-rows`, e.g. `150px 150px`.
+              - **gap**: represents the css `grid-gap`, e.g. `auto`.
+              - **min-width** min width
+              - **max-width** max width
+  - **children**
+    - **type**: array
+    - **description**: Array of web component nodes.
+    - **attributes**:
+      - **id**: unique `id` of the web component.
+      - **viewUrl**: url which points to the web component js file.
+      - **context**: object, which you can pass to the web component.
+      - **layoutConfig**: config object to define the position of an item in a grid. The properties are `row` and `column` and gets the same values as in the css grid standard. If you want to use the mechanism of nested web components you can define a `slot` property with the slot name instead of the config object. In that case this web component node will plugged in the parent web component.
+      - **eventListeners**
+        - **type**: array
+        - **description**: array of events.
+        - **attributes**:
+          - **source**: `id` of the web component, which you want to listen. Alternatively you can set an asterisk, e.g. `*`
+          - **name**: name of the event, which this web component is listening.
+          - **action**: type of the event, like `update`.
+          - **dataConverter**
+            - **type** function
+            - **description** This function gets the data object as parameter. If the received data are in different format you can use this function to convert the data.
+- **since**: 1.7.0
 
 ## Context switcher
 
