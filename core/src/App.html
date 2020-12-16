@@ -613,6 +613,12 @@
     }
   };
 
+  export const setSearchInputPlaceholder = placeholderString => {
+    if (checkSearchProvider(searchProvider) && inputElem) {
+      inputElem.placeholder = placeholderString;
+    }
+  };
+
   export const showSearchResult = arr => {
     if (checkSearchProvider(searchProvider)) {
       if (arr && arr.length > 0) {
