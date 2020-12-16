@@ -59,6 +59,19 @@
         userSettings[userSettingsGroupSchema[0]][key] = option;
     }
 
+    function updateEnumButton(key, option) {
+      document.querySelectorAll('.enum-buttons-container-'+ key  +' button').forEach(button => {
+        let buttonTestid = button.getAttribute('data-testid');
+        let optionTestid = 'lui-us-enum_button_'+key+'_'+option;
+        buttonTestid === optionTestid ?
+          button.classList.add('fd-button--emphasized') :
+          button.classList.remove('fd-button--emphasized');
+      });
+
+      userSettings[userSettingsGroupSchema[0]][key] = option;
+    }
+
+
 </script>
 
 <style>
@@ -114,6 +127,11 @@
         border: 0;
         color: var(--sapTextColor, #32363a);
     }
+
+    .lui-fd-enum-button{
+       margin-right: 3px;
+    }
+
 </style>
 <div class="lui-usersettings-content">
     <div class="lui-us-content-header-container">
@@ -169,6 +187,22 @@
                                 </div>
                             </div>
                         </div>
+                    {/if}
+                    {#if schemaItem.type==='enum_button'}
+                      <div>
+                        <div class="fd-form-item">
+                          <div class="fd-popover enum-buttons-container-{key}">
+                              {#each schemaItem.options as option, optionIndex}
+                               <button class="fd-button lui-fd-enum-button {userSettings[userSettingsGroupSchema[0]][key] === option ? 'fd-button--emphasized':'' }"
+                                 on:click="{() => updateEnumButton(key,option)}"
+                                 data-testid="lui-us-enum_button_{key}_{option}"
+                                 disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
+                                   {$getTranslation(option)}
+                               </button>
+                              {/each}
+                          </div>
+                        </div>
+                      </div>
                     {/if}
                     {#if schemaItem.type==='boolean'}
                         <input type="checkbox"

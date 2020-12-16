@@ -115,6 +115,7 @@ class Settings {
         title: 'Language & Region',
         settings: {
           language: {
+            //type: 'enum_button',
             type: 'enum',
             label: 'Language and Region',
             options: ['German', 'English', 'Spanish', 'French'],
@@ -132,7 +133,11 @@ class Settings {
           policy: {
             type: 'string', label: 'Privacy policy has not been defined.'
           },
-          time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+          time: {
+            // type: 'enum',
+            type: 'enum_button',
+            label: 'Time Format',
+            options: ['12 h', '24 h'] }
         }
       }
     }
