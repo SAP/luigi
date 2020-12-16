@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
@@ -29,6 +29,12 @@
     on:modalConfirm="{()=> handleModalResult(true)}"
     on:modalDismiss="{() => handleModalResult(false)}"
   ></ConfirmationModal>
+  {/if}
+  {#if userSettingsInternalObj.displayed}
+  <UserSettingsDialog
+    on:close="{closeUserSettings}"
+    userSettingsData={userSettingsInternalObj.preparedSchema}>
+  </UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
@@ -108,6 +114,7 @@
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
+  import UserSettingsDialog from './UserSettingsDialog.html'
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
@@ -128,7 +135,8 @@
     RoutingHelpers,
     IframeHelpers,
     AuthHelpers,
-    StorageHelper
+    StorageHelper,
+    UserSettingsHelper
   } from './utilities/helpers';
   import {
     LuigiI18N,
@@ -201,6 +209,7 @@
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
   let searchProvider;
+  let userSettingsInternalObj;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -334,7 +343,7 @@
             }
             resolve();
           },
-          () => {}
+          () => { }
         );
       } else {
         resolve();
@@ -998,6 +1007,22 @@
     }
   };
 
+  //Dialog Box
+  userSettingsInternalObj = {};
+  export const openUserSettings = () => {
+
+    //check if empty array
+    const preparedSchema = UserSettingsHelper.prepareUserSettingsSchema();
+    if (Array.isArray(preparedSchema) && preparedSchema.length) {
+      userSettingsInternalObj.preparedSchema = [...preparedSchema];
+      userSettingsInternalObj.displayed = true;
+    }
+  }
+
+  export const closeUserSettings = () => {
+    userSettingsInternalObj.displayed = false;
+  }
+
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
@@ -1415,7 +1440,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1427,7 +1452,7 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => { });
 </script>
 
 <style type="text/scss">

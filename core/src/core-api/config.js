@@ -264,25 +264,20 @@ class LuigiConfig {
    * By default, the user settings will be written from the **localStorage**
    * @memberof Configuration
    * @param {Object} userSettingsObj to store in the storage.
+   * @param {Object} previousUserSettingsObj the previous object from storage.
    * @example
-   * Luigi.storeUserSettings(userSettingsobject);
+   * Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
    * @since NEXTRELEASE
    */
-  async storeUserSettings(userSettingsObj) {
-    const userSettings = await this.getConfigValueAsync(
-      'settings.userSettings'
-    );
-    if (
-      userSettings &&
-      GenericHelpers.isFunction(userSettings.storeUserSettings)
-    ) {
-      userSettings.storeUserSettings(userSettingsObj);
-    } else {
-      localStorage.setItem(
-        this.USER_SETTINGS_KEY,
-        JSON.stringify(userSettingsObj)
-      );
+  async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
+    const userSettings = await this.getConfigValueAsync('settings.userSettings');
+    if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
+      return userSettings.storeUserSettings(userSettingsObj, previousUserSettingsObj);
     }
+    else {
+      localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
+    }
+    this.configChanged();
   }
 }
 

@@ -61,29 +61,57 @@ class Settings {
       label: 'My Settings',
       icon: 'settings'
     },
-    // functions to use a custom storage like sessionStorage
-    // storeUserSettings: (obj) => {
-    //   sessionStorage.setItem('test', JSON.stringify(obj));
+    userSettingsDialog: {
+      dialogHeader: 'My UserSettings',
+      saveBtn: 'SaveKaese',
+      dismissBtn: 'Abbreche'
+    },
+    //functions to use a custom storage like sessionStorage
+    // storeUserSettings: (obj, previous) => {
+    //   return new Promise((resolve, reject) => {
+    //     if (JSON.stringify(obj) !== JSON.stringify(previous)) {
+    //       const settings = {
+    //         header: "Confirmation",
+    //         body: "Are you sure you want to do this?",
+    //         buttonConfirm: "Yes",
+    //         buttonDismiss: "No"
+    //       }
+    //       Luigi
+    //         .ux()
+    //         .showConfirmationModal(settings).then(() => {
+    //           sessionStorage.setItem('test', JSON.stringify(obj));
+    //           resolve();
+    //         }).catch(() => {
+    //           reject({ closeDialog: true, message: 'error' });
+    //         });
+    //     }
+    //   });
     // },
     // readUserSettings: () => {
-    //   return JSON.parse(sessionStorage.getItem('test'));
+    //   return new Promise((resolve, reject) => {
+    //     resolve(JSON.parse(sessionStorage.getItem('test')));
+    //     //reject({ closeDialog: true, message: 'error' });
+    //   })
     // },
     userSettingGroups: {
       userAccount: {
         label: 'User Account',
         sublabel: 'username',
-        icon: 'icon.jpg',
-        title: 'title',
+        icon: 'account',
+        title: 'User Account',
         settings: {
-          name: { type: 'string', label: 'Name', isEditable: true },
+          name: { type: 'string', label: 'Name' },
           email: { type: 'string', label: 'E-Mail', isEditable: false },
-          server: { type: 'string', label: 'Server', isEditable: false }
+          server: { type: 'string', label: 'Server', isEditable: false },
+          checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
+          checkbox2: { type: 'boolean', label: 'Checkbox2' },
+          checkbox3: { type: 'boolean', label: 'Checkbox23', isEditable: false }
         }
       },
       language: {
         label: 'Language & Region',
         sublabel: 'EN | Time Format: 12h',
-        icon: false,
+        icon: '/assets/github-logo.png',
         title: 'Language & Region',
         settings: {
           language: {
@@ -99,8 +127,12 @@ class Settings {
       privacy: {
         label: 'Privacy',
         title: 'Privacy',
+        icon: 'private',
         settings: {
-          policy: { type: 'string', label: 'Privacy policy has not been defined.' }
+          policy: {
+            type: 'string', label: 'Privacy policy has not been defined.'
+          },
+          time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
         }
       }
     }

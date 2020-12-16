@@ -190,18 +190,19 @@ Luigi.readUserSettings();
 
 #### storeUserSettings
 
-Reads the user settings object.
+Writes the user settings object.
 You can choose a custom storage to write the user settings by implementing the `userSetting.storeUserSettings` function in the settings section of the Luigi configuration
 By default, the user settings will be written from the **localStorage**
 
 ##### Parameters
 
 -   `userSettingsObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** to store in the storage.
+-   `previousUserSettingsObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the previous object from storage.
 
 ##### Examples
 
 ```javascript
-Luigi.storeUserSettings(userSettingsobject);
+Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
 ```
 
 **Meta**
@@ -943,6 +944,22 @@ Set the collapsed state of the left side navigation
 **Meta**
 
 -   **since**: 1.5.0
+
+#### openUserSettings
+
+Open user settings dialog
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### closeUserSettings
+
+Close user settings dialog
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 ## Luigi.globalSearch()
 

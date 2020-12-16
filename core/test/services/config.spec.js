@@ -154,14 +154,16 @@ describe('Config', () => {
     };
 
     it('write user settings to local storage', async () => {
-      await LuigiConfig.storeUserSettings(userSettingsObj);
+      sinon.stub(LuigiConfig, 'configChanged');
+      await LuigiConfig.storeUserSettings(userSettingsObj, userSettingsObj);
       sinon.assert.called(global.localStorage.setItem);
     });
     it('write user settings to custom storage', async () => {
+      sinon.stub(LuigiConfig, 'configChanged');
       console.log = sinon.spy();
       sinon.stub(LuigiConfig, 'getConfigValueAsync').returns(myConfig);
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
-      await LuigiConfig.storeUserSettings(userSettingsObj);
+      await LuigiConfig.storeUserSettings(userSettingsObj, userSettingsObj);
       sinon.assert.calledOnce(console.log);
     });
     it('read user settings from local storage', async () => {
