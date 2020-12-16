@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}" />
+<svelte:window on:resize="{onResize}"/>
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
@@ -33,8 +33,8 @@
   {#if userSettingsInternalObj.displayed}
   <UserSettingsDialog
     on:close="{closeUserSettings}"
-    userSettingsData={userSettingsInternalObj.preparedSchema}>
-  </UserSettingsDialog>
+    userSettingsData="{userSettingsInternalObj.preparedSchema}"
+  ></UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
@@ -114,7 +114,7 @@
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
-  import UserSettingsDialog from './UserSettingsDialog.html'
+  import UserSettingsDialog from './UserSettingsDialog.html';
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
@@ -250,9 +250,13 @@
     let internal = prepareInternalData(config);
     const userSettingsGroupName =
       config.iframe.luigi.currentNode.userSettingsGroup;
+    const userSettingGroups = await LuigiConfig.readUserSettings();
 
-    if (userSettingsGroupName) {
-      const userSettingGroups = await LuigiConfig.readUserSettings();
+    if (
+      userSettingsGroupName &&
+      typeof userSettingGroups === 'object' &&
+      userSettingGroups !== null
+    ) {
       const userSettings = userSettingGroups[userSettingsGroupName];
       internal = { ...internal, userSettings };
     }
@@ -343,7 +347,7 @@
             }
             resolve();
           },
-          () => { }
+          () => {}
         );
       } else {
         resolve();
@@ -1010,18 +1014,17 @@
   //Dialog Box
   userSettingsInternalObj = {};
   export const openUserSettings = () => {
-
     //check if empty array
     const preparedSchema = UserSettingsHelper.prepareUserSettingsSchema();
     if (Array.isArray(preparedSchema) && preparedSchema.length) {
       userSettingsInternalObj.preparedSchema = [...preparedSchema];
       userSettingsInternalObj.displayed = true;
     }
-  }
+  };
 
   export const closeUserSettings = () => {
     userSettingsInternalObj.displayed = false;
-  }
+  };
 
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
@@ -1440,7 +1443,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function () {
+        thirdPartyCookieCheckIframe.onload = function() {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1452,7 +1455,7 @@
     }
   });
 
-  afterUpdate(() => { });
+  afterUpdate(() => {});
 </script>
 
 <style type="text/scss">
