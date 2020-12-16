@@ -15,11 +15,26 @@
         data-testid="luigi-contextswitcher-button"
       >
         {#if selectedOption && customSelectedOptionRenderer }
-        {@html customSelectedOptionRenderer(selectedOption)}
+        <span
+          class="fd-shellbar__title"
+          data-testid="luigi-topnav-title"
+        >{customSelectedOptionRenderer(selectedOption)}</span>
         {:else}
-        {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
-        {:else}{selectedLabel}{/if}
+        {#if !selectedLabel}
+        <span
+          class="fd-shellbar__title"
+          data-testid="luigi-topnav-title"
+        >{$getTranslation(config.defaultLabel)}</span>
+        {:else}
+        <span
+          class="fd-shellbar__title"
+          data-testid="luigi-topnav-title"
+        >{selectedLabel}</span>
         {/if}
+        {/if}
+        <i
+          class="sap-icon--megamenu fd-shellbar__button--icon"
+        ></i>
       </button>
     </div>
     <div

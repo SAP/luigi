@@ -14,7 +14,7 @@
     {#if children && pathData.length > 1}
     <div class="fd-side-nav__main-navigation">
       <div class="lui-fd-side-nav-wrapper">
-        <ul class="{sideNavClass}">
+        <ul class="fd-nested-list {sideNavClass}">
           {#each sortedChildrenEntries as [key, nodes],index}
           {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
@@ -29,16 +29,18 @@
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
               <i
-                class="fd-nested-list__icon sap-icon--{node.icon}"
+                class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"
+                role="presentation"
               ></i>
               {:else}
-              <span class="fd-nested-list__icon">
+              <span class="fd-nested-list__icon sap-icon">
                 <img src="{node.icon}" alt="{node.altText ? node.altText : ''}">
               </span>
               {/if}
               {:else}
               <i
-                class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                role="presentation"
               ></i>
               {/if}
               <span
@@ -46,7 +48,8 @@
               >{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <i
-                class="sap-icon--action"
+                class="fd-nested-list__icon sap-icon sap-icon--action"
+                role="presentation"
               ></i>
               {/if}
               {#if node.badgeCounter}
@@ -76,11 +79,13 @@
               >
                 {#if isOpenUIiconName(nodes.metaInfo.icon)}
                 <i
-                  class="fd-nested-list__icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                  class="fd-nested-list__icon sap-icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
                   role="presentation"
                 ></i>
                 {:else}
-                <span class="fd-nested-list__icon">
+                <span
+                  class="fd-nested-list__icon sap-icon"
+                >
                   <img
                     src="{nodes.metaInfo.icon}"
                     alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
@@ -99,7 +104,9 @@
                 aria-haspopup="true"
                 aria-expanded="{isExpanded(nodes, expandedCategories)}"
                 on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
-              ></button>
+              >
+                <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
+              </button>
             </div>
             <ul
               class="fd-nested-list fd-nested-list--text-only level-2"
@@ -179,11 +186,11 @@
             {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
             {#if isOpenUIiconName(nodes.metaInfo.icon)}
             <i
-              class="fd-nested-list__icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''}"
+              class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''}"
               role="presentation"
             ></i>
             {:else}
-            <span class="fd-nested-list__icon">
+            <span class="fd-nested-list__icon sap-icon">
               <img
                 src="{nodes.metaInfo.icon}"
                 alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
@@ -207,17 +214,18 @@
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
               <i
-                class="fd-nested-list__icon sap-icon--{node.icon}"
+                class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"
               ></i>
               {:else}
-              <span class="fd-nested-list__icon">
+              <span class="fd-nested-list__icon sap-icon">
                 <img src="{node.icon}" alt="{node.altText ? node.altText : ''}">
               </span>
               {/if}
               {:else}
               <i
-                class="fd-nested-list__icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
               ></i>
+              <span>{isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}</span>
               {/if}
               <span
                 class="fd-nested-list__title"

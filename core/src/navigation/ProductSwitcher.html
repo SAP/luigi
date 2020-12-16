@@ -48,7 +48,7 @@ Object.keys(productSwitcherItems[0]).length }
             >
               <div>
                 <i
-                  class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
+                  class="{productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
                 ></i>
                 {#if !hasOpenUIicon(productSwitcherItem)}
                 <img
