@@ -15,7 +15,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function () { };
+    this.configReadyCallback = function() {};
     this.initialized = false;
     this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
@@ -244,11 +244,18 @@ class LuigiConfig {
    * @since NEXTRELEASE
    */
   async readUserSettings() {
-    const userSettings = await this.getConfigValueAsync('settings.userSettings');
-    if (userSettings && GenericHelpers.isFunction(userSettings.readUserSettings)) {
+    const userSettings = await this.getConfigValueAsync(
+      'settings.userSettings'
+    );
+    if (
+      userSettings &&
+      GenericHelpers.isFunction(userSettings.readUserSettings)
+    ) {
       return userSettings.readUserSettings();
     }
-    return JSON.parse(localStorage.getItem(this.USER_SETTINGS_KEY));
+    const localStorageValue = localStorage.getItem(this.USER_SETTINGS_KEY);
+
+    return localStorageValue && JSON.parse(localStorageValue);
   }
 
   /**
@@ -273,6 +280,5 @@ class LuigiConfig {
     this.configChanged();
   }
 }
-
 
 export const config = new LuigiConfig();
