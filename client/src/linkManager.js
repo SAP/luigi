@@ -65,9 +65,9 @@ export class linkManager extends LuigiClientBase {
       this.options.errorSkipNavigation = false;
       return;
     }
-    if (modalSettings && splitViewSettings && drawer) {
+    if (modalSettings && splitViewSettings && drawerSettings) {
       console.warn(
-        'modalSettings, splitViewSettings and drawer cannot be used together. Only modal setting will be taken into account.'
+        'modalSettings, splitViewSettings and drawerSettings cannot be used together. Only modal setting will be taken into account.'
       );
     }
 

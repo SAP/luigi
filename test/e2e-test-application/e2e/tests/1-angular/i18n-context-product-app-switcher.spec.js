@@ -39,14 +39,14 @@ describe('Context switcher', () => {
 
     cy.get('.fd-app__sidebar').should('contain', 'Project One');
     cy.get('.fd-app__sidebar').should('contain', 'Project Two');
-    cy.get('.fd-app__sidebar').should('contain', 'Project 4');
+    cy.get('.fd-app__sidebar').should('contain', 'Project 5');
 
     cy.get('[data-testid=luigi-alert]').should(
       'have.class',
       'fd-message-strip--information'
     );
 
-    cy.get('[data-testid=luigi-alert]').should('contain', 'Project 4 created.');
+    cy.get('[data-testid=luigi-alert]').should('contain', 'Project 5 created.');
 
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
@@ -62,6 +62,10 @@ describe('Context switcher', () => {
     cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
 
     // remove all projects
+
+    cy.selectContextSwitcherItem('Remove Project');
+
+    cy.expectPathToBe('/projects');
 
     cy.selectContextSwitcherItem('Remove Project');
 
@@ -220,7 +224,7 @@ describe('ProductSwitcher', () => {
 
       //check if internal link is there
       cy.get('.fd-product-switch .fd-product-switch__title')
-        .contains('Project 1')
+        .contains('Project One')
         .click();
 
       cy.expectPathToBe('/projects/pr1');
@@ -239,16 +243,16 @@ describe('ProductSwitcher', () => {
 
       cy.get('.fd-product-switch .fd-product-switch__title').should(
         'contain',
-        'Project 4'
+        'Project 5'
       );
 
       cy.get('.fd-product-switch').click();
 
       cy.get('.fd-product-switch .fd-product-switch__title')
-        .contains('Project 4')
+        .contains('Project 5')
         .click();
 
-      cy.expectPathToBe('/projects/pr4');
+      cy.expectPathToBe('/projects/pr5');
     });
 
     it('Mobile Product Switcher is not visible', () => {
@@ -275,7 +279,7 @@ describe('ProductSwitcher', () => {
 
       //check if internal link is there
       cy.get('.fd-product-switch__title')
-        .contains('Project 1')
+        .contains('Project One')
         .click();
 
       cy.expectPathToBe('/projects/pr1');
