@@ -7,10 +7,12 @@
   <div class="fd-shellbar__group fd-shellbar__group--product">
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
     <button
-      class="fd-shellbar__button fd-button sap-icon--menu2 lui-burger"
+      class="fd-shellbar__button fd-button lui-burger"
       on:click="{burgerClickHandler}"
       tabindex="0"
-    ></button>
+    >
+      <i class="sap-icon sap-icon--menu2"></i>
+    </button>
     {/if}
     <LogoTitle
       pathData="{pathData}"
