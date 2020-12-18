@@ -46,7 +46,7 @@ class RoutingClass {
     Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
     @param route string  absolute path of the new route
    */
-  async navigateTo(route, pushState = true) {
+  async navigateTo(route, pushState = true, navSync = true) {
     const { nodeObject } = await Navigation.extractDataFromPath(route);
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
@@ -79,7 +79,9 @@ class RoutingClass {
       event = document.createEvent('Event');
       event.initEvent('popstate', true, true);
     } else {
-      event = new CustomEvent('popstate');
+      event = navSync
+        ? new CustomEvent('popstate')
+        : new CustomEvent('popstate', { detail: { withoutSync: true } });
     }
 
     window.dispatchEvent(event);
@@ -159,7 +161,7 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-  async handleRouteChange(path, component, iframeElement, config) {
+  async handleRouteChange(path, component, iframeElement, config, withoutSync) {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns =
       LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') ||
@@ -352,21 +354,41 @@ class RoutingClass {
           Navigation.onNodeChange(previousNode, currentNode);
         }
       }
-      if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
+      if (
+        nodeObject.compound &&
+        GenericHelpers.requestExperimentalFeature('webcomponents', true)
+      ) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
-      } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
+        this.navigateWebComponentCompound(
+          config,
+          component,
+          iframeElement,
+          nodeObject,
+          iContainer
+        );
+      } else if (
+        nodeObject.webcomponent &&
+        GenericHelpers.requestExperimentalFeature('webcomponents', true)
+      ) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
+        this.navigateWebComponent(
+          config,
+          component,
+          iframeElement,
+          nodeObject,
+          iContainer
+        );
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
         }
-        Iframe.navigateIframe(config, component, iframeElement);
+        if (!withoutSync) {
+          Iframe.navigateIframe(config, component, iframeElement);
+        }
       }
     } catch (err) {
       console.info('Could not handle route change', err);
@@ -531,9 +553,13 @@ class RoutingClass {
     );
   }
 
-
-
-  navigateWebComponentCompound(config, component, node, navNode, iframeContainer) {
+  navigateWebComponentCompound(
+    config,
+    component,
+    node,
+    navNode,
+    iframeContainer
+  ) {
     const componentData = component.get();
     const wc_container = document.querySelector('.wcContainer');
 
@@ -541,7 +567,11 @@ class RoutingClass {
       wc_container.lastChild.remove();
     }
 
-    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    WebComponentService.renderWebComponentCompound(
+      navNode,
+      wc_container,
+      componentData.context
+    );
   }
 }
 
