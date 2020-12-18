@@ -1,4 +1,6 @@
-let defaultConfig = `Luigi.setConfig({
+let defaultConfig = `
+
+Luigi.setConfig({
     navigation: { 
             nodes: [{ 
                 pathSegment: 'home', 
@@ -59,6 +61,38 @@ let defaultConfig = `Luigi.setConfig({
                         enabled: false
                     },
                     viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
+                },{ 
+                    pathSegment: 'wc1', 
+                    label: 'Web Component 1', 
+                    loadingIndicator: { enabled: false },
+                    category: {
+                        label: 'Web Component',
+                        icon: 'cloud',
+                        collapsible: true
+                    },
+                    viewUrl: '/wc/helloWorldWC.js',
+                    webcomponent: true,
+                    openNodeInModal: false
+                },{ 
+                    pathSegment: 'wc2', 
+                    label: 'Web Component 2 (Dialog)', 
+                    category:  'Web Component',
+                    loadingIndicator: {
+                        enabled: false
+                    },
+                    viewUrl: '/wc/helloWorldWC.js',
+                    webcomponent: true,
+                    openNodeInModal: true
+               
+                },{ 
+                    pathSegment: 'wc3', 
+                    label: 'Web Component3 (Url', 
+                    category:  'Web Component',
+                    loadingIndicator: {
+                        enabled: false
+                    },
+                    viewUrl: '/wc/helloWorldWC.js'
+               
                 }] 
             },{ 
                 pathSegment: 'foo', 
@@ -148,10 +182,14 @@ let defaultConfig = `Luigi.setConfig({
             header: { 
                 logo: 'img/luigi.png', 
                 title: 'Luigi Fiddle'
-            } 
-        } 
+            },
+            navigation: {
+              validWebcomponentUrls:['.*?']
+            },
+            experimental: {
+              webcomponents:true
+            }  
+        }
     });    
 `;
 export default defaultConfig;
-
-
