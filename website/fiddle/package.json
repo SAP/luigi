@@ -7,6 +7,7 @@
     "css-loader": "^2.1.1",
     "file-loader": "^4.2.0",
     "mini-css-extract-plugin": "^0.6.0",
+    "replace-in-file": "^6.1.0",
     "serve": "^11.0.0",
     "style-loader": "^0.23.1",
     "svelte": "^3.0.0",
@@ -17,14 +18,14 @@
   },
   "scripts": {
     "start": "npm run dev",
-    "build": "cross-env NODE_ENV=production webpack",
-    "dev": "webpack-dev-server --content-base public"
+    "build": "node patch.js && cross-env NODE_ENV=production webpack",
+    "dev": "node patch.js && webpack-dev-server --content-base public"
   },
   "dependencies": {
-    "@luigi-project/client": "1.6.0",
-    "@luigi-project/core": "1.6.0",
-    "@luigi-project/plugin-auth-oauth2": "1.6.0",
-    "@luigi-project/plugin-auth-oidc": "1.6.0",
+    "@luigi-project/client": "1.7.0",
+    "@luigi-project/core": "1.7.0",
+    "@luigi-project/plugin-auth-oauth2": "1.7.0",
+    "@luigi-project/plugin-auth-oidc": "1.7.0",
     "@sap-theming/theming-base-content": "11.1.21",
     "ace-builds": "1.4.12",
     "fundamental-styles": "0.11.2"
