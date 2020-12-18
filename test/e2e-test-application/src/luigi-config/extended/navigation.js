@@ -6,7 +6,8 @@ import {
   projectsNavProviderFn,
   projectsCounterFn,
   projectExists,
-  removeProject
+  removeProject,
+  getAllProjectsSync
 } from './helpers';
 
 class Navigation {
@@ -301,38 +302,18 @@ class Navigation {
         }
       }
     ];
-    if (projectExists('pr1')) {
-      items.push({
-        icon:
-          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
-        label: 'Project 1',
-        link: '/projects/pr1'
+
+    getAllProjectsSync()
+      .filter(project => project.id !== 'tabNav')
+      .forEach(project => {
+        items.push({
+          icon:
+            'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+          label: project.name,
+          link: '/projects/' + project.id
+        });
       });
-    }
-    if (projectExists('pr2')) {
-      items.push({
-        icon:
-          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
-        label: 'Project 2',
-        link: '/projects/pr2'
-      });
-    }
-    if (projectExists('pr3')) {
-      items.push({
-        icon:
-          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
-        label: 'Project 3',
-        link: '/projects/pr3'
-      });
-    }
-    if (projectExists('pr4')) {
-      items.push({
-        icon:
-          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
-        label: 'Project 4',
-        link: '/projects/pr4'
-      });
-    }
+
     return items;
   };
 
@@ -355,26 +336,17 @@ class Navigation {
         }
       }
     ];
-    if (projectExists('pr1')) {
-      items.push({
-        icon: '',
-        label: 'Project 1',
-        link: '/projects/pr1'
+
+    getAllProjectsSync()
+      .filter(project => project.id !== 'tabNav')
+      .forEach(project => {
+        items.push({
+          icon: '',
+          label: project.name,
+          link: '/projects/' + project.id
+        });
       });
-    }
-    if (projectExists('pr2')) {
-      items.push({
-        icon: '',
-        label: 'Project 2',
-        link: '/projects/pr2'
-      });
-    }
-    if (projectExists('pr3')) {
-      items.push({
-        label: 'Project 3',
-        link: '/projects/pr3'
-      });
-    }
+
     return items;
   };
 
@@ -412,6 +384,11 @@ class Navigation {
         title: 'Application Three',
         link: '/environments',
         subTitle: 'the third app'
+      },
+      {
+        title: 'Application Storage',
+        link: '/projects/storage',
+        subTitle: 'the storage app'
       }
     ]
   };

@@ -107,6 +107,23 @@
       </button>
     </div>
   </div>
+
+  <br />
+  <div
+    *ngIf="userSettings !== undefined"
+    class="fd-layout-panel fd-has-margin-bottom-small"
+  >
+    <div class="fd-layout-panel__header">
+      <div class="fd-layout-panel__head">
+        <h3 class="fd-layout-panel__title">
+          LuigiClient User Settings
+        </h3>
+      </div>
+    </div>
+    <div class="fd-layout-panel__body">
+      <pre>{{ userSettings | json }}</pre>
+    </div>
+  </div>
 </section>
 <section *ngIf="testFeatureToggleActive" class="fd-section">
   <div class="fd-layout-panel">

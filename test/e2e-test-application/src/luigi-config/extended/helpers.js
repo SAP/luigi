@@ -50,6 +50,10 @@ let allProjects = [
   {
     id: 'tabNav',
     name: 'Horizontal Navigation Example'
+  },
+  {
+    id: 'storage',
+    name: 'storage'
   }
 ];
 
@@ -79,6 +83,10 @@ const getAllProjects = () =>
   new Promise(resolve => {
     resolve(allProjects);
   });
+
+export const getAllProjectsSync = () => {
+  return allProjects;
+};
 
 const projectDetailNavProviderFn = context =>
   new Promise(resolve => {

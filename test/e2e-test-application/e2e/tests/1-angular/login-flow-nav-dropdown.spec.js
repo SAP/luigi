@@ -20,7 +20,7 @@ describe('Login Flow', () => {
 
     cy.get('[data-testid="luigi-topnav-profile"]').click();
     cy.get('[data-testid="luigi-topnav-profile-item"]')
-      .contains('Project 1')
+      .contains('Project One')
       .click();
 
     cy.expectPathToBe('/projects/pr1');
@@ -35,6 +35,9 @@ describe('Login Flow', () => {
     cy.expectPathToBe('/projects');
     cy.selectContextSwitcherItem('Remove Project');
     cy.expectPathToBe('/projects');
+    cy.selectContextSwitcherItem('Remove Project');
+    cy.expectPathToBe('/projects');
+
     cy.get('[data-testid="luigi-topnav-profile"]').click();
     cy.get('[data-testid="luigi-topnav-profile-item"]').should(
       'not.contain',
