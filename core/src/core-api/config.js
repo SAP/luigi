@@ -17,6 +17,7 @@ class LuigiConfig {
   constructor() {
     this.configReadyCallback = function() {};
     this.initialized = false;
+    this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
 
   /**
@@ -231,6 +232,52 @@ class LuigiConfig {
     while (container.firstChild) {
       container.removeChild(container.lastChild);
     }
+  }
+
+  /**
+   * Reads the user settings object.
+   * You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
+   * By default, the user settings will be read from the **localStorage**
+   * @memberof Configuration
+   * @example
+   * Luigi.readUserSettings();
+   * @since NEXTRELEASE
+   */
+  async readUserSettings() {
+    const userSettings = await this.getConfigValueAsync(
+      'settings.userSettings'
+    );
+    if (
+      userSettings &&
+      GenericHelpers.isFunction(userSettings.readUserSettings)
+    ) {
+      return userSettings.readUserSettings();
+    }
+    const localStorageValue = localStorage.getItem(this.USER_SETTINGS_KEY);
+
+    return localStorageValue && JSON.parse(localStorageValue);
+  }
+
+  /**
+   * Reads the user settings object.
+   * You can choose a custom storage to write the user settings by implementing the `userSetting.storeUserSettings` function in the settings section of the Luigi configuration
+   * By default, the user settings will be written from the **localStorage**
+   * @memberof Configuration
+   * @param {Object} userSettingsObj to store in the storage.
+   * @param {Object} previousUserSettingsObj the previous object from storage.
+   * @example
+   * Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
+   * @since NEXTRELEASE
+   */
+  async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
+    const userSettings = await this.getConfigValueAsync('settings.userSettings');
+    if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
+      return userSettings.storeUserSettings(userSettingsObj, previousUserSettingsObj);
+    }
+    else {
+      localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
+    }
+    this.configChanged();
   }
 }
 

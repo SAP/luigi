@@ -30,6 +30,12 @@
     on:modalDismiss="{() => handleModalResult(false)}"
   ></ConfirmationModal>
   {/if}
+  {#if userSettingsInternalObj.displayed}
+  <UserSettingsDialog
+    on:close="{closeUserSettings}"
+    userSettingsData="{userSettingsInternalObj.preparedSchema}"
+  ></UserSettingsDialog>
+  {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
@@ -108,6 +114,7 @@
   import Alerts from './Alerts.html';
   import ConfirmationModal from './ConfirmationModal.html';
   import Modal from './Modal.html';
+  import UserSettingsDialog from './UserSettingsDialog.html';
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
@@ -128,7 +135,8 @@
     RoutingHelpers,
     IframeHelpers,
     AuthHelpers,
-    StorageHelper
+    StorageHelper,
+    UserSettingsHelper
   } from './utilities/helpers';
   import {
     LuigiI18N,
@@ -201,6 +209,7 @@
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
   let searchProvider;
+  let userSettingsInternalObj;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -237,7 +246,21 @@
       console.info('iframe does not exist, not able to send context.');
       return;
     }
-    const internal = prepareInternalData(config);
+
+    let internal = prepareInternalData(config);
+    const userSettingsGroupName =
+      config.iframe.luigi.currentNode.userSettingsGroup;
+    const userSettingGroups = await LuigiConfig.readUserSettings();
+
+    if (
+      userSettingsGroupName &&
+      typeof userSettingGroups === 'object' &&
+      userSettingGroups !== null
+    ) {
+      const userSettings = userSettingGroups[userSettingsGroupName];
+      internal = { ...internal, userSettings };
+    }
+
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -992,6 +1015,21 @@
         });
       }
     }
+  };
+
+  //Dialog Box
+  userSettingsInternalObj = {};
+  export const openUserSettings = () => {
+    //check if empty array
+    const preparedSchema = UserSettingsHelper.prepareUserSettingsSchema();
+    if (Array.isArray(preparedSchema) && preparedSchema.length) {
+      userSettingsInternalObj.preparedSchema = [...preparedSchema];
+      userSettingsInternalObj.displayed = true;
+    }
+  };
+
+  export const closeUserSettings = () => {
+    userSettingsInternalObj.displayed = false;
   };
 
   function init(node) {

@@ -61,6 +61,9 @@ class LuigiClient {
   setTargetOrigin(origin) {
     return lifecycleManager.setTargetOrigin(origin);
   }
+  getUserSettings() {
+    return lifecycleManager.getUserSettings();
+  }
   /**
    * @private
    */
