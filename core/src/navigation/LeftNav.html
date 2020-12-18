@@ -105,7 +105,10 @@
                 aria-expanded="{isExpanded(nodes, expandedCategories)}"
                 on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
               >
-                <i class="sap-icon--navigation-right-arrow" role="presentation"></i>
+                <i
+                  class="{isExpanded(nodes, expandedCategories) ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}"
+                  role="presentation"
+                ></i>
               </button>
             </div>
             <ul

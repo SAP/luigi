@@ -147,7 +147,7 @@
                   on:click|preventDefault="{() => toggleDropdownState(key+index)}"
                 >
                   <i
-                    class="sap-icon--navigation-right-arrow"
+                    class="{dropDownStates[key+index] ? 'sap-icon--navigation-down-arrow':'sap-icon--navigation-right-arrow' }"
                     role="presentation"
                   ></i>
                 </button>
