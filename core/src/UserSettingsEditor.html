@@ -62,7 +62,7 @@
     function updateEnumButton(key, option) {
       document.querySelectorAll('.enum-buttons-container-'+ key  +' button').forEach(button => {
         let buttonTestid = button.getAttribute('data-testid');
-        let optionTestid = 'lui-us-enum_button_'+key+'_'+option;
+        const optionTestid = `lui-us-enum_button_${key}_option`;
         buttonTestid === optionTestid ?
           button.classList.add('fd-button--emphasized') :
           button.classList.remove('fd-button--emphasized');
