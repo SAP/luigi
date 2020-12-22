@@ -371,7 +371,7 @@ Web components can communicate over an event bus.
     - **attributes**:
       - **use**:
         - **type**: string OR object
-        - **description**: You can define a css layout, like the css `grid` or implement an extended layout by defining an object using the `extends` property. In that case you have the possibility to implement the following functions the manipulate the standard renderer.
+        - **description**: You can define a CSS layout, like the CSS `grid`, or implement an extended layout by defining an object using the `extends` property. In that case you have the possibility to implement the following functions to manipulate the standard renderer.
         - **attributes**:
           - **extends**
             - **type**: string, e.g. `grid`
