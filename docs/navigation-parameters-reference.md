@@ -415,11 +415,11 @@ Web components can communicate over an event bus.
         - **description**: array of events.
         - **attributes**:
           - **source**: `id` of the web component, which you want to listen. Alternatively you can set an asterisk, e.g. `*`
-          - **name**: name of the event, which this web component is listening.
-          - **action**: type of the event, like `update`.
+          - **name**: name of the event, which this web component is listening to.
+          - **action**: type of the event, such as `update`.
           - **dataConverter**
             - **type** function
-            - **description** This function gets the data object as parameter. If the received data are in different format you can use this function to convert the data.
+            - **description** This function gets the data object as parameter. If the received data are in a different format, you can use this function to convert the data.
 - **example**:
 ```javascript
 {
