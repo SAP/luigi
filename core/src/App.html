@@ -1717,6 +1717,9 @@
     padding-left: 0.5625rem !important;
     padding-right: 0.5625rem !important;
   }
+  :global(.fd-shellbar__logo) {
+    margin-right: 0px;
+  }
 
   :global(.fd-menu__link) {
     text-decoration: none; //Remove underline from links in fd-menu
@@ -1796,6 +1799,25 @@
 
     iframe {
       display: none;
+    }
+  }
+
+  //this is required after FD Styles v0.13.0 in order to make mobile and desktop shellbar work fine
+  @media (min-width: $desktopMaxWidth) {
+    :global(.fd-shellbar__action--desktop) {
+      display: inline-block;
+    }
+    :global(.fd-shellbar__action--mobile) {
+      display: none;
+    }
+  }
+
+  @media (min-width: $mobileMinWidth) and (max-width: $desktopMaxWidth - 1) {
+    :global(.fd-shellbar__action--desktop) {
+      display: none;
+    }
+    :global(.fd-shellbar__action--mobile) {
+      display: inline-block;
     }
   }
 </style>

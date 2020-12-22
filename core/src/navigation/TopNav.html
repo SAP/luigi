@@ -637,6 +637,7 @@
 </script>
 
 <style type="text/scss">
+  @import 'styles/variables';
   //remove default outline of all dropdowns in shellbar
   .fd-shellbar:focus {
     outline: none;
@@ -646,10 +647,6 @@
   .fd-shellbar__button {
     .fd-top-nav__icon {
       color: var(--sapShell_TextColor, #fff);
-
-      &:before {
-        margin-top: 10px;
-      }
     }
   }
 
@@ -683,18 +680,16 @@
   }
 
   .lui-burger {
-    margin-right: 16px;
+    margin-right: 5px;
     cursor: pointer;
     color: var(--sapShell_TextColor, #fff);
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: $desktopMinWidth) {
     .lui-burger {
       margin-left: 0px;
+      margin-right: 15px;
     }
-  }
-
-  @media (min-width: 600px) {
     :global(.lui-mobileOnly) .lui-burger {
       display: none;
     }
