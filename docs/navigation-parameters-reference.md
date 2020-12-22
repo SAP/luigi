@@ -362,7 +362,7 @@ settings: {
 
 ### compound
 - **type**: object
-- **description**: It is possible to compound web components in one micro frontend. Within this object the layout of the web components can be defined. In addition you can configure nested web components. In that case the parent web component has to be defined a slot with a name to plug in the child web component. For example `<header><slot name="header">header</slot></header>`.
+- **description**: It is possible to compound web components in one micro frontend. Within this object, the layout of the web components can be defined. In addition, you can configure nested web components. In that case the parent web component has to be defined by a slot with a name to plug in the child web component. For example `<header><slot name="header">header</slot></header>`.
 Web components can communicate over an event bus.
 - **attributes**:
   - **renderer**:
