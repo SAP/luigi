@@ -20,7 +20,6 @@ meta -->
 - [Responsive application setup](#responsive-application-setup)
 - [App loading indicator](#app-loading-indicator)
 - [Collapsed left side navigation](#collapsed-left-side-navigation)
-- [Web component based micro frontends](#web-component-based-micro-frontends)
 
 ## Rendering of Luigi application in the DOM
 
@@ -93,4 +92,3 @@ If you use **responsiveNavigation = 'semiCollapsible'**  or **'Fiori3'** mode in
 * To close the left side navigation, execute **Luigi.ux().collapseLeftSideNav(true)** in Luigi Core once your initial micro frontend has finished loading. It will set the collapsed state to `true` in **Local Storage**. Which closes the left side navgation, by showing only icons.
 
 * Set the value to `false` if you want to open left side navigation.
-
