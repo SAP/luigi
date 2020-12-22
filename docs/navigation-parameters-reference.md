@@ -352,7 +352,7 @@ settings: {
 
 ### webcomponent
 - **type**: boolean OR object
-- **description**: mark a node as web component either by setting this attribute to `true` or defining an object with the attributes like described below. The `viewUrl` attribute of the node must point to the web component js file in that case.
+- **description**: mark a node as web component either by setting this attribute to `true` or defining an object with the attributes described below. In the latter case, the `viewUrl` attribute of the node must point to the web component `.js` file.
 - **attributes**:
   - **id**: unique id of the web component
   - **type**: string, like `module`.
