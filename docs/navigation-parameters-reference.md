@@ -384,7 +384,7 @@ Web components can communicate over an event bus.
             - **description** This function gets a the grid layout `config` object and the layout config object for the item.
           - **attachCompoundItem**
             - **type**: function
-            - **description** This function allows you to attach custom html to the item. This function gets the whole html container of the compound items and the item container as parameter.
+            - **description** This function allows you to attach custom HTML to the item. This function gets the whole HTML container of the compound items and the item container as parameter.
       - **config**:
         - **type**: object
         - **description**: defines the configuration object of the grid layout
