@@ -407,9 +407,9 @@ Web components can communicate over an event bus.
     - **description**: Array of web component nodes.
     - **attributes**:
       - **id**: unique `id` of the web component.
-      - **viewUrl**: url which points to the web component js file.
+      - **viewUrl**: URL which points to the web component `.js` file.
       - **context**: object, which you can pass to the web component.
-      - **layoutConfig**: config object to define the position of an item in a grid. The properties are `row` and `column` and gets the same values as in the css grid standard. If you want to use the mechanism of nested web components you can define a `slot` property with the slot name instead of the config object. In that case this web component node will plugged in the parent web component.
+      - **layoutConfig**: config object to define the position of an item in a grid. The properties are `row` and `column` and get the same values as in the CSS grid standard. If you want to use the mechanism of nested web components, you can define a `slot` property with the slot name instead of the config object. In that case this web component node will be plugged in the parent web component.
       - **eventListeners**
         - **type**: array
         - **description**: array of events.
