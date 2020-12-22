@@ -438,7 +438,7 @@ Web components can communicate over an event bus.
   },
 ```
 
-Luigi's web component example configuration to show 3 web components in a grid layout. In addition you'll see the configuration for the event bus. The "input" web component sends the typed input. The "header" web component listen listen to a "sendInput" event from a web component with the id "input1". In addition received data will be converted. An "update" event will be triggered and something will changed in the "header" web component where a "update" event listener is registered.
+Below is Luigi's web component example configuration which shows 3 web components in a grid layout. It also includes the configuration for the event bus. The `input` web component sends the typed input. The `header` web component listens to a `sendInput` event from a web component with the id `input1`. Received data will be converted. An `update` event will be triggered, changing the `header` web component where an `update` event listener is registered.
 
 ```javascript
 {
