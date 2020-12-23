@@ -73,7 +73,6 @@
     });
 
     function openEditor(category, event) {
-        console.log('openEditor');
         if (event) {
             document.querySelectorAll('.lui-us-list .fd-nested-list__link').forEach(elem => {
                 elem.classList.remove('is-selected');
@@ -91,8 +90,6 @@
         if (userSettingsSchema[1].viewUrl) {
             UserSettingsHelper.hideUserSettingsIframe();
             if (customIframes.hasOwnProperty(userSettingsSchema[0])) {
-                //get all iframes in dom and compare iframes and set display to block
-                debugger;
                 UserSettingsHelper.getUserSettingsIframesInDom().forEach(iframe => {
                     if (iframe.userSettingsGroup === userSettingsSchema[0]) {
                         iframe.style.display = 'block';
@@ -271,6 +268,12 @@
         padding-top: 0.875rem;
     }
 
+    .iframeUserSettingsCtn :global(iframe) {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
     @media (max-width: 600px) {
         .dialog-size {
             height: 80vh;
@@ -366,7 +369,7 @@
                     <UserSettingsEditor userSettings={storedUserSettings} userSettingsGroupSchema={userSettingsSchema}
                         on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
                 </div>
-                <div class="fd-page iframeUserSettingsCtn"></div>
+                <div class="iframeUserSettingsCtn"></div>
             </div>
         </div>
         <footer class="fd-dialog__footer fd-bar fd-bar--footer">
