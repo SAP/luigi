@@ -15,7 +15,7 @@ const luigifiles = [
 ];
 
 class PatchLuigiPlugin {
-  constructor() {}
+  constructor() { }
   static execHandler(err, stdout, stderr) {
     if (stdout) {
       console.log(stdout);
@@ -77,13 +77,13 @@ module.exports = {
     new MiniCssExtractPlugin({ filename: '[name].css' }),
     new PatchLuigiPlugin(),
     process.env.ANALYZE == 'true' &&
-      new BundleAnalyzerPlugin({
-        openAnalyzer: true,
-        generateStatsFile: true
-      })
+    new BundleAnalyzerPlugin({
+      openAnalyzer: true,
+      generateStatsFile: true
+    })
   ].filter(f => !!f), // filter out disabled plugins (eg ANALYZE returns undefined if not active)
   stats: {
     warnings: false
   },
-  devtool: 'inline'
+  devtool: 'source-map'
 };

@@ -21,6 +21,11 @@ class IframeHelpersClass {
         iframeKey: 'splitViewIframe',
         dataKey: 'splitViewIframeData',
         iframeConfigKey: 'splitView'
+      },
+      {
+        iframeKey: 'userSettingsIframe',
+        dataKey: 'userSettingsIframeData',
+        iframeConfigKey: 'userSettings'
       }
     ];
   }
@@ -45,6 +50,7 @@ class IframeHelpersClass {
   }
 
   removeIframe(iframe, node) {
+    console.log('removeIframe')
     const children = Array.from(node.children);
     children.forEach(child => {
       if (child === iframe) {
@@ -61,9 +67,9 @@ class IframeHelpersClass {
           new RegExp(
             GenericHelpers.escapeRegExp(
               (parenthesis ? '{' : '') +
-                prefix +
-                entry[0] +
-                (parenthesis ? '}' : '')
+              prefix +
+              entry[0] +
+              (parenthesis ? '}' : '')
             ),
             'g'
           ),

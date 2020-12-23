@@ -6,7 +6,7 @@
         beforeUpdate,
         getContext
     } from 'svelte';
-    import { NavigationHelpers, GenericHelpers } from './utilities/helpers';
+    import { NavigationHelpers, GenericHelpers, EventListenerHelpers, IframeHelpers, UserSettingsHelper } from './utilities/helpers';
     import UserSettingsEditor from './UserSettingsEditor.html';
     import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
@@ -25,6 +25,7 @@
     let dialogHeader = TOP_NAV_DEFAULTS.userSettingsDialog.dialogHeader;
     let saveBtn = TOP_NAV_DEFAULTS.userSettingsDialog.saveBtn;
     let dismissBtn = TOP_NAV_DEFAULTS.userSettingsDialog.dismissBtn;
+    let customIframes = {};
 
     onMount(() => {
         const usLocalization = LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
@@ -38,6 +39,21 @@
             key = k;
             break;
         }
+
+        EventListenerHelpers.addEventListener('message', e => {
+            const iframe = IframeHelpers.getValidMessageSource(e);
+            if (!iframe) return;
+            iframe._ready = true;
+            if ('readUserSettings' === e.data.msg) {
+                console.log('received anfrage');
+                let message = {
+                    msg: 'userSettingsObj',
+                    data: storedUserSettings
+                }
+                iframe.contentWindow.postMessage(message, '*');
+            }
+        });
+
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
             previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
             if (userSettingsFromStorage === null) {
@@ -57,6 +73,7 @@
     });
 
     function openEditor(category, event) {
+        console.log('openEditor');
         if (event) {
             document.querySelectorAll('.lui-us-list .fd-nested-list__link').forEach(elem => {
                 elem.classList.remove('is-selected');
@@ -69,8 +86,37 @@
         } else {
             document.querySelectorAll('.lui-us-list .fd-nested-list__link')[0].classList.add("is-selected");
         }
+
         userSettingsSchema = category;
-        displayEditor = true;
+        if (userSettingsSchema[1].viewUrl) {
+            UserSettingsHelper.hideUserSettingsIframe();
+            if (customIframes.hasOwnProperty(userSettingsSchema[0])) {
+                //get all iframes in dom and compare iframes and set display to block
+                debugger;
+                UserSettingsHelper.getUserSettingsIframesInDom().forEach(iframe => {
+                    if (iframe.userSettingsGroup === userSettingsSchema[0]) {
+                        iframe.style.display = 'block';
+                    }
+                });
+            } else {
+                let iframe = UserSettingsHelper.setIframe(userSettingsSchema[1].viewUrl, userSettingsSchema[0]);
+                customIframes[userSettingsSchema[0]] = iframe;
+            }
+
+            displayCustomEditor();
+        } else {
+            diplayUserSettingsEditor();
+        }
+    }
+
+    function displayCustomEditor() {
+        document.querySelector('.iframeUserSettingsCtn').style.display = 'block';
+        document.querySelector('.usersettingseditor').style.display = 'none';
+    }
+
+    function diplayUserSettingsEditor() {
+        document.querySelector('.iframeUserSettingsCtn').style.display = 'none';
+        document.querySelector('.usersettingseditor').style.display = 'block';
     }
 
     const updateSettingsObject = (event) => {
@@ -281,29 +327,34 @@
                         <div class="lui-fd-side__nav-wrapper">
                             <ul class="fd-nested-list lui-us-list">
                                 {#each Object.entries(userSettingsData) as [key, userSettingsGroup], index}
-                                    {#each Object.entries(userSettingsGroup) as userSettingsGroupProperty}
-                                        <li class="fd-nested-list__item">
-                                            <a class="fd-nested-list__link"  on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
-                                                <div class="lui-usersettings-list-item__info-container">
-                                                    {#if userSettingsGroupProperty[1].icon}
-                                                        {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                                                            <span class="fd-nested-list__icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
-                                                        {:else}
-                                                        <span class="fd-nested-list__icon">
-                                                            <img src="{userSettingsGroupProperty[1].icon}" alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
-                                                        </span>
-                                                        {/if}
-                                                    {:else}
-                                                    <span class="fd-nested-list__icon"></span>
-                                                    {/if}
-                                                    <div class="lui-usersettings-list-item__title-container">
-                                                        <span class="lui-usersettings-list-item__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
-                                                        <span class="lui-usersettings-list-item__subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    {/each}
+                                {#each Object.entries(userSettingsGroup) as userSettingsGroupProperty}
+                                <li class="fd-nested-list__item">
+                                    <a class="fd-nested-list__link"
+                                        on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
+                                        <div class="lui-usersettings-list-item__info-container">
+                                            {#if userSettingsGroupProperty[1].icon}
+                                            {#if hasOpenUIicon(userSettingsGroupProperty[1])}
+                                            <span
+                                                class="fd-nested-list__icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
+                                            {:else}
+                                            <span class="fd-nested-list__icon">
+                                                <img src="{userSettingsGroupProperty[1].icon}"
+                                                    alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
+                                            </span>
+                                            {/if}
+                                            {:else}
+                                            <span class="fd-nested-list__icon"></span>
+                                            {/if}
+                                            <div class="lui-usersettings-list-item__title-container">
+                                                <span
+                                                    class="lui-usersettings-list-item__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
+                                                <span
+                                                    class="lui-usersettings-list-item__subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {/each}
                                 {/each}
                             </ul>
                         </div>
@@ -311,9 +362,11 @@
                 </div>
             </div>
             <div class="lui-usersettings-content">
-                {#if displayEditor}
-                    <UserSettingsEditor userSettings={storedUserSettings} userSettingsGroupSchema={userSettingsSchema} on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
-                {/if}
+                <div class="usersettingseditor">
+                    <UserSettingsEditor userSettings={storedUserSettings} userSettingsGroupSchema={userSettingsSchema}
+                        on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
+                </div>
+                <div class="fd-page iframeUserSettingsCtn"></div>
             </div>
         </div>
         <footer class="fd-dialog__footer fd-bar fd-bar--footer">

@@ -99,6 +99,7 @@ class Settings {
         sublabel: 'username',
         icon: 'account',
         title: 'User Account',
+        viewUrl: 'http://localhost:8080/index.html',
         settings: {
           name: { type: 'string', label: 'Name' },
           email: { type: 'string', label: 'E-Mail', isEditable: false },
@@ -128,6 +129,7 @@ class Settings {
         label: 'Privacy',
         title: 'Privacy',
         icon: 'private',
+        viewUrl: 'http://localhost:8080/index2.html',
         settings: {
           policy: {
             type: 'string', label: 'Privacy policy has not been defined.'
