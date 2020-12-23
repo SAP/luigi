@@ -34,7 +34,8 @@ module.exports = {
       {
         from: 'luigi-client.d.ts',
         to: '.'
-      }, {
+      },
+      {
         from: 'src/luigi-element.js',
         to: '.'
       }, {
@@ -42,5 +43,6 @@ module.exports = {
         to: '.'
       }
     ])
-  ]
+  ],
+  devtool: 'source-map'
 };

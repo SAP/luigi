@@ -186,7 +186,7 @@ Luigi.readUserSettings();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 #### storeUserSettings
 
@@ -207,7 +207,7 @@ Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 ## Luigi.elements()
 
@@ -496,7 +496,7 @@ Navigates to the given path in the application. It contains either a full absolu
 ```javascript
 Luigi.navigation().navigate('/overview')
 Luigi.navigation().navigate('users/groups/stakeholders')
-Luigi.navigation().navigate('/settings', null, true) // preserve view
+Luigi.navigation().navigate('/settings', true) // preserve view
 ```
 
 #### openAsModal
@@ -951,7 +951,7 @@ Open user settings dialog
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 #### closeUserSettings
 
@@ -959,7 +959,7 @@ Close user settings dialog
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 ## Luigi.globalSearch()
 
