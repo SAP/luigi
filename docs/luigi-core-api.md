@@ -186,7 +186,7 @@ Luigi.readUserSettings();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 #### storeUserSettings
 
@@ -207,7 +207,7 @@ Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 ## Luigi.elements()
 
@@ -951,7 +951,7 @@ Open user settings dialog
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 #### closeUserSettings
 
@@ -959,7 +959,7 @@ Close user settings dialog
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 ## Luigi.globalSearch()
 

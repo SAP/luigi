@@ -307,7 +307,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 ### Lifecycle~initListenerCallback
 

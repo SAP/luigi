@@ -241,7 +241,7 @@ class LuigiConfig {
    * @memberof Configuration
    * @example
    * Luigi.readUserSettings();
-   * @since NEXTRELEASE
+   * @since 1.7.1
    */
   async readUserSettings() {
     const userSettings = await this.getConfigValueAsync(
@@ -267,7 +267,7 @@ class LuigiConfig {
    * @param {Object} previousUserSettingsObj the previous object from storage.
    * @example
    * Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
-   * @since NEXTRELEASE
+   * @since 1.7.1
    */
   async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
     const userSettings = await this.getConfigValueAsync('settings.userSettings');
