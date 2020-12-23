@@ -25,11 +25,11 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
-## [v1.7.1] (2020-12-23)
+## [v1.7.1] (2020-12-23) :christmas_tree: :santa: :gift:
 
 #### :rocket: Added
 * [#1761](https://github.com/SAP/luigi/pull/1761) multi-level keepSelectedForChildren ([@hardl](https://github.com/hardl))
-* [#1753](https://github.com/SAP/luigi/pull/1753) Global search enhancements #1738 ([@legteodav](https://github.com/legteodav))
+* [#1753](https://github.com/SAP/luigi/pull/1753) Global search enhancements ([@legteodav](https://github.com/legteodav))
 
 #### :bug: Fixed
 * [#1765](https://github.com/SAP/luigi/pull/1765) Fix drawer undefined bug ([@ndricimrr](https://github.com/ndricimrr))
