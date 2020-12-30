@@ -15,12 +15,13 @@ describe('Iframe-helpers', () => {
 
   beforeEach(() => {
     let lastObj = {};
-    component = {
-      set: obj => {
-        Object.assign(lastObj, obj);
-      },
-      get: () => lastObj
-    };
+    component = {};
+    // component = {
+    //   set: obj => {
+    //     Object.assign(lastObj, obj);
+    //   },
+    //   get: () => lastObj
+    // };
 
     sinon.stub(GenericHelpers);
     sinon.stub(ViewUrlDecorator);
@@ -162,7 +163,7 @@ describe('Iframe-helpers', () => {
       expect(a2.host).to.equal('luigi.url.com:443');
     });
   });
-
+  let componentData;
   describe('canReuseIframe', () => {
     const config = {
       iframe: {
@@ -192,36 +193,47 @@ describe('Iframe-helpers', () => {
     it('isSameViewGroup', () => {
       config.iframe.src = 'http://otherurl.de/app.html!#/someUrl';
       config.viewGroup = 'tets';
-      component.set({
+      componentData = {
         viewUrl: 'http://otherurl.de/app.html!#/someUrl',
         viewGroup: 'tets',
         previousNodeValues: { viewUrl: config.iframe.src, viewGroup: 'tets' }
-      });
-      const tets = IframeHelpers.isSameViewGroup(config, component);
+      };
+      const tets = IframeHelpers.isSameViewGroup(componentData);
       assert.equal(tets, true);
     });
 
     it('should return true if views have the same domain and different hash', () => {
       config.iframe.src = 'http://url.com/app.html!#/prevUrl';
-      component.set({
+      componentData = {
         viewUrl: 'http://url.com/app.html!#/someUrl',
-        previousNodeValues: { viewUrl: config.iframe.src }
-      });
-      assert.isTrue(IframeHelpers.canReuseIframe(config, component));
+        currentNode: { userSettingsGroup: 'admin' },
+        previousNodeValues: { viewUrl: config.iframe.src, userSettingsGroup: 'admin' }
+      };
+      assert.isTrue(IframeHelpers.canReuseIframe(config.iframe, componentData));
+    });
+
+    it('should return false if views have the same domain, different hash and userSettingsGroup', () => {
+      config.iframe.src = 'http://url.com/app.html!#/prevUrl';
+      componentData = {
+        viewUrl: 'http://url.com/app.html!#/someUrl',
+        currentNode: { userSettingsGroup: 'admin' },
+        previousNodeValues: { viewUrl: config.iframe.src, userSettingsGroup: 'analyst' }
+      };
+      assert.isFalse(IframeHelpers.canReuseIframe(config.iframe, componentData));
     });
 
     it('should return false if views have different domains', () => {
       const prevUrl = 'http://otherurl.de/app.html';
       const nextUrl = 'http://nexturl.de/app.html';
-      component.set({
+      componentData = {
         viewUrl: 'nextUrl',
         previousNodeValues: { viewUrl: 'prevUrl' }
-      });
+      };
       GenericHelpers.getUrlWithoutHash.resetHistory();
       GenericHelpers.getUrlWithoutHash.withArgs('prevUrl').returns(prevUrl);
       GenericHelpers.getUrlWithoutHash.withArgs('nextUrl').returns(nextUrl);
 
-      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
+      assert.isFalse(IframeHelpers.canReuseIframe(config.iframe, componentData));
     });
 
     const noHashConfig = {
@@ -230,16 +242,32 @@ describe('Iframe-helpers', () => {
       }
     };
 
-    it('should return true if views have the same domain and viewGroup', () => {
-      component.set({
+    it('should return true if views have the same domain and viewGroup and userSettingsGroup', () => {
+      componentData = {
         viewUrl: 'http://url.com/SomeUrl',
         viewGroup: 'firstSPA',
+        currentNode: { userSettingsGroup: 'admin' },
         previousNodeValues: {
           viewUrl: noHashConfig.iframe.src,
-          viewGroup: 'firstSPA'
+          viewGroup: 'firstSPA',
+          userSettingsGroup: 'admin'
         }
-      });
-      assert.isTrue(IframeHelpers.canReuseIframe(config, component));
+      };
+      assert.isTrue(IframeHelpers.canReuseIframe(config.iframe, componentData));
+    });
+
+    it('should return false if views have the same domain and viewGroup but different userSettingsGroup', () => {
+      componentData = {
+        viewUrl: 'http://url.com/SomeUrl',
+        viewGroup: 'firstSPA',
+        currentNode: { userSettingsGroup: 'analyst' },
+        previousNodeValues: {
+          viewUrl: noHashConfig.iframe.src,
+          viewGroup: 'firstSPA',
+          userSettingsGroup: 'admin'
+        }
+      };
+      assert.isFalse(IframeHelpers.canReuseIframe(config.iframe, componentData));
     });
 
     it('should return false if views have the same domian and different viewGroups', () => {
@@ -247,16 +275,16 @@ describe('Iframe-helpers', () => {
       GenericHelpers.getUrlWithoutHash.resetHistory();
       GenericHelpers.getUrlWithoutHash.returns(nextUrl);
 
-      component.set({
+      componentData = {
         viewUrl: 'http://url.com/someUrl',
         viewGroup: 'firstSPA',
         previousNodeValues: {
           viewUrl: noHashConfig.iframe.src,
           viewGroup: 'secondSPA'
         }
-      });
+      };
 
-      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
+      assert.isFalse(IframeHelpers.canReuseIframe(config.iframe, componentData));
     });
 
     it('should return false if views have different domains and the same viewGroup', () => {
@@ -266,15 +294,15 @@ describe('Iframe-helpers', () => {
       GenericHelpers.getUrlWithoutHash.resetHistory();
       GenericHelpers.getUrlWithoutHash.withArgs('prevUrl').returns(prevUrl);
       GenericHelpers.getUrlWithoutHash.withArgs('nextUrl').returns(nextUrl);
-      component.set({
+      componentData = {
         viewUrl: 'nextUrl',
         viewGroup: 'firstSPA',
         previousNodeValues: {
           viewUrl: 'prevUrl',
           viewGroup: 'firstSPA'
         }
-      });
-      assert.isFalse(IframeHelpers.canReuseIframe(config, component));
+      };
+      assert.isFalse(IframeHelpers.canReuseIframe(config.iframe, componentData));
     });
   });
 

@@ -327,7 +327,8 @@ class RoutingClass {
             ? {
                 viewUrl: previousCompData.viewUrl,
                 isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
+                viewGroup: previousCompData.viewGroup,
+                userSettingsGroup: (previousCompData.currentNode) ? previousCompData.currentNode.userSettingsGroup : undefined
               }
             : {}
         })

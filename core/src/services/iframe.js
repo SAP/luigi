@@ -204,7 +204,7 @@ class IframeClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
+    const isSameViewGroup = IframeHelpers.isSameViewGroup(component.get());
     const previousViewIsolated = this.hasIsolatedView(
       componentData.previousNodeValues.isolateView,
       isSameViewGroup,
@@ -215,7 +215,7 @@ class IframeClass {
       isSameViewGroup,
       config.isolateAllViews
     );
-    const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
+    const canReuseIframe = IframeHelpers.canReuseIframe(config.iframe, component.get());
     let activeIframe = this.getActiveIframe(node);
 
     const iframes = IframeHelpers.getMainIframes();

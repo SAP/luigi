@@ -83,52 +83,50 @@ class IframeHelpersClass {
     return processedUrl;
   }
 
-  isSameDomain(config, component) {
-    //TODO rename to reflect the fact that it checks for URL till hash (which is more than just domain)
-    if (config.iframe) {
-      const componentData = component.get();
-      const previousUrl = GenericHelpers.getUrlWithoutHash(
-        componentData.previousNodeValues.viewUrl
-      );
-      const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
-      const previousViewGroup = componentData.previousNodeValues.viewGroup;
-      const nextViewGroup = componentData.viewGroup;
-      if (previousUrl === nextUrl && !previousViewGroup && !nextViewGroup) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  isSameViewGroup(config, component) {
-    if (config.iframe) {
-      const componentData = component.get();
-      const previousUrl = GenericHelpers.getUrlWithoutHash(
-        componentData.previousNodeValues.viewUrl
-      );
-      const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
-      const previousUrlOrigin = this.getLocation(previousUrl);
-      const nextUrlOrigin = this.getLocation(nextUrl);
-      if (previousUrlOrigin === nextUrlOrigin) {
-        const previousViewGroup = componentData.previousNodeValues.viewGroup;
-        const nextViewGroup = componentData.viewGroup;
-        if (
-          previousViewGroup &&
-          nextViewGroup &&
-          previousViewGroup === nextViewGroup
-        ) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  canReuseIframe(config, component) {
-    return (
-      this.isSameDomain(config, component) ||
-      this.isSameViewGroup(config, component)
+  isSameViewUrl(componentData) {
+    const previousUrl = GenericHelpers.getUrlWithoutHash(
+      componentData.previousNodeValues.viewUrl
     );
+    const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
+    const previousViewGroup = componentData.previousNodeValues.viewGroup;
+    const nextViewGroup = componentData.viewGroup;
+
+    return (previousUrl === nextUrl && !previousViewGroup && !nextViewGroup) ? true : false;
+  }
+
+  isSameViewGroup(componentData) {
+    const previousUrl = GenericHelpers.getUrlWithoutHash(
+      componentData.previousNodeValues.viewUrl
+    );
+    const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
+    const previousUrlOrigin = this.getLocation(previousUrl);
+    const nextUrlOrigin = this.getLocation(nextUrl);
+
+    if (previousUrlOrigin !== nextUrlOrigin) {
+      return false;
+    }
+
+    const previousViewGroup = componentData.previousNodeValues.viewGroup;
+    const nextViewGroup = componentData.viewGroup;
+
+    return (previousViewGroup && nextViewGroup && previousViewGroup === nextViewGroup) ? true : false;
+  }
+
+  isSameUserSettingsGroup(componentData) {
+    const currentGroup = componentData.currentNode && componentData.currentNode.userSettingsGroup;
+    const previousGroup = componentData.previousNodeValues && componentData.previousNodeValues.userSettingsGroup;
+
+    return (currentGroup && previousGroup && currentGroup === previousGroup) ? true : false;
+  }
+
+  canReuseIframe(iframe, componentData) {
+    if (!iframe) {
+      return false;
+    }
+    console.log('isSameViewUrl', this.isSameViewUrl(componentData));
+    console.log('isSameViewGroup', this.isSameViewGroup(componentData));
+    console.log('isSameUserSettingsGroup', this.isSameUserSettingsGroup(componentData));
+    return (this.isSameViewUrl(componentData) || this.isSameViewGroup(componentData)) && this.isSameUserSettingsGroup(componentData);
   }
 
   getLocation(url) {
