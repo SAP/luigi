@@ -12,6 +12,7 @@ import { Routing } from '../../services/routing';
 class RoutingHelpersClass {
   constructor() {
     this.defaultContentViewParamPrefix = '~';
+    this.defaultModalViewParamPrefix = ':';
   }
 
   getLastNodeObject(pathData) {
@@ -117,6 +118,24 @@ class RoutingHelpersClass {
       prefix = this.defaultContentViewParamPrefix;
     }
     return prefix;
+  }
+
+  getModalViewParamPrefix() {
+    let prefix = LuigiConfig.getConfigValue('routing.modalPathPrefix');
+    if (!prefix) {
+      prefix = this.defaultModalViewParamPrefix;
+    }
+    return prefix;
+  }
+
+  getModalPathFromPath(path) {
+    const prefix = encodeURI(this.getModalViewParamPrefix());
+    return !path.includes(prefix) ? null : path.split(prefix).pop();
+  }
+
+  removeModalPathFromPath(path) {
+    const prefix = encodeURI(this.getModalViewParamPrefix());
+    return path.includes(prefix) ? path.split(prefix).shift() : path;
   }
 
   addRouteChangeListener(callback) {

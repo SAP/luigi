@@ -6,7 +6,7 @@ import {
   RoutingHelpers,
   IframeHelpers
 } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N } from '../core-api';
+import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
@@ -199,6 +199,14 @@ class RoutingClass {
         : undefined;
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
+      }
+
+      // handle bookmarkable modal
+      const additionalModalPath = RoutingHelpers.getModalPathFromPath(path);
+      if(additionalModalPath) {
+        path = RoutingHelpers.removeModalPathFromPath(path);
+        const { nodeObject } = await Navigation.extractDataFromPath(additionalModalPath);
+        LuigiNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal);
       }
 
       const previousCompData = component.get();

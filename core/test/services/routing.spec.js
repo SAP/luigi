@@ -5,12 +5,12 @@ import { afterEach } from 'mocha';
 
 import { Routing } from '../../src/services/routing';
 import { GenericHelpers, RoutingHelpers } from '../../src/utilities/helpers';
-import { LuigiConfig, LuigiI18N } from '../../src/core-api';
+import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../../src/core-api';
 import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
-describe('Routing', function() {
+describe.only('Routing', function() {
   this.retries(1);
 
   let component;
@@ -619,6 +619,28 @@ describe('Routing', function() {
       await Routing.handleRouteChange(path, component, node, config);
 
       assert.equal(component.get().hideSideNav, true);
+    });
+
+    it('opens a path with an additional modal and default modalPathPrefix', async () => {
+      // given
+      const modalPath = '/project-modal';
+      const path = `#/projects:${modalPath}`;
+
+      const node = { insertBefore: sinon.spy(), children: [] };
+      sinon.stub(document, 'querySelectorAll').callsFake(() => node);
+      sinon.stub(Navigation, 'extractDataFromPath').returns({nodeObject: {}});
+      sinon.stub(LuigiNavigation, 'openAsModal');
+
+      //when      
+      try {
+        await Routing.handleRouteChange(path, component, node, currentLuigiConfig);
+      } catch (error) {
+        // console.log('err', error);
+      }
+      
+      //then
+      sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
+      sinon.assert.calledOnce(LuigiNavigation.openAsModal);
     });
   });
 

@@ -670,5 +670,22 @@ describe('Fiddle', () => {
         expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
       });
     });
+    it('Routing with custom modalPathPrefix and node params', () => {
+      newConfig.navigation.nodes[0].children[0].viewUrl = '/examples/microfrontends/hello-luigi-cdn.html';
+      newConfig.routing.modalPathPrefix = '@';
+
+      cy.visitWithFiddleConfig('/home/two@/home/one?~mp=one', newConfig);
+
+      cy.getModalWindow()
+        .then(win => {
+          assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+        });
+
+      cy.get('[data-testid="modal-mf"] iframe')
+        .iframe()
+        .then($iframe => {
+          cy.wrap($iframe).contains('Hello Luigi')
+        })
+    });
   });
 });

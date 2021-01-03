@@ -526,4 +526,41 @@ describe('Routing-helpers', () => {
       sinon.assert.notCalled(LuigiFeatureToggles.setFeatureToggle);
     });
   });
+
+  describe('getModalPathFromPath', () => {
+    let mockPath = '/path/one';
+    let mockPath2 = '/path/two';
+    let prefix = '^';
+
+    beforeEach(() => {
+      sinon.stub(RoutingHelpers, 'getModalViewParamPrefix');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('without modal prefix', () => {
+      RoutingHelpers.getModalViewParamPrefix.returns('');
+      assert.equal(RoutingHelpers.getModalPathFromPath(mockPath), null);
+    });
+    it('with modal prefix', () => {
+      RoutingHelpers.getModalViewParamPrefix.returns(prefix);
+      assert.equal(RoutingHelpers.getModalPathFromPath(mockPath + encodeURI(prefix) + mockPath2), mockPath2);
+    });
+  });
+  describe('removeModalPathFromPath', () => {
+    let mockPath = '/path/one';
+    let mockPath2 = '/path/two';
+    let prefix = '^';
+
+    beforeEach(() => {
+      sinon.stub(RoutingHelpers, 'getModalViewParamPrefix');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('get normal path', () => {
+      RoutingHelpers.getModalViewParamPrefix.returns(prefix);
+      assert.equal(RoutingHelpers.removeModalPathFromPath(mockPath + encodeURI(prefix) + mockPath2), mockPath);
+    });
+  });
 });
