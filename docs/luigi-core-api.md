@@ -190,7 +190,7 @@ Luigi.readUserSettings();
 
 #### storeUserSettings
 
-Writes the user settings object.
+Reads the user settings object.
 You can choose a custom storage to write the user settings by implementing the `userSetting.storeUserSettings` function in the settings section of the Luigi configuration
 By default, the user settings will be written from the **localStorage**
 
@@ -1083,6 +1083,24 @@ Luigi.globalSearch().setSearchString('searchString');
 **Meta**
 
 -   **since**: 1.3.0
+
+#### setSearchInputPlaceholder
+
+Sets the value of the Placeholder search input field.
+
+##### Parameters
+
+-   `searchString`  search value
+
+##### Examples
+
+```javascript
+Luigi.globalSearch().setSearchInputPlaceholder('HERE input Placeholder');
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 ## Luigi.theming()
 

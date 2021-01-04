@@ -75,7 +75,7 @@ Luigi.setConfig({
                     openNodeInModal: false
                 },{ 
                     pathSegment: 'wc2', 
-                    label: 'WE Luigi Client', 
+                    label: 'WC Luigi Client', 
                     category:  'Web Component',
                     loadingIndicator: {
                         enabled: false
