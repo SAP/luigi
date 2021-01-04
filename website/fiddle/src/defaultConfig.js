@@ -63,35 +63,26 @@ Luigi.setConfig({
                     viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
                 },{ 
                     pathSegment: 'wc1', 
-                    label: 'Web Component 1', 
+                    label: 'WC Editable List', 
                     loadingIndicator: { enabled: false },
                     category: {
                         label: 'Web Component',
                         icon: 'cloud',
                         collapsible: true
                     },
-                    viewUrl: '/wc/helloWorldWC.js',
+                    viewUrl: '/wc/list.js',
                     webcomponent: true,
                     openNodeInModal: false
                 },{ 
                     pathSegment: 'wc2', 
-                    label: 'Web Component 2 (Dialog)', 
+                    label: 'WE Luigi Client', 
                     category:  'Web Component',
                     loadingIndicator: {
                         enabled: false
                     },
-                    viewUrl: '/wc/helloWorldWC.js',
+                    viewUrl: '/wc/luigiExampleWC.js',
                     webcomponent: true,
-                    openNodeInModal: true
-               
-                },{ 
-                    pathSegment: 'wc3', 
-                    label: 'Web Component3 (Url', 
-                    category:  'Web Component',
-                    loadingIndicator: {
-                        enabled: false
-                    },
-                    viewUrl: '/wc/helloWorldWC.js'
+                    openNodeInModal: false
                
                 }] 
             },{ 
