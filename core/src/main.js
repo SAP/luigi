@@ -114,6 +114,14 @@ const configReadyCallback = () => {
           return app.$$.ctx.hasBack();
         };
 
+        Luigi.openUserSettings = () => {
+          app.$$.ctx.openUserSettings();
+        };
+
+        Luigi.closeUserSettings = () => {
+          app.$$.ctx.closeUserSettings();
+        }
+
         resolve();
       });
     });

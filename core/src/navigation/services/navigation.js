@@ -370,23 +370,31 @@ class NavigationClass {
    * getTruncatedChildren
    *
    * Returns an array of children without the childs below
-   * a node that has keepSelectedForChildren enabled
+   * last node that has keepSelectedForChildren or tabnav enabled
    * @param array children
    * @returns array children
    */
   getTruncatedChildren(children) {
     let childToKeepFound = false;
-    const res = [];
-    children.forEach(node => {
-      if (childToKeepFound) {
-        return;
-      }
-      if (node.keepSelectedForChildren || node.tabNav) {
-        childToKeepFound = true;
-      }
-      res.push(node);
-    });
-    return res;
+    let res = [];
+
+    children
+      .slice()
+      .reverse()
+      .forEach(node => {
+        if (!childToKeepFound || node.tabNav) {
+          if (node.keepSelectedForChildren === false) {
+            // explicitly set to false
+            childToKeepFound = true;
+          } else if (node.keepSelectedForChildren || node.tabNav) {
+            childToKeepFound = true;
+            res = [];
+          }
+        }
+        res.push(node);
+      });
+
+    return res.reverse();
   }
 
   async getLeftNavData(current, componentData) {
