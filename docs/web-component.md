@@ -22,9 +22,23 @@ meta -->
 
 Luigi offers the possibility to open a micro frontend as a web component; if you want to have more information about web component, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
 
-For no-complex micro frontend, it can be a good and fast alternative, since all the frontend will be loaded in a single javascript file.
+For no-complex micro frontend, it can be a good and fast alternative: all the frontend will be loaded in a single javascript file.
 
-### Navigation Configuration
+In this page you wil find:
+-   [Navigation Configuration](#navigation-configuration) - how to configure web component in Luigi Core navigation
+-   [Write a Web Component](#write-a-web-component) - quick description how to write a Web Component compatible with Luigi Framework
+-   [Luigi Client for web component](#luigi-client-for-web-component) js object injected in that Web Component, to leverage some Luigi core features
+-   [Tip: how to inject HTML Template code in web component](#tip-how-to-inject-html-template-code-in-web-component) - recommendation how to inject the html in a Web Component
+-   [Tip: Loading a Web Component inside a Luigi WebComponent](#tip-loading-a-web-component-inside-a-luigi-webcomponent) - example how to include standard Web Components in your Luigi Web Component 
+-   [Tip: Example of Luigi Web Component using other standard Web Component and how to communicate with them](#tip-example-of-luigi-web-component-using-other-standard-web-component-and-how-to-communicate-with-them)
+    -   [File luigiExampleWC.js: the Luigi Web Compone](#file-luigiexamplewcjs-the-luigi-web-component) 
+    -   [File f_selectbox.js](#file-f_selectboxjs)
+    -   [File f_busy.js](#file-f_busyjs)
+    -   [File f_input.js](#file-f_inputjs)
+    -   [File wcEvent.js](#file-wceventjs)
+        
+            
+## Navigation Configuration
 
 If you want to declare a menu item to be open as Web Component, you need to specify this configuration in Luigi config:
 ```javascript
@@ -122,7 +136,7 @@ export default class extends HTMLElement {
 ```
 
 
-### Tip: how to inject HTML Template code in web component 
+## Tip: how to inject HTML Template code in web component 
 
 Sometime your Web Component has some HTML template that you would like to use, instead of creating dom elements one by one.
 We suggest putting your html template inside a variable at the beginning of the js file and append to the web component root in the constructor, here an example:
@@ -156,7 +170,8 @@ export default class extends HTMLElement {
 }
 ```
               
-### Tip: Loading a Web Component inside a Luigi WebComponent
+
+## Tip: Loading a Web Component inside a Luigi WebComponent
 In order to modularize/reuse some code, you would like to import other standard Web Component inside Luigi Web Component. 
 There could also be the case that you have already micro front end running in a standard Web Component and you would like to reuse it: 
 the easier way is to create a Luigi Proxy Web Component, here below and example:
@@ -213,12 +228,22 @@ export default class extends HTMLElement {
 ```
 
 
-### Tip: Example of Luigi Web Component using other standard Web Component and how to communicate with them.
+## Tip: Example of Luigi Web Component using other standard Web Component and how to communicate with them.
 
 In Fiddle application we have a Luigi Web Component that is using other custom standard web components and Luigi Client object: [WC Luigi Client](https://fiddle.luigi-project.io/#/home/wc2)
 In this section a very short description of all the files that are used.
 
-####File luigiExampleWC.js: the Luigi Web Component
+In the following diagrams, you can see how the different Web Components are injected:
+
+![Component Injection](assets/component_injections.png)
+
+The Components cannot use (read, write) other Components elements. For this reason, we created a new simple example event mechanism to allow communication between the different components:
+
+![Component Events](assets/component_events.png)
+
+
+
+### File luigiExampleWC.js: the Luigi Web Component
 ```javascript
 import "./f_selectbox.js";
 import "./f_busy.js";
@@ -493,7 +518,7 @@ In this file we have the following elements:
 - An injected <fundamental-input used 4 times
 - We created an example of event handler (file wcEvent.js) that is going to be used for the web components communication.
 
-###File f_selectbox.js
+### File f_selectbox.js
 ```javascript
 import EcEvent from "./wcEvent.js";
 
@@ -637,7 +662,7 @@ event.stopPropagation();
 }
 ```
 
-###File f_busy.js
+### File f_busy.js
 In this Web Component, we are showing a simple [Fundamental Busy Indicator](https://sap.github.io/fundamental-styles/?path=/docs/components-busy-indicator--standard).
 
 ```javascript
@@ -719,7 +744,7 @@ THe busy Web Component will receive the event and show/hide the Busy Indicator:
       });
 ```
 
-###File f_input.js
+### File f_input.js
 This Web Component is used to display a [Fundamental Input](https://sap.github.io/fundamental-styles/?path=/docs/components-forms-input--primary) with a label.
 ```javascript
 import EcEvent from "./wcEvent.js";
@@ -826,7 +851,7 @@ EcEvent.register("drawerUrl",  event => this.drawerUrl = event.detail);
 EcEvent.register("navigationUrl",  event => this.navigationUrl = event.detail);
 ```
 
-####File wcEvent.js
+### File wcEvent.js
 This file is just a js class used to send/recieve messages between the several Web Components:
 ```javascript
 class EventWC {
