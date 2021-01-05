@@ -12,7 +12,7 @@ class LuigiClient {
     if (
       window !== window.top &&
       window.document.head.getAttribute('disable-luigi-history-handling') !=
-        'true'
+      'true'
     ) {
       history.pushState = history.replaceState.bind(history);
     }
@@ -71,6 +71,12 @@ class LuigiClient {
   }
   getUserSettings() {
     return lifecycleManager.getUserSettings();
+  }
+  readUserSettings(readFn) {
+    return lifecycleManager.readUserSettings(readFn);
+  }
+  storeUserSettings(userSettings, storeFn) {
+    return lifecycleManager.storeUserSettings(userSettings, storeFn);
   }
   /**
    * @private

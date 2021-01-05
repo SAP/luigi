@@ -34,6 +34,7 @@
             saveBtn = usLocalization.saveBtn ? usLocalization.saveBtn : saveBtn;
             dismissBtn = usLocalization.dismissBtn ? usLocalization.dismissBtn : dismissBtn;
         }
+
         let key;
         for (let k in userSettingsData[0]) {
             key = k;
@@ -45,21 +46,23 @@
             if (!iframe) return;
             iframe._ready = true;
             if ('readUserSettings' === e.data.msg) {
-                console.log('received anfrage');
                 let message = {
                     msg: 'userSettingsObj',
                     data: storedUserSettings
                 }
                 iframe.contentWindow.postMessage(message, '*');
             }
+            if ('storeUserSettings' === e.data.msg) {
+                storedUserSettings = e.data.data;
+            }
         });
 
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
             previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
             if (userSettingsFromStorage === null) {
-                storedUserSettings;
+                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingsData)), {});
             } else {
-                storedUserSettings = userSettingsFromStorage;
+                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingsData)), userSettingsFromStorage);
             }
             openEditor([key, userSettingsData[0][key]]);
         }).catch(error => {
@@ -71,6 +74,19 @@
             }
         });
     });
+
+    function prepareUserSettingsObj(userSettingsData, userSettingsFromStorage) {
+        let userSettingsObject = {};
+        userSettingsData.forEach(category => {
+            for (let key in category) {
+                for (let i in category[key].settings) {
+                    category[key].settings[i] = '';
+                }
+                userSettingsObject[key] = { ...category[key].settings, ...userSettingsFromStorage[key] }
+            }
+        });
+        return userSettingsObject;
+    }
 
     function openEditor(category, event) {
         if (event) {
@@ -85,7 +101,6 @@
         } else {
             document.querySelectorAll('.lui-us-list .fd-nested-list__link')[0].classList.add("is-selected");
         }
-
         userSettingsSchema = category;
         if (userSettingsSchema[1].viewUrl) {
             UserSettingsHelper.hideUserSettingsIframe();

@@ -11,6 +11,7 @@
     let getTranslation = getContext('getTranslation');
     beforeUpdate(() => {
         if (userSettings && userSettingsGroupSchema && !userSettings.hasOwnProperty(userSettingsGroupSchema[0])) {
+            console.log('########beforeUpdate');
             userSettings[userSettingsGroupSchema[0]] = {};
         }
     });

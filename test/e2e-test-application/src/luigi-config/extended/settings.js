@@ -99,7 +99,7 @@ class Settings {
         sublabel: 'username',
         icon: 'account',
         title: 'User Account',
-        viewUrl: 'http://localhost:8080/index.html',
+        //viewUrl: 'http://localhost:8080/index.html',
         settings: {
           name: { type: 'string', label: 'Name' },
           email: { type: 'string', label: 'E-Mail', isEditable: false },
@@ -135,6 +135,17 @@ class Settings {
             type: 'string', label: 'Privacy policy has not been defined.'
           },
           time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+        }
+      },
+      theming: {
+        label: 'Theming',
+        title: 'Theming',
+        icon: 'private',
+        viewUrl: 'http://localhost:8081/index.html',
+        settings: {
+          theme: {
+            type: 'enum', label: 'theme', options: ['red', 'green']
+          }
         }
       }
     }

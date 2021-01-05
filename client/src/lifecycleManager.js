@@ -17,7 +17,7 @@ class LifecycleManager extends LuigiClientBase {
       'pathParams'
     ];
     this.setCurrentContext(
-      this.defaultContextKeys.reduce(function(acc, key) {
+      this.defaultContextKeys.reduce(function (acc, key) {
         acc[key] = {};
         return acc;
       }, {})
@@ -26,7 +26,9 @@ class LifecycleManager extends LuigiClientBase {
     this._onContextUpdatedFns = {};
     this._onInactiveFns = {};
     this._onInitFns = {};
+    this._onReadUserSettingsFns = {};
     this.authData = {};
+    this.userSettings = {};
 
     /**
      * Adds event listener for communication with Luigi Core and starts communication
@@ -91,6 +93,15 @@ class LifecycleManager extends LuigiClientBase {
         this._notifyUpdate();
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
+
+      helpers.addEventListener('userSettingsObj', e => {
+        if ("userSettingsObj" == e.data.msg) {
+          console.log('userSettingsObj received');
+          this.userSettingsLoaded = true;
+          this._notifyReadUserSettings(e.data.data, origin)
+        }
+      });
+
       /**
        * Get context once initially
        * @private
@@ -138,6 +149,14 @@ class LifecycleManager extends LuigiClientBase {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
       console.warn('Third party cookies are not supported!');
+    }
+  }
+
+  _notifyReadUserSettings(userSettings, origin) {
+    for (let id in this._onReadUserSettingsFns) {
+      if (this.userSettingsLoaded && this._onReadUserSettingsFns.hasOwnProperty(id) && helpers.isFunction(this._onReadUserSettingsFns[id])) {
+        this._onReadUserSettingsFns[id](userSettings, origin);
+      }
     }
   }
 
@@ -204,6 +223,27 @@ class LifecycleManager extends LuigiClientBase {
       initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
     }
     return id;
+  }
+
+  readUserSettings(readFn) {
+    window.parent.postMessage(
+      {
+        msg: 'readUserSettings',
+      },
+      '*'
+    );
+    const id = helpers.getRandomId();
+    this._onReadUserSettingsFns[id] = readFn;
+    return id;
+  }
+
+  storeUserSettings(userSettings, storeFn) {
+    let message = {
+      msg: 'storeUserSettings',
+      data: userSettings
+    }
+    window.parent.postMessage(message, helpers.getLuigiCoreDomain());
+    storeFn();
   }
 
   /**
