@@ -3,30 +3,31 @@ import { LuigiConfig } from '../../core-api';
 class UserSettingsHelperClass {
     constructor() { }
 
-    prepareUserSettingsSchema() {
-        const preparedSchema = [];
+
+    processUserSettingGroups() {
+        const userSettingGroups = [];
         const userSettingsSchema = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
         if (GenericHelpers.isObject(userSettingsSchema)) {
             for (const item in userSettingsSchema) {
                 let innerObj = {};
                 innerObj[item] = userSettingsSchema[item];
-                preparedSchema.push(innerObj);
+                userSettingGroups.push(innerObj);
             };
-            return preparedSchema;
+            return userSettingGroups;
         }
-        return preparedSchema;
+        return userSettingGroups;
     }
 
-    setIframe(viewUrl, usersettingsGroup) {
+    createIframe(viewUrl, userSettingsGroup) {
         const iframe = IframeHelpers.createIframe(
             viewUrl,
             undefined,
             undefined,
             'usersettings'
         );
-        // component.get().lastNode,
         const iframeCtn = document.querySelector('.iframeUserSettingsCtn');
-        iframe['userSettingsGroup'] = usersettingsGroup;
+        iframe.setAttribute('userSettingsGroup', userSettingsGroup);
+        iframe.userSettingsGroup = userSettingsGroup; //important for caching
         iframeCtn.appendChild(iframe);
         return iframe;
     }

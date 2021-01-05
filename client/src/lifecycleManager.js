@@ -28,7 +28,6 @@ class LifecycleManager extends LuigiClientBase {
     this._onInitFns = {};
     this._onReadUserSettingsFns = {};
     this.authData = {};
-    this.userSettings = {};
 
     /**
      * Adds event listener for communication with Luigi Core and starts communication
@@ -223,27 +222,6 @@ class LifecycleManager extends LuigiClientBase {
       initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
     }
     return id;
-  }
-
-  readUserSettings(readFn) {
-    window.parent.postMessage(
-      {
-        msg: 'readUserSettings',
-      },
-      '*'
-    );
-    const id = helpers.getRandomId();
-    this._onReadUserSettingsFns[id] = readFn;
-    return id;
-  }
-
-  storeUserSettings(userSettings, storeFn) {
-    let message = {
-      msg: 'storeUserSettings',
-      data: userSettings
-    }
-    window.parent.postMessage(message, helpers.getLuigiCoreDomain());
-    storeFn();
   }
 
   /**

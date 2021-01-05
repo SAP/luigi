@@ -7,16 +7,18 @@
         getContext
     } from 'svelte';
     import { NavigationHelpers, GenericHelpers, EventListenerHelpers, IframeHelpers, UserSettingsHelper } from './utilities/helpers';
+    import { MessagesListeners } from './services/messages-listeners';
     import UserSettingsEditor from './UserSettingsEditor.html';
     import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
     import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
     import { KEYCODE_ESC } from './utilities/keycode.js';
     export let schemaObj;
-    export let userSettingsData;
+    export let userSettingGroups;
+    
     const dispatch = createEventDispatcher();
     let userSettingGroup;
-    let storedUserSettings = {};
+    export let storedUserSettings = {};
     let userSettingsGroupKey;
     let userSettingsSchema;
     let displayEditor = false;
@@ -26,6 +28,7 @@
     let saveBtn = TOP_NAV_DEFAULTS.userSettingsDialog.saveBtn;
     let dismissBtn = TOP_NAV_DEFAULTS.userSettingsDialog.dismissBtn;
     let customIframes = {};
+    let userSettingsFromStorage
 
     onMount(() => {
         const usLocalization = LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
@@ -36,7 +39,7 @@
         }
 
         let key;
-        for (let k in userSettingsData[0]) {
+        for (let k in userSettingGroups[0]) {
             key = k;
             break;
         }
@@ -45,26 +48,36 @@
             const iframe = IframeHelpers.getValidMessageSource(e);
             if (!iframe) return;
             iframe._ready = true;
-            if ('readUserSettings' === e.data.msg) {
-                let message = {
-                    msg: 'userSettingsObj',
-                    data: storedUserSettings
+            let fn = (e)=>{
+                let customUserSettingsIframes = document.querySelectorAll('[userSettingsGroup]');
+                for(let i = 0;i< customUserSettingsIframes.length;i++){
+                if(customUserSettingsIframes[i].contentWindow=== e.source){
+                    return customUserSettingsIframes[i];
                 }
-                iframe.contentWindow.postMessage(message, '*');
+                }
+                return null;
             }
-            if ('storeUserSettings' === e.data.msg) {
-                storedUserSettings = e.data.data;
+            if ('custom' === e.data.msg) {
+                const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
+                const userSettingsCMKey = 'luigi.updateUserSettings'
+                if(message.id===userSettingsCMKey){
+                    let iframe = fn(e);
+                    if(iframe){
+                        let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
+                        storedUserSettings[userSettingsGroupKey] = message.data;
+                    }
+                }
             }
         });
 
         LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
             previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
             if (userSettingsFromStorage === null) {
-                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingsData)), {});
+                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), {});
             } else {
-                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingsData)), userSettingsFromStorage);
+                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), userSettingsFromStorage);
             }
-            openEditor([key, userSettingsData[0][key]]);
+            openEditor([key, userSettingGroups[0][key]]);
         }).catch(error => {
             if (error && error.message) {
                 console.error(error.message)
@@ -75,9 +88,9 @@
         });
     });
 
-    function prepareUserSettingsObj(userSettingsData, userSettingsFromStorage) {
+    function prepareUserSettingsObj(userSettingGroups, userSettingsFromStorage) {
         let userSettingsObject = {};
-        userSettingsData.forEach(category => {
+        userSettingGroups.forEach(category => {
             for (let key in category) {
                 for (let i in category[key].settings) {
                     category[key].settings[i] = '';
@@ -111,7 +124,7 @@
                     }
                 });
             } else {
-                let iframe = UserSettingsHelper.setIframe(userSettingsSchema[1].viewUrl, userSettingsSchema[0]);
+                let iframe = UserSettingsHelper.createIframe(userSettingsSchema[1].viewUrl, userSettingsSchema[0]);
                 customIframes[userSettingsSchema[0]] = iframe;
             }
 
@@ -344,7 +357,7 @@
                     <div class="fd-side-nav__main-navigation">
                         <div class="lui-fd-side__nav-wrapper">
                             <ul class="fd-nested-list lui-us-list">
-                                {#each Object.entries(userSettingsData) as [key, userSettingsGroup], index}
+                                {#each Object.entries(userSettingGroups) as [key, userSettingsGroup], index}
                                 {#each Object.entries(userSettingsGroup) as userSettingsGroupProperty}
                                 <li class="fd-nested-list__item">
                                     <a class="fd-nested-list__link"

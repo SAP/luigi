@@ -17,12 +17,9 @@
   <ConfirmationModal settings="{confirmationModal.settings}" on:modalConfirm="{()=> handleModalResult(true)}"
     on:modalDismiss="{() => handleModalResult(false)}"></ConfirmationModal>
   {/if}
-  {#if userSettingsInternalObj.displayed}
-  <UserSettingsDialog on:close="{closeUserSettings}" userSettingsData={userSettingsInternalObj.preparedSchema}>
-  </UserSettingsDialog>
-  {/if}
-  {#if userSettingsInternalObj.displayed}
-  <UserSettingsDialog on:close="{closeUserSettings}" userSettingsData="{userSettingsInternalObj.preparedSchema}">
+  {#if internalUserSettingsObject.displayed}
+  <UserSettingsDialog on:close="{closeUserSettings}" userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
+  bind:storedUserSettings>
   </UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
@@ -113,6 +110,7 @@
   export let store;
   export let getTranslation;
 
+
   let showLoadingIndicator = false;
 
   let mfSplitView = {
@@ -162,13 +160,14 @@
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
   let searchProvider;
-  let userSettingsInternalObj;
+  let internalUserSettingsObject;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let displaySearchResult;
   export let displayCustomSearchResult = true;
   export let searchResult;
+  export let storedUserSettings;
   let featureToggleList;
 
   const prepareInternalData = config => {
@@ -201,7 +200,7 @@
     }
 
     let internal = prepareInternalData(config);
-    const userSettingsGroupName =
+    const userSettingsGroupName = config.iframe.luigi || 
       config.iframe.luigi.currentNode.userSettingsGroup;
     const userSettingGroups = await LuigiConfig.readUserSettings();
 
@@ -977,18 +976,18 @@
   };
 
   //Dialog Box
-  userSettingsInternalObj = {};
+  internalUserSettingsObject = {};
   export const openUserSettings = () => {
     //check if empty array
-    const preparedSchema = UserSettingsHelper.prepareUserSettingsSchema();
-    if (Array.isArray(preparedSchema) && preparedSchema.length) {
-      userSettingsInternalObj.preparedSchema = [...preparedSchema];
-      userSettingsInternalObj.displayed = true;
+    const userSettingGroups = UserSettingsHelper.processUserSettingGroups();
+    if (Array.isArray(userSettingGroups) && userSettingGroups.length) {
+      internalUserSettingsObject.userSettingGroups = [...userSettingGroups];
+      internalUserSettingsObject.displayed = true;
     }
   };
 
   export const closeUserSettings = () => {
-    userSettingsInternalObj.displayed = false;
+    internalUserSettingsObject.displayed = false;
   };
 
   function init(node) {
@@ -1054,6 +1053,11 @@
           e.data
         );
         const customMessageListener = customMessagesListeners[message.id];
+        const userSettingsCMKey = 'luigi.updateUserSettings'
+        if (internalUserSettingsObject && message.id === userSettingsCMKey && customMessageListener) {
+            console.warn(`This key is not allowed to use "${userSettingsCMKey}".`);
+          return;
+        }
         if (typeof customMessageListener === 'function') {
           const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
             IframeHelpers.isMessageSource(e, mf.container)
@@ -1108,6 +1112,18 @@
           typ =>
             IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
         );
+
+        //
+          let fn = (e)=>{
+            let customUserSettingsIframes = document.querySelectorAll('[userSettingsGroup]');
+            for(let i = 0;i<customUserSettingsIframes.length;i++){
+              if(customUserSettingsIframes[i].contentWindow=== e.source){
+                return customUserSettingsIframes[i];
+              }
+            }
+            return null;
+          }
+        //
         if (specialIframeMessageSource.length) {
           specialIframeMessageSource.forEach(async typ => {
             let ctx = specialIframeProps[typ.dataKey].context;
@@ -1149,6 +1165,21 @@
             },
             {}
           );
+        }else {
+          let userSettingsIframe = fn(e);
+          if(userSettingsIframe){
+            let userSettingsGroupKey = userSettingsIframe.getAttribute('userSettingsGroup');
+          let config = {
+            context: {
+              userSettingsData: storedUserSettings[userSettingsGroupKey]
+            }, // nur für spezielen Iframe 
+            iframe: 
+              userSettingsIframe
+              
+          }
+          await sendContextToClient(config);
+
+          }
         }
         ViewGroupPreloading.viewGroupLoaded(iframe);
       }

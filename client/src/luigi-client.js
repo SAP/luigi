@@ -72,12 +72,6 @@ class LuigiClient {
   getUserSettings() {
     return lifecycleManager.getUserSettings();
   }
-  readUserSettings(readFn) {
-    return lifecycleManager.readUserSettings(readFn);
-  }
-  storeUserSettings(userSettings, storeFn) {
-    return lifecycleManager.storeUserSettings(userSettings, storeFn);
-  }
   /**
    * @private
    */
