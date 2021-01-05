@@ -53,7 +53,7 @@ If you want to declare a menu item to be open as Web Component, you need to spec
 ```
 
 ### Write a Web Component
-Luigi supports Web Component than are slightly different from standard:
+Luigi supports Web Component that are slightly different from standard:
 - We have no name in WebComponent class (we will show an example)
 - You don’t need to declare any special tag definition inside the component like customElements.define(….., ….)
 - Inside the component, Luigi core will inject an object in your class called LuigiClient
@@ -888,7 +888,6 @@ export default eventWC;
 ```
 
  
-
 
 
 
