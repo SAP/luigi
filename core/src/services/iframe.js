@@ -197,7 +197,7 @@ class IframeClass {
     return !config.iframe.luigi.initOk;
   }
 
-  navigateIframe(config, component, node) {
+  async navigateIframe(config, component, node) {
     clearTimeout(this.timeoutHandle);
     const componentData = component.get();
     let viewUrl = componentData.viewUrl;
@@ -347,6 +347,8 @@ class IframeClass {
       config.iframe['vg'] = this.canCache(componentData.viewGroup)
         ? componentData.viewGroup
         : undefined;
+      config.iframe.luigi.currentNode = componentData.currentNode;
+      const internalData = await component.prepareInternalData(config);
       const message = {
         msg: 'luigi.navigate',
         viewUrl: viewUrl,
@@ -355,7 +357,7 @@ class IframeClass {
         ),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
-        internal: JSON.stringify(component.prepareInternalData(config))
+        internal: JSON.stringify(internalData)
       };
 
       const withSync = componentData.isNavigationSyncEnabled;
