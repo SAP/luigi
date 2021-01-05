@@ -886,20 +886,3 @@ var eventWC = new EventWC();
 export default eventWC;
 
 ```
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
