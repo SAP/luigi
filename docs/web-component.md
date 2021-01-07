@@ -244,7 +244,7 @@ You can see how the different Web Components are injected through the diagrams b
 
 ![Component Injection](assets/component_injections.png)
 
-The Components cannot use (read, write) other Components elements. For this reason, we created a new simple example event mechanism to allow communication between the different components:
+The Components cannot use (read, write) other Components elements. For this reason, we created a new simple event mechanism example to allow communication between the different components:
 
 ![Component Events](assets/component_events.png)
 
