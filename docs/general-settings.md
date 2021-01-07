@@ -113,3 +113,21 @@ There are two ways to check whether the user's browser supports third-party cook
   * `thirdPartyCookieErrorHandling` is a function where you could call an alert like `Luigi.ux().showAlert({})`.
   * **thirdPartyCookieScriptLocation** is the URL to the page containing third-party cookies support check.
 To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/master/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set `thirdPartyCookieScriptLocation` to the `init.html` file. During initialization, Luigi detects cookies support and produces an alert if cookies are disabled in the user's browser.
+
+### User settings
+
+These parameters can be used to configure the user settings menu in Luigi. You may also want to take a look at the [Luigi Core API](luigi-core-api.md) for additional options.
+
+* **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
+* **userSettingsProfileMenuEntry.icon** defines the profile navigation entry icon. By default it is SAP icon `settings`.
+
+* **userSettingsDialog.dialogHeader** defines user settings dialog header. By default it is `User Settings`.
+* **userSettingsDialog.saveBtn** defines user settings dialog save button. By default it is `Save`.
+* **userSettingsDialog.dismissBtn** defines user settings dialog dismiss button. By default it is `Dismiss`.
+
+* **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to write the user settings object. The function takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings.
+If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
+
+* **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object.
+If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
+<!-- document the schema-->

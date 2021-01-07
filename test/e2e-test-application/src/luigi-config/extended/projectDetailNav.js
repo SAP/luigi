@@ -66,7 +66,7 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    },
+    }
   },
   {
     pathSegment: 'clientPermissionsTets',
@@ -122,6 +122,17 @@ export const projectDetailNavStructure = projectId => [
     label: 'Project Settings',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
+    userSettingsGroup: 'language',
+    testId: 'myTestId'
+  },
+  {
+    category: { label: 'Settings', icon: 'action-settings' },
+    pathSegment: 'user_settings',
+    label: 'User Settings',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings',
+    isolateView: true,
+    userSettingsGroup: 'userAccount',
     testId: 'myTestId'
   },
   {
@@ -140,6 +151,7 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     testId: 'myTestId',
+    userSettingsGroup: 'userAccount',
     visibleForFeatureToggles: ['!ft1']
   },
   {
@@ -180,6 +192,7 @@ export const projectDetailNavStructure = projectId => [
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
+    userSettingsGroup: 'privacy',
     icon: 'sys-help-2'
   },
   {
@@ -371,7 +384,7 @@ export const projectDetailNavStructure = projectId => [
         pathSegment: 'users',
         label: 'Users and Groups',
         viewUrl: '/sampleapp.html#/projects/' + projectId + '/users',
-        icon: 'group',
+        icon: 'group'
       },
       {
         category: 'User Management',
