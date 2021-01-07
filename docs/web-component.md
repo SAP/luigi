@@ -42,14 +42,25 @@ In this page you wil find:
 
 If you want to declare a menu item to be open as Web Component, you need to specify this configuration in Luigi config:
 ```javascript
-{ 
-    pathSegment: 'wc', 
-    ………    
-    viewUrl: '/wc/luigiExampleWC.js',
-    webcomponent: true,
-    ………    
-}
-
+Luigi.setConfig({
+    navigation: { 
+   		// To enable CORS Web component Loading: basically you need to add external domains where the Web Components are hosted;
+   		// in this examle, we are sepcify that we can load Web Components from everyhere
+	    validWebcomponentUrls:['.*?'], 
+	    nodes: [
+		...
+		{ 
+		    pathSegment: 'wc', 
+		    ………    
+		    viewUrl: '/wc/luigiExampleWC.js',
+		    webcomponent: true,
+		    ………    
+		}
+		...
+		]
+	}
+	.......
+})
 ```
 
 ### Write a Web Component
