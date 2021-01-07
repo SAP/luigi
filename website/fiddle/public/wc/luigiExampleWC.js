@@ -155,10 +155,7 @@ template.innerHTML = `
             <br />
         </div>
         <footer>
-          
         </footer>  
-          
-    
 </body>
 </html>
 
