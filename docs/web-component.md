@@ -645,7 +645,7 @@ import EcEvent from "./wcEvent.js";
 
 This Web component is called using this html syntax: 
 ```javascript
-<fundamental-list-box id="alertBox" placeholder="Select Alert Type" default_option="" option1="info" option2="success" option3="warning" option4="error" /></div>
+<fundamental-list-box id="alertBox" placeholder="Select Alert Type" default_option="" option1="info" option2="success" option3="warning" option4="error" />
 ```
 Web component will create a [Fundamental Combobox]:(https://sap.github.io/fundamental-styles/?path=/docs/patterns-combobox-input--cozy-and-compact).
 Every time there is a change, it will send an event to main Luigi Web Component (luigiExampleWC.js) using this API:
