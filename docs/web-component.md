@@ -520,10 +520,10 @@ import './f_selectbox.js';
 
 In this file we have the following elements:
 - HTML template of the components where we have basically 4 sections
-- An injected <fundamental-list-box web component
-- An injected <f_busy web component
-- An injected <fundamental-input used 4 times
-- We created an example of event handler (file wcEvent.js) that is going to be used for the web components communication.
+- An injected `<fundamental-list-box>` web component
+- An injected `<f_busy web component>`
+- An injected `<fundamental-input>` used 4 times
+- We created an example of an event handler (file wcEvent.js) that is going to be used for the web components communication.
 
 ### File f_selectbox.js
 ```javascript
