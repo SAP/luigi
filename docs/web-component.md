@@ -218,7 +218,7 @@ export default class extends HTMLElement {
 ```
 
 ```javascript
-//This woudl be the file your_custom_wc.js
+//This would be the file your_custom_wc.js
 
 (function() {
   class F_Input extends HTMLElement {
