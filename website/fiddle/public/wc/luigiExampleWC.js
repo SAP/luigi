@@ -93,7 +93,6 @@ template.innerHTML = `
                         <div style="width: 100px;float: left;padding-top: 10px;">
                           <fundamental-busy id="busyIndicatorExample" show="false"/></div>
                         </div>
-                        
                       </div>
                 </div>
             </div>
