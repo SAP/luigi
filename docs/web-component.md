@@ -238,9 +238,9 @@ export default class extends HTMLElement {
 ## Tip: Example of Luigi Web Component using other standard Web Component and how to communicate with them.
 
 You can have a look at our Luigi Fiddle example where we showcase a Luigi Web Component that is using other custom standard web components and Luigi Client object [here](https://fiddle.luigi-project.io/#/home/wc2)
-In this section a very short description of all the files that are used.
+The following section gives a short description of all the files that are used.
 
-In the following diagrams, you can see how the different Web Components are injected:
+You can see how the different Web Components are injected through the diagrams below:
 
 ![Component Injection](assets/component_injections.png)
 
