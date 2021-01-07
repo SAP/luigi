@@ -184,7 +184,7 @@ There could also be the case that you have already micro front end running in a 
 the easier way is to create a Luigi Proxy Web Component, here below and example:
 
 ```javascript
-//In Luigic Core Config you will have this new Item
+//In Luigi Core Config you will have this new Item
 { 
     pathSegment: 'your-web-componet-through-proxy', 
     ………    
