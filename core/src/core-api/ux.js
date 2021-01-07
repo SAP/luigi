@@ -141,7 +141,7 @@ class LuigiUX {
   /**
    * Open user settings dialog
    * @memberof UX
-   * @since NEXTRELEASE
+   * @since 1.7.1
    */
   openUserSettings() {
     Luigi.openUserSettings();
@@ -150,7 +150,7 @@ class LuigiUX {
   /**
    * Close user settings dialog
    * @memberof UX
-   * @since NEXTRELEASE
+   * @since 1.7.1
    */
   closeUserSettings() {
     Luigi.closeUserSettings();

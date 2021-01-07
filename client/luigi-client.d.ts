@@ -675,7 +675,7 @@ export type storageManager = () => StorageManager;
 /**
  * Returns the current user settings.
  * @returns {Object} current user settings
- * @since NEXTRELEASE
+ * @since 1.7.1
  * @memberof Lifecycle
  */
 export function getUserSettings(): UserSettings;
