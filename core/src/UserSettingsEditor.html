@@ -242,6 +242,7 @@
                 class="fd-button lui-fd-enum-button {userSettings[userSettingsGroupSchema[0]][key] === option ? 'fd-button--emphasized':'' }"
                 on:click="{() => updateEnumButton(key,option)}"
                 id="lui-us-enum_button_{key}_{option}"
+                data-testid="lui-us-enum_button_{key}_{option}"
                 disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
               >{$getTranslation(option)}</button>
               {/each}
