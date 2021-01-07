@@ -146,9 +146,8 @@ export default class extends HTMLElement {
 
 ## Tip: how to inject HTML Template code in web component 
 
-Sometime your Web Component has some HTML template that you would like to use, instead of creating dom elements one by one.
-We suggest putting your html template inside a variable at the beginning of the js file and append to the web component root in the constructor, here an example:
-
+Sometimes your Web Component has some HTML template that you would like to use, instead of creating DOM elements one by one.
+We suggest putting your HTML template inside a variable at the beginning of the js file and append to the web component root in the constructor. An example is given below:
 ```javascript
 const template = document.createElement('template');
 template.innerHTML = `
