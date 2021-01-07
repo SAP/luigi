@@ -137,6 +137,24 @@ class LuigiUX {
   collapseLeftSideNav(state) {
     SemiCollapsibleNavigation.setCollapsed(state);
   }
+
+  /**
+   * Open user settings dialog
+   * @memberof UX
+   * @since 1.7.1
+   */
+  openUserSettings() {
+    Luigi.openUserSettings();
+  }
+
+  /**
+   * Close user settings dialog
+   * @memberof UX
+   * @since 1.7.1
+   */
+  closeUserSettings() {
+    Luigi.closeUserSettings();
+  }
 }
 
 export const ux = new LuigiUX();

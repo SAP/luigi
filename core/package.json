@@ -13,7 +13,7 @@
     "@sap-theming/theming-base-content": "~11.1.21",
     "@webcomponents/webcomponentsjs": "^2.3.0",
     "acorn": "^6.4.1",
-    "axios": ">=0.18.1",
+    "axios": ">=0.21.1",
     "babel-loader": "^8.0.4",
     "bundlesize": "^0.17.0",
     "chai": "^4.2.0",
@@ -82,7 +82,7 @@
     },
     {
       "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "600 kB",
+      "maxSize": "630 kB",
       "compression": "none"
     },
     {

@@ -139,8 +139,8 @@ class RoutingHelpersClass {
       });
     }
 
-    EventListenerHelpers.addEventListener('popstate', () => {
-      callback(Routing.getModifiedPathname());
+    EventListenerHelpers.addEventListener('popstate', e => {
+      callback(Routing.getModifiedPathname(), e.detail && e.detail.withoutSync);
     });
   }
 

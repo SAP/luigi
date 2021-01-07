@@ -85,5 +85,5 @@ module.exports = {
   stats: {
     warnings: false
   },
-  devtool: 'inline'
+  devtool: 'source-map'
 };
