@@ -115,8 +115,8 @@ when Luigi Core loads a Web Component, it injects a LuigiClient instance.
 ### Luigi Client for web component
 
 In this javascript object, you can basically find two elements:
-- this.LuigiClient.uxManager(): you can use all methods described in [Luigi Core UX](https://docs.luigi-project.io/docs/luigi-core-api?section=ux)
-- this.LuigiClient.linkManager(): you can use all methods described in [Luigi Navigation](https://docs.luigi-project.io/docs/luigi-core-api?section=luiginavigation)
+- `this.LuigiClient.uxManager()` : you can use all methods described in [Luigi Core UX](https://docs.luigi-project.io/docs/luigi-core-api?section=ux)
+- `this.LuigiClient.linkManager()` : you can use all methods described in [Luigi Navigation](https://docs.luigi-project.io/docs/luigi-core-api?section=luiginavigation)
 
 For example, if you want to open an alert notificatoin, you can easily call:
 
