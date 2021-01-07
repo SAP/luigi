@@ -196,7 +196,7 @@ the easier way is to create a Luigi Proxy Web Component, here below and example:
 ```
 
 ```javascript
-//This woudl be the file luigi_proxy_wc.js
+//This would be the file luigi_proxy_wc.js
 
 const template = document.createElement('template');
 template.innerHTML = `
