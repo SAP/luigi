@@ -54,9 +54,10 @@ template.innerHTML = `
                       <div>Please Select Alert type</div>
                       <div style="padding-top:5px;">
                         <div style="width: 200px;">
-                          <fundamental-list-box id="alertBox" placeholder="Select Alert Type" default_option="" option1="info" option2="success" option3="warning" option4="error" /></div>
+                          <fundamental-list-box id="alertBox" placeholder="Select Alert Type" default_option="" option1="info" option2="success" option3="warning" option4="error" />
                         </div>
-                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
           </div>
@@ -262,4 +263,3 @@ export default class extends HTMLElement {
 }
 
 import './f_selectbox.js';
-
