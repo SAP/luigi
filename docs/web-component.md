@@ -135,7 +135,7 @@ export default class extends HTMLElement {
 }
 ```
 
-If you want open a drawer:
+If you want to open a drawer:
 ```javascript
 export default class extends HTMLElement {
   constructor() {
