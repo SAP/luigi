@@ -1053,9 +1053,10 @@
           e.data
         );
         const customMessageListener = customMessagesListeners[message.id];
-        const userSettingsCMKey = 'luigi.updateUserSettings'
-        if (internalUserSettingsObject && message.id === userSettingsCMKey && customMessageListener) {
-            console.warn(`This key is not allowed to use "${userSettingsCMKey}".`);
+        const userSettingsCMKey = 'luigi.updateUserSettings';
+        //TODO: check if this ->  && customMessageListener
+        if (internalUserSettingsObject && message.id === userSettingsCMKey) {
+            console.warn(`The key "${userSettingsCMKey}" is not allowed to use for custom messages.`);
           return;
         }
         if (typeof customMessageListener === 'function') {
@@ -1113,17 +1114,6 @@
             IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
         );
 
-        //
-          let fn = (e)=>{
-            let customUserSettingsIframes = document.querySelectorAll('[userSettingsGroup]');
-            for(let i = 0;i<customUserSettingsIframes.length;i++){
-              if(customUserSettingsIframes[i].contentWindow=== e.source){
-                return customUserSettingsIframes[i];
-              }
-            }
-            return null;
-          }
-        //
         if (specialIframeMessageSource.length) {
           specialIframeMessageSource.forEach(async typ => {
             let ctx = specialIframeProps[typ.dataKey].context;
@@ -1166,7 +1156,7 @@
             {}
           );
         }else {
-          let userSettingsIframe = fn(e);
+          let userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
           if(userSettingsIframe){
             let userSettingsGroupKey = userSettingsIframe.getAttribute('userSettingsGroup');
           let config = {

@@ -313,7 +313,7 @@ describe('Iframe-helpers', () => {
         .returns([mockContainer('split_1')])
         .withArgs('.iframeModalCtn._modal iframe') // 'modal'
         .returns([mockContainer('modal')])
-        .withArgs('.iframeModalCtn._drawer iframe') // 'modal'
+        .withArgs('.iframeModalCtn._drawer iframe') // 'drawer'
         .returns([mockContainer('drawer')]);
 
       GenericHelpers.isElementVisible.callsFake(container => {
