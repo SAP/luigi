@@ -154,7 +154,7 @@ class IframeClass {
         console.info(
           'navigate: luigi-client did not respond, using fallback by replacing iframe'
         );
-        this.navigateIframe(config, component, node);
+        await this.navigateIframe(config, component, node);
       }
     }, this.iframeNavFallbackTimeout);
   }

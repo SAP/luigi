@@ -131,7 +131,7 @@ describe('Iframe', () => {
   });
 
   describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
-    it('navigate', () => {
+    it('navigate', async () => {
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://url.com/app.html!#/prevUrl',
@@ -154,13 +154,13 @@ describe('Iframe', () => {
         currentNode: {}
       });
 
-      Iframe.navigateIframe(config, component, node);
+      await Iframe.navigateIframe(config, component, node);
       assert.equal(node.children.length, 2);
     });
   });
 
   describe('create new iframe and add event listener', () => {
-    it('navigate', () => {
+    it('navigate', async () => {
       const spy = sinon.spy(IframeHelpers, 'sendMessageToIframe');
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
@@ -184,7 +184,7 @@ describe('Iframe', () => {
 
       assert.notExists(config.iframe);
 
-      Iframe.navigateIframe(config, component, node);
+      await Iframe.navigateIframe(config, component, node);
       config.iframe.dispatchEvent(new Event('load'));
 
       assert.exists(config.iframe);
@@ -193,7 +193,7 @@ describe('Iframe', () => {
   });
 
   describe('check if luigi respond, if not, callback again to replace the iframe', () => {
-    it('navigate', () => {
+    it('navigate', async () => {
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://url.com/app.html!#/prevUrl',
@@ -217,7 +217,7 @@ describe('Iframe', () => {
         currentNode: {}
       });
       assert.equal(config.iframe.src, 'http://luigi.url.de');
-      Iframe.navigateIframe(config, component, node);
+      await Iframe.navigateIframe(config, component, node);
 
       assert(Iframe.setOkResponseHandler.called, 'setOkResponseHandler call');
       assert.equal(config.iframe.src, 'http://url.com/app.html!#/prevUrl');
@@ -345,7 +345,7 @@ describe('Iframe', () => {
   });
 
   describe('use cached iframe with same viewgroup and change viewUrl', () => {
-    it('navigate', () => {
+    it('navigate', async () => {
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://luigi.url.de',
@@ -377,13 +377,13 @@ describe('Iframe', () => {
       RoutingHelpers.substituteViewUrl.returns('http://luigi.url.de/1m');
 
       assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/2');
-      Iframe.navigateIframe(config, component, node);
+      await Iframe.navigateIframe(config, component, node);
       assert.equal(config.iframe.luigi.nextViewUrl, 'http://luigi.url.de/1m');
     });
   });
 
   describe('using withoutSync whould not trigger iframe fallback', () => {
-    it('navigate', () => {
+    it('navigate', async () => {
       const spy = sinon.spy(console, 'info');
       spy.resetHistory();
 
@@ -411,7 +411,7 @@ describe('Iframe', () => {
         isNavigationSyncEnabled: false
       });
       assert.equal(config.iframe.src, 'http://luigi.url.de');
-      Iframe.navigateIframe(config, component, node);
+      await Iframe.navigateIframe(config, component, node);
       clock.tick(3000);
       assert(spy.notCalled, 'console.info() call should not apply');
       // assert.equal(config.iframe.src, 'http://luigi.url.de');
