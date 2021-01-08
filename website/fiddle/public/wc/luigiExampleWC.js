@@ -40,7 +40,7 @@ template.innerHTML = `
                <div class="fd-row">
                 <div class="fd-col">
                   <div class="docs-layout-grid-bg docs-layout-grid-bg--color-1">
-                    <h3>Example WC Using Luigi Client, Other imported web Components and Sending/Receiving Data</h3>
+                    <h3>Example of web component using Luigi Client</h3>
                   </div>
                 </div>
               </div>
