@@ -50,7 +50,6 @@ class IframeHelpersClass {
   }
 
   removeIframe(iframe, node) {
-    console.log('removeIframe')
     const children = Array.from(node.children);
     children.forEach(child => {
       if (child === iframe) {

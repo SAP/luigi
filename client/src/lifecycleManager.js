@@ -26,7 +26,6 @@ class LifecycleManager extends LuigiClientBase {
     this._onContextUpdatedFns = {};
     this._onInactiveFns = {};
     this._onInitFns = {};
-    this._onReadUserSettingsFns = {};
     this.authData = {};
 
     /**

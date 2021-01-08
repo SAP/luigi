@@ -141,7 +141,6 @@
     }
 
     function storeUserSettings() {
-        debugger;
         LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings).then(() => {
             dispatch('close');
         }).catch(error => {
