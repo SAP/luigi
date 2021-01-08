@@ -314,15 +314,18 @@ describe('Iframe-helpers', () => {
         .withArgs('.iframeModalCtn._modal iframe') // 'modal'
         .returns([mockContainer('modal')])
         .withArgs('.iframeModalCtn._drawer iframe') // 'drawer'
-        .returns([mockContainer('drawer')]);
+        .returns([mockContainer('drawer')])
+        .withArgs('.iframeUserSettingsCtn iframe') // 'drawer'
+        .returns([mockContainer('usersettings')]);
+
 
       GenericHelpers.isElementVisible.callsFake(container => {
         // second container is not active
         return container.luigi.id !== 'main_2';
       });
       const iframes = IframeHelpers.getMicrofrontendsInDom();
-      assert.equal(iframes.length, 5, 'total iframes');
-      assert.equal(iframes.filter(i => i.active).length, 4, 'active iframes');
+      assert.equal(iframes.length, 6, 'total iframes');
+      assert.equal(iframes.filter(i => i.active).length, 5, 'active iframes');
 
       const expectedKeys = ['id', 'container', 'active', 'type'];
       assert.deepEqual(
