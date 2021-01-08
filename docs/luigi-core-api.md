@@ -1095,7 +1095,7 @@ Sets the value of the Placeholder search input field.
 ##### Examples
 
 ```javascript
-Luigi.globalSearch().setSearchInputPlaceholder('HERE input Placeholder');
+Luigi.globalSearch().setSearchInputPlaceholder('Search placeholder');
 ```
 
 **Meta**
