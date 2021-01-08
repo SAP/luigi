@@ -52,6 +52,13 @@ settings: {
       };
       Luigi.ux().showAlert(alert);
     }
+  },
+  theming = {
+    themes: () => [
+      { id: 'light', name: 'Light Theme' },
+      { id: 'dark', name: 'Dark Theme' }
+    ],
+    defaultTheme: 'light'
   }
 }
 ```
@@ -102,8 +109,29 @@ For example, to allow 'fullscreen' for non-modal iframes:
 ```
 * **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+* **theming** in this configuration element you can specify which are the themes available in website. Here the children elements mandatory:
+    * **themes**  is an array of available themes, for example `themes: ['light', 'dark']`. 
+    * **defaultTheme**  the default themes used by the application.
+    * **nodeViewURLDecorator** (Optional) you can add an internal Luigi View Url decorator (below an example). Object is to add a query parameter where we add the current theme used by the application when micro frontends are loaded.
 
-* **theming.themes** is an array of available themes, for example `themes: ['light', 'dark']`.
+```javascript
+theming : {
+    themes: () => [
+      { id: 'light', name: 'Fiori3 Light' },
+      { id: 'dark', name: 'Fiori3 Dark' }
+    ],
+    defaultTheme: 'light'
+    nodeViewURLDecorator: {
+       queryStringParameter: {
+         keyName: 'sap-theme'
+         // optional
+          value: themeId => {
+            return themeId;
+         }
+       }
+     }
+  }
+```     
 
 ### Third-party cookies support check
 
