@@ -1599,6 +1599,12 @@
     }
   }
 
+  @media (max-width: $desktopMinWidth) {
+    :global(.fd-shellbar__title) {
+      display: none;
+    }
+  }
+
   @media (min-width: $desktopMinWidth) {
     :global(.fd-shellbar__title) {
       display: inline;
