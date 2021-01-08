@@ -9,12 +9,6 @@
     let settingsSchema;
     let displayOptions;
     let getTranslation = getContext('getTranslation');
-    beforeUpdate(() => {
-        if (storedUserSettingData && userSettingGroup && !storedUserSettingData.hasOwnProperty(userSettingGroup[0])) {
-            console.log('########beforeUpdate');
-            storedUserSettingData[userSettingGroup[0]] = {};
-        }
-    });
 
     export function updateSettingsObject() {
         dispatch('updateSettingsObject', { storedUserSettingData })
@@ -59,7 +53,6 @@
     function updateComboBox(key, option) {
         storedUserSettingData[userSettingGroup[0]][key] = option;
     }
-
 </script>
 
 <style>

@@ -227,8 +227,7 @@
       internal: JSON.stringify(internal),
       authData: AuthHelpers.getStoredAuthData()
     };
-
-    IframeHelpers.sendMessageToIframe(config.iframe, message);
+   IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = authData => {
@@ -1041,10 +1040,6 @@
       if (!iframe) return;
       iframe._ready = true;
 
-      if ('readUserSettings' === e.data.msg) {
-        console.log('readUserSettings eventReceived');
-      }
-
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
           LuigiConfig.getConfigValue('communication.customMessagesListeners') ||
@@ -1054,9 +1049,10 @@
         );
         const customMessageListener = customMessagesListeners[message.id];
         const userSettingsCMKey = 'luigi.updateUserSettings';
-        //TODO: check if this ->  && customMessageListener
         if (internalUserSettingsObject && message.id === userSettingsCMKey) {
+          if(customMessageListener){
             console.warn(`The key "${userSettingsCMKey}" is not allowed to use for custom messages.`);
+          }
           return;
         }
         if (typeof customMessageListener === 'function') {

@@ -67,7 +67,7 @@ class Settings {
       dismissBtn: 'Abbreche'
     },
     //functions to use a custom storage like sessionStorage
-    // storeUserSettings: (obj, previous) => {
+    // storeUserSettings: (obj, previous) => {    
     //   return new Promise((resolve, reject) => {
     //     if (JSON.stringify(obj) !== JSON.stringify(previous)) {
     //       const settings = {
@@ -82,24 +82,41 @@ class Settings {
     //           sessionStorage.setItem('test', JSON.stringify(obj));
     //           resolve();
     //         }).catch(() => {
-    //           reject({ closeDialog: true, message: 'error' });
+    //           reject({ closeDialog: true, message: 'error ' });
     //         });
     //     }
     //   });
     // },
     // readUserSettings: () => {
     //   return new Promise((resolve, reject) => {
-    //     resolve(JSON.parse(sessionStorage.getItem('test')));
-    //     //reject({ closeDialog: true, message: 'error' });
+    //     try{
+    //       if(sessionStorage.getItem('test')){
+    //         resolve(JSON.parse(sessionStorage.getItem('test')));
+    //       }else{
+    //         resolve(JSON.parse(sessionStorage.getItem('test')));
+    //       }
+    //     }catch{
+    //        reject({ closeDialog: true, message: 'some error' });
+    //     }
     //   })
     // },
     userSettingGroups: {
+      theming: {
+        label: 'Theming',
+        title: 'Theming',
+        icon: 'private',
+        viewUrl: 'http://localhost:8081/index.html',
+        settings: {
+          theme: {
+            type: 'enum', label: 'theme', options: ['red', 'green']
+          }
+        }
+      },
       userAccount: {
         label: 'User Account',
         sublabel: 'username',
         icon: 'account',
         title: 'User Account',
-        //viewUrl: 'http://localhost:8080/index.html',
         settings: {
           name: { type: 'string', label: 'Name' },
           email: { type: 'string', label: 'E-Mail', isEditable: false },
@@ -135,17 +152,6 @@ class Settings {
             type: 'string', label: 'Privacy policy has not been defined.'
           },
           time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
-        }
-      },
-      theming: {
-        label: 'Theming',
-        title: 'Theming',
-        icon: 'private',
-        viewUrl: 'http://localhost:8081/index.html',
-        settings: {
-          theme: {
-            type: 'enum', label: 'theme', options: ['red', 'green']
-          }
         }
       }
     }

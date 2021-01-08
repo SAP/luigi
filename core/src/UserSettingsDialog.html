@@ -49,7 +49,7 @@
             iframe._ready = true;
             if ('custom' === e.data.msg) {
                 const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
-                const userSettingsCMKey = 'luigi.updateUserSettings'
+                const userSettingsCMKey = 'luigi.updateUserSettings';
                 if(message.id===userSettingsCMKey){
                     let iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
                     if(iframe){
@@ -141,6 +141,7 @@
     }
 
     function storeUserSettings() {
+        debugger;
         LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings).then(() => {
             dispatch('close');
         }).catch(error => {
@@ -386,8 +387,10 @@
             </div>
             <div class="lui-usersettings-content">
                 <div class="usersettingseditor">
+                {#if userSettingGroup}
                     <UserSettingsEditor storedUserSettingData={storedUserSettings} userSettingGroup={userSettingGroup}
                         on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
+                {/if}
                 </div>
                 <div class="iframeUserSettingsCtn"></div>
             </div>

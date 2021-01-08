@@ -239,6 +239,7 @@ class LuigiConfig {
    * You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
    * By default, the user settings will be read from the **localStorage**
    * @memberof Configuration
+   * @returns {promise} a promise when a custom `readUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. It resolves a stored user settings object. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
    * @example
    * Luigi.readUserSettings();
    * @since 1.7.1
@@ -259,10 +260,11 @@ class LuigiConfig {
   }
 
   /**
-   * Reads the user settings object.
+   * Stores the user settings object.
    * You can choose a custom storage to write the user settings by implementing the `userSetting.storeUserSettings` function in the settings section of the Luigi configuration
    * By default, the user settings will be written from the **localStorage**
    * @memberof Configuration
+   * @returns {promise} a promise when a custom `storeUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. If it is resolved the user settings dialog will be closed. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
    * @param {Object} userSettingsObj to store in the storage.
    * @param {Object} previousUserSettingsObj the previous object from storage.
    * @example
@@ -270,6 +272,7 @@ class LuigiConfig {
    * @since 1.7.1
    */
   async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
+    debugger;
     const userSettings = await this.getConfigValueAsync('settings.userSettings');
     if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
       return userSettings.storeUserSettings(userSettingsObj, previousUserSettingsObj);

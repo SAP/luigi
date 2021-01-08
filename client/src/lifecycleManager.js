@@ -93,14 +93,6 @@ class LifecycleManager extends LuigiClientBase {
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
 
-      helpers.addEventListener('userSettingsObj', e => {
-        if ("userSettingsObj" == e.data.msg) {
-          console.log('userSettingsObj received');
-          this.userSettingsLoaded = true;
-          this._notifyReadUserSettings(e.data.data, origin)
-        }
-      });
-
       /**
        * Get context once initially
        * @private
@@ -148,14 +140,6 @@ class LifecycleManager extends LuigiClientBase {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
       console.warn('Third party cookies are not supported!');
-    }
-  }
-
-  _notifyReadUserSettings(userSettings, origin) {
-    for (let id in this._onReadUserSettingsFns) {
-      if (this.userSettingsLoaded && this._onReadUserSettingsFns.hasOwnProperty(id) && helpers.isFunction(this._onReadUserSettingsFns[id])) {
-        this._onReadUserSettingsFns[id](userSettings, origin);
-      }
     }
   }
 

@@ -3,7 +3,6 @@ const assert = chai.assert;
 const sinon = require('sinon');
 import { UserSettingsHelper, IframeHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig } from '../../../src/core-api';
-
 describe('UserSettings-helpers', () => {
     const userSettingsSchema = {
         userSettingGroups: {
@@ -102,14 +101,15 @@ describe('UserSettings-helpers', () => {
 
     it('getUserSettingsIframesInDom', ()=>{
         document.querySelector.returns({
-            children:[
-                    {
-                        frame1:{}
-                    },
-                    {
-                        frame2:{}
-                    }
-                ]
+            children:
+            [
+                {
+                    frame1:{}
+                },
+                {
+                    frame2:{}
+                }
+            ]
             
         });
         const iframeCtn = UserSettingsHelper.getUserSettingsIframesInDom();
@@ -126,10 +126,13 @@ describe('UserSettings-helpers', () => {
     });
 
     it('findActiveCustomUserSettingsIframe', ()=>{
-        let iframes=[{contentWindow: {contentWindow1: 'contentWindow1'}}, {contentWindow: {contentWindow2: 'contentWindow2'}}];
         let eventSource = {contentWindow2: 'contentWindow2'};
+        let iframes=[{contentWindow: {contentWindow1: 'contentWindow1'}}, {contentWindow: eventSource}];
         document.querySelectorAll.returns(iframes);
         let activeCustomUserSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(eventSource);
-        assert.deepEqual(activeCustomUserSettingsIframe,eventSource);
+        assert.equal(activeCustomUserSettingsIframe.contentWindow, eventSource);
+        const eventSource2 = {contentWindow3: 'contentWindow3'};
+        activeCustomUserSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(eventSource2);
+        assert.deepEqual(activeCustomUserSettingsIframe ,null);
     });
 });
