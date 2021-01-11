@@ -120,7 +120,7 @@ export const projectDetailNavStructure = projectId => [
     category: { label: 'Settings', icon: 'action-settings' },
     pathSegment: 'settings',
     label: 'Project Settings',
-    viewUrl: 'http://localhost:8080/index.html',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     userSettingsGroup: 'language',
     testId: 'myTestId'
