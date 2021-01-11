@@ -84,5 +84,16 @@ class LuigiGlobalSearch {
   setSearchString(searchString) {
     Luigi.setGlobalSearchString(searchString);
   }
+
+  /**
+   * Sets the value of the Placeholder search input field.
+   * @memberof GlobalSearch
+   * @param searchString search value
+   * @since 1.7.1
+   * @example Luigi.globalSearch().setSearchInputPlaceholder('HERE input Placeholder');
+   */
+  setSearchInputPlaceholder(searchString) {
+    Luigi.setSearchInputPlaceholder(searchString);
+  }
 }
 export const globalSearch = new LuigiGlobalSearch();

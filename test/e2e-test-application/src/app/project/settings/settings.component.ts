@@ -10,7 +10,8 @@ import {
   getNodeParams,
   NodeParams,
   uxManager,
-  getActiveFeatureToggles
+  getActiveFeatureToggles,
+  getUserSettings
 } from '@luigi-project/client';
 import { Subscription } from 'rxjs';
 
@@ -26,6 +27,7 @@ export class SettingsComponent implements OnInit {
   groupId: string;
   hasBack: boolean;
   isModal: boolean;
+  userSettings: object;
   nodeParams: NodeParams = null;
   callbackValue = 'default value';
   lcSubscription: Subscription;
@@ -47,6 +49,7 @@ export class SettingsComponent implements OnInit {
     addInitListener(init => {
       this.hasBack = linkManager().hasBack();
       this.isModal = uxManager().isModal();
+      this.userSettings = getUserSettings();
       this.nodeParams =
         Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
       let featureToggleList = getActiveFeatureToggles();

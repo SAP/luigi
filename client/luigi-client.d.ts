@@ -54,7 +54,9 @@ export declare interface DrawerSettings {
 export declare interface Context {
   authData?: AuthData;
   context?: { parentNavigationContext?: string[] };
-  internal?: any;
+  internal?: {
+    userSettings?: getUserSettings;
+  };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
   [key: string]: any;
@@ -79,6 +81,10 @@ export declare interface AlertSettings {
 
 export declare interface PathParams {
   [key: string]: string;
+}
+
+export declare interface UserSettings {
+  [key: string]: number | string | boolean;
 }
 
 export declare interface UxManager {
@@ -666,3 +672,11 @@ export type uxManager = () => UxManager;
  */
 export function storageManager(): StorageManager;
 export type storageManager = () => StorageManager;
+/**
+ * Returns the current user settings.
+ * @returns {Object} current user settings
+ * @since 1.7.1
+ * @memberof Lifecycle
+ */
+export function getUserSettings(): UserSettings;
+export type getUserSettings = () => UserSettings;
