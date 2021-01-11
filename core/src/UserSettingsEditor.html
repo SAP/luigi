@@ -74,7 +74,7 @@
     document
       .querySelectorAll('.enum-buttons-container-' + key + ' button')
       .forEach(button => {
-        let buttonTestid = button.getAttribute('id');
+        const buttonId = button.getAttribute('id');
         const optionTestid = `lui-us-enum_button_${key}_option`;
         buttonTestid === optionTestid
           ? button.classList.add('fd-button--emphasized')
