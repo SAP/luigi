@@ -480,8 +480,7 @@ describe('Routing', function() {
         path,
         componentSaved,
         currentLuigiConfig.navigation.nodes()[0],
-        config,
-        window
+        config
       );
 
       // then

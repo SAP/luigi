@@ -709,6 +709,39 @@ describe('Navigation', function() {
       const result = Navigation.getTruncatedChildren(children);
       expect(result).to.be.deep.equal([{ 1: '1' }, { 2: '2', tabNav: true }]);
     });
+    it('returns children for multiple keepSelectedForChildren', () => {
+      children = [
+        { 1: '1' },
+        { 2: '2', keepSelectedForChildren: true },
+        { 3: '3' },
+        { 4: '4', keepSelectedForChildren: true },
+        { 5: '5' }
+      ];
+      const result = Navigation.getTruncatedChildren(children);
+      expect(result).to.be.deep.equal([
+        { 1: '1' },
+        { 2: '2', keepSelectedForChildren: true },
+        { 3: '3' },
+        { 4: '4', keepSelectedForChildren: true }
+      ]);
+    });
+    it('returns children for keepSelectedForChildren set explicitly to false', () => {
+      children = [
+        { 1: '1' },
+        { 2: '2', keepSelectedForChildren: true },
+        { 3: '3' },
+        { 4: '4', keepSelectedForChildren: false },
+        { 5: '5' }
+      ];
+      const result = Navigation.getTruncatedChildren(children);
+      expect(result).to.be.deep.equal([
+        { 1: '1' },
+        { 2: '2', keepSelectedForChildren: true },
+        { 3: '3' },
+        { 4: '4', keepSelectedForChildren: false },
+        { 5: '5' }
+      ]);
+    });
   });
   describe('getLeftNavData', () => {
     it('returns empty object if no pathData was found (empty nav)', async () => {

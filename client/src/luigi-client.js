@@ -8,7 +8,15 @@ import { storageManager } from './storageManager';
  * @private
  */
 class LuigiClient {
-  constructor() {}
+  constructor() {
+    if (
+      window !== window.top &&
+      window.document.head.getAttribute('disable-luigi-history-handling') !=
+        'true'
+    ) {
+      history.pushState = history.replaceState.bind(history);
+    }
+  }
 
   addInitListener(initFn) {
     return lifecycleManager.addInitListener(initFn);
