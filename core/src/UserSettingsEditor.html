@@ -76,7 +76,7 @@
       .forEach(button => {
         const buttonId = button.getAttribute('id');
         const optionId = `lui-us-enum_button_${key}_option`;
-        buttonTestid === optionTestid
+        buttonId === optionId
           ? button.classList.add('fd-button--emphasized')
           : button.classList.remove('fd-button--emphasized');
       });
