@@ -48,7 +48,7 @@ describe('UserSettings-helpers', () => {
                 label: 'Theming',
                 title: 'Theming',
                 icon: 'private',
-                viewUrl:'https://url.to.mf',
+                viewUrl: 'https://url.to.mf',
                 settings: {
                     theme: { type: 'enum', label: 'Themes', options: ['red', 'green'] }
                 }
@@ -63,7 +63,7 @@ describe('UserSettings-helpers', () => {
     });
     afterEach(() => {
         if (document.querySelector.restore) {
-           document.querySelector.restore();
+            document.querySelector.restore();
         }
         sinon.restore();
     });
@@ -90,34 +90,34 @@ describe('UserSettings-helpers', () => {
         let processedUserSettingGroups = UserSettingsHelper.processUserSettingGroups();
         assert.equal(processedUserSettingGroups.length, 0);
     });
-    it('Create iframe for custom user settings',()=>{
+    it('Create iframe for custom user settings', () => {
         const customUserSettingsFrame = { setAttribute: sinon.spy() };
         document.querySelector.returns({ appendChild: sinon.spy() });
         IframeHelpers.createIframe.returns(customUserSettingsFrame);
-        
+
         const iframe = UserSettingsHelper.createIframe('https://url.to.mf', 'theming');
         assert.equal(iframe.userSettingsGroup, 'theming');
     });
 
-    it('getUserSettingsIframesInDom', ()=>{
+    it('getUserSettingsIframesInDom', () => {
         document.querySelector.returns({
             children:
-            [
-                {
-                    frame1:{}
-                },
-                {
-                    frame2:{}
-                }
-            ]
-            
+                [
+                    {
+                        frame1: {}
+                    },
+                    {
+                        frame2: {}
+                    }
+                ]
+
         });
         const iframeCtn = UserSettingsHelper.getUserSettingsIframesInDom();
         assert.equal(iframeCtn.length, 2);
     });
 
-    it('hideUserSettingsIframe', ()=>{
-        let iframes=[{style: {display:'block'}}, {style: {display:'block'}}];
+    it('hideUserSettingsIframe', () => {
+        let iframes = [{ style: { display: 'block' } }, { style: { display: 'block' } }];
         sinon.stub(UserSettingsHelper, 'getUserSettingsIframesInDom');
         UserSettingsHelper.getUserSettingsIframesInDom.returns(iframes);
         UserSettingsHelper.hideUserSettingsIframe();
@@ -125,14 +125,14 @@ describe('UserSettings-helpers', () => {
         assert.equal(iframes[1].style.display, 'none');
     });
 
-    it('findActiveCustomUserSettingsIframe', ()=>{
-        let eventSource = {contentWindow2: 'contentWindow2'};
-        let iframes=[{contentWindow: {contentWindow1: 'contentWindow1'}}, {contentWindow: eventSource}];
+    it('findActiveCustomUserSettingsIframe', () => {
+        let eventSource = { contentWindow2: 'contentWindow2' };
+        let iframes = [{ contentWindow: { contentWindow1: 'contentWindow1' } }, { contentWindow: eventSource }];
         document.querySelectorAll.returns(iframes);
         let activeCustomUserSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(eventSource);
         assert.equal(activeCustomUserSettingsIframe.contentWindow, eventSource);
-        const eventSource2 = {contentWindow3: 'contentWindow3'};
+        const eventSource2 = { contentWindow3: 'contentWindow3' };
         activeCustomUserSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(eventSource2);
-        assert.deepEqual(activeCustomUserSettingsIframe ,null);
+        assert.deepEqual(activeCustomUserSettingsIframe, undefined);
     });
 });
