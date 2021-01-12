@@ -141,7 +141,7 @@ userSettingGroup: {
 
 #### Write a custom editor
 This user setting group will be displayed in a user settings dialog and the data will be rendered in a default editor.
-It is possible to write a custom editor which is a micro frontend. In that case the `userSettingGroup` needs a `viewUrl` property with an url to the micro frontend.
+It is possible to write a custom editor using a custom micro frontend. In that case the `userSettingGroup` needs a `viewUrl` property with an url to the micro frontend.
 The micro frontend has to register the `addInitListener` from the Luigi Client. The stored user settings data object is part of the context object which comes with the init listener (`context.userSettingsData`).
 The micro frontend gets only the stored data object which belongs to its `userSettingGroup`.
 To update the user settings data (not store!) a special custom message has to be send to the Luigi core.
