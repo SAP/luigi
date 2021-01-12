@@ -41,17 +41,15 @@
 
         EventListenerHelpers.addEventListener('message', e => {
             const iframe = IframeHelpers.getValidMessageSource(e);
-            if (!iframe) return;
+            if (!iframe || 'custom' !== e.data.msg) return;
             iframe._ready = true;
-            if ('custom' === e.data.msg) {
-                const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
-                const userSettingsCMKey = 'luigi.updateUserSettings';
-                if (message.id === userSettingsCMKey) {
-                    let iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
-                    if (iframe) {
-                        let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
-                        storedUserSettings[userSettingsGroupKey] = message.data;
-                    }
+            const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
+            const userSettingsCMKey = 'luigi.updateUserSettings';
+            if (message.id === userSettingsCMKey) {
+                let iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
+                if (iframe) {
+                    let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
+                    storedUserSettings[userSettingsGroupKey] = message.data;
                 }
             }
         });
