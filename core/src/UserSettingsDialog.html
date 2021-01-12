@@ -15,7 +15,7 @@
     import { KEYCODE_ESC } from './utilities/keycode.js';
     export let schemaObj;
     export let userSettingGroups;
-    
+
     const dispatch = createEventDispatcher();
     let userSettingGroup;
     export let storedUserSettings = {};
@@ -37,11 +37,7 @@
             dismissBtn = usLocalization.dismissBtn ? usLocalization.dismissBtn : dismissBtn;
         }
 
-        let key;
-        for (let k in userSettingGroups[0]) {
-            key = k;
-            break;
-        }
+        let key = Object.keys(userSettingGroups[0]).length > 0 ? Object.keys(userSettingGroups[0])[0] : undefined;
 
         EventListenerHelpers.addEventListener('message', e => {
             const iframe = IframeHelpers.getValidMessageSource(e);
@@ -50,9 +46,9 @@
             if ('custom' === e.data.msg) {
                 const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
                 const userSettingsCMKey = 'luigi.updateUserSettings';
-                if(message.id===userSettingsCMKey){
+                if (message.id === userSettingsCMKey) {
                     let iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
-                    if(iframe){
+                    if (iframe) {
                         let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
                         storedUserSettings[userSettingsGroupKey] = message.data;
                     }
@@ -386,10 +382,10 @@
             </div>
             <div class="lui-usersettings-content">
                 <div class="usersettingseditor">
-                {#if userSettingGroup}
+                    {#if userSettingGroup}
                     <UserSettingsEditor storedUserSettingData={storedUserSettings} userSettingGroup={userSettingGroup}
                         on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
-                {/if}
+                    {/if}
                 </div>
                 <div class="iframeUserSettingsCtn"></div>
             </div>
