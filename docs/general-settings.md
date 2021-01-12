@@ -191,7 +191,7 @@ return new Promise((resolve, reject) => {
       });
 ```      
 
-* **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object. The function should return a promise. The resolve function get's the user settings object as parameter.
+* **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object. The function should return a promise. The resolve function gets the user settings object as parameter.
 If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
 ```javascript
 readUserSettings: () => {
