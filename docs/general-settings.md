@@ -169,7 +169,7 @@ These parameters can be used to configure the user settings menu in Luigi. You m
 By implementing the `storeUserSettings` and `readUserSettings` the default mechanism can be overriden.
 
 * **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to store the user settings object (for example, using a custom third party Rest API). The function should return a promise and takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings. On resolve the user settings dialog will be closed.
-If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
+If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object. In addition, you can implement a `message` to display the error on the browser console log.
 ```javascript
 return new Promise((resolve, reject) => {
         if (JSON.stringify(obj) !== JSON.stringify(previous)) {
