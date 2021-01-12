@@ -184,7 +184,7 @@ By default, the user settings will be read from the **localStorage**
 Luigi.readUserSettings();
 ```
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise when a custom `readUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. It resolves a stored user settings object. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise when `readUserSettings` function is defined in settings.userSettings object. It resolves a stored user settings object. If the promise is rejected, the user settings dialog will be closed in case `closeDialog` property is defined in the error object, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
 
 **Meta**
 
