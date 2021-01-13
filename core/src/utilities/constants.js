@@ -20,5 +20,5 @@ export const APP_LOADING_INDICATOR = {
 };
 
 export const RESERVED_LUIGI_CUSTOMEVENT_KEYS = {
-  userSettingsCMKey: 'luigi.updateUserSettings';
+  userSettingsCMKey: 'luigi.updateUserSettings'
 }
