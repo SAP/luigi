@@ -218,9 +218,12 @@
   export let searchResult;
   let featureToggleList;
 
-  const prepareInternalData = config => {
+  const prepareInternalData = async config => {
     const iframeConf = config.iframe.luigi;
     featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
+    const userSettingsGroupName = iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
+    const userSettingGroups = await LuigiConfig.readUserSettings();
+    const hasUserSettings = (userSettingsGroupName && typeof userSettingGroups === 'object' && userSettingGroups !== null);
     const internalData = {
       isNavigateBack,
       viewStackSize: preservedViews.length,
@@ -229,7 +232,8 @@
       currentTheme: LuigiTheming.getCurrentTheme(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
-        : iframeConf.clientPermissions
+        : iframeConf.clientPermissions,
+      userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null
     };
 
     IframeHelpers.specialIframeTypes
@@ -247,20 +251,6 @@
       return;
     }
 
-    let internal = prepareInternalData(config);
-    const userSettingsGroupName =
-      config.iframe.luigi.currentNode.userSettingsGroup;
-    const userSettingGroups = await LuigiConfig.readUserSettings();
-
-    if (
-      userSettingsGroupName &&
-      typeof userSettingGroups === 'object' &&
-      userSettingGroups !== null
-    ) {
-      const userSettings = userSettingGroups[userSettingsGroupName];
-      internal = { ...internal, userSettings };
-    }
-
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -272,7 +262,7 @@
       pathParams: JSON.stringify(
         Object.assign({}, config.pathParams || pathParams)
       ),
-      internal: JSON.stringify(internal),
+      internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
 
