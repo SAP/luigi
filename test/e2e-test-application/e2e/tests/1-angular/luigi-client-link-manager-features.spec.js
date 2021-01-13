@@ -304,8 +304,7 @@ describe('Luigi client linkManager', () => {
     });
     it('Open and close drawer component with default settings', () => {
       cy.wrap($iframeBody)
-        .find('a[data-testid="link-drawer-default-settings"]')
-        .should('exist')
+        .contains('Open drawer with default settings')
         .click();
 
       cy.get('.drawer').should('exist');
