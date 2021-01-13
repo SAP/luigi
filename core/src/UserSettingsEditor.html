@@ -146,7 +146,7 @@
   }
 
   .lui-fd-enum-button {
-    margin-right: 3px;
+    margin-top: 6px;
   }
 </style>
 <div class="lui-usersettings-content">
@@ -173,7 +173,7 @@
           disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
         >
         {/if}
-        {#if schemaItem.type==='enum'}
+        {#if schemaItem.type==='enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
         <div>
           <div class="fd-form-item">
             <div class="fd-popover">
@@ -232,13 +232,17 @@
           </div>
         </div>
         {/if}
-        {#if schemaItem.type==='enum_button'}
+        {#if schemaItem.type==='enum' && schemaItem.style === 'button'}
         <div>
           <div class="fd-form-item">
-            <div class="fd-popover enum-buttons-container-{key}">
+            <div
+              class="fd-segmented-button enum-buttons-container-{key}"
+              role="group"
+              aria-label="Group label"
+            >
               {#each schemaItem.options as option, optionIndex}
               <button
-                class="fd-button lui-fd-enum-button {userSettings[userSettingsGroupSchema[0]][key] === option ? 'fd-button--emphasized':'' }"
+                class="lui-fd-enum-button fd-button fd-button--compact {userSettings[userSettingsGroupSchema[0]][key] === option ? 'is-selected':'' }"
                 on:click="{() => updateEnumButton(key,option)}"
                 id="lui-us-enum_button_{key}_{option}"
                 data-testid="lui-us-enum_button_{key}_{option}"

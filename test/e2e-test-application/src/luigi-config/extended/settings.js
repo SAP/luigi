@@ -118,10 +118,16 @@ class Settings {
             type: 'enum',
             label: 'Language and Region',
             options: ['German', 'English', 'Spanish', 'French'],
-            description: 'After you save your settings, the browser will refresh for the new language to take effect.'
+            description:
+              'After you save your settings, the browser will refresh for the new language to take effect.'
           },
           date: { type: 'string', label: 'Date Format' },
-          time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+          time: {
+            type: 'enum',
+            style: 'button',
+            label: 'Time Format',
+            options: ['12 h', '24 h']
+          }
         }
       },
       privacy: {
@@ -130,13 +136,19 @@ class Settings {
         icon: 'private',
         settings: {
           policy: {
-            type: 'string', label: 'Privacy policy has not been defined.'
+            type: 'string',
+            label: 'Privacy policy has not been defined.'
           },
-          time: { type: 'enum_button', label: 'Time Format', options: ['12 h', '24 h'] }
+          time: {
+            type: 'enum',
+            style: 'button',
+            label: 'Time Format',
+            options: ['12 h', '24 h']
+          }
         }
       }
     }
-  }
+  };
 }
 
 export const settings = new Settings();
