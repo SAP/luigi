@@ -36,8 +36,7 @@ class Navigation {
       pathSegment: 'overview',
       label: 'Overview',
       viewUrl: '/sampleapp.html#/overview',
-      hideSideNav: true,
-      viewGroup: 'tets'
+      hideSideNav: true
     },
     {
       pathSegment: 'projects',

@@ -160,7 +160,7 @@
   let resizeTabNavToggle = false;
   let thirdPartyCookiesCheck;
   let searchProvider;
-  let internalUserSettingsObject;
+  let internalUserSettingsObject = {};
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -965,7 +965,6 @@
   };
 
   //Dialog Box
-  internalUserSettingsObject = {};
   export const openUserSettings = () => {
     //check if empty array
     const userSettingGroups = UserSettingsHelper.processUserSettingGroups();
