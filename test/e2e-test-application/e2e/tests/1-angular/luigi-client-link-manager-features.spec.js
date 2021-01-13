@@ -204,9 +204,7 @@ describe('Luigi client linkManager', () => {
       );
 
       //navigate somewhere else
-      cy.get('button')
-        .contains('Projects')
-        .click();
+      cy.goToProjectsPage();
 
       //alert disappears
       cy.get('.fd-message-strip').should('not.exist');
@@ -223,9 +221,7 @@ describe('Luigi client linkManager', () => {
       );
 
       //navigate somewhere else
-      cy.get('button')
-        .contains('Projects')
-        .click();
+      cy.goToProjectsPage();
 
       //alert disappears
       cy.get('.fd-message-strip').should('not.exist');
@@ -308,13 +304,17 @@ describe('Luigi client linkManager', () => {
     });
     it('Open and close drawer component with default settings', () => {
       cy.wrap($iframeBody)
-        .contains('Open drawer with default settings')
+        .find('a[data-testid="link-drawer-default-settings"]')
+        .should('exist')
         .click();
+
       cy.get('.drawer').should('exist');
       cy.expectPathToBe('/projects/pr2');
-      cy.get('.drawer .fd-dialog__close').should('exist');
-      cy.get('.drawer .fd-dialog__close').click();
-      cy.get('.drawer .fd-dialog__close').should('not.exist');
+
+      cy.get('.drawer-dialog button[aria-label="close"]')
+        .should('exist')
+        .click();
+      cy.get('.drawer-dialog button[aria-label="close"]').should('not.exist');
       cy.get('.drawer').should('not.exist');
     });
     it('Open and close drawer component with go back button', () => {
