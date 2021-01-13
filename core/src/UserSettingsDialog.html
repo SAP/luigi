@@ -9,7 +9,7 @@
     import { NavigationHelpers, GenericHelpers, EventListenerHelpers, IframeHelpers, UserSettingsHelper } from './utilities/helpers';
     import { MessagesListeners } from './services/messages-listeners';
     import UserSettingsEditor from './UserSettingsEditor.html';
-    import { CSS_BREAKPOINTS } from './utilities/constants';
+    import { CSS_BREAKPOINTS, RESERVED_LUIGI_CUSTOMEVENT_KEYS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
     import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
     import { KEYCODE_ESC } from './utilities/keycode.js';
@@ -44,9 +44,9 @@
             if (!iframe || 'custom' !== e.data.msg) return;
             iframe._ready = true;
             const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
-            const userSettingsCMKey = 'luigi.updateUserSettings';
+            const userSettingsCMKey = RESERVED_LUIGI_CUSTOMEVENT_KEYS.userSettingsCMKey;
             if (message.id === userSettingsCMKey) {
-                let iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
+                const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
                 if (iframe) {
                     let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
                     storedUserSettings[userSettingsGroupKey] = message.data;
