@@ -163,7 +163,7 @@ template.innerHTML = `
 
 import EcEvent from "./wcEvent.js";
 
-export default class extends HTMLElement {
+export default class luigiExampleWC extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -257,4 +257,3 @@ export default class extends HTMLElement {
   }
 }
 
-import './f_selectbox.js';

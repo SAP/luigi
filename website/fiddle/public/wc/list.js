@@ -34,7 +34,7 @@ template.innerHTML = `
 `;
 
 
-export default class extends HTMLElement {
+export default class ListWC extends HTMLElement {
   constructor() {
     super();
     const shadow = this.attachShadow({ mode: 'open' });
