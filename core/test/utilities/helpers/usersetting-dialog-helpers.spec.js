@@ -133,6 +133,6 @@ describe('UserSettings-helpers', () => {
         assert.equal(activeCustomUserSettingsIframe.contentWindow, eventSource);
         const eventSource2 = { contentWindow3: 'contentWindow3' };
         activeCustomUserSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(eventSource2);
-        assert.deepEqual(activeCustomUserSettingsIframe, undefined);
+        assert.deepEqual(activeCustomUserSettingsIframe, null);
     });
 });
