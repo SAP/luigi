@@ -19,7 +19,7 @@
   {/if}
   {#if internalUserSettingsObject.displayed}
   <UserSettingsDialog on:close="{closeUserSettings}" userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
-  bind:storedUserSettings>
+    bind:storedUserSettings>
   </UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
@@ -170,9 +170,12 @@
   export let storedUserSettings;
   let featureToggleList;
 
-  const prepareInternalData = config => {
+  const prepareInternalData = async config => {
     const iframeConf = config.iframe.luigi;
     featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
+    const userSettingsGroupName = iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
+    const userSettingGroups = await LuigiConfig.readUserSettings();
+    const hasUserSettings = (userSettingsGroupName && typeof userSettingGroups === 'object' && userSettingGroups !== null);
     const internalData = {
       isNavigateBack,
       viewStackSize: preservedViews.length,
@@ -181,7 +184,8 @@
       currentTheme: LuigiTheming.getCurrentTheme(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
-        : iframeConf.clientPermissions
+        : iframeConf.clientPermissions,
+      userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null
     };
 
     IframeHelpers.specialIframeTypes
@@ -199,20 +203,6 @@
       return;
     }
 
-    let internal = prepareInternalData(config);
-    const userSettingsGroupName = config.iframe.luigi || 
-      config.iframe.luigi.currentNode.userSettingsGroup;
-    const userSettingGroups = await LuigiConfig.readUserSettings();
-
-    if (
-      userSettingsGroupName &&
-      typeof userSettingGroups === 'object' &&
-      userSettingGroups !== null
-    ) {
-      const userSettings = userSettingGroups[userSettingsGroupName];
-      internal = { ...internal, userSettings };
-    }
-
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
@@ -224,10 +214,10 @@
       pathParams: JSON.stringify(
         Object.assign({}, config.pathParams || pathParams)
       ),
-      internal: JSON.stringify(internal),
+      internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
-   IframeHelpers.sendMessageToIframe(config.iframe, message);
+    IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
 
   const sendAuthDataToClient = authData => {
@@ -982,6 +972,8 @@
     if (Array.isArray(userSettingGroups) && userSettingGroups.length) {
       internalUserSettingsObject.userSettingGroups = [...userSettingGroups];
       internalUserSettingsObject.displayed = true;
+    } else {
+      console.info('There are no user setting groups in the settings section of the luigi config defined.')
     }
   };
 
@@ -1050,7 +1042,7 @@
         const customMessageListener = customMessagesListeners[message.id];
         const userSettingsCMKey = 'luigi.updateUserSettings';
         if (internalUserSettingsObject && message.id === userSettingsCMKey) {
-          if(customMessageListener){
+          if (customMessageListener) {
             console.warn(`The key "${userSettingsCMKey}" is not allowed to use for custom messages.`);
           }
           return;
@@ -1151,19 +1143,19 @@
             },
             {}
           );
-        }else {
+        } else {
           let userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
-          if(userSettingsIframe){
+          if (userSettingsIframe) {
             let userSettingsGroupKey = userSettingsIframe.getAttribute('userSettingsGroup');
-          let config = {
-            context: {
-              userSettingsData: storedUserSettings[userSettingsGroupKey]
-            }, // nur für spezielen Iframe 
-            iframe: 
-              userSettingsIframe
-              
-          }
-          await sendContextToClient(config);
+            let config = {
+              context: {
+                userSettingsData: storedUserSettings[userSettingsGroupKey]
+              }, // nur für spezielen Iframe 
+              iframe:
+                userSettingsIframe
+
+            }
+            await sendContextToClient(config);
 
           }
         }

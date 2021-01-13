@@ -21,11 +21,6 @@ class IframeHelpersClass {
         iframeKey: 'splitViewIframe',
         dataKey: 'splitViewIframeData',
         iframeConfigKey: 'splitView'
-      },
-      {
-        iframeKey: 'userSettingsIframe',
-        dataKey: 'userSettingsIframeData',
-        iframeConfigKey: 'userSettings'
       }
     ];
   }
