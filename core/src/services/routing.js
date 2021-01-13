@@ -387,7 +387,7 @@ class RoutingClass {
           iContainer.classList.remove('lui-webComponent');
         }
         if (!withoutSync) {
-          Iframe.navigateIframe(config, component, iframeElement);
+          await Iframe.navigateIframe(config, component, iframeElement);
         }
       }
     } catch (err) {
