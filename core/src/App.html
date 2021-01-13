@@ -1143,7 +1143,7 @@
             {}
           );
         } else {
-          let userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
+          const userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
           if (userSettingsIframe) {
             let userSettingsGroupKey = userSettingsIframe.getAttribute('userSettingsGroup');
             let config = {
