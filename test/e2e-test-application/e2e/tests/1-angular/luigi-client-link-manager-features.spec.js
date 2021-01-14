@@ -302,6 +302,7 @@ describe('Luigi client linkManager', () => {
         cy.get('.drawer').should('not.exist');
       });
     });
+
     it('Open and close drawer component with default settings', () => {
       cy.wrap($iframeBody)
         .contains('Open drawer with default settings')
@@ -316,6 +317,7 @@ describe('Luigi client linkManager', () => {
       cy.get('.drawer-dialog button[aria-label="close"]').should('not.exist');
       cy.get('.drawer').should('not.exist');
     });
+
     it('Open and close drawer component with go back button', () => {
       cy.wrap($iframeBody)
         .contains('Open view in drawer component')
