@@ -18,7 +18,3 @@ export const CUSTOM_LUIGI_CONTAINER = {
 export const APP_LOADING_INDICATOR = {
   cssSelector: '[luigi-app-loading-indicator]'
 };
-
-export const RESERVED_LUIGI_CUSTOMEVENT_KEYS = {
-  userSettingsCMKey: 'luigi.updateUserSettings'
-}

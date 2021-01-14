@@ -77,7 +77,7 @@
     createEventDispatcher
   } from 'svelte';
   import { fade } from 'svelte/transition';
-  import { CSS_BREAKPOINTS, RESERVED_LUIGI_CUSTOMEVENT_KEYS } from './utilities/constants';
+  import { CSS_BREAKPOINTS } from './utilities/constants';
   import {
     EventListenerHelpers,
     GenericHelpers,
@@ -1039,7 +1039,7 @@
           e.data
         );
         const customMessageListener = customMessagesListeners[message.id];
-        const userSettingsCMKey = RESERVED_LUIGI_CUSTOMEVENT_KEYS.userSettingsCMKey;
+        const userSettingsCMKey = 'luigi.updateUserSettings';
         if (internalUserSettingsObject && message.id === userSettingsCMKey) {
           if (customMessageListener) {
             console.warn(`The key "${userSettingsCMKey}" is not allowed to use for custom messages.`);
@@ -1143,7 +1143,7 @@
             {}
           );
         } else {
-          const userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
+          let userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
           if (userSettingsIframe) {
             let userSettingsGroupKey = userSettingsIframe.getAttribute('userSettingsGroup');
             let config = {
