@@ -84,7 +84,20 @@ Luigi.setConfig({
                     webcomponent: true,
                     openNodeInModal: false
                
-                }] 
+                },
+                { 
+                    pathSegment: 'wc3', 
+                    label: 'WC UI5', 
+                    category:  'Web Component',
+                    loadingIndicator: {
+                        enabled: false
+                    },
+                    viewUrl: '/wc/ui5/ui5example.js',
+                    webcomponent: true,
+                    openNodeInModal: false
+               
+                }
+                ] 
             },{ 
                 pathSegment: 'foo', 
                 label: 'Some Action',
