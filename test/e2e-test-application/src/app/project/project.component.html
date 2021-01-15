@@ -207,8 +207,8 @@
       </div>
       <div class="fd-layout-panel__body">
         <div class="fd-form-item">
-          <label class="fd-switch__label" for="ImBw4551">
-            <span class="fd-switch fd-switch--compact">
+          <label class="fd-switch fd-switch--compact" for="ImBw4551">
+            <span class="fd-switch__control">
               <input
                 type="checkbox"
                 class="fd-switch__input"
@@ -216,7 +216,7 @@
                 (change)="sendDirtyEvent()"
                 id="ImBw4551"
               />
-              <div class="fd-switch__wrapper">
+              <div class="fd-switch__slider">
                 <div class="fd-switch__track">
                   <span
                     class="fd-switch__handle"
@@ -228,11 +228,11 @@
             </span>
           </label>
         </div>
-        <span *ngIf="!isDirty">
+        <span *ngIf="!isDirty" class="fd-switch__text">
           <strong>There are no unsaved changes</strong> &nbsp;&ndash; toggle
           this to be asked for confirmation when you leave this page
         </span>
-        <span *ngIf="isDirty">
+        <span *ngIf="isDirty" class="fd-switch__text">
           <strong>There are unsaved changes</strong> &nbsp;&ndash; a
           confirmation modal will appear when you navigate
           <a
@@ -503,22 +503,32 @@
                   title: 'Webcomponent in a modal',
                   size: 'm'
                 })
-              ">Open webcomponent in a modal</a>
-            <app-code-snippet data="linkManager()
+              "
+              >Open webcomponent in a modal</a
+            >
+            <app-code-snippet
+              data="linkManager()
               .openAsModal('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a modal',
                 size: 'm'
-              })">
+              })"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                   title: 'Webcomponent in a split view',
                   size: '25'
                 })
-              ">Open webcomponent in splitView</a>
-            <app-code-snippet data="linkManager().openAsSplitView('/projects/pr2/webcomponent', {
+              "
+              >Open webcomponent in splitView</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a split view',
                 size: '25'
               })"
@@ -849,4 +859,8 @@
   </div>
 </section>
 
-<app-modal *ngIf="projectId === 'pr1'" [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>
+<app-modal
+  *ngIf="projectId === 'pr1'"
+  [modalActive]="modalActive"
+  (modalClosed)="toggleModal()"
+></app-modal>
