@@ -55,11 +55,19 @@ module.exports = {
 			{ from: './node_modules/@luigi-project/plugin-auth-oidc', to: 'vendor/plugin-auth-oidc' },
 			{ from: './node_modules/fundamental-styles', to: 'vendor/fundamental-styles' },
 			{ from: './node_modules/@sap-theming/theming-base-content', to: 'vendor/theming-base-content' },
+			{ from: './node_modules/@ui5/webcomponents/dist', to: 'vendor/ui5/webcomponents' },
+			{ from: './node_modules/@ui5/webcomponents-base/dist', to: 'vendor/ui5/webcomponents-base' },
+			{ from: './node_modules/@ui5/webcomponents-icons/dist', to: 'vendor/ui5/webcomponents-icons' },
+			{ from: './node_modules/@ui5/webcomponents-localization/dist', to: 'vendor/ui5/webcomponents-localization' },
+			{ from: './node_modules/@ui5/webcomponents-theme-base/dist', to: 'vendor/ui5/webcomponents-theme-base' },
+			{ from: './node_modules/@ui5/webcomponents-fiori/dist', to: 'vendor/ui5/webcomponents-fiori' },
+			{ from: './node_modules//lit-html', to: 'vendor/lit-html' },
 			...['ace.js', 'mode-javascript.js', 'worker-javascript.js'].map(f => ({ from: './node_modules/ace-builds/src-min/' + f, to: 'vendor/ace/src-min/' }))
 		]),
 		new MiniCssExtractPlugin({
 			filename: '[name].css'
 		})
 	],
-	devtool: prod ? false: 'source-map'
+	devtool: prod ? false: 'source-map',
+	watch: true
 };
