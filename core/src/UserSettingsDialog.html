@@ -282,10 +282,22 @@
         padding-top: 0.875rem;
     }
 
+    .iframeUserSettingsCtn {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
     .iframeUserSettingsCtn :global(iframe) {
         width: 100%;
         height: 100%;
         border: none;
+    }
+
+    .iframeUserSettingsCtn {
+        overflow: visible;
+        -webkit-overflow-scrolling: touch;
+
     }
 
     @media (max-width: 600px) {
