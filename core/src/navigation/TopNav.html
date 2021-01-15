@@ -43,7 +43,7 @@
     {/if}
     {#if children && pathData.length > 0}
     {#each children as node, i}
-    {#if !node.hideFromNav}
+    {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
     {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
@@ -415,6 +415,7 @@
   export let isLoggedIn = false;
   export let hideNavComponent;
   export let responsiveNavSetting;
+  export let showGlobalNav;
   export let pathData;
   let previousPathData;
   export let pathParams;
@@ -483,6 +484,9 @@
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        showGlobalNav = LuigiConfig.getConfigBooleanValue(
+          'settings.globalSideNavigation'
+        );
       },
       ['navigation']
     );
