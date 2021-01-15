@@ -24,7 +24,7 @@
     "esm": "^3.2.25",
     "file-loader": "^2.0.0",
     "fs-extra": "9.0.0",
-    "fundamental-styles": "^0.14.0",
+    "fundamental-styles": "^0.13.0",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "live-server": "^1.2.1",
