@@ -87,7 +87,7 @@ Luigi.setConfig({
                 },
                 { 
                     pathSegment: 'wc3', 
-                    label: 'WC UI5', 
+                    label: 'WC UI5 Web Components', 
                     category:  'Web Component',
                     loadingIndicator: {
                         enabled: false
