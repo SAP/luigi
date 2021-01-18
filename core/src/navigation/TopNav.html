@@ -200,7 +200,7 @@
                 </li>
                 {/if}
                 {#each children as node,i}
-                {#if !node.hideFromNav}
+                {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
                 {#if !node.isCat}
                 <li class="fd-menu__item">
                   <a

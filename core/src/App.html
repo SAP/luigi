@@ -94,7 +94,11 @@
     bind:luigiCustomSearchRenderer__slot
   />
 
-  <GlobalNav pathData="{navigationPath}" pathParams="{pathParams}"/>
+  <GlobalNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
