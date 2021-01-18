@@ -38,7 +38,6 @@
       {/if}
     </button>
   </div>
-
   {/if}
   {/if}
   {/each}
@@ -85,7 +84,6 @@
   </div>
   {/if}
 </div>
-
 {/if}
 <script>
   import {
@@ -192,11 +190,11 @@
 </script>
 
 <style type="text/scss">
+  @import 'styles/variables';
   .lui-globalnav {
-    z-index: 99; /* TODO: REMOVE */
     position: fixed;
-    width: 43px;
-    top: 43px;
+    width: $globalNavWidth;
+    top: $topNavHeight;
     bottom: 0;
     left: 0;
     overflow: visible;

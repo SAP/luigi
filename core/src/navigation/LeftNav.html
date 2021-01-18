@@ -586,9 +586,9 @@
   }
 
   :global(.lui-global-nav-visible) .fd-app__sidebar {
-    left: 43px;
+    left: $globalNavWidth;
     .fd-side-nav {
-      width: calc(var(--luigi__left-sidenav--width) - 43px);
+      width: calc(var(--luigi__left-sidenav--width) - #{$globalNavWidth});
     }
   }
 
