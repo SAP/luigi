@@ -6,25 +6,28 @@
         beforeUpdate,
         getContext
     } from 'svelte';
-    import { NavigationHelpers, GenericHelpers } from './utilities/helpers';
+    import { NavigationHelpers, GenericHelpers, EventListenerHelpers, IframeHelpers, UserSettingsHelper } from './utilities/helpers';
+    import { MessagesListeners } from './services/messages-listeners';
     import UserSettingsEditor from './UserSettingsEditor.html';
     import { CSS_BREAKPOINTS } from './utilities/constants';
     import { LuigiConfig } from './core-api';
     import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
     import { KEYCODE_ESC } from './utilities/keycode.js';
     export let schemaObj;
-    export let userSettingsData;
+    export let userSettingGroups;
+
     const dispatch = createEventDispatcher();
     let userSettingGroup;
-    let storedUserSettings = {};
+    export let storedUserSettings = {};
     let userSettingsGroupKey;
-    let userSettingsSchema;
     let displayEditor = false;
     let previousUserSettings = {};
     let getTranslation = getContext('getTranslation');
     let dialogHeader = TOP_NAV_DEFAULTS.userSettingsDialog.dialogHeader;
     let saveBtn = TOP_NAV_DEFAULTS.userSettingsDialog.saveBtn;
     let dismissBtn = TOP_NAV_DEFAULTS.userSettingsDialog.dismissBtn;
+    let customIframes = {};
+    let storedUserSettingsData
 
     onMount(() => {
         const usLocalization = LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
@@ -33,19 +36,32 @@
             saveBtn = usLocalization.saveBtn ? usLocalization.saveBtn : saveBtn;
             dismissBtn = usLocalization.dismissBtn ? usLocalization.dismissBtn : dismissBtn;
         }
-        let key;
-        for (let k in userSettingsData[0]) {
-            key = k;
-            break;
-        }
-        LuigiConfig.readUserSettings().then(userSettingsFromStorage => {
-            previousUserSettings = JSON.parse(JSON.stringify(userSettingsFromStorage));
-            if (userSettingsFromStorage === null) {
-                storedUserSettings;
-            } else {
-                storedUserSettings = userSettingsFromStorage;
+
+        let key = Object.keys(userSettingGroups[0]).length > 0 ? Object.keys(userSettingGroups[0])[0] : undefined;
+
+        EventListenerHelpers.addEventListener('message', e => {
+            const iframe = IframeHelpers.getValidMessageSource(e);
+            if (!iframe || 'custom' !== e.data.msg) return;
+            iframe._ready = true;
+            const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
+            const userSettingsCMKey = 'luigi.updateUserSettings';
+            if (message.id === userSettingsCMKey) {
+                const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
+                if (iframe) {
+                    let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
+                    storedUserSettings[userSettingsGroupKey] = message.data;
+                }
             }
-            openEditor([key, userSettingsData[0][key]]);
+        });
+
+        LuigiConfig.readUserSettings().then(storedUserSettingsData => {
+            previousUserSettings = JSON.parse(JSON.stringify(storedUserSettingsData));
+            if (storedUserSettingsData === null) {
+                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), {});
+            } else {
+                storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), storedUserSettingsData);
+            }
+            openEditor([key, userSettingGroups[0][key]]);
         }).catch(error => {
             if (error && error.message) {
                 console.error(error.message)
@@ -56,7 +72,23 @@
         });
     });
 
-    function openEditor(category, event) {
+    function prepareUserSettingsObj(userSettingGroups, storedUserSettingsData) {
+        let userSettingsObject = {};
+        userSettingGroups.forEach(userSettingGroup => {
+            for (let key in userSettingGroup) {
+                for (let i in userSettingGroup[key].settings) {
+                    userSettingGroup[key].settings[i] = '';
+                }
+                userSettingsObject[key] = { ...userSettingGroup[key].settings, ...storedUserSettingsData[key] }
+            }
+        });
+        return userSettingsObject;
+    }
+
+    function openEditor(selectedUserSettingGroup, event) {
+        userSettingGroup = selectedUserSettingGroup;
+        let selectedUserSettingGroupKey = selectedUserSettingGroup[0];
+        let selectedUserSettingGroupData = selectedUserSettingGroup[1];
         if (event) {
             document.querySelectorAll('.lui-us-list .fd-nested-list__link').forEach(elem => {
                 elem.classList.remove('is-selected');
@@ -69,8 +101,33 @@
         } else {
             document.querySelectorAll('.lui-us-list .fd-nested-list__link')[0].classList.add("is-selected");
         }
-        userSettingsSchema = category;
-        displayEditor = true;
+        if (selectedUserSettingGroupData.viewUrl) {
+            UserSettingsHelper.hideUserSettingsIframe();
+            if (customIframes.hasOwnProperty(selectedUserSettingGroupKey)) {
+                UserSettingsHelper.getUserSettingsIframesInDom().forEach(iframe => {
+                    if (iframe.userSettingsGroup === selectedUserSettingGroupKey) {
+                        iframe.style.display = 'block';
+                    }
+                });
+            } else {
+                let iframe = UserSettingsHelper.createIframe(selectedUserSettingGroupData.viewUrl, selectedUserSettingGroupKey);
+                customIframes[selectedUserSettingGroupKey] = iframe;
+            }
+
+            displayCustomEditor();
+        } else {
+            diplayUserSettingsEditor();
+        }
+    }
+
+    function displayCustomEditor() {
+        document.querySelector('.iframeUserSettingsCtn').style.display = 'block';
+        document.querySelector('.usersettingseditor').style.display = 'none';
+    }
+
+    function diplayUserSettingsEditor() {
+        document.querySelector('.iframeUserSettingsCtn').style.display = 'none';
+        document.querySelector('.usersettingseditor').style.display = 'block';
     }
 
     const updateSettingsObject = (event) => {
@@ -225,6 +282,24 @@
         padding-top: 0.875rem;
     }
 
+    .iframeUserSettingsCtn {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .iframeUserSettingsCtn :global(iframe) {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .iframeUserSettingsCtn {
+        overflow: visible;
+        -webkit-overflow-scrolling: touch;
+
+    }
+
     @media (max-width: 600px) {
         .dialog-size {
             height: 80vh;
@@ -280,30 +355,35 @@
                     <div class="fd-side-nav__main-navigation">
                         <div class="lui-fd-side__nav-wrapper">
                             <ul class="fd-nested-list lui-us-list">
-                                {#each Object.entries(userSettingsData) as [key, userSettingsGroup], index}
-                                    {#each Object.entries(userSettingsGroup) as userSettingsGroupProperty}
-                                        <li class="fd-nested-list__item">
-                                            <a class="fd-nested-list__link"  on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
-                                                <div class="lui-usersettings-list-item__info-container">
-                                                    {#if userSettingsGroupProperty[1].icon}
-                                                        {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                                                            <span class="fd-nested-list__icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
-                                                        {:else}
-                                                        <span class="fd-nested-list__icon">
-                                                            <img src="{userSettingsGroupProperty[1].icon}" alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
-                                                        </span>
-                                                        {/if}
-                                                    {:else}
-                                                    <span class="fd-nested-list__icon"></span>
-                                                    {/if}
-                                                    <div class="lui-usersettings-list-item__title-container">
-                                                        <span class="lui-usersettings-list-item__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
-                                                        <span class="lui-usersettings-list-item__subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    {/each}
+                                {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
+                                {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
+                                <li class="fd-nested-list__item">
+                                    <a class="fd-nested-list__link"
+                                        on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
+                                        <div class="lui-usersettings-list-item__info-container">
+                                            {#if userSettingsGroupProperty[1].icon}
+                                            {#if hasOpenUIicon(userSettingsGroupProperty[1])}
+                                            <span
+                                                class="fd-nested-list__icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
+                                            {:else}
+                                            <span class="fd-nested-list__icon">
+                                                <img src="{userSettingsGroupProperty[1].icon}"
+                                                    alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
+                                            </span>
+                                            {/if}
+                                            {:else}
+                                            <span class="fd-nested-list__icon"></span>
+                                            {/if}
+                                            <div class="lui-usersettings-list-item__title-container">
+                                                <span
+                                                    class="lui-usersettings-list-item__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
+                                                <span
+                                                    class="lui-usersettings-list-item__subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {/each}
                                 {/each}
                             </ul>
                         </div>
@@ -311,9 +391,13 @@
                 </div>
             </div>
             <div class="lui-usersettings-content">
-                {#if displayEditor}
-                    <UserSettingsEditor userSettings={storedUserSettings} userSettingsGroupSchema={userSettingsSchema} on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
-                {/if}
+                <div class="usersettingseditor">
+                    {#if userSettingGroup}
+                    <UserSettingsEditor storedUserSettingData={storedUserSettings} userSettingGroup={userSettingGroup}
+                        on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
+                    {/if}
+                </div>
+                <div class="iframeUserSettingsCtn"></div>
             </div>
         </div>
         <footer class="fd-dialog__footer fd-bar fd-bar--footer">
