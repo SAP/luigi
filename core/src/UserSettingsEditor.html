@@ -53,6 +53,20 @@
     function updateComboBox(key, option) {
         storedUserSettingData[userSettingGroup[0]][key] = option;
     }
+
+    function updateEnumButton(key, option) {
+      document
+        .querySelectorAll('.enum-buttons-container-' + key + ' button')
+        .forEach(button => {
+          const buttonId = button.getAttribute('id');
+          const optionId = `lui-us-enum_button_${key}_option`;
+          buttonId === optionId
+            ? button.classList.add('fd-button--emphasized')
+            : button.classList.remove('fd-button--emphasized');
+        });
+
+      storedUserSettingData[userSettingGroup[0]][key] = option;
+    }
 </script>
 
 <style>
@@ -108,6 +122,10 @@
         border: 0;
         color: var(--sapTextColor, #32363a);
     }
+
+    .lui-fd-enum-button {
+      margin-top: 6px;
+    }
 </style>
 <div class="lui-usersettings-content">
     {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
@@ -128,7 +146,7 @@
                     data-testid="lui-us-input{i}" bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
                 {/if}
-                {#if schemaItem.type==='enum'}
+                {#if schemaItem.type==='enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
                 <div>
                     <div class="fd-form-item">
                         <div class="fd-popover">
@@ -167,6 +185,26 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                {/if}
+                {#if schemaItem.type==='enum' && schemaItem.style === 'button'}
+                <div>
+                  <div class="fd-form-item">
+                    <div
+                      class="fd-segmented-button enum-buttons-container-{key}"
+                      role="group"
+                      aria-label="Group label">
+                      {#each schemaItem.options as option, optionIndex}
+                        <button
+                          class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
+                          on:click="{() => updateEnumButton(key,option)}"
+                          id="lui-us-enum_button_{key}_{option}"
+                          data-testid="lui-us-enum_button_{key}_{option}"
+                          disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                        >{$getTranslation(option)}</button>
+                      {/each}
+                    </div>
+                  </div>
                 </div>
                 {/if}
                 {#if schemaItem.type==='boolean'}
