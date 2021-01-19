@@ -72,7 +72,7 @@
               <label class="fd-form-label" for="select-1">Type:</label>
               <select
                 [ngModel]="alertTypes[0]"
-                class="fd-form-select"
+                class="fd-form-select luigi__inner-padding"
                 id="select-1"
                 name="type"
                 data-testid="luigi-alert-type"
@@ -164,22 +164,20 @@
             ></app-code-snippet>
           </p>
         </div>
-        <div class="fd-container ">
-          <form #luigiLocalizationForm="ngForm" class="fd-col--3">
-            <div class="fd-form-item">
-              <label class="fd-form-label" for="locale">Locale:</label>
-              <input
-                [ngModel]=""
-                class="fd-input"
-                type="text"
-                name="locale"
-                placeholder=""
-                data-testid="luigi-input-locale"
-                [disabled]="!canChangeLocale"
-              />
-            </div>
-          </form>
-        </div>
+        <form #luigiLocalizationForm="ngForm" class="fd-col--3">
+          <div class="fd-form-item">
+            <label class="fd-form-label" for="locale">Locale:</label>
+            <input
+              [ngModel]=""
+              class="fd-input"
+              type="text"
+              name="locale"
+              placeholder=""
+              data-testid="luigi-input-locale"
+              [disabled]="!canChangeLocale"
+            />
+          </div>
+        </form>
         <button
           class="fd-button"
           data-testid="set-current-locale"
@@ -624,7 +622,7 @@
           ></app-code-snippet>
         </p>
         <div class="fd-container fd-container--fluid">
-          <div class="fd-col--4">
+          <div class="fd-col fd-col--4">
             <input
               type="text"
               class="fd-input fd-has-margin-none"
@@ -632,7 +630,7 @@
               (input)="resetPathExistsResult()"
             />
           </div>
-          <div class="fd-col--8 luigi__input-button--margin">
+          <div class="fd-col fd-col--8 luigi__input-button--margin">
             <button class="fd-button" (click)="checkIfPathExists()">
               Check
             </button>
@@ -789,7 +787,7 @@
           </label>
 
           <div class="fd-container fd-container--fluid">
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <input
                 type="text"
                 class="fd-input fd-has-margin-none"
@@ -797,7 +795,7 @@
                 [(ngModel)]="storageDemoKey"
               />
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <input
                 type="text"
                 class="fd-input fd-has-margin-none"
@@ -807,7 +805,10 @@
             </div>
           </div>
 
-          <label class="fd-form-label" data-testid="luigi-current-locale">
+          <label
+            class="fd-col fd-col--12 fd-form-label"
+            data-testid="luigi-current-locale"
+          >
             Async methods
           </label>
 
@@ -816,17 +817,17 @@
             style="padding-top: 5px;"
             *ngIf="!storageDemoOperation"
           >
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_setItem()">
                 setItem
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_getItem()">
                 getItem
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_removeItem()">
                 removeItem
               </button>
@@ -837,17 +838,17 @@
             class="fd-container fd-container--fluid"
             *ngIf="!storageDemoOperation"
           >
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_clear()">
                 clear
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_has()">
                 has
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_getAllKeys()">
                 getAllKeys
               </button>
