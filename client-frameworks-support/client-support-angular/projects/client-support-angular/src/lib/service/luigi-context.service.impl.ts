@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import {
   Context,
   addInitListener,
@@ -38,6 +39,23 @@ export class LuigiContextServiceImpl implements LuigiContextService {
    */
   public getContext(): Context {
     return this.currentContext && this.currentContext.context;
+  }
+
+  /**
+   * Get a promise that resolves when context is set.
+   */
+  public getContextAsync(): Promise<Context> {
+    return new Promise<Context>((resolve, reject) => {
+      if (this.getContext()) {
+        resolve(this.getContext());
+      } else {
+        this.contextObservable()
+          .pipe(first())
+          .subscribe(ctx => {
+            resolve(ctx.context);
+          });
+      }
+    });
   }
 
   /**

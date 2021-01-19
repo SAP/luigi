@@ -19,7 +19,7 @@ describe('Navigation', () => {
     //Check we have 3 left bar items
     cy.get('.lui-usersettings-body .fd-nested-list__link')
       .children()
-      .should('have.length', 3);
+      .should('have.length', 4);
   };
 
   const saveSettings = () => {
