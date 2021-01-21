@@ -182,7 +182,7 @@
                     on:click|stopPropagation="{()=>{toggleSearch(),toggleDropdownState('overflowPopover')}}"
                     data-testid="luigi-search-btn-mobile"
                   >
-                    <span class="fd-top-nav__icon sap-icon--search"></span>
+                    <i class="sap-icon sap-icon--search fd-top-nav__icon"></i>
                     <span class="fd-menu__title">Search</span>
                   </a>
                 </li>
@@ -193,9 +193,9 @@
                     class="fd-menu__link"
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
-                    <span
-                      class="fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
-                    ></span>
+                    <i
+                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
+                    ></i>
                     <span
                       class="fd-menu__title"
                     >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
@@ -235,10 +235,12 @@
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
                   >
-                    <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
-                    >
-                      {#if !hasOpenUIicon(node)}
+                    <span class="fd-top-nav__icon">
+                      {#if hasOpenUIicon(node)}
+                      <i
+                        class="sap-icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                      ></i>
+                      {:else}
                       <img
                         src="{node.icon}"
                         alt="{node.altText ? node.altText : ''}"
@@ -283,9 +285,9 @@
                     data-testid="mobile-product-switcher"
                   >
                     {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
-                    <span
+                    <i
                       class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
-                    ></span>
+                    ></i>
                     {:else}
                     <span class="fd-top-nav__icon">
                       <img
