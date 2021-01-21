@@ -1,9 +1,16 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { OperatorFunction, PartialObserver, Subscription } from 'rxjs';
-import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import {
+  convertToParamMap,
+  NavigationEnd,
+  ParamMap,
+  Router,
+  RouterEvent
+} from '@angular/router';
 import { linkManager } from '@luigi-project/client';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
+import { LuigiContextService } from './luigi-context-service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +18,14 @@ import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-rout
 export class LuigiAutoRoutingService implements OnDestroy {
   private subscription: Subscription = new Subscription();
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private luigiContextService: LuigiContextService
+  ) {
     this.subscription.add(
       this.router.events
         .pipe(this.doFilter())
-        .subscribe(this.doSubscription as () => void)
+        .subscribe(this.doSubscription.bind(this) as () => void)
     );
   }
 
@@ -37,22 +47,48 @@ export class LuigiAutoRoutingService implements OnDestroy {
    * Another option is to specify the LuigiPath: if you add in route data luigiRoute:'/xxxx/xxx';
    * in the case we will update the path in LuigiCore navigation, here an example
    * {path: 'demo', component: DemoComponent, data:{luigiRoute: '/home/demo''}}
-   * @param event
+   * @param event the NavigationEnd event
    */
   doSubscription(event: NavigationEnd): void {
     const current = LuigiActivatedRouteSnapshotHelper.getCurrent();
-    if (current.data.luigiRoute) {
-      linkManager()
-        .withoutSync()
-        .navigate(current.data.luigiRoute);
-      return;
-    }
-    if (current.data.fromVirtualTreeRoot) {
-      console.debug('Calling fromVirtualTreeRoot for ulr ==> ' + event.url);
-      linkManager()
-        .fromVirtualTreeRoot()
-        .withoutSync()
-        .navigate(event.url);
+
+    if (current.data) {
+      if (current.data.luigiRoute) {
+        let route = current.data.luigiRoute;
+
+        if (current.params) {
+          const pmap: ParamMap = convertToParamMap(current.params);
+          pmap.keys.forEach(key => {
+            const val = pmap.getAll(key).forEach(param => {
+              route = route.replace(':' + key, param);
+            });
+          });
+        }
+        let lm = linkManager();
+        if (current.data.fromContext) {
+          if (!this.luigiContextService.getContext()) {
+            console.debug(
+              'Ignoring auto navigation request, luigi context not set'
+            );
+            return;
+          }
+          if (current.data.fromContext === true) {
+            lm = lm.fromClosestContext();
+          } else {
+            lm = lm.fromContext(current.data.fromContext);
+          }
+        }
+
+        lm.withoutSync().navigate(route);
+        return;
+      }
+      if (current.data.fromVirtualTreeRoot) {
+        console.debug('Calling fromVirtualTreeRoot for ulr ==> ' + event.url);
+        linkManager()
+          .fromVirtualTreeRoot()
+          .withoutSync()
+          .navigate(event.url);
+      }
     }
   }
 
