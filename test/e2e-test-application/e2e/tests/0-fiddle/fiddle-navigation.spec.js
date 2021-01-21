@@ -610,6 +610,21 @@ describe('Fiddle', () => {
                 options: ['12 h', '24 h']
               }
             }
+          },
+          theming: {
+            label: 'Theme',
+            sublabel: 'Theme',
+            icon: '/assets/github-logo.png',
+            title: 'Theming',
+            viewUrl: 'http://localhost:8080/index.html',
+            settings: {
+              theme: {
+                type: 'enum',
+                label: 'Theme',
+                options: ['red', 'green'],
+                description: 'Choose a theme'
+              }
+            }
           }
         }
       };
@@ -635,6 +650,21 @@ describe('Fiddle', () => {
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
       cy.get('[data-testid="lui-us-header"]').should('not.be.visible');
+    });
+    it('Check if external mf is loaded in custom user settings editor', () => {
+      cy.visitWithFiddleConfig('/', newConfig);
+      cy.wait(1000);
+      cy.window().then(win => {
+        win.Luigi.ux().openUserSettings();
+      });
+
+      cy.get('.lui-usersettings-left-nav')
+        .contains('Theme')
+        .click();
+
+      cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
+        expect(ifr[0].src).to.equal('http://localhost:8080/index.html')
+      });
     });
   });
 });

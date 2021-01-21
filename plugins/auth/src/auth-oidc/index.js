@@ -38,7 +38,7 @@ export default class openIdConnect {
         store: new InMemoryWebStorage()
       });
       mergedSettings.stateStore = new WebStorageStateStore({
-        store: new InMemoryWebStorage()
+        store: window.sessionStorage
       });
     } else if (isValidStore) {
       mergedSettings.stateStore = new WebStorageStateStore({
@@ -105,7 +105,7 @@ export default class openIdConnect {
         authOnLogoutFn();
         window.location = req.url;
       })
-      .catch(function (err) {
+      .catch(function(err) {
         console.error('[OIDC] logout() Error', err);
         authOnLogoutFn();
       });
@@ -176,7 +176,7 @@ export default class openIdConnect {
             Luigi.auth().store.removeAuthData();
             resolve(response);
           })
-          .catch(function (err) {
+          .catch(function(err) {
             reject(response);
             console.error('[OIDC] Logout Error', err);
           });
