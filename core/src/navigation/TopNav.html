@@ -64,7 +64,7 @@
             {#if node.icon}
             {#if hasOpenUIicon(node)}
             <span
-              class="fd-top-nav__icon sap-icon--{node.icon}"
+              class="sap-icon sap-icon--{node.icon} fd-top-nav__icon"
             ></span>
             {:else}
             <img
@@ -110,7 +110,7 @@
         {#if node.icon}
         {#if hasOpenUIicon(node)}
         <span
-          class="fd-top-nav__icon sap-icon--{node.icon}"
+          class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"
         ></span>
         {:else}
         <img
@@ -163,7 +163,7 @@
                 on:click="{() => toggleDropdownState('overflowPopover')}"
                 data-testid="mobile-menu"
               >
-                <i class="sap-icon--overflow"></i>
+                <i class="sap-icon sap-icon--overflow"></i>
                 <BadgeCounter node="{totalBadgeNode}" special="true"/>
               </button>
             </div>
@@ -213,7 +213,7 @@
                     data-testid="{getTestId(node)}"
                   >
                     <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img
@@ -238,7 +238,7 @@
                     <span class="fd-top-nav__icon">
                       {#if hasOpenUIicon(node)}
                       <i
-                        class="sap-icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                        class="sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
                       ></i>
                       {:else}
                       <img
@@ -262,7 +262,7 @@
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
                     <span
-                      class="fd-top-nav__icon sap-icon--{node.icon}"
+                      class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"
                     ></span>
                     {:else}
                     <img
@@ -286,7 +286,7 @@
                   >
                     {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
                     <i
-                      class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
+                      class="fd-top-nav__icon sap-icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
                     ></i>
                     {:else}
                     <span class="fd-top-nav__icon">
@@ -359,7 +359,7 @@
                 title="{userInfo.name ? userInfo.name : userInfo.email}"
               >
                 <i
-                  class="{!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                  class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 ></i>
               </button>
             </div>
