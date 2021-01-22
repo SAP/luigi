@@ -17,7 +17,7 @@ class LifecycleManager extends LuigiClientBase {
       'pathParams'
     ];
     this.setCurrentContext(
-      this.defaultContextKeys.reduce(function(acc, key) {
+      this.defaultContextKeys.reduce(function (acc, key) {
         acc[key] = {};
         return acc;
       }, {})
@@ -91,6 +91,7 @@ class LifecycleManager extends LuigiClientBase {
         this._notifyUpdate();
         helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
       });
+
       /**
        * Get context once initially
        * @private
@@ -444,7 +445,7 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Returns the current user settings based on the selected node.
    * @returns {Object} current user settings
-   * @since NEXTRELEASE
+   * @since 1.7.1
    * @memberof Lifecycle
    * @example
    * const userSettings = LuigiClient.getUserSettings()

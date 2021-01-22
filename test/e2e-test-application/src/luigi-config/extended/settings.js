@@ -66,33 +66,6 @@ class Settings {
       saveBtn: 'SaveKaese',
       dismissBtn: 'Abbreche'
     },
-    //functions to use a custom storage like sessionStorage
-    // storeUserSettings: (obj, previous) => {
-    //   return new Promise((resolve, reject) => {
-    //     if (JSON.stringify(obj) !== JSON.stringify(previous)) {
-    //       const settings = {
-    //         header: "Confirmation",
-    //         body: "Are you sure you want to do this?",
-    //         buttonConfirm: "Yes",
-    //         buttonDismiss: "No"
-    //       }
-    //       Luigi
-    //         .ux()
-    //         .showConfirmationModal(settings).then(() => {
-    //           sessionStorage.setItem('test', JSON.stringify(obj));
-    //           resolve();
-    //         }).catch(() => {
-    //           reject({ closeDialog: true, message: 'error' });
-    //         });
-    //     }
-    //   });
-    // },
-    // readUserSettings: () => {
-    //   return new Promise((resolve, reject) => {
-    //     resolve(JSON.parse(sessionStorage.getItem('test')));
-    //     //reject({ closeDialog: true, message: 'error' });
-    //   })
-    // },
     userSettingGroups: {
       userAccount: {
         label: 'User Account',
@@ -118,10 +91,16 @@ class Settings {
             type: 'enum',
             label: 'Language and Region',
             options: ['German', 'English', 'Spanish', 'French'],
-            description: 'After you save your settings, the browser will refresh for the new language to take effect.'
+            description:
+              'After you save your settings, the browser will refresh for the new language to take effect.'
           },
           date: { type: 'string', label: 'Date Format' },
-          time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+          time: {
+            type: 'enum',
+            style: 'button',
+            label: 'Time Format',
+            options: ['12 h', '24 h']
+          }
         }
       },
       privacy: {
@@ -130,13 +109,30 @@ class Settings {
         icon: 'private',
         settings: {
           policy: {
-            type: 'string', label: 'Privacy policy has not been defined.'
+            type: 'string',
+            label: 'Privacy policy has not been defined.'
           },
-          time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+          time: {
+            type: 'enum',
+            style: 'button',
+            label: 'Time Format',
+            options: ['12 h', '24 h']
+          }
+        }
+      },
+      theming: {
+        label: 'Theming',
+        title: 'Theming',
+        icon: 'private',
+        viewUrl: 'http://localhost:8081/index.html',
+        settings: {
+          theme: {
+            type: 'enum', label: 'theme', options: ['red', 'green']
+          }
         }
       }
     }
-  }
+  };
 }
 
 export const settings = new Settings();

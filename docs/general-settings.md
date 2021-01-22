@@ -52,6 +52,13 @@ settings: {
       };
       Luigi.ux().showAlert(alert);
     }
+  },
+  theming = {
+    themes: () => [
+      { id: 'light', name: 'Light Theme' },
+      { id: 'dark', name: 'Dark Theme' }
+    ],
+    defaultTheme: 'light'
   }
 }
 ```
@@ -102,8 +109,29 @@ For example, to allow 'fullscreen' for non-modal iframes:
 ```
 * **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+* **theming** is a configuration element that allows you to specify a list of themes that are available on the website. The children elements:
+    * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`. 
+    * **defaultTheme** (mandatory) the default theme used by the application.
+    * **nodeViewURLDecorator** (Optional) you can add an internal Luigi View Url decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
 
-* **theming.themes** is an array of available themes, for example `themes: ['light', 'dark']`.
+```javascript
+theming : {
+    themes: () => [
+      { id: 'light', name: 'Fiori3 Light' },
+      { id: 'dark', name: 'Fiori3 Dark' }
+    ],
+    defaultTheme: 'light'
+    nodeViewURLDecorator: {
+       queryStringParameter: {
+         keyName: 'sap-theme'
+         // optional
+          value: themeId => {
+            return themeId;
+         }
+       }
+     }
+  }
+```     
 
 ### Third-party cookies support check
 
@@ -116,6 +144,46 @@ To detect whether the user's browser supports the mechanism, use the script in t
 
 ### User settings
 
+In order to display a user settings dialog and manage data it is neccessary to define a user settings schema. The schema is defined in a `userSettingGroups` object.
+Each `userSettingGroup` could have the following meta data:
+
+```javascript
+userSettingGroup: {
+  label: 'Label',
+  sublabel: 'Sublabel',
+  icon: 'account',
+  title: 'Title',
+  settings: {
+    inputField: { type: 'string', label: 'label' , isEditable: true},
+    checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
+    enum: 
+      {
+        type: 'enum',
+        label: 'Label',
+        options: ['option1', 'option2', 'option3', 'option3'],
+        description: 'Description'
+      }
+  }
+}
+```
+
+#### Write a custom editor
+This user setting group will be displayed by the default editor, under the form of a user setting dialog.
+It is possible to write a custom editor using a custom micro frontend. In that case the `userSettingGroup` needs a `viewUrl` property with an url to the micro frontend.
+The micro frontend has to register the `addInitListener` from the Luigi Client. The stored user settings data object is part of the context object which comes with the init and update listener (`context.userSettingsData`).
+The micro frontend gets only the stored data object which belongs to its `userSettingGroup`.
+To update the user settings data (not store!) a special custom message has to be send to the Luigi core.
+The custom message sends the `userSettingsData` object with the reserved `id: 'luigi.updateUserSettings'`, e.g.:
+
+```javascript
+window.LuigiClient.addInitListener((context, origin) => {
+    context.userSettingsData.theme = 'red';
+    window.LuigiClient.sendCustomMessage({ id: 'luigi.updateUserSettings', data: context.userSettingsData });
+});
+```
+> **NOTE:** This is a very simple example where the user settings data object will be imidiatly updated without any user interaction. 
+
+#### Customize the user settings dialog
 These parameters can be used to configure the user settings menu in Luigi. You may also want to take a look at the [Luigi Core API](luigi-core-api.md) for additional options.
 
 * **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
@@ -125,9 +193,44 @@ These parameters can be used to configure the user settings menu in Luigi. You m
 * **userSettingsDialog.saveBtn** defines user settings dialog save button. By default it is `Save`.
 * **userSettingsDialog.dismissBtn** defines user settings dialog dismiss button. By default it is `Dismiss`.
 
-* **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to write the user settings object. The function takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings.
-If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
+#### Override default read and store functionality
+By implementing the `storeUserSettings` and `readUserSettings` the default mechanism can be overriden.
 
-* **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object.
+* **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to store the user settings object (for example, using a custom third party Rest API). The function should return a promise and takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings. On resolve the user settings dialog will be closed.
+If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object. In addition, you can implement a `message` to display the error on the browser console log.
+```javascript
+return new Promise((resolve, reject) => {
+        if (JSON.stringify(obj) !== JSON.stringify(previous)) {
+          const settings = {
+            header: "Confirmation",
+            body: "Are you sure you want to do this?",
+            buttonConfirm: "Yes",
+            buttonDismiss: "No"
+          }
+          Luigi
+            .ux()
+            .showConfirmationModal(settings).then(() => {
+              sessionStorage.setItem('luigi.usersettings', JSON.stringify(obj));
+              resolve();
+            }).catch(() => {
+              reject({ closeDialog: true, message: 'error ' });
+            });
+        }
+      });
+```      
+
+* **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object. The function should return a promise. The resolve function gets the user settings object as parameter.
 If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
+```javascript
+readUserSettings: () => {
+      return new Promise((resolve, reject) => {
+        try{
+            resolve(JSON.parse(sessionStorage.getItem('luigi.usersettings')));
+        }catch{
+           reject({ closeDialog: true, message: 'some error' });
+        }
+      })
+    }
+```
+
 <!-- document the schema-->

@@ -184,13 +184,15 @@ By default, the user settings will be read from the **localStorage**
 Luigi.readUserSettings();
 ```
 
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise when `readUserSettings` function is defined in settings.userSettings object. It resolves a stored user settings object. If the promise is rejected, the user settings dialog will be closed in case `closeDialog` property is defined in the error object, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
+
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 #### storeUserSettings
 
-Writes the user settings object.
+Stores the user settings object.
 You can choose a custom storage to write the user settings by implementing the `userSetting.storeUserSettings` function in the settings section of the Luigi configuration
 By default, the user settings will be written from the **localStorage**
 
@@ -205,9 +207,11 @@ By default, the user settings will be written from the **localStorage**
 Luigi.storeUserSettings(userSettingsobject, previousUserSettingsObj);
 ```
 
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise when a custom `storeUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. If it is resolved the user settings dialog will be closed. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
+
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 ## Luigi.elements()
 
@@ -951,7 +955,7 @@ Open user settings dialog
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 #### closeUserSettings
 
@@ -959,7 +963,7 @@ Close user settings dialog
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.7.1
 
 ## Luigi.globalSearch()
 
@@ -1083,6 +1087,24 @@ Luigi.globalSearch().setSearchString('searchString');
 **Meta**
 
 -   **since**: 1.3.0
+
+#### setSearchInputPlaceholder
+
+Sets the value of the Placeholder search input field.
+
+##### Parameters
+
+-   `searchString`  search value
+
+##### Examples
+
+```javascript
+Luigi.globalSearch().setSearchInputPlaceholder('HERE input Placeholder');
+```
+
+**Meta**
+
+-   **since**: 1.7.1
 
 ## Luigi.theming()
 
