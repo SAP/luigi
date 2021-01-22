@@ -32,12 +32,6 @@ export class ViewGroupComponent implements OnInit {
       preloadViewGroups: this.window.parent['Luigi'].config.navigation.preloadViewGroups
     }, null, 3);
 
-    // this.id = iframes[0]['luigi'].id;
-    // let luigiMf = iframes[0]['luigi'];
-    // const clonedLuigiMf = Object.assign({}, luigiMf);
-    // clonedLuigiMf.currentNode =  Object.assign({}, luigiMf.currentNode);
-    // delete clonedLuigiMf.currentNode.parent;
-
     this.route.paramMap.subscribe(queryParams => {
       this.vg = queryParams.get("vg");
       this.time = new Date().toJSON();
