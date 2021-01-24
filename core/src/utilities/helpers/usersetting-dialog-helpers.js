@@ -6,7 +6,7 @@ class UserSettingsHelperClass {
 
     processUserSettingGroups() {
         const userSettingGroups = [];
-        const userSettingsSchema = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
+        const userSettingsSchema = LuigiConfig.getConfigValue('usersettings.userSettingGroups') ? LuigiConfig.getConfigValue('usersettings.userSettingGroups') : LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
         if (GenericHelpers.isObject(userSettingsSchema)) {
             for (const item in userSettingsSchema) {
                 let innerObj = {};
