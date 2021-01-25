@@ -670,9 +670,9 @@ describe('Fiddle', () => {
         expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
       });
     });
-    it('Routing with custom modalPathPrefix and node params', () => {
+    it('Routing with custom modalPathParam and node params', () => {
       newConfig.navigation.nodes[0].children[0].viewUrl = '/examples/microfrontends/hello-luigi-cdn.html';
-      newConfig.routing.modalPathPrefix = '@';
+      newConfig.routing.modalPathParam = '@';
 
       cy.visitWithFiddleConfig('/home/two@/home/one?~mp=one', newConfig);
 

@@ -43,6 +43,11 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a simple way to attach query parameters to a view URL for activities such as sorting and filtering. Only this prefix can pass query parameters to micro frontends. A different prefix has to be used to pass parameters to the Luigi app itself to avoid potential conflicts between the two.
 - **default**: the default prefix character is `~`, but you may also define a custom one.
 
+### modalPathParam
+- **type**: string
+- **description**: sets the parameter name when using the `LuigiClient.linkManager().openAsModal()` function, which provides a simple way to bookmark a modal view URL. It is appended as query param to the base url. An example would be `example.com/your/path?modal=/another/path`.
+- **default**: the default parameter name is `modal`, but you may also define a custom one.
+
 ### skipRoutingForUrlPatterns
 - **type**: RegExp[]
 - **description**: defines regex patterns the router will skip when listening for path changes. This parameter is used for excluding **redirect_uri** parameters.

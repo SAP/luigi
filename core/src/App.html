@@ -543,6 +543,22 @@
     return path;
   };
 
+  const appendModalDataToUrl = (modalPath, modalParams) => {
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+    const params = location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
+    const prevModalPath = params[modalParamName];
+
+    params[modalParamName] = encodeURIComponent(modalPath);
+    if (modalParams && Object.keys(modalParams).length) {
+      params[`${modalParamName}Params`] = encodeURIComponent(JSON.stringify(modalParams));
+    }
+    if (prevModalPath !== modalPath) {
+      const url = new URL(location.href);
+      url.search = `?${RoutingHelpers.encodeParams(params)}`;
+      history.replaceState(window.state, '', url.href);
+    }
+  };
+
   const handleNavClick = event => {
     const node = event.detail.node;
     getUnsavedChangesModalPromise().then(() => {
@@ -1239,6 +1255,7 @@
           contentNode = node;
           resetMicrofrontendModalData();
           openViewInModal(path, e.data.params.modal);
+          appendModalDataToUrl(path, e.data.params.modal);
         } else if (e.data.params.splitView !== undefined) {
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);

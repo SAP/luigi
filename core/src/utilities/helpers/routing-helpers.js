@@ -12,7 +12,7 @@ import { Routing } from '../../services/routing';
 class RoutingHelpersClass {
   constructor() {
     this.defaultContentViewParamPrefix = '~';
-    this.defaultModalViewParamPrefix = ':';
+    this.defaultModalViewParamName = 'modal';
   }
 
   getLastNodeObject(pathData) {
@@ -78,6 +78,14 @@ class RoutingHelpersClass {
     return result;
   }
 
+  encodeParams(dataData) {
+    let queryArr = [];
+    for (let key in dataData) {
+      queryArr.push(encodeURIComponent(key) + '=' + encodeURIComponent(dataData[key]))
+    }
+    return queryArr.join('&');
+  }
+
   getNodeParams(params) {
     const result = {};
     const paramPrefix = this.getContentViewParamPrefix();
@@ -120,22 +128,21 @@ class RoutingHelpersClass {
     return prefix;
   }
 
-  getModalViewParamPrefix() {
-    let prefix = LuigiConfig.getConfigValue('routing.modalPathPrefix');
-    if (!prefix) {
-      prefix = this.defaultModalViewParamPrefix;
+  getModalViewParamName() {
+    let paramName = LuigiConfig.getConfigValue('routing.modalPathParam');
+    if (!paramName) {
+      paramName = this.defaultModalViewParamName;
     }
-    return prefix;
+    return paramName;
   }
 
-  getModalPathFromPath(path) {
-    const prefix = encodeURI(this.getModalViewParamPrefix());
-    return !path.includes(prefix) ? null : path.split(prefix).pop();
+  getModalPathFromPath() {
+    return decodeURIComponent(GenericHelpers.getUrlParameter(this.getModalViewParamName()));
   }
 
-  removeModalPathFromPath(path) {
-    const prefix = encodeURI(this.getModalViewParamPrefix());
-    return path.includes(prefix) ? path.split(prefix).shift() : path;
+  getModalParamsFromPath() {
+    const modalParamsStr = GenericHelpers.getUrlParameter(`${this.getModalViewParamName()}Params`);
+    return modalParamsStr && JSON.parse(decodeURIComponent(modalParamsStr));
   }
 
   addRouteChangeListener(callback) {

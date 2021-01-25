@@ -621,7 +621,7 @@ describe.only('Routing', function() {
       assert.equal(component.get().hideSideNav, true);
     });
 
-    it('opens a path with an additional modal and default modalPathPrefix', async () => {
+    it('opens a path with an additional modal and default modalPathParam', async () => {
       // given
       const modalPath = '/project-modal';
       const path = `#/projects:${modalPath}`;
@@ -631,13 +631,13 @@ describe.only('Routing', function() {
       sinon.stub(Navigation, 'extractDataFromPath').returns({nodeObject: {}});
       sinon.stub(LuigiNavigation, 'openAsModal');
 
-      //when      
+      //when
       try {
         await Routing.handleRouteChange(path, component, node, currentLuigiConfig);
       } catch (error) {
         // console.log('err', error);
       }
-      
+
       //then
       sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
       sinon.assert.calledOnce(LuigiNavigation.openAsModal);

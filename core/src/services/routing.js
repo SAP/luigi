@@ -201,12 +201,12 @@ class RoutingClass {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
 
-      // handle bookmarkable modal
-      const additionalModalPath = RoutingHelpers.getModalPathFromPath(path);
-      if(additionalModalPath) {
-        path = RoutingHelpers.removeModalPathFromPath(path);
+      // handle bookmarkable modal path
+      const additionalModalPath = RoutingHelpers.getModalPathFromPath();
+      if (additionalModalPath) {
+        const modalParams = RoutingHelpers.getModalParamsFromPath();
         const { nodeObject } = await Navigation.extractDataFromPath(additionalModalPath);
-        LuigiNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal);
+        LuigiNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal || modalParams);
       }
 
       const previousCompData = component.get();
