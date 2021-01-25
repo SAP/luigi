@@ -71,7 +71,7 @@ export default class openIdConnect {
         profile
       };
 
-      if (!data.access_token && data.idToken) {
+      if (!data.accessToken && data.idToken) {
         try {
           data.idTokenExpirationDate =
             JSON.parse(atob(data.idToken.split('.')[1])).exp * 1000;
