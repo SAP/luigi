@@ -30,7 +30,8 @@ const logStep = (s1, s2, s3) => {
 
 /**
  * PATHS
- */ 
+ */
+
 const base = path.resolve(__dirname, '..', '..');
 
 const packagePaths = {
@@ -102,12 +103,28 @@ const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
         `npm publish ${publicPath} --access public`
       );
       logStep(resultPublish);
+
+      // add next tag
       logStep('\n');
       const resultTagNext = execTrim(
         `npm dist-tag add ${pkgJson.name}@${pkgJson.version} next`
       );
       logStep(resultTagNext);
       logStep(`Tagged ${pkgJson.name}@${pkgJson.version} with next on npm`);
+
+      // remove default latest tag
+      logStep('\n');
+      const resultTagRemoveLatest = execTrim(
+        `npm dist-tag rm ${pkgJson.name} latest`
+      );
+      logStep(resultTagRemoveLatest);
+      logStep(`Removed 'latest' tag from ${pkgJson.name} on npm`);
+
+      // list tags on npm
+      logStep('\n');
+      const resultTagRemoveLatest = execTrim(`npm dist-tag ls ${pkgJson.name}`);
+      logStep(`Listing tags for ${pkgJson.name} with: on npm`);
+      logStep(resultTagRemoveLatest);
     });
   }
 })();
