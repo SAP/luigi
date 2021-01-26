@@ -49,12 +49,16 @@ To update the user settings data (not store!) a special custom message has to be
 The custom message sends the `userSettingsData` object with the reserved `id: 'luigi.updateUserSettings'`, for example:
 
 ```javascript
+let luigiContext={};
 window.LuigiClient.addInitListener((context, origin) => {
-    context.userSettingsData.theme = 'red';
-    window.LuigiClient.sendCustomMessage({ id: 'luigi.updateUserSettings', data: context.userSettingsData });
-});
+    luigiContext=context;
+)};
+function onThemeChange(value){
+    luigiContext.userSettingsData.theme = value;
+    window.LuigiClient.sendCustomMessage({ id: 'luigi.updateUserSettings', data: luigiContext.userSettingsData });
+};
 ```
-> **NOTE:** This is a very simple example where the user settings data object will be imidiatly updated without any user interaction.
+> **NOTE:** This is a very simple example to get the user settings data from the context and update the changed user settings data via a custom message.
 
 #### Customize the user settings dialog
 
