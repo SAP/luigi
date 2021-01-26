@@ -145,16 +145,10 @@
             'navigation.profile.logout'
           );
           //check if the User Settings schema exist
-          const userSettings = await LuigiConfig.getConfigValueAsync('usersettings') ? await LuigiConfig.getConfigValueAsync('usersettings') : await LuigiConfig.getConfigValueAsync('settings.userSettings');
+          const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
+          const userSettings = userSettingsConfig ? userSettingsConfig : await LuigiConfig.getConfigValueAsync('settings.userSettings');
           hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
-          const userSettingsProfileMenuEntry = await LuigiConfig.getConfigValueAsync(
-            'usersettings.userSettingsProfileMenuEntry'
-          ) ? await LuigiConfig.getConfigValueAsync(
-            'usersettings.userSettingsProfileMenuEntry'
-          ) : await LuigiConfig.getConfigValueAsync(
-            'settings.userSettings.userSettingsProfileMenuEntry'
-          );
           const profileNavData = {
             items:
               (await LuigiConfig.getConfigValueAsync(
@@ -162,6 +156,7 @@
               )) || []
           };
           if (hasUserSettings) {
+            const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
             profileNavData['settings'] = {
               ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
               ...userSettingsProfileMenuEntry

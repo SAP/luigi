@@ -6,7 +6,7 @@ import { communication } from './communication';
 import { lifecycleHooks } from './lifecycle-hooks';
 import { globalSearch } from './globalSearch';
 import { i18nProvider } from './i18n-provider';
-import { usersettings } from './usersettings';
+import { userSettings } from './userSettings';
 
 i18nProvider.init().then(trans => {
   Luigi.setConfig({
@@ -17,6 +17,6 @@ i18nProvider.init().then(trans => {
     communication,
     lifecycleHooks,
     globalSearch,
-    usersettings
+    userSettings
   });
 });

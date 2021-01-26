@@ -75,4 +75,4 @@ class UserSettings {
         }
     }
 }
-export const usersettings = new UserSettings();
+export const userSettings = new UserSettings();
