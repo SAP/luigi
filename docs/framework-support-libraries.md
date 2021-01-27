@@ -80,7 +80,10 @@ With this feature we provide an easy way of synchronizing Angular route with Lui
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2' }}
- ```
+{path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: true}}
+{path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: 'localContext'}}
+
+ ```__
 
 with `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Client:
  ```javascript
@@ -90,6 +93,15 @@ with `data: { luigiRoute: '/home/sample2' }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
  ```
+with `data: { luigiRoute: '/home/sample2', fromContext: true }`, uses luigiClient API in this way:
+ ```javascript
+  luigiClient.linkManager().fromClosestContext().withoutSync().navigate(data.luigiRoute);
+ ```
+with `data: { luigiRoute: '/home/sample2', fromContext: 'localContext' }`, uses luigiClient API in this way:
+ ```javascript
+  luigiClient.linkManager().fromContext('localContext').withoutSync().navigate(data.luigiRoute);
+ ```
+
 More information about linkManager can be found [here](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager).
 
 
@@ -123,9 +135,3 @@ In this class, we added the possibility to "reuse" a component and not initializ
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { reuse: true }}
  ```
-
-
-
-
-
-
