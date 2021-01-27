@@ -15,7 +15,7 @@ meta -->
 
 # Luigi Client framework support libraries
 
-On this page, you can find more information about Luigi Client support libraries for frontend frameworks such as Angular.
+On this page, you can find more information about Luigi Client support libraries for web application frameworks.
 
 ## Angular support Library
 
@@ -73,9 +73,9 @@ providers: [
 
 #### LuigiAutoRoutingService
 
-This service cannot be used directly, but it will provide useful features on how to synchronize your angular application with Luigi navigation.
+This service cannot be used directly, but it will provide useful features on how to synchronize your Angular application with Luigi navigation.
 It can happen that in your microfrontend, user can navigate through different components/pages.
-With this feature we provide an easy way of synchronizing angular route with Luigi navigation; in angular route configuration, you can now add in data these attributes:
+With this feature we provide an easy way of synchronizing Angular route with Luigi navigation; in Angular route configuration, you can now add in data these attributes:
 
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}
@@ -123,15 +123,6 @@ In this class, we added the possibility to "reuse" a component and not initializ
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { reuse: true }}
  ```
-
-If you want to use **LuigiReuseRouteStrategy** (it is not enabled by default), you need to configure in your application:
- ```javascript
- {
-      provide: RouteReuseStrategy,
-      useClass: LuigiReuseRouteStrategy
- }
- ```
-
 
 
 
