@@ -83,6 +83,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
+  navigateWithSync(path) {
+    linkManager()['options'].withoutSync = false;
+    linkManager().navigate(path);
+  }
+
   public ngOnInit() {
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
