@@ -1,62 +1,113 @@
-<svelte:window on:resize="{onResize}" />
+<svelte:window on:resize="{onResize}"/>
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
-  <Modal settings="{mfModal.settings}" nodepath="{mfModal.nodepath}" on:close="{closeModal}"
-    on:iframeCreated="{modalIframeCreated}" on:wcCreated="{modalWCCreated}"></Modal>
+  <Modal
+    settings="{mfModal.settings}"
+    nodepath="{mfModal.nodepath}"
+    on:close="{closeModal}"
+    on:iframeCreated="{modalIframeCreated}"
+    on:wcCreated="{modalWCCreated}"
+  ></Modal>
   {/if}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
-  <Modal settings="{mfDrawer.settings}" nodepath="{mfDrawer.nodepath}" on:close="{closeDrawer}"
-    on:drawerState="{setDrawerState}" on:iframeCreated="{drawerIframeCreated}">
+  <Modal
+    settings="{mfDrawer.settings}"
+    nodepath="{mfDrawer.nodepath}"
+    on:close="{closeDrawer}"
+    on:drawerState="{setDrawerState}"
+    on:iframeCreated="{drawerIframeCreated}"
+  >
     <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
   </Modal>
   {/if}
   {#if confirmationModal.displayed}
-  <ConfirmationModal settings="{confirmationModal.settings}" on:modalConfirm="{()=> handleModalResult(true)}"
-    on:modalDismiss="{() => handleModalResult(false)}"></ConfirmationModal>
+  <ConfirmationModal
+    settings="{confirmationModal.settings}"
+    on:modalConfirm="{()=> handleModalResult(true)}"
+    on:modalDismiss="{() => handleModalResult(false)}"
+  ></ConfirmationModal>
   {/if}
   {#if internalUserSettingsObject.displayed}
-  <UserSettingsDialog on:close="{closeUserSettings}" userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
-    bind:storedUserSettings>
-  </UserSettingsDialog>
+  <UserSettingsDialog
+    on:close="{closeUserSettings}"
+    userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
+    bind:storedUserSettings
+  ></UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
-      tabindex="0" use:init>
+      tabindex="0"
+      use:init
+    >
       <Backdrop area="main" disable="{disableBackdrop}"></Backdrop>
       <div class="wcContainer"></div>
     </div>
     {#if mfSplitView.displayed}
-    <SplitView splitViewSettings="{mfSplitView.settings}" collapsed="{mfSplitView.collapsed}"
-      nodepath="{mfSplitView.nodepath}" on:iframeCreated="{splitViewIframeCreated}"
-      on:statusChanged="{splitViewStatusChanged}" on:wcCreated="{splitViewWCCreated}"
-      disableBackdrop="{disableBackdrop}"></SplitView>
+    <SplitView
+      splitViewSettings="{mfSplitView.settings}"
+      collapsed="{mfSplitView.collapsed}"
+      nodepath="{mfSplitView.nodepath}"
+      on:iframeCreated="{splitViewIframeCreated}"
+      on:statusChanged="{splitViewStatusChanged}"
+      on:wcCreated="{splitViewWCCreated}"
+      disableBackdrop="{disableBackdrop}"
+    ></SplitView>
     {/if}
   </Backdrop>
   {#if showLoadingIndicator}
-  <div in:fade="{{delay: 250, duration: 250}}" out:fade="{{duration: 250}}" class="fd-page spinnerContainer"
-    aria-hidden="false" aria-label="Loading">
-    <div class="fd-busy-indicator--m" aria-hidden="false" aria-label="Loading" data-testid="luigi-loading-spinner">
+  <div
+    in:fade="{{delay: 250, duration: 250}}"
+    out:fade="{{duration: 250}}"
+    class="fd-page spinnerContainer"
+    aria-hidden="false"
+    aria-label="Loading"
+  >
+    <div
+      class="fd-busy-indicator--m"
+      aria-hidden="false"
+      aria-label="Loading"
+      data-testid="luigi-loading-spinner"
+    >
       <div class="fd-busy-indicator--circle-0"></div>
       <div class="fd-busy-indicator--circle-1"></div>
       <div class="fd-busy-indicator--circle-2"></div>
     </div>
   </div>
   {/if}
-  <TopNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}" on:toggleSearch="{toggleSearch}" on:closeSearchResult="{closeSearchResult}"
-    on:handleSearchNavigation="{handleSearchNavigation}" bind:isSearchFieldVisible bind:displaySearchResult
-    bind:displayCustomSearchResult bind:searchResult bind:inputElem bind:luigiCustomSearchRenderer__slot />
+  <TopNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}"
+    on:toggleSearch="{toggleSearch}"
+    on:closeSearchResult="{closeSearchResult}"
+    on:handleSearchNavigation="{handleSearchNavigation}"
+    bind:isSearchFieldVisible
+    bind:displaySearchResult
+    bind:displayCustomSearchResult
+    bind:searchResult
+    bind:inputElem
+    bind:luigiCustomSearchRenderer__slot
+  />
   {#if !(hideNav||hideSideNav)}
-  <LeftNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}" />
+  <LeftNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}"
+  />
   {/if}
   {#if (tabNav && !hideNav)}
-  <TabNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
-    resizeTabNavToggle="{resizeTabNavToggle}" />
+  <TabNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+    resizeTabNavToggle="{resizeTabNavToggle}"
+  />
   {/if}
 </div>
 
@@ -109,7 +160,6 @@
 
   export let store;
   export let getTranslation;
-
 
   let showLoadingIndicator = false;
 
@@ -173,9 +223,13 @@
   const prepareInternalData = async config => {
     const iframeConf = config.iframe.luigi;
     featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
-    const userSettingsGroupName = iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
+    const userSettingsGroupName =
+      iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
     const userSettingGroups = await LuigiConfig.readUserSettings();
-    const hasUserSettings = (userSettingsGroupName && typeof userSettingGroups === 'object' && userSettingGroups !== null);
+    const hasUserSettings =
+      userSettingsGroupName &&
+      typeof userSettingGroups === 'object' &&
+      userSettingGroups !== null;
     const internalData = {
       isNavigateBack,
       viewStackSize: preservedViews.length,
@@ -185,7 +239,9 @@
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
         : iframeConf.clientPermissions,
-      userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null
+      userSettings: hasUserSettings
+        ? userSettingGroups[userSettingsGroupName]
+        : null
     };
 
     IframeHelpers.specialIframeTypes
@@ -288,7 +344,7 @@
             }
             resolve();
           },
-          () => { }
+          () => {}
         );
       } else {
         resolve();
@@ -972,7 +1028,9 @@
       internalUserSettingsObject.userSettingGroups = [...userSettingGroups];
       internalUserSettingsObject.displayed = true;
     } else {
-      console.info('There are no user setting groups in the settings section of the luigi config defined.')
+      console.info(
+        'There are no user setting groups in the settings section of the luigi config defined.'
+      );
     }
   };
 
@@ -1042,7 +1100,9 @@
         const userSettingsCMKey = 'luigi.updateUserSettings';
         if (internalUserSettingsObject && message.id === userSettingsCMKey) {
           if (customMessageListener) {
-            console.warn(`The key "${userSettingsCMKey}" is not allowed to use for custom messages.`);
+            console.warn(
+              `The key "${userSettingsCMKey}" is not allowed to use for custom messages.`
+            );
           }
           return;
         }
@@ -1143,19 +1203,20 @@
             {}
           );
         } else {
-          let userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
+          let userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(
+            e.source
+          );
           if (userSettingsIframe) {
-            let userSettingsGroupKey = userSettingsIframe.getAttribute('userSettingsGroup');
+            let userSettingsGroupKey = userSettingsIframe.getAttribute(
+              'userSettingsGroup'
+            );
             let config = {
               context: {
                 userSettingsData: storedUserSettings[userSettingsGroupKey]
-              }, // nur für spezielen Iframe 
-              iframe:
-                userSettingsIframe
-
-            }
+              }, // nur für spezielen Iframe
+              iframe: userSettingsIframe
+            };
             await sendContextToClient(config);
-
           }
         }
         ViewGroupPreloading.viewGroupLoaded(iframe);
@@ -1421,7 +1482,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function () {
+        thirdPartyCookieCheckIframe.onload = function() {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1433,7 +1494,7 @@
     }
   });
 
-  afterUpdate(() => { });
+  afterUpdate(() => {});
 </script>
 
 <style type="text/scss">
@@ -1537,7 +1598,6 @@
     outline: none;
   }
   .spinnerContainer {
-    background: rgba(243, 244, 245, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
