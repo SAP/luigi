@@ -27,19 +27,25 @@
         setExpandedState(elem, false);
       });
   }
-    function toggleOptions(event, editable) {
-        if (editable || editable === undefined) {
-            const self = closest(event.target, '.fd-popover__control', 20);
-            closeAllCombos(self);
-            const currentState = self.getAttribute('aria-expanded') === 'true';
-            setExpandedState(self, !currentState);
-        }
+
+  function closest(element, selector, max) {
+    if (element && max > 0) {
+      if (GenericHelpers.isIE()) {
+        return element.msMatchesSelector(selector)
+          ? element
+          : closest(element.parentNode, selector, max - 1);
+      } else {
+        return element.matches(selector)
+          ? element
+          : closest(element.parentNode, selector, max - 1);
+      }
+    } else {
+      return undefined;
     }
   }
 
   function toggleOptions(event, editable) {
     if (editable || editable === undefined) {
-      console.log('test');
       const self = closest(event.target, '.fd-popover__control', 20);
       closeAllCombos(self);
       const currentState = self.getAttribute('aria-expanded') === 'true';
@@ -55,19 +61,23 @@
     indicatorBtn.setAttribute('aria-expanded', value);
   }
 
-    function updateEnumButton(key, option) {
-        document
-            .querySelectorAll('.enum-buttons-container-' + key + ' button')
-            .forEach(button => {
-                const buttonId = button.getAttribute('id');
-                const optionId = `lui-us-enum_button_${key}_option`;
-                buttonId === optionId
-                    ? button.classList.add('fd-button--emphasized')
-                    : button.classList.remove('fd-button--emphasized');
-            });
+  function updateComboBox(key, option) {
+    storedUserSettingData[userSettingGroup[0]][key] = option;
+  }
 
-        storedUserSettingData[userSettingGroup[0]][key] = option;
-    }
+  function updateEnumButton(key, option) {
+    document
+      .querySelectorAll('.enum-buttons-container-' + key + ' button')
+      .forEach(button => {
+        const buttonId = button.getAttribute('id');
+        const optionId = `lui-us-enum_button_${key}_option`;
+        buttonId === optionId
+          ? button.classList.add('fd-button--emphasized')
+          : button.classList.remove('fd-button--emphasized');
+      });
+
+    storedUserSettingData[userSettingGroup[0]][key] = option;
+  }
 </script>
 
 <style>
@@ -130,9 +140,8 @@
     color: var(--sapTextColor, #32363a);
   }
 
-
   .lui-fd-enum-button {
-      margin-top: 6px;
+    margin-top: 6px;
   }
 </style>
 <div class="lui-usersettings-content">
@@ -188,25 +197,31 @@
                       class="fd-input-group__button fd-button fd-button--transparent"
                       disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                     >
-                      <i class="sap-icon sap-icon--navigation-down-arrow"></i>
+                      <i class="sap-icon--navigation-down-arrow"></i>
                     </button>
                   </span>
                 </div>
-                {/if}
-                {#if schemaItem.type==='enum' && schemaItem.style === 'button'}
-                <div>
-                    <div class="fd-form-item">
-                        <div class="fd-segmented-button enum-buttons-container-{key}" role="group"
-                            aria-label="Group label">
-                            {#each schemaItem.options as option, optionIndex}
-                            <button
-                                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
-                                on:click="{() => updateEnumButton(key,option)}" id="lui-us-enum_button_{key}_{option}"
-                                data-testid="lui-us-enum_button_{key}_{option}"
-                                disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">{$getTranslation(option)}</button>
-                            {/each}
-                        </div>
-                    </div>
+              </div>
+              <div
+                class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
+                aria-hidden="true"
+              >
+                <div class="fd-popover__wrapper docs-max-height">
+                  <ul class="fd-list fd-list--dropdown" role="listbox">
+                    {#each schemaItem.options as option, optionIndex}
+                    <li
+                      role="option"
+                      tabindex="0"
+                      class="fd-list__item"
+                      data-testid="lui-us-option{i}_{optionIndex}"
+                      on:click="{() => updateComboBox(key,option)}"
+                    >
+                      <span class="fd-list__title">
+                        <span class="fd-list__bold">{$getTranslation(option)}</span>
+                      </span>
+                    </li>
+                    {/each}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -245,5 +260,6 @@
       </div>
       {/each}
     </div>
-    {/if}
+  </div>
+  {/if}
 </div>
