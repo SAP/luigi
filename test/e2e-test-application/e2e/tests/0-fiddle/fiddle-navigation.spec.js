@@ -568,7 +568,7 @@ describe('Fiddle', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
-      newConfig.settings.userSettings = {
+      newConfig.userSettings = {
         userSettingGroups: {
           userAccount: {
             label: 'User Account',
