@@ -20,10 +20,12 @@
       <div class="fd-bar__right">
         <div class="fd-bar__element">
           <button
-            class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
+            class="fd-button fd-button--transparent fd-button--compact"
             on:click="{() => dispatch('close',{ activeDrawer: false })}"
             aria-label="close"
-          ></button>
+          >
+            <i class="sap-icon sap-icon--decline"></i>
+          </button>
         </div>
       </div>
     </div>
