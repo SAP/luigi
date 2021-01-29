@@ -25,6 +25,16 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.8.1] (2021-01-27)
+
+#### :bug: Fixed
+* [#1840](https://github.com/SAP/luigi/pull/1840) Fixed OIDC Implicit Flow id_token Issue ([@hardl](https://github.com/hardl))
+* [#1849](https://github.com/SAP/luigi/pull/1849) Fix Loading Indicator Fixed Background Color ([@legteodav](https://github.com/legteodav))
+
+
+
+
+
 ## [v1.8.0] (2021-01-21)
 
 #### :rocket: Added
@@ -946,3 +956,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.7.0]: https://github.com/SAP/luigi/compare/v1.6.0...v1.7.0
 [v1.7.1]: https://github.com/SAP/luigi/compare/v1.7.0...v1.7.1
 [v1.8.0]: https://github.com/SAP/luigi/compare/v1.7.1...v1.8.0
+[v1.8.1]: https://github.com/SAP/luigi/compare/v1.8.0...v1.8.1

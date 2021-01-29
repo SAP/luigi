@@ -7,10 +7,12 @@
   <div class="fd-shellbar__group fd-shellbar__group--product">
     {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
     <button
-      class="fd-shellbar__button fd-button sap-icon--menu2 lui-burger"
+      class="fd-shellbar__button fd-button lui-burger"
       on:click="{burgerClickHandler}"
       tabindex="0"
-    ></button>
+    >
+      <i class="sap-icon sap-icon--menu2"></i>
+    </button>
     {/if}
     <LogoTitle
       pathData="{pathData}"
@@ -62,7 +64,7 @@
             {#if node.icon}
             {#if hasOpenUIicon(node)}
             <span
-              class="fd-top-nav__icon sap-icon--{node.icon}"
+              class="sap-icon sap-icon--{node.icon} fd-top-nav__icon"
             ></span>
             {:else}
             <img
@@ -108,7 +110,7 @@
         {#if node.icon}
         {#if hasOpenUIicon(node)}
         <span
-          class="fd-top-nav__icon sap-icon--{node.icon}"
+          class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"
         ></span>
         {:else}
         <img
@@ -154,13 +156,14 @@
               role="button"
             >
               <button
-                class="fd-shellbar__button fd-button sap-icon--overflow"
+                class="fd-shellbar__button fd-button"
                 aria-controls="overflowPopover"
                 aria-expanded="{dropDownStates.overflowPopover || false}"
                 aria-haspopup="true"
                 on:click="{() => toggleDropdownState('overflowPopover')}"
                 data-testid="mobile-menu"
               >
+                <i class="sap-icon sap-icon--overflow"></i>
                 <BadgeCounter node="{totalBadgeNode}" special="true"/>
               </button>
             </div>
@@ -179,7 +182,7 @@
                     on:click|stopPropagation="{()=>{toggleSearch(),toggleDropdownState('overflowPopover')}}"
                     data-testid="luigi-search-btn-mobile"
                   >
-                    <span class="fd-top-nav__icon sap-icon--search"></span>
+                    <i class="sap-icon sap-icon--search fd-top-nav__icon"></i>
                     <span class="fd-menu__title">Search</span>
                   </a>
                 </li>
@@ -190,9 +193,9 @@
                     class="fd-menu__link"
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
-                    <span
-                      class="fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
-                    ></span>
+                    <i
+                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
+                    ></i>
                     <span
                       class="fd-menu__title"
                     >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
@@ -210,7 +213,7 @@
                     data-testid="{getTestId(node)}"
                   >
                     <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img
@@ -232,10 +235,12 @@
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
                   >
-                    <span
-                      class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
-                    >
-                      {#if !hasOpenUIicon(node)}
+                    <span class="fd-top-nav__icon">
+                      {#if hasOpenUIicon(node)}
+                      <i
+                        class="sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                      ></i>
+                      {:else}
                       <img
                         src="{node.icon}"
                         alt="{node.altText ? node.altText : ''}"
@@ -257,7 +262,7 @@
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
                     <span
-                      class="fd-top-nav__icon sap-icon--{node.icon}"
+                      class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"
                     ></span>
                     {:else}
                     <img
@@ -280,9 +285,9 @@
                     data-testid="mobile-product-switcher"
                   >
                     {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
-                    <span
-                      class="fd-top-nav__icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
-                    ></span>
+                    <i
+                      class="fd-top-nav__icon sap-icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
+                    ></i>
                     {:else}
                     <span class="fd-top-nav__icon">
                       <img
@@ -346,13 +351,17 @@
               class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }"
             >
               <button
-                class="fd-shellbar__button fd-button {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                class="fd-shellbar__button fd-button"
                 style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
                 aria-expanded="{dropDownStates.profilePopover || false}"
                 aria-haspopup="true"
                 on:click="{() => toggleDropdownState('profilePopover')}"
                 title="{userInfo.name ? userInfo.name : userInfo.email}"
-              ></button>
+              >
+                <i
+                  class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                ></i>
+              </button>
             </div>
             <div
               class="fd-popover__body fd-popover__body--right"
@@ -630,6 +639,7 @@
 </script>
 
 <style type="text/scss">
+  @import 'styles/variables';
   //remove default outline of all dropdowns in shellbar
   .fd-shellbar:focus {
     outline: none;
@@ -639,10 +649,6 @@
   .fd-shellbar__button {
     .fd-top-nav__icon {
       color: var(--sapShell_TextColor, #fff);
-
-      &:before {
-        margin-top: 10px;
-      }
     }
   }
 
@@ -676,18 +682,16 @@
   }
 
   .lui-burger {
-    margin-right: 16px;
+    margin-right: 5px;
     cursor: pointer;
     color: var(--sapShell_TextColor, #fff);
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: $desktopMinWidth) {
     .lui-burger {
       margin-left: 0px;
+      margin-right: 15px;
     }
-  }
-
-  @media (min-width: 600px) {
     :global(.lui-mobileOnly) .lui-burger {
       display: none;
     }
