@@ -63,8 +63,8 @@ class Settings {
     },
     userSettingsDialog: {
       dialogHeader: 'My UserSettings',
-      saveBtn: 'SaveKaese',
-      dismissBtn: 'Abbreche'
+      saveBtn: 'Save',
+      dismissBtn: 'Cancel'
     },
     userSettingGroups: {
       userAccount: {
@@ -100,6 +100,62 @@ class Settings {
             style: 'button',
             label: 'Time Format',
             options: ['12 h', '24 h']
+          },
+          test: {
+            type: 'string',
+            label: 'String',
+          },
+          test2: {
+            type: 'string',
+            label: 'String2',
+          },
+          test3: {
+            type: 'string',
+            label: 'String2',
+          },
+          test4: {
+            type: 'string',
+            label: 'String2',
+          },
+          test5: {
+            type: 'string',
+            label: 'String2',
+          },
+          test6: {
+            type: 'string',
+            label: 'String2',
+          },
+          test7: {
+            type: 'string',
+            label: 'String2',
+          },
+          test8: {
+            type: 'string',
+            label: 'String2',
+          },
+          test9: {
+            type: 'string',
+            label: 'String2',
+          },
+          test10: {
+            type: 'string',
+            label: 'String2',
+          },
+          test11: {
+            type: 'string',
+            label: 'String2',
+          },
+          test12: {
+            type: 'string',
+            label: 'String2',
+          },
+          test13: {
+            type: 'string',
+            label: 'String2',
+          },
+          test14: {
+            type: 'string',
+            label: 'String2',
           }
         }
       },

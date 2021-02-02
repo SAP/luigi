@@ -34,7 +34,6 @@
 
     function toggleOptions(event, editable) {
         if (editable || editable === undefined) {
-            console.log('test');
             const self = closest(event.target, '.fd-popover__control', 20);
             closeAllCombos(self);
             const currentState = self.getAttribute('aria-expanded') === 'true';
@@ -55,17 +54,17 @@
     }
 
     function updateEnumButton(key, option) {
-      document
-        .querySelectorAll('.enum-buttons-container-' + key + ' button')
-        .forEach(button => {
-          const buttonId = button.getAttribute('id');
-          const optionId = `lui-us-enum_button_${key}_option`;
-          buttonId === optionId
-            ? button.classList.add('fd-button--emphasized')
-            : button.classList.remove('fd-button--emphasized');
-        });
+        document
+            .querySelectorAll('.enum-buttons-container-' + key + ' button')
+            .forEach(button => {
+                const buttonId = button.getAttribute('id');
+                const optionId = `lui-us-enum_button_${key}_option`;
+                buttonId === optionId
+                    ? button.classList.add('fd-button--emphasized')
+                    : button.classList.remove('fd-button--emphasized');
+            });
 
-      storedUserSettingData[userSettingGroup[0]][key] = option;
+        storedUserSettingData[userSettingGroup[0]][key] = option;
     }
 </script>
 
@@ -104,7 +103,7 @@
     .lui-us-content-header-container {
         width: 100%;
         padding: 1.5rem 2rem;
-
+        display: flex;
     }
 
     .lui-title--h2 {
@@ -124,16 +123,11 @@
     }
 
     .lui-fd-enum-button {
-      margin-top: 6px;
+        margin-top: 6px;
     }
 </style>
 <div class="lui-usersettings-content">
     {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
-    <div class="lui-us-content-header-container">
-        <h1 class="lui-title lui-title--h2">
-            {userSettingGroup[1].title?$getTranslation(userSettingGroup[1].title):''}
-        </h1>
-    </div>
     <div class="fd-page__content">
         <div class="fd-container lui-form-grid">
             {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
@@ -189,22 +183,18 @@
                 {/if}
                 {#if schemaItem.type==='enum' && schemaItem.style === 'button'}
                 <div>
-                  <div class="fd-form-item">
-                    <div
-                      class="fd-segmented-button enum-buttons-container-{key}"
-                      role="group"
-                      aria-label="Group label">
-                      {#each schemaItem.options as option, optionIndex}
-                        <button
-                          class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
-                          on:click="{() => updateEnumButton(key,option)}"
-                          id="lui-us-enum_button_{key}_{option}"
-                          data-testid="lui-us-enum_button_{key}_{option}"
-                          disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                        >{$getTranslation(option)}</button>
-                      {/each}
+                    <div class="fd-form-item">
+                        <div class="fd-segmented-button enum-buttons-container-{key}" role="group"
+                            aria-label="Group label">
+                            {#each schemaItem.options as option, optionIndex}
+                            <button
+                                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
+                                on:click="{() => updateEnumButton(key,option)}" id="lui-us-enum_button_{key}_{option}"
+                                data-testid="lui-us-enum_button_{key}_{option}"
+                                disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">{$getTranslation(option)}</button>
+                            {/each}
+                        </div>
                     </div>
-                  </div>
                 </div>
                 {/if}
                 {#if schemaItem.type==='boolean'}
