@@ -18,7 +18,7 @@ meta -->
 <!-- add-attribute:class:success -->
 >**TIP:** For learning and testing purposes, use the [Luigi Fiddle](https://fiddle.luigi-project.io) page where you can configure a sample Luigi application.
 
-The configuration file contains a section called **Settings** in which you can configure additional Luigi options. This is an example of how settings parameters can be used:
+The configuration file contains a section called **Settings** where you can configure additional Luigi options. This is an example of how settings parameters can be used:
 
 ```javascript
 settings: {
@@ -153,7 +153,7 @@ To detect whether the user's browser supports the mechanism, use the script in t
 
 ### User settings
 
-Luigi allows you to display a user settings dialog and manage user data. In order to do that, it is neccessary to define a user settings schema. The schema is defined in a `userSettingGroups` object.
+Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
 Each `userSettingGroup` could have the following meta data:
 
 ```javascript
