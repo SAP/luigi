@@ -116,7 +116,7 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 
 ### validWebcomponentUrls
   - **type**: array
-  - **description**: a list of allowed web component URLs. It is also possible to add regular expressions as string to the array.
+  - **description**: a list of allowed web component URLs. They must be added as regular expressions to the array.
   - **example**:
 ```javascript
 settings: {
