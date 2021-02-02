@@ -5,8 +5,8 @@ class UserSettings {
     };
     userSettingsDialog = {
         dialogHeader: 'My UserSettings',
-        saveBtn: 'SaveKaese',
-        dismissBtn: 'Abbreche'
+        saveBtn: 'Save',
+        dismissBtn: 'Cancel'
     };
     userSettingGroups = {
         userAccount: {
@@ -66,12 +66,18 @@ class UserSettings {
             label: 'Theming',
             title: 'Theming',
             icon: 'private',
-            viewUrl: 'http://localhost:8081/index.html',
+            viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
             settings: {
                 theme: {
                     type: 'enum', label: 'theme', options: ['red', 'green']
                 }
             }
+        },
+        custom: {
+            label: 'Custom',
+            sublabel: 'Sublabel',
+            viewUrl: '/examples/microfrontends/multipurpose.html',
+            settings: {}
         }
     }
 }
