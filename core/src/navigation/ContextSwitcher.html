@@ -19,6 +19,9 @@
         {:else}
         {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
         {:else}{selectedLabel}{/if}
+        <i
+          class="sap-icon--megamenu fd-shellbar__button--icon"
+        ></i>
         {/if}
       </button>
     </div>
@@ -331,24 +334,9 @@
 </script>
 
 <style type="text/scss">
-  .fd-button--shell .is-hover,
-  .fd-button--shell:hover {
-    background-color: transparent;
-  }
-
   .lui-ctx-switch-menu {
     max-width: 30vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #fff;
     color: var(--sapShell_TextColor, #fff);
-    padding-right: 30px;
-
-    &:after {
-      position: absolute;
-      top: calc(50% - 8px);
-      right: 12px;
-    }
 
     @media (min-width: 1024px) {
       max-width: 15vw;

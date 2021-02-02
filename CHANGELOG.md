@@ -25,6 +25,33 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.8.1] (2021-01-27)
+
+#### :bug: Fixed
+* [#1840](https://github.com/SAP/luigi/pull/1840) Fixed OIDC Implicit Flow id_token Issue ([@hardl](https://github.com/hardl))
+* [#1849](https://github.com/SAP/luigi/pull/1849) Fix Loading Indicator Fixed Background Color ([@legteodav](https://github.com/legteodav))
+
+
+
+
+
+## [v1.8.0] (2021-01-21)
+
+#### :rocket: Added
+* [#1802](https://github.com/SAP/luigi/pull/1802) Custom Micro-Frontend for User Settings ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1821](https://github.com/SAP/luigi/pull/1821) Fix Styling of User Name in Profile Dropdown ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1790](https://github.com/SAP/luigi/pull/1790) Add Different Visual Appearances for Enums ([@legteodav](https://github.com/legteodav))
+* [#1809](https://github.com/SAP/luigi/pull/1809) Add ng Support Library Enhancements ([@hardl](https://github.com/hardl))
+* [#1799](https://github.com/SAP/luigi/pull/1799) Make navigateIframe and prepareInternalData Functions be Async ([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#1814](https://github.com/SAP/luigi/pull/1814) OIDC Client State Fix ([@hardl](https://github.com/hardl))
+
+
+
+
+
+
 ## [v1.7.1] (2020-12-23) :christmas_tree: :santa: :gift:
 
 #### :rocket: Added
@@ -928,3 +955,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.6.0]: https://github.com/SAP/luigi/compare/v1.5.0...v1.6.0
 [v1.7.0]: https://github.com/SAP/luigi/compare/v1.6.0...v1.7.0
 [v1.7.1]: https://github.com/SAP/luigi/compare/v1.7.0...v1.7.1
+[v1.8.0]: https://github.com/SAP/luigi/compare/v1.7.1...v1.8.0
+[v1.8.1]: https://github.com/SAP/luigi/compare/v1.8.0...v1.8.1

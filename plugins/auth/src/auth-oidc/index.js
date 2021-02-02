@@ -70,6 +70,17 @@ export default class openIdConnect {
         idToken: payload.id_token,
         profile
       };
+
+      if (!data.accessToken && data.idToken) {
+        try {
+          data.idTokenExpirationDate =
+            JSON.parse(atob(data.idToken.split('.')[1])).exp * 1000;
+          data.accessTokenExpirationDate = data.idTokenExpirationDate;
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
       Luigi.auth().store.setAuthData(data);
 
       window.postMessage(
@@ -198,8 +209,9 @@ export default class openIdConnect {
           fromWhere = responseMode === 'fragment' ? 'hash' : 'search';
         }
       } else {
-        // defaulting to access token
-        toCheck = 'access_token';
+        // check id_token, else defaulting to access token
+        toCheck =
+          responseType.indexOf('id_token') > -1 ? 'id_token' : 'access_token';
         if (!responseMode) {
           fromWhere = 'hash';
         } else {

@@ -74,12 +74,14 @@
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation="{() => {}}">
     <button
-      class="fd-button fd-shellbar__button sap-icon--search"
+      class="fd-button fd-shellbar__button"
       aria-haspopup="true"
       aria-expanded="{!isSearchFieldVisible}"
       on:click="{toggleSearch}"
       data-testid="luigi-search-btn-desktop"
-    ></button>
+    >
+      <i class="sap-icon sap-icon--search"></i>
+    </button>
   </div>
 </div>
 <script>
