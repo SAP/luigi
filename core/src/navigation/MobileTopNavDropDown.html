@@ -18,10 +18,12 @@
             data-e2e="mobile-topnav-item"
             data-testid="{getTestId(node)}"
           >
-            <div
-              class="fd-product-switch__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
-            >
-              {#if !hasOpenUIicon(node)}
+            <div class="lui-product-switch__icon">
+              {#if hasOpenUIicon(node)}
+              <i
+                class="sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+              ></i>
+              {:else}
               <img
                 src="{node.icon}"
                 alt="{node.altText ? node.altText : ''}"
@@ -85,9 +87,14 @@
 
   @media (max-width: 1023px) {
     .fd-product-switch__body--mobile {
-      .fd-product-switch__icon {
+      //required after FD Styles v.14 to align different sizes of icon/images on mobile for product switcher
+      .lui-product-switch__icon {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        min-width: 3rem;
         img {
-          max-width: 24px;
+          max-height: 24px;
         }
       }
 

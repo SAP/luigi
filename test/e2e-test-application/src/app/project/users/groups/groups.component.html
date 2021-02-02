@@ -24,10 +24,10 @@
     <div class="fd-layout-panel__body">
       <p>Enter a custom group id and press the arrow button to navigate.</p>
       <div class="fd-container fd-container--fluid">
-        <div class="fd-col--11">
+        <div class="fd-col fd-col--11">
           <input type="text" [(ngModel)]="customValue" class="fd-input" />
         </div>
-        <div class="fd-col--1 luigi__input-button--margin">
+        <div class="fd-col fd-col--1 luigi__input-button--margin">
           <button
             *ngIf="customValue"
             class="fd-button clickable"

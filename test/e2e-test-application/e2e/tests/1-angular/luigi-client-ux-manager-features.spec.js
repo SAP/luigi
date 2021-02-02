@@ -124,9 +124,7 @@ describe('Luigi Client ux manager features', () => {
           .find('[data-testid=toggle-dirty-state]')
           .click();
 
-        cy.get('button')
-          .contains('Projects')
-          .click();
+        cy.goToProjectsPage();
 
         cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
 
@@ -146,9 +144,7 @@ describe('Luigi Client ux manager features', () => {
           .find('[data-testid=toggle-dirty-state]')
           .click();
 
-        cy.get('button')
-          .contains('Projects')
-          .click();
+        cy.goToProjectsPage();
 
         cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
 

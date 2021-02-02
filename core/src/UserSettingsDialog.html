@@ -475,12 +475,14 @@
         <footer class="fd-dialog__footer fd-bar fd-bar--footer">
             <div class="fd-bar__right">
                 <div class="fd-bar__element">
-                    <button on:click="{() => storeUserSettings()}" data-testid="lui-us-saveBtn"
-                        class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">{$getTranslation(saveBtn)}</button>
+                    <button on: {()=> storeUserSettings()}" data-testid="lui-us-saveBtn"
+                        class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact
+                        confirm-button">{$getTranslation(saveBtn)}</button>
                 </div>
                 <div class="fd-bar__element">
-                    <button on:click="{() => dispatch('close')}" data-testid="lui-us-dismissBtn"
-                        class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact">{$getTranslation(dismissBtn)}</button>
+                    <button on: {()=> dispatch('close')}" data-testid="lui-us-dismissBtn"
+                        class="fd-dialog__decisive-button fd-button fd-button--transparent
+                        fd-button--compact">{$getTranslation(dismissBtn)}</button>
                 </div>
             </div>
         </footer>
