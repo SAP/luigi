@@ -1,6 +1,13 @@
-<svelte:window on:resize="{updateSizes}" />
-<div id="splitViewContainer" class="splitViewContainer {collapsed?'lui-collapsed':''}">
-  <Backdrop area="split-view" disable="{disableBackdrop}" on:stateChanged="{backdropStateChanged}"></Backdrop>
+<svelte:window on:resize="{updateSizes}"/>
+<div
+  id="splitViewContainer"
+  class="splitViewContainer {collapsed?'lui-collapsed':''}"
+>
+  <Backdrop
+    area="split-view"
+    disable="{disableBackdrop}"
+    on:stateChanged="{backdropStateChanged}"
+  ></Backdrop>
   <div class="lui-split-view">
     {#if collapsed}
     <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
@@ -8,7 +15,7 @@
         class="lui-collapse-btn"
         on:click|stopPropagation|preventDefault="{expand}"
       >
-        <span class="sap-icon--navigation-up-arrow"></span>
+        <i class="sap-icon sap-icon--navigation-up-arrow"></i>
       </a>
     </div>
     <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
@@ -25,7 +32,7 @@
     class="lui-collapse-btn"
     on:click|stopPropagation|preventDefault="{collapse}"
   >
-    <span class="sap-icon--navigation-down-arrow"></span>
+    <i class="sap-icon sap-icon--navigation-down-arrow"></i>
   </a>
 </div>
 {/if}

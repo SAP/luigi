@@ -11,7 +11,8 @@ import {
   NodeParams,
   uxManager,
   getActiveFeatureToggles,
-  getUserSettings
+  getUserSettings,
+  addContextUpdateListener
 } from '@luigi-project/client';
 import { Subscription } from 'rxjs';
 
@@ -38,7 +39,7 @@ export class SettingsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
@@ -59,6 +60,10 @@ export class SettingsComponent implements OnInit {
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
+    });
+
+    addContextUpdateListener(context => {
+      this.userSettings = getUserSettings();
     });
 
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener

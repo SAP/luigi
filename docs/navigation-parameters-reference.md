@@ -175,6 +175,40 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **type**: object
 - **description**: sends the specified object as a context to the micro frontend.
 
+### children
+- **type**: array | function
+- **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix url. 
+For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children urls.
+```javascript
+navigation: { 
+    nodes: [{ 
+        pathSegment: 'home', 
+        label: 'h', 
+        hideFromNav: true, 
+        children: [{ 
+            pathSegment: 'overview', 
+            label: 'Overview', 
+            icon: 'home',
+            viewUrl: '/examples/microfrontends/multipurpose.html',
+            context: {
+                title: 'Welcome to Luigi Fiddle!',
+                content: 'Click on "Modify Config" at the bottom right and play around with your Luigi configuration'
+            }
+        },
+        ...
+        { 
+            pathSegment: 'ui5sc', 
+            label: 'Shopping Cart', 
+            category:  'UI5 Demo Pages',
+            hideSideNav: true,
+            loadingIndicator: {
+                enabled: false
+            },
+            viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
+        }] 
+    ...
+```
+
 ### defaultChildNode
 - **type**: string
 - **description**: sets the child node that Luigi activates automatically if the current node has no **viewUrl** defined. Provide **pathSegment** of the child node you want to activate as a string.

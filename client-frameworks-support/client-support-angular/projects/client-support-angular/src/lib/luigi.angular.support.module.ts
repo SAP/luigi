@@ -4,8 +4,7 @@ import { LuigiPreloadComponent } from './component/luigi.preload.component';
 import { LuigiContextService } from './service/luigi-context-service';
 import { LuigiContextServiceImpl } from './service/luigi-context.service.impl';
 import { LuigiAutoRoutingService } from './service/luigi-auto-routing.service';
-import {LuigiReuseRouteStrategy} from "./route/luigi-reuse-route-strategy.ts";
-import {LuigiRouteStrategy} from "./route/luigi-route-strategy";
+import { LuigiRouteStrategy } from './route/luigi-route-strategy';
 
 export const staticRoutes: Routes = [
   /** here an example if you want to specify that this component is a virtualTree element in Luigi Core navigation*/

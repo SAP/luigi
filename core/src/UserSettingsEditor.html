@@ -1,183 +1,265 @@
 <svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window>
 <script>
-    import { onMount, afterUpdate, beforeUpdate, createEventDispatcher, getContext } from 'svelte';
-    import { GenericHelpers } from './utilities/helpers';
-    export let userSettingsGroupSchema;
-    export let userSettingsGroupKey;
-    export let userSettings;
-    const dispatch = createEventDispatcher();
-    let settingsSchema;
-    let displayOptions;
-    let getTranslation = getContext('getTranslation');
-    beforeUpdate(() => {
-        if (!userSettings.hasOwnProperty(userSettingsGroupSchema[0])) {
-            userSettings[userSettingsGroupSchema[0]] = {};
-        }
-    });
+  import {
+    onMount,
+    afterUpdate,
+    beforeUpdate,
+    createEventDispatcher,
+    getContext
+  } from 'svelte';
+  import { GenericHelpers } from './utilities/helpers';
+  export let userSettingGroup;
+  export let userSettingsGroupKey;
+  export let storedUserSettingData;
+  const dispatch = createEventDispatcher();
+  let settingsSchema;
+  let displayOptions;
+  let getTranslation = getContext('getTranslation');
 
-    export function updateSettingsObject() {
-        dispatch('updateSettingsObject', { userSettings })
+  export function updateSettingsObject() {
+    dispatch('updateSettingsObject', { storedUserSettingData });
+  }
+
+  function closeAllCombos(self) {
+    document
+      .querySelectorAll('.lui-usersettings-content .fd-popover__control')
+      .forEach(elem => {
+        setExpandedState(elem, false);
+      });
+  }
+
+  function closest(element, selector, max) {
+    if (element && max > 0) {
+      if (GenericHelpers.isIE()) {
+        return element.msMatchesSelector(selector)
+          ? element
+          : closest(element.parentNode, selector, max - 1);
+      } else {
+        return element.matches(selector)
+          ? element
+          : closest(element.parentNode, selector, max - 1);
+      }
+    } else {
+      return undefined;
     }
+  }
 
-    function closeAllCombos(self) {
-        document.querySelectorAll('.lui-usersettings-content .fd-popover__control').forEach(elem => {
-            setExpandedState(elem, false);
-        });
+  function toggleOptions(event, editable) {
+    if (editable || editable === undefined) {
+      const self = closest(event.target, '.fd-popover__control', 20);
+      closeAllCombos(self);
+      const currentState = self.getAttribute('aria-expanded') === 'true';
+      setExpandedState(self, !currentState);
     }
+  }
 
-    function closest(element, selector, max) {
-        if (element && max > 0) {
-            if (GenericHelpers.isIE()) {
-                return element.msMatchesSelector(selector) ? element : closest(element.parentNode, selector, max - 1);
-            } else {
-                return element.matches(selector) ? element : closest(element.parentNode, selector, max - 1);
-            }
-        } else {
-            return undefined;
-        }
-    }
+  function setExpandedState(self, value) {
+    const indicatorBtn = self.querySelector('.fd-input-group__button');
+    const optionsPopOver = self.parentNode.querySelector('.fd-popover__body');
+    self.setAttribute('aria-expanded', value);
+    optionsPopOver.setAttribute('aria-hidden', !value);
+    indicatorBtn.setAttribute('aria-expanded', value);
+  }
 
-    function toggleOptions(event, editable) {
-        if (editable || editable === undefined) {
-            console.log('test');
-            const self = closest(event.target, '.fd-popover__control', 20);
-            closeAllCombos(self);
-            const currentState = self.getAttribute('aria-expanded') === 'true';
-            setExpandedState(self, !currentState);
-        }
-    }
+  function updateComboBox(key, option) {
+    storedUserSettingData[userSettingGroup[0]][key] = option;
+  }
 
-    function setExpandedState(self, value) {
-        const indicatorBtn = self.querySelector('.fd-input-group__button');
-        const optionsPopOver = self.parentNode.querySelector('.fd-popover__body');
-        self.setAttribute('aria-expanded', value);
-        optionsPopOver.setAttribute('aria-hidden', !value);
-        indicatorBtn.setAttribute('aria-expanded', value);
-    }
+  function updateEnumButton(key, option) {
+    document
+      .querySelectorAll('.enum-buttons-container-' + key + ' button')
+      .forEach(button => {
+        const buttonId = button.getAttribute('id');
+        const optionId = `lui-us-enum_button_${key}_option`;
+        buttonId === optionId
+          ? button.classList.add('fd-button--emphasized')
+          : button.classList.remove('fd-button--emphasized');
+      });
 
-    function updateComboBox(key, option) {
-        userSettings[userSettingsGroupSchema[0]][key] = option;
-    }
-
+    storedUserSettingData[userSettingGroup[0]][key] = option;
+  }
 </script>
 
 <style>
-    .lui-form-grid {
-        display: grid;
-        display: -ms-grid;
-        grid-template-columns: minmax(0, 1fr) 2fr;
-        -ms-grid-columns: minmax(0, 1fr) 2fr;
-    }
+  .lui-form-grid {
+    display: grid;
+    display: -ms-grid;
+    grid-template-columns: minmax(0, 1fr) 2fr;
+    -ms-grid-columns: minmax(0, 1fr) 2fr;
+  }
 
-    .lui-value-container {
-        grid-column: 2;
-        -ms-grid-column: 2;
-    }
+  .lui-value-container {
+    grid-column: 2;
+    -ms-grid-column: 2;
+  }
 
-    .lui-value-container>input[type="checkbox"] {
-        margin-top: 13px;
-    }
+  .lui-value-container > input[type='checkbox'] {
+    margin-top: 13px;
+  }
 
-    .lui-form-label {
-        grid-column: 1;
-        -ms-grid-column: 1;
-        text-align: right;
-        padding-top: 10px;
-        overflow: hidden;
-        min-width: 0;
-        word-break: break-word;
-        padding: 10px;
-    }
+  .lui-form-label {
+    grid-column: 1;
+    -ms-grid-column: 1;
+    text-align: right;
+    padding-top: 10px;
+    overflow: hidden;
+    min-width: 0;
+    word-break: break-word;
+    padding: 10px;
+  }
 
-    .fd-form-label {
-        white-space: pre-line;
-    }
+  .fd-form-label {
+    white-space: pre-line;
+  }
 
-    .lui-us-content-header-container {
-        width: 100%;
-        padding: 1.5rem 2rem;
+  .lui-us-content-header-container {
+    width: 100%;
+    padding: 1.5rem 2rem;
+  }
 
-    }
+  .lui-title--h2 {
+    font-size: var(--sapFontHeader2Size, 1.5rem);
+  }
 
-    .lui-title--h2 {
-        font-size: var(--sapFontHeader2Size, 1.5rem);
-    }
+  .lui-title {
+    line-height: var(--sapContent_LineHeight, 1.4);
+    font-family: var(
+      --sapFontFamily,
+      '72',
+      '72full',
+      Arial,
+      Helvetica,
+      sans-serif
+    );
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    color: var(--sapTextColor, #32363a);
+  }
 
-    .lui-title {
-        line-height: var(--sapContent_LineHeight, 1.4);
-        font-family: var(--sapFontFamily, "72", "72full", Arial, Helvetica, sans-serif);
-        font-weight: 400;
-        -webkit-font-smoothing: antialiased;
-        box-sizing: border-box;
-        padding: 0;
-        margin: 0;
-        border: 0;
-        color: var(--sapTextColor, #32363a);
-    }
+  .lui-fd-enum-button {
+    margin-top: 6px;
+  }
 </style>
 <div class="lui-usersettings-content">
-    <div class="lui-us-content-header-container">
-        <h1 class="lui-title lui-title--h2">
-            {userSettingsGroupSchema[1].title?$getTranslation(userSettingsGroupSchema[1].title):''}
-        </h1>
-    </div>
-    <div class="fd-page__content">
-        <div class="fd-container lui-form-grid">
-            {#each Object.entries(userSettingsGroupSchema[1].settings) as [key, schemaItem], i}
-                <div class="lui-form-label">
-                    <label class="fd-form-label" >{$getTranslation(schemaItem.label)}:</label>
+  {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
+  <div class="lui-us-content-header-container">
+    <h1
+      class="lui-title lui-title--h2"
+    >{userSettingGroup[1].title?$getTranslation(userSettingGroup[1].title):''}</h1>
+  </div>
+  <div class="fd-page__content">
+    <div class="fd-container lui-form-grid">
+      {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
+      <div class="lui-form-label">
+        <label class="fd-form-label">{$getTranslation(schemaItem.label)}:</label>
+      </div>
+      <div class="lui-value-container">
+        {#if schemaItem.type==='string'}
+        <input
+          class="fd-input"
+          type="text"
+          placeholder="Field placeholder text"
+          aria-label="Image label"
+          data-testid="lui-us-input{i}"
+          bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
+          disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+        >
+        {/if}
+        {#if schemaItem.type==='enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
+        <div>
+          <div class="fd-form-item">
+            <div class="fd-popover">
+              <div
+                class="fd-popover__control"
+                aria-expanded="false"
+                aria-haspopup="true"
+                on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}"
+              >
+                <div class="fd-input-group fd-input-group--control">
+                  <input
+                    type="text"
+                    class="fd-input fd-input-group__input"
+                    placeholder="{$getTranslation(storedUserSettingData[userSettingGroup[0]][key])}"
+                    data-testid="lui-us-input{i}"
+                    disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                  >
+                  <span
+                    class="fd-input-group__addon fd-input-group__addon--button"
+                  >
+                    <button
+                      aria-label="show/hide fruit options"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="fd-input-group__button fd-button fd-button--transparent"
+                      disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                    >
+                      <i class="sap-icon--navigation-down-arrow"></i>
+                    </button>
+                  </span>
                 </div>
-                <div class="lui-value-container">
-                    {#if schemaItem.type==='string'}
-                            <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label" data-testid="lui-us-input{i}"
-                            bind:value="{userSettings[userSettingsGroupSchema[0]][key]}" disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
-                    {/if}
-                    {#if schemaItem.type==='enum'}
-                        <div>
-                            <div class="fd-form-item">
-                                <div class="fd-popover">
-                                    <div class="fd-popover__control" aria-expanded="false" aria-haspopup="true"
-                                        on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}">
-                                        <div class="fd-input-group fd-input-group--control">
-                                            <input type="text" class="fd-input fd-input-group__input" placeholder="{$getTranslation(userSettings[userSettingsGroupSchema[0]][key])}" data-testid="lui-us-input{i}"
-                                            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
-                                            <span class="fd-input-group__addon fd-input-group__addon--button">
-                                                <button
-                                                    aria-label="show/hide fruit options"
-                                                    aria-expanded="false"
-                                                    aria-haspopup="true"
-                                                    class="fd-input-group__button fd-button fd-button--transparent"
-                                                    disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}">
-                                                    <i class="sap-icon--navigation-down-arrow"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill" aria-hidden="true">
-                                        <div class="fd-popover__wrapper docs-max-height">
-                                            <ul class="fd-list fd-list--dropdown" role="listbox">
-                                                {#each schemaItem.options as option, optionIndex}
-                                                    <li role="option" tabindex="0" class="fd-list__item" data-testid="lui-us-option{i}_{optionIndex}" on:click="{() => updateComboBox(key,option)}">
-                                                        <span class="fd-list__title">
-                                                            <span class="fd-list__bold">{$getTranslation(option)}</span>
-                                                        </span>
-                                                    </li>
-                                                {/each}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {/if}
-                    {#if schemaItem.type==='boolean'}
-                        <input type="checkbox"
-                            class="fd-checkbox"
-                            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                            bind:checked="{userSettings[userSettingsGroupSchema[0]][key]}"/>
-                    {/if}
+              </div>
+              <div
+                class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
+                aria-hidden="true"
+              >
+                <div class="fd-popover__wrapper docs-max-height">
+                  <ul class="fd-list fd-list--dropdown" role="listbox">
+                    {#each schemaItem.options as option, optionIndex}
+                    <li
+                      role="option"
+                      tabindex="0"
+                      class="fd-list__item"
+                      data-testid="lui-us-option{i}_{optionIndex}"
+                      on:click="{() => updateComboBox(key,option)}"
+                    >
+                      <span class="fd-list__title">
+                        <span class="fd-list__bold">{$getTranslation(option)}</span>
+                      </span>
+                    </li>
+                    {/each}
+                  </ul>
                 </div>
-            {/each}
+              </div>
+            </div>
+          </div>
         </div>
+        {/if}
+        {#if schemaItem.type==='enum' && schemaItem.style === 'button'}
+        <div>
+          <div class="fd-form-item">
+            <div
+              class="fd-segmented-button enum-buttons-container-{key}"
+              role="group"
+              aria-label="Group label"
+            >
+              {#each schemaItem.options as option, optionIndex}
+              <button
+                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
+                on:click="{() => updateEnumButton(key,option)}"
+                id="lui-us-enum_button_{key}_{option}"
+                data-testid="lui-us-enum_button_{key}_{option}"
+                disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+              >{$getTranslation(option)}</button>
+              {/each}
+            </div>
+          </div>
+        </div>
+        {/if}
+        {#if schemaItem.type==='boolean'}
+        <input
+          type="checkbox"
+          class="fd-checkbox"
+          disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+          bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
+        >
+        {/if}
+      </div>
+      {/each}
     </div>
+  </div>
+  {/if}
 </div>

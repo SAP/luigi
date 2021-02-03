@@ -116,14 +116,23 @@ describe('Fiddle', () => {
       it('custom selected option renderer', () => {
         cy.visitWithFiddleConfig('/', newConfig);
 
-        cy.contains('Select Environment').click();
-        cy.contains('Environment 1').click();
+        cy.contains('Select Environment')
+          .should('exist')
+          .click();
+        cy.contains('Environment 1')
+          .should('exist')
+          .click();
         cy.get('[data-testid=luigi-contextswitcher-button]')
           .find('label')
           .should('have.css', 'color', 'rgb(136, 255, 0)')
           .and('have.css', 'font-weight', '700');
-        cy.contains('Environment 1').click();
-        cy.contains('Environment 2').click();
+
+        cy.get('[data-testid=luigi-contextswitcher-button]')
+          .should('exist')
+          .click();
+        cy.contains('Environment 2')
+          .should('exist')
+          .click();
         cy.get('[data-testid=luigi-contextswitcher-button]')
           .find('label')
           .should('have.css', 'color', 'rgb(0, 136, 255)')
@@ -374,7 +383,7 @@ describe('Fiddle', () => {
               icon: 'settings'
             }
           }
-        }
+        };
         visitLoggedInWithAuthConfig('/', newConfig);
         cy.get('[data-testid="luigi-topnav-profile"] button').click();
         cy.get('[data-testid="settings-link"]').should('exist');
@@ -383,11 +392,11 @@ describe('Fiddle', () => {
       it('User settings in profile menu with default label', () => {
         newConfig.settings = {
           userSettings: {}
-        }
+        };
         visitLoggedInWithAuthConfig('/', newConfig);
         cy.get('[data-testid="luigi-topnav-profile"] button').click();
         cy.get('[data-testid="settings-link"]').should('exist');
-        cy.get('[data-testid="settings-link"]').contains('Settings')
+        cy.get('[data-testid="settings-link"]').contains('Settings');
       });
       it('User settings not in the profile menu, if not configured', () => {
         newConfig.navigation.profile = {
@@ -568,7 +577,7 @@ describe('Fiddle', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
-      newConfig.settings.userSettings = {
+      newConfig.userSettings = {
         userSettingGroups: {
           userAccount: {
             label: 'User Account',
@@ -591,13 +600,33 @@ describe('Fiddle', () => {
                 type: 'enum',
                 label: 'Language and Region',
                 options: ['German', 'English', 'Spanish', 'French'],
-                description: 'After you save your settings, the browser will refresh for the new language to take effect.'
+                description:
+                  'After you save your settings, the browser will refresh for the new language to take effect.'
               },
               date: { type: 'string', label: 'Date Format' },
-              time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+              time: {
+                type: 'enum',
+                label: 'Time Format',
+                options: ['12 h', '24 h']
+              }
+            }
+          },
+          theming: {
+            label: 'Theme',
+            sublabel: 'Theme',
+            icon: '/assets/github-logo.png',
+            title: 'Theming',
+            viewUrl: 'http://localhost:8080/index.html',
+            settings: {
+              theme: {
+                type: 'enum',
+                label: 'Theme',
+                options: ['red', 'green'],
+                description: 'Choose a theme'
+              }
             }
           }
-        },
+        }
       };
     });
     it('User settings dialog', () => {
@@ -615,10 +644,27 @@ describe('Fiddle', () => {
 
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
-      cy.get('[data-testid="lui-us-input0"]').invoke('attr', 'placeholder').should('contain', 'German');
+      cy.get('[data-testid="lui-us-input0"]')
+        .invoke('attr', 'placeholder')
+        .should('contain', 'German');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
       cy.get('[data-testid="lui-us-header"]').should('not.be.visible');
+    });
+    it('Check if external mf is loaded in custom user settings editor', () => {
+      cy.visitWithFiddleConfig('/', newConfig);
+      cy.wait(1000);
+      cy.window().then(win => {
+        win.Luigi.ux().openUserSettings();
+      });
+
+      cy.get('.lui-usersettings-left-nav')
+        .contains('Theme')
+        .click();
+
+      cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
+        expect(ifr[0].src).to.equal('http://localhost:8080/index.html')
+      });
     });
   });
 });

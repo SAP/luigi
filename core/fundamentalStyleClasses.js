@@ -45,7 +45,7 @@ module.exports = [
   './node_modules/fundamental-styles/dist/product-switch.css',
   // './node_modules/fundamental-styles/dist/radio.css',
   //'./node_modules/fundamental-styles/dist/section.css',
-  //'./node_modules/fundamental-styles/dist/segmented-button.css',
+  './node_modules/fundamental-styles/dist/segmented-button.css',
   './node_modules/fundamental-styles/dist/select.css',
   './node_modules/fundamental-styles/dist/shellbar.css',
   './node_modules/fundamental-styles/dist/side-nav.css',
