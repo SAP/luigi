@@ -32,7 +32,7 @@ module.exports = [
   './node_modules/fundamental-styles/dist/list.css',
   //'./node_modules/fundamental-styles/dist/localization-editor.css',
   './node_modules/fundamental-styles/dist/menu.css',
-  //'./node_modules/fundamental-styles/dist/message-box.css',
+  './node_modules/fundamental-styles/dist/message-box.css',
   './node_modules/fundamental-styles/dist/message-strip.css',
   //'./node_modules/fundamental-styles/dist/message-toast.css',
   //'./node_modules/fundamental-styles/dist/notification.css',

@@ -43,9 +43,11 @@ describe('Luigi Client ux manager features', () => {
         .find('[data-testid=show-luigi-confirmation-modal]')
         .click();
       cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('.sap-icon--question-mark').should('be.visible');
 
       cy.get('[data-testid=luigi-modal-dismiss]').click();
       cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('.sap-icon--question-mark').should('not.be.visible');
       cy.wrap($iframeBody)
         .find('[data-testid=luigi-confirmation-modal-result]')
         .contains('Luigi confirmation modal has been dismissed');

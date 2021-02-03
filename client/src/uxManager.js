@@ -72,6 +72,7 @@ class UxManager extends LuigiClientBase {
    * Shows a confirmation modal.
    * @memberof uxManager
    * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
+   * @param {string} [settings.type="confirmation"] the content of the modal type
    * @param {string} [settings.header="Confirmation"] the content of the modal header
    * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
    * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
@@ -80,6 +81,7 @@ class UxManager extends LuigiClientBase {
    * @example
    * import LuigiClient from '@luigi-project/client';
    * const settings = {
+   *  type: "confirmation",
    *  header: "Confirmation",
    *  body: "Are you sure you want to do this?",
    *  buttonConfirm: "Yes",
