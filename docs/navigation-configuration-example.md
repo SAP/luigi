@@ -25,7 +25,8 @@ Luigi.setConfig({
     // uses hash-based navigation if set to true
     useHashRouting: true,
     nodeParamPrefix: '~',
-    modalPathParam: 'modal',
+    showModalPathInUrl: true,
+    modalPathParam: 'modal'
     skipRoutingForUrlPatterns: [/access_token=/, /id_token=/]
   },
   // navigation structure and settings

@@ -544,13 +544,18 @@
   };
 
   const appendModalDataToUrl = (modalPath, modalParams) => {
+    // global setting for persistence in url .. default false
     const modalParamName = RoutingHelpers.getModalViewParamName();
-    const params = location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
+    const params = location.search
+      ? RoutingHelpers.parseParams(location.search.slice(1))
+      : {};
     const prevModalPath = params[modalParamName];
 
     params[modalParamName] = encodeURIComponent(modalPath);
     if (modalParams && Object.keys(modalParams).length) {
-      params[`${modalParamName}Params`] = encodeURIComponent(JSON.stringify(modalParams));
+      params[`${modalParamName}Params`] = encodeURIComponent(
+        JSON.stringify(modalParams)
+      );
     }
     if (prevModalPath !== modalPath) {
       const url = new URL(location.href);
@@ -1255,7 +1260,12 @@
           contentNode = node;
           resetMicrofrontendModalData();
           openViewInModal(path, e.data.params.modal);
-          appendModalDataToUrl(path, e.data.params.modal);
+          const modalPathInUrl = LuigiConfig.getConfigBooleanValue(
+            'routing.showModalPathInUrl'
+          );
+          if (modalPathInUrl) {
+            appendModalDataToUrl(path, e.data.params.modal);
+          }
         } else if (e.data.params.splitView !== undefined) {
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
