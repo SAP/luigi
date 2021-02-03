@@ -130,14 +130,14 @@ Cypress.Commands.add('goToLinkManagerMethods', iframe => {
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
-  cy.get('button')
-    .contains('Overview')
+  cy.get('button[data-testid="overview_overview"]')
+    .should('exist')
     .click();
 });
 
 Cypress.Commands.add('goToProjectsPage', () => {
-  cy.get('button')
-    .contains('Projects')
+  cy.get('button[data-testid="projects_projects"]')
+    .should('exist')
     .click();
 });
 
@@ -221,7 +221,7 @@ Cypress.Commands.add(
   * If it has not loaded it will hook that same code into the load event
   * so it will run as soon as the iframe loads.
   *
-    usage: 
+    usage:
     cy.get('iframe').iframe().then(modal => {
         cy.wrap(modal)
             .contains('Go back')

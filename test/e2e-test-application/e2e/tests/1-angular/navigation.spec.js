@@ -16,7 +16,10 @@ describe('Navigation', () => {
           title: 'Preserved View',
           size: 'm'
         });
-        cy.get('.fd-dialog__close').click();
+
+        cy.get('button[aria-label="close"]')
+          .should('exist')
+          .click();
         cy.expectPathToBe('/overview');
       });
     });
@@ -310,7 +313,7 @@ describe('Navigation', () => {
     cy.get('.fd-shellbar')
       .contains('Visible for all users')
       .should('exist');
-  
+
     cy.get('.fd-shellbar')
       .contains('Visible for anonymous users only')
       .should('not.exist');
@@ -613,12 +616,13 @@ describe('Navigation', () => {
       });
 
       it('ResponsiveNavigation Semicollapsed', () => {
-        cy.viewport(1000, 600);
+        cy.viewport(800, 600);
         cy.window().then(win => {
           const config = win.Luigi.getConfig();
           config.settings.responsiveNavigation = 'semiCollapsible';
           win.Luigi.configChanged('settings');
           cy.get('[data-testid="mobile-menu"]').click();
+
           cy.get('.fd-popover__body').within(() => {
             cy.get('[data-testid="projects_projects"]').click();
           });
@@ -849,28 +853,227 @@ describe('Navigation', () => {
       });
     });
   });
-  describe('User settings', () => {
-    it('It should display user settings info when userSettingsGroup provided', () => {
-      const userSettings =
-        '{"userAccount":{"name":"Luigi","email":"luigi@luigi.de","server":"luigi.server"},"language":{"language":"Italian","date":"XXX?","time":"12 h"}}';
-      localStorage.setItem('luigi.preferences.userSettings', userSettings);
 
-      cy.visit('/projects/pr1/user_settings');
-      cy.getIframeBody().then($iframeBody => {
-        cy.wrap($iframeBody).should('contain', 'LuigiClient User Settings');
-      });
-      cy.clearLocalStorage('luigi.preferences.userSettings');
+  describe('Collapsible Categories / Accordion', () => {
+    it('It should have multiple categories collapsed', () => {
+      cy.visit('/projects/pr2/collapsibles');
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+      ).click();
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+      ).click();
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
     });
 
-    it('It should not display user settings info when userSettingsGroup not found', () => {
-      const userSettings = '{"mockGroup":{ name: "test"}}';
-      localStorage.setItem('luigi.preferences.userSettings', userSettings);
+    it('It should have a local side nav accordion mode', () => {
+      cy.visit('/projects/pr2/sidenavaccordionmode');
 
-      cy.visit('/projects/pr1/settings');
-      cy.getIframeBody().then($iframeBody => {
-        cy.wrap($iframeBody).should('not.contain', 'LuigiClient User Settings');
+      // All is closed
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+      ).click();
+
+      // First one is open only
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
+
+      // Second one is open only
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'be.visible'
+      );
+
+      cy.get(
+        'li[data-testid="usermanagement"] a[title="User Management"]'
+      ).click();
+
+      // All is closed
+      cy.get(
+        'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+      ).should('not.be.visible');
+      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+        'not.be.visible'
+      );
+    });
+
+    it('It should have a global side nav accordion mode', () => {
+      cy.visit('/projects/pr2/collapsibles');
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          sideNavAccordionMode: true
+        };
+        win.Luigi.configChanged('settings.navigation');
+        // All is closed
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('not.be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'not.be.visible'
+        );
+
+        cy.get(
+          'li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]'
+        ).click();
+
+        // First one is open only
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'not.be.visible'
+        );
+
+        cy.get(
+          'li[data-testid="usermanagement"] a[title="User Management"]'
+        ).click();
+
+        // Second one is open only
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('not.be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'be.visible'
+        );
+
+        cy.get(
+          'li[data-testid="usermanagement"] a[title="User Management"]'
+        ).click();
+
+        // All is closed
+        cy.get(
+          'li[data-testid="superusefulgithublinks"]>ul.fd-nested-list'
+        ).should('not.be.visible');
+        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should(
+          'not.be.visible'
+        );
       });
-      cy.clearLocalStorage('luigi.preferences.userSettings');
     });
   });
+
+
+  describe('Link withoutSync/withSync', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+    });
+
+    it('withoutSync -> it should remain on the current page, highlight tree menu and remain in same page', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        // Link on Main page PR2 exist
+        cy.wrap(result).contains(' with params: project to global settings and back');
+
+        // checking if we have NOT highlighted  menu item
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').not('.is-selected');
+
+        // CLICK ON navigate-withoutSync-virtual-tree
+        // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
+        cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]').click();
+
+        // Url should changed in the main window
+        cy.expectPathToBe('/projects/pr2/virtual-tree');
+        // Click link is still here (we haven't changed page)
+        cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]')
+        // checking if we have highlighted  menu item
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').should('have.class','is-selected');
+
+
+        // checking if we have NOT highlighted  menu item
+        cy.get('a[href="/projects/pr2/settings"]').should('exist').not('.is-selected');
+
+        // CLICK ON navigate-withoutSync-virtual-tree
+        // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
+        cy.wrap(result).find('a[data-testid="navigate-withoutSync-settings"]').click();
+
+        // Url should changed in the main window
+        cy.expectPathToBe('/projects/pr2/settings');
+        // Click link is still here (we haven't changed page)
+        cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]')
+        // checking if we have highlighted  menu item
+        cy.get('a[href="/projects/pr2/settings"]').should('exist').should('have.class','is-selected');
+
+      });
+
+    });
+
+    it('withSync -> it should change page', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        // Link on Main page PR2 exist
+        cy.wrap(result).contains(' with params: project to global settings and back');
+
+
+        // checking if we have NOT highlighted  menu item
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').not('.is-selected');
+
+
+        // CLICK ON navigate-withoutSync-virtual-tree
+        // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
+        cy.wrap(result).find('a[data-testid="navigate-withSync-virtual-tree"]').click();
+
+        // Url should changed in the main window
+        cy.expectPathToBe('/projects/pr2/virtual-tree');
+
+        // Check we have changed page
+        cy.wrap(result).contains(' with params: project to global settings and back').should('not.exist');
+        // checking if we have highlighted  menu item
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').should('have.class','is-selected');
+
+        cy.wrap(result).contains('Add Segments To The Url content');
+      });
+
+    });
+  });
+
+
+
+
+
+
 });
