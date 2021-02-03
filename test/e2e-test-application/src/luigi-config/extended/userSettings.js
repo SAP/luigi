@@ -76,8 +76,7 @@ class UserSettings {
         custom: {
             label: 'Custom',
             sublabel: 'Sublabel',
-            viewUrl: '/examples/microfrontends/multipurpose.html',
-            settings: {}
+            viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
         }
     }
 }
