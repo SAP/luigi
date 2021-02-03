@@ -4,7 +4,7 @@ describe('Navigation', () => {
 
   const openSettingsDialogBox = () => {
     //Click on User Icon (top menu right)
-    cy.get('.fd-user-menu button')
+    cy.get('.fd-avatar')
       .should('exist')
       .click();
 
