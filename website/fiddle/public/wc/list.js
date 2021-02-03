@@ -110,12 +110,24 @@ export default class ListWC extends HTMLElement {
     if (textInput.value) {
       const li = document.createElement('li');
       li.classList.add('item-list-element');
-      li.innerHTML = '<button class="editable-list-remove-item icon">&ominus;</button>'+textInput.value;
+      li.innerHTML = '<button class="editable-list-remove-item icon">&ominus;</button>'+this.escape(textInput.value);
       let button = li.querySelector('button');
       this.itemList.appendChild(li);
       this.handleRemoveItemListeners([button]);
       textInput.value = '';
     }
+  }
+
+  escape(text) {
+    let tagsToReplace = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;'
+    };
+
+    return text.replace(/[&<>]/g, function(tag) {
+      return tagsToReplace[tag] || tag;
+    });
   }
 
   // fires after the element has been attached to the DOM

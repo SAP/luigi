@@ -72,7 +72,7 @@
               <label class="fd-form-label" for="select-1">Type:</label>
               <select
                 [ngModel]="alertTypes[0]"
-                class="fd-form-select"
+                class="fd-form-select luigi__inner-padding"
                 id="select-1"
                 name="type"
                 data-testid="luigi-alert-type"
@@ -164,22 +164,20 @@
             ></app-code-snippet>
           </p>
         </div>
-        <div class="fd-container ">
-          <form #luigiLocalizationForm="ngForm" class="fd-col--3">
-            <div class="fd-form-item">
-              <label class="fd-form-label" for="locale">Locale:</label>
-              <input
-                [ngModel]=""
-                class="fd-input"
-                type="text"
-                name="locale"
-                placeholder=""
-                data-testid="luigi-input-locale"
-                [disabled]="!canChangeLocale"
-              />
-            </div>
-          </form>
-        </div>
+        <form #luigiLocalizationForm="ngForm" class="fd-col--3">
+          <div class="fd-form-item">
+            <label class="fd-form-label" for="locale">Locale:</label>
+            <input
+              [ngModel]=""
+              class="fd-input"
+              type="text"
+              name="locale"
+              placeholder=""
+              data-testid="luigi-input-locale"
+              [disabled]="!canChangeLocale"
+            />
+          </div>
+        </form>
         <button
           class="fd-button"
           data-testid="set-current-locale"
@@ -207,8 +205,8 @@
       </div>
       <div class="fd-layout-panel__body">
         <div class="fd-form-item">
-          <label class="fd-switch__label" for="ImBw4551">
-            <span class="fd-switch fd-switch--compact">
+          <label class="fd-switch fd-switch--compact" for="ImBw4551">
+            <span class="fd-switch__control">
               <input
                 type="checkbox"
                 class="fd-switch__input"
@@ -216,7 +214,7 @@
                 (change)="sendDirtyEvent()"
                 id="ImBw4551"
               />
-              <div class="fd-switch__wrapper">
+              <div class="fd-switch__slider">
                 <div class="fd-switch__track">
                   <span
                     class="fd-switch__handle"
@@ -228,11 +226,11 @@
             </span>
           </label>
         </div>
-        <span *ngIf="!isDirty">
+        <span *ngIf="!isDirty" class="fd-switch__text">
           <strong>There are no unsaved changes</strong> &nbsp;&ndash; toggle
           this to be asked for confirmation when you leave this page
         </span>
-        <span *ngIf="isDirty">
+        <span *ngIf="isDirty" class="fd-switch__text">
           <strong>There are unsaved changes</strong> &nbsp;&ndash; a
           confirmation modal will appear when you navigate
           <a
@@ -503,22 +501,32 @@
                   title: 'Webcomponent in a modal',
                   size: 'm'
                 })
-              ">Open webcomponent in a modal</a>
-            <app-code-snippet data="linkManager()
+              "
+              >Open webcomponent in a modal</a
+            >
+            <app-code-snippet
+              data="linkManager()
               .openAsModal('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a modal',
                 size: 'm'
-              })">
+              })"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                   title: 'Webcomponent in a split view',
                   size: '25'
                 })
-              ">Open webcomponent in splitView</a>
-            <app-code-snippet data="linkManager().openAsSplitView('/projects/pr2/webcomponent', {
+              "
+              >Open webcomponent in splitView</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a split view',
                 size: '25'
               })"
@@ -614,7 +622,7 @@
           ></app-code-snippet>
         </p>
         <div class="fd-container fd-container--fluid">
-          <div class="fd-col--4">
+          <div class="fd-col fd-col--4">
             <input
               type="text"
               class="fd-input fd-has-margin-none"
@@ -622,7 +630,7 @@
               (input)="resetPathExistsResult()"
             />
           </div>
-          <div class="fd-col--8 luigi__input-button--margin">
+          <div class="fd-col fd-col--8 luigi__input-button--margin">
             <button class="fd-button" (click)="checkIfPathExists()">
               Check
             </button>
@@ -639,7 +647,7 @@
       </div>
     </div>
 
-    <div class="fd-layout-panel">
+    <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">
@@ -679,6 +687,57 @@
         </ul>
       </div>
     </div>
+
+    <div class="fd-layout-panel luigi__margin-bottom--small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            LuigiClient - withoutSync()
+          </h3>
+        </div>
+      </div>
+      <div class="fd-layout-panel__body">
+        <ul class="fd-list">
+          <li class="fd-list__item">
+            <a href="javascript:void(0)" class="fd-link" (click)="
+               linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')"
+               data-testid='navigate-withoutSync-virtual-tree'
+            >Go to /projects/pr2/virtual-tree using withoutSync()
+            </a>
+            <app-code-snippet data="linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')">
+            </app-code-snippet>
+          </li>
+
+          <li class="fd-list__item">
+            <a href="javascript:void(0)" class="fd-link navigate-withoutSync-settings" (click)="
+                linkManager().withoutSync().navigate('/projects/pr2/settings')"
+               data-testid='navigate-withoutSync-settings'
+            >Go to /projects/pr2/settings using withoutSync()
+            </a>
+            <app-code-snippet data="linkManager().withoutSync().navigate('/projects/pr2/settings')">
+            </app-code-snippet>
+          </li>
+
+
+          <li class="fd-list__item">
+            <a href="javascript:void(0)" class="fd-link navigate-withSync-virtual-tree"
+               (click)="navigateWithSync('/projects/pr2/virtual-tree')"
+               data-testid='navigate-withSync-virtual-tree'
+            >Go to /projects/pr2/virtual-tree NOT using withoutSync()
+            </a>
+            <app-code-snippet data="linkManager().navigate('/projects/pr2/virtual-tree')">
+            </app-code-snippet>
+          </li>
+
+
+
+        </ul>
+      </div>
+    </div>
+
+
+
+
   </div>
   <div *ngIf="projectId && projectId === 'tabNav'">
     <div class="fd-section__header">
@@ -779,7 +838,7 @@
           </label>
 
           <div class="fd-container fd-container--fluid">
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <input
                 type="text"
                 class="fd-input fd-has-margin-none"
@@ -787,7 +846,7 @@
                 [(ngModel)]="storageDemoKey"
               />
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <input
                 type="text"
                 class="fd-input fd-has-margin-none"
@@ -797,7 +856,10 @@
             </div>
           </div>
 
-          <label class="fd-form-label" data-testid="luigi-current-locale">
+          <label
+            class="fd-col fd-col--12 fd-form-label"
+            data-testid="luigi-current-locale"
+          >
             Async methods
           </label>
 
@@ -806,17 +868,17 @@
             style="padding-top: 5px;"
             *ngIf="!storageDemoOperation"
           >
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_setItem()">
                 setItem
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_getItem()">
                 getItem
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_removeItem()">
                 removeItem
               </button>
@@ -827,17 +889,17 @@
             class="fd-container fd-container--fluid"
             *ngIf="!storageDemoOperation"
           >
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_clear()">
                 clear
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_has()">
                 has
               </button>
             </div>
-            <div class="fd-col--2">
+            <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_getAllKeys()">
                 getAllKeys
               </button>
@@ -849,4 +911,8 @@
   </div>
 </section>
 
-<app-modal *ngIf="projectId === 'pr1'" [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>
+<app-modal
+  *ngIf="projectId === 'pr1'"
+  [modalActive]="modalActive"
+  (modalClosed)="toggleModal()"
+></app-modal>
