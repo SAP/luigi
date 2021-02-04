@@ -365,9 +365,9 @@
                   style="background-image:url('{userInfo.picture}')"
                 ></span>
                 {:else}
-                <span
-                  class="fd-avatar fd-avatar--xs fd-avatar--circle fd-shellbar__avatar--circle"
-                >{userInitials}</span>
+                <i
+                  class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                ></i>
                 {/if}
               </div>
             </div>
@@ -454,7 +454,6 @@
   export let displaySearchResult;
   export let displayCustomSearchResult;
   export let searchResult;
-  export let userInitials;
 
   let store = getContext('store');
   let contextSwitcherToggle = false;
@@ -644,7 +643,6 @@
   export function userInfoUpdate(event) {
     const uInfo = event.detail;
     userInfo = uInfo ? uInfo : {};
-    userInitials = userInfo.name.match(/\b(\w)/g).join('');
   }
 </script>
 

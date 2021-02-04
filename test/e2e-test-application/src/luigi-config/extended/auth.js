@@ -21,9 +21,9 @@ class Auth {
     userInfoFn: () => {
       return new Promise(resolve => {
         resolve({
-          name: 'Luigi User',
-          email: 'luigi.user@example.com'
-          // picture: '/assets/favicon-sap.ico'
+          name: 'Luigi Test',
+          email: 'luigi.user@example.com',
+          picture: '/assets/favicon-sap.ico'
         });
       });
     }
