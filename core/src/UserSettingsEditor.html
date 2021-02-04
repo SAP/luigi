@@ -183,6 +183,7 @@
               <div
                 class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
                 aria-hidden="true">
+                {#if Array.isArray(schemaItem.options)}
                 <div class="fd-popover__wrapper docs-max-height">
                   <ul class="fd-list fd-list--dropdown" role="listbox">
                     {#each schemaItem.options as option, optionIndex}
@@ -195,12 +196,13 @@
                     {/each}
                   </ul>
                 </div>
+                {/if}
               </div>
             </div>
           </div>
         </div>
         {/if}
-        {#if schemaItem.type==='enum' && schemaItem.style === 'button'}
+        {#if schemaItem.type==='enum' && schemaItem.style === 'button' && Array.isArray(schemaItem.options)}
         <div>
           <div class="fd-form-item">
             <div class="fd-segmented-button enum-buttons-container-{key}" role="group" aria-label="Group label">

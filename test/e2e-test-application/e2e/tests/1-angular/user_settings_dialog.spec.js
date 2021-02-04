@@ -245,10 +245,11 @@ describe('Navigation', () => {
     it('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
       let $iframeBody;
 
+      //Click on theming
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(3)
         .click();
-
+      //Check if iframe is loaded and have a red button  
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
@@ -257,14 +258,13 @@ describe('Navigation', () => {
           .contains('Red')
           .click();
       });
-
       saveSettings();
-
       openSettingsDialogBox();
-
+      //Click on theming
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(3)
         .click();
+      //Check if iframe has a red button with a active class
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'active');
@@ -274,10 +274,11 @@ describe('Navigation', () => {
 
     it('Check custom mf without meta data defined in schema', () => {
       let $iframeBody;
-
+      //click on custom
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(4)
         .click();
+      //check if iframe is rendered also there are no meta data set in config.
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
