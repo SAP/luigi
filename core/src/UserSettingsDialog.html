@@ -276,9 +276,9 @@
         height: 100%;
         right: 0;
         overflow-wrap: break-word;
-        padding: 20px;
-        overflow: auto;
-        height: 100%;
+        padding: 0 0px;
+        overflow: hidden;
+        height: 99%;
     }
 
     .lui-usersettings-burger {
@@ -359,15 +359,28 @@
     .iframeUserSettingsCtn {
         overflow: visible;
         -webkit-overflow-scrolling: touch;
-
     }
 
-    .backBtn {
+    .lui-usersettings-content-header__backBtn {
         display: none;
+        float: left;
+        width: 0;
     }
 
     .lui-usersettings-content-header {
-        position: relative;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 50px;
+    }
+
+    .lui-usersettings-content-header__title {
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 50px;
     }
 
 
@@ -397,8 +410,18 @@
             padding-right: 0;
         }
 
-        .backBtn {
+        .lui-usersettings-content-header__backBtn {
             display: block;
+            width: 35%;
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+
+        .lui-usersettings-content-header__title {
+            width: 65%;
         }
     }
 </style>
@@ -451,17 +474,13 @@
             </div>
             <div class="lui-usersettings-content">
                 <div class="lui-usersettings-content-header">
-                    <div class="fd-bar fd-bar--home-page-xl">
-                        <div class="fd-bar__left">
-                            <div class="fd-bar__element backBtn">
-                                <button class="fd-button fd-button--transparent" on:click="{toggleNavMobile}">
-                                    <i class="sap-icon--navigation-left-arrow"></i>
-                                </button>
-                            </div>
-                            <div class="fd-bar__element">
-                                {$getTranslation(userSettingsGroupTitle)}
-                            </div>
-                        </div>
+                    <div class="lui-usersettings-content-header__backBtn">
+                        <button class="fd-button fd-button--transparent" on:click="{toggleNavMobile}">
+                            <i class="sap-icon--navigation-left-arrow"></i>
+                        </button>
+                    </div>
+                    <div class="lui-usersettings-content-header__title">
+                        {$getTranslation(userSettingsGroupTitle)}
                     </div>
                 </div>
                 <div class="usersettingseditor">
