@@ -18,9 +18,19 @@ class UserSettings {
         name: { type: 'string', label: 'Name' },
         email: { type: 'string', label: 'E-Mail', isEditable: false },
         server: { type: 'string', label: 'Server', isEditable: false },
-        checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
+        checkbox: {
+          type: 'boolean',
+          label: 'Checkbox',
+          style: 'checkbox',
+          isEditable: true
+        },
         checkbox2: { type: 'boolean', label: 'Checkbox2', style: 'checkbox' },
-        checkbox3: { type: 'boolean', label: 'Checkbox23', isEditable: false }
+        checkbox3: {
+          type: 'boolean',
+          label: 'Checkbox23',
+          style: 'checkbox',
+          isEditable: false
+        }
       }
     },
     language: {

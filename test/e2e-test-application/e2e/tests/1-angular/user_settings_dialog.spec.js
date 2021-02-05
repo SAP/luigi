@@ -76,15 +76,15 @@ describe('Navigation', () => {
         .should('exist')
         .should('be.disabled');
 
-      //Click on switch checkbox
-      cy.get('[data-testid="lui-us-label-switch_checkbox"]')
-        .should('exist')
-        .click();
-
-      //Check Checkbox is checked
-      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
-        'be.checked'
-      );
+      // //Click on switch checkbox
+      // cy.get('[data-testid="lui-us-label-switch_checkbox"]')
+      //   .should('exist')
+      //   .click();
+      //
+      // //Check Checkbox is checked
+      // cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+      //   'be.checked'
+      // );
 
       //Save Settings
       saveSettings();
@@ -99,9 +99,9 @@ describe('Navigation', () => {
       );
 
       //Check Checkbox is checked
-      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
-        'be.checked'
-      );
+      // cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+      //   'be.checked'
+      // );
 
       //Close settings
       closeSettings();
