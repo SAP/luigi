@@ -76,7 +76,7 @@ describe('Navigation', () => {
         .should('exist')
         .should('be.disabled');
 
-      // //Click on switch checkbox
+      // //Click on switch checkbox TODO to add the test once we deploy 1.9.1
       // cy.get('[data-testid="lui-us-label-switch_checkbox"]')
       //   .should('exist')
       //   .click();
