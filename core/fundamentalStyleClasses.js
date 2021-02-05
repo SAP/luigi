@@ -5,7 +5,7 @@ module.exports = [
   './node_modules/fundamental-styles/dist/action-bar.css',
   // './node_modules/fundamental-styles/dist/alert.css',
   //'./node_modules/fundamental-styles/dist/file-uploader.css',
-  //'./node_modules/fundamental-styles/dist/avatar.css',
+  './node_modules/fundamental-styles/dist/avatar.css',
   //'./node_modules/fundamental-styles/dist/badge.css',
   './node_modules/fundamental-styles/dist/bar.css',
   //'./node_modules/fundamental-styles/dist/breadcrumb.css',

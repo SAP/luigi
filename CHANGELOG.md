@@ -25,6 +25,22 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.9.0] (2021-02-05)
+
+#### :boom: Breaking Change
+* [#1805](https://github.com/SAP/luigi/pull/1805) Update Core fundamental styles from v.11 to v.14 ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :rocket: Added
+* [#1833](https://github.com/SAP/luigi/pull/1833) Move user settings config to an own section ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1744](https://github.com/SAP/luigi/pull/1744) Provide a e2e test for "withoutSync()" bug fix ([@legteodav](https://github.com/legteodav))
+
+#### :bug: Fixed
+* [#1859](https://github.com/SAP/luigi/pull/1859) Change Profile Avatar layout and logic ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+
+
+
 ## [v1.8.1] (2021-01-27)
 
 #### :bug: Fixed
@@ -957,3 +973,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.7.1]: https://github.com/SAP/luigi/compare/v1.7.0...v1.7.1
 [v1.8.0]: https://github.com/SAP/luigi/compare/v1.7.1...v1.8.0
 [v1.8.1]: https://github.com/SAP/luigi/compare/v1.8.0...v1.8.1
+[v1.9.0]: https://github.com/SAP/luigi/compare/v1.8.1...v1.9.0
