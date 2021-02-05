@@ -128,7 +128,7 @@ if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
   publishPackage "plugins" "plugins/auth/public/auth-oauth2"
 fi
 if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
-  checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "oidc-client.min.js" "README.md"
+  checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "README.md"
   publishPackage "plugins" "plugins/auth/public/auth-oidc"
 fi
 
