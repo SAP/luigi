@@ -350,21 +350,29 @@
             <div
               class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }"
             >
-              <button
-                class="fd-shellbar__button fd-button"
-                style="{userInfo.picture?`background-image: url('${userInfo.picture}');background-size:30px;background-repeat: no-repeat;background-position: center;`:''}"
+              <div
+                class="fd-button fd-shellbar__button"
                 aria-expanded="{dropDownStates.profilePopover || false}"
                 aria-haspopup="true"
                 on:click="{() => toggleDropdownState('profilePopover')}"
                 title="{userInfo.name ? userInfo.name : userInfo.email}"
+                role="button"
+                data-testid="luigi-topnav-profile-btn"
               >
+                {#if userInfo.picture}
+                <span
+                  class="fd-avatar fd-avatar--xs fd-avatar--circle"
+                  style="background-image:url('{userInfo.picture}')"
+                ></span>
+                {:else}
                 <i
                   class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 ></i>
-              </button>
+                {/if}
+              </div>
             </div>
             <div
-              class="fd-popover__body fd-popover__body--right"
+              class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
               aria-hidden="{!(dropDownStates.profilePopover || false)}"
               id="profilePopover"
             >
@@ -649,6 +657,11 @@
   .fd-shellbar__button {
     .fd-top-nav__icon {
       color: var(--sapShell_TextColor, #fff);
+    }
+
+    //Override from FD Styles to remove borders around the profile image
+    .fd-shellbar__avatar--circle {
+      border: none;
     }
   }
 
