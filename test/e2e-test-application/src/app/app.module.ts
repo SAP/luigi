@@ -30,6 +30,7 @@ import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.comp
 import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
+import { ViewGroupComponent } from './project/view-group/view-group.component';
 
 @NgModule({
   declarations: [
@@ -57,10 +58,11 @@ import { NavSyncComponent } from './nav-sync/nav-sync.component';
     HideSideNavComponent,
     AnonymousComponent,
     OnNodeActivationComponent,
-    NavSyncComponent
+    NavSyncComponent,
+    ViewGroupComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [LuigiContextService, LuigiAutoNavigationService],
+  providers: [LuigiContextService, LuigiAutoNavigationService, { provide: Window, useValue: window }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
