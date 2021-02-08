@@ -17,10 +17,13 @@ class Navigation {
   }
 
   addNavHrefs = true;
-  preloadViewGroups = false;
+  preloadViewGroups = true;
   viewGroupSettings = {
     tets: {
       preloadUrl: '/sampleapp.html#/preload'
+    },
+    view_group_components: {
+      preloadUrl: '/sampleapp.html#/view-group/preload'
     }
   };
   intentMapping = [
@@ -48,6 +51,45 @@ class Navigation {
         count: projectsCounterFn
       }
     },
+
+    {
+      pathSegment: 'view-groups',
+      label: 'View Groups',
+      children: [
+        {
+          pathSegment: '1',
+          label: 'VG 1',
+          viewUrl: '/sampleapp.html#/view-group/1',
+          viewGroup: 'view_group_components',
+          category: {
+            label: 'View Group',
+            icon: '/assets/github-logo.png',
+            collapsible: true
+          }
+        },
+        {
+          pathSegment: '2',
+          label: 'VG 2',
+          category: 'View Group',
+          viewGroup: 'view_group_components',
+          viewUrl: '/sampleapp.html#/view-group/2'
+        },
+        {
+          pathSegment: '3',
+          label: 'NO VG 3',
+          category: 'View Group',
+          viewUrl: '/sampleapp.html#/view-group/3'
+        },
+        {
+          pathSegment: '4',
+          label: 'NO VG 4',
+          category: 'View Group',
+          viewUrl: '/sampleapp.html#/view-group/4'
+        }
+      ],
+    },
+
+
     {
       hideFromNav: true,
       pathSegment: 'create-environment',
