@@ -64,6 +64,23 @@ describe('Luigi Client ux manager features', () => {
         .contains('Luigi confirmation modal has been confirmed');
     });
 
+    it('Luigi Client confirmation modal with warning type', () => {
+      cy.goToUxManagerMethods($iframeBody);
+
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+
+      cy.wrap($iframeBody)
+        .find('[data-testid=show-luigi-warning-modal]')
+        .click();
+      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('.sap-icon--message-warning').should('be.visible');
+      cy.get('.luigi-modal-confirm').should('not.be.visible');
+
+      cy.get('[data-testid=luigi-modal-dismiss]').click();
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('.sap-icon--message-warning').should('not.be.visible');
+    });
+
     it('Close Luigi Client generic confirmation modal by esc keypress', () => {
       cy.goToUxManagerMethods($iframeBody);
 

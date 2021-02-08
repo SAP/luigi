@@ -17,6 +17,7 @@
     <div class="fd-message-box__body">{settings.body}</div>
     <footer class="fd-bar fd-bar--footer fd-message-box__footer">
       <div class="fd-bar__right">
+        {#if settings.buttonConfirm !== false}
         <div class="fd-bar__element">
           <button
             on:click="{() => dispatch('modalConfirm')}"
@@ -24,11 +25,12 @@
             class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
           >{settings.buttonConfirm}</button>
         </div>
+        {/if}
         <div class="fd-bar__element">
           <button
             on:click="{() => dispatch('modalDismiss')}"
             data-testid="luigi-modal-dismiss"
-            class="fd-button fd-button--transparent fd-button--compact fd-message-box__decisive-button"
+            class="fd-button fd-button--transparent fd-button--compact fd-message-box__decisive-button dismiss-button"
           >{settings.buttonDismiss}</button>
         </div>
       </div>
@@ -63,10 +65,14 @@
 
     settings = Object.assign(defaultSettings, settings);
 
+    const focusedButton = settings.buttonConfirm
+      ? 'confirm-button'
+      : 'dismiss-button';
+
     try {
-      document.querySelector('.confirm-button').focus();
+      document.querySelector(`.${focusedButton}`).focus();
     } catch (e) {
-      console.warn("Couldn't focus confirmation button in modal");
+      console.warn(`Couldn't focus ${focusedButton} in modal`);
     }
   });
 
