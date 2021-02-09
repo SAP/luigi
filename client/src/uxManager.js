@@ -75,7 +75,7 @@ class UxManager extends LuigiClientBase {
    * @param {('confirmation'|'success'|'warning'|'error'|'information')} settings.type the content of the modal type. (Optional)
    * @param {string} [settings.header="Confirmation"] the content of the modal header
    * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
-   * @param {string|false} [settings.buttonConfirm="Yes"] the label for the modal confirm button. Set false for not showing confirmation button.
+   * @param {string|false} [settings.buttonConfirm="Yes"] the label for the modal confirmation button. If set to `false`, the button will not be shown.
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    * @example
