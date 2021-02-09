@@ -798,7 +798,7 @@ Shows a confirmation modal.
     -   `settings.type` **(`"confirmation"` \| `"success"` \| `"warning"` \| `"error"` \| `"information"`)** the content of the modal type. (Optional)
     -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
     -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
-    -   `settings.buttonConfirm` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| `false`)** the label for the modal confirm button. Set false for not showing confirmation button. (optional, default `"Yes"`)
+    -   `settings.buttonConfirm` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| `false`)** the label for the modal confirmation button. If set to `false`, the button will not be shown. (optional, default `"Yes"`)
     -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
 
 ##### Examples
