@@ -87,8 +87,8 @@ Alternatively, to keep the loading indicator until the first micro frontend is u
 
 ## Collapsed left side navigation
 
-If you use **responsiveNavigation = 'semiCollapsible'**  or **'Fiori3'** mode in your settings, you can adjust collapsed state of the left side navigation by using the **collapseLeftSideNav** function. 
+If you use **responsiveNavigation = 'semiCollapsible'**  or **'Fiori3'** mode in your settings, you can adjust collapsed state of the left side navigation by using the **collapseLeftSideNav** function.
 
 * To close the left side navigation, execute **Luigi.ux().collapseLeftSideNav(true)** in Luigi Core once your initial micro frontend has finished loading. It will set the collapsed state to `true` in **Local Storage**. Which closes the left side navgation, by showing only icons.
 
-* Set the value to `false` if you want to make left side navigation to be open.
+* Set the value to `false` if you want to open left side navigation.
