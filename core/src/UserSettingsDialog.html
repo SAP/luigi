@@ -118,19 +118,21 @@
   }
 
   function errorHandling(selectedUserSettingGroupData) {
-    if (GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
-      for (let key in selectedUserSettingGroupData.settings) {
-        let property = selectedUserSettingGroupData.settings[key];
-        if (property.type === 'enum') {
-          if (!Array.isArray(property.options)) {
-            console.error('There is no options array', property.label ? `for "${property.label}"` : '', "defined in the Luigi userSettings config.");
-          }
-        } else if (property.type === undefined) {
-          console.error('There is no "type" ', property.label ? `for "${property.label}"` : '', "defined in the Luigi userSettings config.");
+    if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
+      return;
+    }
+    for (let key in selectedUserSettingGroupData.settings) {
+      let property = selectedUserSettingGroupData.settings[key];
+      if (property.type === 'enum') {
+        if (!Array.isArray(property.options)) {
+          console.error('There is no options array', property.label ? `for "${property.label}"` : '', "defined in the Luigi userSettings config.");
         }
+      } else if (property.type === undefined) {
+        console.error('There is no "type" ', property.label ? `for "${property.label}"` : '', "defined in the Luigi userSettings config.");
       }
     }
   }
+
 
   function openEditor(selectedUserSettingGroup, event) {
     userSettingGroup = selectedUserSettingGroup;
