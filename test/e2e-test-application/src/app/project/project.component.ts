@@ -174,7 +174,14 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     uxManager()
       .showConfirmationModal(settings)
-      .then(() => (this.confirmationModalResult = 'dismissed'));
+      .then(
+        () => {
+          this.confirmationModalResult = 'confirmed';
+        },
+        () => {
+          this.confirmationModalResult = 'dismissed';
+        }
+      );
   }
 
   showAlert() {
