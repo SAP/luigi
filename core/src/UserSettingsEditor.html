@@ -166,7 +166,8 @@
         <input class="fd-input" type="text" placeholder="Field placeholder text" aria-label="Image label"
           data-testid="lui-us-input{i}" bind:value="{storedUserSettingData[userSettingGroup[0]][key]}">
         {:else}
-        <label class="lui-form-text">{storedUserSettingData[userSettingGroup[0]][key]}</label>
+        <label class="lui-form-text"
+          data-testid="lui-us-input{i}">{storedUserSettingData[userSettingGroup[0]][key]}</label>
         {/if}
         {/if}
         {#if schemaItem.type==='enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}

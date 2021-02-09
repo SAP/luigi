@@ -71,10 +71,10 @@ describe('Navigation', () => {
         .should('exist')
         .type(setting_name);
 
-      //Email Input field should be disabled
+      //Email Input field should be disabled and a usual text
       cy.get('[data-testid="lui-us-input1"]')
         .should('exist')
-        .should('be.disabled');
+        .should('have.class', 'lui-form-text');
 
       //Click on Checkbox
       cy.get('.lui-usersettings-content .fd-container .lui-value-container')
