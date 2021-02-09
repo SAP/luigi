@@ -245,7 +245,39 @@ settings: {
 
 ### viewGroup
 - **type**: string
-- **description**: allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin. The value of this parameter is considered as the view group id. For further explanations, see [this section](navigation-configuration.md#view-groups).
+- **description**: allows you to associate nodes to be rendered in the same iframe, as long as they belong to the same origin. 
+The value of this parameter is considered as the view group ID. If you want to use this feature, you must set [preloadViewGroups](navigation-advanced.md#preloadViewGroups) to `true` and provide a preload URL for your view group ID in [viewGroupsSettings](navigation-advanced.md##viewGroupsSettings).
+For further explanations, see [this section](navigation-configuration.md#view-groups). 
+- **example:**
+```javascript
+settings: {
+  navigation: {
+    preloadViewGroups: true,
+    viewGroupSettings:{
+       view_group_components: {
+          preloadUrl: '.....'
+       }   
+    },
+    nodes: {
+      defaultChildNode: 'overview',
+      children: [
+        {
+          pathSegment: 'docs',
+          label: 'Documentation',
+          viewGroup: 'view_group_components',
+          viewUrl: '...'
+        },
+        {
+          pathSegment: 'overview',
+          label: 'Overview',
+          viewGroup: 'view_group_components',
+          viewUrl: '...'
+        }
+      ]
+    }
+  }
+```
+
 
 ### keepSelectedForChildren
 - **type**: boolean
