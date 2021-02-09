@@ -254,7 +254,7 @@
   .fd-side-nav {
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .lui-usersettings-content {
@@ -373,34 +373,25 @@
     }
   }
 </style>
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" />
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
   <div class="fd-dialog__content dialog-size">
     <div class="fd-dialog__header fd-bar fd-bar--header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          <button
-            class="fd-button fd-shellbar__button lui-usersettings-burger"
-            on:click="{toggleNavMobile}"
-            tabindex="0"
-          >
+          <button class="fd-button fd-shellbar__button lui-usersettings-burger" on:click="{toggleNavMobile}"
+            tabindex="0">
             <i class="sap-icon sap-icon--menu2"></i>
           </button>
         </div>
         <div class="fd-bar__element">
-          <h3
-            class="fd-dialog__title"
-            data-testid="lui-us-header"
-          >{$getTranslation(dialogHeader)}</h3>
+          <h3 class="fd-dialog__title" data-testid="lui-us-header">{$getTranslation(dialogHeader)}</h3>
         </div>
       </div>
       <div class="fd-bar__right">
         <div class="fd-bar__element">
-          <button
-            class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
-            on:click="{() => dispatch('close')}"
-            aria-label="close"
-          ></button>
+          <button class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
+            on:click="{() => dispatch('close')}" aria-label="close"></button>
         </div>
       </div>
     </div>
@@ -413,38 +404,26 @@
                 {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
                 {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
                 <li class="fd-nested-list__item">
-                  <a
-                    class="fd-nested-list__link"
-                    on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
-                  >
+                  <a class="fd-nested-list__link"
+                    on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
                     <div class="lui-usersettings-list-item__info-container">
                       {#if userSettingsGroupProperty[1].icon}
                       {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                      <span
-                        class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"
-                      ></span>
+                      <span class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
                       {:else}
-                      <span
-                        class="fd-nested-list__icon sap-icon"
-                      >
-                        <img
-                          src="{userSettingsGroupProperty[1].icon}"
-                          alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
-                        >
+                      <span class="fd-nested-list__icon sap-icon">
+                        <img src="{userSettingsGroupProperty[1].icon}"
+                          alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
                       </span>
                       {/if}
                       {:else}
-                      <span
-                        class="fd-nested-list__icon sap-icon"
-                      ></span>
+                      <span class="fd-nested-list__icon sap-icon"></span>
                       {/if}
                       <div class="lui-usersettings-list-item__title-container">
                         <span
-                          class="lui-usersettings-list-item__title"
-                        >{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
+                          class="lui-usersettings-list-item__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
                         <span
-                          class="lui-usersettings-list-item__subtitle"
-                        >{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
+                          class="lui-usersettings-list-item__subtitle">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
                       </div>
                     </div>
                   </a>
@@ -459,11 +438,8 @@
       <div class="lui-usersettings-content">
         <div class="usersettingseditor">
           {#if userSettingGroup}
-          <UserSettingsEditor
-            storedUserSettingData="{storedUserSettings}"
-            userSettingGroup="{userSettingGroup}"
-            on:updateSettingsObject="{updateSettingsObject}"
-          ></UserSettingsEditor>
+          <UserSettingsEditor storedUserSettingData="{storedUserSettings}" userSettingGroup="{userSettingGroup}"
+            on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
           {/if}
         </div>
         <div class="iframeUserSettingsCtn"></div>
@@ -472,18 +448,12 @@
     <footer class="fd-dialog__footer fd-bar fd-bar--footer">
       <div class="fd-bar__right">
         <div class="fd-bar__element">
-          <button
-            on:click="{() => storeUserSettings()}"
-            data-testid="lui-us-saveBtn"
-            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button"
-          >{$getTranslation(saveBtn)}</button>
+          <button on:click="{() => storeUserSettings()}" data-testid="lui-us-saveBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">{$getTranslation(saveBtn)}</button>
         </div>
         <div class="fd-bar__element">
-          <button
-            on:click="{() => dispatch('close')}"
-            data-testid="lui-us-dismissBtn"
-            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
-          >{$getTranslation(dismissBtn)}</button>
+          <button on:click="{() => dispatch('close')}" data-testid="lui-us-dismissBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact">{$getTranslation(dismissBtn)}</button>
         </div>
       </div>
     </footer>
