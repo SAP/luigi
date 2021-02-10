@@ -221,7 +221,7 @@ describe('Fiddle', () => {
         cy.visitWithFiddleConfig('/home/two', newConfig);
       });
       it('Static profile, and logging out with customLogoutFn', () => {
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
@@ -294,7 +294,7 @@ describe('Fiddle', () => {
         newConfig.auth.disableAutoLogin = true;
         visitWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('not.exist');
         loginLink().should('exist');
       });
@@ -304,7 +304,7 @@ describe('Fiddle', () => {
         visitWithAuthConfig('/', newConfig);
 
         // Logged out
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('not.exist');
         loginLink().should('exist');
 
@@ -313,7 +313,7 @@ describe('Fiddle', () => {
         cy.login('tets@email.com', 'tets', true);
 
         // Logged in
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         loginLink().should('not.exist');
         logoutLink().should('exist');
 
@@ -331,31 +331,33 @@ describe('Fiddle', () => {
         newConfig.auth.disableAutoLogin = false;
         visitLoggedInWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
         // Verify profile value
         logoutLink().contains('Bye bye');
       });
+
       it('No profile, logged in', () => {
         newConfig.navigation.profile = undefined;
         newConfig.auth.disableAutoLogin = false;
         visitLoggedInWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
         // Verify default value
         logoutLink().contains('Sign Out');
       });
+
       it('Trigger Login and Logout with Core API', () => {
         newConfig.navigation.profile = undefined;
         newConfig.auth.disableAutoLogin = true;
         visitWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         loginLink().should('exist');
 
         cy.window().then(win => {
@@ -365,7 +367,7 @@ describe('Fiddle', () => {
 
         cy.login('tets@email.com', 'tets', true);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
 
         cy.window().then(win => {
@@ -385,19 +387,21 @@ describe('Fiddle', () => {
           }
         };
         visitLoggedInWithAuthConfig('/', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('My UserSettings');
       });
+
       it('User settings in profile menu with default label', () => {
         newConfig.settings = {
           userSettings: {}
         };
         visitLoggedInWithAuthConfig('/', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('Settings');
       });
+
       it('User settings not in the profile menu, if not configured', () => {
         newConfig.navigation.profile = {
           logout: {
@@ -408,7 +412,7 @@ describe('Fiddle', () => {
         newConfig.auth.disableAutoLogin = false;
         visitLoggedInWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         cy.get('[data-testid="settings-link"]').should('not.exist');
       });
@@ -663,7 +667,7 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/index.html')
+        expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
       });
     });
   });
