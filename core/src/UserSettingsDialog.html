@@ -118,10 +118,28 @@
     return userSettingsObject;
   }
 
+  function errorHandling(selectedUserSettingGroupData) {
+    if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
+      return;
+    }
+    for (let key in selectedUserSettingGroupData.settings) {
+      let property = selectedUserSettingGroupData.settings[key];
+      if (property.type === 'enum') {
+        if (!Array.isArray(property.options)) {
+          console.error(`There is no options array for '${key}' defined in the Luigi userSettings config.`);
+        }
+      } else if (property.type === undefined) {
+        console.error(`There is no data type defined for '${key}' in the Luigi userSettings config.`);
+      }
+    }
+  }
+
+
   function openEditor(selectedUserSettingGroup, event) {
     userSettingGroup = selectedUserSettingGroup;
     let selectedUserSettingGroupKey = selectedUserSettingGroup[0];
     let selectedUserSettingGroupData = selectedUserSettingGroup[1];
+    errorHandling(selectedUserSettingGroupData);
     if (event) {
       document
         .querySelectorAll('.lui-us-list .fd-nested-list__link')
@@ -255,7 +273,7 @@
   .fd-side-nav {
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .lui-usersettings-content {
@@ -265,7 +283,6 @@
     height: 100%;
     right: 0;
     overflow-wrap: break-word;
-    padding: 20px;
     overflow: auto;
     height: 100%;
   }
@@ -344,6 +361,10 @@
   .iframeUserSettingsCtn {
     overflow: visible;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .usersettingseditor {
+    padding: 20px;
   }
 
   @media (max-width: 600px) {

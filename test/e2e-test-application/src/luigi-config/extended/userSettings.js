@@ -80,15 +80,18 @@ class UserSettings {
       label: 'Theming',
       title: 'Theming',
       icon: 'private',
-      viewUrl: 'http://localhost:8081/index.html',
+      viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
       settings: {
         theme: {
-          type: 'enum',
-          label: 'theme',
-          options: ['red', 'green']
+          type: 'enum', label: 'theme', options: ['red', 'green']
         }
       }
+    },
+    custom: {
+      label: 'Custom',
+      sublabel: 'Sublabel',
+      viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
     }
-  };
+  }
 }
 export const userSettings = new UserSettings();
