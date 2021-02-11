@@ -32,8 +32,8 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#1863](https://github.com/SAP/luigi/pull/1863) Support types for confirmation modal ([@stanleychh](https://github.com/stanleychh))
 
 #### :bug: Fixed
-* [#1861](https://github.com/SAP/luigi/pull/1861) Check if meta data are configured ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#1883](https://github.com/SAP/luigi/pull/1883) fix backwards compatibility test for read/write usersettings and "use… ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1861](https://github.com/SAP/luigi/pull/1861) Error handling for user settings dialog ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1883](https://github.com/SAP/luigi/pull/1883) Bugfix in read/write custom function in luigi user settings config([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 
 
