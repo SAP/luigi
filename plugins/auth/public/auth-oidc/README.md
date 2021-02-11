@@ -69,7 +69,7 @@ You must install `oidc-client` in your project as a dev dependency:
 npm i -save-dev copy-webpack-plugin
 ```
 
-Now you would need to import plugin files and oidc-client library in your project, using webpack:
+Then, you need to import the plugin files and `oidc-client` library in your project using webpack:
 
 ```javascript
 const CopyWebpackPlugin = require('copy-webpack-plugin');
