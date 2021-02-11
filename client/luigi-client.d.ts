@@ -10,9 +10,10 @@ export declare interface AuthData {
 }
 
 export declare interface ConfirmationModalSettings {
+  type?: string;
   header?: string;
   body?: string;
-  buttonConfirm?: string;
+  buttonConfirm?: string | boolean;
   buttonDismiss?: string;
 }
 

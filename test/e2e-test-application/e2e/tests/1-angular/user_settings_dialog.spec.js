@@ -74,17 +74,14 @@ describe('Navigation', () => {
         .should('exist')
         .should('be.disabled');
 
-      //Click on Checkbox
-      cy.get('.lui-usersettings-content .fd-container .lui-value-container')
-        .eq(3)
-        .find('.fd-checkbox')
-        .check();
+      cy.get('[data-testid="lui-us-label-switch_checkbox"]')
+        .should('exist')
+        .click();
 
       //Check Checkbox is checked
-      cy.get('.lui-usersettings-content .fd-container .lui-value-container')
-        .eq(3)
-        .find('.fd-checkbox')
-        .should('be.checked');
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+        'be.checked'
+      );
 
       //Save Settings
       saveSettings();
@@ -99,10 +96,9 @@ describe('Navigation', () => {
       );
 
       //Check Checkbox is checked
-      cy.get('.lui-usersettings-content .fd-container .lui-value-container')
-        .eq(3)
-        .find('.fd-checkbox')
-        .should('be.checked');
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+        'be.checked'
+      );
 
       //Close settings
       closeSettings();

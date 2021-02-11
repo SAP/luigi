@@ -36,7 +36,8 @@
   let storedUserSettingsData;
 
   onMount(() => {
-    const usLocalization = LuigiConfig.getConfigValue(
+    const usLocalizationConfig = LuigiConfig.getConfigValue('userSettings.userSettingsDialog');
+    const usLocalization = usLocalizationConfig ? usLocalizationConfig : LuigiConfig.getConfigValue(
       'settings.userSettings.userSettingsDialog'
     );
     if (usLocalization) {
