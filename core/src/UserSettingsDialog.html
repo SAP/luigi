@@ -125,10 +125,10 @@
       let property = selectedUserSettingGroupData.settings[key];
       if (property.type === 'enum') {
         if (!Array.isArray(property.options)) {
-          console.error('There is no options array', property.label ? `for "${property.label}"` : '', "defined in the Luigi userSettings config.");
+          console.error(`There is no options array for '${key}' defined in the Luigi userSettings config.`);
         }
       } else if (property.type === undefined) {
-        console.error('There is no "type" ', property.label ? `for "${property.label}"` : '', "defined in the Luigi userSettings config.");
+        console.error(`There is no data type defined for '${key}' in the Luigi userSettings config.`);
       }
     }
   }
@@ -272,7 +272,7 @@
   .fd-side-nav {
     height: 100%;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .lui-usersettings-content {
@@ -282,7 +282,6 @@
     height: 100%;
     right: 0;
     overflow-wrap: break-word;
-    padding: 20px;
     overflow: auto;
     height: 100%;
   }
