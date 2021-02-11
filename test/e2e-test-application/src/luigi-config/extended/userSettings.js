@@ -68,6 +68,12 @@ class UserSettings {
           type: 'string',
           label: 'Privacy policy has not been defined.'
         },
+        time: {
+          type: 'enum',
+          style: 'button',
+          label: 'Time Format',
+          options: ['12 h', '24 h']
+        }
       }
     },
     theming: {
