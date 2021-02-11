@@ -21,18 +21,18 @@ class UserSettings {
                 checkbox: {
                     type: 'boolean',
                     label: 'Checkbox',
-                    style: 'checkbox',
+                    // style: 'checkbox',
                     isEditable: true
                 },
                 checkbox2: {
                     type: 'boolean',
-                    label: 'Checkbox2',
-                    style: 'checkbox'
+                    label: 'Checkbox2'
+                    // style: 'checkbox'
                 },
                 checkbox3: {
                     type: 'boolean',
                     label: 'Checkbox23',
-                    style: 'checkbox',
+                    // style: 'checkbox',
                     isEditable: false
                 }
             }
