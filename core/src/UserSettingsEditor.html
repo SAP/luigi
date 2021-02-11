@@ -249,13 +249,36 @@
           </div>
         </div>
         {/if}
-        {#if schemaItem.type==='boolean'}
+        {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style === 'switch')}
+        <label
+          class="fd-switch fd-switch--compact"
+          data-testid="lui-us-label-switch_{key}"
+        >
+          <span class="fd-switch__control">
+            <input
+              class="fd-switch__input"
+              type="checkbox"
+              aria-labelledby="label1"
+              data-testid="lui-us-checkbox-switch_{key}"
+              disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+              bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
+            >
+            <div class="fd-switch__slider">
+              <div class="fd-switch__track">
+                <span class="fd-switch__handle" role="presentation"></span>
+              </div>
+            </div>
+          </span>
+        </label>
+        {/if}
+        {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
         <input
           type="checkbox"
           class="fd-checkbox"
           disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
           bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
         >
+
         {/if}
       </div>
       {/each}
