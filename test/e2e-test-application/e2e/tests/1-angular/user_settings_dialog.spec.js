@@ -14,7 +14,7 @@ describe('Navigation', () => {
       .click();
 
     //Check Dialog is open
-    cy.get('[data-testid="lui-us-header"]').should('exist');
+    cy.get('.lui-usersettings-dialog').should('exist');
 
     //Check we have 3 left bar items
     cy.get('.lui-usersettings-body .fd-nested-list__link')
@@ -29,7 +29,7 @@ describe('Navigation', () => {
       .click();
 
     //Check settings dialog box is closed...
-    cy.get('[data-testid="lui-us-header"]').should('not.exist');
+    cy.get('.lui-usersettings-dialog').should('not.exist');
   };
 
   const closeSettings = () => {
@@ -39,7 +39,7 @@ describe('Navigation', () => {
       .click();
 
     //Check settings dialog box is closed...
-    cy.get('[data-testid="lui-us-header"]').should('not.exist');
+    cy.get('.lui-usersettings-dialog').should('not.exist');
   };
 
   beforeEach(() => {
