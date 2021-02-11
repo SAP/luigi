@@ -665,7 +665,7 @@ describe('Fiddle', () => {
         .contains('Theme')
         .click();
 
-      cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
+      cy.get('. iframe').then(ifr => {
         expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
       });
     });

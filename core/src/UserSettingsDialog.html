@@ -178,12 +178,12 @@
   }
 
   function displayCustomEditor() {
-    document.querySelector('.iframe-user-settings-ctn').style.display = 'block';
+    document.querySelector('.iframeUserSettingsCtn').style.display = 'block';
     document.querySelector('.usersettingseditor').style.display = 'none';
   }
 
   function diplayUserSettingsEditor() {
-    document.querySelector('.iframe-user-settings-ctn').style.display = 'none';
+    document.querySelector('.iframeUserSettingsCtn').style.display = 'none';
     document.querySelector('.usersettingseditor').style.display = 'block';
   }
 
@@ -410,7 +410,7 @@
     padding-top: 0.875rem;
   }
 
-  .iframe-user-settings-ctn {
+  .iframeUserSettingsCtn {
     position: relative;
     width: 100%;
     height: 100%;
@@ -418,7 +418,7 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  .iframe-user-settings-ctn :global(iframe) {
+  .iframeUserSettingsCtn :global(iframe) {
     width: 100%;
     height: 100%;
     border: none;
@@ -514,19 +514,19 @@
       padding-top: 0.875rem;
     }
 
-    .iframe-user-settings-ctn {
+    .iframeUserSettingsCtn {
       position: relative;
       width: 100%;
       height: 100%;
     }
 
-    .iframe-user-settings-ctn :global(iframe) {
+    .iframeUserSettingsCtn :global(iframe) {
       width: 100%;
       height: 100%;
       border: none;
     }
 
-    .iframe-user-settings-ctn {
+    .iframeUserSettingsCtn {
       overflow: visible;
       -webkit-overflow-scrolling: touch;
     }
@@ -684,7 +684,7 @@
           ></UserSettingsEditor>
           {/if}
         </div>
-        <div class="iframe-user-settings-ctn iframe-wrapper"></div>
+        <div class="iframeUserSettingsCtn iframe-wrapper"></div>
       </div>
     </div>
     <footer class="fd-dialog__footer fd-bar fd-bar--footer">
