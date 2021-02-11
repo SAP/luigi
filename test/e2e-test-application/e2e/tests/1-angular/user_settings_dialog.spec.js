@@ -245,7 +245,8 @@ describe('Navigation', () => {
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(3)
         .click();
-      //Check if iframe is loaded and have a red button  
+      cy.wait(5000);
+      //Check if iframe is loaded and have a red button
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
@@ -261,6 +262,7 @@ describe('Navigation', () => {
         .eq(3)
         .click();
       //Check if iframe has a red button with a active class
+      cy.wait(5000);
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'active');
@@ -274,6 +276,7 @@ describe('Navigation', () => {
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(4)
         .click();
+      cy.wait(5000);
       //check if iframe is rendered also there are no meta data set in config.
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
