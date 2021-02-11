@@ -49,7 +49,7 @@ module.exports = [
   './node_modules/fundamental-styles/dist/select.css',
   './node_modules/fundamental-styles/dist/shellbar.css',
   './node_modules/fundamental-styles/dist/side-nav.css',
-  // './node_modules/fundamental-styles/dist/switch.css',
+  './node_modules/fundamental-styles/dist/switch.css',
   //'./node_modules/fundamental-styles/dist/step-input.css'
   //'./node_modules/fundamental-styles/dist/table.css',
   './node_modules/fundamental-styles/dist/tabs.css',
