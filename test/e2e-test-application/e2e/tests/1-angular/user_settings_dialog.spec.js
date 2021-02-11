@@ -76,15 +76,14 @@ describe('Navigation', () => {
         .should('exist')
         .should('be.disabled');
 
-      // //Click on switch checkbox TODO to add the test once we deploy 1.9.1
-      // cy.get('[data-testid="lui-us-label-switch_checkbox"]')
-      //   .should('exist')
-      //   .click();
-      //
-      // //Check Checkbox is checked
-      // cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
-      //   'be.checked'
-      // );
+      cy.get('[data-testid="lui-us-label-switch_checkbox"]')
+        .should('exist')
+        .click();
+
+      //Check Checkbox is checked
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+        'be.checked'
+      );
 
       //Save Settings
       saveSettings();
@@ -99,9 +98,9 @@ describe('Navigation', () => {
       );
 
       //Check Checkbox is checked
-      // cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
-      //   'be.checked'
-      // );
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+        'be.checked'
+      );
 
       //Close settings
       closeSettings();
