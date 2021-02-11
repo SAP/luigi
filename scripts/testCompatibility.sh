@@ -90,7 +90,7 @@ promptForTag() {
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" # get access to all origin branches
     echo "Get latest tag"
     git tag -l --sort=committerdate | tail -1
-    LATEST_LOCAL_TAG=`(git tag -l | tail -1)`
+    LATEST_LOCAL_TAG=`(git tag -l --sort=committerdate | tail -1)`
     if [ "" = "$LATEST_LOCAL_TAG" ]; then
         echo "No tags available, raise depth on git pull"
         exit 2
