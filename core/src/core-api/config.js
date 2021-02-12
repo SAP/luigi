@@ -245,9 +245,8 @@ class LuigiConfig {
    * @since 1.7.1
    */
   async readUserSettings() {
-    const userSettings = await this.getConfigValueAsync(
-      'settings.userSettings'
-    );
+    const userSettingsConfig = await this.getConfigValueAsync('userSettings');
+    const userSettings = userSettingsConfig ? userSettingsConfig : await this.getConfigValueAsync('settings.userSettings');
     if (
       userSettings &&
       GenericHelpers.isFunction(userSettings.readUserSettings)
@@ -272,7 +271,8 @@ class LuigiConfig {
    * @since 1.7.1
    */
   async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
-    const userSettings = await this.getConfigValueAsync('settings.userSettings');
+    const userSettingsConfig = await this.getConfigValueAsync('userSettings');
+    const userSettings = userSettingsConfig ? userSettingsConfig : await this.getConfigValueAsync('settings.userSettings');
     if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
       return userSettings.storeUserSettings(userSettingsObj, previousUserSettingsObj);
     }

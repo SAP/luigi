@@ -19,7 +19,7 @@ describe('Navigation', () => {
     //Check we have 3 left bar items
     cy.get('.lui-usersettings-body .fd-nested-list__link')
       .children()
-      .should('have.length', 4);
+      .should('have.length', 5);
   };
 
   const saveSettings = () => {
@@ -43,6 +43,7 @@ describe('Navigation', () => {
   };
 
   beforeEach(() => {
+    clearStorage();
     cy.visitLoggedIn('/');
     openSettingsDialogBox();
   });
@@ -53,9 +54,6 @@ describe('Navigation', () => {
     const setting_privacy_policy = 'privacy_policy_' + new Date().getTime();
 
     it('Fill Account and save; reopen and check saved value', () => {
-      //Clear storage before to save it
-      clearStorage();
-
       //Click on User Account
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(0)
@@ -76,17 +74,14 @@ describe('Navigation', () => {
         .should('exist')
         .should('have.class', 'lui-form-text');
 
-      //Click on Checkbox
-      cy.get('.lui-usersettings-content .fd-container .lui-value-container')
-        .eq(3)
-        .find('.fd-checkbox')
-        .check();
+      cy.get('[data-testid="lui-us-label-switch_checkbox"]')
+        .should('exist')
+        .click();
 
       //Check Checkbox is checked
-      cy.get('.lui-usersettings-content .fd-container .lui-value-container')
-        .eq(3)
-        .find('.fd-checkbox')
-        .should('be.checked');
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+        'be.checked'
+      );
 
       //Save Settings
       saveSettings();
@@ -101,19 +96,15 @@ describe('Navigation', () => {
       );
 
       //Check Checkbox is checked
-      cy.get('.lui-usersettings-content .fd-container .lui-value-container')
-        .eq(3)
-        .find('.fd-checkbox')
-        .should('be.checked');
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
+        'be.checked'
+      );
 
       //Close settings
       closeSettings();
     });
 
     it('Fill Language and Reason and save; reopen and check saved values', () => {
-      //Clear storage before to save it
-      clearStorage();
-
       //Click on Language & Region
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(1)
@@ -182,9 +173,6 @@ describe('Navigation', () => {
     });
 
     it('Fill Privacy and save; reopen and check saved value', () => {
-      //Clear storage before to save it
-      clearStorage();
-
       //Click on Privacy
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(2)
@@ -248,6 +236,52 @@ describe('Navigation', () => {
 
       //Close settings
       closeSettings();
+    });
+
+    it('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
+      let $iframeBody;
+
+      //Click on theming
+      cy.get('.lui-usersettings-body .fd-nested-list__link')
+        .eq(3)
+        .click();
+      cy.wait(5000);
+      //Check if iframe is loaded and have a red button
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
+        cy.wrap($iframeBody).contains('Red').should('not.have.class', 'active');
+        cy.wrap($iframeBody)
+          .contains('Red')
+          .click();
+      });
+      saveSettings();
+      openSettingsDialogBox();
+      //Click on theming
+      cy.get('.lui-usersettings-body .fd-nested-list__link')
+        .eq(3)
+        .click();
+      //Check if iframe has a red button with a active class
+      cy.wait(5000);
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).contains('Red').should('have.class', 'active');
+      });
+
+    });
+
+    it('Check custom mf without meta data defined in schema', () => {
+      let $iframeBody;
+      //click on custom
+      cy.get('.lui-usersettings-body .fd-nested-list__link')
+        .eq(4)
+        .click();
+      cy.wait(5000);
+      //check if iframe is rendered also there are no meta data set in config.
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
+      });
     });
   });
 });

@@ -32,7 +32,10 @@
   let userSettingsGroupTitle;
 
   onMount(() => {
-    const usLocalization = LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
+    const usLocalizationConfig = LuigiConfig.getConfigValue('userSettings.userSettingsDialog');
+    const usLocalization = usLocalizationConfig ? usLocalizationConfig : LuigiConfig.getConfigValue(
+      'settings.userSettings.userSettingsDialog'
+    );
     if (usLocalization) {
       dialogHeader = usLocalization.dialogHeader ? usLocalization.dialogHeader : dialogHeader;
       saveBtn = usLocalization.saveBtn ? usLocalization.saveBtn : saveBtn;
@@ -91,11 +94,29 @@
     return userSettingsObject;
   }
 
+  function errorHandling(selectedUserSettingGroupData) {
+    if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
+      return;
+    }
+    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
+    for (let key in selectedUserSettingGroupData.settings) {
+      let property = selectedUserSettingGroupData.settings[key];
+      if (property.type === 'enum') {
+        if (!Array.isArray(property.options)) {
+          console.error(`There is no options array for '${key}' defined in the Luigi userSettings config.`);
+        }
+      } else if (property.type === undefined) {
+        console.error(`There is no data type defined for '${key}' in the Luigi userSettings config.`);
+      }
+    }
+  }
+
+
   function openEditor(selectedUserSettingGroup, event) {
     userSettingGroup = selectedUserSettingGroup;
     let selectedUserSettingGroupKey = selectedUserSettingGroup[0];
     let selectedUserSettingGroupData = selectedUserSettingGroup[1];
-    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
+    errorHandling(selectedUserSettingGroupData);
     if (event) {
       document.querySelectorAll('.lui-us-list .fd-nested-list__link').forEach(elem => {
         elem.classList.remove('is-selected');
@@ -279,6 +300,8 @@
     padding: 0 0px;
     overflow: hidden;
     height: 99%;
+    /* overflow: auto;
+    height: 100%; */
   }
 
   .lui-usersettings-burger {
@@ -384,6 +407,10 @@
   }
 
 
+  .usersettingseditor {
+    padding: 20px;
+  }
+
   @media (max-width: 600px) {
     .dialog-size {
       height: 80vh;
@@ -445,15 +472,15 @@
                     <div class="lui-usersettings-list-item__info-container">
                       {#if userSettingsGroupProperty[1].icon}
                       {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                      <span class="fd-nested-list__icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
+                      <span class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
                       {:else}
-                      <span class="fd-nested-list__icon">
+                      <span class="fd-nested-list__icon sap-icon">
                         <img src="{userSettingsGroupProperty[1].icon}"
                           alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
                       </span>
                       {/if}
                       {:else}
-                      <span class="fd-nested-list__icon"></span>
+                      <span class="fd-nested-list__icon sap-icon"></span>
                       {/if}
                       <div class="lui-usersettings-list-item__title-container">
                         <span
@@ -484,9 +511,8 @@
         </div>
         <div class="usersettingseditor">
           {#if userSettingGroup}
-          <UserSettingsEditor storedUserSettingData={storedUserSettings} userSettingGroup={userSettingGroup}
-            on:updateSettingsObject="{updateSettingsObject}">
-          </UserSettingsEditor>
+          <UserSettingsEditor storedUserSettingData="{storedUserSettings}" userSettingGroup="{userSettingGroup}"
+            on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
           {/if}
         </div>
         <div class="iframeUserSettingsCtn"></div>
@@ -495,12 +521,12 @@
     <footer class="fd-dialog__footer fd-bar fd-bar--footer">
       <div class="fd-bar__right">
         <div class="fd-bar__element">
-          <button on:click="{()=> storeUserSettings()}" data-testid="lui-us-saveBtn" class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact
-                        confirm-button">{$getTranslation(saveBtn)}</button>
+          <button on:click="{() => storeUserSettings()}" data-testid="lui-us-saveBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">{$getTranslation(saveBtn)}</button>
         </div>
         <div class="fd-bar__element">
-          <button on:click="{()=> dispatch('close')}" data-testid="lui-us-dismissBtn" class="fd-dialog__decisive-button fd-button fd-button--transparent
-                        fd-button--compact">{$getTranslation(dismissBtn)}</button>
+          <button on:click="{() => dispatch('close')}" data-testid="lui-us-dismissBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact">{$getTranslation(dismissBtn)}</button>
         </div>
       </div>
     </footer>
