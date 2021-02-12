@@ -82,7 +82,7 @@
     position: relative;
   }
 
-  .lui-value-container>input[type="checkbox"] {
+  .lui-value-container>input[type='checkbox'] {
     margin-top: 13px;
   }
 
@@ -107,6 +107,26 @@
     display: flex;
   }
 
+  .lui-title--h2 {
+    font-size: var(--sapFontHeader2Size, 1.5rem);
+  }
+
+  .lui-title {
+    line-height: var(--sapContent_LineHeight, 1.4);
+    font-family: var(--sapFontFamily,
+        '72',
+        '72full',
+        Arial,
+        Helvetica,
+        sans-serif);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    color: var(--sapTextColor, #32363a);
+  }
 
   .lui-fd-enum-button {
     margin-top: 6px;
@@ -120,6 +140,10 @@
 </style>
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
+  <div class="lui-us-content-header-container">
+    <h1 class="lui-title lui-title--h2">{userSettingGroup[1].title?$getTranslation(userSettingGroup[1].title):''}</h1>
+  </div>
+  {#if userSettingGroup[1].settings}
   <div class="fd-page__content">
     <div class="fd-container lui-form-grid">
       {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
@@ -159,6 +183,7 @@
               <div
                 class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
                 aria-hidden="true">
+                {#if Array.isArray(schemaItem.options)}
                 <div class="fd-popover__wrapper docs-max-height">
                   <ul class="fd-list fd-list--dropdown" role="listbox">
                     {#each schemaItem.options as option, optionIndex}
@@ -171,12 +196,13 @@
                     {/each}
                   </ul>
                 </div>
+                {/if}
               </div>
             </div>
           </div>
         </div>
         {/if}
-        {#if schemaItem.type==='enum' && schemaItem.style === 'button'}
+        {#if schemaItem.type==='enum' && schemaItem.style === 'button' && Array.isArray(schemaItem.options)}
         <div>
           <div class="fd-form-item">
             <div class="fd-segmented-button enum-buttons-container-{key}" role="group" aria-label="Group label">
@@ -191,14 +217,30 @@
           </div>
         </div>
         {/if}
-        {#if schemaItem.type==='boolean'}
+        {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style === 'switch')}
+        <label class="fd-switch fd-switch--compact" data-testid="lui-us-label-switch_{key}">
+          <span class="fd-switch__control">
+            <input class="fd-switch__input" type="checkbox" aria-labelledby="label1"
+              data-testid="lui-us-checkbox-switch_{key}"
+              disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+              bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}">
+            <div class="fd-switch__slider">
+              <div class="fd-switch__track">
+                <span class="fd-switch__handle" role="presentation"></span>
+              </div>
+            </div>
+          </span>
+        </label>
+        {/if}
+        {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
         <input type="checkbox" class="fd-checkbox"
           disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-          bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}" />
+          bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}">
         {/if}
       </div>
       {/each}
     </div>
   </div>
+  {/if}
   {/if}
 </div>

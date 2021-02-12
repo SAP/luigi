@@ -28,7 +28,9 @@
     <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
-          <h3 class="fd-layout-panel__title">Confirmation modal</h3>
+          <h3 class="fd-layout-panel__title">
+            Confirmation modal with confirmation type
+          </h3>
         </div>
       </div>
       <div class="fd-layout-panel__body">
@@ -55,6 +57,30 @@
           *ngIf="confirmationModalResult"
         >
           Luigi confirmation modal has been {{ confirmationModalResult }}
+        </p>
+      </div>
+    </div>
+
+    <div class="fd-layout-panel luigi__margin-bottom--small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            Confirmation modal with warning type
+          </h3>
+        </div>
+      </div>
+      <div class="fd-layout-panel__body">
+        <button
+          class="fd-button"
+          data-testid="show-luigi-warning-modal"
+          (click)="showWarningModal()"
+        >
+          Show Luigi confirmation modal with warning type
+        </button>
+        <p>
+          <app-code-snippet
+            data="uxManager().showConfirmationModal(content)"
+          ></app-code-snippet>
         </p>
       </div>
     </div>
@@ -699,45 +725,57 @@
       <div class="fd-layout-panel__body">
         <ul class="fd-list">
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
-               linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')"
-               data-testid='navigate-withoutSync-virtual-tree'
-            >Go to /projects/pr2/virtual-tree using withoutSync()
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager()
+                  .withoutSync()
+                  .navigate('/projects/pr2/virtual-tree')
+              "
+              data-testid="navigate-withoutSync-virtual-tree"
+              >Go to /projects/pr2/virtual-tree using withoutSync()
             </a>
-            <app-code-snippet data="linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')">
+            <app-code-snippet
+              data="linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')"
+            >
             </app-code-snippet>
           </li>
 
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link navigate-withoutSync-settings" (click)="
-                linkManager().withoutSync().navigate('/projects/pr2/settings')"
-               data-testid='navigate-withoutSync-settings'
-            >Go to /projects/pr2/settings using withoutSync()
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
+                linkManager()
+                  .withoutSync()
+                  .navigate('/projects/pr2/settings')
+              "
+              data-testid="navigate-withoutSync-settings"
+              >Go to /projects/pr2/settings using withoutSync()
             </a>
-            <app-code-snippet data="linkManager().withoutSync().navigate('/projects/pr2/settings')">
+            <app-code-snippet
+              data="linkManager().withoutSync().navigate('/projects/pr2/settings')"
+            >
             </app-code-snippet>
           </li>
-
 
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link navigate-withSync-virtual-tree"
-               (click)="navigateWithSync('/projects/pr2/virtual-tree')"
-               data-testid='navigate-withSync-virtual-tree'
-            >Go to /projects/pr2/virtual-tree NOT using withoutSync()
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withSync-virtual-tree"
+              (click)="navigateWithSync('/projects/pr2/virtual-tree')"
+              data-testid="navigate-withSync-virtual-tree"
+              >Go to /projects/pr2/virtual-tree NOT using withoutSync()
             </a>
-            <app-code-snippet data="linkManager().navigate('/projects/pr2/virtual-tree')">
+            <app-code-snippet
+              data="linkManager().navigate('/projects/pr2/virtual-tree')"
+            >
             </app-code-snippet>
           </li>
-
-
-
         </ul>
       </div>
     </div>
-
-
-
-
   </div>
   <div *ngIf="projectId && projectId === 'tabNav'">
     <div class="fd-section__header">

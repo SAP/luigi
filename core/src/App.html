@@ -1743,9 +1743,9 @@
       }
     }
 
-    :global(.fd-dialog) {
+    :global(.fd-dialog, .fd-message-box) {
       &__content {
-        &:not(.fd-dialog__content--mobile) {
+        &:not(.fd-dialog__content--mobile, .fd-message-box__content--mobile) {
           max-width: 90%;
           min-width: 90%;
         }
@@ -1841,16 +1841,19 @@
   }
 
   //Add z-index for dialogs
-  :global(.fd-dialog) {
+  :global(.fd-dialog, .fd-message-box) {
     z-index: 1000;
   }
 
-  :global(.fd-dialog__content--mobile) {
+  :global(.fd-dialog__content--mobile),
+  :global(.fd-message-box__content--mobile) {
     //Remove border-radius from mobile fullscreen dialog
     border-radius: 0;
 
     :global(.fd-dialog__header.fd-bar),
-    :global(.fd-dialog__footer.fd-bar) {
+    :global(.fd-dialog__footer.fd-bar),
+    :global(.fd-message-box__header.fd-bar),
+    :global(.fd-message-box__footer.fd-bar) {
       border-radius: 0;
     }
 
