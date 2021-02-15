@@ -72,14 +72,16 @@ class UxManager extends LuigiClientBase {
    * Shows a confirmation modal.
    * @memberof uxManager
    * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
+   * @param {('confirmation'|'success'|'warning'|'error'|'information')} settings.type the content of the modal type. (Optional)
    * @param {string} [settings.header="Confirmation"] the content of the modal header
    * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
-   * @param {string} [settings.buttonConfirm="Yes"] the label for the modal confirm button
+   * @param {string|false} [settings.buttonConfirm="Yes"] the label for the modal confirmation button. If set to `false`, the button will not be shown.
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    * @example
    * import LuigiClient from '@luigi-project/client';
    * const settings = {
+   *  type: "confirmation",
    *  header: "Confirmation",
    *  body: "Are you sure you want to do this?",
    *  buttonConfirm: "Yes",
