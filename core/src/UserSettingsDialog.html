@@ -6,7 +6,13 @@
     beforeUpdate,
     getContext
   } from 'svelte';
-  import { NavigationHelpers, GenericHelpers, EventListenerHelpers, IframeHelpers, UserSettingsHelper } from './utilities/helpers';
+  import {
+    NavigationHelpers,
+    GenericHelpers,
+    EventListenerHelpers,
+    IframeHelpers,
+    UserSettingsHelper
+  } from './utilities/helpers';
   import { MessagesListeners } from './services/messages-listeners';
   import UserSettingsEditor from './UserSettingsEditor.html';
   import { CSS_BREAKPOINTS } from './utilities/constants';
@@ -27,60 +33,86 @@
   let saveBtn = TOP_NAV_DEFAULTS.userSettingsDialog.saveBtn;
   let dismissBtn = TOP_NAV_DEFAULTS.userSettingsDialog.dismissBtn;
   let customIframes = {};
-  let storedUserSettingsData
+  let storedUserSettingsData;
   let key;
   let userSettingsGroupTitle;
 
   onMount(() => {
-    const usLocalizationConfig = LuigiConfig.getConfigValue('userSettings.userSettingsDialog');
-    const usLocalization = usLocalizationConfig ? usLocalizationConfig : LuigiConfig.getConfigValue(
-      'settings.userSettings.userSettingsDialog'
+    const usLocalizationConfig = LuigiConfig.getConfigValue(
+      'userSettings.userSettingsDialog'
     );
+    const usLocalization = usLocalizationConfig
+      ? usLocalizationConfig
+      : LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
     if (usLocalization) {
-      dialogHeader = usLocalization.dialogHeader ? usLocalization.dialogHeader : dialogHeader;
+      dialogHeader = usLocalization.dialogHeader
+        ? usLocalization.dialogHeader
+        : dialogHeader;
       saveBtn = usLocalization.saveBtn ? usLocalization.saveBtn : saveBtn;
-      dismissBtn = usLocalization.dismissBtn ? usLocalization.dismissBtn : dismissBtn;
+      dismissBtn = usLocalization.dismissBtn
+        ? usLocalization.dismissBtn
+        : dismissBtn;
     }
 
-    key = Object.keys(userSettingGroups[0]).length > 0 ? Object.keys(userSettingGroups[0])[0] : undefined;
+    key =
+      Object.keys(userSettingGroups[0]).length > 0
+        ? Object.keys(userSettingGroups[0])[0]
+        : undefined;
 
     EventListenerHelpers.addEventListener('message', e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe || 'custom' !== e.data.msg) return;
       iframe._ready = true;
 
-      const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
+      const message = MessagesListeners.convertCustomMessageInternalToUser(
+        e.data
+      );
       const userSettingsCMKey = 'luigi.updateUserSettings';
       if (message.id === userSettingsCMKey) {
-        const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
+        const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(
+          e.source
+        );
         if (iframe) {
           let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
           storedUserSettings[userSettingsGroupKey] = message.data;
         }
       }
 
-      if (message.id === 'luigi.navBackMobile' && window.window.innerWidth !== 0 &&
-        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
+      if (
+        message.id === 'luigi.navBackMobile' &&
+        window.window.innerWidth !== 0 &&
+        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
+      ) {
         toggleNavMobile();
       }
     });
 
-    LuigiConfig.readUserSettings().then(storedUserSettingsData => {
-      previousUserSettings = JSON.parse(JSON.stringify(storedUserSettingsData));
-      if (storedUserSettingsData === null) {
-        storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), {});
-      } else {
-        storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), storedUserSettingsData);
-      }
-      openEditor([key, userSettingGroups[0][key]]);
-    }).catch(error => {
-      if (error && error.message) {
-        console.error(error.message)
-      }
-      if (error && error.closeDialog) {
-        dispatch('close');
-      }
-    });
+    LuigiConfig.readUserSettings()
+      .then(storedUserSettingsData => {
+        previousUserSettings = JSON.parse(
+          JSON.stringify(storedUserSettingsData)
+        );
+        if (storedUserSettingsData === null) {
+          storedUserSettings = prepareUserSettingsObj(
+            JSON.parse(JSON.stringify(userSettingGroups)),
+            {}
+          );
+        } else {
+          storedUserSettings = prepareUserSettingsObj(
+            JSON.parse(JSON.stringify(userSettingGroups)),
+            storedUserSettingsData
+          );
+        }
+        openEditor([key, userSettingGroups[0][key]]);
+      })
+      .catch(error => {
+        if (error && error.message) {
+          console.error(error.message);
+        }
+        if (error && error.closeDialog) {
+          dispatch('close');
+        }
+      });
   });
 
   function prepareUserSettingsObj(userSettingGroups, storedUserSettingsData) {
@@ -90,7 +122,10 @@
         for (let i in userSettingGroup[key].settings) {
           userSettingGroup[key].settings[i] = '';
         }
-        userSettingsObject[key] = { ...userSettingGroup[key].settings, ...storedUserSettingsData[key] }
+        userSettingsObject[key] = {
+          ...userSettingGroup[key].settings,
+          ...storedUserSettingsData[key]
+        };
       }
     });
     return userSettingsObject;
@@ -100,19 +135,24 @@
     if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
       return;
     }
-    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
+    userSettingsGroupTitle = selectedUserSettingGroupData.title
+      ? selectedUserSettingGroupData.title
+      : '';
     for (let key in selectedUserSettingGroupData.settings) {
       let property = selectedUserSettingGroupData.settings[key];
       if (property.type === 'enum') {
         if (!Array.isArray(property.options)) {
-          console.error(`There is no options array for '${key}' defined in the Luigi userSettings config.`);
+          console.error(
+            `There is no options array for '${key}' defined in the Luigi userSettings config.`
+          );
         }
       } else if (property.type === undefined) {
-        console.error(`There is no data type defined for '${key}' in the Luigi userSettings config.`);
+        console.error(
+          `There is no data type defined for '${key}' in the Luigi userSettings config.`
+        );
       }
     }
   }
-
 
   function openEditor(selectedUserSettingGroup, event) {
     userSettingGroup = selectedUserSettingGroup;
@@ -120,18 +160,24 @@
     let selectedUserSettingGroupData = selectedUserSettingGroup[1];
     errorHandling(selectedUserSettingGroupData);
     if (event) {
-      document.querySelectorAll('.lui-us-list .fd-nested-list__link').forEach(elem => {
-        elem.classList.remove('is-selected');
-      });
+      document
+        .querySelectorAll('.lui-us-list .fd-nested-list__link')
+        .forEach(elem => {
+          elem.classList.remove('is-selected');
+        });
       const link = closest(event.target, '.fd-nested-list__link', 20);
-      link.classList.add("is-selected");
+      link.classList.add('is-selected');
       if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
         closeNavOnCategoryClickMobile();
       }
     } else {
-      document.querySelectorAll('.lui-us-list .fd-nested-list__link')[0].classList.add("is-selected");
-      if (window.innerWidth !== 0 &&
-        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
+      document
+        .querySelectorAll('.lui-us-list .fd-nested-list__link')[0]
+        .classList.add('is-selected');
+      if (
+        window.innerWidth !== 0 &&
+        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
+      ) {
         handleSaveBtnVisibility();
       }
     }
@@ -144,7 +190,10 @@
           }
         });
       } else {
-        let iframe = UserSettingsHelper.createIframe(selectedUserSettingGroupData.viewUrl, selectedUserSettingGroupKey);
+        let iframe = UserSettingsHelper.createIframe(
+          selectedUserSettingGroupData.viewUrl,
+          selectedUserSettingGroupKey
+        );
         customIframes[selectedUserSettingGroupKey] = iframe;
       }
 
@@ -164,29 +213,35 @@
     document.querySelector('.usersettingseditor').style.display = 'block';
   }
 
-  const updateSettingsObject = (event) => {
+  const updateSettingsObject = event => {
     storedUserSettings = event.detail.userSettings;
-  }
+  };
 
   function storeUserSettings() {
-    LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings).then(() => {
-      dispatch('close');
-    }).catch(error => {
-      if (error && error.message) {
-        console.error(error.message)
-      }
-      if (error && error.closeDialog) {
+    LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings)
+      .then(() => {
         dispatch('close');
-      }
-    });
+      })
+      .catch(error => {
+        if (error && error.message) {
+          console.error(error.message);
+        }
+        if (error && error.closeDialog) {
+          dispatch('close');
+        }
+      });
   }
 
   function closest(element, selector, max) {
     if (element && max > 0) {
       if (GenericHelpers.isIE()) {
-        return element.msMatchesSelector(selector) ? element : closest(element.parentNode, selector, max - 1);
+        return element.msMatchesSelector(selector)
+          ? element
+          : closest(element.parentNode, selector, max - 1);
       } else {
-        return element.matches(selector) ? element : closest(element.parentNode, selector, max - 1);
+        return element.matches(selector)
+          ? element
+          : closest(element.parentNode, selector, max - 1);
       }
     } else {
       return undefined;
@@ -199,16 +254,20 @@
 
   function handleSaveBtnVisibility() {
     if (document.querySelector('.usersettings-leftNavVisible')) {
-      document.querySelector('.confirm-button').style.display = 'block'
+      document.querySelector('.confirm-button').style.display = 'block';
     } else {
-      document.querySelector('.confirm-button').style.display = 'none'
+      document.querySelector('.confirm-button').style.display = 'none';
     }
   }
 
   function toggleNavMobile() {
-    document.querySelector('.lui-usersettings-dialog').classList.toggle('usersettings-leftNavVisible');
-    if (window.innerWidth !== 0 &&
-      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
+    document
+      .querySelector('.lui-usersettings-dialog')
+      .classList.toggle('usersettings-leftNavVisible');
+    if (
+      window.innerWidth !== 0 &&
+      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
+    ) {
       handleSaveBtnVisibility();
     }
   }
@@ -225,7 +284,9 @@
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
       previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
     if (isDesktopToMobile) {
-      document.querySelector('.lui-usersettings-dialog').classList.toggle('usersettings-leftNavVisible');
+      document
+        .querySelector('.lui-usersettings-dialog')
+        .classList.toggle('usersettings-leftNavVisible');
       if (!document.querySelector('.usersettings-leftNavVisible')) {
         document.querySelector('.confirm-button').style.display = 'none';
       } else {
@@ -238,8 +299,9 @@
 
     if (!previousWindowWidth) {
       let confirmbtn = document.querySelector('.confirm-button');
-      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth ?
-        confirmbtn.style.display = 'none' : confirmbtn.style.display = 'block';
+      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
+        ? (confirmbtn.style.display = 'none')
+        : (confirmbtn.style.display = 'block');
     }
 
     previousWindowWidth = window.innerWidth;
@@ -303,13 +365,10 @@
     left: var(--left-fd-side-nav-width);
     top: 0;
     right: 0;
+    height: 85%;
+    overflow: auto;
     overflow-wrap: break-word;
     margin-top: 3.2rem;
-    padding: 0 0px;
-    overflow: hidden;
-    height: 99%;
-    /* overflow: auto;
-    height: 100%; */
   }
 
   .lui-usersettings-burger {
@@ -317,7 +376,7 @@
     cursor: pointer;
     display: none;
   }
-  
+
   .fd-nested-list__item {
     display: flex;
     -webkit-box-align: center;
@@ -388,9 +447,9 @@
   }
 
   .lui-fd-side__nav-wrapper {
+    height: 72vh;
+    max-height: 35rem;
     overflow: auto;
-    height: 70vh;
-    max-height: 36rem;
   }
 
   .lui-usersettings-content-header__back-btn {
@@ -442,8 +501,6 @@
     .fd-nested-list__icon img {
       max-width: 18px;
       max-height: 18px;
-      /*not sure*/
-      margin: 12px;
     }
 
     .lui-usersettings-list-item__info-container {
@@ -592,15 +649,23 @@
                     <div class="lui-usersettings-list-item__info-container">
                       {#if userSettingsGroupProperty[1].icon}
                       {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                      <span class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"></span>
+                      <span
+                        class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"
+                      ></span>
                       {:else}
-                      <span class="fd-nested-list__icon sap-icon">
-                        <img src="{userSettingsGroupProperty[1].icon}"
-                          alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}">
+                      <span
+                        class="fd-nested-list__icon sap-icon"
+                      >
+                        <img
+                          src="{userSettingsGroupProperty[1].icon}"
+                          alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
+                        >
                       </span>
                       {/if}
                       {:else}
-                      <span class="fd-nested-list__icon sap-icon"></span>
+                      <span
+                        class="fd-nested-list__icon sap-icon"
+                      ></span>
                       {/if}
                       <div class="lui-usersettings-list-item__title-container">
                         <span
@@ -636,8 +701,11 @@
       <div class="lui-usersettings-content">
         <div class="usersettingseditor mf-wrapper">
           {#if userSettingGroup}
-          <UserSettingsEditor storedUserSettingData="{storedUserSettings}" userSettingGroup="{userSettingGroup}"
-            on:updateSettingsObject="{updateSettingsObject}"></UserSettingsEditor>
+          <UserSettingsEditor
+            storedUserSettingData="{storedUserSettings}"
+            userSettingGroup="{userSettingGroup}"
+            on:updateSettingsObject="{updateSettingsObject}"
+          ></UserSettingsEditor>
           {/if}
         </div>
         <div class="iframeUserSettingsCtn iframe-wrapper"></div>
@@ -646,12 +714,18 @@
     <footer class="fd-dialog__footer fd-bar fd-bar--footer">
       <div class="fd-bar__right">
         <div class="fd-bar__element">
-          <button on:click="{() => storeUserSettings()}" data-testid="lui-us-saveBtn"
-            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button">{$getTranslation(saveBtn)}</button>
+          <button
+            on:click="{() => storeUserSettings()}"
+            data-testid="lui-us-saveBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button"
+          >{$getTranslation(saveBtn)}</button>
         </div>
         <div class="fd-bar__element">
-          <button on:click="{() => dispatch('close')}" data-testid="lui-us-dismissBtn"
-            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact">{$getTranslation(dismissBtn)}</button>
+          <button
+            on:click="{() => dispatch('close')}"
+            data-testid="lui-us-dismissBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+          >{$getTranslation(dismissBtn)}</button>
         </div>
       </div>
     </footer>
