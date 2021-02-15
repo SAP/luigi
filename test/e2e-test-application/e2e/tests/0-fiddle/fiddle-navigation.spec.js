@@ -116,14 +116,23 @@ describe('Fiddle', () => {
       it('custom selected option renderer', () => {
         cy.visitWithFiddleConfig('/', newConfig);
 
-        cy.contains('Select Environment').click();
-        cy.contains('Environment 1').click();
+        cy.contains('Select Environment')
+          .should('exist')
+          .click();
+        cy.contains('Environment 1')
+          .should('exist')
+          .click();
         cy.get('[data-testid=luigi-contextswitcher-button]')
           .find('label')
           .should('have.css', 'color', 'rgb(136, 255, 0)')
           .and('have.css', 'font-weight', '700');
-        cy.contains('Environment 1').click();
-        cy.contains('Environment 2').click();
+
+        cy.get('[data-testid=luigi-contextswitcher-button]')
+          .should('exist')
+          .click();
+        cy.contains('Environment 2')
+          .should('exist')
+          .click();
         cy.get('[data-testid=luigi-contextswitcher-button]')
           .find('label')
           .should('have.css', 'color', 'rgb(0, 136, 255)')
@@ -212,7 +221,7 @@ describe('Fiddle', () => {
         cy.visitWithFiddleConfig('/home/two', newConfig);
       });
       it('Static profile, and logging out with customLogoutFn', () => {
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
@@ -285,7 +294,7 @@ describe('Fiddle', () => {
         newConfig.auth.disableAutoLogin = true;
         visitWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('not.exist');
         loginLink().should('exist');
       });
@@ -295,7 +304,7 @@ describe('Fiddle', () => {
         visitWithAuthConfig('/', newConfig);
 
         // Logged out
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('not.exist');
         loginLink().should('exist');
 
@@ -304,7 +313,7 @@ describe('Fiddle', () => {
         cy.login('tets@email.com', 'tets', true);
 
         // Logged in
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         loginLink().should('not.exist');
         logoutLink().should('exist');
 
@@ -322,31 +331,33 @@ describe('Fiddle', () => {
         newConfig.auth.disableAutoLogin = false;
         visitLoggedInWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
         // Verify profile value
         logoutLink().contains('Bye bye');
       });
+
       it('No profile, logged in', () => {
         newConfig.navigation.profile = undefined;
         newConfig.auth.disableAutoLogin = false;
         visitLoggedInWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
 
         // Verify default value
         logoutLink().contains('Sign Out');
       });
+
       it('Trigger Login and Logout with Core API', () => {
         newConfig.navigation.profile = undefined;
         newConfig.auth.disableAutoLogin = true;
         visitWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         loginLink().should('exist');
 
         cy.window().then(win => {
@@ -356,7 +367,7 @@ describe('Fiddle', () => {
 
         cy.login('tets@email.com', 'tets', true);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
 
         cy.window().then(win => {
@@ -374,21 +385,23 @@ describe('Fiddle', () => {
               icon: 'settings'
             }
           }
-        }
+        };
         visitLoggedInWithAuthConfig('/', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('My UserSettings');
       });
+
       it('User settings in profile menu with default label', () => {
         newConfig.settings = {
           userSettings: {}
-        }
+        };
         visitLoggedInWithAuthConfig('/', newConfig);
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
-        cy.get('[data-testid="settings-link"]').contains('Settings')
+        cy.get('[data-testid="settings-link"]').contains('Settings');
       });
+
       it('User settings not in the profile menu, if not configured', () => {
         newConfig.navigation.profile = {
           logout: {
@@ -399,7 +412,7 @@ describe('Fiddle', () => {
         newConfig.auth.disableAutoLogin = false;
         visitLoggedInWithAuthConfig('/', newConfig);
 
-        cy.get('[data-testid="luigi-topnav-profile"] button').click();
+        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         cy.get('[data-testid="settings-link"]').should('not.exist');
       });
@@ -568,7 +581,7 @@ describe('Fiddle', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
-      newConfig.settings.userSettings = {
+      newConfig.userSettings = {
         userSettingGroups: {
           userAccount: {
             label: 'User Account',
@@ -591,10 +604,15 @@ describe('Fiddle', () => {
                 type: 'enum',
                 label: 'Language and Region',
                 options: ['German', 'English', 'Spanish', 'French'],
-                description: 'After you save your settings, the browser will refresh for the new language to take effect.'
+                description:
+                  'After you save your settings, the browser will refresh for the new language to take effect.'
               },
               date: { type: 'string', label: 'Date Format' },
-              time: { type: 'enum', label: 'Time Format', options: ['12 h', '24 h'] }
+              time: {
+                type: 'enum',
+                label: 'Time Format',
+                options: ['12 h', '24 h']
+              }
             }
           },
           theming: {
@@ -630,7 +648,9 @@ describe('Fiddle', () => {
 
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
-      cy.get('[data-testid="lui-us-input0"]').invoke('attr', 'placeholder').should('contain', 'German');
+      cy.get('[data-testid="lui-us-input0"]')
+        .invoke('attr', 'placeholder')
+        .should('contain', 'German');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
       cy.get('[data-testid="lui-us-header"]').should('not.be.visible');
@@ -647,7 +667,7 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/index.html')
+        expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
       });
     });
   });

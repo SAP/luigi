@@ -83,6 +83,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
+  navigateWithSync(path) {
+    linkManager()['options'].withoutSync = false;
+    linkManager().navigate(path);
+  }
+
   public ngOnInit() {
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
@@ -135,11 +140,36 @@ export class ProjectComponent implements OnInit, OnDestroy {
     this.confirmationModalResult = '';
     const settings = {
       // header: 'Modal Header - Luigi modal',
+      type: 'confirmation',
       body: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
       buttonConfirm: 'Confirm',
       buttonDismiss: 'Cancel'
+    };
+
+    uxManager()
+      .showConfirmationModal(settings)
+      .then(
+        () => {
+          this.confirmationModalResult = 'confirmed';
+        },
+        () => {
+          this.confirmationModalResult = 'dismissed';
+        }
+      );
+  }
+
+  showWarningModal() {
+    this.confirmationModalResult = '';
+    const settings = {
+      header: 'Warning',
+      type: 'warning',
+      body: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
+      buttonConfirm: false,
+      buttonDismiss: 'Close'
     };
 
     uxManager()

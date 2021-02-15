@@ -29,10 +29,10 @@
     "@luigi-project/plugin-auth-oidc": "1.0.0",
     "@luigi-project/client": "1.0.0",
     "@luigi-project/core": "1.2.1",
-    "@sap-theming/theming-base-content": "~11.1.21",
+    "@sap-theming/theming-base-content": "~11.1.24",
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
-    "fundamental-styles": "^0.11.0",
+    "fundamental-styles": "^0.14.0",
     "rxjs": "6.2.0",
     "zone.js": "^0.8.14",
     "lodash": ">=4.17.13"
@@ -43,7 +43,7 @@
     "@angular-devkit/build-angular": "^0.13.9",
     "@angular-devkit/core": "0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
-    "@angular/cli": "^6.1.1",
+    "@angular/cli": "^6.2.9",
     "@angular/compiler-cli": "^7.2.15",
     "@angular/language-service": "^6.1.0",
     "@babel/core": "^7.0.0",
@@ -60,15 +60,15 @@
     "codelyzer": "^4.4.1",
     "concurrently": "^4.1.0",
     "cypress": "^5.3.0",
+    "http-server": "0.12.3",
+    "lodash": ">=4.17.13",
+    "serialize-javascript": ">=2.1.1",
     "tar": ">=4.4.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~3.2.4",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "lodash": ">=4.17.13",
-    "serialize-javascript": ">=2.1.1",
-    "http-server": "0.12.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }

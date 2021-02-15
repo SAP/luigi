@@ -19,7 +19,7 @@ cache:
     - $HOME/.cache/Cypress
 notifications:
   slack:
-    secure: wiOchVgoiKNUikjCeIhsuv3Y5jolFud6ercdZdO3+JigQqkmoAC95f2jKTYEdplJWyJr8JY6z0+UJNceHyr5YJx/l1wpm6Zq+3H4dq/V0yUXH1uhw2eaTzweX2vjfw0bzewEdc1CGl4kSfdyTajnbKgt+mtnrAV9lPqiXYSOOJTu5BCFomi7u2GhAz1JjBK6P4Ar2jXm+oc81nYjj40P8bZFlA7Rjm0hNN42MMkKvnD8OHztL3EwezKHXlQW7fN4eOrhPOMbT3NRU72g9Nir+lfoKJlch1zPoHXQ7DRp41uGyHV/qfvfRLzXwxftZK6kdvzMe0eI0i1aIm0R6AE0bLphB2o/klJzyQpqSiQgETTH0qJN+3px2kddGrw7Me+UNC/1zZrt1MJfWf0h6WjXTsPDJf3ajLsn8OoIeBTRZbAb9as3UWQZcknuuMf8oGUzZkrZNMWYqo3py0+qWm4wSbWXWVUCgVAIYA6oEADwq37z59HySGkyHI4gEPzxsYODfCuvO4pJX1h4vEyH7w2IigwhDAPq5G4Vdez9ZFS96p/LSCF+iH8yWMy294u8wk5ofWUutFFv0JC45LQBXu51a2TeQkalwVn4DiuxxHE6jZieREw75YFjra4jpWsyziWkzshGT75NCra6cKAbNa4T8n6Pm3ogjEPeeWAO3psgSdo=
+    secure: nls0RW4RKEHLnRBgOi25UTpjjSBFGnXgOnbxuiPsSjBFWehXvH8SfMYGfsDdp6lfH9ljDFA6KiJFauAAgQ+vImaZNHvrHeCitQDqWraXeD1CyzOYGp+8Bx/JyR1bcBKewvQVqNpnhk4hoIEI4Gu2i1NGq1/pAkHOeetw7PVmnpEG/QyQQ8YDXbySzWl39iZc8HWVT4svKV8BqYx+KzqRqE09XSfhiecZ00DVjZEMyKD6oCttOlJ/Vo0Z7QgzAEDaIhb+jrojJ2HD1PPWjiQqfpuyBY6GjeFGwNebevhmVngvQ3+69xn0ydOct3HTR/uSNJexY/Hq9W98QuGliihWwx1ksjFZnKtZ42FRY9p8jD/hw+ySJRwrAvbZtrWA0xmU85Fz/kRMocum5I7UJDGOTvklNYMFT/Rlh5w08DWXx8YCYyvXxsTee7dNELwefYnOL/FZRzHaNKnXqimYsE8dIlbfMBKD2Kh4Hr0+NZlBBaZ71w2+4Cp1mdJnSEFN7zuOrwqdQdjCDAeqttcSOvuQAR/BMGwtN30BrjW16n2YOuqwBoWsp7zUdpSyWp600mTn+vYulue4hvpwpbfELVXRtaggrVvolW9fBtACXE6+G9rqzJRgRLLNGM9i7dbiX2OFx1olMTu0n7XN7MNFdwFH4X0sycfi02GlZb/5L/ntrJY=
 
 integration-testing: &integration-testing
   if: repo = SAP/luigi AND type != cron
@@ -101,7 +101,7 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
-    #   if: repo = SAP/luigi AND branch = master AND type = push
+      if: repo = SAP/luigi AND branch = master AND type = push
       script:
         # - bash -xv ./scripts/testCompatibility.sh --tag latest || travis_terminate 1 # to run with verbose mode
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
