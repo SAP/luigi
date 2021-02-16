@@ -25,7 +25,7 @@ With Luigi v1.9.0, the new v0.14.0 of Fundamental Library Styles were included. 
 
 #### Confirmation modals
 
-With v.1.10.0, we introduced support for different types of confirmation modals. Modals can be of type `confirmation`, `success`, `error`, `warning`, or `information` and they can be configured using the [Luigi Core API](https://docs.luigi-project.io/docs/luigi-core-api/?section=showconfirmationmodal). The modal can also be hidden with the `settings.buttonConfirm` parameter.
+With v.1.10.0, we introduced support for different types of confirmation modals. Modals can be of type `confirmation`, `success`, `error`, `warning`, or `information` and they can be configured using the [Luigi Core API](https://docs.luigi-project.io/docs/luigi-core-api/?section=showconfirmationmodal). The confirmation button can also be hidden with the `settings.buttonConfirm` parameter.
 
 #### More features
 
