@@ -25,6 +25,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.10.0] (2021-02-11)
+
+#### :rocket: Added
+* [#1854](https://github.com/SAP/luigi/pull/1854) Different visual appearances for boolean#1768 ([@legteodav](https://github.com/legteodav))
+* [#1863](https://github.com/SAP/luigi/pull/1863) Support types for confirmation modal ([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#1861](https://github.com/SAP/luigi/pull/1861) Error handling for user settings dialog ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1883](https://github.com/SAP/luigi/pull/1883) Bugfix in read/write custom function in luigi user settings config([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
 ## [v1.9.0] (2021-02-05)
 
 #### :boom: Breaking Change
@@ -974,3 +989,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.8.0]: https://github.com/SAP/luigi/compare/v1.7.1...v1.8.0
 [v1.8.1]: https://github.com/SAP/luigi/compare/v1.8.0...v1.8.1
 [v1.9.0]: https://github.com/SAP/luigi/compare/v1.8.1...v1.9.0
+[v1.10.0]: https://github.com/SAP/luigi/compare/v1.9.0...v1.10.0
