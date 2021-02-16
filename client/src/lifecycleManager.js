@@ -28,6 +28,11 @@ class LifecycleManager extends LuigiClientBase {
     this._onInitFns = {};
     this.authData = {};
 
+
+    const isDeferInit = () => {
+      return window.document.head.getAttribute('defer-luigi-init') == 'true'
+    }
+
     /**
      * Adds event listener for communication with Luigi Core and starts communication
      * @private
@@ -37,6 +42,7 @@ class LifecycleManager extends LuigiClientBase {
        * Save context data every time navigation to a different node happens
        * @private
        */
+
       const setContext = rawData => {
         for (let index = 0; index < this.defaultContextKeys.length; index++) {
           let key = this.defaultContextKeys[index];
@@ -106,7 +112,13 @@ class LifecycleManager extends LuigiClientBase {
       this._tpcCheck();
     };
 
-    luigiClientInit();
+    if (isDeferInit()){
+      window.addEventListener("load", function(event) {
+        luigiClientInit();
+      });
+    }else{
+      luigiClientInit();
+    }
   }
 
   _tpcCheck() {
