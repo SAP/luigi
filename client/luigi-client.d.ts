@@ -681,3 +681,18 @@ export type storageManager = () => StorageManager;
  */
 export function getUserSettings(): UserSettings;
 export type getUserSettings = () => UserSettings;
+
+/**
+ * Check if LuigiClient had been fully initialized
+ * @returns {boolean} client as been initialized?
+ * @since NEXTRELEASE
+ * @memberof Lifecycle
+ */
+export function isLuigiClientInitialized(): boolean;
+
+/**
+ * Finalize Luigi Client initialization; it is useful (and mandatory to call) only when in micro frontend we have in head properties defer-luigi-init=true.
+ * @since NEXTRELEASE
+ * @memberof Lifecycle
+ */
+export function luigiClientInit(): void;
