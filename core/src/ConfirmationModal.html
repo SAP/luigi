@@ -1,33 +1,41 @@
 <svelte:window on:keydown="{handleKeydown}"/>
-<div class="fd-dialog fd-dialog--active" data-testid="luigi-confirmation-modal">
-  <div class="fd-dialog__content fd-dialog__content--s">
-    <header class="fd-dialog__header fd-bar fd-bar--header">
+<div
+  class="fd-message-box-docs-static fd-message-box fd-message-box--{settings.type} fd-message-box--active"
+  data-testid="luigi-confirmation-modal"
+>
+  <section class="fd-message-box__content">
+    <header class="fd-bar fd-bar--header fd-message-box__header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          <h3 class="fd-dialog__title">{settings.header}</h3>
+          {#if settings.type}
+          <i class="sap-icon--{settings.icon}"></i>
+          {/if}
+          <h3 class="fd-title fd-title--h5">{settings.header}</h3>
         </div>
       </div>
     </header>
-    <div class="fd-dialog__body">{settings.body}</div>
-    <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+    <div class="fd-message-box__body">{settings.body}</div>
+    <footer class="fd-bar fd-bar--footer fd-message-box__footer">
       <div class="fd-bar__right">
+        {#if settings.buttonConfirm !== false}
         <div class="fd-bar__element">
           <button
             on:click="{() => dispatch('modalConfirm')}"
             data-testid="luigi-modal-confirm"
-            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button"
+            class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
           >{settings.buttonConfirm}</button>
         </div>
+        {/if}
         <div class="fd-bar__element">
           <button
             on:click="{() => dispatch('modalDismiss')}"
             data-testid="luigi-modal-dismiss"
-            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+            class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
           >{settings.buttonDismiss}</button>
         </div>
       </div>
     </footer>
-  </div>
+  </section>
 </div>
 
 <script>
@@ -38,9 +46,17 @@
   const dispatch = createEventDispatcher();
 
   export let settings;
+  const iconMapping = {
+    confirmation: 'question-mark',
+    information: 'message-information',
+    warning: 'message-warning',
+    error: 'message-error',
+    success: 'message-success'
+  };
 
   onMount(() => {
     const defaultSettings = {
+      icon: iconMapping[settings.type],
       header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
       body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
@@ -49,10 +65,14 @@
 
     settings = Object.assign(defaultSettings, settings);
 
+    const focusedButton = settings.buttonConfirm
+      ? 'confirm-button'
+      : 'dismiss-button';
+
     try {
-      document.querySelector('.confirm-button').focus();
+      document.querySelector(`.${focusedButton}`).focus();
     } catch (e) {
-      console.warn("Couldn't focus confirmation button in modal");
+      console.warn(`Couldn't focus ${focusedButton} in modal`);
     }
   });
 
@@ -68,14 +88,14 @@
 <style type="text/scss">
   @import 'styles/variables';
 
-  .fd-dialog {
+  .fd-message-box {
     &__body {
       overflow-wrap: break-word;
     }
   }
 
   @media (min-width: $desktopMinWidth) {
-    .fd-dialog__content {
+    .fd-message-box__content {
       max-width: 460px;
     }
   }

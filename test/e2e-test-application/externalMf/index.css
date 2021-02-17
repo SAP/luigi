@@ -1,0 +1,21 @@
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.active {
+    font-size: 30px;
+}
+
+.mobileBack {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .mobileBack {
+        display: block;
+    }
+}
