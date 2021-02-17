@@ -613,6 +613,7 @@ describe('Fiddle', () => {
                 label: 'Time Format',
                 options: ['12 h', '24 h']
               }
+<<<<<<< HEAD
             }
           },
           theming: {
@@ -628,6 +629,8 @@ describe('Fiddle', () => {
                 options: ['red', 'green'],
                 description: 'Choose a theme'
               }
+=======
+>>>>>>> fix e2e tests and slight refactoring
             }
           }
         }
@@ -670,22 +673,32 @@ describe('Fiddle', () => {
         expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
       });
     });
-    it('Routing with custom modalPathParam and node params', () => {
-      newConfig.navigation.nodes[0].children[0].viewUrl = '/examples/microfrontends/hello-luigi-cdn.html';
-      newConfig.routing.modalPathParam = '@';
+    it('Routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
+      newConfig.navigation.nodes[0].children[0].viewUrl =
+        '/examples/microfrontends/hello-luigi-cdn.html';
+      newConfig.routing.showModalPathInUrl = true;
+      newConfig.routing.modalPathParam = 'mymodal';
+      newConfig.routing.useHashRouting = false;
 
-      cy.visitWithFiddleConfig('/home/two@/home/one?~mp=one', newConfig);
+      cy.visitWithFiddleConfig('/home', newConfig);
 
-      cy.getModalWindow()
-        .then(win => {
-          assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
-        });
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ mp: 'one' })
+          .openAsModal('/home/one');
+      });
 
-      cy.get('[data-testid="modal-mf"] iframe')
-        .iframe()
-        .then($iframe => {
-          cy.wrap($iframe).contains('Hello Luigi')
-        })
+      cy.wait(150); // it takes some time for the nodeParams be available
+      cy.getModalWindow().then(win => {
+        assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+      });
+
+      cy.expectPathToBe('/home');
+      cy.location().should(location => {
+        expect(location.search).to.eq(
+          '?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+        );
+      });
     });
   });
 });

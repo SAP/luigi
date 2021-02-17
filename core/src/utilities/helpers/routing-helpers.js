@@ -12,6 +12,7 @@ import { Routing } from '../../services/routing';
 class RoutingHelpersClass {
   constructor() {
     this.defaultContentViewParamPrefix = '~';
+    this.defaultQueryParamSeparator = '?';
     this.defaultModalViewParamName = 'modal';
   }
 
@@ -81,7 +82,9 @@ class RoutingHelpersClass {
   encodeParams(dataData) {
     let queryArr = [];
     for (let key in dataData) {
-      queryArr.push(encodeURIComponent(key) + '=' + encodeURIComponent(dataData[key]))
+      queryArr.push(
+        encodeURIComponent(key) + '=' + encodeURIComponent(dataData[key])
+      );
     }
     return queryArr.join('&');
   }
@@ -136,12 +139,50 @@ class RoutingHelpersClass {
     return paramName;
   }
 
+  /**
+   * Get the query param separator which is used with hashRouting
+   * Default: :
+   * @example /home?modal=(urlencoded)/some-modal?modalParams=(urlencoded){...}&otherParam=hmhm
+   * @returns the first query param separator (like ? for path routing)
+   */
+  getHashQueryParamSeparator() {
+    return this.defaultQueryParamSeparator;
+  }
+
+  getQueryParam(paramName) {
+    return this.getQueryParams()[paramName];
+  }
+  getQueryParams() {
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
+      'routing.useHashRouting'
+    );
+    return hashRoutingActive
+      ? this.getLocationHashQueryParams()
+      : this.getLocationSearchQueryParams();
+  }
+  getLocationHashQueryParams() {
+    const queryParamIndex = location.hash.indexOf(
+      this.defaultQueryParamSeparator
+    );
+    return queryParamIndex !== -1
+      ? RoutingHelpers.parseParams(location.hash.slice(queryParamIndex + 1))
+      : {};
+  }
+  getLocationSearchQueryParams() {
+    return location.search
+      ? RoutingHelpers.parseParams(location.search.slice(1))
+      : {};
+  }
+
   getModalPathFromPath() {
-    return decodeURIComponent(GenericHelpers.getUrlParameter(this.getModalViewParamName()));
+    const path = this.getQueryParam(this.getModalViewParamName());
+    return path && decodeURIComponent(path);
   }
 
   getModalParamsFromPath() {
-    const modalParamsStr = GenericHelpers.getUrlParameter(`${this.getModalViewParamName()}Params`);
+    const modalParamsStr = this.getQueryParam(
+      `${this.getModalViewParamName()}Params`
+    );
     return modalParamsStr && JSON.parse(decodeURIComponent(modalParamsStr));
   }
 

@@ -201,13 +201,7 @@ class RoutingClass {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
 
-      // handle bookmarkable modal path
-      const additionalModalPath = RoutingHelpers.getModalPathFromPath();
-      if (additionalModalPath) {
-        const modalParams = RoutingHelpers.getModalParamsFromPath();
-        const { nodeObject } = await Navigation.extractDataFromPath(additionalModalPath);
-        LuigiNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal || modalParams);
-      }
+      await this.handleBookmarkableModalPath();
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
@@ -403,6 +397,20 @@ class RoutingClass {
     }
   }
 
+  async handleBookmarkableModalPath() {
+    const additionalModalPath = RoutingHelpers.getModalPathFromPath();
+    if (additionalModalPath) {
+      const modalParams = RoutingHelpers.getModalParamsFromPath();
+      const { nodeObject } = await Navigation.extractDataFromPath(
+        additionalModalPath
+      );
+      LuigiNavigation.openAsModal(
+        additionalModalPath,
+        nodeObject.openNodeInModal || modalParams
+      );
+    }
+  }
+
   /**
       This function takes the previous node data and the new node path and compares
       if the navigation path of both contains a dynamic node.
@@ -580,6 +588,40 @@ class RoutingClass {
       wc_container,
       componentData.context
     );
+  }
+
+  appendModalDataToUrl(modalPath, modalParams) {
+    // global setting for persistence in url .. default false
+    let queryParamIndex,
+      queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
+    const params = RoutingHelpers.getQueryParams();
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+
+    const prevModalPath = params[modalParamName];
+    if (prevModalPath !== modalPath) {
+      params[modalParamName] = modalPath;
+      if (modalParams && Object.keys(modalParams).length) {
+        params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+      }
+
+      const url = new URL(location.href);
+      const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
+        'routing.useHashRouting'
+      );
+      console.log('params', params);
+      if (hashRoutingActive) {
+        if (queryParamIndex !== -1) {
+          url.hash = url.hash.slice(0, queryParamIndex);
+        }
+        url.hash = `${
+          url.hash
+        }${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+        console.log('path', modalPath, 'new:', url.hash);
+      } else {
+        url.search = `?${RoutingHelpers.encodeParams(params)}`;
+      }
+      history.replaceState(window.state, '', url.href);
+    }
   }
 }
 
