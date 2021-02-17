@@ -81,22 +81,6 @@
 </script>
 
 <style>
-  .lui-form-grid {
-    display: grid;
-    display: -ms-grid;
-    grid-template-columns: minmax(0, 1fr) 2fr;
-    -ms-grid-columns: minmax(0, 1fr) 2fr;
-  }
-
-  .lui-us-content-header-container {
-    width: 100%;
-    padding: 1.5rem 2rem;
-  }
-
-  .lui-title--h2 {
-    font-size: var(--sapFontHeader2Size, 1.5rem);
-  }
-
   .lui-title {
     line-height: var(--sapContent_LineHeight, 1.4);
     font-family: var(
@@ -122,11 +106,6 @@
 </style>
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
-  <div class="lui-us-content-header-container">
-    <h1
-      class="lui-title lui-title--h2"
-    >{userSettingGroup[1].title?$getTranslation(userSettingGroup[1].title):''}</h1>
-  </div>
   {#if userSettingGroup[1].settings}
   <div class="fd-page__content">
     <div class="fd-container fd-form-layout-grid-container">
