@@ -1605,7 +1605,6 @@
     outline: none;
   }
   .spinnerContainer {
-    background: rgba(243, 244, 245, 0.8);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1696,6 +1695,12 @@
     }
   }
 
+  @media (max-width: $desktopMinWidth) {
+    :global(.fd-shellbar__title) {
+      display: none;
+    }
+  }
+
   @media (min-width: $desktopMinWidth) {
     :global(.fd-shellbar__title) {
       display: inline;
@@ -1758,9 +1763,9 @@
       }
     }
 
-    :global(.fd-dialog) {
+    :global(.fd-dialog, .fd-message-box) {
       &__content {
-        &:not(.fd-dialog__content--mobile) {
+        &:not(.fd-dialog__content--mobile, .fd-message-box__content--mobile) {
           max-width: 90%;
           min-width: 90%;
         }
@@ -1814,6 +1819,9 @@
     padding-left: 0.5625rem !important;
     padding-right: 0.5625rem !important;
   }
+  :global(.fd-shellbar__logo) {
+    margin-right: 0px;
+  }
 
   :global(.fd-menu__link) {
     text-decoration: none; //Remove underline from links in fd-menu
@@ -1853,16 +1861,19 @@
   }
 
   //Add z-index for dialogs
-  :global(.fd-dialog) {
+  :global(.fd-dialog, .fd-message-box) {
     z-index: 1000;
   }
 
-  :global(.fd-dialog__content--mobile) {
+  :global(.fd-dialog__content--mobile),
+  :global(.fd-message-box__content--mobile) {
     //Remove border-radius from mobile fullscreen dialog
     border-radius: 0;
 
     :global(.fd-dialog__header.fd-bar),
-    :global(.fd-dialog__footer.fd-bar) {
+    :global(.fd-dialog__footer.fd-bar),
+    :global(.fd-message-box__header.fd-bar),
+    :global(.fd-message-box__footer.fd-bar) {
       border-radius: 0;
     }
 
@@ -1893,6 +1904,25 @@
 
     iframe {
       display: none;
+    }
+  }
+
+  //this is required after FD Styles v0.13.0 in order to make mobile and desktop shellbar work fine
+  @media (min-width: $desktopMaxWidth) {
+    :global(.fd-shellbar__action--desktop) {
+      display: inline-block;
+    }
+    :global(.fd-shellbar__action--mobile) {
+      display: none;
+    }
+  }
+
+  @media (min-width: $mobileMinWidth) and (max-width: $desktopMaxWidth - 1) {
+    :global(.fd-shellbar__action--desktop) {
+      display: none;
+    }
+    :global(.fd-shellbar__action--mobile) {
+      display: inline-block;
     }
   }
 </style>

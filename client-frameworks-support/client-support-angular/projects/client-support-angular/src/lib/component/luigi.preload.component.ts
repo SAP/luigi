@@ -7,9 +7,5 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LuigiPreloadComponent implements OnInit {
   constructor() {}
-  routeExampleVirtual: string =
-    "  {path: 'ng-luigi-demo', component: NgLuigiDemoComponent, data: {fromVirtualTreeRoot: true}}";
-  routeExampleReuse: string =
-    "  {path: 'ng-luigi-demo', component: NgLuigiDemoComponent, data: {reuse: true}}";
   ngOnInit(): void {}
 }

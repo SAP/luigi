@@ -1,4 +1,6 @@
-let defaultConfig = `Luigi.setConfig({
+let defaultConfig = `
+
+Luigi.setConfig({
     navigation: { 
             nodes: [{ 
                 pathSegment: 'home', 
@@ -59,7 +61,43 @@ let defaultConfig = `Luigi.setConfig({
                         enabled: false
                     },
                     viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
-                }] 
+                },{ 
+                    pathSegment: 'wc1', 
+                    label: 'WC Editable List', 
+                    loadingIndicator: { enabled: false },
+                    category: {
+                        label: 'Web Component',
+                        icon: 'cloud',
+                        collapsible: true
+                    },
+                    viewUrl: '/wc/list.js',
+                    webcomponent: true,
+                    openNodeInModal: false
+                },{ 
+                    pathSegment: 'wc2', 
+                    label: 'WC Luigi Client', 
+                    category:  'Web Component',
+                    loadingIndicator: {
+                        enabled: false
+                    },
+                    viewUrl: '/wc/luigiExampleWC.js',
+                    webcomponent: true,
+                    openNodeInModal: false
+               
+                },
+                { 
+                    pathSegment: 'wc3', 
+                    label: 'WC UI5 Web Components', 
+                    category:  'Web Component',
+                    loadingIndicator: {
+                        enabled: false
+                    },
+                    viewUrl: '/wc/ui5/ui5example.js',
+                    webcomponent: true,
+                    openNodeInModal: false
+               
+                }
+                ] 
             },{ 
                 pathSegment: 'foo', 
                 label: 'Some Action',
@@ -148,10 +186,14 @@ let defaultConfig = `Luigi.setConfig({
             header: { 
                 logo: 'img/luigi.png', 
                 title: 'Luigi Fiddle'
-            } 
-        } 
+            },
+            navigation: {
+              validWebcomponentUrls:['.*?']
+            },
+            experimental: {
+              webcomponents:true
+            }  
+        }
     });    
 `;
 export default defaultConfig;
-
-

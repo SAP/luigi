@@ -21,6 +21,7 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 import { PreloadComponent } from './preload/preload.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
+import { ViewGroupComponent } from './project/view-group/view-group.component';
 
 const routes: Routes = [
   { path: 'preload', component: PreloadComponent },
@@ -116,6 +117,10 @@ const routes: Routes = [
   {
     path: 'nav-sync-example/:dyn',
     component: NavSyncComponent
+  },
+  {
+    path: 'view-group/:vg',
+    component: ViewGroupComponent
   }
 ];
 
@@ -123,4 +128,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

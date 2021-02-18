@@ -315,9 +315,8 @@ describe('Iframe-helpers', () => {
         .returns([mockContainer('modal')])
         .withArgs('.iframeModalCtn._drawer iframe') // 'drawer'
         .returns([mockContainer('drawer')])
-        .withArgs('.iframeUserSettingsCtn iframe') // 'drawer'
+        .withArgs('.iframeUserSettingsCtn iframe') // 'usersettings'
         .returns([mockContainer('usersettings')]);
-
 
       GenericHelpers.isElementVisible.callsFake(container => {
         // second container is not active

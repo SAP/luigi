@@ -1,4 +1,4 @@
-<div
+<span
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
 >
@@ -7,31 +7,32 @@
     data-testid="luigi-topnav-logo"
     on:click="{() => goTo('/')}"
     bind:this="{logo}"
-    alt
+    alt="SAP"
   >
   {/if}
-</div>
+</span>
 {#if title}
 {#if !hasApps}
-<div
+<span
   class="fd-shellbar__title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
->{$getTranslation(title)}</div>
+>{$getTranslation(title)}</span>
 {:else}
-<div class="fd-popover fd-popover--left">
+<div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <button
-      class="fd-button fd-shellbar__button--menu fd-button--transparent fd-button--menu"
+      class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu"
       aria-haspopup="true"
       aria-expanded="{dropDownStates.appSwitcherPopover || false}"
       on:click|stopPropagation="{() => toggleDropdownState('appSwitcherPopover')}"
       data-testid="app-switcher"
     >
-      <div
+      <span
         class="fd-shellbar__title"
         data-testid="luigi-topnav-title"
-      >{$getTranslation(title)}</div>
+      >{$getTranslation(title)}</span>
+      <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
     </button>
   </div>
   <div

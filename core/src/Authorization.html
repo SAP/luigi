@@ -1,3 +1,4 @@
+
 {#if !isHidden}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--no-shadow">
@@ -43,13 +44,21 @@
     </li>
     {/each}
     {#if hasUserSettings}
-    <li class="fd-menu__item" on:click="{onUserSettingsClick}" data-testid="{getTestId(profileNav.settings)}">
-      <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
+    <li
+      class="fd-menu__item"
+      on:click="{onUserSettingsClick}"
+      data-testid="{getTestId(profileNav.settings)}"
+    >
+      <a
+        aria-label="User Settings"
+        class="fd-menu__link"
+        data-testid="settings-link"
+      >
         {#if profileNav.settings.icon}
         {#if hasOpenUIicon(profileNav.settings)}
-        <span
+        <i
           class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"
-        ></span>
+        ></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -74,9 +83,9 @@
       <a aria-label="Logout" class="fd-menu__link" data-testid="logout-link">
         {#if profileNav.logout.icon}
         {#if hasOpenUIicon(profileNav.logout)}
-        <span
+        <i
           class="fd-top-nav__icon sap-icon--{profileNav.logout.icon}"
-        ></span>
+        ></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -182,15 +191,14 @@
             'navigation.profile.logout'
           );
           //check if the User Settings schema exist
-          const userSettings = await LuigiConfig.getConfigValueAsync(
-            'settings.userSettings'
+          const userSettingsConfig = await LuigiConfig.getConfigValueAsync(
+            'userSettings'
           );
+          const userSettings = userSettingsConfig
+            ? userSettingsConfig
+            : await LuigiConfig.getConfigValueAsync('settings.userSettings');
           hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
-          const userSettingsProfileMenuEntry = await LuigiConfig.getConfigValueAsync(
-            'settings.userSettings.userSettingsProfileMenuEntry'
-          );
-
           const profileNavData = {
             items:
               (await LuigiConfig.getConfigValueAsync(
@@ -198,6 +206,8 @@
               )) || []
           };
           if (hasUserSettings) {
+            const userSettingsProfileMenuEntry =
+              userSettings.userSettingsProfileMenuEntry;
             profileNavData['settings'] = {
               ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
               ...userSettingsProfileMenuEntry
@@ -292,5 +302,7 @@
   .lui-username {
     display: block;
     padding: 0.75rem 1rem 0.75rem 0.75rem;
+    cursor: default;
+    font-size: 1.125rem;
   }
 </style>

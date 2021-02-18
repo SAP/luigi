@@ -184,7 +184,7 @@ By default, the user settings will be read from the **localStorage**
 Luigi.readUserSettings();
 ```
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise when `readUserSettings` function is defined in settings.userSettings object. It resolves a stored user settings object. If the promise is rejected, the user settings dialog will be closed in case `closeDialog` property is defined in the error object, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise when a custom `readUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. It resolves a stored user settings object. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
 
 **Meta**
 
@@ -875,9 +875,10 @@ Shows a confirmation modal.
 ##### Parameters
 
 -   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you do not provide any value for any of the fields, a default value is used
+    -   `settings.type` **(`"confirmation"` \| `"success"` \| `"warning"` \| `"error"` \| `"information"`)** the content of the modal type. (Optional)
     -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
     -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
-    -   `settings.buttonConfirm` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal confirm button (optional, default `"Yes"`)
+    -   `settings.buttonConfirm` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| `false`)** the label for the modal confirmation button. If set to `false`, the button will not be shown. (optional, default `"Yes"`)
     -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
 
 ##### Examples
