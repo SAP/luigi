@@ -439,7 +439,7 @@
   }
 
   .lui-fd-side__nav-wrapper {
-    height: calc(80vh - 5.5rem);
+    height: calc(80vh - 5.25rem);
     max-height: 35rem;
     overflow: auto;
   }
@@ -456,6 +456,15 @@
 
   .usersettingseditor {
     padding: 20px;
+  }
+
+  .fd-nested-list__icon img {
+    max-width: 18px;
+    max-height: 18px;
+  }
+
+  .fd-nested-list__link {
+    height: 5rem;
   }
 
   @media (max-width: 600px) {
@@ -486,15 +495,6 @@
       transition: 0.5s;
     }
 
-    .fd-nested-list__link {
-      height: 5rem;
-    }
-
-    .fd-nested-list__icon img {
-      max-width: 18px;
-      max-height: 18px;
-    }
-
     .lui-usersettings-dialog-sub-header {
       left: 0;
     }
@@ -504,11 +504,6 @@
       position: relative;
       top: 7px;
       z-index: 1;
-    }
-
-    h2.fd-title {
-      display: inline-block;
-      vertical-align: middle;
     }
   }
 </style>
