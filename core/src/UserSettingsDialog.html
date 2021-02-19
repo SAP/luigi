@@ -14,6 +14,7 @@
     UserSettingsHelper
   } from './utilities/helpers';
   import { MessagesListeners } from './services/messages-listeners';
+  import { ViewUrlDecorator } from './services/viewurl-decorator';
   import UserSettingsEditor from './UserSettingsEditor.html';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { LuigiConfig } from './core-api';
@@ -165,8 +166,12 @@
           }
         });
       } else {
+        const viewUrl =  ViewUrlDecorator.hasDecorators()
+          ? ViewUrlDecorator.applyDecorators(selectedUserSettingGroupData.viewUrl)
+          : selectedUserSettingGroupData.viewUrl;
+
         let iframe = UserSettingsHelper.createIframe(
-          selectedUserSettingGroupData.viewUrl,
+          viewUrl,
           selectedUserSettingGroupKey
         );
         customIframes[selectedUserSettingGroupKey] = iframe;
