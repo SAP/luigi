@@ -61,17 +61,39 @@ Luigi.setConfig({
 })
 ```
 
-If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation, which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`. This file also contains a reference to `/assets/auth-oidc/plugin.js` to make the OIDC client available.
+If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation, 
+which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`. 
+You must install `oidc-client` in your project as a dev dependency:
+
+```javascript
+npm i -save-dev copy-webpack-plugin
+```
+
+Then, you need to import the plugin files and `oidc-client` library in your project using webpack:
 
 ```javascript
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 {
   plugins: [
-    new CopyWebpackPlugin([{
-      from: 'node_modules/@luigi-project/plugin-auth-oidc',
-      to: 'src/assets/auth-oidc'
-    }])
+    new CopyWebpackPlugin([
+     {
+         from: 'node_modules/@luigi-project/plugin-auth-oidc/plugin.js',
+         to: 'assets/auth-oidc'
+     },
+     {
+         from: 'node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js',
+         to: 'assets/auth-oidc'
+     },
+     {
+         from: 'node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html',
+         to: 'assets/auth-oidc'
+     },
+     {
+         from: 'node_modules/oidc-client/dist/oidc-client.min.js',
+         to: 'assets/auth-oidc'
+     }
+    ])
   ]
 }
 ```
