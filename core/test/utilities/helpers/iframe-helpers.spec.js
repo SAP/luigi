@@ -68,7 +68,7 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with interceptor', () => {
-      const icf = () => {};
+      const icf = () => { };
       const interceptor = sinon.spy(icf);
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -315,7 +315,7 @@ describe('Iframe-helpers', () => {
         .returns([mockContainer('modal')])
         .withArgs('.iframeModalCtn._drawer iframe') // 'drawer'
         .returns([mockContainer('drawer')])
-        .withArgs('.iframeUserSettingsCtn iframe') // 'drawer'
+        .withArgs('.iframeUserSettingsCtn iframe') // 'usersettings'
         .returns([mockContainer('usersettings')]);
 
 
