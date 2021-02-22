@@ -43,6 +43,7 @@ imports: [
 These are the main features provided by the library:
 * [LuigiContextService](#LuigiContextService)
 * [LuigiAutoRoutingService](#LuigiAutoRoutingService)
+* [Preload component](##LuigiAutoRoutingService)
 
 #### LuigiContextService
 
@@ -83,21 +84,25 @@ With this feature we provide an easy way of synchronizing Angular route with Lui
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: true}}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: 'localContext'}}
 
- ```__
+ ```
 
-with `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Client:
+With `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Client:
+
  ```javascript
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
  ```
-with `data: { luigiRoute: '/home/sample2' }`, uses luigiClient API in this way:
+
+With `data: { luigiRoute: '/home/sample2' }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
  ```
-with `data: { luigiRoute: '/home/sample2', fromContext: true }`, uses luigiClient API in this way:
+
+With `data: { luigiRoute: '/home/sample2', fromContext: true }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().fromClosestContext().withoutSync().navigate(data.luigiRoute);
  ```
-with `data: { luigiRoute: '/home/sample2', fromContext: 'localContext' }`, uses luigiClient API in this way:
+
+With `data: { luigiRoute: '/home/sample2', fromContext: 'localContext' }`, uses luigiClient API in this way:
  ```javascript
   luigiClient.linkManager().fromContext('localContext').withoutSync().navigate(data.luigiRoute);
  ```
