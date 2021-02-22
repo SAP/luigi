@@ -17,7 +17,7 @@ An example of Luigi Web Components can be found on our sandbox application [Luig
 
 #### Luigi Client Angular support library
 
-Also in v.1.7.0, we introduced a support library for Luigi Client in Angular. After you import the library to your project, you can use different features related to routing in Luigi, as well as  You can find more information about the library [here](https://github.com/SAP/luigi/tree/master/client-frameworks-support/client-support-angular).
+Also in v.1.7.0, we introduced a support library for Luigi Client in Angular. After you import the library to your project, you can use different features related to routing and contexts in Luigi. You can find more information about the library [here](https://github.com/SAP/luigi/tree/master/client-frameworks-support/client-support-angular).
 
 #### Fundamental Library Styles - breaking changes
 
