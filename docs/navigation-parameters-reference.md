@@ -98,7 +98,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **type**: boolean
 - **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
 
-### viewGroupsSettings
+### viewGroupSettings
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
