@@ -20,9 +20,9 @@ meta -->
 
 ### Overview
 
-Luigi offers the possibility to open a micro frontend as a web component; if you want to have more information about web components, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
+Luigi offers the possibility to open a micro frontend as a web component; if you want to have more information about web component, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
 
-For non-complex micro frontend, it can be a good and fast alternative: all the frontend will be loaded in a single javascript file.
+For no-complex micro frontend, it can be a good and fast alternative: all the frontend will be loaded in a single javascript file.
 
 In this page you wil find:
 -   [Navigation Configuration](#navigation-configuration) - how to configure web component in Luigi Core navigation
