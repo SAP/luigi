@@ -22,6 +22,17 @@ describe('Escaping-helpers', () => {
     assert.equal(sanitizedHtml, '<br> <br> <br> <br>');
   });
 
+  it('restoreSanitizedTags', () => {
+    const text =
+      '&lt;br&gt; &lt;b &gt; &lt;del /&gt; &lt;i/&gt; &lt;strong&gt;';
+    const restoreSanitizedTags = ['br', 'b', 'i', 'del', 'strong'];
+    const sanitizedHtml = EscapingHelpers.restoreSanitizedTags(
+      text,
+      restoreSanitizedTags
+    );
+    assert.equal(sanitizedHtml, '<br> <b> <del> <i> <strong>');
+  });
+
   it('sanitizeParam', () => {
     const param = '<>"\'/';
     const sanitizedParam = EscapingHelpers.sanitizeParam(param);
