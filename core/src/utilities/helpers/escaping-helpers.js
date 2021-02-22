@@ -18,6 +18,34 @@ class EscapingHelpersClass {
       .replace(/&lt;br &gt;/g, '<br>');
   }
 
+  restoreSanitizedTags(text, tags) {
+    let result = text;
+
+    for (let i = 0; i < tags.length; i++) {
+      const openTag_1 = new RegExp(`&lt;${tags[i]}\/&gt;`, 'g');
+      const openTag_2 = new RegExp(`&lt;${tags[i]} \/&gt;`, 'g');
+      const openTag_3 = new RegExp(`&lt;${tags[i]}&gt;`, 'g');
+      const openTag_4 = new RegExp(`&lt;${tags[i]} &gt;`, 'g');
+
+      const closeTag_1 = new RegExp(`&lt;\/${tags[i]}[\/]&gt;`, 'g');
+      const closeTag_2 = new RegExp(`&lt;\/${tags[i]} [\/]&gt;`, 'g');
+      const closeTag_3 = new RegExp(`&lt;[\/]${tags[i]}&gt;`, 'g');
+      const closeTag_4 = new RegExp(`&lt;[\/]${tags[i]} &gt;`, 'g');
+
+      result = result
+        .replace(openTag_1, `<${tags[i]}>`)
+        .replace(openTag_2, `<${tags[i]}>`)
+        .replace(openTag_3, `<${tags[i]}>`)
+        .replace(openTag_4, `<${tags[i]}>`)
+        .replace(closeTag_1, `</${tags[i]}>`)
+        .replace(closeTag_2, `</${tags[i]}>`)
+        .replace(closeTag_3, `</${tags[i]}>`)
+        .replace(closeTag_4, `</${tags[i]}>`);
+    }
+
+    return result;
+  }
+
   sanitizeParam(param) {
     return String(param)
       .replace(/</g, '&lt;')

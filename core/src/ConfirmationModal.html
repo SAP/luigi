@@ -54,18 +54,33 @@
     error: 'message-error',
     success: 'message-success'
   };
+  const restoreSanitizedTags = [
+    'i',
+    'b',
+    'br',
+    'mark',
+    'strong',
+    'em',
+    'small',
+    'del'
+  ];
 
   onMount(() => {
     const defaultSettings = {
       icon: iconMapping[settings.type],
       header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
-      body: EscapingHelpers.sanitizeHtml(
-        LuigiI18N.getTranslation('luigi.confirmationModal.body')
-      ),
+      body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
       buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
     };
-
+    const sanitizedHtml = EscapingHelpers.sanitizeHtml(settings.body);
+    settings = {
+      ...settings,
+      body: EscapingHelpers.restoreSanitizedTags(
+        sanitizedHtml,
+        restoreSanitizedTags
+      )
+    };
     settings = Object.assign(defaultSettings, settings);
 
     const focusedButton = settings.buttonConfirm
