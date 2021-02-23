@@ -68,7 +68,7 @@ userSettings:{
 - **description** name of the icon, without the `sap-icon--` prefix or path to an image.
 #### title
 - **type** string (optional)
-- **description** title of the user settings group. It will be displayed as header in the editor area.
+- **description** title of the user settings group. It will be displayed as a header in the editor area.
 #### viewURL
 - **type** string (optional)
 - **description** points to a custom micro frontend. It is possible to not use Luigi`s user settings editor instead you can write an own editor micro frontend.
