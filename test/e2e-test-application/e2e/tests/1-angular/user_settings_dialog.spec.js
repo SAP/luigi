@@ -282,6 +282,6 @@ describe('Navigation', () => {
     //     $iframeBody = result;
     //     cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
     //   });
+    //});
   });
-});
 });
