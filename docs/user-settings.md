@@ -59,7 +59,7 @@ userSettings:{
 
 #### label
 - **type** string (optional)
-- **description** defines the label for the left navigation entry.
+- **description** defines the label for the left-side navigation entry.
 #### sublabel
 - **type** string (optional)
 - **description** defines the sublabel for the left-side navigation entry.
