@@ -54,19 +54,6 @@
     error: 'message-error',
     success: 'message-success'
   };
-  const restoreSanitizedTags = [
-    'i',
-    'b',
-    'br',
-    'mark',
-    'strong',
-    'em',
-    'small',
-    'del',
-    'ins',
-    'sub',
-    'sup'
-  ];
 
   onMount(() => {
     const defaultSettings = {
@@ -76,13 +63,9 @@
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
       buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
     };
-    const sanitizedHtml = EscapingHelpers.sanitizeHtml(settings.body);
     settings = {
       ...settings,
-      body: EscapingHelpers.restoreSanitizedTags(
-        sanitizedHtml,
-        restoreSanitizedTags
-      )
+      body: EscapingHelpers.sanatizeHtmlExceptTextFormatting(settings.body)
     };
     settings = Object.assign(defaultSettings, settings);
 
