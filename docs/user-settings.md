@@ -62,7 +62,7 @@ userSettings:{
 - **description** defines the label for the left navigation entry.
 #### sublabel
 - **type** string (optional)
-- **description** defines the subleable for the left navigation entry.
+- **description** defines the sublabel for the left-side navigation entry.
 #### icon
 - **type** string (optional)
 - **description** name of the icon, without the `sap-icon--` prefix or path to an image.
