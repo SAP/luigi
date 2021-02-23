@@ -34,7 +34,25 @@ class UserSettings {
                     label: 'Checkbox23',
                     // style: 'checkbox',
                     isEditable: false
-                }
+                },
+                name2: { type: 'string', label: 'Name' },
+                email2: { type: 'string', label: 'E-Mail', isEditable: false },
+                server2: { type: 'string', label: 'Server', isEditable: false },
+                checkbox4: {
+                    type: 'boolean',
+                    label: 'Checkbox',
+                    // style: 'checkbox',
+                    isEditable: true
+                },
+                name3: { type: 'string', label: 'Name' },
+                email3: { type: 'string', label: 'E-Mail', isEditable: false },
+                server3: { type: 'string', label: 'Server', isEditable: false },
+                checkbox5: {
+                    type: 'boolean',
+                    label: 'Checkbox',
+                    // style: 'checkbox',
+                    isEditable: true
+                },
             }
         },
         language: {
@@ -80,7 +98,7 @@ class UserSettings {
             label: 'Theming',
             title: 'Theming',
             icon: 'private',
-            viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
+            viewUrl: 'http://192.168.178.21:8090/customUserSettingsMf.html',
             settings: {
                 theme: {
                     type: 'enum', label: 'theme', options: ['red', 'green']
@@ -88,9 +106,10 @@ class UserSettings {
             }
         },
         custom: {
+            title: 'Custom',
             label: 'Custom',
             sublabel: 'Sublabel',
-            viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
+            viewUrl: 'http://192.168.178.21:8090/usersettings.html'
         }
     }
 }
