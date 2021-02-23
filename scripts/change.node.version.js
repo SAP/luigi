@@ -4,7 +4,7 @@ const path = require('path');
 
 
 const listModules = () => {
-  const lernaPath =  path.join(path.resolve(__dirname), '..', 'lerna.json')
+  const lernaPath =  path.join(path.resolve(__dirname), '..', 'lerna.json');
   const lernaConfig = JSON.parse(fs.readFileSync(lernaPath).toString());
   return lernaConfig.packages;
 }
@@ -44,5 +44,4 @@ const executeModule = async (module) => {
     await executeModule(module);
   }
 })();
-
 
