@@ -79,7 +79,7 @@ In that case, the micro frontend will be displayed in the editor area.
 `Key` of each setting object will be the key in the stored user settings with the corresponding value.
 The attributes to define a setting objects are:
 - **attributes**
-  - **type** (mandatory) is a string and defines the data type of this setting. It could be `string`, `boolean` or `enum`. If data type `string` is defined, an input field will be rendered in the editor area. If this property is set to `boolean` a switcher will be rendered. If `enum` type is set it will be rendered a dropdown by default.
+  - **type** (mandatory) is a string and defines the data type of this setting. It could be `string`, `boolean` or `enum`. If data type `string` is defined, an input field will be rendered in the editor area. If this property is set to `boolean`, a switcher will be rendered. If `enum` type is set, it will be rendered as a dropdown by default.
   It is possible to define the style how boolean and enum are generated, see `style` attribute.
 
   - **label** (optional) is a string and the label of the setting.
