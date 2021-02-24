@@ -36,8 +36,8 @@ If you want to declare a menu item to be open as Web Component, you need to spec
 ```javascript
 Luigi.setConfig({
     navigation: {
-   		// To enable CORS Web Component Loading: you need to add external domains where the Web Components are hosted;
-   		// in this example, we sepcify that we can load Web Components from everyhere
+   		// To enable CORS Web component Loading: basically you need to add external domains where the Web Components are hosted;
+   		// in this examle, we are sepcify that we can load Web Components from everyhere
 	    validWebcomponentUrls:['.*?'],
 	    nodes: [
 		...
@@ -97,11 +97,12 @@ export default class ExampleWC extends HTMLElement {
 }
 ```
 
-As shown in the example, you can use a LuigiClient instance inside your Web Component class.
-It is really important to note that this LuigiClient instance is different from the one than you can find in our [Client library](https://docs.luigi-project.io/docs/luigi-client-setup).
+As you could notice from previous example, you can use a LuigiClient instance inside your  web component class.
+It is really important to notice, that this LuigiClient instance is different from the one than you can find in [client library](https://docs.luigi-project.io/docs/luigi-client-setup).
 
-Normal micro frontends are embedded inside iframe: Luigi offers a library to allow the frontend to communicate with Luigi Core.
-In a Web Component the situation is quite different: they are not encapsulated into an iframe, they are just loaded inside a shadow element. When Luigi Core loads a Web Component, it injects a LuigiClient instance.
+Normal micro frontends are embedded inside iFrame: Luigi offers a library to allow the frontend to communicate with Luigi Core.
+In Web Component the situation is quite different: they are not encapsulated into an iframe, they are just loaded inside a shadow element;
+when Luigi Core loads a Web Component, it injects a LuigiClient instance.
 
 ### Luigi Client for Web Components
 
