@@ -238,14 +238,13 @@ describe('Navigation', () => {
       closeSettings();
     });
 
-    it('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
+    it.only('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
       let $iframeBody;
-
       //Click on theming
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(3)
         .click();
-      cy.wait(5000);
+      // cy.wait(5000);
       //Check if iframe is loaded and have a red button
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
@@ -262,7 +261,7 @@ describe('Navigation', () => {
         .eq(3)
         .click();
       //Check if iframe has a red button with a active class
-      cy.wait(5000);
+      // cy.wait(5000);
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'active');

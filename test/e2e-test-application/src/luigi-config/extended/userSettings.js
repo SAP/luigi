@@ -80,7 +80,7 @@ class UserSettings {
             label: 'Theming',
             title: 'Theming',
             icon: 'private',
-            viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
+            viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
             settings: {
                 theme: {
                     type: 'enum', label: 'theme', options: ['red', 'green']
