@@ -71,7 +71,7 @@ userSettings:{
 - **description** title of the user settings group. It will be displayed as a header in the editor area.
 #### viewURL
 - **type** string (optional)
-- **description** points to a custom micro frontend. It is possible to not use Luigi`s user settings editor instead you can write an own editor micro frontend.
+- **description** points to a custom micro frontend. It is possible to not use Luigi's user settings editor. Instead, you can [write your own](#write-a-custom-editor) editor micro frontend.
 In that case the micro frontend will be displayed in the editor area.
 #### settings
 - **type** object (optional)
