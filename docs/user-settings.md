@@ -85,7 +85,7 @@ The attributes to define a setting objects are:
   - **label** (optional) is a string and the label of the setting.
   - **isEditable** (optional) is a boolean and by default `true`. If it is set to `false` the setting is not editable.
   - **style** (optional) is a string and can be defined for the data types `boolean` and `enum`. Boolean will be rendered as switcher by default and it can be changed to `checkbox`. Enum will be rendered as dropdown by default and it can be changed to `button`, which means it will be rendered as a `segmented button`. 
-  - **options** is a array of options. It is mandatory and neccessary if the data type is `enum`.
+  - **options** is an array of options. It is mandatory and necessary if the data type is `enum`.
 
 #### Write a custom editor
 
