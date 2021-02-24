@@ -72,7 +72,7 @@ userSettings:{
 #### viewURL
 - **type** string (optional)
 - **description** points to a custom micro frontend. It is possible to not use Luigi's user settings editor. Instead, you can [write your own](#write-a-custom-editor) editor micro frontend.
-In that case the micro frontend will be displayed in the editor area.
+In that case, the micro frontend will be displayed in the editor area.
 #### settings
 - **type** object (optional)
 - **description** has objects of settings for the corresponding user group. 
