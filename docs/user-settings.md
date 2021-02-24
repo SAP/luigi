@@ -17,7 +17,7 @@ meta -->
 # User Settings
 
 Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
-Each `userSettingGroup` could have the following meta data:
+Following example describes how user settings and a corresponding userSettingGroups configuration could be look like:
 
 ```javascript
 settings:{
