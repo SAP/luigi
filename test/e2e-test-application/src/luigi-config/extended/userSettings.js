@@ -93,25 +93,26 @@ class UserSettings {
           options: ['12 h', '24 h']
         }
       }
-    } /*,
-        theming: {
-            label: 'Theming',
-            title: 'Theming',
-            icon: 'private',
-            viewUrl: 'http://192.168.178.21:8090/customUserSettingsMf.html',
-            settings: {
-                theme: {
-                    type: 'enum', label: 'theme', options: ['red', 'green']
-                }
-            }
-        },
-        custom: {
-            title: 'Custom',
-            label: 'Custom',
-            sublabel: 'Sublabel',
-            viewUrl: 'http://192.168.178.21:8090/usersettings.html'
+    },
+    theming: {
+      label: 'Theming',
+      title: 'Theming',
+      icon: 'private',
+      viewUrl: 'http://192.168.178.21:8090/customUserSettingsMf.html',
+      settings: {
+        theme: {
+          type: 'enum',
+          label: 'theme',
+          options: ['red', 'green']
         }
-        */
+      }
+    },
+    custom: {
+      title: 'Custom',
+      label: 'Custom',
+      sublabel: 'Sublabel',
+      viewUrl: 'http://192.168.178.21:8090/usersettings.html'
+    }
   };
 }
 export const userSettings = new UserSettings();
