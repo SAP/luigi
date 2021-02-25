@@ -8,6 +8,7 @@
   } from 'svelte';
   import { NavigationHelpers, GenericHelpers, EventListenerHelpers, IframeHelpers, UserSettingsHelper } from './utilities/helpers';
   import { MessagesListeners } from './services/messages-listeners';
+  import { ViewUrlDecorator } from './services/viewurl-decorator';
   import UserSettingsEditor from './UserSettingsEditor.html';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { LuigiConfig } from './core-api';
@@ -95,10 +96,10 @@
   }
 
   function errorHandling(selectedUserSettingGroupData) {
+    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
     if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
       return;
     }
-    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
     for (let key in selectedUserSettingGroupData.settings) {
       let property = selectedUserSettingGroupData.settings[key];
       if (property.type === 'enum') {
@@ -142,7 +143,13 @@
           }
         });
       } else {
-        let iframe = UserSettingsHelper.createIframe(selectedUserSettingGroupData.viewUrl, selectedUserSettingGroupKey);
+        const viewUrl = ViewUrlDecorator.hasDecorators()
+          ? ViewUrlDecorator.applyDecorators(selectedUserSettingGroupData.viewUrl)
+          : selectedUserSettingGroupData.viewUrl;
+        let iframe = UserSettingsHelper.createIframe(
+          viewUrl,
+          selectedUserSettingGroupKey
+        );
         customIframes[selectedUserSettingGroupKey] = iframe;
       }
 
@@ -297,11 +304,8 @@
     height: 100%;
     right: 0;
     overflow-wrap: break-word;
-    padding: 0 0px;
-    overflow: hidden;
-    height: 99%;
-    /* overflow: auto;
-    height: 100%; */
+    overflow: auto;
+    height: 100%;
   }
 
   .lui-usersettings-burger {
