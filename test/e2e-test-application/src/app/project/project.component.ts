@@ -141,8 +141,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
     const settings = {
       // header: 'Modal Header - Luigi modal',
       type: 'confirmation',
-      body: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      body: `Lorem <i>tipsum</i> dolor sit amet, <b>consectetur adipisicing elit</b>, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, <br/><br/>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
       buttonConfirm: 'Confirm',
       buttonDismiss: 'Cancel'
@@ -165,9 +165,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     const settings = {
       header: 'Warning',
       type: 'warning',
-      body: `Lorem tipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
+      body: `<mark>Lorem tipsum dolor sit amet,</mark> <b>consectetur adipisicing elit</b>, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, <small>quis nostrud exercitation ullamco</small> laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in <del>reprehenderit</del> in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
       buttonConfirm: false,
       buttonDismiss: 'Close'
     };
