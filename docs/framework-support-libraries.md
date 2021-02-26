@@ -43,7 +43,8 @@ imports: [
 These are the main features provided by the library:
 * [LuigiContextService](#LuigiContextService)
 * [LuigiAutoRoutingService](#LuigiAutoRoutingService)
-* [Preload component](##LuigiAutoRoutingService)
+* [Preload component](#preload-component-example) - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings).
+
 
 #### LuigiContextService
 
