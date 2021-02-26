@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "feed": "^4.2.1",
+    "feed": "^4.2.2",
     "foundation-sites": "^6.6.3",
     "jquery": "^3.5.1",
     "motion-ui": "^2.0.3",
