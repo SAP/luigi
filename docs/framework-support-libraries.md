@@ -75,15 +75,16 @@ providers: [
 #### LuigiAutoRoutingService
 
 This service cannot be used directly, but it will provide useful features on how to synchronize your Angular application with Luigi navigation.
-It can happen that in your microfrontend, user can navigate through different components/pages.
-With this feature we provide an easy way of synchronizing Angular route with Luigi navigation; in Angular route configuration, you can now add in data these attributes:
+It can happen that in your micro frontend, user can navigate through different components/pages.
+With this feature, we provide an easy way of synchronizing Angular route with Luigi navigation. In the Angular route configuration, you can now add in data these attributes:
+
+#### Preload component example
 
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2' }}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: true}}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: 'localContext'}}
-
  ```
 
 With `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Client:
