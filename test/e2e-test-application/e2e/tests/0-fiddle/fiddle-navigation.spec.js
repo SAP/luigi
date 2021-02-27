@@ -639,8 +639,7 @@ describe('Fiddle', () => {
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
       });
-      cy.get('[data-testid="lui-us-header"]').should('be.visible');
-      cy.get('[data-testid="lui-us-header"]').contains('User Settings');
+      cy.get('.lui-usersettings-dialog').should('be.visible');
 
       cy.get('.lui-usersettings-left-nav')
         .contains('Language & Region')
@@ -653,7 +652,7 @@ describe('Fiddle', () => {
         .should('contain', 'German');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
-      cy.get('[data-testid="lui-us-header"]').should('not.be.visible');
+      cy.get('.lui-usersettings-dialog').should('not.be.visible');
     });
     it('Check if external mf is loaded in custom user settings editor', () => {
       cy.visitWithFiddleConfig('/', newConfig);
