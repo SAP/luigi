@@ -25,6 +25,16 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.11.0] (2021-03-01)
+
+#### :rocket: Added
+* [#1900](https://github.com/SAP/luigi/pull/1900) Confirmation modal enhancements ([@stanleychh](https://github.com/stanleychh))
+* [#1900](https://github.com/SAP/luigi/pull/1884) Apply guidelines for user settings dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+
+
+
 ## [v1.10.0] (2021-02-11)
 
 #### :rocket: Added
@@ -990,3 +1000,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.8.1]: https://github.com/SAP/luigi/compare/v1.8.0...v1.8.1
 [v1.9.0]: https://github.com/SAP/luigi/compare/v1.8.1...v1.9.0
 [v1.10.0]: https://github.com/SAP/luigi/compare/v1.9.0...v1.10.0
+[v1.11.0]: https://github.com/SAP/luigi/compare/v1.10.0...v1.11.0
