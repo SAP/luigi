@@ -620,7 +620,7 @@ describe('Fiddle', () => {
             sublabel: 'Theme',
             icon: '/assets/github-logo.png',
             title: 'Theming',
-            viewUrl: 'http://localhost:8080/index.html',
+            viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
             settings: {
               theme: {
                 type: 'enum',
@@ -666,7 +666,7 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
+        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
       });
     });
   });
