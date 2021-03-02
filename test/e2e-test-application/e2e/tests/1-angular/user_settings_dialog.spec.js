@@ -14,9 +14,9 @@ describe('Navigation', () => {
       .click();
 
     //Check Dialog is open
-    cy.get('[data-testid="lui-us-header"]').should('exist');
+    cy.get('.lui-usersettings-dialog').should('exist');
 
-    //Check we have 3 left bar items
+    //Check we have 5 left bar items
     cy.get('.lui-usersettings-body .fd-nested-list__link')
       .children()
       .should('have.length', 5);
@@ -29,7 +29,7 @@ describe('Navigation', () => {
       .click();
 
     //Check settings dialog box is closed...
-    cy.get('[data-testid="lui-us-header"]').should('not.exist');
+    cy.get('.lui-usersettings-dialog').should('not.exist');
   };
 
   const closeSettings = () => {
@@ -39,7 +39,7 @@ describe('Navigation', () => {
       .click();
 
     //Check settings dialog box is closed...
-    cy.get('[data-testid="lui-us-header"]').should('not.exist');
+    cy.get('.lui-usersettings-dialog').should('not.exist');
   };
 
   beforeEach(() => {
@@ -69,10 +69,10 @@ describe('Navigation', () => {
         .should('exist')
         .type(setting_name);
 
-      //Email Input field should be disabled
+      //Email Input field should be disabled and a usual text
       cy.get('[data-testid="lui-us-input1"]')
         .should('exist')
-        .should('be.disabled');
+        .should('have.class', 'lui-form-text');
 
       cy.get('[data-testid="lui-us-label-switch_checkbox"]')
         .should('exist')
@@ -240,12 +240,10 @@ describe('Navigation', () => {
 
     it('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
       let $iframeBody;
-
       //Click on theming
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(3)
         .click();
-      cy.wait(5000);
       //Check if iframe is loaded and have a red button
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
@@ -262,7 +260,6 @@ describe('Navigation', () => {
         .eq(3)
         .click();
       //Check if iframe has a red button with a active class
-      cy.wait(5000);
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'active');
@@ -276,12 +273,12 @@ describe('Navigation', () => {
       cy.get('.lui-usersettings-body .fd-nested-list__link')
         .eq(4)
         .click();
-      cy.wait(5000);
       //check if iframe is rendered also there are no meta data set in config.
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
       });
     });
+
   });
 });
