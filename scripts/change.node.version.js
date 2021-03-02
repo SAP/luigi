@@ -11,6 +11,7 @@ const listModules = () => {
   return lernaConfig.packages;
 }
 
+// helper async function used to execute our 'npm' commands  
 const executeCommand = async (command) => {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
