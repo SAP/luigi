@@ -35,7 +35,7 @@ const executeModule = async (module) => {
     fs.rmdirSync(moduleDependencies, { recursive: true });
 
     process.chdir( modulePath )
-    console.log("npm install on directory "+modulePath);
+    console.log("npm install on directory " + modulePath);
     await executeCommand('npm install');
 };
 
