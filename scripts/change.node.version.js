@@ -2,7 +2,9 @@ const exec = require('child_process').exec;
 const fs = require('fs');
 const path = require('path');
 
+// This script is used to update package dependencies for all modules in the repository. It is used when updating the local node.js version which results in incompatibilities with existing node_modules.
 
+// return list of all module packages
 const listModules = () => {
   const lernaPath =  path.join(path.resolve(__dirname), '..', 'lerna.json');
   const lernaConfig = JSON.parse(fs.readFileSync(lernaPath).toString());
@@ -44,4 +46,3 @@ const executeModule = async (module) => {
     await executeModule(module);
   }
 })();
-
