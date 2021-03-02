@@ -30,7 +30,7 @@ const executeCommand = async (command) => {
 const executeModule = async (module) => {
     const pathArray = [path.resolve(__dirname),'..'].concat(module.split('/'));
     const modulePath =  path.join(...pathArray);
-    const moduleDependencies =   path.join(modulePath, 'node_modules');
+    const moduleDependencies =  path.join(modulePath, 'node_modules');
     console.log("Deleting directory "+moduleDependencies);
     fs.rmdirSync(moduleDependencies, { recursive: true });
 
