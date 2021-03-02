@@ -26,6 +26,7 @@ const executeCommand = async (command) => {
   });
 }
 
+// takes a module as a parameter and deletes its dependencies and then re-installs them sequentially
 const executeModule = async (module) => {
     const pathArray = [path.resolve(__dirname),'..'].concat(module.split('/'));
     const modulePath =  path.join(...pathArray);
