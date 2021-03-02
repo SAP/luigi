@@ -75,6 +75,12 @@ describe('Luigi Client ux manager features', () => {
       cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
       cy.get('.sap-icon--message-warning').should('be.visible');
       cy.get('.luigi-modal-confirm').should('not.be.visible');
+      cy.get('.fd-message-box__body')
+        .get('b')
+        .should('be.visible');
+      cy.get('.fd-message-box__body')
+        .get('mark')
+        .should('be.visible');
 
       cy.get('[data-testid=luigi-modal-dismiss]').click();
       cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
