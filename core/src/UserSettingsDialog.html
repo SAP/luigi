@@ -133,7 +133,9 @@
   }
 
   function errorHandling(selectedUserSettingGroupData) {
-    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
+    userSettingsGroupTitle = selectedUserSettingGroupData.title
+      ? selectedUserSettingGroupData.title
+      : '';
     if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
       return;
     }
@@ -190,7 +192,9 @@
         });
       } else {
         const viewUrl = ViewUrlDecorator.hasDecorators()
-          ? ViewUrlDecorator.applyDecorators(selectedUserSettingGroupData.viewUrl)
+          ? ViewUrlDecorator.applyDecorators(
+              selectedUserSettingGroupData.viewUrl
+            )
           : selectedUserSettingGroupData.viewUrl;
         let iframe = UserSettingsHelper.createIframe(
           viewUrl,
@@ -379,7 +383,6 @@
     margin-top: var(--dialog-header-height);
     overflow-y: auto;
     background-color: var(--sapBackgroundColor, #f7f7f7);
-
   }
 
   .lui-usersettings-burger {
@@ -545,79 +548,54 @@
     }
   }
 </style>
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}"/>
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
-  <div class="fd-dialog__content dialog-size">
-    <div class="fd-dialog__header fd-bar fd-bar--header">
-      <div class="fd-bar__left">
-        <div class="fd-bar__element">
-          <button
-            class="fd-button fd-shellbar__button lui-usersettings-burger"
-            on:click="{toggleNavMobile}"
-            tabindex="0"
-          >
-            <i class="sap-icon sap-icon--menu2"></i>
-          </button>
-        </div>
-        <div class="fd-bar__element">
-          <h3
-            class="fd-dialog__title"
-            data-testid="lui-us-header"
-          >{$getTranslation(dialogHeader)}</h3>
-        </div>
-      </div>
-      <div class="fd-bar__right">
-        <div class="fd-bar__element">
-          <button
-            class="fd-button fd-button--transparent fd-button--compact fd-dialog__close sap-icon--decline"
-            on:click="{() => dispatch('close')}"
-            aria-label="close"
-          ></button>
-        </div>
-      </div>
-    </div>
+  <div class="fd-dialog__content lui-usersettings-dialog-size">
     <div class="fd-dialog__body lui-usersettings-body">
       <div class="lui-usersettings-left-nav">
         <div class="fd-side-nav">
-          <div class="fd-side-nav__main-navigation">
-            <div class="lui-fd-side__nav-wrapper">
-              <ul class="fd-nested-list lui-us-list">
-                {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
-                {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
-                <li class="fd-nested-list__item">
-                  <a
-                    class="fd-nested-list__link"
-                    on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
-                  >
-                    <div class="lui-usersettings-list-item__info-container">
-                      {#if userSettingsGroupProperty[1].icon}
-                      {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                      <span
-                        class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"
-                      ></span>
-                      {:else}
-                      <span
-                        class="fd-nested-list__icon sap-icon"
+          <div class="fd-side-nav__group-header">
+            <h2 class="fd-title fd-title--h5">{$getTranslation(dialogHeader)}</h2>
+          </div>
+          <div
+            class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation"
+          >
+            <ul class="fd-nested-list lui-us-list">
+              {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
+              {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
+              <li class="fd-nested-list__item">
+                <a
+                  class="fd-nested-list__link"
+                  on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
+                >
+                  <div class="lui-usersettings-list-item__info-container">
+                    {#if userSettingsGroupProperty[1].icon}
+                    {#if hasOpenUIicon(userSettingsGroupProperty[1])}
+                    <i
+                      class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"
+                    ></i>
+                    {:else}
+                    <span
+                      class="fd-nested-list__icon sap-icon"
+                    >
+                      <img
+                        src="{userSettingsGroupProperty[1].icon}"
+                        alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
                       >
-                        <img
-                          src="{userSettingsGroupProperty[1].icon}"
-                          alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
-                        >
-                      </span>
-                      {/if}
-                      {:else}
+                    </span>
+                    {/if}
+                    {:else}
+                    <i
+                      class="fd-nested-list__icon sap-icon"
+                    ></i>
+                    {/if}
+                    <div class="lui-usersettings-list-item__title-container">
                       <span
-                        class="fd-nested-list__icon sap-icon"
-                      ></span>
-                      {/if}
-                      <div class="lui-usersettings-list-item__title-container">
-                        <span
-                          class="lui-usersettings-list-item__title"
-                        >{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
-                        <span
-                          class="lui-usersettings-list-item__subtitle"
-                        >{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
-                      </div>
+                        class="lui-usersettings-list-item__title"
+                      >{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
+                      <span
+                        class="lui-usersettings-list-item__subtitle"
+                      >{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
                     </div>
                   </div>
                 </a>
