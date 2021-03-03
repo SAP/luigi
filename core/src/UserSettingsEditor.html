@@ -91,6 +91,7 @@
   .lui-value-container {
     grid-column: 2;
     -ms-grid-column: 2;
+    position: relative;
   }
 
   .lui-value-container > input[type='checkbox'] {
@@ -115,6 +116,7 @@
   .lui-us-content-header-container {
     width: 100%;
     padding: 1.5rem 2rem;
+    display: flex;
   }
 
   .lui-title--h2 {
@@ -143,6 +145,12 @@
   .lui-fd-enum-button {
     margin-top: 6px;
   }
+
+  .lui-form-text {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+  }
 </style>
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
@@ -160,6 +168,7 @@
       </div>
       <div class="lui-value-container">
         {#if schemaItem.type==='string'}
+        {#if schemaItem.isEditable || schemaItem.isEditable === undefined}
         <input
           class="fd-input"
           type="text"
@@ -169,6 +178,12 @@
           bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
           disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
         >
+        {:else}
+        <label
+          class="lui-form-text"
+          data-testid="lui-us-input{i}"
+        >{storedUserSettingData[userSettingGroup[0]][key]}</label>
+        {/if}
         {/if}
         {#if schemaItem.type==='enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
         <div>

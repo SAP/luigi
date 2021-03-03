@@ -620,7 +620,7 @@ describe('Fiddle', () => {
             sublabel: 'Theme',
             icon: '/assets/github-logo.png',
             title: 'Theming',
-            viewUrl: 'http://localhost:8080/index.html',
+            viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
             settings: {
               theme: {
                 type: 'enum',
@@ -639,8 +639,7 @@ describe('Fiddle', () => {
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
       });
-      cy.get('[data-testid="lui-us-header"]').should('be.visible');
-      cy.get('[data-testid="lui-us-header"]').contains('User Settings');
+      cy.get('.lui-usersettings-dialog').should('be.visible');
 
       cy.get('.lui-usersettings-left-nav')
         .contains('Language & Region')
@@ -653,7 +652,7 @@ describe('Fiddle', () => {
         .should('contain', 'German');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
-      cy.get('[data-testid="lui-us-header"]').should('not.be.visible');
+      cy.get('.lui-usersettings-dialog').should('not.be.visible');
     });
     it('Check if external mf is loaded in custom user settings editor', () => {
       cy.visitWithFiddleConfig('/', newConfig);
@@ -667,7 +666,7 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
+        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
       });
     });
   });

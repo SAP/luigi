@@ -80,7 +80,7 @@ class UserSettings {
       label: 'Theming',
       title: 'Theming',
       icon: 'private',
-      viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
+      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
       settings: {
         theme: {
           type: 'enum',
@@ -91,9 +91,10 @@ class UserSettings {
     },
     custom: {
       label: 'Custom',
-      sublabel: 'Sublabel',
-      viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
+      title: 'Custom',
+      icon: 'private',
+      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
     }
-  };
+  }
 }
 export const userSettings = new UserSettings();
