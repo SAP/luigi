@@ -79,11 +79,11 @@ class RoutingHelpersClass {
     return result;
   }
 
-  encodeParams(dataData) {
+  encodeParams(dataObj) {
     let queryArr = [];
-    for (let key in dataData) {
+    for (let key in dataObj) {
       queryArr.push(
-        encodeURIComponent(key) + '=' + encodeURIComponent(dataData[key])
+        encodeURIComponent(key) + '=' + encodeURIComponent(dataObj[key])
       );
     }
     return queryArr.join('&');

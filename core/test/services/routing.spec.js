@@ -620,28 +620,6 @@ describe('Routing', function() {
 
       assert.equal(component.get().hideSideNav, true);
     });
-
-    it('opens a path with an additional modal and default modalPathParam', async () => {
-      // given
-      const modalPath = '/project-modal';
-      const path = `#/projects:${modalPath}`;
-
-      const node = { insertBefore: sinon.spy(), children: [] };
-      sinon.stub(document, 'querySelectorAll').callsFake(() => node);
-      sinon.stub(Navigation, 'extractDataFromPath').returns({nodeObject: {}});
-      sinon.stub(LuigiNavigation, 'openAsModal');
-
-      //when
-      try {
-        await Routing.handleRouteChange(path, component, node, currentLuigiConfig);
-      } catch (error) {
-        // console.log('err', error);
-      }
-
-      //then
-      sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
-      sinon.assert.calledOnce(LuigiNavigation.openAsModal);
-    });
   });
 
   describe('handleRouteClick', () => {
@@ -879,4 +857,62 @@ describe('Routing', function() {
       assert.equal(pathParamValue, 'dyn1');
     });
   });
+
+  describe('handleBookmarkableModalPath', async () => {
+    // given
+    const modalPath = encodeURIComponent('/project-modal');
+    const modalParams = { hello: 'world' };
+
+    beforeEach(() => {
+      sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
+      sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
+      sinon.stub(Navigation, 'extractDataFromPath').returns({ nodeObject: {} });
+      sinon.stub(LuigiNavigation, 'openAsModal');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('with modalParams (from url or withParams())', async () => {
+      //when
+      try {
+        await Routing.handleBookmarkableModalPath();
+      } catch (error) {
+        // console.log('err', error);
+      }
+
+      //then
+      sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
+      sinon.assert.calledOnce(LuigiNavigation.openAsModal);
+      sinon.assert.calledWithExactly(
+        LuigiNavigation.openAsModal,
+        modalPath,
+        modalParams
+      );
+    });
+    it('with node setting openNodeInModal', async () => {
+      const mockNodeModalSettings = {
+        openNodeInModal: { title: 'My Modal' }
+      };
+      Navigation.extractDataFromPath.returns({
+        nodeObject: mockNodeModalSettings
+      });
+
+      //when
+      try {
+        await Routing.handleBookmarkableModalPath();
+      } catch (error) {
+        // console.log('err', error);
+      }
+
+      //then
+      sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
+      sinon.assert.calledOnce(LuigiNavigation.openAsModal);
+      sinon.assert.calledWithExactly(
+        LuigiNavigation.openAsModal,
+        modalPath,
+        mockNodeModalSettings.openNodeInModal
+      );
+    });
+  });
+  // TODO: tests for appendModalDataToUrl
 });

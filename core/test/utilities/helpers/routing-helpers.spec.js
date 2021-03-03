@@ -527,25 +527,102 @@ describe('Routing-helpers', () => {
     });
   });
 
-  describe('getModalPathFromPath', () => {
-    let mockPath = '/path/one';
-    let mockPath2 = '/path/two';
-    let prefix = '^';
+  it('getHashQueryParamSeparator', () => {
+    assert.equal(RoutingHelpers.getHashQueryParamSeparator(), '?');
+  });
 
+  describe('getModalViewParamName', () => {
     beforeEach(() => {
-      sinon.stub(RoutingHelpers, 'getModalViewParamName');
+      sinon.stub(LuigiConfig, 'getConfigValue');
     });
     afterEach(() => {
       sinon.restore();
     });
-    it('without modal prefix', () => {
-      RoutingHelpers.getModalViewParamName.returns('');
-      assert.equal(RoutingHelpers.getModalPathFromPath(mockPath), null);
+    it('without config value', () => {
+      assert.equal(RoutingHelpers.getModalViewParamName(), 'modal');
     });
-    it('with modal prefix', () => {
-      RoutingHelpers.getModalViewParamName.returns(prefix);
-      assert.equal(RoutingHelpers.getModalPathFromPath(mockPath + encodeURI(prefix) + mockPath2), mockPath2);
+    it('without config value', () => {
+      LuigiConfig.getConfigValue.returns('custom');
+      assert.equal(RoutingHelpers.getModalViewParamName(), 'custom');
     });
-    todo('with node params');
+  });
+
+  describe('getModalPathFromPath & getModalParamsFromPath', () => {
+    beforeEach(() => {
+      sinon.stub(RoutingHelpers, 'getModalViewParamName').returns('modal');
+      sinon.stub(RoutingHelpers, 'getQueryParams');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('without modal param', () => {
+      RoutingHelpers.getQueryParams.returns({});
+      assert.equal(RoutingHelpers.getModalPathFromPath('/path/one'), null);
+    });
+    it('with modal', () => {
+      const allQueryParams = {
+        modal: '%2Fhome%2Fchild-2'
+      };
+      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      assert.equal(
+        RoutingHelpers.getModalPathFromPath('defined through stub'),
+        '/home/child-2'
+      );
+    });
+    it('with modal params', () => {
+      const allQueryParams = {
+        modal: '%2Fhome%2Fchild-2',
+        modalParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
+      };
+      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      assert.equal(
+        RoutingHelpers.getModalPathFromPath('defined through stub'),
+        '/home/child-2'
+      );
+      assert.deepEqual(
+        RoutingHelpers.getModalParamsFromPath('defined through stub'),
+        { title: 'Real Child' }
+      );
+    });
+    it('with custom modal param name', () => {
+      const allQueryParams = {
+        custom: '%2Fhome%2Fchild-2',
+        customParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
+      };
+      RoutingHelpers.getModalViewParamName.returns('custom');
+      RoutingHelpers.getQueryParams.returns(allQueryParams);
+
+      assert.equal(
+        RoutingHelpers.getModalPathFromPath('defined through stub'),
+        '/home/child-2'
+      );
+      assert.deepEqual(
+        RoutingHelpers.getModalParamsFromPath('defined through stub'),
+        { title: 'Real Child' }
+      );
+    });
+  });
+
+  describe('encodeParams', () => {
+    it('empty params', () => {
+      assert.equal(RoutingHelpers.encodeParams({}), '');
+    });
+    it('simple params', () => {
+      assert.equal(
+        RoutingHelpers.encodeParams({
+          one: 'eins',
+          two: 'zwei'
+        }),
+        'one=eins&two=zwei'
+      );
+    });
+    it('advanced params', () => {
+      assert.equal(
+        RoutingHelpers.encodeParams({
+          ['a-key']: JSON.stringify({ key: 'value' })
+        }),
+        'a-key=%7B%22key%22%3A%22value%22%7D'
+      );
+    });
   });
 });
