@@ -97,7 +97,8 @@
     NavigationHelpers,
     RoutingHelpers,
     StateHelpers,
-    EventListenerHelpers
+    EventListenerHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -136,9 +137,9 @@
         responsiveNavSetting = LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
-        showGlobalNav = LuigiConfig.getConfigBooleanValue(
-          'settings.globalSideNavigation'
-        );
+        showGlobalNav =
+          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+          GenericHelpers.requestExperimentalFeature('globalNav', true);
         document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
       },
       ['navigation']

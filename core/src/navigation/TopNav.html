@@ -421,7 +421,8 @@
     NavigationHelpers,
     RoutingHelpers,
     StateHelpers,
-    EventListenerHelpers
+    EventListenerHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
@@ -501,9 +502,9 @@
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
-        showGlobalNav = LuigiConfig.getConfigBooleanValue(
-          'settings.globalSideNavigation'
-        );
+        showGlobalNav =
+          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+          GenericHelpers.requestExperimentalFeature('globalNav', true);
       },
       ['navigation']
     );
