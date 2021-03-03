@@ -445,6 +445,18 @@
     flex: 1 1 auto;
   }
 
+  .fd-nested-list__link:active .lui-usersettings-list-item__title {
+    color: var(--sapList_Active_TextColor, #fff);
+  }
+
+  .fd-nested-list__link:active .lui-usersettings-list-item__subtitle {
+    color: var(--sapList_Active_TextColor, #fff);
+  }
+
+  .fd-nested-list__link:active .fd-nested-list__icon {
+    color: var(--sapList_Active_TextColor, #fff);
+  }
+
   .lui-usersettings-list-item__subtitle {
     font-size: var(--sapFontSize, 14px);
     font-weight: normal;
@@ -545,7 +557,7 @@
     }
   }
 </style>
-<svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}"/>
+<svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
   <div class="fd-dialog__content lui-usersettings-dialog-size">
     <div class="fd-dialog__body lui-usersettings-body">
