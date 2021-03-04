@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "test:compatibility": "./scripts/testCompatibility.sh"
+    "test:compatibility": "./scripts/testCompatibility.sh",
+    "change-node-version": "node ./scripts/change.node.version.js"
   },
   "devDependencies": {
     "@starptech/prettyhtml": "^0.10.0",
