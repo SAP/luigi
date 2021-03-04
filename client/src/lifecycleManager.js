@@ -28,24 +28,23 @@ class LifecycleManager extends LuigiClientBase {
     this._onInitFns = {};
     this.authData = {};
 
-    if (!this._isDeferInit()) {
+    if (!this._isDeferInitDefined()) {
       this.luigiClientInit();
     }
   }
 
   /**
-   * Check if we have in the head tag defer-luigi-init=true
-   * with a given payload.
+   * Check if the html head element contains the attribute "defer-luigi-init"
    * @private
    * @memberof Lifecycle
    */
-  _isDeferInit() {
-    return window.document.head.getAttribute('defer-luigi-init') == 'true';
+  _isDeferInitDefined() {
+    return window.document.head.hasAttribute('defer-luigi-init');
   }
 
   /**
-   * Check if LuigiClient had been fully initialized
-   * @returns {boolean} client as been initialized?
+   * Check if LuigiClient is initialized
+   * @returns {boolean} client initialized state
    * @since NEXTRELEASE
    * @memberof Lifecycle
    * @example
@@ -56,14 +55,14 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Finalize Luigi Client initialization; it is useful (and mandatory to call) only when in micro frontend we have in head properties defer-luigi-init=true.
+   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed. 
    * @since NEXTRELEASE
    * @memberof Lifecycle
    * @example
    * LuigiClient.luigiClientInit()
    */
   luigiClientInit() {
-    if ( this.luigiInitialized){
+    if (this.luigiInitialized){
       console.warn("Luigi Client has been already initialized")
       return;
     }

@@ -250,27 +250,26 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
 ### Defer LuigiClient Initialization 
 
 #### Overview 
-In some scenario, the micro frontend application would need to decide when finalize the LuigiClient Initialization. By default, LuigiClient is initialized when you import the library in your micro frontend application.
-It can be the case that a complex application could take a long loading: during the loading processing, the application uses LuigiClient that signals to Core module that the micro frontend is ready for further actions.
-This may lead to some problems, for example a UI synchronization issue:  the side menu is highlighting an item, but the micro-frontend application showing a different content.
+In some scenarios, the micro frontend application would need to decide when to finalize the LuigiClient Initialization. By default, LuigiClient is initialized when you import the library in your micro frontend application.
+However, it can be the case that a complex application could take too long to load all the modules. Since LuigiClient initialization is done automatically when it is imported, LuigiCore will assume that the micro-frontend is fully loaded and ready for further actions even though it isn't.
+This may lead to some problems, for example UI synchronization issues where the side menu highlights an item, but the micro-frontend application shows a different content.
 
 #### Usage
-To defer LuigiClient Initialization you need to:
+Following are the steps you can use to defer LuigiClient Initialization :
   
-  1. In your micro frontend html you must insert in head tag, the property defer-luigi-init="true":
+  1. In your micro frontend html that serves as entry file, you must add the 'defer-luigi-init' attribute into the head element as follows:
   ```html
       <html>
-        <head defer-luigi-init="true">
+        <head defer-luigi-init>
         ....
         </head>
         .....
       </html>
     ```
-  2. In your micro frontend application, use LuigiClient API:
+  2. Then you can use LuigiClient API inside your micro frontend:
   ```javascript
-    if (!isLuigiClientInitialized()){
-      luigiClientInit();
-    }
+      LuigiClient.luigiClientInit();
   ```
+  Note that this will only initialize LuigiClient if it hasn't already been initialized.
 
 <!-- accordion:end -->

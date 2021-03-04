@@ -5,8 +5,6 @@ import {
   addContextUpdateListener,
   sendCustomMessage,
   addInactiveListener,
-  isLuigiClientInitialized,
-  luigiClientInit
 } from '@luigi-project/client';
 import {
   LuigiContextService,
@@ -27,10 +25,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (!isLuigiClientInitialized()){
-      luigiClientInit();
-    }
-
     addInitListener(context => {
       this.onLuigiContext('init', context);
       this.luigiAutoNav.init();
