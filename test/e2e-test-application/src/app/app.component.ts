@@ -4,7 +4,7 @@ import {
   addInitListener,
   addContextUpdateListener,
   sendCustomMessage,
-  addInactiveListener,
+  addInactiveListener
 } from '@luigi-project/client';
 import {
   LuigiContextService,
