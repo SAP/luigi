@@ -613,7 +613,6 @@ describe('Fiddle', () => {
                 label: 'Time Format',
                 options: ['12 h', '24 h']
               }
-<<<<<<< HEAD
             }
           },
           theming: {
@@ -629,8 +628,6 @@ describe('Fiddle', () => {
                 options: ['red', 'green'],
                 description: 'Choose a theme'
               }
-=======
->>>>>>> fix e2e tests and slight refactoring
             }
           }
         }
@@ -694,7 +691,7 @@ describe('Fiddle', () => {
       });
 
       cy.expectPathToBe(
-        '/home?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+        '/home?mymodal=' + encodeURIComponent('/home/one~mp=one')
       );
     });
 
