@@ -898,7 +898,7 @@ Luigi
  });
 ```
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when confirmung the confirmation modal and rejected when dismissing it
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when confirming the confirmation modal and rejected when dismissing it
 
 **Meta**
 
