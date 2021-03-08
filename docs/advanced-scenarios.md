@@ -268,7 +268,7 @@ These are the steps you can use to defer Luigi Client initialization :
         .....
       </html>
     ```
-  2. Then you can use LuigiClient API inside your micro frontend:
+  2. Then, you can use the Luigi Client API inside your micro frontend:
   ```javascript
       LuigiClient.luigiClientInit();
   ```
