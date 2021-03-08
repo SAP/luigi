@@ -89,8 +89,8 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
 It is also possible to customize the values. In that case **burgerTooltip** will be an object with the following properties:
 ```javascript
 burgerTooltip = {
-    navExpanded: 'collapse navigation',
-    navCollapsed: 'expand navigation'
+    navExpanded: 'Collapse navigation',
+    navCollapsed: 'Expand navigation'
   };
 ```
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
