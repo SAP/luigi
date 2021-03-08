@@ -59,7 +59,7 @@ class RoutingClass {
 
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       if (!navSync){
-        EventListenerHelpers.hashChangeWithoutSync=true;
+        EventListenerHelpers.hashChangeWithoutSync = true;
       }
       window.location.hash = route;
       return;
