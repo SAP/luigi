@@ -250,12 +250,14 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
 ### Defer Luigi Client Initialization 
 
 #### Overview 
-In some scenarios, the micro frontend application would need to decide when to finalize the LuigiClient Initialization. By default, LuigiClient is initialized when you import the library in your micro frontend application.
-However, it can be the case that a complex application could take too long to load all the modules. Since LuigiClient initialization is done automatically when it is imported, LuigiCore will assume that the micro-frontend is fully loaded and ready for further actions even though it isn't.
-This may lead to some problems, for example UI synchronization issues where the side menu highlights an item, but the micro-frontend application shows a different content.
+
+In some scenarios, the micro frontend application needs to decide when to finalize the Luigi Client initialization. By default, Luigi Client is initialized when you import the library in your micro frontend application.
+However, it can be the case that a complex application takes too long to load all the modules. Since Luigi Client initialization is done automatically when it is imported, Luigi Core will assume that the micro frontend is fully loaded and ready for further actions when it is not.
+This may lead to some problems, such as UI synchronization issues where the side menu highlights an item, but the micro-frontend application shows different content.
 
 #### Usage
-Following are the steps you can use to defer LuigiClient Initialization :
+
+These are the steps you can use to defer Luigi Client initialization :
   
   1. In your micro frontend html that serves as entry file, you must add the 'defer-luigi-init' attribute into the head element as follows:
   ```html
