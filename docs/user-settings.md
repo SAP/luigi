@@ -16,7 +16,7 @@ meta -->
 
 # User Settings
 
-![User settings in profile menu](assets/usersettingsdialog.png)
+![User settings dialog](assets/usersettingsdialog.png)
 
 Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
 Following example describes how user settings and a corresponding userSettingGroups configuration could be look like:
