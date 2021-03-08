@@ -259,7 +259,7 @@ This may lead to some problems, such as UI synchronization issues where the side
 
 These are the steps you can use to defer Luigi Client initialization :
   
-  1. In your micro frontend html that serves as entry file, you must add the 'defer-luigi-init' attribute into the head element as follows:
+  1. In your micro frontend HTML that serves as entry file, you must add the `defer-luigi-init` attribute into the `<head>` element as follows:
   ```html
       <html>
         <head defer-luigi-init>
