@@ -272,6 +272,7 @@ These are the steps you can use to defer Luigi Client initialization :
   ```javascript
       LuigiClient.luigiClientInit();
   ```
-  Note that this will only initialize LuigiClient if it hasn't already been initialized.
+ <!-- add-attribute:class:warning -->
+> **NOTE**: This will only initialize Luigi Client if it hasn't already been initialized.
 
 <!-- accordion:end -->
