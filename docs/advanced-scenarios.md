@@ -247,7 +247,7 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
     https://example.com/#?intent=Sales-edit?id=100;
   ```
 
-### Defer LuigiClient Initialization 
+### Defer Luigi Client Initialization 
 
 #### Overview 
 In some scenarios, the micro frontend application would need to decide when to finalize the LuigiClient Initialization. By default, LuigiClient is initialized when you import the library in your micro frontend application.
