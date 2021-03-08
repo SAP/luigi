@@ -85,7 +85,7 @@ You can set the following values:
   * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.
   * `Fiori3` displays the button on the left side of the top navigation. Once you click the button, the navigation shows up or collapses.<br>
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node.
-* **burgerTooltip** allows to set and customize a tooltip for the burger, which will  be rendered if **responsiveNavigation** is set to `simple` or `Fiori3`. You can set it to `true`. In that case the default values `expand navigation` and `collapse navigation` will be rendered.
+* **burgerTooltip** allows to set and customize a tooltip for the burger, which will be rendered if **responsiveNavigation** is set to `simple` or `Fiori3`. You can set it to `true`. In that case, the default values `Expand navigation` and `Collapse navigation` will be rendered.
 It is also possible to customize the values. In that case **burgerTooltip** will be an object with the following properties:
 ```javascript
 burgerTooltip = {
