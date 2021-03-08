@@ -1,7 +1,7 @@
 class EventListenerHelpersClass {
   constructor() {
     this.listeners = [];
-    this.hashChangeWithoutSync=false;
+    this.hashChangeWithoutSync = false;
     window.onunload = () => this.removeAllEventListeners();
   }
 
