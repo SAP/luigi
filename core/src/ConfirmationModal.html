@@ -10,11 +10,11 @@
           {#if settings.type}
           <i class="sap-icon--{settings.icon}"></i>
           {/if}
-          <h3 class="fd-title fd-title--h5">{settings.header}</h3>
+          <h2 class="fd-title fd-title--h5">{settings.header}</h2>
         </div>
       </div>
     </header>
-    <div class="fd-message-box__body">{settings.body}</div>
+    <div class="fd-message-box__body">{@html settings.body}</div>
     <footer class="fd-bar fd-bar--footer fd-message-box__footer">
       <div class="fd-bar__right">
         {#if settings.buttonConfirm !== false}
@@ -42,6 +42,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { LuigiI18N } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
+  import { EscapingHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -62,7 +63,10 @@
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
       buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
     };
-
+    settings = {
+      ...settings,
+      body: EscapingHelpers.sanatizeHtmlExceptTextFormatting(settings.body)
+    };
     settings = Object.assign(defaultSettings, settings);
 
     const focusedButton = settings.buttonConfirm
