@@ -16,28 +16,83 @@ meta -->
 
 # User Settings
 
+![User settings dialog](assets/usersettingsdialog.png)
+
 Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
-Each `userSettingGroup` could have the following meta data:
+Following example describes how user settings and a corresponding userSettingGroups configuration could be look like:
+
+<!-- add-attribute:class:warning -->
+>**NOTE:** The user settings dialog can not be opened from the profile menu if the profile section in the top navigation bar is not configured. For more information see the [profile configuration](navigation-parameters-reference.md#profile).
+
+![User settings in profile menu](assets/usersettings-in-profile.png)
 
 ```javascript
-userSettingGroup: {
-  label: 'Label',
-  sublabel: 'Sublabel',
-  icon: 'account',
-  title: 'Title',
-  settings: {
-    inputField: { type: 'string', label: 'label' , isEditable: true},
-    checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
-    enum:
-      {
-        type: 'enum',
-        label: 'Label',
-        options: ['option1', 'option2', 'option3', 'option3'],
-        description: 'Description'
+settings:{
+...
+},
+navigation:{
+...
+},
+userSettings:{
+  userSettingGroups:{
+    account: {
+      label: 'Account',
+      sublabel: 'account',
+      icon: 'account',
+      title: 'Account Settings',
+      settings: {
+        name: { type: 'string', label: 'Name' , isEditable: true},
+        checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
+        enum:
+          {
+            type: 'enum',
+            label: 'Label',
+            options: ['option1', 'option2', 'option3', 'option3'],
+            description: 'Description'
+          },
+          enum2:
+          {
+            type: 'enum',
+            label: 'Label',
+            options: ['option1', 'option2'],
+            style: 'button',
+            description: 'Description'
+          }
       }
+    }
   }
 }
 ```
+
+#### label
+- **type** string (optional)
+- **description** defines the label for the left-side navigation entry.
+#### sublabel
+- **type** string (optional)
+- **description** defines the sublabel for the left-side navigation entry.
+#### icon
+- **type** string (optional)
+- **description** name of the icon, without the `sap-icon--` prefix or path to an image.
+#### title
+- **type** string (optional)
+- **description** title of the user settings group. It will be displayed as a header in the editor area.
+#### viewURL
+- **type** string (optional)
+- **description** points to a custom micro frontend. It is possible to not use Luigi's user settings editor. Instead, you can [write your own](#write-a-custom-editor) editor micro frontend.
+In that case, the micro frontend will be displayed in the editor area.
+#### settings
+- **type** object (optional)
+- **description** has objects of settings for the corresponding user group. 
+`Key` of each setting object will be the key in the stored user settings with the corresponding value.
+The attributes to define a setting objects are:
+- **attributes**
+  - **type** (mandatory) is a string and defines the data type of this setting. It could be `string`, `boolean` or `enum`. If data type `string` is defined, an input field will be rendered in the editor area. If this property is set to `boolean`, a switcher will be rendered. If `enum` type is set, it will be rendered as a dropdown by default.
+  It is possible to define the style of how `boolean` and `enum` are generated, see `style` attribute.
+
+  - **label** (optional) is a string and the label of the setting.
+  - **isEditable** (optional) is a boolean and by default `true`. If it is set to `false` the setting is not editable.
+  - **style** (optional) is a string and can be defined for the data types `boolean` and `enum`. Boolean will be rendered as switcher by default and it can be changed to `checkbox`. Enum will be rendered as dropdown by default and it can be changed to `button`, which means it will be rendered as a `segmented button`. 
+  - **options** is an array of options. It is mandatory and necessary if the data type is `enum`.
 
 #### Write a custom editor
 
@@ -78,40 +133,50 @@ By implementing the `storeUserSettings` and `readUserSettings` the default mecha
 * **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to store the user settings object (for example, using a custom third party Rest API). The function should return a promise and takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings. On resolve, the user settings dialog will be closed.
 If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object. In addition, you can implement a `message` to display the error on the browser console log.
 
-```javascript
-return new Promise((resolve, reject) => {
-        if (JSON.stringify(obj) !== JSON.stringify(previous)) {
-          const settings = {
-            header: "Confirmation",
-            body: "Are you sure you want to do this?",
-            buttonConfirm: "Yes",
-            buttonDismiss: "No"
-          }
-          Luigi
-            .ux()
-            .showConfirmationModal(settings).then(() => {
-              sessionStorage.setItem('luigi.usersettings', JSON.stringify(obj));
-              resolve();
-            }).catch(() => {
-              reject({ closeDialog: true, message: 'error ' });
-            });
-        }
-      });
-```
-
 * **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object: the function should return a promise. The resolve function gets the user settings object as parameter.
 If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
 
 ```javascript
-readUserSettings: () => {
-      return new Promise((resolve, reject) => {
-        try{
-            resolve(JSON.parse(sessionStorage.getItem('luigi.usersettings')));
-        }catch{
-           reject({ closeDialog: true, message: 'some error' });
+userSettings:{
+  userSettingGroups:{
+    ...
+  },
+  storeUserSettings: (obj, previous) => {
+    return new Promise((resolve, reject) => {
+      if (JSON.stringify(obj) !== JSON.stringify(previous)) {
+        const settings = {
+          header: "Confirmation",
+          body: "Are you sure you want to do this?",
+          buttonConfirm: "Yes",
+          buttonDismiss: "No"
         }
-      })
-    }
+        Luigi
+          .ux()
+          .showConfirmationModal(settings).then(() => {
+            sessionStorage.setItem('myUserSettings', JSON.stringify(obj));
+            resolve();
+          }).catch(() => {
+            reject({ closeDialog: true, message: 'error ' });
+          });
+      } else {
+        resolve();
+      }
+    });
+  },
+  readUserSettings: () => {
+    return new Promise((resolve, reject) => {
+      try {
+        if (sessionStorage.getItem('myUserSettings')) {
+          resolve(JSON.parse(sessionStorage.getItem('myUserSettings')));
+        } else {
+          resolve(JSON.parse(sessionStorage.getItem('myUserSettings')));
+        }
+      } catch {
+        reject({ closeDialog: true, message: 'some error' });
+      }
+    })
+  }
+}
 ```
 
 <!-- document the schema-->
