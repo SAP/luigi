@@ -62,7 +62,7 @@ class LifecycleManager extends LuigiClientBase {
    * LuigiClient.luigiClientInit()
    */
   luigiClientInit() {
-    if (this.luigiInitialized){
+    if (this.luigiInitialized) {
       console.warn("Luigi Client has been already initialized")
       return;
     }
