@@ -491,8 +491,8 @@
   function setBurgerTooltip() {
     const burgerTooltipSettings = LuigiConfig.getConfigValue('settings.burgerTooltip');
     if (GenericHelpers.isObject(burgerTooltipSettings) || burgerTooltipSettings === true) {
-      const expandNavTooltip = burgerTooltipSettings.navExpanded ? burgerTooltipSettings.navExpanded : 'collapse navigation';
-      const collapseNavTooltip = burgerTooltipSettings.navCollapsed ? burgerTooltipSettings.navCollapsed : 'expand navigation';
+      const expandNavTooltip = burgerTooltipSettings.navExpanded ? burgerTooltipSettings.navExpanded : 'Collapse navigation';
+      const collapseNavTooltip = burgerTooltipSettings.navCollapsed ? burgerTooltipSettings.navCollapsed : 'Expand navigation';
       if (document.body.classList.contains('lui-simpleSlideInNav')) {
         burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? LuigiI18N.getTranslation(collapseNavTooltip) : LuigiI18N.getTranslation(expandNavTooltip);
       }
