@@ -198,11 +198,17 @@
     top: $topNavHeight;
     bottom: 0;
     left: 0;
-    overflow: visible;
+    overflow: scroll;
     background: #edeff0;
     padding-top: 4px;
     display: block;
     border-right: 1px solid #d6d6d6;
+
+    &::-webkit-scrollbar {
+      width: 0; /* chrome, safari */
+    }
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
 
     .fd-button.fd-shellbar__button .fd-top-nav__icon {
       color: #32363a;
