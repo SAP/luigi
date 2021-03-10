@@ -52,7 +52,7 @@
     burgerTooltip="{burgerTooltip}" />
   {#if !(hideNav||hideSideNav)}
   <LeftNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}" />
+    on:resizeTabNav="{onResizeTabNav}" burgerTooltip="{burgerTooltip}" />
   {/if}
   {#if (tabNav && !hideNav)}
   <TabNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
