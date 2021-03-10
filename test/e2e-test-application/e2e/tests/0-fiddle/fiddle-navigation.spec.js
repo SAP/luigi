@@ -690,7 +690,7 @@ describe('Fiddle', () => {
       });
 
       cy.expectPathToBe(
-        '/home?mymodal=' + encodeURIComponent('/home/one~mp=one')
+        '/home?mymodal=' + encodeURIComponent('/home/one?~mp=one')
       );
     });
 
