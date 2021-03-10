@@ -153,7 +153,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
 
     - name: 'Nightly release'
-      if: type = cron
+      if: type = cron OR (type = api AND commit_message = publish)
       script:
         - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
