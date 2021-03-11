@@ -28,6 +28,9 @@ class ViewUrlDecoratorSvc {
   }
 
   applyDecorators(url) {
+    if (!url) {
+      return url;
+    }
     const urlObj = new URL(GenericHelpers.prependOrigin(url));
     // apply query params
     const queryParamDecorators = this.decorators.filter(

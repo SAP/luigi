@@ -110,7 +110,7 @@ class GenericHelpersClass {
    * @param {path} string full url, relative or absolute path
    */
   prependOrigin(path) {
-    if (path.startsWith('http')) {
+    if (!path || path.startsWith('http')) {
       return path;
     }
     const hasLeadingSlash = path.startsWith('/');
