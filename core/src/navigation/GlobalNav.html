@@ -41,7 +41,7 @@
   {/if}
   {/if}
   {/each}
-  <div class="bottomActions">
+  <div class="lui-global-nav__bottom-section">
     {#each children as node, i}
     {#if node.globalNav === 'bottom'}
     {#if node.separator}
@@ -199,7 +199,7 @@
     bottom: 0;
     left: 0;
     overflow: scroll;
-    background: #edeff0;
+    background: var(--sapShell_Background, #edeff0);
     padding-top: 4px;
     display: block;
     border-right: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
@@ -229,7 +229,7 @@
     }
 
     .fd-button.fd-shellbar__button.is-selected {
-      background-color: #354a5f;
+      background-color: var(--sapShellColor, #354a5f);
     }
 
     .fd-shellbar__action {
@@ -237,7 +237,7 @@
       padding-bottom: 3px;
     }
 
-    .bottomActions {
+    .lui-global-nav__bottom-section {
       position: absolute;
       bottom: 0;
     }
