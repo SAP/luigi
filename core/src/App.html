@@ -1778,6 +1778,22 @@
       }
     }
 
+    :global(body.lui-global-nav-visible.lui-simpleSlideInNav) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: $globalNavWidth;
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
+        left: $globalNavWidth;
+      }
+
+      :global(.fd-app__sidebar) {
+        left: calc(var(--luigi__left-sidenav--width) * -1);
+      }
+    }
+
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       :global(.fd-app__sidebar) {
         display: block;
