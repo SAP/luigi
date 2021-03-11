@@ -30,7 +30,8 @@ const logStep = (s1, s2, s3) => {
 
 /**
  * PATHS
- */ 
+ */
+
 const base = path.resolve(__dirname, '..', '..');
 
 const packagePaths = {
@@ -74,7 +75,7 @@ if (!LATEST_TAG) {
 const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
 
 (async () => {
-  logHeadline('Running nighly release.');
+  logHeadline('Running nightly release.');
 
   /**
    * Checks if files have been changed since last git tag.
