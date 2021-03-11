@@ -717,7 +717,7 @@ describe('Fiddle', () => {
       cy.expectPathToBe('/home');
       cy.location().should(location => {
         expect(location.search).to.eq(
-          '?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+          '?mymodal=' + encodeURIComponent('/home/one~mp=one')
         );
       });
     });
