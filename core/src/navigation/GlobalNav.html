@@ -202,7 +202,7 @@
     background: #edeff0;
     padding-top: 4px;
     display: block;
-    border-right: 1px solid #d6d6d6;
+    border-right: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
 
     &::-webkit-scrollbar {
       width: 0; /* chrome, safari */
@@ -211,7 +211,7 @@
     -ms-overflow-style: none; /* IE 10+ */
 
     .fd-button.fd-shellbar__button .fd-top-nav__icon {
-      color: #32363a;
+      color: var(--sapList_TextColor, #32363a);
     }
 
     .fd-button.fd-shellbar__button {
@@ -221,7 +221,7 @@
 
     .fd-button.fd-shellbar__button:hover .fd-top-nav__icon,
     .fd-button.fd-shellbar__button.is-selected .fd-top-nav__icon {
-      color: white;
+      color: var(--sapBaseColor, #ffffff);
     }
 
     .fd-button.fd-shellbar__button:hover {
