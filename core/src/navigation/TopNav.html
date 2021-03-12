@@ -500,20 +500,6 @@
     }
   }
 
-  function getNavState() {
-    const burgerTooltipSettings = LuigiConfig.getConfigValue('settings.burgerTooltip');
-    if (GenericHelpers.isObject(burgerTooltipSettings) || burgerTooltipSettings === true) {
-      const expandNavTooltip = burgerTooltipSettings.navExpanded ? burgerTooltipSettings.navExpanded : 'collapse navigation';
-      const collapseNavTooltip = burgerTooltipSettings.navCollapsed ? burgerTooltipSettings.navCollapsed : 'expand navigation';
-      if (document.body.classList.contains('lui-simpleSlideInNav')) {
-        burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? LuigiI18N.getTranslation(collapseNavTooltip) : LuigiI18N.getTranslation(expandNavTooltip);
-      }
-      if (document.body.classList.contains('lui-semiCollapsible')) {
-        burgerTooltip = document.body.classList.contains('semiCollapsed') ? LuigiI18N.getTranslation(collapseNavTooltip) : LuigiI18N.getTranslation(expandNavTooltip);
-      }
-    }
-  }
-
   export function simpleNav() {
     document.body.classList.toggle('lui-leftNavToggle');
     if (document.getElementsByClassName('fd-tabs').length > 0) {
