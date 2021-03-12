@@ -314,12 +314,12 @@
   export let displaySearchResult;
   export let displayCustomSearchResult;
   export let searchResult;
+  export let burgerTooltip;
 
   let store = getContext('store');
   let contextSwitcherToggle = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
-  export let burgerTooltip;
   let contextSwitcherConfig = LuigiConfig.getConfigValue(
     'navigation.contextSwitcher'
   );
@@ -377,7 +377,6 @@
       setTopNavData();
     }
     setLoggedInState();
-    getNavState();
   });
 
   export let showTopNav;
