@@ -471,7 +471,9 @@
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
     }
-    setBurgerTooltip();
+    if (NavigationHelpers.getBurgerTooltipConfig() !== undefined) {
+      setBurgerTooltip();
+    }
   }
 
   function setBurgerTooltip() {
