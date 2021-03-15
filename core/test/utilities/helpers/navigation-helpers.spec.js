@@ -222,4 +222,31 @@ describe('Navigation-helpers', () => {
       sinon.assert.calledOnce(node.errorPageHandler.errorFn);
     });
   });
+
+  describe('burger tooltip', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigValue');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('Burger tooltip with defined collapsed and expanded label', () => {
+      LuigiConfig.getConfigValue.returns({
+        navExpanded: 'Collapse navigation test',
+        navCollapsed: 'Expand navigation test'
+      });
+      const [collapseLabel, expandLabel] = NavigationHelpers.getBurgerTooltipConfig();
+      assert.equal(collapseLabel, 'Expand navigation test');
+      assert.equal(expandLabel, 'Collapse navigation test');
+    });
+
+    it('Burger tooltip without defining a label, just use boolean', () => {
+      LuigiConfig.getConfigValue.returns(true);
+      const [collapseLabel, expandLabel] = NavigationHelpers.getBurgerTooltipConfig();
+      assert.equal(collapseLabel, 'Expand navigation');
+      assert.equal(expandLabel, 'Collapse navigation');
+    });
+  });
 });
