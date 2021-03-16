@@ -67,7 +67,6 @@ class UserSettings {
         policy: {
           type: 'string',
           label: 'Privacy policy has not been defined.'
-
         },
         time: {
           type: 'enum',
