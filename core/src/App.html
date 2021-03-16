@@ -1414,17 +1414,22 @@
     if (responsiveNavSetting === 'simple') {
       document.body.classList.add('lui-simpleSlideInNav');
       simpleSlideInNav = true;
-      if (NavigationHelpers.getBurgerTooltipConfig() !== undefined) {
-        burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? NavigationHelpers.getBurgerTooltipConfig()[0] : NavigationHelpers.getBurgerTooltipConfig()[1];
+      if (NavigationHelpers.getBurgerTooltipConfig()) {
+        const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+        if (collapseNavTooltip && expandNavTooltip) {
+          burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? collapseNavTooltip : expandNavTooltip;
+        }
       }
     } else if (responsiveNavSetting === 'simpleMobileOnly') {
       document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
       simpleSlideInNav = true;
     } else if (responsiveNavSetting === 'semiCollapsible' || 'Fiori3') {
-      if (NavigationHelpers.getBurgerTooltipConfig() !== undefined) {
-        const collapsedNavState = JSON.parse(localStorage.getItem(NavigationHelpers.COL_NAV_KEY));
-        const [collapseNav, expandNav] = NavigationHelpers.getBurgerTooltipConfig();
-        burgerTooltip = collapsedNavState ? collapseNav : expandNav;
+      if (NavigationHelpers.getBurgerTooltipConfig()) {
+        const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+        if (collapseNavTooltip && expandNavTooltip) {
+          const collapsedNavState = JSON.parse(localStorage.getItem(NavigationHelpers.COL_NAV_KEY));
+          burgerTooltip = collapsedNavState ? collapseNavTooltip : expandNavTooltip;
+        }
       }
       document.body.classList.add('lui-semiCollapsible');
     }

@@ -471,14 +471,17 @@
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
     }
-    if (NavigationHelpers.getBurgerTooltipConfig() !== undefined) {
-      setBurgerTooltip();
-    }
+    setBurgerTooltip();
   }
 
   function setBurgerTooltip() {
-    if (document.body.classList.contains('lui-semiCollapsible')) {
-      burgerTooltip = document.body.classList.contains('semiCollapsed') ? NavigationHelpers.getBurgerTooltipConfig()[0] : NavigationHelpers.getBurgerTooltipConfig()[1];
+    if (NavigationHelpers.getBurgerTooltipConfig()) {
+      const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+      if (collapseNavTooltip && expandNavTooltip) {
+        if (document.body.classList.contains('lui-semiCollapsible')) {
+          burgerTooltip = document.body.classList.contains('semiCollapsed') ? collapseNavTooltip : expandNavTooltip;
+        }
+      }
     }
   }
 </script>
