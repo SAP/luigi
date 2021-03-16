@@ -133,7 +133,9 @@
   }
 
   function errorHandling(selectedUserSettingGroupData) {
-    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
+    userSettingsGroupTitle = selectedUserSettingGroupData.title
+      ? selectedUserSettingGroupData.title
+      : '';
     if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
       return;
     }
@@ -190,7 +192,9 @@
         });
       } else {
         const viewUrl = ViewUrlDecorator.hasDecorators()
-          ? ViewUrlDecorator.applyDecorators(selectedUserSettingGroupData.viewUrl)
+          ? ViewUrlDecorator.applyDecorators(
+              selectedUserSettingGroupData.viewUrl
+            )
           : selectedUserSettingGroupData.viewUrl;
         let iframe = UserSettingsHelper.createIframe(
           viewUrl,
@@ -379,7 +383,6 @@
     margin-top: var(--dialog-header-height);
     overflow-y: auto;
     background-color: var(--sapBackgroundColor, #f7f7f7);
-
   }
 
   .lui-usersettings-burger {
@@ -445,6 +448,12 @@
     flex: 1 1 auto;
   }
 
+  .fd-nested-list__link:active .lui-usersettings-list-item__title,
+  .fd-nested-list__link:active .lui-usersettings-list-item__subtitle,
+  .fd-nested-list__link:active .fd-nested-list__icon {
+    color: var(--sapList_Active_TextColor, #fff);
+  }
+
   .lui-usersettings-list-item__subtitle {
     font-size: var(--sapFontSize, 14px);
     font-weight: normal;
@@ -494,12 +503,11 @@
   .usersettingseditor {
     padding: 20px;
   }
+
   /*Fiori 3 guidlines*/
   @media (min-width: 1024px) {
     .lui-usersettings-dialog-size {
-      min-width: 55rem;
       max-width: 75rem;
-      min-height: 40rem;
       max-height: 60rem;
     }
   }
