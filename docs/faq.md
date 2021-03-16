@@ -565,7 +565,7 @@ There are a few options to do that at the moment:
 
 ### How do I disable the Luigi loading indicator? / My micro frontend page is stuck on a loading screen.
 
-If you include micro frontends in Luigi which don't use Luigi Client, Luigi Core won't know when they are ready because there is no handshake. This can cause the page to remain loading indefinitely. In that case, you should disable the loading indicator using the [loadingIndicator.enabled]https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=loadingindicatorenabled parameter in your configuration file.
+If you include micro frontends in Luigi which don't use Luigi Client, Luigi Core won't know when they are ready because there is no handshake. This can cause the page to remain loading indefinitely. In that case, you should disable the loading indicator using the [loadingIndicator.enabled](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=loadingindicatorenabled) parameter in your configuration file.
 
 ### Can I hide the Luigi default side/top navigation panel?
 
