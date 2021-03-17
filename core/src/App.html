@@ -1,4 +1,4 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
@@ -354,7 +354,7 @@
             }
             resolve();
           },
-          () => {}
+          () => { }
         );
       } else {
         resolve();
@@ -945,6 +945,7 @@
     mfModal.displayed = false;
     mfModal.nodepath = undefined;
     mfModal.settings = {};
+    modalIframe = undefined;
   };
 
   resetMicrofrontendModalData();
@@ -977,11 +978,24 @@
   };
 
   const closeModal = event => {
+
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
+        const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+          'routing.showModalPathInUrl'
+        );
+        if (showModalPathInUrl) {
+          Routing.removeModalDataFromUrl();
+        }
         resetMicrofrontendModalData();
       });
     } else if (modalWC) {
+      const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+        'routing.showModalPathInUrl'
+      );
+      if (showModalPathInUrl) {
+        Routing.removeModalDataFromUrl();
+      }
       resetMicrofrontendModalData();
     }
   };
@@ -1515,7 +1529,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1527,7 +1541,7 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => { });
 </script>
 
 <style type="text/scss">
