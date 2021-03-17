@@ -1,48 +1,85 @@
+
 {#if !isHidden}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--no-shadow">
     {#if showUserInfo}
     <li class="fd-menu__item">
-      <span aria-label="Username" id="username" class="lui-username fd-has-type-1"
-        data-testid="luigi-topnav-profile-username">{userInfo.name ? userInfo.name : userInfo.email}</span>
+      <span
+        aria-label="Username"
+        id="username"
+        class="lui-username fd-has-type-1"
+        data-testid="luigi-topnav-profile-username"
+      >{userInfo.name ? userInfo.name : userInfo.email}</span>
     </li>
     {/if}
     {#each profileNav.items as profileItem}
-    <li class="fd-menu__item" on:click="{() => onActionClick(profileItem)}" data-testid="{getTestId(profileItem)}">
-      <a class="fd-menu__link" data-testid="luigi-topnav-profile-item" href="{getRouteLink(profileItem)}"
-        on:click|preventDefault="{() => {}}">
+    <li
+      class="fd-menu__item"
+      on:click="{() => onActionClick(profileItem)}"
+      data-testid="{getTestId(profileItem)}"
+    >
+      <a
+        class="fd-menu__link"
+        data-testid="luigi-topnav-profile-item"
+        href="{getRouteLink(profileItem)}"
+        on:click|preventDefault="{() => {}}"
+      >
         {#if profileItem.icon}
         {#if hasOpenUIicon(profileItem)}
-        <span class="fd-top-nav__icon sap-icon--{profileItem.icon}"></span>
+        <span
+          class="fd-top-nav__icon sap-icon--{profileItem.icon}"
+        ></span>
         {:else}
-        <img class="fd-top-nav__icon nav-icon" src="{profileItem.icon}"
-          alt="{profileItem.altText ? profileItem.altText : ''}">
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileItem.icon}"
+          alt="{profileItem.altText ? profileItem.altText : ''}"
+        >
         {/if}
         {/if}
-        <span class="fd-menu__title">{$getTranslation(profileItem.label)}</span>
+        <span
+          class="fd-menu__title"
+        >{$getTranslation(profileItem.label)}</span>
       </a>
     </li>
     {/each}
     {#if hasUserSettings}
-    <li class="fd-menu__item" on:click="{onUserSettingsClick}" data-testid="{getTestId(profileNav.settings)}">
-      <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
+    <li
+      class="fd-menu__item"
+      on:click="{onUserSettingsClick}"
+      data-testid="{getTestId(profileNav.settings)}"
+    >
+      <a
+        aria-label="User Settings"
+        class="fd-menu__link"
+        data-testid="settings-link"
+      >
         {#if profileNav.settings.icon}
         {#if hasOpenUIicon(profileNav.settings)}
         <i
           class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"
         ></i>
         {:else}
-        <img class="fd-top-nav__icon nav-icon" src="{profileNav.settings.icon}"
-          alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}">
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.settings.icon}"
+          alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
+        >
         {/if}
         {/if}
-        <span class="fd-menu__title">{$getTranslation(profileNav.settings.label)}</span>
+        <span
+          class="fd-menu__title"
+        >{$getTranslation(profileNav.settings.label)}</span>
       </a>
     </li>
     {/if}
     {#if isAuthorizationEnabled || isProfileLogoutItem}
     {#if isLoggedIn || !isAuthorizationEnabled && isProfileLogoutItem}
-    <li class="fd-menu__item" on:click="{onLogoutClick}" data-testid="{getTestId(profileNav.logout)}">
+    <li
+      class="fd-menu__item"
+      on:click="{onLogoutClick}"
+      data-testid="{getTestId(profileNav.logout)}"
+    >
       <a aria-label="Logout" class="fd-menu__link" data-testid="logout-link">
         {#if profileNav.logout.icon}
         {#if hasOpenUIicon(profileNav.logout)}
@@ -50,11 +87,16 @@
           class="fd-top-nav__icon sap-icon--{profileNav.logout.icon}"
         ></i>
         {:else}
-        <img class="fd-top-nav__icon nav-icon" src="{profileNav.logout.icon}"
-          alt="{profileNav.logout.altText ? profileNav.logout.altText : ''}">
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.logout.icon}"
+          alt="{profileNav.logout.altText ? profileNav.logout.altText : ''}"
+        >
         {/if}
         {/if}
-        <span class="fd-menu__title">{$getTranslation(profileNav.logout.label)}</span>
+        <span
+          class="fd-menu__title"
+        >{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
     {/if}
@@ -149,8 +191,12 @@
             'navigation.profile.logout'
           );
           //check if the User Settings schema exist
-          const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
-          const userSettings = userSettingsConfig ? userSettingsConfig : await LuigiConfig.getConfigValueAsync('settings.userSettings');
+          const userSettingsConfig = await LuigiConfig.getConfigValueAsync(
+            'userSettings'
+          );
+          const userSettings = userSettingsConfig
+            ? userSettingsConfig
+            : await LuigiConfig.getConfigValueAsync('settings.userSettings');
           hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const profileNavData = {
@@ -160,7 +206,8 @@
               )) || []
           };
           if (hasUserSettings) {
-            const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
+            const userSettingsProfileMenuEntry =
+              userSettings.userSettingsProfileMenuEntry;
             profileNavData['settings'] = {
               ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
               ...userSettingsProfileMenuEntry

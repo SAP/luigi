@@ -1,6 +1,7 @@
 class EventListenerHelpersClass {
   constructor() {
     this.listeners = [];
+    this.hashChangeWithoutSync = false;
     window.onunload = () => this.removeAllEventListeners();
   }
 
@@ -22,6 +23,7 @@ class EventListenerHelpersClass {
     });
     this.listeners = [];
   }
+
 }
 
 export const EventListenerHelpers = new EventListenerHelpersClass();

@@ -94,6 +94,12 @@
     bind:luigiCustomSearchRenderer__slot
     burgerTooltip="{burgerTooltip}"
   />
+
+  <GlobalNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
@@ -123,6 +129,7 @@
   import LeftNav from './navigation/LeftNav.html';
   import TopNav from './navigation/TopNav.html';
   import TabNav from './navigation/TabNav.html';
+  import GlobalNav from './navigation/GlobalNav.html';
   import {
     afterUpdate,
     onMount,
@@ -1694,9 +1701,47 @@
     }
   }
 
+  :global(.lui-global-nav-visible) {
+    :global(.iframeContainer),
+    :global(.spinnerContainer) {
+      left: calc(var(--luigi__left-sidenav--width) + #{$globalNavWidth});
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop),
+    :global(#tabsContainer) {
+      left: calc(var(--luigi__left-sidenav--width) + #{$globalNavWidth});
+    }
+  }
+
+  :global(.semiCollapsed.lui-global-nav-visible) {
+    :global(.iframeContainer),
+    :global(.spinnerContainer) {
+      left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop),
+    :global(#tabsContainer) {
+      left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+    }
+  }
+
+  :global(.lui-global-nav-visible.lui-simpleSlideInNav.lui-leftNavToggle) {
+    :global(#tabsContainer) {
+      left: $globalNavWidth;
+    }
+  }
+
   @media (max-width: $desktopMinWidth) {
     :global(.fd-shellbar__title) {
       display: none;
+    }
+
+    :global(.lui-global-nav-visible) {
+      :global(#tabsContainer) {
+        left: $globalNavWidth;
+      }
     }
   }
 
@@ -1733,6 +1778,22 @@
       :global(#splitViewDragger),
       :global(#splitViewDraggerBackdrop) {
         left: 0;
+      }
+
+      :global(.fd-app__sidebar) {
+        left: calc(var(--luigi__left-sidenav--width) * -1);
+      }
+    }
+
+    :global(body.lui-global-nav-visible.lui-simpleSlideInNav) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: $globalNavWidth;
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
+        left: $globalNavWidth;
       }
 
       :global(.fd-app__sidebar) {

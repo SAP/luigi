@@ -47,7 +47,7 @@
     {/if}
     {#if children && pathData.length > 0}
     {#each children as node, i}
-    {#if !node.hideFromNav}
+    {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
     {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
@@ -142,7 +142,7 @@
     -->
 
     <!-- dropdown for top nav nodes on smaller screens -->
-    {#if visibleNodeCount > 0 || isProductSwitcherAvailable || contextSwitcherConfig}
+    {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable || contextSwitcherConfig}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -205,7 +205,7 @@
                 </li>
                 {/if}
                 {#each children as node,i}
-                {#if !node.hideFromNav}
+                {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
                 {#if !node.isCat}
                 <li class="fd-menu__item">
                   <a
@@ -435,6 +435,7 @@
   export let isLoggedIn = false;
   export let hideNavComponent;
   export let responsiveNavSetting;
+  export let showGlobalNav;
   export let pathData;
   let previousPathData;
   export let pathParams;
@@ -442,6 +443,7 @@
   export let children;
   export let selectedNode;
   export let visibleNodeCount;
+  export let globalNavNodeCount;
   export let totalBadgeNode;
   export let isProductSwitcherAvailable;
   export let productSwitcherConfig;
@@ -473,6 +475,7 @@
       selectedNode = tnd.selectedNode;
       visibleNodeCount = tnd.visibleNodeCount;
       totalBadgeNode = tnd.totalBadgeNode;
+      globalNavNodeCount = tnd.globalNavNodeCount;
       window.TOPNAVDATA = tnd.children;
       previousPathData = pathData;
     }
@@ -504,6 +507,9 @@
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        showGlobalNav =
+          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+          GenericHelpers.requestExperimentalFeature('globalNav', true);
       },
       ['navigation']
     );

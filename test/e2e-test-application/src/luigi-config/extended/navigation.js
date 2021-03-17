@@ -86,9 +86,8 @@ class Navigation {
           category: 'View Group',
           viewUrl: '/sampleapp.html#/view-group/4'
         }
-      ],
+      ]
     },
-
 
     {
       hideFromNav: true,
