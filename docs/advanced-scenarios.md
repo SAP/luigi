@@ -159,21 +159,26 @@ There are two possibilities to add feature toggles to the active feature toggles
 Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code. 
 
 #### Usage
+* Before setting feature toggles, you have to first define the feature toggle query parameter to enable setting the feature toggles via URL in the [general settings](general-settings.md) :
+  ```
+  featureToggles = { queryStringParam: 'ft' };
+  ```
 * To **set** feature toggles, you have two possibilities:
    1. Set feature toggles to the active feature toggle list through [Luigi Core API](luigi-core-api.md#featuretoggles):
   ```javascript
     Luigi.featureToggles().setFeatureToggle('ft1');
   ```
-  2. Set feature toggles to the active feature toggle list via URL parameters:
+  2. Set feature toggles to the active feature toggle list via URL parameters by appending a comma seperated list of strings. The parameter name is the predefined **featureToggles.queryStringParam** :
   ```
   http://localhost:4200/projects/pr1?ft=ft1,ft2
   ```
+
 * To **unset** feature toggles, you have to use the Core API:
   ```javascript
     Luigi.featureToggles().unsetFeatureToggle('ft1');
   ```
 * To **restrict node visiblity with feature toggles**:
-  You can define a list of feature toggles for a particular top or left navigation node. Then, you can use the [visibleForFeatureToggles](navigation-parameters-reference.md#visibleForFeatureToggles) parameter in order to display the node for certain feature toggles.
+  You can define a list of feature toggles for a particular top or left navigation node. For that you can use the [visibleForFeatureToggles](navigation-parameters-reference.md#visibleForFeatureToggles) parameter in order to display the node for certain feature toggles.
   For example, this node will be visible if `ft1` is added to the active feature toggle list:
   ```javascript
   {
@@ -185,6 +190,8 @@ Luigi allows you to implement and configure feature toggles. They can be used to
       visibleForFeatureToggles: ['ft1']
   }
   ```
+  If you define a list of multiple feature toggles the node will be restricted and it will be shown only if **all** of the specified feature toggles are set.
+
   It is also possible to negate the visibility of a node by adding an exclamation mark at the beginning of the feature toggle name.
   In this example, the node is always visible except if `ft1` is set as an active feature toggle:
   ```javascript
