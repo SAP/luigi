@@ -247,8 +247,12 @@ describe('Navigation', () => {
       //Check if iframe is loaded and have a red button
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
-        cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
-        cy.wrap($iframeBody).contains('Red').should('not.have.class', 'active');
+        cy.wrap($iframeBody)
+          .contains('Red')
+          .should('have.class', 'red');
+        cy.wrap($iframeBody)
+          .contains('Red')
+          .should('not.have.class', 'active');
         cy.wrap($iframeBody)
           .contains('Red')
           .click();
@@ -262,9 +266,10 @@ describe('Navigation', () => {
       //Check if iframe has a red button with a active class
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
-        cy.wrap($iframeBody).contains('Red').should('have.class', 'active');
+        cy.wrap($iframeBody)
+          .contains('Red')
+          .should('have.class', 'active');
       });
-
     });
 
     it('Check custom mf without meta data defined in schema', () => {
@@ -276,7 +281,9 @@ describe('Navigation', () => {
       //check if iframe is rendered also there are no meta data set in config.
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
-        cy.wrap($iframeBody).contains('Red').should('have.class', 'red');
+        cy.wrap($iframeBody)
+          .contains('Red')
+          .should('have.class', 'red');
       });
     });
 
