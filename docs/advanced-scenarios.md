@@ -168,7 +168,7 @@ Luigi allows you to implement and configure feature toggles. They can be used to
   ```javascript
     Luigi.featureToggles().setFeatureToggle('ft1');
   ```
-  2. Set feature toggles to the active feature toggle list via URL parameters by appending a comma separated list of strings. The parameter name is the predefined **featureToggles.queryStringParam** :
+  2. Set feature toggles to the active feature toggle list via URL parameters by appending a comma-separated list of strings. The parameter name is the predefined **featureToggles.queryStringParam** :
   ```
   http://localhost:4200/projects/pr1?ft=ft1,ft2
   ```
