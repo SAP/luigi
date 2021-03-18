@@ -290,6 +290,11 @@ class NavigationClass {
         _virtualViewUrl
       });
 
+      if (node.children) {
+        console.warn(
+          'Found both virtualTree and children nodes defined on a navigation node. \nChildren nodes are redundant and ignored when virtualTree is enabled. \nPlease refer to documentation'
+        );
+      }
       node.children = [newChild];
     }
   }
