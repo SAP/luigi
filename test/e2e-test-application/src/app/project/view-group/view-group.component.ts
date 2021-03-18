@@ -7,56 +7,64 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./view-group.component.css']
 })
 export class ViewGroupComponent implements OnInit {
-
   vg: string;
   id: string;
-  code:string;
+  code: string;
   config: string;
   time: string;
 
-  constructor(
-    private route:ActivatedRoute,
-    private window: Window
-  ) { }
+  constructor(private route: ActivatedRoute, private window: Window) {}
 
   ngOnInit() {
-    let iframes = Array.from(this.window.parent.document.querySelectorAll('iframe'));
-    if (!iframes || !iframes[0] || !iframes[0]['luigi']){
+    let iframes = Array.from(
+      this.window.parent.document.querySelectorAll('iframe')
+    );
+    if (!iframes || !iframes[0] || !iframes[0]['luigi']) {
       return;
     }
 
-    console.log("this.window.parent.Luigi --> ",this.window.parent['Luigi'].config);
+    console.log(
+      'this.window.parent.Luigi --> ',
+      this.window.parent['Luigi'].config
+    );
 
-    this.config = JSON.stringify({
-      viewGroupSettings: this.window.parent['Luigi'].config.navigation.viewGroupSettings,
-      preloadViewGroups: this.window.parent['Luigi'].config.navigation.preloadViewGroups
-    }, null, 3);
+    this.config = JSON.stringify(
+      {
+        viewGroupSettings: this.window.parent['Luigi'].config.navigation
+          .viewGroupSettings,
+        preloadViewGroups: this.window.parent['Luigi'].config.navigation
+          .preloadViewGroups
+      },
+      null,
+      3
+    );
 
     this.route.paramMap.subscribe(queryParams => {
-      this.vg = queryParams.get("vg");
+      this.vg = queryParams.get('vg');
       this.time = new Date().toJSON();
 
       let iframes = Array.from(
         this.window.parent.document.querySelectorAll('iframe')
       ).map(this.transformIframes);
 
-      this.code = JSON.stringify(iframes,null,3);
-      let currentIFrame = iframes.find(iframe =>
-        !!iframe.currentNode && !!iframe.currentNode.pathSegment && iframe.currentNode.pathSegment === this.vg);
+      this.code = JSON.stringify(iframes, null, 3);
+      let currentIFrame = iframes.find(
+        iframe =>
+          !!iframe.currentNode &&
+          !!iframe.currentNode.pathSegment &&
+          iframe.currentNode.pathSegment === this.vg
+      );
 
-      if (!!currentIFrame){
+      if (!!currentIFrame) {
         this.id = currentIFrame['id'];
       }
-
     });
   }
 
-
-  transformIframes(iframe){
-
+  transformIframes(iframe) {
     let luigiMf = iframe['luigi'];
     const clonedLuigiMf = Object.assign({}, luigiMf);
-    clonedLuigiMf.currentNode =  Object.assign({}, luigiMf.currentNode);
+    clonedLuigiMf.currentNode = Object.assign({}, luigiMf.currentNode);
     delete clonedLuigiMf.currentNode.parent;
 
     return clonedLuigiMf;

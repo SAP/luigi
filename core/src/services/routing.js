@@ -4,7 +4,7 @@ import { Navigation } from '../navigation/services/navigation';
 import {
   GenericHelpers,
   RoutingHelpers,
-  IframeHelpers
+  IframeHelpers, EventListenerHelpers
 } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../core-api';
 import { Iframe } from './';
@@ -58,6 +58,9 @@ class RoutingClass {
     }
 
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      if (!navSync){
+        EventListenerHelpers.hashChangeWithoutSync = true;
+      }
       window.location.hash = route;
       return;
     }
