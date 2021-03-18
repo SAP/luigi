@@ -1091,4 +1091,59 @@ describe('Navigation', () => {
       });
     });
   });
+
+  describe('Global Navigation', () => {
+    context('Desktop', () => {
+      it('not render global side navigation when globalSideNavigation is false', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = false;
+          config.settings.experimental = { globalNav: true };
+          win.Luigi.configChanged();
+
+          cy.get('.lui-global-nav-visible').should('not.be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group').should('not.be.visible');
+        });
+      });
+
+      it('not render global side navigation when experimental globalNav is false', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = true;
+          config.settings.experimental = { globalNav: false };
+          win.Luigi.configChanged();
+
+          cy.get('.lui-global-nav-visible').should('not.be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group').should('not.be.visible');
+        });
+      });
+
+      it('render global side navigation', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = true;
+          config.settings.experimental = { globalNav: true };
+          win.Luigi.configChanged();
+
+          // render global nav tool bar
+          cy.get('.lui-global-nav-visible').should('be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group')
+            .should('be.visible')
+            .children()
+            .should('have.length', 4);
+
+          // render separator
+          cy.get('.lui-globalnav > .fd-toolbar__separator').should('exist');
+
+          // select global nav node
+          cy.get('button[data-testid="settings_settings"]')
+            .should('exist')
+            .not('.is-selected')
+            .click()
+            .should('have.class', 'is-selected');
+          cy.expectPathToBe('/settings');
+        });
+      });
+    });
+  });
 });
