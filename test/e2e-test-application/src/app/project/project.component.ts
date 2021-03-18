@@ -168,7 +168,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       body: `<mark>Lorem tipsum dolor sit amet,</mark> <b>consectetur adipisicing elit</b>, sed do eiusmod tempor incididunt ut labore et dolore magna
         aliqua. Ut enim ad minim veniam, <small>quis nostrud exercitation ullamco</small> laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in <del>reprehenderit</del> in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
-      buttonConfirm: false,
+      buttonConfirm: 'Confirm',
       buttonDismiss: 'Close'
     };
 
