@@ -190,7 +190,7 @@ Luigi allows you to implement and configure feature toggles. They can be used to
       visibleForFeatureToggles: ['ft1']
   }
   ```
-  If you define a list of multiple feature toggles the node will be restricted and it will be shown only if **all** of the specified feature toggles are set.
+  If you define a list of multiple feature toggles, the node will be restricted and it will be shown only if **all** of the specified feature toggles are set.
 
   It is also possible to negate the visibility of a node by adding an exclamation mark at the beginning of the feature toggle name.
   In this example, the node is always visible except if `ft1` is set as an active feature toggle:
