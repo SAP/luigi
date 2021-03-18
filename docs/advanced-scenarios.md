@@ -159,7 +159,7 @@ There are two possibilities to add feature toggles to the active feature toggles
 Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code. 
 
 #### Usage
-* Before setting feature toggles, you have to first define the feature toggle query parameter to enable setting the feature toggles via URL in the [general settings](general-settings.md) :
+* Before using feature toggles, you first have to include the feature toggle query parameter in the [general settings](general-settings.md) part of your Luigi configuration file. This allows you to enable setting the feature toggles via URL :
   ```
   featureToggles = { queryStringParam: 'ft' };
   ```
