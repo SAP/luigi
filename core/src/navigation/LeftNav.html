@@ -475,13 +475,13 @@
   }
 
   function setBurgerTooltip() {
-    if (NavigationHelpers.getBurgerTooltipConfig()) {
-      const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
-      if (collapseNavTooltip && expandNavTooltip) {
-        if (document.body.classList.contains('lui-semiCollapsible')) {
-          burgerTooltip = document.body.classList.contains('semiCollapsed') ? collapseNavTooltip : expandNavTooltip;
-        }
-      }
+    if (!NavigationHelpers.getBurgerTooltipConfig()) {
+      return;
+    }
+    const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+    const hasSemiCollapsible = document.body.classList.contains('lui-semiCollapsible');
+    if (collapseNavTooltip && expandNavTooltip && hasSemiCollapsible) {
+      burgerTooltip = document.body.classList.contains('semiCollapsed') ? collapseNavTooltip : expandNavTooltip;
     }
   }
 </script>

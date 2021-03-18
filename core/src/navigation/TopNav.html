@@ -489,15 +489,16 @@
   }
 
   function setBurgerTooltip() {
-    if (NavigationHelpers.getBurgerTooltipConfig()) {
-      const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
-      if (collapseNavTooltip && expandNavTooltip) {
-        if (document.body.classList.contains('lui-simpleSlideInNav')) {
-          burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? collapseNavTooltip : expandNavTooltip;
-        }
-        if (document.body.classList.contains('lui-semiCollapsible')) {
-          burgerTooltip = document.body.classList.contains('semiCollapsed') ? collapseNavTooltip : expandNavTooltip;
-        }
+    if (!NavigationHelpers.getBurgerTooltipConfig()) {
+      return;
+    }
+    const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+    if (collapseNavTooltip && expandNavTooltip) {
+      if (document.body.classList.contains('lui-simpleSlideInNav')) {
+        burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? collapseNavTooltip : expandNavTooltip;
+      }
+      if (document.body.classList.contains('lui-semiCollapsible')) {
+        burgerTooltip = document.body.classList.contains('semiCollapsed') ? collapseNavTooltip : expandNavTooltip;
       }
     }
   }
