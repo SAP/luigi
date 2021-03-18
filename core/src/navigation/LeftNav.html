@@ -1,8 +1,16 @@
-<svelte:window on:resize="{onResize}" on:click="{closePopupMenu}" on:blur="{closePopupMenu}" />
+<svelte:window
+  on:resize="{onResize}"
+  on:click="{closePopupMenu}"
+  on:blur="{closePopupMenu}"
+/>
 <div
-  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}">
-  <nav class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}" on:keyup="{handleKey}"
-    data-testid="semiCollapsibleLeftNav">
+  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
+>
+  <nav
+    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
+    on:keyup="{handleKey}"
+    data-testid="semiCollapsibleLeftNav"
+  >
     {#if children && pathData.length > 1}
     <div class="fd-side-nav__main-navigation">
       <div class="lui-fd-side-nav-wrapper">
@@ -511,6 +519,13 @@
   :global(html.luigi-app-in-custom-container) {
     .fd-app__sidebar {
       position: absolute;
+    }
+  }
+
+  :global(.lui-global-nav-visible) .fd-app__sidebar {
+    left: $globalNavWidth;
+    .fd-side-nav {
+      width: var(--luigi__left-sidenav--width);
     }
   }
 
