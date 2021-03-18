@@ -202,7 +202,9 @@ class RoutingHelpersClass {
 
     if (hashRoutingActive) {
       return EventListenerHelpers.addEventListener('hashchange', event => {
-        callback(Routing.getHashPath(event.newURL));
+        const withoutSync = EventListenerHelpers.hashChangeWithoutSync;
+        EventListenerHelpers.hashChangeWithoutSync = false;
+        callback(Routing.getHashPath(event.newURL), withoutSync);
       });
     }
 
