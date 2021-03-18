@@ -10,7 +10,7 @@ import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
-describe('Routing', function() {
+describe('Routing', function () {
   this.retries(1);
 
   let component;
@@ -802,7 +802,7 @@ describe('Routing', function() {
 
   describe('showPageNotFoundError()', () => {
     let component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
     let pathToRedirect = '/go/here';
     let pathToRedirect2 = '/go/there';
@@ -914,5 +914,77 @@ describe('Routing', function() {
       );
     });
   });
-  // TODO: tests for appendModalDataToUrl
+  describe('append and remove modal data from URL', () => {
+    const modalPath = encodeURIComponent('/project-modal');
+    const modalParams = { hello: 'world' };
+    const params = {
+      luigi: 'mario'
+    }
+    const modalParamName = 'mySpecialModal';
+
+
+    let globalLocation = global.location;
+
+    beforeEach(() => {
+      window.history.replaceState = sinon.spy();
+      window.history.pushState = sinon.spy();
+      sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
+      sinon.stub(RoutingHelpers, 'getHashQueryParamSeparator').returns('?');
+      sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
+      sinon.stub(RoutingHelpers, 'getModalViewParamName').returns(modalParamName);
+
+      sinon.stub(Navigation, 'extractDataFromPath').returns({ nodeObject: {} });
+
+      sinon.stub(LuigiNavigation, 'openAsModal');
+    });
+    afterEach(() => {
+      sinon.restore();
+      global.location = globalLocation;
+    });
+
+    it('append modal data to url with path routing', () => {
+      sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
+      global.location = {
+        href: 'http://some.url.de/settings'
+      }
+      window.state = {}
+      sinon
+        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .withArgs('routing.useHashRouting').returns(false);
+      try {
+        Routing.appendModalDataToUrl(modalPath, modalParams);
+
+      } catch (error) {
+        console.log('error', error);
+      }
+      // then
+      sinon.assert.calledWithExactly(
+        window.history.replaceState,
+        {},
+        '',
+        'http://some.url.de/settings?luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+      );
+    });
+    it('remove modal data from url with path routing', () => {
+      sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
+      global.location = {
+        href: 'http://some.url.de/settings?luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+      }
+      window.state = {}
+      sinon
+        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .withArgs('routing.useHashRouting').returns(false);
+      try {
+        Routing.removeModalDataFromUrl();
+      } catch (error) {
+        console.log('error', error);
+      }
+      sinon.assert.calledWithExactly(
+        window.history.replaceState,
+        {},
+        '',
+        'http://some.url.de/settings?luigi=mario'
+      );
+    });
+  });
 });
