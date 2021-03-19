@@ -1145,5 +1145,26 @@ describe('Navigation', () => {
         });
       });
     });
+    context('Mobile', () => {
+      beforeEach(() => {
+        cy.viewport('iphone-6');
+      });
+
+      it('Responsive Global Side Navigation', () => {
+        cy.viewport(800, 600);
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = true;
+          config.settings.experimental = { globalNav: true };
+          win.Luigi.configChanged();
+
+          cy.get('.lui-globalnav').should('be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group')
+            .should('be.visible')
+            .children()
+            .should('have.length', 4);
+        });
+      });
+    });
   });
 });
