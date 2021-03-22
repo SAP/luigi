@@ -58,7 +58,7 @@ class RoutingClass {
     }
 
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      if (!navSync){
+      if (!navSync) {
         EventListenerHelpers.hashChangeWithoutSync = true;
       }
       window.location.hash = route;
@@ -627,7 +627,6 @@ class RoutingClass {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
-
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
       'routing.useHashRouting'
     );
@@ -647,10 +646,10 @@ class RoutingClass {
         url.hash = url.hash.replace(`&${prevModalPath}`, '');
       }
     } else {
-      let searchParam = new URLSearchParams(url.search);
+      let searchParam = new URLSearchParams(url.search.slice(1));
       searchParam.delete(modalParamName);
       searchParam.delete(`${modalParamName}Params`);
-      url.search = searchParam.toString();
+      url.search = decodeURIComponent(searchParam.toString());
     }
     history.replaceState(window.state, '', url.href);
   }
