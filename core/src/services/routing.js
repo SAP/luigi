@@ -646,10 +646,12 @@ class RoutingClass {
         url.hash = url.hash.replace(`&${prevModalPath}`, '');
       }
     } else {
-      let searchParam = new URLSearchParams(url.search.slice(1));
-      searchParam.delete(modalParamName);
-      searchParam.delete(`${modalParamName}Params`);
-      url.search = decodeURIComponent(searchParam.toString());
+      let searchParams = new URLSearchParams(url.search.slice(1));
+      searchParams.delete(modalParamName);
+      searchParams.delete(`${modalParamName}Params`);
+      let finalUrl = '';
+      Array.from(searchParams.keys()).forEach(searchParamKey => { finalUrl += (finalUrl === '' ? '?' : '&') + searchParamKey + '=' + searchParams.get(searchParamKey); });
+      url.search = finalUrl;
     }
     history.replaceState(window.state, '', url.href);
   }
