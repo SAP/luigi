@@ -1,120 +1,63 @@
-<svelte:window on:resize="{onResize}"/>
+<svelte:window on:resize="{onResize}" />
 <div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if}
   {#if mfModal.displayed}
-  <Modal
-    settings="{mfModal.settings}"
-    nodepath="{mfModal.nodepath}"
-    on:close="{closeModal}"
-    on:iframeCreated="{modalIframeCreated}"
-    on:wcCreated="{modalWCCreated}"
-  ></Modal>
+  <Modal settings="{mfModal.settings}" nodepath="{mfModal.nodepath}" on:close="{closeModal}"
+    on:iframeCreated="{modalIframeCreated}" on:wcCreated="{modalWCCreated}"></Modal>
   {/if}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
-  <Modal
-    settings="{mfDrawer.settings}"
-    nodepath="{mfDrawer.nodepath}"
-    on:close="{closeDrawer}"
-    on:drawerState="{setDrawerState}"
-    on:iframeCreated="{drawerIframeCreated}"
-  >
+  <Modal settings="{mfDrawer.settings}" nodepath="{mfDrawer.nodepath}" on:close="{closeDrawer}"
+    on:drawerState="{setDrawerState}" on:iframeCreated="{drawerIframeCreated}">
     <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
   </Modal>
   {/if}
   {#if confirmationModal.displayed}
-  <ConfirmationModal
-    settings="{confirmationModal.settings}"
-    on:modalConfirm="{()=> handleModalResult(true)}"
-    on:modalDismiss="{() => handleModalResult(false)}"
-  ></ConfirmationModal>
+  <ConfirmationModal settings="{confirmationModal.settings}" on:modalConfirm="{()=> handleModalResult(true)}"
+    on:modalDismiss="{() => handleModalResult(false)}"></ConfirmationModal>
   {/if}
   {#if internalUserSettingsObject.displayed}
-  <UserSettingsDialog
-    on:close="{closeUserSettings}"
-    userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
-    bind:storedUserSettings
-  ></UserSettingsDialog>
+  <UserSettingsDialog on:close="{closeUserSettings}" userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
+    bind:storedUserSettings></UserSettingsDialog>
   {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
       class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
-      tabindex="0"
-      use:init
-    >
+      tabindex="0" use:init>
       <Backdrop area="main" disable="{disableBackdrop}"></Backdrop>
       <div class="wcContainer"></div>
     </div>
     {#if mfSplitView.displayed}
-    <SplitView
-      splitViewSettings="{mfSplitView.settings}"
-      collapsed="{mfSplitView.collapsed}"
-      nodepath="{mfSplitView.nodepath}"
-      on:iframeCreated="{splitViewIframeCreated}"
-      on:statusChanged="{splitViewStatusChanged}"
-      on:wcCreated="{splitViewWCCreated}"
-      disableBackdrop="{disableBackdrop}"
-    ></SplitView>
+    <SplitView splitViewSettings="{mfSplitView.settings}" collapsed="{mfSplitView.collapsed}"
+      nodepath="{mfSplitView.nodepath}" on:iframeCreated="{splitViewIframeCreated}"
+      on:statusChanged="{splitViewStatusChanged}" on:wcCreated="{splitViewWCCreated}"
+      disableBackdrop="{disableBackdrop}"></SplitView>
     {/if}
   </Backdrop>
   {#if showLoadingIndicator}
-  <div
-    in:fade="{{delay: 250, duration: 250}}"
-    out:fade="{{duration: 250}}"
-    class="fd-page spinnerContainer"
-    aria-hidden="false"
-    aria-label="Loading"
-  >
-    <div
-      class="fd-busy-indicator--m"
-      aria-hidden="false"
-      aria-label="Loading"
-      data-testid="luigi-loading-spinner"
-    >
+  <div in:fade="{{delay: 250, duration: 250}}" out:fade="{{duration: 250}}" class="fd-page spinnerContainer"
+    aria-hidden="false" aria-label="Loading">
+    <div class="fd-busy-indicator--m" aria-hidden="false" aria-label="Loading" data-testid="luigi-loading-spinner">
       <div class="fd-busy-indicator--circle-0"></div>
       <div class="fd-busy-indicator--circle-1"></div>
       <div class="fd-busy-indicator--circle-2"></div>
     </div>
   </div>
   {/if}
-  <TopNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}"
-    on:toggleSearch="{toggleSearch}"
-    on:closeSearchResult="{closeSearchResult}"
-    on:handleSearchNavigation="{handleSearchNavigation}"
-    bind:isSearchFieldVisible
-    bind:displaySearchResult
-    bind:displayCustomSearchResult
-    bind:searchResult
-    bind:inputElem
-    bind:luigiCustomSearchRenderer__slot
-    burgerTooltip="{burgerTooltip}"
-  />
-  <GlobalNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-  />
+  <TopNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}" on:toggleSearch="{toggleSearch}" on:closeSearchResult="{closeSearchResult}"
+    on:handleSearchNavigation="{handleSearchNavigation}" bind:isSearchFieldVisible bind:displaySearchResult
+    bind:displayCustomSearchResult bind:searchResult bind:inputElem bind:luigiCustomSearchRenderer__slot
+    burgerTooltip="{burgerTooltip}" />
+  <GlobalNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}" />
   {#if !(hideNav||hideSideNav)}
-  <LeftNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}"
-    burgerTooltip="{burgerTooltip}"
-  />
+  <LeftNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}" burgerTooltip="{burgerTooltip}" />
   {/if}
   {#if (tabNav && !hideNav)}
-  <TabNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    resizeTabNavToggle="{resizeTabNavToggle}"
-  />
+  <TabNav pathData="{navigationPath}" pathParams="{pathParams}" on:handleClick="{handleNavClick}"
+    resizeTabNavToggle="{resizeTabNavToggle}" />
   {/if}
 </div>
 
@@ -354,7 +297,7 @@
             }
             resolve();
           },
-          () => {}
+          () => { }
         );
       } else {
         resolve();
@@ -1472,24 +1415,22 @@
     if (responsiveNavSetting === 'simple') {
       document.body.classList.add('lui-simpleSlideInNav');
       simpleSlideInNav = true;
-      if (NavigationHelpers.getBurgerTooltipConfig() !== undefined) {
-        burgerTooltip = document.body.classList.contains('lui-leftNavToggle')
-          ? NavigationHelpers.getBurgerTooltipConfig()[0]
-          : NavigationHelpers.getBurgerTooltipConfig()[1];
+      if (NavigationHelpers.getBurgerTooltipConfig()) {
+        const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+        if (collapseNavTooltip && expandNavTooltip) {
+          burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? collapseNavTooltip : expandNavTooltip;
+        }
       }
     } else if (responsiveNavSetting === 'simpleMobileOnly') {
       document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
       simpleSlideInNav = true;
     } else if (responsiveNavSetting === 'semiCollapsible' || 'Fiori3') {
-      if (NavigationHelpers.getBurgerTooltipConfig() !== undefined) {
-        const collapsedNavState = JSON.parse(
-          localStorage.getItem(NavigationHelpers.COL_NAV_KEY)
-        );
-        const [
-          collapseNav,
-          expandNav
-        ] = NavigationHelpers.getBurgerTooltipConfig();
-        burgerTooltip = collapsedNavState ? collapseNav : expandNav;
+      if (NavigationHelpers.getBurgerTooltipConfig()) {
+        const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+        if (collapseNavTooltip && expandNavTooltip) {
+          const collapsedNavState = JSON.parse(localStorage.getItem(NavigationHelpers.COL_NAV_KEY));
+          burgerTooltip = collapsedNavState ? collapseNavTooltip : expandNavTooltip;
+        }
       }
       document.body.classList.add('lui-semiCollapsible');
     }
@@ -1507,7 +1448,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1519,7 +1460,7 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => { });
 </script>
 
 <style type="text/scss">
@@ -1819,15 +1760,6 @@
       :global(#splitViewDraggerBackdrop),
       :global(#tabsContainer) {
         left: $leftNavWidthCollapsed;
-      }
-    }
-
-    :global(.fd-dialog, .fd-message-box) {
-      &__content {
-        &:not(.fd-dialog__content--mobile, .fd-message-box__content--mobile) {
-          max-width: 90%;
-          min-width: 90%;
-        }
       }
     }
   }
