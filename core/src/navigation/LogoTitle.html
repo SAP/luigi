@@ -1,32 +1,56 @@
 <span
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
-  aria-label="SAP" on:click="{() => goTo('/')}">
+  aria-label="SAP"
+  on:click="{() => goTo('/')}"
+>
   {#if hasLogo}
-  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP">
+  <img
+    data-testid="luigi-topnav-logo"
+    bind:this="{logo}"
+    alt="SAP"
+  >
   {/if}
 </span>
 {#if title}
 {#if !hasApps}
-<span class="fd-shellbar__title" data-testid="luigi-topnav-title"
-  on:click="{() => goTo('/')}">{$getTranslation(title)}</span>
+<span
+  class="fd-shellbar__title"
+  data-testid="luigi-topnav-title"
+  on:click="{() => goTo('/')}"
+>{$getTranslation(title)}</span>
 {:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-    <button class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu" aria-haspopup="true"
+    <button
+      class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu"
+      aria-haspopup="true"
       aria-expanded="{dropDownStates.appSwitcherPopover || false}"
-      on:click|stopPropagation="{() => toggleDropdownState('appSwitcherPopover')}" data-testid="app-switcher">
-      <span class="fd-shellbar__title" data-testid="luigi-topnav-title">{$getTranslation(title)}</span>
+      on:click|stopPropagation="{() => toggleDropdownState('appSwitcherPopover')}"
+      data-testid="app-switcher"
+    >
+      <span
+        class="fd-shellbar__title"
+        data-testid="luigi-topnav-title"
+      >{$getTranslation(title)}</span>
       <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
     </button>
   </div>
-  <div class="fd-popover__body fd-popover__body--left" aria-hidden="{!(dropDownStates.appSwitcherPopover || false)}"
-    id="appSwitcherPopover">
+  <div
+    class="fd-popover__body fd-popover__body--left"
+    aria-hidden="{!(dropDownStates.appSwitcherPopover || false)}"
+    id="appSwitcherPopover"
+  >
     <nav class="fd-menu">
       <ul class="fd-menu__list fd-menu__list--no-shadow">
         {#if showMainAppEntry && selectedItem}
         <li class="fd-menu__item">
-          <a role="button" class="fd-menu__link" on:click|preventDefault="{goToRoot}" href="/"
-            data-testid="{getTestId(defaultTitle)}">
+          <a
+            role="button"
+            class="fd-menu__link"
+            on:click|preventDefault="{goToRoot}"
+            href="/"
+            data-testid="{getTestId(defaultTitle)}"
+          >
             <span class="fd-menu__title">{$getTranslation(defaultTitle)}</span>
           </a>
         </li>
@@ -35,8 +59,13 @@
         {#each appSwitcherItems as item}
         {#if item !== selectedItem && hasValidLink(item, pathParams)}
         <li class="fd-menu__item">
-          <a role="button" class="fd-menu__link" on:click|preventDefault="{() => goTo(item.link)}"
-            href="{getRouteLink(item, pathParams)}" data-testid="{getTestId(item)}">
+          <a
+            role="button"
+            class="fd-menu__link"
+            on:click|preventDefault="{() => goTo(item.link)}"
+            href="{getRouteLink(item, pathParams)}"
+            data-testid="{getTestId(item)}"
+          >
             <span class="fd-menu__title">{$getTranslation(item.title)}</span>
           </a>
         </li>
@@ -204,6 +233,14 @@
   // Force height because of base64 img src
   .lui-customlogo img {
     height: 24px;
+  }
+
+  .fd-shellbar__logo {
+    margin: 0 0.5rem;
+  }
+
+  .fd-shellbar__title {
+    padding: 0 0.625rem;
   }
 
   .fd-shellbar__logo,
