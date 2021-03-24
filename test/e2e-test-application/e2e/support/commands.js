@@ -252,6 +252,43 @@ Cypress.Commands.add('iframe', { prevSubject: 'element' }, $iframe => {
   });
 });
 
+/**
+  * iframeWindow
+  * Basically what it is doing is checking if the iframe has loaded, if
+  * the iframe has loaded it will do $iframe.
+  * If it has not loaded it will hook that same code into the load event
+  * so it will run as soon as the iframe loads.
+  *
+    usage: 
+    cy.get('iframe').iframeWindow().then(modal => {
+        win.LuigiClient....
+    });
+ */
+Cypress.Commands.add('iframeWindow', { prevSubject: 'element' }, $iframe => {
+  Cypress.log({
+    name: 'iframe',
+    consoleProps() {
+      return {
+        iframe: $iframe
+      };
+    }
+  });
+  return new Cypress.Promise(resolve => {
+    onIframeReady(
+      $iframe,
+      () => {
+        resolve($iframe);
+      },
+      () => {
+        $iframe.on('load', () => {
+          resolve($iframe);
+        });
+      }
+    );
+  });
+});
+
+
 function onIframeReady($iframe, successFn, errorFn) {
   try {
     const iCon = $iframe.first()[0].contentWindow,
@@ -301,14 +338,8 @@ function onIframeReady($iframe, successFn, errorFn) {
   }
 }
 
-/**
- * getIframeWindow
- * returns the window instance of an iframe
- */
-Cypress.Commands.add('getIframeWindow', (num = 0) => {
-  return cy
-    .get('iframe')
-    .eq(num)
-    .its('0.contentWindow')
-    .should('exist');
+Cypress.Commands.add('getModalWindow', () => {
+  cy.get('[data-testid="modal-mf"] iframe')
+    .iframeWindow()
+    .its('0.contentWindow');
 });
