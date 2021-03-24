@@ -29,6 +29,9 @@ settings: {
     title: 'Luigi Demo',
     favicon: 'path/to/favicon.ico'
   },
+  featureToggles : { 
+    queryStringParam: 'ft' 
+  },
   sideNavFooterText: 'MyLovelyApp 1.0.0',
   sideNavCompactMode: false,
   customTranslationImplementation: () => {
@@ -126,6 +129,7 @@ For example, to allow 'fullscreen' for non-modal iframes:
 ```
 * **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+* **featureToggles.queryStringParam** allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality. 
 * **theming** is a configuration element that allows you to specify a list of themes that are available on the website. The children elements:
     * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`. 
     * **defaultTheme** (mandatory) the default theme used by the application.
