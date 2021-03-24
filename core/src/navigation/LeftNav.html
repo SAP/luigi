@@ -483,8 +483,13 @@
   }
 
   function setBurgerTooltip() {
-    if (document.body.classList.contains('lui-semiCollapsible')) {
-      burgerTooltip = document.body.classList.contains('semiCollapsed') ? NavigationHelpers.getBurgerTooltipConfig()[0] : NavigationHelpers.getBurgerTooltipConfig()[1];
+    if (!NavigationHelpers.getBurgerTooltipConfig()) {
+      return;
+    }
+    const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
+    const hasSemiCollapsible = document.body.classList.contains('lui-semiCollapsible');
+    if (collapseNavTooltip && expandNavTooltip && hasSemiCollapsible) {
+      burgerTooltip = document.body.classList.contains('semiCollapsed') ? collapseNavTooltip : expandNavTooltip;
     }
   }
 </script>

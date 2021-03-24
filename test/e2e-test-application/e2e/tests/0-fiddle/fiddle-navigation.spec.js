@@ -669,5 +669,57 @@ describe('Fiddle', () => {
         expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
       });
     });
+    it('Hash routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
+      newConfig.navigation.nodes[0].children[0].viewUrl =
+        '/examples/microfrontends/hello-luigi-cdn.html';
+      newConfig.routing.showModalPathInUrl = true;
+      newConfig.routing.modalPathParam = 'mymodal';
+      newConfig.routing.useHashRouting = true;
+
+      cy.visitWithFiddleConfig('/home', newConfig);
+
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ mp: 'one' })
+          .openAsModal('/home/one');
+      });
+
+      cy.wait(150); // it takes some time for the nodeParams be available
+      cy.getModalWindow().then(win => {
+        assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+      });
+
+      cy.expectPathToBe(
+        '/home?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+      );
+    });
+
+    it('Path routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
+      newConfig.navigation.nodes[0].children[0].viewUrl =
+        '/examples/microfrontends/hello-luigi-cdn.html';
+      newConfig.routing.showModalPathInUrl = true;
+      newConfig.routing.modalPathParam = 'mymodal';
+      newConfig.routing.useHashRouting = false;
+
+      cy.visitWithFiddleConfig('/home', newConfig);
+
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ mp: 'one' })
+          .openAsModal('/home/one');
+      });
+
+      cy.wait(150); // it takes some time for the nodeParams be available
+      cy.getModalWindow().then(win => {
+        assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+      });
+
+      cy.expectPathToBe('/home');
+      cy.location().should(location => {
+        expect(location.search).to.eq(
+          '?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+        );
+      });
+    });
   });
 });
