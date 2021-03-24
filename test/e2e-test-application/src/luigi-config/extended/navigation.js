@@ -133,13 +133,19 @@ class Navigation {
       icon: 'globe',
       showLabel: true,
       hideSideNav: false,
+      globalNav: true,
       testId: 'icon-and-label'
+    },
+    {
+      globalNav: true,
+      separator: true
     },
     {
       pathSegment: 'settings',
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
       icon: 'settings',
+      globalNav: true,
       hideSideNav: true,
       viewGroup: 'tets'
     },

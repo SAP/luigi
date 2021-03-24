@@ -1745,6 +1745,17 @@
     }
   }
 
+  :global(.lui-global-nav-visible > .no-side-nav) {
+    .iframeContainer,
+    .spinnerContainer {
+      left: $globalNavWidth;
+    }
+
+    :global(#tabsContainer) {
+      left: $globalNavWidth;
+    }
+  }
+
   :global(.semiCollapsed.lui-global-nav-visible) {
     :global(.iframeContainer),
     :global(.spinnerContainer) {
