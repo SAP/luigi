@@ -6,7 +6,7 @@ import {
   RoutingHelpers,
   IframeHelpers, EventListenerHelpers
 } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N } from '../core-api';
+import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
@@ -16,10 +16,10 @@ class RoutingClass {
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
-          node,
-          node.pathSegment ? '/' + node.pathSegment : '',
-          params
-        )
+        node,
+        node.pathSegment ? '/' + node.pathSegment : '',
+        params
+      )
       : '';
   }
 
@@ -58,7 +58,7 @@ class RoutingClass {
     }
 
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      if (!navSync){
+      if (!navSync) {
         EventListenerHelpers.hashChangeWithoutSync = true;
       }
       window.location.hash = route;
@@ -159,9 +159,9 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config, withoutSync) {
@@ -190,7 +190,7 @@ class RoutingClass {
               this.handleRouteChange(path, component, iframeElement, config) &&
               history.replaceState(window.state, '', newUrl);
           },
-          () => {}
+          () => { }
         );
         return;
       }
@@ -203,6 +203,8 @@ class RoutingClass {
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
+
+      await this.handleBookmarkableModalPath();
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
@@ -236,8 +238,8 @@ class RoutingClass {
             this.showPageNotFoundError(
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-                '/' +
-                defaultChildNode,
+              '/' +
+              defaultChildNode,
               pathUrlRaw,
               true
             );
@@ -328,10 +330,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );
@@ -398,6 +400,20 @@ class RoutingClass {
     }
   }
 
+  async handleBookmarkableModalPath() {
+    const additionalModalPath = RoutingHelpers.getModalPathFromPath();
+    if (additionalModalPath) {
+      const modalParams = RoutingHelpers.getModalParamsFromPath();
+      const { nodeObject } = await Navigation.extractDataFromPath(
+        additionalModalPath
+      );
+      LuigiNavigation.openAsModal(
+        additionalModalPath,
+        nodeObject.openNodeInModal || modalParams
+      );
+    }
+  }
+
   /**
       This function takes the previous node data and the new node path and compares
       if the navigation path of both contains a dynamic node.
@@ -426,10 +442,10 @@ class RoutingClass {
             if (
               !isSamePath ||
               newPathSegment !==
-                RoutingHelpers.getDynamicNodeValue(
-                  previousPathNode,
-                  previousCompData.pathParams
-                )
+              RoutingHelpers.getDynamicNodeValue(
+                previousPathNode,
+                previousCompData.pathParams
+              )
             ) {
               NodeDataManagementStorage.deleteNodesRecursively(
                 previousPathNode
@@ -575,6 +591,69 @@ class RoutingClass {
       wc_container,
       componentData.context
     );
+  }
+
+  appendModalDataToUrl(modalPath, modalParams) {
+    // global setting for persistence in url .. default false
+    let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
+    const params = RoutingHelpers.getQueryParams();
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+
+    const prevModalPath = params[modalParamName];
+    if (prevModalPath !== modalPath) {
+      params[modalParamName] = modalPath;
+      if (modalParams && Object.keys(modalParams).length) {
+        params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+      }
+      const url = new URL(location.href);
+      const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
+        'routing.useHashRouting'
+      );
+      if (hashRoutingActive) {
+        const queryParamIndex = location.hash.indexOf(queryParamSeparator);
+        if (queryParamIndex !== -1) {
+          url.hash = url.hash.slice(0, queryParamIndex);
+        }
+        url.hash = `${url.hash
+          }${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+      } else {
+        url.search = `?${RoutingHelpers.encodeParams(params)}`;
+      }
+      history.replaceState(window.state, '', url.href);
+    }
+  }
+
+  removeModalDataFromUrl() {
+    const params = RoutingHelpers.getQueryParams();
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+    let url = new URL(location.href);
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
+      'routing.useHashRouting'
+    );
+    if (hashRoutingActive) {
+      let modalParamsObj = {};
+
+      if (params[modalParamName]) {
+        modalParamsObj[modalParamName] = params[modalParamName]
+      }
+      if (params[`${modalParamName}Params`]) {
+        modalParamsObj[`${modalParamName}Params`] = params[`${modalParamName}Params`];
+      }
+      let prevModalPath = RoutingHelpers.encodeParams(modalParamsObj);
+      if (url.hash.includes(`?${prevModalPath}`)) {
+        url.hash = url.hash.replace(`?${prevModalPath}`, '');
+      } else if (url.hash.includes(`&${prevModalPath}`)) {
+        url.hash = url.hash.replace(`&${prevModalPath}`, '');
+      }
+    } else {
+      let searchParams = new URLSearchParams(url.search.slice(1));
+      searchParams.delete(modalParamName);
+      searchParams.delete(`${modalParamName}Params`);
+      let finalUrl = '';
+      Array.from(searchParams.keys()).forEach(searchParamKey => { finalUrl += (finalUrl === '' ? '?' : '&') + searchParamKey + '=' + searchParams.get(searchParamKey); });
+      url.search = finalUrl;
+    }
+    history.replaceState(window.state, '', url.href);
   }
 }
 

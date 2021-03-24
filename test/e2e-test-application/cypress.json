@@ -1,4 +1,7 @@
 {
   "projectId": "czq7qc",
-  "retries": 2
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
 }

@@ -273,7 +273,7 @@
     let current = componentData.pathData[componentData.pathData.length - 1];
     let style;
     let margin;
-    moreLink.setAttribute('aria-selected', 'false');
+    moreLink && moreLink.setAttribute('aria-selected', 'false');
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = [...tabsContainer.children];
@@ -308,10 +308,12 @@
       'luigi-tabsContainer'
     )[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
-    let tabs = [...tabsContainer.children];
-    tabs.forEach(element => {
-      element.classList.remove('hide_element');
-    });
+    if (tabsContainer !== undefined) {
+      const tabs = [...tabsContainer.children];
+      tabs.forEach(element => {
+        element.classList.remove('hide_element');
+      });
+    }
   };
 
   onMount(() => {

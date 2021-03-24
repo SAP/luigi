@@ -685,7 +685,7 @@ export type getUserSettings = () => UserSettings;
 /**
  * Check if LuigiClient is initialized
  * @returns {boolean} client initialized state
- * @since NEXTRELEASE
+ * @since 1.12.0
  * @memberof Lifecycle
  */
 export function isLuigiClientInitialized(): boolean;
@@ -693,7 +693,7 @@ export type isLuigiClientInitialized = () => boolean;
 
 /**
    * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed. 
-   * @since NEXTRELEASE
+   * @since 1.12.0
    * @memberof Lifecycle
  */
 export function luigiClientInit(): void;

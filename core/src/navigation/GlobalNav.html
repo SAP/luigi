@@ -194,6 +194,7 @@
   @import 'styles/variables';
   .lui-globalnav {
     position: fixed;
+    height: 100%;
     width: $globalNavWidth;
     top: $topNavHeight;
     bottom: 0;
@@ -221,7 +222,7 @@
 
     .fd-button.fd-shellbar__button:hover .fd-top-nav__icon,
     .fd-button.fd-shellbar__button.is-selected .fd-top-nav__icon {
-      color: var(--sapBaseColor, #ffffff);
+      color: var(--sapShell_InteractiveTextColor, #d1e8ff);
     }
 
     .fd-button.fd-shellbar__button:hover {
@@ -229,7 +230,7 @@
     }
 
     .fd-button.fd-shellbar__button.is-selected {
-      background-color: var(--sapShellColor, #354a5f);
+      background: var(--sapShell_Selected_Background, #23303e);
     }
 
     .fd-shellbar__action {
@@ -238,7 +239,7 @@
     }
 
     .lui-global-nav__bottom-section {
-      position: absolute;
+      position: fixed;
       bottom: 0;
     }
 
