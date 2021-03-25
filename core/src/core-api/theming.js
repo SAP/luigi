@@ -106,21 +106,16 @@ class LuigiTheming {
        * @private
        */
       const theming = LuigiConfig.getConfigValue('settings.theming');
-      if (
-        theming &&
-        theming.nodeViewURLDecorator &&
-        theming.nodeViewURLDecorator.queryStringParameter
-      ) {
+      if (theming && theming.nodeViewURLDecorator && theming.nodeViewURLDecorator.queryStringParameter) {
         ViewUrlDecorator.add({
           type: 'queryString',
           uid: 'theming',
           key: theming.nodeViewURLDecorator.queryStringParameter.keyName,
           valueFn: () => {
             const value = this.getCurrentTheme();
-            const configValueFn =
-              theming.nodeViewURLDecorator.queryStringParameter.value;
+            const configValueFn = theming.nodeViewURLDecorator.queryStringParameter.value;
             return configValueFn ? configValueFn(value) : value;
-          }
+          },
         });
       }
     };

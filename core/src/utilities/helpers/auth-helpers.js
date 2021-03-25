@@ -9,8 +9,7 @@ class AuthHelpersClass {
 
   isLoggedIn() {
     const storedAuthData = this.getStoredAuthData();
-    const isAuthValid = () =>
-      storedAuthData.accessTokenExpirationDate > Number(new Date());
+    const isAuthValid = () => storedAuthData.accessTokenExpirationDate > Number(new Date());
     return storedAuthData && isAuthValid();
   }
 

@@ -10,12 +10,7 @@ class LifecycleManager extends LuigiClientBase {
   constructor() {
     super();
     this.luigiInitialized = false;
-    this.defaultContextKeys = [
-      'context',
-      'internal',
-      'nodeParams',
-      'pathParams'
-    ];
+    this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
     this.setCurrentContext(
       this.defaultContextKeys.reduce(function(acc, key) {
         acc[key] = {};
@@ -50,12 +45,12 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const init = LuigiClient.isLuigiClientInitialized()
    */
-  isLuigiClientInitialized(){
+  isLuigiClientInitialized() {
     return this.luigiInitialized;
   }
 
   /**
-   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed. 
+   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
    * @since 1.12.0
    * @memberof Lifecycle
    * @example
@@ -63,7 +58,7 @@ class LifecycleManager extends LuigiClientBase {
    */
   luigiClientInit() {
     if (this.luigiInitialized) {
-      console.warn("Luigi Client has been already initialized")
+      console.warn('Luigi Client has been already initialized');
       return;
     }
     /**
@@ -78,12 +73,7 @@ class LifecycleManager extends LuigiClientBase {
             rawData[key] = JSON.parse(rawData[key]);
           }
         } catch (e) {
-          console.info(
-            'unable to parse luigi context data for',
-            key,
-            rawData[key],
-            e
-          );
+          console.info('unable to parse luigi context data for', key, rawData[key], e);
         }
       }
       this.setCurrentContext(rawData);
@@ -116,9 +106,7 @@ class LifecycleManager extends LuigiClientBase {
       setContext(e.data);
       if (!this.currentContext.internal.isNavigateBack) {
         history.replaceState({ luigiInduced: true }, '', e.data.viewUrl);
-        window.dispatchEvent(
-          new PopStateEvent('popstate', { state: 'luiginavigation' })
-        );
+        window.dispatchEvent(new PopStateEvent('popstate', { state: 'luiginavigation' }));
       }
       // execute the context change listener if set by the micro frontend
       this._notifyUpdate();
@@ -132,13 +120,12 @@ class LifecycleManager extends LuigiClientBase {
     window.parent.postMessage(
       {
         msg: 'luigi.get-context',
-        clientVersion: require('../public/package.json').version
+        clientVersion: require('../public/package.json').version,
       },
       '*'
     );
     this._tpcCheck();
-  };
-
+  }
 
   _tpcCheck() {
     let tpc = 'enabled';
@@ -335,12 +322,9 @@ class LifecycleManager extends LuigiClientBase {
    * const customMsgId = LuigiClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
    */
   addCustomMessageListener(customMessageId, customMessageListener) {
-    return helpers.addEventListener(
-      customMessageId,
-      (customMessage, listenerId) => {
-        return customMessageListener(customMessage, listenerId);
-      }
-    );
+    return helpers.addEventListener(customMessageId, (customMessage, listenerId) => {
+      return customMessageListener(customMessage, listenerId);
+    });
   }
 
   /**
@@ -467,9 +451,7 @@ class LifecycleManager extends LuigiClientBase {
    * @since 0.6.2
    */
   sendCustomMessage(message) {
-    const customMessageInternal = helpers.convertCustomMessageUserToInternal(
-      message
-    );
+    const customMessageInternal = helpers.convertCustomMessageUserToInternal(message);
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
 

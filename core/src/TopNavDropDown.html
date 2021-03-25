@@ -1,9 +1,8 @@
-<svelte:window on:resize="{setViewportHeightVariable}"/>
+<svelte:window on:resize="{setViewportHeightVariable}" />
 {#if !isMobile}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--top fd-menu__list--no-shadow">
-    {#if children}
-    {#each children as node}
+    {#if children} {#each children as node}
     <li
       class="fd-menu__item"
       on:click="{() => onActionClick(node)}"
@@ -18,22 +17,17 @@
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
         >
           {#if !hasOpenUIicon(node)}
-          <img
-            src="{node.icon}"
-            alt="{node.altText ? node.altText: ''}"
-          >
+          <img src="{node.icon}" alt="{node.altText ? node.altText: ''}" />
           {/if}
-          <BadgeCounter {node}/>
+          <BadgeCounter {node} />
         </span>
         <span class="fd-menu__title">{getNodeLabel(node)}</span>
       </a>
     </li>
-    {/each}
-    {/if}
+    {/each} {/if}
   </ul>
 </nav>
-{/if}
-{#if isMobile}
+{/if} {#if isMobile}
 <MobileTopNav
   on:click="{closeSubNav}"
   on:listClick="{onActionClickExternal}"
@@ -47,19 +41,19 @@
 />
 {/if}
 <script>
-  import BadgeCounter from './navigation/BadgeCounter.html';
-  import MobileTopNav from './navigation/MobileTopNavDropDown.html';
+  import BadgeCounter from "./navigation/BadgeCounter.html";
+  import MobileTopNav from "./navigation/MobileTopNavDropDown.html";
   import {
     beforeUpdate,
     createEventDispatcher,
     onMount,
     getContext
-  } from 'svelte';
-  import { Routing } from './services/routing';
-  import { Navigation } from './navigation/services/navigation';
-  import { NavigationHelpers } from './utilities/helpers';
-  import { RoutingHelpers } from './utilities/helpers';
-  import { LuigiI18N } from './core-api';
+  } from "svelte";
+  import { Routing } from "./services/routing";
+  import { Navigation } from "./navigation/services/navigation";
+  import { NavigationHelpers } from "./utilities/helpers";
+  import { RoutingHelpers } from "./utilities/helpers";
+  import { LuigiI18N } from "./core-api";
 
   const dispatch = createEventDispatcher();
 
@@ -68,9 +62,9 @@
   export let node;
   let pathParams;
   let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
+    "getUnsavedChangesModalPromise"
   );
-  let openViewInModal = getContext('openViewInModal');
+  let openViewInModal = getContext("openViewInModal");
   const getNodeSubtitle = () => {};
 
   //TODO refactor
@@ -122,14 +116,14 @@
   }
 
   export function closeSubNav() {
-    dispatch('close');
+    dispatch("close");
   }
 
   export function setViewportHeightVariable() {
     // get the viewport height and multiple it by 1% to get a value for a vh unit
     let vh = window.innerHeight * 0.01;
     // set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
 
   function hasOpenUIicon(node) {

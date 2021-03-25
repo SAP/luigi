@@ -1,10 +1,6 @@
 import { LuigiConfig, LuigiElements } from '../core-api';
 import { Navigation } from '../navigation/services/navigation';
-import {
-  GenericHelpers,
-  IframeHelpers,
-  RoutingHelpers
-} from '../utilities/helpers';
+import { GenericHelpers, IframeHelpers, RoutingHelpers } from '../utilities/helpers';
 import { WebComponentService } from './web-components';
 
 class SplitViewSvcClass {
@@ -15,7 +11,7 @@ class SplitViewSvcClass {
       rightContentHeight: null,
       thresholdTop: null,
       thresholdBottom: null,
-      m_pos_prev: null
+      m_pos_prev: null,
     };
   }
 
@@ -29,9 +25,7 @@ class SplitViewSvcClass {
     return document.querySelector('#splitViewDragger>.lui-collapse-btn');
   }
   getCollapsedDraggerButton() {
-    return document.querySelector(
-      '#splitViewDraggerCollapsed>.lui-collapse-btn'
-    );
+    return document.querySelector('#splitViewDraggerCollapsed>.lui-collapse-btn');
   }
   getDraggerBackdrop() {
     return document.getElementById('splitViewDraggerBackdrop');
@@ -41,8 +35,8 @@ class SplitViewSvcClass {
     return {
       mfSplitView: {
         displayed: false,
-        settings: {}
-      }
+        settings: {},
+      },
     };
   }
 
@@ -50,24 +44,15 @@ class SplitViewSvcClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IframeHelpers.createIframe(
-      viewUrl,
-      undefined,
-      component.get().lastNode,
-      'split-view'
-    );
+    const iframe = IframeHelpers.createIframe(viewUrl, undefined, component.get().lastNode, 'split-view');
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
     return iframe;
   }
 
   async prepareSplitViewData(component, path) {
-    const pathUrlRaw =
-      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      path
-    );
+    const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathData = await Navigation.getNavigationPath(LuigiConfig.getConfigValueAsync('navigation.nodes'), path);
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
@@ -82,7 +67,7 @@ class SplitViewSvcClass {
       pathData,
       nodeParams,
       collapsed,
-      isDataPrepared: true
+      isDataPrepared: true,
     });
   }
 
@@ -98,12 +83,12 @@ class SplitViewSvcClass {
       );
       const wcInfo = {
         splitViewWC: document.querySelector('.iframeSplitViewCnt'),
-        splitViewWCData: { ...pathData, nodeParams }
+        splitViewWCData: { ...pathData, nodeParams },
       };
       component.set(wcInfo);
       component.dispatch('wcCreated', {
         ...wcInfo,
-        ...{ collapsed: false }
+        ...{ collapsed: false },
       });
     } else {
       const iframe = this.setIframe(
@@ -111,19 +96,19 @@ class SplitViewSvcClass {
         {
           context: pathData.context,
           pathParams: pathData.pathParams,
-          nodeParams
+          nodeParams,
         },
         component
       );
 
       const iframeInfo = {
         splitViewIframe: iframe,
-        splitViewIframeData: { ...pathData, nodeParams }
+        splitViewIframeData: { ...pathData, nodeParams },
       };
       component.set(iframeInfo);
       component.dispatch('iframeCreated', {
         ...iframeInfo,
-        ...{ collapsed: false }
+        ...{ collapsed: false },
       });
     }
 
@@ -133,8 +118,7 @@ class SplitViewSvcClass {
   // required for iOS to force repaint, else scrolling does not work
   /* istanbul ignore next */
   fixIOSscroll() {
-    const iOS =
-      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
     if (!iOS) {
       return;
     }
@@ -152,37 +136,25 @@ class SplitViewSvcClass {
   calculateInitialValues(size, rightContentHeight) {
     if (rightContentHeight) {
       const percentBottom = size || 40;
-      const bottom = parseInt(
-        GenericHelpers.computePxFromPercent(rightContentHeight, percentBottom)
-      );
+      const bottom = parseInt(GenericHelpers.computePxFromPercent(rightContentHeight, percentBottom));
 
       const percentTop = size ? 100 - size : 60;
-      const top = parseInt(
-        GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
-      );
+      const top = parseInt(GenericHelpers.computePxFromPercent(rightContentHeight, percentTop));
 
       return {
         percent: percentBottom,
         bottom,
-        top
+        top,
       };
     }
   }
 
   calculateAndSetSplitViewValues(percentBottom, values) {
     const newBottom =
-      parseInt(
-        GenericHelpers.computePxFromPercent(
-          values.rightContentHeight,
-          100 - percentBottom
-        )
-      ) + LuigiElements.getShellbar().clientHeight;
+      parseInt(GenericHelpers.computePxFromPercent(values.rightContentHeight, 100 - percentBottom)) +
+      LuigiElements.getShellbar().clientHeight;
 
-    this.splitViewValues = this.enforceTresholds(
-      newBottom,
-      values.innerHeight - newBottom,
-      values
-    );
+    this.splitViewValues = this.enforceTresholds(newBottom, values.innerHeight - newBottom, values);
   }
 
   enforceTresholds(top, bottom) {
@@ -198,10 +170,7 @@ class SplitViewSvcClass {
     return {
       top,
       bottom,
-      percent: GenericHelpers.computePercentFromPx(
-        iv.rightContentHeight,
-        bottom
-      )
+      percent: GenericHelpers.computePercentFromPx(iv.rightContentHeight, bottom),
     };
   }
 
@@ -210,7 +179,7 @@ class SplitViewSvcClass {
       displayed: true,
       collapsed: settings.collapsed === true,
       nodepath,
-      settings
+      settings,
     };
 
     this.splitViewValues = this.calculateInitialValues(
@@ -221,7 +190,7 @@ class SplitViewSvcClass {
     this.sendMessageToClients('internal', {
       exists: true,
       size: this.splitViewValues.percent,
-      collapsed: mfSplitView.collapsed
+      collapsed: mfSplitView.collapsed,
     });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
@@ -230,9 +199,7 @@ class SplitViewSvcClass {
     if (comp.get().splitViewIframe || comp.get().splitViewWC) {
       comp
         .getUnsavedChangesModalPromise(
-          comp.get().splitViewWC
-            ? comp.get().splitViewWC
-            : comp.get().splitViewIframe.contentWindow
+          comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
         .then(() => {
           if (comp.get().mfSplitView) {
@@ -241,7 +208,7 @@ class SplitViewSvcClass {
             comp.set({ mfSplitView: comp.get().mfSplitView });
           }
           comp.dispatch('statusChanged', {
-            displayed: false
+            displayed: false,
           });
           IframeHelpers.getIframeContainer().style.paddingBottom = '';
           SplitViewSvc.sendMessageToClients('close.ok');
@@ -256,13 +223,13 @@ class SplitViewSvcClass {
     this.sendMessageToClients('internal', {
       exists: true,
       size: this.splitViewValues.percent,
-      collapsed: false
+      collapsed: false,
     });
     this.sendMessageToClients('expand.ok');
 
     comp.dispatch('statusChanged', {
       displayed: true,
-      collapsed: false
+      collapsed: false,
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
@@ -276,20 +243,18 @@ class SplitViewSvcClass {
     if (comp.get().splitViewIframe || comp.get().splitViewWC) {
       comp
         .getUnsavedChangesModalPromise(
-          comp.get().splitViewWC
-            ? comp.get().splitViewWC
-            : comp.get().splitViewIframe.contentWindow
+          comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
         .then(() => {
           this.sendMessageToClients('internal', {
             exists: true,
             size: this.splitViewValues.percent,
-            collapsed: true
+            collapsed: true,
           });
           this.sendMessageToClients('collapse.ok');
           comp.dispatch('statusChanged', {
             displayed: true,
-            collapsed: true
+            collapsed: true,
           });
           this.getContainer().style.top = '';
           IframeHelpers.getIframeContainer().style.paddingBottom = '';
@@ -300,7 +265,7 @@ class SplitViewSvcClass {
   sendMessageToClients(name, data) {
     IframeHelpers.sendMessageToVisibleIframes({
       msg: `luigi.navigation.splitview.${name}`,
-      data
+      data,
     });
   }
 }

@@ -5,12 +5,8 @@ class UserSettingsHelperClass {
 
   processUserSettingGroups() {
     const userSettingGroups = [];
-    const userSettingGroupsFromConfig = LuigiConfig.getConfigValue(
-      'userSettings.userSettingGroups'
-    );
-    const userSettingGroupsFromOldConfig = LuigiConfig.getConfigValue(
-      'settings.userSettings.userSettingGroups'
-    );
+    const userSettingGroupsFromConfig = LuigiConfig.getConfigValue('userSettings.userSettingGroups');
+    const userSettingGroupsFromOldConfig = LuigiConfig.getConfigValue('settings.userSettings.userSettingGroups');
     //regarding backwards compatibility
     const userSettingsSchema = userSettingGroupsFromConfig
       ? userSettingGroupsFromConfig
@@ -27,12 +23,7 @@ class UserSettingsHelperClass {
   }
 
   createIframe(viewUrl, userSettingsGroup) {
-    const iframe = IframeHelpers.createIframe(
-      viewUrl,
-      undefined,
-      undefined,
-      'usersettings'
-    );
+    const iframe = IframeHelpers.createIframe(viewUrl, undefined, undefined, 'usersettings');
     const iframeCtn = document.querySelector('.iframeUserSettingsCtn');
     iframe.setAttribute('userSettingsGroup', userSettingsGroup);
     iframe.userSettingsGroup = userSettingsGroup; //important for caching
@@ -52,9 +43,7 @@ class UserSettingsHelperClass {
   }
 
   findActiveCustomUserSettingsIframe(eventSource) {
-    let customUserSettingsIframes = document.querySelectorAll(
-      '[userSettingsGroup]'
-    );
+    let customUserSettingsIframes = document.querySelectorAll('[userSettingsGroup]');
     for (let i = 0; i < customUserSettingsIframes.length; i++) {
       if (customUserSettingsIframes[i].contentWindow === eventSource) {
         return customUserSettingsIframes[i];

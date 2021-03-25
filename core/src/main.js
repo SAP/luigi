@@ -24,7 +24,7 @@ const createConfigStore = () => {
           fn(data);
         });
       }
-    }
+    },
   };
 };
 
@@ -45,17 +45,15 @@ const configReadyCallback = () => {
         let app;
 
         if (LuigiElements.isCustomLuigiContainer()) {
-          document
-            .getElementsByTagName('html')[0]
-            .classList.add('luigi-app-in-custom-container');
+          document.getElementsByTagName('html')[0].classList.add('luigi-app-in-custom-container');
         }
 
         app = new App({
           target: LuigiElements.getLuigiContainer(),
           props: {
             store,
-            getTranslation
-          }
+            getTranslation,
+          },
         });
 
         Luigi.showAlert = settings => {
@@ -94,16 +92,15 @@ const configReadyCallback = () => {
         };
 
         Luigi.splitView = {
-          openAsSplitView: (path, settings) =>
-            app.$$.ctx.openSplitView(path, settings),
+          openAsSplitView: (path, settings) => app.$$.ctx.openSplitView(path, settings),
           splitViewHandle: {
             close: () => app.$$.ctx.closeSplitView(),
             collapse: () => app.$$.ctx.collapseSplitView(),
             expand: () => app.$$.ctx.expandSplitView(),
             isCollapsed: () => app.$$.ctx.isSplitViewCollapsed(),
             isExpanded: () => app.$$.ctx.isSplitViewExpanded(),
-            exists: () => app.$$.ctx.existsSplitView()
-          }
+            exists: () => app.$$.ctx.existsSplitView(),
+          },
         };
 
         Luigi.pathExists = path => {
@@ -120,7 +117,7 @@ const configReadyCallback = () => {
 
         Luigi.closeUserSettings = () => {
           app.$$.ctx.closeUserSettings();
-        }
+        };
 
         resolve();
       });

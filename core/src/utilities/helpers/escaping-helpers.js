@@ -20,19 +20,7 @@ class EscapingHelpersClass {
 
   restoreSanitizedElements(text) {
     let result = text;
-    const elements = [
-      'i',
-      'b',
-      'br',
-      'mark',
-      'strong',
-      'em',
-      'small',
-      'del',
-      'ins',
-      'sub',
-      'sup'
-    ];
+    const elements = ['i', 'b', 'br', 'mark', 'strong', 'em', 'small', 'del', 'ins', 'sub', 'sup'];
 
     for (let i = 0; i < elements.length; i++) {
       const openTag_1 = new RegExp(`&lt;${elements[i]}\/&gt;`, 'g');
@@ -86,9 +74,7 @@ class EscapingHelpersClass {
 
     return Object.entries(links).reduce((acc, [key, content]) => {
       const elemId = `_luigi_alert_${uniqueID}_link_${this.sanitizeParam(key)}`;
-      const escapedText = this.restoreSanitizedBrs(
-        this.sanitizeHtml(content.text)
-      );
+      const escapedText = this.restoreSanitizedBrs(this.sanitizeHtml(content.text));
       const processedData = `<a id="${elemId}">${escapedText}</a>`;
       const keyForRegex = this.escapeKeyForRegexp(key);
       const pattern = new RegExp(`({${keyForRegex}})`, 'g');
@@ -96,8 +82,8 @@ class EscapingHelpersClass {
         sanitizedText: acc.sanitizedText.replace(pattern, processedData),
         links: acc.links.concat({
           elemId,
-          url: encodeURI(this.sanitizeHtml(content.url))
-        })
+          url: encodeURI(this.sanitizeHtml(content.url)),
+        }),
       };
     }, initialValue);
   }

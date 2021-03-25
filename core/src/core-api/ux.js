@@ -16,14 +16,11 @@ class LuigiUX {
    * @since 0.6.4
    */
   hideAppLoadingIndicator() {
-    const appLoadingIndicator = document.querySelector(
-      APP_LOADING_INDICATOR.cssSelector
-    );
+    const appLoadingIndicator = document.querySelector(APP_LOADING_INDICATOR.cssSelector);
     if (appLoadingIndicator) {
       appLoadingIndicator.classList.add('hidden');
       setTimeout(() => {
-        appLoadingIndicator.parentNode &&
-          appLoadingIndicator.parentNode.removeChild(appLoadingIndicator);
+        appLoadingIndicator.parentNode && appLoadingIndicator.parentNode.removeChild(appLoadingIndicator);
       }, 500);
     }
   }

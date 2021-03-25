@@ -4,40 +4,26 @@ import { CSS_BREAKPOINTS } from '../../utilities/constants';
 
 class SemiCollapsibleNavigationClass {
   initial() {
-    this.responsiveNavSetting = LuigiConfig.getConfigValue(
-      'settings.responsiveNavigation'
-    );
+    this.responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
 
     const isResponsiveNavSemiCollapsibleOrFiori3 =
-      this.responsiveNavSetting === 'semiCollapsible' ||
-      this.responsiveNavSetting === 'Fiori3';
+      this.responsiveNavSetting === 'semiCollapsible' || this.responsiveNavSetting === 'Fiori3';
 
     //checking if there was a previous state in LocalStorage before the first load and reload
     if (
-      JSON.parse(localStorage.getItem(NavigationHelpers.COL_NAV_KEY)) !==
-        false &&
+      JSON.parse(localStorage.getItem(NavigationHelpers.COL_NAV_KEY)) !== false &&
       isResponsiveNavSemiCollapsibleOrFiori3
     ) {
       this.isSemiCollapsed = this.getCollapsed();
     }
-    this.semiCollapsible = isResponsiveNavSemiCollapsibleOrFiori3
-      ? true
-      : false;
+    this.semiCollapsible = isResponsiveNavSemiCollapsibleOrFiori3 ? true : false;
 
     // set this.isSemiCollapsed to true for mobile
     let isSemiCollapsedUndefined = this.isSemiCollapsed === undefined;
-    if (
-      this.semiCollapsible &&
-      window.innerWidth !== 0 &&
-      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
-    ) {
-      this.isSemiCollapsed = isSemiCollapsedUndefined
-        ? true
-        : this.getCollapsed();
+    if (this.semiCollapsible && window.innerWidth !== 0 && window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
+      this.isSemiCollapsed = isSemiCollapsedUndefined ? true : this.getCollapsed();
     } else {
-      this.isSemiCollapsed = isSemiCollapsedUndefined
-        ? false
-        : this.getCollapsed();
+      this.isSemiCollapsed = isSemiCollapsedUndefined ? false : this.getCollapsed();
     }
 
     this.setCollapsed(this.isSemiCollapsed);
@@ -46,7 +32,7 @@ class SemiCollapsibleNavigationClass {
 
     return {
       isSemiCollapsed: this.isSemiCollapsed,
-      semiCollapsible: this.semiCollapsible
+      semiCollapsible: this.semiCollapsible,
     };
   }
 
@@ -93,7 +79,7 @@ class SemiCollapsibleNavigationClass {
     if (this.valueChangedFns instanceof Array) {
       this.valueChangedFns.forEach(fn =>
         fn({
-          isSemiCollapsed: this.isSemiCollapsed
+          isSemiCollapsed: this.isSemiCollapsed,
         })
       );
     }
@@ -113,9 +99,7 @@ class SemiCollapsibleNavigationClass {
   closePopupMenu(selectedCategory) {
     if (selectedCategory) {
       selectedCategory = null;
-      document
-        .getElementsByClassName('fd-app__sidebar')[0]
-        .classList.remove('isBlocked');
+      document.getElementsByClassName('fd-app__sidebar')[0].classList.remove('isBlocked');
     }
     return selectedCategory;
   }
@@ -126,13 +110,9 @@ class SemiCollapsibleNavigationClass {
       this.setCollapsed(true);
 
       //Force browser to re-render vertical scrollbar
-      document
-        .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
-        .setAttribute('style', 'overflow-y:hidden;');
+      document.getElementsByClassName('lui-fd-side-nav-wrapper')[0].setAttribute('style', 'overflow-y:hidden;');
       window.setTimeout(function() {
-        document
-          .getElementsByClassName('lui-fd-side-nav-wrapper')[0]
-          .setAttribute('style', 'overflow-y:auto;');
+        document.getElementsByClassName('lui-fd-side-nav-wrapper')[0].setAttribute('style', 'overflow-y:auto;');
       });
     } else {
       this.setCollapsed(false);

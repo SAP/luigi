@@ -13,8 +13,7 @@ export const processHeaderSettings = component => {
       component.set({
         hasApps:
           component.get().showMainAppEntry ||
-          (component.get().appSwitcherItems &&
-            component.get().appSwitcherItems.length > 0)
+          (component.get().appSwitcherItems && component.get().appSwitcherItems.length > 0),
       });
       return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
         if (!header) {
@@ -43,17 +42,14 @@ export const processHeaderSettings = component => {
         // Set Favicon
         if (header.favicon) {
           const isInvalidFaviconFormat =
-            !header.favicon.split('?')[0].endsWith('.ico') &&
-            !header.favicon.startsWith('data:image');
+            !header.favicon.split('?')[0].endsWith('.ico') && !header.favicon.startsWith('data:image');
           if (isInvalidFaviconFormat) {
-            console.warn(
-              'Favicon is not an .ico filetype and might get displayed wrong.'
-            );
+            console.warn('Favicon is not an .ico filetype and might get displayed wrong.');
           }
           const link = Object.assign(document.createElement('link'), {
             type: 'image/x-icon',
             rel: 'shortcut icon',
-            href: header.favicon
+            href: header.favicon,
           });
           const head = document.getElementsByTagName('head')[0];
 
@@ -74,11 +70,7 @@ const segmentMatches = (linkSegment, pathSegment, pathParams) => {
   if (linkSegment === pathSegment) {
     return true;
   }
-  if (
-    pathSegment.startsWith(':') &&
-    pathParams &&
-    pathParams[pathSegment.substr(1)] === linkSegment
-  ) {
+  if (pathSegment.startsWith(':') && pathParams && pathParams[pathSegment.substr(1)] === linkSegment) {
     return true;
   }
   return false;
@@ -94,9 +86,7 @@ export const updateTitle = component => {
       .sort((el1, el2) => (el2.link || '').localeCompare(el1.link || ''))
       .some(item => {
         let match = true;
-        GenericHelpers.trimTrailingSlash(
-          GenericHelpers.trimLeadingSlash(item.link)
-        )
+        GenericHelpers.trimTrailingSlash(GenericHelpers.trimLeadingSlash(item.link))
           .split('/')
           .forEach((pathSegment, index) => {
             if (match) {
@@ -104,11 +94,7 @@ export const updateTitle = component => {
                 match = false;
               } else if (
                 !pathData[index + 1].pathSegment ||
-                !segmentMatches(
-                  pathSegment,
-                  pathData[index + 1].pathSegment,
-                  pathParams
-                )
+                !segmentMatches(pathSegment, pathData[index + 1].pathSegment, pathParams)
               ) {
                 match = false;
               }
@@ -121,15 +107,10 @@ export const updateTitle = component => {
       });
   }
   component.set({ selectedItem });
-  const title =
-    selectedItem && selectedItem.title
-      ? selectedItem.title
-      : component.get().defaultTitle;
+  const title = selectedItem && selectedItem.title ? selectedItem.title : component.get().defaultTitle;
   const documentTitle = LuigiUX.getDocumentTitle() || title;
   component.set({ title });
   document.title = LuigiI18N.getTranslation(documentTitle);
-  const subTitle = selectedItem
-    ? selectedItem.subTitle || ''
-    : component.get().defaultSubTitle;
+  const subTitle = selectedItem ? selectedItem.subTitle || '' : component.get().defaultSubTitle;
   component.set({ subTitle });
 };

@@ -39,20 +39,8 @@ class LuigiNavigationManager {
    * Luigi.navigation().navigate('users/groups/stakeholders')
    * Luigi.navigation().navigate('/settings', null, true) // preserve view
    */
-  navigate(
-    path,
-    preserveView,
-    modalSettings,
-    splitViewSettings,
-    drawerSettings
-  ) {
-    return new linkManager().navigate(
-      path,
-      preserveView,
-      modalSettings,
-      splitViewSettings,
-      drawerSettings
-    );
+  navigate(path, preserveView, modalSettings, splitViewSettings, drawerSettings) {
+    return new linkManager().navigate(path, preserveView, modalSettings, splitViewSettings, drawerSettings);
   }
 
   /**

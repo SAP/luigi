@@ -4,20 +4,16 @@
   on:click="{() => goTo('/')}"
 >
   {#if hasLogo}
-  <img
-    data-testid="luigi-topnav-logo"
-    bind:this="{logo}"
-    alt="SAP"
-  >
+  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
 </span>
-{#if title}
-{#if !hasApps}
+{#if title} {#if !hasApps}
 <span
   class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
->{$getTranslation(title)}</span>
+  >{$getTranslation(title)}</span
+>
 {:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
@@ -28,10 +24,9 @@
       on:click|stopPropagation="{() => toggleDropdownState('appSwitcherPopover')}"
       data-testid="app-switcher"
     >
-      <span
-        class="fd-shellbar__title"
-        data-testid="luigi-topnav-title"
-      >{$getTranslation(title)}</span>
+      <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
+        >{$getTranslation(title)}</span
+      >
       <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
     </button>
   </div>
@@ -54,10 +49,9 @@
             <span class="fd-menu__title">{$getTranslation(defaultTitle)}</span>
           </a>
         </li>
-        {/if}
-        {#if appSwitcherItems && appSwitcherItems.length > 0}
-        {#each appSwitcherItems as item}
-        {#if item !== selectedItem && hasValidLink(item, pathParams)}
+        {/if} {#if appSwitcherItems && appSwitcherItems.length > 0} {#each
+        appSwitcherItems as item} {#if item !== selectedItem &&
+        hasValidLink(item, pathParams)}
         <li class="fd-menu__item">
           <a
             role="button"
@@ -69,28 +63,24 @@
             <span class="fd-menu__title">{$getTranslation(item.title)}</span>
           </a>
         </li>
-        {/if}
-        {/each}
-        {/if}
+        {/if} {/each} {/if}
       </ul>
     </nav>
   </div>
 </div>
-{/if}
-{#if subTitle}
+{/if} {#if subTitle}
 <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
-{/if}
-{/if}
+{/if} {/if}
 <script>
   import {
     beforeUpdate,
     createEventDispatcher,
     onMount,
     getContext
-  } from 'svelte';
-  import * as Header from './services/header';
-  import { Routing } from '../services/routing';
-  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+  } from "svelte";
+  import * as Header from "./services/header";
+  import { Routing } from "../services/routing";
+  import { NavigationHelpers, RoutingHelpers } from "../utilities/helpers";
 
   const dispatch = createEventDispatcher();
 
@@ -109,10 +99,10 @@
   export let pathData;
   let previousPathData;
   let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
+    "getUnsavedChangesModalPromise"
   );
-  let getTranslation = getContext('getTranslation');
-  let store = getContext('store');
+  let getTranslation = getContext("getTranslation");
+  let store = getContext("store");
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -136,29 +126,29 @@
       set: obj => {
         if (obj) {
           Object.getOwnPropertyNames(obj).forEach(prop => {
-            if (prop === 'pathData') {
+            if (prop === "pathData") {
               pathData = obj.pathData;
-            } else if (prop === 'appSwitcherItems') {
+            } else if (prop === "appSwitcherItems") {
               appSwitcherItems = obj.appSwitcherItems;
-            } else if (prop === 'pathParams') {
+            } else if (prop === "pathParams") {
               pathParams = obj.pathParams;
-            } else if (prop === 'selectedItem') {
+            } else if (prop === "selectedItem") {
               selectedItem = obj.selectedItem;
-            } else if (prop === 'title') {
+            } else if (prop === "title") {
               title = obj.title;
-            } else if (prop === 'defaultSubTitle') {
+            } else if (prop === "defaultSubTitle") {
               defaultSubTitle = obj.defaultSubTitle;
-            } else if (prop === 'subTitle') {
+            } else if (prop === "subTitle") {
               subTitle = obj.subTitle;
-            } else if (prop === 'defaultTitle') {
+            } else if (prop === "defaultTitle") {
               defaultTitle = obj.defaultTitle;
-            } else if (prop === 'subTitle') {
+            } else if (prop === "subTitle") {
               subTitle = obj.subTitle;
-            } else if (prop === 'showMainAppEntry') {
+            } else if (prop === "showMainAppEntry") {
               showMainAppEntry = obj.showMainAppEntry;
-            } else if (prop === 'hasApps') {
+            } else if (prop === "hasApps") {
               hasApps = obj.hasApps;
-            } else if (prop === 'hasLogo') {
+            } else if (prop === "hasLogo") {
               hasLogo = obj.hasLogo;
             }
           });
@@ -187,17 +177,17 @@
 
   export function goToRoot() {
     getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateTo('/');
+      Routing.navigateTo("/");
     });
   }
 
   export function handleClick(node) {
-    dispatch('handleClick', { node });
-    toggleDropdownState('appSwitcherPopover');
+    dispatch("handleClick", { node });
+    toggleDropdownState("appSwitcherPopover");
   }
 
   export function toggleDropdownState(name) {
-    dispatch('toggleDropdownState', { name });
+    dispatch("toggleDropdownState", { name });
   }
 
   function getTestId(item) {
@@ -213,8 +203,8 @@
         pathParams
       );
       if (
-        concreteLink.indexOf(':') !== 0 &&
-        concreteLink.indexOf('/:') === -1
+        concreteLink.indexOf(":") !== 0 &&
+        concreteLink.indexOf("/:") === -1
       ) {
         return true;
       }
@@ -228,7 +218,7 @@
 </script>
 
 <style type="text/scss">
-  @import 'styles/variables';
+  @import "styles/variables";
 
   // Force height because of base64 img src
   .lui-customlogo img {

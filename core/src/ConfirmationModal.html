@@ -1,4 +1,4 @@
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" />
 <div
   class="fd-message-box-docs-static fd-message-box fd-message-box--{settings.type} fd-message-box--active"
   data-testid="luigi-confirmation-modal"
@@ -23,7 +23,9 @@
             on:click="{() => dispatch('modalConfirm')}"
             data-testid="luigi-modal-confirm"
             class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
-          >{settings.buttonConfirm}</button>
+          >
+            {settings.buttonConfirm}
+          </button>
         </div>
         {/if}
         <div class="fd-bar__element">
@@ -31,7 +33,9 @@
             on:click="{() => dispatch('modalDismiss')}"
             data-testid="luigi-modal-dismiss"
             class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
-          >{settings.buttonDismiss}</button>
+          >
+            {settings.buttonDismiss}
+          </button>
         </div>
       </div>
     </footer>
@@ -39,29 +43,29 @@
 </div>
 
 <script>
-  import { createEventDispatcher, onMount } from 'svelte';
-  import { LuigiI18N } from './core-api';
-  import { KEYCODE_ESC } from './utilities/keycode.js';
-  import { EscapingHelpers } from './utilities/helpers';
+  import { createEventDispatcher, onMount } from "svelte";
+  import { LuigiI18N } from "./core-api";
+  import { KEYCODE_ESC } from "./utilities/keycode.js";
+  import { EscapingHelpers } from "./utilities/helpers";
 
   const dispatch = createEventDispatcher();
 
   export let settings;
   const iconMapping = {
-    confirmation: 'question-mark',
-    information: 'message-information',
-    warning: 'message-warning',
-    error: 'message-error',
-    success: 'message-success'
+    confirmation: "question-mark",
+    information: "message-information",
+    warning: "message-warning",
+    error: "message-error",
+    success: "message-success"
   };
 
   onMount(() => {
     const defaultSettings = {
       icon: iconMapping[settings.type],
-      header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
-      body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
-      buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
-      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
+      header: LuigiI18N.getTranslation("luigi.confirmationModal.header"),
+      body: LuigiI18N.getTranslation("luigi.confirmationModal.body"),
+      buttonDismiss: LuigiI18N.getTranslation("luigi.button.dismiss"),
+      buttonConfirm: LuigiI18N.getTranslation("luigi.button.confirm")
     };
     settings = {
       ...settings,
@@ -70,8 +74,8 @@
     settings = Object.assign(defaultSettings, settings);
 
     const focusedButton = settings.buttonConfirm
-      ? 'confirm-button'
-      : 'dismiss-button';
+      ? "confirm-button"
+      : "dismiss-button";
 
     try {
       document.querySelector(`.${focusedButton}`).focus();
@@ -84,13 +88,13 @@
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
-      dispatch('modalDismiss');
+      dispatch("modalDismiss");
     }
   }
 </script>
 
 <style type="text/scss">
-  @import 'styles/variables';
+  @import "styles/variables";
 
   .fd-message-box {
     &__body {

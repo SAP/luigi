@@ -9,11 +9,7 @@ import { storageManager } from './storageManager';
  */
 class LuigiClient {
   constructor() {
-    if (
-      window !== window.top &&
-      window.document.head.getAttribute('disable-luigi-history-handling') !=
-      'true'
-    ) {
+    if (window !== window.top && window.document.head.getAttribute('disable-luigi-history-handling') != 'true') {
       history.pushState = history.replaceState.bind(history);
     }
   }
@@ -84,7 +80,7 @@ class LuigiClient {
    */
   linkManager() {
     return new linkManager({
-      currentContext: lifecycleManager.currentContext
+      currentContext: lifecycleManager.currentContext,
     });
   }
   /**

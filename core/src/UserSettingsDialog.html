@@ -5,21 +5,21 @@
     onDestroy,
     beforeUpdate,
     getContext
-  } from 'svelte';
+  } from "svelte";
   import {
     NavigationHelpers,
     GenericHelpers,
     EventListenerHelpers,
     IframeHelpers,
     UserSettingsHelper
-  } from './utilities/helpers';
-  import { MessagesListeners } from './services/messages-listeners';
-  import { ViewUrlDecorator } from './services/viewurl-decorator';
-  import UserSettingsEditor from './UserSettingsEditor.html';
-  import { CSS_BREAKPOINTS } from './utilities/constants';
-  import { LuigiConfig } from './core-api';
-  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
-  import { KEYCODE_ESC } from './utilities/keycode.js';
+  } from "./utilities/helpers";
+  import { MessagesListeners } from "./services/messages-listeners";
+  import { ViewUrlDecorator } from "./services/viewurl-decorator";
+  import UserSettingsEditor from "./UserSettingsEditor.html";
+  import { CSS_BREAKPOINTS } from "./utilities/constants";
+  import { LuigiConfig } from "./core-api";
+  import { TOP_NAV_DEFAULTS } from "./utilities/luigi-config-defaults";
+  import { KEYCODE_ESC } from "./utilities/keycode.js";
   export let schemaObj;
   export let userSettingGroups;
 
@@ -29,7 +29,7 @@
   let userSettingsGroupKey;
   let displayEditor = false;
   let previousUserSettings = {};
-  let getTranslation = getContext('getTranslation');
+  let getTranslation = getContext("getTranslation");
   let dialogHeader = TOP_NAV_DEFAULTS.userSettingsDialog.dialogHeader;
   let saveBtn = TOP_NAV_DEFAULTS.userSettingsDialog.saveBtn;
   let dismissBtn = TOP_NAV_DEFAULTS.userSettingsDialog.dismissBtn;
@@ -40,11 +40,11 @@
 
   onMount(() => {
     const usLocalizationConfig = LuigiConfig.getConfigValue(
-      'userSettings.userSettingsDialog'
+      "userSettings.userSettingsDialog"
     );
     const usLocalization = usLocalizationConfig
       ? usLocalizationConfig
-      : LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
+      : LuigiConfig.getConfigValue("settings.userSettings.userSettingsDialog");
     if (usLocalization) {
       dialogHeader = usLocalization.dialogHeader
         ? usLocalization.dialogHeader
@@ -60,27 +60,27 @@
         ? Object.keys(userSettingGroups[0])[0]
         : undefined;
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener("message", e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
-      if (!iframe || 'custom' !== e.data.msg) return;
+      if (!iframe || "custom" !== e.data.msg) return;
       iframe._ready = true;
 
       const message = MessagesListeners.convertCustomMessageInternalToUser(
         e.data
       );
-      const userSettingsCMKey = 'luigi.updateUserSettings';
+      const userSettingsCMKey = "luigi.updateUserSettings";
       if (message.id === userSettingsCMKey) {
         const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(
           e.source
         );
         if (iframe) {
-          let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
+          let userSettingsGroupKey = iframe.getAttribute("userSettingsGroup");
           storedUserSettings[userSettingsGroupKey] = message.data;
         }
       }
 
       if (
-        message.id === 'luigi.navBackMobile' &&
+        message.id === "luigi.navBackMobile" &&
         window.window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
       ) {
@@ -111,7 +111,7 @@
           console.error(error.message);
         }
         if (error && error.closeDialog) {
-          dispatch('close');
+          dispatch("close");
         }
       });
   });
@@ -121,7 +121,7 @@
     userSettingGroups.forEach(userSettingGroup => {
       for (let key in userSettingGroup) {
         for (let i in userSettingGroup[key].settings) {
-          userSettingGroup[key].settings[i] = '';
+          userSettingGroup[key].settings[i] = "";
         }
         userSettingsObject[key] = {
           ...userSettingGroup[key].settings,
@@ -135,13 +135,13 @@
   function errorHandling(selectedUserSettingGroupData) {
     userSettingsGroupTitle = selectedUserSettingGroupData.title
       ? selectedUserSettingGroupData.title
-      : '';
+      : "";
     if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
       return;
     }
     for (let key in selectedUserSettingGroupData.settings) {
       let property = selectedUserSettingGroupData.settings[key];
-      if (property.type === 'enum') {
+      if (property.type === "enum") {
         if (!Array.isArray(property.options)) {
           console.error(
             `There is no options array for '${key}' defined in the Luigi userSettings config.`
@@ -162,19 +162,19 @@
     errorHandling(selectedUserSettingGroupData);
     if (event) {
       document
-        .querySelectorAll('.lui-us-list .fd-nested-list__link')
+        .querySelectorAll(".lui-us-list .fd-nested-list__link")
         .forEach(elem => {
-          elem.classList.remove('is-selected');
+          elem.classList.remove("is-selected");
         });
-      const link = closest(event.target, '.fd-nested-list__link', 20);
-      link.classList.add('is-selected');
+      const link = closest(event.target, ".fd-nested-list__link", 20);
+      link.classList.add("is-selected");
       if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
         closeNavOnCategoryClickMobile();
       }
     } else {
       document
-        .querySelectorAll('.lui-us-list .fd-nested-list__link')[0]
-        .classList.add('is-selected');
+        .querySelectorAll(".lui-us-list .fd-nested-list__link")[0]
+        .classList.add("is-selected");
       if (
         window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
@@ -187,7 +187,7 @@
       if (customIframes.hasOwnProperty(selectedUserSettingGroupKey)) {
         UserSettingsHelper.getUserSettingsIframesInDom().forEach(iframe => {
           if (iframe.userSettingsGroup === selectedUserSettingGroupKey) {
-            iframe.style.display = 'block';
+            iframe.style.display = "block";
           }
         });
       } else {
@@ -210,13 +210,13 @@
   }
 
   function displayCustomEditor() {
-    document.querySelector('.iframeUserSettingsCtn').style.display = 'block';
-    document.querySelector('.usersettingseditor').style.display = 'none';
+    document.querySelector(".iframeUserSettingsCtn").style.display = "block";
+    document.querySelector(".usersettingseditor").style.display = "none";
   }
 
   function diplayUserSettingsEditor() {
-    document.querySelector('.iframeUserSettingsCtn').style.display = 'none';
-    document.querySelector('.usersettingseditor').style.display = 'block';
+    document.querySelector(".iframeUserSettingsCtn").style.display = "none";
+    document.querySelector(".usersettingseditor").style.display = "block";
   }
 
   const updateSettingsObject = event => {
@@ -226,14 +226,14 @@
   function storeUserSettings() {
     LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings)
       .then(() => {
-        dispatch('close');
+        dispatch("close");
       })
       .catch(error => {
         if (error && error.message) {
           console.error(error.message);
         }
         if (error && error.closeDialog) {
-          dispatch('close');
+          dispatch("close");
         }
       });
   }
@@ -259,17 +259,17 @@
   }
 
   function handleSaveBtnVisibility() {
-    if (document.querySelector('.usersettings-leftNavVisible')) {
-      document.querySelector('.confirm-button').style.display = 'block';
+    if (document.querySelector(".usersettings-leftNavVisible")) {
+      document.querySelector(".confirm-button").style.display = "block";
     } else {
-      document.querySelector('.confirm-button').style.display = 'none';
+      document.querySelector(".confirm-button").style.display = "none";
     }
   }
 
   function toggleNavMobile() {
     document
-      .querySelector('.lui-usersettings-dialog')
-      .classList.toggle('usersettings-leftNavVisible');
+      .querySelector(".lui-usersettings-dialog")
+      .classList.toggle("usersettings-leftNavVisible");
     if (
       window.innerWidth !== 0 &&
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
@@ -291,23 +291,23 @@
       previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
     if (isDesktopToMobile) {
       document
-        .querySelector('.lui-usersettings-dialog')
-        .classList.toggle('usersettings-leftNavVisible');
-      if (!document.querySelector('.usersettings-leftNavVisible')) {
-        document.querySelector('.confirm-button').style.display = 'none';
+        .querySelector(".lui-usersettings-dialog")
+        .classList.toggle("usersettings-leftNavVisible");
+      if (!document.querySelector(".usersettings-leftNavVisible")) {
+        document.querySelector(".confirm-button").style.display = "none";
       } else {
-        document.querySelector('.confirm-button').style.display = 'block';
+        document.querySelector(".confirm-button").style.display = "block";
       }
     }
     if (isMobileToDesktop) {
-      document.querySelector('.confirm-button').style.display = 'block';
+      document.querySelector(".confirm-button").style.display = "block";
     }
 
     if (!previousWindowWidth) {
-      let confirmbtn = document.querySelector('.confirm-button');
+      let confirmbtn = document.querySelector(".confirm-button");
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
-        ? (confirmbtn.style.display = 'none')
-        : (confirmbtn.style.display = 'block');
+        ? (confirmbtn.style.display = "none")
+        : (confirmbtn.style.display = "block");
     }
 
     previousWindowWidth = window.innerWidth;
@@ -315,7 +315,7 @@
 
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
-      dispatch('close');
+      dispatch("close");
     }
   }
 </script>
@@ -553,60 +553,57 @@
     }
   }
 </style>
-<svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}"/>
+<svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
   <div class="fd-dialog__content lui-usersettings-dialog-size">
     <div class="fd-dialog__body lui-usersettings-body">
       <div class="lui-usersettings-left-nav">
         <div class="fd-side-nav">
           <div class="fd-side-nav__group-header">
-            <h2 class="fd-title fd-title--h5">{$getTranslation(dialogHeader)}</h2>
+            <h2 class="fd-title fd-title--h5">
+              {$getTranslation(dialogHeader)}
+            </h2>
           </div>
           <div
             class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation"
           >
             <ul class="fd-nested-list lui-us-list">
-              {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
-              {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
+              {#each Object.entries(userSettingGroups) as [key,
+              userSettingGroup], index} {#each Object.entries(userSettingGroup)
+              as userSettingsGroupProperty}
               <li class="fd-nested-list__item">
                 <a
                   class="fd-nested-list__link"
                   on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
                 >
                   <div class="lui-usersettings-list-item__info-container">
-                    {#if userSettingsGroupProperty[1].icon}
-                    {#if hasOpenUIicon(userSettingsGroupProperty[1])}
+                    {#if userSettingsGroupProperty[1].icon} {#if
+                    hasOpenUIicon(userSettingsGroupProperty[1])}
                     <i
                       class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"
                     ></i>
                     {:else}
-                    <span
-                      class="fd-nested-list__icon sap-icon"
-                    >
+                    <span class="fd-nested-list__icon sap-icon">
                       <img
                         src="{userSettingsGroupProperty[1].icon}"
                         alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
-                      >
+                      />
                     </span>
-                    {/if}
-                    {:else}
-                    <i
-                      class="fd-nested-list__icon sap-icon"
-                    ></i>
+                    {/if} {:else}
+                    <i class="fd-nested-list__icon sap-icon"></i>
                     {/if}
                     <div class="lui-usersettings-list-item__title-container">
-                      <span
-                        class="lui-usersettings-list-item__title"
-                      >{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span>
-                      <span
-                        class="lui-usersettings-list-item__subtitle"
-                      >{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span>
+                      <span class="lui-usersettings-list-item__title"
+                        >{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span
+                      >
+                      <span class="lui-usersettings-list-item__subtitle"
+                        >{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span
+                      >
                     </div>
                   </div>
                 </a>
               </li>
-              {/each}
-              {/each}
+              {/each} {/each}
             </ul>
           </div>
         </div>
@@ -618,9 +615,9 @@
         >
           <i class="sap-icon--navigation-left-arrow"></i>
         </button>
-        <h2
-          class="fd-title fd-title--h5"
-        >{$getTranslation(userSettingsGroupTitle)}</h2>
+        <h2 class="fd-title fd-title--h5">
+          {$getTranslation(userSettingsGroupTitle)}
+        </h2>
       </div>
 
       <div class="lui-usersettings-content">
@@ -643,14 +640,18 @@
             on:click="{() => storeUserSettings()}"
             data-testid="lui-us-saveBtn"
             class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button"
-          >{$getTranslation(saveBtn)}</button>
+          >
+            {$getTranslation(saveBtn)}
+          </button>
         </div>
         <div class="fd-bar__element">
           <button
             on:click="{() => dispatch('close')}"
             data-testid="lui-us-dismissBtn"
             class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
-          >{$getTranslation(dismissBtn)}</button>
+          >
+            {$getTranslation(dismissBtn)}
+          </button>
         </div>
       </div>
     </footer>

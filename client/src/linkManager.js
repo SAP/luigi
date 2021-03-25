@@ -26,7 +26,7 @@ export class linkManager extends LuigiClientBase {
       fromVirtualTreeRoot: false,
       fromParent: false,
       relative: false,
-      link: ''
+      link: '',
     };
   }
 
@@ -53,14 +53,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    * LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
    */
-  navigate(
-    path,
-    sessionId,
-    preserveView,
-    modalSettings,
-    splitViewSettings,
-    drawerSettings
-  ) {
+  navigate(path, sessionId, preserveView, modalSettings, splitViewSettings, drawerSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
       return;
@@ -83,8 +76,8 @@ export class linkManager extends LuigiClientBase {
         intent: hasIntent,
         modal: modalSettings,
         splitView: splitViewSettings,
-        drawer: drawerSettings
-      })
+        drawer: drawerSettings,
+      }),
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
@@ -150,18 +143,12 @@ export class linkManager extends LuigiClientBase {
   fromContext(navigationContext) {
     const navigationContextInParent =
       this.currentContext.context.parentNavigationContexts &&
-      this.currentContext.context.parentNavigationContexts.indexOf(
-        navigationContext
-      ) !== -1;
+      this.currentContext.context.parentNavigationContexts.indexOf(navigationContext) !== -1;
     if (navigationContextInParent) {
       this.options.fromContext = navigationContext;
     } else {
       this.options.errorSkipNavigation = true;
-      console.error(
-        'Navigation not possible, navigationContext ' +
-          navigationContext +
-          ' not found.'
-      );
+      console.error('Navigation not possible, navigationContext ' + navigationContext + ' not found.');
     }
     return this;
   }
@@ -175,15 +162,12 @@ export class linkManager extends LuigiClientBase {
    */
   fromClosestContext() {
     const hasParentNavigationContext =
-      this.currentContext &&
-      this.currentContext.context.parentNavigationContexts.length > 0;
+      this.currentContext && this.currentContext.context.parentNavigationContexts.length > 0;
     if (hasParentNavigationContext) {
       this.options.fromContext = null;
       this.options.fromClosestContext = true;
     } else {
-      console.error(
-        'Navigation not possible, no parent navigationContext found.'
-      );
+      console.error('Navigation not possible, no parent navigationContext found.');
     }
     return this;
   }
@@ -255,7 +239,7 @@ export class linkManager extends LuigiClientBase {
       resolveFn: function() {},
       then: function(resolveFn) {
         this.resolveFn = resolveFn;
-      }
+      },
     };
     this.setPromise('pathExistsPromises', pathExistsPromises);
 
@@ -279,8 +263,8 @@ export class linkManager extends LuigiClientBase {
       data: {
         id: currentId,
         link: path,
-        relative: path[0] !== '/'
-      }
+        relative: path[0] !== '/',
+      },
     };
     helpers.sendPostMessageToLuigiCore(pathExistsMsg);
     return pathExistsPromises[currentId];
@@ -292,10 +276,7 @@ export class linkManager extends LuigiClientBase {
    * @returns {boolean} indicating if there is a preserved view you can return to
    */
   hasBack() {
-    return (
-      !!this.currentContext.internal.modal ||
-      this.currentContext.internal.viewStackSize !== 0
-    );
+    return !!this.currentContext.internal.modal || this.currentContext.internal.viewStackSize !== 0;
   }
 
   /**
@@ -309,7 +290,7 @@ export class linkManager extends LuigiClientBase {
   goBack(goBackValue) {
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.navigation.back',
-      goBackContext: goBackValue && JSON.stringify(goBackValue)
+      goBackContext: goBackValue && JSON.stringify(goBackValue),
     });
   }
 

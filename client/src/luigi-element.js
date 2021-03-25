@@ -6,7 +6,7 @@ export class LuigiElement extends HTMLElement {
     super();
     this._shadowRoot = this.attachShadow({
       mode: 'closed',
-      delegatesFocus: false
+      delegatesFocus: false,
     });
     this.__initialized = false;
   }
@@ -36,11 +36,7 @@ export class LuigiElement extends HTMLElement {
       this.afterInit(ctx);
       this.__initialized = true;
     };
-    if (
-      this.luigiConfig &&
-      this.luigiConfig.styleSources &&
-      this.luigiConfig.styleSources.length > 0
-    ) {
+    if (this.luigiConfig && this.luigiConfig.styleSources && this.luigiConfig.styleSources.length > 0) {
       let nr_styles = this.luigiConfig.styleSources.length;
       const loadStylesSync = this.luigiConfig.loadStylesSync;
       const afterLoadOrError = () => {
@@ -150,11 +146,7 @@ export function html(literal, ...keys) {
   let html = '';
   literal.forEach((el, index) => {
     html += el;
-    if (
-      index < keys.length &&
-      keys[index] !== undefined &&
-      keys[index] !== null
-    ) {
+    if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
       html += keys[index];
     }
   });
