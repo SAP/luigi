@@ -1,10 +1,5 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
-import {
-  LuigiAuth,
-  LuigiConfig,
-  LuigiFeatureToggles,
-  LuigiI18N
-} from '../../core-api';
+import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
 import { AuthHelpers, GenericHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
@@ -48,17 +43,11 @@ class NavigationHelpersClass {
       const loggedIn = AuthHelpers.isLoggedIn();
       const anon = nodeToCheckPermissionFor.anonymousAccess;
 
-      if (
-        (loggedIn && anon === 'exclusive') ||
-        (!loggedIn && anon !== 'exclusive' && anon !== true)
-      ) {
+      if ((loggedIn && anon === 'exclusive') || (!loggedIn && anon !== 'exclusive' && anon !== true)) {
         return false;
       }
     }
-    if (
-      nodeToCheckPermissionFor &&
-      nodeToCheckPermissionFor.visibleForFeatureToggles
-    ) {
+    if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
       let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
       for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
         if (ft.startsWith('!')) {
@@ -72,17 +61,11 @@ class NavigationHelpersClass {
         }
       }
     }
-    const permissionCheckerFn = LuigiConfig.getConfigValue(
-      'navigation.nodeAccessibilityResolver'
-    );
+    const permissionCheckerFn = LuigiConfig.getConfigValue('navigation.nodeAccessibilityResolver');
     if (typeof permissionCheckerFn !== 'function') {
       return true;
     }
-    return permissionCheckerFn(
-      nodeToCheckPermissionFor,
-      parentNode,
-      currentContext
-    );
+    return permissionCheckerFn(nodeToCheckPermissionFor, parentNode, currentContext);
   }
 
   applyContext(context, addition, navigationContext) {
@@ -141,11 +124,7 @@ class NavigationHelpersClass {
         if (useVirtualGroups && category) {
           virtualGroupCounter++;
         }
-        if (
-          metaInfo.order === undefined ||
-          metaInfo.order === null ||
-          metaInfo.order === ''
-        ) {
+        if (metaInfo.order === undefined || metaInfo.order === null || metaInfo.order === '') {
           metaInfo.order = key ? groupCounter++ : -1;
         }
         arr = [];
@@ -155,9 +134,7 @@ class NavigationHelpersClass {
         arr.metaInfo = metaInfo;
       }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
-        arr.metaInfo.categoryUid = node.parent
-          ? this.getNodePath(node.parent) + ':' + key
-          : key;
+        arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
       }
       if (!node.hideFromNav) {
         arr.push(node);
@@ -214,8 +191,7 @@ class NavigationHelpersClass {
               count: () => badgeCount
             };
           } else if (hasBadge) {
-            const updatedCount =
-              cats[catLabel].badgeCounter.count() + badgeCount;
+            const updatedCount = cats[catLabel].badgeCounter.count() + badgeCount;
             cats[catLabel].badgeCounter.count = () => updatedCount;
           }
         } else {
@@ -278,9 +254,7 @@ class NavigationHelpersClass {
     if (value) {
       if (replace) {
         // Filter out other categories
-        expandedList = expandedList.filter(
-          f => f.indexOf(context + ':') === -1
-        );
+        expandedList = expandedList.filter(f => f.indexOf(context + ':') === -1);
       }
 
       if (expandedList.indexOf(key) < 0) {
@@ -304,22 +278,15 @@ class NavigationHelpersClass {
     if (node.errorFn) {
       node.errorFn();
     } else {
-      console.warn(
-        'Something went wrong with a client! You will be redirected to another page.'
-      );
+      console.warn('Something went wrong with a client! You will be redirected to another page.');
       const path = node.redirectPath || '/';
       Routing.navigateTo(path);
     }
   }
 
   getBurgerTooltipConfig() {
-    const burgerTooltipSettings = LuigiConfig.getConfigValue(
-      'settings.burgerTooltip'
-    );
-    if (
-      GenericHelpers.isObject(burgerTooltipSettings) ||
-      burgerTooltipSettings === true
-    ) {
+    const burgerTooltipSettings = LuigiConfig.getConfigValue('settings.burgerTooltip');
+    if (GenericHelpers.isObject(burgerTooltipSettings) || burgerTooltipSettings === true) {
       const expandNavTooltip = burgerTooltipSettings.navExpanded
         ? LuigiI18N.getTranslation(burgerTooltipSettings.navExpanded)
         : 'Collapse navigation';

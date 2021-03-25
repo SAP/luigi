@@ -12,8 +12,7 @@ class UxManager extends LuigiClientBase {
     super();
     helpers.addEventListener('luigi.current-locale-changed', e => {
       if (e.data.currentLocale && lifecycleManager.currentContext?.internal) {
-        lifecycleManager.currentContext.internal.currentLocale =
-          e.data.currentLocale;
+        lifecycleManager.currentContext.internal.currentLocale = e.data.currentLocale;
         lifecycleManager._notifyUpdate();
       }
     });
@@ -95,13 +94,10 @@ class UxManager extends LuigiClientBase {
    *  });
    */
   showConfirmationModal(settings) {
-    helpers.addEventListener(
-      'luigi.ux.confirmationModal.hide',
-      (e, listenerId) => {
-        this.hideConfirmationModal(e.data.data);
-        helpers.removeEventListener(listenerId);
-      }
-    );
+    helpers.addEventListener('luigi.ux.confirmationModal.hide', (e, listenerId) => {
+      this.hideConfirmationModal(e.data.data);
+      helpers.removeEventListener(listenerId);
+    });
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.ux.confirmationModal.show',
       data: { settings }
@@ -169,9 +165,7 @@ class UxManager extends LuigiClientBase {
     //generate random ID
     settings.id = helpers.getRandomId();
     if (settings?.closeAfter < 100) {
-      console.warn(
-        `Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`
-      );
+      console.warn(`Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`);
       settings.closeAfter = undefined;
     }
     helpers.sendPostMessageToLuigiCore({

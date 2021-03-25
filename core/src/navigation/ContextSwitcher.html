@@ -1,4 +1,3 @@
-
 {#if contextSwitcherEnabled}
 <!-- DESKTOP VERSION (popover): -->
 {#if !isMobile}
@@ -14,14 +13,11 @@
         aria-disabled="{!renderAsDropdown}"
         data-testid="luigi-contextswitcher-button"
       >
-        {#if selectedOption && customSelectedOptionRenderer }
-        {@html customSelectedOptionRenderer(selectedOption)}
-        {:else}
-        {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
+        {#if selectedOption && customSelectedOptionRenderer } {@html
+        customSelectedOptionRenderer(selectedOption)} {:else} {#if
+        !selectedLabel}{$getTranslation(config.defaultLabel)}
         {:else}{selectedLabel}{/if}
-        <i
-          class="sap-icon--megamenu fd-shellbar__button--icon"
-        ></i>
+        <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
         {/if}
       </button>
     </div>
@@ -58,11 +54,8 @@
       <div class="fd-bar__left">
         <div class="fd-bar__element">
           <h3 class="fd-dialog__title">
-            {#if !selectedLabel}
-            {$getTranslation(config.defaultLabel)}
-            {/if} {#if selectedLabel}
-            {selectedLabel}
-            {/if}
+            {#if !selectedLabel} {$getTranslation(config.defaultLabel)} {/if}
+            {#if selectedLabel} {selectedLabel} {/if}
           </h3>
         </div>
       </div>
@@ -91,25 +84,26 @@
             class="fd-button fd-button--light fd-dialog__decisive-button"
             on:click="{toggleDropdownState}"
             data-testid="mobile-topnav-close"
-          >Cancel</button>
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </footer>
   </div>
 </div>
-{/if}
-{/if}
+{/if} {/if}
 <script>
   import {
     createEventDispatcher,
     onMount,
     getContext,
     beforeUpdate
-  } from 'svelte';
-  import { ContextSwitcherHelpers } from './services/context-switcher';
-  import ContextSwitcherNav from './ContextSwitcherNav.html';
-  import { LuigiConfig } from '../core-api';
-  import { Routing } from '../services/routing';
+  } from "svelte";
+  import { ContextSwitcherHelpers } from "./services/context-switcher";
+  import ContextSwitcherNav from "./ContextSwitcherNav.html";
+  import { LuigiConfig } from "../core-api";
+  import { Routing } from "../services/routing";
   import {
     IframeHelpers,
     RoutingHelpers,
@@ -117,7 +111,7 @@
     NavigationHelpers,
     GenericHelpers,
     EventListenerHelpers
-  } from '../utilities/helpers';
+  } from "../utilities/helpers";
 
   const dispatch = createEventDispatcher();
 
@@ -143,10 +137,10 @@
   export let defaultLabel;
   let preserveSubPathOnSwitch;
   let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
+    "getUnsavedChangesModalPromise"
   );
-  let store = getContext('store');
-  let getTranslation = getContext('getTranslation');
+  let store = getContext("store");
+  let getTranslation = getContext("getTranslation");
   let prevContextSwitcherToggle = false;
 
   onMount(async () => {
@@ -154,7 +148,7 @@
       store,
       async () => {
         const contextSwitcherConfig = LuigiConfig.getConfigValue(
-          'navigation.contextSwitcher'
+          "navigation.contextSwitcher"
         );
         contextSwitcherEnabled = !!contextSwitcherConfig;
         if (!contextSwitcherEnabled) {
@@ -178,7 +172,7 @@
           alwaysShowDropdown =
             contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
           actions = await LuigiConfig.getConfigValueAsync(
-            'navigation.contextSwitcher.actions'
+            "navigation.contextSwitcher.actions"
           );
           const currentPath = Routing.getCurrentPath();
 
@@ -200,14 +194,14 @@
           }
         }
       },
-      ['navigation.contextSwitcher']
+      ["navigation.contextSwitcher"]
     );
 
     RoutingHelpers.addRouteChangeListener(path => setSelectedContext(path));
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener("message", e => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
-      if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
+      if (e.data && e.data.msg === "luigi.refresh-context-switcher") {
         options = null;
         fetchOptions();
       }
@@ -293,7 +287,7 @@
     });
 
     if (isMobile) {
-      dispatch('toggleDropdownState');
+      dispatch("toggleDropdownState");
     }
   }
 
@@ -318,15 +312,15 @@
         Routing.navigateTo(option.link);
       }
       if (isMobile) {
-        dispatch('toggleDropdownState');
+        dispatch("toggleDropdownState");
       }
     });
   }
 
   export function toggleDropdownState() {
-    dispatch('toggleDropdownState');
+    dispatch("toggleDropdownState");
     const ddStates = dropDownStates || {};
-    const isOpened = JSON.parse(ddStates['contextSwitcherPopover']);
+    const isOpened = JSON.parse(ddStates["contextSwitcherPopover"]);
     if (isOpened) {
       fetchOptions();
     }
@@ -348,7 +342,7 @@
   }
 
   .lui-ctx-switch-menu {
-    &.fd-button[aria-disabled='true'] {
+    &.fd-button[aria-disabled="true"] {
       opacity: 1;
       cursor: default;
       background-color: transparent;
@@ -356,7 +350,7 @@
       padding-right: calc(0.625rem - var(--sapButton_BorderWidth, 0.0625rem));
       &:after {
         display: none;
-        content: '';
+        content: "";
       }
     }
   }

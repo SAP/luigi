@@ -28,17 +28,16 @@
         <div class="fd-busy-indicator--circle-2"></div>
       </div>
     </li>
-    {/if} {#if options && options.length} {#each options as node}
-    {#await getNodeName(node.label, config.fallbackLabelResolver,
-    node.id)} {:then label}
+    {/if} {#if options && options.length} {#each options as node} {#await
+    getNodeName(node.label, config.fallbackLabelResolver, node.id)} {:then
+    label}
     <li
       class="fd-menu__item"
       on:click="{()=> goToOption(node, selectedOption)}"
       data-testid="{getTestId(node)}"
     >
-      {#if customOptionsRenderer}
-      {@html customOptionsRenderer(node, label === selectedLabel)}
-      {:else}
+      {#if customOptionsRenderer} {@html customOptionsRenderer(node, label ===
+      selectedLabel)} {:else}
       <a
         href="{getRouteLink(node)}"
         on:click|preventDefault="{()=> {}}"
@@ -72,7 +71,7 @@
   {/if}
 </nav>
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher } from "svelte";
   const dispatch = createEventDispatcher();
 
   export let actions = [];
@@ -89,11 +88,11 @@
   export let getTranslation;
 
   export function onActionClick(node) {
-    dispatch('onActionClick', { node });
+    dispatch("onActionClick", { node });
   }
 
   export function goToOption(option, selectedOption) {
-    dispatch('goToOption', { option, selectedOption });
+    dispatch("goToOption", { option, selectedOption });
   }
 </script>
 

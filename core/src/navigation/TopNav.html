@@ -1,11 +1,12 @@
-<svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
+<svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}" />
 {#if showTopNav}
 <div
   class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}"
   tabindex="0"
 >
   <div class="fd-shellbar__group fd-shellbar__group--product">
-    {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" ||
+    {#if responsiveNavSetting==="simple" ||
+    responsiveNavSetting==="simpleMobileOnly" ||
     responsiveNavSetting==="Fiori3"}
     <button
       class="fd-shellbar__button fd-button lui-burger"
@@ -25,8 +26,7 @@
     />
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--actions">
-    {#if !authorizationEnabled || isLoggedIn}
-    {#if isGlobalSearchAvailable}
+    {#if !authorizationEnabled || isLoggedIn} {#if isGlobalSearchAvailable}
     <GlobalSearch
       bind:isSearchFieldVisible
       on:toggleSearch
@@ -44,11 +44,8 @@
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
       isMobile="{false}"
     />
-    {/if}
-    {#if children && pathData.length > 0}
-    {#each children as node, i}
-    {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
-    {#if node.isCat}
+    {/if} {#if children && pathData.length > 0} {#each children as node, i} {#if
+    !(node.hideFromNav || (showGlobalNav && node.globalNav))} {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
@@ -63,8 +60,7 @@
             on:click="{() => toggleDropdownState(`dropDownPopover-${i}`)}"
             data-testid="{getTestId(node)}"
           >
-            {#if node.icon}
-            {#if hasOpenUIicon(node)}
+            {#if node.icon} {#if hasOpenUIicon(node)}
             <span
               class="sap-icon sap-icon--{node.icon} fd-top-nav__icon"
             ></span>
@@ -73,7 +69,7 @@
               class="fd-top-nav__icon nav-icon"
               src="{node.icon}"
               alt="{node.altText ? node.altText : ''}"
-            >
+            />
             {/if}
             <!-- end hasOpenUIicon-->
             {/if}
@@ -81,7 +77,7 @@
             {#if !node.icon || node.showLabel}
             <span>{getNodeLabel(node)}</span>
             {/if}
-            <BadgeCounter {node}/>
+            <BadgeCounter {node} />
           </button>
         </div>
         <div
@@ -109,17 +105,14 @@
         on:click="{() => handleClick(node)}"
         data-testid="{getTestId(node)}"
       >
-        {#if node.icon}
-        {#if hasOpenUIicon(node)}
-        <span
-          class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"
-        ></span>
+        {#if node.icon} {#if hasOpenUIicon(node)}
+        <span class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"></span>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
           src="{node.icon}"
           alt="{node.altText ? node.altText : ''}"
-        >
+        />
         {/if}
         <!-- end hasOpenUIicon-->
         {/if}
@@ -127,12 +120,10 @@
         {#if !node.icon || node.showLabel}
         <span>{getNodeLabel(node)}</span>
         {/if}
-        <BadgeCounter {node}/>
+        <BadgeCounter {node} />
       </button>
     </div>
-    {/if}
-    {/if}
-    {/each}
+    {/if} {/if} {/each}
     <!-- Sample Markup for Notifications
             <div class="fd-shellbar__action fd-shellbar__action--desktop">
               <button class="fd-shellbar__button fd-button sap-icon--bell" aria-label="Notifications">
@@ -142,7 +133,8 @@
     -->
 
     <!-- dropdown for top nav nodes on smaller screens -->
-    {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable || contextSwitcherConfig}
+    {#if (visibleNodeCount - globalNavNodeCount > 0) ||
+    isProductSwitcherAvailable || contextSwitcherConfig}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -166,7 +158,7 @@
                 data-testid="mobile-menu"
               >
                 <i class="sap-icon sap-icon--overflow"></i>
-                <BadgeCounter node="{totalBadgeNode}" special="true"/>
+                <BadgeCounter node="{totalBadgeNode}" special="true" />
               </button>
             </div>
           </div>
@@ -188,8 +180,8 @@
                     <span class="fd-menu__title">Search</span>
                   </a>
                 </li>
-                {/if}
-                {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
+                {/if} {#if contextSwitcherConfig && (!authorizationEnabled ||
+                isLoggedIn)}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -198,15 +190,14 @@
                     <i
                       class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
                     ></i>
-                    <span
-                      class="fd-menu__title"
-                    >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
+                    <span class="fd-menu__title"
+                      >{selectedLabel ? selectedLabel :
+                      defaultLabelContextSwitcher}</span
+                    >
                   </a>
                 </li>
-                {/if}
-                {#each children as node,i}
-                {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
-                {#if !node.isCat}
+                {/if} {#each children as node,i} {#if !(node.hideFromNav ||
+                (showGlobalNav && node.globalNav))} {#if !node.isCat}
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
@@ -221,9 +212,9 @@
                       <img
                         src="{node.icon}"
                         alt="{node.altText ? node.altText : ''}"
-                      >
+                      />
                       {/if}
-                      <BadgeCounter {node}/>
+                      <BadgeCounter {node} />
                     </span>
                     <span class="fd-menu__title">{getNodeLabel(node)}</span>
                   </a>
@@ -246,9 +237,9 @@
                       <img
                         src="{node.icon}"
                         alt="{node.altText ? node.altText : ''}"
-                      >
+                      />
                       {/if}
-                      <BadgeCounter {node}/>
+                      <BadgeCounter {node} />
                     </span>
                     <span class="fd-list__title">{getNodeLabel(node)}</span>
                   </a>
@@ -276,17 +267,15 @@
                   </a>
                 </li>-->
                 <!-- {/if} -->
-                {/if}
-                {/if}
-                {/each}
-                {#if isProductSwitcherAvailable}
+                {/if} {/if} {/each} {#if isProductSwitcherAvailable}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
                     on:click|stopPropagation="{openMobileProductSwitcher}"
                     data-testid="mobile-product-switcher"
                   >
-                    {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
+                    {#if hasOpenUIicon(productSwitcherConfig) ||
+                    !productSwitcherConfig.icon}
                     <i
                       class="fd-top-nav__icon sap-icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
                     ></i>
@@ -295,12 +284,12 @@
                       <img
                         src="{productSwitcherConfig.icon}"
                         alt="{productSwitcherConfig.altText ? productSwitcherConfig.altText : ''}"
-                      >
+                      />
                     </span>
                     {/if}
-                    <span
-                      class="fd-menu__title"
-                    >{productSwitcherConfig.label}</span>
+                    <span class="fd-menu__title"
+                      >{productSwitcherConfig.label}</span
+                    >
                   </a>
                 </li>
                 {/if}
@@ -313,16 +302,14 @@
             on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
             isMobile="{true}"
           />
-          {/if}
-          {#if openMobileDropDown}
+          {/if} {#if openMobileDropDown}
           <TopNavDropDown
             node="{nodeForMobile}"
             isMobile="{true}"
             on:close="{closeMobileTopNavDropDown}"
             pathParams="{pathParams}"
           />
-          {/if}
-          {#if !authorizationEnabled || isLoggedIn}
+          {/if} {#if !authorizationEnabled || isLoggedIn}
           <ContextSwitcher
             bind:dropDownStates
             on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
@@ -335,8 +322,7 @@
         </div>
       </div>
     </div>
-    {/if}
-    {/if}
+    {/if} {/if}
     <!-- closes {#if children && pathData.length > 0} -->
     {#if authorizationEnabled || profileItemsAvailable}
     <div
@@ -387,8 +373,7 @@
         </div>
       </div>
     </div>
-    {/if}
-    {#if isProductSwitcherAvailable}
+    {/if} {#if isProductSwitcherAvailable}
     <ProductSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
@@ -404,20 +389,20 @@
 />
 {/if}
 <script>
-  import LogoTitle from './LogoTitle.html';
-  import BadgeCounter from './BadgeCounter.html';
-  import Authorization from '../Authorization.html';
-  import TopNavDropDown from '../TopNavDropDown.html';
-  import ContextSwitcher from './ContextSwitcher.html';
-  import ProductSwitcher from './ProductSwitcher.html';
-  import GlobalSearch from './GlobalSearch.html';
+  import LogoTitle from "./LogoTitle.html";
+  import BadgeCounter from "./BadgeCounter.html";
+  import Authorization from "../Authorization.html";
+  import TopNavDropDown from "../TopNavDropDown.html";
+  import ContextSwitcher from "./ContextSwitcher.html";
+  import ProductSwitcher from "./ProductSwitcher.html";
+  import GlobalSearch from "./GlobalSearch.html";
   import {
     beforeUpdate,
     createEventDispatcher,
     onMount,
     getContext
-  } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  } from "svelte";
+  import { LuigiAuth, LuigiConfig, LuigiI18N } from "../core-api";
   import {
     AuthHelpers,
     NavigationHelpers,
@@ -425,8 +410,8 @@
     StateHelpers,
     EventListenerHelpers,
     GenericHelpers
-  } from '../utilities/helpers';
-  import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
+  } from "../utilities/helpers";
+  import { SemiCollapsibleNavigation } from "./services/semi-collapsed-navigation";
 
   const dispatch = createEventDispatcher();
 
@@ -461,12 +446,12 @@
   export let searchResult;
   export let burgerTooltip;
 
-  let store = getContext('store');
+  let store = getContext("store");
   let contextSwitcherToggle = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue(
-    'navigation.contextSwitcher'
+    "navigation.contextSwitcher"
   );
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -491,31 +476,31 @@
       () => {
         authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
         profileItemsAvailable = LuigiConfig.getConfigValue(
-          'navigation.profile'
+          "navigation.profile"
         );
         autologinEnabled = !Boolean(
-          LuigiConfig.getConfigValue('auth.disableAutoLogin')
+          LuigiConfig.getConfigValue("auth.disableAutoLogin")
         );
         isProductSwitcherAvailable = LuigiConfig.getConfigValue(
-          'navigation.productSwitcher'
+          "navigation.productSwitcher"
         );
         hideNavComponent = LuigiConfig.getConfigBooleanValue(
-          'settings.hideNavigation'
+          "settings.hideNavigation"
         );
         responsiveNavSetting = LuigiConfig.getConfigValue(
-          'settings.responsiveNavigation'
+          "settings.responsiveNavigation"
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-        isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        isGlobalSearchAvailable = LuigiConfig.getConfigValue("globalSearch");
         showGlobalNav =
-          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
-          GenericHelpers.requestExperimentalFeature('globalNav', true);
+          LuigiConfig.getConfigBooleanValue("settings.globalSideNavigation") &&
+          GenericHelpers.requestExperimentalFeature("globalNav", true);
       },
-      ['navigation']
+      ["navigation"]
     );
 
-    EventListenerHelpers.addEventListener('message', e => {
-      if ('luigi.navigation.update-badge-counters' === e.data.msg) {
+    EventListenerHelpers.addEventListener("message", e => {
+      if ("luigi.navigation.update-badge-counters" === e.data.msg) {
         setTopNavData();
       }
     });
@@ -552,12 +537,12 @@
   }
 
   export function openMobileProductSwitcher() {
-    toggleDropdownState('productSwitcherPopover');
+    toggleDropdownState("productSwitcherPopover");
   }
 
   export function openMobileContextSwitcher() {
     contextSwitcherToggle = !contextSwitcherToggle;
-    toggleDropdownState('contextSwitcherPopover');
+    toggleDropdownState("contextSwitcherPopover");
   }
 
   export function openMobileTopNavDropDown(node) {
@@ -570,11 +555,11 @@
   }
 
   export function handleClick(node) {
-    dispatch('handleClick', { node });
+    dispatch("handleClick", { node });
   }
 
   export function handleSearchNavigation(node) {
-    dispatch('handleSearchNavigation', { node });
+    dispatch("handleSearchNavigation", { node });
   }
 
   export function handleClickExternal(event) {
@@ -607,7 +592,7 @@
       setTimeout(() => {
         setFocusOnGlobalSearchFieldMobile();
       });
-    dispatch('toggleSearch', {
+    dispatch("toggleSearch", {
       isSearchFieldVisible,
       inputElem,
       luigiCustomSearchRenderer__slot
@@ -627,8 +612,8 @@
 
   function burgerClickHandler() {
     if (
-      responsiveNavSetting === 'simple' ||
-      responsiveNavSetting === 'simpleMobileOnly'
+      responsiveNavSetting === "simple" ||
+      responsiveNavSetting === "simpleMobileOnly"
     ) {
       simpleNav();
     } else {
@@ -646,13 +631,13 @@
       expandNavTooltip
     ] = NavigationHelpers.getBurgerTooltipConfig();
     if (collapseNavTooltip && expandNavTooltip) {
-      if (document.body.classList.contains('lui-simpleSlideInNav')) {
-        burgerTooltip = document.body.classList.contains('lui-leftNavToggle')
+      if (document.body.classList.contains("lui-simpleSlideInNav")) {
+        burgerTooltip = document.body.classList.contains("lui-leftNavToggle")
           ? collapseNavTooltip
           : expandNavTooltip;
       }
-      if (document.body.classList.contains('lui-semiCollapsible')) {
-        burgerTooltip = document.body.classList.contains('semiCollapsed')
+      if (document.body.classList.contains("lui-semiCollapsible")) {
+        burgerTooltip = document.body.classList.contains("semiCollapsed")
           ? collapseNavTooltip
           : expandNavTooltip;
       }
@@ -660,16 +645,16 @@
   }
 
   export function simpleNav() {
-    document.body.classList.toggle('lui-leftNavToggle');
-    if (document.getElementsByClassName('fd-tabs').length > 0) {
-      dispatch('resizeTabNav', {});
+    document.body.classList.toggle("lui-leftNavToggle");
+    if (document.getElementsByClassName("fd-tabs").length > 0) {
+      dispatch("resizeTabNav", {});
     }
   }
 
   export function semicollapsedNav() {
     SemiCollapsibleNavigation.buttonClicked();
-    if (document.getElementsByClassName('fd-tabs').length > 0) {
-      dispatch('resizeTabNav', {});
+    if (document.getElementsByClassName("fd-tabs").length > 0) {
+      dispatch("resizeTabNav", {});
     }
   }
 
@@ -680,7 +665,7 @@
 </script>
 
 <style type="text/scss">
-  @import 'styles/variables';
+  @import "styles/variables";
   //remove default outline of all dropdowns in shellbar
   .fd-shellbar:focus {
     outline: none;

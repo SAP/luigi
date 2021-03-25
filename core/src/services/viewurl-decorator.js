@@ -22,9 +22,7 @@ class ViewUrlDecoratorSvc {
   }
 
   add(decorator) {
-    this.decorators = this.decorators
-      .filter(d => d.uid !== decorator.uid)
-      .concat(decorator);
+    this.decorators = this.decorators.filter(d => d.uid !== decorator.uid).concat(decorator);
   }
 
   applyDecorators(url) {
@@ -33,9 +31,7 @@ class ViewUrlDecoratorSvc {
     }
     const urlObj = new URL(GenericHelpers.prependOrigin(url));
     // apply query params
-    const queryParamDecorators = this.decorators.filter(
-      d => d.type === 'queryString'
-    );
+    const queryParamDecorators = this.decorators.filter(d => d.type === 'queryString');
     for (let i = 0; i < queryParamDecorators.length; i++) {
       const decorator = queryParamDecorators[i];
       if (urlObj.searchParams.has(decorator.key)) {

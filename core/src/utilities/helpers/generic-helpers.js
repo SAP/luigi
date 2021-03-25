@@ -10,9 +10,7 @@ class GenericHelpersClass {
    */
   getRandomId() {
     // window.msCrypto for IE 11
-    return (window.crypto || window.msCrypto).getRandomValues(
-      new Uint32Array(1)
-    )[0];
+    return (window.crypto || window.msCrypto).getRandomValues(new Uint32Array(1))[0];
   }
 
   isFunction(anyParam) {
@@ -70,11 +68,7 @@ class GenericHelpersClass {
     // We assume that any URL not starting with
     // http is on the current page's domain
     if (!urlWithoutHash.startsWith('http')) {
-      return (
-        window.location.origin +
-        (urlWithoutHash.startsWith('/') ? '' : '/') +
-        urlWithoutHash
-      );
+      return window.location.origin + (urlWithoutHash.startsWith('/') ? '' : '/') + urlWithoutHash;
     }
     return urlWithoutHash;
   }
@@ -204,32 +198,19 @@ class GenericHelpersClass {
     if (params) {
       Object.entries(params).forEach(entry => {
         processedString = processedString.replace(
-          new RegExp(
-            this.escapeRegExp(
-              (parenthesis ? '{' : '') +
-                prefix +
-                entry[0] +
-                (parenthesis ? '}' : '')
-            ),
-            'g'
-          ),
+          new RegExp(this.escapeRegExp((parenthesis ? '{' : '') + prefix + entry[0] + (parenthesis ? '}' : '')), 'g'),
           encodeURIComponent(entry[1])
         );
       });
     }
     if (parenthesis) {
-      processedString = processedString.replace(
-        new RegExp('\\{' + this.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
-        ''
-      );
+      processedString = processedString.replace(new RegExp('\\{' + this.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'), '');
     }
     return processedString;
   }
 
   getInnerHeight() {
-    return LuigiElements.isCustomLuigiContainer()
-      ? LuigiElements.getLuigiContainer().clientHeight
-      : window.innerHeight;
+    return LuigiElements.isCustomLuigiContainer() ? LuigiElements.getLuigiContainer().clientHeight : window.innerHeight;
   }
 
   getContentAreaHeight() {
@@ -245,9 +226,7 @@ class GenericHelpersClass {
   }
 
   isElementVisible(element) {
-    const cssDisplayValue = window
-      .getComputedStyle(element, null)
-      .getPropertyValue('display');
+    const cssDisplayValue = window.getComputedStyle(element, null).getPropertyValue('display');
     return cssDisplayValue !== 'none';
   }
 
@@ -276,9 +255,7 @@ class GenericHelpersClass {
   removeProperties(input, keys) {
     const res = {};
     if (!keys instanceof Array || !keys.length) {
-      console.error(
-        '[ERROR] removeProperties requires second parameter: array of keys to remove from object.'
-      );
+      console.error('[ERROR] removeProperties requires second parameter: array of keys to remove from object.');
       return input;
     }
     for (const key in input) {
@@ -330,9 +307,7 @@ class GenericHelpersClass {
    * @returns true, if feature enabled, false otherwise.
    */
   requestExperimentalFeature(expFeatureName, showWarn) {
-    const val = Boolean(
-      LuigiConfig.getConfigValue('settings.experimental.' + expFeatureName)
-    );
+    const val = Boolean(LuigiConfig.getConfigValue('settings.experimental.' + expFeatureName));
     if (showWarn && !val) {
       console.warn('Experimental feature not enabled: ', expFeatureName);
     }

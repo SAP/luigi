@@ -1,4 +1,4 @@
-<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}"/>
+<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
 <div
   class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
 >
@@ -16,7 +16,7 @@
           class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
           data-testid="luigi-search-input__no-handlers"
           autofocus
-        >
+        />
         {:else}
         <input
           type="text"
@@ -25,7 +25,7 @@
           data-testid="luigi-search-input"
           autofocus
           bind:this="{inputElem}"
-        >
+        />
         {/if}
       </div>
       {#if !isCustomSearchRenderer}
@@ -47,18 +47,17 @@
               tabindex="0"
             >
               {#if !isCustomSearchResultItemRenderer}
-              <a
-                class="fd-menu__link"
-                on:click|preventDefault="{() => {}}"
-              >
+              <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
                 <div class="fd-product-switch__text">
                   <div class="fd-product-switch__title">{result.label}</div>
-                  <div class="fd-product-switch__subtitle">{result.description}</div>
+                  <div class="fd-product-switch__subtitle">
+                    {result.description}
+                  </div>
                 </div>
               </a>
-              {:else}
-              {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer, index)}
-              {/if}
+              {:else} {@html
+              renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer,
+              index)} {/if}
             </li>
             {/each}
           </ul>
@@ -85,16 +84,16 @@
   </div>
 </div>
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
-  import { GenericHelpers } from '../utilities/helpers';
-  import { Routing } from '../services/routing';
+  import { beforeUpdate, createEventDispatcher, onMount } from "svelte";
+  import { LuigiAuth, LuigiConfig, LuigiI18N } from "../core-api";
+  import { GenericHelpers } from "../utilities/helpers";
+  import { Routing } from "../services/routing";
   import {
     KEYCODE_ARROW_UP,
     KEYCODE_ARROW_DOWN,
     KEYCODE_ENTER,
     KEYCODE_ESC
-  } from '../utilities/keycode.js';
+  } from "../utilities/keycode.js";
   export let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
@@ -114,7 +113,7 @@
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
   onMount(async () => {
-    search = await LuigiConfig.getConfigValueAsync('globalSearch');
+    search = await LuigiConfig.getConfigValueAsync("globalSearch");
     let inputElement = inputElem;
     const placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {
@@ -136,7 +135,7 @@
     if (GenericHelpers.isFunction(searchProvider.inputPlaceholder)) {
       return searchProvider.inputPlaceholder();
     }
-    if (typeof searchProvider.inputPlaceholder === 'string') {
+    if (typeof searchProvider.inputPlaceholder === "string") {
       const translated = LuigiI18N.getTranslation(
         searchProvider.inputPlaceholder
       );
@@ -145,7 +144,7 @@
       }
       return searchProvider.inputPlaceholder;
     }
-    if (typeof searchProvider.inputPlaceholder === 'object') {
+    if (typeof searchProvider.inputPlaceholder === "object") {
       return searchProvider.inputPlaceholder[currentLocale];
     }
   }
@@ -158,11 +157,11 @@
         searchApiObj
       );
     });
-    return '';
+    return "";
   }
 
   function closeSearchResult() {
-    dispatch('closeSearchResult');
+    dispatch("closeSearchResult");
   }
 
   function onKeyUp({ keyCode }) {
@@ -180,15 +179,15 @@
       } else if (keyCode === KEYCODE_ARROW_DOWN) {
         if (displaySearchResult) {
           document
-            .querySelector('.luigi-search-result-item__0')
-            .childNodes[0].setAttribute('aria-selected', 'true');
-          document.querySelector('.luigi-search-result-item__0').focus();
+            .querySelector(".luigi-search-result-item__0")
+            .childNodes[0].setAttribute("aria-selected", "true");
+          document.querySelector(".luigi-search-result-item__0").focus();
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
       }
     } else {
-      console.warn('GlobalSearch is not available.');
+      console.warn("GlobalSearch is not available.");
     }
   }
 
@@ -203,7 +202,7 @@
           previousSibling
         } = renderedSearchResultItems[index];
         let nodeSibling;
-        if (childNodes[0].getAttribute('aria-selected') === 'true') {
+        if (childNodes[0].getAttribute("aria-selected") === "true") {
           if (direction === KEYCODE_ARROW_DOWN) {
             nodeSibling =
               nextSibling !== null ? nextSibling : renderedSearchResultItems[0];
@@ -216,8 +215,8 @@
                     renderedSearchResultItems.length - 1
                   ];
           }
-          childNodes[0].setAttribute('aria-selected', 'false');
-          nodeSibling.childNodes[0].setAttribute('aria-selected', 'true');
+          childNodes[0].setAttribute("aria-selected", "false");
+          nodeSibling.childNodes[0].setAttribute("aria-selected", "true");
           nodeSibling.focus();
           break;
         }
@@ -231,8 +230,8 @@
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
-        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
-          element.childNodes[0].setAttribute('aria-selected', 'false');
+        if (element.childNodes[0].getAttribute("aria-selected") === "true") {
+          element.childNodes[0].setAttribute("aria-selected", "false");
         }
       }
     }
@@ -277,7 +276,7 @@
     if (node.externalLink) {
       Routing.navigateToLink(node);
     } else {
-      dispatch('handleSearchNavigation', { node });
+      dispatch("handleSearchNavigation", { node });
     }
   }
 
@@ -295,7 +294,7 @@
     else {
       displaySearchResult = false;
     }
-    dispatch('toggleSearch', {
+    dispatch("toggleSearch", {
       isSearchFieldVisible,
       inputElem,
       luigiCustomSearchRenderer__slot
@@ -311,12 +310,12 @@
 <style type="text/scss">
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {
-    li[class*='luigi-search-result']:focus {
+    li[class*="luigi-search-result"]:focus {
       outline: none;
     }
   }
   .luigi-search {
-    &[aria-hidden='true'] {
+    &[aria-hidden="true"] {
       visibility: hidden;
       width: 0;
     }

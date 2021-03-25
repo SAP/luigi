@@ -6,9 +6,9 @@
     id="j2ALl423"
     data-testid="luigi-alert"
   >
-    <p
-      class="fd-message-strip__text"
-    >{@html al.dataSanitized ? al.settings.text: ''}</p>
+    <p class="fd-message-strip__text">
+      {@html al.dataSanitized ? al.settings.text: ''}
+    </p>
     <button
       class="fd-button fd-button--transparent fd-message"
       on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
@@ -28,27 +28,27 @@
     createEventDispatcher,
     onMount,
     getContext
-  } from 'svelte';
+  } from "svelte";
 
   const dispatch = createEventDispatcher();
 
-  import { EscapingHelpers } from './utilities/helpers';
+  import { EscapingHelpers } from "./utilities/helpers";
 
   export let alertQueue;
   export let alertTypeMap = {
-    info: 'information',
-    success: 'success',
-    warning: 'warning',
-    error: 'error'
+    info: "information",
+    success: "success",
+    warning: "warning",
+    error: "error"
   };
   const getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
+    "getUnsavedChangesModalPromise"
   );
-  const handleNavigation = getContext('handleNavigation');
+  const handleNavigation = getContext("handleNavigation");
 
   beforeUpdate(() => {
     if (!alertQueue || !alertQueue.length) {
-      console.warn('There are no alerts to display');
+      console.warn("There are no alerts to display");
       return;
     }
 
@@ -87,8 +87,8 @@
   // review these functions and remove unnecessary 'export' keywords
   export function addClickListener(url, elemId) {
     try {
-      document.getElementById(elemId).addEventListener('click', event => {
-        const isRelative = !url.startsWith('/');
+      document.getElementById(elemId).addEventListener("click", event => {
+        const isRelative = !url.startsWith("/");
         event.stopPropagation();
         getUnsavedChangesModalPromise().then(() => {
           const data = {
@@ -101,7 +101,7 @@
         });
       });
     } catch (e) {
-      console.error('Error on Alert::addClickListener', e);
+      console.error("Error on Alert::addClickListener", e);
     }
   }
 </script>

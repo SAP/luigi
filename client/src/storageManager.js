@@ -14,9 +14,7 @@ class StorageManager extends LuigiClientBase {
   constructor() {
     super();
     this.storageEventProcessor = new StorageEventProcessor();
-    helpers.addEventListener('storage', (evt, listenerId) =>
-      this.storageEventProcessor.processEvent(evt, listenerId)
-    );
+    helpers.addEventListener('storage', (evt, listenerId) => this.storageEventProcessor.processEvent(evt, listenerId));
   }
 
   /**

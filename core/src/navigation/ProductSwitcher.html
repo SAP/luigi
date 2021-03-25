@@ -1,4 +1,4 @@
-<svelte:window on:resize="{setViewportHeightVariable}"/>
+<svelte:window on:resize="{setViewportHeightVariable}" />
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
@@ -19,14 +19,12 @@ Object.keys(productSwitcherItems[0]).length }
         >
           <div class="lui-product-switch__icon">
             {#if hasOpenUIicon(config)}
-            <i
-              class="sap-icon sap-icon--{config.icon}"
-            ></i>
+            <i class="sap-icon sap-icon--{config.icon}"></i>
             {:else}
             <img
               src="{config.icon}"
               alt="{config.altText ? config.altText : ''}"
-            >
+            />
             {/if}
           </div>
         </button>
@@ -38,8 +36,8 @@ Object.keys(productSwitcherItems[0]).length }
       >
         <div class="{columnsClass}">
           <ul class="fd-product-switch__list">
-            {#each productSwitcherItems as productSwitcherItem}
-            {#if productSwitcherItem.label}
+            {#each productSwitcherItems as productSwitcherItem} {#if
+            productSwitcherItem.label}
             <li
               class="fd-product-switch__item {productSwitcherItem.selected?'selected':''}"
               on:click="{() => onActionClick(productSwitcherItem)}"
@@ -54,22 +52,21 @@ Object.keys(productSwitcherItems[0]).length }
                 <img
                   src="{productSwitcherItem.icon}"
                   alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
-                >
+                />
                 {/if}
               </div>
               <div class="fd-product-switch__text">
-                <div
-                  class="fd-product-switch__title"
-                >{getNodeLabel(productSwitcherItem)}</div>
+                <div class="fd-product-switch__title">
+                  {getNodeLabel(productSwitcherItem)}
+                </div>
                 {#if getNodeSubtitle(productSwitcherItem)}
-                <div
-                  class="fd-product-switch__subtitle"
-                >{getNodeSubtitle(productSwitcherItem)}</div>
+                <div class="fd-product-switch__subtitle">
+                  {getNodeSubtitle(productSwitcherItem)}
+                </div>
                 {/if}
               </div>
             </li>
-            {/if}
-            {/each}
+            {/if} {/each}
           </ul>
         </div>
       </div>
@@ -89,15 +86,14 @@ Object.keys(productSwitcherItems[0]).length }
   {getNodeSubtitle}
   {getTestId}
 />
-{/if}
-{/if}
+{/if} {/if}
 <script>
-  import MobileTopNav from './MobileTopNavDropDown.html';
-  import { createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiConfig, LuigiI18N } from '../core-api';
-  import { Routing } from '../services/routing';
-  import { StateHelpers } from '../utilities/helpers';
-  import { NavigationHelpers } from '../utilities/helpers';
+  import MobileTopNav from "./MobileTopNavDropDown.html";
+  import { createEventDispatcher, onMount, getContext } from "svelte";
+  import { LuigiConfig, LuigiI18N } from "../core-api";
+  import { Routing } from "../services/routing";
+  import { StateHelpers } from "../utilities/helpers";
+  import { NavigationHelpers } from "../utilities/helpers";
 
   const dispatch = createEventDispatcher();
 
@@ -106,9 +102,9 @@ Object.keys(productSwitcherItems[0]).length }
   export let config;
   export let dropDownStates;
 
-  let store = getContext('store');
+  let store = getContext("store");
   let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
+    "getUnsavedChangesModalPromise"
   );
   let columnsClass;
 
@@ -119,13 +115,13 @@ Object.keys(productSwitcherItems[0]).length }
         config = NavigationHelpers.getProductSwitcherConfig();
         if (config) {
           productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-            'navigation.productSwitcher.items'
+            "navigation.productSwitcher.items"
           );
           setColumnsClass();
         }
         setViewportHeightVariable();
       },
-      ['navigation.productSwitcher']
+      ["navigation.productSwitcher"]
     );
   });
 
@@ -143,14 +139,14 @@ Object.keys(productSwitcherItems[0]).length }
   }
 
   export function toggleDropdownState() {
-    dispatch('toggleDropdownState');
+    dispatch("toggleDropdownState");
   }
 
   export function setViewportHeightVariable() {
     // get the viewport height and multiple it by 1% to get a value for a vh unit
     let vh = window.innerHeight * 0.01;
     // set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
 
   function hasOpenUIicon(node) {
@@ -168,9 +164,9 @@ Object.keys(productSwitcherItems[0]).length }
   function setColumnsClass() {
     const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
     if (columns === 3) {
-      columnsClass = 'fd-product-switch__body fd-product-switch__body--col-3';
+      columnsClass = "fd-product-switch__body fd-product-switch__body--col-3";
     } else {
-      columnsClass = 'fd-product-switch__body';
+      columnsClass = "fd-product-switch__body";
     }
   }
 
@@ -186,7 +182,7 @@ Object.keys(productSwitcherItems[0]).length }
     img {
       max-height: 24px;
     }
-    [class*='sap-icon'] {
+    [class*="sap-icon"] {
       color: var(--sapShell_InteractiveTextColor, #d1e8ff);
     }
   }

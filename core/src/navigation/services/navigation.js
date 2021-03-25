@@ -29,9 +29,7 @@ class NavigationClass {
           rootNode = topNavNodes;
           if (rootNode.pathSegment) {
             rootNode.pathSegment = '';
-            console.warn(
-              'Root node must have an empty path segment. Provided path segment will be ignored.'
-            );
+            console.warn('Root node must have an empty path segment. Provided path segment will be ignored.');
           }
         } else {
           rootNode = { children: topNavNodes };
@@ -47,20 +45,15 @@ class NavigationClass {
         rootNode.context || {}
       );
 
-      const navPathSegments = navObj.navigationPath
-        .filter(x => x.pathSegment)
-        .map(x => x.pathSegment);
+      const navPathSegments = navObj.navigationPath.filter(x => x.pathSegment).map(x => x.pathSegment);
 
-      navObj.isExistingRoute =
-        !activePath || nodeNamesInCurrentPath.length === navPathSegments.length;
+      navObj.isExistingRoute = !activePath || nodeNamesInCurrentPath.length === navPathSegments.length;
 
       const pathSegments = activePath.split('/');
       navObj.matchedPath = pathSegments
         .filter((segment, index) => {
           return (
-            (navPathSegments[index] &&
-              navPathSegments[index].startsWith(':')) ||
-            navPathSegments[index] === segment
+            (navPathSegments[index] && navPathSegments[index].startsWith(':')) || navPathSegments[index] === segment
           );
         })
         .join('/');
@@ -78,18 +71,12 @@ class NavigationClass {
     let children = [];
     if (!NodeDataManagementStorage.hasChildren(node)) {
       try {
-        children = await AsyncHelpers.getConfigValueFromObjectAsync(
-          node,
-          'children',
-          context || node.context
-        );
+        children = await AsyncHelpers.getConfigValueFromObjectAsync(node, 'children', context || node.context);
         if (children === undefined) {
           children = [];
         }
         children =
-          children
-            .map(n => this.getExpandStructuralPathSegment(n))
-            .map(n => this.bindChildToParent(n, node)) || [];
+          children.map(n => this.getExpandStructuralPathSegment(n)).map(n => this.bindChildToParent(n, node)) || [];
       } catch (err) {
         console.error('Could not lazy-load children for node', err);
       }
@@ -121,11 +108,7 @@ class NavigationClass {
   }
 
   getAccessibleNodes(node, children, context) {
-    return children
-      ? children.filter(child =>
-          NavigationHelpers.isNodeAccessPermitted(child, node, context)
-        )
-      : [];
+    return children ? children.filter(child => NavigationHelpers.isNodeAccessPermitted(child, node, context)) : [];
   }
 
   bindChildToParent(child, node) {
@@ -161,13 +144,7 @@ class NavigationClass {
     return node;
   }
 
-  async buildNode(
-    nodeNamesInCurrentPath,
-    nodesInCurrentPath,
-    childrenOfCurrentNode,
-    context,
-    pathParams = {}
-  ) {
+  async buildNode(nodeNamesInCurrentPath, nodesInCurrentPath, childrenOfCurrentNode, context, pathParams = {}) {
     if (!context.parentNavigationContexts) {
       context.parentNavigationContexts = [];
     }
@@ -176,29 +153,16 @@ class NavigationClass {
       context: context,
       pathParams: pathParams
     };
-    if (
-      nodeNamesInCurrentPath.length > 0 &&
-      childrenOfCurrentNode &&
-      childrenOfCurrentNode.length > 0
-    ) {
+    if (nodeNamesInCurrentPath.length > 0 && childrenOfCurrentNode && childrenOfCurrentNode.length > 0) {
       const urlPathElement = nodeNamesInCurrentPath[0];
       const node = this.findMatchingNode(urlPathElement, childrenOfCurrentNode);
       if (node) {
         nodesInCurrentPath.push(node);
-        let newContext = NavigationHelpers.applyContext(
-          context,
-          node.context,
-          node.navigationContext
-        );
+        let newContext = NavigationHelpers.applyContext(context, node.context, node.navigationContext);
         if (node.pathSegment.startsWith(':')) {
-          pathParams[
-            node.pathSegment.replace(':', '')
-          ] = EscapingHelpers.sanitizeParam(urlPathElement);
+          pathParams[node.pathSegment.replace(':', '')] = EscapingHelpers.sanitizeParam(urlPathElement);
         }
-        newContext = RoutingHelpers.substituteDynamicParamsInObject(
-          newContext,
-          pathParams
-        );
+        newContext = RoutingHelpers.substituteDynamicParamsInObject(newContext, pathParams);
         try {
           /**
            * If its a virtual tree,
@@ -209,13 +173,7 @@ class NavigationClass {
           // STANDARD PROCEDURE
           let children = await this.getChildren(node, newContext);
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
-          result = this.buildNode(
-            newNodeNamesInCurrentPath,
-            nodesInCurrentPath,
-            children,
-            newContext,
-            pathParams
-          );
+          result = this.buildNode(newNodeNamesInCurrentPath, nodesInCurrentPath, children, newContext, pathParams);
         } catch (err) {
           console.error('Error getting nodes children', err);
         }
@@ -266,33 +224,20 @@ class NavigationClass {
       }
 
       _virtualPathIndex++;
-      const keysToClean = [
-        '_*',
-        'virtualTree',
-        'parent',
-        'children',
-        'keepSelectedForChildren',
-        'navigationContext'
-      ];
+      const keysToClean = ['_*', 'virtualTree', 'parent', 'children', 'keepSelectedForChildren', 'navigationContext'];
       const newChild = GenericHelpers.removeProperties(node, keysToClean);
       Object.assign(newChild, {
         pathSegment: ':virtualSegment_' + _virtualPathIndex,
         label: ':virtualSegment_' + _virtualPathIndex,
         viewUrl: GenericHelpers.trimTrailingSlash(
-          this.buildVirtualViewUrl(
-            _virtualViewUrl,
-            pathParams,
-            _virtualPathIndex
-          )
+          this.buildVirtualViewUrl(_virtualViewUrl, pathParams, _virtualPathIndex)
         ),
         _virtualTree: true,
         _virtualPathIndex,
         _virtualViewUrl
       });
 
-      const isVirtualChildren = node.children
-        ? node.children[0]._virtualTree
-        : false;
+      const isVirtualChildren = node.children ? node.children[0]._virtualTree : false;
       if (node.children && !isVirtualChildren) {
         console.warn(
           'Found both virtualTree and children nodes defined on a navigation node. \nChildren nodes are redundant and ignored when virtualTree is enabled. \nPlease refer to documentation'
@@ -305,9 +250,7 @@ class NavigationClass {
   findMatchingNode(urlPathElement, nodes) {
     let result = null;
     const segmentsLength = nodes.filter(n => !!n.pathSegment).length;
-    const dynamicSegmentsLength = nodes.filter(
-      n => n.pathSegment && n.pathSegment.startsWith(':')
-    ).length;
+    const dynamicSegmentsLength = nodes.filter(n => n.pathSegment && n.pathSegment.startsWith(':')).length;
     if (segmentsLength > 1) {
       if (dynamicSegmentsLength === 1) {
         console.warn(
@@ -316,9 +259,7 @@ class NavigationClass {
           'Children:',
           nodes
         );
-        nodes = nodes.filter(
-          n => n.pathSegment && n.pathSegment.startsWith(':')
-        );
+        nodes = nodes.filter(n => n.pathSegment && n.pathSegment.startsWith(':'));
       }
       if (dynamicSegmentsLength > 1) {
         console.error(
@@ -344,9 +285,7 @@ class NavigationClass {
   }
 
   onNodeChange(prevNode, nextNode) {
-    const invokedFunction = LuigiConfig.getConfigValue(
-      'navigation.nodeChangeHook'
-    );
+    const invokedFunction = LuigiConfig.getConfigValue('navigation.nodeChangeHook');
     if (typeof invokedFunction === 'function') {
       invokedFunction(prevNode, nextNode);
     } else if (invokedFunction !== undefined) {
@@ -408,9 +347,7 @@ class NavigationClass {
   async getLeftNavData(current, componentData) {
     const updatedCompData = {};
     if (current.pathData && 1 < current.pathData.length) {
-      const pathDataTruncatedChildren = this.getTruncatedChildren(
-        componentData.pathData
-      );
+      const pathDataTruncatedChildren = this.getTruncatedChildren(componentData.pathData);
       let lastElement = [...pathDataTruncatedChildren].pop();
       let selectedNode;
       if (lastElement.keepSelectedForChildren || lastElement.tabNav) {
@@ -418,19 +355,11 @@ class NavigationClass {
         pathDataTruncatedChildren.pop();
         lastElement = [...pathDataTruncatedChildren].pop();
       }
-      const children = await this.getChildren(
-        lastElement,
-        componentData.context
-      );
+      const children = await this.getChildren(lastElement, componentData.context);
       const groupedChildren = this.getGroupedChildren(children, current);
       updatedCompData.hasCategoriesWithIcon = false;
       Object.values(groupedChildren).forEach(value => {
-        if (
-          !updatedCompData.hasCategoriesWithIcon &&
-          value &&
-          value.metaInfo &&
-          value.metaInfo.icon
-        ) {
+        if (!updatedCompData.hasCategoriesWithIcon && value && value.metaInfo && value.metaInfo.icon) {
           updatedCompData.hasCategoriesWithIcon = true;
         }
       });
@@ -462,9 +391,7 @@ class NavigationClass {
   async getTabNavData(current, componentData) {
     const updatedCompData = {};
     if (current.pathData && 1 < current.pathData.length) {
-      const pathDataTruncatedChildren = this.getTruncatedChildrenForTabNav(
-        componentData.pathData
-      );
+      const pathDataTruncatedChildren = this.getTruncatedChildrenForTabNav(componentData.pathData);
       let selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
         selectedNode.tabNav ? selectedNode : selectedNode.parent,
@@ -479,20 +406,13 @@ class NavigationClass {
   }
 
   async extractDataFromPath(path) {
-    const pathData = await this.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      path
-    );
+    const pathData = await this.getNavigationPath(LuigiConfig.getConfigValueAsync('navigation.nodes'), path);
     const nodeObject = RoutingHelpers.getLastNodeObject(pathData);
     return { nodeObject, pathData };
   }
 
   async shouldPreventNavigation(node) {
-    if (
-      node &&
-      GenericHelpers.isFunction(node.onNodeActivation) &&
-      (await node.onNodeActivation(node)) === false
-    ) {
+    if (node && GenericHelpers.isFunction(node.onNodeActivation) && (await node.onNodeActivation(node)) === false) {
       return true;
     }
     return false;

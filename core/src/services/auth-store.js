@@ -15,8 +15,7 @@ class AuthStoreSvcClass {
 
   getStorageType() {
     if (!this._storageType) {
-      this._storageType =
-        LuigiConfig.getConfigValue('auth.storage') || this._defaultStorage;
+      this._storageType = LuigiConfig.getConfigValue('auth.storage') || this._defaultStorage;
     }
     return this._storageType;
   }
@@ -79,9 +78,7 @@ class AuthStoreSvcClass {
           console.error(this._invalidStorageMsg);
       }
     } catch (e) {
-      console.warn(
-        'Error parsing authorization data. Auto-logout might not work!'
-      );
+      console.warn('Error parsing authorization data. Auto-logout might not work!');
     }
   }
 }

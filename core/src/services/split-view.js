@@ -1,10 +1,6 @@
 import { LuigiConfig, LuigiElements } from '../core-api';
 import { Navigation } from '../navigation/services/navigation';
-import {
-  GenericHelpers,
-  IframeHelpers,
-  RoutingHelpers
-} from '../utilities/helpers';
+import { GenericHelpers, IframeHelpers, RoutingHelpers } from '../utilities/helpers';
 import { WebComponentService } from './web-components';
 
 class SplitViewSvcClass {
@@ -29,9 +25,7 @@ class SplitViewSvcClass {
     return document.querySelector('#splitViewDragger>.lui-collapse-btn');
   }
   getCollapsedDraggerButton() {
-    return document.querySelector(
-      '#splitViewDraggerCollapsed>.lui-collapse-btn'
-    );
+    return document.querySelector('#splitViewDraggerCollapsed>.lui-collapse-btn');
   }
   getDraggerBackdrop() {
     return document.getElementById('splitViewDraggerBackdrop');
@@ -50,24 +44,15 @@ class SplitViewSvcClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IframeHelpers.createIframe(
-      viewUrl,
-      undefined,
-      component.get().lastNode,
-      'split-view'
-    );
+    const iframe = IframeHelpers.createIframe(viewUrl, undefined, component.get().lastNode, 'split-view');
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
     return iframe;
   }
 
   async prepareSplitViewData(component, path) {
-    const pathUrlRaw =
-      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      path
-    );
+    const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathData = await Navigation.getNavigationPath(LuigiConfig.getConfigValueAsync('navigation.nodes'), path);
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     const nodeParams = RoutingHelpers.getNodeParams(params);
     const lastNode = RoutingHelpers.getLastNodeObject(pathData);
@@ -133,8 +118,7 @@ class SplitViewSvcClass {
   // required for iOS to force repaint, else scrolling does not work
   /* istanbul ignore next */
   fixIOSscroll() {
-    const iOS =
-      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
     if (!iOS) {
       return;
     }
@@ -152,14 +136,10 @@ class SplitViewSvcClass {
   calculateInitialValues(size, rightContentHeight) {
     if (rightContentHeight) {
       const percentBottom = size || 40;
-      const bottom = parseInt(
-        GenericHelpers.computePxFromPercent(rightContentHeight, percentBottom)
-      );
+      const bottom = parseInt(GenericHelpers.computePxFromPercent(rightContentHeight, percentBottom));
 
       const percentTop = size ? 100 - size : 60;
-      const top = parseInt(
-        GenericHelpers.computePxFromPercent(rightContentHeight, percentTop)
-      );
+      const top = parseInt(GenericHelpers.computePxFromPercent(rightContentHeight, percentTop));
 
       return {
         percent: percentBottom,
@@ -171,18 +151,10 @@ class SplitViewSvcClass {
 
   calculateAndSetSplitViewValues(percentBottom, values) {
     const newBottom =
-      parseInt(
-        GenericHelpers.computePxFromPercent(
-          values.rightContentHeight,
-          100 - percentBottom
-        )
-      ) + LuigiElements.getShellbar().clientHeight;
+      parseInt(GenericHelpers.computePxFromPercent(values.rightContentHeight, 100 - percentBottom)) +
+      LuigiElements.getShellbar().clientHeight;
 
-    this.splitViewValues = this.enforceTresholds(
-      newBottom,
-      values.innerHeight - newBottom,
-      values
-    );
+    this.splitViewValues = this.enforceTresholds(newBottom, values.innerHeight - newBottom, values);
   }
 
   enforceTresholds(top, bottom) {
@@ -198,10 +170,7 @@ class SplitViewSvcClass {
     return {
       top,
       bottom,
-      percent: GenericHelpers.computePercentFromPx(
-        iv.rightContentHeight,
-        bottom
-      )
+      percent: GenericHelpers.computePercentFromPx(iv.rightContentHeight, bottom)
     };
   }
 
@@ -230,9 +199,7 @@ class SplitViewSvcClass {
     if (comp.get().splitViewIframe || comp.get().splitViewWC) {
       comp
         .getUnsavedChangesModalPromise(
-          comp.get().splitViewWC
-            ? comp.get().splitViewWC
-            : comp.get().splitViewIframe.contentWindow
+          comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
         .then(() => {
           if (comp.get().mfSplitView) {
@@ -276,9 +243,7 @@ class SplitViewSvcClass {
     if (comp.get().splitViewIframe || comp.get().splitViewWC) {
       comp
         .getUnsavedChangesModalPromise(
-          comp.get().splitViewWC
-            ? comp.get().splitViewWC
-            : comp.get().splitViewIframe.contentWindow
+          comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
         .then(() => {
           this.sendMessageToClients('internal', {
