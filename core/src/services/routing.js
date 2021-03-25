@@ -4,7 +4,8 @@ import { Navigation } from '../navigation/services/navigation';
 import {
   GenericHelpers,
   RoutingHelpers,
-  IframeHelpers, EventListenerHelpers
+  IframeHelpers,
+  EventListenerHelpers
 } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
@@ -16,11 +17,21 @@ class RoutingClass {
   getNodePath(node, params) {
     return node
       ? RoutingHelpers.buildRoute(
-        node,
-        node.pathSegment ? '/' + node.pathSegment : '',
-        params
-      )
+          node,
+          node.pathSegment ? '/' + node.pathSegment : '',
+          params
+        )
       : '';
+  }
+
+  normalizePath(path) {
+    const hasLeadingSlash = path.indexOf('/') === 0;
+    let url = new URL(path, 'http://valid.url');
+    const ret = url.pathname + url.search + url.hash;
+    if (!hasLeadingSlash && ret.indexOf('/') === 0) {
+      return ret.substr(1);
+    }
+    return ret;
   }
 
   concatenatePath(basePath, relativePath) {
@@ -113,8 +124,10 @@ class RoutingClass {
           .join('/');
       }
     }
-    return GenericHelpers.addLeadingSlash(
-      this.concatenatePath(windowPath, node.link)
+    return this.normalizePath(
+      GenericHelpers.addLeadingSlash(
+        this.concatenatePath(windowPath, node.link)
+      )
     );
   }
 
@@ -159,9 +172,9 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-        ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) +
         window.location.search
-        : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config, withoutSync) {
@@ -190,7 +203,7 @@ class RoutingClass {
               this.handleRouteChange(path, component, iframeElement, config) &&
               history.replaceState(window.state, '', newUrl);
           },
-          () => { }
+          () => {}
         );
         return;
       }
@@ -238,8 +251,8 @@ class RoutingClass {
             this.showPageNotFoundError(
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) +
-              '/' +
-              defaultChildNode,
+                '/' +
+                defaultChildNode,
               pathUrlRaw,
               true
             );
@@ -330,10 +343,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-              viewUrl: previousCompData.viewUrl,
-              isolateView: previousCompData.isolateView,
-              viewGroup: previousCompData.viewGroup
-            }
+                viewUrl: previousCompData.viewUrl,
+                isolateView: previousCompData.isolateView,
+                viewGroup: previousCompData.viewGroup
+              }
             : {}
         })
       );
@@ -442,10 +455,10 @@ class RoutingClass {
             if (
               !isSamePath ||
               newPathSegment !==
-              RoutingHelpers.getDynamicNodeValue(
-                previousPathNode,
-                previousCompData.pathParams
-              )
+                RoutingHelpers.getDynamicNodeValue(
+                  previousPathNode,
+                  previousCompData.pathParams
+                )
             ) {
               NodeDataManagementStorage.deleteNodesRecursively(
                 previousPathNode
@@ -614,8 +627,9 @@ class RoutingClass {
         if (queryParamIndex !== -1) {
           url.hash = url.hash.slice(0, queryParamIndex);
         }
-        url.hash = `${url.hash
-          }${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+        url.hash = `${
+          url.hash
+        }${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
@@ -634,10 +648,11 @@ class RoutingClass {
       let modalParamsObj = {};
 
       if (params[modalParamName]) {
-        modalParamsObj[modalParamName] = params[modalParamName]
+        modalParamsObj[modalParamName] = params[modalParamName];
       }
       if (params[`${modalParamName}Params`]) {
-        modalParamsObj[`${modalParamName}Params`] = params[`${modalParamName}Params`];
+        modalParamsObj[`${modalParamName}Params`] =
+          params[`${modalParamName}Params`];
       }
       let prevModalPath = RoutingHelpers.encodeParams(modalParamsObj);
       if (url.hash.includes(`?${prevModalPath}`)) {
@@ -650,7 +665,13 @@ class RoutingClass {
       searchParams.delete(modalParamName);
       searchParams.delete(`${modalParamName}Params`);
       let finalUrl = '';
-      Array.from(searchParams.keys()).forEach(searchParamKey => { finalUrl += (finalUrl === '' ? '?' : '&') + searchParamKey + '=' + searchParams.get(searchParamKey); });
+      Array.from(searchParams.keys()).forEach(searchParamKey => {
+        finalUrl +=
+          (finalUrl === '' ? '?' : '&') +
+          searchParamKey +
+          '=' +
+          searchParams.get(searchParamKey);
+      });
       url.search = finalUrl;
     }
     history.replaceState(window.state, '', url.href);
