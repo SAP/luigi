@@ -43,14 +43,14 @@
      "semi": true
   },
   "changelog": {
-     "repo": "SAP/luigi",
-     "labels": {
-        "breaking": ":boom: Breaking Change",
-        "enhancement": ":rocket: Added",
-        "bug": ":bug: Fixed",
-        "internal": ":house: Internal"
-     },
-     "cacheDir": ".changelog"
+    "repo": "SAP/luigi",
+    "labels": {
+      "breaking": ":boom: Breaking Change",
+      "enhancement": ":rocket: Added",
+      "bug": ":bug: Fixed",
+      "internal": ":house: Internal"
+    },
+    "cacheDir": ".changelog"
   },
   "husky": {
      "hooks": {
