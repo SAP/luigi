@@ -1,23 +1,43 @@
 {
   "private": true,
   "scripts": {
-    "test:compatibility": "./scripts/testCompatibility.sh",
-    "change-node-version": "node ./scripts/change.node.version.js"
+     "test:compatibility": "./scripts/testCompatibility.sh",
+     "code-quality": "node code_quality.js -- mode=pre_commit",
+     "code-quality-prettier": "node code_quality.js -- mode=pre_commit_prettier",
+     "code-quality-eslint": "node code_quality.js -- mode=pre_commit__eslint",
+     "full-code-quality": "node code_quality.js -- mode=full",
+     "full-code-quality-prettier": "node code_quality.js -- mode=full_prettier sourcePaths=core/src,client/src",
+     "full-code-quality-eslint": "node code_quality.js -- mode=full_eslint",
+     "full-code-quality-eslint-core": "node code_quality.js -- mode=full_eslint sourcePaths=core/src,core/test report=core_full_eslint_report.html",
+     "full-code-quality-eslint-client": "node code_quality.js -- mode=full_eslint sourcePaths=client/src report=client_full_eslint_report.html",
+     "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/e2e/tests report=e2e-test_full_eslint_report.html",
+     "change-node-version": "node ./scripts/change.node.version.js"
   },
   "devDependencies": {
-    "@starptech/prettyhtml": "^0.10.0",
-    "cypress": "^5.3.0",
-    "diff": ">=3.5.0",
-    "husky": "^4.3.0",
-    "lerna": "^3.22.1",
-    "lerna-changelog": "^1.0.1",
-    "lodash": ">=4.17.13",
-    "lodash.template": ">=4.5.0",
-    "mixin-deep": ">=1.3.2",
-    "meow": "8.0.0",
-    "prettier": "^1.15.3",
-    "set-value": ">=2.0.1",
-    "sirv-cli": "^0.4.4"
+     "@starptech/prettyhtml": "^0.10.0",
+     "@typescript-eslint/eslint-plugin": "^4.9.0",
+     "@typescript-eslint/parser": "^4.9.0",
+     "ansi_up": "^4.0.4",
+     "cypress": "^5.3.0",
+     "diff": ">=3.5.0",
+     "eslint": "^7.14.0",
+     "eslint-config-standard": "^16.0.2",
+     "eslint-plugin-cypress": "^2.11.2",
+     "eslint-plugin-import": "^2.22.1",
+     "eslint-plugin-node": "^11.1.0",
+     "eslint-plugin-promise": "^4.2.1",
+     "git-changed-files": "^1.0.0",
+     "husky": "^4.3.5",
+     "lerna": "^3.22.1",
+     "lerna-changelog": "^1.0.1",
+     "lodash": ">=4.17.13",
+     "lodash.template": ">=4.5.0",
+     "meow": "8.0.0",
+     "mixin-deep": ">=1.3.2",
+     "prettier": "^1.15.3",
+     "set-value": ">=2.0.1",
+     "simple-git": "^2.24.0",
+     "sirv-cli": "^0.4.4"
   },
   "prettier": {
     "singleQuote": true,
@@ -34,8 +54,13 @@
     "cacheDir": ".changelog"
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "./scripts/hooks/apply-formatters.sh && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh && ./scripts/hooks/prevent-illegal-characters.sh"
-    }
+     "hooks": {
+        "pre-commit": "npm run code-quality && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh && ./scripts/hooks/prevent-illegal-characters.sh"
+     }
+  },
+  "codeQuality": {
+     "usePrettier": false,
+     "useEslint": false,
+     "eslintStopCommit": true
   }
 }
