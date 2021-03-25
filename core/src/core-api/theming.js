@@ -115,7 +115,7 @@ class LuigiTheming {
             const value = this.getCurrentTheme();
             const configValueFn = theming.nodeViewURLDecorator.queryStringParameter.value;
             return configValueFn ? configValueFn(value) : value;
-          },
+          }
         });
       }
     };

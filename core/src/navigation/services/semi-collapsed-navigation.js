@@ -32,7 +32,7 @@ class SemiCollapsibleNavigationClass {
 
     return {
       isSemiCollapsed: this.isSemiCollapsed,
-      semiCollapsible: this.semiCollapsible,
+      semiCollapsible: this.semiCollapsible
     };
   }
 
@@ -79,7 +79,7 @@ class SemiCollapsibleNavigationClass {
     if (this.valueChangedFns instanceof Array) {
       this.valueChangedFns.forEach(fn =>
         fn({
-          isSemiCollapsed: this.isSemiCollapsed,
+          isSemiCollapsed: this.isSemiCollapsed
         })
       );
     }

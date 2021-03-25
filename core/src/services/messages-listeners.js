@@ -6,7 +6,7 @@ class MessagesListenersClass {
   convertCustomMessageUserToInternal(message) {
     return {
       msg: 'custom',
-      data: message,
+      data: message
     };
   }
 }

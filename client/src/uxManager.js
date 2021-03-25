@@ -64,7 +64,7 @@ class UxManager extends LuigiClientBase {
   setDirtyStatus(isDirty) {
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.set-page-dirty',
-      dirty: isDirty,
+      dirty: isDirty
     });
   }
   /**
@@ -100,7 +100,7 @@ class UxManager extends LuigiClientBase {
     });
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.ux.confirmationModal.show',
-      data: { settings },
+      data: { settings }
     });
 
     const confirmationModalPromise = {};
@@ -170,7 +170,7 @@ class UxManager extends LuigiClientBase {
     }
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.ux.alert.show',
-      data: { settings },
+      data: { settings }
     });
 
     const alertPromises = this.getPromise('alerts') || {};
@@ -217,8 +217,8 @@ class UxManager extends LuigiClientBase {
       helpers.sendPostMessageToLuigiCore({
         msg: 'luigi.ux.set-current-locale',
         data: {
-          currentLocale: locale,
-        },
+          currentLocale: locale
+        }
       });
     }
   }

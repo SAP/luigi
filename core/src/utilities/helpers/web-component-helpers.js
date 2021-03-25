@@ -33,7 +33,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     if (rendererObj && rendererObj.use && rendererObj.use.extends) {
       this.superRenderer = resolveRenderer({
         use: rendererObj.use.extends,
-        config: rendererObj.config,
+        config: rendererObj.config
       });
     }
   }
@@ -163,7 +163,7 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcEle
         wcElementId: nodeId,
         wcElement: wcElement,
         action: el.action,
-        converter: el.dataConverter,
+        converter: el.dataConverter
       };
 
       if (listenerList) {

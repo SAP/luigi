@@ -17,7 +17,7 @@ export class linkManager extends LuigiCoreAPIBase {
       fromContext: null,
       fromClosestContext: false,
       relative: false,
-      link: '',
+      link: ''
     };
   }
 
@@ -36,8 +36,8 @@ export class linkManager extends LuigiCoreAPIBase {
         relative: relativePath,
         modal: modalSettings,
         splitView: splitViewSettings,
-        drawer: drawerSettings,
-      }),
+        drawer: drawerSettings
+      })
     };
 
     this.sendPostMessageToLuigiCore(navigationOpenMsg);
@@ -93,7 +93,7 @@ export class linkManager extends LuigiCoreAPIBase {
   goBack(goBackValue) {
     this.sendPostMessageToLuigiCore({
       msg: 'luigi.navigation.back',
-      goBackContext: goBackValue && JSON.stringify(goBackValue),
+      goBackContext: goBackValue && JSON.stringify(goBackValue)
     });
   }
 

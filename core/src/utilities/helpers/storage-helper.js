@@ -147,8 +147,8 @@ class StorageHelperClass {
       data: {
         id,
         status,
-        result,
-      },
+        result
+      }
     };
     IframeHelpers.getMicrofrontendsInDom()
       .filter(microfrontendObj => microfrontendObj.id === microfrontendId)

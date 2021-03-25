@@ -68,7 +68,7 @@ class RoutingClass {
     const method = pushState ? 'pushState' : 'replaceState';
     window.history[method](
       {
-        path: route,
+        path: route
       },
       '',
       route
@@ -285,7 +285,7 @@ class RoutingClass {
         pathParams: pathData.pathParams,
         hideSideNav: hideSideNavInherited || false,
         isolateView: nodeObject.isolateView || false,
-        tabNav: tabNavInherited,
+        tabNav: tabNavInherited
       };
 
       component.set(
@@ -294,9 +294,9 @@ class RoutingClass {
             ? {
                 viewUrl: previousCompData.viewUrl,
                 isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup,
+                viewGroup: previousCompData.viewGroup
               }
-            : {},
+            : {}
         })
       );
 
@@ -431,10 +431,10 @@ class RoutingClass {
 
     const alertSettings = {
       text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
-        route: notFoundPath,
+        route: notFoundPath
       }),
       type: 'error',
-      ttl: 1, //how many redirections the alert will 'survive'.
+      ttl: 1 //how many redirections the alert will 'survive'.
     };
     component.showAlert(alertSettings, false);
     this.navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
@@ -451,7 +451,7 @@ class RoutingClass {
   navigateToExternalLink(externalLink) {
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
-      ...externalLink,
+      ...externalLink
     };
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }

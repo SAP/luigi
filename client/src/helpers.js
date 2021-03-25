@@ -31,14 +31,14 @@ class Helpers {
   convertCustomMessageUserToInternal(message) {
     return {
       msg: 'custom',
-      data: message,
+      data: message
     };
   }
 
   convertStorageMessageToInternal(message) {
     return {
       msg: 'storage',
-      data: message,
+      data: message
     };
   }
 
@@ -56,7 +56,7 @@ class Helpers {
     this.listeners.push({
       name,
       eventFn,
-      listenerId,
+      listenerId
     });
     return listenerId;
   }

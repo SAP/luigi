@@ -28,7 +28,7 @@ export const ContextSwitcherHelpers = {
       link: (parentNodePath || '/') + opt.pathValue,
       id: opt.pathValue,
       testId: opt.testId,
-      customRendererCategory: opt.customRendererCategory,
+      customRendererCategory: opt.customRendererCategory
     }));
   },
 
@@ -125,5 +125,5 @@ export const ContextSwitcherHelpers = {
     }
     const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.options');
     return await ContextSwitcherHelpers.generateSwitcherNav(config, contextSwitcherOptions);
-  },
+  }
 };

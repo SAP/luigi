@@ -314,7 +314,7 @@ class RoutingHelpersClass {
             return {
               semanticObject,
               action,
-              params,
+              params
             };
           } else {
             console.warn(

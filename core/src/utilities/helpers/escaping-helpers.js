@@ -82,8 +82,8 @@ class EscapingHelpersClass {
         sanitizedText: acc.sanitizedText.replace(pattern, processedData),
         links: acc.links.concat({
           elemId,
-          url: encodeURI(this.sanitizeHtml(content.url)),
-        }),
+          url: encodeURI(this.sanitizeHtml(content.url))
+        })
       };
     }, initialValue);
   }

@@ -24,7 +24,7 @@ const createConfigStore = () => {
           fn(data);
         });
       }
-    },
+    }
   };
 };
 
@@ -52,8 +52,8 @@ const configReadyCallback = () => {
           target: LuigiElements.getLuigiContainer(),
           props: {
             store,
-            getTranslation,
-          },
+            getTranslation
+          }
         });
 
         Luigi.showAlert = settings => {
@@ -99,8 +99,8 @@ const configReadyCallback = () => {
             expand: () => app.$$.ctx.expandSplitView(),
             isCollapsed: () => app.$$.ctx.isSplitViewCollapsed(),
             isExpanded: () => app.$$.ctx.isSplitViewExpanded(),
-            exists: () => app.$$.ctx.existsSplitView(),
-          },
+            exists: () => app.$$.ctx.existsSplitView()
+          }
         };
 
         Luigi.pathExists = path => {

@@ -11,7 +11,7 @@ class SplitViewSvcClass {
       rightContentHeight: null,
       thresholdTop: null,
       thresholdBottom: null,
-      m_pos_prev: null,
+      m_pos_prev: null
     };
   }
 
@@ -35,8 +35,8 @@ class SplitViewSvcClass {
     return {
       mfSplitView: {
         displayed: false,
-        settings: {},
-      },
+        settings: {}
+      }
     };
   }
 
@@ -67,7 +67,7 @@ class SplitViewSvcClass {
       pathData,
       nodeParams,
       collapsed,
-      isDataPrepared: true,
+      isDataPrepared: true
     });
   }
 
@@ -83,12 +83,12 @@ class SplitViewSvcClass {
       );
       const wcInfo = {
         splitViewWC: document.querySelector('.iframeSplitViewCnt'),
-        splitViewWCData: { ...pathData, nodeParams },
+        splitViewWCData: { ...pathData, nodeParams }
       };
       component.set(wcInfo);
       component.dispatch('wcCreated', {
         ...wcInfo,
-        ...{ collapsed: false },
+        ...{ collapsed: false }
       });
     } else {
       const iframe = this.setIframe(
@@ -96,19 +96,19 @@ class SplitViewSvcClass {
         {
           context: pathData.context,
           pathParams: pathData.pathParams,
-          nodeParams,
+          nodeParams
         },
         component
       );
 
       const iframeInfo = {
         splitViewIframe: iframe,
-        splitViewIframeData: { ...pathData, nodeParams },
+        splitViewIframeData: { ...pathData, nodeParams }
       };
       component.set(iframeInfo);
       component.dispatch('iframeCreated', {
         ...iframeInfo,
-        ...{ collapsed: false },
+        ...{ collapsed: false }
       });
     }
 
@@ -144,7 +144,7 @@ class SplitViewSvcClass {
       return {
         percent: percentBottom,
         bottom,
-        top,
+        top
       };
     }
   }
@@ -170,7 +170,7 @@ class SplitViewSvcClass {
     return {
       top,
       bottom,
-      percent: GenericHelpers.computePercentFromPx(iv.rightContentHeight, bottom),
+      percent: GenericHelpers.computePercentFromPx(iv.rightContentHeight, bottom)
     };
   }
 
@@ -179,7 +179,7 @@ class SplitViewSvcClass {
       displayed: true,
       collapsed: settings.collapsed === true,
       nodepath,
-      settings,
+      settings
     };
 
     this.splitViewValues = this.calculateInitialValues(
@@ -190,7 +190,7 @@ class SplitViewSvcClass {
     this.sendMessageToClients('internal', {
       exists: true,
       size: this.splitViewValues.percent,
-      collapsed: mfSplitView.collapsed,
+      collapsed: mfSplitView.collapsed
     });
     comp.set({ mfSplitView, splitViewValues: this.splitViewValues });
   }
@@ -208,7 +208,7 @@ class SplitViewSvcClass {
             comp.set({ mfSplitView: comp.get().mfSplitView });
           }
           comp.dispatch('statusChanged', {
-            displayed: false,
+            displayed: false
           });
           IframeHelpers.getIframeContainer().style.paddingBottom = '';
           SplitViewSvc.sendMessageToClients('close.ok');
@@ -223,13 +223,13 @@ class SplitViewSvcClass {
     this.sendMessageToClients('internal', {
       exists: true,
       size: this.splitViewValues.percent,
-      collapsed: false,
+      collapsed: false
     });
     this.sendMessageToClients('expand.ok');
 
     comp.dispatch('statusChanged', {
       displayed: true,
-      collapsed: false,
+      collapsed: false
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
@@ -249,12 +249,12 @@ class SplitViewSvcClass {
           this.sendMessageToClients('internal', {
             exists: true,
             size: this.splitViewValues.percent,
-            collapsed: true,
+            collapsed: true
           });
           this.sendMessageToClients('collapse.ok');
           comp.dispatch('statusChanged', {
             displayed: true,
-            collapsed: true,
+            collapsed: true
           });
           this.getContainer().style.top = '';
           IframeHelpers.getIframeContainer().style.paddingBottom = '';
@@ -265,7 +265,7 @@ class SplitViewSvcClass {
   sendMessageToClients(name, data) {
     IframeHelpers.sendMessageToVisibleIframes({
       msg: `luigi.navigation.splitview.${name}`,
-      data,
+      data
     });
   }
 }

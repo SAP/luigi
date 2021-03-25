@@ -6,7 +6,7 @@ export class LuigiElement extends HTMLElement {
     super();
     this._shadowRoot = this.attachShadow({
       mode: 'closed',
-      delegatesFocus: false,
+      delegatesFocus: false
     });
     this.__initialized = false;
   }

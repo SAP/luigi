@@ -31,7 +31,7 @@ class StorageManager extends LuigiClientBase {
     return new Promise((resolve, reject) => {
       this.storageEventProcessor.execute(resolve, reject, 'setItem', {
         key,
-        value,
+        value
       });
     });
   }
@@ -63,7 +63,7 @@ class StorageManager extends LuigiClientBase {
   removeItem(key) {
     return new Promise((resolve, reject) => {
       this.storageEventProcessor.execute(resolve, reject, 'removeItem', {
-        key,
+        key
       });
     });
   }
@@ -154,7 +154,7 @@ class StorageEventProcessor {
   createPendingOperation(id, resolve, reject) {
     pendingOperation.set(id, {
       resolve,
-      reject,
+      reject
     });
   }
   sendMessage(id, operation, params) {
@@ -163,8 +163,8 @@ class StorageEventProcessor {
       data: {
         id,
         operation,
-        params,
-      },
+        params
+      }
     });
   }
 }

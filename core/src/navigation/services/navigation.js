@@ -5,7 +5,7 @@ import {
   EscapingHelpers,
   GenericHelpers,
   NavigationHelpers,
-  RoutingHelpers,
+  RoutingHelpers
 } from '../../utilities/helpers';
 import { NodeDataManagementStorage } from '../../services/node-data-management';
 import { LuigiConfig } from '../../core-api';
@@ -151,7 +151,7 @@ class NavigationClass {
     let result = {
       navigationPath: nodesInCurrentPath,
       context: context,
-      pathParams: pathParams,
+      pathParams: pathParams
     };
     if (nodeNamesInCurrentPath.length > 0 && childrenOfCurrentNode && childrenOfCurrentNode.length > 0) {
       const urlPathElement = nodeNamesInCurrentPath[0];
@@ -234,7 +234,7 @@ class NavigationClass {
         ),
         _virtualTree: true,
         _virtualPathIndex,
-        _virtualViewUrl,
+        _virtualViewUrl
       });
 
       const isVirtualChildren = node.children ? node.children[0]._virtualTree : false;

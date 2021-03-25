@@ -13,7 +13,7 @@ export const processHeaderSettings = component => {
       component.set({
         hasApps:
           component.get().showMainAppEntry ||
-          (component.get().appSwitcherItems && component.get().appSwitcherItems.length > 0),
+          (component.get().appSwitcherItems && component.get().appSwitcherItems.length > 0)
       });
       return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
         if (!header) {
@@ -49,7 +49,7 @@ export const processHeaderSettings = component => {
           const link = Object.assign(document.createElement('link'), {
             type: 'image/x-icon',
             rel: 'shortcut icon',
-            href: header.favicon,
+            href: header.favicon
           });
           const head = document.getElementsByTagName('head')[0];
 

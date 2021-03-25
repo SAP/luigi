@@ -80,7 +80,7 @@ class LuigiClient {
    */
   linkManager() {
     return new linkManager({
-      currentContext: lifecycleManager.currentContext,
+      currentContext: lifecycleManager.currentContext
     });
   }
   /**

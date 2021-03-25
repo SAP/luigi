@@ -72,8 +72,8 @@ class IframeClass {
       nodeParams: JSON.stringify({}),
       pathParams: JSON.stringify({}),
       internal: JSON.stringify({
-        currentLocale: LuigiI18N.getCurrentLocale(),
-      }),
+        currentLocale: LuigiI18N.getCurrentLocale()
+      })
     };
     IframeHelpers.sendMessageToVisibleIframes(message);
   }
@@ -104,8 +104,8 @@ class IframeClass {
                 nodeParams: JSON.stringify({}),
                 pathParams: JSON.stringify({}),
                 internal: JSON.stringify({
-                  currentLocale: LuigiI18N.getCurrentLocale(),
-                }),
+                  currentLocale: LuigiI18N.getCurrentLocale()
+                })
               };
               IframeHelpers.sendMessageToIframe(child, message);
             }
@@ -311,7 +311,7 @@ class IframeClass {
         context: JSON.stringify(Object.assign({}, componentData.context, { goBackContext })),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
-        internal: JSON.stringify(internalData),
+        internal: JSON.stringify(internalData)
       };
 
       const withSync = componentData.isNavigationSyncEnabled;

@@ -178,7 +178,7 @@ class AuthLayerSvcClass {
     if (onAuthConfigError) {
       await LuigiAuth.handleAuthEvent('onAuthConfigError', {
         idpProviderName: idpProviderName,
-        type: 'IdpProviderException',
+        type: 'IdpProviderException'
       });
     } else {
       throw this.IdpProviderException(`IDP Provider ${idpProviderName} does not exist.`);

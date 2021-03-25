@@ -1,21 +1,21 @@
 export const TOP_NAV_DEFAULTS = {
   logout: {
     label: 'Sign Out',
-    icon: 'log',
+    icon: 'log'
   },
   userSettingsProfileMenuEntry: {
     label: 'Settings',
-    icon: 'settings',
+    icon: 'settings'
   },
   userSettingsDialog: {
     dialogHeader: 'User Settings',
     saveBtn: 'Save',
-    dismissBtn: 'Cancel',
-  },
+    dismissBtn: 'Cancel'
+  }
 };
 
 export const NAVIGATION_DEFAULTS = {
   externalLink: {
-    sameWindow: false,
-  },
+    sameWindow: false
+  }
 };

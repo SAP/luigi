@@ -1,7 +1,7 @@
 import {
   DefaultCompoundRenderer,
   resolveRenderer,
-  registerEventListeners,
+  registerEventListeners
 } from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
 
@@ -32,7 +32,7 @@ class WebComponentSvcClass {
           if (wc_container.eventBus) {
             wc_container.eventBus.onPublishEvent(ev, nodeId, wc_id);
           }
-        },
+        }
       };
 
       if (wc.__postProcess) {
@@ -247,14 +247,14 @@ class WebComponentSvcClass {
               if (target) {
                 target.dispatchEvent(
                   new CustomEvent(listenerInfo.action, {
-                    detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail,
+                    detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
                   })
                 );
               } else {
                 console.debug('Could not find event target', listenerInfo);
               }
             });
-          },
+          }
         };
         navNode.compound.children.forEach((wc, index) => {
           const ctx = { ...context, ...wc.context };

@@ -26,7 +26,7 @@ export class linkManager extends LuigiClientBase {
       fromVirtualTreeRoot: false,
       fromParent: false,
       relative: false,
-      link: '',
+      link: ''
     };
   }
 
@@ -76,8 +76,8 @@ export class linkManager extends LuigiClientBase {
         intent: hasIntent,
         modal: modalSettings,
         splitView: splitViewSettings,
-        drawer: drawerSettings,
-      }),
+        drawer: drawerSettings
+      })
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
@@ -239,7 +239,7 @@ export class linkManager extends LuigiClientBase {
       resolveFn: function() {},
       then: function(resolveFn) {
         this.resolveFn = resolveFn;
-      },
+      }
     };
     this.setPromise('pathExistsPromises', pathExistsPromises);
 
@@ -263,8 +263,8 @@ export class linkManager extends LuigiClientBase {
       data: {
         id: currentId,
         link: path,
-        relative: path[0] !== '/',
-      },
+        relative: path[0] !== '/'
+      }
     };
     helpers.sendPostMessageToLuigiCore(pathExistsMsg);
     return pathExistsPromises[currentId];
@@ -290,7 +290,7 @@ export class linkManager extends LuigiClientBase {
   goBack(goBackValue) {
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.navigation.back',
-      goBackContext: goBackValue && JSON.stringify(goBackValue),
+      goBackContext: goBackValue && JSON.stringify(goBackValue)
     });
   }
 

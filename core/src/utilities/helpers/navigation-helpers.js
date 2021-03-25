@@ -115,7 +115,7 @@ class NavigationHelpersClass {
           key = this.virtualGroupPrefix + virtualGroupCounter;
         }
         metaInfo = {
-          label: key,
+          label: key
         };
       }
 
@@ -188,7 +188,7 @@ class NavigationHelpersClass {
           if (hasBadge && !cats[catLabel].badgeCounter) {
             cats[catLabel].badgeCounter = {
               label: '',
-              count: () => badgeCount,
+              count: () => badgeCount
             };
           } else if (hasBadge) {
             const updatedCount = cats[catLabel].badgeCounter.count() + badgeCount;
@@ -201,7 +201,7 @@ class NavigationHelpersClass {
             icon: node.category.icon,
             altText: node.category.altText,
             children: [],
-            badgeCounter: hasBadge && { label: '', count: () => badgeCount },
+            badgeCounter: hasBadge && { label: '', count: () => badgeCount }
           };
           children.push(cats[catLabel]);
         }
@@ -218,7 +218,7 @@ class NavigationHelpersClass {
       children,
       selectedNode,
       visibleNodeCount,
-      globalNavNodeCount,
+      globalNavNodeCount
     };
 
     if (badgeCountsToSumUp.length) {
@@ -226,8 +226,8 @@ class NavigationHelpersClass {
       tnd.totalBadgeNode = {
         badgeCounter: {
           count: () => badgeCountSum,
-          label: '',
-        },
+          label: ''
+        }
       };
     }
     return tnd;
