@@ -2,38 +2,19 @@
    "js": {
       "parser": "babel-flow",
       "trailingComma": "es5",
-      "tabWidth": 3,
+      "tabWidth": 2,
       "singleQuote": true,
-      "printWidth": 120
-   },
-   "json": {
-      "parser": "json",
-      "trailingComma": "es5",
-      "tabWidth": 3,
       "printWidth": 120
    },
    "ts": {
       "parser": "typescript",
       "trailingComma": "es5",
-      "tabWidth": 3,
+      "tabWidth": 2,
       "singleQuote": true,
       "printWidth": 120
    },
    "html": {
       "parser": "html",
-      "tabWidth": 3
-   },
-   "css": {
-      "parser": "css",
-      "trailingComma": "es5",
-      "tabWidth": 3
-   },
-   "scss": {
-      "parser": "scss",
-      "trailingComma": "es5",
-      "tabWidth": 3
-   },
-   "yaml": {
-      "parser": "yaml"
+      "tabWidth": 2
    }
 }
