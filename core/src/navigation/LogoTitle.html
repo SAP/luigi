@@ -14,7 +14,7 @@
 {#if title}
 {#if !hasApps}
 <span
-  class="fd-shellbar__title"
+  class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
 >{$getTranslation(title)}</span>
@@ -239,18 +239,23 @@
     margin: 0 0.5rem;
   }
 
-  .fd-shellbar__title {
-    padding: 0 0.625rem;
-  }
-
   .fd-shellbar__logo,
   .fd-shellbar__title {
     cursor: pointer;
+    max-width: 105px; /*due to limited space on the mobile and buttons (Profile, Logo, burger etc.)*/
+  }
+
+  .lui-shellbar-single-app-title {
+    padding: 0 0.625rem;
+    max-width: 140px;
   }
 
   @media (max-width: $desktopMinWidth - 1) {
     .fd-shellbar__subtitle {
       display: none;
+    }
+    .lui-shellbar-single-app-title {
+      padding-right: 0;
     }
   }
 </style>
