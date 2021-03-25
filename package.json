@@ -60,7 +60,7 @@
   },
   "codeQuality": {
      "usePrettier": true,
-     "useEslint": true,
+     "useEslint": false,
      "eslintStopCommit": true
   }
 }
