@@ -59,7 +59,7 @@
      }
   },
   "codeQuality": {
-     "usePrettier": true,
+     "usePrettier": false,
      "useEslint": false,
      "eslintStopCommit": true
   }
