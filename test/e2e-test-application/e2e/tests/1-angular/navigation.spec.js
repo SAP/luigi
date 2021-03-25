@@ -997,7 +997,6 @@ describe('Navigation', () => {
     });
   });
 
-
   describe('Link withoutSync/withSync', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr2');
@@ -1007,73 +1006,165 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.getIframeBody().then(result => {
         // Link on Main page PR2 exist
-        cy.wrap(result).contains(' with params: project to global settings and back');
+        cy.wrap(result).contains(
+          ' with params: project to global settings and back'
+        );
 
         // checking if we have NOT highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').not('.is-selected');
+        cy.get('a[href="/projects/pr2/virtual-tree"]')
+          .should('exist')
+          .not('.is-selected');
 
         // CLICK ON navigate-withoutSync-virtual-tree
         // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
-        cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]').click();
+        cy.wrap(result)
+          .find('a[data-testid="navigate-withoutSync-virtual-tree"]')
+          .click();
 
         // Url should changed in the main window
         cy.expectPathToBe('/projects/pr2/virtual-tree');
         // Click link is still here (we haven't changed page)
-        cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]')
+        cy.wrap(result).find(
+          'a[data-testid="navigate-withoutSync-virtual-tree"]'
+        );
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').should('have.class','is-selected');
-
+        cy.get('a[href="/projects/pr2/virtual-tree"]')
+          .should('exist')
+          .should('have.class', 'is-selected');
 
         // checking if we have NOT highlighted  menu item
-        cy.get('a[href="/projects/pr2/settings"]').should('exist').not('.is-selected');
+        cy.get('a[href="/projects/pr2/settings"]')
+          .should('exist')
+          .not('.is-selected');
 
         // CLICK ON navigate-withoutSync-virtual-tree
         // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
-        cy.wrap(result).find('a[data-testid="navigate-withoutSync-settings"]').click();
+        cy.wrap(result)
+          .find('a[data-testid="navigate-withoutSync-settings"]')
+          .click();
 
         // Url should changed in the main window
         cy.expectPathToBe('/projects/pr2/settings');
         // Click link is still here (we haven't changed page)
-        cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]')
+        cy.wrap(result).find(
+          'a[data-testid="navigate-withoutSync-virtual-tree"]'
+        );
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/settings"]').should('exist').should('have.class','is-selected');
-
+        cy.get('a[href="/projects/pr2/settings"]')
+          .should('exist')
+          .should('have.class', 'is-selected');
       });
-
     });
 
     it('withSync -> it should change page', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.getIframeBody().then(result => {
         // Link on Main page PR2 exist
-        cy.wrap(result).contains(' with params: project to global settings and back');
-
+        cy.wrap(result).contains(
+          ' with params: project to global settings and back'
+        );
 
         // checking if we have NOT highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').not('.is-selected');
-
+        cy.get('a[href="/projects/pr2/virtual-tree"]')
+          .should('exist')
+          .not('.is-selected');
 
         // CLICK ON navigate-withoutSync-virtual-tree
         // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
-        cy.wrap(result).find('a[data-testid="navigate-withSync-virtual-tree"]').click();
+        cy.wrap(result)
+          .find('a[data-testid="navigate-withSync-virtual-tree"]')
+          .click();
 
         // Url should changed in the main window
         cy.expectPathToBe('/projects/pr2/virtual-tree');
 
         // Check we have changed page
-        cy.wrap(result).contains(' with params: project to global settings and back').should('not.exist');
+        cy.wrap(result)
+          .contains(' with params: project to global settings and back')
+          .should('not.exist');
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]').should('exist').should('have.class','is-selected');
+        cy.get('a[href="/projects/pr2/virtual-tree"]')
+          .should('exist')
+          .should('have.class', 'is-selected');
 
         cy.wrap(result).contains('Add Segments To The Url content');
       });
-
     });
   });
 
+  describe('Global Navigation', () => {
+    context('Desktop', () => {
+      it('not render global side navigation when globalSideNavigation is false', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = false;
+          config.settings.experimental = { globalNav: true };
+          win.Luigi.configChanged();
 
+          cy.get('.lui-global-nav-visible').should('not.be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group').should('not.be.visible');
+        });
+      });
 
+      it('not render global side navigation when experimental globalNav is false', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = true;
+          config.settings.experimental = { globalNav: false };
+          win.Luigi.configChanged();
 
+          cy.get('.lui-global-nav-visible').should('not.be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group').should('not.be.visible');
+        });
+      });
 
+      it('render global side navigation', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = true;
+          config.settings.experimental = { globalNav: true };
+          win.Luigi.configChanged();
 
+          // render global nav tool bar
+          cy.get('.lui-global-nav-visible').should('be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group')
+            .should('be.visible')
+            .children()
+            .should('have.length', 4);
+
+          // render separator
+          cy.get('.lui-globalnav > .fd-toolbar__separator').should('exist');
+
+          // select global nav node
+          cy.get('button[data-testid="settings_settings"]')
+            .should('exist')
+            .not('.is-selected')
+            .click()
+            .should('have.class', 'is-selected');
+          cy.expectPathToBe('/settings');
+        });
+      });
+    });
+    context('Mobile', () => {
+      beforeEach(() => {
+        cy.viewport('iphone-6');
+      });
+
+      it('Responsive Global Side Navigation', () => {
+        cy.viewport(800, 600);
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.globalSideNavigation = true;
+          config.settings.experimental = { globalNav: true };
+          win.Luigi.configChanged();
+
+          cy.get('.lui-globalnav').should('be.visible');
+          cy.get('.lui-globalnav.fd-shellbar__group')
+            .should('be.visible')
+            .children()
+            .should('have.length', 4);
+        });
+      });
+    });
+  });
 });

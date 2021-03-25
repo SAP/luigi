@@ -92,6 +92,12 @@
     bind:searchResult
     bind:inputElem
     bind:luigiCustomSearchRenderer__slot
+    burgerTooltip="{burgerTooltip}"
+  />
+  <GlobalNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
   />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
@@ -99,6 +105,7 @@
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
     on:resizeTabNav="{onResizeTabNav}"
+    burgerTooltip="{burgerTooltip}"
   />
   {/if}
   {#if (tabNav && !hideNav)}
@@ -121,6 +128,7 @@
   import LeftNav from './navigation/LeftNav.html';
   import TopNav from './navigation/TopNav.html';
   import TabNav from './navigation/TabNav.html';
+  import GlobalNav from './navigation/GlobalNav.html';
   import {
     afterUpdate,
     onMount,
@@ -137,7 +145,8 @@
     IframeHelpers,
     AuthHelpers,
     StorageHelper,
-    UserSettingsHelper
+    UserSettingsHelper,
+    NavigationHelpers
   } from './utilities/helpers';
   import {
     LuigiI18N,
@@ -211,6 +220,7 @@
   let thirdPartyCookiesCheck;
   let searchProvider;
   let internalUserSettingsObject = {};
+  let burgerTooltip;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -462,6 +472,7 @@
     // subsequential route handling
     RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
       const pv = preservedViews;
+      // TODO: check if bookmarkable modal is interferring here
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
@@ -934,6 +945,7 @@
     mfModal.displayed = false;
     mfModal.nodepath = undefined;
     mfModal.settings = {};
+    modalIframe = undefined;
   };
 
   resetMicrofrontendModalData();
@@ -946,6 +958,13 @@
     mfModal.displayed = true;
     mfModal.nodepath = nodepath;
     mfModal.settings = settings;
+
+    const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+      'routing.showModalPathInUrl'
+    );
+    if (showModalPathInUrl) {
+      Routing.appendModalDataToUrl(nodepath, settings);
+    }
   };
 
   const modalIframeCreated = event => {
@@ -959,11 +978,24 @@
   };
 
   const closeModal = event => {
+
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
+        const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+          'routing.showModalPathInUrl'
+        );
+        if (showModalPathInUrl) {
+          Routing.removeModalDataFromUrl();
+        }
         resetMicrofrontendModalData();
       });
     } else if (modalWC) {
+      const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+        'routing.showModalPathInUrl'
+      );
+      if (showModalPathInUrl) {
+        Routing.removeModalDataFromUrl();
+      }
       resetMicrofrontendModalData();
     }
   };
@@ -1237,7 +1269,7 @@
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           resetMicrofrontendModalData();
-          openViewInModal(path, e.data.params.modal);
+          openViewInModal(path, e.data.params.modal === true ? {} : e.data.params.modal);
         } else if (e.data.params.splitView !== undefined) {
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
@@ -1462,10 +1494,35 @@
     if (responsiveNavSetting === 'simple') {
       document.body.classList.add('lui-simpleSlideInNav');
       simpleSlideInNav = true;
+      if (NavigationHelpers.getBurgerTooltipConfig()) {
+        const [
+          collapseNavTooltip,
+          expandNavTooltip
+        ] = NavigationHelpers.getBurgerTooltipConfig();
+        if (collapseNavTooltip && expandNavTooltip) {
+          burgerTooltip = document.body.classList.contains('lui-leftNavToggle')
+            ? collapseNavTooltip
+            : expandNavTooltip;
+        }
+      }
     } else if (responsiveNavSetting === 'simpleMobileOnly') {
       document.body.classList.add('lui-simpleSlideInNav', 'lui-mobileOnly');
       simpleSlideInNav = true;
     } else if (responsiveNavSetting === 'semiCollapsible' || 'Fiori3') {
+      if (NavigationHelpers.getBurgerTooltipConfig()) {
+        const [
+          collapseNavTooltip,
+          expandNavTooltip
+        ] = NavigationHelpers.getBurgerTooltipConfig();
+        if (collapseNavTooltip && expandNavTooltip) {
+          const collapsedNavState = JSON.parse(
+            localStorage.getItem(NavigationHelpers.COL_NAV_KEY)
+          );
+          burgerTooltip = collapsedNavState
+            ? collapseNavTooltip
+            : expandNavTooltip;
+        }
+      }
       document.body.classList.add('lui-semiCollapsible');
     }
     thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
@@ -1675,9 +1732,54 @@
     }
   }
 
+  :global(.lui-global-nav-visible) {
+    :global(.iframeContainer),
+    :global(.spinnerContainer) {
+      left: calc(var(--luigi__left-sidenav--width) + #{$globalNavWidth});
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop),
+    :global(#tabsContainer) {
+      left: calc(var(--luigi__left-sidenav--width) + #{$globalNavWidth});
+    }
+  }
+
+  :global(.lui-global-nav-visible > .no-side-nav) {
+    .iframeContainer,
+    .spinnerContainer {
+      left: $globalNavWidth;
+    }
+
+    :global(#tabsContainer) {
+      left: $globalNavWidth;
+    }
+  }
+
+  :global(.semiCollapsed.lui-global-nav-visible) {
+    :global(.iframeContainer),
+    :global(.spinnerContainer) {
+      left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+    }
+    :global(.splitViewContainer),
+    :global(#splitViewDragger),
+    :global(#splitViewDraggerBackdrop),
+    :global(#tabsContainer) {
+      left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+    }
+  }
+
+  :global(.lui-global-nav-visible.lui-simpleSlideInNav.lui-leftNavToggle) {
+    :global(#tabsContainer) {
+      left: $globalNavWidth;
+    }
+  }
+
   @media (max-width: $desktopMinWidth) {
-    :global(.fd-shellbar__title) {
-      display: none;
+    :global(.lui-global-nav-visible) {
+      :global(#tabsContainer) {
+        left: $globalNavWidth;
+      }
     }
   }
 
@@ -1721,6 +1823,22 @@
       }
     }
 
+    :global(body.lui-global-nav-visible.lui-simpleSlideInNav) {
+      .iframeContainer,
+      .spinnerContainer {
+        left: $globalNavWidth;
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
+        left: $globalNavWidth;
+      }
+
+      :global(.fd-app__sidebar) {
+        left: calc(var(--luigi__left-sidenav--width) * -1);
+      }
+    }
+
     :global(body.lui-simpleSlideInNav.lui-leftNavToggle) {
       :global(.fd-app__sidebar) {
         display: block;
@@ -1740,15 +1858,6 @@
       :global(#splitViewDraggerBackdrop),
       :global(#tabsContainer) {
         left: $leftNavWidthCollapsed;
-      }
-    }
-
-    :global(.fd-dialog, .fd-message-box) {
-      &__content {
-        &:not(.fd-dialog__content--mobile, .fd-message-box__content--mobile) {
-          max-width: 90%;
-          min-width: 90%;
-        }
       }
     }
   }

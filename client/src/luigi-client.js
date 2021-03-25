@@ -72,6 +72,13 @@ class LuigiClient {
   getUserSettings() {
     return lifecycleManager.getUserSettings();
   }
+  isLuigiClientInitialized() {
+    return lifecycleManager.isLuigiClientInitialized();
+  }
+  luigiClientInit() {
+    return lifecycleManager.luigiClientInit();
+  }
+
   /**
    * @private
    */

@@ -174,7 +174,10 @@ function addToChangelog(versionText, changelog, lastline) {
     let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
       '00',
       currentDatetime.getMonth() + 1
-    )}${currentDatetime.getDate()}`;
+    )}${currentDatetime.getDate()}${padLeft(
+      '00',
+      currentDatetime.getHours()
+    )}${padLeft('00', currentDatetime.getMinutes())}`;
     prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
   }
 
@@ -222,8 +225,8 @@ function addToChangelog(versionText, changelog, lastline) {
     let changelog = require('child_process')
       .execSync(
         base +
-        '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
-        prevVersion
+          '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
+          prevVersion
       )
       .toString()
       .replace('## Unreleased', versionText);

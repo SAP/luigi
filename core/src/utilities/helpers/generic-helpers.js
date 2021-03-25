@@ -110,7 +110,7 @@ class GenericHelpersClass {
    * @param {path} string full url, relative or absolute path
    */
   prependOrigin(path) {
-    if (path.startsWith('http')) {
+    if (!path || path.startsWith('http')) {
       return path;
     }
     const hasLeadingSlash = path.startsWith('/');
@@ -330,9 +330,11 @@ class GenericHelpersClass {
    * @returns true, if feature enabled, false otherwise.
    */
   requestExperimentalFeature(expFeatureName, showWarn) {
-    var val = LuigiConfig.getConfigValue('settings.experimental.' + expFeatureName);
-    if(showWarn && !val) {
-      console.warn("Experimental feature not enabled: ", expFeatureName);
+    const val = Boolean(
+      LuigiConfig.getConfigValue('settings.experimental.' + expFeatureName)
+    );
+    if (showWarn && !val) {
+      console.warn('Experimental feature not enabled: ', expFeatureName);
     }
     return val;
   }

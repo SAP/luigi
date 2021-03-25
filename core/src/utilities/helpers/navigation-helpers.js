@@ -1,6 +1,11 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
-import { LuigiAuth, LuigiConfig, LuigiFeatureToggles } from '../../core-api';
-import { AuthHelpers } from './';
+import {
+  LuigiAuth,
+  LuigiConfig,
+  LuigiFeatureToggles,
+  LuigiI18N
+} from '../../core-api';
+import { AuthHelpers, GenericHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
 
@@ -171,6 +176,7 @@ class NavigationHelpersClass {
     const rawChildren = await Navigation.getFilteredChildren(pathData[0]);
     let selectedNode = null;
     let visibleNodeCount = 0;
+    let globalNavNodeCount = 0;
     let cats = {};
     const children = [];
     let badgeCountsToSumUp = [];
@@ -184,7 +190,11 @@ class NavigationHelpersClass {
 
       if (!node.hideFromNav) {
         visibleNodeCount++;
+        if (node.globalNav) {
+          globalNavNodeCount++;
+        }
       }
+
       let badgeCount;
       const hasBadge = !!node.badgeCounter;
       if (hasBadge) {
@@ -231,7 +241,8 @@ class NavigationHelpersClass {
     const tnd = {
       children,
       selectedNode,
-      visibleNodeCount
+      visibleNodeCount,
+      globalNavNodeCount
     };
 
     if (badgeCountsToSumUp.length) {
@@ -299,6 +310,25 @@ class NavigationHelpersClass {
       const path = node.redirectPath || '/';
       Routing.navigateTo(path);
     }
+  }
+
+  getBurgerTooltipConfig() {
+    const burgerTooltipSettings = LuigiConfig.getConfigValue(
+      'settings.burgerTooltip'
+    );
+    if (
+      GenericHelpers.isObject(burgerTooltipSettings) ||
+      burgerTooltipSettings === true
+    ) {
+      const expandNavTooltip = burgerTooltipSettings.navExpanded
+        ? LuigiI18N.getTranslation(burgerTooltipSettings.navExpanded)
+        : 'Collapse navigation';
+      const collapseNavTooltip = burgerTooltipSettings.navCollapsed
+        ? LuigiI18N.getTranslation(burgerTooltipSettings.navCollapsed)
+        : 'Expand navigation';
+      return [collapseNavTooltip, expandNavTooltip];
+    }
+    return undefined;
   }
 }
 

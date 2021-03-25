@@ -797,7 +797,7 @@ Shows a confirmation modal.
 -   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
     -   `settings.type` **(`"confirmation"` \| `"success"` \| `"warning"` \| `"error"` \| `"information"`)** the content of the modal type. (Optional)
     -   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
-    -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body (optional, default `"Are you sure you want to do this?"`)
+    -   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body. It supports HTML formatting elements such as `<br>`, `<b>`, `<strong>`, `<i>`, `<em>`, `<mark>`, `<small>`, `<del>`, `<ins>`, `<sub>`, `<sup>`. (optional, default `"Are you sure you want to do this?"`)
     -   `settings.buttonConfirm` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| `false`)** the label for the modal confirmation button. If set to `false`, the button will not be shown. (optional, default `"Yes"`)
     -   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
 

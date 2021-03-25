@@ -68,7 +68,7 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with interceptor', () => {
-      const icf = () => { };
+      const icf = () => {};
       const interceptor = sinon.spy(icf);
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -317,7 +317,6 @@ describe('Iframe-helpers', () => {
         .returns([mockContainer('drawer')])
         .withArgs('.iframeUserSettingsCtn iframe') // 'usersettings'
         .returns([mockContainer('usersettings')]);
-
 
       GenericHelpers.isElementVisible.callsFake(container => {
         // second container is not active

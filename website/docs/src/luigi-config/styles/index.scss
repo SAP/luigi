@@ -540,13 +540,6 @@ $side-nav-width-mobile: 260px;
 
     &.lui-simpleSlideInNav.lui-leftNavToggle {
       .fd-app__sidebar,
-      .fd-side-nav {
-        width: $side-nav-width-mobile;
-      }
-    }
-
-    &.lui-simpleSlideInNav.lui-leftNavToggle {
-      .fd-app__sidebar,
       .fd-side-nav,
       .lui-side-nav__footer{
         display: flex;

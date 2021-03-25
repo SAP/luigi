@@ -159,21 +159,26 @@ There are two possibilities to add feature toggles to the active feature toggles
 Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code. 
 
 #### Usage
+* Before using feature toggles, you first have to include the feature toggle query parameter in the [general settings](general-settings.md) part of your Luigi configuration file. This allows you to enable setting the feature toggles via URL :
+  ```
+  featureToggles = { queryStringParam: 'ft' };
+  ```
 * To **set** feature toggles, you have two possibilities:
    1. Set feature toggles to the active feature toggle list through [Luigi Core API](luigi-core-api.md#featuretoggles):
   ```javascript
     Luigi.featureToggles().setFeatureToggle('ft1');
   ```
-  2. Set feature toggles to the active feature toggle list via URL parameters:
+  2. Set feature toggles to the active feature toggle list via URL parameters by appending a comma-separated list of strings. The parameter name is the predefined **featureToggles.queryStringParam** :
   ```
   http://localhost:4200/projects/pr1?ft=ft1,ft2
   ```
+
 * To **unset** feature toggles, you have to use the Core API:
   ```javascript
     Luigi.featureToggles().unsetFeatureToggle('ft1');
   ```
 * To **restrict node visiblity with feature toggles**:
-  You can define a list of feature toggles for a particular top or left navigation node. Then, you can use the [visibleForFeatureToggles](navigation-parameters-reference.md#visibleForFeatureToggles) parameter in order to display the node for certain feature toggles.
+  You can define a list of feature toggles for a particular top or left navigation node. For that you can use the [visibleForFeatureToggles](navigation-parameters-reference.md#visibleForFeatureToggles) parameter in order to display the node for certain feature toggles.
   For example, this node will be visible if `ft1` is added to the active feature toggle list:
   ```javascript
   {
@@ -185,6 +190,8 @@ Luigi allows you to implement and configure feature toggles. They can be used to
       visibleForFeatureToggles: ['ft1']
   }
   ```
+  If you define a list of multiple feature toggles, the node will be restricted and it will be shown only if **all** of the specified feature toggles are set.
+
   It is also possible to negate the visibility of a node by adding an exclamation mark at the beginning of the feature toggle name.
   In this example, the node is always visible except if `ft1` is set as an active feature toggle:
   ```javascript
@@ -247,6 +254,32 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
     https://example.com/#?intent=Sales-edit?id=100;
   ```
 
+### Defer Luigi Client Initialization 
 
+#### Overview 
+
+In some scenarios, the micro frontend application needs to decide when to finalize the Luigi Client initialization. By default, Luigi Client is initialized when you import the library in your micro frontend application.
+However, it can be the case that a complex application takes too long to load all the modules. Since Luigi Client initialization is done automatically when it is imported, Luigi Core will assume that the micro frontend is fully loaded and ready for further actions when it is not.
+This may lead to some problems, such as UI synchronization issues where the side menu highlights an item, but the micro-frontend application shows different content.
+
+#### Usage
+
+These are the steps you can use to defer Luigi Client initialization :
+  
+  1. In your micro frontend HTML that serves as entry file, you must add the `defer-luigi-init` attribute into the `<head>` element as follows:
+  ```html
+      <html>
+        <head defer-luigi-init>
+        ....
+        </head>
+        .....
+      </html>
+    ```
+  2. Then, you can use the Luigi Client API inside your micro frontend:
+  ```javascript
+      LuigiClient.luigiClientInit();
+  ```
+ <!-- add-attribute:class:warning -->
+> **NOTE**: This will only initialize Luigi Client if it hasn't already been initialized.
 
 <!-- accordion:end -->

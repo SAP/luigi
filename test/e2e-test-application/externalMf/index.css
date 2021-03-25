@@ -1,21 +1,21 @@
 .green {
-    color: green;
+  color: green;
 }
 
 .red {
-    color: red;
+  color: red;
 }
 
 .active {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 .mobileBack {
-    display: none;
+  display: none;
 }
 
 @media (max-width: 600px) {
-    .mobileBack {
-        display: block;
-    }
+  .mobileBack {
+    display: block;
+  }
 }

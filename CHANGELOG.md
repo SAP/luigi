@@ -25,6 +25,33 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.12.0] (2021-03-24)
+
+#### :rocket: Added
+* [#1841](https://github.com/SAP/luigi/pull/1841) Bookmarkable modals ([@maxmarkus](https://github.com/maxmarkus))
+* [#1935](https://github.com/SAP/luigi/pull/1935) Add warning if both virtualTree and children nodes are defined  ([@ndricimrr](https://github.com/ndricimrr))
+* [#1894](https://github.com/SAP/luigi/pull/1894) Add more flexibility to control handshake ([@legteodav](https://github.com/legteodav))
+
+#### :bug: Fixed
+* [#1942](https://github.com/SAP/luigi/pull/1942) Fix 'disabled loadingIndicator' bug when opening in modal ([@ndricimrr](https://github.com/ndricimrr))
+* [#1916](https://github.com/SAP/luigi/pull/1916) Shell header improvements ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#1912](https://github.com/SAP/luigi/pull/1912) Change color of active link ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v1.11.0] (2021-03-01)
+
+#### :rocket: Added
+* [#1900](https://github.com/SAP/luigi/pull/1900) Confirmation modal enhancements ([@stanleychh](https://github.com/stanleychh))
+* [#1900](https://github.com/SAP/luigi/pull/1884) Apply guidelines for user settings dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+
+
+
 ## [v1.10.0] (2021-02-11)
 
 #### :rocket: Added
@@ -990,3 +1017,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.8.1]: https://github.com/SAP/luigi/compare/v1.8.0...v1.8.1
 [v1.9.0]: https://github.com/SAP/luigi/compare/v1.8.1...v1.9.0
 [v1.10.0]: https://github.com/SAP/luigi/compare/v1.9.0...v1.10.0
+[v1.11.0]: https://github.com/SAP/luigi/compare/v1.10.0...v1.11.0
+[v1.12.0]: https://github.com/SAP/luigi/compare/v1.11.0...v1.12.0

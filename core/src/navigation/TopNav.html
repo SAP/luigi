@@ -5,11 +5,13 @@
   tabindex="0"
 >
   <div class="fd-shellbar__group fd-shellbar__group--product">
-    {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" || responsiveNavSetting==="Fiori3"}
+    {#if responsiveNavSetting==="simple" || responsiveNavSetting==="simpleMobileOnly" ||
+    responsiveNavSetting==="Fiori3"}
     <button
       class="fd-shellbar__button fd-button lui-burger"
       on:click="{burgerClickHandler}"
       tabindex="0"
+      title="{burgerTooltip}"
     >
       <i class="sap-icon sap-icon--menu2"></i>
     </button>
@@ -45,7 +47,7 @@
     {/if}
     {#if children && pathData.length > 0}
     {#each children as node, i}
-    {#if !node.hideFromNav}
+    {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
     {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
@@ -140,7 +142,7 @@
     -->
 
     <!-- dropdown for top nav nodes on smaller screens -->
-    {#if visibleNodeCount > 0 || isProductSwitcherAvailable || contextSwitcherConfig}
+    {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable || contextSwitcherConfig}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -203,7 +205,7 @@
                 </li>
                 {/if}
                 {#each children as node,i}
-                {#if !node.hideFromNav}
+                {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
                 {#if !node.isCat}
                 <li class="fd-menu__item">
                   <a
@@ -421,7 +423,8 @@
     NavigationHelpers,
     RoutingHelpers,
     StateHelpers,
-    EventListenerHelpers
+    EventListenerHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
@@ -432,6 +435,7 @@
   export let isLoggedIn = false;
   export let hideNavComponent;
   export let responsiveNavSetting;
+  export let showGlobalNav;
   export let pathData;
   let previousPathData;
   export let pathParams;
@@ -439,6 +443,7 @@
   export let children;
   export let selectedNode;
   export let visibleNodeCount;
+  export let globalNavNodeCount;
   export let totalBadgeNode;
   export let isProductSwitcherAvailable;
   export let productSwitcherConfig;
@@ -454,6 +459,7 @@
   export let displaySearchResult;
   export let displayCustomSearchResult;
   export let searchResult;
+  export let burgerTooltip;
 
   let store = getContext('store');
   let contextSwitcherToggle = false;
@@ -469,6 +475,7 @@
       selectedNode = tnd.selectedNode;
       visibleNodeCount = tnd.visibleNodeCount;
       totalBadgeNode = tnd.totalBadgeNode;
+      globalNavNodeCount = tnd.globalNavNodeCount;
       window.TOPNAVDATA = tnd.children;
       previousPathData = pathData;
     }
@@ -500,6 +507,9 @@
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        showGlobalNav =
+          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+          GenericHelpers.requestExperimentalFeature('globalNav', true);
       },
       ['navigation']
     );
@@ -624,6 +634,29 @@
     } else {
       semicollapsedNav();
     }
+    setBurgerTooltip();
+  }
+
+  function setBurgerTooltip() {
+    if (!NavigationHelpers.getBurgerTooltipConfig()) {
+      return;
+    }
+    const [
+      collapseNavTooltip,
+      expandNavTooltip
+    ] = NavigationHelpers.getBurgerTooltipConfig();
+    if (collapseNavTooltip && expandNavTooltip) {
+      if (document.body.classList.contains('lui-simpleSlideInNav')) {
+        burgerTooltip = document.body.classList.contains('lui-leftNavToggle')
+          ? collapseNavTooltip
+          : expandNavTooltip;
+      }
+      if (document.body.classList.contains('lui-semiCollapsible')) {
+        burgerTooltip = document.body.classList.contains('semiCollapsed')
+          ? collapseNavTooltip
+          : expandNavTooltip;
+      }
+    }
   }
 
   export function simpleNav() {
@@ -651,6 +684,10 @@
   //remove default outline of all dropdowns in shellbar
   .fd-shellbar:focus {
     outline: none;
+  }
+
+  .fd-shellbar {
+    padding: 0 0.5rem;
   }
 
   // Fix FD Styles for icons in Shellbar 0.11.2
@@ -695,16 +732,11 @@
   }
 
   .lui-burger {
-    margin-right: 5px;
     cursor: pointer;
     color: var(--sapShell_TextColor, #fff);
   }
 
   @media (min-width: $desktopMinWidth) {
-    .lui-burger {
-      margin-left: 0px;
-      margin-right: 15px;
-    }
     :global(.lui-mobileOnly) .lui-burger {
       display: none;
     }

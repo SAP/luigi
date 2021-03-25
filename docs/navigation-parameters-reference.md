@@ -43,6 +43,16 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: sets the prefix character when using the `LuigiClient.linkManager().withParam()` function, which provides a simple way to attach query parameters to a view URL for activities such as sorting and filtering. Only this prefix can pass query parameters to micro frontends. A different prefix has to be used to pass parameters to the Luigi app itself to avoid potential conflicts between the two.
 - **default**: the default prefix character is `~`, but you may also define a custom one.
 
+### showModalPathInUrl
+- **type**: boolean
+- **description**: defines if modal paths are persisted in the URL to make them bookmarkable. The query param which is used as persistence can be configured with [`routing.modalPathParam`](#modalPathParam) setting. 
+- **default**: the default is `false`, which means no modal paths are shown in the URL.
+
+### modalPathParam
+- **type**: string
+- **description**: sets the parameter name when using the `LuigiClient.linkManager().openAsModal()` function, which provides a simple way to bookmark a modal view URL. It is appended as query param to the base URL. An example would be `example.com/your/path?modal=/another/path`. This setting requires [`routing.showModalPathInUrl`](#showModalPathInUrl) to be set to `true` to be effective.
+- **default**: the default parameter name is `modal`, but you may also define a custom one.
+
 ### skipRoutingForUrlPatterns
 - **type**: RegExp[]
 - **description**: defines regex patterns the router will skip when listening for path changes. This parameter is used for excluding **redirect_uri** parameters.
@@ -98,7 +108,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **type**: boolean
 - **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
 
-### viewGroupsSettings
+### viewGroupSettings
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node parameters, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
@@ -147,7 +157,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **attributes**:
   - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter
  is `false`.
-  - **url** is the external URL that the node leads to.
+  - **URL** is the external URL that the node leads to.
 
 ### label
 - **type**: string
@@ -678,7 +688,7 @@ The profile section is a configurable drop-down list available in the top naviga
  is ignored. It has the following attributes:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this attribute
    is `false`.
-    - **url** is the external URL that the link leads to.
+    - **URL** is the external URL that the link leads to.
 
 ### staticUserInfoFn
 - **type**: function
@@ -728,7 +738,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
  is ignored. It has the following attributes:
     - **sameWindow** defines if the external URL is opened in the current tab or in a new one. The default value for this attribute
    is `false`.
-    - **url** is the external URL that the link leads to.
+    - **URL** is the external URL that the link leads to.
 
 ## App switcher
 

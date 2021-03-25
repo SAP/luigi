@@ -4,9 +4,10 @@ import { Navigation } from '../navigation/services/navigation';
 import {
   GenericHelpers,
   RoutingHelpers,
-  IframeHelpers
+  IframeHelpers,
+  EventListenerHelpers
 } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N } from '../core-api';
+import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
@@ -21,6 +22,16 @@ class RoutingClass {
           params
         )
       : '';
+  }
+
+  normalizePath(path) {
+    const hasLeadingSlash = path.indexOf('/') === 0;
+    let url = new URL(path, 'http://valid.url');
+    const ret = url.pathname + url.search + url.hash;
+    if (!hasLeadingSlash && ret.indexOf('/') === 0) {
+      return ret.substr(1);
+    }
+    return ret;
   }
 
   concatenatePath(basePath, relativePath) {
@@ -58,6 +69,9 @@ class RoutingClass {
     }
 
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      if (!navSync) {
+        EventListenerHelpers.hashChangeWithoutSync = true;
+      }
       window.location.hash = route;
       return;
     }
@@ -110,8 +124,10 @@ class RoutingClass {
           .join('/');
       }
     }
-    return GenericHelpers.addLeadingSlash(
-      this.concatenatePath(windowPath, node.link)
+    return this.normalizePath(
+      GenericHelpers.addLeadingSlash(
+        this.concatenatePath(windowPath, node.link)
+      )
     );
   }
 
@@ -200,6 +216,8 @@ class RoutingClass {
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
+
+      await this.handleBookmarkableModalPath();
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
@@ -395,6 +413,20 @@ class RoutingClass {
     }
   }
 
+  async handleBookmarkableModalPath() {
+    const additionalModalPath = RoutingHelpers.getModalPathFromPath();
+    if (additionalModalPath) {
+      const modalParams = RoutingHelpers.getModalParamsFromPath();
+      const { nodeObject } = await Navigation.extractDataFromPath(
+        additionalModalPath
+      );
+      LuigiNavigation.openAsModal(
+        additionalModalPath,
+        nodeObject.openNodeInModal || modalParams
+      );
+    }
+  }
+
   /**
       This function takes the previous node data and the new node path and compares
       if the navigation path of both contains a dynamic node.
@@ -572,6 +604,77 @@ class RoutingClass {
       wc_container,
       componentData.context
     );
+  }
+
+  appendModalDataToUrl(modalPath, modalParams) {
+    // global setting for persistence in url .. default false
+    let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
+    const params = RoutingHelpers.getQueryParams();
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+
+    const prevModalPath = params[modalParamName];
+    if (prevModalPath !== modalPath) {
+      params[modalParamName] = modalPath;
+      if (modalParams && Object.keys(modalParams).length) {
+        params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+      }
+      const url = new URL(location.href);
+      const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
+        'routing.useHashRouting'
+      );
+      if (hashRoutingActive) {
+        const queryParamIndex = location.hash.indexOf(queryParamSeparator);
+        if (queryParamIndex !== -1) {
+          url.hash = url.hash.slice(0, queryParamIndex);
+        }
+        url.hash = `${
+          url.hash
+        }${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+      } else {
+        url.search = `?${RoutingHelpers.encodeParams(params)}`;
+      }
+      history.replaceState(window.state, '', url.href);
+    }
+  }
+
+  removeModalDataFromUrl() {
+    const params = RoutingHelpers.getQueryParams();
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+    let url = new URL(location.href);
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
+      'routing.useHashRouting'
+    );
+    if (hashRoutingActive) {
+      let modalParamsObj = {};
+
+      if (params[modalParamName]) {
+        modalParamsObj[modalParamName] = params[modalParamName];
+      }
+      if (params[`${modalParamName}Params`]) {
+        modalParamsObj[`${modalParamName}Params`] =
+          params[`${modalParamName}Params`];
+      }
+      let prevModalPath = RoutingHelpers.encodeParams(modalParamsObj);
+      if (url.hash.includes(`?${prevModalPath}`)) {
+        url.hash = url.hash.replace(`?${prevModalPath}`, '');
+      } else if (url.hash.includes(`&${prevModalPath}`)) {
+        url.hash = url.hash.replace(`&${prevModalPath}`, '');
+      }
+    } else {
+      let searchParams = new URLSearchParams(url.search.slice(1));
+      searchParams.delete(modalParamName);
+      searchParams.delete(`${modalParamName}Params`);
+      let finalUrl = '';
+      Array.from(searchParams.keys()).forEach(searchParamKey => {
+        finalUrl +=
+          (finalUrl === '' ? '?' : '&') +
+          searchParamKey +
+          '=' +
+          searchParams.get(searchParamKey);
+      });
+      url.search = finalUrl;
+    }
+    history.replaceState(window.state, '', url.href);
   }
 }
 

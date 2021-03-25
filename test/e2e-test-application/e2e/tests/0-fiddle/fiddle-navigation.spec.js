@@ -620,7 +620,7 @@ describe('Fiddle', () => {
             sublabel: 'Theme',
             icon: '/assets/github-logo.png',
             title: 'Theming',
-            viewUrl: 'http://localhost:8080/index.html',
+            viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
             settings: {
               theme: {
                 type: 'enum',
@@ -639,8 +639,7 @@ describe('Fiddle', () => {
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
       });
-      cy.get('[data-testid="lui-us-header"]').should('be.visible');
-      cy.get('[data-testid="lui-us-header"]').contains('User Settings');
+      cy.get('.lui-usersettings-dialog').should('be.visible');
 
       cy.get('.lui-usersettings-left-nav')
         .contains('Language & Region')
@@ -653,7 +652,7 @@ describe('Fiddle', () => {
         .should('contain', 'German');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
-      cy.get('[data-testid="lui-us-header"]').should('not.be.visible');
+      cy.get('.lui-usersettings-dialog').should('not.be.visible');
     });
     it('Check if external mf is loaded in custom user settings editor', () => {
       cy.visitWithFiddleConfig('/', newConfig);
@@ -667,7 +666,59 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/index.html');
+        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
+      });
+    });
+    it('Hash routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
+      newConfig.navigation.nodes[0].children[0].viewUrl =
+        '/examples/microfrontends/hello-luigi-cdn.html';
+      newConfig.routing.showModalPathInUrl = true;
+      newConfig.routing.modalPathParam = 'mymodal';
+      newConfig.routing.useHashRouting = true;
+
+      cy.visitWithFiddleConfig('/home', newConfig);
+
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ mp: 'one' })
+          .openAsModal('/home/one');
+      });
+
+      cy.wait(150); // it takes some time for the nodeParams be available
+      cy.getModalWindow().then(win => {
+        assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+      });
+
+      cy.expectPathToBe(
+        '/home?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+      );
+    });
+
+    it('Path routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
+      newConfig.navigation.nodes[0].children[0].viewUrl =
+        '/examples/microfrontends/hello-luigi-cdn.html';
+      newConfig.routing.showModalPathInUrl = true;
+      newConfig.routing.modalPathParam = 'mymodal';
+      newConfig.routing.useHashRouting = false;
+
+      cy.visitWithFiddleConfig('/home', newConfig);
+
+      cy.window().then(win => {
+        win.Luigi.navigation()
+          .withParams({ mp: 'one' })
+          .openAsModal('/home/one');
+      });
+
+      cy.wait(150); // it takes some time for the nodeParams be available
+      cy.getModalWindow().then(win => {
+        assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
+      });
+
+      cy.expectPathToBe('/home');
+      cy.location().should(location => {
+        expect(location.search).to.eq(
+          '?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+        );
       });
     });
   });

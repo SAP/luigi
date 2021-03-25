@@ -15,7 +15,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function () { };
+    this.configReadyCallback = function() {};
     this.initialized = false;
     this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
@@ -246,7 +246,9 @@ class LuigiConfig {
    */
   async readUserSettings() {
     const userSettingsConfig = await this.getConfigValueAsync('userSettings');
-    const userSettings = userSettingsConfig ? userSettingsConfig : await this.getConfigValueAsync('settings.userSettings');
+    const userSettings = userSettingsConfig
+      ? userSettingsConfig
+      : await this.getConfigValueAsync('settings.userSettings');
     if (
       userSettings &&
       GenericHelpers.isFunction(userSettings.readUserSettings)
@@ -272,16 +274,25 @@ class LuigiConfig {
    */
   async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
     const userSettingsConfig = await this.getConfigValueAsync('userSettings');
-    const userSettings = userSettingsConfig ? userSettingsConfig : await this.getConfigValueAsync('settings.userSettings');
-    if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
-      return userSettings.storeUserSettings(userSettingsObj, previousUserSettingsObj);
-    }
-    else {
-      localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
+    const userSettings = userSettingsConfig
+      ? userSettingsConfig
+      : await this.getConfigValueAsync('settings.userSettings');
+    if (
+      userSettings &&
+      GenericHelpers.isFunction(userSettings.storeUserSettings)
+    ) {
+      return userSettings.storeUserSettings(
+        userSettingsObj,
+        previousUserSettingsObj
+      );
+    } else {
+      localStorage.setItem(
+        this.USER_SETTINGS_KEY,
+        JSON.stringify(userSettingsObj)
+      );
     }
     this.configChanged();
   }
 }
-
 
 export const config = new LuigiConfig();

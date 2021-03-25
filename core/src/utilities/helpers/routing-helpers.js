@@ -12,6 +12,8 @@ import { Routing } from '../../services/routing';
 class RoutingHelpersClass {
   constructor() {
     this.defaultContentViewParamPrefix = '~';
+    this.defaultQueryParamSeparator = '?';
+    this.defaultModalViewParamName = 'modal';
   }
 
   getLastNodeObject(pathData) {
@@ -77,6 +79,16 @@ class RoutingHelpersClass {
     return result;
   }
 
+  encodeParams(dataObj) {
+    let queryArr = [];
+    for (let key in dataObj) {
+      queryArr.push(
+        encodeURIComponent(key) + '=' + encodeURIComponent(dataObj[key])
+      );
+    }
+    return queryArr.join('&');
+  }
+
   getNodeParams(params) {
     const result = {};
     const paramPrefix = this.getContentViewParamPrefix();
@@ -119,6 +131,61 @@ class RoutingHelpersClass {
     return prefix;
   }
 
+  getModalViewParamName() {
+    let paramName = LuigiConfig.getConfigValue('routing.modalPathParam');
+    if (!paramName) {
+      paramName = this.defaultModalViewParamName;
+    }
+    return paramName;
+  }
+
+  /**
+   * Get the query param separator which is used with hashRouting
+   * Default: :
+   * @example /home?modal=(urlencoded)/some-modal?modalParams=(urlencoded){...}&otherParam=hmhm
+   * @returns the first query param separator (like ? for path routing)
+   */
+  getHashQueryParamSeparator() {
+    return this.defaultQueryParamSeparator;
+  }
+
+  getQueryParam(paramName) {
+    return this.getQueryParams()[paramName];
+  }
+  getQueryParams() {
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue(
+      'routing.useHashRouting'
+    );
+    return hashRoutingActive
+      ? this.getLocationHashQueryParams()
+      : this.getLocationSearchQueryParams();
+  }
+  getLocationHashQueryParams() {
+    const queryParamIndex = location.hash.indexOf(
+      this.defaultQueryParamSeparator
+    );
+    return queryParamIndex !== -1
+      ? RoutingHelpers.parseParams(location.hash.slice(queryParamIndex + 1))
+      : {};
+  }
+  getLocationSearchQueryParams() {
+    return location.search
+      ? RoutingHelpers.parseParams(location.search.slice(1))
+      : {};
+  }
+
+  getModalPathFromPath() {
+    const path = this.getQueryParam(this.getModalViewParamName());
+    return path && decodeURIComponent(path);
+  }
+
+  getModalParamsFromPath() {
+    const modalParamsStr = this.getQueryParam(
+      `${this.getModalViewParamName()}Params`
+    );
+    return modalParamsStr && JSON.parse(decodeURIComponent(modalParamsStr));
+  }
+
   addRouteChangeListener(callback) {
     const hashRoutingActive = LuigiConfig.getConfigValue(
       'routing.useHashRouting'
@@ -135,7 +202,9 @@ class RoutingHelpersClass {
 
     if (hashRoutingActive) {
       return EventListenerHelpers.addEventListener('hashchange', event => {
-        callback(Routing.getHashPath(event.newURL));
+        const withoutSync = EventListenerHelpers.hashChangeWithoutSync;
+        EventListenerHelpers.hashChangeWithoutSync = false;
+        callback(Routing.getHashPath(event.newURL), withoutSync);
       });
     }
 

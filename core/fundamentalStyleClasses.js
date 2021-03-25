@@ -56,10 +56,10 @@ module.exports = [
   // './node_modules/fundamental-styles/dist/textarea.css',
   //'./node_modules/fundamental-styles/dist/tile.css',
   //'./node_modules/fundamental-styles/dist/time.css',
-  //'./node_modules/fundamental-styles/dist/title.css',
+  './node_modules/fundamental-styles/dist/title.css',
   //'./node_modules/fundamental-styles/dist/token.css',
   //'./node_modules/fundamental-styles/dist/tokenizer.css',
-  //'./node_modules/fundamental-styles/dist/toolbar.css',
+  './node_modules/fundamental-styles/dist/toolbar.css',
   //'./node_modules/fundamental-styles/dist/tree.css',
   './node_modules/fundamental-styles/dist/helpers.css'
 ];

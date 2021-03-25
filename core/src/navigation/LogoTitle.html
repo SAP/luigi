@@ -1,11 +1,11 @@
 <span
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
+  on:click="{() => goTo('/')}"
 >
   {#if hasLogo}
   <img
     data-testid="luigi-topnav-logo"
-    on:click="{() => goTo('/')}"
     bind:this="{logo}"
     alt="SAP"
   >
@@ -14,7 +14,7 @@
 {#if title}
 {#if !hasApps}
 <span
-  class="fd-shellbar__title"
+  class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
 >{$getTranslation(title)}</span>
@@ -235,14 +235,27 @@
     height: 24px;
   }
 
+  .fd-shellbar__logo {
+    margin: 0 0.5rem;
+  }
+
   .fd-shellbar__logo,
   .fd-shellbar__title {
     cursor: pointer;
+    max-width: 105px; /*due to limited space on the mobile and buttons (Profile, Logo, burger etc.)*/
+  }
+
+  .lui-shellbar-single-app-title {
+    padding: 0 0.625rem;
+    max-width: 140px;
   }
 
   @media (max-width: $desktopMinWidth - 1) {
     .fd-shellbar__subtitle {
       display: none;
+    }
+    .lui-shellbar-single-app-title {
+      padding-right: 0;
     }
   }
 </style>

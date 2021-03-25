@@ -11,6 +11,7 @@
      "full-code-quality-eslint-core": "node code_quality.js -- mode=full_eslint sourcePaths=core/src,core/test report=core_full_eslint_report.html",
      "full-code-quality-eslint-client": "node code_quality.js -- mode=full_eslint sourcePaths=client/src report=client_full_eslint_report.html",
      "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/e2e/tests report=e2e-test_full_eslint_report.html"
+     "change-node-version": "node ./scripts/change.node.version.js"
   },
   "devDependencies": {
      "@starptech/prettyhtml": "^0.10.0",

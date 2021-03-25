@@ -43,7 +43,7 @@ For more information on setting caching with view refreshing and preloading for 
 
 Further options related to view groups can be configured using the parameters listed here. These parameters should be placed just before `nodes:` in the `navigation:` section of the configuration file:
 
-### viewGroupsSettings
+### viewGroupSettings
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
@@ -176,7 +176,9 @@ When loading, the **viewUrl** uses the following dynamic URL parameters:
 ```javascript
 Luigi.setConfig({
   routing: {
-    nodeParamPrefix: '~'
+    nodeParamPrefix: '~',
+    showModalPathInUrl: true,
+    modalPathParam: 'modal'
   },
   navigation: {
     nodes: [
