@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnChanges,
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChanges
-} from '@angular/core';
+import { Component, OnChanges, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 import { uxManager } from '@luigi-project/client';
 

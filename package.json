@@ -6,7 +6,7 @@
       "code-quality-prettier": "node code_quality.js -- mode=pre_commit_prettier",
       "code-quality-eslint": "node code_quality.js -- mode=pre_commit__eslint",
       "full-code-quality": "node code_quality.js -- mode=full",
-      "full-code-quality-prettier": "node code_quality.js -- mode=full_prettier sourcePaths=core/src,client/src",
+      "full-code-quality-prettier": "node code_quality.js -- mode=full_prettier sourcePaths=core/src,client/src,test/e2e-test-application/e2e,test/e2e-test-application/src",
       "full-code-quality-eslint": "node code_quality.js -- mode=full_eslint",
       "full-code-quality-eslint-core": "node code_quality.js -- mode=full_eslint sourcePaths=core/src,core/test report=core_full_eslint_report.html",
       "full-code-quality-eslint-client": "node code_quality.js -- mode=full_eslint sourcePaths=client/src report=client_full_eslint_report.html",

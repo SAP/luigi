@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { linkManager, uxManager } from '@luigi-project/client';
 
@@ -11,11 +8,9 @@ import { linkManager, uxManager } from '@luigi-project/client';
   styleUrls: ['./drawer.component.scss']
 })
 export class DrawerComponent implements OnInit {
-
   public linkManager = linkManager;
   public uxManager = uxManager;
-  public constructor() { }
+  public constructor() {}
 
-  public ngOnInit() { }
-
+  public ngOnInit() {}
 }

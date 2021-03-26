@@ -69,12 +69,8 @@ describe('Modal Microfrontend', () => {
 
       cy.get('[data-testid=modal-mf] iframe').then(ifr => {
         const src = ifr.attr('src');
-        const url = new URL(
-          src.startsWith('http') ? src : window.location.origin + src
-        );
-        expect(`${url.pathname}${url.hash}`).to.equal(
-          '/sampleapp.html#/settings'
-        );
+        const url = new URL(src.startsWith('http') ? src : window.location.origin + src);
+        expect(`${url.pathname}${url.hash}`).to.equal('/sampleapp.html#/settings');
       });
     });
 
@@ -192,12 +188,7 @@ describe('iframeCreationInterceptor test', () => {
     cy.visitLoggedIn('/projects/pr2');
     cy.window().then(win => {
       const config = win.Luigi.getConfig();
-      config.settings.iframeCreationInterceptor = (
-        iframe,
-        viewGroup,
-        navigationNode,
-        microFrontendType
-      ) => {
+      config.settings.iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => {
         const style = 'border: 3px dashed ';
         switch (microFrontendType) {
           case 'main':
@@ -227,11 +218,7 @@ describe('iframeCreationInterceptor test', () => {
       cy.wrap($iframeBody)
         .contains('open view in split view')
         .click();
-      cy.get('#splitViewContainer iframe').should(
-        'have.attr',
-        'style',
-        'border: 3px dashed red;'
-      );
+      cy.get('#splitViewContainer iframe').should('have.attr', 'style', 'border: 3px dashed red;');
     });
   });
 
@@ -240,11 +227,7 @@ describe('iframeCreationInterceptor test', () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
-      cy.get('[data-testid=modal-mf] iframe').should(
-        'have.attr',
-        'style',
-        'border: 3px dashed blue;'
-      );
+      cy.get('[data-testid=modal-mf] iframe').should('have.attr', 'style', 'border: 3px dashed blue;');
     });
   });
 });

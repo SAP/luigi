@@ -60,26 +60,21 @@
 </div>
 
 <script>
-  import Backdrop from "./Backdrop.html";
-  import {
-    afterUpdate,
-    createEventDispatcher,
-    onMount,
-    onDestroy
-  } from "svelte";
-  import { fade } from "svelte/transition";
+  import Backdrop from './Backdrop.html';
+  import { afterUpdate, createEventDispatcher, onMount, onDestroy } from 'svelte';
+  import { fade } from 'svelte/transition';
   const dispatch = createEventDispatcher();
 
-  import { Navigation } from "./navigation/services/navigation";
+  import { Navigation } from './navigation/services/navigation';
   import {
     EventListenerHelpers,
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers
-  } from "./utilities/helpers";
-  import { LuigiConfig } from "./core-api";
-  import { KEYCODE_ESC } from "./utilities/keycode.js";
-  import { WebComponentService } from "./services/web-components";
+  } from './utilities/helpers';
+  import { LuigiConfig } from './core-api';
+  import { KEYCODE_ESC } from './utilities/keycode.js';
+  import { WebComponentService } from './services/web-components';
 
   export let settings;
   export let isDataPrepared = false;
@@ -94,13 +89,12 @@
   let isModal = true;
 
   const prepareNodeData = async path => {
-    const pathUrlRaw =
-      path && path.length ? GenericHelpers.getPathWithoutHash(path) : "";
-    const params = RoutingHelpers.parseParams(pathUrlRaw.split("?")[1]);
+    const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     nodeParams = RoutingHelpers.getNodeParams(params);
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
-    isDrawer = settings.isDrawer || typeof nodeObject.drawer === "object";
+    isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
     if (isDrawer) {
       isModal = false;
       if (settings.header === undefined) {
@@ -111,10 +105,10 @@
       }
       if (settings.backdrop === undefined || !settings.backdrop) {
         settings.backdrop = false;
-        dispatch("drawerState", { activeDrawer: true });
+        dispatch('drawerState', { activeDrawer: true });
       }
       if (!settings.size) {
-        settings.size = "s";
+        settings.size = 's';
       }
     } else {
       if (!settings.title) {
@@ -137,12 +131,12 @@
         await setModalSize();
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
-          document.querySelector(".iframeModalCtn"),
+          document.querySelector('.iframeModalCtn'),
           pathData.context,
           nodeObject
         );
-        dispatch("wcCreated", {
-          modalWC: document.querySelector(".iframeModalCtn"),
+        dispatch('wcCreated', {
+          modalWC: document.querySelector('.iframeModalCtn'),
           modalWCData: { ...pathData, nodeParams }
         });
         wcCreated = true;
@@ -155,7 +149,7 @@
           pathParams: pathData.pathParams,
           nodeParams
         });
-        dispatch("iframeCreated", {
+        dispatch('iframeCreated', {
           modalIframe: iframe,
           modalIframeData: { ...pathData, nodeParams }
         });
@@ -167,18 +161,18 @@
   };
 
   const setModalSize = async () => {
-    const elem = document.getElementsByClassName("lui-modal-mf");
-    let modalSize = "80%";
+    const elem = document.getElementsByClassName('lui-modal-mf');
+    let modalSize = '80%';
     if (settings.size) {
-      if (settings.size === "l") {
-        modalSize = "80%";
-      } else if (settings.size === "m") {
-        modalSize = "60%";
-      } else if (settings.size === "s") {
-        modalSize = "40%";
+      if (settings.size === 'l') {
+        modalSize = '80%';
+      } else if (settings.size === 'm') {
+        modalSize = '60%';
+      } else if (settings.size === 's') {
+        modalSize = '40%';
       }
     }
-    elem[0].setAttribute("style", `width:${modalSize};height:${modalSize}`);
+    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
   };
 
   const createIframeModal = async (viewUrl, componentData) => {
@@ -195,34 +189,34 @@
       viewUrl,
       undefined,
       nodeObject,
-      "modal"
+      'modal'
     );
 
-    const iframeCtn = document.querySelector(".iframeModalCtn");
+    const iframeCtn = document.querySelector('.iframeModalCtn');
     iframeCtn.appendChild(iframe);
     return iframe;
   };
 
   async function setDrawerSize(elem) {
-    let styleSettings = "";
-    const elemDrawer = document.getElementsByClassName("drawer");
-    const drawerDialog = document.getElementsByClassName("drawer-dialog");
+    let styleSettings = '';
+    const elemDrawer = document.getElementsByClassName('drawer');
+    const drawerDialog = document.getElementsByClassName('drawer-dialog');
     if (settings.size) {
-      if (settings.size === "l") {
+      if (settings.size === 'l') {
         styleSettings = `width:75%;`;
-      } else if (settings.size === "m") {
+      } else if (settings.size === 'm') {
         styleSettings = `width:50%;`;
-      } else if (settings.size === "s") {
+      } else if (settings.size === 's') {
         styleSettings = `width:25%;`;
-      } else if (settings.size === "xs") {
+      } else if (settings.size === 'xs') {
         styleSettings = `width:15.5%;`;
       }
     }
     if (settings.backdrop) {
-      elemDrawer[0].setAttribute("style", styleSettings);
+      elemDrawer[0].setAttribute('style', styleSettings);
     } else {
-      drawerDialog[0].setAttribute("style", styleSettings);
-      elemDrawer[0].setAttribute("style", "width:100%");
+      drawerDialog[0].setAttribute('style', styleSettings);
+      elemDrawer[0].setAttribute('style', 'width:100%');
     }
   }
 
@@ -234,15 +228,15 @@
   });
 
   const onMessage = async e => {
-    if ("luigi.show-loading-indicator" === e.data.msg) {
+    if ('luigi.show-loading-indicator' === e.data.msg) {
       showLoadingIndicator = true;
     }
 
-    if ("luigi.hide-loading-indicator" === e.data.msg) {
+    if ('luigi.hide-loading-indicator' === e.data.msg) {
       showLoadingIndicator = false;
     }
 
-    if ("luigi.get-context" === e.data.msg) {
+    if ('luigi.get-context' === e.data.msg) {
       const loadingIndicatorAutoHideEnabled =
         !nodeObject ||
         !nodeObject.loadingIndicator ||
@@ -252,41 +246,36 @@
       }
     }
 
-    if ("luigi.close-modal" === e.data.msg) {
-      dispatch("close", { type: "modal" });
+    if ('luigi.close-modal' === e.data.msg) {
+      dispatch('close', { type: 'modal' });
     }
   };
 
   const backdropStateChanged = event => {
-    if (
-      event &&
-      event.detail &&
-      event.detail.backdropActive &&
-      event.detail.drawer
-    ) {
+    if (event && event.detail && event.detail.backdropActive && event.detail.drawer) {
       //renderBackdrop = false;
     }
   };
 
   onMount(() => {
-    EventListenerHelpers.addEventListener("message", onMessage);
+    EventListenerHelpers.addEventListener('message', onMessage);
   });
 
   onDestroy(() => {
-    EventListenerHelpers.removeEventListener("message", onMessage);
+    EventListenerHelpers.removeEventListener('message', onMessage);
   });
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
-      dispatch("close");
+      dispatch('close');
     }
   }
 </script>
 
 <style type="text/scss">
-  @import "styles/variables";
+  @import 'styles/variables';
   .drawer-dialog {
     position: absolute;
     top: $topNavHeight;

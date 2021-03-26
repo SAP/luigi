@@ -1,8 +1,5 @@
 <svelte:window on:resize="{updateSizes}" />
-<div
-  id="splitViewContainer"
-  class="splitViewContainer {collapsed?'lui-collapsed':''}"
->
+<div id="splitViewContainer" class="splitViewContainer {collapsed?'lui-collapsed':''}">
   <Backdrop
     area="split-view"
     disable="{disableBackdrop}"
@@ -11,10 +8,7 @@
   <div class="lui-split-view">
     {#if collapsed}
     <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
-      <a
-        class="lui-collapse-btn"
-        on:click|stopPropagation|preventDefault="{expand}"
-      >
+      <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{expand}">
         <i class="sap-icon sap-icon--navigation-up-arrow"></i>
       </a>
     </div>
@@ -28,30 +22,27 @@
 <div id="splitViewDraggerBackdrop"></div>
 <div id="splitViewDragger" on:mousedown|stopPropagation="{onDragStart}">
   <div class="splitViewSeparator"></div>
-  <a
-    class="lui-collapse-btn"
-    on:click|stopPropagation|preventDefault="{collapse}"
-  >
+  <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{collapse}">
     <i class="sap-icon sap-icon--navigation-down-arrow"></i>
   </a>
 </div>
 {/if}
 <script>
-  import Backdrop from "./Backdrop.html";
+  import Backdrop from './Backdrop.html';
   import {
     afterUpdate,
     onDestroy,
     onMount,
     createEventDispatcher,
     getContext
-  } from "svelte";
-  import { LuigiElements } from "./core-api";
-  import { SplitViewSvc } from "./services";
+  } from 'svelte';
+  import { LuigiElements } from './core-api';
+  import { SplitViewSvc } from './services';
   import {
     EventListenerHelpers,
     GenericHelpers,
     IframeHelpers
-  } from "./utilities/helpers";
+  } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -75,9 +66,7 @@
   export let isDataPrepared = false;
   export let disableBackdrop;
   let wasDataPrepared = false;
-  let getUnsavedChangesModalPromise = getContext(
-    "getUnsavedChangesModalPromise"
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -100,27 +89,27 @@
       set: obj => {
         if (obj) {
           Object.getOwnPropertyNames(obj).forEach(prop => {
-            if (prop === "splitViewSettings") {
+            if (prop === 'splitViewSettings') {
               splitViewSettings = obj.splitViewSettings;
-            } else if (prop === "lastNode") {
+            } else if (prop === 'lastNode') {
               lastNode = obj.lastNode;
-            } else if (prop === "pathData") {
+            } else if (prop === 'pathData') {
               pathData = obj.pathData;
-            } else if (prop === "nodeParams") {
+            } else if (prop === 'nodeParams') {
               nodeParams = obj.nodeParams;
-            } else if (prop === "collapsed") {
+            } else if (prop === 'collapsed') {
               collapsed = obj.collapsed;
-            } else if (prop === "isDataPrepared") {
+            } else if (prop === 'isDataPrepared') {
               isDataPrepared = obj.isDataPrepared;
-            } else if (prop === "currentNode") {
+            } else if (prop === 'currentNode') {
               currentNode = obj.currentNode;
-            } else if (prop === "splitViewIframe") {
+            } else if (prop === 'splitViewIframe') {
               splitViewIframe = obj.splitViewIframe;
-            } else if (prop === "splitViewIframeData") {
+            } else if (prop === 'splitViewIframeData') {
               splitViewIframeData = obj.splitViewIframeData;
-            } else if (prop === "splitViewWC") {
+            } else if (prop === 'splitViewWC') {
               splitViewWC = obj.splitViewWC;
-            } else if (prop === "splitViewWCData") {
+            } else if (prop === 'splitViewWCData') {
               splitViewWCData = obj.splitViewWCData;
             }
           });
@@ -150,7 +139,7 @@
   const setSplitViewSize = () => {
     const draggerBackdrop = SplitViewSvc.getDraggerBackdrop();
     if (draggerBackdrop) {
-      draggerBackdrop.style.display = "none";
+      draggerBackdrop.style.display = 'none';
     }
 
     updateElementSelectors();
@@ -169,16 +158,16 @@
     // actions, like collapse, expand, setSize as well as register
     // event handlers: onCollapse, onExpand, onResize
 
-    if ("luigi.navigation.splitview.close" === e.data.msg) {
+    if ('luigi.navigation.splitview.close' === e.data.msg) {
       SplitViewSvc.close(getComponentWrapper());
     }
-    if ("luigi.navigation.splitview.collapse" === e.data.msg) {
+    if ('luigi.navigation.splitview.collapse' === e.data.msg) {
       collapse();
     }
-    if ("luigi.navigation.splitview.expand" === e.data.msg) {
+    if ('luigi.navigation.splitview.expand' === e.data.msg) {
       expand();
     }
-    if ("luigi.navigation.splitview.resize" === e.data.msg) {
+    if ('luigi.navigation.splitview.resize' === e.data.msg) {
       const percentBottom = parseInt(e.data.data);
       SplitViewSvc.calculateAndSetSplitViewValues(
         percentBottom,
@@ -191,7 +180,7 @@
       }
       setSplitViewSize();
       SplitViewSvc.sendMessageToClients(
-        "resize.ok",
+        'resize.ok',
         SplitViewSvc.splitViewValues.percent
       );
     }
@@ -202,7 +191,7 @@
     // bind(this) changes the signature, required to
     // be assigned to var in order to removeEventListener
     messageHandler = _messageHandler.bind(this);
-    EventListenerHelpers.addEventListener("message", messageHandler);
+    EventListenerHelpers.addEventListener('message', messageHandler);
   });
 
   // [svelte-upgrade warning]
@@ -217,7 +206,7 @@
   });
 
   onDestroy(() => {
-    window.removeEventListener("message", messageHandler);
+    window.removeEventListener('message', messageHandler);
   });
 
   // [svelte-upgrade suggestion]
@@ -229,7 +218,7 @@
   export async function expand() {
     await SplitViewSvc.expand(getComponentWrapper());
     if (elements.draggerBackdrop) {
-      elements.draggerBackdrop.style.display = "none";
+      elements.draggerBackdrop.style.display = 'none';
     }
   }
   export function updateSizes() {
@@ -255,7 +244,7 @@
     const resize = function resize(re) {
       const diff = m_pos - re.y;
 
-      const dragTop = parseInt(getComputedStyle(elements.draggable, "").top);
+      const dragTop = parseInt(getComputedStyle(elements.draggable, '').top);
 
       if (isNaN(dragTop) || diff === 0) {
         // happens in collapsed state on mouse over draggable
@@ -284,7 +273,7 @@
         !newValues.bottom ||
         newValues.top == SplitViewSvc.internalValues.m_pos_prev
       ) {
-        SplitViewSvc.getDraggerBackdrop().style.display = "none";
+        SplitViewSvc.getDraggerBackdrop().style.display = 'none';
         return;
       }
       SplitViewSvc.internalValues.m_pos_prev = newValues.top;
@@ -292,29 +281,29 @@
 
       setSplitViewSize();
 
-      SplitViewSvc.sendMessageToClients("resize.ok", newValues.percent);
+      SplitViewSvc.sendMessageToClients('resize.ok', newValues.percent);
     };
 
     const clearListeners = function clearListeners() {
-      document.removeEventListener("mouseup", onMouseUp);
-      document.removeEventListener("mousemove", resize);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', resize);
     };
     const addListeners = function resetListeners() {
-      document.addEventListener("mouseup", onMouseUp);
-      document.addEventListener("mousemove", resize);
+      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', resize);
     };
 
     updateElementSelectors();
     clearListeners();
     addListeners();
-    SplitViewSvc.getDraggerBackdrop().style.display = "block";
+    SplitViewSvc.getDraggerBackdrop().style.display = 'block';
   }
 
   const setDraggerVisibility = visible => {
     let dragger = SplitViewSvc.getDraggerButton();
-    if (dragger) dragger.style.display = visible ? "block" : "none";
+    if (dragger) dragger.style.display = visible ? 'block' : 'none';
     dragger = SplitViewSvc.getCollapsedDraggerButton();
-    if (dragger) dragger.style.display = visible ? "block" : "none";
+    if (dragger) dragger.style.display = visible ? 'block' : 'none';
   };
 
   const backdropStateChanged = event => {
@@ -323,7 +312,7 @@
 </script>
 
 <style type="text/scss">
-  @import "styles/variables";
+  @import 'styles/variables';
 
   $collapsedSplitviewHeight: 38px;
   $colorNeutral4: #89919a;
