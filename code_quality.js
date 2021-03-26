@@ -113,10 +113,10 @@ const prettifyFile = (file, config) => {
     if (text === pretty) {
       return;
     }
-    console.log('Running prettier the file ' + file);
+    console.log('Running prettier on the file: ' + file);
     fs.writeFileSync(file, pretty);
   } catch (error) {
-    console.log('Error in prettier the file ' + file + ': \n' + error);
+    console.log('Error in running prettier the file ' + file + ': \n' + error);
   }
 };
 
@@ -237,7 +237,7 @@ const preCommit = async () => {
   }
 
   if (codeQualityConfig.useEslint) {
-   console.log('\x1b[33m%s\x1b[0m', 'Running ESlint in pre-commit');
+    console.log('\x1b[33m%s\x1b[0m', 'Running ESlint in pre-commit');
     await preCommitEslint(filesByExtension);
   } else {
     console.log('ESlint is disabled. Skipping...');

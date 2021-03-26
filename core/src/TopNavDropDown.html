@@ -41,19 +41,14 @@
 />
 {/if}
 <script>
-  import BadgeCounter from "./navigation/BadgeCounter.html";
-  import MobileTopNav from "./navigation/MobileTopNavDropDown.html";
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from "svelte";
-  import { Routing } from "./services/routing";
-  import { Navigation } from "./navigation/services/navigation";
-  import { NavigationHelpers } from "./utilities/helpers";
-  import { RoutingHelpers } from "./utilities/helpers";
-  import { LuigiI18N } from "./core-api";
+  import BadgeCounter from './navigation/BadgeCounter.html';
+  import MobileTopNav from './navigation/MobileTopNavDropDown.html';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import { Routing } from './services/routing';
+  import { Navigation } from './navigation/services/navigation';
+  import { NavigationHelpers } from './utilities/helpers';
+  import { RoutingHelpers } from './utilities/helpers';
+  import { LuigiI18N } from './core-api';
 
   const dispatch = createEventDispatcher();
 
@@ -61,10 +56,8 @@
   export let children;
   export let node;
   let pathParams;
-  let getUnsavedChangesModalPromise = getContext(
-    "getUnsavedChangesModalPromise"
-  );
-  let openViewInModal = getContext("openViewInModal");
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let openViewInModal = getContext('openViewInModal');
   const getNodeSubtitle = () => {};
 
   //TODO refactor
@@ -100,10 +93,7 @@
     getUnsavedChangesModalPromise().then(() => {
       if (node.openNodeInModal) {
         const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        openViewInModal(
-          route,
-          node.openNodeInModal === true ? {} : node.openNodeInModal
-        );
+        openViewInModal(route, node.openNodeInModal === true ? {} : node.openNodeInModal);
       } else {
         Routing.handleRouteClick(node, getComponentWrapper());
       }
@@ -116,14 +106,14 @@
   }
 
   export function closeSubNav() {
-    dispatch("close");
+    dispatch('close');
   }
 
   export function setViewportHeightVariable() {
     // get the viewport height and multiple it by 1% to get a value for a vh unit
     let vh = window.innerHeight * 0.01;
     // set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
   function hasOpenUIicon(node) {

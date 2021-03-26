@@ -12,9 +12,9 @@
 >
   <div class="tabsContainerWrapper">
     <div class="tabsContainer luigi-tabsContainer">
-      {#each Object.entries(children) as [key, nodes], index} {#if key ===
-      'undefined' || key.indexOf(virtualGroupPrefix) === 0} {#each nodes as
-      node, index2} {#if !node.hideFromNav} {#if node.label}
+      {#each Object.entries(children) as [key, nodes], index} {#if key === 'undefined' ||
+      key.indexOf(virtualGroupPrefix) === 0} {#each nodes as node, index2} {#if
+      !node.hideFromNav} {#if node.label}
       <span
         class="fd-tabs__item"
         uid="{index}-{index2}"
@@ -64,9 +64,7 @@
                     on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node === selectedNodeForTabNav}"
                   >
-                    <span class="fd-menu__title"
-                      >{$getTranslation(node.label)}</span
-                    >
+                    <span class="fd-menu__title">{$getTranslation(node.label)}</span>
                   </a>
                 </li>
                 {/if} {/if} {/each}
@@ -95,12 +93,10 @@
           class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
           aria-hidden="{!isMoreBtnExpanded}"
         >
-          <ul
-            class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
-          >
+          <ul class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only">
             {#each Object.entries(children) as [key, nodes], index} {#if key ===
-            'undefined' || key.indexOf(virtualGroupPrefix) === 0} {#each nodes
-            as node, index2}
+            'undefined' || key.indexOf(virtualGroupPrefix) === 0} {#each nodes as node,
+            index2}
             <li class="fd-nested-list__item" uid="{index}-{index2}">
               <a
                 href="{getRouteLink(node)}"
@@ -108,9 +104,7 @@
                 on:click|preventDefault="{() => handleClick(node)}"
                 aria-selected="{node===selectedNodeForTabNav}"
               >
-                <span class="fd-nested-list__title"
-                  >{$getTranslation(node.label)}</span
-                >
+                <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
               </a>
             </li>
             {/each} {:else}
@@ -126,9 +120,7 @@
                   aria-selected="{isSelectedCat(key,selectedNodeForTabNav)}"
                   on:click|preventDefault="{() => toggleDropdownState(key+index)}"
                 >
-                  <span class="fd-nested-list__title"
-                    >{$getTranslation(key)}</span
-                  >
+                  <span class="fd-nested-list__title">{$getTranslation(key)}</span>
                 </a>
                 <button
                   class="fd-button fd-nested-list__button"
@@ -177,15 +169,10 @@
 </nav>
 {/if}
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from "svelte";
-  import { Navigation } from "./services/navigation";
-  import { NavigationHelpers, RoutingHelpers } from "../utilities/helpers";
-  import { LuigiConfig, LuigiI18N } from "../core-api";
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import { Navigation } from './services/navigation';
+  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+  import { LuigiConfig, LuigiI18N } from '../core-api';
 
   export let children;
   export let pathData;
@@ -199,7 +186,7 @@
   export let isMoreBtnExpanded = false;
   export let resizeTabNavToggle;
   let previousResizeTabNavToggle;
-  let getTranslation = getContext("getTranslation");
+  let getTranslation = getContext('getTranslation');
 
   //TODO refactor
   const __this = {
@@ -216,15 +203,15 @@
     set: obj => {
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach(prop => {
-          if (prop === "pathData") {
+          if (prop === 'pathData') {
             pathData = obj.pathData;
-          } else if (prop === "context") {
+          } else if (prop === 'context') {
             context = obj.context;
-          } else if (prop === "children") {
+          } else if (prop === 'children') {
             children = obj.children;
-          } else if (prop === "selectedNode") {
+          } else if (prop === 'selectedNode') {
             selectedNode = obj.selectedNode;
-          } else if (prop === "selectedNodeForTabNav") {
+          } else if (prop === 'selectedNodeForTabNav') {
             selectedNodeForTabNav = obj.selectedNodeForTabNav;
           }
         });
@@ -246,17 +233,15 @@
     }
     __this.set({ ...tabNavData });
     previousPathData = pathData;
-    window["LEFTNAVDATA"] = tabNavData.groupedChildren;
+    window['LEFTNAVDATA'] = tabNavData.groupedChildren;
     setTimeout(calcTabsContainer);
   };
 
   const calcTabsContainer = () => {
     clearTapNav();
-    let tabsContainer = document.getElementsByClassName(
-      "luigi-tabsContainer"
-    )[0];
-    let morebtn = document.getElementsByClassName("luigi-tabsMoreButton")[0];
-    let moreLink = document.getElementsByClassName("luigi__more")[0];
+    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
+    let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
+    let moreLink = document.getElementsByClassName('luigi__more')[0];
     let moreBtnSelected = false;
     let tabsContainerOffsetWidth;
     let totalTabsSize = 0;
@@ -265,7 +250,7 @@
     let current = componentData.pathData[componentData.pathData.length - 1];
     let style;
     let margin;
-    moreLink && moreLink.setAttribute("aria-selected", "false");
+    moreLink && moreLink.setAttribute('aria-selected', 'false');
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = [...tabsContainer.children];
@@ -273,45 +258,39 @@
         style = element.currentStyle || window.getComputedStyle(element);
         margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
         totalTabsSize += element.offsetWidth + margin;
-        let uid = element.getAttribute("uid");
+        let uid = element.getAttribute('uid');
         if (totalTabsSize >= tabsContainerOffsetWidth) {
-          element.classList.add("hide_element");
-          if (element.getAttribute("isSelected") === "true") {
-            moreLink.setAttribute("aria-selected", "true");
+          element.classList.add('hide_element');
+          if (element.getAttribute('isSelected') === 'true') {
+            moreLink.setAttribute('aria-selected', 'true');
           }
           document
             .querySelector('li[uid="' + uid + '"]')
-            .classList.remove("hide_element");
+            .classList.remove('hide_element');
           hasMoreBtnElements = true;
         } else {
-          document
-            .querySelector('li[uid="' + uid + '"]')
-            .classList.add("hide_element");
+          document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
         }
       });
       !hasMoreBtnElements
-        ? morebtn.classList.add("hide_element")
-        : morebtn.classList.remove("hide_element");
+        ? morebtn.classList.add('hide_element')
+        : morebtn.classList.remove('hide_element');
     }
   };
 
   const clearTapNav = () => {
-    let tabsContainer = document.getElementsByClassName(
-      "luigi-tabsContainer"
-    )[0];
-    let moreLink = document.getElementsByClassName("luigi__more")[0];
+    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
+    let moreLink = document.getElementsByClassName('luigi__more')[0];
     if (tabsContainer !== undefined) {
       const tabs = [...tabsContainer.children];
       tabs.forEach(element => {
-        element.classList.remove("hide_element");
+        element.classList.remove('hide_element');
       });
     }
   };
 
   onMount(() => {
-    hideNavComponent = LuigiConfig.getConfigBooleanValue(
-      "settings.hideNavigation"
-    );
+    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
   });
 
   // [svelte-upgrade warning]
@@ -335,9 +314,7 @@
   }
 
   function isExpanded(nodes, expandedList) {
-    return (
-      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
-    );
+    return expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0;
   }
 
   function isSelectedCat(key, selectedNodeForTabNav) {
@@ -357,7 +334,7 @@
   // review these functions and remove unnecessary 'export' keywords
   export function handleClick(node) {
     closeAllDropdowns();
-    dispatch("handleClick", { node });
+    dispatch('handleClick', { node });
   }
 
   export function toggleDropdownState(name) {
@@ -383,8 +360,8 @@
 </script>
 
 <style type="text/scss">
-  @import "styles/mixins";
-  @import "styles/variables";
+  @import 'styles/mixins';
+  @import 'styles/variables';
 
   .tabsContainer {
     width: 100%;

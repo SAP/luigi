@@ -1,8 +1,8 @@
 <svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}" />
 {#if showGlobalNav}
 <div class="fd-shellbar__group fd-shellbar__group--actions lui-globalnav">
-  {#if children && pathData.length > 0} {#each children as node, i} {#if
-  node.globalNav === true} {#if node.separator}
+  {#if children && pathData.length > 0} {#each children as node, i} {#if node.globalNav
+  === true} {#if node.separator}
   <span class="fd-toolbar__separator"></span>
   {:else}
   <div class="fd-shellbar__action fd-shellbar__action--hide">
@@ -33,8 +33,7 @@
   </div>
   {/if} {/if} {/each}
   <div class="lui-global-nav__bottom-section">
-    {#each children as node, i} {#if node.globalNav === 'bottom'} {#if
-    node.separator}
+    {#each children as node, i} {#if node.globalNav === 'bottom'} {#if node.separator}
     <span class="fd-toolbar__separator"></span>
     {:else}
     <div class="fd-shellbar__action fd-shellbar__action--hide">
@@ -69,20 +68,15 @@
 </div>
 {/if}
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from "svelte";
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from "../core-api";
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
     NavigationHelpers,
     RoutingHelpers,
     StateHelpers,
     EventListenerHelpers,
     GenericHelpers
-  } from "../utilities/helpers";
+  } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -92,10 +86,8 @@
   export let children;
   export let selectedNode;
 
-  let store = getContext("store");
-  let contextSwitcherConfig = LuigiConfig.getConfigValue(
-    "navigation.contextSwitcher"
-  );
+  let store = getContext('store');
+  let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
 
   export let showGlobalNav;
   export let hideNavComponent;
@@ -114,18 +106,16 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
-        hideNavComponent = LuigiConfig.getConfigBooleanValue(
-          "settings.hideNavigation"
-        );
+        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
         responsiveNavSetting = LuigiConfig.getConfigValue(
-          "settings.responsiveNavigation"
+          'settings.responsiveNavigation'
         );
         showGlobalNav =
-          LuigiConfig.getConfigBooleanValue("settings.globalSideNavigation") &&
-          GenericHelpers.requestExperimentalFeature("globalNav", true);
-        document.body.classList.toggle("lui-global-nav-visible", showGlobalNav);
+          LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
+          GenericHelpers.requestExperimentalFeature('globalNav', true);
+        document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
       },
-      ["navigation"]
+      ['navigation']
     );
   });
 
@@ -154,7 +144,7 @@
   }
 
   export function handleClick(node) {
-    dispatch("handleClick", { node });
+    dispatch('handleClick', { node });
   }
 
   export function handleClickExternal(event) {
@@ -174,7 +164,7 @@
 </script>
 
 <style type="text/scss">
-  @import "styles/variables";
+  @import 'styles/variables';
   .lui-globalnav {
     position: fixed;
     height: 100%;

@@ -43,29 +43,29 @@
 </div>
 
 <script>
-  import { createEventDispatcher, onMount } from "svelte";
-  import { LuigiI18N } from "./core-api";
-  import { KEYCODE_ESC } from "./utilities/keycode.js";
-  import { EscapingHelpers } from "./utilities/helpers";
+  import { createEventDispatcher, onMount } from 'svelte';
+  import { LuigiI18N } from './core-api';
+  import { KEYCODE_ESC } from './utilities/keycode.js';
+  import { EscapingHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
   export let settings;
   const iconMapping = {
-    confirmation: "question-mark",
-    information: "message-information",
-    warning: "message-warning",
-    error: "message-error",
-    success: "message-success"
+    confirmation: 'question-mark',
+    information: 'message-information',
+    warning: 'message-warning',
+    error: 'message-error',
+    success: 'message-success'
   };
 
   onMount(() => {
     const defaultSettings = {
       icon: iconMapping[settings.type],
-      header: LuigiI18N.getTranslation("luigi.confirmationModal.header"),
-      body: LuigiI18N.getTranslation("luigi.confirmationModal.body"),
-      buttonDismiss: LuigiI18N.getTranslation("luigi.button.dismiss"),
-      buttonConfirm: LuigiI18N.getTranslation("luigi.button.confirm")
+      header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
+      body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
+      buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
+      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
     };
     settings = {
       ...settings,
@@ -73,9 +73,7 @@
     };
     settings = Object.assign(defaultSettings, settings);
 
-    const focusedButton = settings.buttonConfirm
-      ? "confirm-button"
-      : "dismiss-button";
+    const focusedButton = settings.buttonConfirm ? 'confirm-button' : 'dismiss-button';
 
     try {
       document.querySelector(`.${focusedButton}`).focus();
@@ -88,13 +86,13 @@
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
-      dispatch("modalDismiss");
+      dispatch('modalDismiss');
     }
   }
 </script>
 
 <style type="text/scss">
-  @import "styles/variables";
+  @import 'styles/variables';
 
   .fd-message-box {
     &__body {
