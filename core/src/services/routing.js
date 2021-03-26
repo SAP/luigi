@@ -335,6 +335,18 @@ class RoutingClass {
         }
         if (!withoutSync) {
           await Iframe.navigateIframe(config, component, iframeElement);
+        } else {
+          const componentData = component.get();
+          const internalData = await component.prepareInternalData(config);
+          IframeHelpers.sendMessageToIframe(config.iframe, {
+            msg: 'luigi.navigate',
+            viewUrl: viewUrl,
+            context: JSON.stringify( componentData.context),
+            nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
+            pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
+            internal: JSON.stringify(internalData),
+            withoutSync: true
+          });
         }
       }
     } catch (err) {

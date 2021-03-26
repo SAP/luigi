@@ -66,7 +66,8 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    }
+    },
+    virtualTree: true
   },
   {
     pathSegment: 'clientPermissionsTets',
