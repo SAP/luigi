@@ -230,12 +230,14 @@ const preCommit = async () => {
   console.log('File to be analyzed before commit:\n' + files.join('\n'));
   const filesByExtension = groupFilesByExtension(files);
   if (codeQualityConfig.usePrettier) {
+    console.log('Running Prettier in pre-commit');
     await preCommitPrettier(filesByExtension);
   } else {
     console.log('Prettier is disabled. Skipping...');
   }
 
   if (codeQualityConfig.useEslint) {
+    console.log('Running ESlint in pre-commit');
     await preCommitEslint(filesByExtension);
   } else {
     console.log('ESlint is disabled. Skipping...');
