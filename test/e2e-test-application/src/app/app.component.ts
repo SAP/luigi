@@ -29,7 +29,10 @@ export class AppComponent implements OnInit {
       this.onLuigiContext('init', context);
       this.luigiAutoNav.init();
     });
-    addContextUpdateListener(context => this.onLuigiContext('update', context));
+    addContextUpdateListener(context => {
+      this.onLuigiContext('update', context);
+      console.log('CONTEXT APP = ', context);
+    });
 
     addInactiveListener(() => {
       console.debug(

@@ -13,7 +13,7 @@ export class LuigiAutoNavigationService implements OnDestroy {
   constructor(private router: Router) {}
 
   public init(): void {
-    const customLocalPrefix = 'settings';
+    const customLocalPrefix = '/settings';
     this.subscriptions.add(
       this.router.events
         .pipe(
