@@ -25,9 +25,7 @@ export class NavSyncComponent implements OnInit, OnDestroy {
         segments => {
           this.currentSegment = segments[segments.length - 1].path;
           const nextIndex = this.segments.indexOf(this.currentSegment) + 1;
-          this.nextSegment = this.segments[nextIndex]
-            ? this.segments[nextIndex]
-            : this.segments[0];
+          this.nextSegment = this.segments[nextIndex] ? this.segments[nextIndex] : this.segments[0];
         },
         err => {}
       )

@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  linkManager,
-  uxManager,
-  sendCustomMessage,
-  addCustomMessageListener
-} from '@luigi-project/client';
+import { linkManager, uxManager, sendCustomMessage, addCustomMessageListener } from '@luigi-project/client';
 
 @Component({
   selector: 'app-overview',
@@ -57,26 +52,22 @@ export class OverviewComponent implements OnInit {
     {
       link: '/projects/pr1/dps',
       text: 'defaultChildNode',
-      description:
-        'navigation node configuration to set a specific node as an initial target'
+      description: 'navigation node configuration to set a specific node as an initial target'
     },
     {
       link: '/projects/pr1/users/groups',
       text: 'dynamic nodes',
-      description:
-        'navigation node configuration to set a specific node as dynamic'
+      description: 'navigation node configuration to set a specific node as dynamic'
     },
     {
       link: '/projects/pr1',
       text: 'external URL node',
-      description:
-        'navigation node configuration to direct to an external website'
+      description: 'navigation node configuration to direct to an external website'
     },
     {
       link: '/projects/pr1/avengers',
       text: 'keepSelectedForChildren',
-      description:
-        'navigation node configuration to focus on a navigation menu and omit the children'
+      description: 'navigation node configuration to focus on a navigation menu and omit the children'
     },
     {
       link: '/projects/pr2',
@@ -94,12 +85,9 @@ export class OverviewComponent implements OnInit {
   public isDirty = false;
 
   ngOnInit() {
-    addCustomMessageListener(
-      'luigi.my-custom-message-for-client',
-      (customMessage, listenerId) => {
-        console.info('Received Custom Message', customMessage, listenerId);
-      }
-    );
+    addCustomMessageListener('luigi.my-custom-message-for-client', (customMessage, listenerId) => {
+      console.info('Received Custom Message', customMessage, listenerId);
+    });
   }
 
   public sendDirtyEvent() {

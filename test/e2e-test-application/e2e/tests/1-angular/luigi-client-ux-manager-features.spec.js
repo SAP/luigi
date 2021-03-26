@@ -136,9 +136,7 @@ describe('Luigi Client ux manager features', () => {
           cy.get('[data-testid=luigi-loading-spinner]').should('exist');
           cy.wait(250); // give it some time to hide
           // wait for programmatic hide of loading indicator
-          cy.get('[data-testid=luigi-loading-spinner]').should(
-            'not.be.visible'
-          );
+          cy.get('[data-testid=luigi-loading-spinner]').should('not.be.visible');
         });
       }
     );
@@ -157,9 +155,7 @@ describe('Luigi Client ux manager features', () => {
 
         cy.get('[data-testid=luigi-modal-dismiss]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should(
-          'not.be.visible'
-        );
+        cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/overview'); //the location is still unchanged after "No" clicked
       });
@@ -177,9 +173,7 @@ describe('Luigi Client ux manager features', () => {
 
         cy.get('[data-testid=luigi-modal-confirm]').click();
 
-        cy.get('[data-testid=luigi-confirmation-modal]').should(
-          'not.be.visible'
-        );
+        cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
 
         cy.expectPathToBe('/projects'); //the location is changed after "Yes" clicked
       });
