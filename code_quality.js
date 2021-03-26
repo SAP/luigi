@@ -3,6 +3,7 @@ const prettier = require('prettier');
 const prettierConfig = require('./prettier_config.json');
 const codeQualityConfig = require('./package.json').codeQuality || {};
 const path = require('path');
+const { exec } = require('child_process');
 
 const fs = require('fs');
 const { ESLint } = require('eslint');
@@ -241,6 +242,12 @@ const preCommit = async () => {
    } else {
       console.log('ESlint is disabled. Skipping...');
    }
+
+   console.log("Adding any possible changes to the commit");
+   exec('git add', (err, stdout, stderr) => {
+      // handle err, stdout & stderr
+      console.log('Error with `git add`', err);
+   });
 };
 
 /**
