@@ -5,9 +5,6 @@
       "code-quality": "node code_quality.js -- mode=pre_commit",
       "code-quality-prettier": "node code_quality.js -- mode=pre_commit_prettier",
       "code-quality-eslint": "node code_quality.js -- mode=pre_commit__eslint",
-
-
-      
       "full-code-quality": "node code_quality.js -- mode=full",
       "full-code-quality-prettier": "node code_quality.js -- mode=full_prettier sourcePaths=core/src,client/src",
       "full-code-quality-eslint": "node code_quality.js -- mode=full_eslint",
