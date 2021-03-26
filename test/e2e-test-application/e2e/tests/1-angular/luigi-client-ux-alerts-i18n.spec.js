@@ -23,10 +23,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .find('[data-testid=show-luigi-alert]')
         .click();
 
-      cy.get('[data-testid=luigi-alert]').should(
-        'have.class',
-        'fd-message-strip--success'
-      );
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--success');
 
       cy.get('[data-testid=luigi-alert-dismiss]').click();
       cy.get('[data-testid=luigi-alert]').should('not.exist');
@@ -41,10 +38,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .find('[data-testid=show-luigi-alert]')
         .click();
 
-      cy.get('[data-testid=luigi-alert]').should(
-        'have.class',
-        'fd-message-strip--information'
-      );
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
     });
     it('hides Alert after specified time', () => {
       const closeAfter = 500;
@@ -109,10 +103,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .find('[data-testid=toggle-dirty-state]')
         .click();
 
-      cy.get('[data-testid=luigi-alert]').should(
-        'have.class',
-        'fd-message-strip--warning'
-      );
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--warning');
 
       cy.get('*[id$=_link_relativePath]').click();
       cy.expectPathToBe('/projects/pr1');

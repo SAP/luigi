@@ -32,6 +32,36 @@ This document outlines the features provided by the Luigi Client API. It covers 
 
 Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
 
+#### isLuigiClientInitialized
+
+Check if LuigiClient is initialized
+
+##### Examples
+
+```javascript
+const init = LuigiClient.isLuigiClientInitialized()
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** client initialized state
+
+**Meta**
+
+-   **since**: 1.12.0
+
+#### luigiClientInit
+
+Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
+
+##### Examples
+
+```javascript
+LuigiClient.luigiClientInit()
+```
+
+**Meta**
+
+-   **since**: 1.12.0
+
 #### addInitListener
 
 Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.

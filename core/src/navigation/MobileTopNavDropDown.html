@@ -10,8 +10,7 @@
     <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
       <div class="fd-product-switch__body fd-product-switch__body--mobile">
         <ul class="fd-product-switch__list">
-          {#if nodes}
-          {#each nodes as node}
+          {#if nodes} {#each nodes as node}
           <li
             class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : '' } {node.selected?'selected':''}"
             on:click="{() => onActionClick(node)}"
@@ -24,22 +23,20 @@
                 class="sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
               ></i>
               {:else}
-              <img
-                src="{node.icon}"
-                alt="{node.altText ? node.altText : ''}"
-              >
+              <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
               {/if}
-              <BadgeCounter {node}/>
+              <BadgeCounter {node} />
             </div>
             <div class="fd-product-switch__text">
               <div class="fd-product-switch__title">{getNodeLabel(node)}</div>
               {#if getNodeSubtitle(node)}
-              <div class="fd-product-switch__subtitle">{getNodeSubtitle(node)}</div>
+              <div class="fd-product-switch__subtitle">
+                {getNodeSubtitle(node)}
+              </div>
               {/if}
             </div>
           </li>
-          {/each}
-          {/if}
+          {/each} {/if}
         </ul>
       </div>
     </div>
@@ -50,7 +47,9 @@
             class="fd-button fd-button--light fd-dialog__decisive-button"
             on:click
             data-testid="mobile-topnav-close"
-          >Cancel</button>
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </footer>

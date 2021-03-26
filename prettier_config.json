@@ -1,0 +1,22 @@
+{
+   "js": {
+      "parser": "babel-flow",
+      "trailingComma": "none",
+      "tabWidth": 2,
+      "singleQuote": true,
+      "printWidth": 120
+   },
+   "ts": {
+      "parser": "typescript",
+      "trailingComma": "none",
+      "tabWidth": 2,
+      "singleQuote": true,
+      "printWidth": 120
+   },
+   "html": {
+      "parser": "html",
+      "tabWidth": 2,
+      "singleQuote": true,
+      "printWidth": 90
+   }
+}

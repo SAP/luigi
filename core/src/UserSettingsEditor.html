@@ -125,14 +125,7 @@
 
   .lui-title {
     line-height: var(--sapContent_LineHeight, 1.4);
-    font-family: var(
-      --sapFontFamily,
-      '72',
-      '72full',
-      Arial,
-      Helvetica,
-      sans-serif
-    );
+    font-family: var(--sapFontFamily, '72', '72full', Arial, Helvetica, sans-serif);
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
@@ -155,9 +148,9 @@
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
   <div class="lui-us-content-header-container">
-    <h1
-      class="lui-title lui-title--h2"
-    >{userSettingGroup[1].title?$getTranslation(userSettingGroup[1].title):''}</h1>
+    <h1 class="lui-title lui-title--h2">
+      {userSettingGroup[1].title?$getTranslation(userSettingGroup[1].title):''}
+    </h1>
   </div>
   {#if userSettingGroup[1].settings}
   <div class="fd-page__content">
@@ -167,8 +160,8 @@
         <label class="fd-form-label">{$getTranslation(schemaItem.label)}:</label>
       </div>
       <div class="lui-value-container">
-        {#if schemaItem.type==='string'}
-        {#if schemaItem.isEditable || schemaItem.isEditable === undefined}
+        {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
+        schemaItem.isEditable === undefined}
         <input
           class="fd-input"
           type="text"
@@ -177,15 +170,13 @@
           data-testid="lui-us-input{i}"
           bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
           disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-        >
+        />
         {:else}
-        <label
-          class="lui-form-text"
-          data-testid="lui-us-input{i}"
-        >{storedUserSettingData[userSettingGroup[0]][key]}</label>
-        {/if}
-        {/if}
-        {#if schemaItem.type==='enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
+        <label class="lui-form-text" data-testid="lui-us-input{i}"
+          >{storedUserSettingData[userSettingGroup[0]][key]}</label
+        >
+        {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
+        schemaItem.style === 'list')}
         <div>
           <div class="fd-form-item">
             <div class="fd-popover">
@@ -202,10 +193,8 @@
                     placeholder="{$getTranslation(storedUserSettingData[userSettingGroup[0]][key])}"
                     data-testid="lui-us-input{i}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                  >
-                  <span
-                    class="fd-input-group__addon fd-input-group__addon--button"
-                  >
+                  />
+                  <span class="fd-input-group__addon fd-input-group__addon--button">
                     <button
                       aria-label="show/hide fruit options"
                       aria-expanded="false"
@@ -245,8 +234,8 @@
             </div>
           </div>
         </div>
-        {/if}
-        {#if schemaItem.type==='enum' && schemaItem.style === 'button' && Array.isArray(schemaItem.options)}
+        {/if} {#if schemaItem.type==='enum' && schemaItem.style === 'button' &&
+        Array.isArray(schemaItem.options)}
         <div>
           <div class="fd-form-item">
             <div
@@ -261,13 +250,15 @@
                 id="lui-us-enum_button_{key}_{option}"
                 data-testid="lui-us-enum_button_{key}_{option}"
                 disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-              >{$getTranslation(option)}</button>
+              >
+                {$getTranslation(option)}
+              </button>
               {/each}
             </div>
           </div>
         </div>
-        {/if}
-        {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style === 'switch')}
+        {/if} {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style
+        === 'switch')}
         <label
           class="fd-switch fd-switch--compact"
           data-testid="lui-us-label-switch_{key}"
@@ -280,7 +271,7 @@
               data-testid="lui-us-checkbox-switch_{key}"
               disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
               bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
-            >
+            />
             <div class="fd-switch__slider">
               <div class="fd-switch__track">
                 <span class="fd-switch__handle" role="presentation"></span>
@@ -288,19 +279,17 @@
             </div>
           </span>
         </label>
-        {/if}
-        {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
+        {/if} {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
         <input
           type="checkbox"
           class="fd-checkbox"
           disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
           bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
-        >
+        />
         {/if}
       </div>
       {/each}
     </div>
   </div>
-  {/if}
-  {/if}
+  {/if} {/if}
 </div>

@@ -60,12 +60,7 @@ class LuigiAuth {
    * @param {AuthData} data
    * @param {string} redirectUrl
    */
-  async handleAuthEvent(
-    eventName,
-    providerInstanceSettings,
-    data,
-    redirectUrl
-  ) {
+  async handleAuthEvent(eventName, providerInstanceSettings, data, redirectUrl) {
     const result = await LuigiConfig.executeConfigFnAsync(
       'auth.events.' + eventName,
       false,

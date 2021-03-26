@@ -45,9 +45,7 @@ const configReadyCallback = () => {
         let app;
 
         if (LuigiElements.isCustomLuigiContainer()) {
-          document
-            .getElementsByTagName('html')[0]
-            .classList.add('luigi-app-in-custom-container');
+          document.getElementsByTagName('html')[0].classList.add('luigi-app-in-custom-container');
         }
 
         app = new App({
@@ -94,8 +92,7 @@ const configReadyCallback = () => {
         };
 
         Luigi.splitView = {
-          openAsSplitView: (path, settings) =>
-            app.$$.ctx.openSplitView(path, settings),
+          openAsSplitView: (path, settings) => app.$$.ctx.openSplitView(path, settings),
           splitViewHandle: {
             close: () => app.$$.ctx.closeSplitView(),
             collapse: () => app.$$.ctx.collapseSplitView(),
@@ -120,7 +117,7 @@ const configReadyCallback = () => {
 
         Luigi.closeUserSettings = () => {
           app.$$.ctx.closeUserSettings();
-        }
+        };
 
         resolve();
       });

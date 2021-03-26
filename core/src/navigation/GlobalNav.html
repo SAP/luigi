@@ -1,13 +1,9 @@
-<svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}"/>
+<svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}" />
 {#if showGlobalNav}
 <div class="fd-shellbar__group fd-shellbar__group--actions lui-globalnav">
-  {#if children && pathData.length > 0}
-  {#each children as node, i}
-  {#if node.globalNav === true}
-  {#if node.separator}
-  <span
-    class="fd-toolbar__separator"
-  ></span>
+  {#if children && pathData.length > 0} {#each children as node, i} {#if node.globalNav
+  === true} {#if node.separator}
+  <span class="fd-toolbar__separator"></span>
   {:else}
   <div class="fd-shellbar__action fd-shellbar__action--hide">
     <button
@@ -18,17 +14,14 @@
       on:click="{() => handleClick(node)}"
       data-testid="{getTestId(node)}"
     >
-      {#if node.icon}
-      {#if hasOpenUIicon(node)}
-      <span
-        class="fd-top-nav__icon sap-icon--{node.icon}"
-      ></span>
+      {#if node.icon} {#if hasOpenUIicon(node)}
+      <span class="fd-top-nav__icon sap-icon--{node.icon}"></span>
       {:else}
       <img
         class="fd-top-nav__icon nav-icon"
         src="{node.icon}"
         alt="{node.altText ? node.altText : ''}"
-      >
+      />
       {/if}
       <!-- end hasOpenUIicon-->
       {/if}
@@ -38,16 +31,10 @@
       {/if}
     </button>
   </div>
-  {/if}
-  {/if}
-  {/each}
+  {/if} {/if} {/each}
   <div class="lui-global-nav__bottom-section">
-    {#each children as node, i}
-    {#if node.globalNav === 'bottom'}
-    {#if node.separator}
-    <span
-      class="fd-toolbar__separator"
-    ></span>
+    {#each children as node, i} {#if node.globalNav === 'bottom'} {#if node.separator}
+    <span class="fd-toolbar__separator"></span>
     {:else}
     <div class="fd-shellbar__action fd-shellbar__action--hide">
       <button
@@ -58,17 +45,14 @@
         on:click="{() => handleClick(node)}"
         data-testid="{getTestId(node)}"
       >
-        {#if node.icon}
-        {#if hasOpenUIicon(node)}
-        <span
-          class="fd-top-nav__icon sap-icon--{node.icon}"
-        ></span>
+        {#if node.icon} {#if hasOpenUIicon(node)}
+        <span class="fd-top-nav__icon sap-icon--{node.icon}"></span>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
           src="{node.icon}"
           alt="{node.altText ? node.altText : ''}"
-        >
+        />
         {/if}
         <!-- end hasOpenUIicon-->
         {/if}
@@ -78,20 +62,13 @@
         {/if}
       </button>
     </div>
-    {/if}
-    {/if}
-    {/each}
+    {/if} {/if} {/each}
   </div>
   {/if}
 </div>
 {/if}
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
     NavigationHelpers,
@@ -110,9 +87,7 @@
   export let selectedNode;
 
   let store = getContext('store');
-  let contextSwitcherConfig = LuigiConfig.getConfigValue(
-    'navigation.contextSwitcher'
-  );
+  let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
 
   export let showGlobalNav;
   export let hideNavComponent;
@@ -131,9 +106,7 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
-        hideNavComponent = LuigiConfig.getConfigBooleanValue(
-          'settings.hideNavigation'
-        );
+        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
         responsiveNavSetting = LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         );

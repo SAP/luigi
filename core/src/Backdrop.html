@@ -1,4 +1,8 @@
-<div class="{backdropClass}" aria-hidden="false" style="{area === 'main' ? 'z-index: 0;' : ''}">
+<div
+  class="{backdropClass}"
+  aria-hidden="false"
+  style="{area === 'main' ? 'z-index: 0;' : ''}"
+>
   <slot></slot>
 </div>
 
@@ -45,9 +49,7 @@
   };
 
   onMount(() => {
-    const backdropDisabled = LuigiConfig.getConfigValue(
-      'settings.backdropDisabled'
-    );
+    const backdropDisabled = LuigiConfig.getConfigValue('settings.backdropDisabled');
     if (!backdropDisabled) {
       setBackdropClass();
       EventListenerHelpers.addEventListener('message', e => {

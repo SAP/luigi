@@ -25,55 +25,44 @@ const setLuigiConfig = (win, config) => {
   }, 20);
 };
 
-Cypress.Commands.add(
-  'visitWithFiddleConfig',
-  (path = '/', config = fiddleConfig) => {
-    cy.visit(`http://localhost:8080/#${path}`, {
-      onBeforeLoad: win => {
-        win.localStorage.clear();
-        win.sessionStorage.clear();
-        setAcceptedCookies(win);
-        setLuigiConfig(win, config);
-      }
-    });
-  }
-);
-Cypress.Commands.add(
-  'visitWithFiddleConfigString',
-  (path = '/', config = fiddleConfig) => {
-    cy.visit(`http://localhost:8080/#${path}`, {
-      onBeforeLoad: win => {
-        win.localStorage.clear();
-        win.sessionStorage.clear();
-        setAcceptedCookies(win);
-        // Not using setLuigiConfig(win, config);
-        const strConfig =
-          typeof config === 'object' ? JSON.stringify(config) : config;
-        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
-        win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
-      }
-    });
-  }
-);
+Cypress.Commands.add('visitWithFiddleConfig', (path = '/', config = fiddleConfig) => {
+  cy.visit(`http://localhost:8080/#${path}`, {
+    onBeforeLoad: win => {
+      win.localStorage.clear();
+      win.sessionStorage.clear();
+      setAcceptedCookies(win);
+      setLuigiConfig(win, config);
+    }
+  });
+});
+Cypress.Commands.add('visitWithFiddleConfigString', (path = '/', config = fiddleConfig) => {
+  cy.visit(`http://localhost:8080/#${path}`, {
+    onBeforeLoad: win => {
+      win.localStorage.clear();
+      win.sessionStorage.clear();
+      setAcceptedCookies(win);
+      // Not using setLuigiConfig(win, config);
+      const strConfig = typeof config === 'object' ? JSON.stringify(config) : config;
+      win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+      win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+    }
+  });
+});
 
-Cypress.Commands.add(
-  'visitLoggedInWithFiddleConfig',
-  (path = '/', config = fiddleConfig) => {
-    cy.visit(`http://localhost:8080/#${path}`, {
-      onBeforeLoad: win => {
-        win.localStorage.clear();
-        win.sessionStorage.clear();
-        setAcceptedCookies(win);
-        setLoggedIn(win);
+Cypress.Commands.add('visitLoggedInWithFiddleConfig', (path = '/', config = fiddleConfig) => {
+  cy.visit(`http://localhost:8080/#${path}`, {
+    onBeforeLoad: win => {
+      win.localStorage.clear();
+      win.sessionStorage.clear();
+      setAcceptedCookies(win);
+      setLoggedIn(win);
 
-        const strConfig =
-          typeof config === 'object' ? JSON.stringify(config) : config;
-        win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
-        win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
-      }
-    });
-  }
-);
+      const strConfig = typeof config === 'object' ? JSON.stringify(config) : config;
+      win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+      win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+    }
+  });
+});
 
 Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   cy.visit(path, {
@@ -86,29 +75,26 @@ Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   });
 });
 
-Cypress.Commands.add(
-  'login',
-  (email, password, skipReturnPathCheck = false) => {
-    cy.get('.fd-input')
-      .first()
-      .clear()
-      .type(email)
-      .should('have.value', email);
+Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false) => {
+  cy.get('.fd-input')
+    .first()
+    .clear()
+    .type(email)
+    .should('have.value', email);
 
-    cy.get('.fd-input')
-      .last()
-      .clear()
-      .type(password)
-      .should('have.value', password);
+  cy.get('.fd-input')
+    .last()
+    .clear()
+    .type(password)
+    .should('have.value', password);
 
-    cy.get('.fd-button').click();
+  cy.get('.fd-button').click();
 
-    if (!skipReturnPathCheck) {
-      cy.get('.fd-shellbar').contains('Overview');
-      cy.expectPathToBe('/overview');
-    }
+  if (!skipReturnPathCheck) {
+    cy.get('.fd-shellbar').contains('Overview');
+    cy.expectPathToBe('/overview');
   }
-);
+});
 
 Cypress.Commands.add('goToUxManagerMethods', iframe => {
   cy.wrap(iframe)
@@ -153,22 +139,17 @@ Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {
     .click();
 });
 
-Cypress.Commands.add(
-  'getIframeBody',
-  (getIframeOpts = {}, index = 0, containerSelector = '.iframeContainer') => {
-    return cy
-      .get(`${containerSelector} iframe`, getIframeOpts)
-      .eq(index)
-      .iframe();
-  }
-);
+Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerSelector = '.iframeContainer') => {
+  return cy
+    .get(`${containerSelector} iframe`, getIframeOpts)
+    .eq(index)
+    .iframe();
+});
 
 const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =
-    appWindow && appWindow.Luigi && appWindow.Luigi.config
-      ? appWindow.Luigi.config.routing
-      : false;
+    appWindow && appWindow.Luigi && appWindow.Luigi.config ? appWindow.Luigi.config.routing : false;
   return useHashRouting;
 };
 
@@ -176,9 +157,7 @@ Cypress.Commands.add('expectPathToBe', (pathWithoutHash, timeout = undefined) =>
   cy.location({ timeout }).should(location => {
     const useHashRouting = isHashRoutingOn();
     const actualPath = useHashRouting ? location.hash : location.pathname;
-    const pathToCheck = useHashRouting
-      ? '#' + pathWithoutHash
-      : pathWithoutHash;
+    const pathToCheck = useHashRouting ? '#' + pathWithoutHash : pathWithoutHash;
     expect(actualPath).to.eq(pathToCheck);
   })
 );
@@ -193,9 +172,7 @@ Cypress.Commands.add('expectSearchToBe', (searchString, a) => {
   // notice that location.hash DOES keep url params ('?a=b') while location.pathname does NOT
   cy.location().should(locationContext => {
     const useHashRouting = isHashRoutingOn();
-    const actualPath = useHashRouting
-      ? locationContext.hash
-      : locationContext.pathname;
+    const actualPath = useHashRouting ? locationContext.hash : locationContext.pathname;
     if (useHashRouting) {
       expect('?' + actualPath.split('?')[1]).to.eq(searchString);
     } else {
@@ -287,7 +264,6 @@ Cypress.Commands.add('iframeWindow', { prevSubject: 'element' }, $iframe => {
     );
   });
 });
-
 
 function onIframeReady($iframe, successFn, errorFn) {
   try {

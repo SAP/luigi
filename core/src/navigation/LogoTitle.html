@@ -4,20 +4,16 @@
   on:click="{() => goTo('/')}"
 >
   {#if hasLogo}
-  <img
-    data-testid="luigi-topnav-logo"
-    bind:this="{logo}"
-    alt="SAP"
-  >
+  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
 </span>
-{#if title}
-{#if !hasApps}
+{#if title} {#if !hasApps}
 <span
-  class="fd-shellbar__title"
+  class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
->{$getTranslation(title)}</span>
+  >{$getTranslation(title)}</span
+>
 {:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
@@ -28,10 +24,9 @@
       on:click|stopPropagation="{() => toggleDropdownState('appSwitcherPopover')}"
       data-testid="app-switcher"
     >
-      <span
-        class="fd-shellbar__title"
-        data-testid="luigi-topnav-title"
-      >{$getTranslation(title)}</span>
+      <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
+        >{$getTranslation(title)}</span
+      >
       <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
     </button>
   </div>
@@ -54,10 +49,9 @@
             <span class="fd-menu__title">{$getTranslation(defaultTitle)}</span>
           </a>
         </li>
-        {/if}
-        {#if appSwitcherItems && appSwitcherItems.length > 0}
-        {#each appSwitcherItems as item}
-        {#if item !== selectedItem && hasValidLink(item, pathParams)}
+        {/if} {#if appSwitcherItems && appSwitcherItems.length > 0} {#each
+        appSwitcherItems as item} {#if item !== selectedItem && hasValidLink(item,
+        pathParams)}
         <li class="fd-menu__item">
           <a
             role="button"
@@ -69,25 +63,16 @@
             <span class="fd-menu__title">{$getTranslation(item.title)}</span>
           </a>
         </li>
-        {/if}
-        {/each}
-        {/if}
+        {/if} {/each} {/if}
       </ul>
     </nav>
   </div>
 </div>
-{/if}
-{#if subTitle}
+{/if} {#if subTitle}
 <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
-{/if}
-{/if}
+{/if} {/if}
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import * as Header from './services/header';
   import { Routing } from '../services/routing';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
@@ -108,9 +93,7 @@
   export let defaultSubTitle;
   export let pathData;
   let previousPathData;
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
 
@@ -208,14 +191,8 @@
 
   function hasValidLink(item, pathParams) {
     if (item.link) {
-      const concreteLink = RoutingHelpers.applyPathParams(
-        item.link,
-        pathParams
-      );
-      if (
-        concreteLink.indexOf(':') !== 0 &&
-        concreteLink.indexOf('/:') === -1
-      ) {
+      const concreteLink = RoutingHelpers.applyPathParams(item.link, pathParams);
+      if (concreteLink.indexOf(':') !== 0 && concreteLink.indexOf('/:') === -1) {
         return true;
       }
     }
@@ -239,18 +216,23 @@
     margin: 0 0.5rem;
   }
 
-  .fd-shellbar__title {
-    padding: 0 0.625rem;
-  }
-
   .fd-shellbar__logo,
   .fd-shellbar__title {
     cursor: pointer;
+    max-width: 105px; /*due to limited space on the mobile and buttons (Profile, Logo, burger etc.)*/
+  }
+
+  .lui-shellbar-single-app-title {
+    padding: 0 0.625rem;
+    max-width: 140px;
   }
 
   @media (max-width: $desktopMinWidth - 1) {
     .fd-shellbar__subtitle {
       display: none;
+    }
+    .lui-shellbar-single-app-title {
+      padding-right: 0;
     }
   }
 </style>

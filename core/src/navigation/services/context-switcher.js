@@ -33,17 +33,10 @@ export const ContextSwitcherHelpers = {
   },
 
   getNodePathFromCurrentPath(option, selectedOption) {
-    const currentPath = GenericHelpers.addLeadingSlash(
-      Routing.getCurrentPath()
-    );
+    const currentPath = GenericHelpers.addLeadingSlash(Routing.getCurrentPath());
     const selectedPath = GenericHelpers.addLeadingSlash(selectedOption.link);
     if (currentPath.startsWith(selectedPath)) {
-      return (
-        option.link +
-        GenericHelpers.addLeadingSlash(
-          currentPath.substring(selectedPath.length)
-        )
-      );
+      return option.link + GenericHelpers.addLeadingSlash(currentPath.substring(selectedPath.length));
     } else {
       return option.link;
     }
@@ -60,9 +53,7 @@ export const ContextSwitcherHelpers = {
 
   isContextSwitcherDetailsView(currentPath, parentNodePath) {
     const currentPathNormalized = GenericHelpers.normalizePath(currentPath);
-    const parentNodePathNormalized = GenericHelpers.normalizePath(
-      parentNodePath
-    );
+    const parentNodePathNormalized = GenericHelpers.normalizePath(parentNodePath);
 
     return Boolean(
       parentNodePath &&
@@ -77,9 +68,7 @@ export const ContextSwitcherHelpers = {
       return id;
     }
 
-    const useFallbackLabelCache = LuigiConfig.getConfigBooleanValue(
-      'navigation.contextSwitcher.useFallbackLabelCache'
-    );
+    const useFallbackLabelCache = LuigiConfig.getConfigBooleanValue('navigation.contextSwitcher.useFallbackLabelCache');
     const labelCache = ContextSwitcherHelpers._fallbackLabels;
     if (useFallbackLabelCache) {
       if (labelCache.has(id)) {
@@ -95,12 +84,7 @@ export const ContextSwitcherHelpers = {
   getSelectedId(currentPath, options, parentNodePath) {
     currentPath = GenericHelpers.normalizePath(currentPath);
     parentNodePath = GenericHelpers.normalizePath(parentNodePath);
-    if (
-      !ContextSwitcherHelpers.isContextSwitcherDetailsView(
-        currentPath,
-        parentNodePath
-      )
-    ) {
+    if (!ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, parentNodePath)) {
       return undefined;
     }
 
@@ -115,41 +99,23 @@ export const ContextSwitcherHelpers = {
     let selectedOption;
     const selectedId = this.getSelectedId(currentPath, options, parentNodePath);
     if (selectedId && options) {
-      selectedOption = ContextSwitcherHelpers.getOptionById(
-        options,
-        selectedId
-      );
+      selectedOption = ContextSwitcherHelpers.getOptionById(options, selectedId);
     }
     return selectedOption;
   },
 
-  async getSelectedLabel(
-    currentPath,
-    options,
-    parentNodePath,
-    fallbackLabelResolver
-  ) {
+  async getSelectedLabel(currentPath, options, parentNodePath, fallbackLabelResolver) {
     const selectedId = this.getSelectedId(currentPath, options, parentNodePath);
     if (!selectedId) {
       return;
     }
 
-    let selectedOption = await this.getSelectedOption(
-      currentPath,
-      options,
-      parentNodePath
-    );
+    let selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
     let selectedLabel = selectedOption ? selectedOption.label : undefined;
 
     // get the label from fallback if selectedId is not
     // in options or options not yet lazy loaded by click
-    return (
-      selectedLabel ||
-      (await ContextSwitcherHelpers.getFallbackLabel(
-        fallbackLabelResolver,
-        selectedId
-      ))
-    );
+    return selectedLabel || (await ContextSwitcherHelpers.getFallbackLabel(fallbackLabelResolver, selectedId));
   },
 
   async fetchOptions(existingOptions = []) {
@@ -157,12 +123,7 @@ export const ContextSwitcherHelpers = {
     if (!config.lazyloadOptions && existingOptions.length) {
       return existingOptions;
     }
-    const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync(
-      'navigation.contextSwitcher.options'
-    );
-    return await ContextSwitcherHelpers.generateSwitcherNav(
-      config,
-      contextSwitcherOptions
-    );
+    const contextSwitcherOptions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.options');
+    return await ContextSwitcherHelpers.generateSwitcherNav(config, contextSwitcherOptions);
   }
 };

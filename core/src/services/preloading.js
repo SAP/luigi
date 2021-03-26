@@ -10,9 +10,7 @@ class ViewGroupPreloadingClass {
   }
 
   preloadViewGroups(batchSize = 3) {
-    const preloadViewGroupsSetting = LuigiConfig.getConfigValue(
-      'navigation.preloadViewGroups'
-    );
+    const preloadViewGroupsSetting = LuigiConfig.getConfigValue('navigation.preloadViewGroups');
     if (preloadViewGroupsSetting === false) {
       return;
     }
@@ -24,10 +22,7 @@ class ViewGroupPreloadingClass {
     const iframes = IframeHelpers.getMainIframes();
     const now = new Date().getTime();
     const preloadingIframes = iframes.filter(
-      iframe =>
-        iframe.luigi &&
-        iframe.luigi.preloading &&
-        now - iframe.luigi.createdAt < 30000
+      iframe => iframe.luigi && iframe.luigi.preloading && now - iframe.luigi.createdAt < 30000
     );
     if (preloadingIframes.length > 0) {
       console.debug('skipping view group preloading (busy)');
@@ -39,15 +34,8 @@ class ViewGroupPreloadingClass {
       .filter(([_, settings]) => settings && settings.preloadUrl)
       .filter((_, index) => index < batchSize)
       .forEach(([name, settings]) => {
-        console.debug(
-          'preloading view group ' + name + ' - ' + settings.preloadUrl
-        );
-        const iframe = IframeHelpers.createIframe(
-          settings.preloadUrl,
-          name,
-          null,
-          'main'
-        );
+        console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
+        const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
         iframe.style.display = 'none';
         iframe.luigi.preloading = true;
         iframeContainer.appendChild(iframe);

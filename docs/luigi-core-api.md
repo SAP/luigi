@@ -894,11 +894,11 @@ Luigi
  .ux()
  .showConfirmationModal(settings)
  .then(() => {
-    // Logic to execute when the confirmation modal is confirmed
+    // Logic to execute when the confirmation modal is dismissed
  });
 ```
 
-Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when confirming the confirmation modal and rejected when dismissing it
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
 
 **Meta**
 

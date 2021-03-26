@@ -1,17 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import {
-  getPathParams,
-  getNodeParams,
-  linkManager,
-  PathParams,
-  NodeParams
-} from '@luigi-project/client';
-import {
-  LuigiContextService,
-  IContextMessage
-} from '../../services/luigi-context.service';
+import { getPathParams, getNodeParams, linkManager, PathParams, NodeParams } from '@luigi-project/client';
+import { LuigiContextService, IContextMessage } from '../../services/luigi-context.service';
 import { toTitleCase } from '../../services/helpers';
 
 @Component({
@@ -35,10 +26,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
 
   private lcSubscription: Subscription = new Subscription();
 
-  constructor(
-    private luigiService: LuigiContextService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.lcSubscription.add(
@@ -53,15 +41,12 @@ export class DynamicComponent implements OnInit, OnDestroy {
         const lastPathParam = Object.values(getPathParams() || {}).pop();
 
         // We can directly access our specified context values here
-        this.nodeLabel = toTitleCase(
-          ctx.context.label || lastPathParam || 'hello'
-        );
+        this.nodeLabel = toTitleCase(ctx.context.label || lastPathParam || 'hello');
         this.links = ctx.context.links;
 
         // preserveView and node params
         this.hasBack = linkManager().hasBack();
-        this.nodeParams =
-          Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
+        this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
 
         if (!this.cdr['destroyed']) {
           this.cdr.detectChanges();

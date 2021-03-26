@@ -1,9 +1,8 @@
-<svelte:window on:resize="{setViewportHeightVariable}"/>
+<svelte:window on:resize="{setViewportHeightVariable}" />
 {#if !isMobile}
 <nav class="fd-menu">
   <ul class="fd-menu__list fd-menu__list--top fd-menu__list--no-shadow">
-    {#if children}
-    {#each children as node}
+    {#if children} {#each children as node}
     <li
       class="fd-menu__item"
       on:click="{() => onActionClick(node)}"
@@ -18,22 +17,17 @@
           class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
         >
           {#if !hasOpenUIicon(node)}
-          <img
-            src="{node.icon}"
-            alt="{node.altText ? node.altText: ''}"
-          >
+          <img src="{node.icon}" alt="{node.altText ? node.altText: ''}" />
           {/if}
-          <BadgeCounter {node}/>
+          <BadgeCounter {node} />
         </span>
         <span class="fd-menu__title">{getNodeLabel(node)}</span>
       </a>
     </li>
-    {/each}
-    {/if}
+    {/each} {/if}
   </ul>
 </nav>
-{/if}
-{#if isMobile}
+{/if} {#if isMobile}
 <MobileTopNav
   on:click="{closeSubNav}"
   on:listClick="{onActionClickExternal}"
@@ -49,12 +43,7 @@
 <script>
   import BadgeCounter from './navigation/BadgeCounter.html';
   import MobileTopNav from './navigation/MobileTopNavDropDown.html';
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
@@ -67,9 +56,7 @@
   export let children;
   export let node;
   let pathParams;
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
   const getNodeSubtitle = () => {};
 
@@ -106,10 +93,7 @@
     getUnsavedChangesModalPromise().then(() => {
       if (node.openNodeInModal) {
         const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        openViewInModal(
-          route,
-          node.openNodeInModal === true ? {} : node.openNodeInModal
-        );
+        openViewInModal(route, node.openNodeInModal === true ? {} : node.openNodeInModal);
       } else {
         Routing.handleRouteClick(node, getComponentWrapper());
       }

@@ -1,4 +1,4 @@
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" />
 <div
   class="fd-message-box-docs-static fd-message-box fd-message-box--{settings.type} fd-message-box--active"
   data-testid="luigi-confirmation-modal"
@@ -23,7 +23,9 @@
             on:click="{() => dispatch('modalConfirm')}"
             data-testid="luigi-modal-confirm"
             class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
-          >{settings.buttonConfirm}</button>
+          >
+            {settings.buttonConfirm}
+          </button>
         </div>
         {/if}
         <div class="fd-bar__element">
@@ -31,7 +33,9 @@
             on:click="{() => dispatch('modalDismiss')}"
             data-testid="luigi-modal-dismiss"
             class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
-          >{settings.buttonDismiss}</button>
+          >
+            {settings.buttonDismiss}
+          </button>
         </div>
       </div>
     </footer>
@@ -69,9 +73,7 @@
     };
     settings = Object.assign(defaultSettings, settings);
 
-    const focusedButton = settings.buttonConfirm
-      ? 'confirm-button'
-      : 'dismiss-button';
+    const focusedButton = settings.buttonConfirm ? 'confirm-button' : 'dismiss-button';
 
     try {
       document.querySelector(`.${focusedButton}`).focus();

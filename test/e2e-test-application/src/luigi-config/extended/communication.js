@@ -5,9 +5,7 @@ class Communication {
     },
     'my-custom-message.test-example': (customMessage, mfObject, mfNodeObj) => {
       console.info(
-        `Core has received custom message: ${JSON.stringify(
-          customMessage
-        )} from microfrontend ${JSON.stringify(
+        `Core has received custom message: ${JSON.stringify(customMessage)} from microfrontend ${JSON.stringify(
           mfObject
         )}. Node information: ${JSON.stringify(mfNodeObj)}`
       );

@@ -27,10 +27,7 @@ class GlobalSearch {
       //   type: 'info',
       //   closeAfter: 1500
       // });
-      inputElem.setAttribute(
-        'data-toggleSearch',
-        fieldVisible ? 'open' : 'close'
-      );
+      inputElem.setAttribute('data-toggleSearch', fieldVisible ? 'open' : 'close');
     },
 
     onInput: () => {
@@ -55,8 +52,7 @@ class GlobalSearch {
             link: '/settings'
           },
           label: 'Settings w/o parameters',
-          description:
-            'Testing a label description which has a long text to fit on mobile nicely',
+          description: 'Testing a label description which has a long text to fit on mobile nicely',
           onActivate() {
             Luigi.globalSearch().closeSearchResult();
           }
@@ -175,15 +171,9 @@ class GlobalSearch {
       var self = this;
       if (searchResultItem.pathObject.externalLink) {
         window.open(searchResultItem.pathObject.externalLink.url, '_blank');
-      } else if (
-        searchResultItem.pathObject.link &&
-        !searchResultItem.pathObject.params
-      ) {
+      } else if (searchResultItem.pathObject.link && !searchResultItem.pathObject.params) {
         Luigi.navigation().navigate(searchResultItem.pathObject.link);
-      } else if (
-        searchResultItem.pathObject.link &&
-        searchResultItem.pathObject.params
-      ) {
+      } else if (searchResultItem.pathObject.link && searchResultItem.pathObject.params) {
         Luigi.navigation()
           .withParams(searchResultItem.pathObject.params)
           .navigate(searchResultItem.pathObject.link);
