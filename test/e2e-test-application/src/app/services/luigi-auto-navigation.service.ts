@@ -19,22 +19,24 @@ export class LuigiAutoNavigationService implements OnDestroy {
       this.router.events
         .pipe(
           filter(ev => ev instanceof NavigationEnd),
-          filter(ev => (ev as NavigationEnd).url.includes(customLocalPrefix)
-          || (ev as NavigationEnd).url.startsWith(customLocalPrefixNavSync)
+          filter(
+            ev =>
+              (ev as NavigationEnd).url.includes(customLocalPrefix) ||
+              (ev as NavigationEnd).url.startsWith(customLocalPrefixNavSync)
           )
         )
         .subscribe((ev: NavigationEnd) => {
           if (ev instanceof NavigationEnd) {
             if (ev.url.includes(customLocalPrefix)) {
               linkManager()
-              .fromVirtualTreeRoot()
-              .withoutSync()
-              .navigate(ev.url);
+                .fromVirtualTreeRoot()
+                .withoutSync()
+                .navigate(ev.url);
             } else {
               linkManager()
-              .fromClosestContext()
-              .withoutSync()
-              .navigate(ev.url.substr(customLocalPrefixNavSync.length));
+                .fromClosestContext()
+                .withoutSync()
+                .navigate(ev.url.substr(customLocalPrefixNavSync.length));
             }
           }
         })
