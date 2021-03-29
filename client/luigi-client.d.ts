@@ -451,7 +451,7 @@ export declare interface StorageManager {
    * @example
    * LuigiClient.storageManager().has(key).then((present) => console.log('element is present: '+present));
    */
-  has: (key: string) => boolean;
+  has: (key: string) => Promise<boolean>;
 
   /**
    * Retrieve all the keys used in the storage
@@ -461,7 +461,7 @@ export declare interface StorageManager {
    * @example
    * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are : '+keys));
    */
-  getAllKeys: () => Array<String>;
+  getAllKeys: () => Promise<String[]>;
 }
 
 /**
@@ -692,9 +692,9 @@ export function isLuigiClientInitialized(): boolean;
 export type isLuigiClientInitialized = () => boolean;
 
 /**
-   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed. 
-   * @since 1.12.0
-   * @memberof Lifecycle
+ * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
+ * @since 1.12.0
+ * @memberof Lifecycle
  */
 export function luigiClientInit(): void;
 export type luigiClientInit = () => void;

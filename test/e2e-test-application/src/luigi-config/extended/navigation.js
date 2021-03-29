@@ -339,8 +339,7 @@ class Navigation {
   getProductSwitcherItems = () => {
     const items = [
       {
-        icon:
-          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+        icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'hybris',
         subTitle: 'first subtitle',
         externalLink: {
@@ -354,8 +353,7 @@ class Navigation {
       .filter(project => project.id !== 'tabNav')
       .forEach(project => {
         items.push({
-          icon:
-            'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+          icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
           label: project.name,
           link: '/projects/' + project.id
         });
@@ -441,7 +439,4 @@ class Navigation {
   };
 }
 
-export const navigation = new Navigation(
-  navigationPermissionChecker,
-  projectsNavProviderFn
-);
+export const navigation = new Navigation(navigationPermissionChecker, projectsNavProviderFn);

@@ -25,11 +25,7 @@
         >
       </p>
       <p>
-        <a
-          href="javascript:void(0)"
-          class="fd-link"
-          (click)="linkManager().goBack()"
-        >
+        <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack()">
           Go back: use default history method
         </a>
       </p>
@@ -76,8 +72,8 @@
           <input type="text" class="fd-input" [(ngModel)]="callbackValue" />
         </div>
         <p>
-          <button class="fd-button" (click)="goBack()">Click here</button> to go
-          back to your preserved view.
+          <button class="fd-button" (click)="goBack()">Click here</button> to go back to
+          your preserved view.
         </p>
       </div>
       <div *ngIf="!hasBack">

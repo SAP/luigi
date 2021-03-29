@@ -91,25 +91,9 @@ export const projectDetailTabNavStructure = projectId => [
     icon: 'accept',
     context: {
       label: 'Avengers',
-      links: [
-        'Captain America',
-        'Iron Man',
-        'Thor',
-        'Hulk',
-        'Black Widow',
-        'Hawkeye',
-        'Loki'
-      ]
+      links: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki']
     },
-    children: [
-      'Captain America',
-      'Iron Man',
-      'Thor',
-      'Hulk',
-      'Black Widow',
-      'Hawkeye',
-      'Loki'
-    ].map(name => ({
+    children: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki'].map(name => ({
       pathSegment: name
         .toLowerCase()
         .split(' ')
@@ -135,8 +119,7 @@ export const projectDetailTabNavStructure = projectId => [
             label: 'Super Power',
             links: ['Details']
           },
-          viewUrl:
-            '/sampleapp.html#/projects/' + projectId + '/dynamic/super-power',
+          viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/super-power',
           children: [
             {
               label: 'Details',
@@ -145,8 +128,7 @@ export const projectDetailTabNavStructure = projectId => [
                 label: 'Details',
                 links: false
               },
-              viewUrl:
-                '/sampleapp.html#/projects/' + projectId + '/dynamic/details'
+              viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/details'
             }
           ]
         }

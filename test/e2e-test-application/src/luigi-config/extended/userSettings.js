@@ -47,8 +47,7 @@ class UserSettings {
           type: 'enum',
           label: 'Language and Region',
           options: ['German', 'English', 'Spanish', 'French'],
-          description:
-            'After you save your settings, the browser will refresh for the new language to take effect.'
+          description: 'After you save your settings, the browser will refresh for the new language to take effect.'
         },
         date: { type: 'string', label: 'Date Format' },
         time: {
@@ -95,6 +94,6 @@ class UserSettings {
       icon: 'private',
       viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
     }
-  }
+  };
 }
 export const userSettings = new UserSettings();

@@ -57,8 +57,8 @@
 </div>
 
 <script>
-  import BadgeCounter from "./BadgeCounter.html";
-  import { createEventDispatcher } from "svelte";
+  import BadgeCounter from './BadgeCounter.html';
+  import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -73,7 +73,7 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function onActionClick(value) {
-    dispatch("listClick", value);
+    dispatch('listClick', value);
   }
 </script>
 

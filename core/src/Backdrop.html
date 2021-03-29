@@ -7,13 +7,13 @@
 </div>
 
 <script>
-  import { beforeUpdate, onMount, createEventDispatcher } from "svelte";
-  import { LuigiConfig } from "./core-api";
-  import { IframeHelpers, EventListenerHelpers } from "./utilities/helpers";
+  import { beforeUpdate, onMount, createEventDispatcher } from 'svelte';
+  import { LuigiConfig } from './core-api';
+  import { IframeHelpers, EventListenerHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
-  export let backdropClass = "";
+  export let backdropClass = '';
   export let backdropActive = false;
   let wasBackdropActive = false;
   let options = {};
@@ -21,13 +21,13 @@
   export let disable;
 
   const setBackdropClass = () => {
-    const baseClasses = "lui-backdrop ";
+    const baseClasses = 'lui-backdrop ';
     if (!backdropActive) {
-      backdropClass = "";
+      backdropClass = '';
     } else if (options.data && options.data.heightCssClass) {
       backdropClass = baseClasses + options.data.heightCssClass;
     } else {
-      backdropClass = baseClasses + "height-auto";
+      backdropClass = baseClasses + 'height-auto';
     }
   };
 
@@ -49,25 +49,23 @@
   };
 
   onMount(() => {
-    const backdropDisabled = LuigiConfig.getConfigValue(
-      "settings.backdropDisabled"
-    );
+    const backdropDisabled = LuigiConfig.getConfigValue('settings.backdropDisabled');
     if (!backdropDisabled) {
       setBackdropClass();
-      EventListenerHelpers.addEventListener("message", e => {
+      EventListenerHelpers.addEventListener('message', e => {
         if (!IframeHelpers.getValidMessageSource(e)) return;
         if (disable !== true) {
-          if ("luigi.add-backdrop" === e.data.msg) {
+          if ('luigi.add-backdrop' === e.data.msg) {
             if (isValidForArea(e)) {
               backdropActive = true;
             } else {
               backdropActive = false;
             }
-            dispatch("stateChanged", { backdropActive: true });
+            dispatch('stateChanged', { backdropActive: true });
           }
-          if ("luigi.remove-backdrop" === e.data.msg) {
+          if ('luigi.remove-backdrop' === e.data.msg) {
             backdropActive = false;
-            dispatch("stateChanged", { backdropActive: false });
+            dispatch('stateChanged', { backdropActive: false });
           }
         }
       });

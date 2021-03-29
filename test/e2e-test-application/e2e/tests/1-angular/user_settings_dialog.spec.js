@@ -1,6 +1,5 @@
 describe('Navigation', () => {
-  const clearStorage = () =>
-    cy.clearLocalStorage('luigi.preferences.userSettings');
+  const clearStorage = () => cy.clearLocalStorage('luigi.preferences.userSettings');
 
   const openSettingsDialogBox = () => {
     //Click on User Icon (top menu right)
@@ -79,9 +78,7 @@ describe('Navigation', () => {
         .click();
 
       //Check Checkbox is checked
-      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
-        'be.checked'
-      );
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should('be.checked');
 
       //Save Settings
       saveSettings();
@@ -90,15 +87,10 @@ describe('Navigation', () => {
       openSettingsDialogBox();
 
       //Check Name Input field and type a new name
-      cy.get('[data-testid="lui-us-input0"]').should(
-        'have.value',
-        setting_name
-      );
+      cy.get('[data-testid="lui-us-input0"]').should('have.value', setting_name);
 
       //Check Checkbox is checked
-      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should(
-        'be.checked'
-      );
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should('be.checked');
 
       //Close settings
       closeSettings();
@@ -163,10 +155,7 @@ describe('Navigation', () => {
         .should('have.attr', 'placeholder', 'Spanish');
 
       //Check Name Input field and type a new name
-      cy.get('[data-testid="lui-us-input1"]').should(
-        'have.value',
-        setting_date_format
-      );
+      cy.get('[data-testid="lui-us-input1"]').should('have.value', setting_date_format);
 
       //Close settings
       closeSettings();
@@ -187,28 +176,20 @@ describe('Navigation', () => {
       cy.get('[data-testid="lui-us-input0"]').type(setting_privacy_policy);
 
       //Check Time Format has two buttons with no selected class
-      cy.get(
-        '.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button'
-      )
+      cy.get('.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button')
         .eq(0)
         .should('not.have.class', 'fd-button--emphasized');
-      cy.get(
-        '.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button'
-      )
+      cy.get('.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button')
         .eq(1)
         .should('not.have.class', 'fd-button--emphasized');
 
       //Click Time Format 12h
-      cy.get(
-        '.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button'
-      )
+      cy.get('.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button')
         .eq(0)
         .click();
 
       //Check Time Format 12h is selected
-      cy.get(
-        '.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button'
-      )
+      cy.get('.lui-usersettings-content .enum-buttons-container-time .lui-fd-enum-button')
         .eq(0)
         .should('have.class', 'is-selected');
 
@@ -224,10 +205,7 @@ describe('Navigation', () => {
         .click();
 
       //Check Private Policy Input field has saved value
-      cy.get('[data-testid="lui-us-input0"]').should(
-        'have.value',
-        setting_privacy_policy
-      );
+      cy.get('[data-testid="lui-us-input0"]').should('have.value', setting_privacy_policy);
 
       //Check Time Format 12h is selected
       cy.get('.lui-usersettings-content .enum-buttons-container-time button')
@@ -286,6 +264,5 @@ describe('Navigation', () => {
           .should('have.class', 'red');
       });
     });
-
   });
 });

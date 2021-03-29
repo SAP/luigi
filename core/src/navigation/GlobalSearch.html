@@ -1,7 +1,5 @@
 <svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
-<div
-  class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
->
+<div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
   <div class="fd-popover">
     <div
       class="fd-popover__control luigi-search"
@@ -84,16 +82,16 @@
   </div>
 </div>
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount } from "svelte";
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from "../core-api";
-  import { GenericHelpers } from "../utilities/helpers";
-  import { Routing } from "../services/routing";
+  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  import { GenericHelpers } from '../utilities/helpers';
+  import { Routing } from '../services/routing';
   import {
     KEYCODE_ARROW_UP,
     KEYCODE_ARROW_DOWN,
     KEYCODE_ENTER,
     KEYCODE_ESC
-  } from "../utilities/keycode.js";
+  } from '../utilities/keycode.js';
   export let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
@@ -113,7 +111,7 @@
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
   onMount(async () => {
-    search = await LuigiConfig.getConfigValueAsync("globalSearch");
+    search = await LuigiConfig.getConfigValueAsync('globalSearch');
     let inputElement = inputElem;
     const placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {
@@ -135,16 +133,14 @@
     if (GenericHelpers.isFunction(searchProvider.inputPlaceholder)) {
       return searchProvider.inputPlaceholder();
     }
-    if (typeof searchProvider.inputPlaceholder === "string") {
-      const translated = LuigiI18N.getTranslation(
-        searchProvider.inputPlaceholder
-      );
+    if (typeof searchProvider.inputPlaceholder === 'string') {
+      const translated = LuigiI18N.getTranslation(searchProvider.inputPlaceholder);
       if (!!translated && translated.trim().length > 0) {
         return translated;
       }
       return searchProvider.inputPlaceholder;
     }
-    if (typeof searchProvider.inputPlaceholder === "object") {
+    if (typeof searchProvider.inputPlaceholder === 'object') {
       return searchProvider.inputPlaceholder[currentLocale];
     }
   }
@@ -157,11 +153,11 @@
         searchApiObj
       );
     });
-    return "";
+    return '';
   }
 
   function closeSearchResult() {
-    dispatch("closeSearchResult");
+    dispatch('closeSearchResult');
   }
 
   function onKeyUp({ keyCode }) {
@@ -179,30 +175,27 @@
       } else if (keyCode === KEYCODE_ARROW_DOWN) {
         if (displaySearchResult) {
           document
-            .querySelector(".luigi-search-result-item__0")
-            .childNodes[0].setAttribute("aria-selected", "true");
-          document.querySelector(".luigi-search-result-item__0").focus();
+            .querySelector('.luigi-search-result-item__0')
+            .childNodes[0].setAttribute('aria-selected', 'true');
+          document.querySelector('.luigi-search-result-item__0').focus();
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
       }
     } else {
-      console.warn("GlobalSearch is not available.");
+      console.warn('GlobalSearch is not available.');
     }
   }
 
   function calcSearchResultItemSelected(direction) {
-    let renderedSearchResultItems =
-      luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let {
-          childNodes,
-          nextSibling,
-          previousSibling
-        } = renderedSearchResultItems[index];
+        let { childNodes, nextSibling, previousSibling } = renderedSearchResultItems[
+          index
+        ];
         let nodeSibling;
-        if (childNodes[0].getAttribute("aria-selected") === "true") {
+        if (childNodes[0].getAttribute('aria-selected') === 'true') {
           if (direction === KEYCODE_ARROW_DOWN) {
             nodeSibling =
               nextSibling !== null ? nextSibling : renderedSearchResultItems[0];
@@ -211,12 +204,10 @@
             nodeSibling =
               previousSibling !== null
                 ? previousSibling
-                : renderedSearchResultItems[
-                    renderedSearchResultItems.length - 1
-                  ];
+                : renderedSearchResultItems[renderedSearchResultItems.length - 1];
           }
-          childNodes[0].setAttribute("aria-selected", "false");
-          nodeSibling.childNodes[0].setAttribute("aria-selected", "true");
+          childNodes[0].setAttribute('aria-selected', 'false');
+          nodeSibling.childNodes[0].setAttribute('aria-selected', 'true');
           nodeSibling.focus();
           break;
         }
@@ -225,13 +216,12 @@
   }
 
   function clearAriaSelected() {
-    let renderedSearchResultItems =
-      luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
-        if (element.childNodes[0].getAttribute("aria-selected") === "true") {
-          element.childNodes[0].setAttribute("aria-selected", "false");
+        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
+          element.childNodes[0].setAttribute('aria-selected', 'false');
         }
       }
     }
@@ -240,9 +230,7 @@
   function onSearchResultItemSelected(searchResultItem) {
     if (
       search &&
-      GenericHelpers.isFunction(
-        search.searchProvider.onSearchResultItemSelected
-      )
+      GenericHelpers.isFunction(search.searchProvider.onSearchResultItemSelected)
     ) {
       search.searchProvider.onSearchResultItemSelected(searchResultItem);
     } else if (
@@ -276,7 +264,7 @@
     if (node.externalLink) {
       Routing.navigateToLink(node);
     } else {
-      dispatch("handleSearchNavigation", { node });
+      dispatch('handleSearchNavigation', { node });
     }
   }
 
@@ -294,7 +282,7 @@
     else {
       displaySearchResult = false;
     }
-    dispatch("toggleSearch", {
+    dispatch('toggleSearch', {
       isSearchFieldVisible,
       inputElem,
       luigiCustomSearchRenderer__slot
@@ -310,12 +298,12 @@
 <style type="text/scss">
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {
-    li[class*="luigi-search-result"]:focus {
+    li[class*='luigi-search-result']:focus {
       outline: none;
     }
   }
   .luigi-search {
-    &[aria-hidden="true"] {
+    &[aria-hidden='true'] {
       visibility: hidden;
       width: 0;
     }
