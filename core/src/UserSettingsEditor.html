@@ -164,8 +164,8 @@
       i}
       <div class="lui-form-label">
         <label class="fd-form-label"
-          >{$getTranslation(schemaItem.label)}:</label
-        >
+          >{$getTranslation(schemaItem.label)}:
+        </label>
       </div>
       <div class="lui-value-container">
         {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
@@ -181,92 +181,88 @@
         />
         {:else}
         <label class="lui-form-text" data-testid="lui-us-input{i}"
-          >{storedUserSettingData[userSettingGroup[0]][key]}</label
-        >
+          >{storedUserSettingData[userSettingGroup[0]][key]}
+        </label>
         {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style ===
         undefined || schemaItem.style === 'list')}
-        <div>
-          <div class="fd-form-item">
-            <div class="fd-popover">
-              <div
-                class="fd-popover__control"
-                aria-expanded="false"
-                aria-haspopup="true"
-                on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}"
-              >
-                <div class="fd-input-group fd-input-group--control">
-                  <input
-                    type="text"
-                    class="fd-input fd-input-group__input"
-                    placeholder="{$getTranslation(storedUserSettingData[userSettingGroup[0]][key])}"
-                    data-testid="lui-us-input{i}"
+        <div class="fd-form-item">
+          <div class="fd-popover">
+            <div
+              class="fd-popover__control"
+              aria-expanded="false"
+              aria-haspopup="true"
+              on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}"
+            >
+              <div class="fd-input-group fd-input-group--control">
+                <input
+                  type="text"
+                  class="fd-input fd-input-group__input"
+                  placeholder="{$getTranslation(storedUserSettingData[userSettingGroup[0]][key])}"
+                  data-testid="lui-us-input{i}"
+                  disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                />
+                <span
+                  class="fd-input-group__addon fd-input-group__addon--button"
+                >
+                  <button
+                    aria-label="show/hide fruit options"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="fd-input-group__button fd-button fd-button--transparent"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                  />
-                  <span
-                    class="fd-input-group__addon fd-input-group__addon--button"
                   >
-                    <button
-                      aria-label="show/hide fruit options"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      class="fd-input-group__button fd-button fd-button--transparent"
-                      disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                    >
-                      <i class="sap-icon--navigation-down-arrow"></i>
-                    </button>
-                  </span>
-                </div>
+                    <i class="sap-icon--navigation-down-arrow"></i>
+                  </button>
+                </span>
               </div>
-              <div
-                class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
-                aria-hidden="true"
-              >
-                {#if Array.isArray(schemaItem.options)}
-                <div class="fd-popover__wrapper docs-max-height">
-                  <ul class="fd-list fd-list--dropdown" role="listbox">
-                    {#each schemaItem.options as option, optionIndex}
-                    <li
-                      role="option"
-                      tabindex="0"
-                      class="fd-list__item"
-                      data-testid="lui-us-option{i}_{optionIndex}"
-                      on:click="{() => updateComboBox(key,option)}"
-                    >
-                      <span class="fd-list__title">
-                        <span class="fd-list__bold"
-                          >{$getTranslation(option)}</span
-                        >
-                      </span>
-                    </li>
-                    {/each}
-                  </ul>
-                </div>
-                {/if}
+            </div>
+            <div
+              class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown fd-popover__body--dropdown-fill"
+              aria-hidden="true"
+            >
+              {#if Array.isArray(schemaItem.options)}
+              <div class="fd-popover__wrapper docs-max-height">
+                <ul class="fd-list fd-list--dropdown" role="listbox">
+                  {#each schemaItem.options as option, optionIndex}
+                  <li
+                    role="option"
+                    tabindex="0"
+                    class="fd-list__item"
+                    data-testid="lui-us-option{i}_{optionIndex}"
+                    on:click="{() => updateComboBox(key,option)}"
+                  >
+                    <span class="fd-list__title">
+                      <span class="fd-list__bold"
+                        >{$getTranslation(option)}</span
+                      >
+                    </span>
+                  </li>
+                  {/each}
+                </ul>
               </div>
+              {/if}
             </div>
           </div>
         </div>
         {/if} {#if schemaItem.type==='enum' && schemaItem.style === 'button' &&
         Array.isArray(schemaItem.options)}
-        <div>
-          <div class="fd-form-item">
-            <div
-              class="fd-segmented-button enum-buttons-container-{key}"
-              role="group"
-              aria-label="Group label"
+        <div class="fd-form-item">
+          <div
+            class="fd-segmented-button enum-buttons-container-{key}"
+            role="group"
+            aria-label="Group label"
+          >
+            {#each schemaItem.options as option, optionIndex}
+            <button
+              class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
+              on:click="{() => updateEnumButton(key,option)}"
+              id="lui-us-enum_button_{key}_{option}"
+              data-testid="lui-us-enum_button_{key}_{option}"
+              disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
             >
-              {#each schemaItem.options as option, optionIndex}
-              <button
-                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
-                on:click="{() => updateEnumButton(key,option)}"
-                id="lui-us-enum_button_{key}_{option}"
-                data-testid="lui-us-enum_button_{key}_{option}"
-                disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-              >
-                {$getTranslation(option)}
-              </button>
-              {/each}
-            </div>
+              {$getTranslation(option)}
+            </button>
+            {/each}
           </div>
         </div>
         {/if} {#if schemaItem.type==='boolean' && (!schemaItem.style ||

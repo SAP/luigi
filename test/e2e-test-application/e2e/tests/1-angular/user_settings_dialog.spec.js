@@ -17,9 +17,9 @@ describe('Navigation', () => {
     cy.get('.lui-usersettings-dialog').should('exist');
 
     //Check we have 5 left bar items
-    cy.get('.lui-usersettings-body .fd-nested-list__link')
+    cy.get('[data-testid="us-navigation-item"]')
       .children()
-      .should('have.length', 5);
+      .should('have.length', 10);
   };
 
   const saveSettings = () => {
@@ -55,12 +55,12 @@ describe('Navigation', () => {
 
     it('Fill Account and save; reopen and check saved value', () => {
       //Click on User Account
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(0)
         .click();
 
       //Check User Account is selected
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(0)
         .should('have.class', 'is-selected');
 
@@ -106,12 +106,12 @@ describe('Navigation', () => {
 
     it('Fill Language and Reason and save; reopen and check saved values', () => {
       //Click on Language & Region
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(1)
         .click();
 
       //Check Language & Region is selected
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(1)
         .should('have.class', 'is-selected');
 
@@ -153,7 +153,7 @@ describe('Navigation', () => {
       openSettingsDialogBox();
 
       //Click on Language & Region (left menu)
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(1)
         .click();
 
@@ -174,7 +174,7 @@ describe('Navigation', () => {
 
     it('Fill Privacy and save; reopen and check saved value', () => {
       //Click on Privacy
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(2)
         .click();
 
@@ -219,7 +219,7 @@ describe('Navigation', () => {
       openSettingsDialogBox();
 
       //Click on Privacy
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(2)
         .click();
 
@@ -241,7 +241,7 @@ describe('Navigation', () => {
     it('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
       let $iframeBody;
       //Click on theming
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(3)
         .click();
       //Check if iframe is loaded and have a red button
@@ -260,7 +260,7 @@ describe('Navigation', () => {
       saveSettings();
       openSettingsDialogBox();
       //Click on theming
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(3)
         .click();
       //Check if iframe has a red button with a active class
@@ -275,7 +275,7 @@ describe('Navigation', () => {
     it('Check custom mf without meta data defined in schema', () => {
       let $iframeBody;
       //click on custom
-      cy.get('.lui-usersettings-body .fd-nested-list__link')
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(4)
         .click();
       //check if iframe is rendered also there are no meta data set in config.
