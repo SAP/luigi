@@ -52,7 +52,12 @@ const routes: Routes = [
     component: DynamicComponent
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
-  { path: 'projects/:projectId/developers/:test', component: SettingsComponent },
+  { path: 'internal/virtualTree', component: SettingsComponent },
+  { 
+    path: 'projects/:projectId/developers/:virt1/:virt2',
+    component: SettingsComponent,
+    data: { fromVirtualTreeRoot: { truncate: '/projects/:projectId/developers' } }
+   },
   { path: 'projects/:projectId/drawer', component: DrawerComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
   {

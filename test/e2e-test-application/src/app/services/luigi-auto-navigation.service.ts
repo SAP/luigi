@@ -13,21 +13,20 @@ export class LuigiAutoNavigationService implements OnDestroy {
   constructor(private router: Router) {}
 
   public init(): void {
-    const customLocalPrefix = '/settings';
+    const customLocalPrefix = '/internal/virtualTree';
     const customLocalPrefixNavSync = '/nav-sync-example';
     this.subscriptions.add(
       this.router.events
         .pipe(
           filter(ev => ev instanceof NavigationEnd),
           filter(
-            ev =>
-              (ev as NavigationEnd).url.includes(customLocalPrefix) ||
-              (ev as NavigationEnd).url.startsWith(customLocalPrefixNavSync)
+            ev => (ev as NavigationEnd).url.startsWith(customLocalPrefix) ||
+            (ev as NavigationEnd).url.startsWith(customLocalPrefixNavSync)
           )
         )
         .subscribe((ev: NavigationEnd) => {
           if (ev instanceof NavigationEnd) {
-            if (ev.url.includes(customLocalPrefix)) {
+            if (ev.url.startsWith(customLocalPrefix)) {
               linkManager()
                 .fromVirtualTreeRoot()
                 .withoutSync()

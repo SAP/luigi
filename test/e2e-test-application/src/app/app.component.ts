@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     });
     addContextUpdateListener(context => {
       this.onLuigiContext('update', context);
-      console.log('CONTEXT APP = ', context);
+      console.log('Context changed:', context);
     });
 
     addInactiveListener(() => {
