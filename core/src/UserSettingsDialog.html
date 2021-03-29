@@ -19,7 +19,7 @@
   import { CSS_BREAKPOINTS } from "./utilities/constants";
   import { LuigiConfig } from "./core-api";
   import { TOP_NAV_DEFAULTS } from "./utilities/luigi-config-defaults";
-  import { KEYCODE_ESC } from "./utilities/keycode.js";
+  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE} from "./utilities/keycode.js";
   export let schemaObj;
   export let userSettingGroups;
 
@@ -173,7 +173,7 @@
       }
     } else {
       document
-        .querySelectorAll(".lui-us-list ..lui-us-navlist__item")[0]
+        .querySelectorAll(".lui-us-list .lui-us-navlist__item")[0]
         .classList.add("is-selected");
       if (
         window.innerWidth !== 0 &&
@@ -318,6 +318,12 @@
       dispatch("close");
     }
   }
+
+  export function handleKeyUp(event) {
+    if (event.keyCode === KEYCODE_ENTER || KEYCODE_SPACE) {
+      this.click();
+    }
+  }
 </script>
 
 <style>
@@ -413,6 +419,7 @@
   }
 
   .iframeUserSettingsCtn {
+    display: none;
     position: relative;
     width: 100%;
     height: 100%;
@@ -518,10 +525,12 @@
               {#each Object.entries(userSettingGroups) as [key,
               userSettingGroup], index} {#each Object.entries(userSettingGroup)
               as userSettingsGroupProperty}
-              <li tabindex="0" 
+              <li  
+                tabindex="0"  
                 role="listitem" 
-                class="fd-list__item lui-us-navlist__item" 
-                on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}">
+                class="fd-list__item lui-us-navlist__item"
+                on:click="{() => openEditor(userSettingsGroupProperty, event)}"
+                on:keyup="{handleKeyUp}">
                 <span class="fd-list__thumbnail">
                   {#if userSettingsGroupProperty[1].icon} 
                   {#if hasOpenUIicon(userSettingsGroupProperty[1])}
@@ -541,39 +550,6 @@
                     <div class="fd-list__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</div>
                     <div class="fd-list__byline">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</div>
                   </div> 
-
-
-
-                <!-- <a
-                  class="fd-nested-list__link"
-                  on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
-                >
-                  <div class="lui-usersettings-list-item__info-container">
-                    {#if userSettingsGroupProperty[1].icon} 
-                    {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                    <i
-                      class="fd-nested-list__icon sap-icon sap-icon--{userSettingsGroupProperty[1].icon}"
-                    ></i>
-                    {:else}
-                    <span class="fd-nested-list__icon sap-icon">
-                      <img
-                        src="{userSettingsGroupProperty[1].icon}"
-                        alt="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
-                      />
-                    </span>
-                    {/if} {:else}
-                    <i class="fd-nested-list__icon sap-icon"></i>
-                    {/if}
-                    <div class="lui-usersettings-list-item__title-container">
-                      <span class="lui-usersettings-list-item__title"
-                        >{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</span
-                      >
-                      <span class="lui-usersettings-list-item__subtitle"
-                        >{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</span
-                      >
-                    </div>
-                  </div>
-                </a> -->
               </li>
               {/each} {/each}
             </ul>

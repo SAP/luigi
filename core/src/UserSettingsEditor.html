@@ -157,11 +157,6 @@
 </style>
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
-  <div class="lui-us-content-header-container">
-    <h1 class="lui-title lui-title--h2">
-      {userSettingGroup[1].title?$getTranslation(userSettingGroup[1].title):''}
-    </h1>
-  </div>
   {#if userSettingGroup[1].settings}
   <div class="fd-page__content">
     <div class="fd-container lui-form-grid">
