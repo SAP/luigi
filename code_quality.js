@@ -244,7 +244,7 @@ const preCommit = async () => {
   }
 
   console.log('Adding any possible changes to the commit');
-  exec('git add -A', (err, stdout, stderr) => {
+  exec('git add', (err, stdout, stderr) => {
     // handle err, stdout & stderr
     if (err) {
       console.log('Error with `git add`', error.message);
