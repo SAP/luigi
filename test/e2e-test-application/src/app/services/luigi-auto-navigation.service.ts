@@ -44,7 +44,8 @@ export class LuigiAutoNavigationService implements OnDestroy {
               .fromClosestContext()
               .navigate(ev.url.substr(customLocalPrefix.length));
           }
-        }))
+        })
+    );
   }
 
   ngOnDestroy(): void {
