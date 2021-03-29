@@ -20,8 +20,9 @@ export class LuigiAutoNavigationService implements OnDestroy {
         .pipe(
           filter(ev => ev instanceof NavigationEnd),
           filter(
-            ev => (ev as NavigationEnd).url.startsWith(customLocalPrefix) ||
-            (ev as NavigationEnd).url.startsWith(customLocalPrefixNavSync)
+            ev =>
+              (ev as NavigationEnd).url.startsWith(customLocalPrefix) ||
+              (ev as NavigationEnd).url.startsWith(customLocalPrefixNavSync)
           )
         )
         .subscribe((ev: NavigationEnd) => {
