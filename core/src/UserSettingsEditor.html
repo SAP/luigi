@@ -156,8 +156,8 @@
   }
 </style>
 <div class="lui-usersettings-content">
-  {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
-  {#if userSettingGroup[1].settings}
+  {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]} {#if
+  userSettingGroup[1].settings}
   <div class="fd-page__content">
     <div class="fd-container lui-form-grid">
       {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem],

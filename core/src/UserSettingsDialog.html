@@ -19,7 +19,11 @@
   import { CSS_BREAKPOINTS } from "./utilities/constants";
   import { LuigiConfig } from "./core-api";
   import { TOP_NAV_DEFAULTS } from "./utilities/luigi-config-defaults";
-  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE} from "./utilities/keycode.js";
+  import {
+    KEYCODE_ESC,
+    KEYCODE_ENTER,
+    KEYCODE_SPACE
+  } from "./utilities/keycode.js";
   export let schemaObj;
   export let userSettingGroups;
 
@@ -525,16 +529,18 @@
               {#each Object.entries(userSettingGroups) as [key,
               userSettingGroup], index} {#each Object.entries(userSettingGroup)
               as userSettingsGroupProperty}
-              <li  
-                tabindex="0"  
-                role="listitem" 
+              <li
+                tabindex="0"
+                role="listitem"
                 class="fd-list__item lui-us-navlist__item"
                 on:click="{() => openEditor(userSettingsGroupProperty, event)}"
-                on:keyup="{handleKeyUp}">
+                on:keyup="{handleKeyUp}"
+              >
                 <span class="fd-list__thumbnail">
-                  {#if userSettingsGroupProperty[1].icon} 
-                  {#if hasOpenUIicon(userSettingsGroupProperty[1])}
-                  <i role="presentation"
+                  {#if userSettingsGroupProperty[1].icon} {#if
+                  hasOpenUIicon(userSettingsGroupProperty[1])}
+                  <i
+                    role="presentation"
                     class="sap-icon--{userSettingsGroupProperty[1].icon}"
                   ></i>
                   {:else}
@@ -545,11 +551,15 @@
                   {/if} {:else}
                   <i role="presentation" class="sap-icon"></i>
                   {/if}
-                  </span>
-                  <div class="fd-list__content">
-                    <div class="fd-list__title">{$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}</div>
-                    <div class="fd-list__byline">{$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}</div>
-                  </div> 
+                </span>
+                <div class="fd-list__content">
+                  <div class="fd-list__title">
+                    {$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}
+                  </div>
+                  <div class="fd-list__byline">
+                    {$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}
+                  </div>
+                </div>
               </li>
               {/each} {/each}
             </ul>
