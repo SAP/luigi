@@ -338,6 +338,7 @@ class RoutingClass {
         } else {
           const componentData = component.get();
           const internalData = await component.prepareInternalData(config);
+          // send a message to the iFrame to trigger a context update listener when withoutSync enabled
           IframeHelpers.sendMessageToIframe(config.iframe, {
             msg: 'luigi.navigate',
             viewUrl: viewUrl,
