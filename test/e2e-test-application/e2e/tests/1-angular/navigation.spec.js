@@ -240,7 +240,7 @@ describe('Navigation', () => {
         .should('exist');
     });
 
-    it('Shows Kyma version in LeftNav', () => {
+    it('Shows Luigi version in LeftNav', () => {
       // projects page
       cy.get('.fd-shellbar')
         .contains('Projects')
