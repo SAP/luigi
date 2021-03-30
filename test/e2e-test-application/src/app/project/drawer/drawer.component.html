@@ -12,30 +12,50 @@
       <ul class="fd-list">
         <li class="fd-list__item">
           <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack()">
-            go back: single iframe, standard history back</a>
+            go back: single iframe, standard history back</a
+          >
           <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
         </li>
         <li class="fd-list__item">
-          <a href="javascript:void(0)" class="fd-link" (click)="linkManager().navigate('/overview')">absolute: to
-            overview</a>
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="linkManager().navigate('/overview')"
+            >absolute: to overview</a
+          >
           <app-code-snippet data="linkManager().navigate('/overview')"></app-code-snippet>
         </li>
         <li class="fd-list__item">
-          <a href="javascript:void(0)" class="fd-link" (click)="uxManager().addBackdrop()">
-            add backdrop</a>
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="uxManager().addBackdrop()"
+          >
+            add backdrop</a
+          >
           <app-code-snippet data="uxManager().addBackdrop()"> </app-code-snippet>
         </li>
         <li class="fd-list__item">
-          <a href="javascript:void(0)" class="fd-link" (click)="uxManager().removeBackdrop()">
-            remove backdrop</a>
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="uxManager().removeBackdrop()"
+          >
+            remove backdrop</a
+          >
           <app-code-snippet data="uxManager().removeBackdrop()"> </app-code-snippet>
         </li>
         <li class="fd-list__item">
-          <a href="javascript:void(0)" class="fd-link"
-            (click)="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})">
-            open modal</a>
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})"
+          >
+            open modal</a
+          >
           <app-code-snippet
-            data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})">
+            data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})"
+          >
           </app-code-snippet>
         </li>
       </ul>

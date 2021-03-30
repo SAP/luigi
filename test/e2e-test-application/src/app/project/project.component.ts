@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef,
-  OnDestroy,
-  ViewChild
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { merge, Observable, Subscription, timer } from 'rxjs';
 import {
@@ -15,10 +9,7 @@ import {
   removeContextUpdateListener,
   storageManager
 } from '@luigi-project/client';
-import {
-  IContextMessage,
-  LuigiContextService
-} from '../services/luigi-context.service';
+import { IContextMessage, LuigiContextService } from '../services/luigi-context.service';
 import { NgForm } from '@angular/forms';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { delay, timeout } from 'rxjs/operators';
@@ -91,23 +82,21 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
-    this.lcSubscription = this.luigiService
-      .getContext()
-      .subscribe((ctx: IContextMessage) => {
-        if (ctx.contextType === 'init' || ctx.contextType === 'update') {
-          this.projectId = ctx.context.currentProject;
-          this.preservedViewCallbackContext = ctx.context.goBackContext;
-          this.currentLocale = uxManager().getCurrentLocale();
-          this.canChangeLocale = getClientPermissions().changeCurrentLocale;
-          // Since Luigi runs outside of Zone.js, changes need
-          // to be updated manually
-          // Be sure to check for destroyed ChangeDetectorRef,
-          // else you get runtime Errors
-          if (!this.cdr['destroyed']) {
-            this.cdr.detectChanges();
-          }
+    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+      if (ctx.contextType === 'init' || ctx.contextType === 'update') {
+        this.projectId = ctx.context.currentProject;
+        this.preservedViewCallbackContext = ctx.context.goBackContext;
+        this.currentLocale = uxManager().getCurrentLocale();
+        this.canChangeLocale = getClientPermissions().changeCurrentLocale;
+        // Since Luigi runs outside of Zone.js, changes need
+        // to be updated manually
+        // Be sure to check for destroyed ChangeDetectorRef,
+        // else you get runtime Errors
+        if (!this.cdr['destroyed']) {
+          this.cdr.detectChanges();
         }
-      });
+      }
+    });
 
     this.activatedRoute.params.subscribe((params: Params) => {
       this.projectId = params['projectId'];
@@ -255,11 +244,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       }
     });
     this.splitViewHandle.on('expand', () => {
-      console.info(
-        'on:expand: split view got expanded',
-        'size:',
-        this.splitViewHandle.getSize()
-      );
+      console.info('on:expand: split view got expanded', 'size:', this.splitViewHandle.getSize());
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
@@ -284,19 +269,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
     if (this.validateKeyAndValue()) {
       return;
     }
-    const promiseStorage = storageManager().setItem(
-      this.storageDemoKey,
-      this.storageDemoValue
-    );
+    const promiseStorage = storageManager().setItem(this.storageDemoKey, this.storageDemoValue);
     this.executeWithTimeout(
       promiseStorage,
       100,
       result => 'success',
-      result =>
-        'Key ' +
-        this.storageDemoKey +
-        'successfully stored with value ' +
-        this.storageDemoValue
+      result => 'Key ' + this.storageDemoKey + 'successfully stored with value ' + this.storageDemoValue
     );
   }
 
@@ -310,9 +288,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
       100,
       result => (result ? 'info' : 'warning'),
       result =>
-        result
-          ? 'Value for key ' + this.storageDemoKey + ' is ' + result
-          : 'No value for key ' + this.storageDemoKey
+        result ? 'Value for key ' + this.storageDemoKey + ' is ' + result : 'No value for key ' + this.storageDemoKey
     );
   }
 
@@ -321,11 +297,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       return;
     }
     const promiseStorage = storageManager().removeItem(this.storageDemoKey);
-    const messageOk =
-      'Value for key ' + this.storageDemoKey + ' had been removed';
-    const messageKo =
-      'Nothing to delete: we could not find any value for key ' +
-      this.storageDemoKey;
+    const messageOk = 'Value for key ' + this.storageDemoKey + ' had been removed';
+    const messageKo = 'Nothing to delete: we could not find any value for key ' + this.storageDemoKey;
     this.executeWithTimeout(
       promiseStorage,
       100,
@@ -336,12 +309,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public storage_clear() {
     const promiseStorage = storageManager().clear();
-    this.executeWithTimeout(
-      promiseStorage,
-      100,
-      result => 'success',
-      result => 'Clear all the storage'
-    );
+    this.executeWithTimeout(promiseStorage, 100, result => 'success', result => 'Clear all the storage');
   }
 
   public storage_has() {
@@ -410,8 +378,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   validateKey() {
-    const notValidInput =
-      !this.storageDemoKey || this.storageDemoKey.trim().length === 0;
+    const notValidInput = !this.storageDemoKey || this.storageDemoKey.trim().length === 0;
     if (notValidInput) {
       this.storageShowAlert('error', 'Please fill Key field');
     }

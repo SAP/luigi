@@ -41,11 +41,7 @@
       on:click="{onUserSettingsClick}"
       data-testid="{getTestId(profileNav.settings)}"
     >
-      <a
-        aria-label="User Settings"
-        class="fd-menu__link"
-        data-testid="settings-link"
-      >
+      <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
         <i class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"></i>
         {:else}
@@ -55,9 +51,7 @@
           alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
         />
         {/if} {/if}
-        <span class="fd-menu__title"
-          >{$getTranslation(profileNav.settings.label)}</span
-        >
+        <span class="fd-menu__title">{$getTranslation(profileNav.settings.label)}</span>
       </a>
     </li>
     {/if} {#if isAuthorizationEnabled || isProfileLogoutItem} {#if isLoggedIn ||
@@ -77,9 +71,7 @@
           alt="{profileNav.logout.altText ? profileNav.logout.altText : ''}"
         />
         {/if} {/if}
-        <span class="fd-menu__title"
-          >{$getTranslation(profileNav.logout.label)}</span
-        >
+        <span class="fd-menu__title">{$getTranslation(profileNav.logout.label)}</span>
       </a>
     </li>
     {/if} {#if isAuthorizationEnabled && !isLoggedIn}
@@ -93,18 +85,18 @@
 </nav>
 {/if}
 <script>
-  import { AuthLayerSvc } from "./services";
-  import { createEventDispatcher, onMount, getContext } from "svelte";
-  import { LuigiAuth, LuigiConfig, LuigiUX } from "./core-api";
+  import { AuthLayerSvc } from './services';
+  import { createEventDispatcher, onMount, getContext } from 'svelte';
+  import { LuigiAuth, LuigiConfig, LuigiUX } from './core-api';
   import {
     AuthHelpers,
     GenericHelpers,
     NavigationHelpers,
     StateHelpers,
     RoutingHelpers
-  } from "./utilities/helpers";
-  import { AuthStoreSvc, Routing } from "./services";
-  import { TOP_NAV_DEFAULTS } from "./utilities/luigi-config-defaults";
+  } from './utilities/helpers';
+  import { AuthStoreSvc, Routing } from './services';
+  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
 
   const dispatch = createEventDispatcher();
 
@@ -119,12 +111,10 @@
   let hasUserSettings;
   let navProfileListenerInstalled;
   let profileLogoutFnDefined;
-  let store = getContext("store");
-  let getTranslation = getContext("getTranslation");
-  let getUnsavedChangesModalPromise = getContext(
-    "getUnsavedChangesModalPromise"
-  );
-  let openViewInModal = getContext("openViewInModal");
+  let store = getContext('store');
+  let getTranslation = getContext('getTranslation');
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let openViewInModal = getContext('openViewInModal');
 
   onMount(async () => {
     if (!LuigiAuth.isAuthorizationEnabled()) {
@@ -140,7 +130,7 @@
     });
     AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
       userInfo = uInfo;
-      dispatch("userInfoUpdated", userInfo);
+      dispatch('userInfoUpdated', userInfo);
     });
   });
 
@@ -169,42 +159,37 @@
         store,
         async () => {
           const logoutItem = await LuigiConfig.getConfigValueAsync(
-            "navigation.profile.logout"
+            'navigation.profile.logout'
           );
           //check if the User Settings schema exist
           const userSettingsConfig = await LuigiConfig.getConfigValueAsync(
-            "userSettings"
+            'userSettings'
           );
           const userSettings = userSettingsConfig
             ? userSettingsConfig
-            : await LuigiConfig.getConfigValueAsync("settings.userSettings");
+            : await LuigiConfig.getConfigValueAsync('settings.userSettings');
           hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const profileNavData = {
             items:
-              (await LuigiConfig.getConfigValueAsync(
-                "navigation.profile.items"
-              )) || []
+              (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
           };
           if (hasUserSettings) {
             const userSettingsProfileMenuEntry =
               userSettings.userSettingsProfileMenuEntry;
-            profileNavData["settings"] = {
+            profileNavData['settings'] = {
               ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
               ...userSettingsProfileMenuEntry
             };
           }
-          profileNavData["logout"] = {
+          profileNavData['logout'] = {
             ...TOP_NAV_DEFAULTS.logout,
             ...logoutItem
           };
           isProfileLogoutItem = Boolean(logoutItem);
           profileLogoutFnDefined = false;
           AuthLayerSvc.setProfileLogoutFn(null);
-          if (
-            logoutItem &&
-            GenericHelpers.isFunction(logoutItem.customLogoutFn)
-          ) {
+          if (logoutItem && GenericHelpers.isFunction(logoutItem.customLogoutFn)) {
             // TODO: PROFNAVLOGOUT: three smiliar implementations.
             // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
             profileLogoutFnDefined = true;
@@ -212,7 +197,7 @@
           }
           profileNav = profileNavData;
         },
-        ["navigation.profile"]
+        ['navigation.profile']
       );
       navProfileListenerInstalled = true;
     }
@@ -220,12 +205,12 @@
 
   export async function setProfileUserData() {
     const uInfo = await LuigiConfig.getConfigValueAsync(
-      "navigation.profile.staticUserInfoFn"
+      'navigation.profile.staticUserInfoFn'
     );
     if (uInfo) {
       AuthLayerSvc.setUserInfo(userInfo);
       userInfo = uInfo;
-      dispatch("userInfoUpdated", userInfo);
+      dispatch('userInfoUpdated', userInfo);
     }
   }
 
@@ -233,15 +218,12 @@
     getUnsavedChangesModalPromise().then(() => {
       if (item.openNodeInModal) {
         const route = RoutingHelpers.buildRoute(item, `${item.link}`);
-        openViewInModal(
-          route,
-          item.openNodeInModal === true ? {} : item.openNodeInModal
-        );
+        openViewInModal(route, item.openNodeInModal === true ? {} : item.openNodeInModal);
       } else {
         Routing.navigateToLink(item);
       }
     });
-    dispatch("toggleDropdownState");
+    dispatch('toggleDropdownState');
   }
 
   export function onLogoutClick() {
@@ -253,14 +235,14 @@
         // TODO: PROFNAVLOGOUT: three smiliar implementations. profilen
         profileNav.logout.customLogoutFn();
       } else {
-        console.error("No IDP provider or profile.customLogoutFn is defined.");
+        console.error('No IDP provider or profile.customLogoutFn is defined.');
       }
     });
   }
 
   export function onUserSettingsClick() {
     LuigiUX.openUserSettings();
-    dispatch("toggleDropdownState");
+    dispatch('toggleDropdownState');
   }
 
   export function logout() {

@@ -5,7 +5,7 @@
     onDestroy,
     beforeUpdate,
     getContext
-  } from "svelte";
+  } from 'svelte';
   import {
     NavigationHelpers,
     GenericHelpers,
@@ -33,7 +33,7 @@
   let userSettingsGroupKey;
   let displayEditor = false;
   let previousUserSettings = {};
-  let getTranslation = getContext("getTranslation");
+  let getTranslation = getContext('getTranslation');
   let dialogHeader = TOP_NAV_DEFAULTS.userSettingsDialog.dialogHeader;
   let saveBtn = TOP_NAV_DEFAULTS.userSettingsDialog.saveBtn;
   let dismissBtn = TOP_NAV_DEFAULTS.userSettingsDialog.dismissBtn;
@@ -44,19 +44,17 @@
 
   onMount(() => {
     const usLocalizationConfig = LuigiConfig.getConfigValue(
-      "userSettings.userSettingsDialog"
+      'userSettings.userSettingsDialog'
     );
     const usLocalization = usLocalizationConfig
       ? usLocalizationConfig
-      : LuigiConfig.getConfigValue("settings.userSettings.userSettingsDialog");
+      : LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
     if (usLocalization) {
       dialogHeader = usLocalization.dialogHeader
         ? usLocalization.dialogHeader
         : dialogHeader;
       saveBtn = usLocalization.saveBtn ? usLocalization.saveBtn : saveBtn;
-      dismissBtn = usLocalization.dismissBtn
-        ? usLocalization.dismissBtn
-        : dismissBtn;
+      dismissBtn = usLocalization.dismissBtn ? usLocalization.dismissBtn : dismissBtn;
     }
 
     key =
@@ -64,27 +62,23 @@
         ? Object.keys(userSettingGroups[0])[0]
         : undefined;
 
-    EventListenerHelpers.addEventListener("message", e => {
+    EventListenerHelpers.addEventListener('message', e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
-      if (!iframe || "custom" !== e.data.msg) return;
+      if (!iframe || 'custom' !== e.data.msg) return;
       iframe._ready = true;
 
-      const message = MessagesListeners.convertCustomMessageInternalToUser(
-        e.data
-      );
-      const userSettingsCMKey = "luigi.updateUserSettings";
+      const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
+      const userSettingsCMKey = 'luigi.updateUserSettings';
       if (message.id === userSettingsCMKey) {
-        const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(
-          e.source
-        );
+        const iframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
         if (iframe) {
-          let userSettingsGroupKey = iframe.getAttribute("userSettingsGroup");
+          let userSettingsGroupKey = iframe.getAttribute('userSettingsGroup');
           storedUserSettings[userSettingsGroupKey] = message.data;
         }
       }
 
       if (
-        message.id === "luigi.navBackMobile" &&
+        message.id === 'luigi.navBackMobile' &&
         window.window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
       ) {
@@ -94,9 +88,7 @@
 
     LuigiConfig.readUserSettings()
       .then(storedUserSettingsData => {
-        previousUserSettings = JSON.parse(
-          JSON.stringify(storedUserSettingsData)
-        );
+        previousUserSettings = JSON.parse(JSON.stringify(storedUserSettingsData));
         if (storedUserSettingsData === null) {
           storedUserSettings = prepareUserSettingsObj(
             JSON.parse(JSON.stringify(userSettingGroups)),
@@ -115,7 +107,7 @@
           console.error(error.message);
         }
         if (error && error.closeDialog) {
-          dispatch("close");
+          dispatch('close');
         }
       });
   });
@@ -125,7 +117,7 @@
     userSettingGroups.forEach(userSettingGroup => {
       for (let key in userSettingGroup) {
         for (let i in userSettingGroup[key].settings) {
-          userSettingGroup[key].settings[i] = "";
+          userSettingGroup[key].settings[i] = '';
         }
         userSettingsObject[key] = {
           ...userSettingGroup[key].settings,
@@ -139,13 +131,13 @@
   function errorHandling(selectedUserSettingGroupData) {
     userSettingsGroupTitle = selectedUserSettingGroupData.title
       ? selectedUserSettingGroupData.title
-      : "";
+      : '';
     if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
       return;
     }
     for (let key in selectedUserSettingGroupData.settings) {
       let property = selectedUserSettingGroupData.settings[key];
-      if (property.type === "enum") {
+      if (property.type === 'enum') {
         if (!Array.isArray(property.options)) {
           console.error(
             `There is no options array for '${key}' defined in the Luigi userSettings config.`
@@ -191,14 +183,12 @@
       if (customIframes.hasOwnProperty(selectedUserSettingGroupKey)) {
         UserSettingsHelper.getUserSettingsIframesInDom().forEach(iframe => {
           if (iframe.userSettingsGroup === selectedUserSettingGroupKey) {
-            iframe.style.display = "block";
+            iframe.style.display = 'block';
           }
         });
       } else {
         const viewUrl = ViewUrlDecorator.hasDecorators()
-          ? ViewUrlDecorator.applyDecorators(
-              selectedUserSettingGroupData.viewUrl
-            )
+          ? ViewUrlDecorator.applyDecorators(selectedUserSettingGroupData.viewUrl)
           : selectedUserSettingGroupData.viewUrl;
         let iframe = UserSettingsHelper.createIframe(
           viewUrl,
@@ -214,13 +204,13 @@
   }
 
   function displayCustomEditor() {
-    document.querySelector(".iframeUserSettingsCtn").style.display = "block";
-    document.querySelector(".usersettingseditor").style.display = "none";
+    document.querySelector('.iframeUserSettingsCtn').style.display = 'block';
+    document.querySelector('.usersettingseditor').style.display = 'none';
   }
 
   function diplayUserSettingsEditor() {
-    document.querySelector(".iframeUserSettingsCtn").style.display = "none";
-    document.querySelector(".usersettingseditor").style.display = "block";
+    document.querySelector('.iframeUserSettingsCtn').style.display = 'none';
+    document.querySelector('.usersettingseditor').style.display = 'block';
   }
 
   const updateSettingsObject = event => {
@@ -230,14 +220,14 @@
   function storeUserSettings() {
     LuigiConfig.storeUserSettings(storedUserSettings, previousUserSettings)
       .then(() => {
-        dispatch("close");
+        dispatch('close');
       })
       .catch(error => {
         if (error && error.message) {
           console.error(error.message);
         }
         if (error && error.closeDialog) {
-          dispatch("close");
+          dispatch('close');
         }
       });
   }
@@ -263,21 +253,18 @@
   }
 
   function handleSaveBtnVisibility() {
-    if (document.querySelector(".usersettings-leftNavVisible")) {
-      document.querySelector(".confirm-button").style.display = "block";
+    if (document.querySelector('.usersettings-leftNavVisible')) {
+      document.querySelector('.confirm-button').style.display = 'block';
     } else {
-      document.querySelector(".confirm-button").style.display = "none";
+      document.querySelector('.confirm-button').style.display = 'none';
     }
   }
 
   function toggleNavMobile() {
     document
-      .querySelector(".lui-usersettings-dialog")
-      .classList.toggle("usersettings-leftNavVisible");
-    if (
-      window.innerWidth !== 0 &&
-      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
-    ) {
+      .querySelector('.lui-usersettings-dialog')
+      .classList.toggle('usersettings-leftNavVisible');
+    if (window.innerWidth !== 0 && window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
       handleSaveBtnVisibility();
     }
   }
@@ -295,23 +282,23 @@
       previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
     if (isDesktopToMobile) {
       document
-        .querySelector(".lui-usersettings-dialog")
-        .classList.toggle("usersettings-leftNavVisible");
-      if (!document.querySelector(".usersettings-leftNavVisible")) {
-        document.querySelector(".confirm-button").style.display = "none";
+        .querySelector('.lui-usersettings-dialog')
+        .classList.toggle('usersettings-leftNavVisible');
+      if (!document.querySelector('.usersettings-leftNavVisible')) {
+        document.querySelector('.confirm-button').style.display = 'none';
       } else {
-        document.querySelector(".confirm-button").style.display = "block";
+        document.querySelector('.confirm-button').style.display = 'block';
       }
     }
     if (isMobileToDesktop) {
-      document.querySelector(".confirm-button").style.display = "block";
+      document.querySelector('.confirm-button').style.display = 'block';
     }
 
     if (!previousWindowWidth) {
-      let confirmbtn = document.querySelector(".confirm-button");
+      let confirmbtn = document.querySelector('.confirm-button');
       window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
-        ? (confirmbtn.style.display = "none")
-        : (confirmbtn.style.display = "block");
+        ? (confirmbtn.style.display = 'none')
+        : (confirmbtn.style.display = 'block');
     }
 
     previousWindowWidth = window.innerWidth;
@@ -319,7 +306,7 @@
 
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
-      dispatch("close");
+      dispatch('close');
     }
   }
 

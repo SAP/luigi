@@ -23,32 +23,25 @@
 </div>
 
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from "svelte";
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
-  import { EscapingHelpers } from "./utilities/helpers";
+  import { EscapingHelpers } from './utilities/helpers';
 
   export let alertQueue;
   export let alertTypeMap = {
-    info: "information",
-    success: "success",
-    warning: "warning",
-    error: "error"
+    info: 'information',
+    success: 'success',
+    warning: 'warning',
+    error: 'error'
   };
-  const getUnsavedChangesModalPromise = getContext(
-    "getUnsavedChangesModalPromise"
-  );
-  const handleNavigation = getContext("handleNavigation");
+  const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  const handleNavigation = getContext('handleNavigation');
 
   beforeUpdate(() => {
     if (!alertQueue || !alertQueue.length) {
-      console.warn("There are no alerts to display");
+      console.warn('There are no alerts to display');
       return;
     }
 
@@ -87,8 +80,8 @@
   // review these functions and remove unnecessary 'export' keywords
   export function addClickListener(url, elemId) {
     try {
-      document.getElementById(elemId).addEventListener("click", event => {
-        const isRelative = !url.startsWith("/");
+      document.getElementById(elemId).addEventListener('click', event => {
+        const isRelative = !url.startsWith('/');
         event.stopPropagation();
         getUnsavedChangesModalPromise().then(() => {
           const data = {
@@ -101,7 +94,7 @@
         });
       });
     } catch (e) {
-      console.error("Error on Alert::addClickListener", e);
+      console.error('Error on Alert::addClickListener', e);
     }
   }
 </script>

@@ -69,10 +69,7 @@
       </div>
       <br />
       <br /><br /><br />
-      <div
-        class="clickable"
-        (click)="linkManager().navigate('/projects/pr2/developers')"
-      >
+      <div class="clickable" (click)="linkManager().navigate('/projects/pr2/developers')">
         projects/pr2/developers
       </div>
       <br />
@@ -86,8 +83,7 @@
           *ngFor="let link of links"
           (click)="linkManager().navigate(slugify(link))"
         >
-          <span class="sap-icon--navigation-right-arrow"></span> &nbsp;
-          {{ link }}
+          <span class="sap-icon--navigation-right-arrow"></span> &nbsp; {{ link }}
         </li>
       </ul>
     </div>
@@ -122,8 +118,8 @@
         <input type="text" class="fd-input" [(ngModel)]="callbackValue" />
       </div>
       <p>
-        <button class="fd-button" (click)="goBack()">Click here</button> to go
-        back to your preserved view.
+        <button class="fd-button" (click)="goBack()">Click here</button> to go back to
+        your preserved view.
       </p>
     </div>
   </div>

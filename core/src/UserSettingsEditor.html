@@ -1,7 +1,4 @@
-<svelte:window
-  on:click="{closeAllCombos}"
-  on:blur="{closeAllCombos}"
-></svelte:window>
+<svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window>
 <script>
   import {
     onMount,
@@ -9,23 +6,23 @@
     beforeUpdate,
     createEventDispatcher,
     getContext
-  } from "svelte";
-  import { GenericHelpers } from "./utilities/helpers";
+  } from 'svelte';
+  import { GenericHelpers } from './utilities/helpers';
   export let userSettingGroup;
   export let userSettingsGroupKey;
   export let storedUserSettingData;
   const dispatch = createEventDispatcher();
   let settingsSchema;
   let displayOptions;
-  let getTranslation = getContext("getTranslation");
+  let getTranslation = getContext('getTranslation');
 
   export function updateSettingsObject() {
-    dispatch("updateSettingsObject", { storedUserSettingData });
+    dispatch('updateSettingsObject', { storedUserSettingData });
   }
 
   function closeAllCombos(self) {
     document
-      .querySelectorAll(".lui-usersettings-content .fd-popover__control")
+      .querySelectorAll('.lui-usersettings-content .fd-popover__control')
       .forEach(elem => {
         setExpandedState(elem, false);
       });
@@ -49,19 +46,19 @@
 
   function toggleOptions(event, editable) {
     if (editable || editable === undefined) {
-      const self = closest(event.target, ".fd-popover__control", 20);
+      const self = closest(event.target, '.fd-popover__control', 20);
       closeAllCombos(self);
-      const currentState = self.getAttribute("aria-expanded") === "true";
+      const currentState = self.getAttribute('aria-expanded') === 'true';
       setExpandedState(self, !currentState);
     }
   }
 
   function setExpandedState(self, value) {
-    const indicatorBtn = self.querySelector(".fd-input-group__button");
-    const optionsPopOver = self.parentNode.querySelector(".fd-popover__body");
-    self.setAttribute("aria-expanded", value);
-    optionsPopOver.setAttribute("aria-hidden", !value);
-    indicatorBtn.setAttribute("aria-expanded", value);
+    const indicatorBtn = self.querySelector('.fd-input-group__button');
+    const optionsPopOver = self.parentNode.querySelector('.fd-popover__body');
+    self.setAttribute('aria-expanded', value);
+    optionsPopOver.setAttribute('aria-hidden', !value);
+    indicatorBtn.setAttribute('aria-expanded', value);
   }
 
   function updateComboBox(key, option) {
@@ -70,13 +67,13 @@
 
   function updateEnumButton(key, option) {
     document
-      .querySelectorAll(".enum-buttons-container-" + key + " button")
+      .querySelectorAll('.enum-buttons-container-' + key + ' button')
       .forEach(button => {
-        const buttonId = button.getAttribute("id");
+        const buttonId = button.getAttribute('id');
         const optionId = `lui-us-enum_button_${key}_option`;
         buttonId === optionId
-          ? button.classList.add("fd-button--emphasized")
-          : button.classList.remove("fd-button--emphasized");
+          ? button.classList.add('fd-button--emphasized')
+          : button.classList.remove('fd-button--emphasized');
       });
 
     storedUserSettingData[userSettingGroup[0]][key] = option;
@@ -97,7 +94,7 @@
     position: relative;
   }
 
-  .lui-value-container > input[type="checkbox"] {
+  .lui-value-container > input[type='checkbox'] {
     margin-top: 13px;
   }
 
@@ -128,14 +125,7 @@
 
   .lui-title {
     line-height: var(--sapContent_LineHeight, 1.4);
-    font-family: var(
-      --sapFontFamily,
-      "72",
-      "72full",
-      Arial,
-      Helvetica,
-      sans-serif
-    );
+    font-family: var(--sapFontFamily, '72', '72full', Arial, Helvetica, sans-serif);
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
@@ -160,8 +150,7 @@
   userSettingGroup[1].settings}
   <div class="fd-page__content">
     <div class="fd-container lui-form-grid">
-      {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem],
-      i}
+      {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
       <div class="lui-form-label">
         <label class="fd-form-label"
           >{$getTranslation(schemaItem.label)}:
@@ -265,8 +254,8 @@
             {/each}
           </div>
         </div>
-        {/if} {#if schemaItem.type==='boolean' && (!schemaItem.style ||
-        schemaItem.style === 'switch')}
+        {/if} {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style
+        === 'switch')}
         <label
           class="fd-switch fd-switch--compact"
           data-testid="lui-us-label-switch_{key}"
@@ -287,8 +276,7 @@
             </div>
           </span>
         </label>
-        {/if} {#if schemaItem.type==='boolean' && schemaItem.style ===
-        'checkbox'}
+        {/if} {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
         <input
           type="checkbox"
           class="fd-checkbox"
