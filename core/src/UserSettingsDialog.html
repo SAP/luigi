@@ -19,7 +19,7 @@
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { LuigiConfig } from './core-api';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
-  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
+  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_TAB } from './utilities/keycode.js';
   export let schemaObj;
   export let userSettingGroups;
 
@@ -304,9 +304,9 @@
     }
   }
 
-  export function handleKeyUp(event) {
-    if (event.keyCode === KEYCODE_ENTER || KEYCODE_SPACE) {
-      this.click();
+  export function handleKeyUp(event, index) {
+    if (event.keyCode == KEYCODE_ENTER || KEYCODE_SPACE && event.keyCode !== KEYCODE_TAB) {
+      document.querySelectorAll('.lui-us-list .lui-us-navlist__item')[index].click();
     }
   }
 </script>
@@ -374,33 +374,6 @@
     margin-top: var(--dialog-header-height);
     overflow-y: auto;
     background-color: var(--sapBackgroundColor, #f7f7f7);
-  }
-
-  .lui-usersettings-burger {
-    margin-right: 16px;
-    cursor: pointer;
-    display: none;
-  }
-
-  .lui-usersettings-list-item__info-container {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: flex;
-    align-items: center;
-  }
-
-  .lui-usersettings-list-item__info-container .sap-icon {
-    font-size: 2rem;
-    color: var(--sapContent_NonInteractiveIconColor);
-    margin-right: 0.75rem;
-  }
-
-  .fd-nested-list__icon img {
-    max-width: 2rem;
-    max-height: 2rem;
-    border-radius: 0.25rem;
-    margin-right: 0.75rem;
   }
 
   .iframeUserSettingsCtn {
@@ -491,6 +464,14 @@
       z-index: 1;
     }
   }
+
+  /*need to be removed after updating FD Styles to 0.16.0, selected state for left side nav*/
+  .fd-list__item.is-selected, .fd-list__item[aria-selected=true] {
+    background: #e5f0fa;
+    background: var(--sapList_SelectionBackgroundColor,#e5f0fa);
+    border-bottom: .0625rem solid #0854a0;
+    border-bottom: var(--sapList_BorderWidth,.0625rem) solid var(--sapList_SelectionBorderColor,#0854a0);
+  }
 </style>
 <svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
@@ -513,7 +494,7 @@
                 class="fd-list__item lui-us-navlist__item"
                 data-testid="us-navigation-item"
                 on:click="{() => openEditor(userSettingsGroupProperty, event)}"
-                on:keyup="{handleKeyUp}"
+                on:keyup="{(event) => handleKeyUp(event,[index])}"
               >
                 <span class="fd-list__thumbnail">
                   {#if userSettingsGroupProperty[1].icon} {#if
