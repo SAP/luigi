@@ -12,18 +12,14 @@
     EventListenerHelpers,
     IframeHelpers,
     UserSettingsHelper
-  } from "./utilities/helpers";
-  import { MessagesListeners } from "./services/messages-listeners";
-  import { ViewUrlDecorator } from "./services/viewurl-decorator";
-  import UserSettingsEditor from "./UserSettingsEditor.html";
-  import { CSS_BREAKPOINTS } from "./utilities/constants";
-  import { LuigiConfig } from "./core-api";
-  import { TOP_NAV_DEFAULTS } from "./utilities/luigi-config-defaults";
-  import {
-    KEYCODE_ESC,
-    KEYCODE_ENTER,
-    KEYCODE_SPACE
-  } from "./utilities/keycode.js";
+  } from './utilities/helpers';
+  import { MessagesListeners } from './services/messages-listeners';
+  import { ViewUrlDecorator } from './services/viewurl-decorator';
+  import UserSettingsEditor from './UserSettingsEditor.html';
+  import { CSS_BREAKPOINTS } from './utilities/constants';
+  import { LuigiConfig } from './core-api';
+  import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
   export let schemaObj;
   export let userSettingGroups;
 
@@ -157,20 +153,18 @@
     let selectedUserSettingGroupData = selectedUserSettingGroup[1];
     errorHandling(selectedUserSettingGroupData);
     if (event) {
-      document
-        .querySelectorAll(".lui-us-list .lui-us-navlist__item")
-        .forEach(elem => {
-          elem.classList.remove("is-selected");
-        });
-      const link = closest(event.target, ".lui-us-navlist__item", 20);
-      link.classList.add("is-selected");
+      document.querySelectorAll('.lui-us-list .lui-us-navlist__item').forEach(elem => {
+        elem.classList.remove('is-selected');
+      });
+      const link = closest(event.target, '.lui-us-navlist__item', 20);
+      link.classList.add('is-selected');
       if (window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
         closeNavOnCategoryClickMobile();
       }
     } else {
       document
-        .querySelectorAll(".lui-us-list .lui-us-navlist__item")[0]
-        .classList.add("is-selected");
+        .querySelectorAll('.lui-us-list .lui-us-navlist__item')[0]
+        .classList.add('is-selected');
       if (
         window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
@@ -509,13 +503,10 @@
               {$getTranslation(dialogHeader)}
             </h2>
           </div>
-          <div
-            class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation"
-          >
+          <div class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation">
             <ul class="fd-list fd-list--byline lui-us-list" role="list">
-              {#each Object.entries(userSettingGroups) as [key,
-              userSettingGroup], index} {#each Object.entries(userSettingGroup)
-              as userSettingsGroupProperty}
+              {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
+              {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
               <li
                 tabindex="0"
                 role="listitem"

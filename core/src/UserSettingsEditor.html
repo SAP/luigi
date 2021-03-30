@@ -152,9 +152,7 @@
     <div class="fd-container lui-form-grid">
       {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
       <div class="lui-form-label">
-        <label class="fd-form-label"
-          >{$getTranslation(schemaItem.label)}:
-        </label>
+        <label class="fd-form-label">{$getTranslation(schemaItem.label)}: </label>
       </div>
       <div class="lui-value-container">
         {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
@@ -172,8 +170,8 @@
         <label class="lui-form-text" data-testid="lui-us-input{i}"
           >{storedUserSettingData[userSettingGroup[0]][key]}
         </label>
-        {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style ===
-        undefined || schemaItem.style === 'list')}
+        {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
+        schemaItem.style === 'list')}
         <div class="fd-form-item">
           <div class="fd-popover">
             <div
@@ -190,9 +188,7 @@
                   data-testid="lui-us-input{i}"
                   disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                 />
-                <span
-                  class="fd-input-group__addon fd-input-group__addon--button"
-                >
+                <span class="fd-input-group__addon fd-input-group__addon--button">
                   <button
                     aria-label="show/hide fruit options"
                     aria-expanded="false"
@@ -221,9 +217,7 @@
                     on:click="{() => updateComboBox(key,option)}"
                   >
                     <span class="fd-list__title">
-                      <span class="fd-list__bold"
-                        >{$getTranslation(option)}</span
-                      >
+                      <span class="fd-list__bold">{$getTranslation(option)}</span>
                     </span>
                   </li>
                   {/each}
