@@ -19,7 +19,12 @@
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { LuigiConfig } from './core-api';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
-  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_TAB } from './utilities/keycode.js';
+  import {
+    KEYCODE_ESC,
+    KEYCODE_ENTER,
+    KEYCODE_SPACE,
+    KEYCODE_TAB
+  } from './utilities/keycode.js';
   export let schemaObj;
   export let userSettingGroups;
 
@@ -305,7 +310,10 @@
   }
 
   export function handleKeyUp(event, index) {
-    if (event.keyCode == KEYCODE_ENTER || KEYCODE_SPACE && event.keyCode !== KEYCODE_TAB) {
+    if (
+      event.keyCode == KEYCODE_ENTER ||
+      (KEYCODE_SPACE && event.keyCode !== KEYCODE_TAB)
+    ) {
       document.querySelectorAll('.lui-us-list .lui-us-navlist__item')[index].click();
     }
   }
@@ -466,11 +474,13 @@
   }
 
   /*need to be removed after updating FD Styles to 0.16.0, selected state for left side nav*/
-  .fd-list__item.is-selected, .fd-list__item[aria-selected=true] {
+  .fd-list__item.is-selected,
+  .fd-list__item[aria-selected='true'] {
     background: #e5f0fa;
-    background: var(--sapList_SelectionBackgroundColor,#e5f0fa);
-    border-bottom: .0625rem solid #0854a0;
-    border-bottom: var(--sapList_BorderWidth,.0625rem) solid var(--sapList_SelectionBorderColor,#0854a0);
+    background: var(--sapList_SelectionBackgroundColor, #e5f0fa);
+    border-bottom: 0.0625rem solid #0854a0;
+    border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
+      var(--sapList_SelectionBorderColor, #0854a0);
   }
 </style>
 <svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
