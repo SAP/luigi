@@ -16,9 +16,9 @@ describe('Navigation', () => {
     cy.get('.lui-usersettings-dialog').should('exist');
 
     //Check we have 5 left bar items
-    cy.get('[data-testid="us-navigation-item"]')
-      .children()
-      .should('have.length', 10);
+    cy.get('.lui-us-list')
+      .find('[data-testid="us-navigation-item"]')
+      .should('have.length', 5);
   };
 
   const saveSettings = () => {

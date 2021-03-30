@@ -503,7 +503,7 @@
                 role="listitem"
                 class="fd-list__item lui-us-navlist__item"
                 data-testid="us-navigation-item"
-                on:click="{() => openEditor(userSettingsGroupProperty, event)}"
+                on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
                 on:keyup="{(event) => handleKeyUp(event,[index])}"
               >
                 <span class="fd-list__thumbnail">
