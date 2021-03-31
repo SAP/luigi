@@ -610,8 +610,11 @@ describe('Fiddle', () => {
       });
       cy.get('.lui-usersettings-dialog').should('be.visible');
 
-      cy.get('.lui-usersettings-left-nav')
-        .contains('Language & Region')
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
+        .eq(1)
+        .should('contain', 'Language & Region');
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
+        .eq(1)
         .click();
 
       cy.get('[data-testid="lui-us-input0"]').click();
@@ -630,8 +633,11 @@ describe('Fiddle', () => {
         win.Luigi.ux().openUserSettings();
       });
 
-      cy.get('.lui-usersettings-left-nav')
-        .contains('Theme')
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
+        .eq(2)
+        .should('contain', 'Theme');
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
+        .eq(2)
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
