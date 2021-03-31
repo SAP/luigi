@@ -38,11 +38,7 @@ class StorageHelperClass {
       if (typeof operationFunction !== 'function') {
         throw operation + ' is not a supported operation for the storage';
       }
-      const result = operationFunction.bind(
-        this,
-        this.cleanHostname(hostname),
-        params
-      )();
+      const result = operationFunction.bind(this, this.cleanHostname(hostname), params)();
       this.sendBackOperation(microfrontendId, id, 'OK', result);
     } catch (error) {
       console.log(error);
@@ -157,9 +153,7 @@ class StorageHelperClass {
     IframeHelpers.getMicrofrontendsInDom()
       .filter(microfrontendObj => microfrontendObj.id === microfrontendId)
       .map(microfrontendObj => microfrontendObj.container)
-      .map(mfContainer =>
-        IframeHelpers.sendMessageToIframe(mfContainer, message)
-      );
+      .map(mfContainer => IframeHelpers.sendMessageToIframe(mfContainer, message));
   }
 }
 

@@ -10,14 +10,9 @@ class LifecycleManager extends LuigiClientBase {
   constructor() {
     super();
     this.luigiInitialized = false;
-    this.defaultContextKeys = [
-      'context',
-      'internal',
-      'nodeParams',
-      'pathParams'
-    ];
+    this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
     this.setCurrentContext(
-      this.defaultContextKeys.reduce(function (acc, key) {
+      this.defaultContextKeys.reduce(function(acc, key) {
         acc[key] = {};
         return acc;
       }, {})
@@ -28,85 +23,108 @@ class LifecycleManager extends LuigiClientBase {
     this._onInitFns = {};
     this.authData = {};
 
+    if (!this._isDeferInitDefined()) {
+      this.luigiClientInit();
+    }
+  }
+
+  /**
+   * Check if the html head element contains the attribute "defer-luigi-init"
+   * @private
+   * @memberof Lifecycle
+   */
+  _isDeferInitDefined() {
+    return window.document.head.hasAttribute('defer-luigi-init');
+  }
+
+  /**
+   * Check if LuigiClient is initialized
+   * @returns {boolean} client initialized state
+   * @since 1.12.0
+   * @memberof Lifecycle
+   * @example
+   * const init = LuigiClient.isLuigiClientInitialized()
+   */
+  isLuigiClientInitialized() {
+    return this.luigiInitialized;
+  }
+
+  /**
+   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
+   * @since 1.12.0
+   * @memberof Lifecycle
+   * @example
+   * LuigiClient.luigiClientInit()
+   */
+  luigiClientInit() {
+    if (this.luigiInitialized) {
+      console.warn('Luigi Client has been already initialized');
+      return;
+    }
     /**
-     * Adds event listener for communication with Luigi Core and starts communication
+     * Save context data every time navigation to a different node happens
      * @private
      */
-    const luigiClientInit = () => {
-      /**
-       * Save context data every time navigation to a different node happens
-       * @private
-       */
-      const setContext = rawData => {
-        for (let index = 0; index < this.defaultContextKeys.length; index++) {
-          let key = this.defaultContextKeys[index];
-          try {
-            if (typeof rawData[key] === 'string') {
-              rawData[key] = JSON.parse(rawData[key]);
-            }
-          } catch (e) {
-            console.info(
-              'unable to parse luigi context data for',
-              key,
-              rawData[key],
-              e
-            );
+    const setContext = rawData => {
+      for (let index = 0; index < this.defaultContextKeys.length; index++) {
+        let key = this.defaultContextKeys[index];
+        try {
+          if (typeof rawData[key] === 'string') {
+            rawData[key] = JSON.parse(rawData[key]);
           }
+        } catch (e) {
+          console.info('unable to parse luigi context data for', key, rawData[key], e);
         }
-        this.setCurrentContext(rawData);
-      };
-
-      const setAuthData = eventPayload => {
-        if (eventPayload) {
-          this.authData = eventPayload;
-        }
-      };
-
-      helpers.addEventListener('luigi.init', e => {
-        setContext(e.data);
-        setAuthData(e.data.authData);
-        helpers.setLuigiCoreDomain(e.origin);
-        this.luigiInitialized = true;
-        this._notifyInit(e.origin);
-        helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
-      });
-
-      helpers.addEventListener('luigi-client.inactive-microfrontend', e => {
-        this._notifyInactive(e.origin);
-      });
-
-      helpers.addEventListener('luigi.auth.tokenIssued', e => {
-        setAuthData(e.data.authData);
-      });
-
-      helpers.addEventListener('luigi.navigate', e => {
-        setContext(e.data);
-        if (!this.currentContext.internal.isNavigateBack) {
-          history.replaceState({ luigiInduced: true }, '', e.data.viewUrl);
-          window.dispatchEvent(
-            new PopStateEvent('popstate', { state: 'luiginavigation' })
-          );
-        }
-        // execute the context change listener if set by the micro frontend
-        this._notifyUpdate();
-        helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
-      });
-
-      /**
-       * Get context once initially
-       * @private
-       */
-      window.parent.postMessage(
-        {
-          msg: 'luigi.get-context',
-          clientVersion: require('../public/package.json').version
-        },
-        '*'
-      );
-      this._tpcCheck();
+      }
+      this.setCurrentContext(rawData);
     };
 
-    luigiClientInit();
+    const setAuthData = eventPayload => {
+      if (eventPayload) {
+        this.authData = eventPayload;
+      }
+    };
+
+    helpers.addEventListener('luigi.init', e => {
+      setContext(e.data);
+      setAuthData(e.data.authData);
+      helpers.setLuigiCoreDomain(e.origin);
+      this.luigiInitialized = true;
+      this._notifyInit(e.origin);
+      helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
+    });
+
+    helpers.addEventListener('luigi-client.inactive-microfrontend', e => {
+      this._notifyInactive(e.origin);
+    });
+
+    helpers.addEventListener('luigi.auth.tokenIssued', e => {
+      setAuthData(e.data.authData);
+    });
+
+    helpers.addEventListener('luigi.navigate', e => {
+      setContext(e.data);
+      if (!this.currentContext.internal.isNavigateBack) {
+        history.replaceState({ luigiInduced: true }, '', e.data.viewUrl);
+        window.dispatchEvent(new PopStateEvent('popstate', { state: 'luiginavigation' }));
+      }
+      // execute the context change listener if set by the micro frontend
+      this._notifyUpdate();
+      helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
+    });
+
+    /**
+     * Get context once initially
+     * @private
+     */
+    window.parent.postMessage(
+      {
+        msg: 'luigi.get-context',
+        clientVersion: require('../public/package.json').version
+      },
+      '*'
+    );
+    this._tpcCheck();
   }
 
   _tpcCheck() {
@@ -304,12 +322,9 @@ class LifecycleManager extends LuigiClientBase {
    * const customMsgId = LuigiClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
    */
   addCustomMessageListener(customMessageId, customMessageListener) {
-    return helpers.addEventListener(
-      customMessageId,
-      (customMessage, listenerId) => {
-        return customMessageListener(customMessage, listenerId);
-      }
-    );
+    return helpers.addEventListener(customMessageId, (customMessage, listenerId) => {
+      return customMessageListener(customMessage, listenerId);
+    });
   }
 
   /**
@@ -436,9 +451,7 @@ class LifecycleManager extends LuigiClientBase {
    * @since 0.6.2
    */
   sendCustomMessage(message) {
-    const customMessageInternal = helpers.convertCustomMessageUserToInternal(
-      message
-    );
+    const customMessageInternal = helpers.convertCustomMessageUserToInternal(message);
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
 

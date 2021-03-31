@@ -192,7 +192,11 @@ Luigi.setConfig({
             },
             experimental: {
               webcomponents:true
-            }  
+            },
+            burgerTooltip: {
+                navExpanded: 'Collapse navigation',
+                navCollapsed: 'Expand navigation'
+            }
         }
     });    
 `;

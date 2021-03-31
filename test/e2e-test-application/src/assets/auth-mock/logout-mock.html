@@ -25,9 +25,7 @@
         var redirectTo;
         try {
           var url = new URL(window.location.href);
-          var post_logout_redirect_uri = url.searchParams.get(
-            'post_logout_redirect_uri'
-          );
+          var post_logout_redirect_uri = url.searchParams.get('post_logout_redirect_uri');
           redirectTo = post_logout_redirect_uri;
 
           var error = url.searchParams.get('error');

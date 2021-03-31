@@ -1,4 +1,4 @@
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" />
 <div
   class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
   style="{isModal?'z-index:1001':''}"
@@ -61,12 +61,7 @@
 
 <script>
   import Backdrop from './Backdrop.html';
-  import {
-    afterUpdate,
-    createEventDispatcher,
-    onMount,
-    onDestroy
-  } from 'svelte';
+  import { afterUpdate, createEventDispatcher, onMount, onDestroy } from 'svelte';
   import { fade } from 'svelte/transition';
   const dispatch = createEventDispatcher();
 
@@ -94,8 +89,7 @@
   let isModal = true;
 
   const prepareNodeData = async path => {
-    const pathUrlRaw =
-      path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
+    const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
     const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
     nodeParams = RoutingHelpers.getNodeParams(params);
     const dataFromPath = await Navigation.extractDataFromPath(path);
@@ -147,6 +141,9 @@
         });
         wcCreated = true;
       } else {
+        showLoadingIndicator = nodeObject.loadingIndicator
+          ? nodeObject.loadingIndicator.enabled
+          : true;
         const iframe = await createIframeModal(nodeObject.viewUrl, {
           context: pathData.context,
           pathParams: pathData.pathParams,
@@ -255,12 +252,7 @@
   };
 
   const backdropStateChanged = event => {
-    if (
-      event &&
-      event.detail &&
-      event.detail.backdropActive &&
-      event.detail.drawer
-    ) {
+    if (event && event.detail && event.detail.backdropActive && event.detail.drawer) {
       //renderBackdrop = false;
     }
   };

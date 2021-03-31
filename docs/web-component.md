@@ -16,28 +16,28 @@ meta -->
 # Web Component
 
 <!-- add-attribute:class:success -->
->**TIP:** You can find some examples how to write/include web components in our test application [Luigi Fiddle](https://fiddle.luigi-project.io).
+>**TIP:** You can find some examples of Web Components in our test application [Luigi Fiddle](https://fiddle.luigi-project.io) in the last navigation entry on the left.
 
 ### Overview
 
-Luigi offers the possibility to open a micro frontend as a web component; if you want to have more information about web component, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
+Luigi offers the possibility to open a micro frontend as a Web Component. For more information, please have a look at the page: [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components).
 
-For no-complex micro frontend, it can be a good and fast alternative: all the frontend will be loaded in a single javascript file.
+Web Components can provide a fast-loading alternative for non-complex micro frontends. All micro frontends from trusted sources will be loaded in a single Javascript file.
 
 In this page you wil find:
 -   [Navigation Configuration](#navigation-configuration) - how to configure web component in Luigi Core navigation
--   [Write a Web Component](#write-a-web-component) - quick description how to write a Web Component compatible with Luigi Framework
--   [Luigi Client for web component](#luigi-client-for-web-component) js object injected in that Web Component, to leverage some Luigi core features
--   [Tip: how to inject HTML Template code in web component](#tip-how-to-inject-html-template-code-in-web-component) - recommendation how to inject the html in a Web Component
+-   [Write a Web Component](#write-a-web-component) - quick description of how to write a Web Component compatible with Luigi Framework
+-   [Luigi Client for web component](#luigi-client-for-web-component) - javascript object injected in a Web Component to leverage Luigi Core features
+-   [Tip: how to inject HTML Template code in Web Component](#tip-how-to-inject-html-template-code-in-web-component) - recommendation for how to inject HTML in a Web Component
 
 ## Navigation Configuration
 
-If you want to declare a menu item to be open as Web Component, you need to specify this configuration in Luigi config:
+If you want to declare a menu item to be open as Web Component, you need to specify this configuration in the Luigi configuration:
 ```javascript
 Luigi.setConfig({
     navigation: {
-   		// To enable CORS Web component Loading: basically you need to add external domains where the Web Components are hosted;
-   		// in this examle, we are sepcify that we can load Web Components from everyhere
+   		// To enable CORS Web Component Loading: you need to add external domains where the Web Components are hosted;
+   		// in this example, we sepcify that we can load Web Components from everyhere
 	    validWebcomponentUrls:['.*?'],
 	    nodes: [
 		...
@@ -56,11 +56,12 @@ Luigi.setConfig({
 ```
 
 ### Write a Web Component
-Luigi supports Web Component that are slightly different from standard:
-- You don’t need to declare any special tag definition inside the component like customElements.define(….., ….)
-- Inside the component, Luigi core will inject an object in your class called LuigiClient
 
-Here below, a very easy Hello World web component example:
+There are a couple of differences between Luigi Web Components and standard ones:
+- You don’t need to declare any special tag definition inside the Component such as `customElements.define(….., ….)`
+- Inside the Component, Luigi Core will inject an object in your class called `LuigiClient`
+
+Below is a simple Hello World Web Component example:
 ```javascript
 export default class ExampleWC extends HTMLElement {
   constructor() {
@@ -96,20 +97,19 @@ export default class ExampleWC extends HTMLElement {
 }
 ```
 
-As you could notice from previous example, you can use a LuigiClient instance inside your  web component class.
-It is really important to notice, that this LuigiClient instance is different from the one than you can find in [client library](https://docs.luigi-project.io/docs/luigi-client-setup).
+As shown in the example, you can use a LuigiClient instance inside your Web Component class.
+It is really important to note that this LuigiClient instance is different from the one than you can find in our [Client library](https://docs.luigi-project.io/docs/luigi-client-setup).
 
-Normal micro frontends are embedded inside iFrame: Luigi offers a library to allow the frontend to communicate with Luigi Core.
-In Web Component the situation is quite different: they are not encapsulated into an iframe, they are just loaded inside a shadow element;
-when Luigi Core loads a Web Component, it injects a LuigiClient instance.
+Normal micro frontends are embedded inside iframe: Luigi offers a library to allow the frontend to communicate with Luigi Core.
+In a Web Component the situation is quite different: they are not encapsulated into an iframe, they are just loaded inside a shadow element. When Luigi Core loads a Web Component, it injects a LuigiClient instance.
 
-### Luigi Client for web component
+### Luigi Client for Web Components
 
-In this javascript object, you can basically find two elements:
+In this Javascript object, you can find two elements:
 - `this.LuigiClient.uxManager()` : you can use all methods described in [Luigi Core UX](https://docs.luigi-project.io/docs/luigi-core-api?section=ux)
 - `this.LuigiClient.linkManager()` : you can use all methods described in [Luigi Navigation](https://docs.luigi-project.io/docs/luigi-core-api?section=luiginavigation)
 
-Below you have a a very easy Hello World web component example which shows an alert:
+Below you have a simple Hello World Web Component example which shows an alert:
 ```javascript
 export default class ExampleWC extends HTMLElement {
   constructor() {
@@ -123,7 +123,7 @@ export default class ExampleWC extends HTMLElement {
 }
 ```
 
-If you want to open a drawer:
+This example opens a drawer:
 ```javascript
 export default class ExampleWC extends HTMLElement {
   constructor() {
@@ -137,8 +137,8 @@ export default class ExampleWC extends HTMLElement {
 
 ## Tip: how to inject HTML Template code in web component
 
-Sometimes your Web Component has some HTML template that you would like to use, instead of creating DOM elements one by one.
-We suggest putting your HTML template inside a variable at the beginning of the js file and append to the web component root in the constructor. An example is given below:
+Sometimes your Web Component has an HTML template that you would like to use instead of creating DOM elements one by one.
+We suggest putting your HTML template inside a variable at the beginning of the Javascript file, and appending it to the Web Component root in the constructor. An example is given below:
 ```javascript
 const template = document.createElement('template');
 template.innerHTML = `

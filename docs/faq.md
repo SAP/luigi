@@ -15,6 +15,14 @@ meta -->
 
 # Frequently asked questions about Luigi
 
+This page contains FAQs about Luigi in the following categories:
+- [Basics](#basic-questions)
+- [User interface/appearance](#ui-questions)
+- [Navigation and routing](#navigation-and-routing-questions)
+- [Others](#other-questions)
+
+## Basic questions
+
 <!-- accordion:start -->
 
 ### What is Luigi?
@@ -34,13 +42,6 @@ This video which explains the basics of micro frontend architecture and how it c
 ### Does Luigi deliver micro frontends?
 
 No, Luigi itself does not deliver any micro frontends. It is a framework that helps you develop micro frontends and connect them to web applications.
-
-### I don't want to use the default Fiori Fundamentals style. How can I style Luigi differently? How can I change the look of Luigi's UI?
-
-There are a few options to do that at the moment:
-- Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
-- Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi.
-- Turn off Luigi view components completely via the [hideNavigation](general-settings.md) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
 
 ### Is Luigi only useful in the context of SAP or very large corporate applications?
 
@@ -85,5 +86,615 @@ TBD
 ### Is Luigi already being used within any products, or is it still too new?
 
 Yes, it is already being used in production and close-to-production within SAP. For example in Kyma, SAP C/4HANA Cockpit, Context Driven Services, Konduit and Varkes. Outside of SAP, SAAS AG (partner) uses Luigi. Additionally, there are some POCs going on and we're supporting a few other customers and partners who want to start using Luigi soon.
+
+<!-- accordion:end -->
+
+## UI questions
+
+<!-- accordion:start -->
+
+### I don't want to use the default Fiori Fundamentals style. How can I style Luigi differently? How can I change the look of Luigi's UI?
+
+There are a few options to do that at the moment:
+- Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
+- Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi.
+- Turn off Luigi view components completely via the [hideNavigation](general-settings.md) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
+- You can use this simple example with a completely customized shell as a starting point:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Luigi Custom UI</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@luigi-project/core/luigi.css"
+    />
+    <script src="https://unpkg.com/@luigi-project/core/luigi.js"></script>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+  </head>
+​
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+​
+    <!-- CUSTOM APP LOGIC, Vanilla JS navigation implementation example -->
+    <script>
+      /**
+       * entry function for custom app logic
+       */
+      function init() {
+        // react on route changes
+        window.onhashchange = updateNav; // there will be an abstraction on luigi side in the future, independend from routing strategy
+
+        // building up static root nodes in header
+        window.linkEl = document.querySelector(".links");
+        Luigi.getConfigValueAsync("navigation.nodes").then((data) => {
+          data.forEach((element) => {
+            var anc = document.createElement("a");
+            anc.innerHTML = Luigi.i18n().getTranslation(element.label);
+            anc.pathSegment = element.pathSegment;
+            anc.addEventListener("click", () => {
+              Luigi.navigation().navigate("/" + element.pathSegment);
+            });
+            linkEl.appendChild(anc);
+          });
+          updateNav();
+        });
+      }
+​
+      /**
+       * returns the currently selected branch in the navigation tree as an array, starting from root to leaf
+       * (currently this has to be done manually here, but we plan to expose that as part of luigi core api)
+       */
+      function getNodeBranch() {
+        let nodeTree = Luigi.getConfigValue("navigation.nodes");
+        let segments = window.location.hash.split("/");
+        console.log(segments);
+        let nodes = [];
+        let cnodes = nodeTree;
+        segments?.forEach((seg) => {
+          cnodes.forEach((node) => {
+            if (node.pathSegment === seg) {
+              cnodes = node.children;
+              nodes.push(node);
+            }
+          });
+        });
+        console.log(nodes);
+        return nodes;
+      }
+​
+      /**
+       * renders side navigation nodes
+       */
+      function renderNavNodes(container, nodes, parentPath, nodeBranch) {
+        nodes?.forEach((node) => {
+          let nodeCnt = document.createElement("div");
+          nodeCnt.classList.add("myNode");
+          let label = document.createElement("div");
+          label.classList.add("myNodeLabel");
+          if (nodeBranch?.length === 1 && node === nodeBranch[0]) {
+            label.classList.add("selected");
+          }
+          label.innerHTML = node.label;
+​
+          // possible targets
+          let path = node.link || parentPath + "/" + node.pathSegment;
+          let extLink = node.externalLink;
+​
+          label.onclick = (ev) => {
+            if (extLink) {
+              if (extLink.sameWindow) {
+                window.location.href = extLink.url;
+              } else {
+                window.open(extLink.url, "_blank");
+              }
+            } else {
+              console.log("nav to ", path);
+              Luigi.navigation().navigate(path);
+            }
+          };
+          nodeCnt.appendChild(label);
+          if (node.children) {
+            renderNavNodes(nodeCnt, node.children, path, nodeBranch.slice(1));
+          }
+​
+          container.appendChild(nodeCnt);
+        });
+      }
+​
+      /*
+       * updates navigation view state according to currently selected node
+       */
+      function updateNav() {
+        let nodeBranch = getNodeBranch();
+​
+        if (nodeBranch?.length > 0) {
+          // top nav selection
+          linkEl.querySelectorAll("a").forEach((el) => {
+            el.classList.toggle(
+              "selected",
+              el.pathSegment === nodeBranch[0].pathSegment
+            );
+          });
+​
+          // left nav content
+          let sideNavCnt = document.querySelector(".myLeftSideNav");
+          sideNavCnt.innerHTML = "";
+​
+          renderNavNodes(
+            sideNavCnt,
+            nodeBranch[0].children,
+            "/" + nodeBranch[0].pathSegment,
+            nodeBranch.slice(1)
+          );
+​
+          document.body.classList.toggle(
+            "leftNavHidden",
+            !(nodeBranch[0].children?.length > 0) || !!nodeBranch[0].hideSideNav
+          );
+        }
+      }
+    </script>
+​
+    <!-- CUSTOM APP LOGIC -->
+​
+    <!-- CUSTOM STYLES -->
+    <style>
+      .myHeader {
+        height: 50px;
+        background: linear-gradient(
+          90deg,
+          rgba(60, 69, 83, 1) 26%,
+          rgba(42, 183, 113, 1) 100%
+        );
+        padding: 10px;
+        font-size: large;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        font-weight: bold;
+        position: relative;
+      }
+​
+      .myHeader img {
+        height: 32px;
+      }
+​
+      .myHeader > span {
+        vertical-align: top;
+        margin-top: 4px;
+        display: inline-block;
+        margin-left: 10px;
+      }
+​
+      .myHeader .links {
+        position: absolute;
+        right: 20px;
+        bottom: 0;
+      }
+​
+      .myHeader .links a,
+      .myHeader .links a:visited {
+        color: white;
+        margin: 5px;
+        padding: 5px;
+        text-decoration: none;
+        border: 1px solid white;
+        border-bottom: none;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        background: #2ab771;
+      }
+​
+      .myHeader .links a.selected {
+        color: #2ab771;
+        background: white;
+      }
+​
+      html.luigi-app-in-custom-container [luigi-app-root] {
+        position: absolute;
+        top: 50px;
+        bottom: 0;
+        left: 260px;
+        right: 0;
+      }
+​
+      .leftNavHidden .myLeftSideNav {
+        display: none;
+      }
+​
+      html.luigi-app-in-custom-container .leftNavHidden [luigi-app-root] {
+        left: 0;
+      }
+​
+      .myLeftSideNav {
+        position: absolute;
+        overflow-y: auto;
+        top: 50px;
+        bottom: 0;
+        left: 0;
+        width: 259px;
+        background-color: rgba(60, 69, 83, 1);
+        color: white;
+        border-top: 1px solid #2ab771;
+      }
+​
+      .myNode {
+        margin: 15px;
+      }
+​
+      .myNodeLabel {
+        cursor: pointer;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+​
+      .myNodeLabel:hover {
+        color: #2ab771;
+      }
+​
+      .myNodeLabel.selected {
+        font-weight: bold;
+        color: #2ab771;
+      }
+    </style>
+    <!-- CUSTOM STYLES -->
+​
+    <!-- LUIGI CONFIG -->
+    <script>
+      Luigi.setConfig({
+        navigation: {
+          nodes: [
+            {
+              pathSegment: "home",
+              label: "Home",
+              hideFromNav: true,
+              children: [
+                {
+                  pathSegment: "overview",
+                  label: "Overview",
+                  icon: "home",
+                  viewUrl:
+                    "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                  context: {
+                    title: "Welcome to Luigi Fiddle!",
+                    content:
+                      'Click on "Modify Config" at the bottom right and play around with your Luigi configuration',
+                  },
+                  children: [
+                    {
+                      pathSegment: "l1",
+                      label: "L1",
+                      icon: "home",
+                      viewUrl:
+                        "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                      context: {
+                        title: "L1",
+                        content: "",
+                      },
+                      children: [
+                        {
+                          pathSegment: "l2",
+                          label: "L2",
+                          icon: "home",
+                          viewUrl:
+                            "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+                          context: {
+                            title: "L2",
+                            content: "",
+                          },
+                        },
+                        {
+                          pathSegment: "empty",
+                          label: "Empty Page L2",
+                          category: {
+                            label: "Fundamental Demo Pages",
+                            icon: "dimension",
+                            collapsible: true,
+                          },
+                          loadingIndicator: {
+                            enabled: false,
+                          },
+                          viewUrl:
+                            "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
+                        },
+                      ],
+                    },
+                    {
+                      pathSegment: "empty",
+                      label: "Empty Page L1",
+                      category: {
+                        label: "Fundamental Demo Pages",
+                        icon: "dimension",
+                        collapsible: true,
+                      },
+                      loadingIndicator: {
+                        enabled: false,
+                      },
+                      viewUrl:
+                        "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
+                    },
+                  ],
+                },
+                {
+                  pathSegment: "empty",
+                  label: "Empty Page",
+                  category: {
+                    label: "Fundamental Demo Pages",
+                    icon: "dimension",
+                    collapsible: true,
+                  },
+                  loadingIndicator: {
+                    enabled: false,
+                  },
+                  viewUrl:
+                    "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/empty-demo-page.html",
+                },
+                {
+                  pathSegment: "table",
+                  label: "Table",
+                  category: "Fundamental Demo Pages",
+                  loadingIndicator: {
+                    enabled: false,
+                  },
+                  viewUrl:
+                    "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html",
+                },
+                {
+                  pathSegment: "tree",
+                  label: "Tree",
+                  category: "Fundamental Demo Pages",
+                  loadingIndicator: {
+                    enabled: false,
+                  },
+                  viewUrl:
+                    "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/tree-demo-page.html",
+                },
+                {
+                  pathSegment: "ui5qs",
+                  label: "Quickstart",
+                  category: {
+                    label: "UI5 Demo Pages",
+                    icon: "sap-ui5",
+                    collapsible: true,
+                  },
+                  viewUrl:
+                    "https://fiddle.luigi-project.io/examples/microfrontends/ui5qs/",
+                },
+                {
+                  pathSegment: "ui5sc",
+                  label: "Shopping Cart",
+                  category: "UI5 Demo Pages",
+                  hideSideNav: true,
+                  loadingIndicator: {
+                    enabled: false,
+                  },
+                  viewUrl:
+                    "https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html",
+                },
+              ],
+            },
+            {
+              pathSegment: "foo",
+              label: "Some Action",
+              icon: "favorite-list",
+              viewUrl:
+                "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+              hideSideNav: true,
+              context: {
+                title: "Left navigation hidden",
+                content:
+                  "for pages needing more space or wanting to handle navigation internally",
+              },
+            },
+            {
+              pathSegment: "help",
+              label: "Help",
+              icon: "sys-help",
+              viewUrl:
+                "https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html",
+              context: {
+                title: "Help Section",
+                content: "Find some useful links on the left",
+              },
+              children: [
+                {
+                  label: "Back",
+                  link: "/",
+                  icon: "nav-back",
+                },
+                {
+                  label: "Luigi Github Page",
+                  externalLink: {
+                    url: "https://github.com/kyma-project/luigi",
+                  },
+                },
+                {
+                  label: "Fundamental Library",
+                  externalLink: {
+                    url: "https://sap.github.io/fundamental-styles",
+                  },
+                },
+                {
+                  label: "Fundamental Icons",
+                  externalLink: {
+                    url:
+                      "https://sap.github.io/fundamental-styles/components/icon.html",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+​
+        routing: {
+          useHashRouting: true,
+        },
+        settings: {
+          hideNavigation: true /* IMPORTANT, hides luigi shell */,
+        },
+        lifecycleHooks: {
+          luigiAfterInit: () => {
+            init(); /* IMPORTANT, calls init from custom app logic */
+          },
+        },
+      });
+    </script>
+​
+    <!-- LUIGI CONFIG -->
+​
+    <!-- HTML -->
+​
+    <div class="myHeader">
+      <img src="https://fiddle.luigi-project.io/img/luigi.png" />
+      <span>ACME Corp</span>
+      <div class="links"></div>
+    </div>
+​
+    <div class="myLeftSideNav"></div>
+​
+    <div luigi-app-root></div>
+    <!-- IMPORTANT -->
+​
+    <!-- HTML -->
+  </body>
+</html>
+```
+
+### How do I disable the Luigi loading indicator? / My micro frontend page is stuck on a loading screen.
+
+If you include micro frontends in Luigi which don't use Luigi Client, Luigi Core won't know when they are ready because there is no handshake. This can cause the page to remain loading indefinitely. In that case, you should disable the loading indicator using the [loadingIndicator.enabled](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=loadingindicatorenabled) parameter in your configuration file.
+
+### Can I hide the Luigi default side/top navigation panel?
+
+To hide Luigi side navigation, use the [hideSideNav](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=hidesidenav) parameter.
+
+To hide the top navigation, you can use custom CSS, for example:
+
+```css
+.fd-shellbar {
+    display: none;
+}
+.fd-app__sidebar, .iframeContainer  {
+    top: 0;
+}
+```
+
+### Can I have more than 2 levels in the Luigi side navigation?/Can navigation nodes have grandchildren?
+
+Curerntly, it is not possible for Luigi navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.luigi-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
+
+<!-- accordion:end -->
+
+## Navigation and routing questions
+
+<!-- accordion:start -->
+
+### What is the proper way for Luigi Core to react to navigation from Luigi Client?
+
+You can use the [nodeChangeHook](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=nodechangehook) function to react to navigation inside Luigi Core.
+
+### How can I deactivate Luigi routing?
+
+You can do that by using the [skipRoutingForUrlPatterns](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=skiproutingforurlpatterns) parameter and setting it to `*`.
+
+<!-- accordion:end -->
+
+## Other questions
+
+<!-- accordion:start -->
+
+### Is it possible to have more than one micro frontend on the same page?
+
+Yes, currently this is possible via [splitView](https://docs.luigi-project.io/docs/luigi-client-api/?section=splitview) or [Web Components](https://docs.luigi-project.io/docs/web-component).
+
+### Can I place a micro frontend within another micro frontend?
+
+Yes, Luigi's [Web Component](https://docs.luigi-project.io/docs/web-component) feature allows you to create [compound micro frontends](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=webcomponent).
+
+### How can I implement a custom home page or login page for Luigi?
+
+One way would be to bind the Luigi app root to a specific [dom element](https://docs.luigi-project.io/docs/luigi-ux-features?section=rendering-of-luigi-application-in-the-dom). With a second dom element containing your home page views, you could control visibility of the two based on login status. For example:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Hello Luigi</title>
+    <link rel='stylesheet' href='https://unpkg.com/@luigi-project/core@1.7.0/luigi.css'>
+    <script src='https://unpkg.com/@luigi-project/core@1.7.0/luigi.js'></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <style>
+        html, body {
+            height: 100%;
+        }
+        .homepage-container {
+            text-align: center;
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+        .luigi-container {
+            width: 100%;
+            height: 100%;
+        }
+        .homepage .homepage-container {
+            display: block;
+        }
+        .homepage .luigi-container {
+            display: none;
+        }
+    </style>
+    <div class="homepage-container">
+        <h1>HOMEPAGE</h1>
+        <button onclick="window.loggedIn=true; checkLogin()">Login</button>
+    </div>
+    <div class="luigi-container" luigi-app-root></div>
+    <script>
+        function checkLogin() {
+            document.body.classList.toggle('homepage', !window.loggedIn);
+        }
+        checkLogin();
+        Luigi.setConfig({
+        navigation: {
+            nodes: [{
+                pathSegment: 'home',
+                label: 'h',
+                hideFromNav: true,
+                children: [{
+                    pathSegment: 'overview',
+                    label: 'Overview',
+                    icon: 'home',
+                    viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+                    context: {
+                        title: 'Welcome to Luigi Fiddle!',
+                        content: 'Click on "Modify Config" at the bottom right and play around with your Luigi configuration'
+                    }
+                }]
+            }]
+        },
+        routing: {
+            useHashRouting: true
+        },
+        settings: {
+            responsiveNavigation: 'semiCollapsible',
+            header: {
+                title: 'Luigi Example'
+            }
+        }
+    });
+    </script>
+</body>
+</html>
+```
+
+### Where can I find the source code for Luigi Fiddle?
+
+Luigi is an open-source project. You can find the source code on our [GitHub repository](https://github.com/SAP/luigi/tree/master/website/fiddle).
 
 <!-- accordion:end -->

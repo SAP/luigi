@@ -86,9 +86,8 @@ class Navigation {
           category: 'View Group',
           viewUrl: '/sampleapp.html#/view-group/4'
         }
-      ],
+      ]
     },
-
 
     {
       hideFromNav: true,
@@ -134,13 +133,19 @@ class Navigation {
       icon: 'globe',
       showLabel: true,
       hideSideNav: false,
+      globalNav: true,
       testId: 'icon-and-label'
+    },
+    {
+      globalNav: true,
+      separator: true
     },
     {
       pathSegment: 'settings',
       label: 'Settings',
       viewUrl: '/sampleapp.html#/settings',
       icon: 'settings',
+      globalNav: true,
       hideSideNav: true,
       viewGroup: 'tets'
     },
@@ -334,8 +339,7 @@ class Navigation {
   getProductSwitcherItems = () => {
     const items = [
       {
-        icon:
-          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+        icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'hybris',
         subTitle: 'first subtitle',
         externalLink: {
@@ -349,8 +353,7 @@ class Navigation {
       .filter(project => project.id !== 'tabNav')
       .forEach(project => {
         items.push({
-          icon:
-            'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+          icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
           label: project.name,
           link: '/projects/' + project.id
         });
@@ -436,7 +439,4 @@ class Navigation {
   };
 }
 
-export const navigation = new Navigation(
-  navigationPermissionChecker,
-  projectsNavProviderFn
-);
+export const navigation = new Navigation(navigationPermissionChecker, projectsNavProviderFn);

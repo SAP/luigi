@@ -59,12 +59,7 @@ class IframeHelpersClass {
       Object.entries(params).forEach(entry => {
         processedUrl = processedUrl.replace(
           new RegExp(
-            GenericHelpers.escapeRegExp(
-              (parenthesis ? '{' : '') +
-              prefix +
-              entry[0] +
-              (parenthesis ? '}' : '')
-            ),
+            GenericHelpers.escapeRegExp((parenthesis ? '{' : '') + prefix + entry[0] + (parenthesis ? '}' : '')),
             'g'
           ),
           encodeURIComponent(entry[1])
@@ -73,10 +68,7 @@ class IframeHelpersClass {
     }
     if (parenthesis) {
       processedUrl = processedUrl.replace(
-        new RegExp(
-          '\\{' + GenericHelpers.escapeRegExp(prefix) + '[^\\}]+\\}',
-          'g'
-        ),
+        new RegExp('\\{' + GenericHelpers.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
         ''
       );
     }
@@ -87,9 +79,7 @@ class IframeHelpersClass {
     //TODO rename to reflect the fact that it checks for URL till hash (which is more than just domain)
     if (config.iframe) {
       const componentData = component.get();
-      const previousUrl = GenericHelpers.getUrlWithoutHash(
-        componentData.previousNodeValues.viewUrl
-      );
+      const previousUrl = GenericHelpers.getUrlWithoutHash(componentData.previousNodeValues.viewUrl);
       const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
       const previousViewGroup = componentData.previousNodeValues.viewGroup;
       const nextViewGroup = componentData.viewGroup;
@@ -103,20 +93,14 @@ class IframeHelpersClass {
   isSameViewGroup(config, component) {
     if (config.iframe) {
       const componentData = component.get();
-      const previousUrl = GenericHelpers.getUrlWithoutHash(
-        componentData.previousNodeValues.viewUrl
-      );
+      const previousUrl = GenericHelpers.getUrlWithoutHash(componentData.previousNodeValues.viewUrl);
       const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
       const previousUrlOrigin = this.getLocation(previousUrl);
       const nextUrlOrigin = this.getLocation(nextUrl);
       if (previousUrlOrigin === nextUrlOrigin) {
         const previousViewGroup = componentData.previousNodeValues.viewGroup;
         const nextViewGroup = componentData.viewGroup;
-        if (
-          previousViewGroup &&
-          nextViewGroup &&
-          previousViewGroup === nextViewGroup
-        ) {
+        if (previousViewGroup && nextViewGroup && previousViewGroup === nextViewGroup) {
           return true;
         }
       }
@@ -125,10 +109,7 @@ class IframeHelpersClass {
   }
 
   canReuseIframe(config, component) {
-    return (
-      this.isSameDomain(config, component) ||
-      this.isSameViewGroup(config, component)
-    );
+    return this.isSameDomain(config, component) || this.isSameViewGroup(config, component);
   }
 
   getLocation(url) {
@@ -185,9 +166,7 @@ class IframeHelpersClass {
 
   getCurrentMicrofrontendIframe() {
     const modalIframes = this.getModalIframes();
-    const mainIframes = this.getMainIframes().filter(
-      GenericHelpers.isElementVisible
-    );
+    const mainIframes = this.getMainIframes().filter(GenericHelpers.isElementVisible);
 
     return modalIframes[0] || mainIframes[0] || null;
   }
@@ -223,15 +202,11 @@ class IframeHelpersClass {
   }
 
   sendMessageToVisibleIframes(message) {
-    this.getVisibleIframes().forEach(iframe =>
-      this.sendMessageToIframe(iframe, message)
-    );
+    this.getVisibleIframes().forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
   broadcastMessageToAllIframes(message) {
-    IframeHelpers.getMicrofrontendIframes().forEach(iframe =>
-      this.sendMessageToIframe(iframe, message)
-    );
+    IframeHelpers.getMicrofrontendIframes().forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
   createIframe(viewUrl, viewGroup, currentNode, microFrontendType) {
@@ -250,18 +225,14 @@ class IframeHelpersClass {
       // 'allow-top-navigation-by-user-activation', // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
       // 'allow-downloads-without-user-activation' // Allows for downloads to occur without a gesture from the user.
     ];
-    const customSandboxRules = LuigiConfig.getConfigValue(
-      'settings.customSandboxRules'
-    );
+    const customSandboxRules = LuigiConfig.getConfigValue('settings.customSandboxRules');
     const allowRules = LuigiConfig.getConfigValue('settings.allowRules');
     const activeSandboxRules = customSandboxRules
       ? [...new Set([...luigiDefaultSandboxRules, ...customSandboxRules])]
       : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
-    iframe.src = ViewUrlDecorator.hasDecorators()
-      ? ViewUrlDecorator.applyDecorators(viewUrl)
-      : viewUrl;
+    iframe.src = ViewUrlDecorator.hasDecorators() ? ViewUrlDecorator.applyDecorators(viewUrl) : viewUrl;
     if (allowRules) {
       iframe.allow = allowRules.join(' ');
     }
@@ -278,9 +249,7 @@ class IframeHelpersClass {
     if (currentNode && currentNode.clientPermissions) {
       iframe.luigi.clientPermissions = currentNode.clientPermissions;
     }
-    const iframeInterceptor = LuigiConfig.getConfigValue(
-      'settings.iframeCreationInterceptor'
-    );
+    const iframeInterceptor = LuigiConfig.getConfigValue('settings.iframeCreationInterceptor');
     if (GenericHelpers.isFunction(iframeInterceptor)) {
       try {
         iframeInterceptor(iframe, viewGroup, currentNode, microFrontendType);
@@ -300,9 +269,7 @@ class IframeHelpersClass {
       ...IframeHelpers.getMicrofrontendIframes(),
       { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];
-    const iframe = allMessagesSources.find(iframe =>
-      this.isMessageSource(e, iframe)
-    );
+    const iframe = allMessagesSources.find(iframe => this.isMessageSource(e, iframe));
 
     if (!iframe || !iframe.luigi || !iframe.luigi.viewUrl) {
       return undefined;
@@ -313,9 +280,7 @@ class IframeHelpersClass {
       return undefined;
     }
 
-    const viewUrl = navigateOkMsg
-      ? iframe.luigi.nextViewUrl
-      : iframe.luigi.viewUrl;
+    const viewUrl = navigateOkMsg ? iframe.luigi.nextViewUrl : iframe.luigi.viewUrl;
     if (!this.iframeIsSameDomain(viewUrl, e.origin)) {
       return undefined;
     }

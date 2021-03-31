@@ -5,10 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Luigi Mock Identity Provider</title>
-    <link
-      rel="stylesheet"
-      href="../../fundamental-styles/fundamental-styles.css"
-    />
+    <link rel="stylesheet" href="../../fundamental-styles/fundamental-styles.css" />
     <link rel="stylesheet" type="text/css" href="../../styles.css" />
     <style type="text/css">
       body {
@@ -78,9 +75,7 @@
         let redirectUrl = decodeURIComponent(
           window.location.href.match(/redirect_uri=(.*?)(&|$)/)[1]
         );
-        let state = decodeURIComponent(
-          window.location.href.match(/state=(.*?)(&|$)/)[1]
-        );
+        let state = decodeURIComponent(window.location.href.match(/state=(.*?)(&|$)/)[1]);
 
         let goTo =
           redirectUrl +

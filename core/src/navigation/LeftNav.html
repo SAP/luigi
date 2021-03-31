@@ -1,14 +1,22 @@
-<svelte:window on:resize="{onResize}" on:click="{closePopupMenu}" on:blur="{closePopupMenu}" />
+<svelte:window
+  on:resize="{onResize}"
+  on:click="{closePopupMenu}"
+  on:blur="{closePopupMenu}"
+/>
 <div
-  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}">
-  <nav class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}" on:keyup="{handleKey}"
-    data-testid="semiCollapsibleLeftNav">
+  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
+>
+  <nav
+    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
+    on:keyup="{handleKey}"
+    data-testid="semiCollapsibleLeftNav"
+  >
     {#if children && pathData.length > 1}
     <div class="fd-side-nav__main-navigation">
       <div class="lui-fd-side-nav-wrapper">
         <ul class="fd-nested-list {sideNavClass}">
-          {#each sortedChildrenEntries as [key, nodes],index}
-          {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
+          {#each sortedChildrenEntries as [key, nodes],index} {#if key === 'undefined' ||
+          key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li class="fd-nested-list__item">
@@ -26,31 +34,26 @@
               ></i>
               {:else}
               <span class="fd-nested-list__icon sap-icon">
-                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}">
+                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
               </span>
-              {/if}
-              {:else}
+              {/if} {:else}
               <i
                 class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
                 role="presentation"
               ></i>
               {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(node.label)}</span>
+              <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
               <i
                 class="fd-nested-list__icon sap-icon sap-icon--action"
                 role="presentation"
               ></i>
-              {/if}
-              {#if node.badgeCounter}
-              <BadgeCounter {node}/>
+              {/if} {#if node.badgeCounter}
+              <BadgeCounter {node} />
               {/if}
             </a>
           </li>
-          {/if} {/if} {/each}
-          {:else}
+          {/if} {/if} {/each} {:else}
           <!-- Collapsible nodes -->
           {#if nodes.metaInfo.collapsible}
           <li
@@ -75,18 +78,14 @@
                   role="presentation"
                 ></i>
                 {:else}
-                <span
-                  class="fd-nested-list__icon sap-icon"
-                >
+                <span class="fd-nested-list__icon sap-icon">
                   <img
                     src="{nodes.metaInfo.icon}"
                     alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
-                  >
+                  />
                 </span>
                 {/if}
-                <span
-                  class="fd-nested-list__title"
-                >{$getTranslation(key)}</span>
+                <span class="fd-nested-list__title">{$getTranslation(key)}</span>
               </a>
               <button
                 class="fd-button fd-nested-list__button"
@@ -119,16 +118,11 @@
                   data-testid="{getTestId(node)}"
                   title="{$getTranslation(node.label)}"
                 >
-                  <span
-                    class="fd-nested-list__title"
-                  >{$getTranslation(node.label)}</span>
+                  <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
-                  <i
-                    class="sap-icon--action"
-                  ></i>
-                  {/if}
-                  {#if node.badgeCounter}
-                  <BadgeCounter {node}/>
+                  <i class="sap-icon--action"></i>
+                  {/if} {#if node.badgeCounter}
+                  <BadgeCounter {node} />
                   {/if}
                 </a>
               </li>
@@ -140,7 +134,9 @@
               <div class="lui-flyout-sublist__wrapper">
                 <h5
                   class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
-                >{$getTranslation(key)}</h5>
+                >
+                  {$getTranslation(key)}
+                </h5>
                 <ul class="fd-nested-list fd-nested-list--text-only">
                   {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
                   <li class="fd-nested-list__item">
@@ -151,16 +147,13 @@
                       data-testid="{getTestId(node)}"
                       title="{$getTranslation(node.label)}"
                     >
-                      <span
-                        class="fd-nested-list__title"
-                      >{$getTranslation(node.label)}</span>
+                      <span class="fd-nested-list__title"
+                        >{$getTranslation(node.label)}</span
+                      >
                       {#if node.externalLink && node.externalLink.url}
-                      <i
-                        class="sap-icon--action"
-                      ></i>
-                      {/if}
-                      {#if node.badgeCounter}
-                      <BadgeCounter {node}/>
+                      <i class="sap-icon--action"></i>
+                      {/if} {#if node.badgeCounter}
+                      <BadgeCounter {node} />
                       {/if}
                     </a>
                   </li>
@@ -178,8 +171,8 @@
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
             id="category_list_level1_{index}"
           >
-            {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
-            {#if isOpenUIiconName(nodes.metaInfo.icon)}
+            {#if hasCategoriesWithIcon && nodes.metaInfo.icon} {#if
+            isOpenUIiconName(nodes.metaInfo.icon)}
             <i
               class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''}"
               role="presentation"
@@ -189,11 +182,9 @@
               <img
                 src="{nodes.metaInfo.icon}"
                 alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
-              >
+              />
             </span>
-            {/if}
-            {/if}
-            {$getTranslation(key)}
+            {/if} {/if} {$getTranslation(key)}
           </li>
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
@@ -208,51 +199,41 @@
               data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
-              <i
-                class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"
-              ></i>
+              <i class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"></i>
               {:else}
               <span class="fd-nested-list__icon sap-icon">
-                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}">
+                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
               </span>
-              {/if}
-              {:else}
+              {/if} {:else}
               <i
                 class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
               ></i>
               <span>{isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}</span>
               {/if}
-              <span
-                class="fd-nested-list__title"
-              >{$getTranslation(node.label)}</span>
+              <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
               {#if node.externalLink && node.externalLink.url}
-              <i
-                class="sap-icon--action"
-              ></i>
-              {/if}
-              {#if node.badgeCounter}
-              <BadgeCounter {node}/>
+              <i class="sap-icon--action"></i>
+              {/if} {#if node.badgeCounter}
+              <BadgeCounter {node} />
               {/if}
             </a>
           </li>
-          {/if} {/if} {/each}
-          {/if}
-          {/if} {/each}
+          {/if} {/if} {/each} {/if} {/if} {/each}
         </ul>
       </div>
     </div>
-    {/if}
-    {#if footerText || semiCollapsibleButton}
+    {/if} {#if footerText || semiCollapsibleButton}
     <div class="fd-side-nav__utility">
       <span class="lui-side-nav__footer">
-        <span
-          class="lui-side-nav__footer--text fd-has-type-minus-1"
-        >{footerText ? footerText : ''}</span>
+        <span class="lui-side-nav__footer--text fd-has-type-minus-1"
+          >{footerText ? footerText : ''}</span
+        >
         {#if semiCollapsibleButton}
         <i
           class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
           on:click="{() => semiCollapsibleButtonClicked(this)}"
           data-testid="semiCollapsibleButton"
+          title="{burgerTooltip}"
         ></i>
         {/if}
       </span>
@@ -262,12 +243,7 @@
 </div>
 
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { RoutingHelpers } from '../utilities/helpers';
 
   //TODO refactor
@@ -344,6 +320,7 @@
   export let hasCategoriesWithIcon;
   export let sideNavClass;
   export let sideNavAccordionMode;
+  export let burgerTooltip;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -367,14 +344,9 @@
 
   onMount(() => {
     semiCollapsibleButton =
-      LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
-      'semiCollapsible';
-    hideNavComponent = LuigiConfig.getConfigBooleanValue(
-      'settings.hideNavigation'
-    );
-    sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
-      'settings.sideNavCompactMode'
-    );
+      LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
+    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
     expandedCategories = NavigationHelpers.loadExpandedCategories();
 
     StateHelpers.doOnStoreChange(
@@ -425,9 +397,7 @@
   }
 
   function isExpanded(nodes, expandedList) {
-    return (
-      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
-    );
+    return expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0;
   }
 
   function getTestId(node) {
@@ -461,8 +431,7 @@
         selectedCat = nodeOrNodes.metaInfo.label;
       } else {
         selectedCat =
-          (nodeOrNodes.category && nodeOrNodes.category.label) ||
-          nodeOrNodes.category;
+          (nodeOrNodes.category && nodeOrNodes.category.label) || nodeOrNodes.category;
       }
 
       if (!sideBar.classList.contains('isBlocked')) {
@@ -471,9 +440,7 @@
 
       // only close if same clicked
       if (selectedCat === selectedCategory) {
-        selectedCategory = SemiCollapsibleNavigation.closePopupMenu(
-          selectedCategory
-        );
+        selectedCategory = SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
         return;
       }
 
@@ -495,9 +462,7 @@
       containerHeight = window.innerHeight;
     }
     setTimeout(() => {
-      const flyoutSublist = parent.getElementsByClassName(
-        'lui-flyout-sublist'
-      )[0];
+      const flyoutSublist = parent.getElementsByClassName('lui-flyout-sublist')[0];
       const topScroll = el.closest('.lui-fd-side-nav-wrapper').scrollTop;
       const topPosition = parentTopPosition + shellbarHeight - topScroll;
       const bottomPosition =
@@ -547,15 +512,30 @@
   }
 
   export function closePopupMenu() {
-    selectedCategory = SemiCollapsibleNavigation.closePopupMenu(
-      selectedCategory
-    );
+    selectedCategory = SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
   }
 
   function semiCollapsibleButtonClicked(el) {
     isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
+    }
+    setBurgerTooltip();
+  }
+
+  function setBurgerTooltip() {
+    if (!NavigationHelpers.getBurgerTooltipConfig()) {
+      return;
+    }
+    const [
+      collapseNavTooltip,
+      expandNavTooltip
+    ] = NavigationHelpers.getBurgerTooltipConfig();
+    const hasSemiCollapsible = document.body.classList.contains('lui-semiCollapsible');
+    if (collapseNavTooltip && expandNavTooltip && hasSemiCollapsible) {
+      burgerTooltip = document.body.classList.contains('semiCollapsed')
+        ? collapseNavTooltip
+        : expandNavTooltip;
     }
   }
 </script>
@@ -585,6 +565,13 @@
   :global(html.luigi-app-in-custom-container) {
     .fd-app__sidebar {
       position: absolute;
+    }
+  }
+
+  :global(.lui-global-nav-visible) .fd-app__sidebar {
+    left: $globalNavWidth;
+    .fd-side-nav {
+      width: var(--luigi__left-sidenav--width);
     }
   }
 

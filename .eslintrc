@@ -1,0 +1,9 @@
+{
+  "extends": ["standard", "plugin:cypress/recommended"],
+  "rules": {
+    "semi": [2, "always"],
+    "no-tabs": "off",
+    "indent": "off",
+    "no-ex-assign": "warn"
+  }
+}

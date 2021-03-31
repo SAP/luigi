@@ -10,18 +10,12 @@
         </div>
       </div>
       <div class="fd-layout-panel__body">
-        <button
-          class="fd-button"
-          data-testid="add-backdrop"
-          (click)="toggleModal()"
-        >
+        <button class="fd-button" data-testid="add-backdrop" (click)="toggleModal()">
           Add backdrop
         </button>
         <p>
           <app-code-snippet data="uxManager().addBackdrop()"></app-code-snippet>
-          <app-code-snippet
-            data="uxManager().removeBackdrop()"
-          ></app-code-snippet>
+          <app-code-snippet data="uxManager().removeBackdrop()"></app-code-snippet>
         </p>
       </div>
     </div>
@@ -137,9 +131,7 @@
               </label>
             </div>
             <div class="fd-form-item">
-              <label class="fd-form-label" for="input-1"
-                >Close after (ms):
-              </label>
+              <label class="fd-form-label" for="input-1">Close after (ms): </label>
               <input
                 [ngModel]=""
                 class="fd-input"
@@ -151,17 +143,11 @@
             </div>
           </div>
         </form>
-        <button
-          class="fd-button"
-          data-testid="show-luigi-alert"
-          (click)="showAlert()"
-        >
+        <button class="fd-button" data-testid="show-luigi-alert" (click)="showAlert()">
           Show Luigi alert
         </button>
         <p>
-          <app-code-snippet
-            data="uxManager().showAlert(settings)"
-          ></app-code-snippet>
+          <app-code-snippet data="uxManager().showAlert(settings)"></app-code-snippet>
         </p>
         <p
           *ngIf="alertDismissed"
@@ -185,9 +171,7 @@
             Current locale is: '{{ currentLocale }}'
           </label>
           <p class="luigi__margin-bottom--small">
-            <app-code-snippet
-              data="uxManager().getCurrentLocale()"
-            ></app-code-snippet>
+            <app-code-snippet data="uxManager().getCurrentLocale()"></app-code-snippet>
           </p>
         </div>
         <form #luigiLocalizationForm="ngForm" class="fd-col--3">
@@ -224,8 +208,7 @@
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-layout-panel__title">
-            Combine unsaved changes feature with Luigi Client UX manager
-            methods!!
+            Combine unsaved changes feature with Luigi Client UX manager methods!!
           </h3>
         </div>
       </div>
@@ -253,12 +236,12 @@
           </label>
         </div>
         <span *ngIf="!isDirty" class="fd-switch__text">
-          <strong>There are no unsaved changes</strong> &nbsp;&ndash; toggle
-          this to be asked for confirmation when you leave this page
+          <strong>There are no unsaved changes</strong> &nbsp;&ndash; toggle this to be
+          asked for confirmation when you leave this page
         </span>
         <span *ngIf="isDirty" class="fd-switch__text">
-          <strong>There are unsaved changes</strong> &nbsp;&ndash; a
-          confirmation modal will appear when you navigate
+          <strong>There are unsaved changes</strong> &nbsp;&ndash; a confirmation modal
+          will appear when you navigate
           <a
             title="Navigate to /projects/pr2 as an example"
             (click)="linkManager().navigate('/projects/pr2')"
@@ -361,9 +344,7 @@
             >
               from parent: to sibling</a
             >
-            <app-code-snippet
-              data="linkManager().fromParent().navigate('/pr1')"
-            >
+            <app-code-snippet data="linkManager().fromParent().navigate('/pr1')">
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
@@ -436,11 +417,7 @@
             ></app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a
-              href="javascript:void(0)"
-              class="fd-link"
-              (click)="navigateAndShowAlert()"
-            >
+            <a href="javascript:void(0)" class="fd-link" (click)="navigateAndShowAlert()">
               with preserved view: project to global settings and back</a
             >
             <app-code-snippet
@@ -457,8 +434,8 @@
                   .navigate('/settings', null, true)
               "
             >
-              extended preserved view example with params: project to global
-              settings and back</a
+              extended preserved view example with params: project to global settings and
+              back</a
             >
             <app-code-snippet
               data="linkManager().withParams({test: true}).navigate('/settings', null, true)"
@@ -478,8 +455,8 @@
                   })
               "
             >
-              extended preserved view example with params rendered in a modal:
-              project to global settings and back</a
+              extended preserved view example with params rendered in a modal: project to
+              global settings and back</a
             >
             <app-code-snippet
               data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})"
@@ -494,9 +471,7 @@
             >
               Open drawer with default settings</a
             >
-            <app-code-snippet
-              data="linkManager().openAsDrawer('/projects/pr1/drawer');"
-            >
+            <app-code-snippet data="linkManager().openAsDrawer('/projects/pr1/drawer');">
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
@@ -560,11 +535,7 @@
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a
-              href="javascript:void(0)"
-              class="fd-link"
-              (click)="openSplitView()"
-            >
+            <a href="javascript:void(0)" class="fd-link" (click)="openSplitView()">
               open view in split view with params</a
             >
             <app-code-snippet
@@ -605,11 +576,7 @@
             </div>
           </li>
           <li class="fd-list__item">
-            <a
-              href="javascript:void(0)"
-              class="fd-link"
-              (click)="linkManager().goBack()"
-            >
+            <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack()">
               go back: single iframe, standard history back</a
             >
             <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
@@ -768,9 +735,7 @@
               data-testid="navigate-withSync-virtual-tree"
               >Go to /projects/pr2/virtual-tree NOT using withoutSync()
             </a>
-            <app-code-snippet
-              data="linkManager().navigate('/projects/pr2/virtual-tree')"
-            >
+            <app-code-snippet data="linkManager().navigate('/projects/pr2/virtual-tree')">
             </app-code-snippet>
           </li>
         </ul>
@@ -818,9 +783,7 @@
           </label>
 
           <p class="luigi__margin-bottom--small">
-            <app-code-snippet
-              data="storageManager().getItem(key)"
-            ></app-code-snippet>
+            <app-code-snippet data="storageManager().getItem(key)"></app-code-snippet>
           </p>
 
           <label class="fd-form-label" data-testid="luigi-current-locale">
@@ -828,9 +791,7 @@
           </label>
 
           <p class="luigi__margin-bottom--small">
-            <app-code-snippet
-              data="storageManager().removeItem(key)"
-            ></app-code-snippet>
+            <app-code-snippet data="storageManager().removeItem(key)"></app-code-snippet>
           </p>
 
           <label class="fd-form-label" data-testid="luigi-current-locale">
@@ -838,9 +799,7 @@
           </label>
 
           <p class="luigi__margin-bottom--small">
-            <app-code-snippet
-              data="storageManager().clear()"
-            ></app-code-snippet>
+            <app-code-snippet data="storageManager().clear()"></app-code-snippet>
           </p>
 
           <label class="fd-form-label" data-testid="luigi-current-locale">
@@ -856,9 +815,7 @@
           </label>
 
           <p class="luigi__margin-bottom--small">
-            <app-code-snippet
-              data="storageManager().getAllKeys()"
-            ></app-code-snippet>
+            <app-code-snippet data="storageManager().getAllKeys()"></app-code-snippet>
           </p>
         </div>
       </div>
@@ -923,10 +880,7 @@
             </div>
           </div>
 
-          <div
-            class="fd-container fd-container--fluid"
-            *ngIf="!storageDemoOperation"
-          >
+          <div class="fd-container fd-container--fluid" *ngIf="!storageDemoOperation">
             <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_clear()">
                 clear

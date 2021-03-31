@@ -65,4 +65,4 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
   providers: [LuigiContextService, LuigiAutoNavigationService, { provide: Window, useValue: window }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

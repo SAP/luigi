@@ -1,4 +1,4 @@
-<svelte:window on:resize="{setViewportHeightVariable}"/>
+<svelte:window on:resize="{setViewportHeightVariable}" />
 {#if productSwitcherItems && productSwitcherItems.length &&
 Object.keys(productSwitcherItems[0]).length }
 <!-- DESKTOP VERSION (popover): -->
@@ -19,14 +19,9 @@ Object.keys(productSwitcherItems[0]).length }
         >
           <div class="lui-product-switch__icon">
             {#if hasOpenUIicon(config)}
-            <i
-              class="sap-icon sap-icon--{config.icon}"
-            ></i>
+            <i class="sap-icon sap-icon--{config.icon}"></i>
             {:else}
-            <img
-              src="{config.icon}"
-              alt="{config.altText ? config.altText : ''}"
-            >
+            <img src="{config.icon}" alt="{config.altText ? config.altText : ''}" />
             {/if}
           </div>
         </button>
@@ -38,8 +33,8 @@ Object.keys(productSwitcherItems[0]).length }
       >
         <div class="{columnsClass}">
           <ul class="fd-product-switch__list">
-            {#each productSwitcherItems as productSwitcherItem}
-            {#if productSwitcherItem.label}
+            {#each productSwitcherItems as productSwitcherItem} {#if
+            productSwitcherItem.label}
             <li
               class="fd-product-switch__item {productSwitcherItem.selected?'selected':''}"
               on:click="{() => onActionClick(productSwitcherItem)}"
@@ -54,22 +49,21 @@ Object.keys(productSwitcherItems[0]).length }
                 <img
                   src="{productSwitcherItem.icon}"
                   alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
-                >
+                />
                 {/if}
               </div>
               <div class="fd-product-switch__text">
-                <div
-                  class="fd-product-switch__title"
-                >{getNodeLabel(productSwitcherItem)}</div>
+                <div class="fd-product-switch__title">
+                  {getNodeLabel(productSwitcherItem)}
+                </div>
                 {#if getNodeSubtitle(productSwitcherItem)}
-                <div
-                  class="fd-product-switch__subtitle"
-                >{getNodeSubtitle(productSwitcherItem)}</div>
+                <div class="fd-product-switch__subtitle">
+                  {getNodeSubtitle(productSwitcherItem)}
+                </div>
                 {/if}
               </div>
             </li>
-            {/if}
-            {/each}
+            {/if} {/each}
           </ul>
         </div>
       </div>
@@ -89,8 +83,7 @@ Object.keys(productSwitcherItems[0]).length }
   {getNodeSubtitle}
   {getTestId}
 />
-{/if}
-{/if}
+{/if} {/if}
 <script>
   import MobileTopNav from './MobileTopNavDropDown.html';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
@@ -107,9 +100,7 @@ Object.keys(productSwitcherItems[0]).length }
   export let dropDownStates;
 
   let store = getContext('store');
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let columnsClass;
 
   onMount(async () => {
@@ -175,9 +166,7 @@ Object.keys(productSwitcherItems[0]).length }
   }
 
   function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.label);
+    return node.testId ? node.testId : NavigationHelpers.prepareForTests(node.label);
   }
 </script>
 

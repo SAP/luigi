@@ -29,6 +29,9 @@ settings: {
     title: 'Luigi Demo',
     favicon: 'path/to/favicon.ico'
   },
+  featureToggles : { 
+    queryStringParam: 'ft' 
+  },
   sideNavFooterText: 'MyLovelyApp 1.0.0',
   sideNavCompactMode: false,
   customTranslationImplementation: () => {
@@ -85,6 +88,14 @@ You can set the following values:
   * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.
   * `Fiori3` displays the button on the left side of the top navigation. Once you click the button, the navigation shows up or collapses.<br>
 If you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node.
+* **burgerTooltip** allows to set and customize a tooltip for the burger, which will be rendered if **responsiveNavigation** is set to `simple` or `Fiori3`. You can set it to `true`. In that case, the default values `Expand navigation` and `Collapse navigation` will be rendered.
+It is also possible to customize the values. In that case **burgerTooltip** will be an object with the following properties:
+```javascript
+burgerTooltip = {
+    navExpanded: 'Collapse navigation',
+    navCollapsed: 'Expand navigation'
+  };
+```
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
 * **sideNavCompactMode** reduces the dimensions of the side navigation and allows you to display more information.
 * **customTranslationImplementation** provides a custom localization implementation. It can be an Object or a Function returning an Object. This Object must provide the **getTranslation** Function as property:
@@ -118,6 +129,7 @@ For example, to allow 'fullscreen' for non-modal iframes:
 ```
 * **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+* **featureToggles.queryStringParam** allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality. 
 * **theming** is a configuration element that allows you to specify a list of themes that are available on the website. The children elements:
     * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`. 
     * **defaultTheme** (mandatory) the default theme used by the application.

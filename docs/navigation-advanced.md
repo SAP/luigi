@@ -176,7 +176,9 @@ When loading, the **viewUrl** uses the following dynamic URL parameters:
 ```javascript
 Luigi.setConfig({
   routing: {
-    nodeParamPrefix: '~'
+    nodeParamPrefix: '~',
+    showModalPathInUrl: true,
+    modalPathParam: 'modal'
   },
   navigation: {
     nodes: [

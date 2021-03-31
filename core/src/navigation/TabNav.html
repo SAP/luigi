@@ -12,11 +12,9 @@
 >
   <div class="tabsContainerWrapper">
     <div class="tabsContainer luigi-tabsContainer">
-      {#each Object.entries(children) as [key, nodes], index}
-      {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-      {#each nodes as node, index2}
-      {#if !node.hideFromNav}
-      {#if node.label}
+      {#each Object.entries(children) as [key, nodes], index} {#if key === 'undefined' ||
+      key.indexOf(virtualGroupPrefix) === 0} {#each nodes as node, index2} {#if
+      !node.hideFromNav} {#if node.label}
       <span
         class="fd-tabs__item"
         uid="{index}-{index2}"
@@ -32,10 +30,7 @@
           <span class="fd-tabs__tag">{$getTranslation(node.label)}</span>
         </a>
       </span>
-      {/if}
-      {/if}
-      {/each}
-      {:else}
+      {/if} {/if} {/each} {:else}
       <span
         class="fd-tabs__item"
         uid="{index}-0"
@@ -61,9 +56,7 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list fd-menu__list--no-shadow">
-                {#each nodes as node}
-                {#if !node.hideFromNav}
-                {#if node.label}
+                {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
@@ -74,16 +67,13 @@
                     <span class="fd-menu__title">{$getTranslation(node.label)}</span>
                   </a>
                 </li>
-                {/if}
-                {/if}
-                {/each}
+                {/if} {/if} {/each}
               </ul>
             </nav>
           </div>
         </div>
       </span>
-      {/if}
-      {/each}
+      {/if} {/each}
     </div>
   </div>
 
@@ -103,12 +93,10 @@
           class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
           aria-hidden="{!isMoreBtnExpanded}"
         >
-          <ul
-            class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
-          >
-            {#each Object.entries(children) as [key, nodes], index}
-            {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-            {#each nodes as node, index2}
+          <ul class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only">
+            {#each Object.entries(children) as [key, nodes], index} {#if key ===
+            'undefined' || key.indexOf(virtualGroupPrefix) === 0} {#each nodes as node,
+            index2}
             <li class="fd-nested-list__item" uid="{index}-{index2}">
               <a
                 href="{getRouteLink(node)}"
@@ -116,13 +104,10 @@
                 on:click|preventDefault="{() => handleClick(node)}"
                 aria-selected="{node===selectedNodeForTabNav}"
               >
-                <span
-                  class="fd-nested-list__title"
-                >{$getTranslation(node.label)}</span>
+                <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
               </a>
             </li>
-            {/each}
-            {:else}
+            {/each} {:else}
             <li class="fd-nested-list__item" uid="{index}-0">
               <div class="fd-nested-list__content has-child" tabindex="0">
                 <a
@@ -167,16 +152,15 @@
                     on:click|preventDefault="{() => handleClick(node)}"
                     aria-selected="{node===selectedNodeForTabNav}"
                   >
-                    <span
-                      class="fd-nested-list__title"
-                    >{$getTranslation(node.label)}</span>
+                    <span class="fd-nested-list__title"
+                      >{$getTranslation(node.label)}</span
+                    >
                   </a>
                 </li>
                 {/each}
               </ul>
             </li>
-            {/if}
-            {/each}
+            {/if} {/each}
           </ul>
         </div>
       </div>
@@ -185,12 +169,7 @@
 </nav>
 {/if}
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Navigation } from './services/navigation';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
   import { LuigiConfig, LuigiI18N } from '../core-api';
@@ -260,9 +239,7 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    let tabsContainer = document.getElementsByClassName(
-      'luigi-tabsContainer'
-    )[0];
+    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
     let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
     let moreBtnSelected = false;
@@ -273,7 +250,7 @@
     let current = componentData.pathData[componentData.pathData.length - 1];
     let style;
     let margin;
-    moreLink.setAttribute('aria-selected', 'false');
+    moreLink && moreLink.setAttribute('aria-selected', 'false');
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = [...tabsContainer.children];
@@ -292,9 +269,7 @@
             .classList.remove('hide_element');
           hasMoreBtnElements = true;
         } else {
-          document
-            .querySelector('li[uid="' + uid + '"]')
-            .classList.add('hide_element');
+          document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
         }
       });
       !hasMoreBtnElements
@@ -304,20 +279,18 @@
   };
 
   const clearTapNav = () => {
-    let tabsContainer = document.getElementsByClassName(
-      'luigi-tabsContainer'
-    )[0];
+    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
-    let tabs = [...tabsContainer.children];
-    tabs.forEach(element => {
-      element.classList.remove('hide_element');
-    });
+    if (tabsContainer !== undefined) {
+      const tabs = [...tabsContainer.children];
+      tabs.forEach(element => {
+        element.classList.remove('hide_element');
+      });
+    }
   };
 
   onMount(() => {
-    hideNavComponent = LuigiConfig.getConfigBooleanValue(
-      'settings.hideNavigation'
-    );
+    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
   });
 
   // [svelte-upgrade warning]
@@ -341,9 +314,7 @@
   }
 
   function isExpanded(nodes, expandedList) {
-    return (
-      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
-    );
+    return expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0;
   }
 
   function isSelectedCat(key, selectedNodeForTabNav) {

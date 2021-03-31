@@ -10,7 +10,7 @@
     "replace-in-file": "^6.1.0",
     "serve": "^11.0.0",
     "style-loader": "^0.23.1",
-    "svelte": "^3.0.0",
+    "svelte": "~3.32.0",
     "svelte-loader": "2.13.3",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.12",
@@ -22,10 +22,10 @@
     "dev": "node patch.js && node build_patch_ui5.js && webpack-dev-server  --content-base public"
   },
   "dependencies": {
-    "@luigi-project/client": "1.8.1",
-    "@luigi-project/core": "1.8.1",
-    "@luigi-project/plugin-auth-oauth2": "1.8.1",
-    "@luigi-project/plugin-auth-oidc": "1.8.1",
+    "@luigi-project/client": "1.11.0",
+    "@luigi-project/core": "1.11.0",
+    "@luigi-project/plugin-auth-oauth2": "1.11.0",
+    "@luigi-project/plugin-auth-oidc": "1.11.0",
     "@sap-theming/theming-base-content": "11.1.21",
     "@ui5/webcomponents": "^1.0.0-rc.11",
     "@ui5/webcomponents-fiori": "^1.0.0-rc.11",

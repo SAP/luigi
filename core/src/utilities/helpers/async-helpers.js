@@ -17,9 +17,7 @@ class AsyncHelpersClass {
         }
         if (Date.now() - startTimer > timeout) {
           clearInterval(this.handles[name]);
-          return reject(
-            `${name} did not appear in object within ${timeout / 1000} seconds.`
-          );
+          return reject(`${name} did not appear in object within ${timeout / 1000} seconds.`);
         }
       }, this.keyExistencyCheckInterval);
     });

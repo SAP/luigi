@@ -92,9 +92,7 @@ const projectDetailNavProviderFn = context =>
   new Promise(resolve => {
     const projectId = context.currentProject;
     const children =
-      projectId === 'tabNav'
-        ? projectDetailTabNavStructure(projectId)
-        : projectDetailNavStructure(projectId);
+      projectId === 'tabNav' ? projectDetailTabNavStructure(projectId) : projectDetailNavStructure(projectId);
 
     getProjectPlugins(projectId).then(result => {
       result.forEach(plugin => {
@@ -158,19 +156,13 @@ export const projectsNavProviderFn = context =>
     });
   });
 
-export const navigationPermissionChecker = (
-  nodeToCheckPermissionFor,
-  parentNode,
-  currentContext
-) => {
+export const navigationPermissionChecker = (nodeToCheckPermissionFor, parentNode, currentContext) => {
   // depending on the current path and context returns true or false
   // true means the current node is accessible, false the opposite
   const mockCurrentUserGroups = ['admins'];
   if (!nodeToCheckPermissionFor.constraints) return true;
   // check if user has required groups
-  return nodeToCheckPermissionFor.constraints.some(c =>
-    mockCurrentUserGroups.includes(c)
-  );
+  return nodeToCheckPermissionFor.constraints.some(c => mockCurrentUserGroups.includes(c));
 };
 
 let mockBadgeCount = 0;

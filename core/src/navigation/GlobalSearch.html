@@ -1,7 +1,5 @@
-<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}"/>
-<div
-  class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}"
->
+<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
+<div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
   <div class="fd-popover">
     <div
       class="fd-popover__control luigi-search"
@@ -16,7 +14,7 @@
           class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
           data-testid="luigi-search-input__no-handlers"
           autofocus
-        >
+        />
         {:else}
         <input
           type="text"
@@ -25,7 +23,7 @@
           data-testid="luigi-search-input"
           autofocus
           bind:this="{inputElem}"
-        >
+        />
         {/if}
       </div>
       {#if !isCustomSearchRenderer}
@@ -47,18 +45,17 @@
               tabindex="0"
             >
               {#if !isCustomSearchResultItemRenderer}
-              <a
-                class="fd-menu__link"
-                on:click|preventDefault="{() => {}}"
-              >
+              <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
                 <div class="fd-product-switch__text">
                   <div class="fd-product-switch__title">{result.label}</div>
-                  <div class="fd-product-switch__subtitle">{result.description}</div>
+                  <div class="fd-product-switch__subtitle">
+                    {result.description}
+                  </div>
                 </div>
               </a>
-              {:else}
-              {@html renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer, index)}
-              {/if}
+              {:else} {@html
+              renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer,
+              index)} {/if}
             </li>
             {/each}
           </ul>
@@ -137,9 +134,7 @@
       return searchProvider.inputPlaceholder();
     }
     if (typeof searchProvider.inputPlaceholder === 'string') {
-      const translated = LuigiI18N.getTranslation(
-        searchProvider.inputPlaceholder
-      );
+      const translated = LuigiI18N.getTranslation(searchProvider.inputPlaceholder);
       if (!!translated && translated.trim().length > 0) {
         return translated;
       }
@@ -193,15 +188,12 @@
   }
 
   function calcSearchResultItemSelected(direction) {
-    let renderedSearchResultItems =
-      luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let {
-          childNodes,
-          nextSibling,
-          previousSibling
-        } = renderedSearchResultItems[index];
+        let { childNodes, nextSibling, previousSibling } = renderedSearchResultItems[
+          index
+        ];
         let nodeSibling;
         if (childNodes[0].getAttribute('aria-selected') === 'true') {
           if (direction === KEYCODE_ARROW_DOWN) {
@@ -212,9 +204,7 @@
             nodeSibling =
               previousSibling !== null
                 ? previousSibling
-                : renderedSearchResultItems[
-                    renderedSearchResultItems.length - 1
-                  ];
+                : renderedSearchResultItems[renderedSearchResultItems.length - 1];
           }
           childNodes[0].setAttribute('aria-selected', 'false');
           nodeSibling.childNodes[0].setAttribute('aria-selected', 'true');
@@ -226,8 +216,7 @@
   }
 
   function clearAriaSelected() {
-    let renderedSearchResultItems =
-      luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
@@ -241,9 +230,7 @@
   function onSearchResultItemSelected(searchResultItem) {
     if (
       search &&
-      GenericHelpers.isFunction(
-        search.searchProvider.onSearchResultItemSelected
-      )
+      GenericHelpers.isFunction(search.searchProvider.onSearchResultItemSelected)
     ) {
       search.searchProvider.onSearchResultItemSelected(searchResultItem);
     } else if (
