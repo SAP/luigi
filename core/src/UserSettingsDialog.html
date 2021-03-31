@@ -311,8 +311,8 @@
 
   export function handleKeyUp(event, index) {
     if (
-      event.keyCode === KEYCODE_ENTER ||
-      (KEYCODE_SPACE && event.keyCode !== KEYCODE_TAB)
+      event.keyCode === (KEYCODE_ENTER || KEYCODE_SPACE) &&
+      event.keyCode !== KEYCODE_TAB
     ) {
       document.querySelectorAll('.lui-us-list .lui-us-navlist__item')[index].click();
     }
