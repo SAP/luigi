@@ -411,6 +411,32 @@ class Navigation {
       });
     }
   };
+
+  appSwitcher = {
+    showMainAppEntry: true,
+    items: [
+      {
+        title: 'Application One',
+        subTitle: 'the first app',
+        link: '/projects/pr1'
+      },
+      {
+        title: 'Application Two',
+        link: '/projects/pr2',
+        subTitle: 'the second app'
+      },
+      {
+        title: 'Application Three',
+        link: '/environments',
+        subTitle: 'the third app'
+      },
+      {
+        title: 'Application Storage',
+        link: '/projects/storage',
+        subTitle: 'the storage app'
+      }
+    ]
+  };
 }
 
 export const navigation = new Navigation(navigationPermissionChecker, projectsNavProviderFn);
