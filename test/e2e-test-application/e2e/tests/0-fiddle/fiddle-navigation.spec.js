@@ -641,7 +641,7 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
+        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
       });
     });
   });
