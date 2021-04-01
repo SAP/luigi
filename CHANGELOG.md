@@ -25,6 +25,22 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.12.1] (2021-04-01)
+
+#### :rocket: Added
+* [#1958](https://github.com/SAP/luigi/pull/1958) Use Byline component for user settings dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1949](https://github.com/SAP/luigi/pull/1949) Normalize link paths ([@hardl](https://github.com/hardl))
+
+#### :bug: Fixed
+* [#1967](https://github.com/SAP/luigi/pull/1967) Limit max-width of Application title only on mobile ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#1953](https://github.com/SAP/luigi/pull/1953) Fix context update bug ([@ndricimrr](https://github.com/ndricimrr))
+* [#1926](https://github.com/SAP/luigi/pull/1926) Show Application title on mobile as well ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+
+
+
+
 ## [v1.12.0] (2021-03-24)
 
 #### :rocket: Added
@@ -1019,3 +1035,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.10.0]: https://github.com/SAP/luigi/compare/v1.9.0...v1.10.0
 [v1.11.0]: https://github.com/SAP/luigi/compare/v1.10.0...v1.11.0
 [v1.12.0]: https://github.com/SAP/luigi/compare/v1.11.0...v1.12.0
+[v1.12.1]: https://github.com/SAP/luigi/compare/v1.12.0...v1.12.1
