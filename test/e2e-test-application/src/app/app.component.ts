@@ -23,7 +23,10 @@ export class AppComponent implements OnInit {
       this.onLuigiContext('init', context);
       this.luigiAutoNav.init();
     });
-    addContextUpdateListener(context => this.onLuigiContext('update', context));
+    addContextUpdateListener(context => {
+      this.onLuigiContext('update', context);
+      console.log('Context changed:', context);
+    });
 
     addInactiveListener(() => {
       console.debug('inactiveListener: micro frontend is now in the background');
