@@ -18,7 +18,7 @@
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <button
-      class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu"
+      class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
       aria-haspopup="true"
       aria-expanded="{dropDownStates.appSwitcherPopover || false}"
       on:click|stopPropagation="{() => toggleDropdownState('appSwitcherPopover')}"
@@ -224,6 +224,10 @@
   .lui-shellbar-single-app-title {
     padding: 0 0.625rem;
     max-width: 50vw;
+  }
+
+  .lui-app-switch {
+    max-width: 40vw;
   }
 
   @media (max-width: $desktopMinWidth - 1) {

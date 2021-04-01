@@ -61,7 +61,7 @@
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
-            <div class="fd-nested-list__content has-child" tabindex="0">
+            <div class="fd-nested-list__content has-child">
               <a
                 href="javascript:void(null)"
                 title="{$getTranslation(key)}"
@@ -90,7 +90,7 @@
               <button
                 class="fd-button fd-nested-list__button"
                 href="#"
-                tabindex="-1"
+                tabindex="0"
                 aria-label="Expand categories"
                 aria-haspopup="true"
                 aria-expanded="{isExpanded(nodes, expandedCategories)}"
