@@ -589,7 +589,7 @@ describe('Fiddle', () => {
             sublabel: 'Theme',
             icon: '/assets/github-logo.png',
             title: 'Theming',
-            viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
+            viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
             settings: {
               theme: {
                 type: 'enum',
@@ -641,11 +641,18 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
+        expect(ifr[0].src).to.equal('http://localhost:8090/customUserSettingsMf.html');
       });
     });
+  });
+
+  describe('Bookmarkable micro frontends', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+    });
+
     it('Hash routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
-      newConfig.navigation.nodes[0].children[0].viewUrl = '/examples/microfrontends/hello-luigi-cdn.html';
       newConfig.routing.showModalPathInUrl = true;
       newConfig.routing.modalPathParam = 'mymodal';
       newConfig.routing.useHashRouting = true;
@@ -659,6 +666,7 @@ describe('Fiddle', () => {
       });
 
       cy.wait(150); // it takes some time for the nodeParams be available
+
       cy.getModalWindow().then(win => {
         assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
       });
@@ -667,7 +675,6 @@ describe('Fiddle', () => {
     });
 
     it('Path routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
-      newConfig.navigation.nodes[0].children[0].viewUrl = '/examples/microfrontends/hello-luigi-cdn.html';
       newConfig.routing.showModalPathInUrl = true;
       newConfig.routing.modalPathParam = 'mymodal';
       newConfig.routing.useHashRouting = false;
