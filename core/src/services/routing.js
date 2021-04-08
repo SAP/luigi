@@ -56,22 +56,17 @@ class RoutingClass {
     if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
       return;
     }
+    const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    let url = new URL(location.href);
+    hashRouting ? url.hash = route : url.pathname = route;
 
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      if (!navSync) {
-        EventListenerHelpers.hashChangeWithoutSync = true;
-      }
-      window.location.hash = route;
-      return;
-    }
-
-    const method = pushState ? 'pushState' : 'replaceState';
+    const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : pushState ? 'pushState' : 'replaceState';
     window.history[method](
       {
-        path: route
+        path: hashRouting ? url.hash : decodeURIComponent(url.pathname)
       },
       '',
-      route
+      hashRouting ? url.hash : decodeURIComponent(url.pathname)
     );
 
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
@@ -147,8 +142,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config, withoutSync) {
@@ -174,7 +169,7 @@ class RoutingClass {
               this.handleRouteChange(path, component, iframeElement, config) &&
               history.replaceState(window.state, '', newUrl);
           },
-          () => {}
+          () => { }
         );
         return;
       }
@@ -292,10 +287,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );

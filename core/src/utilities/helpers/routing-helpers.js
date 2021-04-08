@@ -162,16 +162,12 @@ class RoutingHelpersClass {
       }
     });
 
-    if (hashRoutingActive) {
-      return EventListenerHelpers.addEventListener('hashchange', event => {
-        const withoutSync = EventListenerHelpers.hashChangeWithoutSync;
-        EventListenerHelpers.hashChangeWithoutSync = false;
-        callback(Routing.getHashPath(event.newURL), withoutSync);
-      });
-    }
-
     EventListenerHelpers.addEventListener('popstate', e => {
-      callback(Routing.getModifiedPathname(), e.detail && e.detail.withoutSync);
+      if (hashRoutingActive) {
+        callback(Routing.getHashPath(location.href), e.detail && e.detail.withoutSync);
+      } else {
+        callback(Routing.getModifiedPathname(), e.detail && e.detail.withoutSync);
+      }
     });
   }
 
