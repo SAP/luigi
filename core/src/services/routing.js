@@ -60,7 +60,8 @@ class RoutingClass {
     let url = new URL(location.href);
     hashRouting ? url.hash = route : url.pathname = route;
 
-    const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : pushState ? 'pushState' : 'replaceState';
+    const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
+    const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
     window.history[method](
       {
         path: hashRouting ? url.hash : decodeURIComponent(url.pathname)
