@@ -99,10 +99,9 @@
       {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
       <div class="fd-row">
         <div class="fd-col fd-col--4">
-          <label
-            class="fd-form-label"
-            for="input-level2-{key}{i}"
-          >{$getTranslation(schemaItem.label)}:</label>
+          <label class="fd-form-label" for="input-level2-{key}{i}"
+            >{$getTranslation(schemaItem.label)}:</label
+          >
         </div>
         <div class="fd-col fd-col--8">
           {#if schemaItem.type==='string'}
@@ -115,9 +114,9 @@
             data-testid="lui-us-input{i}"
             bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-          >
-          {/if}
-          {#if schemaItem.type==='enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
+          />
+          {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
+          schemaItem.style === 'list')}
           <div class="fd-form-item">
             <div class="fd-popover">
               <div
@@ -133,10 +132,8 @@
                     placeholder="{$getTranslation(storedUserSettingData[userSettingGroup[0]][key])}"
                     data-testid="lui-us-input{i}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                  >
-                  <span
-                    class="fd-input-group__addon fd-input-group__addon--button"
-                  >
+                  />
+                  <span class="fd-input-group__addon fd-input-group__addon--button">
                     <button
                       aria-label="show/hide fruit options"
                       aria-expanded="false"
@@ -173,11 +170,10 @@
                 </div>
                 {/if}
               </div>
-              {/if}
             </div>
           </div>
-          {/if}
-          {#if schemaItem.type==='enum' && schemaItem.style === 'button' && Array.isArray(schemaItem.options)}
+          {/if} {#if schemaItem.type==='enum' && schemaItem.style === 'button' &&
+          Array.isArray(schemaItem.options)}
           <div class="fd-form-item">
             <div
               class="fd-segmented-button enum-buttons-container-{key}"
@@ -191,12 +187,14 @@
                 id="lui-us-enum_button_{key}_{option}"
                 data-testid="lui-us-enum_button_{key}_{option}"
                 disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-              >{$getTranslation(option)}</button>
+              >
+                {$getTranslation(option)}
+              </button>
               {/each}
             </div>
           </div>
-          {/if}
-          {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style === 'switch')}
+          {/if} {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style
+          === 'switch')}
           <label
             class="fd-switch fd-switch--compact"
             data-testid="lui-us-label-switch_{key}"
@@ -209,7 +207,7 @@
                 data-testid="lui-us-checkbox-switch_{key}"
                 disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                 bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
-              >
+              />
               <div class="fd-switch__slider">
                 <div class="fd-switch__track">
                   <span class="fd-switch__handle" role="presentation"></span>
@@ -217,14 +215,13 @@
               </div>
             </span>
           </label>
-          {/if}
-          {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
+          {/if} {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
           <input
             type="checkbox"
             class="fd-checkbox"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
             bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
-          >
+          />
           {/if}
         </div>
       </div>
