@@ -58,7 +58,12 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    }
+    },
+    context: {
+      label: 'VirtualTree - add segments to the url',
+      links: false
+    },
+    virtualTree: true
   },
   {
     pathSegment: 'clientPermissionsTets',
