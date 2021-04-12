@@ -16,7 +16,7 @@
       key.indexOf(virtualGroupPrefix) === 0} {#each nodes as node, index2} {#if
       !node.hideFromNav} {#if node.label}
       <span
-        class="fd-tabs__item"
+        class="fd-tabs__item { (node === selectedNodeForTabNav) === true ? 'is-selected' : ''}"
         uid="{index}-{index2}"
         isSelected="{node === selectedNodeForTabNav}"
       >
