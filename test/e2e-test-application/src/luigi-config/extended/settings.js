@@ -11,24 +11,24 @@ class Settings {
   appLoadingIndicator = {
     hideAutomatically: false
   };
-  responsiveNavigation = 'simpleMobileOnly'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
+  responsiveNavigation = 'simple'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
     // thirdPartyCookieScriptLocation: 'https://domain/init.html',
     thirdPartyCookieErrorHandling: () => {
       const alert = {
-        text:
-          'Third Party Cookies are not enabled. Please check your browser settings.',
+        text: 'Third Party Cookies are not enabled. Please check your browser settings.',
         type: 'warning'
       };
       Luigi.ux().showAlert(alert);
     }
   };
+  burgerTooltip = {
+    navExpanded: 'Collapse navigation test',
+    navCollapsed: 'Expand navigation test'
+  };
   theming = {
-    themes: () => [
-      { id: 'light', name: 'Fiori3 Light' },
-      { id: 'dark', name: 'Fiori3 Dark' }
-    ],
+    themes: () => [{ id: 'light', name: 'Fiori3 Light' }, { id: 'dark', name: 'Fiori3 Dark' }],
     defaultTheme: 'light'
     // nodeViewURLDecorator: {
     //   queryStringParameter: {
@@ -48,13 +48,13 @@ class Settings {
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
   // hideNavigation = true
   // backdropDisabled = true
-  /* customTranslationImplementation = () => {
-    return {
-      getTranslation: (key, interpolations, locale) => {
-        return '*' + key + '* ' + (locale || Luigi.i18n().getCurrentLocale());
-      }
-    };
-  }; */
+  // customTranslationImplementation = () => {
+  //   return {
+  //     getTranslation: (key, interpolations, locale) => {
+  //       return '*' + key + '* ' + (locale || Luigi.i18n().getCurrentLocale());
+  //     }
+  //   };
+  // };
 }
 
 export const settings = new Settings();

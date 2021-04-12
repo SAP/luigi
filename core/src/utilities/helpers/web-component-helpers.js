@@ -3,7 +3,7 @@
  */
 export class DefaultCompoundRenderer {
   constructor(rendererObj) {
-    if(rendererObj) {
+    if (rendererObj) {
       this.rendererObject = rendererObj;
       this.config = rendererObj.config || {};
     } else {
@@ -30,7 +30,7 @@ export class DefaultCompoundRenderer {
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   constructor(rendererObj) {
     super(rendererObj || { use: {} });
-    if(rendererObj && rendererObj.use && rendererObj.use.extends) {
+    if (rendererObj && rendererObj.use && rendererObj.use.extends) {
       this.superRenderer = resolveRenderer({
         use: rendererObj.use.extends,
         config: rendererObj.config
@@ -39,7 +39,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   }
 
   createCompoundContainer() {
-    if(this.rendererObject.use.createCompoundContainer) {
+    if (this.rendererObject.use.createCompoundContainer) {
       return this.rendererObject.use.createCompoundContainer(this.config, this.superRenderer);
     } else if (this.superRenderer) {
       return this.superRenderer.createCompoundContainer();
@@ -48,7 +48,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   }
 
   createCompoundItemContainer(layoutConfig) {
-    if(this.rendererObject.use.createCompoundItemContainer) {
+    if (this.rendererObject.use.createCompoundItemContainer) {
       return this.rendererObject.use.createCompoundItemContainer(layoutConfig, this.config, this.superRenderer);
     } else if (this.superRenderer) {
       return this.superRenderer.createCompoundItemContainer(layoutConfig);
@@ -57,7 +57,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   }
 
   attachCompoundItem(compoundCnt, compoundItemCnt) {
-    if(this.rendererObject.use.attachCompoundItem) {
+    if (this.rendererObject.use.attachCompoundItem) {
       this.rendererObject.use.attachCompoundItem(compoundCnt, compoundItemCnt, this.superRenderer);
     } else if (this.superRenderer) {
       this.superRenderer.attachCompoundItem(compoundCnt, compoundItemCnt);
@@ -77,15 +77,15 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
     compoundCnt.classList.add(containerClass);
     let mediaQueries = '';
 
-    if(this.config.layouts) {
+    if (this.config.layouts) {
       this.config.layouts.forEach(el => {
-        if(el.minWidth || el.maxWidth) {
+        if (el.minWidth || el.maxWidth) {
           let mq = '@media only screen ';
-          if(el.minWidth != null) {
-            mq += `and (min-width: ${el.minWidth}px) `
+          if (el.minWidth != null) {
+            mq += `and (min-width: ${el.minWidth}px) `;
           }
-          if(el.maxWidth != null) {
-            mq += `and (max-width: ${el.maxWidth}px) `
+          if (el.maxWidth != null) {
+            mq += `and (max-width: ${el.maxWidth}px) `;
           }
 
           mq += `{
@@ -101,7 +101,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
       });
     }
 
-    compoundCnt.innerHTML = /*html*/`
+    compoundCnt.innerHTML = /*html*/ `
         <style scoped>
           .${containerClass} {
             display: grid;
@@ -130,21 +130,21 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
  *
  * @param {*} rendererConfig the renderer config object defined in luigi config
  */
-export const resolveRenderer = (rendererConfig) => {
+export const resolveRenderer = rendererConfig => {
   const rendererDef = rendererConfig.use;
-  if(!rendererDef) {
+  if (!rendererDef) {
     return new DefaultCompoundRenderer(rendererConfig);
-  }
-  else if(rendererDef === 'grid') {
+  } else if (rendererDef === 'grid') {
     return new GridCompoundRenderer(rendererConfig);
-  } else if(rendererDef.createCompoundContainer
-    || rendererDef.createCompoundItemContainer
-    || rendererDef.attachCompoundItem) {
+  } else if (
+    rendererDef.createCompoundContainer ||
+    rendererDef.createCompoundItemContainer ||
+    rendererDef.attachCompoundItem
+  ) {
     return new CustomCompoundRenderer(rendererConfig);
   }
   return new DefaultCompoundRenderer(rendererConfig);
 };
-
 
 /**
  * Registers event listeners defined at the navNode.
@@ -155,7 +155,7 @@ export const resolveRenderer = (rendererConfig) => {
  * @param {*} wcElement the web component element - optional
  */
 export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcElement) => {
-  if(navNode.eventListeners) {
+  if (navNode.eventListeners) {
     navNode.eventListeners.forEach(el => {
       const evID = el.source + '.' + el.name;
       const listenerList = eventbusListeners[evID];
@@ -166,11 +166,11 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcEle
         converter: el.dataConverter
       };
 
-      if(listenerList) {
+      if (listenerList) {
         listenerList.push(listenerInfo);
       } else {
         eventbusListeners[evID] = [listenerInfo];
       }
     });
   }
-}
+};

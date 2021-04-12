@@ -92,8 +92,8 @@
     display: block;
   }
 
-  :global(.show-bar) #app .fd-app__sidebar,
-  :global(.show-bar) .fd-page.iframeContainer {
+  :global(.show-bar #app .fd-app__sidebar),
+  :global(.show-bar .fd-page.iframeContainer) {
     bottom: 50px !important;
   }
 

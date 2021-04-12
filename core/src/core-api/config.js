@@ -1,9 +1,4 @@
-import {
-  AsyncHelpers,
-  EventListenerHelpers,
-  GenericHelpers,
-  StateHelpers
-} from '../utilities/helpers';
+import { AsyncHelpers, EventListenerHelpers, GenericHelpers, StateHelpers } from '../utilities/helpers';
 import { LuigiAuth, LuigiElements } from '.';
 import { AuthLayerSvc, LifecycleHooks } from '../services';
 /**
@@ -15,7 +10,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function () { };
+    this.configReadyCallback = function() {};
     this.initialized = false;
     this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
@@ -121,10 +116,7 @@ class LuigiConfig {
 
     var errorDiv = document.createElement('div');
     errorDiv.setAttribute('class', 'fd-message-strip fd-message-strip--error');
-    errorDiv.setAttribute(
-      'style',
-      'max-width: 800px; display: inline-block; margin-top: 40px;'
-    );
+    errorDiv.setAttribute('style', 'max-width: 800px; display: inline-block; margin-top: 40px;');
     errorDiv.appendChild(errorTextNode);
 
     fd_ui.appendChild(errorDiv);
@@ -152,10 +144,7 @@ class LuigiConfig {
    * Luigi.getConfigBooleanValue('settings.hideNavigation')
    */
   getConfigBooleanValue(property) {
-    const configuredValue = GenericHelpers.getConfigValueFromObject(
-      this.getConfig(),
-      property
-    );
+    const configuredValue = GenericHelpers.getConfigValueFromObject(this.getConfig(), property);
     if (configuredValue === true || configuredValue === 'true') {
       return true;
     }
@@ -175,11 +164,7 @@ class LuigiConfig {
    * Luigi.getConfigValueAsync('navigation.contextSwitcher.options')
    */
   getConfigValueAsync(property, ...parameters) {
-    return AsyncHelpers.getConfigValueFromObjectAsync(
-      this.getConfig(),
-      property,
-      parameters
-    );
+    return AsyncHelpers.getConfigValueFromObjectAsync(this.getConfig(), property, parameters);
   }
 
   /**
@@ -246,11 +231,10 @@ class LuigiConfig {
    */
   async readUserSettings() {
     const userSettingsConfig = await this.getConfigValueAsync('userSettings');
-    const userSettings = userSettingsConfig ? userSettingsConfig : await this.getConfigValueAsync('settings.userSettings');
-    if (
-      userSettings &&
-      GenericHelpers.isFunction(userSettings.readUserSettings)
-    ) {
+    const userSettings = userSettingsConfig
+      ? userSettingsConfig
+      : await this.getConfigValueAsync('settings.userSettings');
+    if (userSettings && GenericHelpers.isFunction(userSettings.readUserSettings)) {
       return userSettings.readUserSettings();
     }
     const localStorageValue = localStorage.getItem(this.USER_SETTINGS_KEY);
@@ -272,16 +256,16 @@ class LuigiConfig {
    */
   async storeUserSettings(userSettingsObj, previousUserSettingsObj) {
     const userSettingsConfig = await this.getConfigValueAsync('userSettings');
-    const userSettings = userSettingsConfig ? userSettingsConfig : await this.getConfigValueAsync('settings.userSettings');
+    const userSettings = userSettingsConfig
+      ? userSettingsConfig
+      : await this.getConfigValueAsync('settings.userSettings');
     if (userSettings && GenericHelpers.isFunction(userSettings.storeUserSettings)) {
       return userSettings.storeUserSettings(userSettingsObj, previousUserSettingsObj);
-    }
-    else {
+    } else {
       localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(userSettingsObj));
     }
     this.configChanged();
   }
 }
-
 
 export const config = new LuigiConfig();

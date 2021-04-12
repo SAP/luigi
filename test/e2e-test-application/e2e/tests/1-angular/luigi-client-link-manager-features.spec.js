@@ -91,14 +91,8 @@ describe('Luigi client linkManager', () => {
           const wcContent = root.querySelector('p').innerText;
           expect(wcContent).to.equal('Hello WebComponent!');
           root.querySelector('button').click();
-          cy.get('[data-testid=luigi-alert]').should(
-            'have.class',
-            'fd-message-strip--information'
-          );
-          cy.get('[data-testid=luigi-alert]').should(
-            'contain',
-            'Hello from uxManager in Web Component'
-          );
+          cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
+          cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from uxManager in Web Component');
         });
         //navigate with intent
         cy.wrap($iframeBody)
@@ -118,10 +112,7 @@ describe('Luigi client linkManager', () => {
 
         //wait for the alert coming from an inactive iFrame to be shown and second iFrame to be loaded
         cy.wait(500);
-        cy.get('.fd-message-strip').should(
-          'contain',
-          'Information alert sent from an inactive iFrame'
-        );
+        cy.get('.fd-message-strip').should('contain', 'Information alert sent from an inactive iFrame');
 
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
@@ -156,9 +147,7 @@ describe('Luigi client linkManager', () => {
             // existent relative path
             { path: 'developers', successExpected: true }
           ].map(data => {
-            const msgExpected = data.successExpected
-              ? `Path ${data.path} exists`
-              : `Path ${data.path} does not exist`;
+            const msgExpected = data.successExpected ? `Path ${data.path} exists` : `Path ${data.path} does not exist`;
             const checkPathSelector = '.link-manager .check-path';
             cy.wrap($iframeBody)
               .find(checkPathSelector + ' input')
@@ -216,9 +205,7 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.expectPathToBe('/overview');
 
-      cy.get('.fd-message-strip').contains(
-        'Could not find the requested route maskopatol/has/a/child'
-      );
+      cy.get('.fd-message-strip').contains('Could not find the requested route maskopatol/has/a/child');
 
       //navigate somewhere else
       cy.goToProjectsPage();

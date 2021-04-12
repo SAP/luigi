@@ -6,10 +6,7 @@ import {
   sendCustomMessage,
   addInactiveListener
 } from '@luigi-project/client';
-import {
-  LuigiContextService,
-  ILuigiContextTypes
-} from './services/luigi-context.service';
+import { LuigiContextService, ILuigiContextTypes } from './services/luigi-context.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,22 +16,20 @@ import {
 export class AppComponent implements OnInit {
   public title = 'app';
 
-  constructor(
-    private luigiService: LuigiContextService,
-    private luigiAutoNav: LuigiAutoNavigationService
-  ) {}
+  constructor(private luigiService: LuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) {}
 
   ngOnInit() {
     addInitListener(context => {
       this.onLuigiContext('init', context);
       this.luigiAutoNav.init();
     });
-    addContextUpdateListener(context => this.onLuigiContext('update', context));
+    addContextUpdateListener(context => {
+      this.onLuigiContext('update', context);
+      console.log('Context changed:', context);
+    });
 
     addInactiveListener(() => {
-      console.debug(
-        'inactiveListener: micro frontend is now in the background'
-      );
+      console.debug('inactiveListener: micro frontend is now in the background');
     });
   }
 

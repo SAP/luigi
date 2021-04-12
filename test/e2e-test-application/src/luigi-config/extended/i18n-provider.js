@@ -42,13 +42,8 @@ class I18nProvider {
   // This function will be used by Luigi Core for translation
   getTranslation(key, interpolations = undefined, locale = undefined) {
     if (!key) return '';
-    this.currentLanguage =
-      locale || this.currentLanguage || Luigi.i18n().getCurrentLocale();
-    const result = this.findTranslation(
-      key,
-      this.translationTable[this.currentLanguage],
-      interpolations
-    );
+    this.currentLanguage = locale || this.currentLanguage || Luigi.i18n().getCurrentLocale();
+    const result = this.findTranslation(key, this.translationTable[this.currentLanguage], interpolations);
     return result ? result : key;
   }
 
@@ -83,10 +78,7 @@ class I18nProvider {
    */
   findInterpolations(value, interpolations) {
     Object.keys(interpolations).forEach(item => {
-      value = value.replace(
-        new RegExp('{' + this.escapeKeyForRegexp(item) + '}', 'gi'),
-        interpolations[item]
-      );
+      value = value.replace(new RegExp('{' + this.escapeKeyForRegexp(item) + '}', 'gi'), interpolations[item]);
     });
     return value;
   }

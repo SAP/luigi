@@ -15,8 +15,7 @@ export const projectDetailNavStructure = projectId => [
         children: [
           {
             pathSegment: ':group',
-            viewUrl:
-              '/sampleapp.html#/projects/' + projectId + '/users/groups/:group',
+            viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups/:group',
             context: {
               currentGroup: ':group'
             },
@@ -26,18 +25,12 @@ export const projectDetailNavStructure = projectId => [
                 pathSegment: 'settings',
                 keepSelectedForChildren: true,
                 icon: 'user-settings',
-                viewUrl:
-                  '/sampleapp.html#/projects/' +
-                  projectId +
-                  '/users/groups/:group/settings',
+                viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups/:group/settings',
                 children: [
                   {
                     label: 'Multi Path Params',
                     pathSegment: ':dynamic',
-                    viewUrl:
-                      '/sampleapp.html#/projects/' +
-                      projectId +
-                      '/users/groups/:group/settings/:dynamic',
+                    viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/groups/:group/settings/:dynamic',
                     context: {
                       label: ':dynamic'
                     }
@@ -52,8 +45,7 @@ export const projectDetailNavStructure = projectId => [
         pathSegment: 'usersoverview',
         label: 'Users Overview',
         icon: 'employee',
-        viewUrl:
-          '/sampleapp.html#/projects/' + projectId + '/users/usersoverview'
+        viewUrl: '/sampleapp.html#/projects/' + projectId + '/users/usersoverview'
       }
     ]
   },
@@ -66,7 +58,12 @@ export const projectDetailNavStructure = projectId => [
     badgeCounter: {
       label: 'Number of developers',
       count: () => Math.floor(Math.random() * 100)
-    }
+    },
+    context: {
+      label: 'VirtualTree - add segments to the url',
+      links: false
+    },
+    virtualTree: true
   },
   {
     pathSegment: 'clientPermissionsTets',
@@ -232,25 +229,9 @@ export const projectDetailNavStructure = projectId => [
     icon: 'accept',
     context: {
       label: 'Avengers',
-      links: [
-        'Captain America',
-        'Iron Man',
-        'Thor',
-        'Hulk',
-        'Black Widow',
-        'Hawkeye',
-        'Loki'
-      ]
+      links: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki']
     },
-    children: [
-      'Captain America',
-      'Iron Man',
-      'Thor',
-      'Hulk',
-      'Black Widow',
-      'Hawkeye',
-      'Loki'
-    ].map(name => ({
+    children: ['Captain America', 'Iron Man', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Loki'].map(name => ({
       pathSegment: name
         .toLowerCase()
         .split(' ')
@@ -276,8 +257,7 @@ export const projectDetailNavStructure = projectId => [
             label: 'Super Power',
             links: ['Details']
           },
-          viewUrl:
-            '/sampleapp.html#/projects/' + projectId + '/dynamic/super-power',
+          viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/super-power',
           children: [
             {
               label: 'Details',
@@ -286,8 +266,7 @@ export const projectDetailNavStructure = projectId => [
                 label: 'Details',
                 links: false
               },
-              viewUrl:
-                '/sampleapp.html#/projects/' + projectId + '/dynamic/details'
+              viewUrl: '/sampleapp.html#/projects/' + projectId + '/dynamic/details'
             }
           ]
         }

@@ -6,9 +6,7 @@ describe('Global Search', () => {
   describe('Open search field ', () => {
     it('Click on field', () => {
       // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should(
-        'not.be.visible'
-      );
+      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
 
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]')
@@ -24,9 +22,7 @@ describe('Global Search', () => {
         .click();
 
       // Input should be not visible
-      cy.get('input[data-testid="luigi-search-input"]').should(
-        'not.be.visible'
-      );
+      cy.get('input[data-testid="luigi-search-input"]').should('not.be.visible');
     });
   });
 
@@ -49,11 +45,7 @@ describe('Global Search', () => {
         .click();
 
       // toggleSearch function should had been executed... input value should be open
-      cy.get('input[data-testid="luigi-search-input"]').should(
-        'have.attr',
-        'data-togglesearch',
-        'open'
-      );
+      cy.get('input[data-testid="luigi-search-input"]').should('have.attr', 'data-togglesearch', 'open');
 
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]')
@@ -61,11 +53,7 @@ describe('Global Search', () => {
         .click();
 
       // toggleSearch function should had been executed...input value should be close
-      cy.get('input[data-testid="luigi-search-input"]').should(
-        'have.attr',
-        'data-togglesearch',
-        'close'
-      );
+      cy.get('input[data-testid="luigi-search-input"]').should('have.attr', 'data-togglesearch', 'close');
     });
   });
 

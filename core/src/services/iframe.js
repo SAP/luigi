@@ -1,11 +1,6 @@
 // Methods related to managing the view in the iframe.
 // Please consider adding any new methods to 'iframe-helpers' if they don't require anything from this file.
-import {
-  GenericHelpers,
-  IframeHelpers,
-  RoutingHelpers,
-  NavigationHelpers
-} from '../utilities/helpers';
+import { GenericHelpers, IframeHelpers, RoutingHelpers, NavigationHelpers } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N } from '../core-api';
 
 class IframeClass {
@@ -16,9 +11,7 @@ class IframeClass {
 
   getActiveIframe(node) {
     const children = [...node.children];
-    return children
-      .filter(child => child.tagName === 'IFRAME')
-      .find(GenericHelpers.isElementVisible);
+    return children.filter(child => child.tagName === 'IFRAME').find(GenericHelpers.isElementVisible);
   }
 
   setActiveIframeToPrevious(node) {
@@ -40,21 +33,14 @@ class IframeClass {
   removeInactiveIframes(node) {
     const children = Array.from(node.children);
     children.forEach(child => {
-      if (
-        !GenericHelpers.isElementVisible(child) &&
-        !child.vg &&
-        child.tagName === 'IFRAME'
-      ) {
+      if (!GenericHelpers.isElementVisible(child) && !child.vg && child.tagName === 'IFRAME') {
         node.removeChild(child);
       }
     });
   }
 
   hasIsolatedView(isolateView, isSameViewGroup, isolateAllViews) {
-    return (
-      isolateView ||
-      (isolateAllViews && !(isolateView === false) && !isSameViewGroup)
-    );
+    return isolateView || (isolateAllViews && !(isolateView === false) && !isSameViewGroup);
   }
 
   getPreservedViewsInDom(iframes) {
@@ -151,9 +137,7 @@ class IframeClass {
         IframeHelpers.removeIframe(config.iframe, node);
         config.iframe = undefined;
         config.isFallbackFrame = true;
-        console.info(
-          'navigate: luigi-client did not respond, using fallback by replacing iframe'
-        );
+        console.info('navigate: luigi-client did not respond, using fallback by replacing iframe');
         await this.navigateIframe(config, component, node);
       }
     }, this.iframeNavFallbackTimeout);
@@ -210,11 +194,7 @@ class IframeClass {
       isSameViewGroup,
       config.isolateAllViews
     );
-    const nextViewIsolated = this.hasIsolatedView(
-      componentData.isolateView,
-      isSameViewGroup,
-      config.isolateAllViews
-    );
+    const nextViewIsolated = this.hasIsolatedView(componentData.isolateView, isSameViewGroup, config.isolateAllViews);
     const canReuseIframe = IframeHelpers.canReuseIframe(config, component);
     let activeIframe = this.getActiveIframe(node);
 
@@ -239,11 +219,7 @@ class IframeClass {
 
       // if next view must be isolated
       if (activeIframe && nextViewIsolated) {
-        activeIframe = this.switchActiveIframe(
-          node,
-          undefined,
-          !activeIframe.vg
-        );
+        activeIframe = this.switchActiveIframe(node, undefined, !activeIframe.vg);
       }
 
       // if next view is not isolated we can pick a iframe with matching viewGroup from the pool
@@ -257,11 +233,7 @@ class IframeClass {
           targetIframe = sameViewGroupIframes[0];
 
           // make the targetIframe the new active iframe
-          activeIframe = this.switchActiveIframe(
-            node,
-            targetIframe,
-            activeIframe && !activeIframe.vg
-          );
+          activeIframe = this.switchActiveIframe(node, targetIframe, activeIframe && !activeIframe.vg);
         }
       }
 
@@ -289,21 +261,13 @@ class IframeClass {
         IframeHelpers.removeElementChildren(node);
       }
       if (componentData.viewUrl) {
-        if (
-          GenericHelpers.getConfigValueFromObject(
-            componentData,
-            'currentNode.loadingIndicator.enabled'
-          ) !== false
-        ) {
+        if (GenericHelpers.getConfigValueFromObject(componentData, 'currentNode.loadingIndicator.enabled') !== false) {
           component.set({ showLoadingIndicator: true });
         } else {
           component.set({ showLoadingIndicator: false });
         }
         config.navigateOk = undefined;
-        const canCache =
-          componentData.viewGroup &&
-          !nextViewIsolated &&
-          this.canCache(componentData.viewGroup);
+        const canCache = componentData.viewGroup && !nextViewIsolated && this.canCache(componentData.viewGroup);
         config.iframe = IframeHelpers.createIframe(
           viewUrl,
           canCache ? componentData.viewGroup : undefined,
@@ -329,13 +293,7 @@ class IframeClass {
         if (pageErrorHandler) {
           this.checkIframe(pageErrorHandler, component, viewUrl, config, node);
         } else if (config.defaultPageErrorHandler) {
-          this.checkIframe(
-            config.defaultPageErrorHandler,
-            component,
-            viewUrl,
-            config,
-            node
-          );
+          this.checkIframe(config.defaultPageErrorHandler, component, viewUrl, config, node);
         }
       }
     } else {
@@ -344,17 +302,13 @@ class IframeClass {
       config.iframe.style.display = 'block';
       config.iframe.luigi.nextViewUrl = viewUrl;
       config.iframe.luigi.nextClientPermissions = component.get().currentNode.clientPermissions;
-      config.iframe['vg'] = this.canCache(componentData.viewGroup)
-        ? componentData.viewGroup
-        : undefined;
+      config.iframe['vg'] = this.canCache(componentData.viewGroup) ? componentData.viewGroup : undefined;
       config.iframe.luigi.currentNode = componentData.currentNode;
       const internalData = await component.prepareInternalData(config);
       const message = {
         msg: 'luigi.navigate',
         viewUrl: viewUrl,
-        context: JSON.stringify(
-          Object.assign({}, componentData.context, { goBackContext })
-        ),
+        context: JSON.stringify(Object.assign({}, componentData.context, { goBackContext })),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
         internal: JSON.stringify(internalData)

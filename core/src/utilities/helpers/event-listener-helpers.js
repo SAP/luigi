@@ -1,6 +1,7 @@
 class EventListenerHelpersClass {
   constructor() {
     this.listeners = [];
+    this.hashChangeWithoutSync = false;
     window.onunload = () => this.removeAllEventListeners();
   }
 
@@ -10,9 +11,7 @@ class EventListenerHelpersClass {
   }
 
   removeEventListener(type, listenerFn) {
-    this.listeners = this.listeners.filter(
-      l => !(l.type === type && l.listenerFn === listenerFn)
-    );
+    this.listeners = this.listeners.filter(l => !(l.type === type && l.listenerFn === listenerFn));
     window.removeEventListener(type, listenerFn);
   }
 

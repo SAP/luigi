@@ -83,11 +83,22 @@ export class LuigiAutoRoutingService implements OnDestroy {
         return;
       }
       if (current.data.fromVirtualTreeRoot) {
-        console.debug('Calling fromVirtualTreeRoot for ulr ==> ' + event.url);
+        let url = event.url;
+        const truncate = current.data.fromVirtualTreeRoot.truncate;
+        if (truncate) {
+          if (truncate.indexOf('*') === 0) {
+            const index = url.indexOf(truncate.substr(1));
+            url = url.substr(index + truncate.length - 1);
+          }
+          else if (url.indexOf(truncate) === 0) {
+            url = url.substr(truncate.length);
+          }
+        }
+        console.debug('Calling fromVirtualTreeRoot for url ==> ' + url);
         linkManager()
           .fromVirtualTreeRoot()
           .withoutSync()
-          .navigate(event.url);
+          .navigate(url);
       }
     }
   }

@@ -5,19 +5,18 @@
   <div class="fd-layout-panel">
     <div class="fd-layout-panel__body">
       <p>
-        This page uses the Angular router to navigate between pages. The Url is
-        updated through a custom Angular service named
-        <code>LuigiAutoNavigation</code> which utilized router events to update
-        the URL on Luigi Core side by using the
-        <code>.withoutSync()</code> method when navigating with
-        <code>LuigiClient.linkManager()</code>.
+        This page uses the Angular router to navigate between pages. The Url is updated
+        through a custom Angular service named
+        <code>LuigiAutoNavigation</code> which utilized router events to update the URL on
+        Luigi Core side by using the <code>.withoutSync()</code> method when navigating
+        with <code>LuigiClient.linkManager()</code>.
       </p>
       <ul class="fd-list">
         <li class="fd-list__item">Current pathsegment: {{ currentSegment }}</li>
         <li class="fd-list__item">
-          Go to:&nbsp;<a class="fd-link" [routerLink]="['../' + nextSegment]">{{
-            nextSegment
-          }}</a>
+          Go to:&nbsp;<a class="fd-link" [routerLink]="['../' + nextSegment]"
+            >{{ nextSegment }}</a
+          >
         </li>
       </ul>
     </div>

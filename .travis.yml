@@ -22,7 +22,7 @@ notifications:
     secure: nls0RW4RKEHLnRBgOi25UTpjjSBFGnXgOnbxuiPsSjBFWehXvH8SfMYGfsDdp6lfH9ljDFA6KiJFauAAgQ+vImaZNHvrHeCitQDqWraXeD1CyzOYGp+8Bx/JyR1bcBKewvQVqNpnhk4hoIEI4Gu2i1NGq1/pAkHOeetw7PVmnpEG/QyQQ8YDXbySzWl39iZc8HWVT4svKV8BqYx+KzqRqE09XSfhiecZ00DVjZEMyKD6oCttOlJ/Vo0Z7QgzAEDaIhb+jrojJ2HD1PPWjiQqfpuyBY6GjeFGwNebevhmVngvQ3+69xn0ydOct3HTR/uSNJexY/Hq9W98QuGliihWwx1ksjFZnKtZ42FRY9p8jD/hw+ySJRwrAvbZtrWA0xmU85Fz/kRMocum5I7UJDGOTvklNYMFT/Rlh5w08DWXx8YCYyvXxsTee7dNELwefYnOL/FZRzHaNKnXqimYsE8dIlbfMBKD2Kh4Hr0+NZlBBaZ71w2+4Cp1mdJnSEFN7zuOrwqdQdjCDAeqttcSOvuQAR/BMGwtN30BrjW16n2YOuqwBoWsp7zUdpSyWp600mTn+vYulue4hvpwpbfELVXRtaggrVvolW9fBtACXE6+G9rqzJRgRLLNGM9i7dbiX2OFx1olMTu0n7XN7MNFdwFH4X0sycfi02GlZb/5L/ntrJY=
 
 integration-testing: &integration-testing
-  if: repo = SAP/luigi AND type != cron
+  if: repo = SAP/luigi AND type != cron AND type != api
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
@@ -112,7 +112,7 @@ jobs:
 
     #----- DOCU -----
     - name: 'Check Documentation'
-      if: repo = SAP/luigi AND type != cron
+      if: repo = SAP/luigi AND type != cron AND type != api
       script:
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
         - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
@@ -122,7 +122,7 @@ jobs:
 
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND branch = master AND type != cron
+      if: repo = SAP/luigi AND branch = master AND type != cron AND type != api
       # Whitesource can't deal with symlinking, therefore we can't use lerna
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
@@ -145,7 +145,7 @@ jobs:
     - stage: 'Publish'
       name: 'Publish to NPM'
       # run only when a release in github was created
-      if: repo = SAP/luigi AND tag ~= ^v AND type != cron
+      if: repo = SAP/luigi AND tag ~= ^v AND type != cron AND type != api
       script:
         - bash ./scripts/npmPublish.sh
       before_cache:
@@ -153,7 +153,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
 
     - name: 'Nightly release'
-      if: type = cron
+      if: type = cron OR (type = api AND commit_message = publish)
       script:
         - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci

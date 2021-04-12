@@ -1,7 +1,4 @@
-import {
-  LuigiContextService,
-  IContextMessage
-} from '../../services/luigi-context.service';
+import { LuigiContextService, IContextMessage } from '../../services/luigi-context.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import {
@@ -39,7 +36,7 @@ export class SettingsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
@@ -51,8 +48,7 @@ export class SettingsComponent implements OnInit {
       this.hasBack = linkManager().hasBack();
       this.isModal = uxManager().isModal();
       this.userSettings = getUserSettings();
-      this.nodeParams =
-        Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
+      this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
       let featureToggleList = getActiveFeatureToggles();
       if (featureToggleList.includes('ft1')) {
         this.testFeatureToggleActive = true;
@@ -68,32 +64,25 @@ export class SettingsComponent implements OnInit {
 
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
-    this.lcSubscription = this.luigiService
-      .getContext()
-      .subscribe((ctx: IContextMessage) => {
-        if (ctx.contextType === 'init' || ctx.contextType === 'update') {
-          this.preservedViewCallbackContext = ctx.context.goBackContext;
-          this.nodeParams =
-            Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
-          // Since Luigi runs outside of Zone.js, changes need
-          // to be updated manually
-          // Be sure to check for destroyed ChangeDetectorRef,
-          // else you get runtime Errors
-          if (uxManager().isSplitView()) {
-            console.info(
-              'uxManager().isSplitView(): micro frontend is running inside a split view'
-            );
-          }
-          if (uxManager().isModal()) {
-            console.info(
-              'uxManager().isModal(): micro frontend is running inside a modal'
-            );
-          }
-          if (!this.cdr['destroyed']) {
-            this.cdr.detectChanges();
-          }
+    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+      if (ctx.contextType === 'init' || ctx.contextType === 'update') {
+        this.preservedViewCallbackContext = ctx.context.goBackContext;
+        this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
+        // Since Luigi runs outside of Zone.js, changes need
+        // to be updated manually
+        // Be sure to check for destroyed ChangeDetectorRef,
+        // else you get runtime Errors
+        if (uxManager().isSplitView()) {
+          console.info('uxManager().isSplitView(): micro frontend is running inside a split view');
         }
-      });
+        if (uxManager().isModal()) {
+          console.info('uxManager().isModal(): micro frontend is running inside a modal');
+        }
+        if (!this.cdr['destroyed']) {
+          this.cdr.detectChanges();
+        }
+      }
+    });
   }
 
   goBack() {

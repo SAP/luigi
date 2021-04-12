@@ -1,4 +1,4 @@
-<svelte:window on:keydown="{handleKeydown}"/>
+<svelte:window on:keydown="{handleKeydown}" />
 <div
   class="fd-message-box-docs-static fd-message-box fd-message-box--{settings.type} fd-message-box--active"
   data-testid="luigi-confirmation-modal"
@@ -10,11 +10,11 @@
           {#if settings.type}
           <i class="sap-icon--{settings.icon}"></i>
           {/if}
-          <h3 class="fd-title fd-title--h5">{settings.header}</h3>
+          <h2 class="fd-title fd-title--h5">{settings.header}</h2>
         </div>
       </div>
     </header>
-    <div class="fd-message-box__body">{settings.body}</div>
+    <div class="fd-message-box__body">{@html settings.body}</div>
     <footer class="fd-bar fd-bar--footer fd-message-box__footer">
       <div class="fd-bar__right">
         {#if settings.buttonConfirm !== false}
@@ -23,7 +23,9 @@
             on:click="{() => dispatch('modalConfirm')}"
             data-testid="luigi-modal-confirm"
             class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
-          >{settings.buttonConfirm}</button>
+          >
+            {settings.buttonConfirm}
+          </button>
         </div>
         {/if}
         <div class="fd-bar__element">
@@ -31,7 +33,9 @@
             on:click="{() => dispatch('modalDismiss')}"
             data-testid="luigi-modal-dismiss"
             class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
-          >{settings.buttonDismiss}</button>
+          >
+            {settings.buttonDismiss}
+          </button>
         </div>
       </div>
     </footer>
@@ -42,6 +46,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { LuigiI18N } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
+  import { EscapingHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -62,12 +67,13 @@
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
       buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
     };
-
+    settings = {
+      ...settings,
+      body: EscapingHelpers.sanatizeHtmlExceptTextFormatting(settings.body)
+    };
     settings = Object.assign(defaultSettings, settings);
 
-    const focusedButton = settings.buttonConfirm
-      ? 'confirm-button'
-      : 'dismiss-button';
+    const focusedButton = settings.buttonConfirm ? 'confirm-button' : 'dismiss-button';
 
     try {
       document.querySelector(`.${focusedButton}`).focus();

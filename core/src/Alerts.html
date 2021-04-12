@@ -6,11 +6,11 @@
     id="j2ALl423"
     data-testid="luigi-alert"
   >
-    <p
-      class="fd-message-strip__text"
-    >{@html al.dataSanitized ? al.settings.text: ''}</p>
+    <p class="fd-message-strip__text">
+      {@html al.dataSanitized ? al.settings.text: ''}
+    </p>
     <button
-      class="fd-button fd-button--transparent fd-message"
+      class="fd-button fd-button--transparent fd-button--compact fd-message-strip__close"
       on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
       aria-label="Close"
       aria-controls="j2ALl423"
@@ -23,12 +23,7 @@
 </div>
 
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -41,9 +36,7 @@
     warning: 'warning',
     error: 'error'
   };
-  const getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   const handleNavigation = getContext('handleNavigation');
 
   beforeUpdate(() => {
@@ -118,9 +111,6 @@
     .fd-message-strip:not(:first-child) {
       margin-top: 8px;
     }
-  }
-  .fd-message-strip.fd-message-strip--dismissible {
-    padding-right: 1.5rem;
   }
   .fd-message-strip__text {
     :global(a) {

@@ -12,8 +12,7 @@ class UxManager extends LuigiClientBase {
     super();
     helpers.addEventListener('luigi.current-locale-changed', e => {
       if (e.data.currentLocale && lifecycleManager.currentContext?.internal) {
-        lifecycleManager.currentContext.internal.currentLocale =
-          e.data.currentLocale;
+        lifecycleManager.currentContext.internal.currentLocale = e.data.currentLocale;
         lifecycleManager._notifyUpdate();
       }
     });
@@ -74,7 +73,7 @@ class UxManager extends LuigiClientBase {
    * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
    * @param {('confirmation'|'success'|'warning'|'error'|'information')} settings.type the content of the modal type. (Optional)
    * @param {string} [settings.header="Confirmation"] the content of the modal header
-   * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body
+   * @param {string} [settings.body="Are you sure you want to do this?"] the content of the modal body. It supports HTML formatting elements such as `<br>`, `<b>`, `<strong>`, `<i>`, `<em>`, `<mark>`, `<small>`, `<del>`, `<ins>`, `<sub>`, `<sup>`.
    * @param {string|false} [settings.buttonConfirm="Yes"] the label for the modal confirmation button. If set to `false`, the button will not be shown.
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
@@ -95,13 +94,10 @@ class UxManager extends LuigiClientBase {
    *  });
    */
   showConfirmationModal(settings) {
-    helpers.addEventListener(
-      'luigi.ux.confirmationModal.hide',
-      (e, listenerId) => {
-        this.hideConfirmationModal(e.data.data);
-        helpers.removeEventListener(listenerId);
-      }
-    );
+    helpers.addEventListener('luigi.ux.confirmationModal.hide', (e, listenerId) => {
+      this.hideConfirmationModal(e.data.data);
+      helpers.removeEventListener(listenerId);
+    });
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.ux.confirmationModal.show',
       data: { settings }
@@ -169,9 +165,7 @@ class UxManager extends LuigiClientBase {
     //generate random ID
     settings.id = helpers.getRandomId();
     if (settings?.closeAfter < 100) {
-      console.warn(
-        `Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`
-      );
+      console.warn(`Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`);
       settings.closeAfter = undefined;
     }
     helpers.sendPostMessageToLuigiCore({
