@@ -104,7 +104,8 @@
           >
         </div>
         <div class="fd-col fd-col--8">
-          {#if schemaItem.type==='string'}
+          {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
+          schemaItem.isEditable === undefined}
           <input
             class="fd-input"
             type="text"
@@ -119,7 +120,7 @@
           <label class="lui-form-text" data-testid="lui-us-input{i}"
             >{storedUserSettingData[userSettingGroup[0]][key]}
           </label>
-          {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
+          {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
           schemaItem.style === 'list')}
           <div class="fd-form-item">
             <div class="fd-popover">
@@ -139,7 +140,7 @@
                   />
                   <span class="fd-input-group__addon fd-input-group__addon--button">
                     <button
-                      aria-label="show/hide fruit options"
+                      aria-label="show/hide options"
                       aria-expanded="false"
                       aria-haspopup="true"
                       class="fd-input-group__button fd-button fd-button--transparent"
