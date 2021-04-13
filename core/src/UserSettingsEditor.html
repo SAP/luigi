@@ -115,7 +115,11 @@
             bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
           />
-          {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
+          {:else}
+          <label class="lui-form-text" data-testid="lui-us-input{i}"
+            >{storedUserSettingData[userSettingGroup[0]][key]}
+          </label>
+          {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
           schemaItem.style === 'list')}
           <div class="fd-form-item">
             <div class="fd-popover">
