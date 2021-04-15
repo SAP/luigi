@@ -163,11 +163,8 @@ class RoutingHelpersClass {
     });
 
     EventListenerHelpers.addEventListener('popstate', e => {
-      if (hashRoutingActive) {
-        callback(Routing.getHashPath(location.href), e.detail && e.detail.withoutSync);
-      } else {
-        callback(Routing.getModifiedPathname(), e.detail && e.detail.withoutSync);
-      }
+      const method = hashRoutingActive ? Routing.getHashPath(location.href) : Routing.getModifiedPathname();
+      callback(method, e.detail && e.detail.withoutSync);
     });
   }
 
