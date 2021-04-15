@@ -237,7 +237,8 @@ class NavigationClass {
         _virtualViewUrl
       });
 
-      const isVirtualChildren = node.children ? node.children[0]._virtualTree : false;
+      const isVirtualChildren =
+        Array.isArray(node.children) && node.children.length > 0 ? node.children[0]._virtualTree : false;
       if (node.children && !isVirtualChildren) {
         console.warn(
           'Found both virtualTree and children nodes defined on a navigation node. \nChildren nodes are redundant and ignored when virtualTree is enabled. \nPlease refer to documentation'
