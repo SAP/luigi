@@ -128,7 +128,10 @@
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
           />
           {:else}
-          <label class="fd-form-label" data-testid="lui-us-input{i}"
+          <label
+            class="fd-form-label"
+            data-testid="lui-us-input{i}"
+            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
             >{storedUserSettingData[userSettingGroup[0]][key]}
           </label>
           {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
