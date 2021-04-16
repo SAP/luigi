@@ -12,6 +12,7 @@ class Routing {
    * Prefix for reflecting params in the url, which is used when navigating .withParams() function.
    */
   nodeParamPrefix = '~';
+  disableBrowserHistory = false;
 
   /**
    * skipRoutingForUrlPatterns
