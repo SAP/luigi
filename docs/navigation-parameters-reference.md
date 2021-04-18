@@ -137,6 +137,11 @@ settings: {
   }
 ```
 
+### disableBrowserHistory
+  - **type** booean
+  - **description**: defines either if browser history is enabled or not.
+  - **default**: `false`
+
 ## Node parameters
 Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.
 
