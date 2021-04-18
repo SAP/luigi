@@ -10,7 +10,11 @@ import { linkManager, uxManager } from '@luigi-project/client';
 export class DrawerComponent implements OnInit {
   public linkManager = linkManager;
   public uxManager = uxManager;
-  public constructor() {}
+  public constructor() { }
 
-  public ngOnInit() {}
+  public ngOnInit() { }
+
+  openConfirmationModal() {
+    uxManager().showConfirmationModal({ body: 'asdf' }).then(() => { console.log('test'); })
+  }
 }
