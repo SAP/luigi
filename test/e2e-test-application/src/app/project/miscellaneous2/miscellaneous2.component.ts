@@ -12,5 +12,5 @@ export class Miscellaneous2Component implements OnInit {
 
   ngOnInit() { }
 
-  test() { uxManager().showConfirmationModal({ body: 'asdf' }).then(() => { console.log('test'); }) }
+  test() { uxManager().showConfirmationModal({ body: 'Just a confirmation modal' }).then(() => console.log('test')) }
 }

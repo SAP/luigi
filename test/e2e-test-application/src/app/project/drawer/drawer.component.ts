@@ -15,6 +15,6 @@ export class DrawerComponent implements OnInit {
   public ngOnInit() { }
 
   openConfirmationModal() {
-    uxManager().showConfirmationModal({ body: 'asdf' }).then(() => { console.log('test'); })
+    uxManager().showConfirmationModal({ body: 'Just a confirmation modal' }).then(() => { console.log('test'); })
   }
 }
