@@ -376,6 +376,11 @@
     background-color: var(--sapBackgroundColor, #f7f7f7);
   }
 
+  .lui-us-sidenav-image {
+    width: 3rem;
+    height: 3rem;
+  }
+
   .iframeUserSettingsCtn {
     position: relative;
     width: 100%;
@@ -463,27 +468,6 @@
       z-index: 1;
     }
   }
-
-  /* TODO: need to be removed after updating FD Styles to 0.16.0, selected state for left side nav */
-  .fd-list__item {
-    cursor: pointer;
-  }
-  .fd-list__item.is-selected,
-  .fd-list__item[aria-selected='true'] {
-    background: #e5f0fa;
-    background: var(--sapList_SelectionBackgroundColor, #e5f0fa);
-    border-bottom: 0.0625rem solid #0854a0;
-    border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
-      var(--sapList_SelectionBorderColor, #0854a0);
-  }
-  .fd-list__item.is-hover,
-  .fd-list__item:hover {
-    background: #f5f5f5;
-    background: var(--sapList_Hover_Background, #f5f5f5);
-  }
-  .fd-list__item.is-selected:hover {
-    background: var(--sapList_Hover_SelectionBackground, #d8e9f8);
-  }
 </style>
 <svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
@@ -512,25 +496,29 @@
                 on:keyup="{(event) => handleKeyUp(event,[index])}"
               >
                 <a tabindex="0" class="fd-list__link" href="#">
+                  {#if userSettingsGroupProperty[1].icon} {#if
+                  hasOpenUIicon(userSettingsGroupProperty[1])}
                   <span class="fd-list__thumbnail">
-                    {#if userSettingsGroupProperty[1].icon} {#if
-                    hasOpenUIicon(userSettingsGroupProperty[1])}
                     <i
                       role="presentation"
                       class="sap-icon--{userSettingsGroupProperty[1].icon}"
                     ></i>
-                    {:else}
-                    <span
-                      class="fd-image--s fd-list__thumbnail"
-                      aria-label="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
-                      style="background-size:cover;"
-                    >
-                      <img src="{userSettingsGroupProperty[1].icon}" />
-                    </span>
-                    {/if} {:else}
-                    <i role="presentation" class="sap-icon"></i>
-                    {/if}
                   </span>
+                  {:else}
+                  <span
+                    class="fd-image--s fd-list__thumbnail"
+                    aria-label="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
+                    style="background-size:cover;"
+                  >
+                    <img
+                      class="lui-us-sidenav-image"
+                      src="{userSettingsGroupProperty[1].icon}"
+                    />
+                  </span>
+                  {/if} {:else}
+                  <i role="presentation" class="sap-icon"></i>
+                  {/if}
+
                   <div class="fd-list__content">
                     <div class="fd-list__title">
                       {$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}
