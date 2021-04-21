@@ -3,8 +3,9 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 import { GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig, LuigiFeatureToggles } from '../../../src/core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
+import { config } from '../../../src/core-api/config';
 
 describe('Routing-helpers', () => {
   describe('substituteDynamicParamsInObject', () => {
@@ -25,18 +26,36 @@ describe('Routing-helpers', () => {
     });
 
     it('substitutes an object', () => {
-      expect(
-        RoutingHelpers.substituteDynamicParamsInObject(input, paramMap)
-      ).to.deep.equal(expectedOutput);
+      expect(RoutingHelpers.substituteDynamicParamsInObject(input, paramMap)).to.deep.equal(expectedOutput);
       expect(input.key2).to.equal(':group');
     });
     it('substitutes an object using custom prefix', () => {
       input.key2 = '#group';
 
-      expect(
-        RoutingHelpers.substituteDynamicParamsInObject(input, paramMap, '#')
-      ).to.deep.equal(expectedOutput);
+      expect(RoutingHelpers.substituteDynamicParamsInObject(input, paramMap, '#')).to.deep.equal(expectedOutput);
       expect(input.key2).to.equal('#group');
+    });
+  });
+
+  describe('substitute locale variable', () => {
+    beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+      sinon.stub(config, 'configChanged');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('substitutes {i18n.currentLocale} variable to current locale', () => {
+      sinon.stub(LuigiI18N, '_notifyLocaleChange');
+      LuigiI18N.setCurrentLocale('en');
+      const viewUrl = '/{i18n.currentLocale}/microfrontend.html';
+      const expected = '/en/microfrontend.html';
+
+      expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });
   });
 
@@ -67,35 +86,23 @@ describe('Routing-helpers', () => {
     });
 
     it('should return first child if no defaultChildNode is set', async () => {
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'stakeholders'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'stakeholders');
     });
 
     it('should return child with pathSegment equal to defaultChildNode', async () => {
       mockPathData.navigationPath[1].defaultChildNode = 'customers';
 
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'customers'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'customers');
     });
 
     it('should return first child if given defaultChildNode does not exist', async () => {
       mockPathData.navigationPath[1].defaultChildNode = 'NOSUCHPATH';
 
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'stakeholders'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'stakeholders');
     });
 
     it('should return first child asynchronous if no defaultChildNode is set', async () => {
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'stakeholders'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'stakeholders');
     });
 
     it('should return first child that has viewUrl defined', async () => {
@@ -124,10 +131,7 @@ describe('Routing-helpers', () => {
         }
       ];
 
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'child'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'child');
     });
 
     it('should return first child that has externalLink.url defined', async () => {
@@ -158,10 +162,7 @@ describe('Routing-helpers', () => {
         }
       ];
 
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'child'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'child');
     });
 
     it('should return first node that has pathSegment defined', async () => {
@@ -189,10 +190,7 @@ describe('Routing-helpers', () => {
         }
       ];
 
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'pathToHome'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'pathToHome');
     });
 
     it('should return undefined if at least one of children has no pathsegment defined', async () => {
@@ -216,10 +214,7 @@ describe('Routing-helpers', () => {
           ]
         }
       ];
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        undefined
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), undefined);
     });
 
     it('should return child that has pathSegment and viewUrl defined', async () => {
@@ -250,10 +245,7 @@ describe('Routing-helpers', () => {
         }
       ];
 
-      assert.equal(
-        await RoutingHelpers.getDefaultChildNode(mockPathData),
-        'home'
-      );
+      assert.equal(await RoutingHelpers.getDefaultChildNode(mockPathData), 'home');
     });
   });
 
@@ -282,17 +274,11 @@ describe('Routing-helpers', () => {
       }
     };
     it('without params', () => {
-      assert.equal(
-        RoutingHelpers.buildRoute(node, '/' + node.pathSegment),
-        '/home/projects/one'
-      );
+      assert.equal(RoutingHelpers.buildRoute(node, '/' + node.pathSegment), '/home/projects/one');
     });
     it('with params', () => {
       const params = 'sort=desc&filter=false';
-      assert.equal(
-        RoutingHelpers.buildRoute(node, '/' + node.pathSegment, params),
-        '/home/projects/one?' + params
-      );
+      assert.equal(RoutingHelpers.buildRoute(node, '/' + node.pathSegment, params), '/home/projects/one?' + params);
     });
   });
   describe('getRouteLink', () => {
@@ -347,18 +333,8 @@ describe('Routing-helpers', () => {
       assert.equal(RoutingHelpers.getRouteLink(given), expected);
 
       sinon.assert.notCalled(Routing.buildFromRelativePath);
-      sinon.assert.calledWith(
-        RoutingHelpers.buildRoute,
-        given,
-        '/' + given.pathSegment
-      );
-      sinon.assert.calledWith(
-        GenericHelpers.replaceVars,
-        expected,
-        undefined,
-        ':',
-        false
-      );
+      sinon.assert.calledWith(RoutingHelpers.buildRoute, given, '/' + given.pathSegment);
+      sinon.assert.calledWith(GenericHelpers.replaceVars, expected, undefined, ':', false);
     });
   });
   describe('getNodeHref', () => {
@@ -374,25 +350,18 @@ describe('Routing-helpers', () => {
 
       expect(RoutingHelpers.getNodeHref({}, {})).to.equal('javascript:void(0)');
       sinon.assert.notCalled(RoutingHelpers.getRouteLink);
-      sinon.assert.calledWith(
-        LuigiConfig.getConfigBooleanValue,
-        'navigation.addNavHrefs'
-      );
+      sinon.assert.calledWith(LuigiConfig.getConfigBooleanValue, 'navigation.addNavHrefs');
     });
     it('returns valid link on url object', () => {
       LuigiConfig.getConfigBooleanValue.returns(true);
       RoutingHelpers.getRouteLink.returns({ url: '/test' });
-      expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal(
-        '/test'
-      );
+      expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal('/test');
       sinon.assert.calledOnce(RoutingHelpers.getRouteLink);
     });
     it('returns valid link on string received', () => {
       LuigiConfig.getConfigBooleanValue.returns(true);
       RoutingHelpers.getRouteLink.returns('/test');
-      expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal(
-        '/test'
-      );
+      expect(RoutingHelpers.getNodeHref({ pathSegment: 'test' }, {})).to.equal('/test');
       sinon.assert.calledOnce(RoutingHelpers.getRouteLink);
     });
   });
@@ -483,24 +452,15 @@ describe('Routing-helpers', () => {
     });
 
     it('return viewGroup from node.parent', () => {
-      assert.deepEqual(
-        RoutingHelpers.findViewGroup(viewGroupInNodeParent),
-        'tets 1-1'
-      );
+      assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInNodeParent), 'tets 1-1');
     });
 
     it('return viewGroup from parent at node.parent', () => {
-      assert.deepEqual(
-        RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent),
-        'tets 1-1-1'
-      );
+      assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent), 'tets 1-1-1');
     });
 
     it('return undefined if viewGroup is not inside node', () => {
-      assert.deepEqual(
-        RoutingHelpers.findViewGroup(noViewGroupInNode),
-        undefined
-      );
+      assert.deepEqual(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
     });
   });
   describe('set feature toggle from url', () => {
@@ -564,10 +524,7 @@ describe('Routing-helpers', () => {
         modal: '%2Fhome%2Fchild-2'
       };
       RoutingHelpers.getQueryParams.returns(allQueryParams);
-      assert.equal(
-        RoutingHelpers.getModalPathFromPath('defined through stub'),
-        '/home/child-2'
-      );
+      assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
     });
     it('with modal params', () => {
       const allQueryParams = {
@@ -575,14 +532,8 @@ describe('Routing-helpers', () => {
         modalParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
       };
       RoutingHelpers.getQueryParams.returns(allQueryParams);
-      assert.equal(
-        RoutingHelpers.getModalPathFromPath('defined through stub'),
-        '/home/child-2'
-      );
-      assert.deepEqual(
-        RoutingHelpers.getModalParamsFromPath('defined through stub'),
-        { title: 'Real Child' }
-      );
+      assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
+      assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
     });
     it('with custom modal param name', () => {
       const allQueryParams = {
@@ -592,14 +543,8 @@ describe('Routing-helpers', () => {
       RoutingHelpers.getModalViewParamName.returns('custom');
       RoutingHelpers.getQueryParams.returns(allQueryParams);
 
-      assert.equal(
-        RoutingHelpers.getModalPathFromPath('defined through stub'),
-        '/home/child-2'
-      );
-      assert.deepEqual(
-        RoutingHelpers.getModalParamsFromPath('defined through stub'),
-        { title: 'Real Child' }
-      );
+      assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
+      assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
     });
   });
 
