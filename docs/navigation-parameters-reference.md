@@ -70,6 +70,11 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
 - **default**: `false`
 
+### disableBrowserHistory
+  - **type** booean
+  - **description**: defines either if browser history is enabled or not.
+  - **default**: `false`
+
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
 

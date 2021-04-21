@@ -58,6 +58,32 @@
           >
           </app-code-snippet>
         </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="openConfirmationModal()"
+          >
+            open confirmation modal</a
+          >
+          <app-code-snippet
+            data="uxManager().showConfirmationModal({ body: 'Just a confirmation modal' }).then(() => { console.log('opended a confirmation modal'); })"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="linkManager().openAsModal('/projects/pr1/miscellaneous2', {title:'miscellaneous2', size:'m'})"
+          >
+            open misc2 in modal</a
+          >
+          <app-code-snippet
+            data="linkManager().openAsModal('/projects/pr1/miscellaneous2', {title:'miscellaneous2', size:'m'})"
+          >
+          </app-code-snippet>
+        </li>
       </ul>
     </div>
   </div>

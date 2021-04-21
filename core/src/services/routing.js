@@ -56,22 +56,18 @@ class RoutingClass {
     if (windowPath === GenericHelpers.trimLeadingSlash(route)) {
       return;
     }
+    const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    let url = new URL(location.href);
+    hashRouting ? (url.hash = route) : (url.pathname = route);
 
-    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      if (!navSync) {
-        EventListenerHelpers.hashChangeWithoutSync = true;
-      }
-      window.location.hash = route;
-      return;
-    }
-
-    const method = pushState ? 'pushState' : 'replaceState';
+    const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
+    const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
     window.history[method](
       {
-        path: route
+        path: hashRouting ? url.hash : decodeURIComponent(url.pathname)
       },
       '',
-      route
+      hashRouting ? url.hash : decodeURIComponent(url.pathname)
     );
 
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
@@ -323,11 +319,13 @@ class RoutingClass {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
       } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
       } else {
         if (iContainer) {

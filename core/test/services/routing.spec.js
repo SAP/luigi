@@ -10,7 +10,7 @@ import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
-describe('Routing', function() {
+describe('Routing', function () {
   this.retries(1);
 
   let component;
@@ -73,6 +73,7 @@ describe('Routing', function() {
   });
 
   describe('navigateTo', () => {
+    let globalLocationRef = global.location;
     beforeEach(() => {
       window.history.replaceState = sinon.spy();
       window.history.pushState = sinon.spy();
@@ -83,10 +84,17 @@ describe('Routing', function() {
       sinon.stub(GenericHelpers, 'trimLeadingSlash').returnsArg(0);
       sinon.stub(GenericHelpers, 'isIE').returns(false);
     });
+    afterEach(() => {
+      global.location = globalLocationRef;
+    })
 
     it('with path routing, does a browser history replace', async () => {
       // given
       const path = '/projects/teams';
+      global.location = {
+        href: `http://some.url.de${path}`,
+        pathname: path
+      }
 
       // when
       await Routing.navigateTo(path, false);
@@ -96,7 +104,7 @@ describe('Routing', function() {
         window.history.replaceState,
         { path },
         '',
-        path
+        '/projects/teams'
       );
       sinon.assert.notCalled(window.history.pushState);
     });
@@ -819,7 +827,7 @@ describe('Routing', function() {
 
   describe('showPageNotFoundError()', () => {
     let component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
     let pathToRedirect = '/go/here';
     let pathToRedirect2 = '/go/there';
