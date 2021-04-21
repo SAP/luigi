@@ -58,7 +58,7 @@ class RoutingClass {
     }
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
     let url = new URL(location.href);
-    hashRouting ? url.hash = route : url.pathname = route;
+    hashRouting ? (url.hash = route) : (url.pathname = route);
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
     const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
@@ -143,8 +143,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-        : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   async handleRouteChange(path, component, iframeElement, config, withoutSync) {
@@ -170,7 +170,7 @@ class RoutingClass {
               this.handleRouteChange(path, component, iframeElement, config) &&
               history.replaceState(window.state, '', newUrl);
           },
-          () => { }
+          () => {}
         );
         return;
       }
@@ -288,10 +288,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-              viewUrl: previousCompData.viewUrl,
-              isolateView: previousCompData.isolateView,
-              viewGroup: previousCompData.viewGroup
-            }
+                viewUrl: previousCompData.viewUrl,
+                isolateView: previousCompData.isolateView,
+                viewGroup: previousCompData.viewGroup
+              }
             : {}
         })
       );
@@ -319,11 +319,13 @@ class RoutingClass {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
       } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
       } else {
         if (iContainer) {
