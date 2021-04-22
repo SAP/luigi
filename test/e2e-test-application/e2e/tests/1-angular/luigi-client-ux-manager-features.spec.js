@@ -179,4 +179,72 @@ describe('Luigi Client ux manager features', () => {
       });
     });
   });
+
+  describe('Test if confirmation modal is visible', () => {
+    it('Test confirmation modal opened from a modal', () => {
+      let $iframeBody;
+      cy.visit('/projects/pr1/');
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('.fd-app__sidebar').contains('Miscellaneous2').click();
+      cy.getIframeBody({}, 0, '.iframeModalCtn._modal').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).should('contain', 'Misc 2 content');
+        cy.wrap($iframeBody).contains('open confirmation modal').click();
+      });
+      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('.fd-message-box__body').should('contain', 'Just a confirmation modal');
+      cy.get('[data-testid=luigi-modal-confirm]').click();
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.getIframeBody({}, 0, '.iframeModalCtn._modal').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).should('contain', 'Misc 2 content');
+      });
+    });
+
+    it('Test confirmation modal opened from a drawer', () => {
+      let $iframeBody;
+      cy.visit('/projects/pr1/');
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('.fd-app__sidebar').contains('Drawer Example').click();
+      cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).should('contain', 'LuigiClient linkManager methods');
+        cy.wrap($iframeBody).contains('open confirmation modal').click();
+      });
+      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('.fd-message-box__body').should('contain', 'Just a confirmation modal');
+      cy.get('[data-testid=luigi-modal-confirm]').click();
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).should('contain', 'LuigiClient linkManager methods');
+      });
+    });
+
+    it('Test confirmation modal opened from modal from a drawer', () => {
+      let $iframeBody;
+      cy.visit('/projects/pr1/');
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.get('.fd-app__sidebar').contains('Drawer Example').click();
+      cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).should('contain', 'LuigiClient linkManager methods');
+        cy.wrap($iframeBody).contains('open misc2 in modal').click();
+      });
+      cy.getIframeBody({}, 0, '.iframeModalCtn._modal').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).should('contain', 'Misc 2 content');
+        cy.wrap($iframeBody).contains('open confirmation modal').click();
+      });
+
+      cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
+      cy.get('.fd-message-box__body').should('contain', 'Just a confirmation modal');
+      cy.get('[data-testid=luigi-modal-confirm]').click();
+      cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
+      cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).should('contain', 'LuigiClient linkManager methods');
+      });
+    });
+  });
 });
