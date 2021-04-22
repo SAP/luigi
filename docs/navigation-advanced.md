@@ -114,6 +114,19 @@ For example, to get the value of the **userId** parameter, use `LuigiClient.getP
 }
   ...
 ```
+- Add a {i18n.currentLocale} parameter to the viewUrl part of your configuration:
+
+```javascript
+{
+  pathSegment: 'home',
+  label: 'Home',
+  viewUrl: 'https://example.com/{i18n.currentLocale}/microfrontend.html',
+}
+  ...
+```
+
+  **{i18n.currentLocale}** parameter will be replaced by the value of `LuigiI18N.getCurrentLocale()`.
+  e.g. `https://example.com/en/microfrontend.html`
 
 In all these cases, the parameter is automatically replaced by the real value.
 
