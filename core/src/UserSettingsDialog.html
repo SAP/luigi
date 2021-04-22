@@ -508,13 +508,8 @@
                   <span
                     class="fd-image--s fd-list__thumbnail"
                     aria-label="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
-                    style="background-size:cover;"
-                  >
-                    <img
-                      class="lui-us-sidenav-image"
-                      src="{userSettingsGroupProperty[1].icon}"
-                    />
-                  </span>
+                    style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
+                  ></span>
                   {/if} {:else}
                   <i role="presentation" class="sap-icon"></i>
                   {/if}
