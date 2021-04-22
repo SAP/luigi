@@ -82,15 +82,19 @@
 
 <style>
   .lui-usersettings-content .fd-row {
-    min-height: 2.75rem; /*required for empty labels do not fall*/
+    min-height: 2.75rem; /*required for empty labels to not shrink*/
   }
 
   .lui-usersettings-content .fd-col {
-    overflow: visible; /*make dropdown vibile*/
+    overflow: visible; /*make dropdown visible above the text below*/
   }
 
   .lui-fd-enum-button {
     margin-top: 6px;
+  }
+
+  .lui-usersettings-content .fd-col .fd-form-label {
+    float: left;
   }
 
   /*Vertical alignement for mobile vertical label/input view*/
@@ -99,9 +103,6 @@
     .lui-usersettings-content .fd-col--8 {
       min-width: 100%;
       max-width: 100%;
-    }
-    .lui-usersettings-content .fd-col .fd-form-label {
-      float: left;
     }
   }
 </style>
