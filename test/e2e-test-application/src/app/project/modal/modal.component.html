@@ -5,11 +5,16 @@
   data-testid="luigi-confirmation-modal"
   aria-hidden="false"
 >
-  <div class="fd-dialog__content fd-dialog__content--s">
+  <div
+    class="fd-dialog__content fd-dialog__content--s"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog-title-1"
+  >
     <header class="fd-dialog__header fd-bar fd-bar--header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          <h3 class="fd-title fd-title--h5">Modal Header</h3>
+          <h2 class="fd-title fd-title--h5" id="dialog-title-1">Modal Header</h2>
         </div>
       </div>
     </header>
