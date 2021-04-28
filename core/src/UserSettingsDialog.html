@@ -471,12 +471,17 @@
 </style>
 <svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
-  <div class="fd-dialog__content lui-usersettings-dialog-size">
+  <div
+    class="fd-dialog__content lui-usersettings-dialog-size"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog-title-2"
+  >
     <div class="fd-dialog__body lui-usersettings-body">
       <div class="lui-usersettings-left-nav">
         <div class="fd-side-nav">
           <div class="fd-side-nav__group-header">
-            <h2 class="fd-title fd-title--h5">
+            <h2 class="fd-title fd-title--h5" id="dialog-title-2">
               {$getTranslation(dialogHeader)}
             </h2>
           </div>
