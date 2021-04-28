@@ -125,8 +125,7 @@ For example, to get the value of the **userId** parameter, use `LuigiClient.getP
   ...
 ```
 
-  **{i18n.currentLocale}** parameter will be replaced by the value of `LuigiI18N.getCurrentLocale()`.
-  e.g. `https://example.com/en/microfrontend.html`
+ The **{i18n.currentLocale}** parameter will be replaced by the value of `LuigiI18N.getCurrentLocale()`, for example `https://example.com/en/microfrontend.html`
 
 In all these cases, the parameter is automatically replaced by the real value.
 
