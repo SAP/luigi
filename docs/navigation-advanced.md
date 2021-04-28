@@ -114,7 +114,7 @@ For example, to get the value of the **userId** parameter, use `LuigiClient.getP
 }
   ...
 ```
-- Add a {i18n.currentLocale} parameter to the viewUrl part of your configuration:
+If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration:
 
 ```javascript
 {
