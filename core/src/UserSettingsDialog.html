@@ -468,6 +468,7 @@
   .fd-list__item {
     cursor: pointer;
   }
+
   .fd-list__item.is-selected,
   .fd-list__item[aria-selected='true'] {
     background: #e5f0fa;
@@ -476,11 +477,13 @@
     border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
       var(--sapList_SelectionBorderColor, #0854a0);
   }
+
   .fd-list__item.is-hover,
   .fd-list__item:hover {
     background: #f5f5f5;
     background: var(--sapList_Hover_Background, #f5f5f5);
   }
+
   .fd-list__item.is-selected:hover {
     background: var(--sapList_Hover_SelectionBackground, #d8e9f8);
   }
