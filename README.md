@@ -110,6 +110,10 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 
 If you have further questions about Luigi, you can contact us on our [Slack channel](luigi-project.slack.com). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
 
+## Contributing
+
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file in this repository for instrcutions on how to contribute to Luigi.
+
 ## Licensing
 
 Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available via the [REUSE tool](https://api.reuse.software/info/github.com/SAP/Luigi).
