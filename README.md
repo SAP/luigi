@@ -5,7 +5,7 @@
  <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
 </p>
 
-## Overview
+## Description
 
 [Luigi](https://luigi-project.io) is a micro frontend JavaScript framework that enables you to create an administrative user interface driven by local and distributed views. Luigi allows a web application to communicate with the micro frontends which the application contains. To make sure the communication runs smoothly, you can easily configure the settings such as routing, navigation, authorization, and user experience elements.
 
@@ -13,7 +13,11 @@ Luigi consists of Luigi Core application and Luigi Client libraries. They establ
 
 Read the [Getting started guide](docs/getting-started.md) to learn more about micro frontends and the structure of Luigi.
 
-## Installation
+## Requirements
+
+Luigi can run on any operating system and there are no specific requirements for installing it.
+
+## Download and installation
 
 Follow the instructions in [this](docs/application-setup.md) document to install Luigi Core. Read [this](client/README.md) document to install the Luigi Client.
 
@@ -101,3 +105,15 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 - Run `npm run test:compatibility` in the main repository folder to start regression testing. The system will prompt you to select the previous version.
 - Run `npm run test:compatibility -- --tag latest` in the main repository folder to start regression testing with the last version preselected.
 - On the CI, run `npm run test:compatibility -- --install --tag latest` in the main repository folder to install dependencies, bundle Luigi and run the tests with the last version preselected.
+
+## How to obtain support
+
+If you have further questions about Luigi, you can contact us on our [Slack channel](luigi-project.slack.com). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
+
+## Contributing
+
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file in this repository for instrcutions on how to contribute to Luigi.
+
+## Licensing
+
+Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available via the [REUSE tool](https://api.reuse.software/info/github.com/SAP/Luigi).
