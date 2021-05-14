@@ -21,11 +21,9 @@ export const processHeaderSettings = component => {
         }
 
         // Set Title and Logo
-        if (header.title) {
-          component.set({ defaultTitle: header.title || '' });
-          component.set({ defaultSubTitle: header.subTitle || '' });
-          updateTitle(component);
-        }
+        component.set({ defaultTitle: header.title || '' });
+        component.set({ defaultSubTitle: header.subTitle || '' });
+        updateTitle(component);
 
         const hasLogo = Boolean(header.logo);
         component.set({ hasLogo });
