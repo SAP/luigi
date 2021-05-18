@@ -945,7 +945,7 @@ describe('Navigation', () => {
           win.Luigi.configChanged();
 
           cy.get('.lui-global-nav-visible').should('not.be.visible');
-          cy.get('.lui-globalnav.fd-shellbar__group').should('not.be.visible');
+          cy.get('.lui-globalnav .fd-side-nav').should('not.be.visible');
         });
       });
 
@@ -957,7 +957,7 @@ describe('Navigation', () => {
           win.Luigi.configChanged();
 
           cy.get('.lui-global-nav-visible').should('not.be.visible');
-          cy.get('.lui-globalnav.fd-shellbar__group').should('not.be.visible');
+          cy.get('.lui-globalnav .fd-side-nav').should('not.be.visible');
         });
       });
 
@@ -970,16 +970,13 @@ describe('Navigation', () => {
 
           // render global nav tool bar
           cy.get('.lui-global-nav-visible').should('be.visible');
-          cy.get('.lui-globalnav.fd-shellbar__group')
+          cy.get('.lui-globalnav .fd-side-nav__main-navigation .fd-nested-list')
             .should('be.visible')
             .children()
             .should('have.length', 4);
 
-          // render separator
-          cy.get('.lui-globalnav > .fd-toolbar__separator').should('exist');
-
           // select global nav node
-          cy.get('button[data-testid="settings_settings"]')
+          cy.get('[data-testid="settings_settings"]')
             .should('exist')
             .not('.is-selected')
             .click()
@@ -1002,7 +999,7 @@ describe('Navigation', () => {
           win.Luigi.configChanged();
 
           cy.get('.lui-globalnav').should('be.visible');
-          cy.get('.lui-globalnav.fd-shellbar__group')
+          cy.get('.lui-globalnav .fd-side-nav__main-navigation .fd-nested-list')
             .should('be.visible')
             .children()
             .should('have.length', 4);
