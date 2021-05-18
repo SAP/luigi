@@ -145,6 +145,7 @@
 
   .fiddle-toolbar .fd-link {
     color: #2deb8a;
+    text-shadow: none;
   }
 
   .editor_container {
