@@ -973,7 +973,7 @@ describe('Navigation', () => {
           cy.get('.lui-globalnav .fd-side-nav__main-navigation .fd-nested-list')
             .should('be.visible')
             .children()
-            .should('have.length', 4);
+            .should('have.length', 2);
 
           // select global nav node
           cy.get('[data-testid="settings_settings"]')
@@ -1002,7 +1002,7 @@ describe('Navigation', () => {
           cy.get('.lui-globalnav .fd-side-nav__main-navigation .fd-nested-list')
             .should('be.visible')
             .children()
-            .should('have.length', 4);
+            .should('have.length', 2);
         });
       });
     });
