@@ -16,15 +16,14 @@ export const processHeaderSettings = component => {
           (component.get().appSwitcherItems && component.get().appSwitcherItems.length > 0)
       });
       return LuigiConfig.getConfigValueAsync('settings.header').then(header => {
-        if (!header) {
-          return;
-        }
-
-        // Set Title and Logo
-        if (header.title) {
+        if (header) {
           component.set({ defaultTitle: header.title || '' });
           component.set({ defaultSubTitle: header.subTitle || '' });
-          updateTitle(component);
+        }
+        updateTitle(component);
+
+        if (!header) {
+          return;
         }
 
         const hasLogo = Boolean(header.logo);
