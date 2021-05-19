@@ -1784,6 +1784,18 @@
         left: $leftNavWidthCollapsed;
       }
     }
+    :global(.lui-semiCollapsible.lui-global-nav-visible) {
+      :global(.iframeContainer),
+      :global(.spinnerContainer) {
+        left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop),
+      :global(#tabsContainer) {
+        left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+      }
+    }
   }
 
   :global(html.luigi-app-in-custom-container) {
