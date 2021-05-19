@@ -671,7 +671,7 @@
     }
   }
 
-  //temporary fix of FD Styles 0.11.0 please review with new version
+  /*TODO: check if FD Styles >v.0.17 included it*/
   .lui-category {
     border-top: var(--sapList_BorderWidth, 0.0625rem) solid
       var(--sapList_GroupHeaderBorderColor, #d8d8d8);
@@ -684,13 +684,6 @@
     -webkit-overflow-scrolling: touch;
     background-color: transparent;
     @include transition(width 0.1s linear);
-    //remove dotted outline from anchor in left side nav
-    .fd-nested-list__content .fd-nested-list {
-      &__link:focus,
-      &__button:focus {
-        outline: none;
-      }
-    }
   }
 
   .lui-side-nav__footer {

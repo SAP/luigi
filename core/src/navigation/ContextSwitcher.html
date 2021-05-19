@@ -48,14 +48,19 @@
 <!-- MOBILE VERSION (fullscreen dialog): -->
 {#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
 <div class="fd-dialog fd-dialog--active" on:click|stopPropagation="{()=>{}}">
-  <div class="fd-dialog__content fd-dialog__content--mobile">
+  <div
+    class="fd-dialog__content fd-dialog__content--mobile"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog-title-3"
+  >
     <div class="fd-dialog__header fd-bar fd-bar--header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          <h3 class="fd-dialog__title">
+          <h2 class="fd-title fd-title--h5" id="dialog-title-3">
             {#if !selectedLabel} {$getTranslation(config.defaultLabel)} {/if} {#if
             selectedLabel} {selectedLabel} {/if}
-          </h3>
+          </h2>
         </div>
       </div>
     </div>

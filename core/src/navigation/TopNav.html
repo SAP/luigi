@@ -117,7 +117,7 @@
     <!-- Sample Markup for Notifications
             <div class="fd-shellbar__action fd-shellbar__action--desktop">
               <button class="fd-shellbar__button fd-button sap-icon--bell" aria-label="Notifications">
-                <span class="fd-counter fd-counter--notification" aria-label="Unread count">25</span>
+                <span class="fd-counter fd-counter--notification fd-shellbar__counter--notification" aria-label="Unread count">25</span>
               </button>
             </div>
     -->
@@ -131,7 +131,6 @@
           <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
             <div
               class="fd-shellbar-collapse--control"
-              aria-controls="eYVEJ960"
               aria-expanded="false"
               aria-haspopup="true"
               role="button"
@@ -317,6 +316,7 @@
                 on:click="{() => toggleDropdownState('profilePopover')}"
                 title="{userInfo.name ? userInfo.name : userInfo.email}"
                 role="button"
+                tabindex="0"
                 data-testid="luigi-topnav-profile-btn"
               >
                 {#if userInfo.picture}
@@ -624,25 +624,13 @@
 
 <style type="text/scss">
   @import 'styles/variables';
-  //remove default outline of all dropdowns in shellbar
+  /*Remove Safari bug with blue outlines of dropdowns in the shellbar*/
   .fd-shellbar:focus {
     outline: none;
   }
 
   .fd-shellbar {
     padding: 0 0.5rem;
-  }
-
-  // Fix FD Styles for icons in Shellbar 0.11.2
-  .fd-shellbar__button {
-    .fd-top-nav__icon {
-      color: var(--sapShell_TextColor, #fff);
-    }
-
-    //Override from FD Styles to remove borders around the profile image
-    .fd-shellbar__avatar--circle {
-      border: none;
-    }
   }
 
   .hideNavComponent {
