@@ -28,7 +28,7 @@
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "live-server": "^1.2.1",
-    "lodash": ">=4.17.13",
+    "lodash": ">=4.17.21",
     "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.8.0",
     "mkdirp": "^1.0.3",
@@ -77,7 +77,7 @@
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "564 kB",
+      "maxSize": "565 kB",
       "compression": "none"
     },
     {

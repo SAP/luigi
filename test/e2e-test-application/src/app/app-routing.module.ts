@@ -53,6 +53,8 @@ const routes: Routes = [
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
   { path: 'internal/virtualTree', component: SettingsComponent },
+  { path: 'projects/:projectId/developers/internal/virtualTree', component: SettingsComponent },
+
   { path: 'projects/:projectId/drawer', component: DrawerComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
   {

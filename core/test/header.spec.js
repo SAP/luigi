@@ -61,22 +61,28 @@ describe('Header', function() {
 
       // then
       assert.equal(document.title, headerSettings.title, 'document title');
-      assert(
-        component.set.calledWith({ title: headerSettings.title }),
-        'component set() title'
-      );
-      assert(
-        component.set.calledWith({ defaultTitle: headerSettings.title }),
-        'component set() defaultTitle'
-      );
-      assert(
-        component.set.calledWith({ subTitle: headerSettings.subTitle }),
-        'component set() subTitle'
-      );
-      assert(
-        component.set.calledWith({ defaultSubTitle: headerSettings.subTitle }),
-        'component set() defaultSubTitle'
-      );
+      assert(component.set.calledWith({ title: headerSettings.title }), 'component set() title');
+      assert(component.set.calledWith({ defaultTitle: headerSettings.title }), 'component set() defaultTitle');
+      assert(component.set.calledWith({ subTitle: headerSettings.subTitle }), 'component set() subTitle');
+      assert(component.set.calledWith({ defaultSubTitle: headerSettings.subTitle }), 'component set() defaultSubTitle');
+    });
+
+    it('should resolve title and subtitle when default title is empty', async () => {
+      // given
+      const headerSettings = {
+        title: '',
+        subTitle: 'good stuff'
+      };
+      setHeaderSettings(headerSettings);
+
+      document.title = 'Title';
+
+      // when
+      await headerService.processHeaderSettings(component);
+
+      // then
+      assert.equal(document.title, headerSettings.title, 'document title');
+      assert(component.set.calledWith({ title: headerSettings.title }), 'component set() title');
     });
 
     it('should hide logo if not defined', async () => {
@@ -86,10 +92,7 @@ describe('Header', function() {
       await headerService.processHeaderSettings(component);
 
       // then
-      assert(
-        component.set.calledWith({ hasLogo: false }),
-        'component set() hasLogo false'
-      );
+      assert(component.set.calledWith({ hasLogo: false }), 'component set() hasLogo false');
     });
 
     it('should resolve logo and set hasLogo', async () => {
@@ -118,15 +121,8 @@ describe('Header', function() {
       clock.tick(100);
 
       // then
-      assert(
-        component.set.calledWith({ hasLogo: true }),
-        'component set() hasLogo'
-      );
-      assert.equal(
-        component.get().logo.src,
-        headerSettings.logo,
-        'header logo'
-      );
+      assert(component.set.calledWith({ hasLogo: true }), 'component set() hasLogo');
+      assert.equal(component.get().logo.src, headerSettings.logo, 'header logo');
     });
 
     it('should resolve favicon', async () => {
@@ -138,9 +134,7 @@ describe('Header', function() {
 
       sinon.stub(document, 'createElement').returns({});
       const appendChild = sinon.spy();
-      sinon
-        .stub(document, 'getElementsByTagName')
-        .returns([{ appendChild, childNodes: [] }]);
+      sinon.stub(document, 'getElementsByTagName').returns([{ appendChild, childNodes: [] }]);
 
       const expectedLink = {
         type: 'image/x-icon',
@@ -152,14 +146,8 @@ describe('Header', function() {
       await headerService.processHeaderSettings(component);
 
       // then
-      assert(
-        document.createElement.calledOnce,
-        'document.createElement() call'
-      );
-      assert(
-        document.getElementsByTagName.calledOnceWith('head'),
-        'document.getElementsByTagName() call'
-      );
+      assert(document.createElement.calledOnce, 'document.createElement() call');
+      assert(document.getElementsByTagName.calledOnceWith('head'), 'document.getElementsByTagName() call');
       assert(appendChild.calledOnceWith(expectedLink), 'appendChild() call');
     });
 
@@ -183,9 +171,7 @@ describe('Header', function() {
         }
       ];
 
-      sinon
-        .stub(document, 'getElementsByTagName')
-        .returns([{ appendChild, childNodes, remove }]);
+      sinon.stub(document, 'getElementsByTagName').returns([{ appendChild, childNodes, remove }]);
 
       // when
       await headerService.processHeaderSettings(component);
@@ -201,10 +187,7 @@ describe('Header', function() {
       await headerService.processHeaderSettings(component);
 
       // then
-      assert(
-        component.set.calledWith({ hasApps: undefined }),
-        'component set() hasApps false'
-      );
+      assert(component.set.calledWith({ hasApps: undefined }), 'component set() hasApps false');
     });
 
     it('should have app switcher if showMainAppEntry is true', async () => {
@@ -221,14 +204,8 @@ describe('Header', function() {
       await headerService.processHeaderSettings(component);
 
       // then
-      assert(
-        component.set.calledWith({ hasApps: true }),
-        'component set() hasApps true'
-      );
-      assert(
-        component.set.calledWith({ showMainAppEntry: true }),
-        'component set() showMainAppEntry true'
-      );
+      assert(component.set.calledWith({ hasApps: true }), 'component set() hasApps true');
+      assert(component.set.calledWith({ showMainAppEntry: true }), 'component set() showMainAppEntry true');
     });
 
     it('should have app switcher if apps are configured', async () => {
@@ -257,18 +234,9 @@ describe('Header', function() {
       await headerService.processHeaderSettings(component);
 
       // then
-      assert(
-        component.set.calledWith({ hasApps: true }),
-        'component set() hasApps true'
-      );
-      assert(
-        component.set.calledWith({ showMainAppEntry: undefined }),
-        'component set() showMainAppEntry false'
-      );
-      assert(
-        component.set.calledWith({ appSwitcherItems: items }),
-        'component set() appSwitcherItems item'
-      );
+      assert(component.set.calledWith({ hasApps: true }), 'component set() hasApps true');
+      assert(component.set.calledWith({ showMainAppEntry: undefined }), 'component set() showMainAppEntry false');
+      assert(component.set.calledWith({ appSwitcherItems: items }), 'component set() appSwitcherItems item');
     });
 
     it('should have app switcher if apps and are showMainAppEntry are configured', async () => {
@@ -298,18 +266,9 @@ describe('Header', function() {
       await headerService.processHeaderSettings(component);
 
       // then
-      assert(
-        component.set.calledWith({ hasApps: true }),
-        'component set() hasApps true'
-      );
-      assert(
-        component.set.calledWith({ showMainAppEntry: true }),
-        'component set() showMainAppEntry true'
-      );
-      assert(
-        component.set.calledWith({ appSwitcherItems: items }),
-        'component set() appSwitcherItems item'
-      );
+      assert(component.set.calledWith({ hasApps: true }), 'component set() hasApps true');
+      assert(component.set.calledWith({ showMainAppEntry: true }), 'component set() showMainAppEntry true');
+      assert(component.set.calledWith({ appSwitcherItems: items }), 'component set() appSwitcherItems item');
     });
   });
 

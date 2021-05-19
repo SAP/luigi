@@ -1784,6 +1784,18 @@
         left: $leftNavWidthCollapsed;
       }
     }
+    :global(.lui-semiCollapsible.lui-global-nav-visible) {
+      :global(.iframeContainer),
+      :global(.spinnerContainer) {
+        left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+      }
+      :global(.splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop),
+      :global(#tabsContainer) {
+        left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+      }
+    }
   }
 
   :global(html.luigi-app-in-custom-container) {
@@ -1920,7 +1932,7 @@
     }
   }
 
-  //this is required after FD Styles v0.13.0 in order to make mobile and desktop shellbar work fine
+  /*this is required after FD Styles v0.13.0 in order to make mobile and desktop shellbar work fine*/
   @media (min-width: $desktopMaxWidth) {
     :global(.fd-shellbar__action--desktop) {
       display: inline-block;

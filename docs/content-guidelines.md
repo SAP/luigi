@@ -106,9 +106,7 @@ The [Core](luigi-core-api.md) and [Client API](luigi-client-api.md) documents ar
   * `@param` - parameters the function takes, e.g. `{boolean}`, `{string}`, `{Object}` followed by any specific name if applicable
   * `@returns` - type and description of what the function returns, e.g. `{boolean}`, `{string}`, `{Object}` followed by any specific name if applicable
   * `@example` - one or more examples of how the function is used
-  * `@since 1.6.0` - earliest Luigi version offering this feature
-
-> **NOTE:** It is mandatory to write `@since 1.6.0` if you are adding a new API function. The `1.7.0` text will automatically update to the version number once the new version is released.
+  * `@since` - earliest Luigi version offering this feature
 
 For an example, you can look at the already existing functions, in this case [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot):
 
