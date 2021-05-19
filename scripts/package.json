@@ -30,6 +30,7 @@
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.0",
     "async-request": "^1.2.0",
+    "lodash":"^4.17.21",
     "cli-color": "^2.0.0",
     "diff": "^4.0.2",
     "documentation": "^13.0.0",
