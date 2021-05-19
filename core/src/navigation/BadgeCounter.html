@@ -1,6 +1,8 @@
 {#if node && node.badgeCounter} {#await node.badgeCounter.count()} {:then count} {#if
 count > 0}
-<span class="fd-counter fd-counter--notification" aria-label="{node.badgeCounter.label}"
+<span
+  class="fd-counter fd-counter--notification fd-shellbar__counter--notification"
+  aria-label="{node.badgeCounter.label}"
   >{count}</span
 >
 {/if} {:catch error} {/await} {/if}
@@ -9,11 +11,11 @@ count > 0}
 </script>
 
 <style type="text/scss">
-  .fd-counter--notification {
-    transform: translate(-20%, -30%);
-  }
-
   :global(.fd-shellbar__action) {
+    .fd-shellbar__counter--notification {
+      top: 0;
+    }
+
     .fd-menu .fd-top-nav__icon {
       position: relative;
       margin-right: 8px;
@@ -22,16 +24,8 @@ count > 0}
       display: inline-block;
       vertical-align: middle;
 
-      .fd-counter--notification {
-        transform: none;
-        position: absolute;
-        top: -6px;
-        left: 6px;
-        border-radius: 8px;
-        font-size: 10px;
-        line-height: 6px;
-        display: block;
-        height: 14px;
+      .fd-shellbar__counter--notification {
+        top: -8px;
       }
     }
 
@@ -39,12 +33,9 @@ count > 0}
       .lui-product-switch__icon {
         position: relative;
 
-        .fd-counter--notification {
-          transform: none;
-          position: absolute;
-          top: 0;
-          right: 0;
-          display: block;
+        .fd-shellbar__counter--notification {
+          top: -8px;
+          right: 6px;
         }
       }
     }
