@@ -1,70 +1,66 @@
 <svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}" />
 {#if showGlobalNav}
-<div class="fd-shellbar__group fd-shellbar__group--actions lui-globalnav">
-  {#if children && pathData.length > 0} {#each children as node, i} {#if node.globalNav
-  === true} {#if node.separator}
-  <span class="fd-toolbar__separator"></span>
-  {:else}
-  <div class="fd-shellbar__action fd-shellbar__action--hide">
-    <button
-      title="{getNodeLabel(node)}"
-      class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
-      aria-expanded="false"
-      aria-haspopup="true"
-      on:click="{() => handleClick(node)}"
-      data-testid="{getTestId(node)}"
-    >
-      {#if node.icon} {#if hasOpenUIicon(node)}
-      <span class="fd-top-nav__icon sap-icon--{node.icon}"></span>
-      {:else}
-      <img
-        class="fd-top-nav__icon nav-icon"
-        src="{node.icon}"
-        alt="{node.altText ? node.altText : ''}"
-      />
+<div class="lui-globalnav">
+  <nav class="fd-side-nav fd-side-nav--condensed">
+    <div class="fd-side-nav__main-navigation">
+      {#if children && pathData.length > 0}
+      <ul class="fd-nested-list">
+        {#each children as node, i} {#if node.globalNav === true && !node.separator}
+        <li
+          class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
+          data-testid="{getTestId(node)}"
+        >
+          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
+            {#if node.icon} {#if hasOpenUIicon(node)}
+            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+            {:else}
+            <img
+              class="fd-top-nav__icon nav-icon"
+              src="{node.icon}"
+              alt="{node.altText ? node.altText : ''}"
+            />
+            {/if}
+            <!-- end hasOpenUIicon-->
+            {/if}
+            <!-- end node.icon -->
+            <div class="lui-text">{getNodeLabel(node)}</div>
+            <div class="lui-indicator"></div>
+          </div>
+        </li>
+        {/if} {/each}
+      </ul>
       {/if}
-      <!-- end hasOpenUIicon-->
-      {/if}
-      <!-- end node.icon -->
-      {#if !node.icon || node.showLabel}
-      <span>{getNodeLabel(node)}</span>
-      {/if}
-    </button>
-  </div>
-  {/if} {/if} {/each}
-  <div class="lui-global-nav__bottom-section">
-    {#each children as node, i} {#if node.globalNav === 'bottom'} {#if node.separator}
-    <span class="fd-toolbar__separator"></span>
-    {:else}
-    <div class="fd-shellbar__action fd-shellbar__action--hide">
-      <button
-        title="{getNodeLabel(node)}"
-        class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
-        aria-expanded="false"
-        aria-haspopup="true"
-        on:click="{() => handleClick(node)}"
-        data-testid="{getTestId(node)}"
-      >
-        {#if node.icon} {#if hasOpenUIicon(node)}
-        <span class="fd-top-nav__icon sap-icon--{node.icon}"></span>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{node.icon}"
-          alt="{node.altText ? node.altText : ''}"
-        />
-        {/if}
-        <!-- end hasOpenUIicon-->
-        {/if}
-        <!-- end node.icon -->
-        {#if !node.icon || node.showLabel}
-        <span>{getNodeLabel(node)}</span>
-        {/if}
-      </button>
     </div>
-    {/if} {/if} {/each}
-  </div>
-  {/if}
+    <div class="fd-side-nav__utility" aria-label="Utility Menu">
+      {#if children && pathData.length > 0}
+      <ul class="fd-nested-list">
+        {#each children as node, i} {#if node.globalNav === 'bottom' && !node.separator}
+        <li
+          class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
+          data-testid="{getTestId(node)}"
+        >
+          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
+            {#if node.icon} {#if hasOpenUIicon(node)}
+            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+            {:else}
+            <img
+              class="fd-top-nav__icon nav-icon"
+              src="{node.icon}"
+              alt="{node.altText ? node.altText : ''}"
+            />
+            {/if}
+            <!-- end hasOpenUIicon-->
+            {/if}
+            <!-- end node.icon -->
+            <div class="lui-text">{getNodeLabel(node)}</div>
+            <div class="lui-indicator"></div>
+          </div>
+        </li>
+        {/if} {/each}
+      </ul>
+      {/if}
+    </div>
+  </nav>
 </div>
 {/if}
 <script>
@@ -167,53 +163,79 @@
   @import 'styles/variables';
   .lui-globalnav {
     position: fixed;
-    height: 100%;
     width: $globalNavWidth;
-    top: $topNavHeight;
+    top: calc(#{$topNavHeight} - 2px);
     bottom: 0;
     left: 0;
-    overflow: scroll;
-    background: var(--sapShell_Background, #edeff0);
-    padding-top: 4px;
+    background: var(--sapShellColor, #354a5f);
     display: block;
-    border-right: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
 
-    &::-webkit-scrollbar {
-      width: 0; /* chrome, safari */
-    }
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-
-    .fd-button.fd-shellbar__button .fd-top-nav__icon {
-      color: var(--sapList_TextColor, #32363a);
-    }
-
-    .fd-button.fd-shellbar__button {
-      border-color: transparent;
-      background: transparent;
-    }
-
-    .fd-button.fd-shellbar__button:hover .fd-top-nav__icon,
-    .fd-button.fd-shellbar__button.is-selected .fd-top-nav__icon {
-      color: var(--sapShell_InteractiveTextColor, #d1e8ff);
-    }
-
-    .fd-button.fd-shellbar__button:hover {
-      background: var(--sapShell_Hover_Background, #283848);
-    }
-
-    .fd-button.fd-shellbar__button.is-selected {
-      background: var(--sapShell_Selected_Background, #23303e);
-    }
-
-    .fd-shellbar__action {
-      padding-left: 3px;
-      padding-bottom: 3px;
-    }
-
-    .lui-global-nav__bottom-section {
-      position: fixed;
+    nav {
       bottom: 0;
+      position: absolute;
+      top: 1px;
+      width: 100%;
+      overflow: auto;
+      background: var(--sapShellColor, #354a5f);
+      border-right: 1px solid var(--sapList_GroupHeaderBorderColor, #d9d9d9);
+
+      &::-webkit-scrollbar {
+        width: 0; /* chrome, safari */
+      }
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE 10+ */
+
+      .fd-side-nav__utility {
+        margin-top: 0;
+      }
+      .fd-side-nav__utility:before {
+        display: none;
+      }
+    }
+
+    .lui-indicator {
+      display: none;
+      position: absolute;
+      left: 0;
+      width: 3px;
+      border-right: 2px solid var(--sapShell_TextColor, #fff);
+      top: 5px;
+      bottom: 5px;
+    }
+
+    .fd-nested-list {
+      border-bottom: none;
+    }
+
+    .fd-nested-list__item {
+      background: var(--sapShellColor, #354a5f);
+      color: var(--sapShell_TextColor, #fff);
+      height: 57px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 10px;
+    }
+    .lui-fd-nested-list__content {
+      padding-top: 0.5rem;
+      position: relative;
+      height: 100%;
+    }
+    .fd-nested-list__item.is-selected {
+      background: var(--sapShell_Active_Background, #354a5f);
+
+      .lui-indicator {
+        display: block;
+      }
+    }
+    .fd-nested-list__item:hover {
+      background: var(--sapShell_Hover_Background, #354a5f);
+    }
+
+    .fd-nested-list__item .lui-text {
+      color: var(--sapShell_TextColor, #fff);
+    }
+    .fd-nested-list__item .fd-top-nav__icon {
+      font-size: 1.1rem;
     }
 
     .fd-toolbar__separator {
