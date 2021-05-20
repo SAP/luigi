@@ -6,6 +6,9 @@
   <div
     class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
     data-testid="modal-mf"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog-title-1"
   >
     {#if isModal || (isDrawer && settings.header)}
     <div class="fd-dialog__header fd-bar fd-bar--header">
@@ -13,7 +16,9 @@
       <div class="fd-bar__left">
         <div class="fd-bar__element">
           {#if settings.title}
-          <h3 class="fd-dialog__title">{settings.title}</h3>
+          <h2 class="fd-title fd-title--h5" id="dialog-title-1">
+            {settings.title}
+          </h2>
           {/if}
         </div>
       </div>
