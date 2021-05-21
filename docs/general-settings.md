@@ -29,8 +29,8 @@ settings: {
     title: 'Luigi Demo',
     favicon: 'path/to/favicon.ico'
   },
-  featureToggles : { 
-    queryStringParam: 'ft' 
+  featureToggles : {
+    queryStringParam: 'ft'
   },
   sideNavFooterText: 'MyLovelyApp 1.0.0',
   sideNavCompactMode: false,
@@ -116,7 +116,7 @@ This function is called with these parameters:
   * `iframe` is the iframe DOM element. It is not yet added to the DOM tree, but all attributes are already set.
   * `viewGroup` is the view group associated with this iframe, if applicable.
   * `navigationNode` is the navigation node associated with this iframe. NOTE: the interceptor is called only once per iframe creation. If two or more navigation nodes share the same iframe (because they belong to the same view group) the interceptor is called with the first navigated node only.
-  * `microFrontendType`, which is `main`, `modal` or `split-view` depending on where it is going to be rendered.
+  * `microFrontendType`, which is `main`, `modal`, `split-view`, `drawer` or `usersettings` depending on where it is going to be rendered.
 
 For example, to allow 'fullscreen' for non-modal iframes:
 ```javascript
@@ -129,9 +129,9 @@ For example, to allow 'fullscreen' for non-modal iframes:
 ```
 * **allowRules** is an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 * **appLoadingIndicator.hideAutomatically** allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
-* **featureToggles.queryStringParam** allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality. 
+* **featureToggles.queryStringParam** allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality.
 * **theming** is a configuration element that allows you to specify a list of themes that are available on the website. The children elements:
-    * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`. 
+    * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`.
     * **defaultTheme** (mandatory) the default theme used by the application.
     * **nodeViewURLDecorator** (Optional) you can add an internal Luigi View Url decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
 
@@ -152,7 +152,7 @@ theming : {
        }
      }
   }
-```     
+```
 
 ### Third-party cookies support check
 
