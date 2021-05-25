@@ -1,5 +1,9 @@
 import { config } from './config';
-import { GenericHelpers, StateHelpers, EscapingHelpers } from '../utilities/helpers';
+import {
+  GenericHelpers,
+  StateHelpers,
+  EscapingHelpers
+} from '../utilities/helpers';
 import { defaultLuigiTranslationTable } from '../utilities/defaultLuigiTranslationTable';
 
 /**
@@ -31,7 +35,9 @@ class LuigiI18NManager {
    * @memberof LuigiI18N
    */
   getCurrentLocale() {
-    return sessionStorage.getItem(this.currentLocaleStorageKey) || this.defaultLocale;
+    return (
+      sessionStorage.getItem(this.currentLocaleStorageKey) || this.defaultLocale
+    );
   }
 
   /**
@@ -74,7 +80,9 @@ class LuigiI18NManager {
     if (listenerId && this.listeners[listenerId]) {
       delete this.listeners[listenerId];
     } else {
-      console.error('Unable to remove locale change listener - no listener registered for given ID.');
+      console.error(
+        'Unable to remove locale change listener - no listener registered for given ID.'
+      );
     }
   }
 
@@ -94,7 +102,9 @@ class LuigiI18NManager {
    * @memberof LuigiI18N
    */
   _initCustomImplementation() {
-    this.translationImpl = config.getConfigValue('settings.customTranslationImplementation');
+    this.translationImpl = config.getConfigValue(
+      'settings.customTranslationImplementation'
+    );
     if (GenericHelpers.isFunction(this.translationImpl)) {
       this.translationImpl = this.translationImpl();
     }
@@ -117,12 +127,20 @@ class LuigiI18NManager {
   getTranslation(key, interpolations = undefined, locale = undefined) {
     if (!key) return '';
     if (this.translationImpl) {
-      const result = this.translationImpl.getTranslation(key, interpolations, locale);
+      const result = this.translationImpl.getTranslation(
+        key,
+        interpolations,
+        locale
+      );
       if (result !== key) {
         return result;
       }
     }
-    const findTranslation = this.findTranslation(key, this.translationTable, interpolations);
+    const findTranslation = this.findTranslation(
+      key,
+      this.translationTable,
+      interpolations
+    );
     return findTranslation ? findTranslation : key;
   }
 

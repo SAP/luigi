@@ -144,8 +144,12 @@ describe('Fiddle', () => {
 
       it('using fallbackLabelResolver', () => {
         newConfig.navigation.contextSwitcher.customSelectedOptionRenderer = undefined;
-        newConfig.navigation.contextSwitcher.fallbackLabelResolver = id => id.toUpperCase();
-        newConfig.navigation.contextSwitcher.options = [{ pathValue: 'env1' }, { pathValue: 'env2' }];
+        newConfig.navigation.contextSwitcher.fallbackLabelResolver = id =>
+          id.toUpperCase();
+        newConfig.navigation.contextSwitcher.options = [
+          { pathValue: 'env1' },
+          { pathValue: 'env2' }
+        ];
 
         cy.visitWithFiddleConfig('/', newConfig);
 
@@ -248,11 +252,17 @@ describe('Fiddle', () => {
       let newConfig;
 
       const visitLoggedInWithAuthConfig = (path = '/', newConfig) => {
-        const strConfig = JSON.stringify(newConfig).replace('"OAUTH2_PROVIDER"', 'window.LuigiAuthOAuth2'); // workaround else it would just be undefined
+        const strConfig = JSON.stringify(newConfig).replace(
+          '"OAUTH2_PROVIDER"',
+          'window.LuigiAuthOAuth2'
+        ); // workaround else it would just be undefined
         cy.visitLoggedInWithFiddleConfig(path, strConfig);
       };
       const visitWithAuthConfig = (path = '/', newConfig) => {
-        const strConfig = JSON.stringify(newConfig).replace('"OAUTH2_PROVIDER"', 'window.LuigiAuthOAuth2'); // workaround else it would just be undefined
+        const strConfig = JSON.stringify(newConfig).replace(
+          '"OAUTH2_PROVIDER"',
+          'window.LuigiAuthOAuth2'
+        ); // workaround else it would just be undefined
         cy.visitWithFiddleConfigString(path, strConfig);
       };
 
@@ -414,7 +424,10 @@ describe('Fiddle', () => {
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
       newConfig.settings.theming = {
-        themes: () => [{ id: 'light', name: 'Fiori3 Light' }, { id: 'dark', name: 'Fiori3 Dark' }],
+        themes: () => [
+          { id: 'light', name: 'Fiori3 Light' },
+          { id: 'dark', name: 'Fiori3 Dark' }
+        ],
         defaultTheme: 'light'
         // nodeViewURLDecorator: {
         //   queryStringParameter: {
@@ -497,11 +510,17 @@ describe('Fiddle', () => {
 
     it('should collapse the left sidde nav on btn click', () => {
       cy.get('[data-testid="semiCollapsibleButton"]').click();
-      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
 
       cy.reload().wait(1000);
 
-      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
     });
 
     it('should execute Core API function collapseLeftSideNav() and open the nav', () => {
@@ -509,7 +528,10 @@ describe('Fiddle', () => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
       cy.reload().wait(1000);
-      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.have.class', 'fd-side-nav--condensed');
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'not.have.class',
+        'fd-side-nav--condensed'
+      );
     });
   });
 
@@ -531,11 +553,17 @@ describe('Fiddle', () => {
 
     it('should collapse the left sidde nav on burger click', () => {
       cy.get('button.lui-burger').click();
-      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
 
       cy.reload().wait(1000);
 
-      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'have.class',
+        'fd-side-nav--condensed'
+      );
     });
 
     it('should execute Core API function collapseLeftSideNav() and open the nav in Fiori3 settings', () => {
@@ -543,7 +571,10 @@ describe('Fiddle', () => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
       cy.reload().wait(1000);
-      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.have.class', 'fd-side-nav--condensed');
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should(
+        'not.have.class',
+        'fd-side-nav--condensed'
+      );
     });
   });
   describe('User settings dialog', () => {
@@ -572,7 +603,7 @@ describe('Fiddle', () => {
               language: {
                 type: 'enum',
                 label: 'Language and Region',
-                options: ['German', 'English', 'Spanish', 'French'],
+                options: [{ de: 'German' }, 'English', 'Spanish', 'French'],
                 description:
                   'After you save your settings, the browser will refresh for the new language to take effect.'
               },
@@ -589,7 +620,8 @@ describe('Fiddle', () => {
             sublabel: 'Theme',
             icon: '/assets/github-logo.png',
             title: 'Theming',
-            viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
+            viewUrl:
+              'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
             settings: {
               theme: {
                 type: 'enum',
@@ -623,6 +655,12 @@ describe('Fiddle', () => {
         .invoke('attr', 'placeholder')
         .should('contain', 'German');
 
+      cy.get('[data-testid="lui-us-input0"]').click();
+      cy.get('[data-testid="lui-us-option0_1"]').click();
+      cy.get('[data-testid="lui-us-input0"]')
+        .invoke('attr', 'placeholder')
+        .should('contain', 'English');
+
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
       cy.get('.lui-usersettings-dialog').should('not.be.visible');
     });
@@ -641,7 +679,9 @@ describe('Fiddle', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
+        expect(ifr[0].src).to.equal(
+          'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
+        );
       });
     });
   });
@@ -672,7 +712,9 @@ describe('Fiddle', () => {
       //   assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
       // });
 
-      cy.expectPathToBe('/home?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
+      cy.expectPathToBe(
+        '/home?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+      );
     });
 
     it('Path routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
@@ -696,7 +738,9 @@ describe('Fiddle', () => {
 
       cy.expectPathToBe('/home');
       cy.location().should(location => {
-        expect(location.search).to.eq('?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
+        expect(location.search).to.eq(
+          '?mymodal=' + encodeURIComponent('/home/one?~mp=one')
+        );
       });
     });
   });
