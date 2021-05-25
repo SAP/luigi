@@ -13,12 +13,6 @@ class Settings {
   };
   responsiveNavigation = 'Fiori3'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
-  iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => {
-    if (iframe.src) {
-      iframe.src = iframe.src + '?luigi=mario';
-      console.log('iframe.src', iframe.src);
-    }
-  };
   thirdPartyCookieCheck = {
     // thirdPartyCookieScriptLocation: 'https://domain/init.html',
     thirdPartyCookieErrorHandling: () => {
