@@ -185,11 +185,15 @@ describe('Luigi Client ux manager features', () => {
       let $iframeBody;
       cy.visit('/projects/pr1/');
       cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
-      cy.get('.fd-app__sidebar').contains('Miscellaneous2').click();
+      cy.get('.fd-app__sidebar')
+        .contains('Miscellaneous2')
+        .click();
       cy.getIframeBody({}, 0, '.iframeModalCtn._modal').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).should('contain', 'Misc 2 content');
-        cy.wrap($iframeBody).contains('open confirmation modal').click();
+        cy.wrap($iframeBody)
+          .contains('open confirmation modal')
+          .click();
       });
       cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
       cy.get('.fd-message-box__body').should('contain', 'Just a confirmation modal');
@@ -205,11 +209,15 @@ describe('Luigi Client ux manager features', () => {
       let $iframeBody;
       cy.visit('/projects/pr1/');
       cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
-      cy.get('.fd-app__sidebar').contains('Drawer Example').click();
+      cy.get('.fd-app__sidebar')
+        .contains('Drawer Example')
+        .click();
       cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).should('contain', 'LuigiClient linkManager methods');
-        cy.wrap($iframeBody).contains('open confirmation modal').click();
+        cy.wrap($iframeBody)
+          .contains('open confirmation modal')
+          .click();
       });
       cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
       cy.get('.fd-message-box__body').should('contain', 'Just a confirmation modal');
@@ -225,16 +233,22 @@ describe('Luigi Client ux manager features', () => {
       let $iframeBody;
       cy.visit('/projects/pr1/');
       cy.get('[data-testid=luigi-confirmation-modal]').should('not.be.visible');
-      cy.get('.fd-app__sidebar').contains('Drawer Example').click();
+      cy.get('.fd-app__sidebar')
+        .contains('Drawer Example')
+        .click();
       cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).should('contain', 'LuigiClient linkManager methods');
-        cy.wrap($iframeBody).contains('open misc2 in modal').click();
+        cy.wrap($iframeBody)
+          .contains('open misc2 in modal')
+          .click();
       });
       cy.getIframeBody({}, 0, '.iframeModalCtn._modal').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).should('contain', 'Misc 2 content');
-        cy.wrap($iframeBody).contains('open confirmation modal').click();
+        cy.wrap($iframeBody)
+          .contains('open confirmation modal')
+          .click();
       });
 
       cy.get('[data-testid=luigi-confirmation-modal]').should('be.visible');
