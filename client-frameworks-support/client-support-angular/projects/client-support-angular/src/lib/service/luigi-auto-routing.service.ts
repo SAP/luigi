@@ -11,6 +11,7 @@ import { linkManager } from '@luigi-project/client';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiContextService } from './luigi-context-service';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -50,9 +51,30 @@ export class LuigiAutoRoutingService implements OnDestroy {
    * @param event the NavigationEnd event
    */
   doSubscription(event: NavigationEnd): void {
-    const current = LuigiActivatedRouteSnapshotHelper.getCurrent();
+    let current: ActivatedRouteSnapshot | null = LuigiActivatedRouteSnapshotHelper.getCurrent();
 
-    if (current.data) {
+    if (!current) {
+      current = this.router.routerState.root.snapshot;
+      while (current?.children?.length > 0) {
+        // handle multiple children
+        let primary: ActivatedRouteSnapshot | null = null;
+
+        current?.children.forEach(childSnapshot => {
+          if (childSnapshot.outlet === 'primary') {
+            primary = childSnapshot;
+          }
+        });
+        if (primary) {
+          current = primary;
+        } else if (current.firstChild) {
+          current = current.firstChild;
+        } else {
+          break;
+        }
+      }
+    }
+
+    if (current?.data) {
       if (current.data.luigiRoute) {
         let route = current.data.luigiRoute;
 
