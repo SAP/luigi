@@ -32,13 +32,13 @@ export class LuigiMockModule {
         console.debug('Detected standalone mode');
 
         // Check and skip if Luigi environment is already mocked
-        if (!(window as any).luigiMockEnvironment) {
+        if ((window as any).luigiMockEnvironment) {
           return;
         }
 
         (window as any).luigiMockEnvironment = {
           msgListener: function(e: any) {
-            if (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage') {
+            if (e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage')) {
               console.debug('Luigi msg', e.data);
 
               if (e.data.msg === 'luigi.get-context') {
