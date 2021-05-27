@@ -78,6 +78,14 @@
 
     storedUserSettingData[userSettingGroup[0]][key] = option;
   }
+
+  function getPlaceholderValue(optionsEntry) {
+    if (GenericHelpers.isObject(optionsEntry)) {
+      return $getTranslation(Object.values(optionsEntry)[0]);
+    } else {
+      return $getTranslation(optionsEntry);
+    }
+  }
 </script>
 
 <style>
@@ -153,7 +161,7 @@
                     type="text"
                     class="fd-input fd-input-group__input"
                     data-testid="lui-us-input{i}"
-                    placeholder="{GenericHelpers.isObject(storedUserSettingData[userSettingGroup[0]][key])?$getTranslation(Object.values(storedUserSettingData[userSettingGroup[0]][key])[0]):$getTranslation(storedUserSettingData[userSettingGroup[0]][key])}"
+                    placeholder="{getPlaceholderValue(storedUserSettingData[userSettingGroup[0]][key])}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                   />
                   <span class="fd-input-group__addon fd-input-group__addon--button">
