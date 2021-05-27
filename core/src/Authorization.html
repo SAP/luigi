@@ -1,88 +1,129 @@
 {#if !isHidden}
-<nav class="fd-menu">
-  <ul class="fd-menu__list fd-menu__list--no-shadow">
-    {#if showUserInfo}
-    <li class="fd-menu__item">
-      <span
-        aria-label="Username"
-        id="username"
-        class="lui-username fd-has-type-1"
-        data-testid="luigi-topnav-profile-username"
-        >{userInfo.name ? userInfo.name : userInfo.email}</span
-      >
-    </li>
-    {/if} {#each profileNav.items as profileItem}
+<div class="fd-user-menu__body">
+  {#if showUserInfo}
+  <div class="fd-user-menu__header">
+    {#if userInfo.avatar}
+    <span
+      class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+      aria-label="Avatar"
+      style="background-image:url('{userInfo.avatar}')"
+    >
+    </span>
+    {:else}
+    <span
+      class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+      aria-label="Avatar"
+      >{initialsOfUser}</span
+    >
+    {/if}
+  </div>
+  <div class="fd-user-menu__subheader">
+    <div
+      class="fd-user-menu__user-name"
+      id="username"
+      data-testid="luigi-topnav-profile-username"
+    >
+      {userInfo.name ? userInfo.name : userInfo.email}
+    </div>
+
+    {#if userInfo.role}
+    <div class="fd-user-menu__user-role">{userInfo.role}</div>
+    {/if}
+  </div>
+  {/if}
+
+  <ul
+    class="fd-list fd-list--navigation fd-list--navigation-indication fd-list--no-border"
+    role="list"
+  >
+    {#each profileNav.items as profileItem}
     <li
-      class="fd-menu__item"
+      tabindex="-1"
+      role="listitem"
+      class="fd-list__item fd-list__item--link"
       on:click="{() => onActionClick(profileItem)}"
       data-testid="{getTestId(profileItem)}"
     >
       <a
-        class="fd-menu__link"
+        tabindex="0"
+        class="fd-list__link"
         data-testid="luigi-topnav-profile-item"
         href="{getRouteLink(profileItem)}"
         on:click|preventDefault="{() => {}}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
-        <span class="fd-top-nav__icon sap-icon--{profileItem.icon}"></span>
+        <i role="presentation" class="fd-list__icon sap-icon--{profileItem.icon}t"></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
-          src="{profileItem.icon}"
+          style="background-image:url('{userInfo.icon}')"
           alt="{profileItem.altText ? profileItem.altText : ''}"
         />
         {/if} {/if}
-        <span class="fd-menu__title">{$getTranslation(profileItem.label)}</span>
+        <span class="fd-list__title">{$getTranslation(profileItem.label)}</span>
       </a>
     </li>
     {/each} {#if hasUserSettings}
     <li
-      class="fd-menu__item"
+      tabindex="-1"
+      role="listitem"
+      class="fd-list__item fd-list__item--link"
       on:click="{onUserSettingsClick}"
-      data-testid="{getTestId(profileNav.settings)}"
     >
-      <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
+      <a
+        tabindex="0"
+        class="fd-list__link"
+        aria-label="User Settings"
+        data-testid="settings-link"
+      >
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
-        <i class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"></i>
+        <i
+          role="presentation"
+          class="fd-list__icon sap-icon--{profileNav.settings.icon}"
+        ></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
           src="{profileNav.settings.icon}"
           alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
         />
-        {/if} {/if}
-        <span class="fd-menu__title">{$getTranslation(profileNav.settings.label)}</span>
+        {/if}{/if}
+        <span class="fd-list__title">{$getTranslation(profileNav.settings.label)}</span>
       </a>
     </li>
-    {/if} {#if isAuthorizationEnabled || isProfileLogoutItem} {#if isLoggedIn ||
-    !isAuthorizationEnabled && isProfileLogoutItem}
-    <li
-      class="fd-menu__item"
-      on:click="{onLogoutClick}"
-      data-testid="{getTestId(profileNav.logout)}"
-    >
-      <a aria-label="Logout" class="fd-menu__link" data-testid="logout-link">
-        {#if profileNav.logout.icon} {#if hasOpenUIicon(profileNav.logout)}
-        <i class="fd-top-nav__icon sap-icon--{profileNav.logout.icon}"></i>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{profileNav.logout.icon}"
-          alt="{profileNav.logout.altText ? profileNav.logout.altText : ''}"
-        />
-        {/if} {/if}
-        <span class="fd-menu__title">{$getTranslation(profileNav.logout.label)}</span>
-      </a>
-    </li>
-    {/if} {#if isAuthorizationEnabled && !isLoggedIn}
-    <li class="fd-menu__item" on:click="{startAuthorization}">
-      <a aria-label="Login" class="fd-menu__link" data-testid="login-link">
-        <span class="fd-menu__title">Login</span>
-      </a>
-    </li>
-    {/if} {/if}
+    {/if}
   </ul>
-</nav>
+</div>
+<div class="fd-popover__body-footer">
+  <div class="fd-bar fd-bar--footer">
+    <div class="fd-bar__right">
+      <div class="fd-bar__element">
+        {#if isAuthorizationEnabled || isProfileLogoutItem} {#if isLoggedIn ||
+        !isAuthorizationEnabled && isProfileLogoutItem}
+        <div class="fd-bar__element" data-testid="{getTestId(profileNav.logout)}">
+          <button
+            class="fd-button fd-button--transparent"
+            tabindex="0"
+            on:click="{onLogoutClick}"
+            data-testid="logout-btn"
+          >
+            {$getTranslation(profileNav.logout.label)}
+          </button>
+        </div>
+        {/if}{/if} {#if isAuthorizationEnabled && !isLoggedIn}
+        <button
+          class="fd-button fd-button--transparent"
+          tabindex="0"
+          on:click="{startAuthorization}"
+          data-testid="login-btn"
+        >
+          Login
+        </button>
+        {/if}
+      </div>
+    </div>
+  </div>
+</div>
 {/if}
 <script>
   import { AuthLayerSvc } from './services';
@@ -115,6 +156,7 @@
   let getTranslation = getContext('getTranslation');
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
+  let initialsOfUser;
 
   onMount(async () => {
     if (!LuigiAuth.isAuthorizationEnabled()) {
@@ -131,6 +173,8 @@
     AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
       userInfo = uInfo;
       dispatch('userInfoUpdated', userInfo);
+      getUserInitials();
+      dispatch('sendInitialsOfUser', initialsOfUser);
     });
   });
 
@@ -240,6 +284,12 @@
     });
   }
 
+  export function getUserInitials() {
+    var initialOfFirstname = userInfo.firstname.charAt(0);
+    var initialOfLastname = userInfo.lastname.charAt(0);
+    initialsOfUser = initialOfFirstname + initialOfLastname;
+  }
+
   export function onUserSettingsClick() {
     LuigiUX.openUserSettings();
     dispatch('toggleDropdownState');
@@ -262,10 +312,12 @@
   .nav-icon {
     height: 2em;
   }
-  .lui-username {
-    display: block;
-    padding: 0.75rem 1rem 0.75rem 0.75rem;
-    cursor: default;
-    font-size: 1.125rem;
+
+  /* fixes for long User Name and role */
+  .fd-user-menu__user-name,
+  .fd-user-menu__user-role {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>

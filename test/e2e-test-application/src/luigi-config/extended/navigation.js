@@ -397,7 +397,7 @@ class Navigation {
 
   profile = {
     logout: {
-      label: 'End session'
+      label: 'Sign Out'
       // icon: "sys-cancel",
     },
     items: this.getProfileItems,
@@ -405,8 +405,10 @@ class Navigation {
       return new Promise(resolve => {
         resolve({
           name: 'Luigi Static User',
+          firstname: 'Static User',
+          lastname: 'Swinka',
           email: 'other.luigi.user@example.com',
-          picture: '/assets/github-logo.png'
+          avatar: '/assets/github-logo.png'
         });
       });
     }
