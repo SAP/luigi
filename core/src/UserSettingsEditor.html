@@ -80,11 +80,9 @@
   }
 
   function getPlaceholderValue(optionsEntry) {
-    if (GenericHelpers.isObject(optionsEntry)) {
-      return $getTranslation(Object.values(optionsEntry)[0]);
-    } else {
-      return $getTranslation(optionsEntry);
-    }
+    const value = GenericHelpers.isObject(optionsEntry) ? Object.values(optionsEntry)[0] : optionsEntry;
+    
+     return $getTranslation(value);
   }
 </script>
 
