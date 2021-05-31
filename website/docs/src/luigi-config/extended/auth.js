@@ -27,11 +27,10 @@ class Auth {
       return new Promise(resolve => {
         resolve({
           name: 'Luigi User',
-          firstname: 'Lui Li',
-          lastname: 'Swinka',
+          initials: 'LU',
           email: 'luigi.user@example.com',
           //avatar: '/assets/favicon-sap.ico',
-          role: 'Expert',
+          description: 'Expert',
           icon: true
         });
       });

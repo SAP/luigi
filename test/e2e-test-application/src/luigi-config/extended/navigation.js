@@ -404,11 +404,11 @@ class Navigation {
     staticUserInfoFn: () => {
       return new Promise(resolve => {
         resolve({
-          name: 'Luigi Static User',
-          firstname: 'Static User',
-          lastname: 'Swinka',
+          name: 'Static User',
+          initials: 'LU',
           email: 'other.luigi.user@example.com',
-          avatar: '/assets/github-logo.png'
+          avatar: '/assets/favicon-sap.ico',
+          description: 'Luigi Developer'
         });
       });
     }

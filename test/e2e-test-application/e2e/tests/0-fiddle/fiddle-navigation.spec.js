@@ -207,16 +207,7 @@ describe('Fiddle', () => {
           logout: {
             label: 'Bye bye',
             icon: 'sys-cancel'
-          },
-          staticUserInfoFn: () => ({
-            name: 'Static User',
-            firstname: 'Static User',
-            lastname: 'Swinka',
-            email: 'other.luigi.user@example.com',
-            avatar: '/assets/github-logo.png',
-            role: 'Luigi Developer',
-            icon: false
-          })
+          }
         };
         cy.visitWithFiddleConfig('/home/two', newConfig);
       });
@@ -278,15 +269,14 @@ describe('Fiddle', () => {
         };
         newConfig.navigation.profile = {
           logout: {
-            label: 'Bye bye',
-            icon: 'sys-cancel'
+            label: 'Bye bye'
           },
           staticUserInfoFn: () => ({
             name: 'Static User',
-            firstname: 'Static User',
-            lastname: 'Swinka',
+            initials: 'LU',
             email: 'other.luigi.user@example.com',
-            avatar: '/assets/github-logo.png'
+            avatar: '/assets/favicon-sap.ico',
+            icon: false
           })
         };
       });
@@ -326,8 +316,7 @@ describe('Fiddle', () => {
       it('Profile, logged in', () => {
         newConfig.navigation.profile = {
           logout: {
-            label: 'Bye bye',
-            icon: 'sys-cancel'
+            label: 'Bye bye'
           }
         };
         newConfig.auth.disableAutoLogin = false;

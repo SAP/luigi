@@ -6,31 +6,32 @@
     <span
       class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
       aria-label="Avatar"
+      data-testid="luigi-topnav-profile-avatar"
       style="background-image:url('{userInfo.avatar}')"
-    >
-    </span>
+    ></span>
     {:else}
     <span
       class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
       aria-label="Avatar"
-      >{initialsOfUser}</span
+      >{userInfo.initials}</span
     >
     {/if}
   </div>
   <div class="fd-user-menu__subheader">
+    {#if userInfo.name}
     <div
       class="fd-user-menu__user-name"
       id="username"
       data-testid="luigi-topnav-profile-username"
     >
-      {userInfo.name ? userInfo.name : userInfo.email}
+      {userInfo.name}
     </div>
-
-    {#if userInfo.role}
-    <div class="fd-user-menu__user-role">{userInfo.role}</div>
+    {/if} {#if userInfo.description}
+    <div class="fd-user-menu__user-role" data-testid="luigi-topnav-profile-description">
+      {userInfo.description}
+    </div>
     {/if}
   </div>
-  {/if}
 
   <ul
     class="fd-list fd-list--navigation fd-list--navigation-indication fd-list--no-border"
@@ -93,6 +94,7 @@
     </li>
     {/if}
   </ul>
+  {/if}
 </div>
 <div class="fd-popover__body-footer">
   <div class="fd-bar fd-bar--footer">

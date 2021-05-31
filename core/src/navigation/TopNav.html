@@ -331,7 +331,10 @@
             data-testid="luigi-topnav-profile-btn"
           >
             {#if userInfo.icon}
-            <i class="sap-icon sap-icon--customer"></i>
+            <i
+              class="sap-icon sap-icon--customer"
+              data-testid="luigi-topnav-profile-icon"
+            ></i>
             {/if} {#if !userInfo.icon}
             <span
               class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
@@ -340,7 +343,9 @@
               aria-label="Avatar"
               role="button"
               tabindex="0"
-              >{initials}
+              data-testid="luigi-topnav-profile-initials"
+            >
+              {userInitials}
             </span>
             {/if}
           </div>
@@ -426,9 +431,8 @@
   export let displayCustomSearchResult;
   export let searchResult;
   export let burgerTooltip;
-  export let initialsOfUser;
-  let initials = '';
 
+  let userInitials = '';
   let store = getContext('store');
   let contextSwitcherToggle = false;
   let selectedLabel;
@@ -638,7 +642,7 @@
   }
 
   export function readInitialsOfUser(event) {
-    initials = event.detail;
+    userInitials = event.detail;
   }
 </script>
 
