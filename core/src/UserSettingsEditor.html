@@ -62,7 +62,7 @@
   }
 
   function updateComboBox(key, option) {
-    storedUserSettingData[userSettingGroup[0]][key] = option;
+    storedUserSettingData[userSettingGroup[0]][key] = option.value | option;
   }
 
   function updateEnumButton(key, option) {
@@ -79,7 +79,9 @@
     storedUserSettingData[userSettingGroup[0]][key] = option;
   }
 
-  function getPlaceholderValue(optionsEntry) {
+  function getValue(optionsEntry) {
+    //{ value: 'de', label: 'German' },
+
     if (GenericHelpers.isObject(optionsEntry)) {
       return $getTranslation(Object.values(optionsEntry)[0]);
     } else {
@@ -161,7 +163,7 @@
                     type="text"
                     class="fd-input fd-input-group__input"
                     data-testid="lui-us-input{i}"
-                    placeholder="{getPlaceholderValue(storedUserSettingData[userSettingGroup[0]][key])}"
+                    value="{getValue(storedUserSettingData[userSettingGroup[0]][key])}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                   />
                   <span class="fd-input-group__addon fd-input-group__addon--button">
@@ -192,19 +194,11 @@
                       data-testid="lui-us-option{i}_{optionIndex}"
                       on:click="{() => updateComboBox(key,option)}"
                     >
-                      {#if GenericHelpers.isObject(option)}
                       <span class="fd-list__title">
                         <span class="fd-list__bold">
-                          {$getTranslation(Object.values(option)[0])}
+                          {$getTranslation(getLabel(option))}
                         </span>
                       </span>
-                      {:else}
-                      <span class="fd-list__title">
-                        <span class="fd-list__bold">
-                          {$getTranslation(option)}
-                        </span>
-                      </span>
-                      {/if}
                     </li>
                     {/each}
                   </ul>
