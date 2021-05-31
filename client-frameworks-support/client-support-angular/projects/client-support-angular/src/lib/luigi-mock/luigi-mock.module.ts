@@ -155,17 +155,11 @@ export class LuigiMockModule {
     if (!luigiVisualizationContainer) {
       luigiVisualizationContainer = document.createElement('div');
       luigiVisualizationContainer.setAttribute('id', 'luigi-debug-vis-cnt');
-      luigiVisualizationContainer.setAttribute('style', 'position: fixed; left: 0; top: 0; z-index: 1000');
+      luigiVisualizationContainer.setAttribute('style', 'display:none;');
       document.body.appendChild(luigiVisualizationContainer);
     }
     const line: HTMLDivElement = document.createElement('div');
-    line.setAttribute('style', 'border: 1px solid red; margin: 5px; background: #ffeeee; cursor: pointer');
     line.innerHTML = JSON.stringify(data);
-    line.addEventListener('click', e => {
-      if (line.parentNode != null) {
-        line.parentNode.removeChild(line);
-      }
-    });
     luigiVisualizationContainer.appendChild(line);
   }
 }
