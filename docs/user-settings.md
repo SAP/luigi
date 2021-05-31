@@ -16,15 +16,32 @@ meta -->
 
 # User Settings
 
+<!-- add-attribute:class:warning -->
+>**NOTE:** User Settings functionality was first introduced in Luigi 1.8.0, so it is not available for older versions.
+
+This document explains how to configure a User Settings dialog in the top navigation of Luigi.
+
+- [Overview](#overview)
+- [Example](#example)
+- [Parameters](#parameters)
+- [Write a custom editor](#write-a-custom-editor)
+- [Customize the user settings dialog](#customize-the-user-settings-dialog)
+- [Override default read and store functionality](#override-default-read-and-store-functionality)
+
+## Overview
+
 ![User settings dialog](assets/usersettingsdialog.png)
 
 Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
-Following example describes how user settings and a corresponding userSettingGroups configuration could be look like:
 
 <!-- add-attribute:class:warning -->
->**NOTE:** The user settings dialog can not be opened from the profile menu if the profile section in the top navigation bar is not configured. For more information see the [profile configuration](navigation-parameters-reference.md#profile).
+>**NOTE:** The user settings dialog can not be opened from the profile menu if the profile section in the top navigation bar is not configured. For more information see the [profile configuration](navigation-advanced.md#profile).
 
 ![User settings in profile menu](assets/usersettings-in-profile.png)
+
+## Example
+
+The following example describes how user settings and a corresponding userSettingGroups configuration could look like:
 
 ```javascript
 settings:{
@@ -64,6 +81,10 @@ userSettings:{
 }
 ```
 
+## Parameters
+
+These parameters used in the example above allow you to configure the items in the user settings menu:
+
 #### label
 - **type** string (optional)
 - **description** defines the label for the left-side navigation entry.
@@ -82,7 +103,7 @@ userSettings:{
 In that case, the micro frontend will be displayed in the editor area.
 #### settings
 - **type** object (optional)
-- **description** has objects of settings for the corresponding user group. 
+- **description** has objects of settings for the corresponding user group.
 `Key` of each setting object will be the key in the stored user settings with the corresponding value.
 The attributes to define a setting objects are:
 - **attributes**
@@ -91,10 +112,10 @@ The attributes to define a setting objects are:
 
   - **label** (optional) is a string and the label of the setting.
   - **isEditable** (optional) is a boolean and by default `true`. If it is set to `false` the setting is not editable.
-  - **style** (optional) is a string and can be defined for the data types `boolean` and `enum`. Boolean will be rendered as switcher by default and it can be changed to `checkbox`. Enum will be rendered as dropdown by default and it can be changed to `button`, which means it will be rendered as a `segmented button`. 
+  - **style** (optional) is a string and can be defined for the data types `boolean` and `enum`. Boolean will be rendered as switcher by default and it can be changed to `checkbox`. Enum will be rendered as dropdown by default and it can be changed to `button`, which means it will be rendered as a `segmented button`.
   - **options** is an array of options. It is mandatory and necessary if the data type is `enum`.
 
-#### Write a custom editor
+## Write a custom editor
 
 This user setting group will be displayed by the default editor, under the form of a user setting dialog.
 It is possible to write a custom editor using a custom micro frontend. In that case, the `userSettingGroup` needs a `viewUrl` property with an URL to the micro frontend.
@@ -115,9 +136,9 @@ function onThemeChange(value){
 ```
 > **NOTE:** This is a very simple example to get the user settings data from the context and update the changed user settings data via a custom message.
 
-#### Customize the user settings dialog
+## Customize the user settings dialog
 
-These parameters can be used to configure the user settings menu in Luigi. You may also want to take a look at the [Luigi Core API](luigi-core-api.md) for additional options.
+These parameters can be used to configure the appearance of the user settings menu in Luigi. You may also want to take a look at the [Luigi Core API](luigi-core-api.md) for additional options.
 
 * **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
 * **userSettingsProfileMenuEntry.icon** defines the profile navigation entry icon. By default it is SAP icon `settings`.
@@ -126,7 +147,7 @@ These parameters can be used to configure the user settings menu in Luigi. You m
 * **userSettingsDialog.saveBtn** defines user settings dialog save button. By default it is `Save`.
 * **userSettingsDialog.dismissBtn** defines user settings dialog dismiss button. By default it is `Dismiss`.
 
-#### Override default read and store functionality
+## Override default read and store functionality
 
 By implementing the `storeUserSettings` and `readUserSettings` the default mechanism can be overriden.
 
