@@ -132,7 +132,7 @@ describe('Navigation', () => {
       //Check Placeholder of input field is Spanish
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('have.attr', 'value', 'Spanish');
+        .should('have.value', 'Spanish');
 
       //Check Date Formant Input field and type a new format
       cy.get('[data-testid="lui-us-input1"]')
@@ -153,7 +153,7 @@ describe('Navigation', () => {
       //Check Placeholder of input field is Spanish
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('have.attr', 'value', 'Spanish');
+        .should('have.value', 'Spanish');
 
       //Check Name Input field and type a new name
       cy.get('[data-testid="lui-us-input1"]').should('have.value', setting_date_format);
@@ -171,7 +171,7 @@ describe('Navigation', () => {
       //Check Private Policy Input field exist and placeholder is
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('have.attr', 'value', 'Field placeholder text');
+        .should('have.attr', 'placeholder', 'Field placeholder text');
 
       //Check Private Policy Input field exist and placeholder is
       cy.get('[data-testid="lui-us-input0"]').type(setting_privacy_policy);

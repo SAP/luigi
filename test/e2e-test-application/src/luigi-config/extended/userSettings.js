@@ -49,7 +49,7 @@ class UserSettings {
           options: [
             { value: 'de', label: 'German' },
             { value: 'en', label: 'English' },
-            'test'
+            'Spanish','French'
           ],
           description:
             'After you save your settings, the browser will refresh for the new language to take effect.'
