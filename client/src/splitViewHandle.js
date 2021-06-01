@@ -111,7 +111,10 @@ export class splitViewHandle extends LuigiClientBase {
       console.warn(name + ' is not a valid split view event');
       return false;
     }
-    const id = helpers.addEventListener(`luigi.navigation.splitview.${name}.ok`, e => callback(e.data.data));
+    const id = helpers.addEventListener(`luigi.navigation.splitview.${name}.ok`, e => {
+      const filterParam = typeof e.data.data == 'number' ? e.data.data : undefined;
+      callback(filterParam);
+    });
     this.splitView.listeners.push(id);
     return id;
   }

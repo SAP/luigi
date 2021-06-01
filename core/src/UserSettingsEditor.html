@@ -78,11 +78,10 @@
           ? button.classList.add('fd-button--emphasized')
           : button.classList.remove('fd-button--emphasized');
       });
-
-    storedUserSettingData[userSettingGroup[0]][key] = option;
+     storedUserSettingData[userSettingGroup[0]][key] = option.value || option;
   }
 
-  function getValue(optionValue, options) {
+  function getLabelForValue(optionValue, options) {
     let label;
     if (Array.isArray(options)) {
       
@@ -106,6 +105,11 @@
       GenericHelpers.isObject(optionsEntry) ? optionsEntry.label : optionsEntry
     );
   }
+
+  function getEnumButtonId(prefix, key, option){
+    return GenericHelpers.isObject(option)?`${prefix}_${key}_${option.value}`:`${prefix}_${key}_${option}`
+  }
+
 
 </script>
 
@@ -185,7 +189,7 @@
                     type="text"
                     class="fd-input fd-input-group__input"
                     data-testid="lui-us-input{i}"
-                    value="{getValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}"
+                    value="{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                   />
                   <span
@@ -241,13 +245,13 @@
             >
               {#each schemaItem.options as option, optionIndex}
               <button
-                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
+                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === (option.value || option) ? 'is-selected':'' }"
                 on:click="{() => updateEnumButton(key,option)}"
-                id="lui-us-enum_button_{key}_{option}"
-                data-testid="lui-us-enum_button_{key}_{option}"
+                id="{getEnumButtonId('lui-us-enum_button', key, option)}"
+                data-testid="{getEnumButtonId('lui-us-enum_button', key, option)}"
                 disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
               >
-                {$getTranslation(option)}
+                {getLabel(option)}
               </button>
               {/each}
             </div>

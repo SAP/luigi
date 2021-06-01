@@ -620,13 +620,13 @@ describe('Fiddle', () => {
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
       cy.get('[data-testid="lui-us-input0"]')
-        .invoke('attr', 'placeholder')
+        .invoke('attr', 'value')
         .should('contain', 'German');
 
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_1"]').click();
       cy.get('[data-testid="lui-us-input0"]')
-        .invoke('attr', 'placeholder')
+        .invoke('attr', 'value')
         .should('contain', 'English');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
