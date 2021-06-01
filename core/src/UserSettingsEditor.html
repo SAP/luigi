@@ -1,4 +1,7 @@
-<svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window>
+<svelte:window
+  on:click="{closeAllCombos}"
+  on:blur="{closeAllCombos}"
+></svelte:window>
 <script>
   import {
     onMount,
@@ -62,7 +65,7 @@
   }
 
   function updateComboBox(key, option) {
-    storedUserSettingData[userSettingGroup[0]][key] = option.value | option;
+    storedUserSettingData[userSettingGroup[0]][key] = option.value || option;
   }
 
   function updateEnumButton(key, option) {
@@ -79,15 +82,31 @@
     storedUserSettingData[userSettingGroup[0]][key] = option;
   }
 
-  function getValue(optionsEntry) {
-    //{ value: 'de', label: 'German' },
-
-    if (GenericHelpers.isObject(optionsEntry)) {
-      return $getTranslation(Object.values(optionsEntry)[0]);
-    } else {
-      return $getTranslation(optionsEntry);
-    }
+  function getValue(optionValue, options) {
+    let label;
+    if (Array.isArray(options)) {
+      
+      for(let i = 0; i<options.length; i++){
+        if(GenericHelpers.isObject(options[i])){
+          if(options[i].value && options[i].value === optionValue){
+            label = options[i].label;
+            break;
+          }
+        }else{
+            label = optionValue;
+            break;
+        }
+      }
+    return $getTranslation(label);
   }
+}
+
+  function getLabel(optionsEntry) {
+    return $getTranslation(
+      GenericHelpers.isObject(optionsEntry) ? optionsEntry.label : optionsEntry
+    );
+  }
+
 </script>
 
 <style>
@@ -124,10 +143,13 @@
   userSettingGroup[1].settings}
   <div class="fd-page__content">
     <div class="fd-container fd-form-layout-grid-container">
-      {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
+      {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem],
+      i}
       <div class="fd-row">
         <div class="fd-col fd-col--4">
-          <label class="fd-form-label">{$getTranslation(schemaItem.label)}: </label>
+          <label class="fd-form-label"
+            >{$getTranslation(schemaItem.label)}:
+          </label>
         </div>
         <div class="fd-col fd-col--8">
           {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
@@ -148,8 +170,8 @@
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
             >{storedUserSettingData[userSettingGroup[0]][key]}
           </label>
-          {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
-          schemaItem.style === 'list')}
+          {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style ===
+          undefined || schemaItem.style === 'list')}
           <div class="fd-form-item">
             <div class="fd-popover">
               <div
@@ -163,10 +185,12 @@
                     type="text"
                     class="fd-input fd-input-group__input"
                     data-testid="lui-us-input{i}"
-                    value="{getValue(storedUserSettingData[userSettingGroup[0]][key])}"
+                    value="{getValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                   />
-                  <span class="fd-input-group__addon fd-input-group__addon--button">
+                  <span
+                    class="fd-input-group__addon fd-input-group__addon--button"
+                  >
                     <button
                       aria-label="show/hide fruit options"
                       aria-expanded="false"
@@ -196,7 +220,7 @@
                     >
                       <span class="fd-list__title">
                         <span class="fd-list__bold">
-                          {$getTranslation(getLabel(option))}
+                          {getLabel(option)}
                         </span>
                       </span>
                     </li>
@@ -207,8 +231,8 @@
               </div>
             </div>
           </div>
-          {/if} {#if schemaItem.type==='enum' && schemaItem.style === 'button' &&
-          Array.isArray(schemaItem.options)}
+          {/if} {#if schemaItem.type==='enum' && schemaItem.style === 'button'
+          && Array.isArray(schemaItem.options)}
           <div class="fd-form-item">
             <div
               class="fd-segmented-button enum-buttons-container-{key}"
@@ -228,8 +252,8 @@
               {/each}
             </div>
           </div>
-          {/if} {#if schemaItem.type==='boolean' && (!schemaItem.style || schemaItem.style
-          === 'switch')}
+          {/if} {#if schemaItem.type==='boolean' && (!schemaItem.style ||
+          schemaItem.style === 'switch')}
           <label
             class="fd-switch fd-switch--compact"
             data-testid="lui-us-label-switch_{key}"
@@ -250,7 +274,8 @@
               </div>
             </span>
           </label>
-          {/if} {#if schemaItem.type==='boolean' && schemaItem.style === 'checkbox'}
+          {/if} {#if schemaItem.type==='boolean' && schemaItem.style ===
+          'checkbox'}
           <input
             type="checkbox"
             class="fd-checkbox"
