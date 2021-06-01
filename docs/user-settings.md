@@ -72,7 +72,7 @@ userSettings:{
           {
             type: 'enum',
             label: 'Label',
-            options: [{option1: 'value1'},{option2: 'value2'}],
+            options: ['value1' 'value2'],
             style: 'button',
             description: 'Description'
           }
@@ -126,7 +126,21 @@ These parameters used in the example above allow you to configure the items in t
   - **label** (optional) is a string and the label of the setting.
   - **isEditable** (optional) is a boolean and by default `true`. If it is set to `false` the setting is not editable.
   - **style** (optional) is a string and can be defined for the data types `boolean` and `enum`. Boolean will be rendered as switcher by default and it can be changed to `checkbox`. Enum will be rendered as dropdown by default and it can be changed to `button`, which means it will be rendered as a `segmented button`.
-  - **options** is an array of options. It is mandatory and necessary if the data type is `enum`.
+  - **options** is an array of options. It is mandatory and necessary if the data type is `enum`. It can be entries of primitive data types like string or integer or entries of objects.
+    In this case the objects need `value` and `label` as key.
+
+```javascript
+language: {
+  type: 'enum',
+  label: 'Language and Region',
+  options: [
+    { value: 'de', label: 'German' },
+    { value: 'en', label: 'English' },
+    { value: 'fr', label: 'French' },
+    { value: 'es', label: 'Spanish' }
+  ]
+}
+```
 
 ## Write a custom editor
 
