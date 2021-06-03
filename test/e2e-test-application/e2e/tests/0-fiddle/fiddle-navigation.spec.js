@@ -572,12 +572,7 @@ describe('Fiddle', () => {
               language: {
                 type: 'enum',
                 label: 'Language and Region',
-                options: [
-                  { value: 'de', label: 'German' },
-                  { value: 'en', label: 'English' },
-                  'Spanish',
-                  'French'
-                ],
+                options: [{ value: 'de', label: 'German' }, { value: 'en', label: 'English' }, 'Spanish', 'French'],
                 description:
                   'After you save your settings, the browser will refresh for the new language to take effect.'
               },
@@ -627,7 +622,7 @@ describe('Fiddle', () => {
       cy.get('[data-testid="lui-us-input0"]')
         .invoke('val')
         .should('contain', 'German');
-  
+
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_1"]').click();
       cy.get('[data-testid="lui-us-input0"]')

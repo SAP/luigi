@@ -46,13 +46,8 @@ class UserSettings {
         language: {
           type: 'enum',
           label: 'Language and Region',
-          options: [
-            { value: 'de', label: 'German' },
-            { value: 'en', label: 'English' },
-            'Spanish','French'
-          ],
-          description:
-            'After you save your settings, the browser will refresh for the new language to take effect.'
+          options: [{ value: 'de', label: 'German' }, { value: 'en', label: 'English' }, 'Spanish', 'French'],
+          description: 'After you save your settings, the browser will refresh for the new language to take effect.'
         },
         date: { type: 'string', label: 'Date Format' },
         time: {
@@ -84,8 +79,7 @@ class UserSettings {
       label: 'Theming',
       title: 'Theming',
       icon: 'private',
-      viewUrl:
-        'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
+      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
       settings: {
         theme: {
           type: 'enum',
@@ -98,8 +92,7 @@ class UserSettings {
       label: 'Custom',
       title: 'Custom',
       icon: 'private',
-      viewUrl:
-        'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
+      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
     }
   };
 }
