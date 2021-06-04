@@ -260,11 +260,11 @@ export class linkManager extends LuigiClientBase {
 
     const pathExistsMsg = {
       msg: 'luigi.navigation.pathExists',
-      data: {
+      data: Object.assign(this.options, {
         id: currentId,
         link: path,
         relative: path[0] !== '/'
-      }
+      })
     };
     helpers.sendPostMessageToLuigiCore(pathExistsMsg);
     return pathExistsPromises[currentId];
