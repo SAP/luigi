@@ -9,7 +9,7 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
 
     cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-username"]').should('contain', 'Luigi Swinka');
+    cy.get('[data-testid="luigi-topnav-profile-username"]').should('contain', 'Luigi User');
   });
 
   it('User description in profile dropdown', () => {

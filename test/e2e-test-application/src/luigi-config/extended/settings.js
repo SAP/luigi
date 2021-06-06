@@ -11,6 +11,7 @@ class Settings {
   appLoadingIndicator = {
     hideAutomatically: false
   };
+  userMenuType = 'Fiori3'; // Options: LuigiSimple | Fiori3
   responsiveNavigation = 'simple'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
