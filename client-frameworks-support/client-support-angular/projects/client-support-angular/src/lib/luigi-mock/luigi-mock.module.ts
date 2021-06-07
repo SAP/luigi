@@ -156,6 +156,8 @@ export class LuigiMockModule {
     if (!luigiVisualizationContainer) {
       luigiVisualizationContainer = document.createElement('div');
       luigiVisualizationContainer.setAttribute('id', 'luigi-debug-vis-cnt');
+      // hide the element from the end user
+      luigiVisualizationContainer.setAttribute('style', 'overflow:hidden;height:0;');
       document.body.appendChild(luigiVisualizationContainer);
     }
     const line: HTMLDivElement = document.createElement('div');
