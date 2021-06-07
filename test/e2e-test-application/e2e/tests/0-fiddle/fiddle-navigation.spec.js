@@ -602,7 +602,7 @@ describe('Fiddle', () => {
         }
       };
     });
-    it.only('User settings dialog', () => {
+    it('User settings dialog', () => {
       cy.visitWithFiddleConfig('/', newConfig);
       cy.wait(1000);
       cy.window().then(win => {
