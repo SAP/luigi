@@ -168,10 +168,10 @@ describe('Navigation', () => {
         .eq(2)
         .click();
 
-      //Check Private Policy Input field exist and placeholder is
+      // //Check Private Policy Input field exist and placeholder is
       cy.get('[data-testid="lui-us-input0"]')
-        .should('exist')
-        .should('have.attr', 'placeholder', 'Field placeholder text');
+        .should('exist');
+      
 
       //Check Private Policy Input field exist and placeholder is
       cy.get('[data-testid="lui-us-input0"]').type(setting_privacy_policy);
