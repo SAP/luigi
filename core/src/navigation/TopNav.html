@@ -355,13 +355,13 @@
             aria-hidden="{!(dropDownStates.profilePopover || false)}"
             id="profilePopover"
           >
-            {#if userMenuTypeSettings === "LuigiSimple"}
-            <AuthorizationSimpleUserMenu
+            {#if profileTypeSettings === "Fiori3" }
+            <Authorization
               on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
               on:userInfoUpdated="{userInfoUpdate}"
             />
             {:else}
-            <Authorization
+            <AuthorizationSimpleProfileMenu
               on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
               on:userInfoUpdated="{userInfoUpdate}"
             />
@@ -389,7 +389,7 @@
   import LogoTitle from './LogoTitle.html';
   import BadgeCounter from './BadgeCounter.html';
   import Authorization from '../Authorization.html';
-  import AuthorizationSimpleUserMenu from '../AuthorizationSimpleUserMenu.html';
+  import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.html';
   import TopNavDropDown from '../TopNavDropDown.html';
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
@@ -413,7 +413,7 @@
   export let isLoggedIn = false;
   export let hideNavComponent;
   export let responsiveNavSetting;
-  export let userMenuTypeSettings;
+  export let profileTypeSettings;
   export let showGlobalNav;
   export let pathData;
   let previousPathData;
@@ -477,7 +477,7 @@
         responsiveNavSetting = LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
-        userMenuTypeSettings = LuigiConfig.getConfigValue('settings.userMenuType');
+        profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
         showGlobalNav =
