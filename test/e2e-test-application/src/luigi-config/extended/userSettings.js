@@ -46,7 +46,7 @@ class UserSettings {
         language: {
           type: 'enum',
           label: 'Language and Region',
-          options: ['German', 'English', 'Spanish', 'French'],
+          options: [{ value: 'de', label: 'German' }, { value: 'en', label: 'English' }, 'Spanish', 'French'],
           description: 'After you save your settings, the browser will refresh for the new language to take effect.'
         },
         date: { type: 'string', label: 'Date Format' },
