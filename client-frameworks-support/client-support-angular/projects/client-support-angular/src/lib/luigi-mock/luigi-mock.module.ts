@@ -48,7 +48,8 @@ export class LuigiMockModule {
                     emulated: true,
                     internal: {
                       viewStackSize: 1
-                    }
+                    },
+                    context: e.data.context
                   },
                   '*'
                 );
@@ -155,7 +156,6 @@ export class LuigiMockModule {
     if (!luigiVisualizationContainer) {
       luigiVisualizationContainer = document.createElement('div');
       luigiVisualizationContainer.setAttribute('id', 'luigi-debug-vis-cnt');
-      luigiVisualizationContainer.setAttribute('style', 'display:none;');
       document.body.appendChild(luigiVisualizationContainer);
     }
     const line: HTMLDivElement = document.createElement('div');
