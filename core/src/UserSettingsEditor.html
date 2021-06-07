@@ -62,7 +62,7 @@
   }
 
   function updateComboBox(key, option) {
-    storedUserSettingData[userSettingGroup[0]][key] = option;
+    storedUserSettingData[userSettingGroup[0]][key] = option.value || option;
   }
 
   function updateEnumButton(key, option) {
@@ -75,8 +75,37 @@
           ? button.classList.add('fd-button--emphasized')
           : button.classList.remove('fd-button--emphasized');
       });
+    storedUserSettingData[userSettingGroup[0]][key] = option.value || option;
+  }
 
-    storedUserSettingData[userSettingGroup[0]][key] = option;
+  function getLabelForValue(optionValue, options) {
+    let label;
+    if (Array.isArray(options)) {
+      for (let i = 0; i < options.length; i++) {
+        if (GenericHelpers.isObject(options[i])) {
+          if (options[i].value && options[i].value === optionValue) {
+            label = options[i].label;
+            break;
+          }
+        } else {
+          label = optionValue;
+          break;
+        }
+      }
+      return $getTranslation(label);
+    }
+  }
+
+  function getLabel(optionsEntry) {
+    return $getTranslation(
+      GenericHelpers.isObject(optionsEntry) ? optionsEntry.label : optionsEntry
+    );
+  }
+
+  function getEnumButtonId(prefix, key, option) {
+    return GenericHelpers.isObject(option)
+      ? `${prefix}_${key}_${option.value}`
+      : `${prefix}_${key}_${option}`;
   }
 </script>
 
@@ -125,7 +154,6 @@
           <input
             class="fd-input"
             type="text"
-            placeholder="Field placeholder text"
             aria-label="Image label"
             data-testid="lui-us-input{i}"
             bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
@@ -152,8 +180,8 @@
                   <input
                     type="text"
                     class="fd-input fd-input-group__input"
-                    placeholder="{$getTranslation(storedUserSettingData[userSettingGroup[0]][key])}"
                     data-testid="lui-us-input{i}"
+                    value="{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                   />
                   <span class="fd-input-group__addon fd-input-group__addon--button">
@@ -185,7 +213,9 @@
                       on:click="{() => updateComboBox(key,option)}"
                     >
                       <span class="fd-list__title">
-                        <span class="fd-list__bold">{$getTranslation(option)}</span>
+                        <span class="fd-list__bold">
+                          {getLabel(option)}
+                        </span>
                       </span>
                     </li>
                     {/each}
@@ -205,13 +235,13 @@
             >
               {#each schemaItem.options as option, optionIndex}
               <button
-                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === option ? 'is-selected':'' }"
+                class="lui-fd-enum-button fd-button fd-button--compact {storedUserSettingData[userSettingGroup[0]][key] === (option.value || option) ? 'is-selected':'' }"
                 on:click="{() => updateEnumButton(key,option)}"
-                id="lui-us-enum_button_{key}_{option}"
-                data-testid="lui-us-enum_button_{key}_{option}"
+                id="{getEnumButtonId('lui-us-enum_button', key, option)}"
+                data-testid="{getEnumButtonId('lui-us-enum_button', key, option)}"
                 disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
               >
-                {$getTranslation(option)}
+                {getLabel(option)}
               </button>
               {/each}
             </div>

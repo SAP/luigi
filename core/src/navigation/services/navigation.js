@@ -1,5 +1,6 @@
 // Main methods used to display and handle the navigation.
 // Please consider adding any new methods to 'navigation-helpers' if they don't require anything from this file.
+
 import {
   AsyncHelpers,
   EscapingHelpers,
@@ -7,8 +8,9 @@ import {
   NavigationHelpers,
   RoutingHelpers
 } from '../../utilities/helpers';
-import { NodeDataManagementStorage } from '../../services/node-data-management';
+
 import { LuigiConfig } from '../../core-api';
+import { NodeDataManagementStorage } from '../../services/node-data-management';
 
 class NavigationClass {
   async getNavigationPath(rootNavProviderPromise, path = '') {
@@ -72,7 +74,7 @@ class NavigationClass {
     if (!NodeDataManagementStorage.hasChildren(node)) {
       try {
         children = await AsyncHelpers.getConfigValueFromObjectAsync(node, 'children', context || node.context);
-        if (children === undefined) {
+        if (children === undefined || children === null) {
           children = [];
         }
         children =
