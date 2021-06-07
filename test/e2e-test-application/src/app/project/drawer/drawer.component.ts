@@ -10,11 +10,15 @@ import { linkManager, uxManager } from '@luigi-project/client';
 export class DrawerComponent implements OnInit {
   public linkManager = linkManager;
   public uxManager = uxManager;
-  public constructor() { }
+  public constructor() {}
 
-  public ngOnInit() { }
+  public ngOnInit() {}
 
   openConfirmationModal() {
-    uxManager().showConfirmationModal({ body: 'Just a confirmation modal' }).then(() => { console.log('opended a confirmation modal'); })
+    uxManager()
+      .showConfirmationModal({ body: 'Just a confirmation modal' })
+      .then(() => {
+        console.log('opended a confirmation modal');
+      });
   }
 }
