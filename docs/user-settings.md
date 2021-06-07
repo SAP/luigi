@@ -13,11 +13,11 @@
 }
 meta -->
 
-
 # User Settings
 
 <!-- add-attribute:class:warning -->
->**NOTE:** User Settings functionality was first introduced in Luigi 1.8.0, so it is not available for older versions.
+
+> **NOTE:** User Settings functionality was first introduced in Luigi 1.8.0, so it is not available for older versions.
 
 This document explains how to configure a User Settings dialog in the top navigation of Luigi.
 
@@ -35,7 +35,8 @@ This document explains how to configure a User Settings dialog in the top naviga
 Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
 
 <!-- add-attribute:class:warning -->
->**NOTE:** The user settings dialog can not be opened from the profile menu if the profile section in the top navigation bar is not configured. For more information see the [profile configuration](navigation-advanced.md#profile).
+
+**NOTE:** The user settings dialog can not be opened from the profile menu if the profile section in the top navigation bar is not configured. For more information see the [profile configuration](navigation-advanced.md#profile).
 
 ![User settings in profile menu](assets/usersettings-in-profile.png)
 
@@ -71,7 +72,7 @@ userSettings:{
           {
             type: 'enum',
             label: 'Label',
-            options: ['option1', 'option2'],
+            options: ['value1' 'value2'],
             style: 'button',
             description: 'Description'
           }
@@ -86,34 +87,60 @@ userSettings:{
 These parameters used in the example above allow you to configure the items in the user settings menu:
 
 #### label
+
 - **type** string (optional)
 - **description** defines the label for the left-side navigation entry.
+
 #### sublabel
+
 - **type** string (optional)
 - **description** defines the sublabel for the left-side navigation entry.
+
 #### icon
+
 - **type** string (optional)
 - **description** name of the icon, without the `sap-icon--` prefix or path to an image.
+
 #### title
+
 - **type** string (optional)
 - **description** title of the user settings group. It will be displayed as a header in the editor area.
+
 #### viewURL
+
 - **type** string (optional)
 - **description** points to a custom micro frontend. It is possible to not use Luigi's user settings editor. Instead, you can [write your own](#write-a-custom-editor) editor micro frontend.
-In that case, the micro frontend will be displayed in the editor area.
+  In that case, the micro frontend will be displayed in the editor area.
+
 #### settings
+
 - **type** object (optional)
 - **description** has objects of settings for the corresponding user group.
-`Key` of each setting object will be the key in the stored user settings with the corresponding value.
-The attributes to define a setting objects are:
+  `Key` of each setting object will be the key in the stored user settings with the corresponding value.
+  The attributes to define a setting objects are:
 - **attributes**
+
   - **type** (mandatory) is a string and defines the data type of this setting. It could be `string`, `boolean` or `enum`. If data type `string` is defined, an input field will be rendered in the editor area. If this property is set to `boolean`, a switcher will be rendered. If `enum` type is set, it will be rendered as a dropdown by default.
-  It is possible to define the style of how `boolean` and `enum` are generated, see `style` attribute.
+    It is possible to define the style of how `boolean` and `enum` are generated, see `style` attribute.
 
   - **label** (optional) is a string and the label of the setting.
   - **isEditable** (optional) is a boolean and by default `true`. If it is set to `false` the setting is not editable.
   - **style** (optional) is a string and can be defined for the data types `boolean` and `enum`. Boolean will be rendered as switcher by default and it can be changed to `checkbox`. Enum will be rendered as dropdown by default and it can be changed to `button`, which means it will be rendered as a `segmented button`.
-  - **options** is an array of options. It is mandatory and necessary if the data type is `enum`.
+  - **options** is an array of options. It is mandatory and necessary if the data type is `enum`. It can be entries of primitive data types like string or integer or entries of objects.
+    In this case the objects need `value` and `label` as key.
+
+```javascript
+language: {
+  type: 'enum',
+  label: 'Language and Region',
+  options: [
+    { value: 'de', label: 'German' },
+    { value: 'en', label: 'English' },
+    { value: 'fr', label: 'French' },
+    { value: 'es', label: 'Spanish' }
+  ]
+}
+```
 
 ## Write a custom editor
 
@@ -134,28 +161,29 @@ function onThemeChange(value){
     window.LuigiClient.sendCustomMessage({ id: 'luigi.updateUserSettings', data: luigiContext.userSettingsData });
 };
 ```
+
 > **NOTE:** This is a very simple example to get the user settings data from the context and update the changed user settings data via a custom message.
 
 ## Customize the user settings dialog
 
 These parameters can be used to configure the appearance of the user settings menu in Luigi. You may also want to take a look at the [Luigi Core API](luigi-core-api.md) for additional options.
 
-* **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
-* **userSettingsProfileMenuEntry.icon** defines the profile navigation entry icon. By default it is SAP icon `settings`.
+- **userSettingsProfileMenuEntry.label** defines the profile navigation entry. By default it is `Settings`.
+- **userSettingsProfileMenuEntry.icon** defines the profile navigation entry icon. By default it is SAP icon `settings`.
 
-* **userSettingsDialog.dialogHeader** defines user settings dialog header. By default it is `User Settings`.
-* **userSettingsDialog.saveBtn** defines user settings dialog save button. By default it is `Save`.
-* **userSettingsDialog.dismissBtn** defines user settings dialog dismiss button. By default it is `Dismiss`.
+- **userSettingsDialog.dialogHeader** defines user settings dialog header. By default it is `User Settings`.
+- **userSettingsDialog.saveBtn** defines user settings dialog save button. By default it is `Save`.
+- **userSettingsDialog.dismissBtn** defines user settings dialog dismiss button. By default it is `Dismiss`.
 
 ## Override default read and store functionality
 
 By implementing the `storeUserSettings` and `readUserSettings` the default mechanism can be overriden.
 
-* **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to store the user settings object (for example, using a custom third party Rest API). The function should return a promise and takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings. On resolve, the user settings dialog will be closed.
-If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object. In addition, you can implement a `message` to display the error on the browser console log.
+- **storeUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to store the user settings object (for example, using a custom third party Rest API). The function should return a promise and takes two parameters. The first one is the user settings which will be stored. The second one is the previous stored user settings. On resolve, the user settings dialog will be closed.
+  If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object. In addition, you can implement a `message` to display the error on the browser console log.
 
-* **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object: the function should return a promise. The resolve function gets the user settings object as parameter.
-If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
+- **readUserSettings** if this function is implemented, the default mechanism will be overridden and you can choose a custom storage to read the user settings object: the function should return a promise. The resolve function gets the user settings object as parameter.
+  If an error appears, you have the possibility to close the user settings dialog by adding a `closeDialog` boolean flag to the error object to close it. In addition, you can implement a `message` to display the error on the browser console log.
 
 ```javascript
 userSettings:{
