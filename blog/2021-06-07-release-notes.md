@@ -10,7 +10,7 @@ Luigi 1.13.0 is the latest Luigi release. It includes updates of Fundamental Lib
 
 <!-- Excerpt -->
 
-#### Breaking changes in Fundamental Styles
+#### Breaking changes in Fundamental Library Styles
 
 With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles was included. It led to having breaking changes in the Luigi Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accessibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/components-dialog--default-dialog) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/components-shellbar--primary).
 
