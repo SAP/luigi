@@ -61,7 +61,7 @@
       on:click="{onLogoutClick}"
       data-testid="{getTestId(profileNav.logout)}"
     >
-      <a aria-label="Logout" class="fd-menu__link" data-testid="logout-link">
+      <a aria-label="Logout" class="fd-menu__link" data-testid="logout-btn">
         {#if profileNav.logout.icon} {#if hasOpenUIicon(profileNav.logout)}
         <i class="fd-top-nav__icon sap-icon--{profileNav.logout.icon}"></i>
         {:else}
@@ -76,7 +76,7 @@
     </li>
     {/if} {#if isAuthorizationEnabled && !isLoggedIn}
     <li class="fd-menu__item" on:click="{startAuthorization}">
-      <a aria-label="Login" class="fd-menu__link" data-testid="login-link">
+      <a aria-label="Login" class="fd-menu__link" data-testid="login-btn">
         <span class="fd-menu__title">Login</span>
       </a>
     </li>
