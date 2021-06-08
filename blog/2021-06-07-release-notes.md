@@ -16,7 +16,7 @@ With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles was included. 
 
 #### Extend options of enum type in user settings
 
-In Luigi's [user settings](https://docs.luigi-project.io/docs/user-settings), an `enum` array can now can store options objects. You can use them if you want to add more options in the user settings for the user to choose from. These objects need `value` and `label` as key. For example:
+In Luigi's [user settings](https://docs.luigi-project.io/docs/user-settings), an `enum` array can now store options objects. You can use them if you want to add more options in the user settings for the user to choose from. These objects need `value` and `label` as key. For example:
 ```javascript
 language: {
   type: 'enum',
