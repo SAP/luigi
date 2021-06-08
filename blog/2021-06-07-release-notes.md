@@ -6,7 +6,7 @@ author:
 layout: blog
 ---
 
-Luigi 1.13.0 is the latest Luigi release. It includes updates of Fundamental Styles, new options in the user settings, as well as other features and bugfixes. Read the release notes below to learn more.
+Luigi 1.13.0 is the latest Luigi release. It includes updates of Fundamental Library Styles, new options in the user settings, as well as other features and bug fixes. Read the release notes below to learn more.
 
 <!-- Excerpt -->
 
