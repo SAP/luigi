@@ -1,19 +1,21 @@
-<span
+<a
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
   on:click="{() => goTo('/')}"
+  href="#"
 >
   {#if hasLogo}
   <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
-</span>
+</a>
 {#if title} {#if !hasApps}
-<span
+<a
   class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
-  >{$getTranslation(title)}</span
->
+  href="#"
+  >{$getTranslation(title)}
+</a>
 {:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
@@ -224,6 +226,7 @@
   .lui-shellbar-single-app-title {
     padding: 0 0.625rem;
     max-width: 50vw;
+    text-decoration: none;
   }
 
   .lui-app-switch {
