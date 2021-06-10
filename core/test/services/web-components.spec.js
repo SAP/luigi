@@ -87,6 +87,7 @@ describe('WebComponentService', function() {
           return myEl;
         });
       sb.stub(container, 'replaceChild').callsFake(() => {});
+      sb.stub(window, 'location').value({ origin: 'http://localhost' });
 
       container.appendChild(itemPlaceholder);
       WebComponentService.attachWC(

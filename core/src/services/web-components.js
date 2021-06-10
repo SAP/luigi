@@ -36,7 +36,7 @@ class WebComponentSvcClass {
       };
 
       if (wc.__postProcess) {
-        const url = new URL('./', viewUrl);
+        const url = new URL(viewUrl, window.location.origin);
         wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);
       } else {
         wc.context = ctx;
