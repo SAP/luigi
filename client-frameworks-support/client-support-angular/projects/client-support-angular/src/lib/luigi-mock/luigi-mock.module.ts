@@ -67,11 +67,16 @@ export class LuigiMockModule {
           },
           mockListeners: {
             'luigi.navigation.pathExists': (event: any) => {
+              const mockData = window.sessionStorage.getItem('luigiMockData');
+              let mockDataParsed = mockData ? JSON.parse(mockData) : undefined;
+              const inputPath = event.data.data.link;
+              const pathExists = mockDataParsed && mockDataParsed.pathExists && mockDataParsed.pathExists[inputPath];
+
               const response = {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
                   correlationId: event.data.data.id,
-                  pathExists: true
+                  pathExists: pathExists ? pathExists : false
                 },
                 emulated: true
               };
