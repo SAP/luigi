@@ -112,7 +112,16 @@
             {$getTranslation(profileNav.logout.label)}
           </button>
         </div>
-        {/if}{/if} {#if isAuthorizationEnabled && !isLoggedIn}
+{/if} {#if isAuthorizationEnabled && !isLoggedIn}
+        <button
+          class="fd-button fd-button--transparent"
+          tabindex="0"
+          on:click="{startAuthorization}"
+          data-testid="login-btn"
+        >
+          Login
+        </button>
+        {/if}{/if}
         <button
           class="fd-button fd-button--transparent"
           tabindex="0"
