@@ -25,24 +25,32 @@ class WebComponentSvcClass {
         wc.setAttribute('nodeId', nodeId);
       }
 
-      const clientAPI = {
-        linkManager: window.Luigi.navigation,
-        uxManager: window.Luigi.ux,
-        publishEvent: ev => {
-          if (wc_container.eventBus) {
-            wc_container.eventBus.onPublishEvent(ev, nodeId, wc_id);
-          }
-        }
-      };
+      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
 
-      if (wc.__postProcess) {
-        const url = new URL(viewUrl, window.location.origin);
-        wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);
-      } else {
-        wc.context = ctx;
-        wc.LuigiClient = clientAPI;
-      }
       wc_container.replaceChild(wc, wcItemPlaceholder);
+    }
+  }
+
+  initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId) {
+    const clientAPI = {
+      linkManager: window.Luigi.navigation,
+      uxManager: window.Luigi.ux,
+      publishEvent: ev => {
+        if (eventBusElement.eventBus) {
+          eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
+        }
+      }
+    };
+
+    if (wc.__postProcess) {
+      const url =
+        new URL(document.baseURI).origin === new URL(viewUrl, document.baseURI).origin
+          ? new URL(viewUrl, document.baseURI)
+          : new URL('./', viewUrl);
+      wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);
+    } else {
+      wc.context = ctx;
+      wc.LuigiClient = clientAPI;
     }
   }
 
@@ -192,13 +200,19 @@ class WebComponentSvcClass {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer) {
-    return new Promise(resolve => {
+  createCompoundContainerAsync(renderer, ctx) {
+    return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
-        const wc_id = this.generateWCId(renderer.viewUrl);
-        this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
-          resolve(document.createElement(wc_id));
-        });
+        try {
+          const wc_id = this.generateWCId(renderer.viewUrl);
+          this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
+            const wc = document.createElement(wc_id);
+            this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+            resolve(wc);
+          });
+        } catch (e) {
+          reject(e);
+        }
       } else {
         resolve(renderer.createCompoundContainer());
       }
@@ -233,7 +247,7 @@ class WebComponentSvcClass {
     renderer = renderer || new DefaultCompoundRenderer();
 
     return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer).then(compoundCnt => {
+      this.createCompoundContainerAsync(renderer, context).then(compoundCnt => {
         const ebListeners = {};
         compoundCnt.eventBus = {
           listeners: ebListeners,
@@ -269,7 +283,7 @@ class WebComponentSvcClass {
         wc_container.appendChild(compoundCnt);
 
         // listener for nesting wc
-        registerEventListeners(ebListeners, navNode.compound, undefined, compoundCnt);
+        registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
         resolve(compoundCnt);
       });
     });
