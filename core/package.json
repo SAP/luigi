@@ -83,7 +83,7 @@
     },
     {
       "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "675kB",
+      "maxSize": "676kB",
       "compression": "none"
     },
     {
