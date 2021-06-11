@@ -302,7 +302,7 @@
     <!-- closes {#if children && pathData.length > 0} -->
     {#if authorizationEnabled || profileItemsAvailable}
     <div
-      class="fd-shellbar__action fd-shellbar__action--show-always"
+      class="fd-shellbar__action fd-shellbar__action--show-always lui-user-menu"
       data-testid="luigi-topnav-profile"
     >
       <div class="fd-popover fd-popover--right fd-user-menu">
@@ -725,5 +725,10 @@
         right: 14px;
       }
     }
+  }
+  /*Fix a long list popover body*/
+  .lui-user-menu .fd-popover__body {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
   }
 </style>
