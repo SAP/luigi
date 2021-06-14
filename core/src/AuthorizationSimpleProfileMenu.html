@@ -1,5 +1,5 @@
 {#if !isHidden}
-<nav class="fd-menu">
+<nav class="fd-menu lui-profile-simple-menu">
   <ul class="fd-menu__list fd-menu__list--no-shadow">
     {#if showUserInfo}
     <li class="fd-menu__item">
@@ -277,5 +277,11 @@
     padding: 0.75rem 1rem 0.75rem 0.75rem;
     cursor: default;
     font-size: 1.125rem;
+  }
+
+  /*Fix a long list popover body*/
+  .lui-profile-simple-menu {
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
   }
 </style>

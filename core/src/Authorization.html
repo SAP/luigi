@@ -1,5 +1,5 @@
 {#if !isHidden}
-<div class="fd-user-menu__body">
+<div class="fd-user-menu__body lui-user-menu-fiori">
   {#if showUserInfo}
   <div class="fd-user-menu__header">
     {#if userInfo.avatar}
@@ -321,5 +321,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /*Fix a long list popover body*/
+  .lui-user-menu-fiori {
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
   }
 </style>
