@@ -10,39 +10,41 @@ module.exports = {
   mode: 'production',
   entry: {
     extendedConfiguration: './src/luigi-config/extended/main.js',
-    coreStyles: './src/luigi-config/styles/index.scss',
+    coreStyles: './src/luigi-config/styles/index.scss'
   },
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'static/luigi/')
   },
   plugins: [
-    new CopyWebpackPlugin([
-      {
-        "from": "node_modules/@luigi-project/core",
-        "to": "luigi-core"
-      },   
-      {
-        "from": "node_modules/@luigi-project/client",
-        "to": "../luigi-client"
-      },
-      {
-        "from": "node_modules/docsearch.js/dist/cdn/docsearch.min.css",
-        "to": "docsearch.min.css"
-      },
-      {
-        "from": "../../docs/assets",
-        "to": "../assets"
-      },
-      {
-        "from": "sitemap.xml",
-        "to": "sitemap.xml"
-      },
-      {
-        "from": "robots.txt",
-        "to": "robots.txt"
-      }
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'node_modules/@luigi-project/core',
+          to: 'luigi-core'
+        },
+        {
+          from: 'node_modules/@luigi-project/client',
+          to: '../luigi-client'
+        },
+        {
+          from: 'node_modules/docsearch.js/dist/cdn/docsearch.min.css',
+          to: 'docsearch.min.css'
+        },
+        {
+          from: '../../docs/assets',
+          to: '../assets'
+        },
+        {
+          from: 'sitemap.xml',
+          to: 'sitemap.xml'
+        },
+        {
+          from: 'robots.txt',
+          to: 'robots.txt'
+        }
+      ]
+    }),
     new webpack.BannerPlugin(
       `
       Don't be afraid!
@@ -55,8 +57,8 @@ module.exports = {
       // all options are optional
       filename: '[name].css',
       chunkFilename: '[id].css',
-      ignoreOrder: false, // Enable to remove warnings about conflicting order
-    }),
+      ignoreOrder: false // Enable to remove warnings about conflicting order
+    })
   ],
   module: {
     rules: [
@@ -76,18 +78,18 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true,
-            },
+              sourceMap: true
+            }
           },
           // Compiles Sass to CSS
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true,
-            },
-          },
+              sourceMap: true
+            }
+          }
         ]
-      },
+      }
     ]
   }
 };
