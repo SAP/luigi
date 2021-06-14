@@ -8,4 +8,3 @@ export * from './lib/service/luigi-context-service';
 export * from './lib/service/luigi-context.service.impl';
 export * from './lib/service/luigi-auto-routing.service';
 export * from './lib/luigi-mock/luigi-mock.module';
-export * from './lib/luigi-mock/luigi-mock-util';

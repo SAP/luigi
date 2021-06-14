@@ -1,10 +1,8 @@
-import { ProtractorBrowser } from 'protractor';
-
 export class LuigiMockUtil {
   private messages: any[];
-  private browser: ProtractorBrowser;
+  private browser: any;
 
-  constructor(browser: ProtractorBrowser) {
+  constructor(browser: any) {
     this.messages = [];
     this.browser = browser;
   }
@@ -14,7 +12,7 @@ export class LuigiMockUtil {
     const elements = await this.browser.$$('#luigi-debug-vis-cnt > div').getWebElements();
 
     this.messages = (await Promise.all(
-      elements.map(async item => {
+      elements.map(async (item: any) => {
         let text = await item.getText();
         try {
           return JSON.parse(text);
@@ -27,7 +25,7 @@ export class LuigiMockUtil {
 
   // TODO - Add comments
   mockContext = (mockContext: any) => {
-    return this.browser.executeScript((mockContext: any) => {
+    this.browser.executeScript((mockContext: any) => {
       globalThis.postMessage({ msg: 'luigi.get-context', context: mockContext }, '*');
     }, mockContext);
   };

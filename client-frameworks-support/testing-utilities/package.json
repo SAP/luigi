@@ -1,0 +1,21 @@
+{
+  "name": "mock-module",
+  "version": "1.0.0",
+  "description": "Mocks Luigi Core for standalone testing of microfrontends",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "devDependencies": {
+
+    "typescript": "^4.3.2"
+  },
+  "peerDependencies" : {
+    "@angular/core": "^12.0.4"
+  }
+}

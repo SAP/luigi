@@ -1,5 +1,4 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { LuigiMockUtil } from './luigi-mock-util.impl';
 
 // @dynamic
 @NgModule({
@@ -8,8 +7,7 @@ import { LuigiMockUtil } from './luigi-mock-util.impl';
       provide: APP_INITIALIZER,
       useFactory: LuigiMockModule.initPostMessageHook,
       multi: true
-    },
-    LuigiMockUtil
+    }
   ]
 })
 

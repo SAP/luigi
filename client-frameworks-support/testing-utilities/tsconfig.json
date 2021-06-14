@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+    
+      "resolveJsonModule": true,
+      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "module": "commonjs",
+      "target": "es2015",
+      "declaration": true,
+      "outDir": "./dist",
+      "rootDir": "./"        
+    },
+    "exclude": ["node_modules"],
+    // "files": ["package.json", "./src/**"]
+  }
