@@ -13,13 +13,13 @@
 <span
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
-  on:click|preventDefault="{() => goTo('/')}"
+  on:click="{() => goTo('/')}"
 >
   {#if hasLogo}
   <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
 </span>
-{/if} {#if title} {#if !hasApps &
+{/if} {#if title} {#if !hasApps} {#if
 LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
 <a
   class="fd-shellbar__title lui-shellbar-single-app-title"
@@ -37,7 +37,7 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
 >
   {$getTranslation(title)}
 </span>
-{/if} {:else}
+{/if}{:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <button
@@ -93,7 +93,7 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
 </div>
 {/if} {#if subTitle}
 <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
-{/if}
+{/if}{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import * as Header from './services/header';
