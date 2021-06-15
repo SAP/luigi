@@ -2,7 +2,7 @@
 <a
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
-  on:click="{() => goTo('/')}"
+  on:click|preventDefault="{() => goTo('/')}"
   href="/"
 >
   {#if hasLogo}
@@ -10,25 +10,34 @@
   {/if}
 </a>
 {:else}
-<a
+<span
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
-  on:click="{() => goTo('/')}"
+  on:click|preventDefault="{() => goTo('/')}"
 >
   {#if hasLogo}
   <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
-</a>
-{/if} {#if title} {#if !hasApps}
+</span>
+{/if} {#if title} {#if !hasApps &
+LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
 <a
   class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
-  on:click="{() => goTo('/')}"
+  on:click|preventDefault="{() => goTo('/')}"
   href="/"
 >
   {$getTranslation(title)}
 </a>
 {:else}
+<span
+  class="fd-shellbar__title lui-shellbar-single-app-title"
+  data-testid="luigi-topnav-title"
+  on:click="{() => goTo('/')}"
+>
+  {$getTranslation(title)}
+</span>
+{/if} {:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
     <button
@@ -84,7 +93,7 @@
 </div>
 {/if} {#if subTitle}
 <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
-{/if} {/if}
+{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import * as Header from './services/header';
