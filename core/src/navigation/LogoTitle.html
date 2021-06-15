@@ -1,20 +1,32 @@
+{#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
 <a
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
   on:click="{() => goTo('/')}"
-  href="#"
+  href="/"
 >
   {#if hasLogo}
   <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
 </a>
-{#if title} {#if !hasApps}
+{:else}
+<a
+  class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
+  aria-label="SAP"
+  on:click="{() => goTo('/')}"
+>
+  {#if hasLogo}
+  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
+  {/if}
+</a>
+{/if} {#if title} {#if !hasApps}
 <a
   class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
-  href="#"
-  >{$getTranslation(title)}
+  href="/"
+>
+  {$getTranslation(title)}
 </a>
 {:else}
 <div class="fd-popover">
@@ -78,6 +90,7 @@
   import * as Header from './services/header';
   import { Routing } from '../services/routing';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+  import { LuigiConfig } from '../core-api';
 
   const dispatch = createEventDispatcher();
 
