@@ -1,10 +1,10 @@
 <span
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
-  aria-label="SAP"
+  aria-label="{title}"
   on:click="{() => goTo('/')}"
 >
   {#if hasLogo}
-  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
+  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="{title}" />
   {/if}
 </span>
 {#if title} {#if !hasApps}
