@@ -39,22 +39,16 @@ const packagePaths = {
   client: ['client'],
   oauth2: ['plugins', 'auth', 'src', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'src', 'auth-oidc'],
-  client_support_angular: [
-    'client-frameworks-support',
-    'client-support-angular'
-  ]
+  client_support_angular: ['client-frameworks-support', 'client-support-angular'],
+  testing_utilities: ['client-frameworks-support', 'testing-utilities']
 };
 const publishPaths = {
   core: ['core', 'public'],
   client: ['client', 'public'],
   oauth2: ['plugins', 'auth', 'public', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'public', 'auth-oidc'],
-  client_support_angular: [
-    'client-frameworks-support',
-    'client-support-angular',
-    'dist',
-    'client-support-angular'
-  ]
+  client_support_angular: ['client-frameworks-support', 'client-support-angular', 'dist', 'client-support-angular'],
+  testing_utilities: ['client-frameworks-support', 'testing-utilities', 'dist']
 };
 
 function execTrim(cmd) {
@@ -99,14 +93,10 @@ const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
       const publicPath = `${base}/${publishPaths[pkg].join('/')}`;
       const pkgJson = require(publicPath + '/package.json');
       logStep(`Publishing ${pkgJson.name}@${pkgJson.version}`);
-      const resultPublish = execTrim(
-        `npm publish ${publicPath} --access public`
-      );
+      const resultPublish = execTrim(`npm publish ${publicPath} --access public`);
       logStep(resultPublish);
       logStep('\n');
-      const resultTagNext = execTrim(
-        `npm dist-tag add ${pkgJson.name}@${pkgJson.version} next`
-      );
+      const resultTagNext = execTrim(`npm dist-tag add ${pkgJson.name}@${pkgJson.version} next`);
       logStep(resultTagNext);
       logStep(`Tagged ${pkgJson.name}@${pkgJson.version} with next on npm`);
     });

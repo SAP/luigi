@@ -1,5 +1,4 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { LuigiMockUtil } from './luigi-mock-util.impl';
 
 // @dynamic
 @NgModule({
@@ -8,8 +7,7 @@ import { LuigiMockUtil } from './luigi-mock-util.impl';
       provide: APP_INITIALIZER,
       useFactory: LuigiMockModule.initPostMessageHook,
       multi: true
-    },
-    LuigiMockUtil
+    }
   ]
 })
 
@@ -58,7 +56,8 @@ export class LuigiMockModule {
               }
 
               // vizualise retrieved event data
-              LuigiMockModule.visualize(e.data);
+              const messageToVisualize = JSON.stringify(e.data);
+              LuigiMockModule.visualize(messageToVisualize);
 
               // Check and run mocked callback if it exists
               const mockListener = (window as any).luigiMockEnvironment.mockListeners[e.data.msg];
@@ -157,19 +156,18 @@ export class LuigiMockModule {
    * This method takes a data object of type 'any' and vizualizes a simple container
    * which holds data that is useful for e2e testing.
    */
-  public static visualize(data: any): void {
+  public static visualize(data: string): void {
     let luigiVisualizationContainer: Element | null = document.querySelector('#luigi-debug-vis-cnt');
     // Construct element structure if not already constructed
     if (!luigiVisualizationContainer) {
       luigiVisualizationContainer = document.createElement('div');
       luigiVisualizationContainer.setAttribute('id', 'luigi-debug-vis-cnt');
-      // TODO: Find a more suitable way to hide the element from the end user
-      // Currently needs a workaround to work.
-      // luigiVisualizationContainer.setAttribute('style', 'overflow:hidden;height:0;');
+      // Try to hide the element from screen by making it smaller
+      luigiVisualizationContainer.setAttribute('style', 'font-size:1pt');
       document.body.appendChild(luigiVisualizationContainer);
     }
     const line: HTMLDivElement = document.createElement('div');
-    line.innerHTML = JSON.stringify(data);
+    line.innerHTML = data;
     luigiVisualizationContainer.appendChild(line);
   }
 }
