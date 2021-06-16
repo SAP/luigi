@@ -11,18 +11,22 @@ export class LuigiMockUtil {
    * Parses the elements added by LuigiMockModule into the DOM and assigns them to the local this.messages variable
    */
   async parseLuigiMockedMessages(): Promise<void> {
-    const elements = await this.browser.$$('#luigi-debug-vis-cnt > div').getWebElements();
-
-    this.messages = (await Promise.all(
-      elements.map(async (item: any) => {
-        let text = await item.getText();
-        try {
-          return JSON.parse(text);
-        } catch (error) {
-          return undefined;
-        }
-      })
-    )).filter(item => item !== undefined);
+    try {
+      const textElements: string[] = await this.browser.executeScript(() =>
+        Array.from(document.getElementById('luigi-debug-vis-cnt').childNodes).map(item => item.textContent)
+      );
+      this.messages = textElements
+        .map((item: string) => {
+          try {
+            return JSON.parse(item);
+          } catch (error) {
+            return undefined;
+          }
+        })
+        .filter(item => item !== undefined);
+    } catch (e) {
+      console.debug('Failed to parse luigi mocked messages: ', e);
+    }
   }
 
   /**

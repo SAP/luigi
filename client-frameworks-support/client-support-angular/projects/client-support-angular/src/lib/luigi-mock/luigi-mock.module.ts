@@ -162,8 +162,8 @@ export class LuigiMockModule {
     if (!luigiVisualizationContainer) {
       luigiVisualizationContainer = document.createElement('div');
       luigiVisualizationContainer.setAttribute('id', 'luigi-debug-vis-cnt');
-      // Try to hide the element from screen by making it smaller
-      luigiVisualizationContainer.setAttribute('style', 'font-size:1pt');
+      // Hide the added DOM element to avoid interferring/overlapping with other elements during testing.
+      luigiVisualizationContainer.setAttribute('style', 'display:none');
       document.body.appendChild(luigiVisualizationContainer);
     }
     const line: HTMLDivElement = document.createElement('div');
