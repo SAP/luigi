@@ -155,7 +155,7 @@
             class="fd-input"
             type="text"
             aria-label="Image label"
-            placeholder="{schemaItem.placeholder && schemaItem.placeholder}"
+            placeholder="{schemaItem.placeholder && $getTranslation(schemaItem.placeholder)}"
             data-testid="lui-us-input{i}"
             bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
@@ -181,7 +181,7 @@
                   <input
                     type="text"
                     class="fd-input fd-input-group__input"
-                    placeholder="{schemaItem.placeholder && schemaItem.placeholder}"
+                    placeholder="{schemaItem.placeholder && $getTranslation(schemaItem.placeholder)}"
                     data-testid="lui-us-input{i}"
                     value="{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}"
                     disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
