@@ -6,7 +6,13 @@
   href="/"
 >
   {#if hasLogo}
-  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
+  <img
+    data-testid="luigi-topnav-logo"
+    bind:this="{logo}"
+    alt="SAP"
+    role="button"
+    tabindex="0"
+  />
   {/if}
 </a>
 {:else}
