@@ -355,7 +355,8 @@
             aria-hidden="{!(dropDownStates.profilePopover || false)}"
             id="profilePopover"
           >
-            {#if profileTypeSettings === "Fiori3" }
+            {#if profileTypeSettings === "Fiori3" &&
+            GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true) }
             <Authorization
               on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
               on:userInfoUpdated="{userInfoUpdate}"
