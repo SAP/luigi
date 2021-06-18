@@ -91,7 +91,7 @@ If you don't specify any value for  **responsiveNavigation**, the buttons remain
 * **profileType** allows applying different layouts of Profile Menu in Shellbar once a user authorized.
 You can set the following values:
   * `simple` displays basic profile menu list of entities.
-  * `Fiori3` displays renewed profile menu layout according to Fiori 3 styleguides. It containes avatar of a user, if applicable and additional description. **since**: v1.13.0<br>
+  * `Fiori3` displays renewed profile menu layout according to Fiori 3 styleguides. It containes avatar of a user, if applicable and additional description. **since**: v1.14.0<br>
 If you don't specify any value for **profileType**, the `simple` layout will be used as a default one.
 * **burgerTooltip** allows to set and customize a tooltip for the burger, which will be rendered if **responsiveNavigation** is set to `simple` or `Fiori3`. You can set it to `true`. In that case, the default values `Expand navigation` and `Collapse navigation` will be rendered.
 It is also possible to customize the values. In that case **burgerTooltip** will be an object with the following properties:

@@ -26,6 +26,7 @@ class Auth {
           email: 'luigi.user@example.com',
           avatar: '/assets/favicon-sap.ico',
           description: 'Luigi Expert'
+          //icon: true
         });
       });
     }
