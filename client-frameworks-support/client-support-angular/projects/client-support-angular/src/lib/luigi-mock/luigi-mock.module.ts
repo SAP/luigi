@@ -56,7 +56,7 @@ export class LuigiMockModule {
               }
 
               // vizualise retrieved event data
-              const messageToVisualize = e.data.msg ? e.data : undefined;
+              const messageToVisualize = typeof e.data == 'object' ? e.data : undefined;
               LuigiMockModule.visualize(JSON.stringify(messageToVisualize));
 
               // Check and run mocked callback if it exists
