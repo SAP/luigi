@@ -15,7 +15,7 @@ class UserSettings {
       icon: 'account',
       title: 'User Account',
       settings: {
-        name: { type: 'string', label: 'Name' },
+        name: { type: 'string', label: 'Name', placeholder: 'Name' },
         email: { type: 'string', label: 'E-Mail', isEditable: false },
         server: { type: 'string', label: 'Server', isEditable: false },
         checkbox: {
@@ -46,10 +46,11 @@ class UserSettings {
         language: {
           type: 'enum',
           label: 'Language and Region',
+          placeholder: 'Language and Region',
           options: [{ value: 'de', label: 'German' }, { value: 'en', label: 'English' }, 'Spanish', 'French'],
           description: 'After you save your settings, the browser will refresh for the new language to take effect.'
         },
-        date: { type: 'string', label: 'Date Format' },
+        date: { type: 'string', label: 'Date Format', placeholder: 'DD-MM-YYYY' },
         time: {
           type: 'enum',
           style: 'button',
@@ -65,7 +66,8 @@ class UserSettings {
       settings: {
         policy: {
           type: 'string',
-          label: 'Privacy policy has not been defined.'
+          label: 'Privacy policy has not been defined.',
+          placeholder: '...'
         },
         time: {
           type: 'enum',
