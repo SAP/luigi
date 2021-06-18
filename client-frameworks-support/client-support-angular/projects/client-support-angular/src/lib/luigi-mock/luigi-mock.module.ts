@@ -56,8 +56,7 @@ export class LuigiMockModule {
               }
 
               // vizualise retrieved event data
-              const messageToVisualize = typeof e.data == 'object' ? e.data : undefined;
-              LuigiMockModule.visualize(JSON.stringify(messageToVisualize));
+              LuigiMockModule.visualize(JSON.stringify(e.data));
 
               // Check and run mocked callback if it exists
               const mockListener = (window as any).luigiMockEnvironment.mockListeners[e.data.msg];
@@ -167,7 +166,7 @@ export class LuigiMockModule {
       document.body.appendChild(luigiVisualizationContainer);
     }
     const line: HTMLDivElement = document.createElement('div');
-    line.innerHTML = data;
+    line.textContent = data;
     luigiVisualizationContainer.appendChild(line);
   }
 }
