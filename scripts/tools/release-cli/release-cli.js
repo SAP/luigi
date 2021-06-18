@@ -57,7 +57,7 @@ const pkgJsonPaths = {
     'client-support-angular',
     'package.json'
   ),
-  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing_utilities', 'dist', 'package.json')
+  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'dist', 'package.json')
 };
 
 const installPaths = {
@@ -65,7 +65,7 @@ const installPaths = {
   client: path.resolve(base, 'client'),
   plugins: path.resolve(base, 'plugins'),
   client_support_angular: path.resolve(base, 'client-frameworks-support', 'client-support-angular'),
-  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing_utilities')
+  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities')
 };
 
 /**
