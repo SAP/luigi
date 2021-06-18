@@ -9,7 +9,8 @@
     "build": "npm run clean && tsc && npm run copy",
     "prepare": "npm run build",
     "copy": "ncp package.json ./dist/pacakge.json && ncp README.md ./dist/README.md",
-    "clean": "del-cli  ./dist"
+    "clean": "del-cli  ./dist",
+    "bundle": "npm run build"
   },
   "types": "dist/index.d.ts",
   "publishConfig": {

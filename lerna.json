@@ -10,6 +10,7 @@
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
     "client-frameworks-support/client-support-angular",
+    "client-frameworks-support/testing-utilities",
     "test/e2e-test-application",
     "test/e2e-test-application/externalMf",
     "website/fiddle"
