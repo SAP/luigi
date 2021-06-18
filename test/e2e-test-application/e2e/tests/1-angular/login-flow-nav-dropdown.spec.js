@@ -12,22 +12,6 @@ describe('Login Flow', () => {
     cy.get('[data-testid="luigi-topnav-profile-username"]').should('contain', 'Luigi User');
   });
 
-  it('User description in profile dropdown', () => {
-    cy.login('tets@email.com', 'tets');
-
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-description"]').should('contain', 'Luigi Expert');
-  });
-
-  it('Profile avatar instead of user initials or icon', () => {
-    cy.login('tets@email.com', 'tets');
-
-    cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.get('[data-testid="luigi-topnav-profile-avatar"]').should('exist');
-    cy.get('[data-testid="luigi-topnav-profile-initials"]').should('not.exist');
-    cy.get('[data-testid="luigi-topnav-profile-icon"]').should('not.exist');
-  });
-
   it('Link in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
