@@ -52,6 +52,73 @@ describe('Navigation', () => {
     const setting_date_format = 'df_' + new Date().getTime();
     const setting_privacy_policy = 'privacy_policy_' + new Date().getTime();
 
+    it('Fill Account, Language and Reason, Privacy, should have placeholder', () => {
+      //Click on User Account
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(0)
+        .click();
+
+      //Check User Account is selected
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(0)
+        .should('have.class', 'is-selected');
+
+      //Check Name Input exist
+      cy.get('[data-testid="lui-us-input0"]').should('exist');
+
+      //Check Name Input has placeholder
+      cy.get('[data-testid="lui-us-input0"]')
+        .invoke('attr', 'placeholder')
+        .should('contain', 'Name');
+
+      //Click on Language & Region
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(1)
+        .click();
+
+      //Check Language & Region is selected
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(1)
+        .should('have.class', 'is-selected');
+
+      //Check Language and Region Input exist
+      cy.get('[data-testid="lui-us-input0"]').should('exist');
+
+      //Check Language and Region Input has placeholder
+      cy.get('[data-testid="lui-us-input0"]')
+        .invoke('attr', 'placeholder')
+        .should('contain', 'Language and Region');
+
+      //Check Date Format Input exist
+      cy.get('[data-testid="lui-us-input1"]').should('exist');
+
+      //Check Date Format Input has placeholder
+      cy.get('[data-testid="lui-us-input1"]')
+        .invoke('attr', 'placeholder')
+        .should('contain', 'DD-MM-YYYY');
+
+      //Click on Privacy
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(2)
+        .click();
+
+      //Click on Privacy
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(2)
+        .should('have.class', 'is-selected');
+
+      //Check Private Policy Input exist
+      cy.get('[data-testid="lui-us-input0"]').should('exist');
+
+      //Check Private Policy Input has placeholder
+      cy.get('[data-testid="lui-us-input0"]')
+        .invoke('attr', 'placeholder')
+        .should('contain', '...');
+
+      //Close settings
+      closeSettings();
+    });
+
     it('Fill Account and save; reopen and check saved value', () => {
       //Click on User Account
       cy.get('[data-testid="us-navigation-item"]')
@@ -169,9 +236,7 @@ describe('Navigation', () => {
         .click();
 
       // //Check Private Policy Input field exist and placeholder is
-      cy.get('[data-testid="lui-us-input0"]')
-        .should('exist');
-      
+      cy.get('[data-testid="lui-us-input0"]').should('exist');
 
       //Check Private Policy Input field exist and placeholder is
       cy.get('[data-testid="lui-us-input0"]').type(setting_privacy_policy);
