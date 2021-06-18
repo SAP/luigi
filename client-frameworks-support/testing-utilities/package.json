@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && npm run copy",
     "prepare": "npm run build",
-    "copy": "ncp package.json ./dist/pacakge.json && ncp README.md ./dist/README.md",
+    "copy": "ncp package.json ./dist/package.json && ncp README.md ./dist/README.md",
     "bundle": "npm run build"
   },
   "types": "dist/index.d.ts",
