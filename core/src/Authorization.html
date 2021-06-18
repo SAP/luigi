@@ -2,12 +2,12 @@
 <div class="fd-user-menu__body lui-user-menu-fiori">
   {#if showUserInfo}
   <div class="fd-user-menu__header">
-    {#if userInfo.avatar}
+    {#if userInfo.picture}
     <span
       class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
       aria-label="Avatar"
       data-testid="luigi-topnav-profile-avatar"
-      style="background-image:url('{userInfo.avatar}')"
+      style="background-image:url('{userInfo.picture}')"
     ></span>
     {:else}
     <span
@@ -327,5 +327,7 @@
   .lui-user-menu-fiori {
     max-height: calc(100vh - 90px);
     overflow-y: auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 </style>

@@ -22,9 +22,9 @@ class Auth {
       return new Promise(resolve => {
         resolve({
           name: 'Luigi User',
-          initials: 'LU',
+          initials: '',
           email: 'luigi.user@example.com',
-          avatar: '/assets/favicon-sap.ico',
+          picture: '/assets/favicon-sap.ico',
           description: 'Luigi Expert'
           //icon: true
         });

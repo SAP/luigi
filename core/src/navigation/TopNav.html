@@ -302,12 +302,14 @@
     <!-- closes {#if children && pathData.length > 0} -->
     {#if authorizationEnabled || profileItemsAvailable}
     <div
-      class="fd-shellbar__action fd-shellbar__action--show-always lui-user-menu"
+      class="fd-shellbar__action fd-shellbar__action--show-always"
       data-testid="luigi-topnav-profile"
     >
+      {#if profileTypeSettings === "Fiori3" &&
+      GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true) }
       <div class="fd-popover fd-popover--right fd-user-menu">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-          {#if userInfo.avatar}
+          {#if userInfo.picture}
           <span
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-controls="profilePopover"
@@ -316,60 +318,77 @@
             aria-label="Avatar"
             role="button"
             tabindex="0"
-            style="background-image:url('{userInfo.avatar}')"
+            style="background-image:url('{userInfo.picture}')"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-btn"
           ></span>
           {:else}
-          <div
-            class="fd-button fd-shellbar__button"
-            aria-expanded="{dropDownStates.profilePopover || false}"
+          <span
+            class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
+            aria-expanded="true"
             aria-haspopup="true"
-            on:click="{() => toggleDropdownState('profilePopover')}"
+            aria-label="Avatar"
             role="button"
             tabindex="0"
-            data-testid="luigi-topnav-profile-btn"
+            on:click="{() => toggleDropdownState('profilePopover')}"
+            data-testid="luigi-topnav-profile-initials"
           >
-            {#if userInfo.icon}
-            <i
-              class="sap-icon sap-icon--customer"
-              data-testid="luigi-topnav-profile-icon"
-            ></i>
-            {/if} {#if !userInfo.icon}
-            <span
-              class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
-              aria-expanded="true"
-              aria-haspopup="true"
-              aria-label="Avatar"
-              role="button"
-              tabindex="0"
-              data-testid="luigi-topnav-profile-initials"
-            >
-              {userInitials}
-            </span>
-            {/if}
-          </div>
+            {userInfo.initials}
+          </span>
           {/if}
+        </div>
+        <div
+          class="fd-popover__body fd-popover__body--right"
+          aria-hidden="{!(dropDownStates.profilePopover || false)}"
+          id="profilePopover"
+        >
+          <Authorization
+            on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
+            on:userInfoUpdated="{userInfoUpdate}"
+          />
+        </div>
+      </div>
+      {:else}
+      <div class="fd-user-menu">
+        <div class="fd-popover">
+          <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+            <div class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }">
+              <div
+                class="fd-button fd-shellbar__button"
+                aria-expanded="{dropDownStates.profilePopover || false}"
+                aria-haspopup="true"
+                on:click="{() => toggleDropdownState('profilePopover')}"
+                title="{userInfo.name ? userInfo.name : userInfo.email}"
+                role="button"
+                tabindex="0"
+                data-testid="luigi-topnav-profile-btn"
+              >
+                {#if userInfo.picture}
+                <span
+                  class="fd-avatar fd-avatar--xs fd-avatar--circle"
+                  style="background-image:url('{userInfo.picture}')"
+                ></span>
+                {:else}
+                <i
+                  class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                ></i>
+                {/if}
+              </div>
+            </div>
+          </div>
           <div
             class="fd-popover__body fd-popover__body--right"
             aria-hidden="{!(dropDownStates.profilePopover || false)}"
             id="profilePopover"
           >
-            {#if profileTypeSettings === "Fiori3" &&
-            GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true) }
-            <Authorization
-              on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
-              on:userInfoUpdated="{userInfoUpdate}"
-            />
-            {:else}
             <AuthorizationSimpleProfileMenu
               on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
               on:userInfoUpdated="{userInfoUpdate}"
             />
-            {/if}
           </div>
         </div>
       </div>
+      {/if}
     </div>
     {/if} {#if isProductSwitcherAvailable}
     <ProductSwitcher
@@ -441,7 +460,6 @@
   export let searchResult;
   export let burgerTooltip;
 
-  let userInitials = '';
   let store = getContext('store');
   let contextSwitcherToggle = false;
   let selectedLabel;
@@ -650,10 +668,6 @@
     const uInfo = event.detail;
     userInfo = uInfo ? uInfo : {};
   }
-
-  export function readInitialsOfUser(event) {
-    userInitials = event.detail;
-  }
 </script>
 
 <style type="text/scss">
@@ -717,5 +731,10 @@
     display: inline-block;
     vertical-align: middle;
     min-width: 16px;
+  }
+
+  .fd-user-menu .fd-shellbar__button {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 </style>
