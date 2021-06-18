@@ -1,5 +1,8 @@
 <svelte:window on:resize="{onResize}" />
-<div id="app" class="{hideNav? 'no-nav' : ''} {hideSideNav? 'no-side-nav':''}">
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':''} {noAnimation?'no-animation':''}"
+>
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
   {/if} {#if mfModal.displayed}
@@ -378,6 +381,7 @@
       },
       set: obj => {
         if (obj) {
+          noAnimation = false;
           Object.getOwnPropertyNames(obj).forEach(prop => {
             if (prop === 'hideNav') {
               hideNav = obj.hideNav;
@@ -398,6 +402,12 @@
             } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
             } else if (prop === 'hideSideNav') {
+              if (hideSideNav && !obj.hideSideNav) {
+                noAnimation = true;
+                setTimeout(() => {
+                  document.querySelector('#app').classList.remove('no-animation');
+                });
+              }
               hideSideNav = obj.hideSideNav;
             } else if (prop === 'isolateView') {
               isolateView = obj.isolateView;
@@ -724,6 +734,7 @@
 
   let hideNav;
   let hideSideNav;
+  let noAnimation;
   let previousWindowWidth;
 
   const closeLeftNav = () => {
