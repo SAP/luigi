@@ -16,7 +16,7 @@ cache:
     - $TRAVIS_BUILD_DIR/website/fiddle/public
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
-    - $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities
+    - $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist
     - $HOME/.cache/Cypress
 notifications:
   slack:
