@@ -108,7 +108,7 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 
 ## How to obtain support
 
-If you have further questions about Luigi, you can contact us on our [Slack channel](luigi-project.slack.com). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
+If you have further questions about Luigi, you can contact us on our [Slack channel](https://slack.luigi-project.io/). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
 
 ## Contributing
 
