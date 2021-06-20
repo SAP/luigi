@@ -137,4 +137,9 @@ if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/clie
   publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
 fi
 
+if ( prepublishCheck "client-frameworks-support/testing-utilities/dist"); then
+  checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
+  publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
+fi
+
 removeNpmToken
