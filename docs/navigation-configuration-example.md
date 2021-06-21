@@ -140,7 +140,7 @@ Luigi.setConfig({
     },
     profile: {
       logout: {
-        label: 'Sign Out',
+        label: 'End Session',
         // icon: "sys-cancel",
         testId: 'myTestId',
         customLogoutFn: myLogoutFn

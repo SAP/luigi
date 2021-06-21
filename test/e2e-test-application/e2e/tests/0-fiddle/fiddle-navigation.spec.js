@@ -316,7 +316,8 @@ describe('Fiddle', () => {
       it('Profile, logged in', () => {
         newConfig.navigation.profile = {
           logout: {
-            label: 'Bye bye'
+            label: 'Bye bye',
+            icon: 'sys-cancel'
           }
         };
         newConfig.auth.disableAutoLogin = false;
