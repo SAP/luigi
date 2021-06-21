@@ -386,7 +386,7 @@ class Navigation {
       .filter(project => project.id !== 'tabNav')
       .forEach(project => {
         items.push({
-          icon: '',
+          icon: 'home',
           label: project.name,
           link: '/projects/' + project.id
         });

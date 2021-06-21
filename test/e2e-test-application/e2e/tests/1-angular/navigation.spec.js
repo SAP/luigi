@@ -1027,7 +1027,7 @@ describe('Navigation', () => {
       it('not render Fiori3 profile in Shellbar when experimental is equal false', () => {
         cy.window().then(win => {
           const config = win.Luigi.getConfig();
-          config.settings.profileType = '';
+          config.settings.profileType = 'Fiori3';
           config.settings.experimental = { profileMenuFiori3: false };
           win.Luigi.configChanged();
 
@@ -1046,7 +1046,11 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]')
+            .should('exist')
+            .click();
+
+          cy.wait(1000);
           cy.get('.lui-user-menu-fiori').should('be.visible');
           cy.get('.lui-profile-simple-menu').should('not.be.visible');
         });
@@ -1059,7 +1063,11 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]')
+            .should('exist')
+            .click();
+
+          cy.wait(1000);
           cy.get('[data-testid="luigi-topnav-profile-avatar"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-initials"]').should('not.exist');
           cy.get('[data-testid="luigi-topnav-profile-icon"]').should('not.exist');
