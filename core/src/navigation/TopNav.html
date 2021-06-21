@@ -305,6 +305,50 @@
       class="fd-shellbar__action fd-shellbar__action--show-always"
       data-testid="luigi-topnav-profile"
     >
+      {#if profileTypeSettings === "Fiori3" &&
+      GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true) }
+      <div class="fd-popover fd-popover--right fd-user-menu">
+        <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+          {#if userInfo.picture}
+          <span
+            class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
+            aria-controls="profilePopover"
+            aria-expanded="true"
+            aria-haspopup="true"
+            aria-label="Avatar"
+            role="button"
+            tabindex="0"
+            style="background-image:url('{userInfo.picture}')"
+            on:click="{() => toggleDropdownState('profilePopover')}"
+            data-testid="luigi-topnav-profile-btn"
+          ></span>
+          {:else}
+          <span
+            class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
+            aria-expanded="true"
+            aria-haspopup="true"
+            aria-label="Avatar"
+            role="button"
+            tabindex="0"
+            on:click="{() => toggleDropdownState('profilePopover')}"
+            data-testid="luigi-topnav-profile-initials"
+          >
+            {userInfo.initials}
+          </span>
+          {/if}
+        </div>
+        <div
+          class="fd-popover__body fd-popover__body--right"
+          aria-hidden="{!(dropDownStates.profilePopover || false)}"
+          id="profilePopover"
+        >
+          <Authorization
+            on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
+            on:userInfoUpdated="{userInfoUpdate}"
+          />
+        </div>
+      </div>
+      {:else}
       <div class="fd-user-menu">
         <div class="fd-popover">
           <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
@@ -331,19 +375,20 @@
                 {/if}
               </div>
             </div>
-            <div
-              class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
-              aria-hidden="{!(dropDownStates.profilePopover || false)}"
-              id="profilePopover"
-            >
-              <Authorization
-                on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
-                on:userInfoUpdated="{userInfoUpdate}"
-              />
-            </div>
+          </div>
+          <div
+            class="fd-popover__body fd-popover__body--right"
+            aria-hidden="{!(dropDownStates.profilePopover || false)}"
+            id="profilePopover"
+          >
+            <AuthorizationSimpleProfileMenu
+              on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
+              on:userInfoUpdated="{userInfoUpdate}"
+            />
           </div>
         </div>
       </div>
+      {/if}
     </div>
     {/if} {#if isProductSwitcherAvailable}
     <ProductSwitcher
@@ -355,7 +400,7 @@
   </div>
 </div>
 {:else}
-<Authorization
+<AuthorizationSimpleProfileMenu
   on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
   isHidden="{true}"
 />
@@ -364,6 +409,7 @@
   import LogoTitle from './LogoTitle.html';
   import BadgeCounter from './BadgeCounter.html';
   import Authorization from '../Authorization.html';
+  import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.html';
   import TopNavDropDown from '../TopNavDropDown.html';
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
@@ -387,6 +433,7 @@
   export let isLoggedIn = false;
   export let hideNavComponent;
   export let responsiveNavSetting;
+  export let profileTypeSettings;
   export let showGlobalNav;
   export let pathData;
   let previousPathData;
@@ -449,6 +496,7 @@
         responsiveNavSetting = LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
+        profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
         showGlobalNav =
@@ -685,12 +733,8 @@
     min-width: 16px;
   }
 
-  .fd-popover__body {
-    &.fd-popover__body--right {
-      &:before,
-      &:after {
-        right: 14px;
-      }
-    }
+  .fd-user-menu .fd-shellbar__button {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 </style>
