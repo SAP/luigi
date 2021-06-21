@@ -275,7 +275,7 @@ describe('Fiddle', () => {
             name: 'Static User',
             initials: 'LU',
             email: 'other.luigi.user@example.com',
-            avatar: '/assets/favicon-sap.ico',
+            picture: '/assets/favicon-sap.ico',
             icon: false
           })
         };

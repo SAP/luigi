@@ -29,7 +29,7 @@ class Auth {
           name: 'Luigi User',
           initials: 'LU',
           email: 'luigi.user@example.com',
-          //avatar: '/assets/favicon-sap.ico',
+          //picture: '/assets/favicon-sap.ico',
           description: 'Expert',
           icon: true
         });
