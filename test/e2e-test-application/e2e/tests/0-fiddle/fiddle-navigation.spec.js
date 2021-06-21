@@ -194,10 +194,10 @@ describe('Fiddle', () => {
   });
   describe('Show-hide of Logout & Login Buttons', () => {
     const loginLink = () => {
-      return cy.get('[data-testid="login-link"]');
+      return cy.get('[data-testid="login-btn"]');
     };
     const logoutLink = () => {
-      return cy.get('[data-testid="logout-link"]');
+      return cy.get('[data-testid="logout-btn"]');
     };
     describe('No Auth', () => {
       beforeEach(() => {
@@ -207,12 +207,7 @@ describe('Fiddle', () => {
           logout: {
             label: 'Bye bye',
             icon: 'sys-cancel'
-          },
-          staticUserInfoFn: () => ({
-            name: 'Static User',
-            email: 'other.luigi.user@example.com',
-            picture: '/assets/github-logo.png'
-          })
+          }
         };
         cy.visitWithFiddleConfig('/home/two', newConfig);
       });
@@ -274,9 +269,15 @@ describe('Fiddle', () => {
         };
         newConfig.navigation.profile = {
           logout: {
-            label: 'Bye bye',
-            icon: 'sys-cancel'
-          }
+            label: 'Bye bye'
+          },
+          staticUserInfoFn: () => ({
+            name: 'Static User',
+            initials: 'LU',
+            email: 'other.luigi.user@example.com',
+            picture: '/assets/favicon-sap.ico',
+            icon: false
+          })
         };
       });
 
@@ -288,6 +289,7 @@ describe('Fiddle', () => {
         logoutLink().should('not.exist');
         loginLink().should('exist');
       });
+
       it('No Profile, no auto-login, logged out and login', () => {
         newConfig.auth.disableAutoLogin = true;
         newConfig.navigation.profile = undefined;
@@ -367,6 +369,7 @@ describe('Fiddle', () => {
 
         cy.contains('Login again');
       });
+
       it('User settings in profile menu with custom label', () => {
         newConfig.settings = {
           userSettings: {
