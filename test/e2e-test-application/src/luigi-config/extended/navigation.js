@@ -386,7 +386,7 @@ class Navigation {
       .filter(project => project.id !== 'tabNav')
       .forEach(project => {
         items.push({
-          icon: 'home',
+          icon: '',
           label: project.name,
           link: '/projects/' + project.id
         });
@@ -407,7 +407,7 @@ class Navigation {
           name: 'Static User',
           initials: 'LU',
           email: 'other.luigi.user@example.com',
-          avatar: '/assets/favicon-sap.ico',
+          picture: '/assets/favicon-sap.ico',
           description: 'Luigi Developer'
         });
       });
