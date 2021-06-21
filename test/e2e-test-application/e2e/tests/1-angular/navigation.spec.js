@@ -1046,9 +1046,7 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
-            .should('exist')
-            .click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('be.visible');
           cy.get('.lui-profile-simple-menu').should('not.be.visible');
         });
@@ -1061,9 +1059,7 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
-            .should('exist')
-            .click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('[data-testid="luigi-topnav-profile-avatar"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-initials"]').should('not.exist');
           cy.get('[data-testid="luigi-topnav-profile-icon"]').should('not.exist');
