@@ -57,7 +57,8 @@ const pkgJsonPaths = {
     'client-support-angular',
     'package.json'
   ),
-  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'dist', 'package.json')
+  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'dist', 'package.json'),
+  testing_utilities_src: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'package.json')
 };
 
 const installPaths = {
