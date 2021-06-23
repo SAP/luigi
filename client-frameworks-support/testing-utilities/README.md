@@ -1,4 +1,4 @@
-## Luigi Testing Utilities
+# Luigi Testing Utilities
 
 Luigi Testing Utilities is a set of auxiliary functions used to enhance the user experience while testing Luigi based micro frontends. The functions abstract away Luigi specific logic from the tester so that it is easier for them to mock and assert Luigi functionality. 
 
