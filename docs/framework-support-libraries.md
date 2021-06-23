@@ -210,7 +210,7 @@ describe('Another test', () => {
 ```
 
 #### Functions provided
-- **mockContext**: Mocks the context by sending luigi context messegaes with the desired mocked context as parameter. 
+- **mockContext**: Mocks the context by sending Luigi context messages with the desired mocked context as parameter. 
 - **mockPathExists**: This method serves as a mock for the luigi client pathExists() function. It is used in e2e tests when component being tested utilizes a call to `LuigiClient.linkManager().pathExists()`
 - **modalOpenedWithTitle**: Checks on the printed DOM Luigi message responses for a modal with given title having been opened. In such a case a message would be printed containing a modal.title. Returns false if not such element was found.
 - **getMSG**: Return list of messages, representing message elements added in the DOM for testing. 
