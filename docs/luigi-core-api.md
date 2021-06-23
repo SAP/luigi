@@ -225,7 +225,7 @@ Luigi.reset();
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.14.0
 
 ## Luigi.elements()
 

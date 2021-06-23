@@ -24,6 +24,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+## [v1.14.0](2021-06-21)
+
+#### :rocket: Added
+
+- [#2074](https://github.com/SAP/luigi/pull/2074) Update FD Styles from v0.17 to v0.18 ([@UlianaMunich](https://github.com/UlianaMunich))
+- [#2088](https://github.com/SAP/luigi/pull/2088) Extend Luigi Emulator functionality ([@ndricimrr](https://github.com/ndricimrr))
+- [#2089](https://github.com/SAP/luigi/pull/2089) Add user settings placeholder ([@rafalgamon](https://github.com/rafalgamon))
+- [#2092](https://github.com/SAP/luigi/pull/2092) Reset luigi via core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+
+- [#2094](https://github.com/SAP/luigi/pull/2094) Fix hardcode LogoTitle aria-label and alt text ([@rafalgamon](https://github.com/rafalgamon))
+- [#2081](https://github.com/SAP/luigi/pull/2081) Make Logo and App title an anchor in Shellbar ([@UlianaMunich](https://github.com/UlianaMunich))
+- [#2084](https://github.com/SAP/luigi/pull/2084) WC nested fix ([@hardl](https://github.com/hardl))
+
 ## [v1.13.0](2021-06-07)
 
 #### :boom: Breaking Change
@@ -1114,3 +1129,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.12.0]: https://github.com/SAP/luigi/compare/v1.11.0...v1.12.0
 [v1.12.1]: https://github.com/SAP/luigi/compare/v1.12.0...v1.12.1
 [v1.13.0]: https://github.com/SAP/luigi/compare/v1.12.1...v1.13.0
+[v1.14.0]: https://github.com/SAP/luigi/compare/v1.13.0...v1.14.0
