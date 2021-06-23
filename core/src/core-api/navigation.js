@@ -73,7 +73,7 @@ class LuigiNavigationManager {
    * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
    */
   openAsSplitView(path, splitViewSettings = {}) {
-    Luigi.splitView.openAsSplitView(path, splitViewSettings); //let's just comment a place
+    Luigi.splitView.openAsSplitView(path, splitViewSettings); //let's 2
     return Luigi.splitView.splitViewHandle;
   }
 
