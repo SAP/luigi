@@ -2,7 +2,7 @@
 
 The Luigi Testing Utilities are a set of auxiliary functions used to enhance the user experience while testing Luigi-based micro frontends. The functions abstract away Luigi-specific logic from the tester so that it is easier for them to mock and assert Luigi functionality. 
 
-### LuigiMockUtil 
+## LuigiMockUtil 
 This class contains certain utility helper functions needed when writing [protractor](https://www.npmjs.com/package/protractor) based e2e tests. You can simply import this module into you project and then use an instance of it to test microfrontend functionality. 
 
 ### How to use the library
