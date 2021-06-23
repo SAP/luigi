@@ -7,7 +7,7 @@ This class contains certain utility helper functions needed when writing [protra
 
 ### How to use the library
 
-**Prerequisites:**
+### Prerequisites
 _In order to use this utility library you need to import LuigiMockModule into your Angular applications entry point. See more [here](https://docs.luigi-project.io/docs/framework-support-libraries/?section=luigicontextservice)_
 
 
