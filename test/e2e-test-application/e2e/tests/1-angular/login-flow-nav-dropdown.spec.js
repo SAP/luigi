@@ -5,7 +5,7 @@ describe('Login Flow', () => {
     });
   });
 
-  it('Username in profile dropdown', () => {
+  it('User name in profile dropdown', () => {
     cy.login('tets@email.com', 'tets');
 
     cy.get('[data-testid="luigi-topnav-profile"]').click();
@@ -16,8 +16,9 @@ describe('Login Flow', () => {
     cy.login('tets@email.com', 'tets');
 
     cy.get('[data-testid="luigi-topnav-profile"]').click();
+    cy.get('[data-testid="luigi-topnav-profile-item"]').contains('Project One');
     cy.get('[data-testid="luigi-topnav-profile-item"]')
-      .contains('Project One')
+      .eq(1)
       .click();
 
     cy.expectPathToBe('/projects/pr1');
@@ -71,7 +72,7 @@ describe('Login Flow', () => {
 
     //logout
     cy.get('[data-testid="luigi-topnav-profile"]').click();
-    cy.contains('End session').click();
+    cy.contains('Sign Out').click();
     cy.get('[data-testid="logout-headline"]').should('contain', 'You have successfully logged out');
     cy.get('[data-testid="logout-message"]').should('contain', 'Sign in again to continue working on awesome things!');
     cy.expectPathToBe('/logout.html');

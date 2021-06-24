@@ -1007,4 +1007,69 @@ describe('Navigation', () => {
       });
     });
   });
+
+  describe('ProfileMenu Fiori 3 Style', () => {
+    context('Desktop', () => {
+      it('not render Fiori3 profile in Shellbar when profileType is equal "simple"', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.profileType = 'simple';
+          win.Luigi.configChanged();
+
+          cy.get('[data-testid="luigi-topnav-profile-btn"]')
+            .should('exist')
+            .click();
+          cy.get('.lui-user-menu-fiori').should('not.be.visible');
+          cy.get('.lui-profile-simple-menu').should('be.visible');
+        });
+      });
+
+      it('not render Fiori3 profile in Shellbar when experimental is equal false', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.profileType = 'Fiori3';
+          config.settings.experimental = { profileMenuFiori3: false };
+          win.Luigi.configChanged();
+
+          cy.get('[data-testid="luigi-topnav-profile-btn"]')
+            .should('exist')
+            .click();
+          cy.get('.lui-user-menu-fiori').should('not.be.visible');
+          cy.get('.lui-profile-simple-menu').should('be.visible');
+        });
+      });
+
+      it('should render Fiori3 profile in Shellbar when profileType is equal "Fiori3"', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.profileType = 'Fiori3';
+          config.settings.experimental = { profileMenuFiori3: true };
+          win.Luigi.configChanged();
+          cy.wait(1000);
+
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+          cy.get('.lui-user-menu-fiori').should('be.visible');
+          cy.get('.lui-profile-simple-menu').should('not.be.visible');
+        });
+      });
+
+      it('should have User Description and Avatar when Fiori3 Profile Menu is enabled', () => {
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.settings.profileType = 'Fiori3';
+          config.settings.experimental = { profileMenuFiori3: true };
+          win.Luigi.configChanged();
+
+          cy.wait(1000);
+
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
+          cy.get('[data-testid="luigi-topnav-profile-avatar"]').should('exist');
+          cy.get('[data-testid="luigi-topnav-profile-initials"]').should('not.exist');
+          cy.get('[data-testid="luigi-topnav-profile-icon"]').should('not.exist');
+        });
+      });
+    });
+  });
 });
