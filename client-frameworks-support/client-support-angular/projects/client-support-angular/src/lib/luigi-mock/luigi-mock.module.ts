@@ -56,7 +56,7 @@ export class LuigiMockModule {
               }
 
               // vizualise retrieved event data
-              LuigiMockModule.visualize(e.data);
+              LuigiMockModule.visualize(JSON.stringify(e.data));
 
               // Check and run mocked callback if it exists
               const mockListener = (window as any).luigiMockEnvironment.mockListeners[e.data.msg];
@@ -67,11 +67,16 @@ export class LuigiMockModule {
           },
           mockListeners: {
             'luigi.navigation.pathExists': (event: any) => {
+              const mockData = window.sessionStorage.getItem('luigiMockData');
+              let mockDataParsed = mockData ? JSON.parse(mockData) : undefined;
+              const inputPath = event.data.data.link;
+              const pathExists = mockDataParsed && mockDataParsed.pathExists && mockDataParsed.pathExists[inputPath];
+
               const response = {
                 msg: 'luigi.navigation.pathExists.answer',
                 data: {
                   correlationId: event.data.data.id,
-                  pathExists: true
+                  pathExists: pathExists ? pathExists : false
                 },
                 emulated: true
               };
@@ -150,19 +155,18 @@ export class LuigiMockModule {
    * This method takes a data object of type 'any' and vizualizes a simple container
    * which holds data that is useful for e2e testing.
    */
-  public static visualize(data: any): void {
+  public static visualize(data: string): void {
     let luigiVisualizationContainer: Element | null = document.querySelector('#luigi-debug-vis-cnt');
     // Construct element structure if not already constructed
     if (!luigiVisualizationContainer) {
       luigiVisualizationContainer = document.createElement('div');
       luigiVisualizationContainer.setAttribute('id', 'luigi-debug-vis-cnt');
-      // TODO: Find a more suitable way to hide the element from the end user
-      // Currently needs a workaround to work.
-      // luigiVisualizationContainer.setAttribute('style', 'overflow:hidden;height:0;');
+      // Hide the added DOM element to avoid interferring/overlapping with other elements during testing.
+      luigiVisualizationContainer.setAttribute('style', 'display:none');
       document.body.appendChild(luigiVisualizationContainer);
     }
     const line: HTMLDivElement = document.createElement('div');
-    line.innerHTML = JSON.stringify(data);
+    line.textContent = data;
     luigiVisualizationContainer.appendChild(line);
   }
 }

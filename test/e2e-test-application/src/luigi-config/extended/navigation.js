@@ -397,16 +397,18 @@ class Navigation {
 
   profile = {
     logout: {
-      label: 'End session'
+      label: 'Sign Out'
       // icon: "sys-cancel",
     },
     items: this.getProfileItems,
     staticUserInfoFn: () => {
       return new Promise(resolve => {
         resolve({
-          name: 'Luigi Static User',
+          name: 'Static User',
+          initials: 'LU',
           email: 'other.luigi.user@example.com',
-          picture: '/assets/github-logo.png'
+          picture: '/assets/favicon-sap.ico',
+          description: 'Luigi Developer'
         });
       });
     }

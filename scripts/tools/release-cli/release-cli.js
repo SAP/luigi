@@ -39,22 +39,8 @@ const pkgJsonPaths = {
   coreIE11: path.resolve(base, 'core', 'public-ie11', 'package.json'),
   client: path.resolve(base, 'client', 'public', 'package.json'),
   clientIE11: path.resolve(base, 'client', 'public-ie11', 'package.json'),
-  authOAuth2: path.resolve(
-    base,
-    'plugins',
-    'auth',
-    'public',
-    'auth-oauth2',
-    'package.json'
-  ),
-  authOIDC: path.resolve(
-    base,
-    'plugins',
-    'auth',
-    'public',
-    'auth-oidc',
-    'package.json'
-  ),
+  authOAuth2: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oauth2', 'package.json'),
+  authOIDC: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oidc', 'package.json'),
   client_support_angular: path.resolve(
     base,
     'client-frameworks-support',
@@ -70,32 +56,28 @@ const pkgJsonPaths = {
     'projects',
     'client-support-angular',
     'package.json'
-  )
+  ),
+  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'dist', 'package.json'),
+  testing_utilities_src: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'package.json')
 };
 
 const installPaths = {
   core: path.resolve(base, 'core'),
   client: path.resolve(base, 'client'),
   plugins: path.resolve(base, 'plugins'),
-  client_support_angular: path.resolve(
-    base,
-    'client-frameworks-support',
-    'client-support-angular'
-  )
+  client_support_angular: path.resolve(base, 'client-frameworks-support', 'client-support-angular'),
+  testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities')
 };
 
 /**
  * FNS
  */
 async function getReleases() {
-  const input = await asyncRequest(
-    'https://api.github.com/repos/SAP/luigi/releases',
-    {
-      headers: {
-        'User-Agent': 'Luigi Release CLI'
-      }
+  const input = await asyncRequest('https://api.github.com/repos/SAP/luigi/releases', {
+    headers: {
+      'User-Agent': 'Luigi Release CLI'
     }
-  );
+  });
   return JSON.parse(input.body)
     .map(r => r.tag_name)
     .filter((t, i) => i <= 8);
@@ -125,9 +107,7 @@ function addToChangelog(versionText, changelog, lastline) {
   const changelogFile = path.resolve(base, 'CHANGELOG.md');
   let md = fs.readFileSync(changelogFile).toString();
   if (md.indexOf(versionText) !== -1) {
-    logWarning(
-      'WARNING: Version already exist in the changelog, not appending.'
-    );
+    logWarning('WARNING: Version already exist in the changelog, not appending.');
     return;
   }
   // remove committers from changelog
@@ -166,18 +146,16 @@ function addToChangelog(versionText, changelog, lastline) {
   // NIGHTLY BUILD
   if (process.env.NIGHTLY === 'true') {
     const padLeft = (str, inp) => {
-      return (
-        str.substring(0, str.length - inp.toString().length) + inp.toString()
-      );
+      return str.substring(0, str.length - inp.toString().length) + inp.toString();
     };
     const currentDatetime = new Date();
     let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
       '00',
       currentDatetime.getMonth() + 1
-    )}${currentDatetime.getDate()}${padLeft(
+    )}${currentDatetime.getDate()}${padLeft('00', currentDatetime.getHours())}${padLeft(
       '00',
-      currentDatetime.getHours()
-    )}${padLeft('00', currentDatetime.getMinutes())}`;
+      currentDatetime.getMinutes()
+    )}`;
     prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
   }
 
@@ -185,10 +163,8 @@ function addToChangelog(versionText, changelog, lastline) {
     {
       type: 'text',
       name: 'version',
-      message:
-        'Version you want to release (current: ' + getVersion('core') + ')?',
-      validate: str =>
-        semver.valid(str) ? true : 'Invalid version (no valid semver)',
+      message: 'Version you want to release (current: ' + getVersion('core') + ')?',
+      validate: str => (semver.valid(str) ? true : 'Invalid version (no valid semver)'),
       initial: nextVersion
     },
     {
@@ -223,11 +199,7 @@ function addToChangelog(versionText, changelog, lastline) {
     const prevVersion = releases[input.prevVersion];
     const versionText = '## [v' + input.version + ']';
     let changelog = require('child_process')
-      .execSync(
-        base +
-          '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' +
-          prevVersion
-      )
+      .execSync(base + '/node_modules/lerna-changelog/bin/cli.js --ignoreCommiters --from ' + prevVersion)
       .toString()
       .replace('## Unreleased', versionText);
 
@@ -271,10 +243,7 @@ function addToChangelog(versionText, changelog, lastline) {
     logHeadline('\nInstalling packages to update package-lock.json');
     for (const key in installPaths) {
       logStep(`Installing ${key}`);
-      require('child_process').execSync(
-        `cd ${installPaths[key]} && npm install`,
-        { stdio: [0, 1, 2] }
-      );
+      require('child_process').execSync(`cd ${installPaths[key]} && npm install`, { stdio: [0, 1, 2] });
     }
     logHeadline('Package-lock.json files updated.\n');
   }
