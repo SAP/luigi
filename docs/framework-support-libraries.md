@@ -140,7 +140,7 @@ and define the provider:
 
 ### LuigiMockModule
 
-In the normal Luigi workflow messages coming from Luigi Client to Luigi Core are processed on the Core and a proper response is sent back. However, in many systems where testing of micro frontends standalone is a necessity, the absence of Luigi Core to send back needed responses to Client micro frontends becomes a case of high coupling. To remove this coupling we introduce **LuigiMockModule** for **Angular** applications. This module is attached to the start of your application where it intercepts all the Client calls and sends a mocked Core response back. This enables users to test their micro frontends standalone without depending on the Core. 
+In the normal Luigi workflow, messages coming from Luigi Client to Luigi Core are processed on the Core and a proper response is sent back. However, in many systems where testing of micro frontends standalone is a necessity, the absence of Luigi Core to send back needed responses to Client micro frontends becomes a case of high coupling. To remove this coupling, we introduce **LuigiMockModule** for **Angular** applications. This module is attached to the start of your application where it intercepts all the Client calls and sends a mocked Core response back. This enables users to test their micro frontends standalone without depending on the Core. 
 To use **LuigiMockModule**, simply add it to the list of imports of your applications entry point. A good practice is to include it in the main testing module of your application as given in the example below:
 
  ```javascript
