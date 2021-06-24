@@ -6,8 +6,8 @@
       "label": "Luigi Client"
     },
     "metaData": {
-      "categoryPosition": 3,
-      "position": 3
+      "categoryPosition": 4,
+      "position": 2
     }
   }
 }
