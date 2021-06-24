@@ -4,15 +4,11 @@
   aria-label="SAP"
   on:click|preventDefault="{() => goTo('/')}"
   href="/"
+  role="button"
+  tabindex="0"
 >
   {#if hasLogo}
-  <img
-    data-testid="luigi-topnav-logo"
-    bind:this="{logo}"
-    alt="SAP"
-    role="button"
-    tabindex="0"
-  />
+  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
 </a>
 {:else}
@@ -20,15 +16,11 @@
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="SAP"
   on:click="{() => goTo('/')}"
+  role="button"
+  tabindex="0"
 >
   {#if hasLogo}
-  <img
-    data-testid="luigi-topnav-logo"
-    bind:this="{logo}"
-    alt="SAP"
-    role="button"
-    tabindex="0"
-  />
+  <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="SAP" />
   {/if}
 </span>
 {/if} {#if title} {#if !hasApps} {#if
