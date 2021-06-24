@@ -1,5 +1,5 @@
 {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
-<a
+<button
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="{title}"
   on:click|preventDefault="{() => goTo('/')}"
@@ -10,7 +10,7 @@
   {#if hasLogo}
   <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="{title}" />
   {/if}
-</a>
+</button>
 {:else}
 <span
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
@@ -234,6 +234,10 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
 
 <style type="text/scss">
   @import 'styles/variables';
+
+  .lui-customlogo {
+    background-color: transparent;
+  }
 
   // Force height because of base64 img src
   .lui-customlogo img {
