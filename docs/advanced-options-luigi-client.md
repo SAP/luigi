@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Advanced Options",
+    "label": "Advanced configuration options",
     "category": {
       "label": "Luigi Client"
     },
