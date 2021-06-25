@@ -6,7 +6,7 @@ author:
 layout: blog
 ---
 
-Luigi 1.14.0 is the latest Luigi release. It includes an update to a new version of Fundamental Library Styles, new options in the user settings, and a new Core API function. Read the release notes below to learn more.
+Luigi v1.14.0 includes an update to a new version of Fundamental Library Styles, new options in the user settings, and a new Core API function. Read the release notes below to learn more.
 
 <!-- Excerpt -->
 
