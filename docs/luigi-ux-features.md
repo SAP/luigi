@@ -44,6 +44,8 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 * Define and apply [**responsiveNavigation**](general-settings.md) settings to make the left navigation responsive.
 
+* Define and apply [**profileType**](general-settings.md) **'simple'**  or **'Fiori3'** to change the Profile Menu layout and design.
+
 * Define a custom width for the left side navigation. To do so, simply add the code below to the top of your `index.html`. The default width is 15rem.
 
 ```html

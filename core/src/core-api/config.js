@@ -266,6 +266,19 @@ class LuigiConfig {
     }
     this.configChanged();
   }
+
+  /**
+   * Reset the current Luigi instance and initialize Luigi with the latest Luigi config.
+   * @memberof Configuration
+   * @example
+   * Luigi.reset();
+   * @since 1.14.0
+   */
+  reset () {
+    const cfg = this.getConfig();
+    this.unload();
+    this.setConfig(cfg);
+  }
 }
 
 export const config = new LuigiConfig();
