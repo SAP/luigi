@@ -317,5 +317,7 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.get('.drawer').should('not.exist');
     });
+
+    it('Prevent drawer from opening if path is absolute', () => {});
   });
 });

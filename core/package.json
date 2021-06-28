@@ -51,6 +51,7 @@
     "svelte-transitions": "^1.2.0",
     "tar": ">=4.4.2",
     "terser": "^4.4.0",
+    "ts-node": "^10.0.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.42.1",
     "webpack-bundle-analyzer": "^3.6.0",
@@ -64,6 +65,7 @@
     "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
     "bundle-develop-ie11": "MINIFY=false webpack --display-error-details --config webpack-ie11.config.js --debug --devtool cheap-source-map --output-pathinfo --watch",
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --require esm --recursive test",
+    "test:debug": "mocha -r esm -r jsdom-global/register --inspect-brk ./test/core-api/*.spec.js --watch",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "bundlesizeOnly": "bundlesize",
@@ -73,7 +75,7 @@
   "bundlesize": [
     {
       "path": "./public/luigi.js",
-      "maxSize": "474 kB",
+      "maxSize": "475 kB",
       "compression": "none"
     },
     {
