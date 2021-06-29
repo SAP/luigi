@@ -158,7 +158,7 @@ class UxManager extends LuigiClientBase {
    */
   showAlert(settings) {
     helpers.addEventListener('luigi.ux.alert.hide', (e, listenerId) => {
-      this.hideAlert(e.data.id);
+      this.hideAlert(e.data.id, e.data);
       helpers.removeEventListener(listenerId);
     });
 
@@ -181,15 +181,16 @@ class UxManager extends LuigiClientBase {
     this.setPromise('alerts', alertPromises);
     return alertPromises[settings.id].promise;
   }
+
   /**
    * @private
    * @memberof uxManager
    * @param {string} id alert id
    */
-  hideAlert(id) {
+  hideAlert(id, data) {
     const alerts = this.getPromise('alerts');
     if (id && alerts[id]) {
-      alerts[id].resolveFn(id);
+      alerts[id].resolveFn(data && data.dismissKey ? data.dismissKey : id);
       delete alerts[id];
       this.setPromise('alerts', alerts);
     }

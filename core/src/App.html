@@ -790,7 +790,7 @@
     });
   };
 
-  const handleAlertDismiss = id => {
+  const handleAlertDismiss = (id, dismissKey) => {
     const alert = getAlertWithId(alerts, id);
 
     if (!alert) {
@@ -798,15 +798,14 @@
       return;
     }
 
-    const openFromClient = alert.openFromClient;
-
     alerts = alerts.filter(a => a.settings.id !== id);
 
-    if (openFromClient) {
+    if (alert.openFromClient) {
       const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
         msg: 'luigi.ux.alert.hide',
-        id
+        id,
+        dismissKey
         //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
@@ -814,7 +813,7 @@
   };
 
   const handleAlertDismissExternal = event => {
-    handleAlertDismiss(event.detail.id);
+    handleAlertDismiss(event.detail.id, event.detail.dismissKey);
   };
 
   //// CONFIRMATION MODAL

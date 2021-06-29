@@ -59,8 +59,8 @@
 
       setTimeout(() => {
         // this needs to be done after links are rendered
-        processedData.links.forEach(l => {
-          addClickListener(l.url, l.elemId);
+        processedData.links.forEach(link => {
+          addClickListener(link, alert.settings.id);
         });
       });
 
@@ -76,22 +76,24 @@
 
   onMount(() => {});
 
-  // [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function addClickListener(url, elemId) {
+  function addClickListener(link, alertId) {
     try {
-      document.getElementById(elemId).addEventListener('click', event => {
-        const isRelative = !url.startsWith('/');
-        event.stopPropagation();
-        getUnsavedChangesModalPromise().then(() => {
-          const data = {
-            params: {
-              link: url,
-              relative: isRelative
-            }
-          };
-          handleNavigation(data);
-        });
+      document.getElementById(link.elemId).addEventListener('click', event => {
+        if (link.url) {
+          const isRelative = !link.url.startsWith('/');
+          event.stopPropagation();
+          getUnsavedChangesModalPromise().then(() => {
+            const data = {
+              params: {
+                link: link.url,
+                relative: isRelative
+              }
+            };
+            handleNavigation(data);
+          });
+        } else if (link.dismissKey) {
+          dispatch('alertDismiss', { id: alertId, dismissKey: link.dismissKey });
+        }
       });
     } catch (e) {
       console.error('Error on Alert::addClickListener', e);
