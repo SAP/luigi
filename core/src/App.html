@@ -1486,6 +1486,8 @@
   /* needed to apply custom width of left side nav, by default 15rem as per FD Styles*/
   :root {
     --luigi__left-sidenav--width: 15rem;
+    --luigi__app-title--width: 60vw;
+    --luigi__multi-app-dropdown--width: 50vw;
   }
 
   :global(html) {
@@ -1615,6 +1617,12 @@
     :global(.fd-app__sidebar) {
       display: none;
     }
+    :global(.lui-shellbar-single-app-title) {
+      max-width: var(--luigi__app-title--width);
+    }
+    :global(.lui-app-switch) {
+      max-width: var(--luigi__multi-app-dropdown--width);
+    }
   }
 
   :global(body.lui-simpleSlideInNav) {
@@ -1696,6 +1704,18 @@
   :global(.lui-global-nav-visible.lui-simpleSlideInNav.lui-leftNavToggle) {
     :global(#tabsContainer) {
       left: $globalNavWidth;
+    }
+  }
+
+  @media (max-width: $mobileMinWidth) {
+    .no-side-nav {
+      :global(.lui-shellbar-single-app-title) {
+        padding-right: 0;
+        max-width: calc(var(--luigi__app-title--width) - 15vw);
+      }
+      :global(.lui-app-switch) {
+        max-width: calc(var(--luigi__multi-app-dropdown--width) - 10vw);
+      }
     }
   }
 

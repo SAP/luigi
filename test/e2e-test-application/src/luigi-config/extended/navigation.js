@@ -419,23 +419,23 @@ class Navigation {
     items: [
       {
         title: 'Application One',
-        subTitle: 'the first app',
+        subTitle: 'first app',
         link: '/projects/pr1'
       },
       {
         title: 'Application Two',
         link: '/projects/pr2',
-        subTitle: 'the second app'
+        subTitle: 'second app'
       },
       {
         title: 'Application Three',
         link: '/environments',
-        subTitle: 'the third app'
+        subTitle: 'third app'
       },
       {
         title: 'Application Storage',
         link: '/projects/storage',
-        subTitle: 'the storage app'
+        subTitle: 'v1.18.0'
       }
     ]
   };
