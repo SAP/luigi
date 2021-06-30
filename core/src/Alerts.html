@@ -78,7 +78,11 @@
 
   function addClickListener(link, alertId) {
     try {
-      document.getElementById(link.elemId).addEventListener('click', event => {
+      const linkElem = document.getElementById(link.elemId);
+      if(linkElem.dismissListener) {
+        linkElem.removeEventListener('click', linkElem.dismissListener);
+      }
+      const listener = event => {
         if (link.url) {
           const isRelative = !link.url.startsWith('/');
           event.stopPropagation();
@@ -94,7 +98,9 @@
         } else if (link.dismissKey) {
           dispatch('alertDismiss', { id: alertId, dismissKey: link.dismissKey });
         }
-      });
+      };
+      linkElem.addEventListener('click', listener);
+      linkElem.dismissListener = listener;
     } catch (e) {
       console.error('Error on Alert::addClickListener', e);
     }

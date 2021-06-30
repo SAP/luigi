@@ -809,6 +809,8 @@
         //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
+    } else if (alert.promise) {
+      alert.promise.resolve(dismissKey || id);
     }
   };
 
