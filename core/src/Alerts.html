@@ -1,4 +1,4 @@
-<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false">
+<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false" bind:this={alertElement}>
   {#each alertQueue as al}
   <div
     class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
@@ -36,6 +36,9 @@
     warning: 'warning',
     error: 'error'
   };
+
+  let alertElement;
+
   const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   const handleNavigation = getContext('handleNavigation');
 
@@ -63,6 +66,20 @@
           addClickListener(link, alert.settings.id);
         });
       });
+
+      if(alert.settings.afterInit) {
+        const el = alertElement;
+        alert.settings.afterInit({
+          dismiss: () => {
+            if(el && el.isConnected) {
+              dispatch('alertDismiss', { id: alert.settings.id });
+            } else {
+              console.debug('Alert already dismissed: ', el);
+            }
+          },
+          element: el
+        });
+      };
 
       return {
         settings: { ...alert.settings, text: processedData.sanitizedText },
