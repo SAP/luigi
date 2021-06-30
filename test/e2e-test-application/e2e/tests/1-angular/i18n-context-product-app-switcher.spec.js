@@ -322,7 +322,7 @@ describe('AppSwitcher', () => {
 
       // check if app switcher got updated
       cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Application One');
-      cy.get('.fd-shellbar__subtitle').should('contain', 'the first app');
+      cy.get('.fd-shellbar__subtitle').should('contain', 'first app');
 
       // check available dropdown items
       cy.get('[data-testid="app-switcher"]').click();
