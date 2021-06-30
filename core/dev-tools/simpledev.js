@@ -1,7 +1,10 @@
 const liveServer = require('live-server');
 const webpack = require('webpack');
 const fs = require('fs-extra');
-const webpack_compiler = webpack(require('../webpack.config'));
+const config = require('../webpack.config');
+config.mode = 'development';
+config.devtool = 'eval-source-map';
+const webpack_compiler = webpack(config);
 
 let logo_ascii = `
                               //
