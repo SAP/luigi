@@ -315,7 +315,7 @@ describe('AppSwitcher', () => {
 
       // check the title and subtlitle
       cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Application Two');
-      cy.get('.fd-shellbar__subtitle').should('contain', 'the second app');
+      cy.get('.fd-shellbar__subtitle').should('contain', 'second app');
 
       // navigate to project 1 using plain navigation
       cy.visit('/projects/pr1/developers');
