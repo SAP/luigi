@@ -27,6 +27,12 @@ describe('linkManager', function() {
       sinon.assert.calledOnce(console.warn);
     });
 
+    it('should navigate if path starts with a "/" but is not an absolute path', () => {
+      lm.navigate('/pr1');
+
+      sinon.assert.calledOnce(lm.sendPostMessageToLuigiCore);
+    });
+
     it('should not navigate if errorSkipNavigation is true', () => {
       lm.options.errorSkipNavigation = true;
       lm.navigate('http://google.co');

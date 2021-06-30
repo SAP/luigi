@@ -67,7 +67,7 @@ export class linkManager extends LuigiClientBase {
     this.options.preserveView = preserveView;
     const relativePath = path[0] !== '/';
 
-    if (!relativePath) {
+    if (path === '/') {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }
@@ -117,8 +117,7 @@ export class linkManager extends LuigiClientBase {
    * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
    */
   openAsSplitView(path, splitViewSettings = {}) {
-    const relativePath = path[0] !== '/';
-    if (!relativePath) {
+    if (path === '/') {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }

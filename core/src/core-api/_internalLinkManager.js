@@ -30,7 +30,7 @@ export class linkManager extends LuigiCoreAPIBase {
     this.options.preserveView = preserveView;
     const relativePath = path[0] !== '/';
 
-    if (!relativePath) {
+    if (path === '/') {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }

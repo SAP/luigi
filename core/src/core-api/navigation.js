@@ -73,8 +73,7 @@ class LuigiNavigationManager {
    * Luigi.navigation().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
    */
   openAsSplitView(path, splitViewSettings = {}) {
-    const relativePath = path[0] !== '/';
-    if (!relativePath) {
+    if (path === '/') {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }
