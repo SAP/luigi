@@ -6,7 +6,7 @@ author:
 layout: blog
 ---
 
-Luigi 1.6.0 is our latest release offering new features related to the Luigi APIs. New functions for local storage can help developers create more efficient applications. A new drawer component was also added. To learn more, read the release notes below.
+Luigi v1.6.0 offers new features related to the Luigi APIs. New functions for local storage can help developers create more efficient applications. A new drawer component was also added. To learn more, read the release notes below.
 <!-- Excerpt -->
 
 #### Storage API for micro frontends
