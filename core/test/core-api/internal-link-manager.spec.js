@@ -1,14 +1,14 @@
 const sinon = require('sinon');
 
 import { linkManager } from '../../src/core-api/_internalLinkManager';
+import { LuigiCoreAPIBase } from '../../src/core-api/baseClass';
 
 let lm;
 
 describe('linkManager', function() {
   beforeEach(() => {
+    base = new LuigiCoreAPIBase();
     lm = new linkManager();
-    sinon.stub(lm, 'sendPostMessageToLuigiCore');
-    window.Luigi['hasBack'] = sinon.spy();
   });
 
   afterEach(() => {
@@ -17,10 +17,12 @@ describe('linkManager', function() {
   });
 
   describe('navigate', () => {
-    it('should not navigate if path is absolute', () => {
-      // debugger;
+    beforeEach(() => {
+      sinon.stub(lm, 'sendPostMessageToLuigiCore');
       console.warn = sinon.spy();
+    });
 
+    it('should not navigate if path is absolute', () => {
       lm.navigate('/');
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
@@ -28,12 +30,41 @@ describe('linkManager', function() {
     });
 
     it('should not navigate if errorSkipNavigation is true', () => {
-      console.warn = sinon.spy();
-
+      lm.options.errorSkipNavigation = true;
       lm.navigate('http://google.co');
 
-      sinon.assert.calledOnce(lm.sendPostMessageToLuigiCore);
-      sinon.assert.notCalled(console.warn);
+      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.match(lm.options.errorSkipNavigation, false);
+    });
+
+    it('should call sendPostMessageToLuigiCore', () => {
+      this.options = {
+        preserveView: false,
+        nodeParams: {},
+        errorSkipNavigation: false,
+        fromContext: null,
+        fromClosestContext: false,
+        relative: false,
+        link: ''
+      };
+      const modalSettings = { modalSetting: 'modalValue' };
+      const splitViewSettings = { splitViewSetting: 'splitViewValue' };
+      const drawerSettings = { drawerSetting: 'drawerValue' };
+      const path = '/path';
+      const relativePath = path[0] !== '/';
+      const navigationOpenMsg = {
+        msg: 'luigi.navigation.open',
+        params: Object.assign(this.options, {
+          link: path,
+          relative: relativePath,
+          modal: modalSettings,
+          splitView: splitViewSettings,
+          drawer: drawerSettings
+        })
+      };
+
+      lm.navigate(path, true, modalSettings, splitViewSettings, drawerSettings);
+      lm.sendPostMessageToLuigiCore.calledOnceWithExactly(navigationOpenMsg);
     });
   });
 
@@ -85,10 +116,6 @@ describe('linkManager', function() {
   });
 
   describe('fromVirtualTreeRoot', () => {
-    beforeEach(() => {
-      // sinon.stub(lm, 'fromVirtualTreeRoot');
-    });
-
     it('should set fromContext to null', () => {
       lm.fromVirtualTreeRoot();
 
@@ -109,60 +136,42 @@ describe('linkManager', function() {
   });
 
   describe('withParams', () => {
-    beforeEach(() => {
-      sinon.stub(lm, 'withParams');
-    });
+    it('should assign passed value to this.options.nodeParams', () => {
+      lm.withParams({ param: 'value' });
 
-    it('should ', () => {});
-  });
-
-  describe('pathExists', () => {
-    beforeEach(() => {
-      // sinon.stub(lm, 'pathExists');
-      sinon.stub(console, 'error');
-    });
-
-    it('should log error if Luigi.pathExists is not a function', () => {
-      lm.pathExists('/pr1');
-
-      sinon.assert.calledOnce(console.error);
+      sinon.assert.match(lm.options.nodeParams, { param: 'value' });
     });
   });
 
-  // describe('hasBack', () => {
-  //   beforeEach(() => {
-  //     // sinon.stub(window.Luigi, 'hasBack');
-  //   });
+  describe('goBack', () => {
+    beforeEach(() => {
+      sinon.stub(lm, 'sendPostMessageToLuigiCore');
+    });
 
-  //   it('should ', () => {
-  //     debugger;
-  //     lm.hasBack();
-  //     sinon.assert.calledOnce(lm.hasBack);
-  //   });
-  // });
+    it('should call sendPostMessageToLuigiCore', () => {
+      const goBackValue = 'message';
+      const message = {
+        msg: 'luigi.navigation.back',
+        goBackContext: '"message"'
+      };
 
-  // describe('goBack', () => {
-  //   beforeEach(() => {
-  //     sinon.spy(window.Luigi, 'hasBack');
-  //   });
+      lm.goBack(goBackValue);
 
-  //   it('should call Luigi.hasBack', () => {
+      sinon.assert.calledOnceWithExactly(lm.sendPostMessageToLuigiCore, message);
+    });
+  });
 
-  //   });
-  // });
+  describe('sendPostMessageToLuigiCore', () => {
+    beforeEach(() => {
+      sinon.stub(window, 'postMessage');
+    });
 
-  // describe('sendPostMessageToLuigiCore', () => {
-  //   beforeEach(() => {
-  //     sinon.spy(window, 'postMessage');
-  //   });
+    it('should call window.postMessage with the msg', () => {
+      const msg = 'message';
 
-  //   it('should call window.postMessage with the msg', () => {
-  //     const msg = 'message';
-  //     debugger;
+      lm.sendPostMessageToLuigiCore(msg);
 
-  //     lm.sendPostMessageToLuigiCore(msg);
-
-  //     sinon.assert.calledOnceWithExactly(window.postMessage, msg, '*')
-  //   });
-  // });
+      sinon.assert.calledOnceWithExactly(window.postMessage, msg, '*');
+    });
+  });
 });
