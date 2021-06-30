@@ -1,13 +1,11 @@
 const sinon = require('sinon');
 
 import { linkManager } from '../../src/core-api/_internalLinkManager';
-import { LuigiCoreAPIBase } from '../../src/core-api/baseClass';
 
 let lm;
 
 describe('linkManager', function() {
   beforeEach(() => {
-    base = new LuigiCoreAPIBase();
     lm = new linkManager();
   });
 
