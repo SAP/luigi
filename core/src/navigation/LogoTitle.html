@@ -4,6 +4,8 @@
   aria-label="{title}"
   on:click|preventDefault="{() => goTo('/')}"
   href="/"
+  role="button"
+  tabindex="0"
 >
   {#if hasLogo}
   <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="{title}" />
@@ -14,6 +16,8 @@
   class="fd-shellbar__logo { !hasLogo ? 'fd-shellbar__logo--image-replaced' : '' } { hasLogo ? 'lui-customlogo' : ''}"
   aria-label="{title}"
   on:click="{() => goTo('/')}"
+  role="button"
+  tabindex="0"
 >
   {#if hasLogo}
   <img data-testid="luigi-topnav-logo" bind:this="{logo}" alt="{title}" />
