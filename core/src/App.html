@@ -381,7 +381,6 @@
       },
       set: obj => {
         if (obj) {
-          noAnimation = false;
           Object.getOwnPropertyNames(obj).forEach(prop => {
             if (prop === 'hideNav') {
               hideNav = obj.hideNav;
