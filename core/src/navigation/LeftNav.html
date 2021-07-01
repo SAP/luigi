@@ -6,8 +6,11 @@
 <div
   class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
 >
+  {#if navHeader}
+  <div class="lui-nav-title"></div>
+  {/if}
   <nav
-    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
+    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
     on:keyup="{handleKey}"
     data-testid="semiCollapsibleLeftNav"
   >
@@ -263,6 +266,7 @@
       hasCategoriesWithIcon
     }),
     set: obj => {
+      console.log('obj', obj);
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach(prop => {
           if (prop === 'pathData') {
@@ -277,6 +281,10 @@
             hasCategoriesWithIcon = obj.hasCategoriesWithIcon;
           }
         });
+
+        if (selectedNode) {
+          navHeader = selectedNode.navHeader;
+        }
 
         let sideNavAccordionModeOverride =
           (selectedNode && selectedNode.sideNavAccordionMode) ||
@@ -321,6 +329,7 @@
   export let sideNavClass;
   export let sideNavAccordionMode;
   export let burgerTooltip;
+  export let navHeader;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -575,6 +584,14 @@
     }
   }
 
+  :global(.semiCollapsed) .lui-fd-side-nav-wrapper {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
   .fd-app__sidebar {
     position: fixed;
     top: $topNavHeight;
@@ -586,11 +603,6 @@
       display: flex;
       justify-content: space-between;
       flex-direction: column;
-      scrollbar-width: none;
-
-      &::-webkit-scrollbar {
-        width: 0;
-      }
     }
 
     .fd-side-nav {
@@ -598,6 +610,13 @@
       width: var(--luigi__left-sidenav--width);
       &.fd-side-nav--condensed {
         width: $leftNavWidthCollapsed;
+      }
+
+      &.lui-nav-header-visible {
+        height: auto;
+        top: 4rem;
+        position: absolute;
+        bottom: 0;
       }
     }
 
