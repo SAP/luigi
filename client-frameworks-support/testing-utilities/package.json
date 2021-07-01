@@ -1,14 +1,13 @@
 {
   "name": "@luigi-project/testing-utilities",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Luigi testing utilities for standalone testing of microfrontends",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && npm run copy",
-    "prepare": "npm run build",
-    "copy": "ncp package.json ./dist/pacakge.json && ncp README.md ./dist/README.md",
+    "copy": "ncp package.json ./dist/package.json && ncp README.md ./dist/README.md",
     "bundle": "npm run build"
   },
   "types": "dist/index.d.ts",
