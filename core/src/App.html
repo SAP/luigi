@@ -1,7 +1,7 @@
 <svelte:window on:resize="{onResize}" />
 <div
   id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':''} {noAnimation?'no-animation':''}"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':'no-animation'}"
 >
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
@@ -402,12 +402,6 @@
             } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
             } else if (prop === 'hideSideNav') {
-              if (hideSideNav && !obj.hideSideNav) {
-                noAnimation = true;
-                setTimeout(() => {
-                  document.querySelector('#app').classList.remove('no-animation');
-                });
-              }
               hideSideNav = obj.hideSideNav;
             } else if (prop === 'isolateView') {
               isolateView = obj.isolateView;
@@ -1651,6 +1645,14 @@
     :global(#splitViewDragger),
     :global(#splitViewDraggerBackdrop) {
       @include transition(left 0.1s linear);
+    }
+  }
+
+  :global(#app.no-animation) {
+    :global(.fd-app__sidebar),
+    :global(.spinnerContainer),
+    :global(.iframeContainer) {
+      @include transition(none);
     }
   }
 
