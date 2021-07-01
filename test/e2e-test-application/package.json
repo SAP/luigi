@@ -25,17 +25,17 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
-    "@luigi-project/plugin-auth-oauth2": "1.0.0",
-    "@luigi-project/plugin-auth-oidc": "1.0.0",
     "@luigi-project/client": "1.0.0",
     "@luigi-project/core": "1.2.1",
+    "@luigi-project/plugin-auth-oauth2": "1.0.0",
+    "@luigi-project/plugin-auth-oidc": "1.0.0",
     "@sap-theming/theming-base-content": "~11.1.28",
     "ajv": "^6.1.1",
     "core-js": "^2.4.1",
     "fundamental-styles": "^0.17.0",
+    "lodash": ">=4.17.13",
     "rxjs": "6.2.0",
-    "zone.js": "^0.8.14",
-    "lodash": ">=4.17.13"
+    "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "7.1.1",
