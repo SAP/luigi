@@ -7,7 +7,30 @@
   class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
 >
   {#if navHeader}
-  <div class="lui-nav-title"></div>
+  <div class="lui-nav-title">
+    <ul class="fd-nested-list">
+      <li class="fd-nested-list__item">
+        <a class="fd-nested-list__link">
+          {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
+          <i
+            class="fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
+            role="presentation"
+          ></i>
+          {:else}
+          <span class="fd-nested-list__icon sap-icon">
+            <img
+              src="{navHeader.icon}"
+              alt="{navHeader.altText ? navHeader.altText : ''}"
+            />
+          </span>
+          {/if} {/if}
+          <span class="fd-nested-list__title">
+            {$getTranslation(navHeader.label)}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
   {/if}
   <nav
     class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
@@ -247,7 +270,19 @@
 
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { RoutingHelpers } from '../utilities/helpers';
+  import { Navigation } from './services/navigation';
+  import {
+    IframeHelpers,
+    NavigationHelpers,
+    GenericHelpers,
+    RoutingHelpers,
+    StateHelpers,
+    EventListenerHelpers
+  } from '../utilities/helpers';
+  import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
+  import { CSS_BREAKPOINTS } from '../utilities/constants';
+  import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
+  import BadgeCounter from './BadgeCounter.html';
 
   //TODO refactor
   const __this = {
@@ -266,7 +301,6 @@
       hasCategoriesWithIcon
     }),
     set: obj => {
-      console.log('obj', obj);
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach(prop => {
           if (prop === 'pathData') {
@@ -282,8 +316,28 @@
           }
         });
 
-        if (selectedNode) {
-          navHeader = selectedNode.navHeader;
+        if (
+          selectedNode &&
+          selectedNode.navHeader &&
+          GenericHelpers.requestExperimentalFeature('navHeader', true)
+        ) {
+          if (selectedNode.navHeader instanceof Function) {
+            navHeader = {};
+            const strippedNode = { ...selectedNode };
+            delete strippedNode.parent;
+            delete strippedNode.children;
+            delete strippedNode.navHeader;
+            let res = selectedNode.navHeader(strippedNode);
+            if (res instanceof Promise) {
+              res.then(headerData => {
+                navHeader = headerData;
+              });
+            } else {
+              navHeader = res;
+            }
+          } else {
+            navHeader = selectedNode.navHeader;
+          }
         }
 
         let sideNavAccordionModeOverride =
@@ -303,14 +357,6 @@
   };
 
   const dispatch = createEventDispatcher();
-
-  import { Navigation } from './services/navigation';
-  import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
-  import { StateHelpers, EventListenerHelpers } from '../utilities/helpers';
-  import { CSS_BREAKPOINTS } from '../utilities/constants';
-  import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
-  import BadgeCounter from './BadgeCounter.html';
 
   export let children;
   export let hideNavComponent;
@@ -592,6 +638,17 @@
     }
   }
 
+  :global(body:not(.semiCollapsed)) .fd-app__sidebar .fd-side-nav.lui-nav-header-visible {
+    height: auto;
+    top: $navHeaderHeight;
+    position: absolute;
+    bottom: 0;
+  }
+
+  :global(.semiCollapsed) .lui-nav-title {
+    display: none;
+  }
+
   .fd-app__sidebar {
     position: fixed;
     top: $topNavHeight;
@@ -605,18 +662,47 @@
       flex-direction: column;
     }
 
+    .lui-nav-title {
+      height: $navHeaderHeight;
+      background: green;
+      width: var(--luigi__left-sidenav--width);
+      border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
+        var(--sapList_BorderColor, #e4e4e4);
+      border-right: var(--sapList_BorderWidth, 0.0625rem) solid
+        var(--sapGroup_ContentBorderColor, #d9d9d9);
+
+      & > ul {
+        height: 100%;
+        & > li {
+          height: 100%;
+        }
+      }
+
+      .fd-nested-list__link,
+      .fd-nested-list__link:active {
+        height: 100%;
+        padding-left: 1rem;
+        background: none;
+        cursor: default;
+
+        .fd-nested-list__title {
+          font-weight: bold;
+          padding-left: 0.3rem;
+          color: var(--sapTextColor, #32363a);
+        }
+
+        i {
+          font-size: 1.5rem;
+          color: var(--sapTile_TextColor, #6a6d70);
+        }
+      }
+    }
+
     .fd-side-nav {
       height: 100%;
       width: var(--luigi__left-sidenav--width);
       &.fd-side-nav--condensed {
         width: $leftNavWidthCollapsed;
-      }
-
-      &.lui-nav-header-visible {
-        height: auto;
-        top: 4rem;
-        position: absolute;
-        bottom: 0;
       }
     }
 
@@ -635,7 +721,7 @@
 
     &.hasFooter {
       .fd-side-nav__main-navigation {
-        height: calc(100% - 50px);
+        height: calc(100% - 2rem);
       }
     }
 
@@ -709,6 +795,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top: var(--sapList_BorderWidth, 0.0625rem) solid
+      var(--sapList_BorderColor, #e4e4e4);
 
     &--text {
       color: #32363a;
