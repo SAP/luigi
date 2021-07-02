@@ -321,13 +321,29 @@
           selectedNode.navHeader &&
           GenericHelpers.requestExperimentalFeature('navHeader', true)
         ) {
-          if (selectedNode.navHeader instanceof Function) {
+          let resolvedNavHeader = selectedNode.navHeader;
+          let resolvedNavHeaderNode = selectedNode;
+
+          if ('inherit' === resolvedNavHeader) {
+            resolvedNavHeaderNode = selectedNode.parent;
+            while (
+              resolvedNavHeaderNode &&
+              'inherit' === resolvedNavHeaderNode.navHeader
+            ) {
+              resolvedNavHeaderNode = resolvedNavHeaderNode.parent;
+            }
+            resolvedNavHeader = resolvedNavHeaderNode
+              ? resolvedNavHeaderNode.navHeader
+              : undefined;
+          }
+
+          if (resolvedNavHeader instanceof Function) {
             navHeader = {};
-            const strippedNode = { ...selectedNode };
-            delete strippedNode.parent;
-            delete strippedNode.children;
-            delete strippedNode.navHeader;
-            let res = selectedNode.navHeader(strippedNode);
+
+            let res = resolvedNavHeader(
+              NavigationHelpers.stripNode(selectedNode),
+              NavigationHelpers.stripNode(resolvedNavHeaderNode)
+            );
             if (res instanceof Promise) {
               res.then(headerData => {
                 navHeader = headerData;
@@ -335,8 +351,13 @@
             } else {
               navHeader = res;
             }
+          } else if ('auto' === resolvedNavHeader) {
+            navHeader = {
+              label: selectedNode.label,
+              icon: selectedNode.icon
+            };
           } else {
-            navHeader = selectedNode.navHeader;
+            navHeader = resolvedNavHeader;
           }
         }
 
