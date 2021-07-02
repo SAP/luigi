@@ -274,7 +274,7 @@ class LuigiConfig {
    * Luigi.reset();
    * @since 1.14.0
    */
-  reset () {
+  reset() {
     const cfg = this.getConfig();
     this.unload();
     this.setConfig(cfg);
