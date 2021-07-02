@@ -1487,7 +1487,7 @@
   :root {
     --luigi__left-sidenav--width: 15rem;
     --luigi__app-title--width: 60vw;
-    --luigi__multi-app-dropdown--width: 50vw;
+    --luigi__multi-app-dropdown--width: 60vw;
   }
 
   :global(html) {
@@ -1616,12 +1616,6 @@
     :global(.fd-app__sidebar) {
       display: none;
     }
-    :global(.lui-shellbar-single-app-title) {
-      max-width: var(--luigi__app-title--width);
-    }
-    :global(.lui-app-switch) {
-      max-width: var(--luigi__multi-app-dropdown--width);
-    }
   }
 
   :global(body.lui-simpleSlideInNav) {
@@ -1706,15 +1700,50 @@
     }
   }
 
+  :global(.lui-shellbar-single-app-title) {
+    padding: 0 0.625rem;
+    text-decoration: none;
+    max-width: calc(var(--luigi__app-title--width) - 3rem);
+  }
+
+  :global(.lui-app-switch) {
+    max-width: calc(var(--luigi__multi-app-dropdown--width) - 2rem);
+  }
+
   @media (max-width: $mobileMinWidth) {
+    :global(.lui-shellbar-single-app-title),
+    :global(.lui-app-switch) {
+      padding-right: 0;
+      padding-left: 0;
+    }
+    :global(.fd-shellbar__group--actions .fd-shellbar__action:first-child) {
+      padding-left: 0;
+    }
+
     .no-side-nav {
       :global(.lui-shellbar-single-app-title) {
-        padding-right: 0;
-        max-width: calc(var(--luigi__app-title--width) - 15vw);
+        max-width: calc(var(--luigi__app-title--width) - 3rem);
       }
       :global(.lui-app-switch) {
-        max-width: calc(var(--luigi__multi-app-dropdown--width) - 10vw);
+        max-width: calc(var(--luigi__app-title--width) - 2rem);
       }
+    }
+    :global(.lui-shellbar-single-app-title) {
+      max-width: calc(var(--luigi__app-title--width) - 5rem);
+    }
+    :global(.lui-app-switch) {
+      max-width: calc(var(--luigi__multi-app-dropdown--width) - 4.5rem);
+    }
+  }
+
+  @media (min-width: $mobileMinWidth) and (max-width: $desktopMinWidth) {
+    .no-side-nav {
+      :global(.lui-shellbar-single-app-title) {
+        max-width: calc(var(--luigi__app-title--width) - 2rem);
+      }
+    }
+    :global(.lui-shellbar-single-app-title) {
+      max-width: calc(var(--luigi__app-title--width) - 3rem);
     }
   }
 
@@ -1961,7 +1990,7 @@
     }
   }
 
-  @media (min-width: $mobileMinWidth) and (max-width: $desktopMaxWidth - 1) {
+  @media (max-width: $desktopMaxWidth - 1) {
     :global(.fd-shellbar__action--desktop) {
       display: none;
     }
