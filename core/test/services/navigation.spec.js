@@ -94,26 +94,15 @@ describe('Navigation', function() {
       const navPath = await Navigation.getNavigationPath(sampleNavPromise);
       assert.equal(navPath.navigationPath.length, 1, 'Only one root expected');
       const rootNode = navPath.navigationPath[0];
-      assert.equal(
-        rootNode.children.length,
-        2,
-        'Root node expected to have 2 children nodes'
-      );
+      assert.equal(rootNode.children.length, 2, 'Root node expected to have 2 children nodes');
       assert.equal(rootNode.children[0].pathSegment, 'aaa');
       const nodeWithLazyLoadedChildren = rootNode.children[1];
       assert.equal(nodeWithLazyLoadedChildren.pathSegment, 'bbb');
     });
 
     it('should resolve first level node', async () => {
-      const navPath = await Navigation.getNavigationPath(
-        sampleNavPromise,
-        'aaa'
-      );
-      assert.equal(
-        navPath.navigationPath.length,
-        2,
-        '2 nodes active : root node + "aaa" node'
-      );
+      const navPath = await Navigation.getNavigationPath(sampleNavPromise, 'aaa');
+      assert.equal(navPath.navigationPath.length, 2, '2 nodes active : root node + "aaa" node');
       assert.equal(navPath.navigationPath[1].pathSegment, 'aaa');
       assert.propertyVal(
         navPath.context,
@@ -124,15 +113,8 @@ describe('Navigation', function() {
     });
 
     it('should resolve second level node', async () => {
-      const navPath = await Navigation.getNavigationPath(
-        sampleNavPromise,
-        'aaa/a1'
-      );
-      assert.equal(
-        navPath.navigationPath.length,
-        3,
-        '3 nodes active : root node, "aaa" node, "a1" node'
-      );
+      const navPath = await Navigation.getNavigationPath(sampleNavPromise, 'aaa/a1');
+      assert.equal(navPath.navigationPath.length, 3, '3 nodes active : root node, "aaa" node, "a1" node');
       assert.equal(navPath.navigationPath[1].pathSegment, 'aaa');
       assert.equal(navPath.navigationPath[2].pathSegment, 'a1');
       assert.propertyVal(
@@ -149,35 +131,17 @@ describe('Navigation', function() {
       );
     });
     it('should load lazy-loaded children nodes only on activation', async () => {
-      expect(
-        NodeDataManagementStorage.hasChildren(
-          activatedNodeWithLazyLoadedChildren
-        )
-      ).to.be.false;
-      const navPath = await Navigation.getNavigationPath(
-        sampleNavPromise,
-        'bbb'
-      );
-      assert.equal(
-        navPath.navigationPath.length,
-        2,
-        '2 nodes active : root node + "bbb" node'
-      );
+      expect(NodeDataManagementStorage.hasChildren(activatedNodeWithLazyLoadedChildren)).to.be.false;
+      const navPath = await Navigation.getNavigationPath(sampleNavPromise, 'bbb');
+      assert.equal(navPath.navigationPath.length, 2, '2 nodes active : root node + "bbb" node');
       const activatedNodeWithLazyLoadedChildren = navPath.navigationPath[1];
       assert.equal(activatedNodeWithLazyLoadedChildren.pathSegment, 'bbb');
-      expect(
-        NodeDataManagementStorage.getChildren(
-          activatedNodeWithLazyLoadedChildren
-        ).children.length
-      ).to.be.above(0);
+      expect(NodeDataManagementStorage.getChildren(activatedNodeWithLazyLoadedChildren).children.length).to.be.above(0);
       assert.propertyVal(navPath.context, 'lazy', false);
     });
 
     it('child node should overwrite existing context variable from a parent', async () => {
-      const navPath = await Navigation.getNavigationPath(
-        sampleNavPromise,
-        'bbb/b1'
-      );
+      const navPath = await Navigation.getNavigationPath(sampleNavPromise, 'bbb/b1');
       assert.propertyVal(navPath.context, 'lazy', true);
     });
   });
@@ -207,42 +171,26 @@ describe('Navigation', function() {
       expect(children.length).to.equal(0);
     });
     it('should return nodes children and bind them if children are provided', async () => {
-      const children = await Navigation.getChildren(
-        nodeWithChildren,
-        undefined
-      );
+      const children = await Navigation.getChildren(nodeWithChildren, undefined);
       expect(children).to.deep.equal(nodeWithChildren.children);
     });
     it('should return nodes children and bind them if children provider is provided', async () => {
-      const children = await Navigation.getChildren(
-        nodeWithChildrenProvider,
-        undefined
-      );
+      const children = await Navigation.getChildren(nodeWithChildrenProvider, undefined);
       expect(children).to.deep.equal(nodeWithChildrenProvider.children());
     });
     it('should not fail if children provider throws an error', async () => {
-      const children = await Navigation.getChildren(
-        nodeWithChildrenProviderError,
-        undefined
-      );
+      const children = await Navigation.getChildren(nodeWithChildrenProviderError, undefined);
       expect(children).to.deep.equal([]);
     });
     it('should return children using provied context and bind them', async () => {
-      const children = await Navigation.getChildren(
-        nodeWithChildrenProvider,
-        'context'
-      );
+      const children = await Navigation.getChildren(nodeWithChildrenProvider, 'context');
       expect(children).to.deep.equal(nodeWithChildrenProvider.children());
     });
     it('uses navigationPermissionChecker and returns correct amount of children', async () => {
       //given
       LuigiConfig.config = {
         navigation: {
-          nodeAccessibilityResolver: (
-            nodeToCheckPermissionFor,
-            currentNode,
-            currentContext
-          ) => {
+          nodeAccessibilityResolver: (nodeToCheckPermissionFor, currentNode, currentContext) => {
             if (nodeToCheckPermissionFor.constraints) {
               return nodeToCheckPermissionFor.constraints === 'other_scope';
             }
@@ -253,10 +201,7 @@ describe('Navigation', function() {
 
       const nodeWithChildren = {
         label: 'someNode',
-        children: [
-          { label: 'child1', constraints: 'some_scope' },
-          { label: 'child2' }
-        ]
+        children: [{ label: 'child1', constraints: 'some_scope' }, { label: 'child2' }]
       };
       const children = await Navigation.getChildren(nodeWithChildren);
       expect(children.length).to.equal(1);
@@ -301,10 +246,7 @@ describe('Navigation', function() {
     });
     it('should return node if pathSegment is not defined', () => {
       const mockNode = { label: 'Luigi' };
-      const result = Navigation.bindChildToParent(
-        mockNode,
-        nodeWithoutPathSegment
-      );
+      const result = Navigation.bindChildToParent(mockNode, nodeWithoutPathSegment);
       assert.deepEqual(result, mockNode);
     });
     it('should return parent.pathSegment of first child', () => {
@@ -441,47 +383,27 @@ describe('Navigation', function() {
       // truthy tests
       // when
       const resStaticOk = Navigation.findMatchingNode('other', [staticNode()]);
-      const resDynamicOk = Navigation.findMatchingNode('avengers', [
-        dynamicNode()
-      ]);
+      const resDynamicOk = Navigation.findMatchingNode('avengers', [dynamicNode()]);
 
       // // then
-      expect(resStaticOk.pathSegment).to.equal(
-        'other',
-        'resStaticOk.pathSegment'
-      );
-      expect(resDynamicOk.pathSegment).to.equal(
-        ':group',
-        'resDynamicOk.pathSegment'
-      );
-      expect(resDynamicOk.viewUrl).to.contain(
-        '/:group',
-        'resDynamicOk.viewUrl'
-      );
-      expect(resDynamicOk.context.currentGroup).to.equal(
-        ':group',
-        'resDynamicOk.context'
-      );
+      expect(resStaticOk.pathSegment).to.equal('other', 'resStaticOk.pathSegment');
+      expect(resDynamicOk.pathSegment).to.equal(':group', 'resDynamicOk.pathSegment');
+      expect(resDynamicOk.viewUrl).to.contain('/:group', 'resDynamicOk.viewUrl');
+      expect(resDynamicOk.context.currentGroup).to.equal(':group', 'resDynamicOk.context');
 
       // falsy tests
       const resNull = Navigation.findMatchingNode('avengers', [staticNode()]);
       expect(resNull).to.equal(null);
       sinon.assert.notCalled(console.warn);
 
-      const resStaticWarning = Navigation.findMatchingNode('avengers', [
-        staticNode(),
-        dynamicNode()
-      ]);
+      const resStaticWarning = Navigation.findMatchingNode('avengers', [staticNode(), dynamicNode()]);
       expect(resStaticWarning.pathSegment).to.equal(
         ':group',
         'static warning pathSegment: ' + resStaticWarning.pathSegment
       );
       sinon.assert.calledOnce(console.warn);
 
-      const resMultipleDynamicError = Navigation.findMatchingNode(
-        'twoDynamic',
-        [dynamicNode(), dynamicNode()]
-      );
+      const resMultipleDynamicError = Navigation.findMatchingNode('twoDynamic', [dynamicNode(), dynamicNode()]);
       expect(resMultipleDynamicError).to.equal(null);
       sinon.assert.calledOnce(console.warn);
       sinon.assert.calledOnce(console.error);
@@ -501,7 +423,7 @@ describe('Navigation', function() {
       NodeDataManagementStorage.deleteCache();
     });
     it('should not fail, returns empty array if empty children and pathData are set', () => {
-      const result = Navigation.getNodesToDisplay(children, pathData);
+      const result = Navigation.getNodesToDisplay(children, pathData).children;
       expect(result).to.be.empty;
     });
     it('should not fail, returns empty array if pathData has not parent node', () => {
@@ -518,16 +440,16 @@ describe('Navigation', function() {
           ]
         }
       ];
-      const result = Navigation.getNodesToDisplay(children, pathData);
+      const result = Navigation.getNodesToDisplay(children, pathData).children;
       assert.deepEqual(result, []);
     });
     it('should not fail, returns parent node children if children is empty and pathData has parent node', () => {
-      let parentChildren = [
+      const parentChildren = [
         {
           pathSegment: 'settings1'
         }
       ];
-      let parentNode = {
+      const parentNode = {
         pathSegment: 'settings',
         children: parentChildren
       };
@@ -551,13 +473,14 @@ describe('Navigation', function() {
         children: parentChildren,
         filteredChildren: parentChildren
       });
-      expect(Navigation.getNodesToDisplay([], pathData)).to.deep.equal(
-        parentChildren
-      );
+      expect(Navigation.getNodesToDisplay([], pathData)).to.deep.equal({
+        children: parentChildren,
+        parent: parentNode
+      });
     });
     it('should not fail, returns children if pathData is empty', () => {
       children = [{ pathSegment: 'overview' }, { pathSegment: 'projects' }];
-      const result = Navigation.getNodesToDisplay(children, pathData);
+      const result = Navigation.getNodesToDisplay(children, pathData).children;
       expect(result).to.be.equal(children);
     });
   });
@@ -577,7 +500,7 @@ describe('Navigation', function() {
       current = {
         pathData: []
       };
-      const result = Navigation.getGroupedChildren(children, current);
+      const result = Navigation.getGroupedChildren(children, current).children;
       expect(result).to.be.deep.equal({});
     });
     it('returns nested node children if pathData has nestedNode', async () => {
@@ -603,7 +526,7 @@ describe('Navigation', function() {
       await Navigation.getChildren(current.pathData[1], {
         children: current.pathData[1].children
       }); //store in cache
-      const result = Navigation.getGroupedChildren(children, current);
+      const result = Navigation.getGroupedChildren(children, current).children;
       expect(result.___0[0].pathSegment).to.be.equal('category');
     });
     it('returns empty object if pathData has not nestedNode', () => {
@@ -622,7 +545,7 @@ describe('Navigation', function() {
           }
         ]
       };
-      const result = Navigation.getGroupedChildren(children, current);
+      const result = Navigation.getGroupedChildren(children, current).children;
       expect(result).to.be.deep.equal({});
     });
     it('returns grouped children if no pathData was found (empty nav)', () => {
@@ -630,7 +553,7 @@ describe('Navigation', function() {
       current = {
         pathData: []
       };
-      const result = Navigation.getGroupedChildren(children, current);
+      const result = Navigation.getGroupedChildren(children, current).children;
       expect(result.___0[0].pathSegment).to.be.equal('settings');
     });
     it('returns grouped children on standard usecase', () => {
@@ -653,7 +576,7 @@ describe('Navigation', function() {
           }
         ]
       };
-      const result = Navigation.getGroupedChildren(children, current);
+      const result = Navigation.getGroupedChildren(children, current).children;
       expect(result.___0[0].pathSegment).to.be.equal('settings');
       expect(result.___0[1].pathSegment).to.be.equal('category');
     });
@@ -673,30 +596,14 @@ describe('Navigation', function() {
       expect(result).to.be.deep.equal([]);
     });
     it('returns children if tabNav is true', () => {
-      children = [
-        { 1: '1' },
-        { 2: '2', tabNav: true },
-        { 3: '3' },
-        { 4: '4' },
-        { 5: '5' }
-      ];
+      children = [{ 1: '1' }, { 2: '2', tabNav: true }, { 3: '3' }, { 4: '4' }, { 5: '5' }];
       const result = Navigation.getTruncatedChildren(children);
       expect(result).to.be.deep.equal([{ 1: '1' }, { 2: '2', tabNav: true }]);
     });
     it('returns children if keepSelectedForChildren is true', () => {
-      children = [
-        { 1: '1' },
-        { 2: '2' },
-        { 3: '3', keepSelectedForChildren: true },
-        { 4: '4' },
-        { 5: '5' }
-      ];
+      children = [{ 1: '1' }, { 2: '2' }, { 3: '3', keepSelectedForChildren: true }, { 4: '4' }, { 5: '5' }];
       const result = Navigation.getTruncatedChildren(children);
-      expect(result).to.be.deep.equal([
-        { 1: '1' },
-        { 2: '2' },
-        { 3: '3', keepSelectedForChildren: true }
-      ]);
+      expect(result).to.be.deep.equal([{ 1: '1' }, { 2: '2' }, { 3: '3', keepSelectedForChildren: true }]);
     });
     it('returns children if keepSelectedForChildren and tabNav are true', () => {
       children = [
@@ -830,13 +737,7 @@ describe('Navigation', function() {
       expect(res.selectedNode.pathSegment).to.equal('settings');
     });
     it('getTruncatedChildrenForTabNav', () => {
-      const children = [
-        { 1: '1' },
-        { 2: '2' },
-        { 3: '3', tabNav: true },
-        { 4: '4' },
-        { 5: '5' }
-      ];
+      const children = [{ 1: '1' }, { 2: '2' }, { 3: '3', tabNav: true }, { 4: '4' }, { 5: '5' }];
       const res = Navigation.getTruncatedChildrenForTabNav(children);
       expect(res.length).to.equal(4);
     });
@@ -846,9 +747,7 @@ describe('Navigation', function() {
     it('extracts the data', async () => {
       sinon.stub(Navigation, 'getNavigationPath').returns('path-data');
       sinon.stub(RoutingHelpers, 'getLastNodeObject').returns('node-object');
-      sinon
-        .stub(LuigiConfig, 'getConfigValueAsync')
-        .returns('navigation-nodes');
+      sinon.stub(LuigiConfig, 'getConfigValueAsync').returns('navigation-nodes');
 
       const expected = {
         nodeObject: 'node-object',
@@ -856,19 +755,9 @@ describe('Navigation', function() {
       };
       const actual = await Navigation.extractDataFromPath('path');
 
-      sinon.assert.calledWithExactly(
-        LuigiConfig.getConfigValueAsync,
-        'navigation.nodes'
-      );
-      sinon.assert.calledWithExactly(
-        Navigation.getNavigationPath,
-        'navigation-nodes',
-        'path'
-      );
-      sinon.assert.calledWithExactly(
-        RoutingHelpers.getLastNodeObject,
-        'path-data'
-      );
+      sinon.assert.calledWithExactly(LuigiConfig.getConfigValueAsync, 'navigation.nodes');
+      sinon.assert.calledWithExactly(Navigation.getNavigationPath, 'navigation-nodes', 'path');
+      sinon.assert.calledWithExactly(RoutingHelpers.getLastNodeObject, 'path-data');
       expect(actual).to.eql(expected);
     });
   });
@@ -897,10 +786,7 @@ describe('Navigation', function() {
         navigation: {}
       };
       Navigation.onNodeChange();
-      sinon.assert.calledWithExactly(
-        LuigiConfig.getConfigValue,
-        'navigation.nodeChangeHook'
-      );
+      sinon.assert.calledWithExactly(LuigiConfig.getConfigValue, 'navigation.nodeChangeHook');
       const result = LuigiConfig.getConfigValue('navigation.nodeChangeHook');
       assert.equal(result, undefined);
     });
@@ -994,10 +880,7 @@ describe('Navigation', function() {
       };
       const expected = 'https://mf.luigi-project.io#!/:virtualSegment_1/';
 
-      assert.equal(
-        Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index),
-        expected
-      );
+      assert.equal(Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index), expected);
     });
     it('returns valid substituted string with pathParams', () => {
       const mock = {
@@ -1011,13 +894,9 @@ describe('Navigation', function() {
       };
 
       // trailing slash is expected, it gets removed later by trimTrailingSlash() before setting viewUrl
-      const expected =
-        'https://mf.luigi-project.io#!/x/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
+      const expected = 'https://mf.luigi-project.io#!/x/:virtualSegment_1/:virtualSegment_2/:virtualSegment_3/';
 
-      assert.equal(
-        Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index),
-        expected
-      );
+      assert.equal(Navigation.buildVirtualViewUrl(mock.url, mock.pathParams, mock.index), expected);
     });
   });
   describe('buildVirtualTree', () => {
@@ -1077,8 +956,7 @@ describe('Navigation', function() {
         _virtualPathIndex: 3,
         label: ':virtualSegment_3',
         pathSegment: ':virtualSegment_3',
-        viewUrl:
-          'http://mf.luigi-project.io/:virtualSegment_2/:virtualSegment_3',
+        viewUrl: 'http://mf.luigi-project.io/:virtualSegment_2/:virtualSegment_3',
         _virtualViewUrl: 'http://mf.luigi-project.io'
       };
       const mockNodeNames = ['foo'];
