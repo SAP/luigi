@@ -315,14 +315,14 @@ describe('AppSwitcher', () => {
 
       // check the title and subtlitle
       cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Application Two');
-      cy.get('.fd-shellbar__subtitle').should('contain', 'second app');
+      cy.get('.fd-shellbar__subtitle').should('contain', 'the second app');
 
       // navigate to project 1 using plain navigation
       cy.visit('/projects/pr1/developers');
 
       // check if app switcher got updated
       cy.get('[data-testid="luigi-topnav-title"]').should('contain', 'Application One');
-      cy.get('.fd-shellbar__subtitle').should('contain', 'first app');
+      cy.get('.fd-shellbar__subtitle').should('contain', 'the first app');
 
       // check available dropdown items
       cy.get('[data-testid="app-switcher"]').click();
