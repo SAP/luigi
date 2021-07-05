@@ -189,6 +189,14 @@ class RoutingClass {
       const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
       const viewUrl = nodeObject.viewUrl || '';
+      const hasChildrenNode = (nodeObject.children && nodeObject.children.length > 0) || false;
+      const intendToHaveEmptyViewUrl =
+        (nodeObject.intendToHaveEmptyViewUrl && nodeObject.intendToHaveEmptyViewUrl === true) || false;
+
+      if (viewUrl === '' && !hasChildrenNode && intendToHaveEmptyViewUrl !== true) {
+        console.warn('This node was configured an empty viewUrl. Please double check it.');
+        return;
+      }
 
       if (!viewUrl && !nodeObject.compound) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(pathData, async (node, ctx) => {
