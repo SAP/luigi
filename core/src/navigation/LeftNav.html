@@ -575,6 +575,14 @@
     }
   }
 
+  :global(.semiCollapsed) .lui-fd-side-nav-wrapper {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
   .fd-app__sidebar {
     position: fixed;
     top: $topNavHeight;
@@ -586,11 +594,6 @@
       display: flex;
       justify-content: space-between;
       flex-direction: column;
-      scrollbar-width: none;
-
-      &::-webkit-scrollbar {
-        width: 0;
-      }
     }
 
     .fd-side-nav {
