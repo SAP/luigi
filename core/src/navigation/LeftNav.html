@@ -6,8 +6,34 @@
 <div
   class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
 >
+  {#if navHeader}
+  <div class="lui-nav-title">
+    <ul class="fd-nested-list">
+      <li class="fd-nested-list__item">
+        <a class="fd-nested-list__link">
+          {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
+          <i
+            class="fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
+            role="presentation"
+          ></i>
+          {:else}
+          <span class="fd-nested-list__icon sap-icon">
+            <img
+              src="{navHeader.icon}"
+              alt="{navHeader.altText ? navHeader.altText : ''}"
+            />
+          </span>
+          {/if} {/if}
+          <span class="fd-nested-list__title">
+            {$getTranslation(navHeader.label)}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  {/if}
   <nav
-    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''}"
+    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
     on:keyup="{handleKey}"
     data-testid="semiCollapsibleLeftNav"
   >
@@ -244,7 +270,19 @@
 
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { RoutingHelpers } from '../utilities/helpers';
+  import { Navigation } from './services/navigation';
+  import {
+    IframeHelpers,
+    NavigationHelpers,
+    GenericHelpers,
+    RoutingHelpers,
+    StateHelpers,
+    EventListenerHelpers
+  } from '../utilities/helpers';
+  import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
+  import { CSS_BREAKPOINTS } from '../utilities/constants';
+  import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
+  import BadgeCounter from './BadgeCounter.html';
 
   //TODO refactor
   const __this = {
@@ -278,6 +316,53 @@
           }
         });
 
+        navHeader = undefined;
+        let parentNode = obj.navParent;
+        if (
+          parentNode &&
+          parentNode.navHeader &&
+          GenericHelpers.requestExperimentalFeature('navHeader', true)
+        ) {
+          let resolvedNavHeader = parentNode.navHeader;
+          let resolvedNavHeaderNode = parentNode;
+
+          if ('inherit' === resolvedNavHeader) {
+            resolvedNavHeaderNode = parentNode.parent;
+            while (
+              resolvedNavHeaderNode &&
+              'inherit' === resolvedNavHeaderNode.navHeader
+            ) {
+              resolvedNavHeaderNode = resolvedNavHeaderNode.parent;
+            }
+            resolvedNavHeader = resolvedNavHeaderNode
+              ? resolvedNavHeaderNode.navHeader
+              : undefined;
+          }
+
+          if (resolvedNavHeader instanceof Function) {
+            navHeader = {};
+
+            let res = resolvedNavHeader(
+              NavigationHelpers.stripNode(parentNode),
+              NavigationHelpers.stripNode(resolvedNavHeaderNode)
+            );
+            if (res instanceof Promise) {
+              res.then(headerData => {
+                navHeader = headerData;
+              });
+            } else {
+              navHeader = res;
+            }
+          } else if ('auto' === resolvedNavHeader) {
+            navHeader = {
+              label: parentNode.label,
+              icon: parentNode.icon
+            };
+          } else {
+            navHeader = resolvedNavHeader;
+          }
+        }
+
         let sideNavAccordionModeOverride =
           (selectedNode && selectedNode.sideNavAccordionMode) ||
           (selectedNode &&
@@ -296,14 +381,6 @@
 
   const dispatch = createEventDispatcher();
 
-  import { Navigation } from './services/navigation';
-  import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
-  import { StateHelpers, EventListenerHelpers } from '../utilities/helpers';
-  import { CSS_BREAKPOINTS } from '../utilities/constants';
-  import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
-  import BadgeCounter from './BadgeCounter.html';
-
   export let children;
   export let hideNavComponent;
   export let footerText;
@@ -321,6 +398,7 @@
   export let sideNavClass;
   export let sideNavAccordionMode;
   export let burgerTooltip;
+  export let navHeader;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -583,6 +661,17 @@
     }
   }
 
+  :global(body:not(.semiCollapsed)) .fd-app__sidebar .fd-side-nav.lui-nav-header-visible {
+    height: auto;
+    top: $navHeaderHeight;
+    position: absolute;
+    bottom: 0;
+  }
+
+  :global(.semiCollapsed) .lui-nav-title {
+    display: none;
+  }
+
   .fd-app__sidebar {
     position: fixed;
     top: $topNavHeight;
@@ -594,6 +683,42 @@
       display: flex;
       justify-content: space-between;
       flex-direction: column;
+    }
+
+    .lui-nav-title {
+      height: $navHeaderHeight;
+      background: green;
+      width: var(--luigi__left-sidenav--width);
+      border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
+        var(--sapList_BorderColor, #e4e4e4);
+      border-right: var(--sapList_BorderWidth, 0.0625rem) solid
+        var(--sapGroup_ContentBorderColor, #d9d9d9);
+
+      & > ul {
+        height: 100%;
+        & > li {
+          height: 100%;
+        }
+      }
+
+      .fd-nested-list__link,
+      .fd-nested-list__link:active {
+        height: 100%;
+        padding-left: 0.5rem;
+        background: none;
+        cursor: default;
+
+        .fd-nested-list__title {
+          font-weight: bold;
+          padding-left: 0.3rem;
+          color: var(--sapTextColor, #32363a);
+        }
+
+        i {
+          font-size: 1.5rem;
+          color: var(--sapTile_TextColor, #6a6d70);
+        }
+      }
     }
 
     .fd-side-nav {
@@ -619,7 +744,7 @@
 
     &.hasFooter {
       .fd-side-nav__main-navigation {
-        height: calc(100% - 50px);
+        height: calc(100% - 2rem);
       }
     }
 
@@ -693,6 +818,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top: var(--sapList_BorderWidth, 0.0625rem) solid
+      var(--sapList_BorderColor, #e4e4e4);
 
     &--text {
       color: #32363a;
