@@ -2,6 +2,7 @@ let defaultConfig = `
 
 Luigi.setConfig({
     navigation: { 
+            validWebcomponentUrls:['.*?'],
             nodes: [{ 
                 pathSegment: 'home', 
                 label: 'h', 
@@ -186,9 +187,6 @@ Luigi.setConfig({
             header: { 
                 logo: 'img/luigi.png', 
                 title: 'Luigi Fiddle'
-            },
-            navigation: {
-              validWebcomponentUrls:['.*?']
             },
             experimental: {
               webcomponents:true
