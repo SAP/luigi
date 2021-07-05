@@ -317,16 +317,17 @@
         });
 
         navHeader = undefined;
+        let parentNode = obj.navParent;
         if (
-          selectedNode &&
-          selectedNode.navHeader &&
+          parentNode &&
+          parentNode.navHeader &&
           GenericHelpers.requestExperimentalFeature('navHeader', true)
         ) {
-          let resolvedNavHeader = selectedNode.navHeader;
-          let resolvedNavHeaderNode = selectedNode;
+          let resolvedNavHeader = parentNode.navHeader;
+          let resolvedNavHeaderNode = parentNode;
 
           if ('inherit' === resolvedNavHeader) {
-            resolvedNavHeaderNode = selectedNode.parent;
+            resolvedNavHeaderNode = parentNode.parent;
             while (
               resolvedNavHeaderNode &&
               'inherit' === resolvedNavHeaderNode.navHeader
@@ -342,7 +343,7 @@
             navHeader = {};
 
             let res = resolvedNavHeader(
-              NavigationHelpers.stripNode(selectedNode),
+              NavigationHelpers.stripNode(parentNode),
               NavigationHelpers.stripNode(resolvedNavHeaderNode)
             );
             if (res instanceof Promise) {
@@ -354,8 +355,8 @@
             }
           } else if ('auto' === resolvedNavHeader) {
             navHeader = {
-              label: selectedNode.label,
-              icon: selectedNode.icon
+              label: parentNode.label,
+              icon: parentNode.icon
             };
           } else {
             navHeader = resolvedNavHeader;

@@ -368,6 +368,7 @@ class NavigationClass {
       });
       updatedCompData.selectedNode = selectedNode || lastElement;
       updatedCompData.children = groupedChildren;
+      updatedCompData.navParent = lastElement;
     }
     return updatedCompData;
   }
