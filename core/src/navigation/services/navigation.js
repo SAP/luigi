@@ -36,7 +36,7 @@ class NavigationClass {
         } else {
           rootNode = { children: topNavNodes };
         }
-        await this.getChildren(rootNode);
+        rootNode.children = await this.getChildren(rootNode);
         NodeDataManagementStorage.setRootNode(rootNode);
       }
       const nodeNamesInCurrentPath = activePath.split('/');
