@@ -297,6 +297,14 @@ class NavigationHelpersClass {
     }
     return undefined;
   }
+
+  stripNode(node) {
+    const strippedNode = { ...node };
+    delete strippedNode.parent;
+    delete strippedNode.children;
+    delete strippedNode.navHeader;
+    return strippedNode;
+  }
 }
 
 export const NavigationHelpers = new NavigationHelpersClass();
