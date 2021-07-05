@@ -419,13 +419,13 @@ class Navigation {
     items: [
       {
         title: 'Application One',
-        subTitle: 'first app',
+        subTitle: 'the first app',
         link: '/projects/pr1'
       },
       {
         title: 'Application Two',
         link: '/projects/pr2',
-        subTitle: 'second app'
+        subTitle: 'the second app'
       },
       {
         title: 'Application Three',
