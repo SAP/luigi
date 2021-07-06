@@ -249,26 +249,9 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
     cursor: pointer;
   }
 
-  .lui-shellbar-single-app-title {
-    padding: 0 0.625rem;
-    max-width: 50vw;
-    text-decoration: none;
-  }
-
-  .lui-app-switch {
-    max-width: 40vw;
-  }
-
-  @media (max-width: $desktopMinWidth - 1) {
-    .fd-shellbar__title {
-      max-width: 105px; /*due to limited space on the mobile and buttons (Profile, Logo, burger etc.)*/
-    }
+  @media (max-width: $desktopMinWidth) {
     .fd-shellbar__subtitle {
       display: none;
-    }
-    .lui-shellbar-single-app-title {
-      padding-right: 0;
-      max-width: 140px;
     }
   }
 </style>
