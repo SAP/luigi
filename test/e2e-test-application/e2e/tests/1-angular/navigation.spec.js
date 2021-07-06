@@ -1,4 +1,9 @@
 describe('Navigation', () => {
+  let consoleSpy;
+  Cypress.on('window:before:load', win => {
+    consoleSpy = cy.spy(win.console, 'warn'); // can be other methods - log, warn, etc
+  });
+
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
@@ -259,6 +264,22 @@ describe('Navigation', () => {
           .contains('Hello from tets.')
           .should('be.visible');
       });
+    });
+
+    it('Side nav does not broken while clicking empty viewUrl node', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+
+      cy.get('.fd-side-nav')
+        .contains('Empty viewUrl node')
+        .click();
+
+      cy.get('.fd-side-nav').should('contain', 'Empty viewUrl node');
     });
   });
 

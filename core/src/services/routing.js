@@ -193,7 +193,7 @@ class RoutingClass {
       const intendToHaveEmptyViewUrl =
         (nodeObject.intendToHaveEmptyViewUrl && nodeObject.intendToHaveEmptyViewUrl === true) || false;
 
-      if (viewUrl === '' && !hasChildrenNode && intendToHaveEmptyViewUrl !== true) {
+      if (viewUrl === '' && !hasChildrenNode && !intendToHaveEmptyViewUrl) {
         console.warn('This node was configured an empty viewUrl. Please double check it.');
         return;
       }
