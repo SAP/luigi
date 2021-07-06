@@ -320,18 +320,27 @@ class NavigationHelpersClass {
     return val || fallback;
   }
 
+  substituteVars(resolver, context) {
+    const resolverString = JSON.stringify(resolver);
+    const resString = resolverString.replace(/\$\{[a-zA-Z0-9$_.]+\}/g, match => {
+      const chain = match.substr(2, match.length - 3);
+      return this.getPropertyChainValue(context, chain) || match;
+    });
+    return JSON.parse(resString);
+  }
+
   async fetchNavHeader(node) {
-    const resolver = node.titleResolver;
+    const resolver = this.substituteVars(node.titleResolver, node.context);
     const requestOptions = resolver.request;
 
     return new Promise((resolve, reject) => {
       if (resolver._cachedHeader) {
-        console.log('header from cache: ', resolver._cachedHeader);
+        console.debug('header from cache: ', resolver._cachedHeader);
         resolve(resolver._cachedHeader);
       } else {
         fetch(requestOptions.url, {
           method: requestOptions.method,
-          headers: RoutingHelpers.substituteDynamicParamsInObject(requestOptions.headers, node.context, ':', true),
+          headers: requestOptions.headers,
           body: JSON.stringify(requestOptions.body)
         }).then(response => {
           response.json().then(data => {
@@ -346,7 +355,7 @@ class NavigationHelpersClass {
               label: label || resolver.fallbackTitle,
               icon: this.getPropertyChainValue(data, resolver.iconPropertyChain, resolver.fallbackIcon)
             };
-            resolver._cachedHeader = navHeader;
+            node.titleResolver._cachedHeader = navHeader;
             resolve(navHeader);
           });
         });
