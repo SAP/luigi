@@ -1,9 +1,4 @@
 describe('Navigation', () => {
-  let consoleSpy;
-  Cypress.on('window:before:load', win => {
-    consoleSpy = cy.spy(win.console, 'warn'); // can be other methods - log, warn, etc
-  });
-
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
