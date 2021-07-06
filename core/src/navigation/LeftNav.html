@@ -10,7 +10,7 @@
   <div class="lui-nav-title">
     <ul class="fd-nested-list">
       <li class="fd-nested-list__item">
-        <a class="fd-nested-list__link">
+        <a class="fd-nested-list__link" title="{$getTranslation(navHeader.label)}">
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
             class="fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
@@ -358,6 +358,29 @@
               label: parentNode.label,
               icon: parentNode.icon
             };
+          } else if (
+            'resolver' === resolvedNavHeader &&
+            resolvedNavHeaderNode.titleResolver
+          ) {
+            if (resolvedNavHeaderNode.titleResolver.prerenderFallback) {
+              navHeader = {
+                label: resolvedNavHeaderNode.titleResolver.fallbackTitle || '',
+                icon: resolvedNavHeaderNode.titleResolver.fallbackIcon
+              };
+            } else {
+              navHeader = {};
+            }
+            NavigationHelpers.fetchNavHeader(resolvedNavHeaderNode)
+              .then(headerData => {
+                navHeader = headerData;
+              })
+              .catch(error => {
+                console.error('Error while retrieving title, fallback to node label');
+                navHeader = {
+                  label: parentNode.label,
+                  icon: parentNode.icon
+                };
+              });
           } else {
             navHeader = resolvedNavHeader;
           }

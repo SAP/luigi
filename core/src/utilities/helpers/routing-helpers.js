@@ -200,11 +200,16 @@ class RoutingHelpersClass {
     return 'javascript:void(0)';
   }
 
-  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':') {
+  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
     return Object.entries(object)
       .map(([key, value]) => {
-        let foundKey = Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
-        return [key, foundKey ? paramMap[foundKey] : value];
+        const foundKey = contains
+          ? Object.keys(paramMap).find(key2 => value && value.indexOf(paramPrefix + key2) >= 0)
+          : Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
+        return [
+          key,
+          foundKey ? (contains ? value.replace(paramPrefix + foundKey, paramMap[foundKey]) : paramMap[foundKey]) : value
+        ];
       })
       .reduce((acc, [key, value]) => {
         return Object.assign(acc, { [key]: value });

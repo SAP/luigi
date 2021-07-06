@@ -1,6 +1,6 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
 import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
-import { AuthHelpers, GenericHelpers } from './';
+import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
 
@@ -304,6 +304,54 @@ class NavigationHelpersClass {
     delete strippedNode.children;
     delete strippedNode.navHeader;
     return strippedNode;
+  }
+
+  getPropertyChainValue(obj, propChain, fallback) {
+    if (!propChain || !obj) {
+      return fallback;
+    }
+    const propArray = propChain.split('.');
+    let val = obj;
+    propArray.forEach(el => {
+      if (val) {
+        val = val[el];
+      }
+    });
+    return val || fallback;
+  }
+
+  async fetchNavHeader(node) {
+    const resolver = node.titleResolver;
+    const requestOptions = resolver.request;
+
+    return new Promise((resolve, reject) => {
+      if (resolver._cachedHeader) {
+        console.log('header from cache: ', resolver._cachedHeader);
+        resolve(resolver._cachedHeader);
+      } else {
+        fetch(requestOptions.url, {
+          method: requestOptions.method,
+          headers: RoutingHelpers.substituteDynamicParamsInObject(requestOptions.headers, node.context, ':', true),
+          body: JSON.stringify(requestOptions.body)
+        }).then(response => {
+          response.json().then(data => {
+            let label = this.getPropertyChainValue(data, resolver.titlePropertyChain);
+            if (label) {
+              label = label.trim();
+            }
+            if (label && resolver.titleDecorator) {
+              label = resolver.titleDecorator.replace('%s', label);
+            }
+            const navHeader = {
+              label: label || resolver.fallbackTitle,
+              icon: this.getPropertyChainValue(data, resolver.iconPropertyChain, resolver.fallbackIcon)
+            };
+            resolver._cachedHeader = navHeader;
+            resolve(navHeader);
+          });
+        });
+      }
+    });
   }
 }
 
