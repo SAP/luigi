@@ -298,22 +298,36 @@ class NavigationClass {
 
   getNodesToDisplay(children, pathData) {
     if (children && children.length > 0) {
-      return children;
+      return {
+        children: children
+      };
     }
     if (pathData.length > 2) {
       //try to get the children from parent node
-      let parentNode = pathData[pathData.length - 2];
+      const parentNode = pathData[pathData.length - 2];
       if (NodeDataManagementStorage.hasChildren(parentNode)) {
-        return this.getChildrenFromCache(parentNode);
+        return {
+          children: this.getChildrenFromCache(parentNode),
+          parent: parentNode
+        };
       }
     }
 
-    return [];
+    return {
+      children: []
+    };
   }
 
   getGroupedChildren(children, current) {
     const nodes = this.getNodesToDisplay(children, current.pathData);
-    return NavigationHelpers.groupNodesBy(nodes, 'category', true);
+    if (Array.isArray(nodes)) {
+      return NavigationHelpers.groupNodesBy(nodes, 'category', true);
+    } else {
+      return {
+        children: NavigationHelpers.groupNodesBy(nodes.children, 'category', true),
+        parent: nodes.parent
+      };
+    }
   }
 
   /**
@@ -359,8 +373,10 @@ class NavigationClass {
         lastElement = [...pathDataTruncatedChildren].pop();
       }
       const children = await this.getChildren(lastElement, componentData.context);
-      const groupedChildren = this.getGroupedChildren(children, current);
+      const groupedChildrenData = this.getGroupedChildren(children, current);
+      updatedCompData.navParent = groupedChildrenData.parent || lastElement;
       updatedCompData.hasCategoriesWithIcon = false;
+      const groupedChildren = groupedChildrenData.children;
       Object.values(groupedChildren).forEach(value => {
         if (!updatedCompData.hasCategoriesWithIcon && value && value.metaInfo && value.metaInfo.icon) {
           updatedCompData.hasCategoriesWithIcon = true;
@@ -368,7 +384,6 @@ class NavigationClass {
       });
       updatedCompData.selectedNode = selectedNode || lastElement;
       updatedCompData.children = groupedChildren;
-      updatedCompData.navParent = lastElement;
     }
     return updatedCompData;
   }
@@ -401,7 +416,7 @@ class NavigationClass {
         selectedNode.tabNav ? selectedNode : selectedNode.parent,
         componentData.context
       );
-      const groupedChildren = this.getGroupedChildren(children, current);
+      const groupedChildren = this.getGroupedChildren(children, current).children;
       updatedCompData.selectedNode = selectedNode;
       updatedCompData.selectedNodeForTabNav = selectedNode;
       updatedCompData.children = groupedChildren;
