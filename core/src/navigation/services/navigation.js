@@ -375,6 +375,7 @@ class NavigationClass {
       const children = await this.getChildren(lastElement, componentData.context);
       const groupedChildrenData = this.getGroupedChildren(children, current);
       updatedCompData.navParent = groupedChildrenData.parent || lastElement;
+      updatedCompData.context = current.pathData._context;
       updatedCompData.hasCategoriesWithIcon = false;
       const groupedChildren = groupedChildrenData.children;
       Object.values(groupedChildren).forEach(value => {

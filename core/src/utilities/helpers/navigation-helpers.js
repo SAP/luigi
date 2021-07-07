@@ -329,8 +329,8 @@ class NavigationHelpersClass {
     return JSON.parse(resString);
   }
 
-  async fetchNavHeader(node) {
-    const resolver = this.substituteVars(node.titleResolver, node.context);
+  async fetchNavHeader(node, context) {
+    const resolver = this.substituteVars(node.titleResolver, context);
     const requestOptions = resolver.request;
 
     return new Promise((resolve, reject) => {

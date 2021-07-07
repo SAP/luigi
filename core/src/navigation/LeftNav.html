@@ -344,7 +344,8 @@
 
             let res = resolvedNavHeader(
               NavigationHelpers.stripNode(parentNode),
-              NavigationHelpers.stripNode(resolvedNavHeaderNode)
+              NavigationHelpers.stripNode(resolvedNavHeaderNode),
+              context
             );
             if (res instanceof Promise) {
               res.then(headerData => {
@@ -370,7 +371,7 @@
             } else {
               navHeader = {};
             }
-            NavigationHelpers.fetchNavHeader(resolvedNavHeaderNode)
+            NavigationHelpers.fetchNavHeader(resolvedNavHeaderNode, context)
               .then(headerData => {
                 navHeader = headerData;
               })
