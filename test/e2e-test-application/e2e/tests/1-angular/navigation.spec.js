@@ -260,6 +260,29 @@ describe('Navigation', () => {
           .should('be.visible');
       });
     });
+
+    it('Side nav does not broken while clicking empty viewUrl node', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+
+      cy.get('.fd-side-nav')
+        .contains('Empty viewUrl node')
+        .click();
+
+      cy.get('.fd-side-nav').should('contain', 'Empty viewUrl node');
+    });
+
+    it('Redirect to root path while reaching empty viewUrl node directly', () => {
+      cy.visit('/projects/pr2/emptyViewUrl');
+
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--warning');
+      cy.expectPathToBe('/overview');
+    });
   });
 
   describe('Node activation hook', () => {
