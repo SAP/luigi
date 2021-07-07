@@ -194,8 +194,7 @@ class RoutingClass {
         (nodeObject.intendToHaveEmptyViewUrl && nodeObject.intendToHaveEmptyViewUrl === true) || false;
 
       if (viewUrl.trim() === '' && !hasChildrenNode && !intendToHaveEmptyViewUrl) {
-        const warningMessage = 'This node was configured an empty viewUrl. Please double check it.';
-        console.warn(warningMessage);
+        console.warn('This node was configured an empty viewUrl. Please double check it.');
 
         // redirect to root when this empty viewUrl node be reached directly
         if (!previousCompData.viewUrl) {
@@ -204,7 +203,7 @@ class RoutingClass {
             '/'
           );
           const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          component.showAlert({ text: warningMessage, type: 'warning' }, false);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
           this.navigateTo(rootPath);
         }
 

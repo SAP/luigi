@@ -280,7 +280,7 @@ describe('Navigation', () => {
     it('Redirect to root path while reaching empty viewUrl node directly', () => {
       cy.visit('/projects/pr2/emptyViewUrl');
 
-      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--warning');
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--error');
       cy.expectPathToBe('/overview');
     });
   });
