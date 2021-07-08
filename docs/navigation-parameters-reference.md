@@ -184,7 +184,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 
 ### intendToHaveEmptyViewUrl
 - **type**: boolean
-- **description**: forces to navigate to the empty viewUrl node.
+- **description**: when set to `true`, it forces navigation to the empty **viewUrl** node.
 ### navigationContext
 - **type**: string
 - **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
