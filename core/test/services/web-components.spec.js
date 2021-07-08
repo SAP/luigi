@@ -11,8 +11,7 @@ import { fail } from 'sinon/lib/sinon/mock-expectation';
 
 describe('WebComponentService', function() {
   describe('generate web component id', function() {
-    const someRandomString =
-      'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
+    const someRandomString = 'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
 
     it('check determinism', () => {
       let wcId = WebComponentService.generateWCId(someRandomString);
@@ -22,9 +21,7 @@ describe('WebComponentService', function() {
 
     it('check uniqueness', () => {
       let wcId = WebComponentService.generateWCId(someRandomString);
-      let wcId2 = WebComponentService.generateWCId(
-        'someOtherRandomString_9843utieuhfgiasdf'
-      );
+      let wcId2 = WebComponentService.generateWCId('someOtherRandomString_9843utieuhfgiasdf');
       expect(wcId).to.not.equal(wcId2);
     });
   });
@@ -63,9 +60,7 @@ describe('WebComponentService', function() {
 
       const expectedCmp = container.children[0];
       expect(expectedCmp.context).to.equal(ctx);
-      expect(expectedCmp.LuigiClient.linkManager).to.equal(
-        window.Luigi.navigation
-      );
+      expect(expectedCmp.LuigiClient.linkManager).to.equal(window.Luigi.navigation);
       expect(expectedCmp.LuigiClient.uxManager).to.equal(window.Luigi.ux);
       expect(expectedCmp.LuigiClient.publishEvent).to.be.a('function');
     });
@@ -90,13 +85,7 @@ describe('WebComponentService', function() {
       sb.stub(window, 'location').value({ origin: 'http://localhost' });
 
       container.appendChild(itemPlaceholder);
-      WebComponentService.attachWC(
-        wc_id,
-        itemPlaceholder,
-        container,
-        ctx,
-        'http://localhost:8080/'
-      );
+      WebComponentService.attachWC(wc_id, itemPlaceholder, container, ctx, 'http://localhost:8080/');
 
       assert(myEl.__postProcess.calledOnce, '__postProcess should be called');
     });
@@ -156,10 +145,7 @@ describe('WebComponentService', function() {
     });
 
     it('check reject due to not-allowed url', done => {
-      WebComponentService.registerWCFromUrl(
-        'http://luigi-project.io/mfe.js',
-        'id'
-      )
+      WebComponentService.registerWCFromUrl('http://luigi-project.io/mfe.js', 'id')
         .then(() => {
           assert(false, 'should not be here');
           done();
@@ -212,13 +198,11 @@ describe('WebComponentService', function() {
         assert(false, 'should not be here');
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake(
-        (id, iCnt, cnt, context) => {
-          expect(cnt).to.equal(container);
-          expect(context).to.equal(ctx);
-          done();
-        }
-      );
+      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context) => {
+        expect(cnt).to.equal(container);
+        expect(context).to.equal(ctx);
+        done();
+      });
 
       WebComponentService.renderWebComponent(viewUrl, container, ctx, node);
     });
@@ -239,13 +223,11 @@ describe('WebComponentService', function() {
         assert(false, 'should not be here');
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake(
-        (id, iCnt, cnt, context) => {
-          expect(cnt).to.equal(container);
-          expect(context).to.equal(ctx);
-          done();
-        }
-      );
+      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context) => {
+        expect(cnt).to.equal(container);
+        expect(context).to.equal(ctx);
+        done();
+      });
 
       window.luigiWCFn = (viewUrl, wc_id, wc_container, cb) => {
         cb();
@@ -272,13 +254,11 @@ describe('WebComponentService', function() {
         });
       });
 
-      sb.stub(WebComponentService, 'attachWC').callsFake(
-        (id, iCnt, cnt, context) => {
-          expect(cnt).to.equal(container);
-          expect(context).to.equal(ctx);
-          done();
-        }
-      );
+      sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context) => {
+        expect(cnt).to.equal(container);
+        expect(context).to.equal(ctx);
+        done();
+      });
 
       WebComponentService.renderWebComponent(viewUrl, container, ctx, node);
     });
@@ -299,9 +279,7 @@ describe('WebComponentService', function() {
       let relative3 = WebComponentService.checkWCUrl('./folder/sth.js');
       expect(relative3).to.be.true;
 
-      let absolute = WebComponentService.checkWCUrl(
-        window.location.href + '/folder/sth.js'
-      );
+      let absolute = WebComponentService.checkWCUrl(window.location.href + '/folder/sth.js');
       expect(absolute).to.be.true;
     });
 
@@ -311,22 +289,14 @@ describe('WebComponentService', function() {
         'https://docs.luigi-project.io/.?'
       ]);
 
-      let valid1 = WebComponentService.checkWCUrl(
-        'https://fiddle.luigi-project.io/folder/sth.js'
-      );
+      let valid1 = WebComponentService.checkWCUrl('https://fiddle.luigi-project.io/folder/sth.js');
       expect(valid1).to.be.true;
-      let valid2 = WebComponentService.checkWCUrl(
-        'https://docs.luigi-project.io/folder/sth.js'
-      );
+      let valid2 = WebComponentService.checkWCUrl('https://docs.luigi-project.io/folder/sth.js');
       expect(valid2).to.be.true;
 
-      let invalid1 = WebComponentService.checkWCUrl(
-        'http://fiddle.luigi-project.io/folder/sth.js'
-      );
+      let invalid1 = WebComponentService.checkWCUrl('http://fiddle.luigi-project.io/folder/sth.js');
       expect(invalid1).to.be.false;
-      let invalid2 = WebComponentService.checkWCUrl(
-        'https://slack.luigi-project.io/folder/sth.js'
-      );
+      let invalid2 = WebComponentService.checkWCUrl('https://slack.luigi-project.io/folder/sth.js');
       expect(invalid2).to.be.false;
     });
   });
@@ -357,21 +327,13 @@ describe('WebComponentService', function() {
         element = el;
       });
 
-      WebComponentService.includeSelfRegisteredWCFromUrl(
-        node,
-        '/mfe.js',
-        () => {}
-      );
+      WebComponentService.includeSelfRegisteredWCFromUrl(node, '/mfe.js', () => {});
       expect(element.getAttribute('src')).to.equal('/mfe.js');
     });
 
     it('check if script tag is not added for untrusted url', () => {
       sb.spy(document.body, 'appendChild');
-      WebComponentService.includeSelfRegisteredWCFromUrl(
-        node,
-        'https://luigi-project.io/mfe.js',
-        () => {}
-      );
+      WebComponentService.includeSelfRegisteredWCFromUrl(node, 'https://luigi-project.io/mfe.js', () => {});
       assert(document.body.appendChild.notCalled);
     });
   });
@@ -388,10 +350,7 @@ describe('WebComponentService', function() {
       sb.spy(renderer);
       WebComponentService.createCompoundContainerAsync(renderer).then(
         () => {
-          assert(
-            renderer.createCompoundContainer.calledOnce,
-            'createCompoundContainer called once'
-          );
+          assert(renderer.createCompoundContainer.calledOnce, 'createCompoundContainer called once');
           done();
         },
         e => {
@@ -405,17 +364,13 @@ describe('WebComponentService', function() {
       let renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = 'mfe.js';
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
+      sb.stub(WebComponentService, 'initWC').returns();
       sb.spy(renderer);
       WebComponentService.createCompoundContainerAsync(renderer).then(
         () => {
-          assert(
-            renderer.createCompoundContainer.notCalled,
-            'createCompoundContainer should not be called'
-          );
-          assert(
-            WebComponentService.registerWCFromUrl.calledOnce,
-            'registerWCFromUrl called once'
-          );
+          assert(renderer.createCompoundContainer.notCalled, 'createCompoundContainer should not be called');
+          assert(WebComponentService.registerWCFromUrl.calledOnce, 'registerWCFromUrl called once');
+          assert(WebComponentService.initWC.calledOnce, 'initWC called once');
           done();
         },
         e => {
@@ -497,11 +452,7 @@ describe('WebComponentService', function() {
       sb.spy(WebComponentService, 'renderWebComponent');
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
-      WebComponentService.renderWebComponentCompound(
-        navNode,
-        wc_container,
-        context
-      )
+      WebComponentService.renderWebComponentCompound(navNode, wc_container, context)
         .then(compoundCnt => {
           expect(wc_container.children.length).to.equal(1);
 
@@ -509,9 +460,7 @@ describe('WebComponentService', function() {
           let evBus = compoundCnt.eventBus;
           const listeners = evBus.listeners[eventEmitter + '.' + eventName];
           expect(listeners.length).to.equal(1);
-          const target = compoundCnt.querySelector(
-            '[nodeId=' + listeners[0].wcElementId + ']'
-          );
+          const target = compoundCnt.querySelector('[nodeId=' + listeners[0].wcElementId + ']');
           sb.spy(target, 'dispatchEvent');
           evBus.onPublishEvent(new CustomEvent(eventName), eventEmitter);
           assert(target.dispatchEvent.calledOnce);
@@ -541,11 +490,7 @@ describe('WebComponentService', function() {
 
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
-      WebComponentService.renderWebComponentCompound(
-        node,
-        wc_container,
-        context
-      ).then(
+      WebComponentService.renderWebComponentCompound(node, wc_container, context).then(
         compoundCnt => {
           expect(WebComponentService.registerWCFromUrl.callCount).to.equal(3);
 
