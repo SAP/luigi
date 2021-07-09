@@ -53,6 +53,14 @@ You can quickly adjust the Luigi application to improve user experience on mobil
   --luigi__left-sidenav--width: yourCustomWidth;
 }
 ```
+* Define a custom width for the App Title on desktop and mobile simultaneously. To do so, simply add the code below to the top of your `index.html`. The default width  `--luigi__app-title--width: 60vw;` and `--luigi__multi-app-dropdown--width: 50vw;`
+
+```html
+:root{
+  --luigi__app-title--width: yourCustomSinglAppTtitleWidth;
+  --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
+}
+```
 
 ## App loading indicator
 

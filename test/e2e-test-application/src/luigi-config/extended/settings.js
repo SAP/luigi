@@ -56,8 +56,11 @@ class Settings {
   //     }
   //   };
   // };
+  // globalSideNavigation = true;
   // experimental = {
-  //   profileMenuFiori3: true
+  //    profileMenuFiori3: true,
+  //    globalNav: true,
+  //   webcomponents:true
   // };
 }
 
