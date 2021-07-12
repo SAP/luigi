@@ -1,7 +1,7 @@
 <svelte:window on:resize="{onResize}" />
 <div
   id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':'no-animation'}"
+  class="no-animation {hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':''}"
 >
   {#if alerts && alerts.length}
   <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
