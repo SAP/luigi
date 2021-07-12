@@ -1483,9 +1483,11 @@
   @import 'styles/mixins';
   @import 'styles/variables';
 
-  /* needed to apply custom width of left side nav, by default 15rem as per FD Styles*/
+  /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {
     --luigi__left-sidenav--width: 15rem;
+    --luigi__app-title--width: 60vw;
+    --luigi__multi-app-dropdown--width: 60vw;
   }
 
   :global(html) {
@@ -1697,6 +1699,54 @@
       left: $globalNavWidth;
     }
   }
+  /*Block for setting up the width of reresponsive App title based on the global variables*/
+  :global(.lui-shellbar-single-app-title) {
+    padding: 0 0.625rem;
+    text-decoration: none;
+    max-width: var(--luigi__app-title--width);
+  }
+
+  :global(.lui-app-switch) {
+    max-width: var(--luigi__multi-app-dropdown--width);
+  }
+
+  @media (max-width: $mobileMinWidth) {
+    :global(.lui-shellbar-single-app-title) {
+      padding-right: 0;
+      padding-left: 0;
+    }
+    :global(.fd-shellbar__group--actions .fd-shellbar__action:first-child) {
+      padding-left: 0;
+    }
+
+    .no-side-nav {
+      :global(.lui-shellbar-single-app-title) {
+        max-width: calc(var(--luigi__app-title--width) - 3rem);
+      }
+      :global(.lui-app-switch) {
+        max-width: calc(var(--luigi__app-title--width) - 2.15rem);
+      }
+    }
+    :global(.lui-shellbar-single-app-title) {
+      max-width: calc(var(--luigi__app-title--width) - 5rem);
+    }
+    :global(.lui-app-switch) {
+      max-width: calc(var(--luigi__multi-app-dropdown--width) - 4rem);
+    }
+  }
+
+  @media (min-width: $mobileMinWidth) and (max-width: $desktopMinWidth) {
+    .no-side-nav {
+      :global(.lui-shellbar-single-app-title) {
+        max-width: calc(var(--luigi__app-title--width) - 2rem);
+      }
+    }
+    :global(.lui-shellbar-single-app-title),
+    :global(.lui-app-switch) {
+      max-width: calc(var(--luigi__app-title--width) - 3rem);
+    }
+  }
+  /*Enbd of the block for resoonsive App title*/
 
   @media (max-width: $desktopMinWidth) {
     :global(.lui-global-nav-visible) {
@@ -1941,7 +1991,7 @@
     }
   }
 
-  @media (min-width: $mobileMinWidth) and (max-width: $desktopMaxWidth - 1) {
+  @media (max-width: $desktopMaxWidth - 1) {
     :global(.fd-shellbar__action--desktop) {
       display: none;
     }
