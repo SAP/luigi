@@ -13,7 +13,7 @@
         <a class="fd-nested-list__link" title="{$getTranslation(navHeader.label)}">
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
-            class="fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
+            class="lui-header-icon fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
             role="presentation"
           ></i>
           {:else}
@@ -27,6 +27,11 @@
           <span class="fd-nested-list__title">
             {$getTranslation(navHeader.label)}
           </span>
+          <i
+            class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
+            role="presentation"
+            title="{$getTranslation('up')}"
+          ></i>
         </a>
       </li>
     </ul>
@@ -738,8 +743,13 @@
           color: var(--sapTextColor, #32363a);
         }
 
-        i {
+        .lui-header-icon {
           font-size: 1.5rem;
+          color: var(--sapTile_TextColor, #6a6d70);
+        }
+
+        .lui-nav-up {
+          cursor: pointer;
           color: var(--sapTile_TextColor, #6a6d70);
         }
       }
