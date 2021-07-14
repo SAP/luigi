@@ -24,6 +24,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
   }
 -->
 
+
+## [v1.14.1] (2021-07-14)
+
+#### :bug: Fixed
+* [#2129](https://github.com/SAP/luigi/pull/2129) Disable left nav animation when switching from/to mfe with hideSideNav ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2139](https://github.com/SAP/luigi/pull/2139) Prevent to open a node w/o children and empty viewUrl ([@stanleychh](https://github.com/stanleychh))
+* [#2147](https://github.com/SAP/luigi/pull/2147) Fix split view overlapping global nav ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2142](https://github.com/SAP/luigi/pull/2142) Fix issue with hidden text in new user menu ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2127](https://github.com/SAP/luigi/pull/2127) fix left nav scrollbar ([@hardl](https://github.com/hardl))
+* [#2126](https://github.com/SAP/luigi/pull/2126) Add global variables and rules to adapt App Title for mobile and Tablet ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+
 ## [v1.14.0](2021-06-21)
 
 #### :rocket: Added
@@ -1130,3 +1143,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.12.1]: https://github.com/SAP/luigi/compare/v1.12.0...v1.12.1
 [v1.13.0]: https://github.com/SAP/luigi/compare/v1.12.1...v1.13.0
 [v1.14.0]: https://github.com/SAP/luigi/compare/v1.13.0...v1.14.0
+[v1.14.1]: https://github.com/SAP/luigi/compare/v1.14.0...v1.14.1
