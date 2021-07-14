@@ -33,6 +33,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2147](https://github.com/SAP/luigi/pull/2147) Fix split view overlapping global nav ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#2142](https://github.com/SAP/luigi/pull/2142) Fix issue with hidden text in new user menu ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#2127](https://github.com/SAP/luigi/pull/2127) fix left nav scrollbar ([@hardl](https://github.com/hardl))
+* [#2126](https://github.com/SAP/luigi/pull/2126) Add global variables and rules to adapt App Title for mobile and Tablet ([@UlianaMunich](https://github.com/UlianaMunich))
 
 
 
