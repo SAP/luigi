@@ -402,7 +402,7 @@
             } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
             } else if (prop === 'hideSideNav') {
-              if (hideSideNav && !obj.hideSideNav) {
+              if (hideSideNav != obj.hideSideNav) {
                 noAnimation = true;
                 setTimeout(() => {
                   document.querySelector('#app').classList.remove('no-animation');
