@@ -1,6 +1,6 @@
 {
   "name": "@luigi-project/client-ie11",
-  "version": "1.14.1",
+  "version": "1.14.2",
   "description": "Javascript library supporting consumers of the Luigi framework",
   "license": "Apache-2.0",
   "main": "luigi-client-ie11.js",

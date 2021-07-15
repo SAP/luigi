@@ -25,6 +25,13 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.14.2] (2021-07-15)
+
+#### :bug: Fixed
+* [#2155](https://github.com/SAP/luigi/pull/2155) added compound view to condition ([@hardl](https://github.com/hardl))
+
+
+
 ## [v1.14.1] (2021-07-14)
 
 #### :bug: Fixed
@@ -1144,3 +1151,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.13.0]: https://github.com/SAP/luigi/compare/v1.12.1...v1.13.0
 [v1.14.0]: https://github.com/SAP/luigi/compare/v1.13.0...v1.14.0
 [v1.14.1]: https://github.com/SAP/luigi/compare/v1.14.0...v1.14.1
+[v1.14.2]: https://github.com/SAP/luigi/compare/v1.14.1...v1.14.2
