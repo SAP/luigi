@@ -189,26 +189,6 @@ class RoutingClass {
       const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
       const viewUrl = nodeObject.viewUrl || '';
-      const hasChildrenNode = (nodeObject.children && nodeObject.children.length > 0) || false;
-      const intendToHaveEmptyViewUrl =
-        (nodeObject.intendToHaveEmptyViewUrl && nodeObject.intendToHaveEmptyViewUrl === true) || false;
-
-      if (viewUrl.trim() === '' && !hasChildrenNode && !intendToHaveEmptyViewUrl) {
-        console.warn('This node was configured an empty viewUrl. Please double check it.');
-
-        // redirect to root when this empty viewUrl node be reached directly
-        if (!previousCompData.viewUrl) {
-          const rootPathData = await Navigation.getNavigationPath(
-            LuigiConfig.getConfigValueAsync('navigation.nodes'),
-            '/'
-          );
-          const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
-          this.navigateTo(rootPath);
-        }
-
-        return;
-      }
 
       if (!viewUrl && !nodeObject.compound) {
         const defaultChildNode = await RoutingHelpers.getDefaultChildNode(pathData, async (node, ctx) => {
