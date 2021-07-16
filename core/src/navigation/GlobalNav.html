@@ -10,6 +10,7 @@
           class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
           data-testid="{getTestId(node)}"
         >
+          {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
           <a
             href="{getRouteLink(node)}"
             title="{$getTranslation(node.label)}"
@@ -32,6 +33,24 @@
               <div class="lui-indicator"></div>
             </div>
           </a>
+          {:else}
+          <div class="lui-fd-nested-list__content">
+            {#if node.icon} {#if hasOpenUIicon(node)}
+            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+            {:else}
+            <img
+              class="fd-top-nav__icon nav-icon"
+              src="{node.icon}"
+              alt="{node.altText ? node.altText : ''}"
+            />
+            {/if}
+            <!-- end hasOpenUIicon-->
+            {/if}
+            <!-- end node.icon -->
+            <div class="lui-text">{getNodeLabel(node)}</div>
+            <div class="lui-indicator"></div>
+          </div>
+          {/if}
         </li>
         {/if} {/each}
       </ul>
@@ -45,6 +64,7 @@
           class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
           data-testid="{getTestId(node)}"
         >
+          {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
           <a
             href="{getRouteLink(node)}"
             title="{$getTranslation(node.label)}"
@@ -67,6 +87,24 @@
               <div class="lui-indicator"></div>
             </div>
           </a>
+          {:else}
+          <div class="lui-fd-nested-list__content">
+            {#if node.icon} {#if hasOpenUIicon(node)}
+            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+            {:else}
+            <img
+              class="fd-top-nav__icon nav-icon"
+              src="{node.icon}"
+              alt="{node.altText ? node.altText : ''}"
+            />
+            {/if}
+            <!-- end hasOpenUIicon-->
+            {/if}
+            <!-- end node.icon -->
+            <div class="lui-text">{getNodeLabel(node)}</div>
+            <div class="lui-indicator"></div>
+          </div>
+          {/if}
         </li>
         {/if} {/each}
       </ul>
