@@ -27,17 +27,20 @@
       "eslint-plugin-node": "^11.1.0",
       "eslint-plugin-promise": "^4.2.1",
       "git-changed-files": "^1.0.0",
+      "ini": ">=1.3.6",
       "husky": "^4.3.5",
-      "lerna": "^3.22.1",
+      "lerna": "^4.0.0",
       "lerna-changelog": "^1.0.1",
       "lodash": ">=4.17.13",
       "lodash.template": ">=4.5.0",
-      "meow": "8.0.0",
+      "meow": "8.1.2",
       "mixin-deep": ">=1.3.2",
       "prettier": "^1.15.3",
       "set-value": ">=2.0.1",
       "simple-git": "^2.24.0",
-      "sirv-cli": "^0.4.4"
+      "sirv-cli": "^0.4.4",
+      "ssri": ">=6.0.2",
+      "trim": ">=0.0.3"
    },
    "prettier": {
       "singleQuote": true,
