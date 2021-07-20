@@ -12,7 +12,10 @@
         >
           {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
           <a href="{getRouteLink(node)}" title="{$getTranslation(node.label)}">
-            <div class="lui-fd-nested-list__content">
+            <div
+              class="lui-fd-nested-list__content"
+              on:click|preventDefault="{() => handleClick(node)}"
+            >
               {#if node.icon} {#if hasOpenUIicon(node)}
               <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
               {:else}
@@ -30,7 +33,10 @@
             </div>
           </a>
           {:else}
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
+          <div
+            class="lui-fd-nested-list__content"
+            on:click|preventDefault="{() => handleClick(node)}"
+          >
             {#if node.icon} {#if hasOpenUIicon(node)}
             <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
             {:else}
@@ -62,7 +68,10 @@
         >
           {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
           <a href="{getRouteLink(node)}" title="{$getTranslation(node.label)}">
-            <div class="lui-fd-nested-list__content">
+            <div
+              class="lui-fd-nested-list__content"
+              on:click|preventDefault="{() => handleClick(node)}"
+            >
               {#if node.icon} {#if hasOpenUIicon(node)}
               <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
               {:else}
@@ -80,7 +89,10 @@
             </div>
           </a>
           {:else}
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
+          <div
+            class="lui-fd-nested-list__content"
+            on:click|preventDefault="{() => handleClick(node)}"
+          >
             {#if node.icon} {#if hasOpenUIicon(node)}
             <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
             {:else}
