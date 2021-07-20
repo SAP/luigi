@@ -49,8 +49,7 @@ class Navigation {
       badgeCounter: {
         label: 'Number of projects',
         count: projectsCounterFn
-      },
-      globalNav: true
+      }
     },
 
     {
