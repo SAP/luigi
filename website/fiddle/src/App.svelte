@@ -94,7 +94,7 @@
 
   :global(.show-bar #app .fd-app__sidebar),
   :global(.show-bar .fd-page.iframeContainer),
-  :global(.show-bar #app .splitViewContaine) {
+  :global(.show-bar #app .splitViewContainer) {
     bottom: 50px !important;
   }
 
