@@ -20,8 +20,14 @@ describe('linkManager', function() {
       console.warn = sinon.spy();
     });
 
-    it('should not navigate if path is absolute', () => {
-      lm.navigate('/');
+    it('should not open a drawer if path is absolute', () => {
+      lm.openAsDrawer('/');
+
+      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.calledOnce(console.warn);
+    });
+    it('should not open a modal if path is absolute', () => {
+      lm.openAsModal('/');
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.calledOnce(console.warn);
