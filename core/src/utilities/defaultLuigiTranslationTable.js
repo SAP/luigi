@@ -13,7 +13,10 @@ const defaultLuigiInternalTranslationTable = {
       confirm: 'Yes'
     },
     requestedRouteNotFound: 'Could not find the requested route {route}.',
-    notExactTargetNode: 'Could not map the exact target node for the requested route {route}.'
+    notExactTargetNode: 'Could not map the exact target node for the requested route {route}.',
+    navigation: {
+      up: 'Up'
+    }
   }
 };
 

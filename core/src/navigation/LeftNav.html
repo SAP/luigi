@@ -27,11 +27,14 @@
           <span class="fd-nested-list__title">
             {$getTranslation(navHeader.label)}
           </span>
+          {#if navHeader.showUpLink}
           <i
             class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
             role="presentation"
-            title="{$getTranslation('up')}"
+            title="{$getTranslation('luigi.navigation.up')}"
+            on:click|preventDefault="{handleUp}"
           ></i>
+          {/if}
         </a>
       </li>
     </ul>
@@ -284,7 +287,7 @@
     StateHelpers,
     EventListenerHelpers
   } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
+  import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.html';
@@ -303,7 +306,8 @@
       sideNavAccordionMode,
       selectedCategory,
       expandedCategories,
-      hasCategoriesWithIcon
+      hasCategoriesWithIcon,
+      navParentNode
     }),
     set: obj => {
       if (obj) {
@@ -323,6 +327,7 @@
 
         navHeader = undefined;
         let parentNode = obj.navParent;
+        navParentNode = parentNode;
         if (
           parentNode &&
           parentNode.navHeader &&
@@ -365,24 +370,27 @@
               icon: parentNode.icon
             };
           } else if (
-            'resolver' === resolvedNavHeader &&
+            resolvedNavHeader &&
+            resolvedNavHeader.useTitleResolver &&
             resolvedNavHeaderNode.titleResolver
           ) {
             if (resolvedNavHeaderNode.titleResolver.prerenderFallback) {
               navHeader = {
+                ...resolvedNavHeader,
                 label: resolvedNavHeaderNode.titleResolver.fallbackTitle || '',
                 icon: resolvedNavHeaderNode.titleResolver.fallbackIcon
               };
             } else {
-              navHeader = {};
+              navHeader = resolvedNavHeader;
             }
             NavigationHelpers.fetchNavHeader(resolvedNavHeaderNode, context)
               .then(headerData => {
-                navHeader = headerData;
+                navHeader = { ...resolvedNavHeader, ...headerData };
               })
               .catch(error => {
                 console.error('Error while retrieving title, fallback to node label');
                 navHeader = {
+                  ...resolvedNavHeader,
                   label: parentNode.label,
                   icon: parentNode.icon
                 };
@@ -428,6 +436,7 @@
   export let sideNavAccordionMode;
   export let burgerTooltip;
   export let navHeader;
+  export let navParentNode;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -604,6 +613,20 @@
         iframe.contentWindow.focus();
       }
     }
+  }
+
+  export function handleUp(event) {
+    let node = navParentNode ? navParentNode.parent : undefined;
+    while (node) {
+      if (node.pathSegment && node.pathSegment.trim().indexOf(':') !== 0) {
+        dispatch('handleClick', { node });
+        return;
+      }
+      node = node.parent;
+    }
+
+    console.warn('Could not resolve "up"-node, redirecting to root');
+    LuigiNavigation.navigate('/');
   }
 
   export function setExpandedState(nodes, value) {
