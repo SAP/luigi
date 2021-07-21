@@ -30,11 +30,6 @@ export class linkManager extends LuigiCoreAPIBase {
     this.options.preserveView = preserveView;
     const relativePath = path[0] !== '/';
 
-    if (path === '/') {
-      console.warn('Navigation with an absolute path prevented.');
-      return;
-    }
-
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       params: Object.assign(this.options, {
@@ -49,11 +44,20 @@ export class linkManager extends LuigiCoreAPIBase {
     this.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 
+  preventNavigation(path){
+    if (path === '/') {
+      console.warn('Navigation with an absolute path prevented.');
+      return true;
+    }
+  }
+
   openAsModal(path, modalSettings = {}) {
+    if(this.preventNavigation(path)!==true)
     this.navigate(path, true, modalSettings);
   }
 
   openAsDrawer(path, drawerSettings = {}) {
+    if(this.preventNavigation(path)!==true)
     this.navigate(path, true, undefined, undefined, drawerSettings);
   }
 
