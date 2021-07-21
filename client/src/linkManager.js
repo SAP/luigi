@@ -67,6 +67,11 @@ export class linkManager extends LuigiClientBase {
     this.options.preserveView = preserveView;
     const relativePath = path[0] !== '/';
 
+    if (path === '/' && (modalSettings || drawerSettings)) {
+      console.warn('Navigation with an absolute path prevented.');
+      return;
+    }
+
     const hasIntent = path.toLowerCase().includes('?intent=');
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
@@ -94,10 +99,6 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal(path, modalSettings = {}) {
-    if (path === '/') {
-      console.warn('Navigation with an absolute path prevented.');
-      return;
-    }
     this.navigate(path, 0, true, modalSettings);
   }
 
@@ -138,10 +139,6 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
    */
   openAsDrawer(path, drawerSettings = {}) {
-    if (path === '/') {
-      console.warn('Navigation with an absolute path prevented.');
-      return;
-    }
     this.navigate(path, 0, true, undefined, undefined, drawerSettings);
   }
 
