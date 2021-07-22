@@ -197,7 +197,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
     const settings = {
       text: textData,
       type,
-      links: linkData
+      links: linkData,
+      closeAfter
     };
 
     uxManager()
