@@ -1,4 +1,4 @@
-<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false">
+<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false" bind:this={alertElement}>
   {#each alertQueue as al}
   <div
     class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
@@ -36,6 +36,7 @@
     warning: 'warning',
     error: 'error'
   };
+  let alertElement;
   const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   const handleNavigation = getContext('handleNavigation');
 
@@ -59,10 +60,24 @@
 
       setTimeout(() => {
         // this needs to be done after links are rendered
-        processedData.links.forEach(l => {
-          addClickListener(l.url, l.elemId);
+        processedData.links.forEach(link => {
+          addClickListener(link, alert.settings.id);
         });
       });
+
+      if(alert.settings.afterInit) {
+        const el = alertElement;
+        alert.settings.afterInit({
+          dismiss: () => {
+            if(el && el.isConnected) {
+              dispatch('alertDismiss', { id: alert.settings.id });
+            } else {
+              console.debug('Alert already dismissed: ', el);
+            }
+          },
+          element: el
+        });
+      };
 
       return {
         settings: { ...alert.settings, text: processedData.sanitizedText },
@@ -76,23 +91,31 @@
 
   onMount(() => {});
 
-  // [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function addClickListener(url, elemId) {
+  function addClickListener(link, alertId) {
     try {
-      document.getElementById(elemId).addEventListener('click', event => {
-        const isRelative = !url.startsWith('/');
-        event.stopPropagation();
-        getUnsavedChangesModalPromise().then(() => {
-          const data = {
-            params: {
-              link: url,
-              relative: isRelative
-            }
-          };
-          handleNavigation(data);
-        });
-      });
+      const linkElem = document.getElementById(link.elemId);
+      if(linkElem.dismissListener) {
+        linkElem.removeEventListener('click', linkElem.dismissListener);
+      }
+      const listener = event => {
+        if (link.url) {
+          const isRelative = !link.url.startsWith('/');
+          event.stopPropagation();
+          getUnsavedChangesModalPromise().then(() => {
+            const data = {
+              params: {
+                link: link.url,
+                relative: isRelative
+              }
+            };
+            handleNavigation(data);
+          });
+        } else if (link.dismissKey) {
+          dispatch('alertDismiss', { id: alertId, dismissKey: link.dismissKey });
+        }
+      };
+      linkElem.addEventListener('click', listener);
+      linkElem.dismissListener = listener;
     } catch (e) {
       console.error('Error on Alert::addClickListener', e);
     }
