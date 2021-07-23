@@ -20,10 +20,9 @@ describe('Navigation', () => {
       cy.window().then(win => {
         cy.stub(win.console, 'warn').as('consoleWarn');
         win.Luigi.navigation().openAsModal('/');
-        
-        cy.get('div[data-testid="modal-mf"]')
-          .should('not.exist')
-          cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
+
+        cy.get('div[data-testid="modal-mf"]').should('not.exist');
+        cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
         cy.expectPathToBe('/overview');
       });
     });
@@ -31,9 +30,8 @@ describe('Navigation', () => {
       cy.window().then(win => {
         cy.stub(win.console, 'warn').as('consoleWarn');
         win.Luigi.navigation().openAsDrawer('/');
-        
-        cy.get('div[data-testid="drawer-mf"]')
-          .should('not.exist');
+
+        cy.get('div[data-testid="drawer-mf"]').should('not.exist');
         cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
         cy.expectPathToBe('/overview');
       });
@@ -261,13 +259,13 @@ describe('Navigation', () => {
     });
 
     it('Icon instead of label in TopNav', () => {
-      cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
-      cy.get('button[title="Settings"]').should('contain', '');
+      cy.get('a[title="Settings"]>.fd-top-nav__icon').should('exist');
+      cy.get('a[title="Settings"]').should('contain', '');
     });
 
     it('Icon with label label in TopNav', () => {
-      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
-      cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
+      cy.get('[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
+      cy.get('[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 
     it('Icon with label in LeftNav', () => {
