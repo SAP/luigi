@@ -47,21 +47,6 @@
     >
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-          {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
-          <a
-            href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
-            title="{getNodeLabel(node)}"
-            class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
-            aria-controls="dropDownPopover-{i}"
-            aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
-            aria-haspopup="true"
-            on:click="{() => toggleDropdownState(`dropDownPopover-${i}`)}"
-            data-testid="{getTestId(node)}"
-          >
-            <TopNavNode bind:node />
-            <BadgeCounter {node} />
-          </a>
-          {:else}
           <button
             title="{getNodeLabel(node)}"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
@@ -74,7 +59,6 @@
             <TopNavNode bind:node />
             <BadgeCounter {node} />
           </button>
-          {/if}
         </div>
         <div
           class="fd-popover__body fd-popover__body--right"
