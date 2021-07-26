@@ -185,6 +185,7 @@ class UxManager extends LuigiClientBase {
    * @private
    * @memberof uxManager
    * @param {string} id alert id
+   * @param {string} dismissKey key of the link
    */
   hideAlert({ id, dismissKey }) {
     const alerts = this.getPromise('alerts');
