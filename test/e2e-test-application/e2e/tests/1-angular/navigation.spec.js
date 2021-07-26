@@ -259,8 +259,8 @@ describe('Navigation', () => {
     });
 
     it('Icon instead of label in TopNav', () => {
-      cy.get('a[title="Settings"]>.fd-top-nav__icon').should('exist');
-      cy.get('a[title="Settings"]').should('contain', '');
+      cy.get('[data-testid="settings_settings"]>.fd-top-nav__icon').should('exist');
+      cy.get('[data-testid="settings_settings"]').should('contain', '');
     });
 
     it('Icon with label label in TopNav', () => {
