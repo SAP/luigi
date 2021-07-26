@@ -23,7 +23,7 @@
           sessionStorage.setItem('fiddle', customConfig);
         }
       }
-      
+
     // try to execyte custom configuration or defaut
     try {
       if (!customConfig) {
@@ -93,7 +93,8 @@
   }
 
   :global(.show-bar #app .fd-app__sidebar),
-  :global(.show-bar .fd-page.iframeContainer) {
+  :global(.show-bar .fd-page.iframeContainer),
+  :global(.show-bar #app .splitViewContainer) {
     bottom: 50px !important;
   }
 

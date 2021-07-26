@@ -25,6 +25,7 @@
     "file-loader": "^2.0.0",
     "fs-extra": "9.0.0",
     "fundamental-styles": "^0.18.0",
+    "glob-parent": ">=5.1.2",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "live-server": "^1.2.1",
@@ -34,7 +35,7 @@
     "mkdirp": "^1.0.3",
     "mocha": "^7.1.1",
     "mock-local-storage": "^1.1.15",
-    "node-sass": "^4.14.1",
+    "node-sass": "^5.0.0",
     "nyc": "^15.0.0",
     "oidc-client": "^1.5.2",
     "postcss": "^8.2.10",
@@ -51,6 +52,7 @@
     "svelte-transitions": "^1.2.0",
     "tar": ">=4.4.2",
     "terser": "^4.4.0",
+    "ts-node": "^10.0.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.42.1",
     "webpack-bundle-analyzer": "^3.6.0",
@@ -64,6 +66,7 @@
     "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
     "bundle-develop-ie11": "MINIFY=false webpack --display-error-details --config webpack-ie11.config.js --debug --devtool cheap-source-map --output-pathinfo --watch",
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --require esm --recursive test",
+    "test:debug": "mocha -r esm -r jsdom-global/register --inspect-brk ./test/core-api/internal-link-manager.spec.js --watch",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "bundlesizeOnly": "bundlesize",
@@ -73,22 +76,22 @@
   "bundlesize": [
     {
       "path": "./public/luigi.js",
-      "maxSize": "474 kB",
+      "maxSize": "500 kB",
       "compression": "none"
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "570 kB",
+      "maxSize": "600 kB",
       "compression": "none"
     },
     {
       "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "680kB",
+      "maxSize": "700kB",
       "compression": "none"
     },
     {
       "path": "./public-ie11/luigi-ie11.css",
-      "maxSize": "571 kB",
+      "maxSize": "600 kB",
       "compression": "none"
     }
   ],

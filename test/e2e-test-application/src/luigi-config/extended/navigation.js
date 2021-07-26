@@ -430,12 +430,12 @@ class Navigation {
       {
         title: 'Application Three',
         link: '/environments',
-        subTitle: 'the third app'
+        subTitle: 'third app'
       },
       {
         title: 'Application Storage',
         link: '/projects/storage',
-        subTitle: 'the storage app'
+        subTitle: 'v1.18.0'
       }
     ]
   };

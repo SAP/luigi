@@ -6,7 +6,7 @@ author:
 layout: blog
 ---
 
-Luigi 1.5 is here, and it offers useful new features as well as many improvements to old ones. You can now implement intent-based navigation in Luigi, and we've also added some new methods to our API. To see the full list of changes, read more below.
+Luigi v1.5.0 is here, and it offers useful new features as well as many improvements to old ones. You can now implement intent-based navigation in Luigi, and we've also added some new methods to our API. To see the full list of changes, read more below.
 <!-- Excerpt -->
 
 #### Intent-based navigation

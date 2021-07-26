@@ -281,6 +281,11 @@ export const projectDetailNavStructure = projectId => [
     icon: 'full-screen'
   },
   {
+    pathSegment: 'emptyViewUrl',
+    label: 'Empty viewUrl node',
+    viewUrl: ''
+  },
+  {
     pathSegment: 'virtual-tree',
     label: 'VirtualTree',
     icon: 'tree',

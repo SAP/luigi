@@ -10,6 +10,50 @@ describe('Navigation', () => {
         cy.expectPathToBe('/projects/pr2');
       });
     });
+    it('Core API navigate to root', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/');
+        cy.expectPathToBe('/overview');
+      });
+    });
+    it('Core API prevent open root in modal', () => {
+      cy.window().then(win => {
+        cy.stub(win.console, 'warn').as('consoleWarn');
+        win.Luigi.navigation().openAsModal('/');
+        
+        cy.get('div[data-testid="modal-mf"]')
+          .should('not.exist')
+          cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
+        cy.expectPathToBe('/overview');
+      });
+    });
+    it('Core API prevent open root in drawer', () => {
+      cy.window().then(win => {
+        cy.stub(win.console, 'warn').as('consoleWarn');
+        win.Luigi.navigation().openAsDrawer('/');
+        
+        cy.get('div[data-testid="drawer-mf"]')
+          .should('not.exist');
+        cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
+        cy.expectPathToBe('/overview');
+      });
+    });
+    it('Core API prevent open root in splitview', () => {
+      cy.window().then(win => {
+        cy.stub(win.console, 'warn').as('consoleWarn');
+        const handle = win.Luigi.navigation().openAsSplitView('/', {
+          title: 'Preserved Split View',
+          size: '40',
+          collapsed: false
+        });
+        setTimeout(() => {
+          cy.get('#splitViewContainer').should('not.be.visible');
+          cy.expect(handle.exists()).to.be.true;
+        }, 0);
+        cy.expectPathToBe('/overview');
+        cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
+      });
+    });
     it('Core API open in dialog', () => {
       cy.window().then(win => {
         win.Luigi.navigation().openAsModal('/settings', {
@@ -259,6 +303,29 @@ describe('Navigation', () => {
           .contains('Hello from tets.')
           .should('be.visible');
       });
+    });
+
+    it('Side nav does not broken while clicking empty viewUrl node', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+
+      cy.get('.fd-side-nav')
+        .contains('Empty viewUrl node')
+        .click();
+
+      cy.get('.fd-side-nav').should('contain', 'Empty viewUrl node');
+    });
+
+    it('Redirect to root path while reaching empty viewUrl node directly', () => {
+      cy.visit('/projects/pr2/emptyViewUrl');
+
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--error');
+      cy.expectPathToBe('/overview');
     });
   });
 

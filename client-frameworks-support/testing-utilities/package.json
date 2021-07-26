@@ -1,6 +1,6 @@
 {
   "name": "@luigi-project/testing-utilities",
-  "version": "1.14.0",
+  "version": "1.14.3",
   "description": "Luigi testing utilities for standalone testing of microfrontends",
   "license": "Apache-2.0",
   "main": "dist/index.js",
