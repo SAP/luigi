@@ -76,12 +76,10 @@
       {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
       <a
         href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
-        title="{getNodeLabel(node)}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
-        aria-controls="dropDownPopover-{i}"
-        aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
+        aria-expanded="false"
         aria-haspopup="true"
-        on:click="{() => toggleDropdownState(`dropDownPopover-${i}`)}"
+        on:click|preventDefault="{() => handleClick(node)}"
         data-testid="{getTestId(node)}"
       >
         <TopNavNode bind:node />
@@ -175,7 +173,7 @@
                     href="{getRouteLink(node)}"
                     class="fd-menu__link {node === selectedNode ? 'is-selected' : ''}"
                     on:click|preventDefault="{() => handleClick(node)}"
-                    data-testid="{getTestId(node)}"
+                    data-testid="{getTestId(node)}-mobile"
                   >
                     <span
                       class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"

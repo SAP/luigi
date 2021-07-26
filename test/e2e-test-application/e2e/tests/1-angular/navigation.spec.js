@@ -619,7 +619,7 @@ describe('Navigation', () => {
       it('Horizontal Navigation on mobile', () => {
         cy.get('[data-testid="mobile-menu"]').click();
         cy.get('.fd-popover__body').within(() => {
-          cy.get('[data-testid="projects_projects"]').click();
+          cy.get('[data-testid="projects_projects-mobile"]').click();
         });
         cy.get('.lui-burger').click();
         cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
@@ -682,7 +682,7 @@ describe('Navigation', () => {
           cy.get('[data-testid="mobile-menu"]').click();
 
           cy.get('.fd-popover__body').within(() => {
-            cy.get('[data-testid="projects_projects"]').click();
+            cy.get('[data-testid="projects_projects-mobile"]').click();
           });
           cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
           cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
