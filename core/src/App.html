@@ -1388,7 +1388,14 @@
           e.data.data.id,
           e.data.data.operation,
           e.data.data.params
-        );
+        )
+      }
+
+      if('luigi-runtim-error-handling'===e.data.msg){
+        let currentNode = iframe.luigi.currentNode;
+        if(currentNode && currentNode.onRuntimeErrorHandler && GenericHelpers.isFunction(currentNode.onRuntimeErrorHandler.errorFn)){
+          currentNode.onRuntimeErrorHandler.errorFn(e.data.errorObj);
+        }
       }
     });
 

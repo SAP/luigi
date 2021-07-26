@@ -2,6 +2,7 @@ import { lifecycleManager } from './lifecycleManager';
 import { linkManager } from './linkManager';
 import { uxManager } from './uxManager';
 import { storageManager } from './storageManager';
+import { helpers } from './helpers'; 
 
 /**
  * @name LuigiClient
@@ -9,8 +10,25 @@ import { storageManager } from './storageManager';
  */
 class LuigiClient {
   constructor() {
-    if (window !== window.top && window.document.head.getAttribute('disable-luigi-history-handling') != 'true') {
-      history.pushState = history.replaceState.bind(history);
+    if (window !== window.top){
+      if(window.document.head.getAttribute('disable-luigi-history-handling') != 'true') {
+        history.pushState = history.replaceState.bind(history);
+      }
+      if (window.document.head.getAttribute('disable-luigi-runtime-error-handling') != 'true') {
+        window.addEventListener('error', (error)=>{
+          const msg = {
+            msg:'luigi-runtim-error-handling',
+            errorObj:{
+              filename: error.filename,
+              message: error.message,
+              lineno: error.lineno,
+              colno: error.colno,
+              error: error.error
+            }
+          }
+          helpers.sendPostMessageToLuigiCore(msg)
+        });
+      }
     }
   }
 
