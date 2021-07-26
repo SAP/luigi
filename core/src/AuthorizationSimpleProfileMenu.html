@@ -20,7 +20,7 @@
       <a
         class="fd-menu__link"
         data-testid="luigi-topnav-profile-item"
-        href="{getRouteLink(profileItem)}"
+        href="{addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}"
         on:click|preventDefault="{() => {}}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
@@ -116,6 +116,7 @@
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
   let initialsOfUser;
+  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   onMount(async () => {
     if (!LuigiAuth.isAuthorizationEnabled()) {
