@@ -7,7 +7,6 @@ Object.keys(productSwitcherItems[0]).length }
   <div class="fd-product-switch">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-        <!-- default: sap-icon--grid -->
         {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
         <a
           href="/"
@@ -20,6 +19,7 @@ Object.keys(productSwitcherItems[0]).length }
         >
           <div class="lui-product-switch__icon">
             {#if hasOpenUIicon(config)}
+            <!-- default: sap-icon--grid -->
             <i class="sap-icon sap-icon--{config.icon}"></i>
             {:else}
             <img src="{config.icon}" alt="{config.altText ? config.altText : ''}" />
@@ -37,6 +37,7 @@ Object.keys(productSwitcherItems[0]).length }
         >
           <div class="lui-product-switch__icon">
             {#if hasOpenUIicon(config)}
+            <!-- default: sap-icon--grid -->
             <i class="sap-icon sap-icon--{config.icon}"></i>
             {:else}
             <img src="{config.icon}" alt="{config.altText ? config.altText : ''}" />
@@ -147,7 +148,6 @@ Object.keys(productSwitcherItems[0]).length }
   export let isMobile;
   export let config;
   export let dropDownStates;
-  export let node;
 
   let store = getContext('store');
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
