@@ -602,7 +602,7 @@ Below is Luigi's web component example configuration which shows 3 web component
 - **type**: object
 - **description**: allows you to handle errors on the Core level. The error handler receives all unhandled errors from the micro frontends which are using the Luigi Client.
 - **attributes**:
-  - **errorFn**:(function) gets an object `error` as parameter. The properties of this objects are the properties of the [error event](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent)
+  - **errorFn**:(function) gets an object `error` as parameter. The properties of this object are the properties of the [error event](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent).
 - **example**
 ```javascript
 onRuntimeErrorHandler: {
