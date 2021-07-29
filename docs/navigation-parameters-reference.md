@@ -595,8 +595,9 @@ Below is Luigi's web component example configuration which shows 3 web component
 - **since**: 1.7.0
 
 ### onRuntimeErrorHandler
+
 <!-- add-attribute:class:warning -->
-> **NOTE**:  The **onRuntimeErrorHandler** only works if the micro frontend uses Luigi client and [disable-luigi-runtime-error-handling](advanced-options-luigi-client.md#disable-luigi-core-runtime-error-handling) is not disabled. 
+> **NOTE**:  The **onRuntimeErrorHandler** only works if the micro frontend uses Luigi Client and [disable-luigi-runtime-error-handling](advanced-options-luigi-client.md#disable-luigi-core-runtime-error-handling) is not disabled. 
 
 - **type**: object
 - **description**: gives you the possibility to handle errors on core level. The error handler receives all unhandled errors of the micro frontends, which are using the Luigi Client.
