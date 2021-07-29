@@ -600,7 +600,7 @@ Below is Luigi's web component example configuration which shows 3 web component
 > **NOTE**:  The **onRuntimeErrorHandler** only works if the micro frontend uses Luigi Client and [disable-luigi-runtime-error-handling](advanced-options-luigi-client.md#disable-luigi-core-runtime-error-handling) is not disabled. 
 
 - **type**: object
-- **description**: gives you the possibility to handle errors on core level. The error handler receives all unhandled errors of the micro frontends, which are using the Luigi Client.
+- **description**: allows you to handle errors on the Core level. The error handler receives all unhandled errors from the micro frontends which are using the Luigi Client.
 - **attributes**:
   - **errorFn**:(function) gets an object `error` as parameter. The properties of this objects are the properties of the [error event](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent)
 - **example**
