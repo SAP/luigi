@@ -1044,8 +1044,11 @@ describe('Navigation', () => {
           cy.get('[data-testid="settings_settings"]')
             .should('exist')
             .not('.is-selected')
-            .click()
-            .should('have.class', 'is-selected');
+            .click();
+
+          // select global nav node again to wait for the rerendering of the element
+          cy.get('[data-testid="settings_settings"]').should('have.class', 'is-selected');
+
           cy.expectPathToBe('/settings');
         });
       });
