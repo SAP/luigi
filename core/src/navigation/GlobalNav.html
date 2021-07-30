@@ -10,22 +10,30 @@
           class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
           data-testid="{getTestId(node)}"
         >
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            <div class="lui-text">{getNodeLabel(node)}</div>
-            <div class="lui-indicator"></div>
-          </div>
+          <a
+            href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
+            title="{$getTranslation(node.label)}"
+          >
+            <div
+              class="lui-fd-nested-list__content"
+              on:click|preventDefault="{() => handleClick(node)}"
+            >
+              {#if node.icon} {#if hasOpenUIicon(node)}
+              <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+              {:else}
+              <img
+                class="fd-top-nav__icon nav-icon"
+                src="{node.icon}"
+                alt="{node.altText ? node.altText : ''}"
+              />
+              {/if}
+              <!-- end hasOpenUIicon-->
+              {/if}
+              <!-- end node.icon -->
+              <div class="lui-text">{getNodeLabel(node)}</div>
+              <div class="lui-indicator"></div>
+            </div>
+          </a>
         </li>
         {/if} {/each}
       </ul>
@@ -39,22 +47,30 @@
           class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
           data-testid="{getTestId(node)}"
         >
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            <div class="lui-text">{getNodeLabel(node)}</div>
-            <div class="lui-indicator"></div>
-          </div>
+          <a
+            href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
+            title="{$getTranslation(node.label)}"
+          >
+            <div
+              class="lui-fd-nested-list__content"
+              on:click|preventDefault="{() => handleClick(node)}"
+            >
+              {#if node.icon} {#if hasOpenUIicon(node)}
+              <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+              {:else}
+              <img
+                class="fd-top-nav__icon nav-icon"
+                src="{node.icon}"
+                alt="{node.altText ? node.altText : ''}"
+              />
+              {/if}
+              <!-- end hasOpenUIicon-->
+              {/if}
+              <!-- end node.icon -->
+              <div class="lui-text">{getNodeLabel(node)}</div>
+              <div class="lui-indicator"></div>
+            </div>
+          </a>
         </li>
         {/if} {/each}
       </ul>
@@ -83,11 +99,13 @@
   export let selectedNode;
 
   let store = getContext('store');
+  let getTranslation = getContext('getTranslation');
   let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
 
   export let showGlobalNav;
   export let hideNavComponent;
   export let responsiveNavSetting;
+  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {

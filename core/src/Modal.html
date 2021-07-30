@@ -5,7 +5,7 @@
 >
   <div
     class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
-    data-testid="modal-mf"
+    data-testid="{isModal?'modal-mf':'drawer-mf'}"
     role="dialog"
     aria-modal="true"
     aria-labelledby="dialog-title-1"

@@ -25,6 +25,14 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.14.3] (2021-07-21)
+
+#### :bug: Fixed
+* [#2163](https://github.com/SAP/luigi/pull/2163) Bug fix navigation to home ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2164](https://github.com/SAP/luigi/pull/2164) Bug fix initials undefined ([@hardl](https://github.com/hardl))
+
+
+
 ## [v1.14.2] (2021-07-15)
 
 #### :bug: Fixed
@@ -1152,3 +1160,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.14.0]: https://github.com/SAP/luigi/compare/v1.13.0...v1.14.0
 [v1.14.1]: https://github.com/SAP/luigi/compare/v1.14.0...v1.14.1
 [v1.14.2]: https://github.com/SAP/luigi/compare/v1.14.1...v1.14.2
+[v1.14.3]: https://github.com/SAP/luigi/compare/v1.14.2...v1.14.3
