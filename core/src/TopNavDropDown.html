@@ -13,9 +13,8 @@
         on:click|preventDefault="{() => {}}"
         class="fd-menu__link"
       >
-        {#if node.icon}
         <span class="fd-top-nav__icon">
-          {#if hasOpenUIicon(node)}
+          {#if node.icon && hasOpenUIicon(node)}
           <i class="sap-icon sap-icon--{node.icon}"></i>
           {:else}
           <img
