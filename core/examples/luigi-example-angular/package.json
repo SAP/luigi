@@ -41,7 +41,7 @@
     "postcss": ">=7.0.36",
     "serialize-javascript": ">=3.1.0",
     "selfsigned": "1.10.8",
-    "tar": ">=4.4.2",
+    "tar": ">=5.0.7",
     "ts-node": "4.1.0",
     "tslint": "5.20.0",
     "typescript": "^4.0.0",
