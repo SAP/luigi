@@ -44,6 +44,37 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
 {/if}{:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
+    {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')} {#if
+    appSwitcherItems && appSwitcherItems.length > 0} {#each appSwitcherItems as item} {#if
+    item === selectedItem && hasValidLink(item, pathParams)}
+    <a
+      href="{addNavHrefForAnchor ? getRouteLink(item) : undefined}"
+      class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
+      aria-haspopup="true"
+      aria-expanded="{dropDownStates.appSwitcherPopover || false}"
+      on:click|preventDefault="{() => toggleDropdownState('appSwitcherPopover')}"
+      data-testid="app-switcher"
+    >
+      <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
+        >{$getTranslation(title)}</span
+      >
+      <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
+    </a>
+    {/if}{/each}{/if} {#if appSwitcherItems.length > 0 && !selectedItem}
+    <a
+      href="/"
+      class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
+      aria-haspopup="true"
+      aria-expanded="{dropDownStates.appSwitcherPopover || false}"
+      on:click|preventDefault="{() => toggleDropdownState('appSwitcherPopover')}"
+      data-testid="app-switcher"
+    >
+      <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
+        >{$getTranslation(title)}</span
+      >
+      <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
+    </a>
+    {/if} {:else}
     <button
       class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
       aria-haspopup="true"
@@ -56,6 +87,7 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
       >
       <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
     </button>
+    {/if}
   </div>
   <div
     class="fd-popover__body fd-popover__body--left"
@@ -67,10 +99,10 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
         {#if showMainAppEntry && selectedItem}
         <li class="fd-menu__item">
           <a
+            href="/"
             role="button"
             class="fd-menu__link"
             on:click|preventDefault="{goToRoot}"
-            href="/"
             data-testid="{getTestId(defaultTitle)}"
           >
             <span class="fd-menu__title">{$getTranslation(defaultTitle)}</span>
@@ -84,7 +116,7 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
             role="button"
             class="fd-menu__link"
             on:click|preventDefault="{() => goTo(item.link)}"
-            href="{getRouteLink(item, pathParams)}"
+            href="{addNavHrefForAnchor ? getRouteLink(item) : undefined}"
             data-testid="{getTestId(item)}"
           >
             <span class="fd-menu__title">{$getTranslation(item.title)}</span>
@@ -124,6 +156,7 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
+  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   //TODO refactor
   const getComponentWrapper = () => {
