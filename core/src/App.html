@@ -1034,6 +1034,7 @@
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
     );
+    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue('navigation.defaults.runTimeErrorHandler')
     const config = {
       iframe: null,
       navigateOk: null,
@@ -1380,15 +1381,22 @@
       }
 
       if ('storage' === e.data.msg) {
-        let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
-        let microfrontendId = getValidMessageSource.luigi.id;
         StorageHelper.process(
-          microfrontendId,
+          iframe.luigi.id,
           e.origin,
           e.data.data.id,
           e.data.data.operation,
           e.data.data.params
-        );
+        )
+      }
+
+      if('luigi-runtime-error-handling'===e.data.msg){
+        let currentNode = iframe.luigi.currentNode;
+        if(currentNode && currentNode.runTimeErrorHandler && GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)){
+          currentNode.runTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        }else if(defaultRunTimeErrorHandler && GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)){
+          defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        }
       }
     });
 
