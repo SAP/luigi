@@ -49,8 +49,8 @@
         tabindex="0"
         class="fd-list__link"
         data-testid="luigi-topnav-profile-item"
-        href="{getRouteLink(profileItem)}"
         on:click|preventDefault="{() => {}}"
+        href="{addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
         <i role="presentation" class="fd-list__icon sap-icon--{profileItem.icon}"></i>
@@ -76,6 +76,7 @@
         class="fd-list__link"
         aria-label="User Settings"
         data-testid="settings-link"
+        
       >
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
         <i
@@ -167,6 +168,7 @@
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
   let initialsOfUser;
+  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   onMount(async () => {
     if (!LuigiAuth.isAuthorizationEnabled()) {
