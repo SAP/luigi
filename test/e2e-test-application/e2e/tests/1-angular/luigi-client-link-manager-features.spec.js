@@ -317,5 +317,19 @@ describe('Luigi client linkManager', () => {
         .click();
       cy.get('.drawer').should('not.exist');
     });
+
+    it('Open and close drawer component with webcomponent', () => {
+      // cy.visitLoggedIn('/projects/pr1');
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent');
+        cy.get('.drawer').should('exist');
+        cy.expectPathToBe('/projects/pr2');
+
+        cy.get('.drawer-dialog button[aria-label="close"]')
+          .should('exist')
+          .click();
+        cy.get('.drawer').should('not.exist');
+      });
+    });
   });
 });
