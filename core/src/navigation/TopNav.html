@@ -333,7 +333,7 @@
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-initials"
           >
-            {userInfo.initials}
+            {userInfo.initials ? userInfo.initials : ''}
           </span>
           {/if}
         </div>
