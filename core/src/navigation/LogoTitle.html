@@ -116,7 +116,7 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
             role="button"
             class="fd-menu__link"
             on:click|preventDefault="{() => goTo(item.link)}"
-            href="{addNavHrefForAnchor ? getRouteLink(item) : undefined}"
+            href="{addNavHrefForAnchor ? getRouteLink(item, pathParams) : undefined}"
             data-testid="{getTestId(item)}"
           >
             <span class="fd-menu__title">{$getTranslation(item.title)}</span>
