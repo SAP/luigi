@@ -594,6 +594,23 @@ Below is Luigi's web component example configuration which shows 3 web component
 ```
 - **since**: 1.7.0
 
+### defaults.runTimeErrorHandler
+
+<!-- add-attribute:class:warning -->
+> **NOTE**:  The **runTimeErrorHandler** only works if the micro frontend uses Luigi Client and [disable-luigi-runtime-error-handling](advanced-options-luigi-client.md#disable-luigi-core-runtime-error-handling) is not disabled. 
+
+- **type**: object
+- **description**: allows you to handle errors on the Core level. The error handler receives all unhandled errors from the micro frontends which are using the Luigi Client.
+- **default**: the parameter **defaults.runTimeErrorHandler** is not specified by default, and you can overwrite it using the **runTimeErrorHandler** value on a single node level.
+- **attributes**:
+  - **errorFn**:(function) gets an object `error` as parameter. The properties of this object are the properties of the [error event](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent). The inherited properties from [event](https://developer.mozilla.org/en-US/docs/Web/API/Event) are not part of the object. Current node is the second parameter.
+- **example**
+```javascript
+runTimeErrorHandler: {
+   errorFn: (error, currentNode)=>{}
+}
+```
+- **since**: NEXTRELEASE
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:

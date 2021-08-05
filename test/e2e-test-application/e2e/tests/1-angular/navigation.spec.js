@@ -20,10 +20,9 @@ describe('Navigation', () => {
       cy.window().then(win => {
         cy.stub(win.console, 'warn').as('consoleWarn');
         win.Luigi.navigation().openAsModal('/');
-        
-        cy.get('div[data-testid="modal-mf"]')
-          .should('not.exist')
-          cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
+
+        cy.get('div[data-testid="modal-mf"]').should('not.exist');
+        cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
         cy.expectPathToBe('/overview');
       });
     });
@@ -31,9 +30,8 @@ describe('Navigation', () => {
       cy.window().then(win => {
         cy.stub(win.console, 'warn').as('consoleWarn');
         win.Luigi.navigation().openAsDrawer('/');
-        
-        cy.get('div[data-testid="drawer-mf"]')
-          .should('not.exist');
+
+        cy.get('div[data-testid="drawer-mf"]').should('not.exist');
         cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
         cy.expectPathToBe('/overview');
       });
@@ -261,13 +259,13 @@ describe('Navigation', () => {
     });
 
     it('Icon instead of label in TopNav', () => {
-      cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
-      cy.get('button[title="Settings"]').should('contain', '');
+      cy.get('[data-testid="settings_settings"]>.fd-top-nav__icon').should('exist');
+      cy.get('[data-testid="settings_settings"]').should('contain', '');
     });
 
     it('Icon with label label in TopNav', () => {
-      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
-      cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
+      cy.get('[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
+      cy.get('[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 
     it('Icon with label in LeftNav', () => {
@@ -621,7 +619,7 @@ describe('Navigation', () => {
       it('Horizontal Navigation on mobile', () => {
         cy.get('[data-testid="mobile-menu"]').click();
         cy.get('.fd-popover__body').within(() => {
-          cy.get('[data-testid="projects_projects"]').click();
+          cy.get('[data-testid="projects_projects-mobile"]').click();
         });
         cy.get('.lui-burger').click();
         cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
@@ -684,7 +682,7 @@ describe('Navigation', () => {
           cy.get('[data-testid="mobile-menu"]').click();
 
           cy.get('.fd-popover__body').within(() => {
-            cy.get('[data-testid="projects_projects"]').click();
+            cy.get('[data-testid="projects_projects-mobile"]').click();
           });
           cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
           cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
