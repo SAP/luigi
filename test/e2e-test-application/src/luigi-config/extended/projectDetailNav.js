@@ -189,7 +189,8 @@ export const projectDetailNavStructure = projectId => [
     isolateView: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
-    icon: 'sys-help-2'
+    icon: 'sys-help-2',
+    tooltipText: 'Miscellaneous2 (Isolated View)'
   },
   {
     pathSegment: 'dps',
@@ -328,7 +329,8 @@ export const projectDetailNavStructure = projectId => [
       url: 'http://github.com',
       sameWindow: true
     },
-    icon: 'globe'
+    icon: 'globe',
+    tooltipText: 'Super useful Github links'
   },
   {
     pathSegment: 'collapsibles',
@@ -340,6 +342,7 @@ export const projectDetailNavStructure = projectId => [
         label: 'Open Github in new tab',
         category: {
           label: 'Super useful Github links',
+          tooltipText: 'Super useful Github links',
           icon: '/assets/github-logo.png',
           collapsible: true
         },
@@ -352,6 +355,7 @@ export const projectDetailNavStructure = projectId => [
       {
         label: 'Open Github in this tab',
         category: 'Super useful Github links',
+        tooltipText: 'Open Github in this tab',
         externalLink: {
           url: 'http://github.com',
           sameWindow: true
@@ -394,6 +398,7 @@ export const projectDetailNavStructure = projectId => [
         category: {
           label: 'Super useful Github links',
           icon: '/assets/github-logo.png',
+          tooltipText: 'Super useful Github links',
           collapsible: true
         },
         externalLink: {
@@ -405,6 +410,7 @@ export const projectDetailNavStructure = projectId => [
       {
         label: 'Open Github in this tab',
         category: 'Super useful Github links',
+        tooltipText: 'Open Github in this tab',
         externalLink: {
           url: 'http://github.com',
           sameWindow: true

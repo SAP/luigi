@@ -57,7 +57,8 @@ export const projectDetailTabNavStructure = projectId => [
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
-    icon: 'sys-help-2'
+    icon: 'sys-help-2',
+    tooltipText: 'Miscellaneous2 (Isolated View)'
   },
   {
     category: { label: 'Default Child node Example', icon: '' },

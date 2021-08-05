@@ -542,6 +542,7 @@ describe('Navigation', () => {
         });
       });
     });
+
     it('Nav sync - use synched nav', () => {
       // projects page
       cy.get('.fd-shellbar')
@@ -569,6 +570,31 @@ describe('Navigation', () => {
         });
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
       });
+    });
+
+    it('Left navigation title attr exist', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/projects/pr1');
+        cy.expectPathToBe('/projects/pr1');
+      });
+
+      cy.get('.fd-app__sidebar .fd-nested-list__link')
+        .contains('Miscellaneous2')
+        .parent()
+        .should('have.attr', 'title', 'Miscellaneous2 (Isolated View)');
+    });
+
+    it('Left navigation title attr not exist', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Default Child')
+        .parent()
+        .should('have.attr', 'title', '');
     });
   });
   describe('Horizontal Tab Navigation', () => {
@@ -762,14 +788,26 @@ describe('Navigation', () => {
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="superusefulgithublinks"]')
+        .contains('Super useful Github links')
+        .parent()
+        .click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
 
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="superusefulgithublinks"]')
+        .contains('Super useful Github links')
+        .parent()
+        .click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
@@ -782,19 +820,28 @@ describe('Navigation', () => {
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
+      cy.get('li[data-testid="superusefulgithublinks"]')
+        .contains('Super useful Github links')
+        .parent()
+        .click();
 
       // First one is open only
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       // Second one is open only
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
 
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       // All is closed
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
@@ -813,19 +860,28 @@ describe('Navigation', () => {
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-        cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
+        cy.get('li[data-testid="superusefulgithublinks"]')
+          .contains('Super useful Github links')
+          .parent()
+          .click();
 
         // First one is open only
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+        cy.get('li[data-testid="usermanagement"]')
+          .contains('User Management')
+          .parent()
+          .click();
 
         // Second one is open only
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
 
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+        cy.get('li[data-testid="usermanagement"]')
+          .contains('User Management')
+          .parent()
+          .click();
 
         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
@@ -841,14 +897,26 @@ describe('Navigation', () => {
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="superusefulgithublinks"]')
+        .contains('Super useful Github links')
+        .parent()
+        .click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
 
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="superusefulgithublinks"]')
+        .contains('Super useful Github links')
+        .parent()
+        .click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
@@ -861,19 +929,28 @@ describe('Navigation', () => {
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
+      cy.get('li[data-testid="superusefulgithublinks"]')
+        .contains('Super useful Github links')
+        .parent()
+        .click();
 
       // First one is open only
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       // Second one is open only
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
       cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
 
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+      cy.get('li[data-testid="usermanagement"]')
+        .contains('User Management')
+        .parent()
+        .click();
 
       // All is closed
       cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
@@ -892,19 +969,28 @@ describe('Navigation', () => {
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-        cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
+        cy.get('li[data-testid="superusefulgithublinks"]')
+          .contains('Super useful Github links')
+          .parent()
+          .click();
 
         // First one is open only
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+        cy.get('li[data-testid="usermanagement"]')
+          .contains('User Management')
+          .parent()
+          .click();
 
         // Second one is open only
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
 
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
+        cy.get('li[data-testid="usermanagement"]')
+          .contains('User Management')
+          .parent()
+          .click();
 
         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');

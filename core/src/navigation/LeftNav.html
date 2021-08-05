@@ -48,7 +48,7 @@
           <li class="fd-nested-list__item">
             <a
               href="{getRouteLink(node)}"
-              title="{$getTranslation(node.label)}"
+              title="{node.tooltipText ? $getTranslation(node.label) : ''}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
               on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
@@ -90,7 +90,7 @@
             <div class="fd-nested-list__content has-child">
               <a
                 href="javascript:void(null)"
-                title="{$getTranslation(key)}"
+                title="{nodes.tooltipText ? $getTranslation(key) : ''}"
                 class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
                 tabindex="-1"
                 id="collapsible_listnode_{index}"
@@ -142,7 +142,7 @@
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
-                  title="{$getTranslation(node.label)}"
+                  title="{node.tooltipText ? $getTranslation(node.label) : ''}"
                 >
                   <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
@@ -171,7 +171,7 @@
                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
-                      title="{$getTranslation(node.label)}"
+                      title="{node.tooltipText ? $getTranslation(node.label) : ''}"
                     >
                       <span class="fd-nested-list__title"
                         >{$getTranslation(node.label)}</span
