@@ -319,7 +319,6 @@ describe('Luigi client linkManager', () => {
     });
 
     it('Open and close drawer component with webcomponent', () => {
-      // cy.visitLoggedIn('/projects/pr1');
       cy.window().then(win => {
         win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent');
         cy.get('.drawer').should('exist');
