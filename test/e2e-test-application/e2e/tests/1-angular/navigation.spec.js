@@ -572,18 +572,6 @@ describe('Navigation', () => {
       });
     });
 
-    it('Left navigation title attr exist', () => {
-      cy.window().then(win => {
-        win.Luigi.navigation().navigate('/projects/pr1');
-        cy.expectPathToBe('/projects/pr1');
-      });
-
-      cy.get('.fd-app__sidebar .fd-nested-list__link')
-        .contains('Miscellaneous2')
-        .parent()
-        .should('have.attr', 'title', 'Miscellaneous2 (Isolated View)');
-    });
-
     it('Left navigation title attr not exist', () => {
       cy.get('.fd-shellbar')
         .contains('Projects')
