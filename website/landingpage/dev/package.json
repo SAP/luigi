@@ -44,6 +44,7 @@
     "rimraf": "^2.7.1",
     "slugify": "^1.4.0",
     "style-sherpa": "^1.0.0",
+    "tar": ">=4.4.15",
     "uncss": "^0.17.3",
     "vinyl-named": "^1.1.0",
     "webpack": "^4.20.2",
