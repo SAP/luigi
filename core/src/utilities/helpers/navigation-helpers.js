@@ -330,36 +330,46 @@ class NavigationHelpersClass {
   }
 
   async fetchNavHeader(node, context) {
-    const resolver = this.substituteVars(node.titleResolver, context);
-    const requestOptions = resolver.request;
-
     return new Promise((resolve, reject) => {
-      if (resolver._cachedHeader) {
-        console.debug('header from cache: ', resolver._cachedHeader);
-        resolve(resolver._cachedHeader);
-      } else {
-        fetch(requestOptions.url, {
-          method: requestOptions.method,
-          headers: requestOptions.headers,
-          body: JSON.stringify(requestOptions.body)
-        }).then(response => {
-          response.json().then(data => {
-            let label = this.getPropertyChainValue(data, resolver.titlePropertyChain);
-            if (label) {
-              label = label.trim();
-            }
-            if (label && resolver.titleDecorator) {
-              label = resolver.titleDecorator.replace('%s', label);
-            }
-            const navHeader = {
-              label: label || resolver.fallbackTitle,
-              icon: this.getPropertyChainValue(data, resolver.iconPropertyChain, resolver.fallbackIcon)
-            };
-            node.titleResolver._cachedHeader = navHeader;
-            resolve(navHeader);
-          });
-        });
+      const strippedResolver = { ...node.titleResolver };
+      delete strippedResolver._cache;
+
+      const resolver = this.substituteVars(strippedResolver, context);
+      const resolverString = JSON.stringify(resolver);
+      if (node.titleResolver._cache) {
+        if (node.titleResolver._cache.key === resolverString) {
+          console.debug('title from cache: ', resolver._cachedHeader);
+          resolve(node.titleResolver._cache.value);
+          return;
+        }
       }
+
+      const requestOptions = resolver.request;
+
+      fetch(requestOptions.url, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        body: JSON.stringify(requestOptions.body)
+      }).then(response => {
+        response.json().then(data => {
+          let label = this.getPropertyChainValue(data, resolver.titlePropertyChain);
+          if (label) {
+            label = label.trim();
+          }
+          if (label && resolver.titleDecorator) {
+            label = resolver.titleDecorator.replace('%s', label);
+          }
+          const navHeader = {
+            label: label || resolver.fallbackTitle,
+            icon: this.getPropertyChainValue(data, resolver.iconPropertyChain, resolver.fallbackIcon)
+          };
+          node.titleResolver._cache = {
+            key: resolverString,
+            value: navHeader
+          };
+          resolve(navHeader);
+        });
+      });
     });
   }
 }

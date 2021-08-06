@@ -279,6 +279,7 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Navigation } from './services/navigation';
+  import { Routing } from '../services/routing';
   import {
     IframeHelpers,
     NavigationHelpers,
@@ -383,18 +384,39 @@
             } else {
               navHeader = resolvedNavHeader;
             }
-            NavigationHelpers.fetchNavHeader(resolvedNavHeaderNode, context)
-              .then(headerData => {
-                navHeader = { ...resolvedNavHeader, ...headerData };
-              })
-              .catch(error => {
-                console.error('Error while retrieving title, fallback to node label');
-                navHeader = {
-                  ...resolvedNavHeader,
-                  label: parentNode.label,
-                  icon: parentNode.icon
-                };
-              });
+            let currentPath = Routing.getCurrentPath();
+            let currentPathSegments = GenericHelpers.trimLeadingSlash(currentPath).split(
+              '/'
+            );
+            let route = RoutingHelpers.buildRoute(
+              resolvedNavHeaderNode,
+              `/${resolvedNavHeaderNode.pathSegment}`
+            );
+            let nrRouteSegments = GenericHelpers.trimLeadingSlash(route).split('/')
+              .length;
+            route = '';
+            for (let i = 0; i < nrRouteSegments; i++) {
+              route += '/' + currentPathSegments[i];
+            }
+
+            Navigation.extractDataFromPath(route).then(data => {
+              const ctx = RoutingHelpers.substituteDynamicParamsInObject(
+                Object.assign({}, data.pathData.context, resolvedNavHeaderNode.context),
+                data.pathData.pathParams
+              );
+              NavigationHelpers.fetchNavHeader(resolvedNavHeaderNode, ctx)
+                .then(headerData => {
+                  navHeader = { ...resolvedNavHeader, ...headerData };
+                })
+                .catch(error => {
+                  console.error('Error while retrieving title, fallback to node label');
+                  navHeader = {
+                    ...resolvedNavHeader,
+                    label: parentNode.label,
+                    icon: parentNode.icon
+                  };
+                });
+            });
           } else {
             navHeader = resolvedNavHeader;
           }
