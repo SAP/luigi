@@ -7,26 +7,6 @@ Object.keys(productSwitcherItems[0]).length }
   <div class="fd-product-switch">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-        {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
-        <a
-          href="/"
-          class="fd-button fd-button--transparent fd-product-switch__control"
-          aria-expanded="{dropDownStates.productSwitcherPopover || false}"
-          aria-haspopup="true"
-          on:click|preventDefault="{toggleDropdownState}"
-          title="{config.label}"
-          data-testid="{getTestId(config)}"
-        >
-          <div class="lui-product-switch__icon">
-            {#if hasOpenUIicon(config)}
-            <!-- default: sap-icon--grid -->
-            <i class="sap-icon sap-icon--{config.icon}"></i>
-            {:else}
-            <img src="{config.icon}" alt="{config.altText ? config.altText : ''}" />
-            {/if}
-          </div>
-        </a>
-        {:else}
         <button
           class="fd-button fd-button--transparent fd-product-switch__control"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
@@ -44,7 +24,6 @@ Object.keys(productSwitcherItems[0]).length }
             {/if}
           </div>
         </button>
-        {/if}
       </div>
       <div
         class="fd-popover__body fd-popover__body--right"
