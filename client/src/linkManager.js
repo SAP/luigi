@@ -26,7 +26,8 @@ export class linkManager extends LuigiClientBase {
       fromVirtualTreeRoot: false,
       fromParent: false,
       relative: false,
-      link: ''
+      link: '',
+      openInNewTab: false
     };
   }
 
@@ -311,6 +312,17 @@ export class linkManager extends LuigiClientBase {
    */
   withoutSync() {
     this.options.withoutSync = true;
+    return this;
+  }
+
+  /**
+   * Enables navigating to a new tab.
+   * @since NEXT_RELEASE
+   * @example
+   * LuigiClient.linkManager().openInNewTab().navigate('/projects/xy/foobar');
+   */
+  openInNewTab() {
+    this.options.openInNewTab = true;
     return this;
   }
 }
