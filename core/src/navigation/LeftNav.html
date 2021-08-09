@@ -384,27 +384,18 @@
             } else {
               navHeader = resolvedNavHeader;
             }
-            let currentPath = Routing.getCurrentPath();
-            let currentPathSegments = GenericHelpers.trimLeadingSlash(currentPath).split(
-              '/'
+
+            const route = RoutingHelpers.mapPathToNode(
+              Routing.getCurrentPath(),
+              resolvedNavHeaderNode
             );
-            let route = RoutingHelpers.buildRoute(
-              resolvedNavHeaderNode,
-              `/${resolvedNavHeaderNode.pathSegment}`
-            );
-            let nrRouteSegments = GenericHelpers.trimLeadingSlash(route).split('/')
-              .length;
-            route = '';
-            for (let i = 0; i < nrRouteSegments; i++) {
-              route += '/' + currentPathSegments[i];
-            }
 
             Navigation.extractDataFromPath(route).then(data => {
               const ctx = RoutingHelpers.substituteDynamicParamsInObject(
                 Object.assign({}, data.pathData.context, resolvedNavHeaderNode.context),
                 data.pathData.pathParams
               );
-              NavigationHelpers.fetchNavHeader(resolvedNavHeaderNode, ctx)
+              NavigationHelpers.fetchNodeTitleData(resolvedNavHeaderNode, ctx)
                 .then(headerData => {
                   navHeader = { ...resolvedNavHeader, ...headerData };
                 })

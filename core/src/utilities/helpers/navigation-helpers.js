@@ -329,7 +329,7 @@ class NavigationHelpersClass {
     return JSON.parse(resString);
   }
 
-  async fetchNavHeader(node, context) {
+  async fetchNodeTitleData(node, context) {
     return new Promise((resolve, reject) => {
       const strippedResolver = { ...node.titleResolver };
       delete strippedResolver._cache;

@@ -217,6 +217,24 @@ class RoutingHelpersClass {
   }
 
   /**
+   * Maps a path to the nodes route, replacing all dynamic pathSegments with the concrete values in path.
+   * Example: path='/object/234/subobject/378/some/node', node with path '/object/:id/subobject/:subid' results in
+   * '/object/234/subobject/378/'.
+   * @param {*} path a concrete node path, typically the current app route.
+   * @param {*} node a node which must be an ancestor of the resolved node from path.
+   */
+  mapPathToNode(path, node) {
+    const pathSegments = GenericHelpers.trimLeadingSlash(path).split('/');
+    const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    const nrRouteSegments = GenericHelpers.trimLeadingSlash(route).split('/').length;
+    let resultingRoute = '';
+    for (let i = 0; i < nrRouteSegments; i++) {
+      resultingRoute += '/' + pathSegments[i];
+    }
+    return resultingRoute;
+  }
+
+  /**
    * Returns true or false whether the passed node is a dynamic node or not
    * @param {*} node
    */
