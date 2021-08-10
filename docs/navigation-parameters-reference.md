@@ -610,7 +610,7 @@ runTimeErrorHandler: {
    errorFn: (error, currentNode)=>{}
 }
 ```
-- **since**: NEXTRELEASE
+- **since**: 1.15.0
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:
