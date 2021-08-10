@@ -587,14 +587,32 @@
               class="fd-link"
               (click)="
                 linkManager().navigate(
-                  '/#?intent=Sales-settings?param1=abc&param2=bcd'
+                  '/#?intent=Sales-settings?project=pr2&param2=bcd'
                 )
               "
             >
               navigate to settings with intent with parameters</a
             >
             <app-code-snippet
-              data="linkManager().navigate('/#?intent=Sales-settings?param1=abc&param2=bcd')"
+              data="linkManager().navigate('/#?intent=Sales-settings?project=pr2&param2=bcd')"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager().navigateToIntent(
+                  'Sales-settings', {project: 'pr1', param2: '22'}
+                )
+              "
+            >
+              navigate to settings of project 1 with alternative intent method:
+              navigateToIntent
+            </a>
+            <app-code-snippet
+              data="linkManager().navigateToIntent('Sales-settings', {project: 'pr1', param2: '22'})"
             >
             </app-code-snippet>
           </li>
@@ -736,6 +754,20 @@
               >Go to /projects/pr2/virtual-tree NOT using withoutSync()
             </a>
             <app-code-snippet data="linkManager().navigate('/projects/pr2/virtual-tree')">
+            </app-code-snippet>
+          </li>
+
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withSync-virtual-tree"
+              (click)="navigateWithSync('/projects/pr2/virtual-tree')"
+              data-testid="navigate-withSync-virtual-tree"
+              >Go to settings with new go to intent
+            </a>
+            <app-code-snippet
+              data="linkManager().navigateToIntent('/projects/pr2/virtual-tree')"
+            >
             </app-code-snippet>
           </li>
         </ul>

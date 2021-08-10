@@ -30,7 +30,7 @@ class Navigation {
     {
       semanticObject: 'Sales',
       action: 'settings',
-      pathSegment: '/projects/pr2/settings'
+      pathSegment: '/projects/:project/settings'
     }
   ];
   nodeAccessibilityResolver = navigationPermissionChecker;

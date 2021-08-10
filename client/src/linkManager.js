@@ -89,6 +89,37 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+   * parameters.
+   * This method internally generates a url of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+   * input arguments. This then follows a call to the original linkManager.navigate(...) function.
+   * Consequentially the following calls shall have the exact same effect:
+   * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
+   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: <semanticObject>-<action>
+   * @param {Object} params an object representing all the parameters passed, i.e.: {param1: '1', param2: 2, param3: 'value3'}
+   * @example
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   */
+  navigateToIntent(semanticSlug, params) {
+    let newPath = '#?intent=';
+    newPath += semanticSlug;
+    if (params) {
+      const paramList = Object.entries(params);
+      // append parameters to the path if any
+      if (paramList.length > 0) {
+        newPath += '?';
+        for (const [key, value] of paramList) {
+          newPath += key + '=' + value + '&';
+        }
+        // trim potential excessive ampersand & at the end
+        newPath = newPath.slice(0, -1);
+      }
+    }
+    this.navigate(newPath);
+  }
+
+  /**
    * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager
    * @param {string} path navigation path
