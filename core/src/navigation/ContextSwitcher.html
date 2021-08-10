@@ -4,6 +4,25 @@
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div class="fd-popover fd-popover--right">
     <div class="fd-popover__control" on:click|stopPropagation="{()=> {}}">
+      {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs') && (selectedOption
+      !== config.defaultLabel) }
+      <a
+        href="{addNavHrefForAnchor ? selectedNodePath : undefined}"
+        class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
+        aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
+        aria-haspopup="true"
+        title="{selectedLabel ? selectedLabel : config.defaultLabel}"
+        on:click|preventDefault="{()=> {if (renderAsDropdown) toggleDropdownState()}}"
+        aria-disabled="{!renderAsDropdown}"
+        data-testid="luigi-contextswitcher-button"
+      >
+        {#if selectedOption && customSelectedOptionRenderer } {@html
+        customSelectedOptionRenderer(selectedOption)} {:else} {#if !selectedLabel}
+        {$getTranslation(config.defaultLabel)} {:else}{selectedLabel} {/if}
+        <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
+        {/if}
+      </a>
+      {:else}
       <button
         class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
         aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
@@ -19,6 +38,7 @@
         <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
         {/if}
       </button>
+      {/if}
     </div>
     <div
       class="fd-popover__body fd-popover__body--right"
@@ -33,6 +53,7 @@
         {options}
         {selectedLabel}
         {selectedOption}
+        {selectedNodePath}
         {getNodeName}
         {getRouteLink}
         {getTestId}
@@ -117,6 +138,7 @@
   export let contextSwitcherEnabled = false;
   export let dropDownStates = {};
   export let selectedLabel = null;
+  export let selectedNodePath;
   export let config = {};
   export let actions = [];
   export let options = null;
@@ -139,6 +161,7 @@
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let prevContextSwitcherToggle = false;
+  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
@@ -249,6 +272,11 @@
       parentNodePath,
       fallbackLabelResolver
     );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
+      currentPath,
+      options,
+      parentNodePath
+    );
     preserveSubPathOnSwitch = conf.preserveSubPathOnSwitch;
   }
 
@@ -266,6 +294,11 @@
       options,
       parentNodePath,
       fallbackLabelResolver
+    );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
+      currentPath,
+      options,
+      parentNodePath
     );
   }
 
