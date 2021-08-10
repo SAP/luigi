@@ -9,15 +9,19 @@
       data-testid="{getTestId(node)}"
     >
       <a
-        href="{getRouteLink(node)}"
+        href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
         on:click|preventDefault="{() => {}}"
         class="fd-menu__link"
       >
-        <span
-          class="fd-top-nav__icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
-        >
-          {#if !hasOpenUIicon(node)}
-          <img src="{node.icon}" alt="{node.altText ? node.altText: ''}" />
+        <span class="fd-top-nav__icon">
+          {#if node.icon && hasOpenUIicon(node)}
+          <i class="sap-icon sap-icon--{node.icon}"></i>
+          {:else}
+          <img
+            class="sap-icon"
+            src="{node.icon}"
+            alt="{node.altText ? node.altText : ''}"
+          />
           {/if}
           <BadgeCounter {node} />
         </span>
@@ -48,7 +52,7 @@
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
-  import { LuigiI18N } from './core-api';
+  import { LuigiI18N, LuigiConfig } from './core-api';
 
   const dispatch = createEventDispatcher();
 
@@ -58,6 +62,7 @@
   let pathParams;
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
+  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   const getNodeSubtitle = () => {};
 
   //TODO refactor
