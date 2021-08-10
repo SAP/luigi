@@ -8,7 +8,7 @@
       class="fd-shellbar__button fd-button lui-burger"
       on:click="{burgerClickHandler}"
       tabindex="0"
-      title="{burgerTooltip}"
+      title="{burgerTooltip ? burgerTooltip : ''}"
     >
       <i class="sap-icon sap-icon--menu2"></i>
     </button>
@@ -48,7 +48,7 @@
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
-            title="{getNodeLabel(node)}"
+            title="{node.tooltipText ? node.tooltipText : ''}"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -87,7 +87,7 @@
       </a>
       {:else}
       <button
-        title="{getNodeLabel(node)}"
+        title="{node.tooltipText ? node.tooltipText : ''}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
         aria-haspopup="true"
@@ -190,7 +190,7 @@
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    title="{getNodeLabel(node)}"
+                    title="{node.tooltipText ? node.tooltipText : ''}"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"

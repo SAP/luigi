@@ -96,6 +96,12 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
 - **default**: the parameter **defaults.isolateView** is `false` by default, and you can overwrite it using the **isolateView** value on a single node level.
 
+### tooltipText
+- **type**: string
+- **description**: Add tooltip to link/button of navigation.
+- **default**: the parameter **defaults.tooltipText** is `null` by default, and you can overwrite it using the **tooltipText** value on a single node level.
+
+
 ### defaults.pageErrorHandler
 <!-- add-attribute:class:warning -->
 > **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
