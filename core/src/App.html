@@ -20,6 +20,7 @@
     on:close="{closeDrawer}"
     on:drawerState="{setDrawerState}"
     on:iframeCreated="{drawerIframeCreated}"
+    on:wcCreated="{drawerWCCreated}"
   >
     <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
   </Modal>
@@ -180,6 +181,8 @@
   let disableBackdrop;
   let drawerIframe;
   let drawerIframeData;
+  let drawerWC;
+  let drawerWCData;
   let drawer;
   let splitViewIframe;
   let splitViewIframeData;
@@ -994,6 +997,11 @@
     drawerIframeData = event.detail.modalIframeData;
   };
 
+  const drawerWCCreated = event => {
+    drawerWC = event.detail.modalWC;
+    drawerWCData = event.detail.modalWCData;
+  };
+
   const setDrawerState = event => {
     activeDrawer = event.detail.activeDrawer;
   };
@@ -1003,10 +1011,18 @@
       activeDrawer = event.detail.activeDrawer;
     }
     if (!activeDrawer || (event && event.detail && event.detail.type !== 'modal')) {
-      if (drawerIframe) {
-        getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
-          resetMicrofrontendDrawerData();
-        });
+      try {
+        if (drawerIframe) {
+          getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
+            resetMicrofrontendDrawerData();
+          });
+        } else if (drawerWC) {
+          getUnsavedChangesModalPromise().then(() => {
+            resetMicrofrontendDrawerData();
+          });
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   };
@@ -1034,6 +1050,7 @@
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
     );
+    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue('navigation.defaults.runTimeErrorHandler')
     const config = {
       iframe: null,
       navigateOk: null,
@@ -1380,15 +1397,22 @@
       }
 
       if ('storage' === e.data.msg) {
-        let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
-        let microfrontendId = getValidMessageSource.luigi.id;
         StorageHelper.process(
-          microfrontendId,
+          iframe.luigi.id,
           e.origin,
           e.data.data.id,
           e.data.data.operation,
           e.data.data.params
-        );
+        )
+      }
+
+      if('luigi-runtime-error-handling'===e.data.msg){
+        let currentNode = iframe.luigi.currentNode;
+        if(currentNode && currentNode.runTimeErrorHandler && GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)){
+          currentNode.runTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        }else if(defaultRunTimeErrorHandler && GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)){
+          defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        }
       }
     });
 
