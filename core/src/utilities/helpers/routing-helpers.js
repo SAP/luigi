@@ -222,13 +222,24 @@ class RoutingHelpersClass {
    * '/object/234/subobject/378/'.
    * @param {*} path a concrete node path, typically the current app route.
    * @param {*} node a node which must be an ancestor of the resolved node from path.
+   *
+   * @returns a string with the route or undefined, if node is not an ancestor of path-node
    */
   mapPathToNode(path, node) {
+    if (!path || !node) {
+      return;
+    }
     const pathSegments = GenericHelpers.trimLeadingSlash(path).split('/');
-    const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-    const nrRouteSegments = GenericHelpers.trimLeadingSlash(route).split('/').length;
+    const nodeRoute = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    const nodeRouteSegments = GenericHelpers.trimLeadingSlash(nodeRoute).split('/');
+    if (pathSegments.length < nodeRouteSegments.length) {
+      return;
+    }
     let resultingRoute = '';
-    for (let i = 0; i < nrRouteSegments; i++) {
+    for (let i = 0; i < nodeRouteSegments.length; i++) {
+      if (pathSegments[i] !== nodeRouteSegments[i] && nodeRouteSegments[i].indexOf(':') !== 0) {
+        return;
+      }
       resultingRoute += '/' + pathSegments[i];
     }
     return resultingRoute;

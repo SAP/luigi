@@ -3,6 +3,7 @@ import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../co
 import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
+import { reject } from 'lodash';
 
 class NavigationHelpersClass {
   constructor() {
@@ -306,6 +307,13 @@ class NavigationHelpersClass {
     return strippedNode;
   }
 
+  /**
+   * Returns a nested property value defined by a chain string
+   * @param {*} obj the object
+   * @param {*} propChain a string defining the property chain
+   * @param {*} fallback fallback value if resolution fails
+   * @returns the value or fallback
+   */
   getPropertyChainValue(obj, propChain, fallback) {
     if (!propChain || !obj) {
       return fallback;
@@ -329,8 +337,32 @@ class NavigationHelpersClass {
     return JSON.parse(resString);
   }
 
+  _fetch(url, options) {
+    return fetch(url, options);
+  }
+
+  processTitleData(data, resolver) {
+    let label = this.getPropertyChainValue(data, resolver.titlePropertyChain);
+    if (label) {
+      label = label.trim();
+    }
+    if (label && resolver.titleDecorator) {
+      label = resolver.titleDecorator.replace('%s', label);
+    }
+    const titleData = {
+      label: label || resolver.fallbackTitle,
+      icon: this.getPropertyChainValue(data, resolver.iconPropertyChain, resolver.fallbackIcon)
+    };
+
+    return titleData;
+  }
+
   async fetchNodeTitleData(node, context) {
     return new Promise((resolve, reject) => {
+      if (!node.titleResolver) {
+        reject(new Error('No title resolver defined at node'));
+        return;
+      }
       const strippedResolver = { ...node.titleResolver };
       delete strippedResolver._cache;
 
@@ -338,7 +370,6 @@ class NavigationHelpersClass {
       const resolverString = JSON.stringify(resolver);
       if (node.titleResolver._cache) {
         if (node.titleResolver._cache.key === resolverString) {
-          console.debug('title from cache: ', resolver._cachedHeader);
           resolve(node.titleResolver._cache.value);
           return;
         }
@@ -346,30 +377,30 @@ class NavigationHelpersClass {
 
       const requestOptions = resolver.request;
 
-      fetch(requestOptions.url, {
+      this._fetch(requestOptions.url, {
         method: requestOptions.method,
         headers: requestOptions.headers,
         body: JSON.stringify(requestOptions.body)
-      }).then(response => {
-        response.json().then(data => {
-          let label = this.getPropertyChainValue(data, resolver.titlePropertyChain);
-          if (label) {
-            label = label.trim();
-          }
-          if (label && resolver.titleDecorator) {
-            label = resolver.titleDecorator.replace('%s', label);
-          }
-          const navHeader = {
-            label: label || resolver.fallbackTitle,
-            icon: this.getPropertyChainValue(data, resolver.iconPropertyChain, resolver.fallbackIcon)
-          };
-          node.titleResolver._cache = {
-            key: resolverString,
-            value: navHeader
-          };
-          resolve(navHeader);
+      })
+        .then(response => {
+          response.json().then(data => {
+            try {
+              const titleData = this.processTitleData(data, resolver, node);
+              node.titleResolver._cache = {
+                key: resolverString,
+                value: titleData
+              };
+              resolve(titleData);
+            } catch (e) {
+              reject(e);
+            }
+          });
+        })
+        .catch(error => {
+          reject(error);
         });
-      });
+    }).catch(error => {
+      reject(error);
     });
   }
 }
