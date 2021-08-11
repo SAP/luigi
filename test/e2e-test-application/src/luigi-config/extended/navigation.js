@@ -30,6 +30,11 @@ class Navigation {
     {
       semanticObject: 'Sales',
       action: 'settings',
+      pathSegment: '/projects/pr2/settings'
+    },
+    {
+      semanticObject: 'Component',
+      action: 'settings',
       pathSegment: '/projects/:project/settings'
     }
   ];
