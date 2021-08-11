@@ -25,6 +25,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.15.0] (2021-08-05)
+
+#### :rocket: Added
+* [#2168](https://github.com/SAP/luigi/pull/2168) Add navHref support for profile dropdown ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2167](https://github.com/SAP/luigi/pull/2167) Handle runtime errors on core level ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2166](https://github.com/SAP/luigi/pull/2166) Add addNavHref support for TopNav  ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2154](https://github.com/SAP/luigi/pull/2154) Add addNavHref support for GlobalNav ([@wdoberschuetz](https://github.com/wdoberschuetz))
+
+#### :bug: Fixed
+* [#2170](https://github.com/SAP/luigi/pull/2170) Fixed Web Component works as drawer ([@rafalgamon](https://github.com/rafalgamon))
+* [#2159](https://github.com/SAP/luigi/pull/2159) Fixed splitview bottom not adjusting to fiddle footer ([@rafalgamon](https://github.com/rafalgamon))
+
+
+
+
 ## [v1.14.3] (2021-07-21)
 
 #### :bug: Fixed
@@ -1161,3 +1176,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.14.1]: https://github.com/SAP/luigi/compare/v1.14.0...v1.14.1
 [v1.14.2]: https://github.com/SAP/luigi/compare/v1.14.1...v1.14.2
 [v1.14.3]: https://github.com/SAP/luigi/compare/v1.14.2...v1.14.3
+[v1.15.0]: https://github.com/SAP/luigi/compare/v1.14.3...v1.15.0
