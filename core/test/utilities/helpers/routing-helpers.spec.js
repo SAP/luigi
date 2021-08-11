@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 import { GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../../src/core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { config } from '../../../src/core-api/config';
 
@@ -54,6 +54,18 @@ describe('Routing-helpers', () => {
       LuigiI18N.setCurrentLocale('en');
       const viewUrl = '/{i18n.currentLocale}/microfrontend.html';
       const expected = '/en/microfrontend.html';
+
+      expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
+    });
+  });
+  describe('substitute search query params', () => {
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('substitutes search query parameter', () => {
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({luigi:'rocks'});
+      const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
+      const expected = '/microfrontend.html?luigi=rocks';
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });

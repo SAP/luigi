@@ -1,6 +1,6 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
 import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers } from './';
 import { Routing } from '../../services/routing';
 
@@ -232,6 +232,7 @@ class RoutingHelpersClass {
     const contextVarPrefix = 'context.';
     const nodeParamsVarPrefix = 'nodeParams.';
     const i18n_currentLocale = '{i18n.currentLocale}';
+    const searchquery = 'routing.queryParams';
 
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.context, contextVarPrefix);
@@ -239,6 +240,15 @@ class RoutingHelpersClass {
 
     if (viewUrl.includes(i18n_currentLocale)) {
       viewUrl = viewUrl.replace(i18n_currentLocale, LuigiI18N.getCurrentLocale());
+    }
+
+    if(viewUrl.includes(searchquery)){
+      const viewUrlSearchParam = viewUrl.split('?')[1];
+      if(viewUrlSearchParam){
+        const key=viewUrlSearchParam.split('=')[0];
+        if(LuigiRouting.getSearchParams()[key])
+        viewUrl = viewUrl.replace(`{${searchquery}.${key}}`,LuigiRouting.getSearchParams()[key]);
+      }
     }
 
     return viewUrl;
