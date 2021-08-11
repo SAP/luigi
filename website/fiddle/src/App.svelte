@@ -267,15 +267,9 @@
         <span>
           <a
             class="fd-link"
-            href="https://www.sap.com/about/legal/privacy.html"
-            target="_blank">
-            Privacy Policy
-          </a>
-          <a
-            class="fd-link"
             href="https://www.sap.com/about/legal/impressum.html"
             target="_blank">
-            Legal
+            Privacy Policy
           </a>
         </span>
       </div>
