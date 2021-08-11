@@ -400,6 +400,9 @@ class RoutingHelpersClass {
    * @param {Object} parameters a list of objects consisting in passed parameters
    */
   resolveDynamicIntentPath(path, parameters) {
+    if (!parameters) {
+      return path;
+    }
     let newPath = path;
     // merge list of objects into one single object for easier iteration
     const mergedParams = Object.assign({}, ...parameters);
