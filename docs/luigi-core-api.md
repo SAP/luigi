@@ -1326,7 +1326,6 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Add search parameters to url.
 If hash routing is enabled the search parameters will be set after the hash.
-If there are already search params they will be overwritten.
 
 ##### Parameters
 
