@@ -69,6 +69,13 @@ describe('Routing-helpers', () => {
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });
+    it('substitutes search query parameter', () => {
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({mario:'rocks'});
+      const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
+      const expected = '/microfrontend.html';
+
+      expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
+    });
   });
 
   describe('defaultChildNodes', () => {

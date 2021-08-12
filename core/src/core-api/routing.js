@@ -1,5 +1,6 @@
 import { LuigiConfig } from ".";
-import { GenericHelpers } from "../utilities/helpers";
+import { Iframe } from "../services";
+import { GenericHelpers, RoutingHelpers } from "../utilities/helpers";
 /**
  * @name Routing
  */
@@ -24,12 +25,7 @@ class LuigiRouting {
         if(LuigiConfig.getConfigValue('routing.useHashRouting')){
             let queryParamsString = url.hash.split("?")[1];
             if (!queryParamsString) return {};
-            return queryParamsString.split("&").reduce(
-                (queryParams, param) => {
-                    var [key, value] = param.split("=");
-                    queryParams[key] = value;
-                    return queryParams;
-                },{});
+            return this._stringSearchParamsToObject(queryParamsString);
         }else{
             for(const [key, value] of url.searchParams.entries()) {
                 queryParams[key]=value;
@@ -39,38 +35,35 @@ class LuigiRouting {
     }
 
     /**
-     * Set search parameter to url.
+     * Add search parameters to url.
      * If hash routing is enabled the search parameters will be set after the hash.
      * If there are already search params they will be overwritten.
      * @memberof Routing
      * @since NEXTRELEASE
      * @param {Object} params 
      * @example
-     * Luigi.routing().setSearchParams({luigi:'rocks'});
+     * Luigi.routing().addSearchParams({luigi:'rocks'});
      */
-    setSearchParams(params){
+    addSearchParams(params){
         if(!GenericHelpers.isObject(params)){
             console.log('Params argument must be an object');
         }else{
             const url = new URL(location);
             if(LuigiConfig.getConfigValue('routing.useHashRouting')){
-                let [hashvalue, queryParamsString] = url.hash.split('?');
-                queryParamsString='';
+                let [hashvalue, givenQueryParamsString] = url.hash.split('?');
+                let queryParamsString = '';
+                if(givenQueryParamsString){
+                    const givenQueryParams = this._stringSearchParamsToObject(givenQueryParamsString);
+                    params = Object.assign(givenQueryParams, params);
+                }
                 for (const [key, value] of Object.entries(params)) {
-                    if(queryParamsString!==''){
+                    if(queryParamsString!=='' && queryParamsString!==undefined){
                         queryParamsString +='&'
                     }
                     queryParamsString += `${key}=${value}`;
                 }
                 url.hash = `${hashvalue}?${queryParamsString}`;
             }else{
-                const keys=[];
-                for (let key of url.searchParams.keys()){
-                    keys.push(key);
-                }
-                keys.forEach((key)=>{
-                    url.searchParams.delete(key);
-                });
                 for (const [key, value] of Object.entries(params)) {
                     url.searchParams.set(key, value);
                 }
@@ -79,8 +72,19 @@ class LuigiRouting {
         }
     }
 
-    stringQueryParamsToObj(value){
-        
+    _stringSearchParamsToObject(queryParamsString){
+        let queryParams = queryParamsString.split("&");
+        if(queryParams.length===1){
+            let [key, value] = queryParams[0].split("=");
+            return {[key]: value};
+        }else{
+            return queryParamsString.split("&").reduce(
+                (queryParams, param) => {
+                    let [key, value] = param.split("=");
+                    queryParams[key] = value;
+                    return queryParams;
+                },{});
+        }
     }
 }
 

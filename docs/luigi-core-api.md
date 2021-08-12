@@ -1320,9 +1320,9 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 *   **since**: NEXTRELEASE
 
-#### setSearchParams
+#### addSearchParams
 
-Set search parameter to url.
+Add search parameters to url.
 If hash routing is enabled the search parameters will be set after the hash.
 If there are already search params they will be overwritten.
 
@@ -1333,7 +1333,7 @@ If there are already search params they will be overwritten.
 ##### Examples
 
 ```javascript
-Luigi.routing().setSearchParams({luigi:'rocks'});
+Luigi.routing().addSearchParams({luigi:'rocks'});
 ```
 
 **Meta**
