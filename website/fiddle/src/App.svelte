@@ -275,7 +275,7 @@
             class="fd-link"
             href="https://www.sap.com/about/legal/impressum.html"
             target="_blank">
-            Legal Disclosure
+            Legal
           </a>
         </span>
       </div>
