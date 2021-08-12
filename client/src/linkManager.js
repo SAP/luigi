@@ -27,7 +27,7 @@ export class linkManager extends LuigiClientBase {
       fromParent: false,
       relative: false,
       link: '',
-      openInNewTab: false
+      newTab: false
     };
   }
 
@@ -319,10 +319,10 @@ export class linkManager extends LuigiClientBase {
    * Enables navigating to a new tab.
    * @since NEXT_RELEASE
    * @example
-   * LuigiClient.linkManager().openInNewTab().navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
-  openInNewTab() {
-    this.options.openInNewTab = true;
+  newTab() {
+    this.options.newTab = true;
     return this;
   }
 }

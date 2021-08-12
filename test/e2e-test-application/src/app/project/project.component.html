@@ -606,14 +606,14 @@
                 linkManager()
                   .fromClosestContext()
                   .withParams({ foo: 'bar' })
-                  .openInNewTab()
+                  .newTab()
                   .navigate('settings')
               "
             >
               navigate to new tab, using closest context and params</a
             >
             <app-code-snippet
-              data="linkManager().fromClosestContext().withParams({ foo: 'bar' }).openInNewTab().navigate('settings')"
+              data="linkManager().fromClosestContext().withParams({ foo: 'bar' }).newTab().navigate('settings')"
             >
             </app-code-snippet>
           </li>

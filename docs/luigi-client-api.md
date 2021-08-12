@@ -389,14 +389,14 @@ LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings'
 
 *   **since**: 0.7.7
 
-#### openInNewTab
+#### newTab
 
 Enables navigating to a new tab.
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().openInNewTab().navigate('/projects/xy/foobar');
+LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 ```
 
 **Meta**

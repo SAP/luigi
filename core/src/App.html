@@ -1244,7 +1244,7 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-        if (e.data.params.openInNewTab) {
+        if (e.data.params.newTab) {
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           openViewInNewTab(path);

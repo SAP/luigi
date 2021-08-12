@@ -392,9 +392,9 @@ export declare interface LinkManager {
    * Enables navigating to a new tab.
    * @since NEXT_RELEASE
    * @example
-   * LuigiClient.linkManager().openInNewTab().navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
-  openInNewTab: () => this;
+  newTab: () => this;
 }
 
 export declare interface StorageManager {
