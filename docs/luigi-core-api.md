@@ -865,6 +865,7 @@ Shows an alert.
 
             *   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
             *   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+            *   `settings.links.LINK_KEY.dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** dismissKey which represents the key of the link.
     *   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
 
 ##### Examples
@@ -877,6 +878,7 @@ const settings = {
    goToHome: { text: 'homepage', url: '/overview' },
    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+   neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
  },
  closeAfter: 3000
 }
