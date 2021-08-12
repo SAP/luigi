@@ -32,6 +32,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public pathExists: { formValue: string; result: boolean | null };
   public confirmationModalResult: '' | 'confirmed' | 'dismissed';
   public alertDismissed;
+  public alertDismissKey;
   public alertTypes = ['success', 'info', 'warning', 'error'];
   public isDirty = false;
   public splitViewHandle;
@@ -176,6 +177,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   showAlert() {
     const { type, links, text, closeAfter } = this.luigiAlertForm.value;
     this.alertDismissed = text ? false : undefined;
+    this.alertDismissKey = text ? false : undefined;
 
     const texts = {
       withoutLink: `<b onmouseover=alert('Wufff!')>click me!</b> Ut enim ad minim veniam,
@@ -183,12 +185,13 @@ export class ProjectComponent implements OnInit, OnDestroy {
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`,
       withLink: `Ut enim ad minim veniam, {goToHome} quis nostrud exercitation
         ullamco {relativePath} laboris nisi ut aliquip ex ea commodo consequat.
-        Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.`
+        Duis aute irure dolor {goToOtherProject} in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. {neverShowItAgain}.`
     };
     const exampleLinks = {
       goToHome: { text: 'homepage', url: '/overview' },
       goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-      relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+      relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+      neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
     };
 
     const textData = !text ? '' : links ? texts.withLink : texts.withoutLink;
@@ -203,7 +206,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     uxManager()
       .showAlert(settings)
-      .then(() => {
+      .then((data) => {
+        if (typeof data === 'string' && data.includes('neverShowItAgain')) {
+          this.alertDismissKey = true;
+        }
         this.alertDismissed = true;
       });
   }
