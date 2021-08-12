@@ -91,7 +91,8 @@ describe('Escaping-helpers', () => {
       const links = {
         issues: {
           text: 'Issues',
-          url: `http://github.com/SAP/luigi/issues`
+          url: `http://github.com/SAP/luigi/issues`,
+          dismissKey: 'goToHome'
         },
         pulls: {
           text: 'Pulls',
@@ -113,10 +114,12 @@ describe('Escaping-helpers', () => {
           'Hello Luigi. <a id="_luigi_alert_1234567890_link_issues-sanitizeParam">Issues-sanitizeHtml</a> <a id="_luigi_alert_1234567890_link_pulls-sanitizeParam">Pulls-sanitizeHtml</a>-sanitizeHtml',
         links: [
           {
+            dismissKey: 'goToHome-sanitizeHtml',
             elemId: '_luigi_alert_1234567890_link_issues-sanitizeParam',
             url: 'http://github.com/SAP/luigi/issues-sanitizeHtml'
           },
           {
+            dismissKey: undefined,
             elemId: '_luigi_alert_1234567890_link_pulls-sanitizeParam',
             url: 'http://github.com/SAP/luigi/pulls-sanitizeHtml'
           }
