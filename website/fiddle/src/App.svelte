@@ -269,7 +269,7 @@
             class="fd-link"
             href="https://www.sap.com/about/legal/privacy.html"
             target="_blank">
-            Privacy Policy
+            Privacy Policy &nbsp&nbsp
           </a>
           <a
             class="fd-link"
