@@ -2,9 +2,10 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { AuthHelpers, NavigationHelpers } from '../../../src/utilities/helpers';
+import { AuthHelpers, NavigationHelpers, GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
 import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
+import { Navigation } from '../../../src/navigation/services/navigation';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
@@ -92,9 +93,7 @@ describe('Navigation-helpers', () => {
       AuthHelpers.isLoggedIn.returns(true);
       LuigiConfig.getConfigValue.returns(permissionCheckerFn);
 
-      assert.isTrue(
-        NavigationHelpers.isNodeAccessPermitted(checkNode, parentNode, context)
-      );
+      assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode, parentNode, context));
       assert(
         permissionCheckerFn.calledWith(checkNode, parentNode, context),
         'permissionCheckerFn called with proper arguments'
@@ -109,20 +108,9 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return false for invalid icon names', async () => {
-      assert.equal(
-        NavigationHelpers.isOpenUIiconName('./relative.path'),
-        false
-      );
-      assert.equal(
-        NavigationHelpers.isOpenUIiconName(
-          'http://niceicons.com/that-one-icon.png'
-        ),
-        false
-      );
-      assert.equal(
-        NavigationHelpers.isOpenUIiconName('https://google.com'),
-        false
-      );
+      assert.equal(NavigationHelpers.isOpenUIiconName('./relative.path'), false);
+      assert.equal(NavigationHelpers.isOpenUIiconName('http://niceicons.com/that-one-icon.png'), false);
+      assert.equal(NavigationHelpers.isOpenUIiconName('https://google.com'), false);
     });
   });
 
@@ -156,11 +144,7 @@ describe('Navigation-helpers', () => {
       },
       pathSegment: 'pathSegment'
     };
-    assert.equal(
-      NavigationHelpers.getNodePath(node),
-      'parent/pathSegment',
-      'path should match'
-    );
+    assert.equal(NavigationHelpers.getNodePath(node), 'parent/pathSegment', 'path should match');
   });
 
   describe('handleUnresponsiveClient', () => {
@@ -247,6 +231,39 @@ describe('Navigation-helpers', () => {
       const [collapseLabel, expandLabel] = NavigationHelpers.getBurgerTooltipConfig();
       assert.equal(collapseLabel, 'Expand navigation');
       assert.equal(expandLabel, 'Collapse navigation');
+    });
+  });
+
+  describe('shouldPreventNavigationForPath', () => {
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('returns true when navigation should be prevented for path', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('testPreventNavigation');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns({
+        pathSegment: 'testPreventNavigation',
+        label: 'Prevent navigation conditionally',
+        onNodeActivation: () => {
+          return false;
+        }
+      });
+      const actual = await NavigationHelpers.shouldPreventNavigationForPath('testPreventNavigation');
+      assert.equal(actual, true);
+    });
+
+    it('returns false when navigation should not be prevented for path', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('testNotPreventNavigation');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns({
+        pathSegment: 'testNotPreventNavigation',
+        label: 'Do not prevent navigation conditionally',
+        onNodeActivation: () => {
+          return true;
+        }
+      });
+      const actual = await NavigationHelpers.shouldPreventNavigationForPath('testNotPreventNavigation');
+      assert.equal(actual, false);
     });
   });
 });

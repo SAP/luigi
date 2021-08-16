@@ -305,6 +305,18 @@ class NavigationHelpersClass {
     delete strippedNode.navHeader;
     return strippedNode;
   }
+
+  /**
+   * Checks if for the given node path navigation should be prevented or not
+   * @param {string} nodepath path to check
+   */
+  async shouldPreventNavigationForPath(nodepath) {
+    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
+    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+      return true;
+    }
+    return false;
+  }
 }
 
 export const NavigationHelpers = new NavigationHelpersClass();

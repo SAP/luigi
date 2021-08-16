@@ -918,8 +918,7 @@
   resetMicrofrontendModalData();
 
   const openViewInModal = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfModal.displayed = true;
@@ -981,8 +980,7 @@
   resetMicrofrontendDrawerData();
 
   const openViewInDrawer = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfDrawer.displayed = true;
@@ -1049,8 +1047,7 @@
   // Open View in New Tab
 
   const openViewInNewTab = async nodepath => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
 
