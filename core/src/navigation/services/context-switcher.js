@@ -100,7 +100,6 @@ export const ContextSwitcherHelpers = {
     const selectedId = this.getSelectedId(currentPath, options, parentNodePath);
     if (selectedId && options) {
       selectedOption = ContextSwitcherHelpers.getOptionById(options, selectedId);
-      console.log('selectedOption', selectedOption);
     }
     return selectedOption;
   },
