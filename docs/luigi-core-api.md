@@ -1308,7 +1308,7 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 #### getSearchParams
 
-Get search parameter from url as object.
+Get search parameter from URL as an object.
 
 ##### Examples
 
