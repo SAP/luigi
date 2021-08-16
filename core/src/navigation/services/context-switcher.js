@@ -111,7 +111,7 @@ export const ContextSwitcherHelpers = {
     }
 
     let selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
-    let selectedLabel = selectedOption ? selectedOption.label : undefined;
+    consts selectedLabel = selectedOption ? selectedOption.label : undefined;
 
     // get the label from fallback if selectedId is not
     // in options or options not yet lazy loaded by click
@@ -125,7 +125,7 @@ export const ContextSwitcherHelpers = {
     }
 
     let selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
-    let selectedNodePath = selectedOption ? selectedOption.link : undefined;
+    const selectedNodePath = selectedOption ? selectedOption.link : undefined;
 
     return selectedNodePath;
   },
