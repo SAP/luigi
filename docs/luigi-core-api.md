@@ -1324,8 +1324,8 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### addSearchParams
 
-Add search parameters to url.
-If hash routing is enabled the search parameters will be set after the hash.
+Add search parameters to the URL.
+If [hash routing](navigation-parameters-reference.md#usehashrouting) is enabled, the search parameters will be set after the hash.
 
 ##### Parameters
 
