@@ -27,7 +27,7 @@ This document outlines the features provided by the Luigi Core API. It covers th
 *   [Global search](#globalsearch) - functions related to Luigi's global search
 *   [Theming](#theming) - functions related to Luigi theming capabilties
 *   [Feature toggles](#featuretoggles) - functions related to Luigi's feature toggle mechanism
-*   [Routing](#routing) - functions to get and set search query parameter
+*   [Routing](#routing) - functions to get and set search query parameters
 
 ## Luigi Config
 
