@@ -6,9 +6,9 @@ describe('Clock based tests', () => {
 
   it('Triggers badge count update with Core Api', () => {
     cy.getIframeBody().then($iframeBody => {
-      const initialBadgeCount = Cypress.$("button[title='Messages'] .fd-counter--notification").text();
+      const initialBadgeCount = Cypress.$("button[data-testid='messages'] .fd-counter--notification").text();
       cy.log('initial badge count: ' + initialBadgeCount);
-      cy.get("button[title='Messages'] .fd-counter--notification").should('contain', initialBadgeCount);
+      cy.get("button[data-testid='messages'] .fd-counter--notification").should('contain', initialBadgeCount);
 
       cy.tick(11e3);
 
@@ -17,8 +17,8 @@ describe('Clock based tests', () => {
         .scrollIntoView()
         .click();
 
-      cy.get("button[title='Messages'] .fd-counter--notification").should('not.contain', initialBadgeCount);
-      cy.get("button[title='Messages'] .fd-counter--notification").should('contain', 9);
+      cy.get("button[data-testid='messages'] .fd-counter--notification").should('not.contain', initialBadgeCount);
+      cy.get("button[data-testid='messages'] .fd-counter--notification").should('contain', 9);
     });
   });
 });

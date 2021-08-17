@@ -117,7 +117,10 @@ describe('TopNavDropDown', () => {
       cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile topnav dropdown
-      cy.get('[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]').click();
+      cy.get('[data-e2e="mobile-topnav-dropdown-category"]')
+        .contains('Misc')
+        .parent()
+        .click();
 
       cy.get('[data-e2e="mobile-topnav-item"]')
         .contains('Visible for all users')
@@ -130,7 +133,10 @@ describe('TopNavDropDown', () => {
       cy.get('[data-testid="mobile-menu"]').click();
 
       //open mobile topnav dropdown
-      cy.get('[data-e2e="mobile-topnav-dropdown-category"][title="Misc"]').click();
+      cy.get('[data-e2e="mobile-topnav-dropdown-category"]')
+        .contains('Misc')
+        .parent()
+        .click();
 
       //close mobile topnav dropdown
       cy.get('[data-testid="mobile-topnav-close"]').click();
