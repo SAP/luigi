@@ -425,9 +425,9 @@ class RoutingHelpersClass {
    * does not contain the respective dynamic parameter name.
    * e.g.:
    * Assume either of these two calls are made:
-   * 1. linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
-   * 2. linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
-   * For both 1. and 2. calls the following dynamic input path: `/projects/:project/details/:user`
+   * 1. `linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})`
+   * 2. `linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')`
+   * For both 1. and 2., the following dynamic input path: `/projects/:project/details/:user`
    * is resolved through this method to `/projects/pr2/details/john`
    *
    * @param {string} path the path containing potential dynamic parameter
