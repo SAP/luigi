@@ -430,8 +430,8 @@ class RoutingHelpersClass {
    * For both 1. and 2., the following dynamic input path: `/projects/:project/details/:user`
    * is resolved through this method to `/projects/pr2/details/john`
    *
-   * @param {string} path the path containing potential dynamic parameter
-   * @param {Object} parameters a list of objects consisting in passed parameters
+   * @param {string} path the path containing the potential dynamic parameter
+   * @param {Object} parameters a list of objects consisting of passed parameters
    */
   resolveDynamicIntentPath(path, parameters) {
     if (!parameters) {
