@@ -91,9 +91,9 @@ export class linkManager extends LuigiClientBase {
   /**
    * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
    * parameters.
-   * This method internally generates a url of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
-   * input arguments. This then follows a call to the original linkManager.navigate(...) function.
-   * Consequentially the following calls shall have the exact same effect:
+   * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+   * input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+   * Consequently, the following calls shall have the exact same effect:
    * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
    * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
    * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: <semanticObject>-<action>
