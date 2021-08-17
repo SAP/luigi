@@ -110,7 +110,7 @@ export const ContextSwitcherHelpers = {
       return;
     }
 
-    let selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
+    const selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
     const selectedLabel = selectedOption ? selectedOption.label : undefined;
 
     // get the label from fallback if selectedId is not
