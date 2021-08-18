@@ -165,7 +165,7 @@
   export let getTranslation;
 
   let showLoadingIndicator = false;
-
+  let currentIframe;
   let mfSplitView = {
     displayed: false
   };
@@ -512,7 +512,11 @@
       path = intentPath ? intentPath : path;
     } else if (params.relative) {
       // relative
-      path = Routing.concatenatePath(getSubPath(currentNode), params.link);
+      console.log('currentIframe', currentIframe);
+      path = Routing.concatenatePath(
+        getSubPath(currentIframe.luigi.currentNode),
+        params.link
+      );
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length) {
       path += path.includes('?') ? '&' : '?';
@@ -1051,7 +1055,9 @@
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
     );
-    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue('navigation.defaults.runTimeErrorHandler')
+    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue(
+      'navigation.defaults.runTimeErrorHandler'
+    );
     const config = {
       iframe: null,
       navigateOk: null,
@@ -1095,6 +1101,7 @@
       const iframe = IframeHelpers.getValidMessageSource(e);
       if (!iframe) return;
       iframe._ready = true;
+      currentIframe = iframe;
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
@@ -1404,14 +1411,21 @@
           e.data.data.id,
           e.data.data.operation,
           e.data.data.params
-        )
+        );
       }
 
-      if('luigi-runtime-error-handling'===e.data.msg){
+      if ('luigi-runtime-error-handling' === e.data.msg) {
         let currentNode = iframe.luigi.currentNode;
-        if(currentNode && currentNode.runTimeErrorHandler && GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)){
+        if (
+          currentNode &&
+          currentNode.runTimeErrorHandler &&
+          GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)
+        ) {
           currentNode.runTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
-        }else if(defaultRunTimeErrorHandler && GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)){
+        } else if (
+          defaultRunTimeErrorHandler &&
+          GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)
+        ) {
           defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
         }
       }

@@ -325,6 +325,25 @@ describe('Navigation', () => {
       cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--error');
       cy.expectPathToBe('/overview');
     });
+
+    it('navigate to a relative path from modal', () => {
+      cy.visit('/projects/pr1');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('[data-testid=open-pr2-modal]')
+          .click();
+      });
+
+      cy.get('[data-testid=modal-mf] iframe')
+        .iframe()
+        .then(modal => {
+          cy.wrap(modal)
+            .contains('relative: to stakeholders')
+            .click();
+
+          cy.expectPathToBe('/projects/pr2/users/groups/stakeholders');
+        });
+    });
   });
 
   describe('Node activation hook', () => {
