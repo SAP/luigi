@@ -10,7 +10,7 @@ import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
-describe('Routing', function () {
+describe('Routing', function() {
   this.retries(1);
 
   let component;
@@ -86,7 +86,7 @@ describe('Routing', function () {
     });
     afterEach(() => {
       global.location = globalLocationRef;
-    })
+    });
 
     it('with path routing, does a browser history replace', async () => {
       // given
@@ -94,18 +94,13 @@ describe('Routing', function () {
       global.location = {
         href: `http://some.url.de${path}`,
         pathname: path
-      }
+      };
 
       // when
       await Routing.navigateTo(path, false);
 
       // then
-      sinon.assert.calledWithExactly(
-        window.history.replaceState,
-        { path },
-        '',
-        '/projects/teams'
-      );
+      sinon.assert.calledWithExactly(window.history.replaceState, { path }, '', '/projects/teams');
       sinon.assert.notCalled(window.history.pushState);
     });
 
@@ -117,10 +112,7 @@ describe('Routing', function () {
       await Routing.navigateTo('/projects');
 
       // then
-      sinon.assert.calledWithExactly(
-        window.dispatchEvent,
-        new CustomEvent('popstate')
-      );
+      sinon.assert.calledWithExactly(window.dispatchEvent, new CustomEvent('popstate'));
     });
   });
 
@@ -140,9 +132,7 @@ describe('Routing', function () {
     });
 
     it('returns intentObject from provided intent link with params', () => {
-      const actual = RoutingHelpers.getIntentObject(
-        '#?intent=Sales-settings?param1=luigi&param2=mario'
-      );
+      const actual = RoutingHelpers.getIntentObject('#?intent=Sales-settings?param1=luigi&param2=mario');
       const expected = {
         semanticObject: 'Sales',
         action: 'settings',
@@ -162,9 +152,7 @@ describe('Routing', function () {
     });
 
     it('falsy intentObject from provided intent link with illegal characters', () => {
-      const actual = RoutingHelpers.getIntentObject(
-        '#?intent=Sales-$et$$tings'
-      );
+      const actual = RoutingHelpers.getIntentObject('#?intent=Sales-$et$$tings');
       assert.isNotOk(actual);
     });
   });
@@ -185,16 +173,12 @@ describe('Routing', function () {
     });
 
     it('checks intent path parsing with illegal characters', () => {
-      const actual = RoutingHelpers.getIntentPath(
-        '#?intent=Sa#les-sett!@ings?param1=luigi&param2=mario'
-      );
+      const actual = RoutingHelpers.getIntentPath('#?intent=Sa#les-sett!@ings?param1=luigi&param2=mario');
       assert.isNotOk(actual);
     });
 
     it('checks intent path parsing with illegal hyphen character', () => {
-      const actual = RoutingHelpers.getIntentPath(
-        '#?intent=Sa-les-sett-ings?param1=luigi&param2=mario'
-      );
+      const actual = RoutingHelpers.getIntentPath('#?intent=Sa-les-sett-ings?param1=luigi&param2=mario');
       assert.isNotOk(actual);
     });
 
@@ -205,17 +189,13 @@ describe('Routing', function () {
     });
 
     it('returns path from provided intent link with params', () => {
-      const actual = RoutingHelpers.getIntentPath(
-        '#?intent=Sales-settings?param1=hello&param2=world'
-      );
+      const actual = RoutingHelpers.getIntentPath('#?intent=Sales-settings?param1=hello&param2=world');
       const expected = '/projects/pr2/settings?~param1=hello&~param2=world';
       assert.equal(actual, expected);
     });
 
     it('returns path from intent link with params and case insensitive start pattern ', () => {
-      const actual = RoutingHelpers.getIntentPath(
-        '#?iNteNT=Sales-settings?param1=hello&param2=world'
-      );
+      const actual = RoutingHelpers.getIntentPath('#?iNteNT=Sales-settings?param1=hello&param2=world');
       const expected = '/projects/pr2/settings?~param1=hello&~param2=world';
       assert.equal(actual, expected);
     });
@@ -249,9 +229,7 @@ describe('Routing', function () {
     });
 
     it('returns path from provided intent link with params', () => {
-      const actual = Routing.getHashPath(
-        '#?intent=Sales-settings?param1=luigi&param2=mario'
-      );
+      const actual = Routing.getHashPath('#?intent=Sales-settings?param1=luigi&param2=mario');
       const expected = '/projects/pr2/settings?~param1=luigi&~param2=mario';
       assert.equal(actual, expected);
     });
@@ -399,6 +377,11 @@ describe('Routing', function () {
               hideSideNav: true,
               prepend: sinon.spy(),
               insertBefore: sinon.spy()
+            },
+            {
+              pathSegment: 'compound',
+              label: 'BBB',
+              viewUrl: ''
             }
           ]
         },
@@ -415,9 +398,7 @@ describe('Routing', function () {
         navigateOk: null
       };
       sinon.stub(Routing, 'navigateTo');
-      sinon
-        .stub(GenericHelpers, 'isElementVisible')
-        .callsFake(element => element);
+      sinon.stub(GenericHelpers, 'isElementVisible').callsFake(element => element);
     });
 
     it('should set component data with hash path', async () => {
@@ -427,19 +408,11 @@ describe('Routing', function () {
 
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-      await Routing.handleRouteChange(
-        path,
-        component,
-        currentLuigiConfig.navigation.nodes()[0],
-        config
-      );
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
-      assert.equal(
-        component.get().hideNav,
-        LuigiConfig.config.settings.hideNavigation
-      );
+      assert.equal(component.get().hideNav, LuigiConfig.config.settings.hideNavigation);
       assert.equal(component.get().showLoadingIndicator, true);
     });
 
@@ -457,12 +430,7 @@ describe('Routing', function () {
 
       // when
       sinon.stub(document, 'createElement').callsFake(() => ({ src: null }));
-      await Routing.handleRouteChange(
-        path,
-        component,
-        currentLuigiConfig.navigation.nodes()[0],
-        config
-      );
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
@@ -501,19 +469,11 @@ describe('Routing', function () {
         .returns({ src: null })
         .once();
 
-      await Routing.handleRouteChange(
-        path,
-        componentSaved,
-        currentLuigiConfig.navigation.nodes()[0],
-        config
-      );
+      await Routing.handleRouteChange(path, componentSaved, currentLuigiConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(componentSaved.get().viewUrl, expectedViewUrl);
-      assert.equal(
-        componentSaved.get().hideNav,
-        LuigiConfig.config.settings.hideNavigation
-      );
+      assert.equal(componentSaved.get().hideNav, LuigiConfig.config.settings.hideNavigation);
 
       assert.equal(componentSaved.get().preservedViews.length, 1);
       docMock.restore();
@@ -529,20 +489,12 @@ describe('Routing', function () {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(
-        path,
-        component,
-        currentLuigiConfig.navigation.nodes()[0],
-        config
-      );
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
-      assert.equal(
-        component.get().hideNav,
-        LuigiConfig.config.settings.hideNavigation
-      );
+      assert.equal(component.get().hideNav, LuigiConfig.config.settings.hideNavigation);
     });
 
     it('should set component data with hash path and clear unused context/node params', async () => {
@@ -554,20 +506,12 @@ describe('Routing', function () {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(
-        path,
-        component,
-        currentLuigiConfig.navigation.nodes()[0],
-        config
-      );
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(component.get().viewUrl, expectedViewUrl);
       assert.equal(iframeMock.src, expectedProcessedViewUrl);
-      assert.equal(
-        component.get().hideNav,
-        LuigiConfig.config.settings.hideNavigation
-      );
+      assert.equal(component.get().hideNav, LuigiConfig.config.settings.hideNavigation);
     });
 
     it('should set component data with path param', async () => {
@@ -578,19 +522,11 @@ describe('Routing', function () {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(
-        path,
-        component,
-        currentLuigiConfig.navigation.nodes()[0],
-        config
-      );
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(iframeMock.src, expectedViewUrl);
-      assert.equal(
-        component.get().hideNav,
-        window.Luigi.config.settings.hideNavigation
-      );
+      assert.equal(component.get().hideNav, window.Luigi.config.settings.hideNavigation);
     });
 
     it('should set component data with multiple path params', async () => {
@@ -601,19 +537,11 @@ describe('Routing', function () {
       // when
       const iframeMock = { src: null };
       sinon.stub(document, 'createElement').callsFake(() => iframeMock);
-      await Routing.handleRouteChange(
-        path,
-        component,
-        currentLuigiConfig.navigation.nodes()[0],
-        config
-      );
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
 
       // then
       assert.equal(iframeMock.src, expectedViewUrl);
-      assert.equal(
-        component.get().hideNav,
-        window.Luigi.config.settings.hideNavigation
-      );
+      assert.equal(component.get().hideNav, window.Luigi.config.settings.hideNavigation);
     });
 
     it('should get DefaultChildNode if viewUrl is not defined', async () => {
@@ -644,6 +572,42 @@ describe('Routing', function () {
       await Routing.handleRouteChange(path, component, node, config);
 
       assert.equal(component.get().hideSideNav, true);
+    });
+
+    it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
+      const path = 'compound';
+      const node = { compound: { renderer: () => {} } };
+
+      //when
+      console.warn = sinon.spy();
+      component.showAlert = sinon.spy();
+      component.shouldShowUnsavedChangesModal = sinon.spy();
+
+      await Routing.handleRouteChange(path, component, node, config).catch(error => {
+        console.log(error);
+      });
+
+      //then
+      sinon.assert.calledOnce(console.warn);
+    });
+
+    it('should navigate to rootPath if node can be reached directly', async () => {
+      //given
+      const path = 'compound';
+      const node = { compound: { renderer: () => {} } };
+
+      component.viewUrl = path;
+
+      component.showAlert = sinon.spy();
+      component.shouldShowUnsavedChangesModal = sinon.spy();
+
+      //when
+      await Routing.handleRouteChange(path, component, node, config).catch(error => {
+        console.log(error);
+      });
+
+      //then
+      sinon.assert.calledWithExactly(Routing.navigateTo, 'projects');
     });
   });
 
@@ -751,12 +715,8 @@ describe('Routing', function () {
     });
 
     it('from intent based link with params', () => {
-      window.location.hash =
-        '#?intent=Sales-settings?param1=luigi&param2=mario';
-      assert.equal(
-        Routing.getModifiedPathname(),
-        '/projects/pr2/settings?~param1=luigi&~param2=mario'
-      );
+      window.location.hash = '#?intent=Sales-settings?param1=luigi&param2=mario';
+      assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings?~param1=luigi&~param2=mario');
     });
 
     it('from intent based link without params', () => {
@@ -827,7 +787,7 @@ describe('Routing', function () {
 
   describe('showPageNotFoundError()', () => {
     let component = {
-      showAlert: () => { }
+      showAlert: () => {}
     };
     let pathToRedirect = '/go/here';
     let pathToRedirect2 = '/go/there';
@@ -875,10 +835,7 @@ describe('Routing', function () {
       assert.isTrue(isDynamic);
     });
     it('check if it is dynamic Node', () => {
-      let pathParamValue = RoutingHelpers.getDynamicNodeValue(
-        node,
-        nodeData.pathParam
-      );
+      let pathParamValue = RoutingHelpers.getDynamicNodeValue(node, nodeData.pathParam);
       assert.equal(pathParamValue, 'dyn1');
     });
   });
@@ -908,11 +865,7 @@ describe('Routing', function () {
       //then
       sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
       sinon.assert.calledOnce(LuigiNavigation.openAsModal);
-      sinon.assert.calledWithExactly(
-        LuigiNavigation.openAsModal,
-        modalPath,
-        modalParams
-      );
+      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, modalParams);
     });
     it('with node setting openNodeInModal', async () => {
       const mockNodeModalSettings = {
@@ -932,11 +885,7 @@ describe('Routing', function () {
       //then
       sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
       sinon.assert.calledOnce(LuigiNavigation.openAsModal);
-      sinon.assert.calledWithExactly(
-        LuigiNavigation.openAsModal,
-        modalPath,
-        mockNodeModalSettings.openNodeInModal
-      );
+      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, mockNodeModalSettings.openNodeInModal);
     });
   });
   describe('append and remove modal data from URL using path routing', () => {
@@ -953,9 +902,7 @@ describe('Routing', function () {
       sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
       sinon.stub(RoutingHelpers, 'getHashQueryParamSeparator').returns('?');
       sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
-      sinon
-        .stub(RoutingHelpers, 'getModalViewParamName')
-        .returns(modalParamName);
+      sinon.stub(RoutingHelpers, 'getModalViewParamName').returns(modalParamName);
 
       sinon.stub(Navigation, 'extractDataFromPath').returns({ nodeObject: {} });
 
@@ -997,8 +944,7 @@ describe('Routing', function () {
       global.location = {
         href:
           'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D',
-        search:
-          '?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+        search: '?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       };
       window.state = {};
       sinon
@@ -1010,12 +956,7 @@ describe('Routing', function () {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(
-        window.history.replaceState,
-        {},
-        '',
-        'http://some.url.de/settings?~luigi=mario'
-      );
+      sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/settings?~luigi=mario');
     });
   });
 
@@ -1033,9 +974,7 @@ describe('Routing', function () {
       sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
       sinon.stub(RoutingHelpers, 'getHashQueryParamSeparator').returns('?');
       sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
-      sinon
-        .stub(RoutingHelpers, 'getModalViewParamName')
-        .returns(modalParamName);
+      sinon.stub(RoutingHelpers, 'getModalViewParamName').returns(modalParamName);
 
       sinon.stub(Navigation, 'extractDataFromPath').returns({ nodeObject: {} });
 
@@ -1090,12 +1029,7 @@ describe('Routing', function () {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(
-        window.history.replaceState,
-        {},
-        '',
-        'http://some.url.de/#/settings?~luigi=mario'
-      );
+      sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/#/settings?~luigi=mario');
     });
   });
 
@@ -1111,9 +1045,7 @@ describe('Routing', function () {
     });
 
     it('should leave query params and hash untouched', () => {
-      const path = Routing.normalizePath(
-        'bla/blub/../x/?~a=b&~c=d#/something?~e=f&~g=h'
-      );
+      const path = Routing.normalizePath('bla/blub/../x/?~a=b&~c=d#/something?~e=f&~g=h');
       assert.equal(path, 'bla/x/?~a=b&~c=d#/something?~e=f&~g=h');
     });
   });
