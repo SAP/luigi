@@ -296,6 +296,11 @@ class RoutingClass {
         cNode2 = cNode2.parent;
       }
 
+      const ctx = RoutingHelpers.substituteDynamicParamsInObject(
+        Object.assign({}, pathData.context, currentNode.context),
+        pathData.pathParams
+      );
+      pathData.navigationPath._context = ctx;
       const newNodeData = {
         hideNav,
         viewUrl,
@@ -304,10 +309,7 @@ class RoutingClass {
         urlParamsRaw,
         currentNode,
         navigationPath: pathData.navigationPath,
-        context: RoutingHelpers.substituteDynamicParamsInObject(
-          Object.assign({}, pathData.context, currentNode.context),
-          pathData.pathParams
-        ),
+        context: ctx,
         pathParams: pathData.pathParams,
         hideSideNav: hideSideNavInherited || false,
         isolateView: nodeObject.isolateView || false,
