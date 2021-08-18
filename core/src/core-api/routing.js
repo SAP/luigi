@@ -12,7 +12,7 @@ class LuigiRouting {
     constructor() {}
 
     /**
-     * Get search parameter from url as object.
+     * Get search parameter from URL as an object.
      * @memberof Routing
      * @since NEXTRELEASE
      * @returns {Object}
