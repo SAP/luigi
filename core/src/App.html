@@ -512,7 +512,6 @@
       path = intentPath ? intentPath : path;
     } else if (params.relative) {
       // relative
-      console.log('currentIframe', currentIframe);
       path = Routing.concatenatePath(
         getSubPath(currentIframe.luigi.currentNode),
         params.link
