@@ -102,14 +102,14 @@ describe('Routing-helpers', () => {
       sinon.restore();
     });
     it('substitutes search query parameter', () => {
-      sinon.stub(LuigiRouting, 'getSearchParams').returns({luigi:'rocks'});
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({ luigi: 'rocks' });
       const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
       const expected = '/microfrontend.html?luigi=rocks';
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });
     it('substitutes search query parameter', () => {
-      sinon.stub(LuigiRouting, 'getSearchParams').returns({mario:'rocks'});
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({ mario: 'rocks' });
       const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
       const expected = '/microfrontend.html';
 
