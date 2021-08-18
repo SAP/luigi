@@ -9,11 +9,15 @@ import { config } from '../../../src/core-api/config';
 
 describe('Routing-helpers', () => {
   describe('substituteDynamicParamsInObject', () => {
-    let input, paramMap, expectedOutput;
+    let input, input2, paramMap, expectedOutput;
     beforeEach(() => {
       input = {
         key1: 'something',
         key2: ':group'
+      };
+      input2 = {
+        key1: 'something',
+        key2: 'sth:group/sth'
       };
       paramMap = {
         group: 'mygroup'
@@ -34,6 +38,41 @@ describe('Routing-helpers', () => {
 
       expect(RoutingHelpers.substituteDynamicParamsInObject(input, paramMap, '#')).to.deep.equal(expectedOutput);
       expect(input.key2).to.equal('#group');
+    });
+    it('does not substitutes an object without contains', () => {
+      expect(RoutingHelpers.substituteDynamicParamsInObject(input2, paramMap, undefined, false).key2).to.equal(
+        input2.key2
+      );
+    });
+    it('substitutes an object with contains', () => {
+      expect(RoutingHelpers.substituteDynamicParamsInObject(input2, paramMap, undefined, true).key2).to.equal(
+        'sthmygroup/sth'
+      );
+    });
+  });
+
+  describe('mapPathToNode', () => {
+    let node;
+    beforeEach(() => {
+      node = {
+        pathSegment: ':id',
+        parent: {
+          pathSegment: 'home'
+        }
+      };
+    });
+    it('happy path', () => {
+      expect(RoutingHelpers.mapPathToNode('/home/234/subpage', node)).to.equal('/home/234');
+      expect(RoutingHelpers.mapPathToNode('/home/234/', node)).to.equal('/home/234');
+    });
+    it('node not an ancestor', () => {
+      expect(RoutingHelpers.mapPathToNode('/home2/234/subpage', node)).to.be.undefined;
+      expect(RoutingHelpers.mapPathToNode('/home', node)).to.be.undefined;
+    });
+    it('wrong input corner cases', () => {
+      expect(RoutingHelpers.mapPathToNode(undefined, undefined)).to.be.undefined;
+      expect(RoutingHelpers.mapPathToNode('/home', undefined)).to.be.undefined;
+      expect(RoutingHelpers.mapPathToNode(undefined, node)).to.be.undefined;
     });
   });
 
