@@ -35,8 +35,8 @@ class LuigiRouting {
     }
 
     /**
-     * Add search parameters to url.
-     * If hash routing is enabled the search parameters will be set after the hash.
+     * Add search parameters to the URL.
+     * If [hash routing](navigation-parameters-reference.md#usehashrouting) is enabled, the search parameters will be set after the hash.
      * @memberof Routing
      * @since NEXTRELEASE
      * @param {Object} params 
