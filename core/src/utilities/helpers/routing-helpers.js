@@ -276,14 +276,14 @@ class RoutingHelpersClass {
       viewUrl = viewUrl.replace(i18n_currentLocale, LuigiI18N.getCurrentLocale());
     }
 
-    if(viewUrl.includes(searchquery)){
+    if (viewUrl.includes(searchquery)) {
       const viewUrlSearchParam = viewUrl.split('?')[1];
-      if(viewUrlSearchParam){
-        const key=viewUrlSearchParam.split('=')[0];
-        if(LuigiRouting.getSearchParams()[key]){
-          viewUrl = viewUrl.replace(`{${searchquery}.${key}}`,LuigiRouting.getSearchParams()[key]);
-        }else{
-          viewUrl = viewUrl.replace(`?${key}={${searchquery}.${key}}`,'');
+      if (viewUrlSearchParam) {
+        const key = viewUrlSearchParam.split('=')[0];
+        if (LuigiRouting.getSearchParams()[key]) {
+          viewUrl = viewUrl.replace(`{${searchquery}.${key}}`, LuigiRouting.getSearchParams()[key]);
+        } else {
+          viewUrl = viewUrl.replace(`?${key}={${searchquery}.${key}}`, '');
         }
       }
     }

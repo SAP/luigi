@@ -8,7 +8,7 @@ import { ux } from './ux';
 import { globalSearch } from './globalsearch';
 import { theming } from './theming';
 import { featureToggles } from './featuretoggles';
-import { routing } from './routing'
+import { routing } from './routing';
 
 export const LuigiConfig = config;
 export const LuigiAuth = auth;
