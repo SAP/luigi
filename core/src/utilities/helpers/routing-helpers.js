@@ -200,15 +200,49 @@ class RoutingHelpersClass {
     return 'javascript:void(0)';
   }
 
-  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':') {
+  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
     return Object.entries(object)
       .map(([key, value]) => {
-        let foundKey = Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
-        return [key, foundKey ? paramMap[foundKey] : value];
+        const foundKey = contains
+          ? Object.keys(paramMap).find(key2 => value && value.indexOf(paramPrefix + key2) >= 0)
+          : Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
+        return [
+          key,
+          foundKey ? (contains ? value.replace(paramPrefix + foundKey, paramMap[foundKey]) : paramMap[foundKey]) : value
+        ];
       })
       .reduce((acc, [key, value]) => {
         return Object.assign(acc, { [key]: value });
       }, {});
+  }
+
+  /**
+   * Maps a path to the nodes route, replacing all dynamic pathSegments with the concrete values in path.
+   * Example: path='/object/234/subobject/378/some/node', node with path '/object/:id/subobject/:subid' results in
+   * '/object/234/subobject/378/'.
+   * @param {*} path a concrete node path, typically the current app route.
+   * @param {*} node a node which must be an ancestor of the resolved node from path.
+   *
+   * @returns a string with the route or undefined, if node is not an ancestor of path-node
+   */
+  mapPathToNode(path, node) {
+    if (!path || !node) {
+      return;
+    }
+    const pathSegments = GenericHelpers.trimLeadingSlash(path).split('/');
+    const nodeRoute = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    const nodeRouteSegments = GenericHelpers.trimLeadingSlash(nodeRoute).split('/');
+    if (pathSegments.length < nodeRouteSegments.length) {
+      return;
+    }
+    let resultingRoute = '';
+    for (let i = 0; i < nodeRouteSegments.length; i++) {
+      if (pathSegments[i] !== nodeRouteSegments[i] && nodeRouteSegments[i].indexOf(':') !== 0) {
+        return;
+      }
+      resultingRoute += '/' + pathSegments[i];
+    }
+    return resultingRoute;
   }
 
   /**
