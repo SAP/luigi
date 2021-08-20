@@ -250,6 +250,14 @@ describe('Routing', function() {
       const expected = '/projects/123/details/343/view/231';
       assert.equal(actual, expected);
     });
+
+    it('input path not changed when array has an empty object', () => {
+      const path = '/projects/:other/details/:param/view/:not';
+      const parameters = [];
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      const expected = '/projects/:other/details/:param/view/:not';
+      assert.equal(actual, expected);
+    });
   });
 
   describe('getHashPath()', () => {
