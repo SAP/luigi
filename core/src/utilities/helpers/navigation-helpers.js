@@ -310,6 +310,7 @@ class NavigationHelpersClass {
   /**
    * Checks if for the given node path navigation should be prevented or not
    * @param {string} nodepath path to check
+   * @returns {boolean} navigation should be prevented or not
    */
   async shouldPreventNavigationForPath(nodepath) {
     const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
