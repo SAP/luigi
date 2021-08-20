@@ -14,12 +14,12 @@ const fs = require('fs-extra');
 // the project's config changing)
 
 module.exports = (on, config) => {
+  require('@cypress/code-coverage/task')(on, config);
+
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-  //console.log(config) // see what all is in here!
-  let customConfigFile = getConfigurationFileByEnvName(
-    `${config.env.configFile}.json`
-  );
+  // console.log(config) // see what all is in here!
+  const customConfigFile = getConfigurationFileByEnvName(`${config.env.configFile}.json`);
   return customConfigFile;
 };
 

@@ -1,4 +1,4 @@
-//you can now use ES6 goodies here
+// you can now use ES6 goodies here
 Luigi.setConfig({
   navigation: {
     nodes: () => [

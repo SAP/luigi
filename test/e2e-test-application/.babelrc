@@ -1,6 +1,7 @@
 {
   "presets": ["@babel/preset-env"],
   "plugins": [
+    "istanbul",
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-proposal-optional-chaining"
   ]
