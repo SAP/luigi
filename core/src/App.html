@@ -804,7 +804,7 @@
     });
   };
 
-  const handleAlertDismiss = id => {
+  const handleAlertDismiss = (id, dismissKey) => {
     const alert = getAlertWithId(alerts, id);
 
     if (!alert) {
@@ -812,23 +812,24 @@
       return;
     }
 
-    const openFromClient = alert.openFromClient;
-
     alerts = alerts.filter(a => a.settings.id !== id);
 
-    if (openFromClient) {
+    if (alert.openFromClient) {
       const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
         msg: 'luigi.ux.alert.hide',
-        id
+        id,
+        dismissKey
         //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
+    } else if (alert.promise) {
+      alert.promise.resolve(dismissKey || id);
     }
   };
 
   const handleAlertDismissExternal = event => {
-    handleAlertDismiss(event.detail.id);
+    handleAlertDismiss(event.detail.id, event.detail.dismissKey);
   };
 
   //// CONFIRMATION MODAL
@@ -1050,7 +1051,9 @@
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
     );
-    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue('navigation.defaults.runTimeErrorHandler')
+    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue(
+      'navigation.defaults.runTimeErrorHandler'
+    );
     const config = {
       iframe: null,
       navigateOk: null,
@@ -1403,14 +1406,21 @@
           e.data.data.id,
           e.data.data.operation,
           e.data.data.params
-        )
+        );
       }
 
-      if('luigi-runtime-error-handling'===e.data.msg){
+      if ('luigi-runtime-error-handling' === e.data.msg) {
         let currentNode = iframe.luigi.currentNode;
-        if(currentNode && currentNode.runTimeErrorHandler && GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)){
+        if (
+          currentNode &&
+          currentNode.runTimeErrorHandler &&
+          GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)
+        ) {
           currentNode.runTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
-        }else if(defaultRunTimeErrorHandler && GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)){
+        } else if (
+          defaultRunTimeErrorHandler &&
+          GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)
+        ) {
           defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
         }
       }
