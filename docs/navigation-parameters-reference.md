@@ -98,7 +98,15 @@ The navigation parameters allow you to configure **global** navigation settings 
 
 ### tooltipText
 - **type**: string
-- **description**: Add tooltip to all of the links and buttons of the left side navigation and top navigation.
+- **description**: allows you to add a tooltip to any of the links and buttons of the left side navigation and top navigation. You can set the parameter with the text that will appear on the tooltip. 
+- **example**:
+```javascript
+tooltipText: 'Useful links'
+```
+
+### defaults.tooltipText
+- **type**: string
+- **description**: allows you to add a tooltip to **all** the links and buttons of the left side navigation and top navigation.
 - **default**: the parameter **defaults.tooltipText** is `null` by default, and you can overwrite it using the **tooltipText** value on a single node level.
 
 
