@@ -921,8 +921,7 @@
   resetMicrofrontendModalData();
 
   const openViewInModal = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfModal.displayed = true;
@@ -984,8 +983,7 @@
   resetMicrofrontendDrawerData();
 
   const openViewInDrawer = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfDrawer.displayed = true;
@@ -1047,6 +1045,16 @@
 
   export const closeUserSettings = () => {
     internalUserSettingsObject.displayed = false;
+  };
+
+  // Open View in New Tab
+
+  const openViewInNewTab = async nodepath => {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
+      return;
+    }
+
+    window.open(nodepath, '_blank');
   };
 
   function init(node) {
@@ -1238,7 +1246,11 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-        if (e.data.params.modal !== undefined) {
+        if (e.data.params.newTab) {
+          let path = buildPath(e.data.params);
+          path = GenericHelpers.addLeadingSlash(path);
+          openViewInNewTab(path);
+        } else if (e.data.params.modal !== undefined) {
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;

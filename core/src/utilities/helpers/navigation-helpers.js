@@ -308,6 +308,19 @@ class NavigationHelpersClass {
   }
 
   /**
+   * Checks if for the given node path navigation should be prevented or not
+   * @param {string} nodepath path to check
+   * @returns {boolean} navigation should be prevented or not
+   */
+  async shouldPreventNavigationForPath(nodepath) {
+    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
+    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+      return true;
+    }
+    return false;
+  }
+  
+  /**
    * Returns a nested property value defined by a chain string
    * @param {*} obj the object
    * @param {*} propChain a string defining the property chain
