@@ -306,6 +306,21 @@ export declare interface LinkManager {
    */
   navigate: (path: string, sessionId?: string, preserveView?: boolean, modalSettings?: ModalSettings) => void;
 
+  /**
+   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+   * parameters.
+   * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+   * input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+   * Consequently, the following calls shall have the exact same effect:
+   * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
+   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`
+   * @example
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   */
+  navigateToIntent: (semanticSlug: string, params: Object) => void;
+
   /** @lends linkManager */
   /**
    * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
@@ -389,6 +404,14 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
   withoutSync: () => this;
+
+  /**
+   * Enables navigating to a new tab.
+   * @since NEXT_RELEASE
+   * @example
+   * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+   */
+  newTab: () => this;
 }
 
 export declare interface StorageManager {
