@@ -388,6 +388,20 @@ LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings'
 
 -   **since**: 0.7.7
 
+#### newTab
+
+Enables navigating to a new tab.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+```
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
 #### navigate
 
 Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.

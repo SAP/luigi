@@ -304,12 +304,7 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    * LuigiClient.linkManager().navigate('#?intent=Sales-order?id=13') // intent navigation
    */
-  navigate: (
-    path: string,
-    sessionId?: string,
-    preserveView?: boolean,
-    modalSettings?: ModalSettings
-  ) => void;
+  navigate: (path: string, sessionId?: string, preserveView?: boolean, modalSettings?: ModalSettings) => void;
 
   /** @lends linkManager */
   /**
@@ -367,10 +362,7 @@ export declare interface LinkManager {
    * @example
    * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
    */
-  openAsSplitView: (
-    path: string,
-    splitViewSettings?: SplitViewSettings
-  ) => SplitViewInstance;
+  openAsSplitView: (path: string, splitViewSettings?: SplitViewSettings) => SplitViewInstance;
 
   /**
    * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
@@ -397,6 +389,14 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
   withoutSync: () => this;
+
+  /**
+   * Enables navigating to a new tab.
+   * @since NEXT_RELEASE
+   * @example
+   * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+   */
+  newTab: () => this;
 }
 
 export declare interface StorageManager {
@@ -471,12 +471,8 @@ export declare interface StorageManager {
  * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
  * @memberof Lifecycle
  */
-export function addInitListener(
-  initFn: (context: Context, origin?: string) => void
-): number;
-export type addInitListener = (
-  initFn: (context: Context, origin?: string) => void
-) => number;
+export function addInitListener(initFn: (context: Context, origin?: string) => void): number;
+export type addInitListener = (initFn: (context: Context, origin?: string) => void) => number;
 
 /**
  * Callback of the addInitListener
@@ -497,12 +493,8 @@ export type removeInitListener = (id: number) => boolean;
  * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
  * @memberof Lifecycle
  */
-export function addContextUpdateListener(
-  contextUpdatedFn: (context: Context) => void
-): string;
-export type addContextUpdateListener = (
-  contextUpdatedFn: (context: Context) => void
-) => string;
+export function addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string;
+export type addContextUpdateListener = (contextUpdatedFn: (context: Context) => void) => string;
 
 /**
  * Removes a context update listener.
