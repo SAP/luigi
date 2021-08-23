@@ -371,6 +371,27 @@ The Link Manager allows you to navigate to another route. Use it instead of an i
 -   Reflect the route.
 -   Keep the navigation state in Luigi.
 
+#### navigateToIntent
+
+Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+parameters.
+This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+Conequently the following calls shall have the exact same effect:
+
+-   `linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})`
+-   `linkManager().navigate('/#?intent=Sales-settings?project=pr2\&user=john')`
+
+##### Parameters
+
+-   `semanticSlug` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+```
+
 #### withoutSync
 
 Disables the navigation handling for a single navigation request
@@ -387,6 +408,20 @@ LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings'
 **Meta**
 
 -   **since**: 0.7.7
+
+#### newTab
+
+Enables navigating to a new tab.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+```
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
 
 #### navigate
 

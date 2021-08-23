@@ -3,9 +3,10 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { AuthHelpers, NavigationHelpers } from '../../../src/utilities/helpers';
+import { AuthHelpers, NavigationHelpers, GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
 import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
+import { Navigation } from '../../../src/navigation/services/navigation';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
@@ -234,6 +235,39 @@ describe('Navigation-helpers', () => {
     });
   });
 
+  describe('shouldPreventNavigationForPath', () => {
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('returns true when navigation should be prevented for path', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('testPreventNavigation');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns({
+        pathSegment: 'testPreventNavigation',
+        label: 'Prevent navigation conditionally',
+        onNodeActivation: () => {
+          return false;
+        }
+      });
+      const actual = await NavigationHelpers.shouldPreventNavigationForPath('testPreventNavigation');
+      assert.equal(actual, true);
+    });
+
+    it('returns false when navigation should not be prevented for path', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('testNotPreventNavigation');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns({
+        pathSegment: 'testNotPreventNavigation',
+        label: 'Do not prevent navigation conditionally',
+        onNodeActivation: () => {
+          return true;
+        }
+      });
+      const actual = await NavigationHelpers.shouldPreventNavigationForPath('testNotPreventNavigation');
+      assert.equal(actual, false);
+    });
+  });
+  
   describe('node title data', () => {
     let object;
 
