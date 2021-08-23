@@ -918,8 +918,7 @@
   resetMicrofrontendModalData();
 
   const openViewInModal = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfModal.displayed = true;
@@ -981,8 +980,7 @@
   resetMicrofrontendDrawerData();
 
   const openViewInDrawer = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfDrawer.displayed = true;
@@ -1046,12 +1044,24 @@
     internalUserSettingsObject.displayed = false;
   };
 
+  // Open View in New Tab
+
+  const openViewInNewTab = async nodepath => {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
+      return;
+    }
+
+    window.open(nodepath, '_blank');
+  };
+
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
     );
-    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue('navigation.defaults.runTimeErrorHandler')
+    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue(
+      'navigation.defaults.runTimeErrorHandler'
+    );
     const config = {
       iframe: null,
       navigateOk: null,
@@ -1232,7 +1242,11 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-        if (e.data.params.modal !== undefined) {
+        if (e.data.params.newTab) {
+          let path = buildPath(e.data.params);
+          path = GenericHelpers.addLeadingSlash(path);
+          openViewInNewTab(path);
+        } else if (e.data.params.modal !== undefined) {
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
@@ -1404,14 +1418,21 @@
           e.data.data.id,
           e.data.data.operation,
           e.data.data.params
-        )
+        );
       }
 
-      if('luigi-runtime-error-handling'===e.data.msg){
+      if ('luigi-runtime-error-handling' === e.data.msg) {
         let currentNode = iframe.luigi.currentNode;
-        if(currentNode && currentNode.runTimeErrorHandler && GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)){
+        if (
+          currentNode &&
+          currentNode.runTimeErrorHandler &&
+          GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)
+        ) {
           currentNode.runTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
-        }else if(defaultRunTimeErrorHandler && GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)){
+        } else if (
+          defaultRunTimeErrorHandler &&
+          GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)
+        ) {
           defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
         }
       }

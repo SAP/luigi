@@ -404,6 +404,14 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
   withoutSync: () => this;
+
+  /**
+   * Enables navigating to a new tab.
+   * @since NEXT_RELEASE
+   * @example
+   * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+   */
+  newTab: () => this;
 }
 
 export declare interface StorageManager {
