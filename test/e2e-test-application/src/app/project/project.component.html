@@ -610,6 +610,24 @@
               href="javascript:void(0)"
               class="fd-link"
               (click)="
+                linkManager().navigateToIntent(
+                  'Component-settings', {project: 'pr1', param2: '22'}
+                )
+              "
+            >
+              navigate to settings of project 1 with alternative intent method:
+              navigateToIntent
+            </a>
+            <app-code-snippet
+              data="linkManager().navigateToIntent('Component-settings', {project: 'pr1', param2: '22'})"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromClosestContext()
                   .withParams({ foo: 'bar' })

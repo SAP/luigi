@@ -395,6 +395,8 @@ class RoutingHelpersClass {
         }
         realPath = realPath.pathSegment;
         if (intentObject.params) {
+          // resolve dynamic parameters in the path if any
+          realPath = this.resolveDynamicIntentPath(realPath, intentObject.params);
           // get custom node param prefixes if any or default to ~
           let nodeParamPrefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
           nodeParamPrefix = nodeParamPrefix ? nodeParamPrefix : '~';
@@ -415,6 +417,39 @@ class RoutingHelpersClass {
       console.warn('No intent mappings are defined in Luigi configuration.');
     }
     return false;
+  }
+
+  /**
+   * This function takes a path which contains dynamic parameters and a list parameters and replaces the dynamic parameters
+   * with the given parameters if any. The input path remains unchanged if the parameters list
+   * does not contain the respective dynamic parameter name.
+   * e.g.:
+   * Assume either of these two calls are made:
+   * 1. `linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})`
+   * 2. `linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')`
+   * For both 1. and 2., the following dynamic input path: `/projects/:project/details/:user`
+   * is resolved through this method to `/projects/pr2/details/john`
+   *
+   * @param {string} path the path containing the potential dynamic parameter
+   * @param {Object} parameters a list of objects consisting of passed parameters
+   */
+  resolveDynamicIntentPath(path, parameters) {
+    if (!parameters) {
+      return path;
+    }
+    let newPath = path;
+    // merge list of objects into one single object for easier iteration
+    const mergedParams = Object.assign({}, ...parameters);
+    for (const [key, value] of Object.entries(mergedParams)) {
+      // regular expression to detect dynamic parameter patterns:
+      // /some/path/:param1/example/:param2/sample
+      // /some/path/example/:param1
+      const regex = new RegExp('/:' + key + '(/|$)', 'g');
+      newPath = newPath.replace(regex, `/${value}/`);
+    }
+    // strip trailing slash
+    newPath = newPath.replace(/\/$/, '');
+    return newPath;
   }
 }
 
