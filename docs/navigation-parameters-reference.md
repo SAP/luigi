@@ -104,11 +104,6 @@ The navigation parameters allow you to configure **global** navigation settings 
 tooltipText: 'Useful links'
 ```
 
-### defaults.tooltipText
-- **type**: string
-- **description**: allows you to add a tooltip to **all** the links and buttons of the left side navigation and top navigation.
-- **default**: the parameter **defaults.tooltipText** is `null` by default, and you can overwrite it using the **tooltipText** value on a single node level.
-
 
 ### defaults.pageErrorHandler
 <!-- add-attribute:class:warning -->
