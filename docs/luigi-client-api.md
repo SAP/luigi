@@ -373,8 +373,7 @@ The Link Manager allows you to navigate to another route. Use it instead of an i
 
 #### navigateToIntent
 
-Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
-parameters.
+Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing parameters, if any.
 This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
 Conequently the following calls shall have the exact same effect:
 
@@ -384,12 +383,13 @@ Conequently the following calls shall have the exact same effect:
 ##### Parameters
 
 -   `semanticSlug` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
--   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`. (optional, default `{}`)
 
 ##### Examples
 
 ```javascript
 LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+LuigiClient.linkManager().navigateToIntent('Sales-settings')
 ```
 
 #### withoutSync
