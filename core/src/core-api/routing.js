@@ -46,43 +46,37 @@ class LuigiRouting {
   addSearchParams(params) {
     if (!GenericHelpers.isObject(params)) {
       console.log('Params argument must be an object');
-    } else {
-      const url = new URL(location);
-      if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-        let [hashvalue, givenQueryParamsString] = url.hash.split('?');
-        let queryParamsString = '';
-        if (givenQueryParamsString) {
-          const givenQueryParams = this._stringSearchParamsToObject(givenQueryParamsString);
-          params = Object.assign(givenQueryParams, params);
-        }
-        for (const [key, value] of Object.entries(params)) {
-          if (queryParamsString !== '' && queryParamsString !== undefined) {
-            queryParamsString += '&';
-          }
-          queryParamsString += `${key}=${value}`;
-        }
-        url.hash = `${hashvalue}?${queryParamsString}`;
-      } else {
-        for (const [key, value] of Object.entries(params)) {
-          url.searchParams.set(key, value);
-        }
-      }
-      window.history.pushState({}, '', url.href);
+      return;
     }
+    const url = new URL(location);
+    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      let [hashvalue, givenQueryParamsString] = url.hash.split('?');
+      let queryParamsString = '';
+      if (givenQueryParamsString) {
+        const givenQueryParams = this._stringSearchParamsToObject(givenQueryParamsString);
+        params = Object.assign(givenQueryParams, params);
+      }
+      for (const [key, value] of Object.entries(params)) {
+        if (queryParamsString !== '' && queryParamsString !== undefined) {
+          queryParamsString += '&';
+        }
+        queryParamsString += `${key}=${value}`;
+      }
+      url.hash = `${hashvalue}?${queryParamsString}`;
+    } else {
+      for (const [key, value] of Object.entries(params)) {
+        url.searchParams.set(key, value);
+      }
+    }
+    window.history.pushState({}, '', url.href);
   }
 
   _stringSearchParamsToObject(queryParamsString) {
-    let queryParams = queryParamsString.split('&');
-    if (queryParams.length === 1) {
-      let [key, value] = queryParams[0].split('=');
-      return { [key]: value };
-    } else {
-      return queryParamsString.split('&').reduce((queryParams, param) => {
-        let [key, value] = param.split('=');
-        queryParams[key] = value;
-        return queryParams;
-      }, {});
-    }
+    return queryParamsString.split('&').reduce((queryParams, param) => {
+      let [key, value] = param.split('=');
+      queryParams[key] = value;
+      return queryParams;
+    }, {});
   }
 }
 
