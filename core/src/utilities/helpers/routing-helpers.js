@@ -266,7 +266,7 @@ class RoutingHelpersClass {
     const contextVarPrefix = 'context.';
     const nodeParamsVarPrefix = 'nodeParams.';
     const i18n_currentLocale = '{i18n.currentLocale}';
-    const searchquery = 'routing.queryParams';
+    const searchQuery = 'routing.queryParams';
 
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.context, contextVarPrefix);
