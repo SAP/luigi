@@ -281,7 +281,7 @@ class RoutingHelpersClass {
       if (viewUrlSearchParam) {
         const key = viewUrlSearchParam.split('=')[0];
         if (LuigiRouting.getSearchParams()[key]) {
-          viewUrl = viewUrl.replace(`{${searchquery}.${key}}`, LuigiRouting.getSearchParams()[key]);
+          viewUrl = viewUrl.replace(`{${searchQuery}.${key}}`, LuigiRouting.getSearchParams()[key]);
         } else {
           viewUrl = viewUrl.replace(`?${key}={${searchquery}.${key}}`, '');
         }
