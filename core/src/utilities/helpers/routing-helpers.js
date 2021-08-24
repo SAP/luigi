@@ -283,7 +283,7 @@ class RoutingHelpersClass {
         if (LuigiRouting.getSearchParams()[key]) {
           viewUrl = viewUrl.replace(`{${searchQuery}.${key}}`, LuigiRouting.getSearchParams()[key]);
         } else {
-          viewUrl = viewUrl.replace(`?${key}={${searchquery}.${key}}`, '');
+          viewUrl = viewUrl.replace(`?${key}={${searchQuery}.${key}}`, '');
         }
       }
     }
