@@ -40,8 +40,12 @@
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
       isMobile="{false}"
     />
-    {/if} {#if children && pathData.length > 0} {#each children as node, i} {#if
-    !(node.hideFromNav || (showGlobalNav && node.globalNav))} {#if node.isCat}
+    {/if}
+
+    <div class="test2"></div>
+    {#if isGlobalSearchAvailable || (children && pathData.length > 0)} {#if (children &&
+    pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav ||
+    (showGlobalNav && node.globalNav))} {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
@@ -99,7 +103,7 @@
       </button>
       {/if}
     </div>
-    {/if} {/if} {/each}
+    {/if} {/if} {/each} {/if}
     <!-- Sample Markup for Notifications
             <div class="fd-shellbar__action fd-shellbar__action--desktop">
               <button class="fd-shellbar__button fd-button sap-icon--bell" aria-label="Notifications">
@@ -108,9 +112,11 @@
             </div>
     -->
 
+    <div class="test"></div>
+
     <!-- dropdown for top nav nodes on smaller screens -->
-    {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
-    contextSwitcherConfig}
+    {#if isGlobalSearchAvailable || (visibleNodeCount - globalNavNodeCount > 0) ||
+    isProductSwitcherAvailable || contextSwitcherConfig}
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -166,8 +172,8 @@
                     >
                   </a>
                 </li>
-                {/if} {#each children as node,i} {#if !(node.hideFromNav || (showGlobalNav
-                && node.globalNav))} {#if !node.isCat}
+                {/if} {#if children} {#each children as node,i} {#if !(node.hideFromNav ||
+                (showGlobalNav && node.globalNav))} {#if !node.isCat}
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
@@ -231,7 +237,7 @@
                   </a>
                 </li>-->
                 <!-- {/if} -->
-                {/if} {/if} {/each} {#if isProductSwitcherAvailable}
+                {/if} {/if} {/each} {/if} {#if isProductSwitcherAvailable}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -487,6 +493,7 @@
         profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        console.log(isGlobalSearchAvailable);
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
