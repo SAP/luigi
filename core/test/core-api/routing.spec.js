@@ -23,7 +23,7 @@ describe('Luigi routing', function() {
       global.location = 'http://some.url.de/something?test=tets&luigi=rocks';
       assert.deepEqual(LuigiRouting.getSearchParams(), { test: 'tets', luigi: 'rocks' });
     });
-    it('get searchparams', () => {
+    it('get searchparams when no query parameter', () => {
       global.location = 'http://some.url.de';
       assert.deepEqual(LuigiRouting.getSearchParams(), {});
     });
