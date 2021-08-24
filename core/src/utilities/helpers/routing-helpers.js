@@ -276,7 +276,7 @@ class RoutingHelpersClass {
       viewUrl = viewUrl.replace(i18n_currentLocale, LuigiI18N.getCurrentLocale());
     }
 
-    if (viewUrl.includes(searchquery)) {
+    if (viewUrl.includes(searchQuery)) {
       const viewUrlSearchParam = viewUrl.split('?')[1];
       if (viewUrlSearchParam) {
         const key = viewUrlSearchParam.split('=')[0];
