@@ -62,7 +62,7 @@ class LuigiRouting {
         }
         queryParamsString += `${key}=${value}`;
       }
-      url.hash = `${hashvalue}?${queryParamsString}`;
+      url.hash = `${hashValue}?${queryParamsString}`;
     } else {
       for (const [key, value] of Object.entries(params)) {
         url.searchParams.set(key, value);
