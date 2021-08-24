@@ -50,7 +50,7 @@ class LuigiRouting {
     }
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      let [hashvalue, givenQueryParamsString] = url.hash.split('?');
+      let [hashValue, givenQueryParamsString] = url.hash.split('?');
       let queryParamsString = '';
       if (givenQueryParamsString) {
         const givenQueryParams = this._stringSearchParamsToObject(givenQueryParamsString);
