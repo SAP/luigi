@@ -78,6 +78,32 @@ class LuigiRouting {
       return queryParams;
     }, {});
   }
+
+  _prepareSearchParamsForClient(currentNode) {
+    let filteredObj = {};
+    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+        if (key in this.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
+          filteredObj[key] = this.getSearchParams()[key];
+        }
+      });
+    }
+    return filteredObj;
+  }
+
+  _addSearchParamsFromClient(currentNode, searchParams) {
+    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+      let filteredObj = {};
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+        if (key in searchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
+          filteredObj[key] = searchParams[key];
+        }
+      });
+      if (Object.keys(filteredObj).length > 0) {
+        this.addSearchParams(filteredObj);
+      }
+    }
+  }
 }
 
 export const routing = new LuigiRouting();

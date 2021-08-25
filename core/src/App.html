@@ -148,7 +148,8 @@
     LuigiElements,
     LuigiGlobalSearch,
     LuigiFeatureToggles,
-    LuigiTheming
+    LuigiTheming,
+    LuigiRouting
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -1434,6 +1435,24 @@
           GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)
         ) {
           defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        }
+      }
+
+      if ('luigi.getSearchParams' === e.data.msg) {
+        // const message={
+        //   msg:'luigi.getSearchParams.answer',
+        //   data: LuigiRouting._prepareSearchParamsForClient(iframe.luigi.currentNode)
+        // }
+        // debugger;
+        // await sendContextToClient(config, message);
+      }
+
+      if ('luigi.addSearchParams' === e.data.msg) {
+        if (
+          iframe.luigi.currentNode.clientPermissions &&
+          iframe.luigi.currentNode.clientPermissions.urlParameters
+        ) {
+          LuigiRouting._addSearchParamsFromClient(currentNode, e.data.data);
         }
       }
     });

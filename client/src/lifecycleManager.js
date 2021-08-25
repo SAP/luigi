@@ -427,6 +427,37 @@ class LifecycleManager extends LuigiClientBase {
     return this.currentContext.pathParams;
   }
 
+  getSearchParams() {
+    // helpers.addEventListener(
+    //   'luigi.getSearchParams.answer',(e, listenerId) => {
+    //     const promise = this.getPromise('getSearchParams');
+    //     if (promise) {
+    //       e.data ? promise.resolveFn(e.data.data) : promise.rejectFn();
+    //       this.setPromise('getSearchParams', undefined);
+    //     }
+    //     helpers.removeEventListener(listenerId);
+    //   });
+
+    // helpers.sendPostMessageToLuigiCore({msg:'luigi.getSearchParams'});
+    // const getSearchParamsPromise = {};
+    // getSearchParamsPromise.promise = new Promise((resolve, reject) => {
+    //   getSearchParamsPromise.resolveFn = resolve;
+    //   getSearchParamsPromise.rejectFn = reject;
+    // });
+    // this.setPromise('getSearchParams', getSearchParamsPromise);
+    // return getSearchParamsPromise.promise;
+    return this.currentContext.searchParams;
+  }
+
+  addSearchParams(searchParams) {
+    if (searchParams) {
+      helpers.sendPostMessageToLuigiCore({
+        msg: 'luigi.addSearchParams',
+        data: searchParams
+      });
+    }
+  }
+
   /**
    * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
    * @returns {Object} client permissions as specified in the navigation node
