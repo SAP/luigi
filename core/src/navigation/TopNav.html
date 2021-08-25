@@ -493,7 +493,6 @@
         profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
-        console.log(isGlobalSearchAvailable);
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
