@@ -40,12 +40,9 @@
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
       isMobile="{false}"
     />
-    {/if}
-
-    <div class="test2"></div>
-    {#if isGlobalSearchAvailable || (children && pathData.length > 0)} {#if (children &&
-    pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav ||
-    (showGlobalNav && node.globalNav))} {#if node.isCat}
+    {/if} {#if isGlobalSearchAvailable || (children && pathData.length > 0)} {#if
+    (children && pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav
+    || (showGlobalNav && node.globalNav))} {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
@@ -111,8 +108,6 @@
               </button>
             </div>
     -->
-
-    <div class="test"></div>
 
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if isGlobalSearchAvailable || (visibleNodeCount - globalNavNodeCount > 0) ||
