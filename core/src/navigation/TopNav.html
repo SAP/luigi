@@ -297,31 +297,29 @@
       <div class="fd-popover fd-popover--right fd-user-menu">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           {#if userInfo.picture}
-          <span
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-controls="profilePopover"
             aria-expanded="true"
             aria-haspopup="true"
-            aria-label="Avatar"
-            role="button"
+            title="Avatar"
             tabindex="0"
             style="background-image:url('{userInfo.picture}')"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-btn"
-          ></span>
+          ></button>
           {:else}
-          <span
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-expanded="true"
             aria-haspopup="true"
-            aria-label="Avatar"
-            role="button"
+            title="Avatar"
             tabindex="0"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-initials"
           >
             {userInfo.initials ? userInfo.initials : ''}
-          </span>
+        </button>
           {/if}
         </div>
         <div
@@ -340,13 +338,13 @@
         <div class="fd-popover">
           <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
             <div class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }">
-              <div
+              <button
                 class="fd-button fd-shellbar__button"
                 aria-expanded="{dropDownStates.profilePopover || false}"
                 aria-haspopup="true"
+                aria-controls="profilePopover"
                 on:click="{() => toggleDropdownState('profilePopover')}"
                 title="{userInfo.name ? userInfo.name : userInfo.email}"
-                role="button"
                 tabindex="0"
                 data-testid="luigi-topnav-profile-btn"
               >
@@ -360,7 +358,7 @@
                   class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 ></i>
                 {/if}
-              </div>
+            </button>
             </div>
           </div>
           <div
