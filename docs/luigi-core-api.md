@@ -1340,3 +1340,17 @@ Luigi.routing().addSearchParams({luigi:'rocks'});
 **Meta**
 
 *   **since**: NEXTRELEASE
+
+#### deleteSearchParams
+
+Delete all search parameters from the URL
+
+##### Examples
+
+```javascript
+Luigi.routing().deleteSearchParams();
+```
+
+**Meta**
+
+*   **since**: NEXTRELEASE

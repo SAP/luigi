@@ -23,15 +23,15 @@ class LuigiRouting {
     const queryParams = {};
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      const queryParamsString = url.hash.split('?')[1];
-      if (!queryParamsString) return {};
-      return this._stringSearchParamsToObject(queryParamsString);
+      for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
+        queryParams[key] = value;
+      }
     } else {
       for (const [key, value] of url.searchParams.entries()) {
         queryParams[key] = value;
       }
-      return queryParams;
     }
+    return queryParams;
   }
 
   /**
@@ -51,18 +51,11 @@ class LuigiRouting {
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       let [hashValue, givenQueryParamsString] = url.hash.split('?');
-      let queryParamsString = '';
-      if (givenQueryParamsString) {
-        const givenQueryParams = this._stringSearchParamsToObject(givenQueryParamsString);
-        params = Object.assign(givenQueryParams, params);
-      }
+      let searchParams = new URLSearchParams(givenQueryParamsString);
       for (const [key, value] of Object.entries(params)) {
-        if (queryParamsString !== '' && queryParamsString !== undefined) {
-          queryParamsString += '&';
-        }
-        queryParamsString += `${key}=${value}`;
+        searchParams.set(key, value);
       }
-      url.hash = `${hashValue}?${queryParamsString}`;
+      url.hash = `${hashValue}?${decodeURIComponent(searchParams.toString())}`;
     } else {
       for (const [key, value] of Object.entries(params)) {
         url.searchParams.set(key, value);
@@ -71,12 +64,27 @@ class LuigiRouting {
     window.history.pushState({}, '', url.href);
   }
 
-  _stringSearchParamsToObject(queryParamsString) {
-    return queryParamsString.split('&').reduce((queryParams, param) => {
-      let [key, value] = param.split('=');
-      queryParams[key] = value;
-      return queryParams;
-    }, {});
+  /**
+   * Delete all search parameters from the URL
+   * @memberof Routing
+   * @since NEXTRELEASE
+   * @example
+   * Luigi.routing().deleteSearchParams();
+   */
+  deleteSearchParams() {
+    const url = new URL(location);
+    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      url.hash = url.hash.split('?')[0];
+    } else {
+      const keys = [];
+      for (let key of url.searchParams.keys()) {
+        keys.push(key);
+      }
+      keys.forEach(key => {
+        url.searchParams.delete(key);
+      });
+    }
+    window.history.pushState({}, '', url.href);
   }
 }
 
