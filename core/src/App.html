@@ -20,6 +20,7 @@
     on:close="{closeDrawer}"
     on:drawerState="{setDrawerState}"
     on:iframeCreated="{drawerIframeCreated}"
+    on:wcCreated="{drawerWCCreated}"
   >
     <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
   </Modal>
@@ -180,6 +181,8 @@
   let disableBackdrop;
   let drawerIframe;
   let drawerIframeData;
+  let drawerWC;
+  let drawerWCData;
   let drawer;
   let splitViewIframe;
   let splitViewIframeData;
@@ -801,7 +804,7 @@
     });
   };
 
-  const handleAlertDismiss = id => {
+  const handleAlertDismiss = (id, dismissKey) => {
     const alert = getAlertWithId(alerts, id);
 
     if (!alert) {
@@ -809,23 +812,24 @@
       return;
     }
 
-    const openFromClient = alert.openFromClient;
-
     alerts = alerts.filter(a => a.settings.id !== id);
 
-    if (openFromClient) {
+    if (alert.openFromClient) {
       const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
         msg: 'luigi.ux.alert.hide',
-        id
+        id,
+        dismissKey
         //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
+    } else if (alert.promise) {
+      alert.promise.resolve(dismissKey || id);
     }
   };
 
   const handleAlertDismissExternal = event => {
-    handleAlertDismiss(event.detail.id);
+    handleAlertDismiss(event.detail.id, event.detail.dismissKey);
   };
 
   //// CONFIRMATION MODAL
@@ -914,8 +918,7 @@
   resetMicrofrontendModalData();
 
   const openViewInModal = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfModal.displayed = true;
@@ -977,8 +980,7 @@
   resetMicrofrontendDrawerData();
 
   const openViewInDrawer = async (nodepath, settings) => {
-    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
-    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
     mfDrawer.displayed = true;
@@ -994,6 +996,11 @@
     drawerIframeData = event.detail.modalIframeData;
   };
 
+  const drawerWCCreated = event => {
+    drawerWC = event.detail.modalWC;
+    drawerWCData = event.detail.modalWCData;
+  };
+
   const setDrawerState = event => {
     activeDrawer = event.detail.activeDrawer;
   };
@@ -1003,10 +1010,18 @@
       activeDrawer = event.detail.activeDrawer;
     }
     if (!activeDrawer || (event && event.detail && event.detail.type !== 'modal')) {
-      if (drawerIframe) {
-        getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
-          resetMicrofrontendDrawerData();
-        });
+      try {
+        if (drawerIframe) {
+          getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
+            resetMicrofrontendDrawerData();
+          });
+        } else if (drawerWC) {
+          getUnsavedChangesModalPromise().then(() => {
+            resetMicrofrontendDrawerData();
+          });
+        }
+      } catch (e) {
+        console.log(e);
       }
     }
   };
@@ -1029,10 +1044,23 @@
     internalUserSettingsObject.displayed = false;
   };
 
+  // Open View in New Tab
+
+  const openViewInNewTab = async nodepath => {
+    if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
+      return;
+    }
+
+    window.open(nodepath, '_blank');
+  };
+
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
+    );
+    const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue(
+      'navigation.defaults.runTimeErrorHandler'
     );
     const config = {
       iframe: null,
@@ -1214,7 +1242,11 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-        if (e.data.params.modal !== undefined) {
+        if (e.data.params.newTab) {
+          let path = buildPath(e.data.params);
+          path = GenericHelpers.addLeadingSlash(path);
+          openViewInNewTab(path);
+        } else if (e.data.params.modal !== undefined) {
           let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
@@ -1380,15 +1412,29 @@
       }
 
       if ('storage' === e.data.msg) {
-        let getValidMessageSource = IframeHelpers.getValidMessageSource(e);
-        let microfrontendId = getValidMessageSource.luigi.id;
         StorageHelper.process(
-          microfrontendId,
+          iframe.luigi.id,
           e.origin,
           e.data.data.id,
           e.data.data.operation,
           e.data.data.params
         );
+      }
+
+      if ('luigi-runtime-error-handling' === e.data.msg) {
+        let currentNode = iframe.luigi.currentNode;
+        if (
+          currentNode &&
+          currentNode.runTimeErrorHandler &&
+          GenericHelpers.isFunction(currentNode.runTimeErrorHandler.errorFn)
+        ) {
+          currentNode.runTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        } else if (
+          defaultRunTimeErrorHandler &&
+          GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)
+        ) {
+          defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        }
       }
     });
 

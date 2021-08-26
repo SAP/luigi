@@ -56,21 +56,7 @@
             on:click="{() => toggleDropdownState(`dropDownPopover-${i}`)}"
             data-testid="{getTestId(node)}"
           >
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="sap-icon sap-icon--{node.icon} fd-top-nav__icon"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            {#if !node.icon || node.showLabel}
-            <span>{getNodeLabel(node)}</span>
-            {/if}
+            <TopNavNode bind:node />
             <BadgeCounter {node} />
           </button>
         </div>
@@ -87,6 +73,19 @@
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
+      {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
+      <a
+        href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
+        class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
+        aria-expanded="false"
+        aria-haspopup="true"
+        on:click|preventDefault="{() => handleClick(node)}"
+        data-testid="{getTestId(node)}"
+      >
+        <TopNavNode bind:node />
+        <BadgeCounter {node} />
+      </a>
+      {:else}
       <button
         title="{getNodeLabel(node)}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
@@ -95,23 +94,10 @@
         on:click="{() => handleClick(node)}"
         data-testid="{getTestId(node)}"
       >
-        {#if node.icon} {#if hasOpenUIicon(node)}
-        <span class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"></span>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{node.icon}"
-          alt="{node.altText ? node.altText : ''}"
-        />
-        {/if}
-        <!-- end hasOpenUIicon-->
-        {/if}
-        <!-- end node.icon -->
-        {#if !node.icon || node.showLabel}
-        <span>{getNodeLabel(node)}</span>
-        {/if}
+        <TopNavNode bind:node />
         <BadgeCounter {node} />
       </button>
+      {/if}
     </div>
     {/if} {/if} {/each}
     <!-- Sample Markup for Notifications
@@ -187,7 +173,7 @@
                     href="{getRouteLink(node)}"
                     class="fd-menu__link {node === selectedNode ? 'is-selected' : ''}"
                     on:click|preventDefault="{() => handleClick(node)}"
-                    data-testid="{getTestId(node)}"
+                    data-testid="{getTestId(node)}-mobile"
                   >
                     <span
                       class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
@@ -258,7 +244,7 @@
                       class="fd-top-nav__icon sap-icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
                     ></i>
                     {:else}
-                    <span class="fd-top-nav__icon">
+                    <span class="fd-top-nav__icon sap-icon">
                       <img
                         src="{productSwitcherConfig.icon}"
                         alt="{productSwitcherConfig.altText ? productSwitcherConfig.altText : ''}"
@@ -310,31 +296,29 @@
       <div class="fd-popover fd-popover--right fd-user-menu">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           {#if userInfo.picture}
-          <span
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-controls="profilePopover"
             aria-expanded="true"
             aria-haspopup="true"
-            aria-label="Avatar"
-            role="button"
+            title="Avatar"
             tabindex="0"
             style="background-image:url('{userInfo.picture}')"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-btn"
-          ></span>
+          ></button>
           {:else}
-          <span
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-expanded="true"
             aria-haspopup="true"
-            aria-label="Avatar"
-            role="button"
+            title="Avatar"
             tabindex="0"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-initials"
           >
             {userInfo.initials ? userInfo.initials : ''}
-          </span>
+        </button>
           {/if}
         </div>
         <div
@@ -353,13 +337,13 @@
         <div class="fd-popover">
           <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
             <div class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }">
-              <div
+              <button
                 class="fd-button fd-shellbar__button"
                 aria-expanded="{dropDownStates.profilePopover || false}"
                 aria-haspopup="true"
+                aria-controls="profilePopover"
                 on:click="{() => toggleDropdownState('profilePopover')}"
                 title="{userInfo.name ? userInfo.name : userInfo.email}"
-                role="button"
                 tabindex="0"
                 data-testid="luigi-topnav-profile-btn"
               >
@@ -373,7 +357,7 @@
                   class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 ></i>
                 {/if}
-              </div>
+            </button>
             </div>
           </div>
           <div
@@ -414,6 +398,7 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import GlobalSearch from './GlobalSearch.html';
+  import TopNavNode from './TopNavNode.html';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -465,6 +450,7 @@
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
       const tnd = await NavigationHelpers.generateTopNavNodes(pathData);

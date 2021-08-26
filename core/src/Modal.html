@@ -133,7 +133,11 @@
       if (nodeObject.webcomponent) {
         //"Workaround" because we need a webcomponent client api to hide/show the loadingIndicator
         showLoadingIndicator = false;
-        await setModalSize();
+        if (isDrawer) {
+          await setDrawerSize();
+        } else {
+          await setModalSize();
+        }
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector('.iframeModalCtn'),
@@ -318,6 +322,9 @@
   }
   .lui-modal-mf {
     position: relative;
+    .spinnerContainer {
+      left: 0;
+    }
   }
   .spinnerContainer {
     display: flex;

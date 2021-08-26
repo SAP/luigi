@@ -200,15 +200,49 @@ class RoutingHelpersClass {
     return 'javascript:void(0)';
   }
 
-  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':') {
+  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
     return Object.entries(object)
       .map(([key, value]) => {
-        let foundKey = Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
-        return [key, foundKey ? paramMap[foundKey] : value];
+        const foundKey = contains
+          ? Object.keys(paramMap).find(key2 => value && value.indexOf(paramPrefix + key2) >= 0)
+          : Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
+        return [
+          key,
+          foundKey ? (contains ? value.replace(paramPrefix + foundKey, paramMap[foundKey]) : paramMap[foundKey]) : value
+        ];
       })
       .reduce((acc, [key, value]) => {
         return Object.assign(acc, { [key]: value });
       }, {});
+  }
+
+  /**
+   * Maps a path to the nodes route, replacing all dynamic pathSegments with the concrete values in path.
+   * Example: path='/object/234/subobject/378/some/node', node with path '/object/:id/subobject/:subid' results in
+   * '/object/234/subobject/378/'.
+   * @param {*} path a concrete node path, typically the current app route.
+   * @param {*} node a node which must be an ancestor of the resolved node from path.
+   *
+   * @returns a string with the route or undefined, if node is not an ancestor of path-node
+   */
+  mapPathToNode(path, node) {
+    if (!path || !node) {
+      return;
+    }
+    const pathSegments = GenericHelpers.trimLeadingSlash(path).split('/');
+    const nodeRoute = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    const nodeRouteSegments = GenericHelpers.trimLeadingSlash(nodeRoute).split('/');
+    if (pathSegments.length < nodeRouteSegments.length) {
+      return;
+    }
+    let resultingRoute = '';
+    for (let i = 0; i < nodeRouteSegments.length; i++) {
+      if (pathSegments[i] !== nodeRouteSegments[i] && nodeRouteSegments[i].indexOf(':') !== 0) {
+        return;
+      }
+      resultingRoute += '/' + pathSegments[i];
+    }
+    return resultingRoute;
   }
 
   /**
@@ -361,6 +395,8 @@ class RoutingHelpersClass {
         }
         realPath = realPath.pathSegment;
         if (intentObject.params) {
+          // resolve dynamic parameters in the path if any
+          realPath = this.resolveDynamicIntentPath(realPath, intentObject.params);
           // get custom node param prefixes if any or default to ~
           let nodeParamPrefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
           nodeParamPrefix = nodeParamPrefix ? nodeParamPrefix : '~';
@@ -381,6 +417,39 @@ class RoutingHelpersClass {
       console.warn('No intent mappings are defined in Luigi configuration.');
     }
     return false;
+  }
+
+  /**
+   * This function takes a path which contains dynamic parameters and a list parameters and replaces the dynamic parameters
+   * with the given parameters if any. The input path remains unchanged if the parameters list
+   * does not contain the respective dynamic parameter name.
+   * e.g.:
+   * Assume either of these two calls are made:
+   * 1. `linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})`
+   * 2. `linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')`
+   * For both 1. and 2., the following dynamic input path: `/projects/:project/details/:user`
+   * is resolved through this method to `/projects/pr2/details/john`
+   *
+   * @param {string} path the path containing the potential dynamic parameter
+   * @param {Object} parameters a list of objects consisting of passed parameters
+   */
+  resolveDynamicIntentPath(path, parameters) {
+    if (!parameters) {
+      return path;
+    }
+    let newPath = path;
+    // merge list of objects into one single object for easier iteration
+    const mergedParams = Object.assign({}, ...parameters);
+    for (const [key, value] of Object.entries(mergedParams)) {
+      // regular expression to detect dynamic parameter patterns:
+      // /some/path/:param1/example/:param2/sample
+      // /some/path/example/:param1
+      const regex = new RegExp('/:' + key + '(/|$)', 'g');
+      newPath = newPath.replace(regex, `/${value}/`);
+    }
+    // strip trailing slash
+    newPath = newPath.replace(/\/$/, '');
+    return newPath;
   }
 }
 

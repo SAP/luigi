@@ -104,6 +104,16 @@ describe('Luigi client linkManager', () => {
         cy.goToOverviewPage();
         cy.goToLinkManagerMethods($iframeBody);
 
+        // navigate with intent - second option
+        cy.wrap($iframeBody)
+          .contains('navigate to settings of project 1 with alternative intent method')
+          .click();
+        cy.expectPathToBe('/projects/pr1/settings');
+        cy.expectSearchToBe('?~project=pr1&~param2=22');
+
+        cy.goToOverviewPage();
+        cy.goToLinkManagerMethods($iframeBody);
+
         //navigate with preserve view functionality
         cy.wrap($iframeBody)
           .contains('with preserved view: project to global settings and back')
@@ -316,6 +326,19 @@ describe('Luigi client linkManager', () => {
         .contains('go back: single iframe, standard history back')
         .click();
       cy.get('.drawer').should('not.exist');
+    });
+
+    it('Open and close drawer component with webcomponent', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent');
+        cy.get('.drawer').should('exist');
+        cy.expectPathToBe('/projects/pr2');
+
+        cy.get('.drawer-dialog button[aria-label="close"]')
+          .should('exist')
+          .click();
+        cy.get('.drawer').should('not.exist');
+      });
     });
   });
 });

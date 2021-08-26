@@ -201,6 +201,65 @@ describe('Routing', function() {
     });
   });
 
+  describe('resolveDynamicIntentPath()', () => {
+    it('returns resolved dynamic path with single dynamic parameter', () => {
+      const path = '/projects/:id/details';
+      const parameters = [{ id: 123 }];
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      const expected = '/projects/123/details';
+      assert.equal(actual, expected);
+    });
+
+    it('returns resolved dynamic path with multiple dynamic parameter', () => {
+      const path = '/projects/:id/details/:componentId/view/:viewId/show';
+      const parameters = [{ id: 123, componentId: 444, viewId: '223' }];
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      const expected = '/projects/123/details/444/view/223/show';
+      assert.equal(actual, expected);
+    });
+
+    it('returns resolved dynamic path with similiar named parameters', () => {
+      const path = '/projects/:component/details/:componentId/view/:componentCount/show';
+      const parameters = [{ component: 123 }];
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      // check edge case when parameter names stat with same substring
+      const expected = '/projects/123/details/:componentId/view/:componentCount/show';
+      assert.equal(actual, expected);
+    });
+
+    it('input path not changed when there are no parameters defined', () => {
+      const path = '/projects/:component/details/:componentId/view/:componentCount/show';
+      const parameters = undefined;
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      const expected = '/projects/:component/details/:componentId/view/:componentCount/show';
+      assert.equal(actual, expected);
+    });
+
+    it('input path not changed when no paramters match dynamic specification', () => {
+      const path = '/projects/:component/details/:componentId/view/:componentCount/show';
+      const parameters = [{ other: 123, param: 343, not: '231', related: 'to dynamic ones' }];
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      const expected = '/projects/:component/details/:componentId/view/:componentCount/show';
+      assert.equal(actual, expected);
+    });
+
+    it('returns resolved parameters when there is extra parameters given', () => {
+      const path = '/projects/:other/details/:param/view/:not';
+      const parameters = [{ other: 123, param: 343, not: '231', related: 'to dynamic ones', sample: 'test' }];
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      const expected = '/projects/123/details/343/view/231';
+      assert.equal(actual, expected);
+    });
+
+    it('input path not changed when array has an empty object', () => {
+      const path = '/projects/:other/details/:param/view/:not';
+      const parameters = [];
+      const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
+      const expected = '/projects/:other/details/:param/view/:not';
+      assert.equal(actual, expected);
+    });
+  });
+
   describe('getHashPath()', () => {
     beforeEach(() => {
       LuigiConfig.getConfigValue.restore();
