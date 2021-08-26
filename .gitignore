@@ -9,6 +9,7 @@ node_modules
 lerna-debug.log
 
 .changelog
+.nyc_output/
 
 # temporary files and folders
 tmp-*
