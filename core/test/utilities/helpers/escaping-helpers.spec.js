@@ -23,8 +23,7 @@ describe('Escaping-helpers', () => {
   });
 
   it('restoreSanitizedElements', () => {
-    const text =
-      '&lt;br&gt; &lt;b &gt; &lt;del /&gt; &lt;i/&gt; &lt;strong&gt;';
+    const text = '&lt;br&gt; &lt;b &gt; &lt;del /&gt; &lt;i/&gt; &lt;strong&gt;';
     const restoredHtml = EscapingHelpers.restoreSanitizedElements(text);
     assert.equal(restoredHtml, '<br> <b> <del> <i> <strong>');
   });
@@ -79,11 +78,7 @@ describe('Escaping-helpers', () => {
         links: []
       };
 
-      assert.deepEqual(
-        escapedTextAndLinks,
-        expectedResult,
-        'excaped text object with empty link array'
-      );
+      assert.deepEqual(escapedTextAndLinks, expectedResult, 'excaped text object with empty link array');
     });
 
     it('with links', () => {
@@ -91,7 +86,8 @@ describe('Escaping-helpers', () => {
       const links = {
         issues: {
           text: 'Issues',
-          url: `http://github.com/SAP/luigi/issues`
+          url: `http://github.com/SAP/luigi/issues`,
+          dismissKey: 'goToHome'
         },
         pulls: {
           text: 'Pulls',
@@ -101,11 +97,7 @@ describe('Escaping-helpers', () => {
       const uniqueID = 1234567890;
 
       // when
-      const escapedTextAndLinks = EscapingHelpers.processTextAndLinks(
-        text,
-        links,
-        uniqueID
-      );
+      const escapedTextAndLinks = EscapingHelpers.processTextAndLinks(text, links, uniqueID);
 
       // then
       const expectedResult = {
@@ -113,21 +105,19 @@ describe('Escaping-helpers', () => {
           'Hello Luigi. <a id="_luigi_alert_1234567890_link_issues-sanitizeParam">Issues-sanitizeHtml</a> <a id="_luigi_alert_1234567890_link_pulls-sanitizeParam">Pulls-sanitizeHtml</a>-sanitizeHtml',
         links: [
           {
+            dismissKey: 'goToHome-sanitizeHtml',
             elemId: '_luigi_alert_1234567890_link_issues-sanitizeParam',
             url: 'http://github.com/SAP/luigi/issues-sanitizeHtml'
           },
           {
+            dismissKey: undefined,
             elemId: '_luigi_alert_1234567890_link_pulls-sanitizeParam',
             url: 'http://github.com/SAP/luigi/pulls-sanitizeHtml'
           }
         ]
       };
 
-      assert.deepEqual(
-        escapedTextAndLinks,
-        expectedResult,
-        'excaped text and links object'
-      );
+      assert.deepEqual(escapedTextAndLinks, expectedResult, 'excaped text and links object');
     });
   });
 });

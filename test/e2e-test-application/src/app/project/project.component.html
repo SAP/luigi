@@ -156,6 +156,13 @@
         >
           Luigi alert has been dismissed
         </p>
+        <p
+          *ngIf="alertDismissKey"
+          class="fd-has-font-style-italic fd-has-color-status-1"
+          data-testid="luigi-dismissKey-result"
+        >
+          Luigi alert dismissKey has been returned
+        </p>
       </div>
     </div>
 
@@ -595,6 +602,43 @@
             >
             <app-code-snippet
               data="linkManager().navigate('/#?intent=Sales-settings?param1=abc&param2=bcd')"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager().navigateToIntent(
+                  'Component-settings', {project: 'pr1', param2: '22'}
+                )
+              "
+            >
+              navigate to settings of project 1 with alternative intent method:
+              navigateToIntent
+            </a>
+            <app-code-snippet
+              data="linkManager().navigateToIntent('Component-settings', {project: 'pr1', param2: '22'})"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager()
+                  .fromClosestContext()
+                  .withParams({ foo: 'bar' })
+                  .newTab()
+                  .navigate('settings')
+              "
+            >
+              navigate to new tab, using closest context and params</a
+            >
+            <app-code-snippet
+              data="linkManager().fromClosestContext().withParams({ foo: 'bar' }).newTab().navigate('settings')"
             >
             </app-code-snippet>
           </li>

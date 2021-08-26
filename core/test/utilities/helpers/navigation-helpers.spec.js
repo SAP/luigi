@@ -1,10 +1,12 @@
+/* eslint-disable camelcase */
 //TODO: make some tests here
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { AuthHelpers, NavigationHelpers } from '../../../src/utilities/helpers';
+import { AuthHelpers, NavigationHelpers, GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
 import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
+import { Navigation } from '../../../src/navigation/services/navigation';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
@@ -92,9 +94,7 @@ describe('Navigation-helpers', () => {
       AuthHelpers.isLoggedIn.returns(true);
       LuigiConfig.getConfigValue.returns(permissionCheckerFn);
 
-      assert.isTrue(
-        NavigationHelpers.isNodeAccessPermitted(checkNode, parentNode, context)
-      );
+      assert.isTrue(NavigationHelpers.isNodeAccessPermitted(checkNode, parentNode, context));
       assert(
         permissionCheckerFn.calledWith(checkNode, parentNode, context),
         'permissionCheckerFn called with proper arguments'
@@ -109,20 +109,9 @@ describe('Navigation-helpers', () => {
     });
 
     it('should return false for invalid icon names', async () => {
-      assert.equal(
-        NavigationHelpers.isOpenUIiconName('./relative.path'),
-        false
-      );
-      assert.equal(
-        NavigationHelpers.isOpenUIiconName(
-          'http://niceicons.com/that-one-icon.png'
-        ),
-        false
-      );
-      assert.equal(
-        NavigationHelpers.isOpenUIiconName('https://google.com'),
-        false
-      );
+      assert.equal(NavigationHelpers.isOpenUIiconName('./relative.path'), false);
+      assert.equal(NavigationHelpers.isOpenUIiconName('http://niceicons.com/that-one-icon.png'), false);
+      assert.equal(NavigationHelpers.isOpenUIiconName('https://google.com'), false);
     });
   });
 
@@ -156,11 +145,7 @@ describe('Navigation-helpers', () => {
       },
       pathSegment: 'pathSegment'
     };
-    assert.equal(
-      NavigationHelpers.getNodePath(node),
-      'parent/pathSegment',
-      'path should match'
-    );
+    assert.equal(NavigationHelpers.getNodePath(node), 'parent/pathSegment', 'path should match');
   });
 
   describe('handleUnresponsiveClient', () => {
@@ -247,6 +232,215 @@ describe('Navigation-helpers', () => {
       const [collapseLabel, expandLabel] = NavigationHelpers.getBurgerTooltipConfig();
       assert.equal(collapseLabel, 'Expand navigation');
       assert.equal(expandLabel, 'Collapse navigation');
+    });
+  });
+
+  describe('shouldPreventNavigationForPath', () => {
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('returns true when navigation should be prevented for path', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('testPreventNavigation');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns({
+        pathSegment: 'testPreventNavigation',
+        label: 'Prevent navigation conditionally',
+        onNodeActivation: () => {
+          return false;
+        }
+      });
+      const actual = await NavigationHelpers.shouldPreventNavigationForPath('testPreventNavigation');
+      assert.equal(actual, true);
+    });
+
+    it('returns false when navigation should not be prevented for path', async () => {
+      sinon.stub(Navigation, 'getNavigationPath').returns('testNotPreventNavigation');
+      sinon.stub(RoutingHelpers, 'getLastNodeObject').returns({
+        pathSegment: 'testNotPreventNavigation',
+        label: 'Do not prevent navigation conditionally',
+        onNodeActivation: () => {
+          return true;
+        }
+      });
+      const actual = await NavigationHelpers.shouldPreventNavigationForPath('testNotPreventNavigation');
+      assert.equal(actual, false);
+    });
+  });
+
+  describe('node title data', () => {
+    let object;
+
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigValue');
+      sinon.stub(NavigationHelpers, '_fetch');
+      object = {
+        some: {
+          nested: {
+            value: 'value'
+          },
+          other: {
+            key: 'otherkey',
+            value: 'othervalue'
+          }
+        }
+      };
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('getPropertyChainValue', () => {
+      assert.equal(NavigationHelpers.getPropertyChainValue(object, 'some.nested.value'), 'value');
+      assert.equal(NavigationHelpers.getPropertyChainValue(object, 'some.nested.value2', 'fallback'), 'fallback');
+      assert.equal(NavigationHelpers.getPropertyChainValue(undefined, 'some.nested.value2', 'fallback'), 'fallback');
+      assert.equal(NavigationHelpers.getPropertyChainValue(object, undefined, 'fallback'), 'fallback');
+      assert.equal(NavigationHelpers.getPropertyChainValue(undefined, undefined, 'fallback'), 'fallback');
+
+      assert.equal(NavigationHelpers.getPropertyChainValue(object, 'some'), object.some);
+      assert.equal(NavigationHelpers.getPropertyChainValue(object, '', 'fallback'), 'fallback');
+    });
+
+    it('substituteVars', () => {
+      const resolver = {
+        a: {
+          b: {
+            value: 'xyz_${some.nested.value}_andbeyond'
+          },
+          c: {
+            '${some.other.key}': 'keyrep_${some.other.value}'
+          }
+        }
+      };
+      const subs = NavigationHelpers.substituteVars(resolver, object);
+      assert.equal(subs.a.b.value, 'xyz_value_andbeyond');
+      assert.equal(subs.a.c.otherkey, 'keyrep_othervalue');
+    });
+
+    describe('fetchNodeTitleData', () => {
+      const samplenode = {
+        context: {
+          token: '123456789',
+          projectId: 'pr1'
+        },
+        titleResolver: {
+          request: {
+            method: 'POST',
+            url: 'http://localhost/test',
+            headers: {
+              authorization: 'Bearer ${token}',
+              'content-type': 'application/json'
+            },
+            body: {
+              operationName: 'project',
+              query:
+                'query project($projectId: ID!) {\n  project(projectId: $projectId) {\n    projectId\n    displayName\n    owner\n    description\n    created\n    __typename\n  }\n}\n',
+              variables: {
+                projectId: '${projectId}'
+              }
+            }
+          },
+          titlePropertyChain: 'data.project.displayName',
+          iconPropertyChain: 'data.img',
+          prerenderFallback: true,
+          titleDecorator: 'decorate %s end',
+          fallbackTitle: 'Project',
+          fallbackIcon: 'curriculum'
+        }
+      };
+
+      it('should reject if no titleResolver set', done => {
+        NavigationHelpers.fetchNodeTitleData({ titleResolver: undefined }, {})
+          .then(() => {
+            assert.fail('Should not be here');
+          })
+          .catch(() => {
+            // should fail
+            done();
+          });
+      });
+
+      it('should get data from cache', done => {
+        const node = {
+          titleResolver: {
+            url: 'http://localhost'
+          }
+        };
+
+        const value = {
+          some: 'value'
+        };
+
+        node.titleResolver._cache = {
+          key: JSON.stringify(node.titleResolver),
+          value: value
+        };
+
+        NavigationHelpers.fetchNodeTitleData(node, node.context).then(data => {
+          assert.equal(data, value);
+          done();
+        });
+      });
+
+      it('should use correct request data and properly process response data', done => {
+        const node = JSON.parse(JSON.stringify(samplenode));
+
+        let fetchUrl, fetchOptions;
+        NavigationHelpers._fetch.callsFake((url, options) => {
+          fetchUrl = url;
+          fetchOptions = options;
+          return new Promise((resolve, reject) => {
+            resolve(
+              new Response(JSON.stringify({}), {
+                status: 200,
+                headers: { 'Content-type': 'application/json' }
+              })
+            );
+          });
+        });
+
+        const assertRequestData = () => {
+          assert.equal(fetchUrl, 'http://localhost/test');
+          assert.equal(fetchOptions.headers.authorization, 'Bearer 123456789');
+          assert.equal(JSON.parse(fetchOptions.body).variables.projectId, 'pr1');
+        };
+
+        NavigationHelpers.fetchNodeTitleData(node, node.context)
+          .then(() => {
+            assertRequestData();
+            done();
+          })
+          .catch(e => {
+            assertRequestData();
+            done();
+          });
+      });
+
+      it('should process server response correctly', () => {
+        const node = JSON.parse(JSON.stringify(samplenode));
+        const mockedResponse = {
+          data: {
+            img: 'imgurl',
+            project: {
+              displayName: 'display'
+            }
+          }
+        };
+
+        const titleData = NavigationHelpers.processTitleData(mockedResponse, node.titleResolver);
+        assert.equal(titleData.icon, 'imgurl');
+        assert.equal(titleData.label, 'decorate display end');
+      });
+
+      it('should return fallback', () => {
+        const node = JSON.parse(JSON.stringify(samplenode));
+        const mockedResponse = {};
+
+        const titleData = NavigationHelpers.processTitleData(mockedResponse, node.titleResolver);
+        assert.equal(titleData.icon, 'curriculum');
+        assert.equal(titleData.label, 'Project');
+      });
     });
   });
 });
