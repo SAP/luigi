@@ -1326,6 +1326,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Add search parameters to the URL.
 If [hash routing](navigation-parameters-reference.md#usehashrouting) is enabled, the search parameters will be set after the hash.
+In order to delete a search query param you can set the value of the param to undefined.
 
 ##### Parameters
 
@@ -1334,21 +1335,7 @@ If [hash routing](navigation-parameters-reference.md#usehashrouting) is enabled,
 ##### Examples
 
 ```javascript
-Luigi.routing().addSearchParams({luigi:'rocks'});
-```
-
-**Meta**
-
-*   **since**: NEXTRELEASE
-
-#### deleteSearchParams
-
-Delete all search parameters from the URL
-
-##### Examples
-
-```javascript
-Luigi.routing().deleteSearchParams();
+Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined});
 ```
 
 **Meta**
