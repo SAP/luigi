@@ -52,9 +52,9 @@ describe('Luigi routing', function() {
     });
     it('delete search params from url', () => {
       window.state = {};
-      global.location = 'http://some.url.de?luigi=rocks';
-      LuigiRouting.deleteSearchParams();
-      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/');
+      global.location = 'http://some.url.de?luigi=rocks&mario=red';
+      LuigiRouting.addSearchParams({ mario: undefined });
+      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?luigi=rocks');
     });
   });
   describe('SearchParams hash routing', () => {
@@ -115,9 +115,9 @@ describe('Luigi routing', function() {
     });
     it('delete search params from url', () => {
       window.state = {};
-      global.location = 'http://some.url.de/#/?luigi=rocks';
-      LuigiRouting.deleteSearchParams();
-      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/#/');
+      global.location = 'http://some.url.de/#/?luigi=rocks&mario=red';
+      LuigiRouting.addSearchParams({ mario: undefined });
+      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/#/?luigi=rocks');
     });
   });
 });
