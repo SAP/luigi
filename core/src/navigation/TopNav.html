@@ -110,8 +110,8 @@
     -->
 
     <!-- dropdown for top nav nodes on smaller screens -->
-    {#if isGlobalSearchAvailable || (visibleNodeCount - globalNavNodeCount > 0) ||
-    isProductSwitcherAvailable || contextSwitcherConfig}
+    {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
+    contextSwitcherConfig || isGlobalSearchAvailable }
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -319,7 +319,7 @@
             data-testid="luigi-topnav-profile-initials"
           >
             {userInfo.initials ? userInfo.initials : ''}
-        </button>
+          </button>
           {/if}
         </div>
         <div
@@ -358,7 +358,7 @@
                   class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 ></i>
                 {/if}
-            </button>
+              </button>
             </div>
           </div>
           <div
