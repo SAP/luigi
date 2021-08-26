@@ -382,6 +382,25 @@ describe('Routing', function() {
               pathSegment: 'compound',
               label: 'BBB',
               viewUrl: ''
+            },
+            {
+              pathSegment: 'compound2',
+              label: 'BBB',
+              viewUrl: ''
+            },
+            {
+              pathSegment: 'compound3',
+              label: 'BBB',
+              viewUrl: '',
+              compound: true
+            },
+            {
+              pathSegment: 'compound-webcomponent',
+              label: 'BBB',
+              viewUrl: 'compound',
+              intendToHaveEmptyViewUrl: true,
+              webcomponent: true,
+              component: true
             }
           ]
         },
@@ -575,6 +594,7 @@ describe('Routing', function() {
     });
 
     it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
+      //given
       const path = 'compound';
       const node = { compound: { renderer: () => {} } };
 
@@ -593,21 +613,72 @@ describe('Routing', function() {
 
     it('should navigate to rootPath if node can be reached directly', async () => {
       //given
-      const path = 'compound';
+      const path = 'compound2';
       const node = { compound: { renderer: () => {} } };
 
+      //when
       component.viewUrl = path;
-
       component.showAlert = sinon.spy();
       component.shouldShowUnsavedChangesModal = sinon.spy();
 
-      //when
       await Routing.handleRouteChange(path, component, node, config).catch(error => {
         console.log(error);
       });
 
       //then
       sinon.assert.calledWithExactly(Routing.navigateTo, 'projects');
+    });
+
+    it('should handle nodeObject that is compound', async () => {
+      //given
+      const path = 'compound3';
+      const node = { compound: { renderer: () => {} } };
+
+      //when
+      component.viewUrl = path;
+      component.showAlert = sinon.spy();
+      component.shouldShowUnsavedChangesModal = sinon.spy();
+
+      const element = document.createElement('div');
+      sinon.stub(document, 'getElementsByClassName').returns([element]);
+      sinon.stub(GenericHelpers, 'requestExperimentalFeature').returns(true);
+      Iframe.switchActiveIframe = sinon.spy();
+      Routing.navigateWebComponentCompound = sinon.spy();
+
+      await Routing.handleRouteChange(path, component, node, config).catch(error => {
+        console.log(error);
+      });
+
+      //then
+      assert.equal(element.classList.contains('lui-webComponent'), true);
+      sinon.assert.calledOnce(Iframe.switchActiveIframe);
+      sinon.assert.calledOnce(Routing.navigateWebComponentCompound);
+    });
+
+    it('should handle nodeObject that is webcomponent', async () => {
+      //given
+      const path = 'compound-webcomponent';
+      const node = { compound: { renderer: () => {} } };
+
+      //when
+      component.viewUrl = path;
+      component.showAlert = sinon.spy();
+      component.shouldShowUnsavedChangesModal = sinon.spy();
+
+      const element = document.createElement('div');
+      sinon.stub(document, 'getElementsByClassName').returns([element]);
+      sinon.stub(GenericHelpers, 'requestExperimentalFeature').returns(true);
+      Iframe.switchActiveIframe = sinon.spy();
+      Routing.navigateWebComponent = sinon.spy();
+
+      await Routing.handleRouteChange(path, component, node, config).catch(error => {
+        console.log(error);
+      });
+
+      //then
+      assert.equal(element.classList.contains('lui-webComponent'), true);
+      sinon.assert.calledOnce(Iframe.switchActiveIframe);
+      sinon.assert.calledOnce(Routing.navigateWebComponent);
     });
   });
 
