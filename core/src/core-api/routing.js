@@ -1,6 +1,5 @@
 import { LuigiConfig } from '.';
-import { Iframe } from '../services';
-import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
+import { GenericHelpers } from '../utilities/helpers';
 /**
  * @name Routing
  */
@@ -69,6 +68,7 @@ class LuigiRouting {
       }
     }
     window.history.pushState({}, '', url.href);
+    LuigiConfig.configChanged();
   }
 
   _stringSearchParamsToObject(queryParamsString) {
