@@ -171,7 +171,7 @@ export const projectDetailNavStructure = projectId => [
   },
   {
     pathSegment: 'webcomponent',
-    label: 'Webcomponent',
+    label: 'Webcomponent TEST',
     icon: 'along-stacked-chart',
     loadingIndicator: {
       enabled: false
@@ -181,7 +181,8 @@ export const projectDetailNavStructure = projectId => [
     },
     viewUrl: '/assets/helloWorldWC.js',
     webcomponent: true,
-    openNodeInModal: true
+    openNodeInModal: true,
+    tooltipText: 'Webcomponent TEST2'
   },
   {
     pathSegment: 'misc2-isolated',
@@ -190,7 +191,7 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
     icon: 'sys-help-2',
-    tooltipText: 'Miscellaneous2 (Isolated View)'
+    tooltipText: false
   },
   {
     pathSegment: 'dps',
