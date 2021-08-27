@@ -7,7 +7,7 @@
       {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs') && (selectedOption
       !== config.defaultLabel) }
       <a
-        href="{addNavHrefForAnchor ? selectedNodePath : undefined}"
+        href="{selectedNodePath}"
         class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
         aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
         aria-haspopup="true"
