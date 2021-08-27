@@ -315,11 +315,11 @@ export declare interface LinkManager {
    * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
    * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
    * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
-   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`
+   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`. (optional, default `{}`)
    * @example
    * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
    */
-  navigateToIntent: (semanticSlug: string, params: Object) => void;
+  navigateToIntent: (semanticSlug: string, params?: Object) => void;
 
   /** @lends linkManager */
   /**
