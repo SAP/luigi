@@ -1052,6 +1052,8 @@
     }
 
     window.open(nodepath, '_blank');
+    otherWindow.opener = null;
+
   };
 
   function init(node) {
