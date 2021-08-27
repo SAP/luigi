@@ -392,6 +392,7 @@ Consequently, the following calls shall have the exact same effect:
 
 ```javascript
 LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+LuigiClient.linkManager().navigateToIntent('Sales-settings')
 ```
 
 #### withoutSync
