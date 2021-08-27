@@ -119,5 +119,11 @@ describe('Luigi routing', function() {
       LuigiRouting.addSearchParams({ mario: undefined });
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/#/?luigi=rocks');
     });
+
+    it('_modifySearchParam', () => {
+      let searchParams = new URLSearchParams('mario=rocks');
+      let sp = LuigiRouting._modifySearchParam({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
+      assert.equal(sp.toString(), 'test=tets&luigi=rocks');
+    });
   });
 });
