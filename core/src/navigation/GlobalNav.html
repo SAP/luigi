@@ -13,11 +13,10 @@
           <a
             href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
             title="{$getTranslation(node.label)}"
+            on:click|preventDefault="{() => handleClick(node)}"
+            role="button"
           >
-            <div
-              class="lui-fd-nested-list__content"
-              on:click|preventDefault="{() => handleClick(node)}"
-            >
+            <div class="lui-fd-nested-list__content">
               {#if node.icon} {#if hasOpenUIicon(node)}
               <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
               {:else}
@@ -262,6 +261,11 @@
       display: block;
       margin-left: 5px;
       margin-bottom: 2px;
+    }
+
+    /*disable default red/purple outline*/
+    .fd-nested-list__item a {
+      text-decoration: none;
     }
   }
 </style>

@@ -271,12 +271,12 @@
       ),
       nodeParams: JSON.stringify(Object.assign({}, config.nodeParams || nodeParams)),
       pathParams: JSON.stringify(Object.assign({}, config.pathParams || pathParams)),
+      searchParams: JSON.stringify(Object.assign({}, LuigiRouting._prepareSearchParamsForClient(config.iframe.luigi.currentNode))),
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
-
   const sendAuthDataToClient = authData => {
     const message = {
       msg: 'luigi.auth.tokenIssued',

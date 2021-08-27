@@ -50,6 +50,12 @@ describe('Luigi routing', function() {
       LuigiRouting.addSearchParams('bar');
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
     });
+    it('delete search params from url', () => {
+      window.state = {};
+      global.location = 'http://some.url.de?luigi=rocks&mario=red';
+      LuigiRouting.addSearchParams({ mario: undefined });
+      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?luigi=rocks');
+    });
   });
   describe('SearchParams hash routing', () => {
     beforeEach(() => {
@@ -107,19 +113,11 @@ describe('Luigi routing', function() {
       LuigiRouting.addSearchParams('bar');
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
     });
-  });
-  describe('_stringSearchParamsToObject', () => {
-    it('single param', () => {
-      const singleParam = 'luigi=rocks';
-      assert.deepEqual(LuigiRouting._stringSearchParamsToObject(singleParam), { luigi: 'rocks' });
-    });
-    it('multiple param', () => {
-      const singleParam = 'luigi=rocks&test=tets&some=thing';
-      assert.deepEqual(LuigiRouting._stringSearchParamsToObject(singleParam), {
-        luigi: 'rocks',
-        test: 'tets',
-        some: 'thing'
-      });
+    it('delete search params from url', () => {
+      window.state = {};
+      global.location = 'http://some.url.de/#/?luigi=rocks&mario=red';
+      LuigiRouting.addSearchParams({ mario: undefined });
+      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/#/?luigi=rocks');
     });
   });
 });
