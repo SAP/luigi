@@ -1051,8 +1051,7 @@
       return;
     }
 
-    window.open(nodepath, '_blank');
-    otherWindow.opener = null;
+    window.open(nodepath, '_blank', 'noopener,noreferrer');
 
   };
 
