@@ -284,16 +284,18 @@ class RoutingClass {
 
       let cNode2 = currentNode;
       let hideSideNavInherited = nodeObject.hideSideNav;
-      while (cNode2) {
-        if (cNode2.tabNav && cNode2.hideSideNav === true) {
-          hideSideNavInherited = true;
-          break;
+      if(hideSideNavInherited === undefined) {
+        while (cNode2) {
+          if (cNode2.tabNav && cNode2.hideSideNav === true) {
+            hideSideNavInherited = true;
+            break;
+          }
+          if (cNode2.hideSideNav === false) {
+            hideSideNavInherited = false;
+            break;
+          }
+          cNode2 = cNode2.parent;
         }
-        if (cNode2.hideSideNav === false) {
-          hideSideNavInherited = false;
-          break;
-        }
-        cNode2 = cNode2.parent;
       }
 
       const ctx = RoutingHelpers.substituteDynamicParamsInObject(
