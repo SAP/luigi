@@ -52,23 +52,13 @@ class LuigiRouting {
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       let [hashValue, givenQueryParamsString] = url.hash.split('?');
       let searchParams = new URLSearchParams(givenQueryParamsString);
-      for (const [key, value] of Object.entries(params)) {
-        searchParams.set(key, value);
-        if (value === undefined) {
-          searchParams.delete(key);
-        }
-      }
+      searchParams = this._modifySearchParam(params, searchParams);
       url.hash = hashValue;
       if (searchParams.toString() !== '') {
         url.hash += `?${decodeURIComponent(searchParams.toString())}`;
       }
     } else {
-      for (const [key, value] of Object.entries(params)) {
-        url.searchParams.set(key, value);
-        if (value === undefined) {
-          url.searchParams.delete(key);
-        }
-      }
+      this._modifySearchParam(params, url.searchParams);
     }
     window.history.pushState({}, '', url.href);
     LuigiConfig.configChanged();
@@ -98,6 +88,17 @@ class LuigiRouting {
         this.addSearchParams(filteredObj);
       }
     }
+  }
+
+  //Adds and remove properties from searchParams
+  _modifySearchParam(params, searchParams) {
+    for (const [key, value] of Object.entries(params)) {
+      searchParams.set(key, value);
+      if (value === undefined) {
+        searchParams.delete(key);
+      }
+    }
+    return searchParams;
   }
 }
 

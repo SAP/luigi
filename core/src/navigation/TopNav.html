@@ -40,8 +40,9 @@
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
       isMobile="{false}"
     />
-    {/if} {#if children && pathData.length > 0} {#each children as node, i} {#if
-    !(node.hideFromNav || (showGlobalNav && node.globalNav))} {#if node.isCat}
+    {/if} {#if isGlobalSearchAvailable || (children && pathData.length > 0)} {#if
+    (children && pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav
+    || (showGlobalNav && node.globalNav))} {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
@@ -99,7 +100,7 @@
       </button>
       {/if}
     </div>
-    {/if} {/if} {/each}
+    {/if} {/if} {/each} {/if}
     <!-- Sample Markup for Notifications
             <div class="fd-shellbar__action fd-shellbar__action--desktop">
               <button class="fd-shellbar__button fd-button sap-icon--bell" aria-label="Notifications">
@@ -110,7 +111,7 @@
 
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
-    contextSwitcherConfig}
+    contextSwitcherConfig || isGlobalSearchAvailable }
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -166,8 +167,8 @@
                     >
                   </a>
                 </li>
-                {/if} {#each children as node,i} {#if !(node.hideFromNav || (showGlobalNav
-                && node.globalNav))} {#if !node.isCat}
+                {/if} {#if children} {#each children as node,i} {#if !(node.hideFromNav ||
+                (showGlobalNav && node.globalNav))} {#if !node.isCat}
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
@@ -231,7 +232,7 @@
                   </a>
                 </li>-->
                 <!-- {/if} -->
-                {/if} {/if} {/each} {#if isProductSwitcherAvailable}
+                {/if} {/if} {/each} {/if} {#if isProductSwitcherAvailable}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -318,7 +319,7 @@
             data-testid="luigi-topnav-profile-initials"
           >
             {userInfo.initials ? userInfo.initials : ''}
-        </button>
+          </button>
           {/if}
         </div>
         <div
@@ -357,7 +358,7 @@
                   class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 ></i>
                 {/if}
-            </button>
+              </button>
             </div>
           </div>
           <div
