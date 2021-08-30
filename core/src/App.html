@@ -1050,9 +1050,8 @@
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
-
+    /*'noopener,noreferrer' required to disable XSS injections*/
     window.open(nodepath, '_blank', 'noopener,noreferrer');
-
   };
 
   function init(node) {
