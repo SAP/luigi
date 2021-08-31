@@ -110,12 +110,24 @@ export const ContextSwitcherHelpers = {
       return;
     }
 
-    let selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
-    let selectedLabel = selectedOption ? selectedOption.label : undefined;
+    const selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
+    const selectedLabel = selectedOption ? selectedOption.label : undefined;
 
     // get the label from fallback if selectedId is not
     // in options or options not yet lazy loaded by click
     return selectedLabel || (await ContextSwitcherHelpers.getFallbackLabel(fallbackLabelResolver, selectedId));
+  },
+
+  async getSelectedNode(currentPath, options, parentNodePath) {
+    const selectedId = this.getSelectedId(currentPath, options, parentNodePath);
+    if (!selectedId) {
+      return;
+    }
+
+    let selectedOption = await this.getSelectedOption(currentPath, options, parentNodePath);
+    const selectedNodePath = selectedOption ? selectedOption.link : undefined;
+
+    return selectedNodePath;
   },
 
   async fetchOptions(existingOptions = []) {
