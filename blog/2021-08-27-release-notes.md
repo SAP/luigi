@@ -29,11 +29,6 @@ LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 
 You can read more in the documentation [here](https://docs.luigi-project.io/docs/luigi-client-api/?section=newtab).
 
-
-#### addNavHrefs support for application switcher and product switcher
-
-You now have the possibility to apply [addNavHrefs](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=addnavhrefs) to the [app switcher](https://docs.luigi-project.io/docs/navigation-advanced?section=app-switcher) and [product switcher](https://docs.luigi-project.io/docs/navigation-advanced?section=product-switcher) in Luigi. This allows you to enable product switcher links to be opened in new tab, for example. For more information, see [PR #2172](https://github.com/SAP/luigi/pull/2172) and [PR #2177](https://github.com/SAP/luigi/pull/2177).
-
 #### Bugfixes
 
 For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/master/CHANGELOG.md).
