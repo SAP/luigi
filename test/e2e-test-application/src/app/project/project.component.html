@@ -78,7 +78,24 @@
         </p>
       </div>
     </div>
-
+    <div class="fd-layout-panel luigi__margin-bottom--small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            Open settings in a modal
+          </h3>
+        </div>
+      </div>
+      <div class="fd-layout-panel__body">
+        <button
+          class="fd-button"
+          data-testid="open-pr2-modal"
+          (click)="linkManager().openAsModal('/settings/')"
+        >
+          Open settings in a modal
+        </button>
+      </div>
+    </div>
     <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">

@@ -18,6 +18,7 @@ export class linkManager extends LuigiClientBase {
     Object.assign(this, values);
 
     this.options = {
+      action: '',
       preserveView: false,
       nodeParams: {},
       errorSkipNavigation: false,
@@ -74,10 +75,12 @@ export class linkManager extends LuigiClientBase {
     }
 
     const hasIntent = path.toLowerCase().includes('?intent=');
+    const action = relativePath ? 'RELATIVE' : hasIntent ? 'INTENT' : this.options.action;
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
       params: Object.assign(this.options, {
+        action: action,
         link: path,
         relative: relativePath,
         intent: hasIntent,
@@ -184,6 +187,7 @@ export class linkManager extends LuigiClientBase {
       this.currentContext.context.parentNavigationContexts &&
       this.currentContext.context.parentNavigationContexts.indexOf(navigationContext) !== -1;
     if (navigationContextInParent) {
+      this.options.action = 'CONTEXT';
       this.options.fromContext = navigationContext;
     } else {
       this.options.errorSkipNavigation = true;
@@ -203,6 +207,7 @@ export class linkManager extends LuigiClientBase {
     const hasParentNavigationContext =
       this.currentContext && this.currentContext.context.parentNavigationContexts.length > 0;
     if (hasParentNavigationContext) {
+      this.options.action = 'CLOSEST_CONTEXT';
       this.options.fromContext = null;
       this.options.fromClosestContext = true;
     } else {
@@ -219,6 +224,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
    */
   fromVirtualTreeRoot() {
+    this.options.action = 'VIRTUAL_TREE_ROOT';
     this.options.fromContext = null;
     this.options.fromClosestContext = false;
     this.options.fromVirtualTreeRoot = true;
@@ -234,6 +240,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromParent().navigate('/sibling')
    */
   fromParent() {
+    this.options.action = 'PARENT';
     this.options.fromParent = true;
     return this;
   }
