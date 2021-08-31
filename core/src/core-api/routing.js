@@ -53,7 +53,7 @@ class LuigiRouting {
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       let [hashValue, givenQueryParamsString] = url.hash.split('?');
       let searchParams = new URLSearchParams(givenQueryParamsString);
-      searchParams = this._modifySearchParam(params, searchParams);
+      this._modifySearchParam(params, searchParams);
       url.hash = hashValue;
       if (searchParams.toString() !== '') {
         url.hash += `?${decodeURIComponent(searchParams.toString())}`;
@@ -72,7 +72,6 @@ class LuigiRouting {
         searchParams.delete(key);
       }
     }
-    return searchParams;
   }
 }
 

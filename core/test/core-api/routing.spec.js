@@ -122,8 +122,8 @@ describe('Luigi routing', function() {
 
     it('_modifySearchParam', () => {
       let searchParams = new URLSearchParams('mario=rocks');
-      let sp = LuigiRouting._modifySearchParam({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
-      assert.equal(sp.toString(), 'test=tets&luigi=rocks');
+      LuigiRouting._modifySearchParam({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
+      assert.equal(searchParams.toString(), 'test=tets&luigi=rocks');
     });
   });
 });
