@@ -13,6 +13,7 @@ describe('Luigi routing', function() {
   });
   afterEach(() => {
     global.location = globalLocationRef;
+    sinon.restore();
   });
   describe('SearchParams path routing', () => {
     it('get searchparams', () => {

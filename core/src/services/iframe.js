@@ -312,7 +312,7 @@ class IframeClass {
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
         searchParams: JSON.stringify(
-          Object.assign({}, LuigiRouting._prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+          Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
         ),
         internal: JSON.stringify(internalData)
       };

@@ -427,29 +427,25 @@ class LifecycleManager extends LuigiClientBase {
     return this.currentContext.pathParams;
   }
 
-  getSearchParams() {
-    // helpers.addEventListener(
-    //   'luigi.getSearchParams.answer',(e, listenerId) => {
-    //     const promise = this.getPromise('getSearchParams');
-    //     if (promise) {
-    //       e.data ? promise.resolveFn(e.data.data) : promise.rejectFn();
-    //       this.setPromise('getSearchParams', undefined);
-    //     }
-    //     helpers.removeEventListener(listenerId);
-    //   });
-
-    // helpers.sendPostMessageToLuigiCore({msg:'luigi.getSearchParams'});
-    // const getSearchParamsPromise = {};
-    // getSearchParamsPromise.promise = new Promise((resolve, reject) => {
-    //   getSearchParamsPromise.resolveFn = resolve;
-    //   getSearchParamsPromise.rejectFn = reject;
-    // });
-    // this.setPromise('getSearchParams', getSearchParamsPromise);
-    // return getSearchParamsPromise.promise;
+  /**
+   * Read search query parameters which are send from Luigi core
+   * @memberof Lifecycle
+   * @returns core search query parameters
+   * @example
+   * LuigiClient.getCoreSearchParams();
+   */
+  getCoreSearchParams() {
     return this.currentContext.searchParams;
   }
 
-  addSearchParams(searchParams) {
+  /**
+   * Sends search query parameters to Luigi core. If it is allowed on node level it will be added to url.
+   * @param {Object} searchParams
+   * @memberof Lifecycle
+   * @example
+   * LuigiClient.addCoreSearchParams({luigi:'rocks'});
+   */
+  addCoreSearchParams(searchParams) {
     if (searchParams) {
       helpers.sendPostMessageToLuigiCore({
         msg: 'luigi.addSearchParams',

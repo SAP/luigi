@@ -628,4 +628,58 @@ describe('Routing-helpers', () => {
       );
     });
   });
+
+  describe('Handle core search params from client', () => {
+    let currentNode;
+    beforeEach(() => {
+      currentNode = {
+        clientPermissions: {
+          urlParameters: {
+            luigi: {
+              read: true,
+              write: true
+            }
+          }
+        }
+      };
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({ luigi: 'rocks', test: 'tets' });
+      LuigiRouting.addSearchParams = sinon.spy();
+      console.warn = sinon.spy();
+    });
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+    it('Client can read allowed search param', () => {
+      assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), { luigi: 'rocks' });
+    });
+    it('Client can write allowd search params', () => {
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(LuigiRouting.addSearchParams, { luigi: 'rocks' });
+    });
+    it('Client can not read luigi url parameter', () => {
+      currentNode.clientPermissions.urlParameters.luigi.read = false;
+      assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), {});
+    });
+    it('Client can not write luigi url parameter', () => {
+      currentNode.clientPermissions.urlParameters.luigi.write = false;
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+    });
+    it('Client can only write specific url parameter', () => {
+      currentNode.clientPermissions.urlParameters = {
+        test: {
+          write: true,
+          read: true
+        },
+        luigi: {
+          write: false,
+          read: false
+        }
+      };
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(LuigiRouting.addSearchParams, { test: 'tets' });
+      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+    });
+  });
 });

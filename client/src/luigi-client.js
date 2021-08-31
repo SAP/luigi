@@ -56,11 +56,11 @@ class LuigiClient {
   getPathParams() {
     return lifecycleManager.getPathParams();
   }
-  getSearchParams() {
-    return lifecycleManager.getSearchParams();
+  getCoreSearchParams() {
+    return lifecycleManager.getCoreSearchParams();
   }
-  addSearchParams(searchParams) {
-    return lifecycleManager.addSearchParams(searchParams);
+  addCoreSearchParams(searchParams) {
+    return lifecycleManager.addCoreSearchParams(searchParams);
   }
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();

@@ -52,42 +52,17 @@ class LuigiRouting {
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       let [hashValue, givenQueryParamsString] = url.hash.split('?');
       let searchParams = new URLSearchParams(givenQueryParamsString);
-      searchParams = this._modifySearchParam(params, searchParams);
+      this._modifySearchParam(params, searchParams);
       url.hash = hashValue;
       if (searchParams.toString() !== '') {
         url.hash += `?${decodeURIComponent(searchParams.toString())}`;
       }
     } else {
-      this._modifySearchParam(params, url.searchParams);
+      let searchParams = new URLSearchParams();
+      this._modifySearchParam(params, searchParams);
     }
     window.history.pushState({}, '', url.href);
     LuigiConfig.configChanged();
-  }
-
-  _prepareSearchParamsForClient(currentNode) {
-    let filteredObj = {};
-    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
-      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
-        if (key in this.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
-          filteredObj[key] = this.getSearchParams()[key];
-        }
-      });
-    }
-    return filteredObj;
-  }
-
-  _addSearchParamsFromClient(currentNode, searchParams) {
-    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
-      let filteredObj = {};
-      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
-        if (key in searchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
-          filteredObj[key] = searchParams[key];
-        }
-      });
-      if (Object.keys(filteredObj).length > 0) {
-        this.addSearchParams(filteredObj);
-      }
-    }
   }
 
   //Adds and remove properties from searchParams

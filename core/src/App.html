@@ -271,7 +271,12 @@
       ),
       nodeParams: JSON.stringify(Object.assign({}, config.nodeParams || nodeParams)),
       pathParams: JSON.stringify(Object.assign({}, config.pathParams || pathParams)),
-      searchParams: JSON.stringify(Object.assign({}, LuigiRouting._prepareSearchParamsForClient(config.iframe.luigi.currentNode))),
+      searchParams: JSON.stringify(
+        Object.assign(
+          {},
+          RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)
+        )
+      ),
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
@@ -1184,6 +1189,9 @@
               context: ctx,
               pathParams: specialIframeProps[typ.dataKey].pathParams,
               nodeParams: specialIframeProps[typ.dataKey].nodeParams,
+              searchParams: RoutingHelpers.prepareSearchParamsForClient(
+                specialIframeProps[typ.iframeKey].luigi.currentNode
+              ),
               modal: typ.iframeKey.startsWith('modal'),
               drawer: typ.iframeKey.startsWith('drawer'),
               splitView: typ.iframeKey.startsWith('splitView')
@@ -1438,21 +1446,12 @@
         }
       }
 
-      if ('luigi.getSearchParams' === e.data.msg) {
-        // const message={
-        //   msg:'luigi.getSearchParams.answer',
-        //   data: LuigiRouting._prepareSearchParamsForClient(iframe.luigi.currentNode)
-        // }
-        // debugger;
-        // await sendContextToClient(config, message);
-      }
-
       if ('luigi.addSearchParams' === e.data.msg) {
         if (
           iframe.luigi.currentNode.clientPermissions &&
           iframe.luigi.currentNode.clientPermissions.urlParameters
         ) {
-          LuigiRouting._addSearchParamsFromClient(currentNode, e.data.data);
+          RoutingHelpers.addSearchParamsFromClient(iframe.luigi.currentNode, e.data.data);
         }
       }
     });
