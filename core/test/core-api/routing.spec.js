@@ -10,6 +10,7 @@ describe('Luigi routing', function() {
 
   beforeEach(() => {
     window.history.pushState = sinon.spy();
+    sinon.stub(LuigiConfig, 'configChanged');
   });
   afterEach(() => {
     global.location = globalLocationRef;
