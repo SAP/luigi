@@ -49,7 +49,11 @@
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
-            title="{getNodeLabel(node)}"
+            title="{
+              (nodes.tooltipText && nodes.tooltipText.length) ?
+              $getTranslation(nodes.tooltipText) :
+              (nodes.tooltipText === false) ? '' : getNodeLabel(node)
+              }"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -88,7 +92,11 @@
       </a>
       {:else}
       <button
-        title="{getNodeLabel(node)}"
+        title="{
+              (nodes.tooltipText && nodes.tooltipText.length) ?
+              $getTranslation(nodes.tooltipText) :
+              (nodes.tooltipText === false) ? '' : getNodeLabel(node)
+              }"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
         aria-haspopup="true"
@@ -191,7 +199,11 @@
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    title="{getNodeLabel(node)}"
+                    title="{
+                      (nodes.tooltipText && nodes.tooltipText.length) ?
+                      $getTranslation(nodes.tooltipText) :
+                      (nodes.tooltipText === false) ? '' : getNodeLabel(node)
+                      }"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"

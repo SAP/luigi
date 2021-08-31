@@ -542,6 +542,7 @@ describe('Navigation', () => {
         });
       });
     });
+
     it('Nav sync - use synched nav', () => {
       // projects page
       cy.get('.fd-shellbar')
@@ -569,6 +570,19 @@ describe('Navigation', () => {
         });
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
       });
+    });
+
+    it('Left navigation title attr not exist', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Default Child')
+        .parent()
+        .should('have.attr', 'title', '');
     });
   });
   describe('Horizontal Tab Navigation', () => {

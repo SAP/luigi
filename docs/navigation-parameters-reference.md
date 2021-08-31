@@ -89,12 +89,21 @@ The navigation parameters allow you to configure **global** navigation settings 
 
 ### nodeChangeHook
 - **type**: function
-- **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration. 
+- **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration.
 
 ### defaults.isolateView
 - **type**: boolean
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
 - **default**: the parameter **defaults.isolateView** is `false` by default, and you can overwrite it using the **isolateView** value on a single node level.
+
+### tooltipText
+- **type**: string
+- **description**: allows you to add a tooltip to any of the links and buttons of the left side navigation and top navigation. You can set the parameter with the text that will appear on the tooltip.
+- **default**: it is `null` by default, and you can overwrite it using the **tooltipText** value on a single node level.
+- **example**:
+```javascript
+tooltipText: 'Useful links'
+```
 
 ### defaults.pageErrorHandler
 <!-- add-attribute:class:warning -->
