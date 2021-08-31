@@ -580,9 +580,9 @@ describe('Navigation', () => {
         .contains('Project One')
         .click();
       cy.get('.fd-nested-list__link')
-        .contains('Default Child')
+        .contains('Miscellaneous2')
         .parent()
-        .should('have.attr', 'title', '');
+        .should('have.attr', 'title', 'Miscellaneous2');
     });
   });
   describe('Horizontal Tab Navigation', () => {
