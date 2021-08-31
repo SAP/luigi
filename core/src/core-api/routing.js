@@ -1,5 +1,6 @@
 import { LuigiConfig } from '.';
-import { GenericHelpers } from '../utilities/helpers';
+import { Iframe } from '../services';
+import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 /**
  * @name Routing
  */
@@ -58,11 +59,9 @@ class LuigiRouting {
         url.hash += `?${decodeURIComponent(searchParams.toString())}`;
       }
     } else {
-      let searchParams = new URLSearchParams();
-      this._modifySearchParam(params, searchParams);
+      this._modifySearchParam(params, url.searchParams);
     }
     window.history.pushState({}, '', url.href);
-    LuigiConfig.configChanged();
   }
 
   //Adds and remove properties from searchParams
@@ -73,7 +72,6 @@ class LuigiRouting {
         searchParams.delete(key);
       }
     }
-    return searchParams;
   }
 }
 
