@@ -1,4 +1,8 @@
-<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false" bind:this={alertElement}>
+<div
+  class="fd-shell__overlay luigi-alert--overlay"
+  aria-hidden="false"
+  bind:this="{alertElement}"
+>
   {#each alertQueue as al}
   <div
     class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
@@ -65,11 +69,11 @@
         });
       });
 
-      if(alert.settings.afterInit) {
+      if (alert.settings.afterInit) {
         const el = alertElement;
         alert.settings.afterInit({
           dismiss: () => {
-            if(el && el.isConnected) {
+            if (el && el.isConnected) {
               dispatch('alertDismiss', { id: alert.settings.id });
             } else {
               console.debug('Alert already dismissed: ', el);
@@ -77,7 +81,7 @@
           },
           element: el
         });
-      };
+      }
 
       return {
         settings: { ...alert.settings, text: processedData.sanitizedText },
@@ -94,7 +98,7 @@
   function addClickListener(link, alertId) {
     try {
       const linkElem = document.getElementById(link.elemId);
-      if(linkElem.dismissListener) {
+      if (linkElem.dismissListener) {
         linkElem.removeEventListener('click', linkElem.dismissListener);
       }
       const listener = event => {
@@ -105,7 +109,8 @@
             const data = {
               params: {
                 link: link.url,
-                relative: isRelative
+                relative: isRelative,
+                action: isRelative ? 'RELATIVE' : ''
               }
             };
             handleNavigation(data);
