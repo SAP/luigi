@@ -184,6 +184,19 @@ export const projectDetailNavStructure = projectId => [
     openNodeInModal: true
   },
   {
+    pathSegment: 'webcomponent2',
+    label: 'Webcomponent 2',
+    icon: 'along-stacked-chart',
+    loadingIndicator: {
+      enabled: false
+    },
+    context: {
+      title: 'Hello WebComponent!'
+    },
+    viewUrl: '/assets/helloWorldWC.js',
+    webcomponent: true
+  },
+  {
     pathSegment: 'misc2-isolated',
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
