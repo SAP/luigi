@@ -8,6 +8,7 @@ import { ux } from './ux';
 import { globalSearch } from './globalsearch';
 import { theming } from './theming';
 import { featureToggles } from './featuretoggles';
+import { routing } from './routing';
 
 export const LuigiConfig = config;
 export const LuigiAuth = auth;
@@ -19,6 +20,7 @@ export const LuigiUX = ux;
 export const LuigiGlobalSearch = globalSearch;
 export const LuigiTheming = theming;
 export const LuigiFeatureToggles = featureToggles;
+export const LuigiRouting = routing;
 
 // Expose it window for user app to call Luigi.setConfig()
 window.Luigi = config;
@@ -31,3 +33,4 @@ window.Luigi.ux = () => ux;
 window.Luigi.globalSearch = () => globalSearch;
 window.Luigi.theming = () => theming;
 window.Luigi.featureToggles = () => featureToggles;
+window.Luigi.routing = () => routing;
