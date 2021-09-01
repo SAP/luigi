@@ -75,7 +75,8 @@ export class linkManager extends LuigiClientBase {
     }
 
     const hasIntent = path.toLowerCase().includes('?intent=');
-    const action = relativePath ? 'RELATIVE' : hasIntent ? 'INTENT' : this.options.action;
+    const hasAction = this.options.action !== '';
+    const action = hasAction ? this.options.action : relativePath ? 'RELATIVE' : hasIntent ? 'INTENT' : '';
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
