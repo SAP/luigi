@@ -533,7 +533,7 @@
       path = Routing.concatenatePath(getSubPath(node, localPathParams), link);
     } else if (fromContext) {
       // from a given navigation context
-      const navigationContext = params.fromContext;
+      const navigationContext = fromContext;
       const node = localNavPath
         .reverse()
         .find(n => navigationContext === n.navigationContext);
