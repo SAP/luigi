@@ -9,8 +9,7 @@ import {
   uxManager,
   getActiveFeatureToggles,
   getUserSettings,
-  addContextUpdateListener,
-  getCoreSearchParams
+  addContextUpdateListener
 } from '@luigi-project/client';
 import { Subscription } from 'rxjs';
 
@@ -68,12 +67,7 @@ export class SettingsComponent implements OnInit {
     this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
       if (ctx.contextType === 'init' || ctx.contextType === 'update') {
         this.preservedViewCallbackContext = ctx.context.goBackContext;
-        console.log('getNodeParams() ', getNodeParams());
         this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
-        let test = getCoreSearchParams();
-        if (test.q) {
-          console.log('test', test);
-        }
         // Since Luigi runs outside of Zone.js, changes need
         // to be updated manually
         // Be sure to check for destroyed ChangeDetectorRef,

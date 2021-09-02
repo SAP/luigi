@@ -152,15 +152,7 @@ class Navigation {
       icon: 'settings',
       globalNav: true,
       hideSideNav: true,
-      viewGroup: 'tets',
-      clientPermissions: {
-        urlParameters: {
-          q: {
-            read: true,
-            write: true
-          }
-        }
-      }
+      viewGroup: 'tets'
     },
 
     {
