@@ -428,7 +428,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Read search query parameters which are send from Luigi core
+   * Read search query parameters which are sent from Luigi Core
    * @memberof Lifecycle
    * @returns core search query parameters
    * @example
