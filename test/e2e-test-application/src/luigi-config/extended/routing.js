@@ -22,10 +22,6 @@ class Routing {
    * Default: /access_token=/, /id_token=/
    */
   skipRoutingForUrlPatterns = [/access_token=/, /id_token=/];
-  pageNotFoundHandler = (wrongPath, wasAnyPathFitted) => {
-    console.log('test');
-    console.log(wrongPath, wasAnyPathFitted);
-  };
 }
 
 export const routing = new Routing();

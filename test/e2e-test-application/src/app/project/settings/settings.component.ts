@@ -6,12 +6,10 @@ import {
   linkManager,
   getNodeParams,
   NodeParams,
-  getCoreSearchParams,
   uxManager,
   getActiveFeatureToggles,
   getUserSettings,
-  addContextUpdateListener,
-  CoreSearchParams
+  addContextUpdateListener
 } from '@luigi-project/client';
 import { Subscription } from 'rxjs';
 
@@ -29,7 +27,6 @@ export class SettingsComponent implements OnInit {
   isModal: boolean;
   userSettings: object;
   nodeParams: NodeParams = null;
-  searchParams: CoreSearchParams = null;
   callbackValue = 'default value';
   lcSubscription: Subscription;
   preservedViewCallbackContext: any;
@@ -52,7 +49,6 @@ export class SettingsComponent implements OnInit {
       this.isModal = uxManager().isModal();
       this.userSettings = getUserSettings();
       this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
-      this.searchParams = Object.keys(getCoreSearchParams()).length > 0 ? getCoreSearchParams() : null;
       let featureToggleList = getActiveFeatureToggles();
       if (featureToggleList.includes('ft1')) {
         this.testFeatureToggleActive = true;
@@ -64,7 +60,6 @@ export class SettingsComponent implements OnInit {
 
     addContextUpdateListener(context => {
       this.userSettings = getUserSettings();
-      this.searchParams = getCoreSearchParams();
     });
 
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
@@ -73,9 +68,6 @@ export class SettingsComponent implements OnInit {
       if (ctx.contextType === 'init' || ctx.contextType === 'update') {
         this.preservedViewCallbackContext = ctx.context.goBackContext;
         this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;
-        debugger;
-        this.searchParams = getCoreSearchParams();
-        console.log('this.searchParams ', this.searchParams);
         // Since Luigi runs outside of Zone.js, changes need
         // to be updated manually
         // Be sure to check for destroyed ChangeDetectorRef,
