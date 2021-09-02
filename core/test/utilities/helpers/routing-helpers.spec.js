@@ -653,7 +653,7 @@ describe('Routing-helpers', () => {
     it('Client can read allowed search param', () => {
       assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), { luigi: 'rocks' });
     });
-    it('Client can write allowd search params', () => {
+    it('Client can write allowed search params', () => {
       RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
       sinon.assert.calledWith(LuigiRouting.addSearchParams, { luigi: 'rocks' });
     });
