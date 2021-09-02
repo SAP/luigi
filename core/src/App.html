@@ -537,7 +537,7 @@
       // relative
       path = Routing.concatenatePath(getSubPath(localNode, localPathParams), params.link);
     }
-    if (params.nodeParams && Object.keys(params.nodeParams).length) {
+    if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
       path += path.includes('?') ? '&' : '?';
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
@@ -786,7 +786,7 @@
   let alerts = [];
 
   const getAlertWithId = (alertQueue, id) => {
-    if (!alertQueue || !alertQueue.length) return;
+    if (!alertQueue || !alertQueue.length > 0) return;
     return alertQueue.filter(alert => alert.settings.id === id)[0];
   };
 
@@ -1053,7 +1053,7 @@
   export const openUserSettings = () => {
     //check if empty array
     const userSettingGroups = UserSettingsHelper.processUserSettingGroups();
-    if (Array.isArray(userSettingGroups) && userSettingGroups.length) {
+    if (Array.isArray(userSettingGroups) && userSettingGroups.length > 0) {
       internalUserSettingsObject.userSettingGroups = [...userSettingGroups];
       internalUserSettingsObject.displayed = true;
     } else {
@@ -1102,7 +1102,7 @@
 
     EventListenerHelpers.addEventListener('popstate', async e => {
       const alertQueue = alerts;
-      if (!alertQueue || !alertQueue.length) return;
+      if (!alertQueue || !alertQueue.length > 0) return;
 
       const updatedAlerts = alertQueue
         .map(a => {
@@ -1197,7 +1197,7 @@
           IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
         );
 
-        if (specialIframeMessageSource.length) {
+        if (specialIframeMessageSource.length > 0) {
           specialIframeMessageSource.forEach(async typ => {
             let ctx = specialIframeProps[typ.dataKey].context;
             const conf = {
@@ -1322,7 +1322,7 @@
           });
         } else {
           // go back: context from the view
-          if (preservedViews && preservedViews.length) {
+          if (preservedViews && preservedViews.length > 0) {
             getUnsavedChangesModalPromise().then(() => {
               // remove current active iframe and data
               Iframe.setActiveIframeToPrevious(node);
