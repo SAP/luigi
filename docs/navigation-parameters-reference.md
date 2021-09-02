@@ -379,7 +379,7 @@ settings: {
 
 ### clientPermissions.urlParameters
 - **type**: object
-- **description** Specify if the micro frontend behind this node can read and write the Luigi core search query parameter. See also [Routing API](luigi-core-api.md#routing)
+- **description** Specify if the micro frontend behind this node can read and write the Luigi Core search query parameter. See also [Routing API](luigi-core-api.md#routing)
 - **example**:
 ```javascript
 clientPermissions:{
