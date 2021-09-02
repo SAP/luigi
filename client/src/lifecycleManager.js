@@ -10,14 +10,13 @@ class LifecycleManager extends LuigiClientBase {
   constructor() {
     super();
     this.luigiInitialized = false;
-    this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
+    this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
       this.defaultContextKeys.reduce(function(acc, key) {
         acc[key] = {};
         return acc;
       }, {})
     );
-
     this._onContextUpdatedFns = {};
     this._onInactiveFns = {};
     this._onInitFns = {};
