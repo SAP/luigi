@@ -439,7 +439,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Sends search query parameters to Luigi core. If it is allowed on node level it will be added to url.
+   * Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
    * @param {Object} searchParams
    * @memberof Lifecycle
    * @example
