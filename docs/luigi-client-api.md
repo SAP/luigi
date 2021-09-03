@@ -274,7 +274,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### getCoreSearchParams
 
-Read search query parameters which are send from Luigi core
+Read search query parameters which are sent from Luigi core
 
 ##### Examples
 
