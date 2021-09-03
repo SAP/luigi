@@ -51,8 +51,8 @@
           <button
             title="{
               (node.tooltipText && node.tooltipText.length) ?
-              node.tooltipText :
-              (node.tooltipText === false) ? '' : getNodeLabel(node)
+              getTooltipText(node) :
+              (node.tooltipText === false || node.tooltipText === '') ? '' : getNodeLabel(node)
               }"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
@@ -94,8 +94,8 @@
       <button
         title="{
               (node.tooltipText && node.tooltipText.length) ?
-              node.tooltipText :
-              (node.tooltipText === false) ? '' : getNodeLabel(node)
+              getTooltipText(node) :
+              (node.tooltipText === false || node.tooltipText === '') ? '' : getNodeLabel(node)
               }"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
@@ -201,8 +201,8 @@
                     href="{getRouteLink(node)}"
                     title="{
                       (node.tooltipText && node.tooltipText.length) ?
-                      node.tooltipText :
-                      (node.tooltipText === false) ? '' : getNodeLabel(node)
+                      getTooltipText(node) :
+                      (node.tooltipText === false || node.tooltipText === '') ? '' : getNodeLabel(node)
                       }"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
@@ -463,6 +463,9 @@
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+  let defaultsTooltipTextConfig = LuigiConfig.getConfigValue(
+    'navigation.defaults.tooltipText'
+  );
   const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -529,6 +532,10 @@
 
   function getNodeLabel(node) {
     return LuigiI18N.getTranslation(node.label);
+  }
+
+  function getTooltipText(node) {
+    return node.tooltipText || defaultsTooltipTextConfig;
   }
 
   function getTestId(node) {
