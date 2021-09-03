@@ -633,7 +633,7 @@ export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
 
 /**
- * Read search query parameters which are send from Luigi core
+ * Read search query parameters which are sent from Luigi core
  * @memberof Lifecycle
  * @returns core search query parameters
  * @example
