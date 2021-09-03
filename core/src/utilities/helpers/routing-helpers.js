@@ -467,7 +467,7 @@ class RoutingHelpersClass {
 
   prepareSearchParamsForClient(currentNode) {
     let filteredObj = {};
-    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+    if (currentNode?.clientPermissions?.urlParameters) {
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
         if (key in LuigiRouting.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
           filteredObj[key] = LuigiRouting.getSearchParams()[key];
