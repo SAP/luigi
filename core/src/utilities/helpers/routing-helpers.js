@@ -478,7 +478,7 @@ class RoutingHelpersClass {
   }
 
   addSearchParamsFromClient(currentNode, searchParams) {
-    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+    if (currentNode?.clientPermissions?.urlParameters) {
       let filteredObj = {};
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
         if (key in searchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
