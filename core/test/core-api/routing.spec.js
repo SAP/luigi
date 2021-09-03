@@ -10,9 +10,11 @@ describe('Luigi routing', function() {
 
   beforeEach(() => {
     window.history.pushState = sinon.spy();
+    sinon.stub(LuigiConfig, 'configChanged');
   });
   afterEach(() => {
     global.location = globalLocationRef;
+    sinon.restore();
   });
   describe('SearchParams path routing', () => {
     it('get searchparams', () => {
