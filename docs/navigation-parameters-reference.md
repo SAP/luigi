@@ -377,6 +377,20 @@ settings: {
     }
     ```
 
+### clientPermissions.urlParameters
+- **type**: object
+- **description** Specify if the micro frontend behind this node can read and write the Luigi Core search query parameter. See also [Routing API](luigi-core-api.md#routing)
+- **example**:
+```javascript
+clientPermissions:{
+  urlParameters:{
+    q:{
+      write: true,
+      read: true
+    }
+  }
+}
+```
 ### tabNav
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
