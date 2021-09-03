@@ -299,8 +299,8 @@
     AuthLayerSvc.logout();
   }
 
-  export function handleKeyUp(event) {
-    if (event.keyCode === KEYCODE_ENTER || event.keyCode === KEYCODE_SPACE) {
+  export function handleKeyUp({ keyCode }) {
+    if (keyCode === KEYCODE_ENTER || keyCode === KEYCODE_SPACE) {
       document.querySelector('.lui-anchor-node>.fd-list__link').click();
     }
   }
