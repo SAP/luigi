@@ -84,6 +84,10 @@ export declare interface PathParams {
   [key: string]: string;
 }
 
+export declare interface CoreSearchParams {
+  [key: string]: string;
+}
+
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
 }
@@ -315,9 +319,10 @@ export declare interface LinkManager {
    * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
    * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
    * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
-   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`. (optional, default `{}`)
+   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`.
    * @example
    * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings')
    */
   navigateToIntent: (semanticSlug: string, params?: Object) => void;
 
@@ -626,6 +631,26 @@ export type getActiveFeatureToggles = () => Array<String>;
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Read search query parameters which are sent from Luigi core
+ * @memberof Lifecycle
+ * @returns core search query parameters
+ * @example
+ * LuigiClient.getCoreSearchParams();
+ */
+export function getCoreSearchParams(): CoreSearchParams;
+export type getCoreSearchParams = () => CoreSearchParams;
+
+/**
+ * Sends search query parameters to Luigi core. If it is allowed on node level it will be added to url.
+ * @param {Object} searchParams
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.addCoreSearchParams({luigi:'rocks'});
+ */
+export function addCoreSearchParams(searchParam: CoreSearchParams): void;
+export type addCoreSearchParams = (searchParam: CoreSearchParams) => void;
 
 /**
  * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).

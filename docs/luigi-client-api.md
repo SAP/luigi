@@ -272,6 +272,32 @@ const pathParams = LuigiClient.getPathParams()
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
 
+#### getCoreSearchParams
+
+Read search query parameters which are sent from Luigi core
+
+##### Examples
+
+```javascript
+LuigiClient.getCoreSearchParams();
+```
+
+Returns **any** core search query parameters
+
+#### addCoreSearchParams
+
+Sends search query parameters to Luigi core. If it is allowed on node level it will be added to url.
+
+##### Parameters
+
+-   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+##### Examples
+
+```javascript
+LuigiClient.addCoreSearchParams({luigi:'rocks'});
+```
+
 #### getClientPermissions
 
 Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
@@ -373,17 +399,19 @@ The Link Manager allows you to navigate to another route. Use it instead of an i
 
 #### navigateToIntent
 
-Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing parameters, if any.
-This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
-Conequently the following calls shall have the exact same effect:
+Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+parameters.
+This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+Consequently, the following calls shall have the exact same effect:
 
--   `linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})`
--   `linkManager().navigate('/#?intent=Sales-settings?project=pr2\&user=john')`
+-   linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+-   linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
 
 ##### Parameters
 
 -   `semanticSlug` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
--   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{project: 'pr2', user: 'john'}`. (optional, default `{}`)
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`. (optional, default `{}`)
 
 ##### Examples
 
@@ -472,8 +500,7 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
 
 #### openAsSplitView
 
--   **See: [splitView](#splitview) for further documentation about the returned instance
-    **
+-   **See: [splitView](#splitview) for further documentation about the returned instance**
 
 Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
 
@@ -900,7 +927,7 @@ Shows an alert.
         -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
             -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
             -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
-            -   `settings.links.LINK_KEY.dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** dismissKey represents the key of a particular link. There is no need to define url when dismissKey is provided.
+            -   `settings.links.LINK_KEY.dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** dismissKey which represents the key of the link.
     -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
 
 ##### Examples
@@ -914,6 +941,7 @@ const settings = {
    goToHome: { text: 'homepage', url: '/overview' },
    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+   neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
  },
  closeAfter: 3000
 }

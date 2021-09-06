@@ -25,6 +25,29 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.16.0] (2021-08-27)
+
+#### :rocket: Added
+* [#2226](https://github.com/SAP/luigi/pull/2226) Make navigateToIntent parameters optional ([@ndricimrr](https://github.com/ndricimrr))
+* [#2196](https://github.com/SAP/luigi/pull/2196) Extend intent based navigation ([@ndricimrr](https://github.com/ndricimrr))
+* [#2190](https://github.com/SAP/luigi/pull/2190) Add newTab option to linkManager ([@ndricimrr](https://github.com/ndricimrr))
+* [#2173](https://github.com/SAP/luigi/pull/2173) Node title resolver nav up ([@hardl](https://github.com/hardl))
+* [#2177](https://github.com/SAP/luigi/pull/2177) Enable addNavHrefs to be applied to the App Dropdown in TopNav ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2172](https://github.com/SAP/luigi/pull/2172) Add possibility to enable product switch to be opened in new Tab  ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2224](https://github.com/SAP/luigi/pull/2224) Fixed global search on smal devices ([@rafalgamon](https://github.com/rafalgamon))
+* [#2220](https://github.com/SAP/luigi/pull/2220) Remove red and purple underline from GlobalNav ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2195](https://github.com/SAP/luigi/pull/2195) Fix Positioning for spinner modal container ([@Patil2099](https://github.com/Patil2099))
+
+#### :house: Internal
+* [#2230](https://github.com/SAP/luigi/pull/2230) Fix & Re-Enable Docu Generation ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
+
+
 ## [v1.15.0] (2021-08-05)
 
 #### :rocket: Added
@@ -1177,3 +1200,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.14.2]: https://github.com/SAP/luigi/compare/v1.14.1...v1.14.2
 [v1.14.3]: https://github.com/SAP/luigi/compare/v1.14.2...v1.14.3
 [v1.15.0]: https://github.com/SAP/luigi/compare/v1.14.3...v1.15.0
+[v1.16.0]: https://github.com/SAP/luigi/compare/v1.15.0...v1.16.0
