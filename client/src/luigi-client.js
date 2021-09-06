@@ -2,7 +2,7 @@ import { lifecycleManager } from './lifecycleManager';
 import { linkManager } from './linkManager';
 import { uxManager } from './uxManager';
 import { storageManager } from './storageManager';
-import { helpers } from './helpers'; 
+import { helpers } from './helpers';
 
 /**
  * @name LuigiClient
@@ -10,17 +10,17 @@ import { helpers } from './helpers';
  */
 class LuigiClient {
   constructor() {
-    if (window !== window.top){
-      if(window.document.head.getAttribute('disable-luigi-history-handling') !== 'true') {
+    if (window !== window.top) {
+      if (window.document.head.getAttribute('disable-luigi-history-handling') !== 'true') {
         history.pushState = history.replaceState.bind(history);
       }
       if (window.document.head.getAttribute('disable-luigi-runtime-error-handling') !== 'true') {
-        window.addEventListener('error', ({ filename, message, lineno, colno, error })=>{
+        window.addEventListener('error', ({ filename, message, lineno, colno, error }) => {
           const msg = {
-            msg:'luigi-runtime-error-handling',
-            errorObj:{ filename, message, lineno, colno, error }
-            }
-          helpers.sendPostMessageToLuigiCore(msg)
+            msg: 'luigi-runtime-error-handling',
+            errorObj: { filename, message, lineno, colno, error }
+          };
+          helpers.sendPostMessageToLuigiCore(msg);
         });
       }
     }
@@ -55,6 +55,12 @@ class LuigiClient {
   }
   getPathParams() {
     return lifecycleManager.getPathParams();
+  }
+  getCoreSearchParams() {
+    return lifecycleManager.getCoreSearchParams();
+  }
+  addCoreSearchParams(searchParams) {
+    return lifecycleManager.addCoreSearchParams(searchParams);
   }
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();
