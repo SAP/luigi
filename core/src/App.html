@@ -414,7 +414,10 @@
               if (hideSideNav != obj.hideSideNav) {
                 noAnimation = true;
                 setTimeout(() => {
-                  document.querySelector('#app')?.classList.remove('no-animation');
+                  const appNode = document.querySelector('#app');
+                  if(appNode) {
+                    appNode.classList.remove('no-animation');
+                  }
                 });
               }
               hideSideNav = obj.hideSideNav;
