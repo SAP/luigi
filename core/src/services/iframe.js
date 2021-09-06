@@ -1,7 +1,7 @@
 // Methods related to managing the view in the iframe.
 // Please consider adding any new methods to 'iframe-helpers' if they don't require anything from this file.
 import { GenericHelpers, IframeHelpers, RoutingHelpers, NavigationHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N } from '../core-api';
+import { LuigiConfig, LuigiI18N, LuigiRouting } from '../core-api';
 
 class IframeClass {
   constructor() {
@@ -311,6 +311,9 @@ class IframeClass {
         context: JSON.stringify(Object.assign({}, componentData.context, { goBackContext })),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
+        searchParams: JSON.stringify(
+          Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+        ),
         internal: JSON.stringify(internalData)
       };
 
