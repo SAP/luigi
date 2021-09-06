@@ -148,7 +148,8 @@
     LuigiElements,
     LuigiGlobalSearch,
     LuigiFeatureToggles,
-    LuigiTheming
+    LuigiTheming,
+    LuigiRouting
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -270,12 +271,17 @@
       ),
       nodeParams: JSON.stringify(Object.assign({}, config.nodeParams || nodeParams)),
       pathParams: JSON.stringify(Object.assign({}, config.pathParams || pathParams)),
+      searchParams: JSON.stringify(
+        Object.assign(
+          {},
+          RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)
+        )
+      ),
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
-
   const sendAuthDataToClient = authData => {
     const message = {
       msg: 'luigi.auth.tokenIssued',
@@ -1183,6 +1189,9 @@
               context: ctx,
               pathParams: specialIframeProps[typ.dataKey].pathParams,
               nodeParams: specialIframeProps[typ.dataKey].nodeParams,
+              searchParams: RoutingHelpers.prepareSearchParamsForClient(
+                specialIframeProps[typ.iframeKey].luigi.currentNode
+              ),
               modal: typ.iframeKey.startsWith('modal'),
               drawer: typ.iframeKey.startsWith('drawer'),
               splitView: typ.iframeKey.startsWith('splitView')
@@ -1434,6 +1443,15 @@
           GenericHelpers.isFunction(defaultRunTimeErrorHandler.errorFn)
         ) {
           defaultRunTimeErrorHandler.errorFn(e.data.errorObj, currentNode);
+        }
+      }
+
+      if ('luigi.addSearchParams' === e.data.msg) {
+        if (
+          iframe.luigi.currentNode.clientPermissions &&
+          iframe.luigi.currentNode.clientPermissions.urlParameters
+        ) {
+          RoutingHelpers.addSearchParamsFromClient(iframe.luigi.currentNode, e.data.data);
         }
       }
     });
