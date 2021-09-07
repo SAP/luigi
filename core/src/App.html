@@ -39,7 +39,9 @@
   {/if}
   <Backdrop disable="{disableBackdrop}">
     <div
-      class="fd-page iframeContainer {mfSplitView.displayed?'lui-split-view':''} {mfSplitView.collapsed?'lui-collapsed':''}"
+      class="fd-page iframeContainer"
+      class:lui-split-view="{mfSplitView.displayed}"
+      class:lui-collapsed="{mfSplitView.collapsed}"
       tabindex="0"
       use:init
     >
