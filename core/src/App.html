@@ -514,8 +514,7 @@
       const node = navigationPath.find(n => navigationContext === n.navigationContext);
       path = Routing.concatenatePath(getSubPath(node), params.link);
     } else if (params.intent) {
-      const intentPath = RoutingHelpers.getIntentPath(params.link);
-      path = intentPath ? intentPath : path;
+      path = RoutingHelpers.getIntentPath(params.link);
     } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(getSubPath(currentNode), params.link);
@@ -1344,15 +1343,17 @@
       if ('luigi.navigation.pathExists' === e.data.msg) {
         const data = e.data.data;
         const path = buildPath(data);
-        const pathData = await Navigation.getNavigationPath(
-          LuigiConfig.getConfigValueAsync('navigation.nodes'),
-          path
-        );
+        const pathData = path
+          ? await Navigation.getNavigationPath(
+              LuigiConfig.getConfigValueAsync('navigation.nodes'),
+              path
+            )
+          : false;
         const message = {
           msg: 'luigi.navigation.pathExists.answer',
           data: {
             correlationId: data.id,
-            pathExists: pathData.isExistingRoute
+            pathExists: pathData ? pathData.isExistingRoute : false
           }
         };
         IframeHelpers.sendMessageToIframe(iframe, message);
@@ -1481,14 +1482,17 @@
   export const pathExists = async path => {
     const data = {
       link: path,
-      relative: path[0] !== '/'
+      relative: path[0] !== '/',
+      intent: path && path.toLowerCase().includes('?intent=')
     };
     const builtPath = buildPath(data);
-    const pathData = await Navigation.getNavigationPath(
-      LuigiConfig.getConfigValueAsync('navigation.nodes'),
-      builtPath
-    );
-    return pathData.isExistingRoute;
+    const pathData = builtPath
+      ? await Navigation.getNavigationPath(
+          LuigiConfig.getConfigValueAsync('navigation.nodes'),
+          builtPath
+        )
+      : false;
+    return pathData ? pathData.isExistingRoute : false;
   };
 
   export const hasBack = () => {

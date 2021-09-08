@@ -297,11 +297,13 @@ export class linkManager extends LuigiClientBase {
       }.bind(this)
     );
 
+    const hasIntent = path.toLowerCase().includes('?intent=');
     const pathExistsMsg = {
       msg: 'luigi.navigation.pathExists',
       data: Object.assign(this.options, {
         id: currentId,
         link: path,
+        intent: hasIntent,
         relative: path[0] !== '/'
       })
     };
