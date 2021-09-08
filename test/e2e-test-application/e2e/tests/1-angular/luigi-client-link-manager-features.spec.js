@@ -52,7 +52,7 @@ describe('Luigi client linkManager', () => {
           .contains('Click here')
           .click();
         cy.expectPathToBe('/projects/pr2');
-
+        cy.wait(500);
         //navigate to sibling through parent
         cy.wrap($iframeBody)
           .contains('from parent: to sibling')
@@ -75,7 +75,7 @@ describe('Luigi client linkManager', () => {
           .contains('Click here')
           .click();
         cy.expectPathToBe('/projects/pr2');
-
+        cy.wait(500);
         //don't navigate
         cy.wrap($iframeBody)
           .contains('parent by name: with nonexisting context')
