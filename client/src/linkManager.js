@@ -73,7 +73,7 @@ export class linkManager extends LuigiClientBase {
       return;
     }
 
-    const hasIntent = path.toLowerCase().includes('?intent=');
+    const hasIntent = path.toLowerCase().includes('#?intent=');
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
@@ -297,7 +297,7 @@ export class linkManager extends LuigiClientBase {
       }.bind(this)
     );
 
-    const hasIntent = path.toLowerCase().includes('?intent=');
+    const hasIntent = path.toLowerCase().includes('#?intent=');
     const pathExistsMsg = {
       msg: 'luigi.navigation.pathExists',
       data: Object.assign(this.options, {

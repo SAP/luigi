@@ -298,9 +298,15 @@
       const nodePath = Routing.getNodePath(currentNode, urlParamsRaw);
 
       $: preservedViews.push({
-        path: config.iframe.luigi && config.iframe.luigi.pathParams
-          ? GenericHelpers.replaceVars(nodePath, config.iframe.luigi.pathParams, ':', false)
-          : nodePath,
+        path:
+          config.iframe.luigi && config.iframe.luigi.pathParams
+            ? GenericHelpers.replaceVars(
+                nodePath,
+                config.iframe.luigi.pathParams,
+                ':',
+                false
+              )
+            : nodePath,
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
       });
@@ -418,7 +424,7 @@
                 noAnimation = true;
                 setTimeout(() => {
                   const appNode = document.querySelector('#app');
-                  if(appNode) {
+                  if (appNode) {
                     appNode.classList.remove('no-animation');
                   }
                 });
@@ -1516,7 +1522,7 @@
     const data = {
       link: path,
       relative: path[0] !== '/',
-      intent: path && path.toLowerCase().includes('?intent=')
+      intent: path && path.toLowerCase().includes('#?intent=')
     };
     const builtPath = buildPath(data);
     const pathData = builtPath
