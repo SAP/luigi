@@ -28,15 +28,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 ## [v1.16.1] (2021-09-09)
 
 #### :rocket: Added
-* [#2236](https://github.com/SAP/luigi/pull/2236) Mf access to query params ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2236](https://github.com/SAP/luigi/pull/2236) Microfrontend access to query params ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#2207](https://github.com/SAP/luigi/pull/2207) Routing core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 #### :bug: Fixed
-* [#2262](https://github.com/SAP/luigi/pull/2262) no-animation fix if #app is not found ([@hardl](https://github.com/hardl))
+* [#2262](https://github.com/SAP/luigi/pull/2262) Fix no-animation if #app is not found ([@hardl](https://github.com/hardl))
 * [#2263](https://github.com/SAP/luigi/pull/2263) Fix newTab navigation with hash routing enabled bug ([@ndricimrr](https://github.com/ndricimrr))
-
-#### :house: Internal
-* [#2271](https://github.com/SAP/luigi/pull/2271) Fix flaky test ([@ndricimrr](https://github.com/ndricimrr))
 
 
 
