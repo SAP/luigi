@@ -34,8 +34,8 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 #### :bug: Fixed
 * [#2262](https://github.com/SAP/luigi/pull/2262) Fix no-animation if #app is not found ([@hardl](https://github.com/hardl))
 * [#2263](https://github.com/SAP/luigi/pull/2263) Fix newTab navigation with hash routing enabled bug ([@ndricimrr](https://github.com/ndricimrr))
-
-
+* [#2258](https://github.com/SAP/luigi/pull/2258) Fix goBack with dynamic node functionality ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2252](https://github.com/SAP/luigi/pull/2252) Fix wrong context from modal ([@stanleychh](https://github.com/stanleychh))
 
 
 
