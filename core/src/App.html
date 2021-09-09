@@ -1059,7 +1059,10 @@
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
-
+    const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    if (hashRouting) {
+      nodepath = '#' + nodepath;
+    }
     window.open(nodepath, '_blank');
   };
 
