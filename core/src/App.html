@@ -792,7 +792,7 @@
   let alerts = [];
 
   const getAlertWithId = (alertQueue, id) => {
-    if (!alertQueue || !alertQueue.length > 0) return;
+    if (!alertQueue || !(alertQueue.length > 0)) return;
     return alertQueue.filter(alert => alert.settings.id === id)[0];
   };
 
@@ -1111,7 +1111,7 @@
 
     EventListenerHelpers.addEventListener('popstate', async e => {
       const alertQueue = alerts;
-      if (!alertQueue || !alertQueue.length > 0) return;
+      if (!alertQueue || !(alertQueue.length > 0)) return;
 
       const updatedAlerts = alertQueue
         .map(a => {
