@@ -295,9 +295,12 @@
   const addPreserveView = (data, config) => {
     if (data.params.preserveView || data.params.viewgroup) {
       const nextPath = buildPath(data.params);
+      const nodePath = Routing.getNodePath(currentNode, urlParamsRaw);
 
       $: preservedViews.push({
-        path: Routing.getNodePath(currentNode, urlParamsRaw),
+        path: config.iframe.luigi && config.iframe.luigi.pathParams
+          ? GenericHelpers.replaceVars(nodePath, config.iframe.luigi.pathParams, ':', false)
+          : nodePath,
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
       });
