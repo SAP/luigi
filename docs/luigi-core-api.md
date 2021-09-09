@@ -1307,7 +1307,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.16.1
 
 #### addSearchParams
 
@@ -1327,4 +1327,4 @@ Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined});
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.16.1
