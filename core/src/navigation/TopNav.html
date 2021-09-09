@@ -49,11 +49,7 @@
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
-            title="{
-              (node.tooltipText && node.tooltipText.length) ?
-              getTooltipText(node) :
-              (node.tooltipText === false || node.tooltipText === '') ? '' : getNodeLabel(node)
-              }"
+            title="{resolveTooltipText(node, getNodeLabel(node))}"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -92,11 +88,7 @@
       </a>
       {:else}
       <button
-        title="{
-              (node.tooltipText && node.tooltipText.length) ?
-              getTooltipText(node) :
-              (node.tooltipText === false || node.tooltipText === '') ? '' : getNodeLabel(node)
-              }"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
         aria-haspopup="true"
@@ -199,11 +191,7 @@
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    title="{
-                      (node.tooltipText && node.tooltipText.length) ?
-                      getTooltipText(node) :
-                      (node.tooltipText === false || node.tooltipText === '') ? '' : getNodeLabel(node)
-                      }"
+                    title="{resolveTooltipText(node, getNodeLabel(node))}"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
@@ -534,10 +522,6 @@
     return LuigiI18N.getTranslation(node.label);
   }
 
-  function getTooltipText(node) {
-    return node.tooltipText || defaultsTooltipTextConfig;
-  }
-
   function getTestId(node) {
     return node.testId
       ? node.testId
@@ -546,6 +530,22 @@
 
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
+  }
+
+  function resolveTooltipText(node, translation) {
+    if (node.hasOwnProperty('tooltipText')) {
+      if (node.tooltipText === undefined || node.tooltipText === null) {
+        return defaultsTooltipTextConfig;
+      } else if (node.tooltipText.length) {
+        return node.tooltipText;
+      }
+    }
+
+    if (node.tooltipText === false || node.tooltipText === '') {
+      return '';
+    }
+
+    return translation;
   }
 
   export function openMobileProductSwitcher() {

@@ -181,7 +181,8 @@ export const projectDetailNavStructure = projectId => [
     },
     viewUrl: '/assets/helloWorldWC.js',
     webcomponent: true,
-    openNodeInModal: true
+    openNodeInModal: true,
+    tooltipText: 'Webcomponent tooltipText'
   },
   {
     pathSegment: 'misc2-isolated',
@@ -189,13 +190,15 @@ export const projectDetailNavStructure = projectId => [
     isolateView: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
-    icon: 'sys-help-2'
+    icon: 'sys-help-2',
+    tooltipText: ''
   },
   {
     pathSegment: 'dps',
     label: 'Default Child node Example',
     defaultChildNode: 'dps2',
     icon: 'checklist',
+    tooltipText: null,
     children: [
       {
         pathSegment: 'dps1',

@@ -12,11 +12,7 @@
       <li class="fd-nested-list__item">
         <a
           class="fd-nested-list__link"
-          title="{
-                (navHeader.tooltipText && navHeader.tooltipText.length) ?
-                getTooltipText(navHeader) :
-                (navHeader.tooltipText === false || navHeader.tooltipText === '') ? '' : $getTranslation(navHeader.label)
-                }"
+          title="{resolveTooltipText(navHeader, $getTranslation(navHeader.label))}"
         >
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
@@ -63,11 +59,7 @@
           <li class="fd-nested-list__item">
             <a
               href="{getRouteLink(node)}"
-              title="{
-                (node.tooltipText && node.tooltipText.length) ?
-                getTooltipText(node) :
-                (node.tooltipText === false || node.tooltipText === '') ? '' : $getTranslation(node.label)
-                }"
+              title="{resolveTooltipText(node, $getTranslation(node.label))}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
               on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
@@ -109,11 +101,7 @@
             <div class="fd-nested-list__content has-child">
               <a
                 href="javascript:void(null)"
-                title="{
-                  (nodes.tooltipText && nodes.tooltipText.length) ?
-                  getTooltipText(nodes) :
-                  (nodes.tooltipText === false || nodes.tooltipText === '') ? '' : $getTranslation(key)
-                  }"
+                title="{resolveTooltipText(nodes, $getTranslation(key))}"
                 class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
                 tabindex="-1"
                 id="collapsible_listnode_{index}"
@@ -165,11 +153,7 @@
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
-                  title="{
-                    (node.tooltipText && node.tooltipText.length) ?
-                    getTooltipText(node) :
-                    (node.tooltipText === false || node.tooltipText === '') ? '' : $getTranslation(node.label)
-                    }"
+                  title="{resolveTooltipText(node, $getTranslation(node.label))}"
                 >
                   <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
@@ -198,11 +182,7 @@
                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
-                      title="{
-                        (node.tooltipText && node.tooltipText.length) ?
-                        getTooltipText(node) :
-                        (node.tooltipText === false || node.tooltipText === '') ? '' : $getTranslation(node.label)
-                        }"
+                      title="{resolveTooltipText(node, $getTranslation(node.label))}"
                     >
                       <span class="fd-nested-list__title"
                         >{$getTranslation(node.label)}</span
@@ -224,11 +204,7 @@
           <!-- Category nodes -->
           <li
             class="fd-nested-list__group-header lui-category"
-            title="{
-              (nodes.tooltipText && nodes.tooltipText.length) ?
-              getTooltipText(nodes) :
-              (nodes.tooltipText === false || nodes.tooltipText === '') ? '' : $getTranslation(key)
-              }"
+            title="{resolveTooltipText(nodes, $getTranslation(key))}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
             id="category_list_level1_{index}"
           >
@@ -250,11 +226,7 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-nested-list__item"
-            title="{
-              (node.tooltipText && node.tooltipText.length) ?
-              getTooltipText(node) :
-              (node.tooltipText === false || node.tooltipText === '') ? '' : $getTranslation(node.label)
-              }"
+            title="{resolveTooltipText(node, $getTranslation(node.label))}"
             aria-labelledby="category_list_level1_{index}"
           >
             <a
@@ -579,6 +551,22 @@
       : NavigationHelpers.prepareForTests(key || metaInfo.label);
   }
 
+  function resolveTooltipText(node, translation) {
+    if (node.hasOwnProperty('tooltipText')) {
+      if (node.tooltipText === undefined || node.tooltipText === null) {
+        return defaultsTooltipTextConfig;
+      } else if (node.tooltipText.length) {
+        return node.tooltipText;
+      }
+    }
+
+    if (node.tooltipText === false || node.tooltipText === '') {
+      return '';
+    }
+
+    return translation;
+  }
+
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleClick(node) {
@@ -714,10 +702,6 @@
         ? collapseNavTooltip
         : expandNavTooltip;
     }
-  }
-
-  function getTooltipText(node) {
-    return node.tooltipText || defaultsTooltipTextConfig;
   }
 </script>
 

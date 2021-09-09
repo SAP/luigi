@@ -572,7 +572,7 @@ describe('Navigation', () => {
       });
     });
 
-    it('Left navigation title attr not exist', () => {
+    it('Node navigation title attr exist', () => {
       cy.get('.fd-shellbar')
         .contains('Projects')
         .click();
@@ -584,7 +584,54 @@ describe('Navigation', () => {
         .parent()
         .should('have.attr', 'title', 'Miscellaneous2');
     });
+
+    it('Node navigation title attr tooltipText text', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Webcomponent')
+        .parent()
+        .should('have.attr', 'title', 'Webcomponent tooltipText');
+    });
+
+    it('Node navigation title attr tooltipText not exist', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Miscellaneous2 (Isolated View)')
+        .parent()
+        .should('have.attr', 'title', '');
+    });
+
+    it('Node navigation title attr default.tooltipText text', () => {
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          tooltipText: 'Defaults tooltipText'
+        };
+        win.Luigi.configChanged('settings.navigation');
+        cy.get('.fd-shellbar')
+          .contains('Projects')
+          .click();
+        cy.get('.fd-app__sidebar .fd-nested-list__item')
+          .contains('Project One')
+          .click();
+        cy.get('.fd-nested-list__link')
+          .contains('Default Child node Example')
+          .parent()
+          .should('have.attr', 'title', 'Defaults tooltipText');
+      });
+    });
   });
+
   describe('Horizontal Tab Navigation', () => {
     context('Desktop', () => {
       it('Open horizontal navigation', () => {

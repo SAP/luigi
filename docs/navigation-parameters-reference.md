@@ -105,6 +105,12 @@ The navigation parameters allow you to configure **global** navigation settings 
 tooltipText: 'Useful links'
 ```
 
+### defaults.tooltipText
+- **type**: string
+- **description**: defaults properties apply to nodes where they are not set explicitly, this is just a dumb mechanism.
+- **default**: the parameter **defaults.tooltipText** is taking from navigation config, and you can overwrite it using the **tooltipText** value on a single node level.
+
+
 ### defaults.pageErrorHandler
 <!-- add-attribute:class:warning -->
 > **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
