@@ -80,6 +80,17 @@
     "reporter": ["html", "lcov", "clover", "json", "json-summary"],
     "report-dir": "./coverage",
     "extension": [ ".js", ".cjs", ".mjs", ".ts", ".tsx", ".jsx" ],
-    "excludeAfterRemap": false
+    "excludeAfterRemap": false,
+    "include": [
+      "src/**/*.js",
+      "node_modules/@luigi-project/core/luigi.js",
+      "node_modules/@luigi-project/client/luigi-client.js",
+      "node_modules/@luigi-project/client/luigi-element.js",
+      "../../core/src/**/*.html",
+      "../../core/src/**/*.js"
+    ],
+    "exclude": [
+      "**/*.spec.js"
+    ]
   }
 }
