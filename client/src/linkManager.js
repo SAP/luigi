@@ -73,14 +73,13 @@ export class linkManager extends LuigiClientBase {
       return;
     }
 
-    const hasIntent = path.toLowerCase().includes('#?intent=');
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
       params: Object.assign(this.options, {
         link: path,
         relative: relativePath,
-        intent: hasIntent,
+        intent: helpers.hasIntent(path),
         modal: modalSettings,
         splitView: splitViewSettings,
         drawer: drawerSettings
@@ -297,13 +296,12 @@ export class linkManager extends LuigiClientBase {
       }.bind(this)
     );
 
-    const hasIntent = path.toLowerCase().includes('#?intent=');
     const pathExistsMsg = {
       msg: 'luigi.navigation.pathExists',
       data: Object.assign(this.options, {
         id: currentId,
         link: path,
-        intent: hasIntent,
+        intent: helpers.hasIntent(path),
         relative: path[0] !== '/'
       })
     };

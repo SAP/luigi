@@ -1522,7 +1522,7 @@
     const data = {
       link: path,
       relative: path[0] !== '/',
-      intent: path && path.toLowerCase().includes('#?intent=')
+      intent: RoutingHelpers.hasIntent(path)
     };
     const builtPath = buildPath(data);
     const pathData = builtPath
