@@ -50,7 +50,7 @@
     "svelte": "^3.12.1",
     "svelte-loader": "2.13.6",
     "svelte-transitions": "^1.2.0",
-    "tar": ">=5.0.7",
+    "tar": ">=5.0.10",
     "terser": "^4.4.0",
     "ts-node": "^10.0.0",
     "url-loader": "^1.0.1",
