@@ -14,6 +14,7 @@
       "change-node-version": "node ./scripts/change.node.version.js"
    },
    "devDependencies": {
+      "@babel/plugin-proposal-optional-chaining": "^7.14.5",
       "@starptech/prettyhtml": "^0.10.0",
       "@typescript-eslint/eslint-plugin": "^4.9.0",
       "@typescript-eslint/parser": "^4.9.0",

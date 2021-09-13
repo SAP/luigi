@@ -12,6 +12,11 @@ module.exports = {
           emitCss: true,
           name: 'Luigi',
           preprocess: {
+            script: ({ content }) => {
+              return require('@babel/core').transform(content, {
+                plugins: ['@babel/plugin-proposal-optional-chaining']
+              });
+            },
             style: ({ content, attributes }) => {
               if (attributes.type !== 'text/scss') return;
               return new Promise((fulfil, reject) => {
