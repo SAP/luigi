@@ -68,6 +68,7 @@
       "eslintStopCommit": true
    },
    "dependencies": {
+      "@babel/core": "^7.15.5",
       "webpack": "^5.52.0"
    }
 }
