@@ -272,6 +272,32 @@ const pathParams = LuigiClient.getPathParams()
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
 
+#### getCoreSearchParams
+
+Read search query parameters which are sent from Luigi Core
+
+##### Examples
+
+```javascript
+LuigiClient.getCoreSearchParams();
+```
+
+Returns **any** Core search query parameters
+
+#### addCoreSearchParams
+
+Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
+
+##### Parameters
+
+-   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+##### Examples
+
+```javascript
+LuigiClient.addCoreSearchParams({luigi:'rocks'});
+```
+
 #### getClientPermissions
 
 Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).

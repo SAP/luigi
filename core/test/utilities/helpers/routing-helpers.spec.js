@@ -3,7 +3,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 import { GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../../src/core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { config } from '../../../src/core-api/config';
 
@@ -93,6 +93,25 @@ describe('Routing-helpers', () => {
       LuigiI18N.setCurrentLocale('en');
       const viewUrl = '/{i18n.currentLocale}/microfrontend.html';
       const expected = '/en/microfrontend.html';
+
+      expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
+    });
+  });
+  describe('substitute search query params', () => {
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('substitutes search query parameter', () => {
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({ luigi: 'rocks' });
+      const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
+      const expected = '/microfrontend.html?luigi=rocks';
+
+      expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
+    });
+    it('substitutes search query parameter', () => {
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({ mario: 'rocks' });
+      const viewUrl = '/microfrontend.html?luigi={routing.queryParams.luigi}';
+      const expected = '/microfrontend.html';
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });
@@ -607,6 +626,60 @@ describe('Routing-helpers', () => {
         }),
         'a-key=%7B%22key%22%3A%22value%22%7D'
       );
+    });
+  });
+
+  describe('Handle core search params from client', () => {
+    let currentNode;
+    beforeEach(() => {
+      currentNode = {
+        clientPermissions: {
+          urlParameters: {
+            luigi: {
+              read: true,
+              write: true
+            }
+          }
+        }
+      };
+      sinon.stub(LuigiRouting, 'getSearchParams').returns({ luigi: 'rocks', test: 'tets' });
+      LuigiRouting.addSearchParams = sinon.spy();
+      console.warn = sinon.spy();
+    });
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+    it('Client can read allowed search param', () => {
+      assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), { luigi: 'rocks' });
+    });
+    it('Client can write allowed search params', () => {
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(LuigiRouting.addSearchParams, { luigi: 'rocks' });
+    });
+    it('Client can not read luigi url parameter', () => {
+      currentNode.clientPermissions.urlParameters.luigi.read = false;
+      assert.deepEqual(RoutingHelpers.prepareSearchParamsForClient(currentNode), {});
+    });
+    it('Client can not write luigi url parameter', () => {
+      currentNode.clientPermissions.urlParameters.luigi.write = false;
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+    });
+    it('Client can only write specific url parameter', () => {
+      currentNode.clientPermissions.urlParameters = {
+        test: {
+          write: true,
+          read: true
+        },
+        luigi: {
+          write: false,
+          read: false
+        }
+      };
+      RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
+      sinon.assert.calledWith(LuigiRouting.addSearchParams, { test: 'tets' });
+      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
     });
   });
 });

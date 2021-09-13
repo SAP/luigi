@@ -50,7 +50,7 @@
     "svelte": "^3.12.1",
     "svelte-loader": "2.13.6",
     "svelte-transitions": "^1.2.0",
-    "tar": ">=5.0.7",
+    "tar": ">=5.0.10",
     "terser": "^4.4.0",
     "ts-node": "^10.0.0",
     "url-loader": "^1.0.1",
@@ -66,7 +66,7 @@
     "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
     "bundle-develop-ie11": "MINIFY=false webpack --display-error-details --config webpack-ie11.config.js --debug --devtool cheap-source-map --output-pathinfo --watch",
     "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --require esm --recursive test",
-    "test:debug": "mocha -r esm -r jsdom-global/register --inspect-brk ./test/core-api/internal-link-manager.spec.js --watch",
+    "test:debug": "npm run test -- --inspect-brk ./test/services/routing.spec.js --watch",
     "test:watch": "npm run test -- --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "bundlesizeOnly": "bundlesize",
@@ -131,7 +131,8 @@
     ],
     "reporter": [
       "lcov",
-      "text-summary"
+      "text-summary",
+      "html"
     ],
     "cache": true,
     "all": true

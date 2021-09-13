@@ -1,6 +1,6 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
 import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers } from './';
 import { Routing } from '../../services/routing';
 
@@ -266,6 +266,7 @@ class RoutingHelpersClass {
     const contextVarPrefix = 'context.';
     const nodeParamsVarPrefix = 'nodeParams.';
     const i18n_currentLocale = '{i18n.currentLocale}';
+    const searchQuery = 'routing.queryParams';
 
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.context, contextVarPrefix);
@@ -273,6 +274,18 @@ class RoutingHelpersClass {
 
     if (viewUrl.includes(i18n_currentLocale)) {
       viewUrl = viewUrl.replace(i18n_currentLocale, LuigiI18N.getCurrentLocale());
+    }
+
+    if (viewUrl.includes(searchQuery)) {
+      const viewUrlSearchParam = viewUrl.split('?')[1];
+      if (viewUrlSearchParam) {
+        const key = viewUrlSearchParam.split('=')[0];
+        if (LuigiRouting.getSearchParams()[key]) {
+          viewUrl = viewUrl.replace(`{${searchQuery}.${key}}`, LuigiRouting.getSearchParams()[key]);
+        } else {
+          viewUrl = viewUrl.replace(`?${key}={${searchQuery}.${key}}`, '');
+        }
+      }
     }
 
     return viewUrl;
@@ -450,6 +463,34 @@ class RoutingHelpersClass {
     // strip trailing slash
     newPath = newPath.replace(/\/$/, '');
     return newPath;
+  }
+
+  prepareSearchParamsForClient(currentNode) {
+    let filteredObj = {};
+    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+        if (key in LuigiRouting.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
+          filteredObj[key] = LuigiRouting.getSearchParams()[key];
+        }
+      });
+    }
+    return filteredObj;
+  }
+
+  addSearchParamsFromClient(currentNode, searchParams) {
+    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+      let filteredObj = {};
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+        if (key in searchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
+          filteredObj[key] = searchParams[key];
+        } else {
+          console.warn(`No permission to add "${key}" to the url`);
+        }
+      });
+      if (Object.keys(filteredObj).length > 0) {
+        LuigiRouting.addSearchParams(filteredObj);
+      }
+    }
   }
 }
 
