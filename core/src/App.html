@@ -1085,11 +1085,14 @@
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
+
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
     if (hashRouting) {
       nodepath = '#' + nodepath;
     }
-    window.open(nodepath, '_blank');
+    
+    /*'noopener,noreferrer' required to disable XSS injections*/
+    window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
 
   function init(node) {
