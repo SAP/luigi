@@ -274,7 +274,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### getCoreSearchParams
 
-Read search query parameters which are sent from Luigi core
+Read search query parameters which are sent from Luigi Core
 
 ##### Examples
 
@@ -282,11 +282,11 @@ Read search query parameters which are sent from Luigi core
 LuigiClient.getCoreSearchParams();
 ```
 
-Returns **any** core search query parameters
+Returns **any** Core search query parameters
 
 #### addCoreSearchParams
 
-Sends search query parameters to Luigi core. If it is allowed on node level it will be added to url.
+Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
 
 ##### Parameters
 

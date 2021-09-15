@@ -54,7 +54,7 @@ export class ViewGroupComponent implements OnInit {
     const clonedLuigiMf = Object.assign({}, luigiMf);
     clonedLuigiMf.currentNode = Object.assign({}, luigiMf.currentNode);
     delete clonedLuigiMf.currentNode.parent;
-
+    clonedLuigiMf.currentNode.children = ['...children removed'];
     return clonedLuigiMf;
   }
 }

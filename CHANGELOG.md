@@ -25,6 +25,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.16.1] (2021-09-09)
+
+#### :rocket: Added
+* [#2236](https://github.com/SAP/luigi/pull/2236) Microfrontend access to query params ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2207](https://github.com/SAP/luigi/pull/2207) Routing core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#2262](https://github.com/SAP/luigi/pull/2262) Fix no-animation if #app is not found ([@hardl](https://github.com/hardl))
+* [#2263](https://github.com/SAP/luigi/pull/2263) Fix newTab navigation with hash routing enabled bug ([@ndricimrr](https://github.com/ndricimrr))
+* [#2258](https://github.com/SAP/luigi/pull/2258) Fix goBack with dynamic node functionality ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2252](https://github.com/SAP/luigi/pull/2252) Fix wrong context from modal ([@stanleychh](https://github.com/stanleychh))
+
+
+
+
 ## [v1.16.0] (2021-08-27)
 
 #### :rocket: Added
@@ -1201,3 +1216,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.14.3]: https://github.com/SAP/luigi/compare/v1.14.2...v1.14.3
 [v1.15.0]: https://github.com/SAP/luigi/compare/v1.14.3...v1.15.0
 [v1.16.0]: https://github.com/SAP/luigi/compare/v1.15.0...v1.16.0
+[v1.16.1]: https://github.com/SAP/luigi/compare/v1.16.0...v1.16.1
