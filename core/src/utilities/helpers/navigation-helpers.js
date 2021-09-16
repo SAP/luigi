@@ -69,6 +69,25 @@ class NavigationHelpersClass {
     return permissionCheckerFn(nodeToCheckPermissionFor, parentNode, currentContext);
   }
 
+  isWebComponentCompoundPermitted(nodeToCheckPermissionFor) {
+    if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
+      const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
+      for (const ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
+        if (ft.startsWith('!')) {
+          if (activeFeatureToggles.includes(ft.slice(1))) {
+            return false;
+          }
+        } else {
+          if (!activeFeatureToggles.includes(ft)) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
   applyContext(context, addition, navigationContext) {
     if (addition) {
       for (var p in addition) {
@@ -319,7 +338,7 @@ class NavigationHelpersClass {
     }
     return false;
   }
-  
+
   /**
    * Returns a nested property value defined by a chain string
    * @param {*} obj the object
