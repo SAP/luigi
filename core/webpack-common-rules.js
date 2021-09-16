@@ -2,6 +2,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sass = require('node-sass');
 
 module.exports = {
+  js: {
+    test: /\.m?js/,
+    resolve: {
+      fullySpecified: false
+    }
+  },
   svelte: {
     test: /\.(svelte|html)$/,
     exclude: /node_modules/,
@@ -9,7 +15,7 @@ module.exports = {
       {
         loader: 'svelte-loader',
         options: {
-          emitCss: true,
+          emitCss: false,
           name: 'Luigi',
           preprocess: {
             style: ({ content, attributes }) => {
