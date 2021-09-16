@@ -451,9 +451,6 @@
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
-  let defaultsTooltipTextConfig = LuigiConfig.getConfigValue(
-    'navigation.defaults.tooltipText'
-  );
   const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -533,19 +530,7 @@
   }
 
   function resolveTooltipText(node, translation) {
-    if (node.hasOwnProperty('tooltipText')) {
-      if (node.tooltipText === undefined || node.tooltipText === null) {
-        return defaultsTooltipTextConfig;
-      } else if (node.tooltipText.length) {
-        return node.tooltipText;
-      }
-    }
-
-    if (node.tooltipText === false || node.tooltipText === '') {
-      return '';
-    }
-
-    return translation;
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   export function openMobileProductSwitcher() {

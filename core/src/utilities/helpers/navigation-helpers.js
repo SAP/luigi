@@ -319,7 +319,7 @@ class NavigationHelpersClass {
     }
     return false;
   }
-  
+
   /**
    * Returns a nested property value defined by a chain string
    * @param {*} obj the object
@@ -415,6 +415,22 @@ class NavigationHelpersClass {
     }).catch(error => {
       reject(error);
     });
+  }
+
+  generateTooltipText(node, translation) {
+    if (node.hasOwnProperty('tooltipText')) {
+      if (node.tooltipText === undefined || node.tooltipText === null) {
+        return LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
+      } else if (node.tooltipText.length) {
+        return node.tooltipText;
+      }
+    }
+
+    if (node.tooltipText === false || node.tooltipText === '') {
+      return '';
+    }
+
+    return translation;
   }
 }
 

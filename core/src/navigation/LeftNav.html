@@ -459,9 +459,6 @@
   let sideNavCompactMode;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
-  let defaultsTooltipTextConfig = LuigiConfig.getConfigValue(
-    'navigation.defaults.tooltipText'
-  );
 
   const setLeftNavData = async () => {
     const componentData = __this.get();
@@ -552,19 +549,7 @@
   }
 
   function resolveTooltipText(node, translation) {
-    if (node.hasOwnProperty('tooltipText')) {
-      if (node.tooltipText === undefined || node.tooltipText === null) {
-        return defaultsTooltipTextConfig;
-      } else if (node.tooltipText.length) {
-        return node.tooltipText;
-      }
-    }
-
-    if (node.tooltipText === false || node.tooltipText === '') {
-      return '';
-    }
-
-    return translation;
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   // [svelte-upgrade suggestion]
