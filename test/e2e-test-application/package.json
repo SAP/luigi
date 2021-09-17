@@ -76,21 +76,24 @@
     "webpack-dev-server": "^3.11.0"
   },
   "nyc": {
+    "sourceMap": true,
     "check-coverage": true,
-    "reporter": ["html", "lcov", "clover", "json", "json-summary"],
+    "all": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "html"
+    ],
     "report-dir": "./coverage",
-    "extension": [ ".js", ".cjs", ".mjs", ".ts", ".tsx", ".jsx" ],
-    "excludeAfterRemap": false,
+    "extension": [ ".js", ".cjs", ".mjs", ".ts", ".tsx", ".jsx", ".html" ],
     "include": [
-      "src/**/*.js",
-      "node_modules/@luigi-project/core/luigi.js",
-      "node_modules/@luigi-project/client/luigi-client.js",
-      "node_modules/@luigi-project/client/luigi-element.js",
+      "../../core/src/**/*.js",
       "../../core/src/**/*.html",
-      "../../core/src/**/*.js"
+      "../../core/public/luigi.js"
     ],
     "exclude": [
-      "**/*.spec.js"
+      "**/*.spec.js",
+      "src/luigi-config/**/*.js"
     ]
   }
 }
