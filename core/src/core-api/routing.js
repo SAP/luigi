@@ -13,7 +13,7 @@ class LuigiRouting {
   /**
    * Get search parameter from URL as an object.
    * @memberof Routing
-   * @since NEXTRELEASE
+   * @since 1.16.1
    * @returns {Object}
    * @example
    * Luigi.routing().getSearchParams();
@@ -38,7 +38,7 @@ class LuigiRouting {
    * If [hash routing](navigation-parameters-reference.md#usehashrouting) is enabled, the search parameters will be set after the hash.
    * In order to delete a search query param you can set the value of the param to undefined.
    * @memberof Routing
-   * @since NEXTRELEASE
+   * @since 1.16.1
    * @param {Object} params
    * @example
    * Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined});
