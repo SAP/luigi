@@ -52,6 +52,9 @@ module.exports = {
   entry: {
     luigi: luigifiles
   },
+  optimization: {
+    minimize: false
+  },
   resolve: {
     alias: {
       svelte: path.resolve('node_modules', 'svelte')
