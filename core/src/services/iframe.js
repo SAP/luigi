@@ -272,8 +272,7 @@ class IframeClass {
           viewUrl,
           canCache ? componentData.viewGroup : undefined,
           component.get().currentNode,
-          'main',
-          componentData
+          'main'
         );
 
         node.insertBefore(config.iframe, node.firstChild);

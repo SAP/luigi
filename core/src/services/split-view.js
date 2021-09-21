@@ -44,13 +44,7 @@ class SplitViewSvcClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IframeHelpers.createIframe(
-      viewUrl,
-      undefined,
-      component.get().lastNode,
-      'split-view',
-      componentData
-    );
+    const iframe = IframeHelpers.createIframe(viewUrl, undefined, component.get().lastNode, 'split-view');
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
     return iframe;

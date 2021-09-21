@@ -209,7 +209,7 @@ class IframeHelpersClass {
     IframeHelpers.getMicrofrontendIframes().forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
-  createIframe(viewUrl, viewGroup, currentNode, microFrontendType, componentData) {
+  createIframe(viewUrl, viewGroup, currentNode, microFrontendType) {
     const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -241,8 +241,7 @@ class IframeHelpersClass {
       viewUrl,
       currentNode,
       createdAt: new Date().getTime(),
-      id: GenericHelpers.getRandomId(),
-      pathParams: componentData ? componentData.pathParams : undefined
+      id: GenericHelpers.getRandomId()
     };
     if (viewGroup) {
       iframe.vg = viewGroup;

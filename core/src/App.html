@@ -298,9 +298,15 @@
       const nodePath = Routing.getNodePath(currentNode, urlParamsRaw);
 
       $: preservedViews.push({
-        path: config.iframe.luigi && config.iframe.luigi.pathParams
-          ? GenericHelpers.replaceVars(nodePath, config.iframe.luigi.pathParams, ':', false)
-          : nodePath,
+        path:
+          config.iframe.luigi && config.iframe.luigi.pathParams
+            ? GenericHelpers.replaceVars(
+                nodePath,
+                config.iframe.luigi.pathParams,
+                ':',
+                false
+              )
+            : nodePath,
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
       });
@@ -310,8 +316,8 @@
     }
   };
 
-  const handleNavigation = (data, config, srcNode, srcPathParams) => {
-    let path = buildPath(data.params, srcNode, srcPathParams);
+  const handleNavigation = (data, config) => {
+    let path = buildPath(data.params);
 
     path = GenericHelpers.addLeadingSlash(path);
 
@@ -418,7 +424,7 @@
                 noAnimation = true;
                 setTimeout(() => {
                   const appNode = document.querySelector('#app');
-                  if(appNode) {
+                  if (appNode) {
                     appNode.classList.remove('no-animation');
                   }
                 });
@@ -489,67 +495,44 @@
     });
   };
 
-  const getSubPath = (node, nodePathParams) => {
-    return GenericHelpers.replaceVars(
-      Routing.getNodePath(node),
-      nodePathParams,
-      ':',
-      false
-    );
+  const getSubPath = node => {
+    return GenericHelpers.replaceVars(Routing.getNodePath(node), pathParams, ':', false);
   };
 
-  const buildPath = (params, srcNode, srcNodePathParams) => {
-    const localNode = srcNode || currentNode;
-    const localPathParams = srcNodePathParams || pathParams;
-    let localNavPath = navigationPath;
-    if (srcNode) {
-      let parent = srcNode.parent;
-      localNavPath = [srcNode];
-      while (parent) {
-        localNavPath.push(parent);
-        parent = parent.parent;
-      }
-      localNavPath = localNavPath.reverse();
-    }
-
+  const buildPath = params => {
     let path = params.link;
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const node = [...localNavPath].reverse().find(n => n.virtualTree);
+      const node = [...navigationPath].reverse().find(n => n.virtualTree);
       if (!node) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
         );
         return;
       }
-      path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
+      path = Routing.concatenatePath(getSubPath(node), params.link);
     } else if (params.fromParent) {
       // from direct parent
-      path = Routing.concatenatePath(
-        getSubPath(localNode.parent, localPathParams),
-        params.link
-      );
+      path = Routing.concatenatePath(getSubPath(currentNode.parent), params.link);
     } else if (params.fromClosestContext) {
       // from the closest navigation context
-      const node = [...localNavPath]
+      const node = [...navigationPath]
         .reverse()
         .find(n => n.navigationContext && n.navigationContext.length > 0);
-      path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
+      path = Routing.concatenatePath(getSubPath(node), params.link);
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const node = localNavPath
-        .reverse()
-        .find(n => navigationContext === n.navigationContext);
-      path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
+      const node = navigationPath.find(n => navigationContext === n.navigationContext);
+      path = Routing.concatenatePath(getSubPath(node), params.link);
     } else if (params.intent) {
       const intentPath = RoutingHelpers.getIntentPath(params.link);
       path = intentPath ? intentPath : path;
     } else if (params.relative) {
       // relative
-      path = Routing.concatenatePath(getSubPath(localNode, localPathParams), params.link);
+      path = Routing.concatenatePath(getSubPath(currentNode), params.link);
     }
-    if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
+    if (params.nodeParams && Object.keys(params.nodeParams).length) {
       path += path.includes('?') ? '&' : '?';
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
@@ -798,7 +781,7 @@
   let alerts = [];
 
   const getAlertWithId = (alertQueue, id) => {
-    if (!alertQueue || !(alertQueue.length > 0)) return;
+    if (!alertQueue || !alertQueue.length) return;
     return alertQueue.filter(alert => alert.settings.id === id)[0];
   };
 
@@ -1065,7 +1048,7 @@
   export const openUserSettings = () => {
     //check if empty array
     const userSettingGroups = UserSettingsHelper.processUserSettingGroups();
-    if (Array.isArray(userSettingGroups) && userSettingGroups.length > 0) {
+    if (Array.isArray(userSettingGroups) && userSettingGroups.length) {
       internalUserSettingsObject.userSettingGroups = [...userSettingGroups];
       internalUserSettingsObject.displayed = true;
     } else {
@@ -1090,7 +1073,7 @@
     if (hashRouting) {
       nodepath = '#' + nodepath;
     }
-    
+
     /*'noopener,noreferrer' required to disable XSS injections*/
     window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
@@ -1120,7 +1103,7 @@
 
     EventListenerHelpers.addEventListener('popstate', async e => {
       const alertQueue = alerts;
-      if (!alertQueue || !(alertQueue.length > 0)) return;
+      if (!alertQueue || !alertQueue.length) return;
 
       const updatedAlerts = alertQueue
         .map(a => {
@@ -1215,7 +1198,7 @@
           IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
         );
 
-        if (specialIframeMessageSource.length > 0) {
+        if (specialIframeMessageSource.length) {
           specialIframeMessageSource.forEach(async typ => {
             let ctx = specialIframeProps[typ.dataKey].context;
             const conf = {
@@ -1286,25 +1269,23 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-        const srcNode = iframe.luigi.currentNode;
-        const srcPathParams = iframe.luigi.pathParams;
         if (e.data.params.newTab) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           openViewInNewTab(path);
         } else if (e.data.params.modal !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           resetMicrofrontendModalData();
           openViewInModal(path, e.data.params.modal === true ? {} : e.data.params.modal);
         } else if (e.data.params.splitView !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           openSplitView(path, e.data.params.splitView);
         } else if (e.data.params.drawer !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          let path = buildPath(e.data.params);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           resetMicrofrontendDrawerData();
@@ -1313,7 +1294,7 @@
         } else {
           getUnsavedChangesModalPromise().then(() => {
             isNavigationSyncEnabled = !e.data.params.withoutSync;
-            handleNavigation(e.data, config, srcNode, srcPathParams);
+            handleNavigation(e.data, config);
             closeModal();
             closeSplitView();
             closeDrawer();
@@ -1343,7 +1324,7 @@
           });
         } else {
           // go back: context from the view
-          if (preservedViews && preservedViews.length > 0) {
+          if (preservedViews && preservedViews.length) {
             getUnsavedChangesModalPromise().then(() => {
               // remove current active iframe and data
               Iframe.setActiveIframeToPrevious(node);
@@ -1376,10 +1357,8 @@
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {
-        const srcNode = iframe.luigi.currentNode;
-        const srcPathParams = iframe.luigi.pathParams;
         const data = e.data.data;
-        const path = buildPath(data, srcNode, srcPathParams);
+        const path = buildPath(data);
         const pathData = await Navigation.getNavigationPath(
           LuigiConfig.getConfigValueAsync('navigation.nodes'),
           path
