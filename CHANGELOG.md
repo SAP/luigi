@@ -28,9 +28,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 ## [v1.16.2] (2021-09-22)
 
 #### :bug: Fixed
-* [#2284](https://github.com/SAP/luigi/pull/2284) Fix wrong modal creation ([@JohannesDoberer](https://github.com/JohannesDoberer))
-
-
+* [#2284](https://github.com/SAP/luigi/pull/2284) Fix error on modal creation ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 
 
