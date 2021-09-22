@@ -1309,7 +1309,7 @@
           if (specialIframeMessageSource.length > 0) {
             path = buildPath(e.data.params, srcNode, srcPathParams);
           } else {
-            path = buildPath(e.data.params, undefined, undefined);
+            path = buildPath(e.data.params);
           }
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
