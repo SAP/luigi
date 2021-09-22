@@ -298,9 +298,15 @@
       const nodePath = Routing.getNodePath(currentNode, urlParamsRaw);
 
       $: preservedViews.push({
-        path: config.iframe.luigi && config.iframe.luigi.pathParams
-          ? GenericHelpers.replaceVars(nodePath, config.iframe.luigi.pathParams, ':', false)
-          : nodePath,
+        path:
+          config.iframe.luigi && config.iframe.luigi.pathParams
+            ? GenericHelpers.replaceVars(
+                nodePath,
+                config.iframe.luigi.pathParams,
+                ':',
+                false
+              )
+            : nodePath,
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
       });
@@ -418,7 +424,7 @@
                 noAnimation = true;
                 setTimeout(() => {
                   const appNode = document.querySelector('#app');
-                  if(appNode) {
+                  if (appNode) {
                     appNode.classList.remove('no-animation');
                   }
                 });
@@ -1090,7 +1096,7 @@
     if (hashRouting) {
       nodepath = '#' + nodepath;
     }
-    
+
     /*'noopener,noreferrer' required to disable XSS injections*/
     window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
@@ -1144,6 +1150,18 @@
 
     EventListenerHelpers.addEventListener('message', async e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
+      const specialIframeProps = {
+        modalIframe,
+        modalIframeData,
+        drawerIframe,
+        drawerIframeData,
+        drawer,
+        modal,
+        splitViewIframe,
+        splitViewIframeData,
+        splitView
+      };
+
       if (!iframe) return;
       iframe._ready = true;
 
@@ -1200,19 +1218,9 @@
         iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
-        const specialIframeProps = {
-          modalIframe,
-          modalIframeData,
-          drawerIframe,
-          drawerIframeData,
-          drawer,
-          modal,
-          splitViewIframe,
-          splitViewIframeData,
-          splitView
-        };
-        const specialIframeMessageSource = IframeHelpers.specialIframeTypes.filter(typ =>
-          IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
+        let specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
+          e,
+          specialIframeProps
         );
 
         if (specialIframeMessageSource.length > 0) {
@@ -1293,7 +1301,16 @@
           path = GenericHelpers.addLeadingSlash(path);
           openViewInNewTab(path);
         } else if (e.data.params.modal !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          let path;
+          const specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
+            e,
+            specialIframeProps
+          );
+          if (specialIframeMessageSource.length > 0) {
+            path = buildPath(e.data.params, srcNode, srcPathParams);
+          } else {
+            path = buildPath(e.data.params, undefined, undefined);
+          }
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           resetMicrofrontendModalData();
