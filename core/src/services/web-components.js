@@ -35,7 +35,7 @@ class WebComponentSvcClass {
     const clientAPI = {
       linkManager: window.Luigi.navigation,
       uxManager: window.Luigi.ux,
-      getCurrentLocale: window.Luigi.i18n().getCurrentLocale,
+      getCurrentLocale: () => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
         if (eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
