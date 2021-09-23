@@ -25,6 +25,14 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.16.2] (2021-09-22)
+
+#### :bug: Fixed
+* [#2284](https://github.com/SAP/luigi/pull/2284) Fix error on modal creation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v1.16.1] (2021-09-09)
 
 #### :rocket: Added
@@ -1217,3 +1225,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.15.0]: https://github.com/SAP/luigi/compare/v1.14.3...v1.15.0
 [v1.16.0]: https://github.com/SAP/luigi/compare/v1.15.0...v1.16.0
 [v1.16.1]: https://github.com/SAP/luigi/compare/v1.16.0...v1.16.1
+[v1.16.2]: https://github.com/SAP/luigi/compare/v1.16.1...v1.16.2
