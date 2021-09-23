@@ -137,6 +137,7 @@ class RoutingClass {
       const intentPath = RoutingHelpers.getIntentPath(hash);
       if (intentPath) {
         // if intent faulty or illegal then skip
+        history.replaceState(window.state, '', intentPath);
         return intentPath;
       }
     }
