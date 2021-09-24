@@ -188,6 +188,7 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'misc2-isolated',
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
+    openNodeInModal: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
     icon: 'sys-help-2',

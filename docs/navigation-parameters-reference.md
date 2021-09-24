@@ -107,7 +107,7 @@ tooltipText: 'Useful links'
 
 ### defaults.tooltipText
 - **type**: string
-- **description**: applies the [tooltipText](navigation-parameters-reference.md#tooltiptext) property to all navigation nodes where it is not set explicitly. 
+- **description**: applies the [tooltipText](navigation-parameters-reference.md#tooltiptext) property to all navigation nodes where it is not set explicitly. If **tooltipText** is added to some specific node but it set value as null or undefined, user should see value frome **defaults.tooltipText**.
 - **default**: the parameter **defaults.tooltipText** is `false` by default, and you can overwrite it using the **tooltipText** value on a single node level.
 
 
