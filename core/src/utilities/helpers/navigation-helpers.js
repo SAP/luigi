@@ -39,6 +39,24 @@ class NavigationHelpersClass {
     return result;
   }
 
+  checkVisibleForFeatureToggles(nodeToCheckPermission) {
+    if (nodeToCheckPermission && nodeToCheckPermission.visibleForFeatureToggles) {
+      const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
+      for (const ft of nodeToCheckPermission.visibleForFeatureToggles) {
+        if (ft.startsWith('!')) {
+          if (activeFeatureToggles.includes(ft.slice(1))) {
+            return false;
+          }
+        } else {
+          if (!activeFeatureToggles.includes(ft)) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+  }
+
   isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
     if (LuigiAuth.isAuthorizationEnabled()) {
       const loggedIn = AuthHelpers.isLoggedIn();
@@ -48,20 +66,9 @@ class NavigationHelpersClass {
         return false;
       }
     }
-    if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
-      let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
-      for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
-        if (ft.startsWith('!')) {
-          if (activeFeatureToggles.includes(ft.slice(1))) {
-            return false;
-          }
-        } else {
-          if (!activeFeatureToggles.includes(ft)) {
-            return false;
-          }
-        }
-      }
-    }
+
+    if (!this.checkVisibleForFeatureToggles(nodeToCheckPermissionFor)) return false;
+
     const permissionCheckerFn = LuigiConfig.getConfigValue('navigation.nodeAccessibilityResolver');
     if (typeof permissionCheckerFn !== 'function') {
       return true;
@@ -69,23 +76,8 @@ class NavigationHelpersClass {
     return permissionCheckerFn(nodeToCheckPermissionFor, parentNode, currentContext);
   }
 
-  isWebComponentCompoundPermitted(nodeToCheckPermissionFor) {
-    if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
-      const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
-      for (const ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
-        if (ft.startsWith('!')) {
-          if (activeFeatureToggles.includes(ft.slice(1))) {
-            return false;
-          }
-        } else {
-          if (!activeFeatureToggles.includes(ft)) {
-            return false;
-          }
-        }
-      }
-    }
-
-    return true;
+  isWebComponentCompoundPermitted(node) {
+    return this.checkVisibleForFeatureToggles(node);
   }
 
   applyContext(context, addition, navigationContext) {
