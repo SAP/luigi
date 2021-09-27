@@ -9,6 +9,9 @@ const createConfigStore = () => {
     subscribe,
     update,
     reset,
+    scopeS: () => {
+      return scopeSubscribers;
+    },
     subscribeToScope: (fn, scope) => {
       let subscribers = scopeSubscribers[scope];
       if (!subscribers) {
@@ -18,7 +21,7 @@ const createConfigStore = () => {
       subscribers.add(fn);
     },
     fire: (scope, data) => {
-      let subscribers = scopeSubscribers[scope];
+      const subscribers = scopeSubscribers[scope];
       if (subscribers) {
         [...subscribers].forEach(fn => {
           fn(data);

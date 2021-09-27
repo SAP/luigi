@@ -108,6 +108,7 @@ class IframeClass {
                 })
               };
               IframeHelpers.sendMessageToIframe(child, message);
+              console.log('test');
             }
           }
         }
@@ -322,6 +323,9 @@ class IframeClass {
       if (withSync) {
         // default, send navigation event to client
         IframeHelpers.sendMessageToIframe(config.iframe, message);
+        IframeHelpers.broadcastMessageToAllIframes({
+          msg: 'luigi.navigate.contextUpdate'
+        });
         this.setOkResponseHandler(config, component, node);
       } else {
         // `withoutSync()` used. client navigation was skipped, reset after one-time use.

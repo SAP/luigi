@@ -119,9 +119,12 @@ class LifecycleManager extends LuigiClientBase {
           pathParams: e.data.pathParams ? e.data.pathParams : undefined
         });
       }
+      helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
+    });
+
+    helpers.addEventListener('luigi.navigate.contextUpdate', e => {
       // execute the context change listener if set by the micro frontend
       this._notifyUpdate();
-      helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
     });
 
     /**

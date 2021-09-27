@@ -476,7 +476,14 @@
       () => {
         NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
-        Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
+        Routing.handleRouteChange(
+          currentPath,
+          getComponentWrapper(),
+          node,
+          config,
+          undefined,
+          mfModal
+        );
       },
       ['navigation.nodes']
     );
@@ -485,6 +492,8 @@
     RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
       const pv = preservedViews;
       // TODO: check if bookmarkable modal is interferring here
+      console.log(path, 'path');
+
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
