@@ -147,7 +147,7 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-  async handleRouteChange(path, component, iframeElement, config, withoutSync, mfModal) {
+  async handleRouteChange(path, component, iframeElement, config, withoutSync, isModalOpen) {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
     const hasSkipMatches = patterns.filter(p => window.location.href.match(p)).length !== 0;
@@ -182,7 +182,7 @@ class RoutingClass {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
 
-      if (!mfModal.displayed) {
+      if (!isModalOpen) {
         await this.handleBookmarkableModalPath();
       }
 

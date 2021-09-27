@@ -9,9 +9,6 @@ const createConfigStore = () => {
     subscribe,
     update,
     reset,
-    scopeS: () => {
-      return scopeSubscribers;
-    },
     subscribeToScope: (fn, scope) => {
       let subscribers = scopeSubscribers[scope];
       if (!subscribers) {

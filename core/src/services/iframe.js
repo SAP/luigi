@@ -108,7 +108,6 @@ class IframeClass {
                 })
               };
               IframeHelpers.sendMessageToIframe(child, message);
-              console.log('test');
             }
           }
         }

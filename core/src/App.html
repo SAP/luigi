@@ -482,7 +482,7 @@
           node,
           config,
           undefined,
-          mfModal
+          mfModal.displayed
         );
       },
       ['navigation.nodes']
@@ -492,7 +492,6 @@
     RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
       const pv = preservedViews;
       // TODO: check if bookmarkable modal is interferring here
-      console.log(path, 'path');
 
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
