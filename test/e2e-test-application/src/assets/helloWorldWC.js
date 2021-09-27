@@ -19,7 +19,7 @@ export default class extends HTMLElement {
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.uxManager().showAlert({
-          text: 'Hello from uxManager in Web Component',
+          text: 'Hello from uxManager in Web Component, Language:' + this.LuigiClient.getCurrentLocale(),
           type: 'info'
         });
       }

@@ -114,7 +114,7 @@ describe('Luigi client linkManager', () => {
         expect(wcContent).to.equal('Hello WebComponent!');
         root.querySelector('button').click();
         cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
-        cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from uxManager in Web Component');
+        cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from uxManager in Web Component, Language:en');
       });
     });
 
