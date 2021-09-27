@@ -1033,14 +1033,24 @@
     }
   };
 
+  const resizeMicrofrontendIframe = () => {
+    let { width } = getComputedStyle(document.querySelector('.iframeModalCtn._drawer'));
+    IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
+      'style',
+      `width: calc(100% - ${width})`
+    );
+  };
+
   const drawerIframeCreated = event => {
     drawerIframe = event.detail.modalIframe;
     drawerIframeData = event.detail.modalIframeData;
+    resizeMicrofrontendIframe();
   };
 
   const drawerWCCreated = event => {
     drawerWC = event.detail.modalWC;
     drawerWCData = event.detail.modalWCData;
+    resizeMicrofrontendIframe();
   };
 
   const setDrawerState = event => {
@@ -1062,6 +1072,7 @@
             resetMicrofrontendDrawerData();
           });
         }
+        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute('style', null);
       } catch (e) {
         console.log(e);
       }
