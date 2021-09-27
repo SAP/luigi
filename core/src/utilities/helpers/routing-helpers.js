@@ -492,6 +492,14 @@ class RoutingHelpersClass {
       }
     }
   }
+
+  /**
+   * Checks if given path contains intent navigation special syntax
+   * @param {string} path to check
+   */
+  hasIntent(path) {
+    return !!path && path.toLowerCase().includes('#?intent=');
+  }
 }
 
 export const RoutingHelpers = new RoutingHelpersClass();
