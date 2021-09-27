@@ -53,8 +53,8 @@ class NavigationHelpersClass {
           }
         }
       }
-      return true;
     }
+    return true;
   }
 
   isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
@@ -67,7 +67,7 @@ class NavigationHelpersClass {
       }
     }
 
-    if (!this.checkVisibleForFeatureToggles(nodeToCheckPermissionFor)) return false;
+    if (!this.checkVisibleForFeatureToggles(nodeToCheckPermissionFor) return false;
 
     const permissionCheckerFn = LuigiConfig.getConfigValue('navigation.nodeAccessibilityResolver');
     if (typeof permissionCheckerFn !== 'function') {
