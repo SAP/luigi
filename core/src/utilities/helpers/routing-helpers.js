@@ -404,7 +404,6 @@ class RoutingHelpersClass {
           item => item.semanticObject === intentObject.semanticObject && item.action === intentObject.action
         );
         if (!realPath) {
-          console.warn('No mappings found for the specified intent.');
           return false;
         }
         realPath = realPath.pathSegment;
