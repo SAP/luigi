@@ -117,6 +117,14 @@ class Helpers {
       );
     }
   }
+
+  /**
+   * Checks if given path contains intent navigation special syntax
+   * @param {string} path to check
+   */
+  hasIntent(path) {
+    return !!path && path.toLowerCase().includes('#?intent=');
+  }
 }
 
 export const helpers = new Helpers();

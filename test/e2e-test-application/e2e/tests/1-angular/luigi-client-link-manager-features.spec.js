@@ -173,6 +173,26 @@ describe('Luigi client linkManager', () => {
           path: '/projects/pr1/users/groups/avengers/settings/dynamic-two',
           successExpected: true
         },
+        // existent path with intent
+        {
+          path: '#?intent=Sales-settings',
+          successExpected: true
+        },
+        // existent path with intent and parameters
+        {
+          path: '#?intent=Sales-settings?param1=abc&param2=bcd',
+          successExpected: true
+        },
+        // nonexistent path with intent and not-mapped intent configuration
+        {
+          path: '#?intent=Sales-fake?param1=abc&param2=bcd',
+          successExpected: false
+        },
+        // existent path with intent and no mapped intent key name
+        {
+          path: '#?international=Sales-fake?param1=abc&param2=bcd',
+          successExpected: false
+        },
         // existent relative path
         { path: 'developers', successExpected: true }
       ].forEach(data => {
