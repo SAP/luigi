@@ -4,6 +4,7 @@ import {
   registerEventListeners
 } from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
+import { RoutingHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
@@ -72,6 +73,8 @@ class WebComponentSvcClass {
    * specified.
    * @returns a promise that gets resolved after successfull import */
   registerWCFromUrl(viewUrl, wc_id) {
+    // TODO deal with i18n for viewUrl
+    // const viewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(viewUrl)) {
         this.dynamicImport(viewUrl)
@@ -170,6 +173,8 @@ class WebComponentSvcClass {
    * If the web component is not defined yet, it gets imported.
    */
   renderWebComponent(viewUrl, wc_container, context, node, nodeId) {
+    // TODO: deal with i18n for viewUrl
+    // const viewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
     const wc_id =
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(viewUrl);
     const wcItemPlaceholder = document.createElement('div');
@@ -230,10 +235,10 @@ class WebComponentSvcClass {
    */
   renderWebComponentCompound(navNode, wc_container, context) {
     let renderer;
-
+    // TODO: deal with i18n for viewUrl
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
-      renderer.viewUrl = navNode.viewUrl;
+      renderer.viewUrl = RoutingHelpers.getI18nViewUrl(navNode.viewUrl);
       renderer.createCompoundItemContainer = layoutConfig => {
         var cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {

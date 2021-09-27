@@ -344,6 +344,15 @@ export const projectDetailNavStructure = projectId => [
     icon: 'globe'
   },
   {
+    label: 'Open SAP Website',
+    category: 'Super useful Github links',
+    externalLink: {
+      url: 'http://sap.com/{i18n.currentLocale}',
+      sameWindow: true
+    },
+    icon: 'globe'
+  },
+  {
     pathSegment: 'collapsibles',
     label: 'Collapsible categories',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',

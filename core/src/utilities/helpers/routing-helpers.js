@@ -262,19 +262,28 @@ class RoutingHelpersClass {
     return this.isDynamicNode(node) ? pathParams[node.pathSegment.substring(1)] : undefined;
   }
 
+  /**
+   * Returns the viewUrl with current locale, e.g. luigi/{i18n.currentLocale}/ -> luigi/en
+   * if viewUrl contains {i18n.currentLocale} term, it will be replaced by current locale
+   * @param {*} viewUrl
+   */
+  getI18nViewUrl(viewUrl) {
+    const i18n_currentLocale = '{i18n.currentLocale}';
+    const locale = LuigiI18N.getCurrentLocale();
+    const hasI18n = viewUrl.includes(i18n_currentLocale);
+
+    return hasI18n ? viewUrl.replace(i18n_currentLocale, locale) : viewUrl;
+  }
+
   substituteViewUrl(viewUrl, componentData) {
     const contextVarPrefix = 'context.';
     const nodeParamsVarPrefix = 'nodeParams.';
-    const i18n_currentLocale = '{i18n.currentLocale}';
     const searchQuery = 'routing.queryParams';
 
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.context, contextVarPrefix);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.nodeParams, nodeParamsVarPrefix);
-
-    if (viewUrl.includes(i18n_currentLocale)) {
-      viewUrl = viewUrl.replace(i18n_currentLocale, LuigiI18N.getCurrentLocale());
-    }
+    viewUrl = this.getI18nViewUrl(viewUrl);
 
     if (viewUrl.includes(searchQuery)) {
       const viewUrlSearchParam = viewUrl.split('?')[1];
