@@ -1090,11 +1090,14 @@
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
+
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
     if (hashRouting) {
       nodepath = '#' + nodepath;
     }
-    window.open(nodepath, '_blank');
+
+    /*'noopener,noreferrer' required to disable XSS injections*/
+    window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
 
   function init(node) {
@@ -1146,6 +1149,18 @@
 
     EventListenerHelpers.addEventListener('message', async e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
+      const specialIframeProps = {
+        modalIframe,
+        modalIframeData,
+        drawerIframe,
+        drawerIframeData,
+        drawer,
+        modal,
+        splitViewIframe,
+        splitViewIframeData,
+        splitView
+      };
+
       if (!iframe) return;
       iframe._ready = true;
 
@@ -1202,19 +1217,9 @@
         iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
-        const specialIframeProps = {
-          modalIframe,
-          modalIframeData,
-          drawerIframe,
-          drawerIframeData,
-          drawer,
-          modal,
-          splitViewIframe,
-          splitViewIframeData,
-          splitView
-        };
-        const specialIframeMessageSource = IframeHelpers.specialIframeTypes.filter(typ =>
-          IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
+        let specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
+          e,
+          specialIframeProps
         );
 
         if (specialIframeMessageSource.length > 0) {
@@ -1295,7 +1300,16 @@
           path = GenericHelpers.addLeadingSlash(path);
           openViewInNewTab(path);
         } else if (e.data.params.modal !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          let path;
+          const specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
+            e,
+            specialIframeProps
+          );
+          if (specialIframeMessageSource.length > 0) {
+            path = buildPath(e.data.params, srcNode, srcPathParams);
+          } else {
+            path = buildPath(e.data.params);
+          }
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           resetMicrofrontendModalData();
