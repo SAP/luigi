@@ -288,6 +288,12 @@ class IframeHelpersClass {
 
     return iframe;
   }
+
+  getSpecialIframeMessageSource(e, specialIframeProps) {
+    return IframeHelpers.specialIframeTypes.filter(typ =>
+      IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
+    );
+  }
 }
 
 export const IframeHelpers = new IframeHelpersClass();
