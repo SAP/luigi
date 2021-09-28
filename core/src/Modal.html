@@ -139,7 +139,7 @@
           await setModalSize();
         }
         WebComponentService.renderWebComponent(
-          RoutingHelpers.getI18nViewUrl(nodeObject.viewUrl),
+          nodeObject.viewUrl,
           document.querySelector('.iframeModalCtn'),
           pathData.context,
           nodeObject
