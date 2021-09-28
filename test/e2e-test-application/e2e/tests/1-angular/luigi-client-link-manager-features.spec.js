@@ -466,36 +466,36 @@ describe('Luigi client linkManager', () => {
 
     it('Check main iframe width after Open and close drawer component with default settings', () => {
       cy.window().then(win => {
-        cy.get('.fd-page.iframeContainer').then($container => {
+        cy.get('.fd-page.iframeContainer iframe').then($container => {
           cy.get('#app').then($page => {
             const containerWidth = parseFloat(win.getComputedStyle($container[0]).width);
             const pageWidth = parseFloat(win.getComputedStyle($page[0]).width);
             cy.log(containerWidth, pageWidth);
 
-            // cy.get('.iframeContainer iframe')
-            //   .invoke('width')
-            //   .should('eq', containerWidth);
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth);
 
             cy.wrap($iframeBody)
               .contains('Open drawer with default settings')
               .click();
 
-            // cy.get('.drawer-dialog')
-            //   .invoke('width')
-            //   .should('eq', pageWidth * 0.25);
-            //
-            // cy.get('.iframeContainer iframe')
-            //   .invoke('width')
-            //   .should('eq', containerWidth - pageWidth * 0.25);
+            cy.get('.drawer-dialog')
+              .invoke('width')
+              .should('eq', pageWidth * 0.25);
+
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth - pageWidth * 0.25);
             cy.expectPathToBe('/projects/pr2');
 
             cy.get('.drawer-dialog button[aria-label="close"]')
               .should('exist')
               .click();
 
-            // cy.get('.iframeContainer iframe')
-            //   .invoke('width')
-            //   .should('eq', containerWidth);
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth);
           });
         });
       });
