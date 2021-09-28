@@ -235,7 +235,7 @@ class WebComponentSvcClass {
     let renderer;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
-      renderer.viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
+      renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, { context });
       renderer.createCompoundItemContainer = layoutConfig => {
         var cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {
