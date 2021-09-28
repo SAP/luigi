@@ -73,11 +73,10 @@ class WebComponentSvcClass {
    * specified.
    * @returns a promise that gets resolved after successfull import */
   registerWCFromUrl(viewUrl, wc_id) {
-    // TODO deal with i18n for viewUrl
-    // const viewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
+    const i18nViewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
     return new Promise((resolve, reject) => {
-      if (this.checkWCUrl(viewUrl)) {
-        this.dynamicImport(viewUrl)
+      if (this.checkWCUrl(i18nViewUrl)) {
+        this.dynamicImport(i18nViewUrl)
           .then(module => {
             try {
               if (!window.customElements.get(wc_id)) {
@@ -100,8 +99,8 @@ class WebComponentSvcClass {
           })
           .catch(err => reject(err));
       } else {
-        console.warn(`View URL '${viewUrl}' not allowed to be included`);
-        reject(`View URL '${viewUrl}' not allowed`);
+        console.warn(`View URL '${i18nViewUrl}' not allowed to be included`);
+        reject(`View URL '${i18nViewUrl}' not allowed`);
       }
     });
   }
@@ -173,28 +172,27 @@ class WebComponentSvcClass {
    * If the web component is not defined yet, it gets imported.
    */
   renderWebComponent(viewUrl, wc_container, context, node, nodeId) {
-    // TODO: deal with i18n for viewUrl
-    const viewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
+    const i18nViewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
     const wc_id =
-      node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(viewUrl);
+      node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
     } else {
       /** Custom import function, if defined */
       if (window.luigiWCFn) {
-        window.luigiWCFn(viewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
+        window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
-        this.includeSelfRegisteredWCFromUrl(node, viewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
+        this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else {
-        this.registerWCFromUrl(viewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, viewUrl, nodeId);
+        this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       }
     }
@@ -235,7 +233,6 @@ class WebComponentSvcClass {
    */
   renderWebComponentCompound(navNode, wc_container, context) {
     let renderer;
-    // TODO: deal with i18n for viewUrl
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = RoutingHelpers.getI18nViewUrl(navNode.viewUrl);

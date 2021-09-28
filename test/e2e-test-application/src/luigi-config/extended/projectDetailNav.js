@@ -179,7 +179,7 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true,
     openNodeInModal: true
   },
@@ -193,7 +193,7 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true
   },
   {
