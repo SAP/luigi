@@ -174,7 +174,7 @@ class WebComponentSvcClass {
    */
   renderWebComponent(viewUrl, wc_container, context, node, nodeId) {
     // TODO: deal with i18n for viewUrl
-    // const viewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
+    const viewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
     const wc_id =
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(viewUrl);
     const wcItemPlaceholder = document.createElement('div');
