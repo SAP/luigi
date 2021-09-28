@@ -172,7 +172,7 @@ class WebComponentSvcClass {
    * If the web component is not defined yet, it gets imported.
    */
   renderWebComponent(viewUrl, wc_container, context, node, nodeId) {
-    const i18nViewUrl = RoutingHelpers.getI18nViewUrl(viewUrl);
+    const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id =
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
@@ -235,7 +235,7 @@ class WebComponentSvcClass {
     let renderer;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
-      renderer.viewUrl = RoutingHelpers.getI18nViewUrl(navNode.viewUrl);
+      renderer.viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
       renderer.createCompoundItemContainer = layoutConfig => {
         var cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {
