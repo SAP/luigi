@@ -16,15 +16,10 @@
         aria-disabled="{!renderAsDropdown}"
         data-testid="luigi-contextswitcher-button"
       >
-        {#if selectedOption && customSelectedOptionRenderer }
-        {@html customSelectedOptionRenderer(selectedOption)}
-        {:else}
-            {#if !selectedLabel}
-                {$getTranslation(config.defaultLabel)}
-            {:else}
-                {selectedLabel}
-            {/if}
-          <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
+        {#if selectedOption && customSelectedOptionRenderer } {@html
+        customSelectedOptionRenderer(selectedOption)} {:else} {#if !selectedLabel}
+        {$getTranslation(config.defaultLabel)} {:else} {selectedLabel} {/if}
+        <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
         {/if}
         <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
         {/if}
@@ -42,21 +37,8 @@
         data-testid="luigi-contextswitcher-button"
       >
         {#if selectedOption && customSelectedOptionRenderer } {@html
-
-
-
-
-
-        customSelectedOptionRenderer(selectedOption)} {:else} 
-        
-        
-        {#if
-
-        !selectedLabel}{$getTranslation(config.defaultLabel)} {:else}{selectedLabel}
-        
-        
-        
-        {/if}
+        customSelectedOptionRenderer(selectedOption)} {:else} {#if
+        !selectedLabel}{$getTranslation(config.defaultLabel)} {:else}{selectedLabel} {/if}
 
         <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
         {/if}

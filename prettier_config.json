@@ -17,7 +17,8 @@
       "parser": "html",
       "tabWidth": 2,
       "singleQuote": true,
-      "printWidth": 90
+      "printWidth": 90,
+      "plugins": ["prettier-plugin-svelte"]
    },
    "svelte": {
       "parser": "babel",
