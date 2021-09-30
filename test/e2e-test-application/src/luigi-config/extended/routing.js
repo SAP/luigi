@@ -7,7 +7,6 @@ class Routing {
    * For path routing, set to false and run `npm run start`
    */
   useHashRouting = false;
-  
 
   /**
    * Prefix for reflecting params in the url, which is used when navigating .withParams() function.
