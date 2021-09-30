@@ -682,4 +682,117 @@ describe('Routing-helpers', () => {
       sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
     });
   });
+
+  describe('hasIntent', () => {
+    it('checks against correct intent keyword', () => {
+      const path = "#?intent=";
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isTrue(hasIntent);
+    });
+
+    it('check against incorrect intent keyword', () => {
+      const path = "#?int=";
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+
+    it('check against undefined intent keyword', () => {
+      const path = undefined;
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+  });
+
+  describe('hasIntent', () => {
+    it('checks against correct intent keyword', () => {
+      const path = "#?intent=";
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isTrue(hasIntent);
+    });
+
+    it('check against incorrect intent keyword', () => {
+      const path = "#?int=";
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+
+    it('check against undefined intent keyword', () => {
+      const path = undefined;
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+  });
+
+  describe('getPageNotFoundRedirectPath', () => {
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('with custom pageNotFoundHandler defined', async () => {
+      const customRedirect = "somecustompath"
+      sinon.stub(LuigiConfig, 'getConfigValue').withArgs('routing.pageNotFoundHandler').returns(()=>{
+        return {redirectTo: customRedirect};
+      });
+      const expected = await RoutingHelpers.getPageNotFoundRedirectPath("notFoundPath");
+      assert.equal(customRedirect, expected)
+    });
+
+    it('with custom pageNotFoundHandler not defined', async () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').withArgs('routing.pageNotFoundHandler').returns(undefined);
+      const expected = await RoutingHelpers.getPageNotFoundRedirectPath("notFoundPath");
+      assert.equal(undefined, expected)
+    });
+
+    it('with custom pageNotFoundHandler not a function', async  () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').withArgs('routing.pageNotFoundHandler').returns({thisObject: "should be function instead"});
+      const expected = await RoutingHelpers.getPageNotFoundRedirectPath("notFoundPath");
+      assert.equal(undefined, expected)
+    });
+  });
+
+  describe('handlePageNotFoundAndRetriveRedirectPath', () => {
+    const component = {
+      showAlert: () => {}
+    }
+
+    beforeEach(() =>{
+      console.warn = sinon.spy();
+      sinon.stub(LuigiI18N, 'getTranslation');
+      sinon.stub(RoutingHelpers, 'getPageNotFoundRedirectPath')
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('when path exists should return path itself', async () => {
+      const path = "existingpath";
+      const expected = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(component, path, true);
+      assert.equal(path, expected)
+    });
+
+    it('with custom pageNotFoundHandler defined', async () => {
+      const redirectPath = "somepathtoredirect";
+      // define pageNotFoundHandler return value with stub
+      RoutingHelpers.getPageNotFoundRedirectPath.returns(redirectPath);
+      // call function being tested
+      const expected = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(component, redirectPath, false);
+      assert.equal(redirectPath, expected)
+    });
+
+    it('with custom pageNotFoundHandler not defined', async () => {
+      const path = "notFoundPath";
+      LuigiI18N.getTranslation.withArgs('luigi.requestedRouteNotFound', {route: path}).returns('Could not find the requested route');
+      // set pageNotFoundHandler as undefined with stub 
+      RoutingHelpers.getPageNotFoundRedirectPath.returns(undefined);
+      // call function being tested
+      const expected = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(component, path, false);
+      sinon.assert.calledWith(console.warn, `Could not find the requested route: ${path}`);
+      sinon.assert.calledWith(LuigiI18N.getTranslation,'luigi.requestedRouteNotFound', {route: path});
+      assert.equal(undefined, expected);
+    });
+  });
 });

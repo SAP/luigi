@@ -7,6 +7,17 @@ class Routing {
    * For path routing, set to false and run `npm run start`
    */
   useHashRouting = false;
+  
+  pageNotFoundHandler = (wrongPath, wasAnyPathFitted) => {
+    console.log("Wrong path, fitted", wrongPath, wasAnyPathFitted);
+      Luigi.showAlert({
+        text: `Path not found---------: ${wrongPath}`,
+        type: 'error',
+        closeAfter: 3000
+      });
+    
+    return {redirectTo: "errors"};
+  };
 
   /**
    * Prefix for reflecting params in the url, which is used when navigating .withParams() function.

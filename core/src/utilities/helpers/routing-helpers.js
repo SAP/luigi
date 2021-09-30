@@ -500,6 +500,56 @@ class RoutingHelpersClass {
   hasIntent(path) {
     return !!path && path.toLowerCase().includes('#?intent=');
   }
+
+  /**
+   * Queries the pageNotFoundHandler configuration and returns redirect path if it exists
+   * If the there is no `pageNotFoundHandler` defined we return undefined.
+   * @param {*} notFoundPath the path to check
+   * @param {*} isAnyPathMatched it is true if a valid path
+   * @returns redirect path if it exists, else return undefined
+   */
+  async getPageNotFoundRedirectPath(notFoundPath) {
+    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    if (typeof pageNotFoundHandler === 'function') {
+      //custom 404 handler is provided, use it
+      const result = pageNotFoundHandler(notFoundPath);
+      if (result && result.redirectTo) {
+        return result.redirectTo;
+      }
+    }
+    return undefined;
+  }
+
+  /**
+   * Handles pageNotFound situation depending if path exists or not.
+   * If path exists simply return the given path, else fetch the pageNotFound redirect path and return it. 
+   * In case there was no pageNotFound handler defined it shows an alert and returns undefined.   
+   * @param {any} component the component to show the alert on
+   * @param {string} path the path to check for
+   * @param {boolean} pathExists defines if path exists or not
+   * @returns the path to redirect to or undefined if path doesn't exist and no redirect path is defined
+   */
+  async handlePageNotFoundAndRetriveRedirectPath(component, path, pathExists) {
+    if (pathExists) {
+      return path;
+    }
+    const redirectPath = await this.getPageNotFoundRedirectPath(path);
+    if (redirectPath !== undefined) {
+      return redirectPath;
+    } else {
+      // default behavior if `pageNotFoundHandler` did not produce a redirect path 
+      const alertSettings = {
+        text: LuigiI18N.getTranslation('luigi.requestedRouteNotFound', {
+          route: path
+        }),
+        type: 'error',
+        ttl: 1 //how many redirections the alert will 'survive'.
+      };
+      component.showAlert(alertSettings, false);
+      console.warn(`Could not find the requested route: ${path}`);
+      return undefined;
+    }
+  }
 }
 
 export const RoutingHelpers = new RoutingHelpersClass();
