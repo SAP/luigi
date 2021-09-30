@@ -116,6 +116,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
 
 * **customSandboxRules** is an array of custom rules for the content in the iframe. You can extend the [Luigi default sandbox rules](https://github.com/SAP/luigi/blob/af1deebb392dcec6490f72576e32eb5853a894bc/core/src/utilities/helpers/iframe-helpers.js#L140) by adding further rules.
+* **resizeMainIFrame** is enable resising of main microfrontend iFrame after drawer open. When the value is `true` main iFrame will be resize when `false` it is not.
 * **iframeCreationInterceptor** is a function called on iframe creation. It gives you full control over the created iframe DOM element. You can modify it to your needs just before it is added to the DOM tree.
 This function is called with these parameters:
   * `iframe` is the iframe DOM element. It is not yet added to the DOM tree, but all attributes are already set.

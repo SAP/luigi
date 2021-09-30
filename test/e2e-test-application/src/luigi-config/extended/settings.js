@@ -44,6 +44,7 @@ class Settings {
   featureToggles = {
     queryStringParam: 'ft'
   };
+  resizeMainIFrame = false;
   // sideNavCompactMode = true;
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };
