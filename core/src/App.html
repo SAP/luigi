@@ -1336,7 +1336,8 @@
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
           const pathExist = await pathExists(path) ;
-          path = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(getComponentWrapper(), path, pathExist);          if (!path) {
+          path = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(getComponentWrapper(), path, pathExist);          
+          if (!path) {
             return;
           }
           contentNode = node;
