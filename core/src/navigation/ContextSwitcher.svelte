@@ -43,6 +43,10 @@
       >
         {#if selectedOption && customSelectedOptionRenderer } {@html
 
+
+
+
+
         customSelectedOptionRenderer(selectedOption)} {:else} 
         
         
