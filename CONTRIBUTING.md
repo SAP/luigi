@@ -19,7 +19,7 @@ You are welcome to contribute with your pull requests. These steps explain the c
 
 ## Testing
 
-> **NOTE:** You should always add [*unit tests*](https://github.com/SAP/luigi/tree/master/test) if you are adding code to our repository.
+> **NOTE:** You should always add [*unit tests*](https://github.com/SAP/luigi/tree/master/core/test) if you are adding code to our repository.
 
 If you've added code that is exposed as an API or configuration, additionally add e2e tests to [fiddle-navigation.spec.js](https://github.com/SAP/luigi/blob/master/test/e2e-test-application/e2e/tests/0-fiddle/fiddle-navigation.spec.js).
 
