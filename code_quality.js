@@ -107,6 +107,8 @@ const groupFilesByExtension = files => {
  * @param config: configuration that will be used to prettier the file.
  */
 const prettifyFile = (file, config) => {
+  console.log('file', file);
+  console.log('config', config);
   try {
     const text = fs.readFileSync(file).toString();
     const pretty = prettier.format(text, config);
