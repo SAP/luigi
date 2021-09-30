@@ -43,10 +43,12 @@
       >
         {#if selectedOption && customSelectedOptionRenderer } {@html
 
-        customSelectedOptionRenderer(selectedOption)} {:else} {#if
+        customSelectedOptionRenderer(selectedOption)} {:else} 
+        
+        
+        {#if
 
         !selectedLabel}{$getTranslation(config.defaultLabel)} {:else}{selectedLabel}
-        
         
         
         

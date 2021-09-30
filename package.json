@@ -35,7 +35,7 @@
       "lodash.template": ">=4.5.0",
       "meow": "8.1.2",
       "mixin-deep": ">=1.3.2",
-      "prettier": "^1.15.3",
+      "prettier": "1.19.1",
       "set-value": ">=2.0.1",
       "simple-git": "^2.24.0",
       "sirv-cli": "^0.4.4",
