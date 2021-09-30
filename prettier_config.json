@@ -17,6 +17,15 @@
       "parser": "html",
       "tabWidth": 2,
       "singleQuote": true,
-      "printWidth": 90
+      "printWidth": 90,
+      "overrides": [ {
+         "files": "*.svelte",
+         "options": {
+           "svelteBracketNewLine": false,
+           "svelteAllowShorthand": false,
+           "svelteSortOrder" : "options-scripts-styles-markup",
+           "plugins": [ "prettier-plugin-svelte" ]
+         }
+       } ]
    }
 }
