@@ -8,21 +8,6 @@ class AsyncHelpersClass {
     this.keyExistencyCheckInterval = 50;
   }
 
-  waitForKeyExistency(obj, name, timeout = this.keyExistencyTimeout) {
-    const startTimer = Date.now();
-    return new Promise((resolve, reject) => {
-      this.handles[name] = setInterval(() => {
-        if (obj[name]) {
-          return resolve(true);
-        }
-        if (Date.now() - startTimer > timeout) {
-          clearInterval(this.handles[name]);
-          return reject(`${name} did not appear in object within ${timeout / 1000} seconds.`);
-        }
-      }, this.keyExistencyCheckInterval);
-    });
-  }
-
   wrapAsPromise(value) {
     return new Promise(resolve => {
       resolve(value);
