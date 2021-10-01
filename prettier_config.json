@@ -17,11 +17,9 @@
       "parser": "html",
       "tabWidth": 2,
       "singleQuote": true,
-      "printWidth": 90,
-      "plugins": ["svelte"]
+      "printWidth": 90
    },
    "svelte": {
-      "parser": "babel",
       "arrowParens": "avoid",
       "singleQuote": true,
       "printWidth": 90,
