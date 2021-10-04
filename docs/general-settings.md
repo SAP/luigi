@@ -158,6 +158,8 @@ theming : {
      }
   }
 ```
+* **customAlertHandler** is a function which will be called if it is defined. With this function the Luigi alerts will be disabled and you can implement own alerts. This function gets `settings` and `openFromClient` as parameter.
+
 
 ### Third-party cookies support check
 
