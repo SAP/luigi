@@ -466,10 +466,6 @@ describe('Luigi client linkManager', () => {
 
     it('Check main iframe width after Open and close drawer component with default settings', () => {
       cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.settings.resizeMainIFrame = true;
-        win.Luigi.configChanged('settings');
-
         cy.get('.fd-page.iframeContainer iframe').then($container => {
           cy.get('#app').then($page => {
             const containerWidth = parseFloat(win.getComputedStyle($container[0]).width);
@@ -479,9 +475,7 @@ describe('Luigi client linkManager', () => {
               .invoke('width')
               .should('eq', containerWidth);
 
-            cy.wrap($iframeBody)
-              .contains('Open drawer with default settings')
-              .click();
+            win.Luigi.navigation().openAsDrawer('/projects/pr1/drawer', { resizeMainIFrame: true });
 
             cy.get('.drawer-dialog')
               .invoke('width')
@@ -506,10 +500,6 @@ describe('Luigi client linkManager', () => {
 
     it('Check main iframe width after Open and close drawer component with webcomponent', () => {
       cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.settings.resizeMainIFrame = true;
-        win.Luigi.configChanged('settings');
-
         cy.get('.fd-page.iframeContainer iframe').then($container => {
           cy.get('#app').then($page => {
             const containerWidth = parseFloat(win.getComputedStyle($container[0]).width);
@@ -519,7 +509,7 @@ describe('Luigi client linkManager', () => {
               .invoke('width')
               .should('eq', containerWidth);
 
-            win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent');
+            win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent', { resizeMainIFrame: true });
 
             cy.get('.drawer-dialog')
               .invoke('width')

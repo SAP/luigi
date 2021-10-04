@@ -1038,7 +1038,8 @@
   const isResizeMF = () => {
     return (
       window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
-      LuigiConfig.getConfigBooleanValue('settings.resizeMainIFrame')
+      mfDrawer.settings &&
+      mfDrawer.settings.resizeMainIFrame
     );
   };
 
