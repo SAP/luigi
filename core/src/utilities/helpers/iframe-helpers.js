@@ -53,28 +53,6 @@ class IframeHelpersClass {
     });
   }
 
-  replaceVars(viewUrl, params, prefix, parenthesis = true) {
-    let processedUrl = viewUrl;
-    if (params) {
-      Object.entries(params).forEach(entry => {
-        processedUrl = processedUrl.replace(
-          new RegExp(
-            GenericHelpers.escapeRegExp((parenthesis ? '{' : '') + prefix + entry[0] + (parenthesis ? '}' : '')),
-            'g'
-          ),
-          encodeURIComponent(entry[1])
-        );
-      });
-    }
-    if (parenthesis) {
-      processedUrl = processedUrl.replace(
-        new RegExp('\\{' + GenericHelpers.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
-        ''
-      );
-    }
-    return processedUrl;
-  }
-
   isSameDomain(config, component) {
     //TODO rename to reflect the fact that it checks for URL till hash (which is more than just domain)
     if (config.iframe) {
