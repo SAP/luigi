@@ -19,9 +19,19 @@
         {#if selectedOption && customSelectedOptionRenderer }
         {@html customSelectedOptionRenderer(selectedOption)}
         {:else}
-            {#if !selectedLabel}
-                {$getTranslation(config.defaultLabel)}
+
+
+
+
+            {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
             {:else}
+
+
+
+
+
+
+
                 {selectedLabel}
             {/if}
           <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
