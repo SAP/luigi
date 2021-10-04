@@ -27,6 +27,12 @@
       "svelteStrictMode": true,
       "svelteBracketNewLine": true,
       "svelteIndentScriptAndStyle": true,
-      "svelteAllowShorthand": true
+      "svelteAllowShorthand": true,
+      "overrides": [
+         {
+           "files": ["*.svelte"],
+           "processor": "svelte3/svelte3"
+         }
+       ]
    }
 }
