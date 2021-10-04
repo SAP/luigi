@@ -20,6 +20,7 @@
       "printWidth": 90
    },
    "svelte": {
+      "parser": "lisp",
       "arrowParens": "avoid",
       "singleQuote": true,
       "printWidth": 90,
