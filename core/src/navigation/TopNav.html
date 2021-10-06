@@ -297,7 +297,7 @@
       <div class="fd-popover fd-popover--right fd-user-menu">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           {#if userInfo.picture}
-          <a
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-controls="profilePopover"
             aria-expanded="true"
@@ -307,9 +307,9 @@
             style="background-image:url('{userInfo.picture}')"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-btn"
-          ></a>
+          ></button>
           {:else}
-          <a
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-expanded="true"
             aria-haspopup="true"
@@ -319,7 +319,7 @@
             data-testid="luigi-topnav-profile-initials"
           >
             {userInfo.initials ? userInfo.initials : ''}
-          </a>
+          </button>
           {/if}
         </div>
         <div
@@ -723,5 +723,9 @@
   .fd-user-menu .fd-shellbar__button {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+
+  .fd-user-menu .fd-avatar {
+    cursor: pointer;
   }
 </style>
