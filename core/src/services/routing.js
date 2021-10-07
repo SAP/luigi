@@ -181,8 +181,8 @@ class RoutingClass {
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
-      if(showModalPathInUrl == true){
-      await this.handleBookmarkableModalPath();
+      if(LuigiConfig.getConfigValue('routing.showModalPathInUrl') == true){
+        await this.handleBookmarkableModalPath();
       }
 
       const previousCompData = component.get();
