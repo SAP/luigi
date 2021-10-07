@@ -667,7 +667,7 @@ describe('Routing', function() {
       });
 
       //then
-      sinon.assert.calledTwice(console.warn);
+      sinon.assert.calledOnce(console.warn);
     });
 
     it('should navigate to rootPath if node can be reached directly', async () => {
