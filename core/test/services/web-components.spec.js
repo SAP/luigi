@@ -5,6 +5,7 @@ const assert = chai.assert;
 
 import { WebComponentService } from '../../src/services/web-components';
 import { LuigiConfig } from '../../src/core-api';
+import { LuigiI18N } from '../../src/core-api';
 import { DefaultCompoundRenderer } from '../../src/utilities/helpers/web-component-helpers';
 import { LuigiElement } from '../../../client/src/luigi-element';
 import { fail } from 'sinon/lib/sinon/mock-expectation';
@@ -35,7 +36,8 @@ describe('WebComponentService', function() {
     before(() => {
       window.Luigi = {
         navigation: 'mock1',
-        ux: 'mock2'
+        ux: 'mock2',
+        i18n: ()=> LuigiI18N
       };
     });
 
@@ -62,6 +64,8 @@ describe('WebComponentService', function() {
       expect(expectedCmp.context).to.equal(ctx);
       expect(expectedCmp.LuigiClient.linkManager).to.equal(window.Luigi.navigation);
       expect(expectedCmp.LuigiClient.uxManager).to.equal(window.Luigi.ux);
+      expect(expectedCmp.LuigiClient.getCurrentLocale()).to.equal(window.Luigi.i18n().getCurrentLocale());
+      expect(expectedCmp.LuigiClient.getCurrentLocale).to.be.a('function');
       expect(expectedCmp.LuigiClient.publishEvent).to.be.a('function');
     });
 
