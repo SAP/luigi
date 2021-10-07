@@ -8,6 +8,7 @@
     getContext
   } from 'svelte';
   import { GenericHelpers } from './utilities/helpers';
+  import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
   export let userSettingGroup;
   export let userSettingsGroupKey;
   export let storedUserSettingData;
@@ -54,7 +55,7 @@
   }
 
   function setExpandedState(self, value) {
-    const indicatorBtn = self.querySelector('.fd-input-group__button');
+    const indicatorBtn = self.querySelector('.lui-activate-language-dropdown');
     const optionsPopOver = self.parentNode.querySelector('.fd-popover__body');
     self.setAttribute('aria-expanded', value);
     optionsPopOver.setAttribute('aria-hidden', !value);
@@ -107,6 +108,21 @@
       ? `${prefix}_${key}_${option.value}`
       : `${prefix}_${key}_${option}`;
   }
+
+  export function handleKeyUp({ keyCode }) {
+    if (keyCode === KEYCODE_ENTER || keyCode === KEYCODE_SPACE) {
+      document.querySelector('.lui-anchor-node').click();
+    }
+  }
+
+  export function handleKeyListItem(event, index) {
+    if (event.keyCode === KEYCODE_ENTER || event.keyCode === KEYCODE_SPACE) {
+      document.querySelectorAll('.lui-usersettings-content li.fd-list__item')[index].click();
+    }
+  }
+
+  /*to display a language on forst load of the User Settings dialog*/  
+  getLabelForValue();
 </script>
 
 <style>
@@ -176,27 +192,26 @@
                 aria-expanded="false"
                 aria-haspopup="true"
                 on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}"
-              >
-                <div class="fd-input-group fd-input-group--control">
-                  <input
-                    type="text"
-                    class="fd-input fd-input-group__input"
-                    placeholder="{$getTranslation(schemaItem.placeholder)}"
-                    data-testid="lui-us-input{i}"
-                    value="{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}"
-                    disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                  />
-                  <span class="fd-input-group__addon fd-input-group__addon--button">
-                    <button
-                      aria-label="show/hide fruit options"
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      class="fd-input-group__button fd-button fd-button--transparent"
+                >
+                <div class="fd-select">
+                  <div 
+                    tabindex="0"
+                    aria-expanded="false" 
+                    aria-haspopup="listbox" 
+                    aria-label="Language"
+                    class="fd-select__control lui-anchor-node" 
+                    on:keyup="{(event) => handleKeyUp(event)}"
+                    data-testid="lui-us-language-dropdown">
+                    <span 
+                      class="fd-select__text-content"
+                      data-testid="lui-us-input{i}"
                       disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                    >
-                      <i class="sap-icon--navigation-down-arrow"></i>
-                    </button>
-                  </span>
+                      >{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}
+                    </span>
+                    <span class="fd-button fd-button--transparent fd-select__button lui-activate-language-dropdown">
+                          <i class="sap-icon--slim-arrow-down"></i>
+                      </span>
+                  </div>
                 </div>
               </div>
               <div
@@ -204,7 +219,7 @@
                 aria-hidden="true"
               >
                 {#if Array.isArray(schemaItem.options)}
-                <div class="fd-popover__wrapper docs-max-height">
+                <div class="fd-popover__wrapper">
                   <ul class="fd-list fd-list--dropdown" role="listbox">
                     {#each schemaItem.options as option, optionIndex}
                     <li
@@ -213,6 +228,7 @@
                       class="fd-list__item"
                       data-testid="lui-us-option{i}_{optionIndex}"
                       on:click="{() => updateComboBox(key,option)}"
+                      on:keyup="{(event) => handleKeyListItem(event,[optionIndex])}"
                     >
                       <span class="fd-list__title">
                         <span class="fd-list__bold">
