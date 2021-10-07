@@ -76,7 +76,7 @@ To show a loading indicator before Luigi Core or your first micro frontend is re
 </div>
 ```
 
-The loading indicator is removed after [settings.appLoadingIndicator.hideAutomatically](navigation-parameters-reference.md#loadingindicatorhideautomatically) has been set to `true`.
+To automatically remove the loadining indicator after Luigi initialization phase you can set [settings.appLoadingIndicator.hideAutomatically](navigation-parameters-reference.md#loadingindicatorhideautomatically) to `true`.
 
 To keep the loading indicator until the first micro frontend is usable, follow these steps:
 
