@@ -810,10 +810,9 @@
   };
 
   export const showAlert = (settings, openFromClient = false) => {
-    if (
-      GenericHelpers.isFunction(LuigiConfig.getConfigValue('settings.customAlertHandler'))
-    ) {
-      LuigiConfig.getConfigValue('settings.customAlertHandler')(settings, openFromClient);
+    const customAlertHandler = LuigiConfig.getConfigValue('settings.customAlertHandler');
+    if (GenericHelpers.isFunction(customAlertHandler)) {
+      customAlertHandler(settings, openFromClient);
       return Promise.reject();
     }
     const currentAlerts = alerts;
