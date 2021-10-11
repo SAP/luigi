@@ -71,8 +71,13 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **default**: `false`
 
 ### disableBrowserHistory
-  - **type** booean
+  - **type** boolean
   - **description**: defines either if browser history is enabled or not.
+  - **default**: `false`
+
+### replaceIntentRoute
+  - **type** boolean
+  - **description**: defines if intent navigation route resolves to actual path automatically or not.
   - **default**: `false`
 
 ## Navigation parameters
