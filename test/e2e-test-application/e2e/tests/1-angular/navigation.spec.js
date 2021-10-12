@@ -608,7 +608,7 @@ describe('Navigation', () => {
       cy.get('.fd-nested-list__link')
         .contains('Miscellaneous2 (Isolated View)')
         .parent()
-        .should('have.attr', 'title', '');
+        .should('have.attr', 'title', 'Miscellaneous2 (Isolated View)');
     });
 
     it('Node navigation title attr default.tooltipText text', () => {
@@ -628,6 +628,30 @@ describe('Navigation', () => {
           .contains('Default Child node Example')
           .parent()
           .should('have.attr', 'title', 'Defaults tooltipText');
+      });
+    });
+
+    it('Node navigation title attr default.tooltipText set false', () => {
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          tooltipText: false
+        };
+        win.Luigi.configChanged('settings.navigation');
+        cy.get('.fd-shellbar')
+          .contains('Projects')
+          .click();
+        cy.get('.fd-app__sidebar .fd-nested-list__item')
+          .contains('Project One')
+          .click();
+        cy.get('.fd-nested-list__link')
+          .contains('Miscellaneous2')
+          .parent()
+          .should('have.attr', 'title', '');
+        cy.get('.fd-nested-list__link')
+          .contains('Webcomponent')
+          .parent()
+          .should('have.attr', 'title', 'Webcomponent tooltipText');
       });
     });
   });

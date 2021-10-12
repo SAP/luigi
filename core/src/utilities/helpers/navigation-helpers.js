@@ -418,19 +418,18 @@ class NavigationHelpersClass {
   }
 
   generateTooltipText(node, translation) {
-    if (node.hasOwnProperty('tooltipText')) {
-      if (node.tooltipText === undefined || node.tooltipText === null) {
-        return LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
-      } else if (node.tooltipText.length) {
-        return node.tooltipText;
-      }
+    let ttText = node.tooltipText;
+    if (ttText === undefined) {
+      ttText = LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
     }
 
-    if (node.tooltipText === false || node.tooltipText === '') {
+    if (ttText === undefined) {
+      return translation;
+    } else if (ttText === false) {
       return '';
+    } else {
+      return LuigiI18N.getTranslation(ttText);
     }
-
-    return translation;
   }
 }
 

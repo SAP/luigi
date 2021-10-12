@@ -191,15 +191,13 @@ export const projectDetailNavStructure = projectId => [
     openNodeInModal: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
-    icon: 'sys-help-2',
-    tooltipText: ''
+    icon: 'sys-help-2'
   },
   {
     pathSegment: 'dps',
     label: 'Default Child node Example',
     defaultChildNode: 'dps2',
     icon: 'checklist',
-    tooltipText: null,
     children: [
       {
         pathSegment: 'dps1',

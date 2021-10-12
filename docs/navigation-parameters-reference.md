@@ -98,17 +98,17 @@ The navigation parameters allow you to configure **global** navigation settings 
 
 ### tooltipText
 - **type**: string
-- **description**: allows you to add a tooltip to any of the links and buttons of the left side navigation and top navigation. You can set the parameter with the text that will appear on the tooltip.
-- **default**: it is `null` by default, and you can overwrite it using the **tooltipText** value on a single node level.
+- **description**: allows to overwrite a **defaults.tooltipText** to any of the links and buttons of the left side navigation and top navigation.
+- **default**: it is `undefined` by default, and it can be overwrite by using the **tooltipText** value on a single node level.
 - **example**:
 ```javascript
 tooltipText: 'Useful links'
 ```
 
 ### defaults.tooltipText
-- **type**: string
-- **description**: applies the [tooltipText](navigation-parameters-reference.md#tooltiptext) property to all navigation nodes where it is not set explicitly. If **tooltipText** is added to some specific node but it set value as null or undefined, user should see value frome **defaults.tooltipText**.
-- **default**: the parameter **defaults.tooltipText** is `false` by default, and you can overwrite it using the **tooltipText** value on a single node level.
+- **type**: boolean | string 
+- **description**: applies the [tooltipText](navigation-parameters-reference.md#tooltiptext) property to all navigation nodes where it is not set explicitly. If it is `false` all tooltips will hide. If it is `Some string text` all tooltips will have value `Some string text`. 
+- **default**: the parameter **defaults.tooltipText** is `undefined` by default.
 
 
 ### defaults.pageErrorHandler
