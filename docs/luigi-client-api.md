@@ -955,10 +955,6 @@ LuigiClient
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed
 
-<!-- add-attribute:class:warning -->
-
-> **NOTE:** You can also define a [customAlertHandler](general-settings.md#general-parameters) function to implement custom alerts.
-
 #### getCurrentLocale
 
 Gets the current locale.
