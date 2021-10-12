@@ -32,11 +32,11 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2293](https://github.com/SAP/luigi/pull/2293) Refactor the Language Dropdown under User Settings Dialog ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#2219](https://github.com/SAP/luigi/pull/2219) Expose getCurrentLocale in webcomponent luigi client ([@Patil2099](https://github.com/Patil2099))
 * [#2267](https://github.com/SAP/luigi/pull/2267) Expand path exists to intent check ([@ndricimrr](https://github.com/ndricimrr))
-* [#2256](https://github.com/SAP/luigi/pull/2256) Make User Settings node under profile dropdown an anchor instead oof … ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2256](https://github.com/SAP/luigi/pull/2256) Make Profile Dropdown entities accessible via keyboard([@UlianaMunich](https://github.com/UlianaMunich))
 
 #### :bug: Fixed
-* [#2306](https://github.com/SAP/luigi/pull/2306) Fixing cursor for a Fiori3 Profile Dropdown in Shellbar ([@UlianaMunich](https://github.com/UlianaMunich))
-* [#2314](https://github.com/SAP/luigi/pull/2314) fixed navigation context ([@hardl](https://github.com/hardl))
+* [#2306](https://github.com/SAP/luigi/pull/2306) Fixing cursor for a "Fiori3" Profile Dropdown in Shellbar ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2314](https://github.com/SAP/luigi/pull/2314) Fix navigation context ([@hardl](https://github.com/hardl))
 * [#2253](https://github.com/SAP/luigi/pull/2253) Fix wc and splitview wc opened together ([@ndricimrr](https://github.com/ndricimrr))
 
 
