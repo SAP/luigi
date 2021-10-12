@@ -82,7 +82,6 @@
         aria-haspopup="true"
         on:click|preventDefault="{() => handleClick(node)}"
         data-testid="{getTestId(node)}"
-        tabindex="0"
       >
         <TopNavNode bind:node />
         <BadgeCounter {node} />

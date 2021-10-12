@@ -30,7 +30,6 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
   data-testid="luigi-topnav-title"
   on:click|preventDefault="{() => goTo('/')}"
   href="/"
-  tabindex="0"
 >
   {$getTranslation(title)}
 </a>
@@ -39,7 +38,6 @@ LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
   class="fd-shellbar__title lui-shellbar-single-app-title"
   data-testid="luigi-topnav-title"
   on:click="{() => goTo('/')}"
-  tabindex="0"
 >
   {$getTranslation(title)}
 </span>
