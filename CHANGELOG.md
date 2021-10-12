@@ -36,7 +36,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :bug: Fixed
 * [#2306](https://github.com/SAP/luigi/pull/2306) Fixing cursor for a "Fiori3" Profile Dropdown in Shellbar ([@UlianaMunich](https://github.com/UlianaMunich))
-* [#2314](https://github.com/SAP/luigi/pull/2314) Fix navigation context ([@hardl](https://github.com/hardl))
+* [#2314](https://github.com/SAP/luigi/pull/2314) Fix navigation context for special iframes ([@hardl](https://github.com/hardl))
 * [#2253](https://github.com/SAP/luigi/pull/2253) Fix wc and splitview wc opened together ([@ndricimrr](https://github.com/ndricimrr))
 
 
