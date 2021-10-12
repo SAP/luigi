@@ -25,6 +25,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.17.0] (2021-10-12)
+
+#### :rocket: Added
+* [#2286](https://github.com/SAP/luigi/pull/2286) Resolve intent path to actual path ([@ndricimrr](https://github.com/ndricimrr))
+* [#2293](https://github.com/SAP/luigi/pull/2293) Refactor the Language Dropdown under User Settings Dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2219](https://github.com/SAP/luigi/pull/2219) Expose getCurrentLocale in webcomponent luigi client ([@Patil2099](https://github.com/Patil2099))
+* [#2267](https://github.com/SAP/luigi/pull/2267) Expand path exists to intent check ([@ndricimrr](https://github.com/ndricimrr))
+* [#2256](https://github.com/SAP/luigi/pull/2256) Make User Settings node under profile dropdown an anchor instead oof … ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2306](https://github.com/SAP/luigi/pull/2306) Fixing cursor for a Fiori3 Profile Dropdown in Shellbar ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2314](https://github.com/SAP/luigi/pull/2314) fixed navigation context ([@hardl](https://github.com/hardl))
+* [#2253](https://github.com/SAP/luigi/pull/2253) Fix wc and splitview wc opened together ([@ndricimrr](https://github.com/ndricimrr))
+
+
 ## [v1.16.2] (2021-09-22)
 
 #### :bug: Fixed
@@ -1226,3 +1241,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.16.0]: https://github.com/SAP/luigi/compare/v1.15.0...v1.16.0
 [v1.16.1]: https://github.com/SAP/luigi/compare/v1.16.0...v1.16.1
 [v1.16.2]: https://github.com/SAP/luigi/compare/v1.16.1...v1.16.2
+[v1.17.0]: https://github.com/SAP/luigi/compare/v1.16.2...v1.17.0
