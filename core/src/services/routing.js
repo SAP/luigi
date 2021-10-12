@@ -135,8 +135,12 @@ class RoutingClass {
     if (/\?intent=/i.test(window.location.hash)) {
       const hash = window.location.hash.replace('#/#', '').replace('#', '');
       const intentPath = RoutingHelpers.getIntentPath(hash);
+      // if intent faulty or illegal then skip
       if (intentPath) {
-        // if intent faulty or illegal then skip
+        const isReplaceRouteActivated = Luigi.getConfigValue('routing.replaceIntentRoute');
+        if (isReplaceRouteActivated) {
+          history.replaceState(window.state, '', intentPath);
+        }
         return intentPath;
       }
     }
@@ -284,7 +288,7 @@ class RoutingClass {
 
       let cNode2 = currentNode;
       let hideSideNavInherited = nodeObject.hideSideNav;
-      if(hideSideNavInherited === undefined) {
+      if (hideSideNavInherited === undefined) {
         while (cNode2) {
           if (cNode2.tabNav && cNode2.hideSideNav === true) {
             hideSideNavInherited = true;

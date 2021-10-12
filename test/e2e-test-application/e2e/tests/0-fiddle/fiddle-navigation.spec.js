@@ -620,16 +620,18 @@ describe('Fiddle', () => {
         .eq(1)
         .click();
 
-      cy.get('[data-testid="lui-us-input0"]').click();
+      cy.get('[data-testid="lui-us-language-dropdown"]')
+        .eq(0)
+        .click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
       cy.get('[data-testid="lui-us-input0"]')
-        .invoke('val')
+        .should('exist')
         .should('contain', 'German');
 
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_1"]').click();
       cy.get('[data-testid="lui-us-input0"]')
-        .invoke('val')
+        .should('exist')
         .should('contain', 'English');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();

@@ -65,9 +65,15 @@
       </a>
     </li>
     {/each} {#if hasUserSettings}
-    <li tabindex="-1" role="listitem" class="fd-list__item fd-list__item--link">
-      <button
-        on:click="{onUserSettingsClick}"
+    <li
+      tabindex="-1"
+      role="listitem"
+      class="fd-list__item fd-list__item--link lui-anchor-node"
+      on:click|preventDefault="{onUserSettingsClick}"
+      on:keyup="{(event) => handleKeyUp(event)}"
+    >
+      <a
+        tabindex="0"
         class="fd-list__link"
         title="User Settings"
         data-testid="settings-link"
@@ -85,7 +91,7 @@
         />
         {/if}{/if}
         <span class="fd-list__title">{$getTranslation(profileNav.settings.label)}</span>
-      </button>
+      </a>
     </li>
     {/if}
   </ul>
@@ -143,6 +149,7 @@
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
 
   const dispatch = createEventDispatcher();
 
@@ -297,6 +304,12 @@
     AuthLayerSvc.logout();
   }
 
+  export function handleKeyUp({ keyCode }) {
+    if (keyCode === KEYCODE_ENTER || keyCode === KEYCODE_SPACE) {
+      document.querySelector('.lui-anchor-node>.fd-list__link').click();
+    }
+  }
+
   export let showUserInfo;
   $: showUserInfo = Boolean(userInfo && (userInfo.name || userInfo.email));
 </script>
@@ -328,18 +341,6 @@
     /*TODO: check if FD Styles > 0.18.0 has fixed it*/
     .fd-list__title {
       line-height: var(--sapContent_LineHeight, 1.4);
-    }
-  }
-
-  li > button.fd-list__link {
-    background-color: var(--sapList_Background, #fff);
-
-    &:hover {
-      background-color: var(--sapList_Hover_Background, #f5f5f5);
-    }
-
-    .fd-list__title {
-      flex: none;
     }
   }
 </style>
