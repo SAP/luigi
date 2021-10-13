@@ -115,6 +115,9 @@
       if (!settings.size) {
         settings.size = 's';
       }
+      if (settings.overlap === undefined) {
+        settings.overlap = true;
+      }
     } else {
       if (!settings.title) {
         settings.title = nodeObject.label;
