@@ -158,7 +158,7 @@ theming : {
      }
   }
 ```
-* **customAlertHandler** is a function which will be called if it is defined. With this function, Luigi alerts will be disabled and you can implement your own alerts. This function gets `settings` and `openFromClient` as parameters. In addition we recommend to return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+* **customAlertHandler** is a function which will be called if it is defined. With this function, Luigi alerts will be disabled and you can implement your own alerts. This function gets `settings` and `openFromClient` as parameters. In addition, we recommend to return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise): 
 
 ```javascript
 Luigi.setConfig({
