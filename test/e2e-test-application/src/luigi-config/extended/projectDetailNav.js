@@ -35,16 +35,16 @@ export const projectDetailNavStructure = projectId => [
           id: 'input1',
           viewUrl: '/assets/helloWorldWC.js',
           context: {
-            title: 'Some input test 1',
+            title: 'Some input text !ft',
             instant: true
-          }
-          // visibleForFeatureToggles: ['!ft']
+          },
+          visibleForFeatureToggles: ['!ft']
         },
         {
           id: 'input12',
           viewUrl: '/assets/helloWorldWC.js',
           context: {
-            title: 'Some input test 2',
+            title: 'Some input text ft1',
             instant: true
           },
           visibleForFeatureToggles: ['ft1']
