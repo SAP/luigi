@@ -475,7 +475,7 @@ describe('Luigi client linkManager', () => {
               .invoke('width')
               .should('eq', containerWidth);
 
-            win.Luigi.navigation().openAsDrawer('/projects/pr1/drawer', { resizeMainIFrame: true });
+            win.Luigi.navigation().openAsDrawer('/projects/pr1/drawer', { overlap: false });
 
             cy.get('.drawer-dialog')
               .invoke('width')
@@ -509,7 +509,7 @@ describe('Luigi client linkManager', () => {
               .invoke('width')
               .should('eq', containerWidth);
 
-            win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent', { resizeMainIFrame: true });
+            win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent', { overlap: false });
 
             cy.get('.drawer-dialog')
               .invoke('width')

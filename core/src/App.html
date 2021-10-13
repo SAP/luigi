@@ -1039,7 +1039,7 @@
     return (
       window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
       mfDrawer.settings &&
-      mfDrawer.settings.resizeMainIFrame
+      !mfDrawer.settings.overlap
     );
   };
 
@@ -1638,7 +1638,9 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => {
+    resizeMicrofrontendIframe();
+  });
 </script>
 
 <style type="text/scss">
