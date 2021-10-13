@@ -161,7 +161,7 @@ export class linkManager extends LuigiClientBase {
    * @param {any} drawerSettings.header By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
    * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
    * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
-   * @param {boolean} [drawerSettings.overlap=false] enable resizing of main microfrontend iFrame after drawer open
+   * @param {boolean} [drawerSettings.overlap=true] enable resizing of main microfrontend iFrame after drawer open
    * @since 1.6.0
    * @example
    * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
