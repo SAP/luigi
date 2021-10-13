@@ -1620,6 +1620,7 @@
     --luigi__left-sidenav--width: 15rem;
     --luigi__app-title--width: 60vw;
     --luigi__multi-app-dropdown--width: 60vw;
+    --luigi__breadcrumb--height: 2.75rem;
   }
 
   :global(html) {
@@ -1666,6 +1667,11 @@
     @include transition(visibility 0s 0.3s, opacity 0.3s linear);
   }
 
+  :global(.lui-breadcrumb) .iframeContainer,
+  :global(.lui-breadcrumb) .spinnerContainer {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+  }
+
   .iframeContainer,
   .spinnerContainer {
     position: absolute;
@@ -1702,6 +1708,10 @@
     border: none;
     width: 100%;
     height: 100%;
+  }
+
+  :global(.lui-breadcrumb) .iframeContainerTabNav {
+    top: calc(#{$topNavHeight} + #{$topNavHeightTab} + var(--luigi__breadcrumb--height));
   }
 
   .iframeContainerTabNav {
