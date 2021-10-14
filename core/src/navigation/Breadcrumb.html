@@ -17,6 +17,7 @@
 
   export let pathData;
   let previousPathData;
+  let previousBreadcrumbs = {};
 
   let breadcrumbContainer;
 
@@ -49,28 +50,62 @@
   beforeUpdate(async () => {
     if (pathData && (!previousPathData || previousPathData != pathData)) {
       setNavData();
-      const breadcrumbConfig = LuigiConfig.getConfigValue('navigation.breadcrumbs');
-      showBreadcrumb = !!breadcrumbConfig;
 
       if (pathData.length === 0) {
+        // data reset, just do nothing
         return;
+      }
+
+      const breadcrumbConfig = LuigiConfig.getConfigValue('navigation.breadcrumbs');
+      showBreadcrumb = !!breadcrumbConfig;
+      if (showBreadcrumb) {
+        // if enabled in general, check node scope
+        pathData.forEach(node => {
+          if (node.showBreadcrumbs === false) {
+            showBreadcrumb = false;
+          } else if (node.showBreadcrumbs === true) {
+            showBreadcrumb = true;
+          }
+        });
       }
 
       if (showBreadcrumb) {
         addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
         if (breadcrumbConfig.renderer) {
-          const items = [];
+          let items = [];
           const start = breadcrumbConfig.omitRoot ? 2 : 1;
 
           for (let i = start; i < pathData.length; i++) {
-            // First run needed for preventing flickering
+            // First run needed for pre-render
             const node = pathData[i];
-            if (node.label || node.titleResolver) {
+            const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
+            if (previousBreadcrumbs[route]) {
+              items.push(previousBreadcrumbs[route]);
+            } else if (node.label || node.titleResolver) {
               document.body.classList.add('lui-breadcrumb');
-              break;
+              if (node.titleResolver) {
+                items.push({
+                  label:
+                    node.titleResolver.prerenderFallback &&
+                    node.titleResolver.fallbackTitle
+                      ? getNodeLabel(node.titleResolver.fallbackTitle)
+                      : breadcrumbConfig.pendingItemLabel || '',
+                  node: node,
+                  route: route,
+                  pending: true
+                });
+              } else if (node.label) {
+                items.push({ label: getNodeLabel(node), node: node, route: route });
+              }
             }
           }
+
+          if (breadcrumbConfig.clearBeforeRender) {
+            breadcrumbContainer.innerHTML = '';
+          }
+          breadcrumbConfig.renderer(breadcrumbContainer, items, clickHandler);
+          items = [];
 
           for (let i = start; i < pathData.length; i++) {
             const node = pathData[i];
@@ -99,7 +134,9 @@
             }
           }
 
-          breadcrumbContainer.innerHTML = '';
+          if (breadcrumbConfig.clearBeforeRender) {
+            breadcrumbContainer.innerHTML = '';
+          }
           if (items.length > 1) {
             items[items.length - 1].last = true;
             document.body.classList.add('lui-breadcrumb');
@@ -107,6 +144,10 @@
           } else if (breadcrumbConfig.autoHide) {
             document.body.classList.remove('lui-breadcrumb');
           }
+          previousBreadcrumbs = {};
+          items.map(item => {
+            previousBreadcrumbs[item.route] = item;
+          });
         } else {
           document.body.classList.remove('lui-breadcrumb');
           console.warn('No breadcrumb container renderer specified');
