@@ -101,6 +101,11 @@
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
   />
+  <Breadcrumb
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
   {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
@@ -130,6 +135,7 @@
   import TopNav from './navigation/TopNav.html';
   import TabNav from './navigation/TabNav.html';
   import GlobalNav from './navigation/GlobalNav.html';
+  import Breadcrumb from './navigation/Breadcrumb.html';
   import { afterUpdate, onMount, setContext, createEventDispatcher } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
