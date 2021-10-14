@@ -11,7 +11,7 @@ class Settings {
   appLoadingIndicator = {
     hideAutomatically: false
   };
-  profileType = ''; // Options: simple | Fiori3
+  profileType = 'Fiori3'; // Options: simple | Fiori3
   responsiveNavigation = 'Fiori3'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
   thirdPartyCookieCheck = {
@@ -56,13 +56,13 @@ class Settings {
   //     }
   //   };
   // };
-  // globalSideNavigation = true;
-  // experimental = {
-  //    profileMenuFiori3: true,
-  // globalNav: true
-  //   webcomponents:true
-  // };
-  // globalSideNavigation = true;
+  globalSideNavigation = true;
+  experimental = {
+    profileMenuFiori3: true,
+    globalNav: true
+    //   webcomponents:true
+  };
+  globalSideNavigation = true;
 }
 
 export const settings = new Settings();

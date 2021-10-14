@@ -344,7 +344,7 @@ class Navigation {
   getProductSwitcherItems = () => {
     const items = [
       {
-        icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+        icon: 'contacts',
         label: 'hybris',
         subTitle: 'first subtitle',
         externalLink: {
