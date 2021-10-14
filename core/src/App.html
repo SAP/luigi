@@ -96,17 +96,19 @@
     bind:luigiCustomSearchRenderer__slot
     burgerTooltip="{burgerTooltip}"
   />
+  {#if !(hideNav)}
   <GlobalNav
     pathData="{navigationPath}"
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
   />
+  {#if breadcrumbsEnabled}
   <Breadcrumb
     pathData="{navigationPath}"
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
   />
-  {#if !(hideNav||hideSideNav)}
+  {/if} {/if} {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
     pathParams="{pathParams}"
@@ -136,7 +138,13 @@
   import TabNav from './navigation/TabNav.html';
   import GlobalNav from './navigation/GlobalNav.html';
   import Breadcrumb from './navigation/Breadcrumb.html';
-  import { afterUpdate, onMount, setContext, createEventDispatcher } from 'svelte';
+  import {
+    afterUpdate,
+    beforeUpdate,
+    onMount,
+    setContext,
+    createEventDispatcher
+  } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import {
@@ -234,6 +242,7 @@
   export let searchResult;
   export let storedUserSettings;
   let featureToggleList;
+  let breadcrumbsEnabled;
 
   const prepareInternalData = async config => {
     const iframeConf = config.iframe.luigi;
@@ -1614,6 +1623,10 @@
   });
 
   afterUpdate(() => {});
+
+  beforeUpdate(() => {
+    breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');
+  });
 </script>
 
 <style type="text/scss">
