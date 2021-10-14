@@ -137,7 +137,9 @@ export class linkManager extends LuigiClientBase {
   /**
    * Update current title and size of a modal.
    * @memberof linkManager
-   * @param {*} updatedModalSettings
+   * @param {Object} updatedModalSettings possibility to update the active modal.
+   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
+   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
    * @example
    * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
    */
