@@ -35,7 +35,7 @@ Object.keys(productSwitcherItems[0]).length }
             {#each productSwitcherItems as productSwitcherItem} {#if
             productSwitcherItem.label}
             <li
-              class="fd-product-switch__item {productSwitcherItem.selected?'selected':''}"
+              class="fd-product-switch__item {productSwitcherItem.selected?'selected':''} lui-products-switch-list-item"
               on:click="{() => onActionClick(productSwitcherItem)}"
               data-testid="{getTestId(productSwitcherItem)}"
               tabindex="0"
@@ -44,21 +44,19 @@ Object.keys(productSwitcherItems[0]).length }
               <a
                 href="{addNavHrefForAnchor ? getRouteLink(productSwitcherItem) : undefined}"
                 on:click|preventDefault="{() => {}}"
-                class="fd-menu__link lui-products-switch-anchor"
+                class="fd-menu__link "
               >
-                <div class="lui-product-switch__icon">
-                  {#if hasOpenUIicon(productSwitcherItem)}
-                  <i
-                    role="presentation"
-                    class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
-                  ></i>
-                  {:else}
-                  <img
-                    src="{productSwitcherItem.icon}"
-                    alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
-                  />
-                  {/if}
-                </div>
+                {#if hasOpenUIicon(productSwitcherItem)}
+                <i
+                  role="presentation"
+                  class="fd-product-switch__icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
+                ></i>
+                {:else}
+                <img
+                  src="{productSwitcherItem.icon}"
+                  alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
+                />
+                {/if}
                 <div class="fd-product-switch__text">
                   <div class="fd-product-switch__title">
                     {getNodeLabel(productSwitcherItem)}
@@ -206,18 +204,20 @@ Object.keys(productSwitcherItems[0]).length }
 
 <style type="text/scss">
   .lui-product-switch__icon {
-    img {
-      max-height: 1.5rem;
-      align-items: center;
-    }
     [class*='sap-icon'] {
       color: var(--sapShell_InteractiveTextColor, #d1e8ff);
     }
   }
-  .lui-products-switch-anchor {
+  .lui-products-switch-list-item {
     display: block;
     padding: 0;
     height: auto;
+    [class*='sap-icon'] {
+      color: var(--sapContent_IconColor, #0854a0);
+    }
+    img {
+      max-height: 3rem;
+    }
   }
 
   .fd-product-switch__title,
