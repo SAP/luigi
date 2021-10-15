@@ -25,7 +25,7 @@ Also, the Profile dropdown entities in user settings are now accessible via keyb
 
 #### getCurrentLocale works with Luigi Client Web Components
 
-With our newest release, you can use the [getCurrentLocale](https://docs.luigi-project.io/docs/luigi-client-api/?section=getcurrentlocale) function with [Web Components](https://docs.luigi-project.io/docs/web-component) in Luigi Client. For more information see the changes [here](https://github.com/SAP/luigi/pull/2219).
+With our newest release, you can use the [getCurrentLocale](https://docs.luigi-project.io/docs/luigi-client-api/?section=getcurrentlocale) function within [Web Components](https://docs.luigi-project.io/docs/web-component) of Luigi Client. For more information see the changes [here](https://github.com/SAP/luigi/pull/2219).
 
 #### Bugfixes
 
