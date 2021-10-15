@@ -19,7 +19,7 @@ will be translated to its actual path: `http://localhost:4200/projects/pr2/setti
 
 #### Improved user settings
 
-The language dropdown in Luigi's [user settings](https://docs.luigi-project.io/docs/user-settings) dialog was refactored to the latest Fiori3 specifications. You can find more information [here].
+The language dropdown in Luigi's [user settings](https://docs.luigi-project.io/docs/user-settings) dialog was refactored to the latest Fiori3 specifications to be easily accessible via keyboard. You can find more information [here].
 
 Also, the Profile dropdown entities in user settings are now accessible via keyboard. You can learn more [here](https://github.com/SAP/luigi/pull/2256).
 
