@@ -349,6 +349,10 @@
     z-index: 2;
   }
 
+  .lui-usersettings-left-nav .fd-list__byline {
+    padding-top: 0.6em;
+  }
+
   .fd-side-nav {
     height: 100%;
     width: 100%;
@@ -470,7 +474,7 @@
   }
 </style>
 <svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
-<div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
+<div class="fd-dialog fd-dialog--active lui-usersettings-dialog" tabindex="0">
   <div
     class="fd-dialog__content lui-usersettings-dialog-size"
     role="dialog"
