@@ -1634,6 +1634,7 @@
 
   beforeUpdate(() => {
     breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');
+    searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
   });
 </script>
 
