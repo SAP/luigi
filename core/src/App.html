@@ -96,12 +96,19 @@
     bind:luigiCustomSearchRenderer__slot
     burgerTooltip="{burgerTooltip}"
   />
+  {#if !(hideNav)}
   <GlobalNav
     pathData="{navigationPath}"
     pathParams="{pathParams}"
     on:handleClick="{handleNavClick}"
   />
-  {#if !(hideNav||hideSideNav)}
+  {#if breadcrumbsEnabled}
+  <Breadcrumb
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
+  {/if} {/if} {#if !(hideNav||hideSideNav)}
   <LeftNav
     pathData="{navigationPath}"
     pathParams="{pathParams}"
@@ -130,7 +137,14 @@
   import TopNav from './navigation/TopNav.html';
   import TabNav from './navigation/TabNav.html';
   import GlobalNav from './navigation/GlobalNav.html';
-  import { afterUpdate, onMount, setContext, createEventDispatcher } from 'svelte';
+  import Breadcrumb from './navigation/Breadcrumb.html';
+  import {
+    afterUpdate,
+    beforeUpdate,
+    onMount,
+    setContext,
+    createEventDispatcher
+  } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import {
@@ -228,6 +242,7 @@
   export let searchResult;
   export let storedUserSettings;
   let featureToggleList;
+  let breadcrumbsEnabled;
 
   const prepareInternalData = async config => {
     const iframeConf = config.iframe.luigi;
@@ -1616,6 +1631,11 @@
   });
 
   afterUpdate(() => {});
+
+  beforeUpdate(() => {
+    breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');
+    searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
+  });
 </script>
 
 <style type="text/scss">
@@ -1628,6 +1648,7 @@
     --luigi__left-sidenav--width: 15rem;
     --luigi__app-title--width: 60vw;
     --luigi__multi-app-dropdown--width: 60vw;
+    --luigi__breadcrumb--height: 2.75rem;
   }
 
   :global(html) {
@@ -1674,6 +1695,11 @@
     @include transition(visibility 0s 0.3s, opacity 0.3s linear);
   }
 
+  :global(.lui-breadcrumb) .iframeContainer,
+  :global(.lui-breadcrumb) .spinnerContainer {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+  }
+
   .iframeContainer,
   .spinnerContainer {
     position: absolute;
@@ -1710,6 +1736,10 @@
     border: none;
     width: 100%;
     height: 100%;
+  }
+
+  :global(.lui-breadcrumb) .iframeContainerTabNav {
+    top: calc(#{$topNavHeight} + #{$topNavHeightTab} + var(--luigi__breadcrumb--height));
   }
 
   .iframeContainerTabNav {
