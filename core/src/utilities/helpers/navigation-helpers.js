@@ -19,7 +19,19 @@ class NavigationHelpersClass {
 
   getProductSwitcherColumnsNumber() {
     const productSwitcherConfig = this.getProductSwitcherConfig();
-    return productSwitcherConfig.columns === 3 ? 3 : 4;
+    let productSwitcherColumns = productSwitcherConfig.columns;
+    let productSwitcherItemsAmount = productSwitcherConfig.items().length;
+    if (productSwitcherColumns === 'auto') {
+      if (productSwitcherItemsAmount <= 6) {
+        return 3;
+      } else {
+        return 4;
+      }
+    } else if (productSwitcherColumns === 3) {
+      return 3;
+    } else {
+      return 4;
+    }
   }
 
   prepareForTests(...parts) {
@@ -319,7 +331,7 @@ class NavigationHelpersClass {
     }
     return false;
   }
-  
+
   /**
    * Returns a nested property value defined by a chain string
    * @param {*} obj the object

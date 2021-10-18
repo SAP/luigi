@@ -44,7 +44,6 @@ Object.keys(productSwitcherItems[0]).length }
               <a
                 href="{addNavHrefForAnchor ? getRouteLink(productSwitcherItem) : undefined}"
                 on:click|preventDefault="{() => {}}"
-                class="fd-menu__link "
               >
                 {#if hasOpenUIicon(productSwitcherItem)}
                 <i
@@ -212,8 +211,8 @@ Object.keys(productSwitcherItems[0]).length }
     display: block;
     padding: 0;
     height: auto;
-    [class*='sap-icon'] {
-      color: var(--sapContent_IconColor, #0854a0);
+    a {
+      text-decoration: none;
     }
     img {
       max-height: 3rem;

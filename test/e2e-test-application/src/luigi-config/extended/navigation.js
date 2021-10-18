@@ -16,7 +16,7 @@ class Navigation {
     this.projectsNavProviderFn = projectsNavProviderFn;
   }
 
-  addNavHrefs = true;
+  addNavHrefs = false;
   preloadViewGroups = true;
   viewGroupSettings = {
     tets: {
@@ -373,7 +373,7 @@ class Navigation {
     icon: 'grid',
     // icon: '/assets/favicon-sap.ico',
     items: this.getProductSwitcherItems,
-    columns: 3
+    columns: 'auto'
   };
 
   getProfileItems = () => {
