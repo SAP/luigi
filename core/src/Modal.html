@@ -289,6 +289,10 @@
 
 <style type="text/scss">
   @import 'styles/variables';
+  :global(.lui-breadcrumb) .drawer-dialog {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+  }
+
   .drawer-dialog {
     position: absolute;
     top: $topNavHeight;
@@ -305,6 +309,10 @@
     left: auto;
     right: 0;
     height: 100%;
+  }
+
+  :global(.lui-breadcrumb) .drawer__backdrop {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
   .drawer__backdrop {
