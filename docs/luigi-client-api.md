@@ -498,6 +498,22 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
 
+#### updateModalSettings
+
+Update current title and size of a modal.
+
+##### Parameters
+
+-   `updatedModalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** possibility to update the active modal. (optional, default `{}`)
+    -   `updatedModalSettings.title` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `title` of the active modal.
+    -   `updatedModalSettings.size` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `size` of the active modal.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+```
+
 #### openAsSplitView
 
 -   **See: [splitView](#splitview) for further documentation about the returned instance**
