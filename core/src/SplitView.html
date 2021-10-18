@@ -399,6 +399,10 @@
     }
   }
 
+  :global(.lui-breadcrumb) :global(#splitViewDraggerBackdrop) {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+  }
+
   :global(#splitViewDraggerBackdrop) {
     position: absolute;
     background-color: rgba(255, 255, 255, 0.7);

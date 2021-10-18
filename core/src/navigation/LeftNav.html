@@ -751,6 +751,10 @@
     display: none;
   }
 
+  :global(.lui-breadcrumb) .fd-app__sidebar {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+  }
+
   .fd-app__sidebar {
     position: fixed;
     top: $topNavHeight;
