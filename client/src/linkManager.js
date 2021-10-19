@@ -135,6 +135,23 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * Update current title and size of a modal.
+   * @memberof linkManager
+   * @param {Object} updatedModalSettings possibility to update the active modal.
+   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
+   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @example
+   * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+   */
+  updateModalSettings(updatedModalSettings = {}) {
+    const message = {
+      msg: 'luigi.navigation.updateModalSettings',
+      updatedModalSettings
+    };
+    helpers.sendPostMessageToLuigiCore(message);
+  }
+
+  /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
    * @memberof linkManager
    * @param {string} path navigation path

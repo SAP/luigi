@@ -75,11 +75,12 @@
         if (breadcrumbConfig.renderer) {
           let items = [];
           const start = breadcrumbConfig.omitRoot ? 2 : 1;
+          const currentPath = Routing.getCurrentPath();
 
           for (let i = start; i < pathData.length; i++) {
             // First run needed for pre-render
             const node = pathData[i];
-            const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
+            const route = RoutingHelpers.mapPathToNode(currentPath, node);
             if (previousBreadcrumbs[route]) {
               items.push(previousBreadcrumbs[route]);
             } else if (node.label || node.titleResolver) {
@@ -110,7 +111,7 @@
           for (let i = start; i < pathData.length; i++) {
             const node = pathData[i];
 
-            const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
+            const route = RoutingHelpers.mapPathToNode(currentPath, node);
 
             if (node.titleResolver) {
               const data = await Navigation.extractDataFromPath(route);
@@ -133,21 +134,23 @@
               items.push({ label: getNodeLabel(node), node: node, route: route });
             }
           }
-
-          if (breadcrumbConfig.clearBeforeRender) {
-            breadcrumbContainer.innerHTML = '';
+          // check if route has been changed in the meantime, if yes, do nothing
+          if (currentPath === Routing.getCurrentPath()) {
+            if (breadcrumbConfig.clearBeforeRender) {
+              breadcrumbContainer.innerHTML = '';
+            }
+            if (items.length > 1) {
+              items[items.length - 1].last = true;
+              document.body.classList.add('lui-breadcrumb');
+              breadcrumbConfig.renderer(breadcrumbContainer, items, clickHandler);
+            } else if (breadcrumbConfig.autoHide) {
+              document.body.classList.remove('lui-breadcrumb');
+            }
+            previousBreadcrumbs = {};
+            items.map(item => {
+              previousBreadcrumbs[item.route] = item;
+            });
           }
-          if (items.length > 1) {
-            items[items.length - 1].last = true;
-            document.body.classList.add('lui-breadcrumb');
-            breadcrumbConfig.renderer(breadcrumbContainer, items, clickHandler);
-          } else if (breadcrumbConfig.autoHide) {
-            document.body.classList.remove('lui-breadcrumb');
-          }
-          previousBreadcrumbs = {};
-          items.map(item => {
-            previousBreadcrumbs[item.route] = item;
-          });
         } else {
           document.body.classList.remove('lui-breadcrumb');
           console.warn('No breadcrumb container renderer specified');
