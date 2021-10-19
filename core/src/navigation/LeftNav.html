@@ -48,8 +48,8 @@
     on:keyup="{handleKey}"
     data-testid="semiCollapsibleLeftNav"
   >
-    {#if children && pathData.length > 1}
     <div class="fd-side-nav__main-navigation">
+      {#if children && pathData.length > 1}
       <div class="lui-fd-side-nav-wrapper">
         <ul class="fd-nested-list {sideNavClass}">
           {#each sortedChildrenEntries as [key, nodes],index} {#if key === 'undefined' ||
@@ -258,8 +258,9 @@
           {/if} {/if} {/each} {/if} {/if} {/each}
         </ul>
       </div>
+      {/if}
     </div>
-    {/if} {#if footerText || semiCollapsibleButton}
+    {#if footerText || semiCollapsibleButton}
     <div class="fd-side-nav__utility">
       <span class="lui-side-nav__footer">
         <span class="lui-side-nav__footer--text fd-has-type-minus-1"
@@ -326,95 +327,101 @@
             selectedNode = obj.selectedNode;
           } else if (prop === 'hasCategoriesWithIcon') {
             hasCategoriesWithIcon = obj.hasCategoriesWithIcon;
-          }
-        });
-
-        navHeader = undefined;
-        let parentNode = obj.navParent;
-        navParentNode = parentNode;
-        if (
-          parentNode &&
-          parentNode.navHeader &&
-          GenericHelpers.requestExperimentalFeature('navHeader', true)
-        ) {
-          let resolvedNavHeader = parentNode.navHeader;
-          let resolvedNavHeaderNode = parentNode;
-
-          if ('inherit' === resolvedNavHeader) {
-            resolvedNavHeaderNode = parentNode.parent;
-            while (
-              resolvedNavHeaderNode &&
-              'inherit' === resolvedNavHeaderNode.navHeader
+          } else if (prop === 'navParent') {
+            navHeader = undefined;
+            let parentNode = obj.navParent;
+            navParentNode = parentNode;
+            if (
+              parentNode &&
+              parentNode.navHeader &&
+              GenericHelpers.requestExperimentalFeature('navHeader', true)
             ) {
-              resolvedNavHeaderNode = resolvedNavHeaderNode.parent;
-            }
-            resolvedNavHeader = resolvedNavHeaderNode
-              ? resolvedNavHeaderNode.navHeader
-              : undefined;
-          }
+              let resolvedNavHeader = parentNode.navHeader;
+              let resolvedNavHeaderNode = parentNode;
 
-          if (resolvedNavHeader instanceof Function) {
-            navHeader = {};
+              if ('inherit' === resolvedNavHeader) {
+                resolvedNavHeaderNode = parentNode.parent;
+                while (
+                  resolvedNavHeaderNode &&
+                  'inherit' === resolvedNavHeaderNode.navHeader
+                ) {
+                  resolvedNavHeaderNode = resolvedNavHeaderNode.parent;
+                }
+                resolvedNavHeader = resolvedNavHeaderNode
+                  ? resolvedNavHeaderNode.navHeader
+                  : undefined;
+              }
 
-            let res = resolvedNavHeader(
-              NavigationHelpers.stripNode(parentNode),
-              NavigationHelpers.stripNode(resolvedNavHeaderNode),
-              context
-            );
-            if (res instanceof Promise) {
-              res.then(headerData => {
-                navHeader = headerData;
-              });
-            } else {
-              navHeader = res;
-            }
-          } else if ('auto' === resolvedNavHeader) {
-            navHeader = {
-              label: parentNode.label,
-              icon: parentNode.icon
-            };
-          } else if (
-            resolvedNavHeader &&
-            resolvedNavHeader.useTitleResolver &&
-            resolvedNavHeaderNode.titleResolver
-          ) {
-            if (resolvedNavHeaderNode.titleResolver.prerenderFallback) {
-              navHeader = {
-                ...resolvedNavHeader,
-                label: resolvedNavHeaderNode.titleResolver.fallbackTitle || '',
-                icon: resolvedNavHeaderNode.titleResolver.fallbackIcon
-              };
-            } else {
-              navHeader = resolvedNavHeader;
-            }
+              if (resolvedNavHeader instanceof Function) {
+                navHeader = {};
 
-            const route = RoutingHelpers.mapPathToNode(
-              Routing.getCurrentPath(),
-              resolvedNavHeaderNode
-            );
-
-            Navigation.extractDataFromPath(route).then(data => {
-              const ctx = RoutingHelpers.substituteDynamicParamsInObject(
-                Object.assign({}, data.pathData.context, resolvedNavHeaderNode.context),
-                data.pathData.pathParams
-              );
-              NavigationHelpers.fetchNodeTitleData(resolvedNavHeaderNode, ctx)
-                .then(headerData => {
-                  navHeader = { ...resolvedNavHeader, ...headerData };
-                })
-                .catch(error => {
-                  console.error('Error while retrieving title, fallback to node label');
+                let res = resolvedNavHeader(
+                  NavigationHelpers.stripNode(parentNode),
+                  NavigationHelpers.stripNode(resolvedNavHeaderNode),
+                  context
+                );
+                if (res instanceof Promise) {
+                  res.then(headerData => {
+                    navHeader = headerData;
+                  });
+                } else {
+                  navHeader = res;
+                }
+              } else if ('auto' === resolvedNavHeader) {
+                navHeader = {
+                  label: parentNode.label,
+                  icon: parentNode.icon
+                };
+              } else if (
+                resolvedNavHeader &&
+                resolvedNavHeader.useTitleResolver &&
+                resolvedNavHeaderNode.titleResolver
+              ) {
+                if (resolvedNavHeaderNode.titleResolver.prerenderFallback) {
                   navHeader = {
                     ...resolvedNavHeader,
-                    label: parentNode.label,
-                    icon: parentNode.icon
+                    label: resolvedNavHeaderNode.titleResolver.fallbackTitle || '',
+                    icon: resolvedNavHeaderNode.titleResolver.fallbackIcon
                   };
+                } else {
+                  navHeader = resolvedNavHeader;
+                }
+
+                const route = RoutingHelpers.mapPathToNode(
+                  Routing.getCurrentPath(),
+                  resolvedNavHeaderNode
+                );
+
+                Navigation.extractDataFromPath(route).then(data => {
+                  const ctx = RoutingHelpers.substituteDynamicParamsInObject(
+                    Object.assign(
+                      {},
+                      data.pathData.context,
+                      resolvedNavHeaderNode.context
+                    ),
+                    data.pathData.pathParams
+                  );
+                  NavigationHelpers.fetchNodeTitleData(resolvedNavHeaderNode, ctx)
+                    .then(headerData => {
+                      navHeader = { ...resolvedNavHeader, ...headerData };
+                    })
+                    .catch(error => {
+                      console.error(
+                        'Error while retrieving title, fallback to node label'
+                      );
+                      navHeader = {
+                        ...resolvedNavHeader,
+                        label: parentNode.label,
+                        icon: parentNode.icon
+                      };
+                    });
                 });
-            });
-          } else {
-            navHeader = resolvedNavHeader;
+              } else {
+                navHeader = resolvedNavHeader;
+              }
+            }
           }
-        }
+        });
 
         let sideNavAccordionModeOverride =
           (selectedNode && selectedNode.sideNavAccordionMode) ||
@@ -742,6 +749,10 @@
 
   :global(.semiCollapsed) .lui-nav-title {
     display: none;
+  }
+
+  :global(.lui-breadcrumb) .fd-app__sidebar {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
   .fd-app__sidebar {
