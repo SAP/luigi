@@ -101,14 +101,6 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
 - **default**: the parameter **defaults.isolateView** is `false` by default, and you can overwrite it using the **isolateView** value on a single node level.
 
-### tooltipText
-- **type**: string
-- **description**: allows to overwrite a **defaults.tooltipText** to any of the links and buttons of the left side navigation and top navigation.
-- **default**: it is `undefined` by default, and it can be overwrite by using the **tooltipText** value on a single node level.
-- **example**:
-```javascript
-tooltipText: 'Useful links'
-```
 
 ### defaults.tooltipText
 - **type**: boolean | string 
@@ -171,6 +163,15 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **examples**:
   - A static **pathSegment** of value `settings` results in `example.com/settings`.
   - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
+
+### tooltipText
+- **type**: string
+- **description**: Allows to set a custom tooltip text for this node or to disable the tooltip by setting the value to `false`.
+- **default**: it is `undefined` by default, and it can be overwrite by using the **tooltipText** value on a single node level.
+- **example**:
+```javascript
+tooltipText: 'Useful links'
+```
 
 ### link
 - **type**: string
