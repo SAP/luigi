@@ -1166,6 +1166,13 @@
       if (!iframe) return;
       iframe._ready = true;
 
+      const specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
+        e,
+        specialIframeProps
+      );
+      const isSpecialIframe =
+        specialIframeMessageSource && specialIframeMessageSource.length > 0;
+
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
           LuigiConfig.getConfigValue('communication.customMessagesListeners') || {};
@@ -1219,12 +1226,7 @@
         iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
-        let specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
-          e,
-          specialIframeProps
-        );
-
-        if (specialIframeMessageSource.length > 0) {
+        if (isSpecialIframe) {
           specialIframeMessageSource.forEach(async typ => {
             let ctx = specialIframeProps[typ.dataKey].context;
             const conf = {
@@ -1295,23 +1297,16 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-        const srcNode = iframe.luigi.currentNode;
-        const srcPathParams = iframe.luigi.pathParams;
+
+        const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
+        const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
+
         if (e.data.params.newTab) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
           openViewInNewTab(path);
         } else if (e.data.params.modal !== undefined) {
-          let path;
-          const specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
-            e,
-            specialIframeProps
-          );
-          if (specialIframeMessageSource.length > 0) {
-            path = buildPath(e.data.params, srcNode, srcPathParams);
-          } else {
-            path = buildPath(e.data.params);
-          }
+          let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
           contentNode = node;
           resetMicrofrontendModalData();
