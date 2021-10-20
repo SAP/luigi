@@ -48,7 +48,9 @@
     <div class="fd-side-nav__main-navigation">
       {#if children && pathData.length > 1}
       <div class="lui-fd-side-nav-wrapper">
-        <ul class="fd-nested-list {sideNavClass}">
+        <ul
+          class="fd-nested-list {sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact':'fd-nested-list'}"
+        >
           {#each sortedChildrenEntries as [key, nodes],index} {#if key === 'undefined' ||
           key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
@@ -452,7 +454,6 @@
   export let selectedCategory = null;
   export let expandedCategories;
   export let hasCategoriesWithIcon;
-  export let sideNavClass;
   export let sideNavAccordionMode;
   export let burgerTooltip;
   export let navHeader;
@@ -493,12 +494,6 @@
       ['settings.footer']
     );
 
-    // set compact mode class
-    if (Boolean(sideNavCompactMode)) {
-      sideNavClass = 'fd-nested-list fd-nested-list--compact';
-    } else {
-      sideNavClass = 'fd-nested-list';
-    }
     let stateArr = SemiCollapsibleNavigation.initial();
     isSemiCollapsed = stateArr.isSemiCollapsed;
     semiCollapsible = stateArr.semiCollapsible;
@@ -517,6 +512,7 @@
     if (!previousPathData || previousPathData != pathData) {
       setLeftNavData();
     }
+    sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
   });
 
   export let sortedChildrenEntries;
