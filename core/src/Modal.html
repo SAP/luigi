@@ -115,6 +115,9 @@
       if (!settings.size) {
         settings.size = 's';
       }
+      if (settings.overlap === undefined) {
+        settings.overlap = true;
+      }
     } else {
       if (!settings.title) {
         settings.title = nodeObject.label;
@@ -259,6 +262,16 @@
     if ('luigi.close-modal' === e.data.msg) {
       dispatch('close', { type: 'modal' });
     }
+
+    if ('luigi.navigation.updateModalSettings' === e.data.msg) {
+      if (e.data.updatedModalSettings.title || e.data.updatedModalSettings.title === '') {
+        settings.title = e.data.updatedModalSettings.title;
+      }
+      if (e.data.updatedModalSettings.size) {
+        settings.size = e.data.updatedModalSettings.size;
+        await setModalSize();
+      }
+    }
   };
 
   const backdropStateChanged = event => {
@@ -286,6 +299,10 @@
 
 <style type="text/scss">
   @import 'styles/variables';
+  :global(.lui-breadcrumb) .drawer-dialog {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+  }
+
   .drawer-dialog {
     position: absolute;
     top: $topNavHeight;
@@ -302,6 +319,10 @@
     left: auto;
     right: 0;
     height: 100%;
+  }
+
+  :global(.lui-breadcrumb) .drawer__backdrop {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
   .drawer__backdrop {
