@@ -288,7 +288,7 @@ class RoutingClass {
 
       let cNode2 = currentNode;
       let hideSideNavInherited = nodeObject.hideSideNav;
-      if(hideSideNavInherited === undefined) {
+      if (hideSideNavInherited === undefined) {
         while (cNode2) {
           if (cNode2.tabNav && cNode2.hideSideNav === true) {
             hideSideNavInherited = true;
@@ -467,25 +467,13 @@ class RoutingClass {
   }
 
   async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
-    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    const redirectPathFromNotFoundHandler = RoutingHelpers.getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched);
 
-    if (typeof pageNotFoundHandler === 'function') {
-      //custom 404 handler is provided, use it
-      const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
-      if (result && result.redirectTo) {
-        this.navigateTo(result.redirectTo);
-      }
+    if (redirectPathFromNotFoundHandler) {
+      this.navigateTo(redirectPathFromNotFoundHandler);
       return;
     }
-
-    const alertSettings = {
-      text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
-        route: notFoundPath
-      }),
-      type: 'error',
-      ttl: 1 //how many redirections the alert will 'survive'.
-    };
-    component.showAlert(alertSettings, false);
+    RoutingHelpers.showRouteNotFoundAlert(component, pathToRedirect, isAnyPathMatched);
     this.navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
   }
 

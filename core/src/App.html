@@ -1349,8 +1349,12 @@
         } else if (e.data.params.modal !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
-          const pathExist = await pathExists(path) ;
-          path = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(getComponentWrapper(), path, pathExist);
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
           if (!path) {
             return;
           }
@@ -1360,8 +1364,12 @@
         } else if (e.data.params.splitView !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
-          const pathExist = await pathExists(path) ;
-          path = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(getComponentWrapper(), path, pathExist);
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
           if (!path) {
             return;
           }
@@ -1370,8 +1378,12 @@
         } else if (e.data.params.drawer !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
-          const pathExist = await pathExists(path) ;
-          path = await RoutingHelpers.handlePageNotFoundAndRetriveRedirectPath(getComponentWrapper(), path, pathExist);          
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
           if (!path) {
             return;
           }
@@ -1665,7 +1677,7 @@
 
   afterUpdate(() => {
     resizeMicrofrontendIframe();
-  })
+  });
 
   beforeUpdate(() => {
     breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');
