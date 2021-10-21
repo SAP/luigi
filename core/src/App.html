@@ -297,6 +297,7 @@
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
+    config.iframe.luigi._lastUpdatedMessage = message;
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
   const sendAuthDataToClient = authData => {
