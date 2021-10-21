@@ -463,9 +463,6 @@ runTimeErrorHandler: {
 ### intendToHaveEmptyViewUrl
 - **type**: boolean
 - **description**: when set to `true`, it forces navigation to the empty **viewUrl** node.
-### navigationContext
-- **type**: string
-- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
 
 ### isolateView
 - **type**: boolean
@@ -475,7 +472,6 @@ runTimeErrorHandler: {
 ### keepSelectedForChildren
 - **type**: boolean
 - **description**: focuses the navigation on its current hierarchy, omitting the display of children.
-
 
 ### label
 - **type**: string
@@ -505,6 +501,10 @@ runTimeErrorHandler: {
       hideAutomatically: false
     }
     ```
+
+### navigationContext
+- **type**: string
+- **description**: contains a named node that is mainly for use in combination with a dynamic **pathSegment** to start navigation from a dynamic node using ` LuigiClient.linkManager().fromContext('contextname')`.
 
 
 ### onNodeActivation
@@ -586,11 +586,13 @@ settings: {
   }
 ```
 
+
 ### viewUrl
 - **type**: string
 - **description**: contains the URL or path to a view which renders when you click the navigation node. Use either a full URL or a relative path. If **viewUrl** is undefined, Luigi activates the child node specified in **defaultChildNode**. When both **viewUrl** and **defaultChildNode** are undefined, Luigi opens the first child of the current node. **viewUrl** can contain variables from:
   * dynamic path segments
   * node parameters
+
 
 ### virtualTree
 - **type**: boolean
@@ -623,6 +625,11 @@ settings: {
     ```
 - **since**: 1.4.0
 
+
+
+
+
+
 ### webcomponent
 - **type**: boolean OR object
 - **description**: mark a node as web component either by setting this attribute to `true` or defining an object with the attributes described below. In the latter case, the `viewUrl` attribute of the node must point to the web component `.js` file.
@@ -633,9 +640,13 @@ settings: {
   - **tagName**: tag name where web component is added to DOM.
 - **since**: 1.7.0
 
+
+
+
 ## Context switcher
 
 The context switcher is a drop-down list available in the top navigation bar. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** parameter to the **navigation** object using the following optional parameters:
+
 
 ### actions
 - **type**: array
@@ -675,7 +686,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: any
 - **description**: specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
 
-### icon
+### Icon
 - **type**: string
 - **description**: is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html). It's displayed on smaller screens next to the default label or the selected context in a dropdown for the top navigation nodes. There is a default icon if nothing is set.
 
