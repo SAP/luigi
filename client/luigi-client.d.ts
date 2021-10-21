@@ -50,6 +50,7 @@ export declare interface DrawerSettings {
   header?: any;
   size?: 'l' | 'm' | 's' | 'xs';
   backdrop?: boolean;
+  overlap?: boolean;
 }
 
 export declare interface Context {

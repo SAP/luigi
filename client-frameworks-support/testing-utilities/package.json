@@ -1,6 +1,5 @@
 {
   "name": "@luigi-project/testing-utilities",
-  "version": "1.16.2",
   "description": "Luigi testing utilities for standalone testing of microfrontends",
   "license": "Apache-2.0",
   "main": "dist/index.js",
@@ -31,5 +30,6 @@
     "micro-frontends",
     "microfrontends",
     "testing"
-  ]
+  ],
+  "version": "1.17.0"
 }
