@@ -463,6 +463,74 @@ describe('Luigi client linkManager', () => {
         cy.get('.drawer').should('not.exist');
       });
     });
+
+    it('Check main iframe width after Open and close drawer component with default settings', () => {
+      cy.window().then(win => {
+        cy.get('.fd-page.iframeContainer iframe').then($container => {
+          cy.get('#app').then($page => {
+            const containerWidth = parseFloat(win.getComputedStyle($container[0]).width);
+            const pageWidth = parseFloat(win.getComputedStyle($page[0]).width);
+
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth);
+
+            win.Luigi.navigation().openAsDrawer('/projects/pr1/drawer', { overlap: false });
+
+            cy.get('.drawer-dialog')
+              .invoke('width')
+              .should('eq', pageWidth * 0.25);
+
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth - pageWidth * 0.25);
+            cy.expectPathToBe('/projects/pr2');
+
+            cy.get('.drawer-dialog button[aria-label="close"]')
+              .should('exist')
+              .click();
+
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth);
+          });
+        });
+      });
+    });
+
+    it('Check main iframe width after Open and close drawer component with webcomponent', () => {
+      cy.window().then(win => {
+        cy.get('.fd-page.iframeContainer iframe').then($container => {
+          cy.get('#app').then($page => {
+            const containerWidth = parseFloat(win.getComputedStyle($container[0]).width);
+            const pageWidth = parseFloat(win.getComputedStyle($page[0]).width);
+
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth);
+
+            win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent', { overlap: false });
+
+            cy.get('.drawer-dialog')
+              .invoke('width')
+              .should('eq', pageWidth * 0.25);
+
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth - pageWidth * 0.25);
+            cy.expectPathToBe('/projects/pr2');
+
+            cy.get('.drawer-dialog button[aria-label="close"]')
+              .should('exist')
+              .click();
+
+            cy.get('.iframeContainer iframe')
+              .invoke('width')
+              .should('eq', containerWidth);
+          });
+        });
+      });
+    });
   });
 
   describe('Webcomponent visibleForFeatureToggles test', () => {
