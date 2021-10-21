@@ -513,6 +513,8 @@
       setLeftNavData();
     }
     sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
+    semiCollapsibleButton =
+      LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
   });
 
   export let sortedChildrenEntries;
