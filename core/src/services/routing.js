@@ -185,8 +185,10 @@ class RoutingClass {
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
-
-      await this.handleBookmarkableModalPath();
+      const isShowModalPathInUrl = LuigiConfig.getConfigValue('routing.showModalPathInUrl');
+      if (isShowModalPathInUrl) {
+        await this.handleBookmarkableModalPath();
+      }
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
