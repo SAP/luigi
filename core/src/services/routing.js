@@ -500,6 +500,7 @@ class RoutingClass {
   }
 
   navigateToExternalLink(externalLink) {
+    externalLink.url = RoutingHelpers.getI18nViewUrl(externalLink.url);
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink

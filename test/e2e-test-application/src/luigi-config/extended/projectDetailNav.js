@@ -179,7 +179,7 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true,
     openNodeInModal: true,
     tooltipText: 'Webcomponent tooltipText'
@@ -194,7 +194,7 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true
   },
   {
@@ -341,6 +341,15 @@ export const projectDetailNavStructure = projectId => [
     category: 'Super useful Github links',
     externalLink: {
       url: 'http://github.com',
+      sameWindow: true
+    },
+    icon: 'globe'
+  },
+  {
+    label: 'Open SAP Website',
+    category: 'Super useful Github links',
+    externalLink: {
+      url: 'http://sap.com/{i18n.currentLocale}',
       sameWindow: true
     },
     icon: 'globe'
