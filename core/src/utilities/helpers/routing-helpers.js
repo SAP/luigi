@@ -195,7 +195,7 @@ class RoutingHelpersClass {
         pathParams,
         LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
       );
-      return this.getI18nViewUrl(link.url) || link;
+      return link.url || link;
     }
     return 'javascript:void(0)';
   }
@@ -270,7 +270,7 @@ class RoutingHelpersClass {
   getI18nViewUrl(viewUrl) {
     const i18n_currentLocale = '{i18n.currentLocale}';
     const locale = LuigiI18N.getCurrentLocale();
-    const hasI18n = viewUrl && viewUrl.includes(i18n_currentLocale);
+    const hasI18n = viewUrl.includes(i18n_currentLocale);
 
     return hasI18n ? viewUrl.replace(i18n_currentLocale, locale) : viewUrl;
   }
