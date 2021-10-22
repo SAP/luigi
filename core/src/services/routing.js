@@ -473,7 +473,7 @@ class RoutingClass {
       this.navigateTo(redirectPathFromNotFoundHandler);
       return;
     }
-    RoutingHelpers.showRouteNotFoundAlert(component, pathToRedirect, isAnyPathMatched);
+    RoutingHelpers.showRouteNotFoundAlert(component, notFoundPath, isAnyPathMatched);
     this.navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
   }
 
