@@ -498,6 +498,22 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
 
+#### updateModalSettings
+
+Update current title and size of a modal.
+
+##### Parameters
+
+-   `updatedModalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** possibility to update the active modal. (optional, default `{}`)
+    -   `updatedModalSettings.title` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `title` of the active modal.
+    -   `updatedModalSettings.size` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `size` of the active modal.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+```
+
 #### openAsSplitView
 
 -   **See: [splitView](#splitview) for further documentation about the returned instance**
@@ -535,6 +551,7 @@ Opens a view in a drawer. You can specify the size of the drawer, whether the dr
     -   `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
     -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
     -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"` \| `"xs"`)** size of the drawer (optional, default `"s"`)
+    -   `drawerSettings.overlap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** enable resizing of main microfrontend iFrame after drawer open (optional, default `true`)
 
 ##### Examples
 
