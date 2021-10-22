@@ -185,8 +185,10 @@ class RoutingClass {
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
-
-      await this.handleBookmarkableModalPath();
+      const isShowModalPathInUrl = LuigiConfig.getConfigValue('routing.showModalPathInUrl');
+      if (isShowModalPathInUrl) {
+        await this.handleBookmarkableModalPath();
+      }
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
@@ -486,6 +488,7 @@ class RoutingClass {
   }
 
   navigateToExternalLink(externalLink) {
+    externalLink.url = RoutingHelpers.getI18nViewUrl(externalLink.url);
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink
