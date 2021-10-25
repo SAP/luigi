@@ -151,7 +151,7 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-  async handleRouteChange(path, component, iframeElement, config, withoutSync, routingLuigiConfig) {
+  async handleRouteChange(path, component, iframeElement, config, withoutSync) {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
     const hasSkipMatches = patterns.filter(p => window.location.href.match(p)).length !== 0;
@@ -217,7 +217,7 @@ class RoutingClass {
             '/'
           );
           const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw, routingLuigiConfig);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
           this.navigateTo(rootPath);
         }
 
@@ -242,8 +242,7 @@ class RoutingClass {
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) + '/' + defaultChildNode,
               pathUrlRaw,
-              true,
-              routingLuigiConfig
+              true
             );
             return;
           }
@@ -254,13 +253,13 @@ class RoutingClass {
             '/'
           );
           const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw, undefined, routingLuigiConfig);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
         }
         return;
       }
 
       if (!pathData.isExistingRoute) {
-        this.showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true, routingLuigiConfig);
+        this.showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true);
         return;
       }
 
@@ -467,8 +466,9 @@ class RoutingClass {
     }
   }
 
-  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false, routingLuigiConfig) {
-    const pageNotFoundHandler = routingLuigiConfig.pageNotFoundHandler;
+  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
+    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+
     if (typeof pageNotFoundHandler === 'function') {
       //custom 404 handler is provided, use it
       const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
