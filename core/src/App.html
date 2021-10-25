@@ -243,6 +243,7 @@
   export let storedUserSettings;
   let featureToggleList;
   let breadcrumbsEnabled;
+  let routingLuigiConfig;
 
   const prepareInternalData = async config => {
     const iframeConf = config.iframe.luigi;
@@ -491,7 +492,14 @@
       () => {
         NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
-        Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
+        Routing.handleRouteChange(
+          currentPath,
+          getComponentWrapper(),
+          node,
+          config,
+          undefined,
+          routingLuigiConfig
+        );
       },
       ['navigation.nodes']
     );
@@ -508,7 +516,14 @@
 
       closeSplitView();
 
-      Routing.handleRouteChange(path, getComponentWrapper(), node, config, withoutSync);
+      Routing.handleRouteChange(
+        path,
+        getComponentWrapper(),
+        node,
+        config,
+        withoutSync,
+        routingLuigiConfig
+      );
     });
   };
 
@@ -1591,6 +1606,7 @@
   };
 
   onMount(() => {
+    routingLuigiConfig = LuigiConfig.getConfigValue('routing');
     LuigiTheming._init();
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
@@ -1650,11 +1666,12 @@
 
   afterUpdate(() => {
     resizeMicrofrontendIframe();
-  })
+  });
 
   beforeUpdate(() => {
     breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
+    routingLuigiConfig = LuigiConfig.getConfigValue('routing');
   });
 </script>
 

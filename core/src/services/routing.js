@@ -151,7 +151,7 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-  async handleRouteChange(path, component, iframeElement, config, withoutSync) {
+  async handleRouteChange(path, component, iframeElement, config, withoutSync, routingLuigiConfig) {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
     const hasSkipMatches = patterns.filter(p => window.location.href.match(p)).length !== 0;
@@ -217,7 +217,7 @@ class RoutingClass {
             '/'
           );
           const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw, routingLuigiConfig);
           this.navigateTo(rootPath);
         }
 
@@ -242,7 +242,8 @@ class RoutingClass {
               component,
               GenericHelpers.trimTrailingSlash(pathData.matchedPath) + '/' + defaultChildNode,
               pathUrlRaw,
-              true
+              true,
+              routingLuigiConfig
             );
             return;
           }
@@ -253,13 +254,13 @@ class RoutingClass {
             '/'
           );
           const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw, undefined, routingLuigiConfig);
         }
         return;
       }
 
       if (!pathData.isExistingRoute) {
-        this.showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true);
+        this.showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true, routingLuigiConfig);
         return;
       }
 
@@ -288,7 +289,7 @@ class RoutingClass {
 
       let cNode2 = currentNode;
       let hideSideNavInherited = nodeObject.hideSideNav;
-      if(hideSideNavInherited === undefined) {
+      if (hideSideNavInherited === undefined) {
         while (cNode2) {
           if (cNode2.tabNav && cNode2.hideSideNav === true) {
             hideSideNavInherited = true;
@@ -466,9 +467,8 @@ class RoutingClass {
     }
   }
 
-  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
-    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
-
+  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false, routingLuigiConfig) {
+    const pageNotFoundHandler = routingLuigiConfig.pageNotFoundHandler;
     if (typeof pageNotFoundHandler === 'function') {
       //custom 404 handler is provided, use it
       const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
