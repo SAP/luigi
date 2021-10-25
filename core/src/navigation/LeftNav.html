@@ -10,7 +10,10 @@
   <div class="lui-nav-title">
     <ul class="fd-nested-list">
       <li class="fd-nested-list__item">
-        <a class="fd-nested-list__link" title="{$getTranslation(navHeader.label)}">
+        <a
+          class="fd-nested-list__link"
+          title="{resolveTooltipText(navHeader, $getTranslation(navHeader.label))}"
+        >
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
             class="lui-header-icon fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
@@ -56,7 +59,7 @@
           <li class="fd-nested-list__item">
             <a
               href="{getRouteLink(node)}"
-              title="{$getTranslation(node.label)}"
+              title="{resolveTooltipText(node, $getTranslation(node.label))}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
               on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
@@ -98,7 +101,7 @@
             <div class="fd-nested-list__content has-child">
               <a
                 href="javascript:void(null)"
-                title="{$getTranslation(key)}"
+                title="{resolveTooltipText(nodes, $getTranslation(key))}"
                 class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
                 tabindex="-1"
                 id="collapsible_listnode_{index}"
@@ -150,7 +153,7 @@
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
-                  title="{$getTranslation(node.label)}"
+                  title="{resolveTooltipText(node, $getTranslation(node.label))}"
                 >
                   <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
@@ -179,7 +182,7 @@
                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
-                      title="{$getTranslation(node.label)}"
+                      title="{resolveTooltipText(node, $getTranslation(node.label))}"
                     >
                       <span class="fd-nested-list__title"
                         >{$getTranslation(node.label)}</span
@@ -201,7 +204,7 @@
           <!-- Category nodes -->
           <li
             class="fd-nested-list__group-header lui-category"
-            title="{$getTranslation(key)}"
+            title="{resolveTooltipText(nodes, $getTranslation(key))}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
             id="category_list_level1_{index}"
           >
@@ -223,7 +226,7 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-nested-list__item"
-            title="{$getTranslation(node.label)}"
+            title="{resolveTooltipText(node, $getTranslation(node.label))}"
             aria-labelledby="category_list_level1_{index}"
           >
             <a
@@ -550,6 +553,10 @@
     return metaInfo && metaInfo.testId
       ? metaInfo.testId
       : NavigationHelpers.prepareForTests(key || metaInfo.label);
+  }
+
+  function resolveTooltipText(node, translation) {
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   // [svelte-upgrade suggestion]
