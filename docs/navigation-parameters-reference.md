@@ -33,11 +33,6 @@ Use the parameters and functions in this reference to configure your Luigi navig
 ## Routing parameters
 You can configure the way Luigi tackles routing in your application in the `routing:` section of the configuration file. For example, you can choose the routing strategy to apply in your application as either hash or path location routing.
 
-### defaults.sideNavAccordionMode
-- **type**: boolean
-- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
-- **default**: `false`
-
 ### disableBrowserHistory
   - **type** boolean
   - **description**: defines either if browser history is enabled or not.
@@ -105,6 +100,11 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
 - **since**: v1.0.1
+
+### defaults.sideNavAccordionMode
+- **type**: boolean
+- **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
+- **default**: `false`
 
 ### defaults.tooltipText
 - **type**: boolean | string
