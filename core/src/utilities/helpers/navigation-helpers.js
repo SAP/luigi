@@ -91,7 +91,7 @@ class NavigationHelpersClass {
   }
 
   groupNodesBy(nodes, property, useVirtualGroups) {
-    const result = {};
+    let result = {};
     let groupCounter = 0;
     let virtualGroupCounter = 0;
 
@@ -102,13 +102,21 @@ class NavigationHelpersClass {
         return oa - ob;
       });
     };
+    const renameObjKey = (obj, oldKey, newKey) => {
+      const tmpObj = clone(obj);
+      const targetKey = tmpObj[oldKey];
+      delete tmpObj[oldKey];
+      tmpObj[newKey] = targetKey;
+      return tmpObj;
+    };
+    const clone = obj => Object.assign({}, obj);
 
     nodes.forEach(node => {
       let key;
       let metaInfo;
       const category = node[property];
       if (category && typeof category === 'object') {
-        key = category.label;
+        key = category.id ? category.id : category.label;
         metaInfo = Object.assign({}, category);
       } else {
         key = category;
@@ -134,6 +142,13 @@ class NavigationHelpersClass {
       if (!arr.metaInfo) {
         arr.metaInfo = metaInfo;
       }
+      if (!arr.metaInfo.collapsible && metaInfo.collapsible) {
+        arr.metaInfo.collapsible = metaInfo.collapsible;
+      }
+      if (category && typeof category === 'object' && category.id && category.label) {
+        arr.metaInfo.label = category.label;
+        arr.metaInfo.id = category.id;
+      }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
       }
@@ -141,6 +156,13 @@ class NavigationHelpersClass {
         arr.push(node);
       }
     });
+
+    Object.keys(result).forEach(category => {
+      if (result[category].metaInfo && result[category].metaInfo.id) {
+        result = renameObjKey(result, result[category].metaInfo.id, result[category].metaInfo.label);
+      }
+    });
+
     Object.keys(result).forEach(category => {
       orderNodes(result[category]);
       if (result[category].length === 0) {
@@ -148,6 +170,21 @@ class NavigationHelpersClass {
       }
     });
     return result;
+  }
+
+  generateTooltipText(node, translation) {
+    let ttText = node.tooltipText;
+    if (ttText === undefined) {
+      ttText = LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
+    }
+
+    if (ttText === undefined) {
+      return translation;
+    } else if (ttText === false) {
+      return '';
+    } else {
+      return LuigiI18N.getTranslation(ttText);
+    }
   }
 
   async generateTopNavNodes(pathData) {
@@ -415,21 +452,6 @@ class NavigationHelpersClass {
     }).catch(error => {
       reject(error);
     });
-  }
-
-  generateTooltipText(node, translation) {
-    let ttText = node.tooltipText;
-    if (ttText === undefined) {
-      ttText = LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
-    }
-
-    if (ttText === undefined) {
-      return translation;
-    } else if (ttText === false) {
-      return '';
-    } else {
-      return LuigiI18N.getTranslation(ttText);
-    }
   }
 }
 
