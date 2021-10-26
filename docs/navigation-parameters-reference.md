@@ -106,6 +106,11 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **errorFn** used to handle different scenarios other than redirection.
 - **since**: v1.0.1
 
+### defaults.tooltipText
+- **type**: boolean | string
+- **description**: applies the [tooltipText](navigation-parameters-reference.md#tooltiptext) property to all navigation nodes where it is not set explicitly. If it is `false`, all tooltips will be hidden. If it is `Some string text`, all tooltips will have the value `Some string text`.
+- **default**: the parameter **defaults.tooltipText** is `undefined` by default.
+
 ### intentMapping
 - **type**: array
 - **description**: contains an array of abstract intent objects that can be used to navigate through micro frontends through the [LuigiClient linkManager.navigate()](luigi-client-api.md#navigate) method. The attributes contained in each intent object of the array are abstract notations which can be used to define the target mapping of your desired intent navigation in a semantic way.
@@ -283,7 +288,7 @@ Web components can communicate over an event bus.
     - **description**: Array of web component nodes.
     - **attributes**:
       - **id**: unique `id` of the web component.
-      - **viewUrl**: URL which points to the web component `.js` file.
+      - **viewUrl**: URL which points to the web component `.js` file. If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration.
       - **context**: object, which you can pass to the web component.
       - **layoutConfig**: config object to define the position of an item in a grid. The properties are `row` and `column` and get the same values as in the CSS grid standard. If you want to use the mechanism of nested web components, you can define a `slot` property with the slot name instead of the config object. In that case this web component node will be plugged in the parent web component.
       - **eventListeners**
@@ -445,7 +450,7 @@ runTimeErrorHandler: {
 - **attributes**:
   - **sameWindow** defines if the external URL is opened in a new or current tab. The default value for this parameter
  is `false`.
-  - **URL** is the external URL that the node leads to.
+  - **URL** is the external URL that the node leads to. If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the URL part of your configuration.
 
 ### hideFromNav
 - **type**: boolean
@@ -550,6 +555,15 @@ runTimeErrorHandler: {
 ### testId
 - **type**: string
 - **description**: allows you to define your own custom **testId** to be used in E2E tests. If you do not specify it, it is a combination of the node's **pathSegment** followed by an underscore and the label, written as one word in lower case. If the **pathSegment** does not exist, the **testId** includes the label only. This way, you can have `pathsegment_label` or `label`.
+
+### tooltipText
+- **type**: string
+- **description**: Allows to set a custom tooltip text for this node or to disable the tooltip by setting the value to `false`.
+- **default**: it is `undefined` by default, and it can be overwritten by using the **tooltipText** value on a single node level.
+- **example**:
+```javascript
+tooltipText: 'Useful links'
+```
 
 ### viewGroup
 - **type**: string
