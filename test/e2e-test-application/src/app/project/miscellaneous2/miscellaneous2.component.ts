@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { uxManager } from '@luigi-project/client';
+import { uxManager, addInitListener } from '@luigi-project/client';
 
 @Component({
   selector: 'app-miscellaneous2',
@@ -10,7 +10,11 @@ import { uxManager } from '@luigi-project/client';
 export class Miscellaneous2Component implements OnInit {
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    addInitListener(context => {
+      console.log(context);
+    });
+  }
 
   openConfirmationModal() {
     uxManager()
