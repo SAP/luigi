@@ -51,7 +51,7 @@
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
-            title="{getNodeLabel(node)}"
+            title="{resolveTooltipText(node, getNodeLabel(node))}"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -85,6 +85,7 @@
       <a
         href="{getRouteLink(node)}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         aria-expanded="false"
         aria-haspopup="true"
         on:click|preventDefault="{() => handleClick(node)}"
@@ -95,7 +96,7 @@
       </a>
       {:else}
       <button
-        title="{getNodeLabel(node)}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
         aria-haspopup="true"
@@ -198,7 +199,7 @@
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    title="{getNodeLabel(node)}"
+                    title="{resolveTooltipText(node, getNodeLabel(node))}"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
@@ -542,6 +543,10 @@
 
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
+  }
+
+  function resolveTooltipText(node, translation) {
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   export function openMobileProductSwitcher() {
