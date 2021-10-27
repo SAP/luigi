@@ -802,6 +802,8 @@
   };
 
   const onResize = () => {
+    resizeMicrofrontendIframe();
+
     const isMobileToDesktop =
       window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
       previousWindowWidth < CSS_BREAKPOINTS.desktopMinWidth;
@@ -1052,14 +1054,37 @@
     }
   };
 
+  const isResizeMF = () => {
+    return (
+      window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
+      mfDrawer.settings &&
+      !mfDrawer.settings.overlap
+    );
+  };
+
+  const resizeMicrofrontendIframe = () => {
+    if (!isResizeMF()) return;
+
+    const drawer = document.querySelector('.iframeModalCtn._drawer');
+    if (drawer) {
+      let { width } = getComputedStyle(drawer);
+      IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
+        'style',
+        `width: calc(100% - ${width})`
+      );
+    }
+  };
+
   const drawerIframeCreated = event => {
     drawerIframe = event.detail.modalIframe;
     drawerIframeData = event.detail.modalIframeData;
+    resizeMicrofrontendIframe();
   };
 
   const drawerWCCreated = event => {
     drawerWC = event.detail.modalWC;
     drawerWCData = event.detail.modalWCData;
+    resizeMicrofrontendIframe();
   };
 
   const setDrawerState = event => {
@@ -1081,6 +1106,7 @@
             resetMicrofrontendDrawerData();
           });
         }
+        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute('style', null);
       } catch (e) {
         console.log(e);
       }
@@ -1630,7 +1656,9 @@
     }
   });
 
-  afterUpdate(() => {});
+  afterUpdate(() => {
+    resizeMicrofrontendIframe();
+  });
 
   beforeUpdate(() => {
     breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');

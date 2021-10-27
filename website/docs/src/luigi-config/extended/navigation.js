@@ -9,19 +9,23 @@ const getDocuItems = () => {
     headers: {
       'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
     }
-  }).then(function (obj) {
-    return obj.json();
-  }).then(function (json) {
-    return json.map((child) => {
-      child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
-      return child;
-    });
-  }).catch(function (err) {
-    console.error(`Error: ${err}`);
   })
-}
+    .then(function(obj) {
+      return obj.json();
+    })
+    .then(function(json) {
+      return json.map(child => {
+        child.viewUrl = child.viewUrl.replace('__BASE_URL__', baseUrl);
+        return child;
+      });
+    })
+    .catch(function(err) {
+      console.error(`Error: ${err}`);
+    });
+};
 
 class Navigation {
+  addNavHrefs = true;
   nodes = {
     defaultChildNode: 'docs',
     children: [
@@ -74,8 +78,7 @@ class Navigation {
   getProductSwitcherItems = () => {
     const items = [
       {
-        icon:
-          'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
+        icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'hybris',
         externalLink: {
           url: 'https://www.hybris.com',

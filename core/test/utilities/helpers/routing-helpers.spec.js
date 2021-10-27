@@ -83,14 +83,28 @@ describe('Routing-helpers', () => {
         setItem: sinon.stub()
       };
       sinon.stub(config, 'configChanged');
+      sinon.stub(LuigiI18N, '_notifyLocaleChange');
+      LuigiI18N.setCurrentLocale('en');
     });
     afterEach(() => {
       sinon.restore();
     });
 
-    it('substitutes {i18n.currentLocale} variable to current locale', () => {
-      sinon.stub(LuigiI18N, '_notifyLocaleChange');
-      LuigiI18N.setCurrentLocale('en');
+    it('getI18nViewUrl - substitutes {i18n.currentLocale} variable to current locale', () => {
+      const viewUrl = '/{i18n.currentLocale}/microfrontend.html';
+      const expected = '/en/microfrontend.html';
+
+      expect(RoutingHelpers.getI18nViewUrl(viewUrl)).to.equal(expected);
+    });
+
+    it('No substitution if {i18n.currentLocale} variable is not provided', () => {
+      const viewUrl = '/{i18n}/microfrontend.html';
+      const expected = '/{i18n}/microfrontend.html';
+
+      expect(RoutingHelpers.getI18nViewUrl(viewUrl)).to.equal(expected);
+    });
+
+    it('substituteViewUrl - substitutes {i18n.currentLocale} variable to current locale', () => {
       const viewUrl = '/{i18n.currentLocale}/microfrontend.html';
       const expected = '/en/microfrontend.html';
 

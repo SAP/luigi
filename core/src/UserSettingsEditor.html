@@ -117,11 +117,14 @@
 
   export function handleKeyListItem(event, index) {
     if (event.keyCode === KEYCODE_ENTER || event.keyCode === KEYCODE_SPACE) {
-      document.querySelectorAll('.lui-usersettings-content li.fd-list__item')[index].click();
+      document
+        .querySelectorAll('.lui-usersettings-content li.fd-list__item')
+        [index].click();
     }
   }
 
-  /*to display a language on forst load of the User Settings dialog*/  
+  /*to display a language on forst load of the User Settings dialog*/
+
   getLabelForValue();
 </script>
 
@@ -192,25 +195,29 @@
                 aria-expanded="false"
                 aria-haspopup="true"
                 on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}"
-                >
+              >
                 <div class="fd-select">
-                  <div 
+                  <div
                     tabindex="0"
-                    aria-expanded="false" 
-                    aria-haspopup="listbox" 
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
                     aria-label="Language"
-                    class="fd-select__control lui-anchor-node" 
+                    class="fd-select__control lui-anchor-node"
                     on:keyup="{(event) => handleKeyUp(event)}"
-                    data-testid="lui-us-language-dropdown">
-                    <span 
+                    data-testid="lui-us-language-dropdown"
+                  >
+                    <span
                       class="fd-select__text-content"
                       data-testid="lui-us-input{i}"
                       disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
-                      >{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key], schemaItem.options)}
+                      >{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key],
+                      schemaItem.options)}
                     </span>
-                    <span class="fd-button fd-button--transparent fd-select__button lui-activate-language-dropdown">
-                          <i class="sap-icon--slim-arrow-down"></i>
-                      </span>
+                    <span
+                      class="fd-button fd-button--transparent fd-select__button lui-activate-language-dropdown"
+                    >
+                      <i class="sap-icon--slim-arrow-down"></i>
+                    </span>
                   </div>
                 </div>
               </div>
