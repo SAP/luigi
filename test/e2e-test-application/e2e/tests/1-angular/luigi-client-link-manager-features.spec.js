@@ -490,13 +490,13 @@ describe('Luigi client linkManager', () => {
               .should('eq', containerWidth - pageWidth * 0.25);
             cy.expectPathToBe('/projects/pr2');
 
-            cy.get('.drawer-dialog button[aria-label="close"]')
-              .should('exist')
-              .click();
+            // cy.get('.drawer-dialog button[aria-label="close"]')
+            //   .should('exist')
+            //   .click();
 
-            cy.get('.iframeContainer iframe')
-              .invoke('width')
-              .should('eq', containerWidth);
+            // cy.get('.iframeContainer iframe')
+            //   .invoke('width')
+            //   .should('eq', containerWidth);
           });
         });
       });
