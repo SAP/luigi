@@ -48,6 +48,7 @@ class NavigationHelpersClass {
         return false;
       }
     }
+    /* istanbul ignore if */
     if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
       let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
       for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
@@ -336,6 +337,7 @@ class NavigationHelpersClass {
     return undefined;
   }
 
+  /* istanbul ignore next */
   stripNode(node) {
     const strippedNode = { ...node };
     delete strippedNode.parent;

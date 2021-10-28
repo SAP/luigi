@@ -1,5 +1,6 @@
 import { linkManager } from './_internalLinkManager';
 
+/* istanbul ignore file */
 class LuigiNavigationManager {
   /**
    * Use these functions for navigation-related features.

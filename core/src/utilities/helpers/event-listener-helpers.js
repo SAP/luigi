@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 class EventListenerHelpersClass {
   constructor() {
     this.listeners = [];

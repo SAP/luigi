@@ -2,6 +2,8 @@ import App from './App.html';
 import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
 import { writable, readable } from 'svelte/store';
 import { AuthLayerSvc } from './services';
+/* istanbul ignore file */
+
 const createConfigStore = () => {
   const { subscribe, update, reset } = writable({});
   const scopeSubscribers = {};
