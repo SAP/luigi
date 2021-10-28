@@ -37,13 +37,18 @@
     </li>
     {/each} {#if hasUserSettings}
     <li
-      tabindex="-1" 
+      tabindex="-1"
       class="fd-menu__item lui-anchor-node"
       on:click|preventDefault="{onUserSettingsClick}"
       on:keyup="{(event) => handleKeyUp(event)}"
       data-testid="{getTestId(profileNav.settings)}"
     >
-      <a tabindex="0" title="User Settings" class="fd-menu__link" data-testid="settings-link">
+      <a
+        tabindex="0"
+        title="User Settings"
+        class="fd-menu__link"
+        data-testid="settings-link"
+      >
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
         <i class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"></i>
         {:else}
@@ -296,10 +301,10 @@
   }
 
   li > button.fd-menu__link {
-    background-color: var(--sapList_Background,#fff);
+    background-color: var(--sapList_Background, #fff);
 
     &:hover {
-      background-color: var(--sapList_Hover_Background,#f5f5f5);
+      background-color: var(--sapList_Hover_Background, #f5f5f5);
     }
   }
 </style>

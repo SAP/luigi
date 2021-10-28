@@ -37,7 +37,7 @@ describe('WebComponentService', function() {
       window.Luigi = {
         navigation: 'mock1',
         ux: 'mock2',
-        i18n: ()=> LuigiI18N
+        i18n: () => LuigiI18N
       };
     });
 

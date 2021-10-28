@@ -185,8 +185,10 @@ class RoutingClass {
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
-
-      await this.handleBookmarkableModalPath();
+      const isShowModalPathInUrl = LuigiConfig.getConfigValue('routing.showModalPathInUrl');
+      if (isShowModalPathInUrl) {
+        await this.handleBookmarkableModalPath();
+      }
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
@@ -288,7 +290,7 @@ class RoutingClass {
 
       let cNode2 = currentNode;
       let hideSideNavInherited = nodeObject.hideSideNav;
-      if(hideSideNavInherited === undefined) {
+      if (hideSideNavInherited === undefined) {
         while (cNode2) {
           if (cNode2.tabNav && cNode2.hideSideNav === true) {
             hideSideNavInherited = true;
@@ -498,6 +500,7 @@ class RoutingClass {
   }
 
   navigateToExternalLink(externalLink) {
+    externalLink.url = RoutingHelpers.getI18nViewUrl(externalLink.url);
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink

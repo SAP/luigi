@@ -428,6 +428,21 @@ class NavigationHelpersClass {
       reject(error);
     });
   }
+
+  generateTooltipText(node, translation) {
+    let ttText = node.tooltipText;
+    if (ttText === undefined) {
+      ttText = LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
+    }
+
+    if (ttText === undefined) {
+      return translation;
+    } else if (ttText === false) {
+      return '';
+    } else {
+      return LuigiI18N.getTranslation(ttText);
+    }
+  }
 }
 
 export const NavigationHelpers = new NavigationHelpersClass();
