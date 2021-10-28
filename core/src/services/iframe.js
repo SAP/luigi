@@ -320,11 +320,21 @@ class IframeClass {
 
       const withSync = componentData.isNavigationSyncEnabled;
       if (withSync) {
-        // default, send navigation event to client
-        IframeHelpers.sendMessageToIframe(config.iframe, message);
-        IframeHelpers.broadcastMessageToAllIframes({
-          msg: 'luigi.navigate.contextUpdate'
+        IframeHelpers.getVisibleIframes().forEach(iframe => {
+          if (iframe !== config.iframe) {
+            IframeHelpers.sendMessageToIframe(iframe, {
+              msg: 'luigi.navigate',
+              context: iframe.luigi._lastUpdatedMessage.context,
+              nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
+              pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
+              searchParams: JSON.stringify(
+                Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+              ),
+              internal: iframe.luigi._lastUpdatedMessage.internal
+            });
+          }
         });
+        IframeHelpers.sendMessageToIframe(config.iframe, message);
         this.setOkResponseHandler(config, component, node);
       } else {
         // `withoutSync()` used. client navigation was skipped, reset after one-time use.

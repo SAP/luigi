@@ -297,6 +297,7 @@
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
+    config.iframe.luigi._lastUpdatedMessage = message;
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
   const sendAuthDataToClient = authData => {
@@ -491,14 +492,7 @@
       () => {
         NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
-        Routing.handleRouteChange(
-          currentPath,
-          getComponentWrapper(),
-          node,
-          config,
-          undefined,
-          mfModal.displayed
-        );
+        Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
       },
       ['navigation.nodes']
     );
@@ -513,7 +507,6 @@
         Iframe.removeInactiveIframes(node);
       }
       closeModal();
-
       closeSplitView();
 
       Routing.handleRouteChange(path, getComponentWrapper(), node, config, withoutSync);

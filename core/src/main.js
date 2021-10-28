@@ -18,7 +18,7 @@ const createConfigStore = () => {
       subscribers.add(fn);
     },
     fire: (scope, data) => {
-      const subscribers = scopeSubscribers[scope];
+      let subscribers = scopeSubscribers[scope];
       if (subscribers) {
         [...subscribers].forEach(fn => {
           fn(data);
