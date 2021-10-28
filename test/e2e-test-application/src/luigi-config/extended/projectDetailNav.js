@@ -234,7 +234,8 @@ export const projectDetailNavStructure = projectId => [
     },
     viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true,
-    openNodeInModal: true
+    openNodeInModal: true,
+    tooltipText: 'Webcomponent tooltipText'
   },
   {
     pathSegment: 'webcomponent2',
@@ -253,6 +254,7 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'misc2-isolated',
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
+    openNodeInModal: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
     icon: 'sys-help-2'

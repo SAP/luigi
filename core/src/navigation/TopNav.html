@@ -49,7 +49,7 @@
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
-            title="{getNodeLabel(node)}"
+            title="{resolveTooltipText(node, getNodeLabel(node))}"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -78,6 +78,7 @@
       <a
         href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         aria-expanded="false"
         aria-haspopup="true"
         on:click|preventDefault="{() => handleClick(node)}"
@@ -88,7 +89,7 @@
       </a>
       {:else}
       <button
-        title="{getNodeLabel(node)}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
         aria-haspopup="true"
@@ -191,7 +192,7 @@
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    title="{getNodeLabel(node)}"
+                    title="{resolveTooltipText(node, getNodeLabel(node))}"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
@@ -302,7 +303,7 @@
             aria-controls="profilePopover"
             aria-expanded="true"
             aria-haspopup="true"
-            title="Avatar"
+            title="{userInfo.name ? userInfo.name : undefined}"
             tabindex="0"
             style="background-image:url('{userInfo.picture}')"
             on:click="{() => toggleDropdownState('profilePopover')}"
@@ -313,7 +314,7 @@
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-expanded="true"
             aria-haspopup="true"
-            title="Avatar"
+            title="{userInfo.name ? userInfo.name : undefined}"
             tabindex="0"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-initials"
@@ -344,7 +345,7 @@
                 aria-haspopup="true"
                 aria-controls="profilePopover"
                 on:click="{() => toggleDropdownState('profilePopover')}"
-                title="{userInfo.name ? userInfo.name : userInfo.email}"
+                title="{userInfo.name ? userInfo.name : undefined}"
                 tabindex="0"
                 data-testid="luigi-topnav-profile-btn"
               >
@@ -527,6 +528,10 @@
 
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
+  }
+
+  function resolveTooltipText(node, translation) {
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   export function openMobileProductSwitcher() {
