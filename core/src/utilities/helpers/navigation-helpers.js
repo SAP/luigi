@@ -76,10 +76,6 @@ class NavigationHelpersClass {
     return permissionCheckerFn(nodeToCheckPermissionFor, parentNode, currentContext);
   }
 
-  isWebComponentCompoundPermitted(node) {
-    return this.checkVisibleForFeatureToggles(node);
-  }
-
   applyContext(context, addition, navigationContext) {
     if (addition) {
       for (var p in addition) {

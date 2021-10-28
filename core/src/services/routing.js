@@ -529,7 +529,7 @@ class RoutingClass {
 
     if (navNode.compound && navNode.compound.children) {
       navNode.compound.children = navNode.compound.children.filter(c =>
-        NavigationHelpers.isWebComponentCompoundPermitted(c)
+        NavigationHelpers.checkVisibleForFeatureToggles(c)
       );
     }
 
