@@ -827,6 +827,10 @@
   };
 
   export const showAlert = (settings, openFromClient = false) => {
+    const customAlertHandler = LuigiConfig.getConfigValue('settings.customAlertHandler');
+    if (GenericHelpers.isFunction(customAlertHandler)) {
+      return customAlertHandler(settings, openFromClient);
+    }
     const currentAlerts = alerts;
 
     if (!settings.id) {
@@ -1477,8 +1481,12 @@
 
       if ('luigi.ux.alert.show' === e.data.msg) {
         const { settings } = e.data.data;
-
-        if (!settings.text) {
+        if (
+          !settings.text &&
+          !GenericHelpers.isFunction(
+            LuigiConfig.getConfigValue('settings.customAlertHandler')
+          )
+        ) {
           console.error(
             "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
           );
@@ -1650,7 +1658,7 @@
 
   afterUpdate(() => {
     resizeMicrofrontendIframe();
-  })
+  });
 
   beforeUpdate(() => {
     breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');

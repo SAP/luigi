@@ -44,6 +44,11 @@ class Settings {
   featureToggles = {
     queryStringParam: 'ft'
   };
+
+  // customAlertHandler = (settings, openFromClient = false) =>{
+  //   window.open('http://localhost:4200',settings.title , `width=${settings.width},height=${settings.height}`);
+  // }
+
   // sideNavCompactMode = true;
   // allowRules = ['microphone'];
   // iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => { };

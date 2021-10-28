@@ -884,6 +884,10 @@ Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 -   **since**: 0.6.4
 
+<!-- add-attribute:class:warning -->
+
+> **NOTE:** You can also define a [customAlertHandler](general-settings.md#general-parameters) function to implement custom alerts.
+
 #### showConfirmationModal
 
 Shows a confirmation modal.
