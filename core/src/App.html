@@ -501,12 +501,12 @@
     RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
       const pv = preservedViews;
       // TODO: check if bookmarkable modal is interferring here
-
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
       closeModal();
+
       closeSplitView();
 
       Routing.handleRouteChange(path, getComponentWrapper(), node, config, withoutSync);
