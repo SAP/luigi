@@ -547,7 +547,6 @@ describe('Luigi client linkManager', () => {
       cy.window().then(win => {
         cy.wait(500);
         cy.get('.wcContainer>div>div>*').then(container => {
-          console.log(container.children().prevObject[0]);
           const root = container.children().prevObject[0].shadowRoot;
           const wcContent = root.querySelector('p').innerText;
           expect(wcContent).to.equal('Some input text !ft');
