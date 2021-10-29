@@ -2,6 +2,7 @@ export const projectDetailNavStructure = projectId => [
   {
     pathSegment: 'wc_grid',
     label: 'Grid',
+    hideFromNav: true,
     category: {
       label: 'Compound',
       icon: 'attachment-html',
