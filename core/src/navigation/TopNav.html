@@ -16,6 +16,7 @@
     <LogoTitle
       pathData="{pathData}"
       pathParams="{pathParams}"
+      addNavHrefForAnchor="{addNavHrefForAnchor}"
       bind:dropDownStates
       on:toggleDropdownState="{toggleDropdownStateExternal}"
       on:handleClick="{handleClickExternal}"
@@ -39,6 +40,7 @@
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
       isMobile="{false}"
+      addNavHrefForAnchor="{addNavHrefForAnchor}"
     />
     {/if} {#if isGlobalSearchAvailable || (children && pathData.length > 0)} {#if
     (children && pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav
@@ -49,7 +51,7 @@
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
-            title="{getNodeLabel(node)}"
+            title="{resolveTooltipText(node, getNodeLabel(node))}"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -66,7 +68,12 @@
           aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
           id="dropDownPopover-{i}"
         >
-          <TopNavDropDown node="{node}" isMobile="{false}" pathParams="{pathParams}" />
+          <TopNavDropDown
+            node="{node}"
+            isMobile="{false}"
+            pathParams="{pathParams}"
+            addNavHrefForAnchor="{addNavHrefForAnchor}"
+          />
         </div>
       </div>
     </div>
@@ -74,10 +81,11 @@
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
-      {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
+      {#if addNavHrefForAnchor}
       <a
-        href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
+        href="{getRouteLink(node)}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         aria-expanded="false"
         aria-haspopup="true"
         on:click|preventDefault="{() => handleClick(node)}"
@@ -88,7 +96,7 @@
       </a>
       {:else}
       <button
-        title="{getNodeLabel(node)}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
         aria-haspopup="true"
@@ -191,7 +199,7 @@
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    title="{getNodeLabel(node)}"
+                    title="{resolveTooltipText(node, getNodeLabel(node))}"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
@@ -302,7 +310,7 @@
             aria-controls="profilePopover"
             aria-expanded="true"
             aria-haspopup="true"
-            title="Avatar"
+            title="{userInfo.name ? userInfo.name : undefined}"
             tabindex="0"
             style="background-image:url('{userInfo.picture}')"
             on:click="{() => toggleDropdownState('profilePopover')}"
@@ -313,7 +321,7 @@
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-expanded="true"
             aria-haspopup="true"
-            title="Avatar"
+            title="{userInfo.name ? userInfo.name : undefined}"
             tabindex="0"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-initials"
@@ -330,6 +338,7 @@
           <Authorization
             on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
             on:userInfoUpdated="{userInfoUpdate}"
+            addNavHrefForAnchor="{addNavHrefForAnchor}"
           />
         </div>
       </div>
@@ -344,7 +353,7 @@
                 aria-haspopup="true"
                 aria-controls="profilePopover"
                 on:click="{() => toggleDropdownState('profilePopover')}"
-                title="{userInfo.name ? userInfo.name : userInfo.email}"
+                title="{userInfo.name ? userInfo.name : undefined}"
                 tabindex="0"
                 data-testid="luigi-topnav-profile-btn"
               >
@@ -369,6 +378,7 @@
             <AuthorizationSimpleProfileMenu
               on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
               on:userInfoUpdated="{userInfoUpdate}"
+              addNavHrefForAnchor="{addNavHrefForAnchor}"
             />
           </div>
         </div>
@@ -380,6 +390,7 @@
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
       isMobile="{false}"
+      addNavHrefForAnchor="{addNavHrefForAnchor}"
     />
     {/if}
   </div>
@@ -388,6 +399,7 @@
 <AuthorizationSimpleProfileMenu
   on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
   isHidden="{true}"
+  addNavHrefForAnchor="{addNavHrefForAnchor}"
 />
 {/if}
 <script>
@@ -451,7 +463,9 @@
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
-  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+  export let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue(
+    'navigation.addNavHrefs'
+  );
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
       const tnd = await NavigationHelpers.generateTopNavNodes(pathData);
@@ -489,6 +503,8 @@
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
+        addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+        contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
       },
       ['navigation']
     );
@@ -527,6 +543,10 @@
 
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
+  }
+
+  function resolveTooltipText(node, translation) {
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   export function openMobileProductSwitcher() {

@@ -115,6 +115,9 @@
       if (!settings.size) {
         settings.size = 's';
       }
+      if (settings.overlap === undefined) {
+        settings.overlap = true;
+      }
     } else {
       if (!settings.title) {
         settings.title = nodeObject.label;
@@ -258,6 +261,16 @@
 
     if ('luigi.close-modal' === e.data.msg) {
       dispatch('close', { type: 'modal' });
+    }
+
+    if ('luigi.navigation.updateModalSettings' === e.data.msg) {
+      if (e.data.updatedModalSettings.title || e.data.updatedModalSettings.title === '') {
+        settings.title = e.data.updatedModalSettings.title;
+      }
+      if (e.data.updatedModalSettings.size) {
+        settings.size = e.data.updatedModalSettings.size;
+        await setModalSize();
+      }
     }
   };
 

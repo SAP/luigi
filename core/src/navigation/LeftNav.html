@@ -10,7 +10,10 @@
   <div class="lui-nav-title">
     <ul class="fd-nested-list">
       <li class="fd-nested-list__item">
-        <a class="fd-nested-list__link" title="{$getTranslation(navHeader.label)}">
+        <a
+          class="fd-nested-list__link"
+          title="{resolveTooltipText(navHeader, $getTranslation(navHeader.label))}"
+        >
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
             class="lui-header-icon fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
@@ -48,7 +51,9 @@
     <div class="fd-side-nav__main-navigation">
       {#if children && pathData.length > 1}
       <div class="lui-fd-side-nav-wrapper">
-        <ul class="fd-nested-list {sideNavClass}">
+        <ul
+          class="fd-nested-list {sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact':'fd-nested-list'}"
+        >
           {#each sortedChildrenEntries as [key, nodes],index} {#if key === 'undefined' ||
           key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
@@ -56,7 +61,7 @@
           <li class="fd-nested-list__item">
             <a
               href="{getRouteLink(node)}"
-              title="{$getTranslation(node.label)}"
+              title="{resolveTooltipText(node, $getTranslation(node.label))}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
               on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
@@ -98,7 +103,7 @@
             <div class="fd-nested-list__content has-child">
               <a
                 href="javascript:void(null)"
-                title="{$getTranslation(key)}"
+                title="{resolveTooltipText(nodes, $getTranslation(key))}"
                 class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
                 tabindex="-1"
                 id="collapsible_listnode_{index}"
@@ -150,7 +155,7 @@
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
-                  title="{$getTranslation(node.label)}"
+                  title="{resolveTooltipText(node, $getTranslation(node.label))}"
                 >
                   <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
@@ -179,7 +184,7 @@
                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
-                      title="{$getTranslation(node.label)}"
+                      title="{resolveTooltipText(node, $getTranslation(node.label))}"
                     >
                       <span class="fd-nested-list__title"
                         >{$getTranslation(node.label)}</span
@@ -201,7 +206,7 @@
           <!-- Category nodes -->
           <li
             class="fd-nested-list__group-header lui-category"
-            title="{$getTranslation(key)}"
+            title="{resolveTooltipText(nodes, $getTranslation(key))}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
             id="category_list_level1_{index}"
           >
@@ -223,7 +228,7 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-nested-list__item"
-            title="{$getTranslation(node.label)}"
+            title="{resolveTooltipText(node, $getTranslation(node.label))}"
             aria-labelledby="category_list_level1_{index}"
           >
             <a
@@ -452,7 +457,6 @@
   export let selectedCategory = null;
   export let expandedCategories;
   export let hasCategoriesWithIcon;
-  export let sideNavClass;
   export let sideNavAccordionMode;
   export let burgerTooltip;
   export let navHeader;
@@ -493,12 +497,6 @@
       ['settings.footer']
     );
 
-    // set compact mode class
-    if (Boolean(sideNavCompactMode)) {
-      sideNavClass = 'fd-nested-list fd-nested-list--compact';
-    } else {
-      sideNavClass = 'fd-nested-list';
-    }
     let stateArr = SemiCollapsibleNavigation.initial();
     isSemiCollapsed = stateArr.isSemiCollapsed;
     semiCollapsible = stateArr.semiCollapsible;
@@ -517,6 +515,9 @@
     if (!previousPathData || previousPathData != pathData) {
       setLeftNavData();
     }
+    sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
+    semiCollapsibleButton =
+      LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
   });
 
   export let sortedChildrenEntries;
@@ -550,6 +551,10 @@
     return metaInfo && metaInfo.testId
       ? metaInfo.testId
       : NavigationHelpers.prepareForTests(key || metaInfo.label);
+  }
+
+  function resolveTooltipText(node, translation) {
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   // [svelte-upgrade suggestion]

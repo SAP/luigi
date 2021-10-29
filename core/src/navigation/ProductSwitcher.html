@@ -39,9 +39,9 @@ Object.keys(productSwitcherItems[0]).length }
               on:click="{() => onActionClick(productSwitcherItem)}"
               data-testid="{getTestId(productSwitcherItem)}"
             >
-              {#if LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')}
+              {#if addNavHrefForAnchor}
               <a
-                href="{addNavHrefForAnchor ? getRouteLink(productSwitcherItem) : undefined}"
+                href="{getRouteLink(productSwitcherItem)}"
                 on:click|preventDefault="{() => {}}"
                 class="fd-menu__link"
               >
@@ -131,7 +131,7 @@ Object.keys(productSwitcherItems[0]).length }
   let store = getContext('store');
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let columnsClass;
-  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+  export let addNavHrefForAnchor;
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(

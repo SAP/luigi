@@ -542,6 +542,7 @@ describe('Navigation', () => {
         });
       });
     });
+
     it('Nav sync - use synched nav', () => {
       // projects page
       cy.get('.fd-shellbar')
@@ -570,7 +571,91 @@ describe('Navigation', () => {
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
       });
     });
+
+    it('Node navigation title attr exist', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Miscellaneous2')
+        .parent()
+        .should('have.attr', 'title', 'Miscellaneous2');
+    });
+
+    it('Node navigation title attr tooltipText text', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Webcomponent')
+        .parent()
+        .should('have.attr', 'title', 'Webcomponent tooltipText');
+    });
+
+    it('Node navigation title attr tooltipText not exist', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Miscellaneous2 (Isolated View)')
+        .parent()
+        .should('have.attr', 'title', 'Miscellaneous2 (Isolated View)');
+    });
+
+    it('Node navigation title attr default.tooltipText text', () => {
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          tooltipText: 'Defaults tooltipText'
+        };
+        win.Luigi.configChanged('settings.navigation');
+        cy.get('.fd-shellbar')
+          .contains('Projects')
+          .click();
+        cy.get('.fd-app__sidebar .fd-nested-list__item')
+          .contains('Project One')
+          .click();
+        cy.get('.fd-nested-list__link')
+          .contains('Default Child node Example')
+          .parent()
+          .should('have.attr', 'title', 'Defaults tooltipText');
+      });
+    });
+
+    it('Node navigation title attr default.tooltipText set false', () => {
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          tooltipText: false
+        };
+        win.Luigi.configChanged('settings.navigation');
+        cy.get('.fd-shellbar')
+          .contains('Projects')
+          .click();
+        cy.get('.fd-app__sidebar .fd-nested-list__item')
+          .contains('Project One')
+          .click();
+        cy.get('.fd-nested-list__link')
+          .contains('Miscellaneous2')
+          .parent()
+          .should('have.attr', 'title', '');
+        cy.get('.fd-nested-list__link')
+          .contains('Webcomponent')
+          .parent()
+          .should('have.attr', 'title', 'Webcomponent tooltipText');
+      });
+    });
   });
+
   describe('Horizontal Tab Navigation', () => {
     context('Desktop', () => {
       it('Open horizontal navigation', () => {

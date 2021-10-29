@@ -622,7 +622,7 @@ describe('Fiddle', () => {
 
       cy.get('[data-testid="lui-us-language-dropdown"]')
         .eq(0)
-       .click();
+        .click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')

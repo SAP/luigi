@@ -135,6 +135,23 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * Update current title and size of a modal.
+   * @memberof linkManager
+   * @param {Object} updatedModalSettings possibility to update the active modal.
+   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
+   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @example
+   * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+   */
+  updateModalSettings(updatedModalSettings = {}) {
+    const message = {
+      msg: 'luigi.navigation.updateModalSettings',
+      updatedModalSettings
+    };
+    helpers.sendPostMessageToLuigiCore(message);
+  }
+
+  /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
    * @memberof linkManager
    * @param {string} path navigation path
@@ -161,6 +178,7 @@ export class linkManager extends LuigiClientBase {
    * @param {any} drawerSettings.header By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
    * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
    * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
+   * @param {boolean} [drawerSettings.overlap=true] enable resizing of main microfrontend iFrame after drawer open
    * @since 1.6.0
    * @example
    * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});

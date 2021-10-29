@@ -179,9 +179,10 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true,
-    openNodeInModal: true
+    openNodeInModal: true,
+    tooltipText: 'Webcomponent tooltipText'
   },
   {
     pathSegment: 'webcomponent2',
@@ -193,13 +194,14 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true
   },
   {
     pathSegment: 'misc2-isolated',
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
+    openNodeInModal: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
     icon: 'sys-help-2'
@@ -356,6 +358,15 @@ export const projectDetailNavStructure = projectId => [
     category: 'Super useful Github links',
     externalLink: {
       url: 'http://github.com',
+      sameWindow: true
+    },
+    icon: 'globe'
+  },
+  {
+    label: 'Open SAP Website',
+    category: 'Super useful Github links',
+    externalLink: {
+      url: 'http://sap.com/{i18n.currentLocale}',
       sameWindow: true
     },
     icon: 'globe'
