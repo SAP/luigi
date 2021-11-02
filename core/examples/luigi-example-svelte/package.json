@@ -25,10 +25,10 @@
     "serve:microfrontend": "cd public && ws --spa mf.html --port 5001"
   },
   "dependencies": {
-    "@luigi-project/client": "^1.1.0",
-    "@luigi-project/core": "^1.1.0",
-    "@sap-theming/theming-base-content": "^11.1.21",
-    "fundamental-styles": "^0.11.0",
+    "@luigi-project/client": "^1.17.0",
+    "@luigi-project/core": "^1.17.0",
+    "@sap-theming/theming-base-content": "^11.1.28",
+    "fundamental-styles": "^0.18.0",
     "svelte-routing": "^1.4.2"
   }
 }
