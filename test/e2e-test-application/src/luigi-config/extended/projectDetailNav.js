@@ -1,5 +1,59 @@
 export const projectDetailNavStructure = projectId => [
   {
+    pathSegment: 'wc_grid',
+    label: 'Grid',
+    hideFromNav: true,
+    category: {
+      label: 'Compound',
+      icon: 'attachment-html',
+      collapsible: true
+    },
+    compound: {
+      renderer: {
+        use: 'grid',
+        config: {
+          columns: '1fr 1fr 1fr',
+          /* rows: '150px', */
+          /* gap: '30px', */
+          layouts: [
+            {
+              minWidth: 0,
+              maxWidth: 600,
+              columns: '1fr',
+              gap: 0
+            },
+            {
+              minWidth: 600,
+              maxWidth: 1024,
+              columns: '1fr 1fr',
+              gap: '30px'
+            }
+          ]
+        }
+      },
+      children: [
+        {
+          id: 'input1',
+          viewUrl: '/assets/helloWorldWC.js',
+          context: {
+            title: 'Some input text !ft',
+            instant: true
+          },
+          visibleForFeatureToggles: ['!ft']
+        },
+        {
+          id: 'input12',
+          viewUrl: '/assets/helloWorldWC.js',
+          context: {
+            title: 'Some input text ft1',
+            instant: true
+          },
+          visibleForFeatureToggles: ['ft1']
+        }
+      ]
+    }
+  },
+  {
     category: { label: 'User Management', icon: 'person-placeholder' },
     pathSegment: 'users',
     label: 'Users and Groups',

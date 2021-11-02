@@ -154,6 +154,7 @@
   const dispatch = createEventDispatcher();
 
   export let isHidden = false;
+  export let addNavHrefForAnchor;
 
   let idpProviderInstance;
   let userInfo;
@@ -169,7 +170,6 @@
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
   let initialsOfUser;
-  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   onMount(async () => {
     if (!LuigiAuth.isAuthorizationEnabled()) {

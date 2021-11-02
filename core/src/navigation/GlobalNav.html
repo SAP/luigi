@@ -99,12 +99,11 @@
 
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
-  let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
 
   export let showGlobalNav;
   export let hideNavComponent;
   export let responsiveNavSetting;
-  const addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+  let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -136,6 +135,7 @@
     if (!previousPathData || previousPathData != pathData) {
       setTopNavData();
     }
+    addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   });
 
   function hasOpenUIicon(node) {

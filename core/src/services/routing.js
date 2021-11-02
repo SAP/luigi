@@ -1,7 +1,7 @@
 // Methods related to the routing. They mostly end up changing the iframe view which is handled by `iframe.js` file;
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
-import { GenericHelpers, RoutingHelpers, IframeHelpers, EventListenerHelpers } from '../utilities/helpers';
+import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
@@ -513,6 +513,12 @@ class RoutingClass {
 
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
+    }
+
+    if (navNode.compound && navNode.compound.children) {
+      navNode.compound.children = navNode.compound.children.filter(c =>
+        NavigationHelpers.checkVisibleForFeatureToggles(c)
+      );
     }
 
     WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
