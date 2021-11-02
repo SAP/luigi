@@ -25,6 +25,23 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.18.0] (2021-11-02)
+
+#### :rocket: Added
+* [#2298](https://github.com/SAP/luigi/pull/2298) Check if given path exists for core/client openAsX functions ([@ndricimrr](https://github.com/ndricimrr))
+* [#2336](https://github.com/SAP/luigi/pull/2336) Update Luigi Core/Client in examples Apps ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2280](https://github.com/SAP/luigi/pull/2280) Fixed visibleForFeatureToggles for Compound WebComponent ([@rafalgamon](https://github.com/rafalgamon))
+* [#2304](https://github.com/SAP/luigi/pull/2304) Feature - customAlertHandler ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2242](https://github.com/SAP/luigi/pull/2242) Add tooltipText param to TopNav and LeftNav ([@rafalgamon](https://github.com/rafalgamon))
+* [#2294](https://github.com/SAP/luigi/pull/2294) Fixed resizing main iframe container if a drawer is opened ([@rafalgamon](https://github.com/rafalgamon))
+* [#2322](https://github.com/SAP/luigi/pull/2322) Update modal title and size from micro frontend ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#2333](https://github.com/SAP/luigi/pull/2333) Fix changeable settings config properties ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2332](https://github.com/SAP/luigi/pull/2332) Rename aria-label from Avatar to Username ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2350](https://github.com/SAP/luigi/pull/2350) Changeable routing config properties  ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
 ## [v1.17.0] (2021-10-12)
 
 #### :rocket: Added
@@ -1242,3 +1259,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.16.1]: https://github.com/SAP/luigi/compare/v1.16.0...v1.16.1
 [v1.16.2]: https://github.com/SAP/luigi/compare/v1.16.1...v1.16.2
 [v1.17.0]: https://github.com/SAP/luigi/compare/v1.16.2...v1.17.0
+[v1.18.0]: https://github.com/SAP/luigi/compare/v1.17.0...v1.18.0
