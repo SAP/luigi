@@ -10,15 +10,14 @@ module.exports = {
         to: './fundamental-styles'
       },
       {
-        from:
-          'node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_base_fiori/fonts',
-        to: './fonts'
-      },
-      {
-        from:
-          'node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/fonts',
+        from: 'node_modules/@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts',
         to: './fonts'
       }
     ])
-  ]
+  ],
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  }
 };
