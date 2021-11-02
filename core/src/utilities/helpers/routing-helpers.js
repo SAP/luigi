@@ -509,6 +509,65 @@ class RoutingHelpersClass {
   hasIntent(path) {
     return !!path && path.toLowerCase().includes('#?intent=');
   }
+
+  /**
+   * Queries the pageNotFoundHandler configuration and returns redirect path if it exists
+   * If the there is no `pageNotFoundHandler` defined we return undefined.
+   * @param {*} notFoundPath the path to check
+   * @returns redirect path if it exists, else return undefined
+   */
+  getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched = false) {
+    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    if (typeof pageNotFoundHandler === 'function') {
+      //custom 404 handler is provided, use it
+      const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
+      if (result && result.redirectTo) {
+        return result.redirectTo;
+      }
+    }
+    return undefined;
+  }
+
+  /**
+   * Handles pageNotFound situation depending if path exists or not.
+   * If path exists simply return the given path, else fetch the pageNotFound redirect path and return it.
+   * In case there was no pageNotFound handler defined it shows an alert and returns undefined.
+   * @param {any} component the component to show the alert on
+   * @param {string} path the path to check for
+   * @param {boolean} pathExists defines if path exists or not
+   * @returns the path to redirect to or undefined if path doesn't exist and no redirect path is defined
+   */
+  async handlePageNotFoundAndRetrieveRedirectPath(component, path, pathExists) {
+    if (pathExists) {
+      return path;
+    }
+    const redirectPath = this.getPageNotFoundRedirectPath(path);
+    if (redirectPath !== undefined) {
+      return redirectPath;
+    } else {
+      // default behavior if `pageNotFoundHandler` did not produce a redirect path
+      this.showRouteNotFoundAlert(component, path);
+      console.warn(`Could not find the requested route: ${path}`);
+      return undefined;
+    }
+  }
+
+  /**
+   * Shows an alert on the given component given the path
+   * @param {*} component the component used to call the alert function upon
+   * @param {string} path the path to show in the alert
+   * @param {boolean} isAnyPathMatched shows whether a valid path was found / which means path was only partially wrong. Otherwise it is false.
+   */
+  showRouteNotFoundAlert(component, path, isAnyPathMatched = false) {
+    const alertSettings = {
+      text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
+        route: path
+      }),
+      type: 'error',
+      ttl: 1 //how many redirections the alert will 'survive'.
+    };
+    component.showAlert(alertSettings, false);
+  }
 }
 
 export const RoutingHelpers = new RoutingHelpersClass();

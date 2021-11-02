@@ -504,6 +504,19 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              (click)="linkManager().openAsDrawer('/projects/pr2/drawer', { overlap: false })"
+            >
+              Open drawer with no overlap</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsDrawer('/projects/pr1/drawer', { overlap: false });"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="
                 linkManager().openAsModal('/projects/pr2/webcomponent', {
                   title: 'Webcomponent in a modal',
