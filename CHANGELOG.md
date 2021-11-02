@@ -35,6 +35,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2242](https://github.com/SAP/luigi/pull/2242) Add tooltipText param to TopNav and LeftNav ([@rafalgamon](https://github.com/rafalgamon))
 * [#2294](https://github.com/SAP/luigi/pull/2294) Fixed resizing main iframe container if a drawer is opened ([@rafalgamon](https://github.com/rafalgamon))
 * [#2322](https://github.com/SAP/luigi/pull/2322) Update modal title and size from micro frontend ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2288](https://github.com/SAP/luigi/pull/2288) Enable core api templating for compound children and external link node ([@stanleychh](https://github.com/stanleychh))
 
 #### :bug: Fixed
 * [#2333](https://github.com/SAP/luigi/pull/2333) Fix changeable settings config properties ([@JohannesDoberer](https://github.com/JohannesDoberer))
