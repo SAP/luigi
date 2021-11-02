@@ -39,19 +39,11 @@ class NavigationHelpersClass {
     return result;
   }
 
-  isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
-    if (LuigiAuth.isAuthorizationEnabled()) {
-      const loggedIn = AuthHelpers.isLoggedIn();
-      const anon = nodeToCheckPermissionFor.anonymousAccess;
-
-      if ((loggedIn && anon === 'exclusive') || (!loggedIn && anon !== 'exclusive' && anon !== true)) {
-        return false;
-      }
-    }
+  checkVisibleForFeatureToggles(nodeToCheckPermission) {
     /* istanbul ignore if */
-    if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
-      let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
-      for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
+    if (nodeToCheckPermission && nodeToCheckPermission.visibleForFeatureToggles) {
+      const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
+      for (const ft of nodeToCheckPermission.visibleForFeatureToggles) {
         if (ft.startsWith('!')) {
           if (activeFeatureToggles.includes(ft.slice(1))) {
             return false;
@@ -63,6 +55,21 @@ class NavigationHelpersClass {
         }
       }
     }
+    return true;
+  }
+
+  isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
+    if (LuigiAuth.isAuthorizationEnabled()) {
+      const loggedIn = AuthHelpers.isLoggedIn();
+      const anon = nodeToCheckPermissionFor.anonymousAccess;
+
+      if ((loggedIn && anon === 'exclusive') || (!loggedIn && anon !== 'exclusive' && anon !== true)) {
+        return false;
+      }
+    }
+
+    if (!this.checkVisibleForFeatureToggles(nodeToCheckPermissionFor)) return false;
+
     const permissionCheckerFn = LuigiConfig.getConfigValue('navigation.nodeAccessibilityResolver');
     if (typeof permissionCheckerFn !== 'function') {
       return true;
