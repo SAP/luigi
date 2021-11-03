@@ -115,7 +115,7 @@ class NavigationHelpersClass {
       let key;
       let metaInfo;
       const category = node[property];
-      if (category && GenericHelpers.isObject(category)) {
+      if (GenericHelpers.isObject(category)) {
         key = category.id ? category.id : category.label;
         metaInfo = Object.assign({}, category);
       } else {
@@ -145,7 +145,7 @@ class NavigationHelpersClass {
       if (!arr.metaInfo.collapsible && metaInfo.collapsible) {
         arr.metaInfo.collapsible = metaInfo.collapsible;
       }
-      if (category && GenericHelpers.isObject(category) && category.id && category.label) {
+      if (GenericHelpers.isObject(category) && category.id && category.label) {
         arr.metaInfo.label = category.label;
         arr.metaInfo.id = category.id;
       }
@@ -158,7 +158,6 @@ class NavigationHelpersClass {
     });
 
     Object.keys(result).forEach(category => {
-      debugger;
       const metaInfo = result[category].metaInfo;
       if (metaInfo && metaInfo.id) {
         result[metaInfo.label] = result[metaInfo.id];
