@@ -2,7 +2,7 @@
 <div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
   <div class="fd-popover">
     <div
-      class="fd-popover__control luigi-search"
+      class="fd-popover__control {isSearchFieldCentered?'luigi-search-centered':'luigi-search'}"
       on:click|stopPropagation="{() => {}}"
       aria-hidden="{!isSearchFieldVisible}"
       aria-haspopup="true"
@@ -24,7 +24,25 @@
           autofocus
           bind:this="{inputElem}"
         />
-        {/if}
+        {#if isSearchFieldCentered}
+        <span
+          class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
+        >
+          {#if showX}
+          <button
+            aria-label="button-decline"
+            class="fd-shellbar__button fd-button"
+            on:click="{clearSearchField}"
+          >
+            <i class="sap-icon--decline"></i>
+          </button>
+          {:else}
+          <button aria-label="button-search" class="fd-shellbar__button fd-button">
+            <i class="sap-icon--search"></i>
+          </button>
+          {/if}
+        </span>
+        {/if} {/if}
       </div>
       {#if !isCustomSearchRenderer}
       <div
@@ -68,6 +86,7 @@
     </div>
   </div>
 </div>
+{#if !isSearchFieldCentered}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation="{() => {}}">
     <button
@@ -81,6 +100,7 @@
     </button>
   </div>
 </div>
+{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
@@ -110,8 +130,15 @@
   let search;
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
+  let searchFieldAlwaysVisible;
+  let isSearchFieldCentered;
+  let showX = false;
+
   onMount(async () => {
     search = await LuigiConfig.getConfigValueAsync('globalSearch');
+    isSearchFieldCentered = LuigiConfig.getConfigValue(
+      'globalSearch.searchFieldCentered'
+    );
     let inputElement = inputElem;
     const placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {
@@ -122,6 +149,12 @@
     );
     isCustomSearchResultItemRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultItemRenderer
+    );
+  });
+
+  beforeUpdate(() => {
+    isSearchFieldCentered = LuigiConfig.getConfigValue(
+      'globalSearch.searchFieldCentered'
     );
   });
 
@@ -181,10 +214,20 @@
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
+        if (document.querySelector('.luigi-search__input').value) {
+          showX = true;
+        } else {
+          showX = false;
+        }
       }
     } else {
       console.warn('GlobalSearch is not available.');
     }
+  }
+
+  function clearSearchField() {
+    document.querySelector('.luigi-search__input').value = '';
+    showX = false;
   }
 
   function calcSearchResultItemSelected(direction) {
@@ -336,6 +379,17 @@
       }
     }
   }
+
+  .luigi-search-centered {
+    visibility: visible;
+    width: 24vw;
+    position: fixed;
+    left: 50%;
+    top: 0.25rem;
+    margin-left: -12vw;
+  }
+
+  /* Shell Header/Shell Interactive (7996B4) */
 
   //remove arrow from the search popover
 
