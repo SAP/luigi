@@ -110,20 +110,12 @@ class NavigationHelpersClass {
         return oa - ob;
       });
     };
-    const renameObjKey = (obj, oldKey, newKey) => {
-      const tmpObj = clone(obj);
-      const targetKey = tmpObj[oldKey];
-      delete tmpObj[oldKey];
-      tmpObj[newKey] = targetKey;
-      return tmpObj;
-    };
-    const clone = obj => Object.assign({}, obj);
 
     nodes.forEach(node => {
       let key;
       let metaInfo;
       const category = node[property];
-      if (category && typeof category === 'object') {
+      if (category && GenericHelpers.isObject(category)) {
         key = category.id ? category.id : category.label;
         metaInfo = Object.assign({}, category);
       } else {
@@ -153,7 +145,7 @@ class NavigationHelpersClass {
       if (!arr.metaInfo.collapsible && metaInfo.collapsible) {
         arr.metaInfo.collapsible = metaInfo.collapsible;
       }
-      if (category && typeof category === 'object' && category.id && category.label) {
+      if (category && GenericHelpers.isObject(category) && category.id && category.label) {
         arr.metaInfo.label = category.label;
         arr.metaInfo.id = category.id;
       }
@@ -166,8 +158,11 @@ class NavigationHelpersClass {
     });
 
     Object.keys(result).forEach(category => {
-      if (result[category].metaInfo && result[category].metaInfo.id) {
-        result = renameObjKey(result, result[category].metaInfo.id, result[category].metaInfo.label);
+      debugger;
+      const metaInfo = result[category].metaInfo;
+      if (metaInfo && metaInfo.id) {
+        result[metaInfo.label] = result[metaInfo.id];
+        delete result[metaInfo.id];
       }
     });
 
