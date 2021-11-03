@@ -575,6 +575,7 @@ describe('Luigi client linkManager', () => {
         cy.get('.wcContainer>div>div>*').then(container => {
           const root = container.children().prevObject[0].shadowRoot;
           const wcContent = root.querySelector('button').innerText;
+
           expect(wcContent).to.equal('Start');
         });
       });
@@ -584,9 +585,10 @@ describe('Luigi client linkManager', () => {
       cy.window().then(win => {
         cy.wait(500);
         cy.get('.wcContainer>div>div>*').then(container => {
-          const root = container.children().prevObject[0].shadowRoot;
+          const root = container.children().prevObject[1].shadowRoot;
           const wcContent = root.querySelector('p').innerText;
-          expect(wcContent).to.equal('00:00');
+
+          expect(wcContent).to.equal('0:0');
         });
       });
     });
@@ -596,7 +598,9 @@ describe('Luigi client linkManager', () => {
         cy.wait(500);
         cy.get('.wcContainer>div>div>*').then(container => {
           const root = container.children().prevObject[0].shadowRoot;
+          root.querySelector('button').click();
           const wcContent = root.querySelector('button').innerText;
+
           expect(wcContent).to.equal('Stop');
         });
       });
@@ -606,9 +610,12 @@ describe('Luigi client linkManager', () => {
       cy.window().then(win => {
         cy.wait(500);
         cy.get('.wcContainer>div>div>*').then(container => {
-          const root = container.children().prevObject[0].shadowRoot;
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          rootBtn.querySelector('button').click();
+          const root = container.children().prevObject[1].shadowRoot;
           const wcContent = root.querySelector('p').innerText;
-          expect(wcContent).to.notEqual('00:00');
+
+          expect(wcContent).to.equal('0:0');
         });
       });
     });
@@ -617,10 +624,16 @@ describe('Luigi client linkManager', () => {
       cy.window().then(win => {
         cy.wait(500);
         cy.get('.wcContainer>div>div>*').then(container => {
-          const root = container.children().prevObject[0].shadowRoot;
-          const wcContent = root.querySelector('button').innerText;
-          const wcContentP = root.querySelector('p').innerText;
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          rootBtn.querySelector('button').click();
+          const wcContent = rootBtn.querySelector('button').innerText;
           expect(wcContent).to.equal('Stop');
+
+          const rootP = container.children().prevObject[1].shadowRoot;
+          const wcContentStart = rootP.querySelector('p').innerText;
+          cy.wait(500);
+          const wcContentStop = rootP.querySelector('p').innerText;
+          expect(wcContentStart).to.not.equal(wcContentStop);
         });
       });
     });
@@ -629,10 +642,17 @@ describe('Luigi client linkManager', () => {
       cy.window().then(win => {
         cy.wait(500);
         cy.get('.wcContainer>div>div>*').then(container => {
-          const root = container.children().prevObject[0].shadowRoot;
-          const wcContent = root.querySelector('button').innerText;
-          const wcContentP = root.querySelector('p').innerText;
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          rootBtn.querySelector('button').click();
+          rootBtn.querySelector('button').click();
+          const wcContent = rootBtn.querySelector('button').innerText;
           expect(wcContent).to.equal('Start');
+
+          const rootP = container.children().prevObject[1].shadowRoot;
+          const wcContentStart = rootP.querySelector('p').innerText;
+          cy.wait(500);
+          const wcContentStop = rootP.querySelector('p').innerText;
+          expect(wcContentStart).to.equal(wcContentStop);
         });
       });
     });

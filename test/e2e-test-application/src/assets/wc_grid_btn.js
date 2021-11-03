@@ -13,7 +13,10 @@ export default class extends HTMLElement {
 
     this.$button = this._shadowRoot.querySelector('button');
     this.$button.addEventListener('click', () => {
-      if (this.LuigiClient) {
+      if (this.$button.innerHTML === 'Start') {
+        this.$button.innerHTML = 'Stop';
+      } else {
+        this.$button.innerHTML = 'Start';
       }
     });
   }
