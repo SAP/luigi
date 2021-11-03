@@ -97,6 +97,7 @@
           {#if nodes.metaInfo.collapsible}
           <li
             class="fd-nested-list__item lui-collapsible-item"
+            class:lui-item-expanded="{isExpanded(nodes, expandedCategories)}"
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
