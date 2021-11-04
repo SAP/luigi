@@ -40,7 +40,6 @@ class NavigationHelpersClass {
   }
 
   checkVisibleForFeatureToggles(nodeToCheckPermission) {
-    /* istanbul ignore if */
     if (nodeToCheckPermission && nodeToCheckPermission.visibleForFeatureToggles) {
       const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
       for (const ft of nodeToCheckPermission.visibleForFeatureToggles) {
