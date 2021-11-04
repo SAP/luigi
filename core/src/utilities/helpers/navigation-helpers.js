@@ -146,8 +146,7 @@ class NavigationHelpersClass {
         arr.metaInfo.collapsible = metaInfo.collapsible;
       }
       if (GenericHelpers.isObject(category) && category.id && category.label) {
-        arr.metaInfo.label = category.label;
-        arr.metaInfo.id = category.id;
+        arr.metaInfo = { ...arr.metaInfo, label: category.label, id: category.id };
       }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
