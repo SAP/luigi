@@ -23,7 +23,7 @@
     />
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--actions">
-    {#if !authorizationEnabled || isLoggedIn} {#if isGlobalSearchAvailable}
+    {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig}
     <GlobalSearch
       bind:isSearchFieldVisible
       on:toggleSearch
@@ -34,6 +34,7 @@
       bind:inputElem
       bind:luigiCustomSearchRenderer__slot
       on:closeSearchResult
+      globalSearchConfig="{globalSearchConfig}"
     />
     {/if}
     <ContextSwitcher
@@ -42,9 +43,9 @@
       isMobile="{false}"
       addNavHrefForAnchor="{addNavHrefForAnchor}"
     />
-    {/if} {#if isGlobalSearchAvailable || (children && pathData.length > 0)} {#if
-    (children && pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav
-    || (showGlobalNav && node.globalNav))} {#if node.isCat}
+    {/if} {#if globalSearchConfig || (children && pathData.length > 0)} {#if (children &&
+    pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav ||
+    (showGlobalNav && node.globalNav))} {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
@@ -119,7 +120,7 @@
 
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
-    contextSwitcherConfig || isGlobalSearchAvailable }
+    contextSwitcherConfig || globalSearchConfig }
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -150,7 +151,7 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list fd-menu__list--no-shadow">
-                {#if isGlobalSearchAvailable}
+                {#if globalSearchConfig}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -449,7 +450,7 @@
   export let profileItemsAvailable;
   export let userInfo = {};
   export let urlAuthError;
-  export let isGlobalSearchAvailable;
+  export let globalSearchConfig;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -499,7 +500,7 @@
         );
         profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-        isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);

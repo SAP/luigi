@@ -2,7 +2,7 @@
 <div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
   <div class="fd-popover">
     <div
-      class="fd-popover__control {isSearchFieldCentered?'luigi-search-centered':'luigi-search'}"
+      class="fd-popover__control {search.searchFieldCentered?'luigi-search-centered':'luigi-search'}"
       on:click|stopPropagation="{() => {}}"
       aria-hidden="{!isSearchFieldVisible}"
       aria-haspopup="true"
@@ -24,11 +24,11 @@
           autofocus
           bind:this="{inputElem}"
         />
-        {#if isSearchFieldCentered}
+        {#if search.searchFieldCentered}
         <span
           class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
         >
-          {#if showX}
+          {#if clearSearchFieldBtn}
           <button
             aria-label="button-decline"
             class="fd-shellbar__button fd-button"
@@ -86,7 +86,7 @@
     </div>
   </div>
 </div>
-{#if !isSearchFieldCentered}
+{#if !search.searchFieldCentered}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation="{() => {}}">
     <button
@@ -119,6 +119,7 @@
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
+  export let globalSearchConfig;
   const dispatch = createEventDispatcher();
   const searchApiObj = {
     fireItemSelected: item => {
@@ -127,36 +128,35 @@
   };
   let searchResults = {};
   let showPopOverCustomSearch = false;
-  let search;
+  let search = {};
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
   let searchFieldAlwaysVisible;
-  let isSearchFieldCentered;
-  let showX = false;
+  let clearSearchFieldBtn = false;
 
   onMount(async () => {
-    search = await LuigiConfig.getConfigValueAsync('globalSearch');
-    isSearchFieldCentered = LuigiConfig.getConfigValue(
-      'globalSearch.searchFieldCentered'
-    );
+    search = globalSearchConfig;
     let inputElement = inputElem;
     const placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {
       inputElement.placeholder = placeHolder;
     }
+    getCustomRenderer();
+  });
+
+  beforeUpdate(() => {
+    search = globalSearchConfig;
+    getCustomRenderer();
+  });
+
+  function getCustomRenderer() {
     isCustomSearchRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultRenderer
     );
     isCustomSearchResultItemRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultItemRenderer
     );
-  });
-
-  beforeUpdate(() => {
-    isSearchFieldCentered = LuigiConfig.getConfigValue(
-      'globalSearch.searchFieldCentered'
-    );
-  });
+  }
 
   function getSearchPlaceholder(searchProvider) {
     if (!searchProvider || !searchProvider.inputPlaceholder) {
@@ -214,10 +214,10 @@
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
-        if (document.querySelector('.luigi-search__input').value) {
-          showX = true;
-        } else {
-          showX = false;
+        if (search.searchFieldCentered) {
+          document.querySelector('.luigi-search__input').value
+            ? (clearSearchFieldBtn = true)
+            : (clearSearchFieldBtn = false);
         }
       }
     } else {
@@ -227,7 +227,7 @@
 
   function clearSearchField() {
     document.querySelector('.luigi-search__input').value = '';
-    showX = false;
+    clearSearchFieldBtn = false;
   }
 
   function calcSearchResultItemSelected(direction) {
@@ -385,14 +385,11 @@
     width: 24vw;
     position: fixed;
     left: 50%;
-    top: 0.25rem;
+    top: 0.19rem;
     margin-left: -12vw;
   }
 
-  /* Shell Header/Shell Interactive (7996B4) */
-
   //remove arrow from the search popover
-
   @media screen and (max-width: 1024px) {
     .luigi-search-shell__mobile {
       position: relative;
