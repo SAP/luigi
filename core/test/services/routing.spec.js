@@ -924,14 +924,15 @@ describe('Routing', function() {
     let notFoundPath = '/this/does/not/exist';
     beforeEach(() => {
       sinon.stub(Routing, 'navigateTo');
+      sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
       sinon.stub(LuigiI18N, 'getTranslation');
       sinon.stub(component, 'showAlert');
     });
 
-    it('navigate to redirect path', () => {
+    it('navigate to redirect path', async () => {
       LuigiConfig.getConfigValue.returns(null);
 
-      Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
+      await Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
 
       sinon.assert.calledWithExactly(Routing.navigateTo, pathToRedirect);
     });

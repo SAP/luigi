@@ -57,6 +57,11 @@ export class linkManager extends LuigiCoreAPIBase {
     this.navigate(path, true, undefined, undefined, drawerSettings);
   }
 
+  openAsSplitView(path, splitViewSettings = {}) {
+    this.navigate(path, true, undefined, splitViewSettings);
+    return Luigi.splitView.splitViewHandle;
+  }
+
   fromContext(navigationContext) {
     this.options.fromContext = navigationContext;
     return this;

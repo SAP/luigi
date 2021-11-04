@@ -94,7 +94,6 @@ const configReadyCallback = () => {
         };
 
         Luigi.splitView = {
-          openAsSplitView: (path, settings) => app.$$.ctx.openSplitView(path, settings),
           splitViewHandle: {
             close: () => app.$$.ctx.closeSplitView(),
             collapse: () => app.$$.ctx.collapseSplitView(),
