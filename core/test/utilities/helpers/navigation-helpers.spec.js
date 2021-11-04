@@ -267,7 +267,7 @@ describe('Navigation-helpers', () => {
       assert.equal(actual, false);
     });
   });
-  
+
   describe('node title data', () => {
     let object;
 
@@ -441,6 +441,33 @@ describe('Navigation-helpers', () => {
         assert.equal(titleData.icon, 'curriculum');
         assert.equal(titleData.label, 'Project');
       });
+    });
+  });
+  describe('generate tooltip text', () => {
+    let node;
+    beforeEach(() => {
+      node = {
+        label: 'LuigiNode'
+      };
+      sinon.stub(LuigiConfig, 'getConfigValue');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('tooltip text on node', () => {
+      node.tooltipText = 'MarioNode';
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'MarioNode');
+    });
+    it('tooltip turned off', () => {
+      node.tooltipText = false;
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
+    });
+    it('tooltip not defined', () => {
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'LuigiNode');
+    });
+    it('tooltip turned off used defaults', () => {
+      LuigiConfig.getConfigValue.returns(false);
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
     });
   });
 });
