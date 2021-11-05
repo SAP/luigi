@@ -475,7 +475,11 @@ describe('Luigi client linkManager', () => {
               .invoke('width')
               .should('eq', containerWidth);
 
-            win.Luigi.navigation().openAsDrawer('/projects/pr1/drawer', { overlap: false });
+            cy.wrap($iframeBody)
+              .contains('Open drawer with no overlap')
+              .click();
+
+            cy.wait(500);
 
             cy.get('.drawer-dialog')
               .invoke('width')
@@ -511,6 +515,8 @@ describe('Luigi client linkManager', () => {
 
             win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent', { overlap: false });
 
+            cy.wait(300);
+
             cy.get('.drawer-dialog')
               .invoke('width')
               .should('eq', pageWidth * 0.25);
@@ -523,6 +529,8 @@ describe('Luigi client linkManager', () => {
             cy.get('.drawer-dialog button[aria-label="close"]')
               .should('exist')
               .click();
+
+            cy.wait(300);
 
             cy.get('.iframeContainer iframe')
               .invoke('width')

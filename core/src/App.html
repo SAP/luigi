@@ -1354,17 +1354,44 @@
         } else if (e.data.params.modal !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
+          if (!path) {
+            return;
+          }
           contentNode = node;
           resetMicrofrontendModalData();
           openViewInModal(path, e.data.params.modal === true ? {} : e.data.params.modal);
         } else if (e.data.params.splitView !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
+          if (!path) {
+            return;
+          }
           contentNode = node;
           openSplitView(path, e.data.params.splitView);
         } else if (e.data.params.drawer !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
+          if (!path) {
+            return;
+          }
           contentNode = node;
           resetMicrofrontendDrawerData();
           e.data.params.drawer.isDrawer = true;
