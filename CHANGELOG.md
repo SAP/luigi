@@ -27,6 +27,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 ## [v1.18.1] (2021-11-08)
 
+#### :bug: Fixed
 * [#license udpate](https://github.com/SAP/luigi/commit/a939f5af62f332a0941979d9bd93de93e8f9b776) Added license to client-support-angular library ([@hardl](https://github.com/hardl))
 
 ## [v1.18.0] (2021-11-02)
