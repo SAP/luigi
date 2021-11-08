@@ -93,9 +93,16 @@ export const projectDetailNavStructure = projectId => [
           id: 'timer',
           viewUrl: '/assets/wc_grid_timer.js',
           context: {
-            m: 0,
             s: 0
-          }
+          },
+          eventListeners: [
+            {
+              source: 'btn',
+              name: 'sendBtn',
+              action: 'update',
+              dataConverter: data => data
+            }
+          ]
         }
       ]
     }

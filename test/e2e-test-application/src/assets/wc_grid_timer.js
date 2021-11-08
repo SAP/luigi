@@ -12,9 +12,12 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(templatetimer.content.cloneNode(true));
 
     this.$paragraph = this._shadowRoot.querySelector('p.timer');
+    this.addEventListener('update', ev => {
+      this.$paragraph.innerHTML = ev.detail;
+    });
   }
 
   set context(ctx) {
-    this.$paragraph.innerHTML = `${ctx.m}:${ctx.s}`;
+    this.$paragraph.innerHTML = `${ctx.s}`;
   }
 }

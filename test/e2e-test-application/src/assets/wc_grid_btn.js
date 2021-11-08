@@ -15,8 +15,10 @@ export default class extends HTMLElement {
     this.$button.addEventListener('click', () => {
       if (this.$button.innerHTML === 'Start') {
         this.$button.innerHTML = 'Stop';
+        this.LuigiClient.publishEvent(new CustomEvent('sendBtn', { detail: 1 }));
       } else {
         this.$button.innerHTML = 'Start';
+        this.LuigiClient.publishEvent(new CustomEvent('sendBtn', { detail: 2 }));
       }
     });
   }

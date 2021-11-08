@@ -588,7 +588,7 @@ describe('Luigi client linkManager', () => {
           const root = container.children().prevObject[1].shadowRoot;
           const wcContent = root.querySelector('p').innerText;
 
-          expect(wcContent).to.equal('0:0');
+          expect(wcContent).to.equal('0');
         });
       });
     });
@@ -615,7 +615,7 @@ describe('Luigi client linkManager', () => {
           const root = container.children().prevObject[1].shadowRoot;
           const wcContent = root.querySelector('p').innerText;
 
-          expect(wcContent).to.equal('0:0');
+          expect(wcContent).to.equal('1');
         });
       });
     });
@@ -625,14 +625,13 @@ describe('Luigi client linkManager', () => {
         cy.wait(500);
         cy.get('.wcContainer>div>div>*').then(container => {
           const rootBtn = container.children().prevObject[0].shadowRoot;
+          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
           rootBtn.querySelector('button').click();
           const wcContent = rootBtn.querySelector('button').innerText;
           expect(wcContent).to.equal('Stop');
 
-          const rootP = container.children().prevObject[1].shadowRoot;
-          const wcContentStart = rootP.querySelector('p').innerText;
           cy.wait(500);
-          const wcContentStop = rootP.querySelector('p').innerText;
+          const wcContentStop = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
           expect(wcContentStart).to.not.equal(wcContentStop);
         });
       });
@@ -644,14 +643,15 @@ describe('Luigi client linkManager', () => {
         cy.get('.wcContainer>div>div>*').then(container => {
           const rootBtn = container.children().prevObject[0].shadowRoot;
           rootBtn.querySelector('button').click();
+          cy.wait(500);
+
           rootBtn.querySelector('button').click();
           const wcContent = rootBtn.querySelector('button').innerText;
           expect(wcContent).to.equal('Start');
 
-          const rootP = container.children().prevObject[1].shadowRoot;
-          const wcContentStart = rootP.querySelector('p').innerText;
+          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
           cy.wait(500);
-          const wcContentStop = rootP.querySelector('p').innerText;
+          const wcContentStop = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
           expect(wcContentStart).to.equal(wcContentStop);
         });
       });
