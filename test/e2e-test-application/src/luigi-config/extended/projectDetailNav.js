@@ -261,23 +261,6 @@ export const projectDetailNavStructure = projectId => [
     icon: 'sys-help-2'
   },
   {
-    pathSegment: 'microfrontend-in-modal-ctx',
-    label: 'Microfrontend in Modal ctx',
-    viewUrl: '/assets/microfrontend-in-modal-ctx.html',
-    openNodeInModal: true,
-    loadingIndicator: {
-      enabled: false
-    }
-  },
-  {
-    pathSegment: 'microfrontend-ctx',
-    label: 'Microfrontend ctx',
-    viewUrl: '/assets/microfrontend-ctx.html',
-    loadingIndicator: {
-      enabled: false
-    }
-  },
-  {
     pathSegment: 'dps',
     label: 'Default Child node Example',
     defaultChildNode: 'dps2',

@@ -234,25 +234,24 @@ describe('iframeCreationInterceptor test', () => {
 
 describe('Context Update Listener test', () => {
   beforeEach(() => {
-    cy.visitLoggedIn('/projects/pr1');
+    cy.visitLoggedIn('/projects/pr1/miscellaneous2');
   });
 
   it('Context in content Area', () => {
     cy.window().then(win => {
-      cy.get('a[title="Microfrontend ctx"]').click();
-
-      cy.wait(500);
+      cy.wait(2500);
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('#console-text-test')
-          .should('have.text', 'Context in content Area');
+          .find('#console')
+          .should('have.text', 'InitListener called');
 
         win.Luigi.configChanged();
+        cy.wait(500);
 
         cy.wrap($iframeBody)
-          .find('#console-text-test')
-          .should('have.text', 'Context update in content Area');
+          .find('#console')
+          .should('have.text', 'ContextUpdateListener called');
       });
     });
   });
@@ -262,26 +261,27 @@ describe('Context Update Listener test', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
     cy.visitLoggedIn('/projects/pr1');
-    cy.get('a[title="Microfrontend in Modal ctx"]').click();
+    cy.get('a[title="Miscellaneous2"]').click();
   });
 
   it('Context in modal', () => {
-    cy.wait(1500);
+    cy.wait(2500);
 
     cy.get('[data-testid=modal-mf] iframe')
       .eq(0)
       .iframe()
       .then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('#console-text-test')
-          .should('have.text', 'Context in modal');
+          .find('#console')
+          .should('have.text', 'InitListener called');
 
         cy.window().then(win => {
           win.Luigi.configChanged();
+          cy.wait(500);
 
           cy.wrap($iframeBody)
-            .find('#console-text-test')
-            .should('have.text', 'Context update in modal');
+            .find('#console')
+            .should('have.text', 'ContextUpdateListener called');
         });
       });
   });
