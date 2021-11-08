@@ -24,14 +24,12 @@
   </div>
   {#if globalSearchConfig && globalSearchConfig.searchFieldCentered}
   <div class="lui-global-search">
-    <GlobalSearchCentered
-      globalSearchConfig="{globalSearchConfig}"
-    />
+    <GlobalSearchCentered globalSearchConfig="{globalSearchConfig}" isMobile="{false}" />
   </div>
   {/if}
   <div class="fd-shellbar__group fd-shellbar__group--actions">
-    {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig}
-    {#if !globalSearchConfig.searchFieldCentered}
+    {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig} {#if
+    !globalSearchConfig.searchFieldCentered}
     <GlobalSearch
       bind:isSearchFieldVisible
       on:toggleSearch
@@ -44,8 +42,7 @@
       on:closeSearchResult
       globalSearchConfig="{globalSearchConfig}"
     />
-    {/if}
-    {/if}
+    {/if} {/if}
     <ContextSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
@@ -130,6 +127,14 @@
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
     contextSwitcherConfig || globalSearchConfig }
+    <!-- {#if globalSearchConfig.searchFieldCentered}
+    <div class="lui-global-search">
+      <GlobalSearchCentered
+        globalSearchConfig="{globalSearchConfig}"
+        isMobile="{true}"
+      />
+    </div>
+    {/if} -->
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -421,7 +426,7 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import GlobalSearch from './GlobalSearch.html';
-  import GlobalSearchCentered from './GlobalSearchCentered.html'
+  import GlobalSearchCentered from './GlobalSearchCentered.html';
   import TopNavNode from './TopNavNode.html';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
@@ -703,11 +708,6 @@
     display: none;
   }
 
-  .lui-global-search{
-    order: 2;
-    flex: 1;
-  }
-
   .nav-icon {
     height: 100%;
   }
@@ -742,11 +742,6 @@
     :global(.lui-mobileOnly) .lui-burger {
       display: none;
     }
-
-    .lui-global-search{
-      min-width: 22rem;
-    }
-
   }
 
   :global(.no-side-nav) {

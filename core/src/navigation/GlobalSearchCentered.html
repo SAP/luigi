@@ -1,5 +1,5 @@
 <svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
-<div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
+<div class="fd-shellbar__action">
   <div class="fd-popover">
     <div
       class="fd-popover__control luigi-search-centered"
@@ -86,6 +86,21 @@
     </div>
   </div>
 </div>
+<!-- {:else}
+<div class="fd-shellbar__action fd-shellbar__action--mobile">
+  <div on:click|stopPropagation="{() => {}}">
+    <button
+      class="fd-button fd-shellbar__button"
+      aria-haspopup="true"
+      aria-expanded="{!isSearchFieldVisible}"
+      on:click="{toggleSearch}"
+      data-testid="luigi-search-btn-desktop"
+    >
+      <i class="sap-icon sap-icon--search"></i>
+    </button>
+  </div>
+</div>
+{/if} -->
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
@@ -105,6 +120,7 @@
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
   export let globalSearchConfig;
+  export let isMobile;
   const dispatch = createEventDispatcher();
   const searchApiObj = {
     fireItemSelected: item => {
@@ -132,6 +148,7 @@
   beforeUpdate(() => {
     search = globalSearchConfig;
     getCustomRenderer();
+    console.log('isMobile ', isMobile);
   });
 
   function getCustomRenderer() {
@@ -301,6 +318,27 @@
       inputElem.focus();
     }
   }
+
+  export function toggleSearch() {
+    if (!isSearchFieldVisible)
+      setTimeout(() => {
+        setFocusOnGlobalSearchFieldDesktop();
+      });
+    else {
+      displaySearchResult = false;
+    }
+    dispatch('toggleSearch', {
+      isSearchFieldVisible,
+      inputElem,
+      luigiCustomSearchRenderer__slot
+    });
+
+    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
+      const fieldVisible =
+        isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
+      search.searchProvider.toggleSearch(inputElem, fieldVisible);
+    }
+  }
 </script>
 <style type="text/scss">
   //remove default browser outline on focus for search results
@@ -310,20 +348,34 @@
     }
   }
 
-  :global(.lui-global-search){
-    .fd-popover{
-      width:100%;
+  :global(.lui-global-search) {
+    order: 2;
+    flex: 1;
+    max-width: 43rem;
+    .fd-popover {
+      width: 100%;
     }
   }
- 
-  
-  
-  .luigi-search-centered input {
-    height: 2rem;
+
+  @media (min-width: 1440px) {
+    :global(.lui-global-search) {
+      margin-left: 3rem;
+      margin-right: 3rem;
+    }
   }
 
-  //remove arrow from the search popover
-  @media screen and (max-width: 1024px) {
-    
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    :global(.lui-global-search) {
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+  }
+  @media (max-width: 599px) {
+    :global(.lui-global-search) {
+      order: 0;
+      flex: 0;
+      margin-left: 0rem;
+      margin-right: 0rem;
+    }
   }
 </style>
