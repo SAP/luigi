@@ -2,7 +2,7 @@
 <div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
   <div class="fd-popover">
     <div
-      class="fd-popover__control {search.searchFieldCentered?'luigi-search-centered':'luigi-search'}"
+      class="fd-popover__control luigi-search-centered"
       on:click|stopPropagation="{() => {}}"
       aria-hidden="{!isSearchFieldVisible}"
       aria-haspopup="true"
@@ -86,21 +86,6 @@
     </div>
   </div>
 </div>
-{#if !search.searchFieldCentered}
-<div class="fd-shellbar__action fd-shellbar__action--desktop">
-  <div on:click|stopPropagation="{() => {}}">
-    <button
-      class="fd-button fd-shellbar__button"
-      aria-haspopup="true"
-      aria-expanded="{!isSearchFieldVisible}"
-      on:click="{toggleSearch}"
-      data-testid="luigi-search-btn-desktop"
-    >
-      <i class="sap-icon sap-icon--search"></i>
-    </button>
-  </div>
-</div>
-{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
@@ -316,27 +301,6 @@
       inputElem.focus();
     }
   }
-
-  export function toggleSearch() {
-    if (!isSearchFieldVisible)
-      setTimeout(() => {
-        setFocusOnGlobalSearchFieldDesktop();
-      });
-    else {
-      displaySearchResult = false;
-    }
-    dispatch('toggleSearch', {
-      isSearchFieldVisible,
-      inputElem,
-      luigiCustomSearchRenderer__slot
-    });
-
-    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
-      const fieldVisible =
-        isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
-      search.searchProvider.toggleSearch(inputElem, fieldVisible);
-    }
-  }
 </script>
 <style type="text/scss">
   //remove default browser outline on focus for search results
@@ -345,75 +309,21 @@
       outline: none;
     }
   }
-  .luigi-search {
-    &[aria-hidden='true'] {
-      visibility: hidden;
-      width: 0;
-    }
 
-    &__input {
-      width: 184px;
-    }
-    &-popover__body {
-      top: calc(2.25rem + 5px);
-
-      &:before,
-      &:after {
-        display: none;
-      }
-      .fd-menu {
-        max-height: 70vh;
-        overflow: auto;
-        .fd-menu__item {
-          margin-bottom: 10px;
-          &:first-child {
-            margin-top: 10px;
-          }
-          &:last-child .fd-menu__link {
-            border-radius: 0;
-          }
-          .fd-product-switch__title {
-            font-weight: 600;
-          }
-        }
-      }
+  :global(.lui-global-search){
+    .fd-popover{
+      width:100%;
     }
   }
-
-  .luigi-search-centered {
-    visibility: visible;
-    width: 24vw;
-    position: fixed;
-    left: 50%;
-    top: 0.25rem;
-    margin-left: -12vw;
-    max-width:43rem;
-  }
+ 
+  
+  
   .luigi-search-centered input {
     height: 2rem;
   }
 
   //remove arrow from the search popover
   @media screen and (max-width: 1024px) {
-    .luigi-search-shell__mobile {
-      position: relative;
-      height: calc(2.25rem + 2px);
-      padding: 0;
-
-      .fd-popover {
-        vertical-align: top;
-      }
-
-      .luigi-search {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background: var(--sapShellColor);
-        z-index: 2;
-      }
-      .fd-menu {
-        max-width: 12rem;
-      }
-    }
+    
   }
 </style>
