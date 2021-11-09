@@ -1,7 +1,7 @@
 // Methods related to the routing. They mostly end up changing the iframe view which is handled by `iframe.js` file;
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
-import { GenericHelpers, RoutingHelpers, IframeHelpers, EventListenerHelpers } from '../utilities/helpers';
+import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
 import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
@@ -469,25 +469,13 @@ class RoutingClass {
   }
 
   async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
-    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    const redirectPathFromNotFoundHandler = RoutingHelpers.getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched);
 
-    if (typeof pageNotFoundHandler === 'function') {
-      //custom 404 handler is provided, use it
-      const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
-      if (result && result.redirectTo) {
-        this.navigateTo(result.redirectTo);
-      }
+    if (redirectPathFromNotFoundHandler) {
+      this.navigateTo(redirectPathFromNotFoundHandler);
       return;
     }
-
-    const alertSettings = {
-      text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
-        route: notFoundPath
-      }),
-      type: 'error',
-      ttl: 1 //how many redirections the alert will 'survive'.
-    };
-    component.showAlert(alertSettings, false);
+    RoutingHelpers.showRouteNotFoundAlert(component, notFoundPath, isAnyPathMatched);
     this.navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
   }
 
@@ -525,6 +513,12 @@ class RoutingClass {
 
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
+    }
+
+    if (navNode.compound && navNode.compound.children) {
+      navNode.compound.children = navNode.compound.children.filter(c =>
+        NavigationHelpers.checkVisibleForFeatureToggles(c)
+      );
     }
 
     WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);

@@ -90,26 +90,36 @@ describe('Navigation', () => {
         }, 50);
       });
     });
-    it('Core API collapse in SplitView', () => {
+    it('Core API collapse in SplitView', done => {
       cy.window().then(win => {
         const handle = win.Luigi.navigation().openAsSplitView('/ext', {
           title: 'Preserved Split View',
           size: '40',
           collapsed: false
         });
-        handle.collapse();
-        cy.expect(handle.isCollapsed()).to.be.true;
+        setTimeout(() => {
+          handle.collapse();
+          setTimeout(() => {
+            cy.expect(handle.isCollapsed()).to.be.true;
+            done();
+          }, 50);
+        }, 50);
       });
     });
-    it('Core API expand SplitView', () => {
+    it('Core API expand SplitView', done => {
       cy.window().then(win => {
         const handle = win.Luigi.navigation().openAsSplitView('/ext', {
           title: 'Preserved Split View',
           size: '40',
           collapsed: false
         });
-        handle.expand();
-        cy.expect(handle.isExpanded()).to.be.true;
+        setTimeout(() => {
+          handle.expand();
+          setTimeout(() => {
+            cy.expect(handle.isExpanded()).to.be.true;
+            done();
+          }, 50);
+        }, 50);
       });
     });
     it('Core API open collapsed splitview and check if expand container will disappear after navigation', () => {
@@ -120,12 +130,14 @@ describe('Navigation', () => {
           size: '40',
           collapsed: true
         });
-        cy.get('#splitViewContainer').should('be.visible');
-        cy.get('.fd-shellbar')
-          .contains('Projects')
-          .click();
-        cy.expectPathToBe('/projects');
-        cy.get('#splitViewContainer').should('not.be.visible');
+        setTimeout(() => {
+          cy.get('#splitViewContainer').should('be.visible');
+          cy.get('.fd-shellbar')
+            .contains('Projects')
+            .click();
+          cy.expectPathToBe('/projects');
+          cy.get('#splitViewContainer').should('not.be.visible');
+        }, 0);
       });
     });
     it('Core API navigate with params', () => {

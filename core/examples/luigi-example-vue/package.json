@@ -7,8 +7,8 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@luigi-project/client": "^1.13.0",
-    "@luigi-project/core": "^1.13.0",
+    "@luigi-project/client": "^1.17.0",
+    "@luigi-project/core": "^1.17.0",
     "@sap-theming/theming-base-content": "^11.1.28",
     "fundamental-styles": "0.18.0",
     "vue": "2.6.10",

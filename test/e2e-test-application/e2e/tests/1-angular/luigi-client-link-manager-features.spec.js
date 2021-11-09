@@ -475,7 +475,11 @@ describe('Luigi client linkManager', () => {
               .invoke('width')
               .should('eq', containerWidth);
 
-            win.Luigi.navigation().openAsDrawer('/projects/pr1/drawer', { overlap: false });
+            cy.wrap($iframeBody)
+              .contains('Open drawer with no overlap')
+              .click();
+
+            cy.wait(500);
 
             cy.get('.drawer-dialog')
               .invoke('width')
@@ -511,6 +515,8 @@ describe('Luigi client linkManager', () => {
 
             win.Luigi.navigation().openAsDrawer('/projects/pr1/webcomponent', { overlap: false });
 
+            cy.wait(300);
+
             cy.get('.drawer-dialog')
               .invoke('width')
               .should('eq', pageWidth * 0.25);
@@ -524,10 +530,34 @@ describe('Luigi client linkManager', () => {
               .should('exist')
               .click();
 
+            cy.wait(300);
+
             cy.get('.iframeContainer iframe')
               .invoke('width')
               .should('eq', containerWidth);
           });
+        });
+      });
+    });
+  });
+
+  describe('Webcomponent visibleForFeatureToggles test', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr1/wc_grid');
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.settings.experimental = { webcomponents: true };
+        win.Luigi.configChanged();
+      });
+    });
+
+    it('open webcomponent with visibleForFeatureToggles', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const root = container.children().prevObject[0].shadowRoot;
+          const wcContent = root.querySelector('p').innerText;
+          expect(wcContent).to.equal('Some input text !ft');
         });
       });
     });

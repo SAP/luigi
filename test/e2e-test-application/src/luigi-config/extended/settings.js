@@ -67,7 +67,7 @@ class Settings {
   //   globalNav: true
   //   webcomponents:true
   //};
-  globalSideNavigation = true;
+  //globalSideNavigation = true;
 }
 
 export const settings = new Settings();
