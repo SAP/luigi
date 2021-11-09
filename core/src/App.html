@@ -337,7 +337,7 @@
     let path = buildPath(data.params, srcNode, srcPathParams);
 
     path = GenericHelpers.addLeadingSlash(path);
-
+    path = data.params.preserveQueryParams ? path + location.search : path;
     addPreserveView(data, config);
 
     // Navigate to the raw path. Any errors/alerts are handled later.

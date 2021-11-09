@@ -7,7 +7,11 @@ class Routing {
    * For path routing, set to false and run `npm run start`
    */
   useHashRouting = false;
-
+  /**
+   * preserveQueryParams
+   * Default: false. Define true that preserve the query parameters of url after navigation request.
+   */
+  preserveQueryParams = false;
   /**
    * Prefix for reflecting params in the url, which is used when navigating .withParams() function.
    */

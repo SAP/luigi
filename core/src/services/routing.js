@@ -2,7 +2,7 @@
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
 import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
+import { LuigiConfig, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
@@ -42,6 +42,15 @@ class RoutingClass {
   }
 
   /**
+  Append query parameters to the route if `preserveQueryParams` is set
+  @param route string  absolute path of the new route
+  @param queryParams string  URL's parameter string, beginning with the leading ? character
+  */
+  getQueryParamsRoute(route, queryParams) {
+    return LuigiConfig.getConfigValue('routing.preserveQueryParams') ? route + queryParams : route;
+  }
+
+  /**
     navigateTo used for navigation
     Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
     @param route string  absolute path of the new route
@@ -58,6 +67,7 @@ class RoutingClass {
     }
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
     let url = new URL(location.href);
+    route = this.getQueryParamsRoute(route, url.search);
     hashRouting ? (url.hash = route) : (url.pathname = route);
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
