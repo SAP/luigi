@@ -42,15 +42,6 @@ class RoutingClass {
   }
 
   /**
-  Append query parameters to the route if `preserveQueryParams` is set
-  @param route string  absolute path of the new route
-  @param queryParams string  URL's parameter string, beginning with the leading ? character
-  */
-  getQueryParamsRoute(route, queryParams) {
-    return LuigiConfig.getConfigValue('routing.preserveQueryParams') ? route + queryParams : route;
-  }
-
-  /**
     navigateTo used for navigation
     Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
     @param route string  absolute path of the new route
@@ -66,8 +57,9 @@ class RoutingClass {
       return;
     }
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    const preserveQueryParams = LuigiConfig.getConfigValue('routing.preserveQueryParams');
     let url = new URL(location.href);
-    route = this.getQueryParamsRoute(route, url.search);
+    route = preserveQueryParams ? RoutingHelpers.composeSearchParamsToRoute(route) : route;
     hashRouting ? (url.hash = route) : (url.pathname = route);
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';

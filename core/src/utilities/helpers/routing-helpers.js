@@ -142,6 +142,15 @@ class RoutingHelpersClass {
     return location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
   }
 
+  /**
+    * Append search query parameters to the route
+    @param route string  absolute path of the new route
+    @returns app.js?query=test
+  */
+  composeSearchParamsToRoute(route) {
+    return location.search ? route + location.search : route;
+  }
+
   getModalPathFromPath() {
     const path = this.getQueryParam(this.getModalViewParamName());
     return path && decodeURIComponent(path);
