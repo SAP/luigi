@@ -1064,13 +1064,16 @@
 
   const resizeMicrofrontendIframe = () => {
     if (!isResizeMF()) return;
-
     const drawer = document.querySelector('.iframeModalCtn._drawer');
     if (drawer) {
+      //reset
+      IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
+      document.querySelector('div.iframeContainer').removeAttribute('style');
       let { width } = getComputedStyle(drawer);
+      let clientWidth = IframeHelpers.getCurrentMicrofrontendIframe().clientWidth;
       IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
         'style',
-        `width: calc(100% - ${width})`
+        `width: calc(${clientWidth}px - ${width})`
       );
     }
   };

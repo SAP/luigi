@@ -142,11 +142,15 @@ class IframeHelpersClass {
     return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
   }
 
+  getCurrentWebcomponentCtnInDom() {
+    return document.querySelector('.iframeContainer.lui-webComponent');
+  }
+
   getCurrentMicrofrontendIframe() {
     const modalIframes = this.getModalIframes();
     const mainIframes = this.getMainIframes().filter(GenericHelpers.isElementVisible);
-
-    return modalIframes[0] || mainIframes[0] || null;
+    const webComponentCtn = this.getCurrentWebcomponentCtnInDom();
+    return modalIframes[0] || mainIframes[0] || webComponentCtn || null;
   }
 
   getIframesWithType(type) {
