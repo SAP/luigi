@@ -145,7 +145,7 @@ class RoutingHelpersClass {
   /**
     * Append search query parameters to the route
     @param route string  absolute path of the new route
-    @returns app.js?query=test
+    @returns resulting route with or without appended params eg.: /someroute?query=test
   */
   composeSearchParamsToRoute(route) {
     return location.search ? route + location.search : route;
