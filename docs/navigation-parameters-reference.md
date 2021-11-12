@@ -75,6 +75,11 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: defines either hash-based (`example.com/#/yourpath`) or path-based (`example.com/yourpath`) routing.
 - **default**: the default is `false`, which means path routing is used.
 
+### preserveQueryParams
+- **type**: boolean
+- **description**: defines if query parameters are persisted in the URL after path changes.
+- **default**: the default is `false`, which means query parameters are not persisted in the URL after navgiation request.
+
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
 
