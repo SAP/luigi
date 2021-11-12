@@ -649,14 +649,15 @@ describe('Luigi client linkManager', () => {
           rootBtn.querySelector('button').click();
           cy.wait(500);
 
+          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+  
           rootBtn.querySelector('button').click();
           const wcContent = rootBtn.querySelector('button').innerText;
           expect(wcContent).to.equal('Start');
 
-          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
           cy.wait(500);
           const wcContentStop = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
-          expect(wcContentStart).to.equal(wcContentStop);
+          expect(wcContentStart).to.not.equal(wcContentStop);
         });
       });
     });
