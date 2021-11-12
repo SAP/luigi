@@ -420,7 +420,7 @@ export declare interface LinkManager {
   newTab: () => this;
 
   /**
-   * Keeps url's query parameters for a navigation request.
+   * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
    * @since NEXT_RELEASE
    * @example
