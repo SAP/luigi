@@ -9,7 +9,7 @@ class Routing {
   useHashRouting = false;
   /**
    * preserveQueryParams
-   * Default: false. Define true that preserve the query parameters of url after navigation request.
+   * Default: false. Set to true to preserve the query parameters of the URL after navigation request.
    */
   preserveQueryParams = false;
   /**
