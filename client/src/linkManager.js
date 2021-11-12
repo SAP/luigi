@@ -378,7 +378,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * Keeps url's query parameters for a navigation request.
+   * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true` the url's query parameters will be kept after navigation.
    * @since NEXT_RELEASE
    * @example
