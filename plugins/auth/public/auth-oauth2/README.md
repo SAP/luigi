@@ -49,7 +49,7 @@ Luigi.setConfig({
 })
 ```
 
-For **Angular-based** applications, the `callback.html` file can be copied using copy-webpack-plugin. Include the following in your webpack configuration file:
+For **Angular-based** applications, the `callback.html` file can be copied using [copy-webpack-plugin](https://www.npmjs.com/package/copy-webpack-plugin). Include the following in your webpack configuration file:
 
 ```javascript
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -64,7 +64,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 }
 ```
 
-For more simple scenarios such as Luigi setup without a framework, you can use any copy plugin to copy the `callback.html` file. An example is given below using copyfiles:
+For more simple scenarios such as Luigi setup without a framework, you can use any copy plugin to copy the `callback.html` file. An example is given below using [copyfiles](https://www.npmjs.com/package/copyfiles):
 
 ```javascript
 "buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
@@ -72,4 +72,4 @@ For more simple scenarios such as Luigi setup without a framework, you can use a
 "copyCallbackOAuth": "copyfiles -f node_modules/@luigi-project/plugin-auth-oauth2/callback.html public/assets/auth-oauth2"
 ```
 
-Running npm run build should then suffice to bundle the config and also copy the callback file.
+Running `npm run build` should then suffice to bundle the config and also copy the callback file.
