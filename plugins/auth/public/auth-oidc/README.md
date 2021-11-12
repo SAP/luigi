@@ -17,7 +17,7 @@ meta -->
 
 ## Overview
 
-This project contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider. 
+This [authorization plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider.
 Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow.
 
 ## Installation
@@ -61,12 +61,12 @@ Luigi.setConfig({
 })
 ```
 
-If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation, 
-which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`. 
+If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation,
+which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`.
 You must install `oidc-client` in your project as a dev dependency:
 
 ```javascript
-npm i -save-dev copy-webpack-plugin
+npm i -save-dev oidc-client
 ```
 
 Then, you need to import the plugin files and `oidc-client` library in your project using webpack:
