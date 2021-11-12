@@ -1058,6 +1058,7 @@
     return (
       window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
       mfDrawer.displayed &&
+      mfDrawer.settings &&
       !mfDrawer.settings.overlap
     );
   };
@@ -1067,7 +1068,7 @@
     const drawer = document.querySelector('.iframeModalCtn._drawer');
     const currentMfIframe = IframeHelpers.getCurrentMicrofrontendIframe();
     if (drawer && currentMfIframe) {
-      //computed width reset
+      //reset computed width
       currentMfIframe.removeAttribute('style');
       document.querySelector('div.iframeContainer').removeAttribute('style');
 
