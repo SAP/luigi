@@ -1057,7 +1057,7 @@
   const isResizeMF = () => {
     return (
       window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
-      mfDrawer.settings &&
+      mfDrawer.displayed &&
       !mfDrawer.settings.overlap
     );
   };
@@ -1065,17 +1065,15 @@
   const resizeMicrofrontendIframe = () => {
     if (!isResizeMF()) return;
     const drawer = document.querySelector('.iframeModalCtn._drawer');
-    if (drawer) {
-      //reset
-      IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
+    const currentMfIframe = IframeHelpers.getCurrentMicrofrontendIframe();
+    if (drawer && currentMfIframe) {
+      //computed width reset
+      currentMfIframe.removeAttribute('style');
       document.querySelector('div.iframeContainer').removeAttribute('style');
 
       const { width } = getComputedStyle(drawer);
-      const clientWidth = IframeHelpers.getCurrentMicrofrontendIframe().clientWidth;
-      IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
-        'style',
-        `width: calc(${clientWidth}px - ${width})`
-      );
+      const clientWidth = currentMfIframe.clientWidth;
+      currentMfIframe.setAttribute('style', `width: calc(${clientWidth}px - ${width})`);
     }
   };
 
