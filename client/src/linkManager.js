@@ -379,7 +379,7 @@ export class linkManager extends LuigiClientBase {
 
   /**
    * Keeps the URL's query parameters for a navigation request.
-   * @param {boolean} preserve By default, it is set to `false`. If it is set to `true` the url's query parameters will be kept after navigation.
+   * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
    * @since NEXT_RELEASE
    * @example
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
