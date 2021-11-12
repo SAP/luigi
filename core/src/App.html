@@ -1069,8 +1069,9 @@
       //reset
       IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
       document.querySelector('div.iframeContainer').removeAttribute('style');
-      let { width } = getComputedStyle(drawer);
-      let clientWidth = IframeHelpers.getCurrentMicrofrontendIframe().clientWidth;
+
+      const { width } = getComputedStyle(drawer);
+      const clientWidth = IframeHelpers.getCurrentMicrofrontendIframe().clientWidth;
       IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
         'style',
         `width: calc(${clientWidth}px - ${width})`

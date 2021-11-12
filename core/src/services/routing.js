@@ -499,6 +499,7 @@ class RoutingClass {
   navigateWebComponent(config, component, node, navNode, iframeContainer) {
     const componentData = component.get();
     const wc_container = document.querySelector('.wcContainer');
+
     if (!wc_container) return;
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
@@ -511,6 +512,7 @@ class RoutingClass {
     const componentData = component.get();
     const wc_container = document.querySelector('.wcContainer');
 
+    if (!wc_container) return;
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
     }
