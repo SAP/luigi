@@ -53,19 +53,50 @@
     if (!backdropDisabled) {
       setBackdropClass();
       EventListenerHelpers.addEventListener('message', e => {
-        if (!IframeHelpers.getValidMessageSource(e)) return;
+        const msgSrc = IframeHelpers.getValidMessageSource(e);
+        if (!msgSrc) return;
         if (disable !== true) {
           if ('luigi.add-backdrop' === e.data.msg) {
-            if (isValidForArea(e)) {
-              backdropActive = true;
+            if (true) {
+              const message = {
+                msg: 'luigi.ux.overflow-backdrop',
+                visible: true,
+                offsetX: msgSrc.getBoundingClientRect().left,
+                offsetY: msgSrc.getBoundingClientRect().top
+              };
+              IframeHelpers.sendMessageToIframe(msgSrc, message);
+              setTimeout(() => {
+                document.body.classList.add('lui-overflow-backdrop');
+              }, 1);
             } else {
-              backdropActive = false;
+              if (isValidForArea(e)) {
+                backdropActive = true;
+              } else {
+                backdropActive = false;
+              }
+              dispatch('stateChanged', { backdropActive: true });
             }
-            dispatch('stateChanged', { backdropActive: true });
           }
           if ('luigi.remove-backdrop' === e.data.msg) {
-            backdropActive = false;
-            dispatch('stateChanged', { backdropActive: false });
+            if (true) {
+              const message = {
+                msg: 'luigi.ux.overflow-backdrop',
+                visible: false
+              };
+              IframeHelpers.sendMessageToIframe(msgSrc, message);
+              const style = document
+                .querySelector('.iframeContainer')
+                .getAttribute('style');
+              document
+                .querySelector('.iframeContainer')
+                .setAttribute('style', 'transition: none !important');
+              setTimeout(() => {
+                document.body.classList.remove('lui-overflow-backdrop');
+              }, 1);
+            } else {
+              backdropActive = false;
+              dispatch('stateChanged', { backdropActive: false });
+            }
           }
         }
       });
@@ -92,5 +123,14 @@
     bottom: 0;
     right: 0;
     z-index: 2;
+  }
+
+  :global(html body.lui-overflow-backdrop .iframeContainer) {
+    position: fixed;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1000000;
+    transition: none !important;
+    background-color: transparent;
   }
 </style>

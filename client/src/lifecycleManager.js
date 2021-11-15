@@ -102,6 +102,31 @@ class LifecycleManager extends LuigiClientBase {
       setAuthData(e.data.authData);
     });
 
+    helpers.addEventListener('luigi.ux.overflow-backdrop', e => {
+      console.log('luigi.ux.overflow-backdrop', e);
+      if (e.data.visible) {
+        if (e.data.offsetY > 0 || e.data.offsetX > 0) {
+          const bdStyle = document.querySelector('head style[lui-backdrop-style]');
+          const stag = bdStyle || document.createElement('style');
+          stag.innerHTML = `
+          .lui-backdrop-overlay {
+            position: fixed;
+            top: ${e.data.offsetY}px; 
+            left: ${e.data.offsetX}px;
+            bottom: 0;
+            right: 0;
+          }
+          `;
+          stag.setAttribute('lui-backdrop-style', true);
+          document.head.appendChild(stag);
+
+          document.querySelector('body > .main').classList.add('lui-backdrop-overlay');
+        }
+      } else {
+        document.querySelector('body > .main').classList.remove('lui-backdrop-overlay');
+      }
+    });
+
     helpers.addEventListener('luigi.navigate', e => {
       setContext(e.data);
       if (!this.currentContext.internal.isNavigateBack && !this.currentContext.withoutSync) {
