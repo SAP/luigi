@@ -148,6 +148,11 @@ class RoutingHelpersClass {
     @returns resulting route with or without appended params, for example /someroute?query=test
   */
   composeSearchParamsToRoute(route) {
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    if (hashRoutingActive) {
+      const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
+      return queryParamIndex !== -1 ? route + location.hash.slice(queryParamIndex) : route;
+    }
     return location.search ? route + location.search : route;
   }
 
