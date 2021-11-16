@@ -95,6 +95,7 @@
     bind:inputElem
     bind:luigiCustomSearchRenderer__slot
     burgerTooltip="{burgerTooltip}"
+    bind:globalSearchContainerWidth
   />
   {#if !(hideNav)}
   <GlobalNav
@@ -801,7 +802,23 @@
     document.body.classList.remove('lui-leftNavToggle');
   };
 
+  export let globalSearchContainerWidth;
+  function handleVisibilityGlobalSearch(){
+    globalSearchContainerWidth=document.querySelector('.lui-global-search').offsetWidth;
+    if(globalSearchContainerWidth<=384){
+      document.querySelector('.lui-global-search').classList.add('lui-global-search-input--hidden');
+      document.querySelector('.lui-global-search').classList.remove('lui-global-search-input--visible');
+      document.querySelector('.lui-global-search').classList.add('lui-global-search-btn--visible');
+      document.querySelector('.lui-global-search-btn').classList.remove('lui-global-search-btn--hidden');
+    }else{
+      document.querySelector('.lui-global-search').classList.remove('lui-global-search-input--hidden');
+      document.querySelector('.lui-global-search').classList.add('lui-global-search-input--visible');
+      document.querySelector('.lui-global-search').classList.remove('lui-global-search-btn--visible');
+      document.querySelector('.lui-global-search-btn').classList.add('lui-global-search-btn--hidden');
+    }
+  }
   const onResize = () => {
+    handleVisibilityGlobalSearch(); 
     resizeMicrofrontendIframe();
 
     const isMobileToDesktop =
@@ -1681,6 +1698,13 @@
         };
       });
     }
+    
+    // if(document.querySelector('.lui-global-search')){
+      // globalSearchContainerWidth=document.querySelector('.lui-global-search').offsetWidth; 
+      // console.log('clientWidth ', document.querySelector('.lui-global-search').offsetWidth)
+      // console.log('offsetWidth ', document.querySelector('.lui-global-search').clientWidth)
+    // }
+    handleVisibilityGlobalSearch();
   });
 
   afterUpdate(() => {
@@ -2214,6 +2238,49 @@
       display: none;
     }
   }
+
+  /* :global(.lui-global-search-input--visible){
+    display:inline-block;
+  }
+  
+  :global(.lui-global-search-input--hidden){
+    display:none;
+  }
+
+  :global(.lui-global-search-btn--hidden){
+      display:none;
+      background-color:green;
+    }
+    :global(.lui-global-search-btn--visible){
+      display:inline-block;
+      background-color:red;
+    }
+
+  @media (min-width: globalSearchContainerWidth){
+    :global(.lui-global-search .lui-global-search-input--visible){
+      display:none;
+    } 
+  }
+
+  @media (max-width: globalSearchContainerWidth - 1){
+    :global(.lui-global-search .lui-global-search-input--visible){
+      display:inline-block;
+    } 
+  } */
+ 
+  /* @media (min-width:(800*1px) ){
+    :global(.lui-global-search-btn--visibility){
+      display:inline-block;
+      background-color:red;
+    }
+  }
+
+  @media (max-width:globalSearchContainerWidth - 1){
+    :global(.lui-global-search-btn--visibility){
+      display:none;
+      background-color:green;
+    }
+  } */
 
   /*this is required after FD Styles v0.13.0 in order to make mobile and desktop shellbar work fine*/
   @media (min-width: $desktopMaxWidth) {

@@ -1,8 +1,8 @@
-<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
-<div class="fd-shellbar__action">
+<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}"/>
+<div class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible?'lui-global-search-mobile--active':''}">
   <div class="fd-popover">
     <div
-      class="fd-popover__control luigi-search-centered"
+      class="fd-popover__control luigi-search"
       on:click|stopPropagation="{() => {}}"
       aria-hidden="{!isSearchFieldVisible}"
       aria-haspopup="true"
@@ -27,20 +27,17 @@
         {#if search.searchFieldCentered}
         <span
           class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
-        >
-          {#if clearSearchFieldBtn}
+        >  
           <button
             aria-label="button-decline"
             class="fd-shellbar__button fd-button"
             on:click="{clearSearchField}"
           >
-            <i class="sap-icon--decline"></i>
-          </button>
-          {:else}
-          <button aria-label="button-search" class="fd-shellbar__button fd-button">
+            {#if clearSearchFieldBtn}
+              <i class="sap-icon--decline"></i>
+            {/if}
             <i class="sap-icon--search"></i>
           </button>
-          {/if}
         </span>
         {/if} {/if}
       </div>
@@ -86,8 +83,8 @@
     </div>
   </div>
 </div>
-<!-- {:else}
-<div class="fd-shellbar__action fd-shellbar__action--mobile">
+{#if !isSearchFieldVisible}
+<div class="lui-global-search-btn">
   <div on:click|stopPropagation="{() => {}}">
     <button
       class="fd-button fd-shellbar__button"
@@ -100,7 +97,22 @@
     </button>
   </div>
 </div>
-{/if} -->
+{/if}
+{#if isSearchFieldVisible}
+<div class="lui-global-search-cancel-btn {isSearchFieldVisible?'lui-global-search-cancel-btn--active':''}">
+  <div on:click|stopPropagation="{() => {}}">
+    <button
+      class="fd-button fd-shellbar__button"
+      aria-haspopup="true"
+      aria-expanded="{!isSearchFieldVisible}"
+      on:click="{toggleSearch}"
+      data-testid="luigi-search-btn-desktop"
+    >
+      Cancel
+    </button>
+  </div>
+</div>
+{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
@@ -112,10 +124,13 @@
     KEYCODE_ENTER,
     KEYCODE_ESC
   } from '../utilities/keycode.js';
-  export let isSearchFieldVisible;
+  import { CSS_BREAKPOINTS } from '../utilities/constants';
+  let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
   export let displayCustomSearchResult;
+  export let isGlobalSearchMobileView;
+  export let globalSearchContainerWidth;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
@@ -132,7 +147,6 @@
   let search = {};
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
-  let searchFieldAlwaysVisible;
   let clearSearchFieldBtn = false;
 
   onMount(async () => {
@@ -148,7 +162,6 @@
   beforeUpdate(() => {
     search = globalSearchConfig;
     getCustomRenderer();
-    console.log('isMobile ', isMobile);
   });
 
   function getCustomRenderer() {
@@ -319,25 +332,8 @@
     }
   }
 
-  export function toggleSearch() {
-    if (!isSearchFieldVisible)
-      setTimeout(() => {
-        setFocusOnGlobalSearchFieldDesktop();
-      });
-    else {
-      displaySearchResult = false;
-    }
-    dispatch('toggleSearch', {
-      isSearchFieldVisible,
-      inputElem,
-      luigiCustomSearchRenderer__slot
-    });
-
-    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
-      const fieldVisible =
-        isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
-      search.searchProvider.toggleSearch(inputElem, fieldVisible);
-    }
+  function toggleSearch() {
+    isSearchFieldVisible=!isSearchFieldVisible;
   }
 </script>
 <style type="text/scss">
@@ -361,6 +357,7 @@
     :global(.lui-global-search) {
       margin-left: 3rem;
       margin-right: 3rem;
+      
     }
   }
 
@@ -370,12 +367,125 @@
       margin-right: 2rem;
     }
   }
-  @media (max-width: 599px) {
+
+  @media (min-width: 1023px) and (max-width: 600px) {
     :global(.lui-global-search) {
-      order: 0;
-      flex: 0;
-      margin-left: 0rem;
-      margin-right: 0rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
     }
   }
+
+  :global(.lui-global-search) {
+      display:flex;
+      justify-content: center;
+    }
+
+  :global(.lui-global-search-btn--visible){
+    justify-content: flex-end;
+    .lui-global-search-btn{
+      display:inline-block;
+      background-color:red;
+    }
+  }
+
+  
+  :global(.lui-global-search-input--hidden){
+    .lui-global-search-input{
+      display:none;
+    }
+    .lui-global-search-input.lui-global-search-mobile--active{
+      position: absolute;
+      display:block;
+      background-color: #354a5f;
+      width: 80%;
+      left: 0;
+      top: 0;
+      z-index: 100000000000000000;
+      height: 43px;
+      .fd-shellbar__input-group{
+        margin-top: 0.2rem;
+      }
+    }
+
+      .lui-global-search-cancel-btn.lui-global-search-cancel-btn--active{
+        position: absolute;
+        right: 0;
+        display:block;
+        display:inline-block;
+        background-color: #354a5f;
+        top: 0;
+        height: 43px;
+        width: 20%;
+        z-index: 999999999999999999;
+        .fd-shellbar__button{
+          margin-top: 0.2rem;
+        }
+      }
+      .lui-global-search-btn{
+        right:0
+      }
+
+  }
+
+  .lui-global-search-btn{
+    display:none;
+  }
+
+  .lui-global-search-input {
+    flex: 0 0 100%;
+  }
+ 
+  @media (max-width: 599px) {
+    :global(.lui-global-search) {
+      display:flex;
+      justify-content: flex-end;
+      
+      .lui-global-search-mobile--active{
+        position: absolute;
+        display:block;
+        background-color: #354a5f;
+        width: 80%;
+        left: 0;
+        top: 0;
+        z-index: 100000000000000000;
+        height: 43px;
+        .fd-shellbar__input-group{
+          margin-top: 0.2rem;
+        }
+      }
+
+      .luigi-search {
+        &[aria-hidden='true'] {
+        visibility: hidden;
+        width: 0;
+        }
+      }
+      .lui-global-search-btn{
+        right:0
+      }
+
+      .lui-global-search-cancel-btn{
+        position: absolute;
+        right: 0;
+        display:inline-block;
+        background-color: #354a5f;
+        top: 0;
+        height: 43px;
+        width: 20%;
+        z-index: 999999999999999999;
+        .fd-shellbar__button{
+          margin-top: 0.2rem;
+        }
+      }
+
+
+    }
+
+    :global(.fd-shellbar__group.fd-shellbar__group--actions){
+      flex-grow: 0;
+    }
+
+ 
+    
+}
 </style>

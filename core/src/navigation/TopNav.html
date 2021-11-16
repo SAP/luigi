@@ -24,7 +24,18 @@
   </div>
   {#if globalSearchConfig && globalSearchConfig.searchFieldCentered}
   <div class="lui-global-search">
-    <GlobalSearchCentered globalSearchConfig="{globalSearchConfig}" isMobile="{false}" />
+    <GlobalSearchCentered globalSearchConfig="{globalSearchConfig}"
+    bind:isSearchFieldVisible
+      on:toggleSearch
+      on:handleSearchNavigation
+      bind:searchResult
+      bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:inputElem
+      bind:globalSearchContainerWidth
+      bind:luigiCustomSearchRenderer__slot
+      on:closeSearchResult
+      />
   </div>
   {/if}
   <div class="fd-shellbar__group fd-shellbar__group--actions">
@@ -127,14 +138,6 @@
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
     contextSwitcherConfig || globalSearchConfig }
-    <!-- {#if globalSearchConfig.searchFieldCentered}
-    <div class="lui-global-search">
-      <GlobalSearchCentered
-        globalSearchConfig="{globalSearchConfig}"
-        isMobile="{true}"
-      />
-    </div>
-    {/if} -->
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -441,7 +444,7 @@
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
   const dispatch = createEventDispatcher();
-
+  export let globalSearchContainerWidth;
   export let authorizationEnabled;
   export let autologinEnabled;
   export let isLoggedIn = false;
@@ -466,6 +469,7 @@
   export let userInfo = {};
   export let urlAuthError;
   export let globalSearchConfig;
+  export let isGlobalSearchMobileView;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;

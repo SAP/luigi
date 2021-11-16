@@ -2,7 +2,7 @@
 <div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
   <div class="fd-popover">
     <div
-      class="fd-popover__control {search.searchFieldCentered?'luigi-search-centered':'luigi-search'}"
+      class="fd-popover__control luigi-search"
       on:click|stopPropagation="{() => {}}"
       aria-hidden="{!isSearchFieldVisible}"
       aria-haspopup="true"
@@ -86,7 +86,6 @@
     </div>
   </div>
 </div>
-{#if !search.searchFieldCentered}
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation="{() => {}}">
     <button
@@ -100,7 +99,6 @@
     </button>
   </div>
 </div>
-{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
@@ -378,19 +376,6 @@
         }
       }
     }
-  }
-
-  .luigi-search-centered {
-    visibility: visible;
-    width: 24vw;
-    position: fixed;
-    left: 50%;
-    top: 0.25rem;
-    margin-left: -12vw;
-    max-width:43rem;
-  }
-  .luigi-search-centered input {
-    height: 2rem;
   }
 
   //remove arrow from the search popover
