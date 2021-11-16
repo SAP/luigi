@@ -68,7 +68,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 }
 ```
 
-For more simple scenarios such as Luigi setup without a framework, you can use any copy plugin to copy the `callback.html` file. An example is given below using [copyfiles](https://www.npmjs.com/package/copyfiles):
+In case of a basic Luigi setup without a framework, you can use any copy plugin to copy the `callback.html` file and then modify the `package.json` script to copy the file when building. One package that could be helpful is [copyfiles](https://www.npmjs.com/package/copyfiles). Following is an example:
 
 ```javascript
 "buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
