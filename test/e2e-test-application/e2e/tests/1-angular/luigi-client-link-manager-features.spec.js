@@ -562,4 +562,32 @@ describe('Luigi client linkManager', () => {
       });
     });
   });
+
+  describe('linkManager preserveQueryParams features', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      // "clear" variables to make sure they are not reused and throw error in case something goes wrong
+      $iframeBody = undefined;
+      cy.visitLoggedIn('/projects/pr1/settings?query=test&ft=ft1');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+      });
+    });
+
+    it('Naviage to pr2 with query parameters', () => {
+      cy.wrap($iframeBody)
+        .contains('navigate to project 2 with query parameters')
+        .click();
+      cy.expectPathToBe('/projects/pr2');
+      cy.expectSearchToBe('?query=test&ft=ft1');
+    });
+
+    it('Naviage to pr2 without query parameters', () => {
+      cy.wrap($iframeBody)
+        .contains('navigate to project 2 without query parameters')
+        .click();
+      cy.expectPathToBe('/projects/pr2');
+      cy.expectSearchToBe('');
+    });
+  });
 });
