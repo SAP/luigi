@@ -49,7 +49,11 @@ Luigi.setConfig({
 })
 ```
 
-For **Angular-based** applications, the `callback.html` file can be copied using [copy-webpack-plugin](https://www.npmjs.com/package/copy-webpack-plugin). Include the following in your webpack configuration file:
+ We provide a `callback.html` file through our `plugin-auth-oauth2` package. This `callback.html` file resides in `node_modules/@luigi-project/plugin-auth-oauth2/callback.html` and needs to be copied to a folder in your Luigi Core installation, which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oauth2/callback.html`.
+
+The examples given below give some alternatives on how to copy this file in your project. However, you may choose your own way of copying the `callback.html` file to the default location depending on your environment.
+
+For applications involving a webpack configuration, one way to copy the `callback.html` file is using packages such as [copy-webpack-plugin](https://www.npmjs.com/package/copy-webpack-plugin) and then including the following in your webpack configuration file:
 
 ```javascript
 const CopyWebpackPlugin = require('copy-webpack-plugin');
