@@ -116,7 +116,7 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
-  import { GenericHelpers } from '../utilities/helpers';
+  import { GenericHelpers, GlobalSearchHelper } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import {
     KEYCODE_ARROW_UP,
@@ -148,6 +148,7 @@
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
   let clearSearchFieldBtn = false;
+  let globalSearchCtnWidth;
 
   onMount(async () => {
     search = globalSearchConfig;
@@ -157,6 +158,9 @@
       inputElement.placeholder = placeHolder;
     }
     getCustomRenderer();
+    globalSearchCtnWidth=GlobalSearchHelper.calculateGlobalSearchCtnWidth();
+    globalSearchCtnWidth= parseInt(globalSearchCtnWidth,10)+"px";
+    console.log('globalSearchCtnWidth ', globalSearchCtnWidth);
   });
 
   beforeUpdate(() => {
@@ -388,7 +392,6 @@
     }
   }
 
-  
   :global(.lui-global-search-input--hidden){
     .lui-global-search-input{
       display:none;
@@ -397,7 +400,7 @@
       position: absolute;
       display:block;
       background-color: #354a5f;
-      width: 80%;
+      width: calc(100% - 90px);
       left: 0;
       top: 0;
       z-index: 100000000000000000;
@@ -414,9 +417,9 @@
         display:inline-block;
         background-color: #354a5f;
         top: 0;
-        height: 43px;
-        width: 20%;
         z-index: 999999999999999999;
+        width: 90px;
+        height: 43px;
         .fd-shellbar__button{
           margin-top: 0.2rem;
         }
@@ -424,7 +427,6 @@
       .lui-global-search-btn{
         right:0
       }
-
   }
 
   .lui-global-search-btn{
@@ -434,7 +436,8 @@
   .lui-global-search-input {
     flex: 0 0 100%;
   }
- 
+
+
   @media (max-width: 599px) {
     :global(.lui-global-search) {
       display:flex;
@@ -444,7 +447,7 @@
         position: absolute;
         display:block;
         background-color: #354a5f;
-        width: 80%;
+        width: calc(100% - 90px);
         left: 0;
         top: 0;
         z-index: 100000000000000000;
@@ -453,6 +456,7 @@
           margin-top: 0.2rem;
         }
       }
+      
 
       .luigi-search {
         &[aria-hidden='true'] {
@@ -470,22 +474,15 @@
         display:inline-block;
         background-color: #354a5f;
         top: 0;
-        height: 43px;
-        width: 20%;
+        width:90px;
         z-index: 999999999999999999;
         .fd-shellbar__button{
           margin-top: 0.2rem;
         }
       }
-
-
     }
-
-    :global(.fd-shellbar__group.fd-shellbar__group--actions){
-      flex-grow: 0;
-    }
-
- 
-    
-}
+  }
+  :global(.fd-shellbar__group){
+    flex-grow: 0;
+  }
 </style>
