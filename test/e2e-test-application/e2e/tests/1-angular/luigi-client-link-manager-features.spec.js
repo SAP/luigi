@@ -563,6 +563,107 @@ describe('Luigi client linkManager', () => {
     });
   });
 
+
+  describe('Webcomponent compound view test', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr1/wc_grid_compound');
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.settings.experimental = { webcomponents: true };
+        win.Luigi.configChanged();
+      });
+    });
+
+    it('open webcomponent btn', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const root = container.children().prevObject[0].shadowRoot;
+          const wcContent = root.querySelector('button').innerText;
+
+          expect(wcContent).to.equal('Start');
+        });
+      });
+    });
+
+    it('open webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const root = container.children().prevObject[1].shadowRoot;
+          const wcContent = root.querySelector('p').innerText;
+
+          expect(wcContent).to.equal('0');
+        });
+      });
+    });
+
+    it('click on webcomponent btn', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const root = container.children().prevObject[0].shadowRoot;
+          root.querySelector('button').click();
+          const wcContent = root.querySelector('button').innerText;
+
+          expect(wcContent).to.equal('Stop');
+        });
+      });
+    });
+
+    it('listener on webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          rootBtn.querySelector('button').click();
+          const root = container.children().prevObject[1].shadowRoot;
+          const wcContent = root.querySelector('p').innerText;
+
+          expect(wcContent).to.equal('1');
+        });
+      });
+    });
+
+    it('click start timer on  webcomponent btn and reaction in webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+          rootBtn.querySelector('button').click();
+          const wcContent = rootBtn.querySelector('button').innerText;
+          expect(wcContent).to.equal('Stop');
+
+          cy.wait(500);
+          const wcContentStop = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+          expect(wcContentStart).to.not.equal(wcContentStop);
+        });
+      });
+    });
+
+    it('click start and stop timer on webcomponent btn and reaction in webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          rootBtn.querySelector('button').click();
+          cy.wait(500);
+
+          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+  
+          rootBtn.querySelector('button').click();
+          const wcContent = rootBtn.querySelector('button').innerText;
+          expect(wcContent).to.equal('Start');
+
+          cy.wait(500);
+          const wcContentStop = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+          expect(wcContentStart).to.not.equal(wcContentStop);
+        });
+      });
+    });
+  });
+      
   describe('linkManager preserveQueryParams features', () => {
     let $iframeBody;
     beforeEach(() => {
