@@ -1,5 +1,7 @@
-<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}"/>
-<div class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible?'lui-global-search-mobile--active':''}">
+<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
+<div
+  class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible?'lui-global-search-mobile--active':''}"
+>
   <div class="fd-popover">
     <div
       class="fd-popover__control luigi-search"
@@ -27,14 +29,14 @@
         {#if search.searchFieldCentered}
         <span
           class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
-        >  
+        >
           <button
             aria-label="button-decline"
             class="fd-shellbar__button fd-button"
             on:click="{clearSearchField}"
           >
             {#if clearSearchFieldBtn}
-              <i class="sap-icon--decline"></i>
+            <i class="sap-icon--decline"></i>
             {/if}
             <i class="sap-icon--search"></i>
           </button>
@@ -97,9 +99,10 @@
     </button>
   </div>
 </div>
-{/if}
-{#if isSearchFieldVisible}
-<div class="lui-global-search-cancel-btn {isSearchFieldVisible?'lui-global-search-cancel-btn--active':''}">
+{/if} {#if isSearchFieldVisible}
+<div
+  class="lui-global-search-cancel-btn {isSearchFieldVisible?'lui-global-search-cancel-btn--active':''}"
+>
   <div on:click|stopPropagation="{() => {}}">
     <button
       class="fd-button fd-shellbar__button"
@@ -158,9 +161,15 @@
       inputElement.placeholder = placeHolder;
     }
     getCustomRenderer();
-    globalSearchCtnWidth=GlobalSearchHelper.calculateGlobalSearchCtnWidth();
-    globalSearchCtnWidth= parseInt(globalSearchCtnWidth,10)+"px";
-    console.log('globalSearchCtnWidth ', globalSearchCtnWidth);
+    GlobalSearchHelper.handleVisibilityGlobalSearch();
+    //bind element in var (bind:this)
+    let globalSearchCtn = document.querySelector('.lui-global-search');
+    const resizeObserver = new ResizeObserver(entries => {
+      GlobalSearchHelper.handleVisibilityGlobalSearch();
+      console.log('Size changed');
+    });
+
+    resizeObserver.observe(globalSearchCtn);
   });
 
   beforeUpdate(() => {
@@ -337,7 +346,7 @@
   }
 
   function toggleSearch() {
-    isSearchFieldVisible=!isSearchFieldVisible;
+    isSearchFieldVisible = !isSearchFieldVisible;
   }
 </script>
 <style type="text/scss">
@@ -361,7 +370,6 @@
     :global(.lui-global-search) {
       margin-left: 3rem;
       margin-right: 3rem;
-      
     }
   }
 
@@ -380,109 +388,63 @@
   }
 
   :global(.lui-global-search) {
-      display:flex;
-      justify-content: center;
-    }
+    display: flex;
+    justify-content: center;
+  }
 
-  :global(.lui-global-search-btn--visible){
+  :global(.lui-global-search.lui-global-search-toogle) {
     justify-content: flex-end;
-    .lui-global-search-btn{
-      display:inline-block;
-      background-color:red;
+    .lui-global-search-btn {
+      display: inline-block;
     }
   }
 
-  :global(.lui-global-search-input--hidden){
-    .lui-global-search-input{
-      display:none;
+  :global(.lui-global-search.lui-global-search-toogle) {
+    .lui-global-search-input {
+      display: none;
     }
-    .lui-global-search-input.lui-global-search-mobile--active{
+    .lui-global-search-input.lui-global-search-mobile--active {
       position: absolute;
-      display:block;
+      display: block;
       background-color: #354a5f;
       width: calc(100% - 90px);
       left: 0;
       top: 0;
       z-index: 100000000000000000;
       height: 43px;
-      .fd-shellbar__input-group{
+      .fd-shellbar__input-group {
         margin-top: 0.2rem;
       }
     }
 
-      .lui-global-search-cancel-btn.lui-global-search-cancel-btn--active{
-        position: absolute;
-        right: 0;
-        display:block;
-        display:inline-block;
-        background-color: #354a5f;
-        top: 0;
-        z-index: 999999999999999999;
-        width: 90px;
-        height: 43px;
-        .fd-shellbar__button{
-          margin-top: 0.2rem;
-        }
+    .lui-global-search-cancel-btn.lui-global-search-cancel-btn--active {
+      position: absolute;
+      right: 0;
+      display: block;
+      display: inline-block;
+      background-color: #354a5f;
+      top: 0;
+      z-index: 999999999999999999;
+      width: 90px;
+      height: 43px;
+      .fd-shellbar__button {
+        margin-top: 0.2rem;
       }
-      .lui-global-search-btn{
-        right:0
-      }
+    }
+    .lui-global-search-btn {
+      right: 0;
+    }
   }
 
-  .lui-global-search-btn{
-    display:none;
+  .lui-global-search-btn {
+    display: none;
   }
 
   .lui-global-search-input {
     flex: 0 0 100%;
   }
 
-
-  @media (max-width: 599px) {
-    :global(.lui-global-search) {
-      display:flex;
-      justify-content: flex-end;
-      
-      .lui-global-search-mobile--active{
-        position: absolute;
-        display:block;
-        background-color: #354a5f;
-        width: calc(100% - 90px);
-        left: 0;
-        top: 0;
-        z-index: 100000000000000000;
-        height: 43px;
-        .fd-shellbar__input-group{
-          margin-top: 0.2rem;
-        }
-      }
-      
-
-      .luigi-search {
-        &[aria-hidden='true'] {
-        visibility: hidden;
-        width: 0;
-        }
-      }
-      .lui-global-search-btn{
-        right:0
-      }
-
-      .lui-global-search-cancel-btn{
-        position: absolute;
-        right: 0;
-        display:inline-block;
-        background-color: #354a5f;
-        top: 0;
-        width:90px;
-        z-index: 999999999999999999;
-        .fd-shellbar__button{
-          margin-top: 0.2rem;
-        }
-      }
-    }
-  }
-  :global(.fd-shellbar__group){
+  :global(.fd-shellbar__group) {
     flex-grow: 0;
   }
 </style>

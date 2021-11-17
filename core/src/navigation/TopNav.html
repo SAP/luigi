@@ -24,18 +24,18 @@
   </div>
   {#if globalSearchConfig && globalSearchConfig.searchFieldCentered}
   <div class="lui-global-search">
-    <GlobalSearchCentered globalSearchConfig="{globalSearchConfig}"
-    bind:isSearchFieldVisible
+    <GlobalSearchCentered
+      globalSearchConfig="{globalSearchConfig}"
+      bind:isSearchFieldVisible
       on:toggleSearch
       on:handleSearchNavigation
       bind:searchResult
       bind:displaySearchResult
       bind:displayCustomSearchResult
       bind:inputElem
-      bind:globalSearchContainerWidth
       bind:luigiCustomSearchRenderer__slot
       on:closeSearchResult
-      />
+    />
   </div>
   {/if}
   <div class="fd-shellbar__group fd-shellbar__group--actions">
@@ -444,7 +444,6 @@
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
   const dispatch = createEventDispatcher();
-  export let globalSearchContainerWidth;
   export let authorizationEnabled;
   export let autologinEnabled;
   export let isLoggedIn = false;
@@ -469,7 +468,6 @@
   export let userInfo = {};
   export let urlAuthError;
   export let globalSearchConfig;
-  export let isGlobalSearchMobileView;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;

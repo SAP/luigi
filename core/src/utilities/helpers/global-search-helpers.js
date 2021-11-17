@@ -1,12 +1,15 @@
+/* istanbul ignore file */
 class GlobalSearchHelperClass {
-    constructor() {}
+  constructor() {}
 
-    calculateGlobalSearchCtnWidth(){
-        if(document.querySelector('.lui-global-search')){
-            return document.querySelector('.lui-global-search').offsetWidth;
-        }
-        return null;        
+  handleVisibilityGlobalSearch() {
+    const globalSearchCtn = document.querySelector('.lui-global-search');
+    if (globalSearchCtn.offsetWidth <= 384) {
+      globalSearchCtn.classList.add('lui-global-search-toogle');
+    } else {
+      globalSearchCtn.classList.remove('lui-global-search-toogle');
     }
+  }
 }
 
 export const GlobalSearchHelper = new GlobalSearchHelperClass();
