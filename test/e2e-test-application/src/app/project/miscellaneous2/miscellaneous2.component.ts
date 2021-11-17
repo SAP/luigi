@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { uxManager, addInitListener } from '@luigi-project/client';
+import { uxManager, addInitListener, addContextUpdateListener } from '@luigi-project/client';
 
 @Component({
   selector: 'app-miscellaneous2',
@@ -9,11 +9,19 @@ import { uxManager, addInitListener } from '@luigi-project/client';
 })
 export class Miscellaneous2Component implements OnInit {
   constructor() {}
+  consoleText: string = 'InitListener called';
 
   ngOnInit() {
     addInitListener(context => {
-      console.log(context);
+      this.consoleText = 'InitListener called';
     });
+    addContextUpdateListener(context => {
+      this.consoleText = 'ContextUpdateListener called';
+    });
+  }
+
+  showConsoleText() {
+    return this.consoleText;
   }
 
   openConfirmationModal() {

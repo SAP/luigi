@@ -75,6 +75,11 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: defines either hash-based (`example.com/#/yourpath`) or path-based (`example.com/yourpath`) routing.
 - **default**: the default is `false`, which means path routing is used.
 
+### preserveQueryParams
+- **type**: boolean
+- **description**: defines if query parameters are persisted in the URL after path changes.
+- **default**: the default is `false`, which means query parameters are not persisted in the URL after navigation request.
+
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
 
@@ -181,6 +186,7 @@ Node parameters are all the parameters that can be added to an individual naviga
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
   - **testId** is a string where you can define your own custom `testId` for  E2E tests. If nothing is specified, it is the node's label written as one word in lower case, for example`label`.
+  - **id** if this property is defined all nodes with the same category `id` will be grouped.
 
 ### children
 - **type**: array | function

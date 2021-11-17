@@ -821,4 +821,33 @@ describe('Routing-helpers', () => {
       assert.equal(undefined, expected);
     });
   });
+
+  describe('composeSearchParamsToRoute', () => {
+    let globalLocationRef = global.location;
+    const route = '/home';
+
+    afterEach(() => {
+      global.location = globalLocationRef;
+    });
+
+    it('with location search params', () => {
+      global.location = {
+        search: '?query=params'
+      };
+      const actual = RoutingHelpers.composeSearchParamsToRoute(route);
+      const expected = '/home?query=params';
+
+      assert.equal(actual, expected);
+    });
+
+    it('without location search params', () => {
+      global.location = {
+        search: ''
+      };
+      const actual = RoutingHelpers.composeSearchParamsToRoute(route);
+      const expected = '/home';
+
+      assert.equal(actual, expected);
+    });
+  });
 });
