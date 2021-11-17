@@ -448,6 +448,40 @@
           >
           </app-code-snippet>
         </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="
+              linkManager()
+                .preserveQueryParams(true)
+                .navigate('/projects/pr2')
+            "
+          >
+            navigate to project 2 with query parameters</a
+          >
+          <app-code-snippet
+            data="linkManager().preserveQueryParams(true).navigate('/projects/pr2')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="
+              linkManager()
+                .preserveQueryParams(false)
+                .navigate('/projects/pr2')
+            "
+          >
+            navigate to project 2 without query parameters</a
+          >
+          <app-code-snippet
+            data="linkManager().preserveQueryParams(false).navigate('/projects/pr2')"
+          >
+          </app-code-snippet>
+        </li>
       </ul>
     </div>
   </div>
