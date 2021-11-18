@@ -128,7 +128,6 @@
     KEYCODE_ESC
   } from '../utilities/keycode.js';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
-  let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
   export let displayCustomSearchResult;
@@ -142,6 +141,7 @@
       search.searchProvider.onSearchResultItemSelected(item);
     }
   };
+  let isSearchFieldVisible;
   let searchResults = {};
   let showPopOverCustomSearch = false;
   let search = {};
@@ -340,7 +340,7 @@
   }
 
   function toggleSearch() {
-    if (!isSearchFieldVisible){
+    if (!isSearchFieldVisible) {
       setTimeout(() => {
         setFocusOnGlobalSearchFieldDesktop();
       });
@@ -448,9 +448,9 @@
     flex-grow: 0;
   }
 
-  @media (max-width:599px){
-    :global(.fd-shellbar__logo){
-      display:none;
+  @media (max-width: 599px) {
+    :global(.fd-shellbar__logo) {
+      display: none;
     }
   }
 </style>

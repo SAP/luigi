@@ -732,7 +732,7 @@ describe('Fiddle', () => {
       });
     });
     context('Mobile', () => {
-      it.only('Search on smaller viewport', ()=>{
+      it('Search on smaller viewport', ()=>{
         cy.viewport('iphone-6');
         cy.get('.lui-global-search-btn').should('be.visible');
         cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
