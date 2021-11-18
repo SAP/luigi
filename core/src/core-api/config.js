@@ -282,7 +282,7 @@ class LuigiConfig {
   }
 
   /**
-   * Delete cache. Clear titleResolver cache of nested navigation nodes.
+   * Clear navigation node related caches.
    * @memberof Configuration
    * @example
    * Luigi.clearNavigationCache();

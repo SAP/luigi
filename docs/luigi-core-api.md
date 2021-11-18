@@ -230,7 +230,7 @@ Luigi.reset();
 
 #### clearNavigationCache
 
-Delete cache. Clear titleResolver cache of nested navigation nodes.
+Clear navigation node related caches.
 
 ##### Examples
 
