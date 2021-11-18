@@ -500,10 +500,10 @@ class RoutingClass {
 
   navigateWebComponent(component, navNode) {
     const wc_container = this.removeLastChildFromWCContainer();
-    if (wc_container) {
-      const componentData = component.get();
-      WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
-    }
+    if (!wc_container) return;
+      
+    const componentData = component.get();
+    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
   }
 
   navigateWebComponentCompound(component, navNode) {
