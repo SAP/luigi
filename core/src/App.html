@@ -535,7 +535,7 @@
         localNavPath.push(parent);
         parent = parent.parent;
       }
-      localNavPath = localNavPath.reverse();
+      localNavPath = [...localNavPath].reverse();
     }
 
     let path = params.link;
@@ -564,7 +564,7 @@
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const node = localNavPath
+      const node = [...localNavPath]
         .reverse()
         .find(n => navigationContext === n.navigationContext);
       path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
