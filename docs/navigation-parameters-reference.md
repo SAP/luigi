@@ -837,6 +837,10 @@ The global search is an input field available in the top navigation bar. The sea
 - **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.luigiAfterInit**](lifecycle-hooks.md#luigiafterinit) hook.
 - **since**: 1.5.0
 
+### searchFieldCentered
+- **type**: boolean
+- **description**: The search input field will be rendered in the center of the shellbar.
+- **since**: NEXTRELEASE
 ### searchProvider
 - **type**: Object
 - **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.

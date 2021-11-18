@@ -109,7 +109,7 @@
       aria-haspopup="true"
       aria-expanded="{!isSearchFieldVisible}"
       on:click="{toggleSearch}"
-      data-testid="luigi-search-btn-desktop"
+      data-testid="luigi-search-cancel-btn"
     >
       Cancel
     </button>
@@ -132,13 +132,10 @@
   export let searchResult = [];
   export let displaySearchResult;
   export let displayCustomSearchResult;
-  export let isGlobalSearchMobileView;
-  export let globalSearchContainerWidth;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
   export let globalSearchConfig;
-  export let isMobile;
   const dispatch = createEventDispatcher();
   const searchApiObj = {
     fireItemSelected: item => {
@@ -151,7 +148,6 @@
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
   let clearSearchFieldBtn = false;
-  let globalSearchCtnWidth;
 
   onMount(async () => {
     search = globalSearchConfig;
@@ -162,11 +158,9 @@
     }
     getCustomRenderer();
     GlobalSearchHelper.handleVisibilityGlobalSearch();
-    //bind element in var (bind:this)
-    let globalSearchCtn = document.querySelector('.lui-global-search');
+    const globalSearchCtn = document.querySelector('.lui-global-search');
     const resizeObserver = new ResizeObserver(entries => {
       GlobalSearchHelper.handleVisibilityGlobalSearch();
-      console.log('Size changed');
     });
 
     resizeObserver.observe(globalSearchCtn);
@@ -346,6 +340,11 @@
   }
 
   function toggleSearch() {
+    if (!isSearchFieldVisible){
+      setTimeout(() => {
+        setFocusOnGlobalSearchFieldDesktop();
+      });
+    }
     isSearchFieldVisible = !isSearchFieldVisible;
   }
 </script>
@@ -418,6 +417,7 @@
     }
 
     .lui-global-search-cancel-btn.lui-global-search-cancel-btn--active {
+      text-align: center;
       position: absolute;
       right: 0;
       display: block;
@@ -446,5 +446,11 @@
 
   :global(.fd-shellbar__group) {
     flex-grow: 0;
+  }
+
+  @media (max-width:599px){
+    :global(.fd-shellbar__logo){
+      display:none;
+    }
   }
 </style>

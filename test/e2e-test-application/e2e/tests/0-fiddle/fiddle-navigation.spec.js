@@ -711,4 +711,45 @@ describe('Fiddle', () => {
       });
     });
   });
+  describe('GlobalSearchCentered', ()=>{
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+    });
+    beforeEach(()=>{
+      newConfig.globalSearch={
+        searchFieldCentered: true,
+        searchProvider:{}
+      };
+
+      cy.visitWithFiddleConfig('/home', newConfig);
+    });
+    context('Desktop', () => {
+      it('Search on large viewport', ()=>{
+        cy.get('.lui-global-search-btn').should('not.be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-input').should('be.visible');
+      });
+    });
+    context('Mobile', () => {
+      it.only('Search on smaller viewport', ()=>{
+        cy.viewport('iphone-6');
+        cy.get('.lui-global-search-btn').should('be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-input').should('not.be.visible');
+        
+        cy.get('.lui-global-search-btn').click();
+        
+        cy.get('.lui-global-search-btn').should('not.be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('be.visible');
+        cy.get('.lui-global-search-input').should('be.visible');
+
+        cy.get('.lui-global-search-cancel-btn').click();
+
+        cy.get('.lui-global-search-btn').should('be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-input').should('not.be.visible');
+      });
+    });
+  });
 });
