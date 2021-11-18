@@ -1,5 +1,6 @@
 import { LuigiConfig } from './';
 import { AuthStoreSvc, AuthLayerSvc } from '../services';
+/* istanbul ignore file */
 
 /**
  * Authorization helpers
