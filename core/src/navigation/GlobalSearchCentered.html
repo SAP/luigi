@@ -111,13 +111,13 @@
       on:click="{toggleSearch}"
       data-testid="luigi-search-cancel-btn"
     >
-      Cancel
+      {$getTranslation(search.globalSearchCenteredCancelButton)}
     </button>
   </div>
 </div>
 {/if}
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import { GenericHelpers, GlobalSearchHelper } from '../utilities/helpers';
   import { Routing } from '../services/routing';
@@ -127,6 +127,7 @@
     KEYCODE_ENTER,
     KEYCODE_ESC
   } from '../utilities/keycode.js';
+  import { TOP_NAV_DEFAULTS } from '../utilities/luigi-config-defaults';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
   export let searchResult = [];
   export let displaySearchResult;
@@ -141,6 +142,7 @@
       search.searchProvider.onSearchResultItemSelected(item);
     }
   };
+  let cancelBtn = TOP_NAV_DEFAULTS.globalSearchCenteredCancelButton;
   let isSearchFieldVisible;
   let searchResults = {};
   let showPopOverCustomSearch = false;
@@ -148,9 +150,13 @@
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
   let clearSearchFieldBtn = false;
+  let getTranslation = getContext('getTranslation');
 
   onMount(async () => {
     search = globalSearchConfig;
+    cancelBtn = search.globalSearchCenteredCancelButton
+      ? search.globalSearchCenteredCancelButton
+      : cancelBtn;
     let inputElement = inputElem;
     const placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {

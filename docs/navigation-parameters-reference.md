@@ -847,6 +847,11 @@ The global search is an input field available in the top navigation bar. The sea
 - **type**: boolean
 - **description**: The search input field will be rendered in the center of the shellbar.
 - **since**: NEXTRELEASE
+
+### globalSearchCenteredCancelButton
+- **type**: string
+- **description**: defines the label of the cancel button. It will be displayed if you want to hide the search field on a smaller viewport.
+- **since**: NEXTRELEASE
 ### searchProvider
 - **type**: Object
 - **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.
