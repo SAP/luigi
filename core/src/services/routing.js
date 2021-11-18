@@ -2,7 +2,7 @@
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
 import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
+import { LuigiConfig, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
@@ -57,7 +57,9 @@ class RoutingClass {
       return;
     }
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    const preserveQueryParams = LuigiConfig.getConfigValue('routing.preserveQueryParams');
     let url = new URL(location.href);
+    route = preserveQueryParams ? RoutingHelpers.composeSearchParamsToRoute(route) : route;
     hashRouting ? (url.hash = route) : (url.pathname = route);
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
