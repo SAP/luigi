@@ -12,9 +12,7 @@ export const projectDetailNavStructure = projectId => [
       renderer: {
         use: 'grid',
         config: {
-          columns: '1fr 1fr 1fr',
-          /* rows: '150px', */
-          /* gap: '30px', */
+          columns: '1fr 1fr',
           layouts: [
             {
               minWidth: 0,
@@ -49,6 +47,62 @@ export const projectDetailNavStructure = projectId => [
             instant: true
           },
           visibleForFeatureToggles: ['ft1']
+        }
+      ]
+    }
+  },
+  {
+    pathSegment: 'wc_grid_compound',
+    label: 'Grid Compound',
+    hideFromNav: true,
+    category: {
+      label: 'Compound',
+      icon: 'attachment-html',
+      collapsible: true
+    },
+    compound: {
+      renderer: {
+        use: 'grid',
+        config: {
+          columns: '1fr 1fr',
+          layouts: [
+            {
+              minWidth: 0,
+              maxWidth: 600,
+              columns: '1fr',
+              gap: 0
+            },
+            {
+              minWidth: 600,
+              maxWidth: 1024,
+              columns: '1fr 1fr',
+              gap: '30px'
+            }
+          ]
+        }
+      },
+      children: [
+        {
+          id: 'btn',
+          viewUrl: '/assets/wc_grid_btn.js',
+          context: {
+            text: 'Start'
+          }
+        },
+        {
+          id: 'timer',
+          viewUrl: '/assets/wc_grid_timer.js',
+          context: {
+            s: 0
+          },
+          eventListeners: [
+            {
+              source: 'btn',
+              name: 'sendBtn',
+              action: 'update',
+              dataConverter: data => data
+            }
+          ]
         }
       ]
     }
@@ -146,9 +200,9 @@ export const projectDetailNavStructure = projectId => [
         label: 'Prevent navigation',
         icon: 'stop',
         viewUrl: '/sampleapp.html#/on-node-activation/not-navigated',
-        onNodeActivation: node => {
+        onNodeActivation: () => {
           Luigi.showAlert({
-            text: `Showing an alert instead of navigating.`,
+            text: 'Showing an alert instead of navigating.',
             type: 'info',
             closeAfter: 3000
           });
@@ -161,7 +215,7 @@ export const projectDetailNavStructure = projectId => [
         icon: 'question-mark',
         viewUrl: '/sampleapp.html#/on-node-activation/conditionally-navigated',
         openNodeInModal: true,
-        onNodeActivation: node => {
+        onNodeActivation: () => {
           return Luigi.showConfirmationModal({}).then(() => true, () => false);
         }
       }

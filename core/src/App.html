@@ -297,6 +297,7 @@
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
+    config.iframe.luigi._lastUpdatedMessage = message;
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
   const sendAuthDataToClient = authData => {
@@ -337,7 +338,9 @@
     let path = buildPath(data.params, srcNode, srcPathParams);
 
     path = GenericHelpers.addLeadingSlash(path);
-
+    path = data.params.preserveQueryParams
+      ? RoutingHelpers.composeSearchParamsToRoute(path)
+      : path;
     addPreserveView(data, config);
 
     // Navigate to the raw path. Any errors/alerts are handled later.
