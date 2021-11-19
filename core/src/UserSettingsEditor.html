@@ -16,6 +16,7 @@
   let settingsSchema;
   let displayOptions;
   let getTranslation = getContext('getTranslation');
+  let selectedLanguageLabel;
 
   export function updateSettingsObject() {
     dispatch('updateSettingsObject', { storedUserSettingData });
@@ -46,23 +47,27 @@
   }
 
   function toggleOptions(event, editable) {
+    let self = closest(event.target, '.fd-popover__control', 20);
+    let currentState = self.getAttribute('aria-expanded') === 'true';
+
     if (editable || editable === undefined) {
-      const self = closest(event.target, '.fd-popover__control', 20);
       closeAllCombos(self);
-      const currentState = self.getAttribute('aria-expanded') === 'true';
       setExpandedState(self, !currentState);
     }
   }
 
   function setExpandedState(self, value) {
     const indicatorBtn = self.querySelector('.lui-activate-language-dropdown');
-    const optionsPopOver = self.parentNode.querySelector('.fd-popover__body');
+    const optionsPopover = self.parentNode.querySelector('.fd-popover__body');
+    const optionsSelectControl = self.parentNode.querySelector('.fd-select__control');
     self.setAttribute('aria-expanded', value);
-    optionsPopOver.setAttribute('aria-hidden', !value);
+    optionsPopover.setAttribute('aria-hidden', !value);
+    optionsSelectControl.setAttribute('aria-expanded', value);
     indicatorBtn.setAttribute('aria-expanded', value);
   }
 
-  function updateComboBox(key, option) {
+  function updateComboBox(key, option, optionIndex) {
+    selectedLanguageLabel = optionIndex;
     storedUserSettingData[userSettingGroup[0]][key] = option.value || option;
   }
 
@@ -81,19 +86,40 @@
 
   function getLabelForValue(optionValue, options) {
     let label;
+    let selectedLanguageLabelString;
     if (Array.isArray(options)) {
       for (let i = 0; i < options.length; i++) {
         if (GenericHelpers.isObject(options[i])) {
           if (options[i].value && options[i].value === optionValue) {
             label = options[i].label;
+            selectedLanguageLabel = i;
             break;
           }
         } else {
           label = optionValue;
+          selectedLanguageLabel = options.indexOf(optionValue);
           break;
         }
       }
       return $getTranslation(label);
+    }
+  }
+
+  function getValueOfSelectedLanguage(optionValue, options) {
+    let value;
+    if (Array.isArray(options)) {
+      for (let i = 0; i < options.length; i++) {
+        if (GenericHelpers.isObject(options[i])) {
+          if (options[i].value === optionValue) {
+            value = options[i].value;
+            break;
+          }
+        } else {
+          value = false;
+          break;
+        }
+      }
+      return $getTranslation(value);
     }
   }
 
@@ -110,7 +136,7 @@
   }
 
   export function handleKeyUp({ keyCode }) {
-    if (keyCode === KEYCODE_ENTER || keyCode === KEYCODE_SPACE) {
+    if (keyCode === KEYCODE_SPACE) {
       document.querySelector('.lui-anchor-node').click();
     }
   }
@@ -123,9 +149,9 @@
     }
   }
 
-  /*to display a language on forst load of the User Settings dialog*/
-
+  /*to display a language on first load of the User Settings dialog*/
   getLabelForValue();
+  
 </script>
 
 <style>
@@ -156,6 +182,11 @@
       float: left;
     }
   }
+
+  /*Override of FDF Styles margin v0.20.0 due to the row width*/
+  .fd-row .fd-col .fd-select__control.lui-anchor-node {
+    margin: 0;
+  }
 </style>
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]} {#if
@@ -171,7 +202,7 @@
           {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
           schemaItem.isEditable === undefined}
           <input
-            class="fd-input"
+            class="fd-input fd-input--compact"
             type="text"
             aria-label="Image label"
             placeholder="{$getTranslation(schemaItem.placeholder)}"
@@ -196,8 +227,8 @@
                 aria-haspopup="true"
                 on:click|stopPropagation="{()=>toggleOptions(event,schemaItem.isEditable)}"
               >
-                <div class="fd-select">
-                  <div
+                <div class="fd-select fd-select--compact">
+                  <button
                     tabindex="0"
                     aria-expanded="false"
                     aria-haspopup="listbox"
@@ -214,11 +245,10 @@
                       schemaItem.options)}
                     </span>
                     <span
-                      class="fd-button fd-button--transparent fd-select__button lui-activate-language-dropdown"
-                    >
+                      class="fd-button fd-button--transparent fd-select__button lui-activate-language-dropdown">
                       <i class="sap-icon--slim-arrow-down"></i>
                     </span>
-                  </div>
+                  </button>
                 </div>
               </div>
               <div
@@ -226,26 +256,21 @@
                 aria-hidden="true"
               >
                 {#if Array.isArray(schemaItem.options)}
-                <div class="fd-popover__wrapper">
                   <ul class="fd-list fd-list--dropdown" role="listbox">
                     {#each schemaItem.options as option, optionIndex}
                     <li
                       role="option"
                       tabindex="0"
                       class="fd-list__item"
+                      class:is-selected={selectedLanguageLabel === optionIndex}
                       data-testid="lui-us-option{i}_{optionIndex}"
-                      on:click="{() => updateComboBox(key,option)}"
+                      on:click="{() => updateComboBox(key,option,optionIndex)}"
                       on:keyup="{(event) => handleKeyListItem(event,[optionIndex])}"
                     >
-                      <span class="fd-list__title">
-                        <span class="fd-list__bold">
-                          {getLabel(option)}
-                        </span>
-                      </span>
+                      <span class="fd-list__title">{getLabel(option)}</span>
                     </li>
                     {/each}
                   </ul>
-                </div>
                 {/if}
               </div>
             </div>

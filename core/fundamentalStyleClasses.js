@@ -21,7 +21,6 @@ module.exports = [
   './node_modules/fundamental-styles/dist/form-item.css',
   './node_modules/fundamental-styles/dist/form-label.css',
   //'./node_modules/fundamental-styles/dist/form-message.css',
-  //'./node_modules/fundamental-styles/dist/form-select.css',
   './node_modules/fundamental-styles/dist/form-layout-grid.css',
   //'./node_modules/fundamental-styles/dist/inline-help.css',
   './node_modules/fundamental-styles/dist/input.css',
