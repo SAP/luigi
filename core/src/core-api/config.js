@@ -1,6 +1,7 @@
 import { AsyncHelpers, EventListenerHelpers, GenericHelpers, StateHelpers } from '../utilities/helpers';
 import { LuigiAuth, LuigiElements } from '.';
 import { AuthLayerSvc, LifecycleHooks } from '../services';
+import { NodeDataManagementStorage } from '../services/node-data-management.js';
 /**
  * @name Configuration
  */
@@ -278,6 +279,32 @@ class LuigiConfig {
     const cfg = this.getConfig();
     this.unload();
     this.setConfig(cfg);
+  }
+
+  /**
+   * Clear navigation node related caches.
+   * @memberof Configuration
+   * @example
+   * Luigi.clearNavigationCache();
+   * @since NEXT_RELEASE
+   */
+  clearNavigationCache() {
+    NodeDataManagementStorage.deleteCache();
+
+    const clearTitleResolverCache = nodes => {
+      if (nodes && nodes.forEach) {
+        nodes.forEach(node => {
+          if (node.titleResolver && node.titleResolver._cache) {
+            node.titleResolver._cache = undefined;
+          }
+          if (node.children) {
+            clearTitleResolverCache(node.children);
+          }
+        });
+      }
+    };
+
+    clearTitleResolverCache(this.getConfig().navigation.nodes);
   }
 }
 
