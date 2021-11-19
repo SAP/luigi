@@ -39,10 +39,7 @@ describe('Config', () => {
 
       // then
       assert.equal(LuigiConfig.getConfigBooleanValue('whatever'), false);
-      assert.equal(
-        LuigiConfig.getConfigBooleanValue('whateverparent.whateverchild'),
-        false
-      );
+      assert.equal(LuigiConfig.getConfigBooleanValue('whateverparent.whateverchild'), false);
     });
   });
 
@@ -51,24 +48,13 @@ describe('Config', () => {
       //given
       LuigiConfig.config = {
         truthyFn: (param1, param2) => 'value' + param1 + param2,
-        truthyFnAsync: (param1, param2) =>
-          Promise.resolve('value' + param1 + param2)
+        truthyFnAsync: (param1, param2) => Promise.resolve('value' + param1 + param2)
       };
 
-      const resultTruthyFn = await LuigiConfig.executeConfigFnAsync(
-        'truthyFn',
-        false,
-        'foo',
-        'bar'
-      );
+      const resultTruthyFn = await LuigiConfig.executeConfigFnAsync('truthyFn', false, 'foo', 'bar');
       assert.equal(resultTruthyFn, 'valuefoobar');
 
-      const resultTruthyFnAsync = await LuigiConfig.executeConfigFnAsync(
-        'truthyFnAsync',
-        false,
-        'foo',
-        'bar'
-      );
+      const resultTruthyFnAsync = await LuigiConfig.executeConfigFnAsync('truthyFnAsync', false, 'foo', 'bar');
       assert.equal(resultTruthyFnAsync, 'valuefoobar');
     });
 
@@ -76,17 +62,14 @@ describe('Config', () => {
       //given
       LuigiConfig.config = {};
 
-      const resultUndefined = await LuigiConfig.executeConfigFnAsync(
-        'not.existing.value'
-      );
+      const resultUndefined = await LuigiConfig.executeConfigFnAsync('not.existing.value');
       assert.isUndefined(resultUndefined, 'async fn result is not undefined');
     });
 
     it('returns undefined on error/rejected promise', async () => {
       //given
       LuigiConfig.config = {
-        rejectFnAsync: (param1, param2) =>
-          Promise.reject(new Error('rejected')),
+        rejectFnAsync: (param1, param2) => Promise.reject(new Error('rejected')),
         errFnAsync: (param1, param2) => {
           throw new Error({
             name: 'someError',
@@ -95,24 +78,18 @@ describe('Config', () => {
         }
       };
 
-      const resultRejectFnAsync = await LuigiConfig.executeConfigFnAsync(
-        'rejectFnAsync'
-      );
+      const resultRejectFnAsync = await LuigiConfig.executeConfigFnAsync('rejectFnAsync');
       assert.isUndefined(resultRejectFnAsync, 'rejection did not return');
 
-      const resultErrFnAsync = await LuigiConfig.executeConfigFnAsync(
-        'errFnAsync'
-      );
+      const resultErrFnAsync = await LuigiConfig.executeConfigFnAsync('errFnAsync');
       assert.isUndefined(resultErrFnAsync, 'error did not return');
     });
 
     it('throws an error if throwError flag is set', async () => {
-      sinon
-        .stub(AsyncHelpers, 'applyFunctionPromisified')
-        .returns(Promise.reject(new Error('rejected')));
+      sinon.stub(AsyncHelpers, 'applyFunctionPromisified').returns(Promise.reject(new Error('rejected')));
       //given
       LuigiConfig.config = {
-        rejectFnAsync: (param1, param2) => { }
+        rejectFnAsync: (param1, param2) => {}
       };
 
       // second parameter throws an error and we want it to throw an error on failure
@@ -177,6 +154,29 @@ describe('Config', () => {
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
       await LuigiConfig.readUserSettings();
       sinon.assert.calledOnce(console.log);
+    });
+  });
+
+  describe('clearNavigationCache', () => {
+    it('should clean navigation titleResolver cache', () => {
+      LuigiConfig.config = {
+        navigation: {
+          nodes: {
+            titleResolver: {
+              url: 'http://localhost',
+              _cache: {
+                key: 'cacheKey',
+                value: 'cacheValue'
+              }
+            }
+          }
+        }
+      };
+      LuigiConfig.clearNavigationCache();
+
+      const actual = LuigiConfig.getConfigValue('navigation.titleResolver._cache');
+      const expected = undefined;
+      assert.equal(actual, expected);
     });
   });
 });
