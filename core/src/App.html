@@ -297,6 +297,7 @@
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData()
     };
+    config.iframe.luigi._lastUpdatedMessage = message;
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
   const sendAuthDataToClient = authData => {
@@ -534,7 +535,7 @@
         localNavPath.push(parent);
         parent = parent.parent;
       }
-      localNavPath = localNavPath.reverse();
+      localNavPath = [...localNavPath].reverse();
     }
 
     let path = params.link;
@@ -563,7 +564,7 @@
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const node = localNavPath
+      const node = [...localNavPath]
         .reverse()
         .find(n => navigationContext === n.navigationContext);
       path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
