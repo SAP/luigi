@@ -97,3 +97,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
   ]
 }
 ```
+
+If your application does not use webpack or you installed Luigi without a framework, you can use an alternative way of copying the `silent-callback.html` file. You can use any copy plugin to copy the file and then modify the `package.json` script to copy the file when building. One package that could be helpful is [copyfiles](https://www.npmjs.com/package/copyfiles). Below is an example:
+
+```javascript
+"buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
+"build": "npm run buildConfig && npm run copyCallbackOIdc",
+"copyCallbackOIdc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html public/assets/auth-oidc"
+```
+
+Running `npm run build` should then suffice to bundle the config and also copy the callback file.
