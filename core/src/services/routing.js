@@ -501,22 +501,21 @@ class RoutingClass {
   navigateWebComponent(component, navNode) {
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
-      
+
     const componentData = component.get();
     WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
   }
 
   navigateWebComponentCompound(component, navNode) {
     const wc_container = this.removeLastChildFromWCContainer();
-    if (wc_container) {
-      const componentData = component.get();
-      if (navNode.compound && navNode.compound.children) {
-        navNode.compound.children = navNode.compound.children.filter(c =>
-          NavigationHelpers.checkVisibleForFeatureToggles(c)
-        );
-      }
-      WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    if (!wc_container) return;
+
+    const componentData = component.get();
+    const { compound } = navNode;
+    if (compound && compound.children) {
+      compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
   }
 
   removeLastChildFromWCContainer() {
