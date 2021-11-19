@@ -28,6 +28,7 @@ class WebComponentSvcClass {
 
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
 
+      wc._luigi_node = wcItemPlaceholder._luigi_node;
       wc_container.replaceChild(wc, wcItemPlaceholder);
     }
   }
@@ -177,6 +178,7 @@ class WebComponentSvcClass {
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
+    wcItemPlaceholder._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
