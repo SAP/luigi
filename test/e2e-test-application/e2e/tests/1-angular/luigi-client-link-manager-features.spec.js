@@ -541,6 +541,94 @@ describe('Luigi client linkManager', () => {
     });
   });
 
+  describe('Split View', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        cy.goToLinkManagerMethods($iframeBody);
+        cy.expectPathToBe('/projects/pr2');
+        cy.get('.lui-split-view').should('not.exist');
+      });
+    });
+
+    it('Open Split View component with default settings', () => {
+      cy.wrap($iframeBody)
+        .contains('open view in split view with params')
+        .click();
+
+      cy.get('.lui-split-view').should('exist');
+      cy.expectPathToBe('/projects/pr2');
+    });
+
+    it('Check main iframe height after open Split View component with default settings', () => {
+      cy.window().then(win => {
+        cy.get('.fd-page.iframeContainer').then($iframe => {
+          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height);
+
+          cy.get('.iframeContainer')
+            .invoke('height')
+            .should('eq', iframeHeight);
+
+          cy.wrap($iframeBody)
+            .contains('open view in split view with params')
+            .click();
+
+          cy.wait(500);
+
+          cy.get('.splitViewContainer').then($splitViewContainer => {
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
+
+            cy.get('.splitViewContainer')
+              .invoke('height')
+              .should('eq', splitViewHeight);
+
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+              cy.log('Positive');
+            } else {
+              cy.error('Negative');
+            }
+            cy.expectPathToBe('/projects/pr2');
+          });
+        });
+      });
+    });
+
+    it('Check main iframe height after open and close Split View component with default settings', () => {
+      cy.window().then(win => {
+        cy.get('.fd-page.iframeContainer').then($iframe => {
+          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height);
+
+          cy.get('.iframeContainer')
+            .invoke('height')
+            .should('eq', iframeHeight);
+
+          cy.wrap($iframeBody)
+            .contains('open view in split view with params')
+            .click();
+
+          cy.wait(500);
+
+          cy.get('.splitViewContainer').then($splitViewContainer => {
+            cy.get('.lui-collapse-btn').click();
+
+            cy.wait(500);
+
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
+
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+              cy.log('Positive');
+            } else {
+              cy.error('Negative');
+            }
+            cy.expectPathToBe('/projects/pr2');
+          });
+        });
+      });
+    });
+  });
+
   describe('Webcomponent visibleForFeatureToggles test', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr1/wc_grid');
