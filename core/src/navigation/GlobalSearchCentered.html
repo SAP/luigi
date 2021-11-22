@@ -111,7 +111,7 @@
       on:click="{toggleSearch}"
       data-testid="luigi-search-cancel-btn"
     >
-      {$getTranslation(search.globalSearchCenteredCancelButton)}
+      {$getTranslation(cancelBtn)}
     </button>
   </div>
 </div>
@@ -154,6 +154,7 @@
 
   onMount(async () => {
     search = globalSearchConfig;
+    debugger;
     cancelBtn = search.globalSearchCenteredCancelButton
       ? search.globalSearchCenteredCancelButton
       : cancelBtn;
@@ -255,6 +256,7 @@
 
   function clearSearchField() {
     document.querySelector('.luigi-search__input').value = '';
+    closeSearchResult();
     clearSearchFieldBtn = false;
   }
 
