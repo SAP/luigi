@@ -86,7 +86,6 @@
 
   function getLabelForValue(optionValue, options) {
     let label;
-    let selectedLanguageLabelString;
     if (Array.isArray(options)) {
       for (let i = 0; i < options.length; i++) {
         if (GenericHelpers.isObject(options[i])) {
@@ -102,24 +101,6 @@
         }
       }
       return $getTranslation(label);
-    }
-  }
-
-  function getValueOfSelectedLanguage(optionValue, options) {
-    let value;
-    if (Array.isArray(options)) {
-      for (let i = 0; i < options.length; i++) {
-        if (GenericHelpers.isObject(options[i])) {
-          if (options[i].value === optionValue) {
-            value = options[i].value;
-            break;
-          }
-        } else {
-          value = false;
-          break;
-        }
-      }
-      return $getTranslation(value);
     }
   }
 
