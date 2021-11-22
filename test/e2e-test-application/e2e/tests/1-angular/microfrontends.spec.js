@@ -13,7 +13,7 @@ describe('Modal Microfrontend', () => {
       cy.goToLinkManagerMethods($iframeBody);
     });
 
-    it(`doesn't change URL when opened`, () => {
+    it("doesn't change URL when opened", () => {
       cy.expectPathToBe('/projects/pr2');
 
       cy.wrap($iframeBody)
@@ -23,7 +23,7 @@ describe('Modal Microfrontend', () => {
       cy.expectPathToBe('/projects/pr2');
     });
 
-    it(`can be closed by Close Button`, () => {
+    it('can be closed by Close Button', () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
@@ -41,7 +41,7 @@ describe('Modal Microfrontend', () => {
         .should('not.be.visible');
     });
 
-    it(`can be closed by the Luigi client`, () => {
+    it('can be closed by the Luigi client', () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
@@ -62,7 +62,7 @@ describe('Modal Microfrontend', () => {
       });
     });
 
-    it(`sets proper URL inside iframe`, () => {
+    it('sets proper URL inside iframe', () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
@@ -74,7 +74,7 @@ describe('Modal Microfrontend', () => {
       });
     });
 
-    it(`has the size set directly`, () => {
+    it('has the size set directly', () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
@@ -85,7 +85,7 @@ describe('Modal Microfrontend', () => {
       });
     });
 
-    it(`go back closes the modal`, () => {
+    it('go back closes the modal', () => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
@@ -209,11 +209,11 @@ describe('iframeCreationInterceptor test', () => {
     });
   });
 
-  it(`main iframe intercepted`, () => {
+  it('main iframe intercepted', () => {
     cy.get('iframe').should('have.attr', 'style', 'border: 3px dashed green;');
   });
 
-  it(`split-view iframe intercepted`, () => {
+  it('split-view iframe intercepted', () => {
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('open view in split view')
@@ -222,12 +222,67 @@ describe('iframeCreationInterceptor test', () => {
     });
   });
 
-  it(`modal iframe intercepted`, () => {
+  it('modal iframe intercepted', () => {
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
         .click();
       cy.get('[data-testid=modal-mf] iframe').should('have.attr', 'style', 'border: 3px dashed blue;');
     });
+  });
+});
+
+describe('Context Update Listener test', () => {
+  beforeEach(() => {
+    cy.visitLoggedIn('/projects/pr1/miscellaneous2');
+  });
+
+  it('Context in content Area', () => {
+    cy.window().then(win => {
+      cy.wait(2500);
+
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('#console')
+          .should('have.text', 'InitListener called');
+
+        win.Luigi.configChanged();
+        cy.wait(500);
+
+        cy.wrap($iframeBody)
+          .find('#console')
+          .should('have.text', 'ContextUpdateListener called');
+      });
+    });
+  });
+});
+
+describe('Context Update Listener test', () => {
+  beforeEach(() => {
+    cy.visitLoggedIn('/');
+    cy.visitLoggedIn('/projects/pr1');
+    cy.get('a[title="Miscellaneous2"]').click();
+  });
+
+  it('Context in modal', () => {
+    cy.wait(2500);
+
+    cy.get('[data-testid=modal-mf] iframe')
+      .eq(0)
+      .iframe()
+      .then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('#console')
+          .should('have.text', 'InitListener called');
+
+        cy.window().then(win => {
+          win.Luigi.configChanged();
+          cy.wait(500);
+
+          cy.wrap($iframeBody)
+            .find('#console')
+            .should('have.text', 'ContextUpdateListener called');
+        });
+      });
   });
 });

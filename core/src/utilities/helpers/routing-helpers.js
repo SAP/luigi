@@ -142,6 +142,20 @@ class RoutingHelpersClass {
     return location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
   }
 
+  /**
+    * Append search query parameters to the route
+    @param route string  absolute path of the new route
+    @returns resulting route with or without appended params, for example /someroute?query=test
+  */
+  composeSearchParamsToRoute(route) {
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    if (hashRoutingActive) {
+      const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
+      return queryParamIndex !== -1 ? route + location.hash.slice(queryParamIndex) : route;
+    }
+    return location.search ? route + location.search : route;
+  }
+
   getModalPathFromPath() {
     const path = this.getQueryParam(this.getModalViewParamName());
     return path && decodeURIComponent(path);
