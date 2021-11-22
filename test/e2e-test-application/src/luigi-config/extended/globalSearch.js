@@ -2,7 +2,7 @@ class GlobalSearch {
   constructor() {
     this.searchResult = [];
   }
-  searchFieldCentered = true;
+  // searchFieldCentered = true;
   searchProvider = {
     // onInput: () => {},
     // onEnter: () => {},
