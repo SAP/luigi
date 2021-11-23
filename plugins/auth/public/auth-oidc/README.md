@@ -63,13 +63,31 @@ Luigi.setConfig({
 
 If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation,
 which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`.
-You must install `oidc-client` in your project as a dev dependency:
+
+Next, you must install `oidc-client` in your project as a dev dependency:
 
 ```javascript
 npm i -save-dev oidc-client
 ```
 
-Then, you need to import the plugin files and `oidc-client` library in your project using webpack:
+Then, you need to copy certain auxiliary plugin files and the callback file, as they are needed for the initial setup. 
+
+Respectively from `oidc-client` library you need:
+- `oidc-client.min.js` which normally resides in `node_modules/oidc-client/dist`
+
+and from our library `@luigi-project/plugin-auth-oidc` you need:
+- `plugin.js`
+- `silent-callback.html`
+- `plugin-ie11.js` (for IE11 only)
+which all reside under `node_modules/@luigi-project/plugin-auth-oidc/plugin.js`.
+
+The above mentioned files should be copied to `assets/auth-oidc` as the default location.
+
+Below we give some alternatives on how to easily copy these files in your project. However, you may choose your own way of copying these files depending on your environment.
+
+For applications involving a webpack configuration, one way to copy files is using packages such as [copy-webpack-plugin](https://www.npmjs.com/package/copy-webpack-plugin) and then including the following in your webpack configuration file:
+
+
 
 ```javascript
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -103,7 +121,7 @@ If your application does not use webpack or you installed Luigi without a framew
 ```javascript
 "buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
 "build": "npm run buildConfig && npm run copyCallbackOIdc",
-"copyCallbackOIdc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html public/assets/auth-oidc"
+"copyCallbackOidc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html node_modules/@luigi-project/plugin-auth-oidc/plugin.js node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js node_modules/oidc-client/dist/oidc-client.min.js public/assets/auth-oidc"
 ```
 
 Running `npm run build` should then suffice to bundle the config and also copy the callback file.
