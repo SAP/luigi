@@ -758,7 +758,7 @@ describe('Fiddle', () => {
                   {
                     pathSegment: ':someid',
                     navHeader: {
-                      label: 'test',
+                      label: ':someid',
                       icon: 'sys-help'
                     },
                     children: [
