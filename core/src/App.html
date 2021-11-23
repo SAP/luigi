@@ -1060,6 +1060,7 @@
   const isResizeMF = () => {
     return (
       window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
+      mfDrawer.displayed &&
       mfDrawer.settings &&
       !mfDrawer.settings.overlap
     );
@@ -1067,14 +1068,16 @@
 
   const resizeMicrofrontendIframe = () => {
     if (!isResizeMF()) return;
-
     const drawer = document.querySelector('.iframeModalCtn._drawer');
-    if (drawer) {
-      let { width } = getComputedStyle(drawer);
-      IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
-        'style',
-        `width: calc(100% - ${width})`
-      );
+    const currentMfIframe = IframeHelpers.getCurrentMicrofrontendIframe();
+    if (drawer && currentMfIframe) {
+      //reset computed width
+      currentMfIframe.removeAttribute('style');
+      document.querySelector('div.iframeContainer').removeAttribute('style');
+
+      const { width } = getComputedStyle(drawer);
+      const clientWidth = currentMfIframe.clientWidth;
+      currentMfIframe.setAttribute('style', `width: calc(${clientWidth}px - ${width})`);
     }
   };
 
