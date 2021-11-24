@@ -47,7 +47,7 @@ class UserSettings {
           type: 'enum',
           label: 'Language and Region',
           placeholder: 'Language and Region',
-          options: [{ value: 'de', label: 'German' }, { value: 'en', label: 'English' }, 'Spanish', 'French'],
+          options: [{ value: 'de', label: 'Deutsch (de)' }, { value: 'en', label: 'English (en)' }, 'Français', '简体中文'],
           description: 'After you save your settings, the browser will refresh for the new language to take effect.'
         },
         date: { type: 'string', label: 'Date Format', placeholder: 'DD-MM-YYYY' },
