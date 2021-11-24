@@ -73,7 +73,6 @@ export class linkManager extends LuigiClientBase {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }
-   
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
