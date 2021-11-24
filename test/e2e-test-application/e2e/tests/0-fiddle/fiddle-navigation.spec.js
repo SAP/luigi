@@ -801,15 +801,15 @@ describe('Fiddle', () => {
       cy.visitWithFiddleConfig('/home', newConfig);
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
-      // const root = container.children().prevObject[0].shadowRoot;
-      //   const wcContent = root.querySelector('p').innerText;
-      cy.get('.lui-breadcrumb-container').then(container => {
-        const ui5breadcrumbs = container[0].children[0].shadowRoot;
-        const ui5label = ui5breadcrumbs.querySelector('.ui5-breadcrumbs-current-location ui5-label').shadowRoot;
-        expect(ui5breadcrumbs.querySelector('.ui5-breadcrumbs-current-location ui5-label').innerText).to.equal(
-          'static'
-        );
-      });
+      // Either this
+      // cy.get('.lui-breadcrumb-container').then(container => {
+
+      //   const ui5breadcrumbs = container[0].children[0].shadowRoot;
+      //   expect(ui5breadcrumbs.querySelector('.ui5-breadcrumbs-current-location ui5-label').innerText).to.equal(
+      //     'static'
+      //   );
+      // });
+      // or this
       // cy.get('ui5-breadcrumbs')
       //   .shadow()
       //   .find('.ui5-breadcrumbs-current-location')
