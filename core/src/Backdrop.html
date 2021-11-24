@@ -53,19 +53,34 @@
     if (!backdropDisabled) {
       setBackdropClass();
       EventListenerHelpers.addEventListener('message', e => {
-        if (!IframeHelpers.getValidMessageSource(e)) return;
+        const srcIframe = IframeHelpers.getValidMessageSource(e);
+        if (!srcIframe) return;
         if (disable !== true) {
           if ('luigi.add-backdrop' === e.data.msg) {
-            if (isValidForArea(e)) {
-              backdropActive = true;
-            } else {
-              backdropActive = false;
-            }
+            backdropActive = isValidForArea(e);
             dispatch('stateChanged', { backdropActive: true });
+
+            document.querySelectorAll('*').forEach(el => {
+              const oldTab = el.getAttribute('tabindex');
+              el.setAttribute('oldTab', el.getAttribute('tabindex'));
+              if (el !== srcIframe) {
+                el.setAttribute('tabindex', '-1');
+              }
+            });
           }
           if ('luigi.remove-backdrop' === e.data.msg) {
             backdropActive = false;
             dispatch('stateChanged', { backdropActive: false });
+
+            document.querySelectorAll('*').forEach(el => {
+              const restoreVal = el.getAttribute('oldTab');
+              if (restoreVal) {
+                el.setAttribute('tabindex', restoreVal);
+                el.removeAttribute('oldTab');
+              } else {
+                el.removeAttribute('tabindex');
+              }
+            });
           }
         }
       });
