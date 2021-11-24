@@ -801,10 +801,19 @@ describe('Fiddle', () => {
       cy.visitWithFiddleConfig('/home', newConfig);
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
-      cy.get('ui5-breadcrumbs')
-        .shadow()
-        .find('.ui5-breadcrumbs-current-location')
-        .should('be.visible');
+      // const root = container.children().prevObject[0].shadowRoot;
+      //   const wcContent = root.querySelector('p').innerText;
+      cy.get('.lui-breadcrumb-container').then(container => {
+        const ui5breadcrumbs = container[0].children[0].shadowRoot;
+        const ui5label = ui5breadcrumbs.querySelector('.ui5-breadcrumbs-current-location ui5-label').shadowRoot;
+        expect(ui5breadcrumbs.querySelector('.ui5-breadcrumbs-current-location ui5-label').innerText).to.equal(
+          'static'
+        );
+      });
+      // cy.get('ui5-breadcrumbs')
+      //   .shadow()
+      //   .find('.ui5-breadcrumbs-current-location')
+      //   .should('be.visible');
       // cy.get('ui5-breadcrumbs')
       //   .shadow()
       //   .find('ui5-label')
@@ -820,31 +829,31 @@ describe('Fiddle', () => {
       //     expect(e.get()[0].host.innerText).to.equal('Home');
       //   });
     });
-    it('Breadcrumbs with dynamic nodes', () => {
-      cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-      cy.wait(1000);
-      cy.get('.lui-breadcrumb-container').should('be.visible');
-      cy.get('ui5-breadcrumbs')
-        .shadow()
-        .find('.ui5-breadcrumbs-current-location')
-        .should('be.visible');
-      cy.get('ui5-breadcrumbs')
-        .shadow()
-        .find('.ui5-breadcrumbs-root ui5-label')
-        .shadow()
-        .should(e => {
-          expect(e.get()[0].host.innerText).to.equal('1');
-        });
-      cy.get('ui5-breadcrumbs')
-        .shadow()
-        .find('.ui5-breadcrumbs-root ui5-link')
-        .shadow()
-        .should(e => {
-          expect(e.get()[1].host.innerText).to.equal('Home');
-          expect(e.get()[2].host.innerText).to.equal('dyn');
-          expect(e.get()[3].host.innerText).to.equal('dynValue');
-        });
-    });
+    // it('Breadcrumbs with dynamic nodes', () => {
+    //   cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+    //   cy.wait(1000);
+    //   cy.get('.lui-breadcrumb-container').should('be.visible');
+    //   cy.get('ui5-breadcrumbs')
+    //     .shadow()
+    //     .find('.ui5-breadcrumbs-current-location')
+    //     .should('be.visible');
+    //   cy.get('ui5-breadcrumbs')
+    //     .shadow()
+    //     .find('.ui5-breadcrumbs-root ui5-label')
+    //     .shadow()
+    //     .should(e => {
+    //       expect(e.get()[0].host.innerText).to.equal('1');
+    //     });
+    //   cy.get('ui5-breadcrumbs')
+    //     .shadow()
+    //     .find('.ui5-breadcrumbs-root ui5-link')
+    //     .shadow()
+    //     .should(e => {
+    //       expect(e.get()[1].host.innerText).to.equal('Home');
+    //       expect(e.get()[2].host.innerText).to.equal('dyn');
+    //       expect(e.get()[3].host.innerText).to.equal('dynValue');
+    //     });
+    // });
     it('dynamic nav header', () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');
