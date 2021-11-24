@@ -73,12 +73,7 @@ export class linkManager extends LuigiClientBase {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }
-    //TODO clarify ft option
-    if (!helpers.hasIntent(path)) {
-      path = path.split('?')[0];
-      console.log('Search params are not allowed in navigate function.');
-    }
-
+   
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,

@@ -1348,10 +1348,14 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
-
+        //TODO first check is the differentiation if the event comes from client or core
+        // Fix in task 
+        if(e.data.params.hasOwnProperty('intent') && !e.data.params.intent){
+          console.warn('Search params are not allowed in path string!');
+          e.data.params.link = e.data.params.link.split('?')[0];
+        }
         if (e.data.params.newTab) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
