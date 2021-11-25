@@ -277,8 +277,7 @@ class IframeHelpersClass {
     );
   }
 
-  disableA11yOfInactiveIframe(e) {
-    const srcIframe = this.getValidMessageSource(e);
+  disableA11yOfInactiveIframe(srcIframe) {
     const nodeList = document.querySelectorAll('*');
     [...nodeList].forEach(el => {
       el.setAttribute('oldTab', el.getAttribute('tabindex'));

@@ -60,7 +60,7 @@
             backdropActive = isValidForArea(e);
             dispatch('stateChanged', { backdropActive: true });
             // disable backdrop background elements' accessbility
-            IframeHelpers.disableA11yOfInactiveIframe(e);
+            IframeHelpers.disableA11yOfInactiveIframe(srcIframe);
           }
           if ('luigi.remove-backdrop' === e.data.msg) {
             backdropActive = false;
