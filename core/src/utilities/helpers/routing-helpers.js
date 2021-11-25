@@ -45,7 +45,7 @@ class RoutingHelpersClass {
   }
 
   parseParams(paramsString) {
-    if(!paramsString)return {};
+    if (!paramsString) return {};
     const result = {};
     const viewParamString = paramsString;
     const pairs = viewParamString ? viewParamString.split('&') : null;
@@ -502,7 +502,7 @@ class RoutingHelpersClass {
   }
 
   addSearchParamsFromClient(currentNode, searchParams) {
-    if(searchParams){
+    if (searchParams) {
       Object.keys(searchParams).forEach(key => {
         searchParams[key] = encodeURIComponent(searchParams[key]);
       });
@@ -528,11 +528,6 @@ class RoutingHelpersClass {
    */
   hasIntent(path) {
     return !!path && path.toLowerCase().includes('#?intent=');
-  }
-
-  cutSearchParams(path){
-    console.log('Search params are not allowed.');
-    return path.split('?')[0];
   }
 
   /**
