@@ -1350,7 +1350,8 @@
         isNavigateBack = false;
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
-        //TODO first check is the differentiation if the event comes from client or core
+        // This first statement is the differentiation between client or core
+        // core has no intent
         // Fix in task #2395
         if (e.data.params.hasOwnProperty('intent') && !e.data.params.intent) {
           console.warn('Search params are not allowed in path string!');
