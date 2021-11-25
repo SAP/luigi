@@ -17,7 +17,7 @@ meta -->
 
 ## Overview
 
-This project contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider. 
+This [authorization plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider.
 Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow.
 
 ## Installation
@@ -61,15 +61,33 @@ Luigi.setConfig({
 })
 ```
 
-If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation, 
-which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`. 
-You must install `oidc-client` in your project as a dev dependency:
+If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation,
+which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`.
+
+Next, you must install `oidc-client` in your project as a dev dependency:
 
 ```javascript
-npm i -save-dev copy-webpack-plugin
+npm i -save-dev oidc-client
 ```
 
-Then, you need to import the plugin files and `oidc-client` library in your project using webpack:
+Then, you need to copy certain auxiliary plugin files and the callback file, as they are needed for the initial setup. 
+
+Respectively from `oidc-client` library you need:
+- `oidc-client.min.js` which normally resides in `node_modules/oidc-client/dist`
+
+and from our library `@luigi-project/plugin-auth-oidc` you need:
+- `plugin.js`
+- `silent-callback.html`
+- `plugin-ie11.js` (for IE11 only)
+which all reside under `node_modules/@luigi-project/plugin-auth-oidc/plugin.js`.
+
+The above mentioned files should be copied to `assets/auth-oidc` as the default location.
+
+Below we give some alternatives on how to easily copy these files in your project. However, you may choose your own way of copying these files depending on your environment.
+
+For applications involving a webpack configuration, one way to copy files is using packages such as [copy-webpack-plugin](https://www.npmjs.com/package/copy-webpack-plugin) and then including the following in your webpack configuration file:
+
+
 
 ```javascript
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -97,3 +115,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
   ]
 }
 ```
+
+If your application does not use webpack or you installed Luigi without a framework, you can use an alternative way of copying the `silent-callback.html` file. You can use any copy plugin to copy the file and then modify the `package.json` script to copy the file when building. One package that could be helpful is [copyfiles](https://www.npmjs.com/package/copyfiles). Below is an example:
+
+```javascript
+"buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
+"build": "npm run buildConfig && npm run copyCallbackOIdc",
+"copyCallbackOidc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html node_modules/@luigi-project/plugin-auth-oidc/plugin.js node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js node_modules/oidc-client/dist/oidc-client.min.js public/assets/auth-oidc"
+```
+
+Running `npm run build` should then suffice to bundle the config and also copy the callback file.
