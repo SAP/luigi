@@ -9,7 +9,7 @@
       aria-hidden="{!isSearchFieldVisible}"
       aria-haspopup="true"
     >
-      <div class="fd-input-group fd-shellbar__input-group">
+      <div class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn">
         {#if search && search.disableInputHandlers}
         <input
           type="text"
@@ -17,27 +17,23 @@
           data-testid="luigi-search-input__no-handlers"
           autofocus
         />
-        {:else}
-        <input
-          type="text"
-          on:keyup="{(event) => onKeyUp(event)}"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-          data-testid="luigi-search-input"
-          autofocus
-          bind:this="{inputElem}"
-        />
-        {#if search.searchFieldCentered}
+        {:else} <input type="text" on:keyup="{(event) => onKeyUp(event)}" class="fd-input
+        fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+        data-testid="luigi-search-input" autofocus bind:this="{inputElem}" on:input={() =>
+        renderClearBtn()} /> {#if search.searchFieldCentered}
         <span
           class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
         >
+          {#if clearSearchFieldBtn}
           <button
             aria-label="button-decline"
             class="fd-shellbar__button fd-button"
             on:click="{clearSearchField}"
           >
-            {#if clearSearchFieldBtn}
             <i class="sap-icon--decline"></i>
-            {/if}
+          </button>
+          {/if}
+          <button aria-label="button-search" class="fd-shellbar__button fd-button">
             <i class="sap-icon--search"></i>
           </button>
         </span>
@@ -253,6 +249,12 @@
     }
   }
 
+  function renderClearBtn() {
+    document.querySelector('.luigi-search__input').value
+      ? (clearSearchFieldBtn = true)
+      : (clearSearchFieldBtn = false);
+  }
+
   function clearSearchField() {
     document.querySelector('.luigi-search__input').value = '';
     closeSearchResult();
@@ -356,11 +358,27 @@
   }
 </script>
 <style type="text/scss">
+  @import 'styles/variables';
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {
     li[class*='luigi-search-result']:focus {
       outline: none;
     }
+  }
+
+  .luigi-search {
+    .fd-input-group,
+    .fd-button,
+    .luigi-search__input {
+      height: 2rem;
+    }
+    .fd-input-group__addon {
+      min-height: 2rem;
+    }
+  }
+
+  .luigi-search:hover {
+    background-color: var(--sapShell_Hover_Background, #283848);
   }
 
   :global(.lui-global-search) {
@@ -398,28 +416,46 @@
     justify-content: center;
   }
 
-  :global(.lui-global-search.lui-global-search-toogle) {
+  :global(.lui-global-search.lui-global-search-toggle) {
     justify-content: flex-end;
     .lui-global-search-btn {
       display: inline-block;
     }
   }
 
-  :global(.lui-global-search.lui-global-search-toogle) {
+  .fd-input-group__addon--button {
+    display: inline-block;
+  }
+
+  div.luigi-search-input-ctn:focus-within {
+    z-index: 5;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline-offset: -0.1875rem;
+    outline-width: 0.0625rem;
+    outline-width: var(--sapContent_FocusWidth, 0.0625rem);
+    outline-color: #fff;
+    outline-color: var(--sapContent_FocusColor, #fff);
+    outline-style: dotted;
+    outline-style: var(--sapContent_FocusStyle, dotted);
+  }
+
+  :global(.lui-global-search.lui-global-search-toggle) {
     .lui-global-search-input {
       display: none;
     }
     .lui-global-search-input.lui-global-search-mobile--active {
       position: absolute;
       display: block;
-      background-color: #354a5f;
+      background-color: var(--sapShellColor, #354a5f);
       width: calc(100% - 90px);
       left: 0;
       top: 0;
-      z-index: 100000000000000000;
-      height: 43px;
+      z-index: 1;
+      height: $topNavHeight;
+      padding-left: 1rem;
       .fd-shellbar__input-group {
-        margin-top: 0.2rem;
+        margin-top: 6px;
       }
     }
 
@@ -429,13 +465,13 @@
       right: 0;
       display: block;
       display: inline-block;
-      background-color: #354a5f;
+      background-color: var(--sapShellColor, #354a5f);
       top: 0;
-      z-index: 999999999999999999;
+      z-index: 1;
       width: 90px;
-      height: 43px;
+      height: $topNavHeight;
       .fd-shellbar__button {
-        margin-top: 0.2rem;
+        margin-top: 6px;
       }
     }
     .lui-global-search-btn {
