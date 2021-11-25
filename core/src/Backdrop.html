@@ -59,7 +59,6 @@
           if ('luigi.add-backdrop' === e.data.msg) {
             backdropActive = isValidForArea(e);
             dispatch('stateChanged', { backdropActive: true });
-
             document.querySelectorAll('*').forEach(el => {
               const oldTab = el.getAttribute('tabindex');
               el.setAttribute('oldTab', el.getAttribute('tabindex'));
@@ -71,7 +70,6 @@
           if ('luigi.remove-backdrop' === e.data.msg) {
             backdropActive = false;
             dispatch('stateChanged', { backdropActive: false });
-
             document.querySelectorAll('*').forEach(el => {
               const restoreVal = el.getAttribute('oldTab');
               if (restoreVal) {
