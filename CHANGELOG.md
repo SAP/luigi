@@ -38,6 +38,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2289](https://github.com/SAP/luigi/pull/2289) Fixed context update for special iframes ([@rafalgamon](https://github.com/rafalgamon))
 * [#2374](https://github.com/SAP/luigi/pull/2374) Make User Menu type of Fiori3 to use 'Compact' mode instead of 'Cozy' ([@UlianaMunich](https://github.com/UlianaMunich))
 
+
 ## [v1.18.1] (2021-11-08)
 
 #### :bug: Fixed
