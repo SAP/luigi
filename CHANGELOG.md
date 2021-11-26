@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.19.0] (2021-11-26)
+
+#### :rocket: Added
+* [#2383](https://github.com/SAP/luigi/pull/2383) Introduce clearNavigationCache() to clear children and titleResolver cache ([@stanleychh](https://github.com/stanleychh))
+* [#2369](https://github.com/SAP/luigi/pull/2369) Replace CSS static value with SAP Fiori 3 variable in LeftNav ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2352](https://github.com/SAP/luigi/pull/2352) Node category merging improvements ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#2391](https://github.com/SAP/luigi/pull/2391) Style language dropdown under User Settings Dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2375](https://github.com/SAP/luigi/pull/2375) Webcomponent drawer overlap bug ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2289](https://github.com/SAP/luigi/pull/2289) Fixed context update for special iframes ([@rafalgamon](https://github.com/rafalgamon))
+* [#2374](https://github.com/SAP/luigi/pull/2374) Make User Menu type of Fiori3 to use 'Compact' mode instead of 'Cozy' ([@UlianaMunich](https://github.com/UlianaMunich))
+
 ## [v1.18.1] (2021-11-08)
 
 #### :bug: Fixed
@@ -1267,3 +1280,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.17.0]: https://github.com/SAP/luigi/compare/v1.16.2...v1.17.0
 [v1.18.0]: https://github.com/SAP/luigi/compare/v1.17.0...v1.18.0
 [v1.18.1]: https://github.com/SAP/luigi/compare/v1.18.0...v1.18.1
+[v1.19.0]: https://github.com/SAP/luigi/compare/v1.18.1...v1.19.0
