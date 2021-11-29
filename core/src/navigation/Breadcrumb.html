@@ -167,18 +167,19 @@
   });
 
   async function getNodeLabel(node) {
-    if (node.label && (node.pathSegment && !node.pathSegment.indexOf(':') === 0)) {
-      return LuigiI18N.getTranslation(node.label) || node.label;
-    } else if (node.pathSegment) {
-      if (node.pathSegment.indexOf(':') === 0) {
-        const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
-        const data = await Navigation.extractDataFromPath(route);
-        return RoutingHelpers.getDynamicNodeValue(node, data.pathData.pathParams);
-      } else {
-        return node.pathSegment;
-      }
+    const isDynamicNode = node.pathSegment && node.pathSegment.indexOf(':') === 0;
+    if (isDynamicNode) {
+      const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
+      const data = await Navigation.extractDataFromPath(route);
+      return RoutingHelpers.getDynamicNodeValue(node, data.pathData.pathParams);
     } else {
-      return '';
+      if (node.label) {
+        return LuigiI18N.getTranslation(node.label) || node.label;
+      } else if (node.pathSegment) {
+        return node.pathSegment;
+      } else {
+        return '';
+      }
     }
   }
 
