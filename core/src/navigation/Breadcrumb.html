@@ -167,7 +167,7 @@
   });
 
   async function getNodeLabel(node) {
-    if (node.label) {
+    if (node.label && (node.pathSegment && !node.pathSegment.indexOf(':') === 0)) {
       return LuigiI18N.getTranslation(node.label) || node.label;
     } else if (node.pathSegment) {
       if (node.pathSegment.indexOf(':') === 0) {

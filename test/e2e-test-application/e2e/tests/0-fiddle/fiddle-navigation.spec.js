@@ -713,26 +713,30 @@ describe('Fiddle', () => {
   });
   describe('BreadCrumb and NavHeader', () => {
     let newConfig;
-    const breadcrumbsConfig = {
+    var breadcrumbsConfig = {
       clearBeforeRender: true,
       renderer: (el, items, clickHandler) => {
         el.classList.add('myBreadcrumb');
-        let ui5breadcrumbs = document.createElement('ui5-breadcrumbs');
-        items.forEach(item => {
+        let breadcrumbs = document.createElement('ol');
+        breadcrumbs.setAttribute('style', 'top: 0;position: absolute;left: 0;');
+        items.forEach((item, index) => {
           if (item.label) {
-            let itemCmp = document.createElement('ui5-breadcrumbs-item');
+            let itemCmp = document.createElement('li');
+            itemCmp.setAttribute('style', 'display:inline; margin: 0 10px;');
+            itemCmp.setAttribute('data-testid', `breadcrumb_${item.label}_index${index}`);
             itemCmp.innerHTML = item.label;
             itemCmp._item = item;
-            ui5breadcrumbs.appendChild(itemCmp);
+            breadcrumbs.appendChild(itemCmp);
           }
         });
-        ui5breadcrumbs.addEventListener('item-click', event => {
+        breadcrumbs.addEventListener('click', event => {
           clickHandler(event.detail.item._item);
         });
-        el.appendChild(ui5breadcrumbs);
-        return ui5breadcrumbs;
+        el.appendChild(breadcrumbs);
+        return breadcrumbs;
       }
     };
+
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
       newConfig.settings = {
@@ -791,6 +795,12 @@ describe('Fiddle', () => {
                 pathSegment: 'static',
                 label: 'static',
                 viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+              },
+              {
+                pathSegment: 'virtual-tree',
+                label: 'VirtualTree',
+                viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+                virtualTree: true
               }
             ]
           }
@@ -801,59 +811,27 @@ describe('Fiddle', () => {
       cy.visitWithFiddleConfig('/home', newConfig);
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
-      // Either this
-      // cy.get('.lui-breadcrumb-container').then(container => {
-
-      //   const ui5breadcrumbs = container[0].children[0].shadowRoot;
-      //   expect(ui5breadcrumbs.querySelector('.ui5-breadcrumbs-current-location ui5-label').innerText).to.equal(
-      //     'static'
-      //   );
-      // });
-      // or this
-      // cy.get('ui5-breadcrumbs')
-      //   .shadow()
-      //   .find('.ui5-breadcrumbs-current-location')
-      //   .should('be.visible');
-      // cy.get('ui5-breadcrumbs')
-      //   .shadow()
-      //   .find('ui5-label')
-      //   .shadow()
-      //   .should(e => {
-      //     expect(e.get()[0].host.innerText).to.equal('static');
-      //   });
-      // cy.get('ui5-breadcrumbs')
-      //   .shadow()
-      //   .find('.ui5-breadcrumbs-link-wrapper ui5-link')
-      //   .shadow()
-      //   .should(e => {
-      //     expect(e.get()[0].host.innerText).to.equal('Home');
-      //   });
+      cy.get('[data-testid=breadcrumb_home_index0]').should('be.visible');
+      cy.get('[data-testid=breadcrumb_static_index1]').should('be.visible');
     });
-    // it('Breadcrumbs with dynamic nodes', () => {
-    //   cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-    //   cy.wait(1000);
-    //   cy.get('.lui-breadcrumb-container').should('be.visible');
-    //   cy.get('ui5-breadcrumbs')
-    //     .shadow()
-    //     .find('.ui5-breadcrumbs-current-location')
-    //     .should('be.visible');
-    //   cy.get('ui5-breadcrumbs')
-    //     .shadow()
-    //     .find('.ui5-breadcrumbs-root ui5-label')
-    //     .shadow()
-    //     .should(e => {
-    //       expect(e.get()[0].host.innerText).to.equal('1');
-    //     });
-    //   cy.get('ui5-breadcrumbs')
-    //     .shadow()
-    //     .find('.ui5-breadcrumbs-root ui5-link')
-    //     .shadow()
-    //     .should(e => {
-    //       expect(e.get()[1].host.innerText).to.equal('Home');
-    //       expect(e.get()[2].host.innerText).to.equal('dyn');
-    //       expect(e.get()[3].host.innerText).to.equal('dynValue');
-    //     });
-    // });
+    it('Breadcrumbs with dynamic nodes', () => {
+      cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+      cy.wait(1000);
+      cy.get('.lui-breadcrumb-container').should('be.visible');
+      cy.get('[data-testid=breadcrumb_home_index0]').should('be.visible');
+      cy.get('[data-testid=breadcrumb_dyn_index1]').should('be.visible');
+      cy.get('[data-testid=breadcrumb_dynValue_index2]').should('be.visible');
+      cy.get('[data-testid=breadcrumb_1_index3]').should('be.visible');
+    });
+    it('Breadcrumbs with virtual nodes', () => {
+      cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
+      cy.wait(1000);
+      cy.get('.lui-breadcrumb-container').should('be.visible');
+      cy.get('[data-testid=breadcrumb_home_index0]').should('be.visible');
+      cy.get('[data-testid=breadcrumb_virtual-tree_index1]').should('be.visible');
+      cy.get('[data-testid=breadcrumb_virtualValue_index2]').should('be.visible');
+      cy.get('[data-testid=breadcrumb_test_index3]').should('be.visible');
+    });
     it('dynamic nav header', () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');

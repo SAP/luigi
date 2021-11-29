@@ -22,10 +22,10 @@
     "dev": "node patch.js && node build_patch_ui5.js && webpack-dev-server  --content-base public"
   },
   "dependencies": {
-    "@luigi-project/client": "1.18.1",
-    "@luigi-project/core": "1.18.1",
-    "@luigi-project/plugin-auth-oauth2": "1.18.1",
-    "@luigi-project/plugin-auth-oidc": "1.18.1",
+    "@luigi-project/client": "1.19.0",
+    "@luigi-project/core": "1.19.0",
+    "@luigi-project/plugin-auth-oauth2": "1.19.0",
+    "@luigi-project/plugin-auth-oidc": "1.19.0",
     "@sap-theming/theming-base-content": "~11.1.28",
     "@ui5/webcomponents": "^1.0.1",
     "@ui5/webcomponents-fiori": "^1.0.1",
