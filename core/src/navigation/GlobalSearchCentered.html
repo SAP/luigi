@@ -98,17 +98,15 @@
 <div
   class="lui-global-search-cancel-btn {isSearchFieldVisible?'lui-global-search-cancel-btn--active':''}"
 >
-  <div on:click|stopPropagation="{() => {}}">
-    <button
-      class="fd-button fd-shellbar__button"
-      aria-haspopup="true"
-      aria-expanded="{!isSearchFieldVisible}"
-      on:click="{toggleSearch}"
-      data-testid="luigi-search-cancel-btn"
-    >
-      {$getTranslation(cancelBtn)}
-    </button>
-  </div>
+  <button
+    class="fd-button fd-shellbar__button"
+    aria-haspopup="true"
+    aria-expanded="{!isSearchFieldVisible}"
+    on:click|stopPropagation="{()=> toggleSearch()}"
+    data-testid="luigi-search-cancel-btn"
+  >
+    {$getTranslation(cancelBtn)}
+  </button>
 </div>
 {/if}
 <script>
