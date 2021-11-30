@@ -183,19 +183,19 @@ describe('Navigation', () => {
       //Check we should have 4 options
       cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
         .eq(0)
-        .find(' .fd-list--dropdown .fd-list__item')
+        .find('.fd-list--dropdown .fd-list__item')
         .children()
         .should('have.length', 4);
 
-      //Click on Spanish list item
+      //Click on Français list item
       cy.get('[data-testid="lui-us-option0_2"]')
         .should('exist')
         .click();
 
-      //Check Placeholder of input field is Spanish
+      //Check Placeholder of input field is Français
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('contain', 'Spanish');
+        .should('contain', 'Français');
 
       //Check Date Formant Input field and type a new format
       cy.get('[data-testid="lui-us-input1"]')
@@ -213,10 +213,10 @@ describe('Navigation', () => {
         .eq(1)
         .click();
 
-      //Check Placeholder of input field is Spanish
+      //Check Placeholder of input field is Français
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('contain', 'Spanish');
+        .should('contain', 'Français');
 
       //Check Name Input field and type a new name
       cy.get('[data-testid="lui-us-input1"]').should('have.value', setting_date_format);

@@ -2,7 +2,7 @@
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
 import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
+import { LuigiConfig, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
@@ -57,7 +57,9 @@ class RoutingClass {
       return;
     }
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    const preserveQueryParams = LuigiConfig.getConfigValue('routing.preserveQueryParams');
     let url = new URL(location.href);
+    route = preserveQueryParams ? RoutingHelpers.composeSearchParamsToRoute(route) : route;
     hashRouting ? (url.hash = route) : (url.pathname = route);
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
@@ -360,13 +362,13 @@ class RoutingClass {
           iContainer.classList.add('lui-webComponent');
         }
         Iframe.switchActiveIframe(iframeElement, undefined, false);
-        this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
+        this.navigateWebComponentCompound(component, nodeObject);
       } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
         Iframe.switchActiveIframe(iframeElement, undefined, false);
-        this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
+        this.navigateWebComponent(component, nodeObject);
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
@@ -496,32 +498,33 @@ class RoutingClass {
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
-  navigateWebComponent(config, component, node, navNode, iframeContainer) {
+  navigateWebComponent(component, navNode) {
+    const wc_container = this.removeLastChildFromWCContainer();
+    if (!wc_container) return;
+
     const componentData = component.get();
-    const wc_container = document.querySelector('.wcContainer');
-
-    while (wc_container.lastChild) {
-      wc_container.lastChild.remove();
-    }
-
     WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
   }
 
-  navigateWebComponentCompound(config, component, node, navNode, iframeContainer) {
-    const componentData = component.get();
-    const wc_container = document.querySelector('.wcContainer');
+  navigateWebComponentCompound(component, navNode) {
+    const wc_container = this.removeLastChildFromWCContainer();
+    if (!wc_container) return;
 
+    const componentData = component.get();
+    const { compound } = navNode;
+    if (compound && compound.children) {
+      compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
+    }
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+  }
+
+  removeLastChildFromWCContainer() {
+    const wc_container = document.querySelector('.wcContainer');
+    if (!wc_container) return;
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
     }
-
-    if (navNode.compound && navNode.compound.children) {
-      navNode.compound.children = navNode.compound.children.filter(c =>
-        NavigationHelpers.checkVisibleForFeatureToggles(c)
-      );
-    }
-
-    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    return wc_container;
   }
 
   appendModalDataToUrl(modalPath, modalParams) {

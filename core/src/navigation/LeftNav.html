@@ -777,7 +777,6 @@
 
     .lui-nav-title {
       height: $navHeaderHeight;
-      background: green;
       width: var(--luigi__left-sidenav--width);
       border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
         var(--sapList_BorderColor, #e4e4e4);
@@ -1012,11 +1011,13 @@
         0 2px 8px 0 var(--fd-color-neutral-2)
       );
       border: 1px solid var(--fd-color-neutral-3);
-      background: white;
       opacity: 0;
       animation-name: flyoutAnimation;
       animation-duration: 0.3s;
       animation-fill-mode: forwards;
+      .lui-flyout-sublist__title {
+        background: var(--sapList_Background,#fff);
+      }
 
       @-webkit-keyframes flyoutAnimation {
         0% {

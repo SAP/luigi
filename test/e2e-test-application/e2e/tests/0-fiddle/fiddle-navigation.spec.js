@@ -575,7 +575,7 @@ describe('Fiddle', () => {
               language: {
                 type: 'enum',
                 label: 'Language and Region',
-                options: [{ value: 'de', label: 'German' }, { value: 'en', label: 'English' }, 'Spanish', 'French'],
+                options: [{ value: 'de', label: 'Deutsch' }, { value: 'en', label: 'English' }, '简体中文', { value: 'fr', label: 'Français' }],
                 description:
                   'After you save your settings, the browser will refresh for the new language to take effect.'
               },
@@ -626,13 +626,26 @@ describe('Fiddle', () => {
       cy.get('[data-testid="lui-us-option0_0"]').click();
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('contain', 'German');
+        .should('contain', 'Deutsch');
 
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_1"]').click();
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
         .should('contain', 'English');
+
+
+      cy.get('[data-testid="lui-us-language-dropdown"]')
+        .eq(0)
+        .click();
+      cy.get('[data-testid="lui-us-language-dropdown"]')
+        .should('be.visible');
+        cy.get('[data-testid="lui-us-language-dropdown"]')
+        .eq(0)
+        .click();
+      cy.wait(500);
+      cy.get('[data-testid="lui-us-option0_0"]')
+        .should('not.be.visible');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
       cy.get('.lui-usersettings-dialog').should('not.be.visible');
