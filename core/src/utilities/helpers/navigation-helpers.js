@@ -3,7 +3,7 @@ import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../co
 import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
-import { reject } from 'lodash';
+import { reject, get } from 'lodash';
 
 class NavigationHelpersClass {
   constructor() {
@@ -369,14 +369,7 @@ class NavigationHelpersClass {
     if (!propChain || !obj) {
       return fallback;
     }
-    const propArray = propChain.split('.');
-    let val = obj;
-    propArray.forEach(el => {
-      if (val) {
-        val = val[el];
-      }
-    });
-    return val || fallback;
+    return get(obj, propChain, fallback);
   }
 
   substituteVars(resolver, context) {
