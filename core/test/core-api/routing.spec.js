@@ -36,6 +36,12 @@ describe('Luigi routing', function() {
       LuigiRouting.addSearchParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?foo=bar');
     });
+    it('set searchparams without keeping browser history', () => {
+      window.state = {};
+      global.location = 'http://some.url.de';
+      LuigiRouting.addSearchParams({ foo: 'bar' }, false);
+      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/?foo=bar');
+    });
     it('add search params to searchparams', () => {
       window.state = {};
       global.location = 'http://some.url.de?test=tets';
