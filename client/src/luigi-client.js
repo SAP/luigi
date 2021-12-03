@@ -47,6 +47,9 @@ class LuigiClient {
   getContext() {
     return lifecycleManager.getContext();
   }
+  addNodeParams(searchParams, keepBrowserHistory) {
+    return lifecycleManager.addNodeParams(searchParams, keepBrowserHistory);
+  }
   getNodeParams() {
     return lifecycleManager.getNodeParams();
   }
@@ -59,8 +62,8 @@ class LuigiClient {
   getCoreSearchParams() {
     return lifecycleManager.getCoreSearchParams();
   }
-  addCoreSearchParams(searchParams) {
-    return lifecycleManager.addCoreSearchParams(searchParams);
+  addCoreSearchParams(searchParams, keepBrowserHistory) {
+    return lifecycleManager.addCoreSearchParams(searchParams, keepBrowserHistory);
   }
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();

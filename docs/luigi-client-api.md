@@ -237,10 +237,25 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 -   **since**: 1.4.0
 
+#### addNodeParams
+
+Set search query parameters to Luigi Core. The search parameters will be added to the URL.
+
+##### Parameters
+
+-   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
+
+##### Examples
+
+```javascript
+LuigiClient.addNodeParams({luigi:'rocks'}, true);
+```
+
 #### getNodeParams
 
 Returns the node parameters of the active URL.
-Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
 
 <!-- add-attribute:class:warning -->
 
@@ -291,11 +306,12 @@ Sends search query parameters to Luigi Core. If they are allowed on node level, 
 ##### Parameters
 
 -   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.addCoreSearchParams({luigi:'rocks'});
+LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
 ```
 
 #### getClientPermissions

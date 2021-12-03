@@ -1587,8 +1587,20 @@
           iframe.luigi.currentNode.clientPermissions &&
           iframe.luigi.currentNode.clientPermissions.urlParameters
         ) {
-          RoutingHelpers.addSearchParamsFromClient(iframe.luigi.currentNode, e.data.data);
+          const { data, keepBrowserHistory } = e.data;
+          RoutingHelpers.addSearchParamsFromClient(
+            iframe.luigi.currentNode,
+            data,
+            keepBrowserHistory
+          );
         }
+      }
+
+      if ('luigi.addNodeParams' === e.data.msg) {
+        if (isSpecialIframe) return;
+
+        const { data, keepBrowserHistory } = e.data;
+        LuigiRouting.addNodeParams(data, keepBrowserHistory);
       }
     });
 
