@@ -22,7 +22,7 @@
       on:handleClick="{handleClickExternal}"
     />
   </div>
-  {#if globalSearchConfig && globalSearchConfig.searchFieldCentered}
+  {#if globalSearchConfig && isGlobalSearchCentered}
   <div class="lui-global-search">
     <GlobalSearchCentered
       globalSearchConfig="{globalSearchConfig}"
@@ -40,7 +40,7 @@
   {/if}
   <div class="fd-shellbar__group fd-shellbar__group--actions">
     {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig} {#if
-    !globalSearchConfig.searchFieldCentered}
+    !isGlobalSearchCentered}
     <GlobalSearch
       bind:isSearchFieldVisible
       on:toggleSearch
@@ -168,7 +168,7 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list fd-menu__list--no-shadow">
-                {#if globalSearchConfig && !globalSearchConfig.searchFieldCentered}
+                {#if globalSearchConfig && !isGlobalSearchCentered}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -468,6 +468,7 @@
   export let userInfo = {};
   export let urlAuthError;
   export let globalSearchConfig;
+  export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -518,6 +519,10 @@
         profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
+        isGlobalSearchCentered =
+          globalSearchConfig &&
+          globalSearchConfig.searchFieldCentered &&
+          GenericHelpers.requestExperimentalFeature('globalSearchCentered', true);
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);

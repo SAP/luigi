@@ -337,7 +337,7 @@
             if (
               parentNode &&
               parentNode.navHeader &&
-              GenericHelpers.requestExperimentalFeature('navHeader', true)
+              GenericHelpers.requestExperimentalFeature('globalSearchCentered', true)
             ) {
               let resolvedNavHeader = parentNode.navHeader;
               let resolvedNavHeaderNode = parentNode;
@@ -1008,7 +1008,7 @@
       animation-duration: 0.3s;
       animation-fill-mode: forwards;
       .lui-flyout-sublist__title {
-        background: var(--sapList_Background,#fff);
+        background: var(--sapList_Background, #fff);
       }
 
       @-webkit-keyframes flyoutAnimation {

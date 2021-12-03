@@ -24,7 +24,7 @@
           autofocus
           bind:this="{inputElem}"
         />
-        {#if search.searchFieldCentered}
+        {#if globalSearchCentered && search.searchFieldCentered }
         <span
           class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
         >
@@ -212,7 +212,7 @@
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
-        if (search.searchFieldCentered) {
+        if (search.searchFieldCentered && isGlobalSearchCentered) {
           document.querySelector('.luigi-search__input').value
             ? (clearSearchFieldBtn = true)
             : (clearSearchFieldBtn = false);
