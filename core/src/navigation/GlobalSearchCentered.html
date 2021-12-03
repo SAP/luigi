@@ -425,14 +425,13 @@
   }
 
   div.luigi-search-input-ctn:focus-within {
-    z-index: 5;
     -webkit-box-shadow: none;
     box-shadow: none;
     outline-offset: -0.1875rem;
     outline-width: 0.0625rem;
     outline-width: var(--sapContent_FocusWidth, 0.0625rem);
     outline-color: #fff;
-    outline-color: var(--sapContent_FocusColor, #fff);
+    outline-color: var(--sapContent_ContrastFocusColor, #fff);
     outline-style: dotted;
     outline-style: var(--sapContent_FocusStyle, dotted);
   }
@@ -448,7 +447,7 @@
       width: calc(100% - 90px);
       left: 0;
       top: 0;
-      z-index: 1;
+      z-index: 2;
       padding-left: 1rem;
       .fd-shellbar__input-group {
         margin-top: 6px;
@@ -463,7 +462,7 @@
       display: inline-block;
       background-color: var(--sapShellColor, #354a5f);
       top: 0;
-      z-index: 1;
+      z-index: 2;
       width: 90px;
       .fd-shellbar__button {
         margin-top: 4px;
