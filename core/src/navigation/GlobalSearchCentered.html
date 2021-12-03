@@ -376,10 +376,20 @@
   }
 
   .luigi-search {
+    .fd-input-group {
+      isolation: isolate;
+    }
+
     .fd-input-group,
     .fd-button,
     .luigi-search__input {
       height: 2rem;
+    }
+
+    .fd-input-group__addon,
+    .luigi-search__input {
+      isolation: isolate;
+      z-index: -1;
     }
     .fd-input-group__addon {
       min-height: 2rem;
