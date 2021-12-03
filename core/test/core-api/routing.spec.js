@@ -145,4 +145,36 @@ describe('Luigi routing', function() {
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
   });
+
+  describe('addNodeParams', () => {
+    it('add node Params', () => {
+      window.state = {};
+      global.location = 'http://some.url.de';
+      LuigiRouting.addNodeParams({ foo: 'bar' }, true);
+      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?%7Efoo=bar');
+    });
+    it('add node Params without keeping browser history', () => {
+      window.state = {};
+      global.location = 'http://some.url.de';
+      LuigiRouting.addNodeParams({ foo: 'bar' }, false);
+      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/?%7Efoo=bar');
+    });
+    it('add more node param to existing node params', () => {
+      window.state = {};
+      global.location = 'http://some.url.de?~test=tets';
+      LuigiRouting.addNodeParams({ foo: 'bar' }, true);
+      sinon.assert.calledWithExactly(
+        window.history.pushState,
+        window.state,
+        '',
+        'http://some.url.de/?%7Etest=tets&%7Efoo=bar'
+      );
+    });
+    it('call addNodeParams with wrong argument', () => {
+      console.log = sinon.spy();
+      global.location = 'http://some.url.de';
+      LuigiRouting.addNodeParams('bar', true);
+      sinon.assert.calledWith(console.log, 'Params argument must be an object');
+    });
+  });
 });
