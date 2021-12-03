@@ -136,7 +136,7 @@
     }
   };
   let cancelBtn = TOP_NAV_DEFAULTS.globalSearchCenteredCancelButton;
-  let isSearchFieldVisible;
+  export let isSearchFieldVisible;
   let searchResults = {};
   let showPopOverCustomSearch = false;
   let search = {};
@@ -345,13 +345,25 @@
     }
   }
 
-  function toggleSearch() {
-    if (!isSearchFieldVisible) {
+  export function toggleSearch() {
+    if (!isSearchFieldVisible)
       setTimeout(() => {
         setFocusOnGlobalSearchFieldDesktop();
       });
+    else {
+      displaySearchResult = false;
     }
-    isSearchFieldVisible = !isSearchFieldVisible;
+    dispatch('toggleSearch', {
+      isSearchFieldVisible,
+      inputElem,
+      luigiCustomSearchRenderer__slot
+    });
+
+    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
+      const fieldVisible =
+        isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
+      search.searchProvider.toggleSearch(inputElem, fieldVisible);
+    }
   }
 </script>
 <style type="text/scss">
@@ -471,6 +483,10 @@
     .lui-global-search-btn {
       right: 0;
     }
+  }
+
+  .lui-global-search-cancel-btn {
+    display: none;
   }
 
   .lui-global-search-btn {
