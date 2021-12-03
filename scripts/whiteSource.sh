@@ -23,7 +23,7 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
 for ((i=0;i<${#FOLDERS[@]};++i)); do
   cd $BASE_DIR/../${FOLDERS[i]}
 
-  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s", "devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}" ) > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
+  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s","baseUrl":"%s", "devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}" "$WHITESOURCE_BASEURL") > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
 
   whitesource run
 
