@@ -317,9 +317,9 @@
       hasCategoriesWithIcon,
       navParentNode
     }),
-    set: obj => {
+    set: async obj => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach(prop => {
+        Object.getOwnPropertyNames(obj).forEach(async prop => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -420,7 +420,7 @@
                     });
                 });
               } else {
-                navHeader = resolvedNavHeader;
+                navHeader = await processHeader(resolvedNavHeader, resolvedNavHeaderNode);
               }
             }
           }
@@ -552,6 +552,14 @@
     return metaInfo && metaInfo.testId
       ? metaInfo.testId
       : NavigationHelpers.prepareForTests(key || metaInfo.label);
+  }
+
+  async function processHeader(header, node) {
+    const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
+    const data = await Navigation.extractDataFromPath(route);
+    const dynParams = data.pathData.pathParams;
+    const nhead = RoutingHelpers.substituteDynamicParamsInObject(header, dynParams);
+    return nhead;
   }
 
   function resolveTooltipText(node, translation) {
