@@ -83,21 +83,24 @@
             const route = RoutingHelpers.mapPathToNode(currentPath, node);
             if (previousBreadcrumbs[route]) {
               items.push(previousBreadcrumbs[route]);
-            } else if (node.label || node.titleResolver) {
+            } else if (node.label || node.pathSegment || node.titleResolver) {
               document.body.classList.add('lui-breadcrumb');
               if (node.titleResolver) {
                 items.push({
                   label:
                     node.titleResolver.prerenderFallback &&
                     node.titleResolver.fallbackTitle
-                      ? getNodeLabel(node.titleResolver.fallbackTitle)
+                      ? LuigiI18N.getTranslation(node.titleResolver.fallbackTitle)
                       : breadcrumbConfig.pendingItemLabel || '',
                   node: node,
                   route: route,
                   pending: true
                 });
-              } else if (node.label) {
-                items.push({ label: getNodeLabel(node), node: node, route: route });
+              } else {
+                const label = await getNodeLabel(node);
+                if (label) {
+                  items.push({ label: label, node: node, route: route });
+                }
               }
             }
           }
@@ -130,8 +133,9 @@
               }
             }
 
-            if (node.label) {
-              items.push({ label: getNodeLabel(node), node: node, route: route });
+            const label = await getNodeLabel(node);
+            if (label) {
+              items.push({ label: label, node: node, route: route });
             }
           }
           // check if route has been changed in the meantime, if yes, do nothing
@@ -162,8 +166,19 @@
     }
   });
 
-  function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label) || node.label;
+  async function getNodeLabel(node) {
+    if (node.label && !node._virtualTree) {
+      return LuigiI18N.getTranslation(node.label) || node.label;
+    }
+    if (node.pathSegment && node.pathSegment.indexOf(':') === 0) {
+      const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
+      const data = await Navigation.extractDataFromPath(route);
+      return RoutingHelpers.getDynamicNodeValue(node, data.pathData.pathParams);
+    }
+    if (node.pathSegment) {
+      return node.pathSegment;
+    }
+    return '';
   }
 
   export function handleClick(node) {

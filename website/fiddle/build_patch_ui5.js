@@ -70,7 +70,7 @@ try{
   copyDirectory(__dirname+"/node_modules/@ui5/webcomponents-localization/dist", __dirname+"/public/vendor/ui5/webcomponents-localization", true);
   copyDirectory(__dirname+"/node_modules/@ui5/webcomponents-theme-base/dist", __dirname+"/public/vendor/ui5/webcomponents-theme-base", true);
   copyDirectory(__dirname+"/node_modules/@ui5/webcomponents-fiori/dist", __dirname+"/public/vendor/ui5/webcomponents-fiori", true);
-  copyDirectory(__dirname+"/node_modules//lit-html", __dirname+"/public/vendor/lit-html", false);
+  copyDirectory(__dirname+"/node_modules/lit-html", __dirname+"/public/vendor/lit-html", false);
 
 
   // let allFiles = walk(__dirname+"/public/vendor/ui5").filter(file => file.endsWith(".js"));
