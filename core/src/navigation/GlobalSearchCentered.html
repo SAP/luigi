@@ -236,14 +236,9 @@
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
-        if (
-          search.searchFieldCentered &&
-          GenericHelpers.requestExperimentalFeature('globalSearchCentered', true)
-        ) {
-          document.querySelector('.luigi-search__input').value
-            ? (clearSearchFieldBtn = true)
-            : (clearSearchFieldBtn = false);
-        }
+        document.querySelector('.luigi-search__input').value
+          ? (clearSearchFieldBtn = true)
+          : (clearSearchFieldBtn = false);
       }
     } else {
       console.warn('GlobalSearch is not available.');
