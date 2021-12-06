@@ -3,8 +3,8 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { AuthHelpers, NavigationHelpers, GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
+import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
+import { LuigiAuth, LuigiConfig, LuigiFeatureToggles } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { Navigation } from '../../../src/navigation/services/navigation';
 
@@ -523,4 +523,62 @@ describe('Navigation-helpers', () => {
       assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
     });
   });
+  describe('check visible for feature toggles', ()=>{
+    let nodeToCheckPermission;
+    beforeEach(() =>{
+      nodeToCheckPermission={
+        visibleForFeatureToggles:['testFt']
+      }
+      sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList');
+    });
+    afterEach(()=>{
+      sinon.restore();
+    });
+    it('Node is visible with Ft "testFT"', async ()=>{
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), true);
+    });
+    it('Node is NOT visible with Ft "testFT2"', async ()=>{
+      nodeToCheckPermission.visibleForFeatureToggles=['!testFt2']
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt','testFt2']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
+    });
+    it('Node is NOT visible with Ft "testFT"', async ()=>{
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['test']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
+    });
+  });
+  // describe('generate top nav nodes', ()=>{
+  //   let pathData;
+  //   beforeEach(()=>{
+  //     pathData=[
+  //       {
+  //         pathSegment: 'home',
+  //         label:'home',
+  //         loadingIndicator: {
+  //           enabled: false
+  //         },
+  //         viewUrl: '/microfrontend.html',
+  //         children:[{
+  //           pathSegment: 'home_child',
+  //           label:'home_child',
+  //           loadingIndicator: {
+  //             enabled: false
+  //           },
+  //           viewUrl: '/microfrontend.html'
+  //         }]},
+  //         {
+  //           pathSegment: 'home2',
+  //           label:'home2',
+  //           loadingIndicator: {
+  //             enabled: false
+  //           },
+  //           viewUrl: '/microfrontend.html',
+  //     }];
+  //   });
+  //   it.only('test', async ()=>{
+  //     let test = await NavigationHelpers.generateTopNavNodes(pathData);
+      
+  //   })
+  // });
 });
