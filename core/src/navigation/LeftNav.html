@@ -334,11 +334,7 @@
             navHeader = undefined;
             let parentNode = obj.navParent;
             navParentNode = parentNode;
-            if (
-              parentNode &&
-              parentNode.navHeader &&
-              GenericHelpers.requestExperimentalFeature('globalSearchCentered', true)
-            ) {
+            if (parentNode && parentNode.navHeader) {
               let resolvedNavHeader = parentNode.navHeader;
               let resolvedNavHeaderNode = parentNode;
 
