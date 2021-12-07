@@ -36,82 +36,85 @@ class GlobalSearch {
         Luigi.globalSearch().closeSearchResult();
       } else {
         this.searchResult = [];
-        let searchResultItem1 = {
-          pathObject: {
-            link: '/settings',
-            params: { foo: 'bar' }
-          },
-          label: 'Settings',
-          description: 'settings',
-          onActivate() {
-            Luigi.globalSearch().closeSearchResult();
-          }
-        };
-        let searchResultItem1a = {
-          pathObject: {
-            link: '/settings'
-          },
-          label: 'Settings w/o parameters',
-          description: 'Testing a label description which has a long text to fit on mobile nicely',
-          onActivate() {
-            Luigi.globalSearch().closeSearchResult();
-          }
-        };
-        let searchResultItem2 = {
-          pathObject: {
-            link: '/projects'
-          },
-          label: 'Projects',
-          description: 'projects',
-          onActivate() {
-            Luigi.globalSearch().closeSearchResult();
-          }
-        };
-        let searchResultItem3 = {
-          pathObject: {
-            link: '/projects/pr2'
-          },
-          label: 'Projects 2',
-          description: 'projects 2',
-          onActivate() {
-            Luigi.globalSearch().closeSearchResult();
-          }
-        };
-        let searchResultItem4 = {
-          pathObject: {
-            externalLink: {
-              url: 'https://www.hybris.com',
-              sameWindow: false
-            }
-          },
-          label: 'hybris GmbH',
-          description: 'hybris',
-          onActivate() {
-            Luigi.globalSearch().closeSearchResult();
-          }
-        };
-        this.searchResult.push(
-          searchResultItem1,
-          searchResultItem1a,
-          searchResultItem2,
-          searchResultItem3,
-          searchResultItem4
-        );
-        if (this.searchResult.length > 0) {
-          Luigi.globalSearch().showSearchResult(this.searchResult);
-        } else {
-          Luigi.globalSearch().showSearchResult([
-            {
+
+        Luigi.config.navigation.nodes.map(n => {
+          if (n.pathSegment && !n.children && n.label) {
+            this.searchResult.push({
               pathObject: {
-                path: '',
-                params: {} // can be used by linkmanager.navigate(path).withParams(params)
+                link: `/${n.pathSegment}`
               },
-              label: 'Nothing found',
-              description: '',
-              onActivate() {}
+              label: n.label,
+              description: n.label,
+              onActivate() {
+                Luigi.globalSearch().closeSearchResult();
+              }
+            });
+          } else if (Array.isArray(n.children) && n.label) {
+            if (n.children.length > 0) {
+              for (let k = 0; k < n.children.length; k++) {
+                if (n.label && n.children[k].label) {
+                  this.searchResult.push({
+                    pathObject: {
+                      link: `/${n.pathSegment}/${n.children[k].pathSegment}`
+                    },
+                    label: `${n.label} ${n.children[k].label}`,
+                    description: `${n.label} ${n.children[k].label}`,
+                    onActivate() {
+                      Luigi.globalSearch().closeSearchResult();
+                    }
+                  });
+                }
+              }
             }
-          ]);
-        }
+          }
+        });
+
+        Luigi.config.navigation.nodes[1].children().then(childrens => {
+          childrens[0]
+            .children('pr1')
+            .then(nodes => {
+              for (let j = 0; j < nodes.length; j++) {
+                if (nodes[j].pathSegment) {
+                  this.searchResult.push({
+                    pathObject: {
+                      link: `/projects/pr1/${nodes[j].pathSegment}`
+                    },
+                    label: `${nodes[j].label}`,
+                    description: `${nodes[j].label}`,
+                    onActivate() {
+                      Luigi.globalSearch().closeSearchResult();
+                    }
+                  });
+                }
+              }
+              return this.searchResult;
+            })
+            .then(r => {
+              const result = this.searchResult.filter(res =>
+                res.label.toLowerCase().includes(
+                  Luigi.globalSearch()
+                    .getSearchString()
+                    .toLowerCase()
+                )
+              );
+
+              if (result.length > 0) {
+                Luigi.globalSearch().showSearchResult(result);
+              } else {
+                Luigi.globalSearch().showSearchResult([
+                  {
+                    pathObject: {
+                      path: '',
+                      params: {} // can be used by linkmanager.navigate(path).withParams(params)
+                    },
+                    label: 'Nothing found',
+                    description: '',
+                    onActivate() {}
+                  }
+                ]);
+              }
+            });
+        });
       }
     },
     onEnter: () => {},
