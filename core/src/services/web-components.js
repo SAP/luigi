@@ -177,6 +177,7 @@ class WebComponentSvcClass {
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
+    wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);

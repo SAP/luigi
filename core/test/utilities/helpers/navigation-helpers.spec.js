@@ -490,7 +490,6 @@ describe('Navigation-helpers', () => {
       it('group nodes by category label', () => {
         nodes[1].category.collapsible = true;
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
-        console.log('result ', result.test['metaInfo']);
         assert.deepEqual(Object.keys(result), ['1', 'test', 'luigi']);
         assert.deepEqual(result.test['metaInfo'], { categoryUid: 'test', label: 'test', collapsible: true, order: 1 });
       });

@@ -142,11 +142,15 @@ class IframeHelpersClass {
     return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
   }
 
+  getCurrentWebcomponentCtnInDom() {
+    return document.querySelector('.iframeContainer.lui-webComponent');
+  }
+
   getCurrentMicrofrontendIframe() {
     const modalIframes = this.getModalIframes();
     const mainIframes = this.getMainIframes().filter(GenericHelpers.isElementVisible);
-
-    return modalIframes[0] || mainIframes[0] || null;
+    const webComponentCtn = this.getCurrentWebcomponentCtnInDom();
+    return modalIframes[0] || mainIframes[0] || webComponentCtn || null;
   }
 
   getIframesWithType(type) {
@@ -271,6 +275,29 @@ class IframeHelpersClass {
     return IframeHelpers.specialIframeTypes.filter(typ =>
       IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
     );
+  }
+
+  disableA11yOfInactiveIframe(srcIframe) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      el.setAttribute('oldTab', el.getAttribute('tabindex'));
+      if (el !== srcIframe) {
+        el.setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
+  enableA11yOfInactiveIframe() {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      const restoreVal = el.getAttribute('oldTab');
+      if (restoreVal) {
+        el.setAttribute('tabindex', restoreVal);
+        el.removeAttribute('oldTab');
+      } else {
+        el.removeAttribute('tabindex');
+      }
+    });
   }
 }
 
