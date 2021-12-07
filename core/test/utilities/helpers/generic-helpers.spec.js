@@ -1,6 +1,7 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
+import { LuigiConfig } from '../../../src/core-api';
 import { GenericHelpers } from '../../../src/utilities/helpers';
 
 describe('Generic-helpers', () => {
@@ -25,18 +26,10 @@ describe('Generic-helpers', () => {
     const catName = 'spencer';
 
     setLocationSearch('?param=1&foo=bar&cat=' + catName);
-    assert.equal(
-      GenericHelpers.getUrlParameter('cat'),
-      catName,
-      'url with ? and multiple params'
-    );
+    assert.equal(GenericHelpers.getUrlParameter('cat'), catName, 'url with ? and multiple params');
 
     setLocationSearch('#foo=bar&cat=' + catName + '&param=1');
-    assert.equal(
-      GenericHelpers.getUrlParameter('cat'),
-      catName,
-      'url with # and multiple params'
-    );
+    assert.equal(GenericHelpers.getUrlParameter('cat'), catName, 'url with # and multiple params');
   });
 
   it('getUrlWithoutHash', () => {
@@ -101,26 +94,41 @@ describe('Generic-helpers', () => {
     });
 
     it('with beta and next', () => {
-      const input = [
-        '1.1.1-dev.0000',
-        '0.6.4',
-        '0.7.7-beta.0',
-        '0.7.1',
-        '1.0.0'
-      ];
-      const expected = [
-        '0.6.4',
-        '0.7.1',
-        '0.7.7-beta.0',
-        '1.0.0',
-        '1.1.1-dev.0000'
-      ];
+      const input = ['1.1.1-dev.0000', '0.6.4', '0.7.7-beta.0', '0.7.1', '1.0.0'];
+      const expected = ['0.6.4', '0.7.1', '0.7.7-beta.0', '1.0.0', '1.1.1-dev.0000'];
       assert.deepEqual(input.sort(GenericHelpers.semverCompare), expected);
     });
 
     it('single comparison', () => {
       assert.equal(GenericHelpers.semverCompare('0.7.4', '1.1.1'), -1);
       assert.equal(GenericHelpers.semverCompare('1.1.1', '0.7.4'), 1);
+    });
+  });
+  describe('request experimental feature', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfig');
+      console.warn = sinon.spy();
+      LuigiConfig.getConfig.returns({
+        settings: {
+          experimental: {
+            test: true
+          }
+        }
+      });
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('experimental feature is configured', () => {
+      assert.equal(GenericHelpers.requestExperimentalFeature('test', true), true);
+    });
+    it('experimental feature NOT configured and show console warn', () => {
+      assert.equal(GenericHelpers.requestExperimentalFeature('tets', true), false);
+      sinon.assert.calledOnce(console.warn);
+    });
+    it('experimental feature NOT configured and no console warn', () => {
+      assert.equal(GenericHelpers.requestExperimentalFeature('tets', false), false);
+      sinon.assert.neverCalledWith(console.warn);
     });
   });
 });

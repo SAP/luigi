@@ -89,7 +89,7 @@ class LuigiTheming {
    * @example
    * Luigi.theming().isThemingAvailable()
    */
-  isThemingAvailable() {
+  isThemingAvailable /* istanbul ignore next */() {
     return !!LuigiConfig.getConfigValue('settings.theming');
   }
 
@@ -98,7 +98,7 @@ class LuigiTheming {
    * @memberof Theming
    * @private
    */
-  _init() {
+  _init /* istanbul ignore next */() {
     const setupViewUrlDecorator = () => {
       /**
        * Registers the viewUrl decorator
