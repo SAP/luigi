@@ -103,8 +103,8 @@
     "branches": 55,
     "watermarks": {
       "lines": [
-        55,
-        70
+        70,
+        80
       ],
       "functions": [
         55,
@@ -115,8 +115,8 @@
         65
       ],
       "statements": [
-        55,
-        70
+        70,
+        80
       ]
     },
     "include": [
