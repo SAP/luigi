@@ -276,6 +276,29 @@ class IframeHelpersClass {
       IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
     );
   }
+
+  disableA11yOfInactiveIframe(srcIframe) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      el.setAttribute('oldTab', el.getAttribute('tabindex'));
+      if (el !== srcIframe) {
+        el.setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
+  enableA11yOfInactiveIframe() {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      const restoreVal = el.getAttribute('oldTab');
+      if (restoreVal) {
+        el.setAttribute('tabindex', restoreVal);
+        el.removeAttribute('oldTab');
+      } else {
+        el.removeAttribute('tabindex');
+      }
+    });
+  }
 }
 
 export const IframeHelpers = new IframeHelpersClass();
