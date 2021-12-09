@@ -212,9 +212,6 @@
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
-        document.querySelector('.luigi-search__input').value
-          ? (clearSearchFieldBtn = true)
-          : (clearSearchFieldBtn = false);
       }
     } else {
       console.warn('GlobalSearch is not available.');
