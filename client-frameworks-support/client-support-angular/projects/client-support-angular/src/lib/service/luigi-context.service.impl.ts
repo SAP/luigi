@@ -1,27 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ReplaySubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import {
-  Context,
-  addInitListener,
-  addContextUpdateListener
-} from '@luigi-project/client';
-import {
-  IContextMessage,
-  ILuigiContextTypes,
-  LuigiContextService
-} from './luigi-context-service';
+import { Context, addInitListener, addContextUpdateListener } from '@luigi-project/client';
+import { IContextMessage, ILuigiContextTypes, LuigiContextService } from './luigi-context-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LuigiContextServiceImpl implements LuigiContextService {
-  private subject: ReplaySubject<IContextMessage> = new ReplaySubject<
-    IContextMessage
-  >(1);
+  private subject: ReplaySubject<IContextMessage> = new ReplaySubject<IContextMessage>(1);
   private currentContext: IContextMessage = (null as unknown) as IContextMessage;
 
-  constructor() {
+  constructor(private zone: NgZone) {
     addInitListener(initContext => {
       this.addListener(ILuigiContextTypes.INIT, initContext);
     });
@@ -62,8 +52,10 @@ export class LuigiContextServiceImpl implements LuigiContextService {
    * Set current context
    */
   protected setContext(obj: IContextMessage): void {
-    this.currentContext = obj;
-    this.subject.next(obj);
+    this.zone.run(() => {
+      this.currentContext = obj;
+      this.subject.next(obj);
+    });
   }
 
   addListener(contextType: ILuigiContextTypes, context: Context): void {
