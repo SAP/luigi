@@ -24,25 +24,6 @@
           autofocus
           bind:this="{inputElem}"
         />
-        {#if search && search.searchFieldCentered }
-        <span
-          class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
-        >
-          {#if clearSearchFieldBtn}
-          <button
-            aria-label="button-decline"
-            class="fd-shellbar__button fd-button"
-            on:click="{clearSearchField}"
-          >
-            <i class="sap-icon--decline"></i>
-          </button>
-          {:else}
-          <button aria-label="button-search" class="fd-shellbar__button fd-button">
-            <i class="sap-icon--search"></i>
-          </button>
-          {/if}
-        </span>
-        {/if} {/if}
       </div>
       {#if !isCustomSearchRenderer}
       <div
