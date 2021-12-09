@@ -111,7 +111,6 @@
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
   let searchFieldAlwaysVisible;
-  let clearSearchFieldBtn = false;
 
   onMount(async () => {
     search = globalSearchConfig;
@@ -197,11 +196,6 @@
     } else {
       console.warn('GlobalSearch is not available.');
     }
-  }
-
-  function clearSearchField() {
-    document.querySelector('.luigi-search__input').value = '';
-    clearSearchFieldBtn = false;
   }
 
   function calcSearchResultItemSelected(direction) {
