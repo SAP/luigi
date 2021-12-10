@@ -1350,7 +1350,7 @@
         isNavigateBack = false;
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
-        if (e.source !== window && !e.data.params.intent) {
+        if (e.source !== window && !e.data.params.intent && e.data.params.link) {
           e.data.params.link = e.data.params.link.split('?')[0];
         }
         if (e.data.params.newTab) {
