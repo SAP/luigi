@@ -24,7 +24,7 @@
         <span
           class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
         >
-          {#if clearSearchFieldBtn}
+          {#if displayClearSearchFieldBtn}
           <button
             aria-label="button-decline"
             class="fd-shellbar__button fd-button"
@@ -143,7 +143,7 @@
   let search = {};
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
-  let clearSearchFieldBtn = false;
+  let displayClearSearchFieldBtn = false;
   let getTranslation = getContext('getTranslation');
 
   onMount(async () => {
@@ -236,25 +236,22 @@
         }
       } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
         search.searchProvider.onInput();
-        document.querySelector('.luigi-search__input').value
-          ? (clearSearchFieldBtn = true)
-          : (clearSearchFieldBtn = false);
       }
     } else {
-      console.warn('GlobalSearch is not available.');
+      console.warn('GlobalSearchCentered is not available.');
     }
   }
 
   function renderClearBtn() {
     document.querySelector('.luigi-search__input').value
-      ? (clearSearchFieldBtn = true)
-      : (clearSearchFieldBtn = false);
+      ? (displayClearSearchFieldBtn = true)
+      : (displayClearSearchFieldBtn = false);
   }
 
   function clearSearchField() {
     document.querySelector('.luigi-search__input').value = '';
     closeSearchResult();
-    clearSearchFieldBtn = false;
+    displayClearSearchFieldBtn = false;
   }
 
   function calcSearchResultItemSelected(direction) {
