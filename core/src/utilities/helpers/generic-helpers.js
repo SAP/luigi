@@ -313,6 +313,44 @@ class GenericHelpersClass {
     }
     return val;
   }
+
+  createRemotePromise() {
+    let res, rej;
+    const prom = new Promise((resolve, reject) => {
+      res = () => {
+        resolve();
+      };
+      rej = () => {
+        reject(new Error());
+      };
+    });
+
+    let luiRP = LuigiConfig._remotePromises;
+    if (!luiRP) {
+      luiRP = {
+        counter: 0,
+        promises: []
+      };
+      LuigiConfig._remotePromises = luiRP;
+    }
+    prom.id = luiRP.counter++;
+    luiRP.promises[prom.id] = prom;
+
+    prom.doResolve = () => {
+      delete luiRP.promises[prom.id];
+      res();
+    };
+    prom.doReject = () => {
+      delete luiRP.promises[prom.id];
+      rej();
+    };
+
+    return prom;
+  }
+
+  getRemotePromise(id) {
+    return LuigiConfig._remotePromises ? LuigiConfig._remotePromises.promises[id] : undefined;
+  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();

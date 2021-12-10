@@ -345,7 +345,7 @@
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    Routing.navigateTo(path, true, isNavigationSyncEnabled);
+    return Routing.navigateTo(path, true, isNavigationSyncEnabled);
   };
 
   const removeQueryParams = str => str.split('?')[0];
@@ -366,7 +366,7 @@
   };
 
   const getUnsavedChangesModalPromise = source => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
@@ -379,7 +379,9 @@
             }
             resolve();
           },
-          () => {}
+          () => {
+            reject();
+          }
         );
       } else {
         resolve();
@@ -1349,13 +1351,37 @@
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
 
+        const previousUrl = window.location.href;
+
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
+
+        const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+
+        const resolveRemotePromise = () => {
+          if (remotePromise) {
+            remotePromise.doResolve();
+          }
+        };
+        const rejectRemotePromise = () => {
+          if (remotePromise) {
+            remotePromise.doReject();
+          }
+        };
+
+        const checkResolve = checkLocationChange => {
+          if (!checkLocationChange || previousUrl !== window.location.href) {
+            resolveRemotePromise();
+          } else {
+            rejectRemotePromise();
+          }
+        };
 
         if (e.data.params.newTab) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
-          openViewInNewTab(path);
+          await openViewInNewTab(path);
+          checkResolve();
         } else if (e.data.params.modal !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
@@ -1366,11 +1392,16 @@
             pathExist
           );
           if (!path) {
+            rejectRemotePromise();
             return;
           }
           contentNode = node;
           resetMicrofrontendModalData();
-          openViewInModal(path, e.data.params.modal === true ? {} : e.data.params.modal);
+          await openViewInModal(
+            path,
+            e.data.params.modal === true ? {} : e.data.params.modal
+          );
+          checkResolve();
         } else if (e.data.params.splitView !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
@@ -1381,10 +1412,12 @@
             pathExist
           );
           if (!path) {
+            rejectRemotePromise();
             return;
           }
           contentNode = node;
-          openSplitView(path, e.data.params.splitView);
+          await openSplitView(path, e.data.params.splitView);
+          checkResolve();
         } else if (e.data.params.drawer !== undefined) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
@@ -1395,21 +1428,33 @@
             pathExist
           );
           if (!path) {
+            rejectRemotePromise();
             return;
           }
           contentNode = node;
           resetMicrofrontendDrawerData();
           e.data.params.drawer.isDrawer = true;
-          openViewInDrawer(path, e.data.params.drawer);
+          await openViewInDrawer(path, e.data.params.drawer);
+          checkResolve();
         } else {
-          getUnsavedChangesModalPromise().then(() => {
-            isNavigationSyncEnabled = !e.data.params.withoutSync;
-            handleNavigation(e.data, config, srcNode, srcPathParams);
-            closeModal();
-            closeSplitView();
-            closeDrawer();
-            isNavigationSyncEnabled = true;
-          });
+          getUnsavedChangesModalPromise()
+            .then(() => {
+              isNavigationSyncEnabled = !e.data.params.withoutSync;
+              handleNavigation(e.data, config, srcNode, srcPathParams)
+                .then(() => {
+                  checkResolve(true);
+                })
+                .catch(() => {
+                  rejectRemotePromise();
+                });
+              closeModal();
+              closeSplitView();
+              closeDrawer();
+              isNavigationSyncEnabled = true;
+            })
+            .catch(() => {
+              rejectRemotePromise();
+            });
         }
       }
 
