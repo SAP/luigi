@@ -134,7 +134,6 @@ jobs:
             npm --prefix ./core ci ./core;
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
             npm --prefix ./website/fiddle install ./website/fiddle;
-            npm i -g whitesource;
             bash ./scripts/whiteSource.sh;
           fi'
       before_cache:

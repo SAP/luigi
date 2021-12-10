@@ -19,13 +19,15 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "8b3ce944979d49c8b1d2917533199aeb4e73a993843f4820a509a33932e18a29"
                            "56eb623145264763a82330025e4f11efd538074a3cd04791ab6ab87293174aca"
                           )
+                          
+curl -s -L https://github.com/whitesource/unified-agent-distribution/raw/master/standAlone/wss_agent.sh > wss_agent.sh
 
 for ((i=0;i<${#FOLDERS[@]};++i)); do
   cd $BASE_DIR/../${FOLDERS[i]}
 
-  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s","baseURL":"%s", "devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}" "$WHITESOURCE_BASEURL") > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
+  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s", "devDep": "false","forceUpdate": true,"checkPolicies": true, "wss.url":"https://sap.whitesourcesoftware.com/agent"}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}") > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
 
-  whitesource run
+  bash wss_agent.sh -apiKey ${WHITESOURCE_APIKEY}" -c $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json -project travis-ci_test -d .
 
   RV=$?
   echo "Exit code: $RV"
