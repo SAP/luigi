@@ -32,7 +32,7 @@ for ((i=0;i<${#FOLDERS[@]};++i)); do
   #echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s", "devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}" ) > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
   echo $'apiKey='${WHITESOURCE_APIKEY}$'\nuserKey='$WHITESOURCE_USER_TOKEN$'\nproductName='$WHITESOURCE_PRODUCT_TOKEN$'\nprojectToken='${PROJECT_TOKENS[i]}$'\ndevDep=false\nforceUpdate=true\ncheckPolicies=true\nwss.url=https://sap.whitesourcesoftware.com/agent' > wss-generated-file.config
   #echo "test $(< wss-generated-file.config)"
-  java -jar $BASE_DIR/wss-unified-agent.jar -c wss-generated-file.config -d .
+  java -jar $BASE_DIR/wss-unified-agent.jar -c wss-generated-file.config -d . -scanComment "test"
 
   RV=$?
   echo "Exit code: $RV"
