@@ -239,7 +239,7 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 #### addNodeParams
 
-Set search query parameters to Luigi Core. The search parameters will be added to the URL.
+Set node parameters to Luigi Core. The search parameters will be added to the URL.
 
 ##### Parameters
 
