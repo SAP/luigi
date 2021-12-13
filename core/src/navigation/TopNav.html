@@ -39,7 +39,7 @@
   </div>
   {/if}
   <div class="fd-shellbar__group fd-shellbar__group--actions">
-    {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig} {#if
+    {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig &&
     !isGlobalSearchCentered}
     <GlobalSearch
       bind:isSearchFieldVisible
@@ -53,7 +53,7 @@
       on:closeSearchResult
       globalSearchConfig="{globalSearchConfig}"
     />
-    {/if} {/if}
+    {/if}
     <ContextSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
