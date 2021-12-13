@@ -613,7 +613,7 @@ export type getEventData = () => Context;
 export function getContext(): Context;
 export type getContext = () => Context;
 /**
- * Set search query parameters to Luigi core. It will be added to url.
+ * Sets search query parameters in Luigi Core. The search parameters will be added to the URL.
  * @param {Object} searchParams
  * @memberof Lifecycle
  * @example
