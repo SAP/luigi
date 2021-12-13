@@ -22,16 +22,17 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
 
 cd $BASE_DIR
 echo "Start download.."
-curl -LJO https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar
+#curl -LJO https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar
 echo "Downloaded"
 
 for ((i=0;i<${#FOLDERS[@]};++i)); do
-
   cd $BASE_DIR/../${FOLDERS[i]}
-
-  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s", "devDep": "false","forceUpdate": true,"checkPolicies": true, "wss.url":"https://sap.whitesourcesoftware.com/agent"}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}") > whitesource.config.json
-
-  java -jar $BASE_DIR/wss-unified-agent.jar -c whitesource.config.json -d .
+  echo "create config File:"
+  
+  #echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s", "devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}" ) > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
+  echo $'apiKey='${WHITESOURCE_APIKEY}$'\nuserKey='$WHITESOURCE_USER_TOKEN$'\nproductName='$WHITESOURCE_PRODUCT_TOKEN$'\nprojectToken='${PROJECT_TOKENS[i]}$'\ndevDep=false\nforceUpdate=true\ncheckPolicies=true\nwss.url=https://sap.whitesourcesoftware.com/agent' > wss-generated-file.config
+  #echo "test $(< wss-generated-file.config)"
+  java -jar $BASE_DIR/wss-unified-agent.jar -c wss-generated-file.config -d .
 
   RV=$?
   echo "Exit code: $RV"
