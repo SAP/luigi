@@ -135,9 +135,9 @@ jobs:
             npm --prefix ./core ci ./core;
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
             npm --prefix ./website/fiddle install ./website/fiddle;
-            bash echo "#######check folder path"
-            bash echo $TRAVIS_BUILD_DIR
-            bash echo $HOME
+            echo "#######check folder path"
+            echo $TRAVIS_BUILD_DIR
+            echo $HOME
             bash ./scripts/whiteSource.sh;
           fi'
       before_cache:
