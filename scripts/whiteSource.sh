@@ -20,8 +20,8 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "56eb623145264763a82330025e4f11efd538074a3cd04791ab6ab87293174aca"
                           )
 
-cd $BASE_DIR/../../../../whitesource
-CACHED_WHITESOURCE_UA=$BASE_DIR/../../../../whitesource/wss-unified-agent.jar
+cd $BASE_DIR/../../../../.cache/whitesource
+CACHED_WHITESOURCE_UA=$BASE_DIR/../../../../.cache/whitesource/wss-unified-agent.jar
 echo $CACHED_WHITESOURCE_UA
 if [ -f "$CACHED_WHITESOURCE_UA" ]; then
     echo "$CACHED_WHITESOURCE_UA exists. Take from Cache."
@@ -36,7 +36,7 @@ for ((i=0;i<${#FOLDERS[@]};++i)); do
   cd $BASE_DIR/../${FOLDERS[i]}
   echo "Create config File:"
   echo $'apiKey='${WHITESOURCE_APIKEY}$'\nuserKey='$WHITESOURCE_USER_TOKEN$'\nproductName='$WHITESOURCE_PRODUCT_TOKEN$'\nprojectToken='${PROJECT_TOKENS[i]}$'\ndevDep=false\nforceUpdate=true\ncheckPolicies=true\nwss.url=https://sap.whitesourcesoftware.com/agent' > wss-generated-file.config
-  java -jar $BASE_DIR/../../../../whitesource/wss-unified-agent.jar -c wss-generated-file.config -d . -scanComment $(date)
+  java -jar $BASE_DIR/../../../../.cache/whitesource/wss-unified-agent.jar -c wss-generated-file.config -d . -scanComment $(date)
   
   RV=$?
   echo "Exit code: $RV"
