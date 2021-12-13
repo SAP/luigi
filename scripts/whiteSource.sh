@@ -36,7 +36,7 @@ for ((i=0;i<${#FOLDERS[@]};++i)); do
   cd $BASE_DIR/../${FOLDERS[i]}
   echo "Create config File:"
   echo $'apiKey='${WHITESOURCE_APIKEY}$'\nuserKey='$WHITESOURCE_USER_TOKEN$'\nproductName='$WHITESOURCE_PRODUCT_TOKEN$'\nprojectToken='${PROJECT_TOKENS[i]}$'\ndevDep=false\nforceUpdate=true\ncheckPolicies=true\nwss.url=https://sap.whitesourcesoftware.com/agent' > wss-generated-file.config
-  java -jar $BASE_DIR/../../../../.cache/whitesource/wss-unified-agent.jar -c wss-generated-file.config -d . -scanComment $(date)
+  java -jar $BASE_DIR/../../../../.cache/whitesource/wss-unified-agent.jar -c wss-generated-file.config -d . -scanComment "test2"
   
   RV=$?
   echo "Exit code: $RV"
