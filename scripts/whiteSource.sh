@@ -22,7 +22,7 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
 
 cd $BASE_DIR
 echo "Start download.."
-
+echo $BASE_DIR
 curl -LJO https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar
 echo "Downloaded"
 
