@@ -19,8 +19,7 @@
         {:else} <input type="text" on:keyup="{(event) => onKeyUp(event)}" class="fd-input
         fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
         data-testid="luigi-search-input" bind:this="{inputElem}" on:input={() =>
-        renderClearBtn()} /> {#if search.searchFieldCentered &&
-        GenericHelpers.requestExperimentalFeature('globalSearchCentered', true)}
+        renderClearBtn()} />
         <span
           class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button lui-search-btn-ctn"
         >
@@ -41,7 +40,7 @@
             <i class="sap-icon--search"></i>
           </button>
         </span>
-        {/if} {/if}
+        {/if}
       </div>
       {#if !isCustomSearchRenderer}
       <div
@@ -173,6 +172,7 @@
   beforeUpdate(() => {
     search = globalSearchConfig;
     getCustomRenderer();
+    renderClearBtn();
   });
 
   function getCustomRenderer() {
@@ -253,13 +253,13 @@
   }
 
   function renderClearBtn() {
-    document.querySelector('.luigi-search__input').value
+    inputElem && inputElem.value
       ? (displayClearSearchFieldBtn = true)
       : (displayClearSearchFieldBtn = false);
   }
 
   function clearSearchField() {
-    document.querySelector('.luigi-search__input').value = '';
+    inputElem.value = '';
     closeSearchResult();
     displayClearSearchFieldBtn = false;
   }
