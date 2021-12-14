@@ -575,7 +575,12 @@ describe('Fiddle', () => {
               language: {
                 type: 'enum',
                 label: 'Language and Region',
-                options: [{ value: 'de', label: 'Deutsch' }, { value: 'en', label: 'English' }, '简体中文', { value: 'fr', label: 'Français' }],
+                options: [
+                  { value: 'de', label: 'Deutsch' },
+                  { value: 'en', label: 'English' },
+                  '简体中文',
+                  { value: 'fr', label: 'Français' }
+                ],
                 description:
                   'After you save your settings, the browser will refresh for the new language to take effect.'
               },
@@ -634,18 +639,15 @@ describe('Fiddle', () => {
         .should('exist')
         .should('contain', 'English');
 
-
       cy.get('[data-testid="lui-us-language-dropdown"]')
         .eq(0)
         .click();
+      cy.get('[data-testid="lui-us-language-dropdown"]').should('be.visible');
       cy.get('[data-testid="lui-us-language-dropdown"]')
-        .should('be.visible');
-        cy.get('[data-testid="lui-us-language-dropdown"]')
         .eq(0)
         .click();
       cy.wait(500);
-      cy.get('[data-testid="lui-us-option0_0"]')
-        .should('not.be.visible');
+      cy.get('[data-testid="lui-us-option0_0"]').should('not.be.visible');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
       cy.get('.lui-usersettings-dialog').should('not.be.visible');
@@ -724,6 +726,54 @@ describe('Fiddle', () => {
       });
     });
   });
+
+  describe('GlobalSearchCentered', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+    });
+    beforeEach(() => {
+      newConfig.globalSearch = {
+        searchFieldCentered: true,
+        searchProvider: {}
+      };
+      newConfig.settings = {
+        experimental: {
+          globalSearchCentered: true
+        }
+      };
+
+      cy.visitWithFiddleConfig('/home', newConfig);
+    });
+    context('Desktop', () => {
+      it('Search on large viewport', () => {
+        cy.get('.lui-global-search-btn').should('not.be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-input').should('be.visible');
+      });
+    });
+    context('Mobile', () => {
+      it('Search on smaller viewport', () => {
+        cy.viewport('iphone-6');
+        cy.get('.lui-global-search-btn').should('be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-input').should('not.be.visible');
+
+        cy.get('.lui-global-search-btn').click();
+
+        cy.get('.lui-global-search-btn').should('not.be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('be.visible');
+        cy.get('.lui-global-search-input').should('be.visible');
+
+        cy.get('.lui-global-search-cancel-btn').click();
+
+        cy.get('.lui-global-search-btn').should('be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-input').should('not.be.visible');
+      });
+    });
+  });
+
   describe('BreadCrumb and NavHeader', () => {
     let newConfig;
     var breadcrumbsConfig = {
