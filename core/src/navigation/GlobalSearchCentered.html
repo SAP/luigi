@@ -22,7 +22,7 @@
         renderClearBtn()} /> {#if search.searchFieldCentered &&
         GenericHelpers.requestExperimentalFeature('globalSearchCentered', true)}
         <span
-          class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button"
+          class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button lui-search-btn-ctn"
         >
           {#if displayClearSearchFieldBtn}
           <button
@@ -33,7 +33,11 @@
             <i class="sap-icon--decline"></i>
           </button>
           {/if}
-          <button aria-label="button-search" class="fd-shellbar__button fd-button">
+          <button
+            aria-label="button-search"
+            class="fd-shellbar__button fd-button"
+            on:click="{searchBtnClicked}"
+          >
             <i class="sap-icon--search"></i>
           </button>
         </span>
@@ -242,6 +246,12 @@
     }
   }
 
+  function searchBtnClicked() {
+    if (search && GenericHelpers.isFunction(search.searchProvider.onSearchBtnClick)) {
+      search.searchProvider.onSearchBtnClick();
+    }
+  }
+
   function renderClearBtn() {
     document.querySelector('.luigi-search__input').value
       ? (displayClearSearchFieldBtn = true)
@@ -441,6 +451,10 @@
     .lui-global-search-btn {
       display: inline-block;
     }
+  }
+
+  .lui-search-btn-ctn {
+    font-size: 0;
   }
 
   .fd-input-group__addon--button {

@@ -114,6 +114,9 @@ class GlobalSearch {
         }
       }
     },
+    onSearchBtnClick: () => {
+      console.log('retrieve globalSearch search btn clicked');
+    },
     onEnter: () => {},
     onEscape: () => {
       Luigi.globalSearch().closeSearchResult();
