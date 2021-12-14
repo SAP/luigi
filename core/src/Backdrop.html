@@ -53,19 +53,20 @@
     if (!backdropDisabled) {
       setBackdropClass();
       EventListenerHelpers.addEventListener('message', e => {
-        if (!IframeHelpers.getValidMessageSource(e)) return;
+        const srcIframe = IframeHelpers.getValidMessageSource(e);
+        if (!srcIframe) return;
         if (disable !== true) {
           if ('luigi.add-backdrop' === e.data.msg) {
-            if (isValidForArea(e)) {
-              backdropActive = true;
-            } else {
-              backdropActive = false;
-            }
+            backdropActive = isValidForArea(e);
             dispatch('stateChanged', { backdropActive: true });
+            // disable backdrop background elements' accessbility
+            IframeHelpers.disableA11yOfInactiveIframe(srcIframe);
           }
           if ('luigi.remove-backdrop' === e.data.msg) {
             backdropActive = false;
             dispatch('stateChanged', { backdropActive: false });
+            // enable backdrop background elements' accessbility
+            IframeHelpers.enableA11yOfInactiveIframe();
           }
         }
       });
