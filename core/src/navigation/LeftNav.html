@@ -13,7 +13,7 @@
         <a class="fd-nested-list__link">
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
-            class="fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
+            class="fd-nested-list__icon sap-icon {icon(navHeader.icon)}"
             role="presentation"
           ></i>
           {:else}
@@ -55,7 +55,7 @@
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
               <i
-                class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"
+                class="fd-nested-list__icon sap-icon icon({node.icon})"
                 role="presentation"
               ></i>
               {:else}
@@ -225,7 +225,7 @@
               data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
-              <i class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"></i>
+              <i class="fd-nested-list__icon sap-icon icon({node.icon})"></i>
               {:else}
               <span class="fd-nested-list__icon sap-icon">
                 <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -468,6 +468,10 @@
       entries.sort((e1, e2) => e1[1].metaInfo.order - e2[1].metaInfo.order);
       sortedChildrenEntries = entries;
     }
+  }
+
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
   }
 
   function isOpenUIiconName(name) {

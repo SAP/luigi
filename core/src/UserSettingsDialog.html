@@ -262,6 +262,11 @@
       handleSaveBtnVisibility();
     }
   }
+
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
+  }
+
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);
   }
@@ -506,7 +511,7 @@
                   <span class="fd-list__thumbnail">
                     <i
                       role="presentation"
-                      class="sap-icon--{userSettingsGroupProperty[1].icon}"
+                      class="{icon(userSettingsGroupProperty[1].icon)}"
                     ></i>
                   </span>
                   {:else}

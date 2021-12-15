@@ -24,7 +24,7 @@
         on:click|preventDefault="{() => {}}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
-        <span class="fd-top-nav__icon sap-icon--{profileItem.icon}"></span>
+        <span class="fd-top-nav__icon {icon(profileItem.icon)}"></span>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -43,7 +43,7 @@
     >
       <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
-        <i class="fd-top-nav__icon sap-icon--{profileNav.settings.icon}"></i>
+        <i class="fd-top-nav__icon {icon(profileNav.settings.icon)}"></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -63,7 +63,7 @@
     >
       <a aria-label="Logout" class="fd-menu__link" data-testid="logout-btn">
         {#if profileNav.logout.icon} {#if hasOpenUIicon(profileNav.logout)}
-        <i class="fd-top-nav__icon sap-icon--{profileNav.logout.icon}"></i>
+        <i class="fd-top-nav__icon {icon(profileNav.logout.icon)}"></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -137,6 +137,10 @@
 
   function startAuthorization() {
     AuthLayerSvc.startAuthorization();
+  }
+
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
   }
 
   function hasOpenUIicon(node) {

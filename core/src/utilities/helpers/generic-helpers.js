@@ -313,6 +313,23 @@ class GenericHelpersClass {
     }
     return val;
   }
+
+  /**
+   * Checks, if icon class is businessSuiteInAppSymbols or TNT suite and renders the icon name accordingly
+   *
+   * @param {*} iconString icon name
+   *
+   * @returns properly formatted icon name.
+   */
+  renderIconClassName(iconString) {
+    let iconClass = 'sap-icon-';
+    if (iconString.startsWith('businessSuiteInAppSymbols') || iconString.startsWith('TNT')) {
+      iconClass += iconString;
+    } else {
+      iconClass += '-' + iconString;
+    }
+    return iconClass;
+  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();

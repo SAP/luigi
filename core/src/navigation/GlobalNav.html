@@ -12,7 +12,7 @@
         >
           <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
             {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+            <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
             {:else}
             <img
               class="fd-top-nav__icon nav-icon"
@@ -41,7 +41,7 @@
         >
           <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
             {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
+            <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
             {:else}
             <img
               class="fd-top-nav__icon nav-icon"
@@ -120,6 +120,10 @@
       setTopNavData();
     }
   });
+
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
+  }
 
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);

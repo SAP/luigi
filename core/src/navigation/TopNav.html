@@ -57,7 +57,7 @@
             data-testid="{getTestId(node)}"
           >
             {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="sap-icon sap-icon--{node.icon} fd-top-nav__icon"></span>
+            <span class="sap-icon {icon(node.icon)} fd-top-nav__icon"></span>
             {:else}
             <img
               class="fd-top-nav__icon nav-icon"
@@ -96,7 +96,7 @@
         data-testid="{getTestId(node)}"
       >
         {#if node.icon} {#if hasOpenUIicon(node)}
-        <span class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"></span>
+        <span class="fd-top-nav__icon sap-icon {icon(node.icon)}"></span>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -233,7 +233,7 @@
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
                     <span
-                      class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"
+                      class="fd-top-nav__icon sap-icon {icon(node.icon)}"
                     ></span>
                     {:else}
                     <img
@@ -255,7 +255,7 @@
                     {#if hasOpenUIicon(productSwitcherConfig) ||
                     !productSwitcherConfig.icon}
                     <i
-                      class="fd-top-nav__icon sap-icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
+                      class="fd-top-nav__icon sap-icon {icon(productSwitcherConfig.icon || 'grid')}"
                     ></i>
                     {:else}
                     <span class="fd-top-nav__icon">
@@ -523,6 +523,10 @@
   export let showTopNav;
   $: showTopNav =
     (authorizationEnabled && (!autologinEnabled || isLoggedIn)) || !authorizationEnabled;
+
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
+  }
 
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);

@@ -53,7 +53,7 @@
         on:click|preventDefault="{() => {}}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
-        <i role="presentation" class="fd-list__icon sap-icon--{profileItem.icon}"></i>
+        <i role="presentation" class="fd-list__icon {icon(profileItem.icon)}"></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -78,10 +78,7 @@
         data-testid="settings-link"
       >
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
-        <i
-          role="presentation"
-          class="fd-list__icon sap-icon--{profileNav.settings.icon}"
-        ></i>
+        <i role="presentation" class="fd-list__icon {icon(profileNav.settings.icon)}"></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -188,6 +185,10 @@
 
   function startAuthorization() {
     AuthLayerSvc.startAuthorization();
+  }
+
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
   }
 
   function hasOpenUIicon(node) {

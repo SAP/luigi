@@ -8,7 +8,7 @@
       <div class="fd-bar__left">
         <div class="fd-bar__element">
           {#if settings.type}
-          <i class="sap-icon--{settings.icon}"></i>
+          <i class="{icon(settings.icon)}"></i>
           {/if}
           <h2 class="fd-title fd-title--h5">{settings.header}</h2>
         </div>
@@ -81,6 +81,10 @@
       console.warn(`Couldn't focus ${focusedButton} in modal`);
     }
   });
+
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
+  }
 
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
