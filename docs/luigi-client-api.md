@@ -243,7 +243,7 @@ Sets node parameters in Luigi Core. The parameters will be added to the URL.
 
 ##### Parameters
 
--   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 -   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
 
 ##### Examples

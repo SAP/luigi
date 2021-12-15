@@ -403,17 +403,17 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Sets node parameters in Luigi Core. The parameters will be added to the URL.
-   * @param {Object} searchParams
+   * @param {Object} params
    * @param {boolean} keepBrowserHistory
    * @memberof Lifecycle
    * @example
    * LuigiClient.addNodeParams({luigi:'rocks'}, true);
    */
-  addNodeParams(searchParams, keepBrowserHistory = true) {
-    if (searchParams) {
+  addNodeParams(params, keepBrowserHistory = true) {
+    if (params) {
       helpers.sendPostMessageToLuigiCore({
         msg: 'luigi.addNodeParams',
-        data: searchParams,
+        data: params,
         keepBrowserHistory
       });
     }
