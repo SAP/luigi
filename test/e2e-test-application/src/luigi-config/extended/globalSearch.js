@@ -2,7 +2,7 @@ class GlobalSearch {
   constructor() {
     this.searchResult = [];
   }
-
+  // searchFieldCentered = true;
   searchProvider = {
     // onInput: () => {},
     // onEnter: () => {},
@@ -113,6 +113,9 @@ class GlobalSearch {
           ]);
         }
       }
+    },
+    onSearchBtnClick: () => {
+      console.log('retrieve globalSearch search btn clicked');
     },
     onEnter: () => {},
     onEscape: () => {
