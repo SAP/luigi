@@ -4,7 +4,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
+import { LuigiAuth, LuigiConfig, LuigiFeatureToggles } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { Navigation } from '../../../src/navigation/services/navigation';
 
