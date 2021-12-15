@@ -77,6 +77,10 @@
   export let getNodeSubtitle;
   export let noSubTitle;
 
+  function icon(iconString) {
+    return GenericHelpers.renderIconClassName(iconString);
+  }
+
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function onActionClick(value) {

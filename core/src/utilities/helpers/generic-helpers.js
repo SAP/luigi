@@ -316,6 +316,7 @@ class GenericHelpersClass {
 
   /**
    * Checks, if icon class is businessSuiteInAppSymbols or TNT suite and renders the icon name accordingly
+   * I.e. will return sap-icon--home or sap-icon-TNT--systemjava or sap-icon-businessSuiteInAppSymbols--birthday
    *
    * @param {*} iconString icon name
    *
