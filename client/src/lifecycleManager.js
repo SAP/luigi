@@ -10,7 +10,7 @@ class LifecycleManager extends LuigiClientBase {
   constructor() {
     super();
     this.luigiInitialized = false;
-    this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams'];
+    this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
       this.defaultContextKeys.reduce(function(acc, key) {
         acc[key] = {};
@@ -425,6 +425,33 @@ class LifecycleManager extends LuigiClientBase {
    */
   getPathParams() {
     return this.currentContext.pathParams;
+  }
+
+  /**
+   * Read search query parameters which are sent from Luigi Core
+   * @memberof Lifecycle
+   * @returns Core search query parameters
+   * @example
+   * LuigiClient.getCoreSearchParams();
+   */
+  getCoreSearchParams() {
+    return this.currentContext.searchParams;
+  }
+
+  /**
+   * Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
+   * @param {Object} searchParams
+   * @memberof Lifecycle
+   * @example
+   * LuigiClient.addCoreSearchParams({luigi:'rocks'});
+   */
+  addCoreSearchParams(searchParams) {
+    if (searchParams) {
+      helpers.sendPostMessageToLuigiCore({
+        msg: 'luigi.addSearchParams',
+        data: searchParams
+      });
+    }
   }
 
   /**

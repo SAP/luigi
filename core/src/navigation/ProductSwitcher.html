@@ -7,8 +7,6 @@ Object.keys(productSwitcherItems[0]).length }
   <div class="fd-product-switch">
     <div class="fd-popover fd-popover--right">
       <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-        <!-- default: sap-icon--grid -->
-
         <button
           class="fd-button fd-button--transparent fd-product-switch__control"
           aria-expanded="{dropDownStates.productSwitcherPopover || false}"
@@ -19,6 +17,7 @@ Object.keys(productSwitcherItems[0]).length }
         >
           <div class="lui-product-switch__icon">
             {#if hasOpenUIicon(config)}
+            <!-- default: sap-icon--grid -->
             <i class="sap-icon {icon(config.icon)}"></i>
             {:else}
             <img src="{config.icon}" alt="{config.altText ? config.altText : ''}" />
@@ -40,6 +39,36 @@ Object.keys(productSwitcherItems[0]).length }
               on:click="{() => onActionClick(productSwitcherItem)}"
               data-testid="{getTestId(productSwitcherItem)}"
             >
+              {#if addNavHrefForAnchor}
+              <a
+                href="{getRouteLink(productSwitcherItem)}"
+                on:click|preventDefault="{() => {}}"
+                class="fd-menu__link"
+              >
+                <div class="lui-product-switch__icon">
+                  {#if hasOpenUIicon(productSwitcherItem)}
+                  <i
+                    class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
+                  ></i>
+                  {:else}
+                  <img
+                    src="{productSwitcherItem.icon}"
+                    alt="{productSwitcherItem.altText ? productSwitcherItem.altText : ''}"
+                  />
+                  {/if}
+                </div>
+                <div class="fd-product-switch__text">
+                  <div class="fd-product-switch__title">
+                    {getNodeLabel(productSwitcherItem)}
+                  </div>
+                  {#if getNodeSubtitle(productSwitcherItem)}
+                  <div class="fd-product-switch__subtitle">
+                    {getNodeSubtitle(productSwitcherItem)}
+                  </div>
+                  {/if}
+                </div>
+              </a>
+              {:else}
               <div class="lui-product-switch__icon">
                 {#if hasOpenUIicon(productSwitcherItem)}
                 <i
@@ -62,6 +91,7 @@ Object.keys(productSwitcherItems[0]).length }
                 </div>
                 {/if}
               </div>
+              {/if}
             </li>
             {/if} {/each}
           </ul>
@@ -89,8 +119,7 @@ Object.keys(productSwitcherItems[0]).length }
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiConfig, LuigiI18N } from '../core-api';
   import { Routing } from '../services/routing';
-  import { StateHelpers } from '../utilities/helpers';
-  import { NavigationHelpers } from '../utilities/helpers';
+  import { StateHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -102,6 +131,7 @@ Object.keys(productSwitcherItems[0]).length }
   let store = getContext('store');
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let columnsClass;
+  export let addNavHrefForAnchor;
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
@@ -171,6 +201,10 @@ Object.keys(productSwitcherItems[0]).length }
 
   function getTestId(node) {
     return node.testId ? node.testId : NavigationHelpers.prepareForTests(node.label);
+  }
+
+  function getRouteLink(node) {
+    return RoutingHelpers.getNodeHref(node);
   }
 </script>
 

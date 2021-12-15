@@ -44,7 +44,13 @@ class SplitViewSvcClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
-    const iframe = IframeHelpers.createIframe(viewUrl, undefined, component.get().lastNode, 'split-view');
+    const iframe = IframeHelpers.createIframe(
+      viewUrl,
+      undefined,
+      component.get().lastNode,
+      'split-view',
+      componentData
+    );
     const iframeCtn = document.querySelector('.iframeSplitViewCnt');
     iframeCtn.appendChild(iframe);
     return iframe;
@@ -90,6 +96,16 @@ class SplitViewSvcClass {
         ...wcInfo,
         ...{ collapsed: false }
       });
+      // if both splitview web component and main view web component are being rendered, avoid hiding main view wc
+      const mainWCContainer = document.querySelector('.wcContainer');
+      // check if main view web component container is currently rendered
+      if (mainWCContainer && mainWCContainer.childElementCount) {
+        const iContainer = document.getElementsByClassName('iframeContainer')[0];
+        if (iContainer) {
+          // sets 'wcContainer' display property to 'block' from 'none'
+          iContainer.classList.add('lui-webComponent');
+        }
+      }
     } else {
       const iframe = this.setIframe(
         lastNode.viewUrl,

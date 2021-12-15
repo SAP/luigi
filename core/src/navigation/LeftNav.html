@@ -10,10 +10,13 @@
   <div class="lui-nav-title">
     <ul class="fd-nested-list">
       <li class="fd-nested-list__item">
-        <a class="fd-nested-list__link">
+        <a
+          class="fd-nested-list__link"
+          title="{resolveTooltipText(navHeader, $getTranslation(navHeader.label))}"
+        >
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
-            class="fd-nested-list__icon sap-icon {icon(navHeader.icon)}"
+            class="lui-header-icon fd-nested-list__icon sap-icon {icon(navHeader.icon)}"
             role="presentation"
           ></i>
           {:else}
@@ -27,6 +30,14 @@
           <span class="fd-nested-list__title">
             {$getTranslation(navHeader.label)}
           </span>
+          {#if navHeader.showUpLink}
+          <i
+            class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
+            role="presentation"
+            title="{$getTranslation('luigi.navigation.up')}"
+            on:click|preventDefault="{handleUp}"
+          ></i>
+          {/if}
         </a>
       </li>
     </ul>
@@ -37,10 +48,12 @@
     on:keyup="{handleKey}"
     data-testid="semiCollapsibleLeftNav"
   >
-    {#if children && pathData.length > 1}
     <div class="fd-side-nav__main-navigation">
+      {#if children && pathData.length > 1}
       <div class="lui-fd-side-nav-wrapper">
-        <ul class="fd-nested-list {sideNavClass}">
+        <ul
+          class="fd-nested-list {sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact':'fd-nested-list'}"
+        >
           {#each sortedChildrenEntries as [key, nodes],index} {#if key === 'undefined' ||
           key.startsWith(virtualGroupPrefix)}
           <!-- Single nodes -->
@@ -48,7 +61,7 @@
           <li class="fd-nested-list__item">
             <a
               href="{getRouteLink(node)}"
-              title="{$getTranslation(node.label)}"
+              title="{resolveTooltipText(node, $getTranslation(node.label))}"
               class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
               on:click|preventDefault="{() => handleClick(node)}"
               data-testid="{getTestId(node)}"
@@ -84,13 +97,14 @@
           {#if nodes.metaInfo.collapsible}
           <li
             class="fd-nested-list__item lui-collapsible-item"
+            class:lui-item-expanded="{isExpanded(nodes, expandedCategories)}"
             on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
           >
             <div class="fd-nested-list__content has-child">
               <a
                 href="javascript:void(null)"
-                title="{$getTranslation(key)}"
+                title="{resolveTooltipText(nodes, $getTranslation(key))}"
                 class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
                 tabindex="-1"
                 id="collapsible_listnode_{index}"
@@ -142,7 +156,7 @@
                   class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                   on:click|preventDefault="{() => handleClick(node)}"
                   data-testid="{getTestId(node)}"
-                  title="{$getTranslation(node.label)}"
+                  title="{resolveTooltipText(node, $getTranslation(node.label))}"
                 >
                   <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
                   {#if node.externalLink && node.externalLink.url}
@@ -171,7 +185,7 @@
                       class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
                       on:click|preventDefault="{() => handleClick(node)}"
                       data-testid="{getTestId(node)}"
-                      title="{$getTranslation(node.label)}"
+                      title="{resolveTooltipText(node, $getTranslation(node.label))}"
                     >
                       <span class="fd-nested-list__title"
                         >{$getTranslation(node.label)}</span
@@ -193,7 +207,7 @@
           <!-- Category nodes -->
           <li
             class="fd-nested-list__group-header lui-category"
-            title="{$getTranslation(key)}"
+            title="{resolveTooltipText(nodes, $getTranslation(key))}"
             data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
             id="category_list_level1_{index}"
           >
@@ -215,7 +229,7 @@
           {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
           <li
             class="fd-nested-list__item"
-            title="{$getTranslation(node.label)}"
+            title="{resolveTooltipText(node, $getTranslation(node.label))}"
             aria-labelledby="category_list_level1_{index}"
           >
             <a
@@ -247,8 +261,9 @@
           {/if} {/if} {/each} {/if} {/if} {/each}
         </ul>
       </div>
+      {/if}
     </div>
-    {/if} {#if footerText || semiCollapsibleButton}
+    {#if footerText || semiCollapsibleButton}
     <div class="fd-side-nav__utility">
       <span class="lui-side-nav__footer">
         <span class="lui-side-nav__footer--text fd-has-type-minus-1"
@@ -271,6 +286,7 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Navigation } from './services/navigation';
+  import { Routing } from '../services/routing';
   import {
     IframeHelpers,
     NavigationHelpers,
@@ -279,7 +295,7 @@
     StateHelpers,
     EventListenerHelpers
   } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements, LuigiI18N } from '../core-api';
+  import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.html';
@@ -298,11 +314,12 @@
       sideNavAccordionMode,
       selectedCategory,
       expandedCategories,
-      hasCategoriesWithIcon
+      hasCategoriesWithIcon,
+      navParentNode
     }),
-    set: obj => {
+    set: async obj => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach(prop => {
+        Object.getOwnPropertyNames(obj).forEach(async prop => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -313,55 +330,101 @@
             selectedNode = obj.selectedNode;
           } else if (prop === 'hasCategoriesWithIcon') {
             hasCategoriesWithIcon = obj.hasCategoriesWithIcon;
+          } else if (prop === 'navParent') {
+            navHeader = undefined;
+            let parentNode = obj.navParent;
+            navParentNode = parentNode;
+            if (
+              parentNode &&
+              parentNode.navHeader &&
+              GenericHelpers.requestExperimentalFeature('navHeader', true)
+            ) {
+              let resolvedNavHeader = parentNode.navHeader;
+              let resolvedNavHeaderNode = parentNode;
+
+              if ('inherit' === resolvedNavHeader) {
+                resolvedNavHeaderNode = parentNode.parent;
+                while (
+                  resolvedNavHeaderNode &&
+                  'inherit' === resolvedNavHeaderNode.navHeader
+                ) {
+                  resolvedNavHeaderNode = resolvedNavHeaderNode.parent;
+                }
+                resolvedNavHeader = resolvedNavHeaderNode
+                  ? resolvedNavHeaderNode.navHeader
+                  : undefined;
+              }
+
+              if (resolvedNavHeader instanceof Function) {
+                navHeader = {};
+
+                let res = resolvedNavHeader(
+                  NavigationHelpers.stripNode(parentNode),
+                  NavigationHelpers.stripNode(resolvedNavHeaderNode),
+                  context
+                );
+                if (res instanceof Promise) {
+                  res.then(headerData => {
+                    navHeader = headerData;
+                  });
+                } else {
+                  navHeader = res;
+                }
+              } else if ('auto' === resolvedNavHeader) {
+                navHeader = {
+                  label: parentNode.label,
+                  icon: parentNode.icon
+                };
+              } else if (
+                resolvedNavHeader &&
+                resolvedNavHeader.useTitleResolver &&
+                resolvedNavHeaderNode.titleResolver
+              ) {
+                if (resolvedNavHeaderNode.titleResolver.prerenderFallback) {
+                  navHeader = {
+                    ...resolvedNavHeader,
+                    label: resolvedNavHeaderNode.titleResolver.fallbackTitle || '',
+                    icon: resolvedNavHeaderNode.titleResolver.fallbackIcon
+                  };
+                } else {
+                  navHeader = resolvedNavHeader;
+                }
+
+                const route = RoutingHelpers.mapPathToNode(
+                  Routing.getCurrentPath(),
+                  resolvedNavHeaderNode
+                );
+
+                Navigation.extractDataFromPath(route).then(data => {
+                  const ctx = RoutingHelpers.substituteDynamicParamsInObject(
+                    Object.assign(
+                      {},
+                      data.pathData.context,
+                      resolvedNavHeaderNode.context
+                    ),
+                    data.pathData.pathParams
+                  );
+                  NavigationHelpers.fetchNodeTitleData(resolvedNavHeaderNode, ctx)
+                    .then(headerData => {
+                      navHeader = { ...resolvedNavHeader, ...headerData };
+                    })
+                    .catch(error => {
+                      console.error(
+                        'Error while retrieving title, fallback to node label'
+                      );
+                      navHeader = {
+                        ...resolvedNavHeader,
+                        label: parentNode.label,
+                        icon: parentNode.icon
+                      };
+                    });
+                });
+              } else {
+                navHeader = await processHeader(resolvedNavHeader, resolvedNavHeaderNode);
+              }
+            }
           }
         });
-
-        navHeader = undefined;
-        let parentNode = obj.navParent;
-        if (
-          parentNode &&
-          parentNode.navHeader &&
-          GenericHelpers.requestExperimentalFeature('navHeader', true)
-        ) {
-          let resolvedNavHeader = parentNode.navHeader;
-          let resolvedNavHeaderNode = parentNode;
-
-          if ('inherit' === resolvedNavHeader) {
-            resolvedNavHeaderNode = parentNode.parent;
-            while (
-              resolvedNavHeaderNode &&
-              'inherit' === resolvedNavHeaderNode.navHeader
-            ) {
-              resolvedNavHeaderNode = resolvedNavHeaderNode.parent;
-            }
-            resolvedNavHeader = resolvedNavHeaderNode
-              ? resolvedNavHeaderNode.navHeader
-              : undefined;
-          }
-
-          if (resolvedNavHeader instanceof Function) {
-            navHeader = {};
-
-            let res = resolvedNavHeader(
-              NavigationHelpers.stripNode(parentNode),
-              NavigationHelpers.stripNode(resolvedNavHeaderNode)
-            );
-            if (res instanceof Promise) {
-              res.then(headerData => {
-                navHeader = headerData;
-              });
-            } else {
-              navHeader = res;
-            }
-          } else if ('auto' === resolvedNavHeader) {
-            navHeader = {
-              label: parentNode.label,
-              icon: parentNode.icon
-            };
-          } else {
-            navHeader = resolvedNavHeader;
-          }
-        }
 
         let sideNavAccordionModeOverride =
           (selectedNode && selectedNode.sideNavAccordionMode) ||
@@ -395,10 +458,10 @@
   export let selectedCategory = null;
   export let expandedCategories;
   export let hasCategoriesWithIcon;
-  export let sideNavClass;
   export let sideNavAccordionMode;
   export let burgerTooltip;
   export let navHeader;
+  export let navParentNode;
   let context;
   let previousWindowWidth;
   let responsiveNavSetting;
@@ -435,12 +498,6 @@
       ['settings.footer']
     );
 
-    // set compact mode class
-    if (Boolean(sideNavCompactMode)) {
-      sideNavClass = 'fd-nested-list fd-nested-list--compact';
-    } else {
-      sideNavClass = 'fd-nested-list';
-    }
     let stateArr = SemiCollapsibleNavigation.initial();
     isSemiCollapsed = stateArr.isSemiCollapsed;
     semiCollapsible = stateArr.semiCollapsible;
@@ -459,6 +516,9 @@
     if (!previousPathData || previousPathData != pathData) {
       setLeftNavData();
     }
+    sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
+    semiCollapsibleButton =
+      LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
   });
 
   export let sortedChildrenEntries;
@@ -496,6 +556,18 @@
     return metaInfo && metaInfo.testId
       ? metaInfo.testId
       : NavigationHelpers.prepareForTests(key || metaInfo.label);
+  }
+
+  async function processHeader(header, node) {
+    const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
+    const data = await Navigation.extractDataFromPath(route);
+    const dynParams = data.pathData.pathParams;
+    const nhead = RoutingHelpers.substituteDynamicParamsInObject(header, dynParams);
+    return nhead;
+  }
+
+  function resolveTooltipText(node, translation) {
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   // [svelte-upgrade suggestion]
@@ -579,6 +651,20 @@
         iframe.contentWindow.focus();
       }
     }
+  }
+
+  export function handleUp(event) {
+    let node = navParentNode ? navParentNode.parent : undefined;
+    while (node) {
+      if (node.pathSegment && node.pathSegment.trim().indexOf(':') !== 0) {
+        dispatch('handleClick', { node });
+        return;
+      }
+      node = node.parent;
+    }
+
+    console.warn('Could not resolve "up"-node, redirecting to root');
+    LuigiNavigation.navigate('/');
   }
 
   export function setExpandedState(nodes, value) {
@@ -676,6 +762,10 @@
     display: none;
   }
 
+  :global(.lui-breadcrumb) .fd-app__sidebar {
+    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+  }
+
   .fd-app__sidebar {
     position: fixed;
     top: $topNavHeight;
@@ -691,7 +781,6 @@
 
     .lui-nav-title {
       height: $navHeaderHeight;
-      background: green;
       width: var(--luigi__left-sidenav--width);
       border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
         var(--sapList_BorderColor, #e4e4e4);
@@ -718,8 +807,13 @@
           color: var(--sapTextColor, #32363a);
         }
 
-        i {
+        .lui-header-icon {
           font-size: 1.5rem;
+          color: var(--sapTile_TextColor, #6a6d70);
+        }
+
+        .lui-nav-up {
+          cursor: pointer;
           color: var(--sapTile_TextColor, #6a6d70);
         }
       }
@@ -921,11 +1015,13 @@
         0 2px 8px 0 var(--fd-color-neutral-2)
       );
       border: 1px solid var(--fd-color-neutral-3);
-      background: white;
       opacity: 0;
       animation-name: flyoutAnimation;
       animation-duration: 0.3s;
       animation-fill-mode: forwards;
+      .lui-flyout-sublist__title {
+        background: var(--sapList_Background, #fff);
+      }
 
       @-webkit-keyframes flyoutAnimation {
         0% {

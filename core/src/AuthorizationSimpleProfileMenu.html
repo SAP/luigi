@@ -20,7 +20,7 @@
       <a
         class="fd-menu__link"
         data-testid="luigi-topnav-profile-item"
-        href="{getRouteLink(profileItem)}"
+        href="{addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}"
         on:click|preventDefault="{() => {}}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
@@ -37,11 +37,18 @@
     </li>
     {/each} {#if hasUserSettings}
     <li
-      class="fd-menu__item"
-      on:click="{onUserSettingsClick}"
+      tabindex="-1"
+      class="fd-menu__item lui-anchor-node"
+      on:click|preventDefault="{onUserSettingsClick}"
+      on:keyup="{(event) => handleKeyUp(event)}"
       data-testid="{getTestId(profileNav.settings)}"
     >
-      <a aria-label="User Settings" class="fd-menu__link" data-testid="settings-link">
+      <a
+        tabindex="0"
+        title="User Settings"
+        class="fd-menu__link"
+        data-testid="settings-link"
+      >
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
         <i class="fd-top-nav__icon {icon(profileNav.settings.icon)}"></i>
         {:else}
@@ -61,7 +68,7 @@
       on:click="{onLogoutClick}"
       data-testid="{getTestId(profileNav.logout)}"
     >
-      <a aria-label="Logout" class="fd-menu__link" data-testid="logout-btn">
+      <button title="Logout" class="fd-menu__link" data-testid="logout-btn">
         {#if profileNav.logout.icon} {#if hasOpenUIicon(profileNav.logout)}
         <i class="fd-top-nav__icon {icon(profileNav.logout.icon)}"></i>
         {:else}
@@ -72,7 +79,7 @@
         />
         {/if} {/if}
         <span class="fd-menu__title">{$getTranslation(profileNav.logout.label)}</span>
-      </a>
+      </button>
     </li>
     {/if} {#if isAuthorizationEnabled && !isLoggedIn}
     <li class="fd-menu__item" on:click="{startAuthorization}">
@@ -97,10 +104,12 @@
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
 
   const dispatch = createEventDispatcher();
 
   export let isHidden = false;
+  export let addNavHrefForAnchor;
 
   let idpProviderInstance;
   let userInfo;
@@ -254,6 +263,12 @@
     AuthLayerSvc.logout();
   }
 
+  export function handleKeyUp({ keyCode }) {
+    if (keyCode === KEYCODE_ENTER || keyCode === KEYCODE_SPACE) {
+      document.querySelector('.lui-anchor-node>.fd-menu__link').click();
+    }
+  }
+
   export let showUserInfo;
   $: showUserInfo = Boolean(userInfo && (userInfo.name || userInfo.email));
 </script>
@@ -287,5 +302,13 @@
   .lui-profile-simple-menu {
     max-height: calc(100vh - 60px);
     overflow-y: auto;
+  }
+
+  li > button.fd-menu__link {
+    background-color: var(--sapList_Background, #fff);
+
+    &:hover {
+      background-color: var(--sapList_Hover_Background, #f5f5f5);
+    }
   }
 </style>

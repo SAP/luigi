@@ -10,22 +10,29 @@
           class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
           data-testid="{getTestId(node)}"
         >
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            <div class="lui-text">{getNodeLabel(node)}</div>
-            <div class="lui-indicator"></div>
-          </div>
+          <a
+            href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
+            title="{$getTranslation(node.label)}"
+            on:click|preventDefault="{() => handleClick(node)}"
+            role="button"
+          >
+            <div class="lui-fd-nested-list__content">
+              {#if node.icon} {#if hasOpenUIicon(node)}
+              <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
+              {:else}
+              <img
+                class="fd-top-nav__icon nav-icon"
+                src="{node.icon}"
+                alt="{node.altText ? node.altText : ''}"
+              />
+              {/if}
+              <!-- end hasOpenUIicon-->
+              {/if}
+              <!-- end node.icon -->
+              <div class="lui-text">{getNodeLabel(node)}</div>
+              <div class="lui-indicator"></div>
+            </div>
+          </a>
         </li>
         {/if} {/each}
       </ul>
@@ -39,22 +46,30 @@
           class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
           data-testid="{getTestId(node)}"
         >
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            <div class="lui-text">{getNodeLabel(node)}</div>
-            <div class="lui-indicator"></div>
-          </div>
+          <a
+            href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
+            title="{$getTranslation(node.label)}"
+          >
+            <div
+              class="lui-fd-nested-list__content"
+              on:click|preventDefault="{() => handleClick(node)}"
+            >
+              {#if node.icon} {#if hasOpenUIicon(node)}
+              <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
+              {:else}
+              <img
+                class="fd-top-nav__icon nav-icon"
+                src="{node.icon}"
+                alt="{node.altText ? node.altText : ''}"
+              />
+              {/if}
+              <!-- end hasOpenUIicon-->
+              {/if}
+              <!-- end node.icon -->
+              <div class="lui-text">{getNodeLabel(node)}</div>
+              <div class="lui-indicator"></div>
+            </div>
+          </a>
         </li>
         {/if} {/each}
       </ul>
@@ -83,11 +98,12 @@
   export let selectedNode;
 
   let store = getContext('store');
-  let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+  let getTranslation = getContext('getTranslation');
 
   export let showGlobalNav;
   export let hideNavComponent;
   export let responsiveNavSetting;
+  let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -119,6 +135,7 @@
     if (!previousPathData || previousPathData != pathData) {
       setTopNavData();
     }
+    addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   });
 
   function icon(iconString) {
@@ -248,6 +265,11 @@
       display: block;
       margin-left: 5px;
       margin-bottom: 2px;
+    }
+
+    /*disable default red/purple outline*/
+    .fd-nested-list__item a {
+      text-decoration: none;
     }
   }
 </style>

@@ -1,6 +1,6 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
-import { LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
 import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers } from './';
 import { Routing } from '../../services/routing';
 
@@ -142,6 +142,20 @@ class RoutingHelpersClass {
     return location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
   }
 
+  /**
+    * Append search query parameters to the route
+    @param route string  absolute path of the new route
+    @returns resulting route with or without appended params, for example /someroute?query=test
+  */
+  composeSearchParamsToRoute(route) {
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    if (hashRoutingActive) {
+      const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
+      return queryParamIndex !== -1 ? route + location.hash.slice(queryParamIndex) : route;
+    }
+    return location.search ? route + location.search : route;
+  }
+
   getModalPathFromPath() {
     const path = this.getQueryParam(this.getModalViewParamName());
     return path && decodeURIComponent(path);
@@ -195,20 +209,54 @@ class RoutingHelpersClass {
         pathParams,
         LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
       );
-      return link.url || link;
+      return this.getI18nViewUrl(link.url) || link;
     }
     return 'javascript:void(0)';
   }
 
-  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':') {
+  substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
     return Object.entries(object)
       .map(([key, value]) => {
-        let foundKey = Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
-        return [key, foundKey ? paramMap[foundKey] : value];
+        const foundKey = contains
+          ? Object.keys(paramMap).find(key2 => value && value.indexOf(paramPrefix + key2) >= 0)
+          : Object.keys(paramMap).find(key2 => value === paramPrefix + key2);
+        return [
+          key,
+          foundKey ? (contains ? value.replace(paramPrefix + foundKey, paramMap[foundKey]) : paramMap[foundKey]) : value
+        ];
       })
       .reduce((acc, [key, value]) => {
         return Object.assign(acc, { [key]: value });
       }, {});
+  }
+
+  /**
+   * Maps a path to the nodes route, replacing all dynamic pathSegments with the concrete values in path.
+   * Example: path='/object/234/subobject/378/some/node', node with path '/object/:id/subobject/:subid' results in
+   * '/object/234/subobject/378/'.
+   * @param {*} path a concrete node path, typically the current app route.
+   * @param {*} node a node which must be an ancestor of the resolved node from path.
+   *
+   * @returns a string with the route or undefined, if node is not an ancestor of path-node
+   */
+  mapPathToNode(path, node) {
+    if (!path || !node) {
+      return;
+    }
+    const pathSegments = GenericHelpers.trimLeadingSlash(path).split('/');
+    const nodeRoute = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    const nodeRouteSegments = GenericHelpers.trimLeadingSlash(nodeRoute).split('/');
+    if (pathSegments.length < nodeRouteSegments.length) {
+      return;
+    }
+    let resultingRoute = '';
+    for (let i = 0; i < nodeRouteSegments.length; i++) {
+      if (pathSegments[i] !== nodeRouteSegments[i] && nodeRouteSegments[i].indexOf(':') !== 0) {
+        return;
+      }
+      resultingRoute += '/' + pathSegments[i];
+    }
+    return resultingRoute;
   }
 
   /**
@@ -228,17 +276,39 @@ class RoutingHelpersClass {
     return this.isDynamicNode(node) ? pathParams[node.pathSegment.substring(1)] : undefined;
   }
 
+  /**
+   * Returns the viewUrl with current locale, e.g. luigi/{i18n.currentLocale}/ -> luigi/en
+   * if viewUrl contains {i18n.currentLocale} term, it will be replaced by current locale
+   * @param {*} viewUrl
+   */
+  getI18nViewUrl(viewUrl) {
+    const i18n_currentLocale = '{i18n.currentLocale}';
+    const locale = LuigiI18N.getCurrentLocale();
+    const hasI18n = viewUrl && viewUrl.includes(i18n_currentLocale);
+
+    return hasI18n ? viewUrl.replace(i18n_currentLocale, locale) : viewUrl;
+  }
+
   substituteViewUrl(viewUrl, componentData) {
     const contextVarPrefix = 'context.';
     const nodeParamsVarPrefix = 'nodeParams.';
-    const i18n_currentLocale = '{i18n.currentLocale}';
+    const searchQuery = 'routing.queryParams';
 
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.context, contextVarPrefix);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.nodeParams, nodeParamsVarPrefix);
+    viewUrl = this.getI18nViewUrl(viewUrl);
 
-    if (viewUrl.includes(i18n_currentLocale)) {
-      viewUrl = viewUrl.replace(i18n_currentLocale, LuigiI18N.getCurrentLocale());
+    if (viewUrl.includes(searchQuery)) {
+      const viewUrlSearchParam = viewUrl.split('?')[1];
+      if (viewUrlSearchParam) {
+        const key = viewUrlSearchParam.split('=')[0];
+        if (LuigiRouting.getSearchParams()[key]) {
+          viewUrl = viewUrl.replace(`{${searchQuery}.${key}}`, LuigiRouting.getSearchParams()[key]);
+        } else {
+          viewUrl = viewUrl.replace(`?${key}={${searchQuery}.${key}}`, '');
+        }
+      }
     }
 
     return viewUrl;
@@ -361,6 +431,8 @@ class RoutingHelpersClass {
         }
         realPath = realPath.pathSegment;
         if (intentObject.params) {
+          // resolve dynamic parameters in the path if any
+          realPath = this.resolveDynamicIntentPath(realPath, intentObject.params);
           // get custom node param prefixes if any or default to ~
           let nodeParamPrefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
           nodeParamPrefix = nodeParamPrefix ? nodeParamPrefix : '~';
@@ -381,6 +453,134 @@ class RoutingHelpersClass {
       console.warn('No intent mappings are defined in Luigi configuration.');
     }
     return false;
+  }
+
+  /**
+   * This function takes a path which contains dynamic parameters and a list parameters and replaces the dynamic parameters
+   * with the given parameters if any. The input path remains unchanged if the parameters list
+   * does not contain the respective dynamic parameter name.
+   * e.g.:
+   * Assume either of these two calls are made:
+   * 1. `linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})`
+   * 2. `linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')`
+   * For both 1. and 2., the following dynamic input path: `/projects/:project/details/:user`
+   * is resolved through this method to `/projects/pr2/details/john`
+   *
+   * @param {string} path the path containing the potential dynamic parameter
+   * @param {Object} parameters a list of objects consisting of passed parameters
+   */
+  resolveDynamicIntentPath(path, parameters) {
+    if (!parameters) {
+      return path;
+    }
+    let newPath = path;
+    // merge list of objects into one single object for easier iteration
+    const mergedParams = Object.assign({}, ...parameters);
+    for (const [key, value] of Object.entries(mergedParams)) {
+      // regular expression to detect dynamic parameter patterns:
+      // /some/path/:param1/example/:param2/sample
+      // /some/path/example/:param1
+      const regex = new RegExp('/:' + key + '(/|$)', 'g');
+      newPath = newPath.replace(regex, `/${value}/`);
+    }
+    // strip trailing slash
+    newPath = newPath.replace(/\/$/, '');
+    return newPath;
+  }
+
+  prepareSearchParamsForClient(currentNode) {
+    let filteredObj = {};
+    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+        if (key in LuigiRouting.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
+          filteredObj[key] = LuigiRouting.getSearchParams()[key];
+        }
+      });
+    }
+    return filteredObj;
+  }
+
+  addSearchParamsFromClient(currentNode, searchParams) {
+    if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
+      let filteredObj = {};
+      Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
+        if (key in searchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
+          filteredObj[key] = searchParams[key];
+        } else {
+          console.warn(`No permission to add "${key}" to the url`);
+        }
+      });
+      if (Object.keys(filteredObj).length > 0) {
+        LuigiRouting.addSearchParams(filteredObj);
+      }
+    }
+  }
+
+  /**
+   * Checks if given path contains intent navigation special syntax
+   * @param {string} path to check
+   */
+  hasIntent(path) {
+    return !!path && path.toLowerCase().includes('#?intent=');
+  }
+
+  /**
+   * Queries the pageNotFoundHandler configuration and returns redirect path if it exists
+   * If the there is no `pageNotFoundHandler` defined we return undefined.
+   * @param {*} notFoundPath the path to check
+   * @returns redirect path if it exists, else return undefined
+   */
+  getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched = false) {
+    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    if (typeof pageNotFoundHandler === 'function') {
+      //custom 404 handler is provided, use it
+      const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
+      if (result && result.redirectTo) {
+        return result.redirectTo;
+      }
+    }
+    return undefined;
+  }
+
+  /**
+   * Handles pageNotFound situation depending if path exists or not.
+   * If path exists simply return the given path, else fetch the pageNotFound redirect path and return it.
+   * In case there was no pageNotFound handler defined it shows an alert and returns undefined.
+   * @param {any} component the component to show the alert on
+   * @param {string} path the path to check for
+   * @param {boolean} pathExists defines if path exists or not
+   * @returns the path to redirect to or undefined if path doesn't exist and no redirect path is defined
+   */
+  async handlePageNotFoundAndRetrieveRedirectPath(component, path, pathExists) {
+    if (pathExists) {
+      return path;
+    }
+    const redirectPath = this.getPageNotFoundRedirectPath(path);
+    if (redirectPath !== undefined) {
+      return redirectPath;
+    } else {
+      // default behavior if `pageNotFoundHandler` did not produce a redirect path
+      this.showRouteNotFoundAlert(component, path);
+      console.warn(`Could not find the requested route: ${path}`);
+      return undefined;
+    }
+  }
+
+  /**
+   * Shows an alert on the given component given the path
+   * @param {*} component the component used to call the alert function upon
+   * @param {string} path the path to show in the alert
+   * @param {boolean} isAnyPathMatched shows whether a valid path was found / which means path was only partially wrong. Otherwise it is false.
+   */
+  showRouteNotFoundAlert(component, path, isAnyPathMatched = false) {
+    const alertSettings = {
+      text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
+        route: path
+      }),
+      type: 'error',
+      ttl: 1 //how many redirections the alert will 'survive'.
+    };
+    component.showAlert(alertSettings, false);
   }
 }
 

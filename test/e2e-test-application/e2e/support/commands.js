@@ -116,13 +116,13 @@ Cypress.Commands.add('goToLinkManagerMethods', iframe => {
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
-  cy.get('button[data-testid="overview_overview"]')
+  cy.get('[data-testid="overview_overview"]')
     .should('exist')
     .click();
 });
 
 Cypress.Commands.add('goToProjectsPage', () => {
-  cy.get('button[data-testid="projects_projects"]')
+  cy.get('[data-testid="projects_projects"]')
     .should('exist')
     .click();
 });

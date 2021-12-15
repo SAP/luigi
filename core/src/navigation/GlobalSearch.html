@@ -99,6 +99,7 @@
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
+  export let globalSearchConfig;
   const dispatch = createEventDispatcher();
   const searchApiObj = {
     fireItemSelected: item => {
@@ -107,23 +108,34 @@
   };
   let searchResults = {};
   let showPopOverCustomSearch = false;
-  let search;
+  let search = {};
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
+  let searchFieldAlwaysVisible;
+
   onMount(async () => {
-    search = await LuigiConfig.getConfigValueAsync('globalSearch');
+    search = globalSearchConfig;
     let inputElement = inputElem;
     const placeHolder = getSearchPlaceholder(search.searchProvider);
     if (placeHolder) {
       inputElement.placeholder = placeHolder;
     }
+    getCustomRenderer();
+  });
+
+  beforeUpdate(() => {
+    search = globalSearchConfig;
+    getCustomRenderer();
+  });
+
+  function getCustomRenderer() {
     isCustomSearchRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultRenderer
     );
     isCustomSearchResultItemRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultItemRenderer
     );
-  });
+  }
 
   function getSearchPlaceholder(searchProvider) {
     if (!searchProvider || !searchProvider.inputPlaceholder) {
@@ -338,7 +350,6 @@
   }
 
   //remove arrow from the search popover
-
   @media screen and (max-width: 1024px) {
     .luigi-search-shell__mobile {
       position: relative;

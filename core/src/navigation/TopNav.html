@@ -16,14 +16,16 @@
     <LogoTitle
       pathData="{pathData}"
       pathParams="{pathParams}"
+      addNavHrefForAnchor="{addNavHrefForAnchor}"
       bind:dropDownStates
       on:toggleDropdownState="{toggleDropdownStateExternal}"
       on:handleClick="{handleClickExternal}"
     />
   </div>
-  <div class="fd-shellbar__group fd-shellbar__group--actions">
-    {#if !authorizationEnabled || isLoggedIn} {#if isGlobalSearchAvailable}
-    <GlobalSearch
+  {#if globalSearchConfig && isGlobalSearchCentered}
+  <div class="lui-global-search">
+    <GlobalSearchCentered
+      globalSearchConfig="{globalSearchConfig}"
       bind:isSearchFieldVisible
       on:toggleSearch
       on:handleSearchNavigation
@@ -34,21 +36,40 @@
       bind:luigiCustomSearchRenderer__slot
       on:closeSearchResult
     />
+  </div>
+  {/if}
+  <div class="fd-shellbar__group fd-shellbar__group--actions">
+    {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig &&
+    !isGlobalSearchCentered}
+    <GlobalSearch
+      bind:isSearchFieldVisible
+      on:toggleSearch
+      on:handleSearchNavigation
+      bind:searchResult
+      bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:inputElem
+      bind:luigiCustomSearchRenderer__slot
+      on:closeSearchResult
+      globalSearchConfig="{globalSearchConfig}"
+    />
     {/if}
     <ContextSwitcher
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('contextSwitcherPopover')}"
       isMobile="{false}"
+      addNavHrefForAnchor="{addNavHrefForAnchor}"
     />
-    {/if} {#if children && pathData.length > 0} {#each children as node, i} {#if
-    !(node.hideFromNav || (showGlobalNav && node.globalNav))} {#if node.isCat}
+    {/if} {#if globalSearchConfig || (children && pathData.length > 0)} {#if (children &&
+    pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav ||
+    (showGlobalNav && node.globalNav))} {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           <button
-            title="{getNodeLabel(node)}"
+            title="{resolveTooltipText(node, getNodeLabel(node))}"
             class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
             aria-controls="dropDownPopover-{i}"
             aria-expanded="{dropDownStates[`dropDownPopover-${i}`] || false}"
@@ -56,21 +77,7 @@
             on:click="{() => toggleDropdownState(`dropDownPopover-${i}`)}"
             data-testid="{getTestId(node)}"
           >
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="sap-icon {icon(node.icon)} fd-top-nav__icon"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            {#if !node.icon || node.showLabel}
-            <span>{getNodeLabel(node)}</span>
-            {/if}
+            <TopNavNode bind:node />
             <BadgeCounter {node} />
           </button>
         </div>
@@ -79,7 +86,12 @@
           aria-hidden="{!(dropDownStates[`dropDownPopover-${i}`] || false)}"
           id="dropDownPopover-{i}"
         >
-          <TopNavDropDown node="{node}" isMobile="{false}" pathParams="{pathParams}" />
+          <TopNavDropDown
+            node="{node}"
+            isMobile="{false}"
+            pathParams="{pathParams}"
+            addNavHrefForAnchor="{addNavHrefForAnchor}"
+          />
         </div>
       </div>
     </div>
@@ -87,33 +99,34 @@
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
+      {#if addNavHrefForAnchor}
+      <a
+        href="{getRouteLink(node)}"
+        class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
+        aria-expanded="false"
+        aria-haspopup="true"
+        on:click|preventDefault="{() => handleClick(node)}"
+        data-testid="{getTestId(node)}"
+      >
+        <TopNavNode bind:node />
+        <BadgeCounter {node} />
+      </a>
+      {:else}
       <button
-        title="{getNodeLabel(node)}"
+        title="{resolveTooltipText(node, getNodeLabel(node))}"
         class="fd-shellbar__button fd-button {node === selectedNode ? 'is-selected' : ''}"
         aria-expanded="false"
         aria-haspopup="true"
         on:click="{() => handleClick(node)}"
         data-testid="{getTestId(node)}"
       >
-        {#if node.icon} {#if hasOpenUIicon(node)}
-        <span class="fd-top-nav__icon sap-icon {icon(node.icon)}"></span>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{node.icon}"
-          alt="{node.altText ? node.altText : ''}"
-        />
-        {/if}
-        <!-- end hasOpenUIicon-->
-        {/if}
-        <!-- end node.icon -->
-        {#if !node.icon || node.showLabel}
-        <span>{getNodeLabel(node)}</span>
-        {/if}
+        <TopNavNode bind:node />
         <BadgeCounter {node} />
       </button>
+      {/if}
     </div>
-    {/if} {/if} {/each}
+    {/if} {/if} {/each} {/if}
     <!-- Sample Markup for Notifications
             <div class="fd-shellbar__action fd-shellbar__action--desktop">
               <button class="fd-shellbar__button fd-button sap-icon--bell" aria-label="Notifications">
@@ -124,7 +137,7 @@
 
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
-    contextSwitcherConfig}
+    contextSwitcherConfig || globalSearchConfig }
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -155,7 +168,7 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list fd-menu__list--no-shadow">
-                {#if isGlobalSearchAvailable}
+                {#if globalSearchConfig && !isGlobalSearchCentered}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -180,14 +193,14 @@
                     >
                   </a>
                 </li>
-                {/if} {#each children as node,i} {#if !(node.hideFromNav || (showGlobalNav
-                && node.globalNav))} {#if !node.isCat}
+                {/if} {#if children} {#each children as node,i} {#if !(node.hideFromNav ||
+                (showGlobalNav && node.globalNav))} {#if !node.isCat}
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
                     class="fd-menu__link {node === selectedNode ? 'is-selected' : ''}"
                     on:click|preventDefault="{() => handleClick(node)}"
-                    data-testid="{getTestId(node)}"
+                    data-testid="{getTestId(node)}-mobile"
                   >
                     <span
                       class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
@@ -204,7 +217,7 @@
                 <li class="fd-menu__item">
                   <a
                     href="{getRouteLink(node)}"
-                    title="{getNodeLabel(node)}"
+                    title="{resolveTooltipText(node, getNodeLabel(node))}"
                     class="fd-menu__link"
                     on:click|preventDefault="{() => openMobileTopNavDropDown(node)}"
                     data-e2e="mobile-topnav-dropdown-category"
@@ -245,7 +258,7 @@
                   </a>
                 </li>-->
                 <!-- {/if} -->
-                {/if} {/if} {/each} {#if isProductSwitcherAvailable}
+                {/if} {/if} {/each} {/if} {#if isProductSwitcherAvailable}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -258,7 +271,7 @@
                       class="fd-top-nav__icon sap-icon {icon(productSwitcherConfig.icon || 'grid')}"
                     ></i>
                     {:else}
-                    <span class="fd-top-nav__icon">
+                    <span class="fd-top-nav__icon sap-icon">
                       <img
                         src="{productSwitcherConfig.icon}"
                         alt="{productSwitcherConfig.altText ? productSwitcherConfig.altText : ''}"
@@ -310,31 +323,29 @@
       <div class="fd-popover fd-popover--right fd-user-menu">
         <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
           {#if userInfo.picture}
-          <span
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-controls="profilePopover"
             aria-expanded="true"
             aria-haspopup="true"
-            aria-label="Avatar"
-            role="button"
+            title="{userInfo.name ? userInfo.name : undefined}"
             tabindex="0"
             style="background-image:url('{userInfo.picture}')"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-btn"
-          ></span>
+          ></button>
           {:else}
-          <span
+          <button
             class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
             aria-expanded="true"
             aria-haspopup="true"
-            aria-label="Avatar"
-            role="button"
+            title="{userInfo.name ? userInfo.name : undefined}"
             tabindex="0"
             on:click="{() => toggleDropdownState('profilePopover')}"
             data-testid="luigi-topnav-profile-initials"
           >
             {userInfo.initials ? userInfo.initials : ''}
-          </span>
+          </button>
           {/if}
         </div>
         <div
@@ -345,6 +356,7 @@
           <Authorization
             on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
             on:userInfoUpdated="{userInfoUpdate}"
+            addNavHrefForAnchor="{addNavHrefForAnchor}"
           />
         </div>
       </div>
@@ -353,13 +365,13 @@
         <div class="fd-popover">
           <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
             <div class="{userInfo.picture ? 'fd-shellbar__button--user-menu' : '' }">
-              <div
+              <button
                 class="fd-button fd-shellbar__button"
                 aria-expanded="{dropDownStates.profilePopover || false}"
                 aria-haspopup="true"
+                aria-controls="profilePopover"
                 on:click="{() => toggleDropdownState('profilePopover')}"
-                title="{userInfo.name ? userInfo.name : userInfo.email}"
-                role="button"
+                title="{userInfo.name ? userInfo.name : undefined}"
                 tabindex="0"
                 data-testid="luigi-topnav-profile-btn"
               >
@@ -373,7 +385,7 @@
                   class="sap-icon {!userInfo.picture?'sap-icon--customer':'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                 ></i>
                 {/if}
-              </div>
+              </button>
             </div>
           </div>
           <div
@@ -384,6 +396,7 @@
             <AuthorizationSimpleProfileMenu
               on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
               on:userInfoUpdated="{userInfoUpdate}"
+              addNavHrefForAnchor="{addNavHrefForAnchor}"
             />
           </div>
         </div>
@@ -395,6 +408,7 @@
       bind:dropDownStates
       on:toggleDropdownState="{() => toggleDropdownState('productSwitcherPopover')}"
       isMobile="{false}"
+      addNavHrefForAnchor="{addNavHrefForAnchor}"
     />
     {/if}
   </div>
@@ -403,6 +417,7 @@
 <AuthorizationSimpleProfileMenu
   on:toggleDropdownState="{() => toggleDropdownState('profilePopover')}"
   isHidden="{true}"
+  addNavHrefForAnchor="{addNavHrefForAnchor}"
 />
 {/if}
 <script>
@@ -414,6 +429,8 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import GlobalSearch from './GlobalSearch.html';
+  import GlobalSearchCentered from './GlobalSearchCentered.html';
+  import TopNavNode from './TopNavNode.html';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
@@ -427,7 +444,6 @@
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
   const dispatch = createEventDispatcher();
-
   export let authorizationEnabled;
   export let autologinEnabled;
   export let isLoggedIn = false;
@@ -451,7 +467,8 @@
   export let profileItemsAvailable;
   export let userInfo = {};
   export let urlAuthError;
-  export let isGlobalSearchAvailable;
+  export let globalSearchConfig;
+  export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -465,6 +482,9 @@
   let selectedLabel;
   let defaultLabelContextSwitcher;
   let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+  export let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue(
+    'navigation.addNavHrefs'
+  );
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
       const tnd = await NavigationHelpers.generateTopNavNodes(pathData);
@@ -498,10 +518,16 @@
         );
         profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-        isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
+        isGlobalSearchCentered =
+          globalSearchConfig &&
+          globalSearchConfig.searchFieldCentered &&
+          GenericHelpers.requestExperimentalFeature('globalSearchCentered', true);
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
+        addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+        contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
       },
       ['navigation']
     );
@@ -544,6 +570,10 @@
 
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
+  }
+
+  function resolveTooltipText(node, translation) {
+    return NavigationHelpers.generateTooltipText(node, translation);
   }
 
   export function openMobileProductSwitcher() {
@@ -740,5 +770,9 @@
   .fd-user-menu .fd-shellbar__button {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+
+  .fd-user-menu .fd-avatar {
+    cursor: pointer;
   }
 </style>
