@@ -671,8 +671,8 @@ export type getCoreSearchParams = () => CoreSearchParams;
  * LuigiClient.addCoreSearchParams({luigi:'rocks'});
  * LuigiClient.addCoreSearchParams({luigi:'rocks', false});
  */
-export function addCoreSearchParams(searchParam: CoreSearchParams, keepBrowserHistory: Boolean): void;
-export type addCoreSearchParams = (searchParam: CoreSearchParams, keepBrowserHistory: Boolean) => void;
+export function addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: Boolean): void;
+export type addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: Boolean) => void;
 
 /**
  * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
