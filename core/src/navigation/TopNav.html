@@ -186,7 +186,7 @@
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
                     <i
-                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
+                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? icon(contextSwitcherConfig.icon) : 'sap-icon--switch-views'}"
                     ></i>
                     <span class="fd-menu__title"
                       >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span
@@ -203,7 +203,7 @@
                     data-testid="{getTestId(node)}-mobile"
                   >
                     <span
-                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? icon(node.icon) : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -225,7 +225,7 @@
                     <span class="fd-top-nav__icon">
                       {#if hasOpenUIicon(node)}
                       <i
-                        class="sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                        class="sap-icon {node.icon && hasOpenUIicon(node) ? icon(node.icon) : '' }"
                       ></i>
                       {:else}
                       <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />

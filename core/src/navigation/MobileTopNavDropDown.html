@@ -27,7 +27,7 @@
             <div class="lui-product-switch__icon">
               {#if hasOpenUIicon(node)}
               <i
-                class="sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                class="sap-icon {node.icon && hasOpenUIicon(node) ? icon(node.icon) : '' }"
               ></i>
               {:else}
               <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />

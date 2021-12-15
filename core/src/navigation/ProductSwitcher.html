@@ -48,7 +48,7 @@ Object.keys(productSwitcherItems[0]).length }
                 <div class="lui-product-switch__icon">
                   {#if hasOpenUIicon(productSwitcherItem)}
                   <i
-                    class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
+                    class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? icon(productSwitcherItem.icon) : '' }"
                   ></i>
                   {:else}
                   <img
@@ -72,7 +72,7 @@ Object.keys(productSwitcherItems[0]).length }
               <div class="lui-product-switch__icon">
                 {#if hasOpenUIicon(productSwitcherItem)}
                 <i
-                  class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? 'sap-icon--' + productSwitcherItem.icon : '' }"
+                  class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? icon(productSwitcherItem.icon) : '' }"
                 ></i>
                 {:else}
                 <img

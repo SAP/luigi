@@ -114,7 +114,7 @@
               >
                 {#if isOpenUIiconName(nodes.metaInfo.icon)}
                 <i
-                  class="fd-nested-list__icon sap-icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                  class="fd-nested-list__icon sap-icon {icon(nodes.metaInfo.icon)} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
                   role="presentation"
                 ></i>
                 {:else}
@@ -214,7 +214,7 @@
             {#if hasCategoriesWithIcon && nodes.metaInfo.icon} {#if
             isOpenUIiconName(nodes.metaInfo.icon)}
             <i
-              class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''}"
+              class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? icon(nodes.metaInfo.icon) : ''}"
               role="presentation"
             ></i>
             {:else}
