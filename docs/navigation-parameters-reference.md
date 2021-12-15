@@ -843,6 +843,16 @@ The global search is an input field available in the top navigation bar. The sea
 - **description**: disables the on:keyUp and other internal handlers on the search input field. It is a plain input field then, which can be used to attach your own handlers. If set to `true`, a **searchProvider** must be defined in order to show the search field, which can contain your custom logic. It is recommended to initialize your custom logic in the [**lifeCycle.luigiAfterInit**](lifecycle-hooks.md#luigiafterinit) hook.
 - **since**: 1.5.0
 
+### globalSearchCenteredCancelButton
+- **type**: string
+- **description**: defines the label of the cancel button. It will be displayed if you want to hide the search field on a smaller viewport. This property is only available if `searchFieldCentered` is active. Default value is `cancel` and this property is optional.
+- **since**: NEXTRELEASE
+
+### searchFieldCentered
+- **type**: boolean
+- **description**: The search input field will be rendered in the center of the shellbar.
+- **since**: NEXTRELEASE
+
 ### searchProvider
 - **type**: Object
 - **description**: The search provider is an object which contains different events and the possibility to implement a custom result renderer or change only the search result item.
@@ -897,7 +907,7 @@ The global search is an input field available in the top navigation bar. The sea
      - **description**: Key value JSON object, where `key` is the language and `value` is the text used as placeholder in the search input field. This function doesn't have any input parameter.
    - **toggleSearch**
      - **type**: Function
-     - **description**: This function will be executed every time you click on the search icon.
+     - **description**: This function will be executed every time when the visibility of the search input field is changed.
     - **attributes**:
       - **element**
         - **type**: INPUT element
