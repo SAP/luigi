@@ -47,7 +47,7 @@ class LuigiClient {
   getContext() {
     return lifecycleManager.getContext();
   }
-  addNodeParams(searchParams, keepBrowserHistory) {
+  addNodeParams(params, keepBrowserHistory) {
     return lifecycleManager.addNodeParams(params, keepBrowserHistory);
   }
   getNodeParams() {

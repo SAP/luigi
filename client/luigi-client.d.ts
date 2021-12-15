@@ -620,8 +620,8 @@ export type getContext = () => Context;
  * LuigiClient.addNodeParams({luigi:'rocks'});
  * LuigiClient.addNodeParams({luigi:'rocks', false});
  */
-export function addNodeParams(searchParams: CoreSearchParams, keepBrowserHistory: Boolean): void;
-export type addNodeParams = (searchParams: CoreSearchParams, keepBrowserHistory: Boolean) => void;
+export function addNodeParams(params: NodeParams, keepBrowserHistory: Boolean): void;
+export type addNodeParams = (params: NodeParams, keepBrowserHistory: Boolean) => void;
 /**
  * Returns the node parameters of the active URL.
  * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
