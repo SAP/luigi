@@ -614,7 +614,7 @@ export function getContext(): Context;
 export type getContext = () => Context;
 /**
  * Sets node parameters in Luigi Core. The parameters will be added to the URL.
- * @param {Object} searchParams
+ * @param {Object} params
  * @memberof Lifecycle
  * @example
  * LuigiClient.addNodeParams({luigi:'rocks'});
