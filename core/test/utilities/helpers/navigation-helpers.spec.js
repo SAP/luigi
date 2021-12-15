@@ -522,4 +522,139 @@ describe('Navigation-helpers', () => {
       assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
     });
   });
+  describe('check visible for feature toggles', () => {
+    let nodeToCheckPermission;
+    beforeEach(() => {
+      nodeToCheckPermission = {
+        visibleForFeatureToggles: ['testFt']
+      };
+      sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('Node is visible with Ft "testFT"', async () => {
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), true);
+    });
+    it('Node is NOT visible with Ft "testFT2"', async () => {
+      nodeToCheckPermission.visibleForFeatureToggles = ['!testFt2'];
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt', 'testFt2']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
+    });
+    it('Node is NOT visible with Ft "testFT"', async () => {
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['test']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
+    });
+  });
+  describe('generate top nav nodes', () => {
+    let pathData;
+    beforeEach(() => {
+      pathData = [
+        {
+          children: [
+            {
+              pathSegment: 'overview',
+              label: 'overview',
+              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+            },
+            {
+              pathSegment: 'projects',
+              label: 'Projects',
+              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+              children: [
+                {
+                  pathSegment: 'settings',
+                  label: 'Settings',
+                  viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                }
+              ]
+            },
+            {
+              pathSegment: 'user_management',
+              label: 'User Management',
+              category: { label: 'test' },
+              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+              children: [
+                {
+                  pathSegment: 'developers',
+                  label: 'Developers',
+                  viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          pathSegment: 'overview',
+          label: 'overview',
+          viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+        }
+      ];
+    });
+    it('check visible nodes and children of top nav', async () => {
+      let tnd = await NavigationHelpers.generateTopNavNodes(pathData);
+      assert.equal(tnd.visibleNodeCount, 3);
+      assert.equal(tnd.children[0].label, 'overview');
+      assert.equal(tnd.children[1].label, 'Projects');
+      assert.equal(tnd.children[2].label, 'test');
+      assert.equal(tnd.children[2].isCat, true);
+    });
+  });
+  describe('prepare for test id if no testId is configured', () => {
+    it('prepare test id', () => {
+      assert.equal(NavigationHelpers.prepareForTests('Te st'), 'test');
+      assert.equal(NavigationHelpers.prepareForTests('TEST'), 'test');
+      assert.equal(NavigationHelpers.prepareForTests('te&st'), 'te%26st');
+      assert.equal(NavigationHelpers.prepareForTests(''), '');
+      assert.equal(NavigationHelpers.prepareForTests('Das', 'ist', 'ein', 'Test'), 'das_ist_ein_test');
+    });
+  });
+  describe('load and store expanded categories', () => {
+    beforeEach(() => {
+      global['localStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+    });
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+    it('load expanded category', () => {
+      localStorage.getItem.returns('["home:cat"]');
+      assert.deepEqual(NavigationHelpers.loadExpandedCategories(), ['home:cat']);
+    });
+    it('load expanded categories', () => {
+      localStorage.getItem.returns('["home:cat1", "home:cat2"]');
+      assert.deepEqual(NavigationHelpers.loadExpandedCategories(), ['home:cat1', 'home:cat2']);
+    });
+    it('store expanded state with empty expanded cat', () => {
+      const expandedList = NavigationHelpers.storeExpandedState('home:cat', true);
+      sinon.assert.calledWithExactly(
+        global.localStorage.setItem,
+        'luigi.preferences.navigation.expandedCategories',
+        JSON.stringify(['home:cat'])
+      );
+      assert.deepEqual(expandedList, ['home:cat']);
+    });
+    it('store expanded state with stored cat', () => {
+      sinon.stub(NavigationHelpers, 'loadExpandedCategories').returns(['home:cat', 'home:cat2']);
+      assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', true), ['home:cat', 'home:cat2']);
+      sinon.assert.calledWithExactly(
+        global.localStorage.setItem,
+        'luigi.preferences.navigation.expandedCategories',
+        JSON.stringify(['home:cat', 'home:cat2'])
+      );
+    });
+    it('store expanded state with stored cat', () => {
+      sinon.stub(NavigationHelpers, 'loadExpandedCategories').returns(['home:cat', 'home:cat2']);
+      assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', false), ['home:cat']);
+      sinon.assert.calledWithExactly(
+        global.localStorage.setItem,
+        'luigi.preferences.navigation.expandedCategories',
+        JSON.stringify(['home:cat'])
+      );
+    });
+  });
 });
