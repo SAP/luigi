@@ -13,7 +13,7 @@ class RoutingHelpersClass {
 
   getLastNodeObject(pathData) {
     const lastElement = [...pathData.navigationPath].pop();
-    return lastElement ? lastElement : {};
+    return lastElement || {};
   }
 
   async getDefaultChildNode(pathData, childrenResolverFn) {
@@ -61,8 +61,8 @@ class RoutingHelpersClass {
   }
 
   encodeParams(dataObj) {
-    let queryArr = [];
-    for (let key in dataObj) {
+    const queryArr = [];
+    for (const key in dataObj) {
       queryArr.push(encodeURIComponent(key) + '=' + encodeURIComponent(dataObj[key]));
     }
     return queryArr.join('&');
@@ -131,14 +131,17 @@ class RoutingHelpersClass {
   getQueryParam(paramName) {
     return this.getQueryParams()[paramName];
   }
+
   getQueryParams() {
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
     return hashRoutingActive ? this.getLocationHashQueryParams() : this.getLocationSearchQueryParams();
   }
+
   getLocationHashQueryParams() {
     const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
     return queryParamIndex !== -1 ? RoutingHelpers.parseParams(location.hash.slice(queryParamIndex + 1)) : {};
   }
+
   getLocationSearchQueryParams() {
     return location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
   }
@@ -171,7 +174,7 @@ class RoutingHelpersClass {
     const hashRoutingActive = LuigiConfig.getConfigValue('routing.useHashRouting');
 
     EventListenerHelpers.addEventListener('message', e => {
-      if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
+      if (e.data.msg === 'refreshRoute' && e.origin === window.origin) {
         const path = hashRoutingActive ? Routing.getHashPath() : Routing.getModifiedPathname();
         callback(path);
       }
@@ -199,7 +202,7 @@ class RoutingHelpersClass {
       return pp + link;
     }
 
-    let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
     return pp + GenericHelpers.replaceVars(route, pathParams, ':', false);
   }
 
@@ -324,7 +327,7 @@ class RoutingHelpersClass {
 
   setFeatureToggles(featureToggleProperty, path) {
     let featureTogglesFromUrl;
-    let paramsMap = this.sanitizeParamsMap(this.parseParams(path.split('?')[1]));
+    const paramsMap = this.sanitizeParamsMap(this.parseParams(path.split('?')[1]));
 
     if (paramsMap[featureToggleProperty]) {
       featureTogglesFromUrl = paramsMap[featureToggleProperty];
@@ -332,7 +335,7 @@ class RoutingHelpersClass {
     if (!featureTogglesFromUrl) {
       return;
     }
-    let featureToggleList = featureTogglesFromUrl.split(',');
+    const featureToggleList = featureTogglesFromUrl.split(',');
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
       featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft));
     }
@@ -365,12 +368,12 @@ class RoutingHelpersClass {
         const actionAndParams = elements[1].split('?');
         // length 2 involves parameters, length 1 involves no parameters
         if (actionAndParams.length === 2 || actionAndParams.length === 1) {
-          let action = actionAndParams[0];
+          const action = actionAndParams[0];
           let params = actionAndParams[1];
           // parse parameters, if any
           if (params) {
             params = params.split('&');
-            let paramObjects = [];
+            const paramObjects = [];
             params.forEach(item => {
               const param = item.split('=');
               param.length === 2 && paramObjects.push({ [param[0]]: param[1] });
@@ -436,7 +439,7 @@ class RoutingHelpersClass {
           realPath = this.resolveDynamicIntentPath(realPath, intentObject.params);
           // get custom node param prefixes if any or default to ~
           let nodeParamPrefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
-          nodeParamPrefix = nodeParamPrefix ? nodeParamPrefix : '~';
+          nodeParamPrefix = nodeParamPrefix || '~';
           realPath = realPath.concat(`?${nodeParamPrefix}`);
           intentObject.params.forEach(param => {
             realPath = realPath.concat(Object.keys(param)[0]); // append param name
@@ -490,7 +493,7 @@ class RoutingHelpersClass {
   }
 
   prepareSearchParamsForClient(currentNode) {
-    let filteredObj = {};
+    const filteredObj = {};
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
         if (key in LuigiRouting.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
@@ -501,7 +504,7 @@ class RoutingHelpersClass {
     return filteredObj;
   }
 
-  addSearchParamsFromClient(currentNode, searchParams) {
+  addSearchParamsFromClient(currentNode, searchParams, keepBrowserHistory) {
     const localSearchParams = { ...searchParams };
     if (!GenericHelpers.isObject(localSearchParams)) {
       return;
@@ -510,7 +513,7 @@ class RoutingHelpersClass {
       localSearchParams[key] = encodeURIComponent(localSearchParams[key]);
     });
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
-      let filteredObj = {};
+      const filteredObj = {};
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
         if (key in localSearchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
           filteredObj[key] = localSearchParams[key];
@@ -521,7 +524,7 @@ class RoutingHelpersClass {
         console.warn(`No permission to add the search param "${key}" to the url`);
       }
       if (Object.keys(filteredObj).length > 0) {
-        LuigiRouting.addSearchParams(filteredObj);
+        LuigiRouting.addSearchParams(filteredObj, keepBrowserHistory);
       }
     }
   }
@@ -543,7 +546,7 @@ class RoutingHelpersClass {
   getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched = false) {
     const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
     if (typeof pageNotFoundHandler === 'function') {
-      //custom 404 handler is provided, use it
+      // custom 404 handler is provided, use it
       const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
       if (result && result.redirectTo) {
         return result.redirectTo;
