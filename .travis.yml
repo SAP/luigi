@@ -127,10 +127,11 @@ jobs:
 
     #----- WHITESOURCE -----
     - name: 'Whitesource check'
-      if: repo = SAP/luigi AND branch = master AND type != cron AND type != api
+      if: repo = SAP/luigi AND branch = whitesource-update AND type != cron AND type != api
       # Whitesource can't deal with symlinking, therefore we can't use lerna
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
+            java --version
             npm --prefix ./client ci ./client;
             npm --prefix ./core ci ./core;
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
