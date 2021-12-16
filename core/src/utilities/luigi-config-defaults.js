@@ -11,7 +11,8 @@ export const TOP_NAV_DEFAULTS = {
     dialogHeader: 'User Settings',
     saveBtn: 'Save',
     dismissBtn: 'Cancel'
-  }
+  },
+  globalSearchCenteredCancelButton: 'Cancel'
 };
 
 export const NAVIGATION_DEFAULTS = {
