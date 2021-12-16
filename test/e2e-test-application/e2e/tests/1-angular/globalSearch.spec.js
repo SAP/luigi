@@ -67,13 +67,13 @@ describe('Global Search', () => {
       // Type Luigi in search input textbox
       cy.get('input[data-testid="luigi-search-input"]')
         .should('be.visible')
-        .type('Luigi');
+        .type('De');
 
       // We should get 5 results
       cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
         .should('be.visible')
         .children()
-        .should('have.length', 5);
+        .should('have.length', 6);
     });
 
     it('Click on Projects result', () => {
@@ -85,15 +85,15 @@ describe('Global Search', () => {
       // Type Luigi in search input textbox
       cy.get('input[data-testid="luigi-search-input"]')
         .should('be.visible')
-        .type('Luigi');
+        .type('Overview');
 
       // Click on first result
       cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
-        .contains('Projects')
+        .contains('Overview')
         .click();
 
       // Url should be changed
-      cy.expectPathToBe('/projects');
+      cy.expectPathToBe('/overview');
     });
   });
 });
