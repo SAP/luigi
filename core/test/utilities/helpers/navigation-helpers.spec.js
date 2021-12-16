@@ -527,10 +527,10 @@ describe('Navigation-helpers', () => {
     it('should render sap-icon to standard icon suite', () => {
       assert.equal(NavigationHelpers.renderIconClassName('home'), 'sap-icon--home');
     });
-    it('should render sap-icon to standard TNT suite', () => {
+    it('should render sap-icon to TNT suite', () => {
       assert.equal(NavigationHelpers.renderIconClassName('TNT--home'), 'sap-icon-TNT--home');
     });
-    it('should render sap-icon to standard businessSuiteInAppSymbols suite', () => {
+    it('should render sap-icon to businessSuiteInAppSymbols suite', () => {
       assert.equal(
         NavigationHelpers.renderIconClassName('businessSuiteInAppSymbols--home'),
         'sap-icon-businessSuiteInAppSymbols--home'
