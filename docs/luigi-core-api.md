@@ -1332,11 +1332,12 @@ In order to delete a search query param you can set the value of the param to un
 ##### Parameters
 
 -   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
 ##### Examples
 
 ```javascript
-Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined});
+Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined}, false);
 ```
 
 **Meta**
