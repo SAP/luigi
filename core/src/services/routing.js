@@ -60,16 +60,18 @@ class RoutingClass {
     const preserveQueryParams = LuigiConfig.getConfigValue('routing.preserveQueryParams');
     let url = new URL(location.href);
     route = preserveQueryParams ? RoutingHelpers.composeSearchParamsToRoute(route) : route;
-    hashRouting ? (url.hash = route) : (url.pathname = route);
+    if (hashRouting) {
+      url.hash = route;
+    }
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
     const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
     window.history[method](
       {
-        path: hashRouting ? url.hash : decodeURIComponent(url.pathname)
+        path: hashRouting ? url.hash : route
       },
       '',
-      hashRouting ? url.hash : decodeURIComponent(url.pathname)
+      hashRouting ? url.hash : route
     );
 
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility

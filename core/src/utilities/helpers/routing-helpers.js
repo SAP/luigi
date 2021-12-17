@@ -45,6 +45,7 @@ class RoutingHelpersClass {
   }
 
   parseParams(paramsString) {
+    if (!paramsString) return {};
     const result = {};
     const viewParamString = paramsString;
     const pairs = viewParamString ? viewParamString.split('&') : null;
@@ -504,15 +505,24 @@ class RoutingHelpersClass {
   }
 
   addSearchParamsFromClient(currentNode, searchParams, keepBrowserHistory) {
+    const localSearchParams = { ...searchParams };
+    if (!GenericHelpers.isObject(localSearchParams)) {
+      return;
+    }
+    Object.keys(localSearchParams).forEach(key => {
+      localSearchParams[key] = encodeURIComponent(localSearchParams[key]);
+    });
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       const filteredObj = {};
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
-        if (key in searchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
-          filteredObj[key] = searchParams[key];
-        } else {
-          console.warn(`No permission to add "${key}" to the url`);
+        if (key in localSearchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
+          filteredObj[key] = localSearchParams[key];
+          delete localSearchParams[key];
         }
       });
+      for (const key in localSearchParams) {
+        console.warn(`No permission to add the search param "${key}" to the url`);
+      }
       if (Object.keys(filteredObj).length > 0) {
         LuigiRouting.addSearchParams(filteredObj, keepBrowserHistory);
       }
