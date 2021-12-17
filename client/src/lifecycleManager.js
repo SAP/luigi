@@ -389,7 +389,8 @@ class LifecycleManager extends LuigiClientBase {
     return this.currentContext.context;
   }
 
-  /**Returns a list of active feature toggles
+  /**
+   * Returns a list of active feature toggles
    * @returns {Array} a list of feature toggle names
    * @memberof Lifecycle
    * @since 1.4.0
@@ -399,9 +400,28 @@ class LifecycleManager extends LuigiClientBase {
   getActiveFeatureToggles() {
     return this.currentContext.internal.activeFeatureToggleList;
   }
+
+  /**
+   * Sets node parameters in Luigi Core. The parameters will be added to the URL.
+   * @param {Object} params
+   * @param {boolean} keepBrowserHistory
+   * @memberof Lifecycle
+   * @example
+   * LuigiClient.addNodeParams({luigi:'rocks'}, true);
+   */
+  addNodeParams(params, keepBrowserHistory = true) {
+    if (params) {
+      helpers.sendPostMessageToLuigiCore({
+        msg: 'luigi.addNodeParams',
+        data: params,
+        keepBrowserHistory
+      });
+    }
+  }
+
   /**
    * Returns the node parameters of the active URL.
-   * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+   * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
    * <!-- add-attribute:class:warning -->
    * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
    * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
@@ -412,6 +432,7 @@ class LifecycleManager extends LuigiClientBase {
   getNodeParams() {
     return this.currentContext.nodeParams;
   }
+
   /**
    * Returns the dynamic path parameters of the active URL.
    * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
@@ -441,15 +462,17 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
    * @param {Object} searchParams
+   * @param {boolean} keepBrowserHistory
    * @memberof Lifecycle
    * @example
-   * LuigiClient.addCoreSearchParams({luigi:'rocks'});
+   * LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
    */
-  addCoreSearchParams(searchParams) {
+  addCoreSearchParams(searchParams, keepBrowserHistory = true) {
     if (searchParams) {
       helpers.sendPostMessageToLuigiCore({
         msg: 'luigi.addSearchParams',
-        data: searchParams
+        data: searchParams,
+        keepBrowserHistory
       });
     }
   }
