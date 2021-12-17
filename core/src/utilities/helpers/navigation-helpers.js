@@ -141,11 +141,9 @@ class NavigationHelpersClass {
       if (!arr.metaInfo) {
         arr.metaInfo = metaInfo;
       }
-      if (!arr.metaInfo.collapsible && metaInfo.collapsible) {
-        arr.metaInfo.collapsible = metaInfo.collapsible;
-      }
-      if (GenericHelpers.isObject(category) && category.id && category.label) {
-        arr.metaInfo = { ...arr.metaInfo, label: category.label, id: category.id };
+      if (GenericHelpers.isObject(category) && !arr.metaInfo._firstCatObjFound) {
+        arr.metaInfo._firstCatObjFound = true;
+        arr.metaInfo = { ...arr.metaInfo, ...category };
       }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
@@ -154,9 +152,9 @@ class NavigationHelpersClass {
         arr.push(node);
       }
     });
-
     Object.keys(result).forEach(category => {
       const metaInfo = result[category].metaInfo;
+      delete metaInfo._firstCatObjFound;
       if (metaInfo && metaInfo.id) {
         result[metaInfo.label] = result[metaInfo.id];
         delete result[metaInfo.id];
