@@ -68,7 +68,7 @@
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
               <i
-                class="fd-nested-list__icon sap-icon icon({node.icon})"
+                class="fd-nested-list__icon sap-icon {icon(node.icon)}"
                 role="presentation"
               ></i>
               {:else}

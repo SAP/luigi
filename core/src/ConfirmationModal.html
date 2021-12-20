@@ -46,7 +46,7 @@
   import { createEventDispatcher, onMount } from 'svelte';
   import { LuigiI18N } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
-  import { EscapingHelpers } from './utilities/helpers';
+  import { EscapingHelpers, NavigationHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -83,6 +83,9 @@
   });
 
   function icon(iconString) {
+    if (!iconString) {
+      return '';
+    }
     return NavigationHelpers.renderIconClassName(iconString);
   }
 
