@@ -319,6 +319,7 @@ class NavigationHelpersClass {
    * @returns properly formatted icon name.
    */
   renderIconClassName(iconString) {
+    if (!iconString) return '';
     let iconClass = 'sap-icon-';
     if (iconString.startsWith('businessSuiteInAppSymbols') || iconString.startsWith('TNT')) {
       iconClass += iconString;
