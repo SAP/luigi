@@ -536,5 +536,8 @@ describe('Navigation-helpers', () => {
         'sap-icon-businessSuiteInAppSymbols--home'
       );
     });
+    it('render icon class name without name', () => {
+      assert.equal(NavigationHelpers.renderIconClassName(''), '');
+    });
   });
 });
