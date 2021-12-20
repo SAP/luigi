@@ -36,7 +36,8 @@ class RoutingHelpersClass {
         );
       }
       const validChild = children.find(
-        child => child.pathSegment && (child.viewUrl || (child.externalLink && child.externalLink.url))
+        child =>
+          child.pathSegment && (child.viewUrl || child.compound || (child.externalLink && child.externalLink.url))
       );
       if (validChild) return validChild.pathSegment;
     }
