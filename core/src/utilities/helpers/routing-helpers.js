@@ -36,7 +36,8 @@ class RoutingHelpersClass {
         );
       }
       const validChild = children.find(
-        child => child.pathSegment && (child.viewUrl || (child.externalLink && child.externalLink.url))
+        child =>
+          child.pathSegment && (child.viewUrl || child.compound || (child.externalLink && child.externalLink.url))
       );
       if (validChild) return validChild.pathSegment;
     }
@@ -361,8 +362,9 @@ class RoutingHelpersClass {
   getIntentObject(intentLink) {
     const intentParams = intentLink.split('?intent=')[1];
     if (intentParams) {
-      const elements = intentParams.split('-');
-      if (elements.length === 2) {
+      const firstDash = intentParams.indexOf('-');
+      if (firstDash > 0) {
+        const elements = [intentParams.slice(0, firstDash), intentParams.slice(firstDash + 1)];
         // avoids usage of '-' in semantic object and action
         const semanticObject = elements[0];
         const actionAndParams = elements[1].split('?');
