@@ -351,14 +351,7 @@ class RoutingClass {
           }
         }
       }
-      if (config.iframe !== null) {
-        const prevUrl = config.iframe.luigi.viewUrl.split('/').pop();
-        if (path !== prevUrl) {
-          const { nodeObject, pathData } = await Navigation.extractDataFromPath(prevUrl);
-          const previousNode = nodeObject;
-          Navigation.onNodeChange(previousNode, currentNode);
-        }
-      }
+
       if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
@@ -392,6 +385,8 @@ class RoutingClass {
           });
         }
       }
+
+      Navigation.onNodeChange(previousCompData.currentNode, currentNode);
     } catch (err) {
       console.info('Could not handle route change', err);
     }
