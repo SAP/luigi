@@ -104,6 +104,9 @@ describe('Iframe', () => {
     beforeEach(() => {
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => node.children);
     });
+    afterEach(() => {
+      sinon.restore();
+    });
     it('goBack with preserved view situation', () => {
       Iframe.setActiveIframeToPrevious(node);
       assert.equal(node.children.length, 4);
@@ -144,6 +147,9 @@ describe('Iframe', () => {
       };
       sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
         return viewGroupSettings;
+      });
+      afterEach(() => {
+        sinon.restore();
       });
     });
     it('return viewgroup from viewgroup settings', () => {
@@ -448,9 +454,6 @@ describe('Iframe', () => {
       someConfig = {
         iframe: {}
       };
-    });
-    afterEach(() => {
-      sinon.restore();
     });
     it('init handshake failed no luigi object on iframe', () => {
       assert.equal(Iframe.initHandshakeFailed(someConfig), true);
