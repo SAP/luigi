@@ -4,6 +4,8 @@ node_modules
 # IDEs
 .idea
 .angulardoc.json
+.vscode/diff
+.vscode/settings.json
 
 # Lerna
 lerna-debug.log
