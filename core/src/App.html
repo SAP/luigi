@@ -1348,16 +1348,19 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
-
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
-
-        if (e.data.params.newTab) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+        const params = e.data.params;
+        const { intent, newTab, modal, splitView, drawer, withoutSync } = params;
+        if (e.source !== window && !intent && params.link) {
+          params.link = params.link.split('?')[0];
+        }
+        if (newTab) {
+          let path = buildPath(params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
           openViewInNewTab(path);
-        } else if (e.data.params.modal !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+        } else if (modal !== undefined) {
+          let path = buildPath(params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
           const pathExist = await pathExists(path);
           path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
@@ -1370,9 +1373,9 @@
           }
           contentNode = node;
           resetMicrofrontendModalData();
-          openViewInModal(path, e.data.params.modal === true ? {} : e.data.params.modal);
-        } else if (e.data.params.splitView !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          openViewInModal(path, modal === true ? {} : modal);
+        } else if (splitView !== undefined) {
+          let path = buildPath(params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
           const pathExist = await pathExists(path);
           path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
@@ -1384,9 +1387,9 @@
             return;
           }
           contentNode = node;
-          openSplitView(path, e.data.params.splitView);
-        } else if (e.data.params.drawer !== undefined) {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          openSplitView(path, splitView);
+        } else if (drawer !== undefined) {
+          let path = buildPath(params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
           const pathExist = await pathExists(path);
           path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
@@ -1399,11 +1402,11 @@
           }
           contentNode = node;
           resetMicrofrontendDrawerData();
-          e.data.params.drawer.isDrawer = true;
-          openViewInDrawer(path, e.data.params.drawer);
+          drawer.isDrawer = true;
+          openViewInDrawer(path, drawer);
         } else {
           getUnsavedChangesModalPromise().then(() => {
-            isNavigationSyncEnabled = !e.data.params.withoutSync;
+            isNavigationSyncEnabled = !withoutSync;
             handleNavigation(e.data, config, srcNode, srcPathParams);
             closeModal();
             closeSplitView();
@@ -1593,6 +1596,8 @@
             data,
             keepBrowserHistory
           );
+        } else {
+          console.warn('No client permissions to add url parameter for this node.');
         }
       }
 
