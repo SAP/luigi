@@ -13,6 +13,7 @@
     IframeHelpers,
     UserSettingsHelper
   } from './utilities/helpers';
+  import { AuthLayerSvc } from './services';
   import { MessagesListeners } from './services/messages-listeners';
   import { ViewUrlDecorator } from './services/viewurl-decorator';
   import UserSettingsEditor from './UserSettingsEditor.html';
@@ -22,6 +23,7 @@
   import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
   export let schemaObj;
   export let userSettingGroups;
+  export let userInfo = {};
 
   const dispatch = createEventDispatcher();
   let userSettingGroup;
@@ -106,6 +108,11 @@
           dispatch('close');
         }
       });
+
+    AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
+      userInfo = uInfo;
+      dispatch('userInfoUpdated', userInfo);
+    });
   });
 
   function prepareUserSettingsObj(userSettingGroups, storedUserSettingsData) {
@@ -162,9 +169,11 @@
         closeNavOnCategoryClickMobile();
       }
     } else {
-      document
-        .querySelectorAll('.lui-us-list .lui-us-navlist__item')[0]
-        .classList.add('is-selected');
+      const firstListItem = document.querySelectorAll(
+        '.lui-us-list .lui-us-navlist__item'
+      )[0];
+      firstListItem.classList.add('is-selected');
+      firstListItem.focus();
       if (
         window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
@@ -384,6 +393,9 @@
     width: 3rem;
     height: 3rem;
   }
+  .lui-us-navlist__item .fd-avatar--thumbnail {
+    margin-right: 0.75rem;
+  }
 
   .iframeUserSettingsCtn {
     position: relative;
@@ -467,6 +479,7 @@
     }
 
     .lui-usersettings-content-header__back-btn {
+      margin-right: 0.5em;
       display: inline-block;
       position: relative;
       z-index: 1;
@@ -498,14 +511,20 @@
               {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
               <li
                 role="listitem"
-                tabindex="-1"
                 class="fd-list__item fd-list__item--link lui-us-navlist__item"
                 data-testid="us-navigation-item"
                 on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
                 on:keyup="{(event) => handleKeyUp(event,[index])}"
               >
                 <a tabindex="0" class="fd-list__link" href="#">
-                  {#if userSettingsGroupProperty[1].icon} {#if
+                  {#if userSettingsGroupProperty[0]==='userAccount' && userInfo.picture}
+                  <span
+                    class="fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail"
+                    aria-label="Avatar"
+                    data-testid="luigi-topnav-profile-avatar"
+                    style="background-image:url('{userInfo.picture}')"
+                  ></span>
+                  {:else if userSettingsGroupProperty[1].icon} {#if
                   hasOpenUIicon(userSettingsGroupProperty[1])}
                   <span class="fd-list__thumbnail">
                     <i
@@ -540,7 +559,7 @@
       </div>
       <div class="fd-side-nav__group-header lui-usersettings-dialog-sub-header">
         <button
-          class="fd-button fd-button--transparent lui-usersettings-content-header__back-btn"
+          class="fd-button fd-button--transparent fd-button--compact lui-usersettings-content-header__back-btn"
           on:click="{toggleNavMobile}"
         >
           <i class="sap-icon--navigation-left-arrow"></i>
