@@ -1,5 +1,5 @@
 import { LuigiConfig } from '.';
-import { GenericHelpers } from '../utilities/helpers';
+import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 /**
  * @name Routing
  */
@@ -40,18 +40,19 @@ class LuigiRouting {
    * @memberof Routing
    * @since 1.16.1
    * @param {Object} params
+   * @param {boolean} keepBrowserHistory
    * @example
-   * Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined});
+   * Luigi.routing().addSearchParams({luigi:'rocks', mario:undefined}, false);
    */
-  addSearchParams(params) {
+  addSearchParams(params, keepBrowserHistory) {
     if (!GenericHelpers.isObject(params)) {
       console.log('Params argument must be an object');
       return;
     }
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      let [hashValue, givenQueryParamsString] = url.hash.split('?');
-      let searchParams = new URLSearchParams(givenQueryParamsString);
+      const [hashValue, givenQueryParamsString] = url.hash.split('?');
+      const searchParams = new URLSearchParams(givenQueryParamsString);
       this._modifySearchParam(params, searchParams);
       url.hash = hashValue;
       if (searchParams.toString() !== '') {
@@ -60,17 +61,42 @@ class LuigiRouting {
     } else {
       this._modifySearchParam(params, url.searchParams);
     }
-    window.history.pushState({}, '', url.href);
+
+    this.handleBrowserHistory(keepBrowserHistory, url.href);
     LuigiConfig.configChanged();
   }
 
-  //Adds and remove properties from searchParams
-  _modifySearchParam(params, searchParams) {
+  // Adds and remove properties from searchParams
+  _modifySearchParam(params, searchParams, paramPrefix) {
     for (const [key, value] of Object.entries(params)) {
-      searchParams.set(key, value);
+      const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
+
+      searchParams.set(paramKey, value);
       if (value === undefined) {
         searchParams.delete(key);
       }
+    }
+  }
+
+  addNodeParams(params, keepBrowserHistory) {
+    if (!GenericHelpers.isObject(params)) {
+      console.log('Params argument must be an object');
+      return;
+    }
+
+    const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
+    const url = new URL(location);
+    this._modifySearchParam(params, url.searchParams, paramPrefix);
+
+    this.handleBrowserHistory(keepBrowserHistory, url.href);
+    LuigiConfig.configChanged();
+  }
+
+  handleBrowserHistory(keepBrowserHistory, href) {
+    if (keepBrowserHistory) {
+      window.history.pushState({}, '', href);
+    } else {
+      window.history.replaceState({}, '', href);
     }
   }
 }
