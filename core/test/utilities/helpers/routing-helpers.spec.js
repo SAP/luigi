@@ -678,7 +678,7 @@ describe('Routing-helpers', () => {
     it('Client can not write luigi url parameter', () => {
       currentNode.clientPermissions.urlParameters.luigi.write = false;
       RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
     });
     it('Client can only write specific url parameter', () => {
       currentNode.clientPermissions.urlParameters = {
@@ -693,7 +693,7 @@ describe('Routing-helpers', () => {
       };
       RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
       sinon.assert.calledWith(LuigiRouting.addSearchParams, { test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
     });
   });
 
