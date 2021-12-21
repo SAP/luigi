@@ -60,16 +60,18 @@ class RoutingClass {
     const preserveQueryParams = LuigiConfig.getConfigValue('routing.preserveQueryParams');
     let url = new URL(location.href);
     route = preserveQueryParams ? RoutingHelpers.composeSearchParamsToRoute(route) : route;
-    hashRouting ? (url.hash = route) : (url.pathname = route);
+    if (hashRouting) {
+      url.hash = route;
+    }
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
     const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
     window.history[method](
       {
-        path: hashRouting ? url.hash : decodeURIComponent(url.pathname)
+        path: hashRouting ? url.hash : route
       },
       '',
-      hashRouting ? url.hash : decodeURIComponent(url.pathname)
+      hashRouting ? url.hash : route
     );
 
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
@@ -349,14 +351,7 @@ class RoutingClass {
           }
         }
       }
-      if (config.iframe !== null) {
-        const prevUrl = config.iframe.luigi.viewUrl.split('/').pop();
-        if (path !== prevUrl) {
-          const { nodeObject, pathData } = await Navigation.extractDataFromPath(prevUrl);
-          const previousNode = nodeObject;
-          Navigation.onNodeChange(previousNode, currentNode);
-        }
-      }
+
       if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
@@ -390,6 +385,8 @@ class RoutingClass {
           });
         }
       }
+
+      Navigation.onNodeChange(previousCompData.currentNode, currentNode);
     } catch (err) {
       console.info('Could not handle route change', err);
     }

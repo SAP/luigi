@@ -4,7 +4,7 @@
   "description": "luigi-auth-plugin-* development versions, only the public folders are being published to npm as a package",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigiluigi.git"
+    "url": "ssh://github.com/SAP/luigi.git"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",

@@ -612,10 +612,19 @@ export type getEventData = () => Context;
  */
 export function getContext(): Context;
 export type getContext = () => Context;
-
+/**
+ * Sets node parameters in Luigi Core. The parameters will be added to the URL.
+ * @param {Object} params
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.addNodeParams({luigi:'rocks'});
+ * LuigiClient.addNodeParams({luigi:'rocks', false});
+ */
+export function addNodeParams(params: NodeParams, keepBrowserHistory: Boolean): void;
+export type addNodeParams = (params: NodeParams, keepBrowserHistory: Boolean) => void;
 /**
  * Returns the node parameters of the active URL.
- * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+ * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
  * <!-- add-attribute:class:warning -->
  * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
@@ -656,12 +665,14 @@ export type getCoreSearchParams = () => CoreSearchParams;
 /**
  * Sends search query parameters to Luigi core. If it is allowed on node level it will be added to url.
  * @param {Object} searchParams
+ * @param {boolean} keepBrowserHistory
  * @memberof Lifecycle
  * @example
  * LuigiClient.addCoreSearchParams({luigi:'rocks'});
+ * LuigiClient.addCoreSearchParams({luigi:'rocks', false});
  */
-export function addCoreSearchParams(searchParam: CoreSearchParams): void;
-export type addCoreSearchParams = (searchParam: CoreSearchParams) => void;
+export function addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: Boolean): void;
+export type addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: Boolean) => void;
 
 /**
  * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
