@@ -522,7 +522,6 @@ describe('Navigation-helpers', () => {
         };
         nodes.push(node);
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
-        console.log('result: ', result.One);
         assert.deepEqual(result.One.metaInfo, {
           label: 'One',
           order: 0,
