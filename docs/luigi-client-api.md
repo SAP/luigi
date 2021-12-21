@@ -301,7 +301,7 @@ Returns **any** Core search query parameters
 
 #### addCoreSearchParams
 
-Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
+Sends search query parameters to Luigi Core. If they are [allowed on node level](navigation-parameters-reference.md#clientpermissionsurlparameters), the search parameters will be added to the URL.
 
 ##### Parameters
 
