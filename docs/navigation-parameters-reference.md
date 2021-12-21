@@ -55,6 +55,11 @@ You can configure the way Luigi tackles routing in your application in the `rout
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
 
+### preserveQueryParams
+- **type**: boolean
+- **description**: defines if query parameters are persisted in the URL after path changes.
+- **default**: the default is `false`, which means query parameters are not persisted in the URL after navigation request.
+
 ### replaceIntentRoute
   - **type** boolean
   - **description**: defines if intent navigation route resolves to actual path automatically or not.
@@ -75,11 +80,6 @@ You can configure the way Luigi tackles routing in your application in the `rout
 - **description**: defines either hash-based (`example.com/#/yourpath`) or path-based (`example.com/yourpath`) routing.
 - **default**: the default is `false`, which means path routing is used.
 
-### preserveQueryParams
-- **type**: boolean
-- **description**: defines if query parameters are persisted in the URL after path changes.
-- **default**: the default is `false`, which means query parameters are not persisted in the URL after navigation request.
-
 ## Navigation parameters
 The navigation parameters allow you to configure **global** navigation settings directly under the `navigation:` section in the configuration file.
 
@@ -92,10 +92,16 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **type**: boolean
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
 - **default**: the parameter **defaults.isolateView** is `false` by default, and you can overwrite it using the **isolateView** value on a single node level.
+- **example**:
+```
+config.navigation.defaults = {
+  isolateView: true
+```
 
 ### defaults.pageErrorHandler
 <!-- add-attribute:class:warning -->
 > **NOTE**: The **pageErrorHandler** only works if the [loading indicator](#loadingindicatorenabled) is not disabled.
+
 - **type**: object
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **default**: the parameter **defaults.pageErrorHandler** is not specified by default, and you can overwrite it using the **pageErrorHandler** value on a single node level.
@@ -105,16 +111,30 @@ The navigation parameters allow you to configure **global** navigation settings 
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
 - **since**: v1.0.1
+- **example**:
+```javascript
+pageErrorHandler: plugin.pageErrorHandler
+```
 
 ### defaults.sideNavAccordionMode
 - **type**: boolean
 - **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened.
 - **default**: `false`
+- **example**:
+```javascript
+config.navigation.defaults = {
+  sideNavAccordionMode: true
+```
 
 ### defaults.tooltipText
 - **type**: boolean | string
 - **description**: applies the [tooltipText](navigation-parameters-reference.md#tooltiptext) property to all navigation nodes where it is not set explicitly. If it is `false`, all tooltips will be hidden. If it is `Some string text`, all tooltips will have the value `Some string text`.
 - **default**: the parameter **defaults.tooltipText** is `undefined` by default.
+- **example**:
+```javascript
+ config.navigation.defaults = {
+  tooltipText: 'Default tooltip text'
+```
 
 ### intentMapping
 - **type**: array
@@ -706,7 +726,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 - **type**: any
 - **description**: specifies a function used to fetch the **label** for **options** with no **label** defined. Additionally, it fetches the drop-down label for non-existing **options**.
 
-### Icon
+### icon
 - **type**: string
 - **description**: is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html). It's displayed on smaller screens next to the default label or the selected context in a dropdown for the top navigation nodes. There is a default icon if nothing is set.
 
