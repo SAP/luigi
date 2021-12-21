@@ -93,7 +93,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
 - **default**: the parameter **defaults.isolateView** is `false` by default, and you can overwrite it using the **isolateView** value on a single node level.
 - **example**:
-```
+```javascript
 config.navigation.defaults = {
   isolateView: true
 ```
