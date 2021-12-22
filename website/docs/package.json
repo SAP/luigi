@@ -9,7 +9,7 @@
     "dev:luigi": "sirv static/luigi --single --dev --cors --port 4000 --host 0.0.0.0",
     "debug:sapper": "PORT=4001 node --inspect node_modules/sapper/dist/cli.js dev",
     "build:config": "node -r esm scripts/generate-docu-sitemap.js && webpack --config webpack-generateConfig.config",
-    "export:sapper": "NODE_ENV=production sapper export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
+    "export:sapper": "env NODE_ENV=production sapper export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
     "export:serve": "sirv public --single --dev --cors --port 5000 --host 0.0.0.0",
     "export": "npm run build:config && npm run export:sapper",
     "test": "run-p --race dev cy:run",
