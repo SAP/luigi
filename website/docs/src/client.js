@@ -6,9 +6,10 @@ import { InternalLinksHandler } from './client-js/internal-links';
 import { OuterFrameHandler } from './client-js/outer-frame-handler';
 import { ScrollAnchorsHandler } from './client-js/smooth-scroll-anchors';
 import { SearchTagHandler } from './client-js/search-tag';
+import { OldVersions } from './client-js/oldVersions';
 
 sapper.start({
-	target: document.querySelector('#sapper')
+  target: document.querySelector('#sapper')
 });
 
 new CopyCodeHandler().init();
@@ -18,3 +19,4 @@ new Accordion().init();
 new ScrollAnchorsHandler().init();
 new OuterFrameHandler().init();
 new SearchTagHandler().init();
+new OldVersions().init();
