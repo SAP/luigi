@@ -114,7 +114,14 @@ config.navigation.defaults = {
 - **since**: v1.0.1
 - **example**:
 ```javascript
-pageErrorHandler: plugin.pageErrorHandler
+config.navigation.defaults = {
+    pageErrorHandler: {
+         timeout: 500,
+         viewUrl: '/some/view/url',
+         redirectPath: '/projects/pr2',
+         errorFn: ()=> {}
+    }
+}
 ```
 
 ### defaults.sideNavAccordionMode
