@@ -96,6 +96,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 ```javascript
 config.navigation.defaults = {
   isolateView: true
+}
 ```
 
 ### defaults.pageErrorHandler
@@ -124,6 +125,7 @@ pageErrorHandler: plugin.pageErrorHandler
 ```javascript
 config.navigation.defaults = {
   sideNavAccordionMode: true
+}
 ```
 
 ### defaults.tooltipText
@@ -134,6 +136,7 @@ config.navigation.defaults = {
 ```javascript
  config.navigation.defaults = {
   tooltipText: 'Default tooltip text'
+}
 ```
 
 ### intentMapping
