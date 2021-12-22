@@ -123,7 +123,8 @@ class NavigationHelpersClass {
           key = this.virtualGroupPrefix + virtualGroupCounter;
         }
         metaInfo = {
-          label: key
+          label: key,
+          _fromString: true
         };
       }
 
@@ -141,8 +142,8 @@ class NavigationHelpersClass {
       if (!arr.metaInfo) {
         arr.metaInfo = metaInfo;
       }
-      if (GenericHelpers.isObject(category) && !arr.metaInfo._firstCatObjFound) {
-        arr.metaInfo._firstCatObjFound = true;
+      if (GenericHelpers.isObject(category) && arr.metaInfo._fromString) {
+        delete arr.metaInfo._fromString;
         arr.metaInfo = { ...arr.metaInfo, ...category };
       }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
@@ -154,7 +155,6 @@ class NavigationHelpersClass {
     });
     Object.keys(result).forEach(category => {
       const metaInfo = result[category].metaInfo;
-      delete metaInfo._firstCatObjFound;
       if (metaInfo && metaInfo.id) {
         result[metaInfo.label] = result[metaInfo.id];
         delete result[metaInfo.id];
