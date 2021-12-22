@@ -3,10 +3,10 @@ import h from 'hastscript';
 
 export default function oldVersion() {
   return function transformer(tree) {
-    visit(tree, 'element', function(node) {
+    visit(tree, ['comment'], function(node, index, parent) {
       if (node.type === 'comment' && node.value.trim() === 'oldVersionsDropdown') {
         const oldVerDropdown = h('div.oldverdrop');
-        Object.assign(node, oldVerDropdown);
+        parent.children.splice(index + 1, 0, oldVerDropdown);
       }
     });
   };
