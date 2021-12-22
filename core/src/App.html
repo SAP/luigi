@@ -1352,59 +1352,13 @@
         const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
         const params = e.data.params;
         const { intent, newTab, modal, splitView, drawer, withoutSync } = params;
+        const isSpecial = newTab || modal || splitView || drawer;
+
         if (e.source !== window && !intent && params.link) {
           params.link = params.link.split('?')[0];
         }
-        if (newTab) {
-          let path = buildPath(params, srcNode, srcPathParams);
-          path = GenericHelpers.addLeadingSlash(path);
-          openViewInNewTab(path);
-        } else if (modal !== undefined) {
-          let path = buildPath(params, srcNode, srcPathParams);
-          path = GenericHelpers.addLeadingSlash(path);
-          const pathExist = await pathExists(path);
-          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
-            getComponentWrapper(),
-            path,
-            pathExist
-          );
-          if (!path) {
-            return;
-          }
-          contentNode = node;
-          resetMicrofrontendModalData();
-          openViewInModal(path, modal === true ? {} : modal);
-        } else if (splitView !== undefined) {
-          let path = buildPath(params, srcNode, srcPathParams);
-          path = GenericHelpers.addLeadingSlash(path);
-          const pathExist = await pathExists(path);
-          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
-            getComponentWrapper(),
-            path,
-            pathExist
-          );
-          if (!path) {
-            return;
-          }
-          contentNode = node;
-          openSplitView(path, splitView);
-        } else if (drawer !== undefined) {
-          let path = buildPath(params, srcNode, srcPathParams);
-          path = GenericHelpers.addLeadingSlash(path);
-          const pathExist = await pathExists(path);
-          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
-            getComponentWrapper(),
-            path,
-            pathExist
-          );
-          if (!path) {
-            return;
-          }
-          contentNode = node;
-          resetMicrofrontendDrawerData();
-          drawer.isDrawer = true;
-          openViewInDrawer(path, drawer);
-        } else {
+
+        if (!isSpecial) {
           getUnsavedChangesModalPromise().then(() => {
             isNavigationSyncEnabled = !withoutSync;
             handleNavigation(e.data, config, srcNode, srcPathParams);
@@ -1413,6 +1367,36 @@
             closeDrawer();
             isNavigationSyncEnabled = true;
           });
+        } else {
+          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          path = GenericHelpers.addLeadingSlash(path);
+
+          if (newTab) {
+            openViewInNewTab(path);
+            return;
+          }
+
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
+          if (!path) {
+            return;
+          }
+          contentNode = node;
+
+          if (modal !== undefined) {
+            resetMicrofrontendModalData();
+            openViewInModal(path, modal === true ? {} : modal);
+          } else if (splitView !== undefined) {
+            openSplitView(path, splitView);
+          } else if (drawer !== undefined) {
+            resetMicrofrontendDrawerData();
+            drawer.isDrawer = true;
+            openViewInDrawer(path, drawer);
+          }
         }
       }
 
