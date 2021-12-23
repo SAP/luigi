@@ -30,7 +30,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 #### :rocket: Added
 * [#2432](https://github.com/SAP/luigi/pull/2432) Change sap-icon-- to icon function ([@wdoberschuetz](https://github.com/wdoberschuetz))
 * [#2385](https://github.com/SAP/luigi/pull/2385) Searchfield configurable - global searchfield centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#2370](https://github.com/SAP/luigi/pull/2370) Dynamic-pathSegment-for-breadcrumbs-navheader ([@hardl](https://github.com/hardl))
+* [#2370](https://github.com/SAP/luigi/pull/2370) Dynamic pathSegment for breadcrumbs NavHeader ([@hardl](https://github.com/hardl))
 * [#2409](https://github.com/SAP/luigi/pull/2409) Params handling improvements ([@stanleychh](https://github.com/stanleychh))
 
 #### :bug: Fixed
