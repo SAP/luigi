@@ -1,5 +1,6 @@
 import visit from 'unist-util-visit';
 import h from 'hastscript';
+import versions from '../../static/versions.json';
 
 export default function oldVersion() {
   return function transformer(tree) {
@@ -7,13 +8,9 @@ export default function oldVersion() {
       if (node.type === 'comment' && node.value.trim() === 'oldVersionsDropdown') {
         const oldVerDropdown = h('select.oldverdrop');
         parent.children.splice(index + 1, 0, oldVerDropdown);
-        fetch('https://api.github.com/repos/SAP/luigi/tags').then(response => {
-          response.json().then(tags => {
-            tags.forEach(tag => {
-              const tagOption = h('option', tag.name);
-              oldVerDropdown.children.push(tagOption);
-            });
-          });
+        versions.forEach(tag => {
+          const tagOption = h('option', tag.name);
+          oldVerDropdown.children.push(tagOption);
         });
       }
     });
