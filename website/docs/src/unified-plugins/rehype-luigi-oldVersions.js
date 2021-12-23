@@ -9,15 +9,26 @@ export default function oldVersion() {
         const wrapper = h('div.custom-select');
         const oldVerDropdown = h('select.oldverdrop');
         oldVerDropdown.properties.onchange =
-          "window.open('https://github.com/SAP/luigi/blob/' + event.target.value + '/docs/README.md', '_blank');";
+          "window.open('https://github.com/SAP/luigi/blob/' + event.target.value + '/docs/README.md', '_blank'); event.target.value=0;";
         wrapper.children.push(oldVerDropdown);
         parent.children.splice(index + 1, 0, wrapper);
         const tagLinks = [];
+        const minors = {};
         versions.forEach(tag => {
-          if (tag.name.indexOf('v') === 0) {
-            tagLinks.push(tag);
+          if (tag.name.indexOf('v') === 0 && tag.name.indexOf('-') < 0) {
+            const vInfo = tag.name.split('.');
+            if (vInfo && vInfo.length === 3) {
+              const minor = vInfo[0] + '.' + vInfo[1];
+              if (!minors[minor]) {
+                minors[minor] = tag;
+                tagLinks.push(tag);
+              }
+            }
           }
         });
+        const chooseOption = h('option', 'Choose a version');
+        chooseOption.properties.value = '0';
+        oldVerDropdown.children.push(chooseOption);
         tagLinks.forEach(tag => {
           const tagOption = h('option', tag.name);
           oldVerDropdown.children.push(tagOption);
