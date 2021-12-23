@@ -1,12 +1,10 @@
 export class OldVersions {
   init() {
-    const oldVersionItems = document.querySelectorAll('div.oldverdrop');
+    const oldVersionItems = document.querySelectorAll('select.oldverdrop');
     oldVersionItems.forEach(item => {
-      const select = document.createElement('select');
-      select.addEventListener('focus', ev => {
+      item.addEventListener('focus', ev => {
         alert(1);
       });
-      item.appendChild(select);
     });
   }
 }

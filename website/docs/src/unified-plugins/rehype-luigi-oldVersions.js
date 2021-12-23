@@ -5,7 +5,7 @@ export default function oldVersion() {
   return function transformer(tree) {
     visit(tree, ['comment'], function(node, index, parent) {
       if (node.type === 'comment' && node.value.trim() === 'oldVersionsDropdown') {
-        const oldVerDropdown = h('div.oldverdrop');
+        const oldVerDropdown = h('select.oldverdrop');
         parent.children.splice(index + 1, 0, oldVerDropdown);
       }
     });
