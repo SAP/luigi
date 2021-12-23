@@ -8,7 +8,7 @@
       <div class="fd-bar__left">
         <div class="fd-bar__element">
           {#if settings.type}
-          <i class="{icon(settings.icon)}"></i>
+          <i class="{getSapIconStr(settings.icon)}"></i>
           {/if}
           <h2 class="fd-title fd-title--h5">{settings.header}</h2>
         </div>
@@ -82,7 +82,7 @@
     }
   });
 
-  function icon(iconString) {
+  function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
   }
 

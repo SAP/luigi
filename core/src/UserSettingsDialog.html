@@ -263,7 +263,7 @@
     }
   }
 
-  function icon(iconString) {
+  function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
   }
 
@@ -515,7 +515,7 @@
                   <span class="fd-list__thumbnail">
                     <i
                       role="presentation"
-                      class="{icon(userSettingsGroupProperty[1].icon)}"
+                      class="{getSapIconStr(userSettingsGroupProperty[1].icon)}"
                     ></i>
                   </span>
                   {:else}

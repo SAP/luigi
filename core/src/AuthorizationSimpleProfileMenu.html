@@ -24,7 +24,7 @@
         on:click|preventDefault="{() => {}}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
-        <span class="fd-top-nav__icon {icon(profileItem.icon)}"></span>
+        <span class="fd-top-nav__icon {getSapIconStr(profileItem.icon)}"></span>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -50,7 +50,7 @@
         data-testid="settings-link"
       >
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
-        <i class="fd-top-nav__icon {icon(profileNav.settings.icon)}"></i>
+        <i class="fd-top-nav__icon {getSapIconStr(profileNav.settings.icon)}"></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -70,7 +70,7 @@
     >
       <button title="Logout" class="fd-menu__link" data-testid="logout-btn">
         {#if profileNav.logout.icon} {#if hasOpenUIicon(profileNav.logout)}
-        <i class="fd-top-nav__icon {icon(profileNav.logout.icon)}"></i>
+        <i class="fd-top-nav__icon {getSapIconStr(profileNav.logout.icon)}"></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -148,7 +148,7 @@
     AuthLayerSvc.startAuthorization();
   }
 
-  function icon(iconString) {
+  function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
   }
 

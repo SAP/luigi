@@ -186,7 +186,7 @@
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
                     <i
-                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? icon(contextSwitcherConfig.icon) : 'sap-icon--switch-views'}"
+                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? getSapIconStr(contextSwitcherConfig.icon) : 'sap-icon--switch-views'}"
                     ></i>
                     <span class="fd-menu__title"
                       >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span
@@ -203,7 +203,7 @@
                     data-testid="{getTestId(node)}-mobile"
                   >
                     <span
-                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? icon(node.icon) : '' }"
+                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -225,7 +225,7 @@
                     <span class="fd-top-nav__icon">
                       {#if hasOpenUIicon(node)}
                       <i
-                        class="sap-icon {node.icon && hasOpenUIicon(node) ? icon(node.icon) : '' }"
+                        class="sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : '' }"
                       ></i>
                       {:else}
                       <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -246,7 +246,7 @@
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
                     <span
-                      class="fd-top-nav__icon sap-icon {icon(node.icon)}"
+                      class="fd-top-nav__icon sap-icon {getSapIconStr(node.icon)}"
                     ></span>
                     {:else}
                     <img
@@ -268,7 +268,7 @@
                     {#if hasOpenUIicon(productSwitcherConfig) ||
                     !productSwitcherConfig.icon}
                     <i
-                      class="fd-top-nav__icon sap-icon {icon(productSwitcherConfig.icon || 'grid')}"
+                      class="fd-top-nav__icon sap-icon {getSapIconStr(productSwitcherConfig.icon || 'grid')}"
                     ></i>
                     {:else}
                     <span class="fd-top-nav__icon sap-icon">
@@ -550,7 +550,7 @@
   $: showTopNav =
     (authorizationEnabled && (!autologinEnabled || isLoggedIn)) || !authorizationEnabled;
 
-  function icon(iconString) {
+  function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
   }
 

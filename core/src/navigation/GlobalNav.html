@@ -18,7 +18,7 @@
           >
             <div class="lui-fd-nested-list__content">
               {#if node.icon} {#if hasOpenUIicon(node)}
-              <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
+              <span class="lui-text fd-top-nav__icon {getSapIconStr(node.icon)}"></span>
               {:else}
               <img
                 class="fd-top-nav__icon nav-icon"
@@ -55,7 +55,7 @@
               on:click|preventDefault="{() => handleClick(node)}"
             >
               {#if node.icon} {#if hasOpenUIicon(node)}
-              <span class="lui-text fd-top-nav__icon {icon(node.icon)}"></span>
+              <span class="lui-text fd-top-nav__icon {getSapIconStr(node.icon)}"></span>
               {:else}
               <img
                 class="fd-top-nav__icon nav-icon"
@@ -138,7 +138,7 @@
     addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   });
 
-  function icon(iconString) {
+  function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
   }
 

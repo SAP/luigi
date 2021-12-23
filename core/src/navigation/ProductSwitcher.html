@@ -18,7 +18,7 @@ Object.keys(productSwitcherItems[0]).length }
           <div class="lui-product-switch__icon">
             {#if hasOpenUIicon(config)}
             <!-- default: sap-icon--grid -->
-            <i class="sap-icon {icon(config.icon)}"></i>
+            <i class="sap-icon {getSapIconStr(config.icon)}"></i>
             {:else}
             <img src="{config.icon}" alt="{config.altText ? config.altText : ''}" />
             {/if}
@@ -48,7 +48,7 @@ Object.keys(productSwitcherItems[0]).length }
                 <div class="lui-product-switch__icon">
                   {#if hasOpenUIicon(productSwitcherItem)}
                   <i
-                    class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? icon(productSwitcherItem.icon) : '' }"
+                    class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? getSapIconStr(productSwitcherItem.icon) : '' }"
                   ></i>
                   {:else}
                   <img
@@ -72,7 +72,7 @@ Object.keys(productSwitcherItems[0]).length }
               <div class="lui-product-switch__icon">
                 {#if hasOpenUIicon(productSwitcherItem)}
                 <i
-                  class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? icon(productSwitcherItem.icon) : '' }"
+                  class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? getSapIconStr(productSwitcherItem.icon) : '' }"
                 ></i>
                 {:else}
                 <img
@@ -174,7 +174,7 @@ Object.keys(productSwitcherItems[0]).length }
     document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
 
-  function icon(iconString) {
+  function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
   }
 
