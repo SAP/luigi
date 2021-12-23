@@ -186,7 +186,7 @@
 				padding-left: 20px;
 			}
 		}
-		
+
 		ol {
 			padding: 0 0 0 18px;
 
@@ -413,6 +413,33 @@
 			border-radius: 3px;
 			font-size: 14px;
 		}
+
+    .custom-select {
+          position: relative;
+        select {
+          -moz-appearance: none;
+          -webkit-appearance: none;
+          appearance: none;
+          background: #edf2f7;
+          border: 1px solid #d0d8e2;
+          font-size: 16px;
+          line-height: 28px;
+          margin: 0;
+          font-weight: 600;
+          padding: 18px 80px 18px 20px;
+          cursor: pointer;
+          width: 100%;
+        }
+        &::after {
+          content: "▼";
+          color: #2deb8a;
+          font-size: 22px;
+          pointer-events: none;
+          position: absolute;
+          right: 15px;
+          top: 18px;
+        }
+    }
 
 		.accordion-container {
 

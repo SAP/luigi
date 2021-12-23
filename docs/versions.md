@@ -99,7 +99,7 @@ In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recomm
 
 ## Docs for earlier versions
 
-<!-- add-attribute:class:warning -->
-> **NOTE**: Always download the latest patch version!
+The current documentation page describes the latest Luigi version. The documentation for earlier Luigi versions is provided as Markdown files in our GitHub repository.
 
-The current documentation page describes the latest Luigi version. You can find the documentation for earlier Luigi versions by going to our [GitHub repository](https://github.com/SAP/luigi/tree/master/docs), selecting the branch dropdown in the top left corner, and choosing the tag of any earlier version.
+
+<!-- oldVersionsDropdown -->
