@@ -101,6 +101,7 @@ With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles were included.
 <!-- add-attribute:class:warning -->
 > **NOTE**: Always download the latest patch version!
 
-<!-- oldVersionsDropdown -->
-
 The current documentation page describes the latest Luigi version. You can find the documentation for earlier Luigi versions by going to our [GitHub repository](https://github.com/SAP/luigi/tree/master/docs), selecting the branch dropdown in the top left corner, and choosing the tag of any earlier version.
+
+
+<!-- oldVersionsDropdown -->
