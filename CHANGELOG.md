@@ -34,7 +34,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2409](https://github.com/SAP/luigi/pull/2409) Params handling improvements ([@stanleychh](https://github.com/stanleychh))
 
 #### :bug: Fixed
-* [#2456](https://github.com/SAP/luigi/pull/2456) Disbale doublle scroll when zooming in the browser ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2456](https://github.com/SAP/luigi/pull/2456) Disable double scroll when zooming in the browser ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#2447](https://github.com/SAP/luigi/pull/2447) Fix category icon not applied if category not on first node ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#2437](https://github.com/SAP/luigi/pull/2437) Fixed nodeChangeHook issues ([@hardl](https://github.com/hardl))
 * [#2393](https://github.com/SAP/luigi/pull/2393) Strip query params in linkmanager navigate ([@JohannesDoberer](https://github.com/JohannesDoberer))
