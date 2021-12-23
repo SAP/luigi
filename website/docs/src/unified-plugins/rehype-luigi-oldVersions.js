@@ -28,8 +28,9 @@ export default function oldVersion() {
         });
         const chooseOption = h('option', 'Choose a version');
         chooseOption.properties.value = '0';
+        chooseOption.properties.style = 'display:none;';
         oldVerDropdown.children.push(chooseOption);
-        tagLinks.forEach(tag => {
+        tagLinks.slice(1).forEach(tag => {
           const tagOption = h('option', tag.name);
           oldVerDropdown.children.push(tagOption);
         });
