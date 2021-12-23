@@ -6,8 +6,10 @@ export default function oldVersion() {
   return function transformer(tree) {
     visit(tree, ['comment'], function(node, index, parent) {
       if (node.type === 'comment' && node.value.trim() === 'oldVersionsDropdown') {
+        const wrapper = h('div.custom-select');
         const oldVerDropdown = h('select.oldverdrop');
-        parent.children.splice(index + 1, 0, oldVerDropdown);
+        wrapper.children.push(oldVerDropdown);
+        parent.children.splice(index + 1, 0, wrapper);
         const tagLinks = [];
         versions.forEach(tag => {
           if (tag.name.indexOf('v') === 0) {
