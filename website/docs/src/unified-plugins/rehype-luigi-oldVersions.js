@@ -8,6 +8,8 @@ export default function oldVersion() {
       if (node.type === 'comment' && node.value.trim() === 'oldVersionsDropdown') {
         const wrapper = h('div.custom-select');
         const oldVerDropdown = h('select.oldverdrop');
+        oldVerDropdown.properties.onchange =
+          "window.open('https://github.com/SAP/luigi/blob/' + event.target.value + '/docs/README.md', '_blank');";
         wrapper.children.push(oldVerDropdown);
         parent.children.splice(index + 1, 0, wrapper);
         const tagLinks = [];
