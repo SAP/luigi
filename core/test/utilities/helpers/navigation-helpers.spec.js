@@ -493,6 +493,46 @@ describe('Navigation-helpers', () => {
         assert.deepEqual(Object.keys(result), ['1', 'test', 'luigi']);
         assert.deepEqual(result.test['metaInfo'], { categoryUid: 'test', label: 'test', collapsible: true, order: 1 });
       });
+      it('first category object counts', () => {
+        const node = {
+          pathSegment: 'someNode',
+          label: 'someNode',
+          category: {
+            label: 'luigi',
+            collapsible: true,
+            icon: 'someIcon'
+          },
+          viewUrl: '/microfrontend.html'
+        };
+        nodes.push(node);
+        const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
+        assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2 });
+      });
+      it('first category object counts - part 2', () => {
+        const node = {
+          pathSegment: 'someNode',
+          label: 'someNode',
+          category: {
+            id: '1',
+            label: 'One',
+            collapsible: true,
+            icon: 'someIcon'
+          },
+          viewUrl: '/microfrontend.html'
+        };
+        nodes.push(node);
+        const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
+        assert.deepEqual(result.One.metaInfo, {
+          label: 'One',
+          order: 0,
+          id: '1',
+          collapsible: true,
+          icon: 'someIcon',
+          categoryUid: '1'
+        });
+        assert.equal(result.One[0].label, 'luigi');
+        assert.equal(result.One[1].label, 'someNode');
+      });
     });
   });
   describe('generate tooltip text', () => {
@@ -520,6 +560,24 @@ describe('Navigation-helpers', () => {
     it('tooltip turned off used defaults', () => {
       LuigiConfig.getConfigValue.returns(false);
       assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
+    });
+  });
+
+  describe('renderIconClassName', () => {
+    it('should render sap-icon to standard icon suite', () => {
+      assert.equal(NavigationHelpers.renderIconClassName('home'), 'sap-icon--home');
+    });
+    it('should render sap-icon to TNT suite', () => {
+      assert.equal(NavigationHelpers.renderIconClassName('TNT--home'), 'sap-icon-TNT--home');
+    });
+    it('should render sap-icon to businessSuiteInAppSymbols suite', () => {
+      assert.equal(
+        NavigationHelpers.renderIconClassName('businessSuiteInAppSymbols--home'),
+        'sap-icon-businessSuiteInAppSymbols--home'
+      );
+    });
+    it('render icon class name without name', () => {
+      assert.equal(NavigationHelpers.renderIconClassName(''), '');
     });
   });
 });

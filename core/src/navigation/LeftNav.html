@@ -16,7 +16,7 @@
         >
           {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
           <i
-            class="lui-header-icon fd-nested-list__icon sap-icon sap-icon--{navHeader.icon}"
+            class="lui-header-icon fd-nested-list__icon sap-icon {getSapIconStr(navHeader.icon)}"
             role="presentation"
           ></i>
           {:else}
@@ -68,7 +68,7 @@
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
               <i
-                class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"
+                class="fd-nested-list__icon sap-icon {getSapIconStr(node.icon)}"
                 role="presentation"
               ></i>
               {:else}
@@ -114,7 +114,7 @@
               >
                 {#if isOpenUIiconName(nodes.metaInfo.icon)}
                 <i
-                  class="fd-nested-list__icon sap-icon {'sap-icon--' + nodes.metaInfo.icon} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                  class="fd-nested-list__icon sap-icon {getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
                   role="presentation"
                 ></i>
                 {:else}
@@ -214,7 +214,7 @@
             {#if hasCategoriesWithIcon && nodes.metaInfo.icon} {#if
             isOpenUIiconName(nodes.metaInfo.icon)}
             <i
-              class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? 'sap-icon--' + nodes.metaInfo.icon : ''}"
+              class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? getSapIconStr(nodes.metaInfo.icon) : ''}"
               role="presentation"
             ></i>
             {:else}
@@ -239,7 +239,7 @@
               data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
-              <i class="fd-nested-list__icon sap-icon sap-icon--{node.icon}"></i>
+              <i class="fd-nested-list__icon sap-icon getSapIconStr({node.icon})"></i>
               {:else}
               <span class="fd-nested-list__icon sap-icon">
                 <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -528,6 +528,10 @@
       entries.sort((e1, e2) => e1[1].metaInfo.order - e2[1].metaInfo.order);
       sortedChildrenEntries = entries;
     }
+  }
+
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
   }
 
   function isOpenUIiconName(name) {

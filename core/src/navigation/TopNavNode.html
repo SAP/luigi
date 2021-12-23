@@ -1,5 +1,5 @@
 {#if node.icon} {#if hasOpenUIicon(node)}
-<span class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"></span>
+<span class="fd-top-nav__icon sap-icon {getSapIconStr(node.icon)}"></span>
 {:else}
 <img
   class="fd-top-nav__icon sap-icon"
@@ -22,6 +22,10 @@
 
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);
+  }
+
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
   }
 
   function getNodeLabel(node) {
