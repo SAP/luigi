@@ -417,6 +417,7 @@
     .custom-select {
           position: relative;
         select {
+          color: #3c4553;
           -moz-appearance: none;
           -webkit-appearance: none;
           appearance: none;
