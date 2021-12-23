@@ -99,7 +99,7 @@ In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recomm
 
 ## Docs for earlier versions
 
-The current documentation page describes the latest Luigi version. The documentation for earlier Luigi versions is provided as markdown files in our github repository.
+The current documentation page describes the latest Luigi version. The documentation for earlier Luigi versions is provided as Markdown files in our GitHub repository.
 
 
 <!-- oldVersionsDropdown -->
