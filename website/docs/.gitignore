@@ -12,6 +12,7 @@ luigi-client
 docsearch.min.css
 public
 static/assets
+static/versions.json
 *coreStyles*
 navigation-generated.json
 sitemap.xml

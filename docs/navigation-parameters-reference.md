@@ -877,12 +877,12 @@ The global search is an input field available in the top navigation bar. The sea
 ### globalSearchCenteredCancelButton
 - **type**: string
 - **description**: defines the label of the cancel button. It will be displayed if you want to hide the search field on a smaller viewport. This property is only available if `searchFieldCentered` is active. Default value is `cancel` and this property is optional.
-- **since**: NEXTRELEASE
+- **since**: 1.20.0
 
 ### searchFieldCentered
 - **type**: boolean
 - **description**: The search input field will be rendered in the center of the shellbar.
-- **since**: NEXTRELEASE
+- **since**: 1.20.0
 
 ### searchProvider
 - **type**: Object
