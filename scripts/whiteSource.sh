@@ -20,9 +20,8 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "56eb623145264763a82330025e4f11efd538074a3cd04791ab6ab87293174aca"
                           )
 
-
 if [ -f "$CACHED_WHITESOURCE_UA" ]; then
-    echo "$CACHED_WHITESOURCE_UA exists. Take from Cache."
+    echo "$CACHED_WHITESOURCE_UA exists. Take from cache."
 else 
     # download jar file to /home/.cache/whitesource
     cd $BASE_DIR/../../../../.cache/whitesource
