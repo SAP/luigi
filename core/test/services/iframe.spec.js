@@ -4,12 +4,7 @@ const sinon = require('sinon');
 
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
-import {
-  GenericHelpers,
-  RoutingHelpers,
-  IframeHelpers,
-  NavigationHelpers
-} from '../../src/utilities/helpers';
+import { GenericHelpers, RoutingHelpers, IframeHelpers, NavigationHelpers } from '../../src/utilities/helpers';
 import { LuigiConfig } from '../../src/core-api';
 
 describe('Iframe', () => {
@@ -38,7 +33,6 @@ describe('Iframe', () => {
       prepareInternalData: () => {}
     };
     sinon.stub(Iframe, 'setOkResponseHandler');
-    sinon.stub(Iframe, 'initHandshakeFailed').returns(false);
     sinon.stub(NavigationHelpers, 'handleUnresponsiveClient');
     sinon.stub(LuigiConfig, 'getConfigValue').callsFake();
     sinon.stub(GenericHelpers);
@@ -107,14 +101,21 @@ describe('Iframe', () => {
   });
 
   describe('setActiveIframeToPrevious', () => {
+    beforeEach(() => {
+      sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => node.children);
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
     it('goBack with preserved view situation', () => {
-      sinon
-        .stub(IframeHelpers, 'getMainIframes')
-        .callsFake(() => node.children);
       Iframe.setActiveIframeToPrevious(node);
-
       assert.equal(node.children.length, 4);
       assert.equal(node.children[0].style.display, 'block');
+    });
+    it('setActiveIframeToPrevious w/o preservedViews', () => {
+      delete node.children[1].pv;
+      Iframe.setActiveIframeToPrevious(node);
+      assert.equal(node.children.length, 5);
     });
   });
 
@@ -127,6 +128,38 @@ describe('Iframe', () => {
       style: {},
       visible: false,
       tagName: 'IFRAME'
+    });
+  });
+
+  describe('getViewGroupSettings', () => {
+    let viewGroupSettings;
+    beforeEach(() => {
+      viewGroupSettings = {
+        ham: {
+          preloadUrl: 'ham.html'
+        },
+        cheese: {
+          preloadUrl: 'cheese.html'
+        },
+        ananas: {
+          preloadUrl: 'ananas.html'
+        }
+      };
+      sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
+        return viewGroupSettings;
+      });
+      afterEach(() => {
+        sinon.restore();
+      });
+    });
+    it('return viewgroup from viewgroup settings', () => {
+      assert.deepEqual(Iframe.getViewGroupSettings('ananas'), {
+        preloadUrl: 'ananas.html'
+      });
+    });
+    it('no view group found in viewgroup settings', () => {
+      assert.deepEqual(Iframe.getViewGroupSettings(''), {});
+      assert.deepEqual(Iframe.getViewGroupSettings('somethingElse'), {});
     });
   });
 
@@ -194,6 +227,7 @@ describe('Iframe', () => {
 
   describe('check if luigi respond, if not, callback again to replace the iframe', () => {
     it('navigate', async () => {
+      sinon.stub(Iframe, 'initHandshakeFailed').returns(false);
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://url.com/app.html!#/prevUrl',
@@ -256,10 +290,7 @@ describe('Iframe', () => {
           src: 'http://luigi.url.de'
         }
       });
-      assert(
-        Iframe.navigateIframe.notCalled,
-        'Iframe.navigateIframe not called'
-      );
+      assert(Iframe.navigateIframe.notCalled, 'Iframe.navigateIframe not called');
     });
     it('not ok', () => {
       sinon.stub(Iframe, 'navigateIframe');
@@ -337,15 +368,13 @@ describe('Iframe', () => {
       clock.tick(2000);
 
       // then
-      assert(
-        NavigationHelpers.handleUnresponsiveClient.called,
-        'handleUnresponsiveClient() call'
-      );
+      assert(NavigationHelpers.handleUnresponsiveClient.called, 'handleUnresponsiveClient() call');
     });
   });
 
   describe('use cached iframe with same viewgroup and change viewUrl', () => {
     it('navigate', async () => {
+      sinon.stub(Iframe, 'initHandshakeFailed').returns(false);
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [
         {
           src: 'http://luigi.url.de',
@@ -384,6 +413,7 @@ describe('Iframe', () => {
 
   describe('using withoutSync whould not trigger iframe fallback', () => {
     it('navigate', async () => {
+      sinon.stub(Iframe, 'initHandshakeFailed').returns(false);
       const spy = sinon.spy(console, 'info');
       spy.resetHistory();
 
@@ -416,6 +446,28 @@ describe('Iframe', () => {
       assert(spy.notCalled, 'console.info() call should not apply');
       // assert.equal(config.iframe.src, 'http://luigi.url.de');
       assert.isTrue(component.get().isNavigationSyncEnabled);
+    });
+  });
+  describe('init handshake failed', () => {
+    let someConfig = {};
+    beforeEach(() => {
+      someConfig = {
+        iframe: {}
+      };
+    });
+    it('init handshake failed no luigi object on iframe', () => {
+      assert.equal(Iframe.initHandshakeFailed(someConfig), true);
+    });
+    it('init handshake failed initOk undefined', () => {
+      someConfig.iframe.luigi = {};
+      assert.equal(Iframe.initHandshakeFailed(someConfig), true);
+    });
+    it('init handshake success', () => {
+      someConfig.iframe.luigi = {
+        initOk: true,
+        clientVersion: '1.4.0'
+      };
+      assert.equal(Iframe.initHandshakeFailed(someConfig), false);
     });
   });
 });

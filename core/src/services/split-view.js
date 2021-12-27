@@ -133,7 +133,7 @@ class SplitViewSvcClass {
 
   // required for iOS to force repaint, else scrolling does not work
   /* istanbul ignore next */
-  fixIOSscroll() {
+  fixIOSscroll /* istanbul ignore next */() {
     const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
     if (!iOS) {
       return;
