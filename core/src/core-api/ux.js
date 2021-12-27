@@ -135,6 +135,7 @@ class LuigiUX {
    * @since 1.5.0
    */
   collapseLeftSideNav(state) {
+    /* istanbul ignore next */
     SemiCollapsibleNavigation.setCollapsed(state);
   }
 
@@ -143,7 +144,7 @@ class LuigiUX {
    * @memberof UX
    * @since 1.7.1
    */
-  openUserSettings() {
+  openUserSettings() /* istanbul ignore next */ {
     Luigi.openUserSettings();
   }
 
@@ -152,7 +153,7 @@ class LuigiUX {
    * @memberof UX
    * @since 1.7.1
    */
-  closeUserSettings() {
+  closeUserSettings() /* istanbul ignore next */ {
     Luigi.closeUserSettings();
   }
 }

@@ -541,6 +541,94 @@ describe('Luigi client linkManager', () => {
     });
   });
 
+  describe('Split View', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        cy.goToLinkManagerMethods($iframeBody);
+        cy.expectPathToBe('/projects/pr2');
+        cy.get('.lui-split-view').should('not.exist');
+      });
+    });
+
+    it('Open Split View component with default settings', () => {
+      cy.wrap($iframeBody)
+        .contains('open view in split view with params')
+        .click();
+
+      cy.get('.lui-split-view').should('exist');
+      cy.expectPathToBe('/projects/pr2');
+    });
+
+    it('Check main iframe height after open Split View component with default settings', () => {
+      cy.window().then(win => {
+        cy.get('.fd-page.iframeContainer').then($iframe => {
+          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height);
+
+          cy.get('.iframeContainer')
+            .invoke('height')
+            .should('eq', iframeHeight);
+
+          cy.wrap($iframeBody)
+            .contains('open view in split view with params')
+            .click();
+
+          cy.wait(500);
+
+          cy.get('.splitViewContainer').then($splitViewContainer => {
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
+
+            cy.get('.splitViewContainer')
+              .invoke('height')
+              .should('eq', splitViewHeight);
+
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+              cy.log('Positive');
+            } else {
+              cy.error('Negative');
+            }
+            cy.expectPathToBe('/projects/pr2');
+          });
+        });
+      });
+    });
+
+    it('Check main iframe height after open and close Split View component with default settings', () => {
+      cy.window().then(win => {
+        cy.get('.fd-page.iframeContainer').then($iframe => {
+          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height);
+
+          cy.get('.iframeContainer')
+            .invoke('height')
+            .should('eq', iframeHeight);
+
+          cy.wrap($iframeBody)
+            .contains('open view in split view with params')
+            .click();
+
+          cy.wait(500);
+
+          cy.get('.splitViewContainer').then($splitViewContainer => {
+            cy.get('.lui-collapse-btn').click();
+
+            cy.wait(500);
+
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
+
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+              cy.log('Positive');
+            } else {
+              cy.error('Negative');
+            }
+            cy.expectPathToBe('/projects/pr2');
+          });
+        });
+      });
+    });
+  });
+
   describe('Webcomponent visibleForFeatureToggles test', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr1/wc_grid');
@@ -560,6 +648,134 @@ describe('Luigi client linkManager', () => {
           expect(wcContent).to.equal('Some input text !ft');
         });
       });
+    });
+  });
+
+  describe('Webcomponent compound view test', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr1/wc_grid_compound');
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.settings.experimental = { webcomponents: true };
+        win.Luigi.configChanged();
+      });
+    });
+
+    it('open webcomponent btn', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const root = container.children().prevObject[0].shadowRoot;
+          const wcContent = root.querySelector('button').innerText;
+
+          expect(wcContent).to.equal('Start');
+        });
+      });
+    });
+
+    it('open webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const root = container.children().prevObject[1].shadowRoot;
+          const wcContent = root.querySelector('p').innerText;
+
+          expect(wcContent).to.equal('0');
+        });
+      });
+    });
+
+    it('click on webcomponent btn', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const root = container.children().prevObject[0].shadowRoot;
+          root.querySelector('button').click();
+          const wcContent = root.querySelector('button').innerText;
+
+          expect(wcContent).to.equal('Stop');
+        });
+      });
+    });
+
+    it('listener on webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          rootBtn.querySelector('button').click();
+          const root = container.children().prevObject[1].shadowRoot;
+          const wcContent = root.querySelector('p').innerText;
+
+          expect(wcContent).to.equal('1');
+        });
+      });
+    });
+
+    it('click start timer on  webcomponent btn and reaction in webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+          rootBtn.querySelector('button').click();
+          const wcContent = rootBtn.querySelector('button').innerText;
+          expect(wcContent).to.equal('Stop');
+
+          cy.wait(500);
+          const wcContentStop = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+          expect(wcContentStart).to.not.equal(wcContentStop);
+        });
+      });
+    });
+
+    it('click start and stop timer on webcomponent btn and reaction in webcomponent timer', () => {
+      cy.window().then(win => {
+        cy.wait(500);
+        cy.get('.wcContainer>div>div>*').then(container => {
+          const rootBtn = container.children().prevObject[0].shadowRoot;
+          rootBtn.querySelector('button').click();
+          cy.wait(500);
+
+          const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+
+          rootBtn.querySelector('button').click();
+          const wcContent = rootBtn.querySelector('button').innerText;
+          expect(wcContent).to.equal('Start');
+
+          cy.wait(500);
+          const wcContentStop = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
+          expect(wcContentStart).to.not.equal(wcContentStop);
+        });
+      });
+    });
+  });
+
+  describe('linkManager preserveQueryParams features', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      // "clear" variables to make sure they are not reused and throw error in case something goes wrong
+      $iframeBody = undefined;
+      cy.visitLoggedIn('/projects/pr1/settings?query=test&ft=ft1');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+      });
+    });
+
+    it('Naviage to pr2 with query parameters', () => {
+      cy.wrap($iframeBody)
+        .contains('navigate to project 2 with query parameters')
+        .click();
+      cy.expectPathToBe('/projects/pr2');
+      cy.expectSearchToBe('?query=test&ft=ft1');
+    });
+
+    it('Naviage to pr2 without query parameters', () => {
+      cy.wrap($iframeBody)
+        .contains('navigate to project 2 without query parameters')
+        .click();
+      cy.expectPathToBe('/projects/pr2');
+      cy.expectSearchToBe('');
     });
   });
 });

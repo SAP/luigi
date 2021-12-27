@@ -678,7 +678,7 @@ describe('Routing-helpers', () => {
     it('Client can not write luigi url parameter', () => {
       currentNode.clientPermissions.urlParameters.luigi.write = false;
       RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
     });
     it('Client can only write specific url parameter', () => {
       currentNode.clientPermissions.urlParameters = {
@@ -693,7 +693,7 @@ describe('Routing-helpers', () => {
       };
       RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
       sinon.assert.calledWith(LuigiRouting.addSearchParams, { test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
     });
   });
 
@@ -819,6 +819,35 @@ describe('Routing-helpers', () => {
       sinon.assert.calledWith(console.warn, `Could not find the requested route: ${path}`);
       sinon.assert.calledOnce(RoutingHelpers.showRouteNotFoundAlert);
       assert.equal(undefined, expected);
+    });
+  });
+
+  describe('composeSearchParamsToRoute', () => {
+    let globalLocationRef = global.location;
+    const route = '/home';
+
+    afterEach(() => {
+      global.location = globalLocationRef;
+    });
+
+    it('with location search params', () => {
+      global.location = {
+        search: '?query=params'
+      };
+      const actual = RoutingHelpers.composeSearchParamsToRoute(route);
+      const expected = '/home?query=params';
+
+      assert.equal(actual, expected);
+    });
+
+    it('without location search params', () => {
+      global.location = {
+        search: ''
+      };
+      const actual = RoutingHelpers.composeSearchParamsToRoute(route);
+      const expected = '/home';
+
+      assert.equal(actual, expected);
     });
   });
 });

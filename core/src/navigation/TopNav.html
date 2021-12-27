@@ -22,9 +22,10 @@
       on:handleClick="{handleClickExternal}"
     />
   </div>
-  <div class="fd-shellbar__group fd-shellbar__group--actions">
-    {#if !authorizationEnabled || isLoggedIn} {#if isGlobalSearchAvailable}
-    <GlobalSearch
+  {#if globalSearchConfig && isGlobalSearchCentered}
+  <div class="lui-global-search">
+    <GlobalSearchCentered
+      globalSearchConfig="{globalSearchConfig}"
       bind:isSearchFieldVisible
       on:toggleSearch
       on:handleSearchNavigation
@@ -35,6 +36,23 @@
       bind:luigiCustomSearchRenderer__slot
       on:closeSearchResult
     />
+  </div>
+  {/if}
+  <div class="fd-shellbar__group fd-shellbar__group--actions">
+    {#if !authorizationEnabled || isLoggedIn} {#if globalSearchConfig &&
+    !isGlobalSearchCentered}
+    <GlobalSearch
+      bind:isSearchFieldVisible
+      on:toggleSearch
+      on:handleSearchNavigation
+      bind:searchResult
+      bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:inputElem
+      bind:luigiCustomSearchRenderer__slot
+      on:closeSearchResult
+      globalSearchConfig="{globalSearchConfig}"
+    />
     {/if}
     <ContextSwitcher
       bind:dropDownStates
@@ -42,9 +60,9 @@
       isMobile="{false}"
       addNavHrefForAnchor="{addNavHrefForAnchor}"
     />
-    {/if} {#if isGlobalSearchAvailable || (children && pathData.length > 0)} {#if
-    (children && pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav
-    || (showGlobalNav && node.globalNav))} {#if node.isCat}
+    {/if} {#if globalSearchConfig || (children && pathData.length > 0)} {#if (children &&
+    pathData.length > 0)} {#each children as node, i} {#if !(node.hideFromNav ||
+    (showGlobalNav && node.globalNav))} {#if node.isCat}
     <div
       class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
     >
@@ -119,7 +137,7 @@
 
     <!-- dropdown for top nav nodes on smaller screens -->
     {#if (visibleNodeCount - globalNavNodeCount > 0) || isProductSwitcherAvailable ||
-    contextSwitcherConfig || isGlobalSearchAvailable }
+    contextSwitcherConfig || globalSearchConfig }
     <div class="fd-shellbar__action fd-shellbar__action--mobile">
       <div class="fd-shellbar-collapse">
         <div class="fd-popover fd-popover--right">
@@ -150,7 +168,7 @@
           >
             <nav class="fd-menu">
               <ul class="fd-menu__list fd-menu__list--no-shadow">
-                {#if isGlobalSearchAvailable}
+                {#if globalSearchConfig && !isGlobalSearchCentered}
                 <li class="fd-menu__item">
                   <a
                     class="fd-menu__link"
@@ -168,7 +186,7 @@
                     on:click|stopPropagation="{openMobileContextSwitcher}"
                   >
                     <i
-                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? 'sap-icon--' + contextSwitcherConfig.icon : 'sap-icon--switch-views'}"
+                      class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? getSapIconStr(contextSwitcherConfig.icon) : 'sap-icon--switch-views'}"
                     ></i>
                     <span class="fd-menu__title"
                       >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span
@@ -185,7 +203,7 @@
                     data-testid="{getTestId(node)}-mobile"
                   >
                     <span
-                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                      class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : '' }"
                     >
                       {#if !hasOpenUIicon(node)}
                       <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -207,7 +225,7 @@
                     <span class="fd-top-nav__icon">
                       {#if hasOpenUIicon(node)}
                       <i
-                        class="sap-icon {node.icon && hasOpenUIicon(node) ? 'sap-icon--' + node.icon : '' }"
+                        class="sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : '' }"
                       ></i>
                       {:else}
                       <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -228,7 +246,7 @@
                   >
                     {#if node.icon} {#if hasOpenUIicon(node)}
                     <span
-                      class="fd-top-nav__icon sap-icon sap-icon--{node.icon}"
+                      class="fd-top-nav__icon sap-icon {getSapIconStr(node.icon)}"
                     ></span>
                     {:else}
                     <img
@@ -250,7 +268,7 @@
                     {#if hasOpenUIicon(productSwitcherConfig) ||
                     !productSwitcherConfig.icon}
                     <i
-                      class="fd-top-nav__icon sap-icon sap-icon--{productSwitcherConfig.icon || 'grid'}"
+                      class="fd-top-nav__icon sap-icon {getSapIconStr(productSwitcherConfig.icon || 'grid')}"
                     ></i>
                     {:else}
                     <span class="fd-top-nav__icon sap-icon">
@@ -411,6 +429,7 @@
   import ContextSwitcher from './ContextSwitcher.html';
   import ProductSwitcher from './ProductSwitcher.html';
   import GlobalSearch from './GlobalSearch.html';
+  import GlobalSearchCentered from './GlobalSearchCentered.html';
   import TopNavNode from './TopNavNode.html';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
@@ -425,7 +444,6 @@
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
   const dispatch = createEventDispatcher();
-
   export let authorizationEnabled;
   export let autologinEnabled;
   export let isLoggedIn = false;
@@ -449,7 +467,8 @@
   export let profileItemsAvailable;
   export let userInfo = {};
   export let urlAuthError;
-  export let isGlobalSearchAvailable;
+  export let globalSearchConfig;
+  export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -499,7 +518,11 @@
         );
         profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
-        isGlobalSearchAvailable = LuigiConfig.getConfigValue('globalSearch');
+        globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
+        isGlobalSearchCentered =
+          globalSearchConfig &&
+          globalSearchConfig.searchFieldCentered &&
+          GenericHelpers.requestExperimentalFeature('globalSearchCentered', true);
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
@@ -526,6 +549,10 @@
   export let showTopNav;
   $: showTopNav =
     (authorizationEnabled && (!autologinEnabled || isLoggedIn)) || !authorizationEnabled;
+
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
+  }
 
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);

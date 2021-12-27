@@ -18,7 +18,7 @@ Object.keys(productSwitcherItems[0]).length }
           <div class="lui-product-switch__icon">
             {#if hasOpenUIicon(config)}
             <!-- default: sap-icon--grid -->
-            <i class="sap-icon sap-icon--{config.icon}"></i>
+            <i class="sap-icon {getSapIconStr(config.icon)}"></i>
             {:else}
             <img src="{config.icon}" alt="{config.altText ? config.altText : ''}" />
             {/if}
@@ -169,6 +169,10 @@ Object.keys(productSwitcherItems[0]).length }
     let vh = window.innerHeight * 0.01;
     // set the value in the --vh custom property to the root of the document
     document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
   }
 
   function hasOpenUIicon(node) {

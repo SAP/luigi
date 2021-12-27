@@ -25,6 +25,38 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.20.0] (2021-12-23)
+
+#### :rocket: Added
+* [#2432](https://github.com/SAP/luigi/pull/2432) Change sap-icon-- to icon function ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2385](https://github.com/SAP/luigi/pull/2385) Searchfield configurable - global searchfield centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2370](https://github.com/SAP/luigi/pull/2370) Dynamic pathSegment for breadcrumbs NavHeader ([@hardl](https://github.com/hardl))
+* [#2409](https://github.com/SAP/luigi/pull/2409) Params handling improvements ([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#2456](https://github.com/SAP/luigi/pull/2456) Disable double scroll when zooming in the browser ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2447](https://github.com/SAP/luigi/pull/2447) Fix category icon not applied if category not on first node ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2437](https://github.com/SAP/luigi/pull/2437) Fixed nodeChangeHook issues ([@hardl](https://github.com/hardl))
+* [#2393](https://github.com/SAP/luigi/pull/2393) Strip query params in linkmanager navigate ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2425](https://github.com/SAP/luigi/pull/2425) Search field clear btn on global search centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2403](https://github.com/SAP/luigi/pull/2403) Fix Luigi Context Observable running outside of Angular Zone ([@SomeKay](https://github.com/SomeKay))
+
+
+
+## [v1.19.0] (2021-11-26)
+
+#### :rocket: Added
+* [#2383](https://github.com/SAP/luigi/pull/2383) Introduce clearNavigationCache() to clear children and titleResolver cache ([@stanleychh](https://github.com/stanleychh))
+* [#2369](https://github.com/SAP/luigi/pull/2369) Replace CSS static value with SAP Fiori 3 variable in LeftNav ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2352](https://github.com/SAP/luigi/pull/2352) Node category merging improvements ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#2391](https://github.com/SAP/luigi/pull/2391) Style language dropdown under User Settings Dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2375](https://github.com/SAP/luigi/pull/2375) Webcomponent drawer overlap bug ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2289](https://github.com/SAP/luigi/pull/2289) Fixed context update for special iframes ([@rafalgamon](https://github.com/rafalgamon))
+* [#2374](https://github.com/SAP/luigi/pull/2374) Make User Menu type of Fiori3 to use 'Compact' mode instead of 'Cozy' ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
 ## [v1.18.1] (2021-11-08)
 
 #### :bug: Fixed
@@ -1267,3 +1299,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.17.0]: https://github.com/SAP/luigi/compare/v1.16.2...v1.17.0
 [v1.18.0]: https://github.com/SAP/luigi/compare/v1.17.0...v1.18.0
 [v1.18.1]: https://github.com/SAP/luigi/compare/v1.18.0...v1.18.1
+[v1.19.0]: https://github.com/SAP/luigi/compare/v1.18.1...v1.19.0
+[v1.20.0]: https://github.com/SAP/luigi/compare/v1.19.0...v1.20.0

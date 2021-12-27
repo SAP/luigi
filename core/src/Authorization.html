@@ -34,7 +34,7 @@
   </div>
 
   <ul
-    class="fd-list fd-list--navigation fd-list--navigation-indication fd-list--no-border"
+    class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border"
     role="list"
   >
     {#each profileNav.items as profileItem}
@@ -53,7 +53,10 @@
         href="{addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
-        <i role="presentation" class="fd-list__icon sap-icon--{profileItem.icon}"></i>
+        <i
+          role="presentation"
+          class="fd-list__icon {getSapIconStr(profileItem.icon)}"
+        ></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -81,7 +84,7 @@
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
         <i
           role="presentation"
-          class="fd-list__icon sap-icon--{profileNav.settings.icon}"
+          class="fd-list__icon {getSapIconStr(profileNav.settings.icon)}"
         ></i>
         {:else}
         <img
@@ -191,6 +194,10 @@
 
   function startAuthorization() {
     AuthLayerSvc.startAuthorization();
+  }
+
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
   }
 
   function hasOpenUIicon(node) {

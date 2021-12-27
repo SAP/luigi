@@ -36,6 +36,7 @@
     "diff": "^4.0.2",
     "documentation": "^11.0.0",
     "glob-parent": ">=5.1.2",
+    "json-schema": ">=0.4.0",
     "nodemon": "^2.0.4",
     "prompts": "^2.3.2",
     "remark-html": ">=13.0.2",
