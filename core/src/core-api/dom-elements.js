@@ -1,6 +1,6 @@
 import { CUSTOM_LUIGI_CONTAINER } from './../utilities/constants';
 import { IframeHelpers } from './../utilities/helpers';
-
+/* istanbul ignore file */
 /**
  * Use these functions to get DOM elements.
  * @namespace Elements
