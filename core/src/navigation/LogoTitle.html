@@ -43,9 +43,17 @@
 {/if}{:else}
 <div class="fd-popover">
   <div class="fd-popover__control" on:click|stopPropagation="{() => {}}">
-    {#if addNavHrefForAnchor} {#if appSwitcherItems && appSwitcherItems.length > 0} {#each
-    appSwitcherItems as item} {#if item === selectedItem && hasValidLink(item,
-    pathParams)}
+    {#if addNavHrefForAnchor} {#if appSwitcherItems && appSwitcherItems.length === 1}
+    <a
+      href="{getRouteLink(appSwitcherItems[0])}"
+      class="fd-shellbar__title lui-shellbar-single-app-title"
+    >
+      <span>
+        {$getTranslation(appSwitcherItems[0].title)}
+      </span>
+    </a>
+    {/if} {#if appSwitcherItems && appSwitcherItems.length > 1} {#each appSwitcherItems as
+    item} {#if item === selectedItem && hasValidLink(item, pathParams)}
     <a
       href="{getRouteLink(item)}"
       class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
@@ -59,7 +67,7 @@
       >
       <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"></i>
     </a>
-    {/if} {/each} {/if} {#if appSwitcherItems.length > 0 && !selectedItem}
+    {/if} {/each} {/if} {#if appSwitcherItems.length > 1 && !selectedItem}
     <a
       href="/"
       class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
