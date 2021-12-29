@@ -1180,4 +1180,16 @@ describe('Routing', function() {
       assert.equal(path, 'bla/x/?~a=b&~c=d#/something?~e=f&~g=h');
     });
   });
+  describe('concatenate path', () => {
+    it('concatenate path', () => {
+      assert.equal(Routing.concatenatePath('/home/overview', 'settings'), 'home/overview/settings');
+      assert.equal(Routing.concatenatePath('/#/home/overview', 'settings'), 'home/overview/settings');
+      assert.equal(Routing.concatenatePath('', 'settings'), 'settings');
+      assert.equal(Routing.concatenatePath('/home/overview', ''), 'home/overview');
+      assert.equal(Routing.concatenatePath('/home/overview', '/test'), 'home/overview/test');
+      assert.equal(Routing.concatenatePath('/home/overview/', 'test'), 'home/overview/test');
+      assert.equal(Routing.concatenatePath('/home/overview/', '/test'), 'home/overview/test');
+      assert.equal(Routing.concatenatePath('/home/overview/', 'test/'), 'home/overview/test/');
+    });
+  });
 });
