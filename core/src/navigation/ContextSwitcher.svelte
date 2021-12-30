@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher, onMount, getContext, beforeUpdate } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
-  import ContextSwitcherNav from './ContextSwitcherNav.html';
+  import ContextSwitcherNav from './ContextSwitcherNav.svelte';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
   import {
