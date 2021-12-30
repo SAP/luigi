@@ -1,10 +1,10 @@
 <script>
-  import LogoTitle from './LogoTitle.html';
-  import BadgeCounter from './BadgeCounter.html';
+  import LogoTitle from './LogoTitle.svelte';
+  import BadgeCounter from './BadgeCounter.svelte';
   import Authorization from '../Authorization.html';
   import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.html';
   import TopNavDropDown from '../TopNavDropDown.html';
-  import ContextSwitcher from './ContextSwitcher.html';
+  import ContextSwitcher from './ContextSwitcher.svelte';
   import ProductSwitcher from './ProductSwitcher.html';
   import GlobalSearch from './GlobalSearch.html';
   import GlobalSearchCentered from './GlobalSearchCentered.html';
