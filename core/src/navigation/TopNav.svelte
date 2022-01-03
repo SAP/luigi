@@ -8,7 +8,7 @@
   import ProductSwitcher from './ProductSwitcher.html';
   import GlobalSearch from './GlobalSearch.html';
   import GlobalSearchCentered from './GlobalSearchCentered.html';
-  import TopNavNode from './TopNavNode.html';
+  import TopNavNode from './TopNavNode.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
