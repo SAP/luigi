@@ -5,7 +5,7 @@
   import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.html';
   import TopNavDropDown from '../TopNavDropDown.html';
   import ContextSwitcher from './ContextSwitcher.svelte';
-  import ProductSwitcher from './ProductSwitcher.html';
+  import ProductSwitcher from './ProductSwitcher.svelte';
   import GlobalSearch from './GlobalSearch.html';
   import GlobalSearchCentered from './GlobalSearchCentered.html';
   import TopNavNode from './TopNavNode.svelte';
