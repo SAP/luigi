@@ -123,7 +123,8 @@ class NavigationHelpersClass {
           key = this.virtualGroupPrefix + virtualGroupCounter;
         }
         metaInfo = {
-          label: key
+          label: key,
+          _fromString: true
         };
       }
 
@@ -141,11 +142,9 @@ class NavigationHelpersClass {
       if (!arr.metaInfo) {
         arr.metaInfo = metaInfo;
       }
-      if (!arr.metaInfo.collapsible && metaInfo.collapsible) {
-        arr.metaInfo.collapsible = metaInfo.collapsible;
-      }
-      if (GenericHelpers.isObject(category) && category.id && category.label) {
-        arr.metaInfo = { ...arr.metaInfo, label: category.label, id: category.id };
+      if (GenericHelpers.isObject(category) && arr.metaInfo._fromString) {
+        delete arr.metaInfo._fromString;
+        arr.metaInfo = { ...arr.metaInfo, ...category };
       }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
@@ -154,7 +153,6 @@ class NavigationHelpersClass {
         arr.push(node);
       }
     });
-
     Object.keys(result).forEach(category => {
       const metaInfo = result[category].metaInfo;
       if (metaInfo && metaInfo.id) {
@@ -310,6 +308,23 @@ class NavigationHelpersClass {
 
   isOpenUIiconName(string) {
     return /^[a-z0-9\-]+$/i.test(string);
+  }
+
+  /**
+   * Checks, if icon class is businessSuiteInAppSymbols or TNT suite and renders the icon name accordingly
+   * I.e. will return sap-icon--home or sap-icon-TNT--systemjava or sap-icon-businessSuiteInAppSymbols--birthday
+   * @param {*} iconString icon name
+   * @returns properly formatted icon name.
+   */
+  renderIconClassName(iconString) {
+    if (!iconString) return '';
+    let iconClass = 'sap-icon-';
+    if (iconString.startsWith('businessSuiteInAppSymbols') || iconString.startsWith('TNT')) {
+      iconClass += iconString;
+    } else {
+      iconClass += '-' + iconString;
+    }
+    return iconClass;
   }
 
   handleUnresponsiveClient(node) {

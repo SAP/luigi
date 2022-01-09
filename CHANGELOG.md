@@ -25,6 +25,24 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.20.0] (2021-12-23)
+
+#### :rocket: Added
+* [#2432](https://github.com/SAP/luigi/pull/2432) Change sap-icon-- to icon function ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2385](https://github.com/SAP/luigi/pull/2385) Searchfield configurable - global searchfield centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2370](https://github.com/SAP/luigi/pull/2370) Dynamic pathSegment for breadcrumbs NavHeader ([@hardl](https://github.com/hardl))
+* [#2409](https://github.com/SAP/luigi/pull/2409) Params handling improvements ([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#2456](https://github.com/SAP/luigi/pull/2456) Disable double scroll when zooming in the browser ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2447](https://github.com/SAP/luigi/pull/2447) Fix category icon not applied if category not on first node ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2437](https://github.com/SAP/luigi/pull/2437) Fixed nodeChangeHook issues ([@hardl](https://github.com/hardl))
+* [#2393](https://github.com/SAP/luigi/pull/2393) Strip query params in linkmanager navigate ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2425](https://github.com/SAP/luigi/pull/2425) Search field clear btn on global search centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2403](https://github.com/SAP/luigi/pull/2403) Fix Luigi Context Observable running outside of Angular Zone ([@SomeKay](https://github.com/SomeKay))
+
+
+
 ## [v1.19.0] (2021-11-26)
 
 #### :rocket: Added
@@ -1282,3 +1300,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.18.0]: https://github.com/SAP/luigi/compare/v1.17.0...v1.18.0
 [v1.18.1]: https://github.com/SAP/luigi/compare/v1.18.0...v1.18.1
 [v1.19.0]: https://github.com/SAP/luigi/compare/v1.18.1...v1.19.0
+[v1.20.0]: https://github.com/SAP/luigi/compare/v1.19.0...v1.20.0
