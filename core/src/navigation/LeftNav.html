@@ -239,7 +239,7 @@
               data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
-              <i class="fd-nested-list__icon sap-icon getSapIconStr({node.icon})"></i>
+              <i class="fd-nested-list__icon sap-icon {getSapIconStr(node.icon)}"></i>
               {:else}
               <span class="fd-nested-list__icon sap-icon">
                 <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
