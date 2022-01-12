@@ -456,7 +456,7 @@ class LifecycleManager extends LuigiClientBase {
    * LuigiClient.getCoreSearchParams();
    */
   getCoreSearchParams() {
-    return this.currentContext.searchParams;
+    return this.currentContext.searchParams || {};
   }
 
   /**
