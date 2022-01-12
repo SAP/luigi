@@ -154,6 +154,7 @@
                 aria-expanded="{dropDownStates.overflowPopover || false}"
                 aria-haspopup="true"
                 on:click="{() => toggleDropdownState('overflowPopover')}"
+                class:is-selected="{dropDownStates.overflowPopover}"
                 data-testid="mobile-menu"
               >
                 <i class="sap-icon sap-icon--overflow"></i>
@@ -770,6 +771,11 @@
   .fd-user-menu .fd-shellbar__button {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+
+  :global(.fd-shellbar .fd-shellbar__button.is-selected) {
+    background: var(--sapShell_Active_Background, #354a5f);
+    color: var(--sapShell_Active_TextColor, #fff);
   }
 
   .fd-user-menu .fd-avatar {
