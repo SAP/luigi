@@ -2,15 +2,30 @@ version: '3'
 services:
   oidc-server-mock:
     container_name: oidc-server-mock
-    image: soluto/oidc-server-mock
+    image: soluto/oidc-server-mock:latest
     ports:
       - "4011:80"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      SERVER_OPTIONS_INLINE: |
+        {
+          "AccessTokenJwtType": "JWT",
+          "Discovery": {
+            "ShowKeySet": true
+          },
+          "Authentication": {
+            "CookieSameSiteMode": "Lax",
+            "CheckSessionCookieSameSiteMode": "Lax"
+          }
+        }
       API_SCOPES_INLINE: |
         [
-          "some-app-scope-1",
-          "some-app-scope-2"
+          {
+            "Name": "some-app-scope-1"
+          },
+          {
+            "Name": "some-app-scope-2"
+          }
         ]
       API_RESOURCES_INLINE: |
         [
