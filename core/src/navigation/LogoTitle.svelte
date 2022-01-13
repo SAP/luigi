@@ -185,7 +185,16 @@
     <div class="fd-popover">
       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
         {#if addNavHrefForAnchor}
-          {#if appSwitcherItems && appSwitcherItems.length > 0}
+          {#if appSwitcherItems && appSwitcherItems.length === 1}
+            <a
+              href="{getRouteLink(appSwitcherItems[0])}"
+              class="fd-shellbar__title lui-shellbar-single-app-title">
+              <span>
+                {$getTranslation(appSwitcherItems[0].title)}
+              </span>
+            </a>
+          {/if}
+          {#if appSwitcherItems && appSwitcherItems.length > 1}
             {#each appSwitcherItems as item}
               {#if item === selectedItem && hasValidLink(item, pathParams)}
                 <a
@@ -209,7 +218,7 @@
               {/if}
             {/each}
           {/if}
-          {#if appSwitcherItems.length > 0 && !selectedItem}
+          {#if appSwitcherItems.length > 1 && !selectedItem}
             <a
               href="/"
               class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
