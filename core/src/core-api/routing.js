@@ -73,7 +73,7 @@ class LuigiRouting {
 
       searchParams.set(paramKey, value);
       if (value === undefined) {
-        searchParams.delete(key);
+        searchParams.delete(paramKey);
       }
     }
   }
