@@ -1009,17 +1009,13 @@
 
     .lui-flyout-sublist__wrapper {
       position: relative;
-      border-bottom-right-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
-      border-bottom-left-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
-      border-top-right-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
-      border-top-left-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
+      border-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
       @include box-shadow(
         var(
           --sapContent_Shadow2,
-          (0 0 0 0.0625rem rgba(0, 0, 0, 0.42), 0 0.625rem 1.875rem 0 rgba(0, 0, 0, 0.3))
+          (0 0 0 0.0625rem rgba(0, 0, 0, 0.42), 0 0.625rem 1.275rem 0 rgba(0, 0, 0, 0.3))
         )
       );
-      border-color: var(--sapContent_ShadowColor);
       opacity: 0;
       animation-name: flyoutAnimation;
       animation-duration: 0.3s;
@@ -1066,6 +1062,16 @@
       &:after {
         left: -13px;
         border-right-color: var(--sapGroup_ContentBackground, #fff);
+      }
+
+      & > *:first-child {
+        border-top-right-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
+        border-top-left-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
+      }
+
+      & > *:last-child {
+        border-bottom-right-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
+        border-bottom-left-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
       }
     }
 
