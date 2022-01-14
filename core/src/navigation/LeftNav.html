@@ -239,7 +239,7 @@
               data-testid="{getTestId(node)}"
             >
               {#if node.icon} {#if isOpenUIiconName(node.icon)}
-              <i class="fd-nested-list__icon sap-icon getSapIconStr({node.icon})"></i>
+              <i class="fd-nested-list__icon sap-icon {getSapIconStr(node.icon)}"></i>
               {:else}
               <span class="fd-nested-list__icon sap-icon">
                 <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
@@ -298,7 +298,7 @@
   import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
-  import BadgeCounter from './BadgeCounter.html';
+  import BadgeCounter from './BadgeCounter.svelte';
 
   //TODO refactor
   const __this = {
