@@ -597,6 +597,28 @@ class RoutingHelpersClass {
     };
     component.showAlert(alertSettings, false);
   }
+
+  // Adds and remove properties from searchParams
+  modifySearchParam(params, searchParams, paramPrefix) {
+    for (const [key, value] of Object.entries(params)) {
+      const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
+
+      searchParams.set(paramKey, value);
+      if (value === undefined) {
+        searchParams.delete(key);
+      }
+    }
+  }
+
+  addParamsOnHashRouting(url, params, paramPrefix){
+    const [hashValue, givenQueryParamsString] = url.hash.split('?');
+    const searchParams = new URLSearchParams(givenQueryParamsString);
+    this.modifySearchParam(params, searchParams, paramPrefix);
+    url.hash = hashValue;
+    if (searchParams.toString() !== '') {
+      url.hash += `?${decodeURIComponent(searchParams.toString())}`;
+    }
+  }
 }
 
 export const RoutingHelpers = new RoutingHelpersClass();

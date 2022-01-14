@@ -1,5 +1,6 @@
 import { afterEach } from 'mocha';
 import { LuigiRouting, LuigiConfig } from '../../src/core-api';
+import { RoutingHelpers } from '../../src/utilities/helpers';
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -140,14 +141,14 @@ describe('Luigi routing', function() {
     afterEach(() => {
       sinon.restore();
     });
-    it('_modifySearchParam', () => {
+    it('modifySearchParam', () => {
       const searchParams = new URLSearchParams('mario=rocks');
-      LuigiRouting._modifySearchParam({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
+      RoutingHelpers.modifySearchParam({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
       assert.equal(searchParams.toString(), 'test=tets&luigi=rocks');
     });
-    it('_modifySearchParam with paramPrefix', () => {
+    it('modifySearchParam with paramPrefix', () => {
       const searchParams = new URLSearchParams('~mario=rocks');
-      LuigiRouting._modifySearchParam({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
+      RoutingHelpers.modifySearchParam({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
   });
