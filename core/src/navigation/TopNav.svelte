@@ -603,29 +603,6 @@
                                   >
                                 </a>
                               </li>
-                              <!-- {:else}
-                <li class="fd-menu__item">
-                  <a
-                    href="{getRouteLink(node)}"
-                    title="{getNodeLabel(node)}"
-                    class="fd-menu__link"
-                    on:click|preventDefault="openMobileTopNavDropDown(node)"
-                    data-testid="mobile-topnav-dropdown-category"
-                  >
-                    {#if node.icon} {#if hasOpenUIicon(node)}
-                    <span
-                      class="fd-top-nav__icon sap-icon {getSapIconStr(node.icon)}"
-                    ></span>
-                    {:else}
-                    <img
-                      class="fd-top-nav__icon nav-icon"
-                      src="{node.icon}"
-                    >
-                    {/if} {/if}
-                    <span class="fd-list__title">{getNodeLabel(node)}</span>
-                  </a>
-                </li>-->
-                              <!-- {/if} -->
                             {/if}
                           {/if}
                         {/each}
