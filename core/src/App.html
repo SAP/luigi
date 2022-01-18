@@ -832,7 +832,10 @@
   export const showAlert = (settings, openFromClient = false) => {
     const customAlertHandler = LuigiConfig.getConfigValue('settings.customAlertHandler');
     if (GenericHelpers.isFunction(customAlertHandler)) {
-      return customAlertHandler(settings, openFromClient);
+      const customReturnValue = customAlertHandler(settings, openFromClient);
+      if (customReturnValue !== false) {
+        return customReturnValue;
+      }
     }
     const currentAlerts = alerts;
 
