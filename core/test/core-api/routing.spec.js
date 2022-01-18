@@ -60,11 +60,17 @@ describe('Luigi routing', function() {
       LuigiRouting.addSearchParams('bar', true);
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
     });
-    it('delete search params from url', () => {
+    it('delete search params from url with keepBrowserHistory is true', () => {
       window.state = {};
       global.location = 'http://some.url.de?luigi=rocks&mario=red';
       LuigiRouting.addSearchParams({ mario: undefined }, true);
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?luigi=rocks');
+    });
+    it('delete search params from url with keepBrowserHistory is false', () => {
+      window.state = {};
+      global.location = 'http://some.url.de?luigi=rocks&mario=red';
+      LuigiRouting.addSearchParams({ mario: undefined }, false);
+      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/?luigi=rocks');
     });
   });
   describe('SearchParams hash routing', () => {
@@ -182,6 +188,16 @@ describe('Luigi routing', function() {
       global.location = 'http://some.url.de';
       LuigiRouting.addNodeParams('bar', true);
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
+    });
+    it('remove node param if value of params object is undefined', ()=>{
+      window.state = {};
+      global.location = 'http://some.url.de';
+      LuigiRouting.addNodeParams({ test: undefined }, false);
+      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/');
+      LuigiRouting.addNodeParams({ foo: 'bar' }, false);
+      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/?%7Efoo=bar');
+      LuigiRouting.addNodeParams({ foo: undefined }, false);
+      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/');
     });
   });
 });
