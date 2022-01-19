@@ -102,6 +102,7 @@ burgerTooltip = {
   };
 ```
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
+* **getNavFooterContainer** in addition to **sideNavFooterText** a client can insert non-sanitized HTML under the footer section. 
 * **sideNavCompactMode** reduces the dimensions of the side navigation and allows you to display more information.
 * **customTranslationImplementation** provides a custom localization implementation. It can be an Object or a Function returning an Object. This Object must provide the **getTranslation** Function as property:
 ```javascript
