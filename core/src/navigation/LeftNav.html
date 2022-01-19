@@ -1,3 +1,288 @@
+<svelte:window
+  on:resize="{onResize}"
+  on:click="{closePopupMenu}"
+  on:blur="{closePopupMenu}"
+/>
+<div
+  class="fd-app__sidebar {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
+>
+  {#if navHeader}
+  <div class="lui-nav-title">
+    <ul class="fd-nested-list">
+      <li class="fd-nested-list__item">
+        <a
+          class="fd-nested-list__link"
+          title="{resolveTooltipText(navHeader, $getTranslation(navHeader.label))}"
+        >
+          {#if navHeader.icon} {#if isOpenUIiconName(navHeader.icon)}
+          <i
+            class="lui-header-icon fd-nested-list__icon sap-icon {getSapIconStr(navHeader.icon)}"
+            role="presentation"
+          ></i>
+          {:else}
+          <span class="fd-nested-list__icon sap-icon">
+            <img
+              src="{navHeader.icon}"
+              alt="{navHeader.altText ? navHeader.altText : ''}"
+            />
+          </span>
+          {/if} {/if}
+          <span class="fd-nested-list__title">
+            {$getTranslation(navHeader.label)}
+          </span>
+          {#if navHeader.showUpLink}
+          <i
+            class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
+            role="presentation"
+            title="{$getTranslation('luigi.navigation.up')}"
+            on:click|preventDefault="{handleUp}"
+          ></i>
+          {/if}
+        </a>
+      </li>
+    </ul>
+  </div>
+  {/if}
+  <nav
+    class="fd-side-nav {isSemiCollapsed ? 'fd-side-nav--condensed' : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
+    on:keyup="{handleKey}"
+    data-testid="semiCollapsibleLeftNav"
+  >
+    <div class="fd-side-nav__main-navigation">
+      {#if children && pathData.length > 1}
+      <div class="lui-fd-side-nav-wrapper">
+        <ul
+          class="fd-nested-list {sideNavCompactMode ? 'fd-nested-list fd-nested-list--compact':'fd-nested-list'}"
+        >
+          {#each sortedChildrenEntries as [key, nodes],index} {#if key === 'undefined' ||
+          key.startsWith(virtualGroupPrefix)}
+          <!-- Single nodes -->
+          {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+          <li class="fd-nested-list__item">
+            <a
+              href="{getRouteLink(node)}"
+              title="{resolveTooltipText(node, $getTranslation(node.label))}"
+              class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+              on:click|preventDefault="{() => handleClick(node)}"
+              data-testid="{getTestId(node)}"
+            >
+              {#if node.icon} {#if isOpenUIiconName(node.icon)}
+              <i
+                class="fd-nested-list__icon sap-icon {getSapIconStr(node.icon)}"
+                role="presentation"
+              ></i>
+              {:else}
+              <span class="fd-nested-list__icon sap-icon">
+                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
+              </span>
+              {/if} {:else}
+              <i
+                class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+                role="presentation"
+              ></i>
+              {/if}
+              <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
+              {#if node.externalLink && node.externalLink.url}
+              <i
+                class="fd-nested-list__icon sap-icon sap-icon--action"
+                role="presentation"
+              ></i>
+              {/if} {#if node.badgeCounter}
+              <BadgeCounter {node} />
+              {/if}
+            </a>
+          </li>
+          {/if} {/if} {/each} {:else}
+          <!-- Collapsible nodes -->
+          {#if nodes.metaInfo.collapsible}
+          <li
+            class="fd-nested-list__item lui-collapsible-item"
+            class:lui-item-expanded="{isExpanded(nodes, expandedCategories)}"
+            on:click|stopPropagation="{() => handleIconClick(nodes, event.currentTarget)}"
+            data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
+          >
+            <div class="fd-nested-list__content has-child">
+              <a
+                href="javascript:void(null)"
+                title="{resolveTooltipText(nodes, $getTranslation(key))}"
+                class="fd-nested-list__link {isExpanded(nodes, expandedCategories) ? 'is-expanded' : ''}"
+                tabindex="-1"
+                id="collapsible_listnode_{index}"
+                aria-haspopup="true"
+                aria-expanded="{isExpanded(nodes, expandedCategories)}"
+                on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
+              >
+                {#if isOpenUIiconName(nodes.metaInfo.icon)}
+                <i
+                  class="fd-nested-list__icon sap-icon {getSapIconStr(nodes.metaInfo.icon)} {isSemiCollapsed && !nodes.metaInfo.icon ? 'sap-icon--rhombus-milestone-2' : ''}"
+                  role="presentation"
+                ></i>
+                {:else}
+                <span class="fd-nested-list__icon sap-icon">
+                  <img
+                    src="{nodes.metaInfo.icon}"
+                    alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
+                  />
+                </span>
+                {/if}
+                <span class="fd-nested-list__title">{$getTranslation(key)}</span>
+              </a>
+              <button
+                class="fd-button fd-nested-list__button"
+                href="#"
+                tabindex="0"
+                aria-label="Expand categories"
+                aria-haspopup="true"
+                aria-expanded="{isExpanded(nodes, expandedCategories)}"
+                on:click|preventDefault="{() => setExpandedState(nodes, !isExpanded(nodes, expandedCategories), this)}"
+              >
+                <i
+                  class="{isExpanded(nodes, expandedCategories) ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}"
+                  role="presentation"
+                ></i>
+              </button>
+            </div>
+            <ul
+              class="fd-nested-list fd-nested-list--text-only level-2"
+              aria-hidden="{!isExpanded(nodes, expandedCategories)}"
+            >
+              {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+              <li
+                class="fd-nested-list__item"
+                aria-labelledby="collapsible_listnode_{index}"
+              >
+                <a
+                  href="{getRouteLink(node)}"
+                  class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                  on:click|preventDefault="{() => handleClick(node)}"
+                  data-testid="{getTestId(node)}"
+                  title="{resolveTooltipText(node, $getTranslation(node.label))}"
+                >
+                  <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
+                  {#if node.externalLink && node.externalLink.url}
+                  <i class="sap-icon--action"></i>
+                  {/if} {#if node.badgeCounter}
+                  <BadgeCounter {node} />
+                  {/if}
+                </a>
+              </li>
+              {/if} {/if} {/each}
+            </ul>
+            <!-- Flyout for collapsible nodes -->
+            {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
+            <div class="lui-flyout-sublist">
+              <div class="lui-flyout-sublist__wrapper">
+                <h5
+                  class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
+                >
+                  {$getTranslation(key)}
+                </h5>
+                <ul class="fd-nested-list fd-nested-list--text-only">
+                  {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+                  <li class="fd-nested-list__item">
+                    <a
+                      href="{getRouteLink(node)}"
+                      class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+                      on:click|preventDefault="{() => handleClick(node)}"
+                      data-testid="{getTestId(node)}"
+                      title="{resolveTooltipText(node, $getTranslation(node.label))}"
+                    >
+                      <span class="fd-nested-list__title"
+                        >{$getTranslation(node.label)}</span
+                      >
+                      {#if node.externalLink && node.externalLink.url}
+                      <i class="sap-icon--action"></i>
+                      {/if} {#if node.badgeCounter}
+                      <BadgeCounter {node} />
+                      {/if}
+                    </a>
+                  </li>
+                  {/if} {/if} {/each}
+                </ul>
+              </div>
+            </div>
+            {/if}
+          </li>
+          {:else}
+          <!-- Category nodes -->
+          <li
+            class="fd-nested-list__group-header lui-category"
+            title="{resolveTooltipText(nodes, $getTranslation(key))}"
+            data-testid="{getTestIdForCat(nodes.metaInfo, key)}"
+            id="category_list_level1_{index}"
+          >
+            {#if hasCategoriesWithIcon && nodes.metaInfo.icon} {#if
+            isOpenUIiconName(nodes.metaInfo.icon)}
+            <i
+              class="fd-nested-list__icon sap-icon {nodes.metaInfo.icon ? getSapIconStr(nodes.metaInfo.icon) : ''}"
+              role="presentation"
+            ></i>
+            {:else}
+            <span class="fd-nested-list__icon sap-icon">
+              <img
+                src="{nodes.metaInfo.icon}"
+                alt="{nodes.metaInfo.altText ? nodes.metaInfo.altText : ''}"
+              />
+            </span>
+            {/if} {/if} {$getTranslation(key)}
+          </li>
+          {#each nodes as node} {#if !node.hideFromNav} {#if node.label}
+          <li
+            class="fd-nested-list__item"
+            title="{resolveTooltipText(node, $getTranslation(node.label))}"
+            aria-labelledby="category_list_level1_{index}"
+          >
+            <a
+              href="{getRouteLink(node)}"
+              class="fd-nested-list__link {node === selectedNode ? 'is-selected' : ''}"
+              on:click|preventDefault="{() => handleClick(node)}"
+              data-testid="{getTestId(node)}"
+            >
+              {#if node.icon} {#if isOpenUIiconName(node.icon)}
+              <i class="fd-nested-list__icon sap-icon {getSapIconStr(node.icon)}"></i>
+              {:else}
+              <span class="fd-nested-list__icon sap-icon">
+                <img src="{node.icon}" alt="{node.altText ? node.altText : ''}" />
+              </span>
+              {/if} {:else}
+              <i
+                class="fd-nested-list__icon sap-icon {isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}"
+              ></i>
+              <span>{isSemiCollapsed ? 'sap-icon--rhombus-milestone-2' : ''}</span>
+              {/if}
+              <span class="fd-nested-list__title">{$getTranslation(node.label)}</span>
+              {#if node.externalLink && node.externalLink.url}
+              <i class="sap-icon--action"></i>
+              {/if} {#if node.badgeCounter}
+              <BadgeCounter {node} />
+              {/if}
+            </a>
+          </li>
+          {/if} {/if} {/each} {/if} {/if} {/each}
+        </ul>
+      </div>
+      {/if}
+    </div>
+    {#if footerText || semiCollapsibleButton}
+    <div class="fd-side-nav__utility">
+      <span class="lui-side-nav__footer">
+        <span class="lui-side-nav__footer--text fd-has-type-minus-1"
+          >{footerText ? footerText : ''}</span
+        >
+        {#if semiCollapsibleButton}
+        <i
+          class="lui-side-nav__footer--icon {isSemiCollapsed ? 'sap-icon--open-command-field' : 'sap-icon--close-command-field'}"
+          on:click="{() => semiCollapsibleButtonClicked(this)}"
+          data-testid="semiCollapsibleButton"
+          title="{burgerTooltip}"
+        ></i>
+        {/if}
+      </span>
+    </div>
+    {/if}
+  </nav>
+</div>
+
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Navigation } from './services/navigation';
@@ -10,7 +295,8 @@
     StateHelpers,
     EventListenerHelpers
   } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements, LuigiNavigation } from '../core-api';
+  import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
+  import { CSS_BREAKPOINTS } from '../utilities/constants';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.svelte';
 
@@ -165,6 +451,7 @@
   export let semiCollapsibleButton;
   export let pathData;
   export let pathParams;
+  let previousPathData;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
   export let isSemiCollapsed;
   export let selectedNode;
@@ -175,8 +462,9 @@
   export let burgerTooltip;
   export let navHeader;
   export let navParentNode;
-  let previousPathData;
   let context;
+  let previousWindowWidth;
+  let responsiveNavSetting;
   let sideNavCompactMode;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
@@ -420,422 +708,6 @@
   }
 </script>
 
-<svelte:window
-  on:resize={onResize}
-  on:click={closePopupMenu}
-  on:blur={closePopupMenu}
-/>
-<div
-  class="fd-app__sidebar {hideNavComponent
-    ? 'hideNavComponent'
-    : ''} {footerText || semiCollapsibleButton
-    ? 'hasFooter'
-    : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
->
-  {#if navHeader}
-    <div class="lui-nav-title">
-      <ul class="fd-nested-list">
-        <li class="fd-nested-list__item">
-          <a
-            class="fd-nested-list__link"
-            title={resolveTooltipText(
-              navHeader,
-              $getTranslation(navHeader.label)
-            )}
-          >
-            {#if navHeader.icon}
-              {#if isOpenUIiconName(navHeader.icon)}
-                <i
-                  class="lui-header-icon fd-nested-list__icon sap-icon {getSapIconStr(
-                    navHeader.icon
-                  )}"
-                  role="presentation"
-                />
-              {:else}
-                <span class="fd-nested-list__icon sap-icon">
-                  <img
-                    src={navHeader.icon}
-                    alt={navHeader.altText ? navHeader.altText : ''}
-                  />
-                </span>
-              {/if}
-            {/if}
-            <span class="fd-nested-list__title">
-              {$getTranslation(navHeader.label)}
-            </span>
-            {#if navHeader.showUpLink}
-              <i
-                class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
-                role="presentation"
-                title={$getTranslation('luigi.navigation.up')}
-                on:click|preventDefault={handleUp}
-              />
-            {/if}
-          </a>
-        </li>
-      </ul>
-    </div>
-  {/if}
-  <nav
-    class="fd-side-nav {isSemiCollapsed
-      ? 'fd-side-nav--condensed'
-      : ''} {navHeader ? 'lui-nav-header-visible' : ''}"
-    on:keyup={handleKey}
-    data-testid="semiCollapsibleLeftNav"
-  >
-    <div class="fd-side-nav__main-navigation">
-      {#if children && pathData.length > 1}
-        <div class="lui-fd-side-nav-wrapper">
-          <ul
-            class="fd-nested-list {sideNavCompactMode
-              ? 'fd-nested-list fd-nested-list--compact'
-              : 'fd-nested-list'}"
-          >
-            {#each sortedChildrenEntries as [key, nodes], index}
-              {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
-                <!-- Single nodes -->
-                {#each nodes as node}
-                  {#if !node.hideFromNav}
-                    {#if node.label}
-                      <li class="fd-nested-list__item">
-                        <a
-                          href={getRouteLink(node)}
-                          title={resolveTooltipText(
-                            node,
-                            $getTranslation(node.label)
-                          )}
-                          class="fd-nested-list__link {node === selectedNode
-                            ? 'is-selected'
-                            : ''}"
-                          on:click|preventDefault={() => handleClick(node)}
-                          data-testid={getTestId(node)}
-                        >
-                          {#if node.icon}
-                            {#if isOpenUIiconName(node.icon)}
-                              <i
-                                class="fd-nested-list__icon sap-icon {getSapIconStr(
-                                  node.icon
-                                )}"
-                                role="presentation"
-                              />
-                            {:else}
-                              <span class="fd-nested-list__icon sap-icon">
-                                <img
-                                  src={node.icon}
-                                  alt={node.altText ? node.altText : ''}
-                                />
-                              </span>
-                            {/if}
-                          {:else}
-                            <i
-                              class="fd-nested-list__icon sap-icon {isSemiCollapsed
-                                ? 'sap-icon--rhombus-milestone-2'
-                                : ''}"
-                              role="presentation"
-                            />
-                          {/if}
-                          <span class="fd-nested-list__title"
-                            >{$getTranslation(node.label)}</span
-                          >
-                          {#if node.externalLink && node.externalLink.url}
-                            <i
-                              class="fd-nested-list__icon sap-icon sap-icon--action"
-                              role="presentation"
-                            />
-                          {/if}
-                          {#if node.badgeCounter}
-                            <BadgeCounter {node} />
-                          {/if}
-                        </a>
-                      </li>
-                    {/if}
-                  {/if}
-                {/each}
-              {:else}
-                <!-- Collapsible nodes -->
-                {#if nodes.metaInfo.collapsible}
-                  <li
-                    class="fd-nested-list__item lui-collapsible-item"
-                    class:lui-item-expanded={isExpanded(
-                      nodes,
-                      expandedCategories
-                    )}
-                    on:click|stopPropagation={() =>
-                      handleIconClick(nodes, event.currentTarget)}
-                    data-testid={getTestIdForCat(nodes.metaInfo, key)}
-                  >
-                    <div class="fd-nested-list__content has-child">
-                      <a
-                        href="javascript:void(null)"
-                        title={resolveTooltipText(nodes, $getTranslation(key))}
-                        class="fd-nested-list__link {isExpanded(
-                          nodes,
-                          expandedCategories
-                        )
-                          ? 'is-expanded'
-                          : ''}"
-                        tabindex="-1"
-                        id="collapsible_listnode_{index}"
-                        aria-haspopup="true"
-                        aria-expanded={isExpanded(nodes, expandedCategories)}
-                        on:click|preventDefault={() =>
-                          setExpandedState(
-                            nodes,
-                            !isExpanded(nodes, expandedCategories),
-                            this
-                          )}
-                      >
-                        {#if isOpenUIiconName(nodes.metaInfo.icon)}
-                          <i
-                            class="fd-nested-list__icon sap-icon {getSapIconStr(
-                              nodes.metaInfo.icon
-                            )} {isSemiCollapsed && !nodes.metaInfo.icon
-                              ? 'sap-icon--rhombus-milestone-2'
-                              : ''}"
-                            role="presentation"
-                          />
-                        {:else}
-                          <span class="fd-nested-list__icon sap-icon">
-                            <img
-                              src={nodes.metaInfo.icon}
-                              alt={nodes.metaInfo.altText
-                                ? nodes.metaInfo.altText
-                                : ''}
-                            />
-                          </span>
-                        {/if}
-                        <span class="fd-nested-list__title"
-                          >{$getTranslation(key)}</span
-                        >
-                      </a>
-                      <button
-                        class="fd-button fd-nested-list__button"
-                        href="#"
-                        tabindex="0"
-                        aria-label="Expand categories"
-                        aria-haspopup="true"
-                        aria-expanded={isExpanded(nodes, expandedCategories)}
-                        on:click|preventDefault={() =>
-                          setExpandedState(
-                            nodes,
-                            !isExpanded(nodes, expandedCategories),
-                            this
-                          )}
-                      >
-                        <i
-                          class={isExpanded(nodes, expandedCategories)
-                            ? 'sap-icon--navigation-down-arrow'
-                            : 'sap-icon--navigation-right-arrow'}
-                          role="presentation"
-                        />
-                      </button>
-                    </div>
-                    <ul
-                      class="fd-nested-list fd-nested-list--text-only level-2"
-                      aria-hidden={!isExpanded(nodes, expandedCategories)}
-                    >
-                      {#each nodes as node}
-                        {#if !node.hideFromNav}
-                          {#if node.label}
-                            <li
-                              class="fd-nested-list__item"
-                              aria-labelledby="collapsible_listnode_{index}"
-                            >
-                              <a
-                                href={getRouteLink(node)}
-                                class="fd-nested-list__link {node ===
-                                selectedNode
-                                  ? 'is-selected'
-                                  : ''}"
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
-                                data-testid={getTestId(node)}
-                                title={resolveTooltipText(
-                                  node,
-                                  $getTranslation(node.label)
-                                )}
-                              >
-                                <span class="fd-nested-list__title"
-                                  >{$getTranslation(node.label)}</span
-                                >
-                                {#if node.externalLink && node.externalLink.url}
-                                  <i class="sap-icon--action" />
-                                {/if}
-                                {#if node.badgeCounter}
-                                  <BadgeCounter {node} />
-                                {/if}
-                              </a>
-                            </li>
-                          {/if}
-                        {/if}
-                      {/each}
-                    </ul>
-                    <!-- Flyout for collapsible nodes -->
-                    {#if nodes.metaInfo && nodes.metaInfo.label === selectedCategory}
-                      <div class="lui-flyout-sublist">
-                        <div class="lui-flyout-sublist__wrapper">
-                          <h5
-                            class="lui-flyout-sublist__title fd-has-type-minus-1 fd-has-color-text-4"
-                          >
-                            {$getTranslation(key)}
-                          </h5>
-                          <ul class="fd-nested-list fd-nested-list--text-only">
-                            {#each nodes as node}
-                              {#if !node.hideFromNav}
-                                {#if node.label}
-                                  <li class="fd-nested-list__item">
-                                    <a
-                                      href={getRouteLink(node)}
-                                      class="fd-nested-list__link {node ===
-                                      selectedNode
-                                        ? 'is-selected'
-                                        : ''}"
-                                      on:click|preventDefault={() =>
-                                        handleClick(node)}
-                                      data-testid={getTestId(node)}
-                                      title={resolveTooltipText(
-                                        node,
-                                        $getTranslation(node.label)
-                                      )}
-                                    >
-                                      <span class="fd-nested-list__title"
-                                        >{$getTranslation(node.label)}</span
-                                      >
-                                      {#if node.externalLink && node.externalLink.url}
-                                        <i class="sap-icon--action" />
-                                      {/if}
-                                      {#if node.badgeCounter}
-                                        <BadgeCounter {node} />
-                                      {/if}
-                                    </a>
-                                  </li>
-                                {/if}
-                              {/if}
-                            {/each}
-                          </ul>
-                        </div>
-                      </div>
-                    {/if}
-                  </li>
-                {:else}
-                  <!-- Category nodes -->
-                  <li
-                    class="fd-nested-list__group-header lui-category"
-                    title={resolveTooltipText(nodes, $getTranslation(key))}
-                    data-testid={getTestIdForCat(nodes.metaInfo, key)}
-                    id="category_list_level1_{index}"
-                  >
-                    {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
-                      {#if isOpenUIiconName(nodes.metaInfo.icon)}
-                        <i
-                          class="fd-nested-list__icon sap-icon {nodes.metaInfo
-                            .icon
-                            ? getSapIconStr(nodes.metaInfo.icon)
-                            : ''}"
-                          role="presentation"
-                        />
-                      {:else}
-                        <span class="fd-nested-list__icon sap-icon">
-                          <img
-                            src={nodes.metaInfo.icon}
-                            alt={nodes.metaInfo.altText
-                              ? nodes.metaInfo.altText
-                              : ''}
-                          />
-                        </span>
-                      {/if}
-                    {/if}
-                    {$getTranslation(key)}
-                  </li>
-                  {#each nodes as node}
-                    {#if !node.hideFromNav}
-                      {#if node.label}
-                        <li
-                          class="fd-nested-list__item"
-                          title={resolveTooltipText(
-                            node,
-                            $getTranslation(node.label)
-                          )}
-                          aria-labelledby="category_list_level1_{index}"
-                        >
-                          <a
-                            href={getRouteLink(node)}
-                            class="fd-nested-list__link {node === selectedNode
-                              ? 'is-selected'
-                              : ''}"
-                            on:click|preventDefault={() => handleClick(node)}
-                            data-testid={getTestId(node)}
-                          >
-                            {#if node.icon}
-                              {#if isOpenUIiconName(node.icon)}
-                                <i
-                                  class="fd-nested-list__icon sap-icon {getSapIconStr(
-                                    node.icon
-                                  )}"
-                                />
-                              {:else}
-                                <span class="fd-nested-list__icon sap-icon">
-                                  <img
-                                    src={node.icon}
-                                    alt={node.altText ? node.altText : ''}
-                                  />
-                                </span>
-                              {/if}
-                            {:else}
-                              <i
-                                class="fd-nested-list__icon sap-icon {isSemiCollapsed
-                                  ? 'sap-icon--rhombus-milestone-2'
-                                  : ''}"
-                              />
-                              <span
-                                >{isSemiCollapsed
-                                  ? 'sap-icon--rhombus-milestone-2'
-                                  : ''}</span
-                              >
-                            {/if}
-                            <span class="fd-nested-list__title"
-                              >{$getTranslation(node.label)}</span
-                            >
-                            {#if node.externalLink && node.externalLink.url}
-                              <i class="sap-icon--action" />
-                            {/if}
-                            {#if node.badgeCounter}
-                              <BadgeCounter {node} />
-                            {/if}
-                          </a>
-                        </li>
-                      {/if}
-                    {/if}
-                  {/each}
-                {/if}
-              {/if}
-            {/each}
-          </ul>
-        </div>
-      {/if}
-    </div>
-    {#if footerText || semiCollapsibleButton}
-      <div class="fd-side-nav__utility">
-        <span class="lui-side-nav__footer">
-          <span class="lui-side-nav__footer--text fd-has-type-minus-1"
-            >{footerText ? footerText : ''}</span
-          >
-          {#if semiCollapsibleButton}
-            <i
-              class="lui-side-nav__footer--icon {isSemiCollapsed
-                ? 'sap-icon--open-command-field'
-                : 'sap-icon--close-command-field'}"
-              on:click={() => semiCollapsibleButtonClicked(this)}
-              data-testid="semiCollapsibleButton"
-              title={burgerTooltip}
-            />
-          {/if}
-        </span>
-      </div>
-    {/if}
-  </nav>
-</div>
-
 <style type="text/scss">
   @import 'styles/mixins';
   @import 'styles/variables';
@@ -879,9 +751,7 @@
     }
   }
 
-  :global(body:not(.semiCollapsed))
-    .fd-app__sidebar
-    .fd-side-nav.lui-nav-header-visible {
+  :global(body:not(.semiCollapsed)) .fd-app__sidebar .fd-side-nav.lui-nav-header-visible {
     height: auto;
     top: $navHeaderHeight;
     position: absolute;
