@@ -298,7 +298,7 @@
   import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
   import { CSS_BREAKPOINTS } from '../utilities/constants';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
-  import BadgeCounter from './BadgeCounter.html';
+  import BadgeCounter from './BadgeCounter.svelte';
 
   //TODO refactor
   const __this = {
@@ -1009,12 +1009,13 @@
 
     .lui-flyout-sublist__wrapper {
       position: relative;
-      @include border-radius(4px);
+      border-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
       @include box-shadow(
-        0 5px 20px 0 var(--fd-color-neutral-3),
-        0 2px 8px 0 var(--fd-color-neutral-2)
+        var(
+          --sapContent_Shadow2,
+          (0 0 0 0.0625rem rgba(0, 0, 0, 0.42), 0 0.625rem 1.275rem 0 rgba(0, 0, 0, 0.3))
+        )
       );
-      border: 1px solid var(--fd-color-neutral-3);
       opacity: 0;
       animation-name: flyoutAnimation;
       animation-duration: 0.3s;
@@ -1055,20 +1056,22 @@
 
       &:before {
         left: -14px;
-        border-right-color: var(--fd-color-neutral-3);
+        border-right-color: var(--sapContent_ForegroundBorderColor, #89919a);
       }
 
       &:after {
         left: -13px;
-        border-right-color: white;
+        border-right-color: var(--sapGroup_ContentBackground, #fff);
       }
-    }
 
-    li {
-      border-top: 1px solid var(--fd-color-neutral-2);
+      & > *:first-child {
+        border-top-right-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
+        border-top-left-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
+      }
 
-      &:first-child {
-        border: none;
+      & > *:last-child {
+        border-bottom-right-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
+        border-bottom-left-radius: var(--sapElement_BorderCornerRadius, 0.25rem);
       }
     }
 

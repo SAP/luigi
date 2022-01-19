@@ -134,9 +134,9 @@
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
   import LeftNav from './navigation/LeftNav.html';
-  import TopNav from './navigation/TopNav.html';
+  import TopNav from './navigation/TopNav.svelte';
   import TabNav from './navigation/TabNav.html';
-  import GlobalNav from './navigation/GlobalNav.html';
+  import GlobalNav from './navigation/GlobalNav.svelte';
   import Breadcrumb from './navigation/Breadcrumb.html';
   import {
     afterUpdate,
@@ -832,7 +832,10 @@
   export const showAlert = (settings, openFromClient = false) => {
     const customAlertHandler = LuigiConfig.getConfigValue('settings.customAlertHandler');
     if (GenericHelpers.isFunction(customAlertHandler)) {
-      return customAlertHandler(settings, openFromClient);
+      const customReturnValue = customAlertHandler(settings, openFromClient);
+      if (customReturnValue !== false) {
+        return customReturnValue;
+      }
     }
     const currentAlerts = alerts;
 
@@ -2148,10 +2151,6 @@
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       box-shadow: none;
-
-      :global(.fd-menu__item:first-child) {
-        border-bottom: rgba(243, 244, 245, 0.8);
-      }
     }
   }
 
