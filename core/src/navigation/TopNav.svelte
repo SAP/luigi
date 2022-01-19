@@ -7,7 +7,7 @@
   import ContextSwitcher from './ContextSwitcher.svelte';
   import ProductSwitcher from './ProductSwitcher.svelte';
   import GlobalSearch from './GlobalSearch.svelte';
-  import GlobalSearchCentered from './GlobalSearchCentered.html';
+  import GlobalSearchCentered from './GlobalSearchCentered.svelte';
   import TopNavNode from './TopNavNode.svelte';
   import {
     beforeUpdate,
