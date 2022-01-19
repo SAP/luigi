@@ -421,16 +421,16 @@
 />
 {/if}
 <script>
-  import LogoTitle from './LogoTitle.html';
-  import BadgeCounter from './BadgeCounter.html';
+  import LogoTitle from './LogoTitle.svelte';
+  import BadgeCounter from './BadgeCounter.svelte';
   import Authorization from '../Authorization.html';
   import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.html';
   import TopNavDropDown from '../TopNavDropDown.html';
-  import ContextSwitcher from './ContextSwitcher.html';
-  import ProductSwitcher from './ProductSwitcher.html';
+  import ContextSwitcher from './ContextSwitcher.svelte';
+  import ProductSwitcher from './ProductSwitcher.svelte';
   import GlobalSearch from './GlobalSearch.html';
   import GlobalSearchCentered from './GlobalSearchCentered.html';
-  import TopNavNode from './TopNavNode.html';
+  import TopNavNode from './TopNavNode.svelte';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
