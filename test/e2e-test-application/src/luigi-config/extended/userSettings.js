@@ -12,7 +12,7 @@ class UserSettings {
     userAccount: {
       label: 'User Account',
       sublabel: 'username',
-      icon: 'account',
+      icon: '/assets/favicon-sap.ico',
       iconClassAttribute: 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail',
       title: 'User Account',
       settings: {

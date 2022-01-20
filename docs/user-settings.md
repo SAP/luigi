@@ -101,6 +101,11 @@ These parameters used in the example above allow you to configure the items in t
 - **type** string (optional)
 - **description** name of the icon, without the `sap-icon--` prefix or path to an image.
 
+#### iconClassAttribute
+
+- **type** string (optional)
+- **description** adds specified class(es) to the icon container. Custom classes help to style the image which can be set under **icon** attribute above. 
+
 #### title
 
 - **type** string (optional)
