@@ -605,19 +605,21 @@ class RoutingHelpersClass {
 
       searchParams.set(paramKey, value);
       if (value === undefined) {
-        searchParams.delete(key);
+        searchParams.delete(paramKey);//TODO change to key
       }
     }
   }
 
-  addParamsOnHashRouting(url, params, paramPrefix){
-    const [hashValue, givenQueryParamsString] = url.hash.split('?');
+  addParamsOnHashRouting(params, hash,  paramPrefix){
+    let localhash = hash;
+    const [hashValue, givenQueryParamsString] = localhash.split('?');
     const searchParams = new URLSearchParams(givenQueryParamsString);
     this.modifySearchParam(params, searchParams, paramPrefix);
-    url.hash = hashValue;
+    localhash = hashValue;
     if (searchParams.toString() !== '') {
-      url.hash += `?${decodeURIComponent(searchParams.toString())}`;
+     localhash += `?${decodeURIComponent(searchParams.toString())}`;
     }
+    return localhash;
   }
 }
 

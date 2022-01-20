@@ -51,7 +51,7 @@ class LuigiRouting {
     }
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      RoutingHelpers.addParamsOnHashRouting(url, params);
+      url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash);
     } else {
       RoutingHelpers.modifySearchParam(params, url.searchParams);
     }
@@ -69,7 +69,7 @@ class LuigiRouting {
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      RoutingHelpers.addParamsOnHashRouting(url, params, paramPrefix);
+      url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash, paramPrefix);
     }else{
       RoutingHelpers.modifySearchParam(params, url.searchParams, paramPrefix);
     }
