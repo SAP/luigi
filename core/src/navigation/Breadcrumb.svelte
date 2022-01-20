@@ -1,14 +1,10 @@
-<div class="lui-breadcrumb-container" bind:this="{breadcrumbContainer}"></div>
-
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  import { LuigiConfig, LuigiI18N } from '../core-api';
   import {
     NavigationHelpers,
     RoutingHelpers,
-    StateHelpers,
-    EventListenerHelpers,
-    GenericHelpers
+    StateHelpers
   } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import { Navigation } from './services/navigation';
@@ -185,6 +181,8 @@
     dispatch('handleClick', { node });
   }
 </script>
+
+<div class="lui-breadcrumb-container" bind:this={breadcrumbContainer} />
 
 <style type="text/scss">
   @import 'styles/variables';

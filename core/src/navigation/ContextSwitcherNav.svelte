@@ -113,16 +113,16 @@
   }
 
   .fd-menu__list {
-    &--bottom {
-      border-top: 1px solid #eeeeef;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-    &--top {
-      border-bottom: 1px solid #eeeeef;
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
+     &--bottom {
+        border-top: var(--sapList_BorderWidth, 0.0625rem) solid var(--sapList_BorderColor, #e4e4e4);
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+     }
+     &--top {
+        border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid var(--sapList_BorderColor, #e4e4e4);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+     }
   }
 
   :global(.lui-contextswitcher-indicator) {
