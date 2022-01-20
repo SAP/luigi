@@ -47,7 +47,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
    * {path: 'demo', component: DemoComponent, data:{fromVirtualTreeRoot: true}}
    * Another option is to specify the LuigiPath: if you add in route data luigiRoute:'/xxxx/xxx';
    * in the case we will update the path in LuigiCore navigation, here an example
-   * {path: 'demo', component: DemoComponent, data:{luigiRoute: '/home/demo''}}
+   * {path: 'demo', component: DemoComponent, data:{luigiRoute: '/home/demo''}} //updateModalPathParam: true
    * @param event the NavigationEnd event
    */
   doSubscription(event: NavigationEnd): void {
@@ -75,8 +75,14 @@ export class LuigiAutoRoutingService implements OnDestroy {
     }
 
     if (current?.data) {
+      
       if (current.data.luigiRoute) {
         let route = current.data.luigiRoute;
+        //modalPathParam change here?
+        if (current.data.updateModalPathParam) {
+          let lm = linkManager();
+          lm.updateModalPathInternalNavigation(current.data.luigiRoute);
+        }
 
         if (current.params) {
           const pmap: ParamMap = convertToParamMap(current.params);

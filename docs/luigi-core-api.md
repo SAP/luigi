@@ -536,8 +536,7 @@ Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 
 #### openAsSplitView
 
--   **See: [SplitView Client](https://docs.luigi-project.io/docs/luigi-client-api?section=splitview) for further documentation. These methods from the Client SplitView are also implemented for Luigi Core: `close`, `collapse`, `expand`, `isCollapsed`, `isExpanded`, `exists`
-    **
+-   **See: [SplitView Client](https://docs.luigi-project.io/docs/luigi-client-api?section=splitview) for further documentation. These methods from the Client SplitView are also implemented for Luigi Core: `close`, `collapse`, `expand`, `isCollapsed`, `isExpanded`, `exists`**
 
 Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
 

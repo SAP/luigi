@@ -88,6 +88,25 @@ export class linkManager extends LuigiClientBase {
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 
+  updateModalPathInternalNavigation(path) {
+    helpers.setTargetOrigin('http://localhost:4100');
+    const navigationOpenMsg = {
+      msg: 'luigi.navigation.updateModalDataPath',
+      // sessionId: sessionId,
+      params: Object.assign(this.options, {
+        link: path
+        // relative: relativePath,
+        // intent: hasIntent,
+        // modal: modalSettings,
+        // splitView: splitViewSettings,
+        // drawer: drawerSettings
+      })
+    };
+    helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
+
+    // luigi.auth.updateModalDataPath
+  }
+
   /**
    * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager

@@ -519,6 +519,11 @@ class RoutingClass {
     WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
   }
 
+  updateModalDataInUrl(message) {
+    // this.removeModalDataFromUrl();
+    console.log(message, data.params.link);
+  }
+
   appendModalDataToUrl(modalPath, modalParams) {
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();

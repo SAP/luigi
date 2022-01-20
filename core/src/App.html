@@ -1297,6 +1297,10 @@
         sendAuthDataToClient(e.data.authData);
       }
 
+      if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
+        Routing.updateModalDataInUrl(e);
+      }
+
       if ('luigi.navigation.pathExists' === e.data.msg) {
         const data = e.data.data;
         const path = buildPath(data);

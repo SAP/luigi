@@ -117,6 +117,10 @@ class RoutingHelpersClass {
     return paramName;
   }
 
+  // setModalPathParam() {
+
+  // }
+
   /**
    * Get the query param separator which is used with hashRouting
    * Default: :
