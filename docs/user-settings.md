@@ -104,7 +104,7 @@ These parameters used in the example above allow you to configure the items in t
 #### iconClassAttribute
 
 - **type** string (optional)
-- **description** adds specified class(es) to the icon container. Custom classes help to style the image which can be set under **icon** attribute above. 
+- **description** adds specified class(es) to the icon container. Custom classes help to style the image which can be set under the **icon** attribute above. 
 
 #### title
 
