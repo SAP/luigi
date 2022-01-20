@@ -1,89 +1,6 @@
-<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
-<div class="fd-shellbar__action {isSearchFieldVisible ? 'luigi-search-shell__mobile':''}">
-  <div class="fd-popover">
-    <div
-      class="fd-popover__control luigi-search"
-      on:click|stopPropagation="{() => {}}"
-      aria-hidden="{!isSearchFieldVisible}"
-      aria-haspopup="true"
-    >
-      <div class="fd-input-group fd-shellbar__input-group">
-        {#if search && search.disableInputHandlers}
-        <input
-          type="text"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-          data-testid="luigi-search-input__no-handlers"
-          autofocus
-        />
-        {:else}
-        <input
-          type="text"
-          on:keyup="{(event) => onKeyUp(event)}"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-          data-testid="luigi-search-input"
-          autofocus
-          bind:this="{inputElem}"
-        />
-        {/if}
-      </div>
-      {#if !isCustomSearchRenderer}
-      <div
-        class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
-        aria-hidden="{!displaySearchResult}"
-      >
-        <nav class="fd-menu">
-          {#if searchResult}
-          <ul
-            class="fd-menu__list fd-menu__list--top"
-            bind:this="{luigiCustomSearchItemRenderer__slotContainer}"
-          >
-            {#each searchResult as result, index}
-            <li
-              class="fd-menu__item luigi-search-result-item__{index}"
-              on:click="{(event) => onSearchResultItemSelected(result, event)}"
-              on:keyup="{(event) => handleKeydown(result, event)}"
-              tabindex="0"
-            >
-              {#if !isCustomSearchResultItemRenderer}
-              <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
-                <div class="fd-product-switch__text">
-                  <div class="fd-product-switch__title">{result.label}</div>
-                  <div class="fd-product-switch__subtitle">
-                    {result.description}
-                  </div>
-                </div>
-              </a>
-              {:else} {@html
-              renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer,
-              index)} {/if}
-            </li>
-            {/each}
-          </ul>
-          {/if}
-        </nav>
-      </div>
-      {:else}
-      <div bind:this="{luigiCustomSearchRenderer__slot}"></div>
-      {/if}
-    </div>
-  </div>
-</div>
-<div class="fd-shellbar__action fd-shellbar__action--desktop">
-  <div on:click|stopPropagation="{() => {}}">
-    <button
-      class="fd-button fd-shellbar__button"
-      aria-haspopup="true"
-      aria-expanded="{!isSearchFieldVisible}"
-      on:click="{toggleSearch}"
-      data-testid="luigi-search-btn-desktop"
-    >
-      <i class="sap-icon sap-icon--search"></i>
-    </button>
-  </div>
-</div>
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  import { LuigiI18N } from '../core-api';
   import { GenericHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import {
@@ -106,12 +23,9 @@
       search.searchProvider.onSearchResultItemSelected(item);
     }
   };
-  let searchResults = {};
-  let showPopOverCustomSearch = false;
   let search = {};
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
-  let searchFieldAlwaysVisible;
 
   onMount(async () => {
     search = globalSearchConfig;
@@ -307,6 +221,105 @@
     }
   }
 </script>
+
+<svelte:window on:click={closeSearchResult} on:blur={closeSearchResult} />
+<div
+  class="fd-shellbar__action {isSearchFieldVisible
+    ? 'luigi-search-shell__mobile'
+    : ''}"
+>
+  <div class="fd-popover">
+    <div
+      class="fd-popover__control luigi-search"
+      on:click|stopPropagation={() => {}}
+      aria-hidden={!isSearchFieldVisible}
+      aria-haspopup="true"
+    >
+      <div class="fd-input-group fd-shellbar__input-group">
+        {#if search && search.disableInputHandlers}
+          <input
+            type="text"
+            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            data-testid="luigi-search-input__no-handlers"
+            autofocus
+          />
+        {:else}
+          <input
+            type="text"
+            on:keyup={event => onKeyUp(event)}
+            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            data-testid="luigi-search-input"
+            autofocus
+            bind:this={inputElem}
+          />
+        {/if}
+      </div>
+      {#if !isCustomSearchRenderer}
+        <div
+          class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
+          aria-hidden={!displaySearchResult}
+        >
+          <nav class="fd-menu">
+            {#if searchResult}
+              <ul
+                class="fd-menu__list fd-menu__list--top"
+                bind:this={luigiCustomSearchItemRenderer__slotContainer}
+              >
+                {#each searchResult as result, index}
+                  <li
+                    class="fd-menu__item luigi-search-result-item__{index}"
+                    on:click={event =>
+                      onSearchResultItemSelected(result, event)}
+                    on:keyup={event => handleKeydown(result, event)}
+                    tabindex="0"
+                  >
+                    {#if !isCustomSearchResultItemRenderer}
+                      <a
+                        class="fd-menu__link"
+                        on:click|preventDefault={() => {}}
+                      >
+                        <div class="fd-product-switch__text">
+                          <div class="fd-product-switch__title">
+                            {result.label}
+                          </div>
+                          <div class="fd-product-switch__subtitle">
+                            {result.description}
+                          </div>
+                        </div>
+                      </a>
+                    {:else}
+                      {@html renderCustomSearchItem(
+                        result,
+                        luigiCustomSearchItemRenderer__slotContainer,
+                        index
+                      )}
+                    {/if}
+                  </li>
+                {/each}
+              </ul>
+            {/if}
+          </nav>
+        </div>
+      {:else}
+        <div bind:this={luigiCustomSearchRenderer__slot} />
+      {/if}
+    </div>
+  </div>
+</div>
+<div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <div on:click|stopPropagation={() => {}}>
+    <button
+      class="fd-button fd-shellbar__button"
+      aria-haspopup="true"
+      aria-expanded={!isSearchFieldVisible}
+      on:click={toggleSearch}
+      data-testid="luigi-search-btn-desktop"
+    >
+      <i class="sap-icon sap-icon--search" />
+    </button>
+  </div>
+</div>
+
 <style type="text/scss">
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {

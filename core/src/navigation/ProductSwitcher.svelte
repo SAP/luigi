@@ -1,5 +1,5 @@
 <script>
-  import MobileTopNav from './MobileTopNavDropDown.html';
+  import MobileTopNav from './MobileTopNavDropDown.svelte';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiConfig, LuigiI18N } from '../core-api';
   import { Routing } from '../services/routing';

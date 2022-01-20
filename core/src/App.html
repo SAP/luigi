@@ -133,11 +133,11 @@
   import UserSettingsDialog from './UserSettingsDialog.html';
   import Backdrop from './Backdrop.html';
   import SplitView from './SplitView.html';
-  import LeftNav from './navigation/LeftNav.html';
+  import LeftNav from './navigation/LeftNav.svelte';
   import TopNav from './navigation/TopNav.svelte';
-  import TabNav from './navigation/TabNav.html';
+  import TabNav from './navigation/TabNav.svelte';
   import GlobalNav from './navigation/GlobalNav.svelte';
-  import Breadcrumb from './navigation/Breadcrumb.html';
+  import Breadcrumb from './navigation/Breadcrumb.svelte';
   import {
     afterUpdate,
     beforeUpdate,
@@ -2151,10 +2151,6 @@
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       box-shadow: none;
-
-      :global(.fd-menu__item:first-child) {
-        border-bottom: rgba(243, 244, 245, 0.8);
-      }
     }
   }
 
