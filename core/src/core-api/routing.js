@@ -72,7 +72,7 @@ class LuigiRouting {
       const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
 
       searchParams.set(paramKey, value);
-      if (value === undefined) {
+      if (value === undefined || value === 'undefined') {
         searchParams.delete(paramKey);
       }
     }
