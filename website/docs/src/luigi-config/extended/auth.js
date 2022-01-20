@@ -29,9 +29,9 @@ class Auth {
           name: 'Luigi User',
           initials: 'LU',
           email: 'luigi.user@example.com',
-          picture: '/assets/favicon-sap.ico',
-          description: 'Expert'
-          //icon: true
+          //picture: '/assets/favicon-sap.ico',
+          description: 'Expert',
+          icon: true
         });
       });
     }
