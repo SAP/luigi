@@ -13,7 +13,6 @@
     IframeHelpers,
     UserSettingsHelper
   } from './utilities/helpers';
-  import { AuthLayerSvc } from './services';
   import { MessagesListeners } from './services/messages-listeners';
   import { ViewUrlDecorator } from './services/viewurl-decorator';
   import UserSettingsEditor from './UserSettingsEditor.html';
@@ -23,7 +22,6 @@
   import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
   export let schemaObj;
   export let userSettingGroups;
-  export let userInfo = {};
 
   const dispatch = createEventDispatcher();
   let userSettingGroup;
@@ -108,11 +106,6 @@
           dispatch('close');
         }
       });
-
-    AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
-      userInfo = uInfo;
-      dispatch('userInfoUpdated', userInfo);
-    });
   });
 
   function prepareUserSettingsObj(userSettingGroups, storedUserSettingsData) {
@@ -398,9 +391,6 @@
     width: 3rem;
     height: 3rem;
   }
-  .lui-us-navlist__item .fd-avatar--thumbnail {
-    margin-right: 0.75rem;
-  }
 
   .iframeUserSettingsCtn {
     position: relative;
@@ -435,6 +425,10 @@
 
   .fd-side-nav__group-header {
     height: var(--dialog-header-height);
+  }
+  /*missing margin-right in FD Styles. TODO: check in newer version 1.21.0*/
+  .fd-list--byline .fd-avatar.fd-avatar--thumbnail {
+    margin-right: 0.75rem;
   }
 
   .usersettingseditor {
@@ -522,14 +516,7 @@
                 on:keyup="{(event) => handleKeyUp(event,[index])}"
               >
                 <a tabindex="0" class="fd-list__link" href="#">
-                  {#if userSettingsGroupProperty[0]==='userAccount' && userInfo.picture}
-                  <span
-                    class="fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail"
-                    aria-label="Avatar"
-                    data-testid="luigi-topnav-profile-avatar"
-                    style="background-image:url('{userInfo.picture}')"
-                  ></span>
-                  {:else if userSettingsGroupProperty[1].icon} {#if
+                  {#if userSettingsGroupProperty[1].icon} {#if
                   hasOpenUIicon(userSettingsGroupProperty[1])}
                   <span class="fd-list__thumbnail">
                     <i
@@ -539,7 +526,7 @@
                   </span>
                   {:else}
                   <span
-                    class="fd-image--s fd-list__thumbnail"
+                    class="{userSettingsGroupProperty[1].iconClassAttribute || 'fd-image--s fd-list__thumbnail'}"
                     aria-label="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
                     style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
                   ></span>
