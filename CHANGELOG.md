@@ -35,7 +35,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2472](https://github.com/SAP/luigi/pull/2472) Node params are not deleted ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#2466](https://github.com/SAP/luigi/pull/2466) Proper styling for App Switcher with one entity ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#2467](https://github.com/SAP/luigi/pull/2467) Oidc mockserver fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#2469](https://github.com/SAP/luigi/pull/2469) Sap icon fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2469](https://github.com/SAP/luigi/pull/2469) Fixed additional sap icon fonts ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 
 ## [v1.20.0] (2021-12-23)
