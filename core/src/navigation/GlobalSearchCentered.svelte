@@ -1,121 +1,6 @@
-<svelte:window on:click="{closeSearchResult}" on:blur="{closeSearchResult}" />
-<div
-  class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible?'lui-global-search-mobile--active':''}"
->
-  <div class="fd-popover">
-    <div
-      class="fd-popover__control luigi-search"
-      on:click|stopPropagation="{() => {}}"
-      aria-hidden="{!isSearchFieldVisible}"
-      aria-haspopup="true"
-    >
-      <div class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn">
-        {#if search && search.disableInputHandlers}
-        <input
-          type="text"
-          class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-          data-testid="luigi-search-input__no-handlers"
-        />
-        {:else} <input type="text" on:keyup="{(event) => onKeyUp(event)}" class="fd-input
-        fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
-        data-testid="luigi-search-input" bind:this="{inputElem}" on:input={() =>
-        renderClearBtn()} />
-        <span
-          class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button lui-search-btn-ctn"
-        >
-          {#if displayClearSearchFieldBtn}
-          <button
-            aria-label="button-decline"
-            class="fd-shellbar__button fd-button"
-            on:click="{clearSearchField}"
-          >
-            <i class="sap-icon--decline"></i>
-          </button>
-          {/if}
-          <button
-            aria-label="button-search"
-            class="fd-shellbar__button fd-button"
-            on:click="{searchBtnClicked}"
-          >
-            <i class="sap-icon--search"></i>
-          </button>
-        </span>
-        {/if}
-      </div>
-      {#if !isCustomSearchRenderer}
-      <div
-        class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
-        aria-hidden="{!displaySearchResult}"
-      >
-        <nav class="fd-menu">
-          {#if searchResult}
-          <ul
-            class="fd-menu__list fd-menu__list--top"
-            bind:this="{luigiCustomSearchItemRenderer__slotContainer}"
-          >
-            {#each searchResult as result, index}
-            <li
-              class="fd-menu__item luigi-search-result-item__{index}"
-              on:click="{(event) => onSearchResultItemSelected(result, event)}"
-              on:keyup="{(event) => handleKeydown(result, event)}"
-              tabindex="0"
-            >
-              {#if !isCustomSearchResultItemRenderer}
-              <a class="fd-menu__link" on:click|preventDefault="{() => {}}">
-                <div class="fd-product-switch__text">
-                  <div class="fd-product-switch__title">{result.label}</div>
-                  <div class="fd-product-switch__subtitle">
-                    {result.description}
-                  </div>
-                </div>
-              </a>
-              {:else} {@html
-              renderCustomSearchItem(result,luigiCustomSearchItemRenderer__slotContainer,
-              index)} {/if}
-            </li>
-            {/each}
-          </ul>
-          {/if}
-        </nav>
-      </div>
-      {:else}
-      <div bind:this="{luigiCustomSearchRenderer__slot}"></div>
-      {/if}
-    </div>
-  </div>
-</div>
-{#if !isSearchFieldVisible}
-<div class="lui-global-search-btn">
-  <div on:click|stopPropagation="{() => {}}">
-    <button
-      class="fd-button fd-shellbar__button"
-      aria-haspopup="true"
-      aria-expanded="{!isSearchFieldVisible}"
-      on:click="{toggleSearch}"
-      data-testid="luigi-search-btn-desktop"
-    >
-      <i class="sap-icon sap-icon--search"></i>
-    </button>
-  </div>
-</div>
-{/if} {#if isSearchFieldVisible}
-<div
-  class="lui-global-search-cancel-btn {isSearchFieldVisible?'lui-global-search-cancel-btn--active':''}"
->
-  <button
-    class="fd-button fd-shellbar__button"
-    aria-haspopup="true"
-    aria-expanded="{!isSearchFieldVisible}"
-    on:click|stopPropagation="{()=> toggleSearch()}"
-    data-testid="luigi-search-cancel-btn"
-  >
-    {$getTranslation(cancelBtn)}
-  </button>
-</div>
-{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  import { LuigiI18N } from '../core-api';
   import { GenericHelpers, GlobalSearchHelper } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import {
@@ -125,7 +10,6 @@
     KEYCODE_ESC
   } from '../utilities/keycode.js';
   import { TOP_NAV_DEFAULTS } from '../utilities/luigi-config-defaults';
-  import { CSS_BREAKPOINTS } from '../utilities/constants';
   export let searchResult = [];
   export let displaySearchResult;
   export let displayCustomSearchResult;
@@ -141,8 +25,6 @@
   };
   let cancelBtn = TOP_NAV_DEFAULTS.globalSearchCenteredCancelButton;
   export let isSearchFieldVisible;
-  let searchResults = {};
-  let showPopOverCustomSearch = false;
   let search = {};
   let isCustomSearchRenderer;
   let isCustomSearchResultItemRenderer;
@@ -372,6 +254,146 @@
     }
   }
 </script>
+
+<svelte:window on:click={closeSearchResult} on:blur={closeSearchResult} />
+<div
+  class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible
+    ? 'lui-global-search-mobile--active'
+    : ''}"
+>
+  <div class="fd-popover">
+    <div
+      class="fd-popover__control luigi-search"
+      on:click|stopPropagation={() => {}}
+      aria-hidden={!isSearchFieldVisible}
+      aria-haspopup="true"
+    >
+      <div
+        class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn"
+      >
+        {#if search && search.disableInputHandlers}
+          <input
+            type="text"
+            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            data-testid="luigi-search-input__no-handlers"
+          />
+        {:else}
+          <input
+            type="text"
+            on:keyup={event => onKeyUp(event)}
+            class="fd-input
+        fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            data-testid="luigi-search-input"
+            bind:this={inputElem}
+            on:input={() => renderClearBtn()}
+          />
+          <span
+            class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button lui-search-btn-ctn"
+          >
+            {#if displayClearSearchFieldBtn}
+              <button
+                aria-label="button-decline"
+                class="fd-shellbar__button fd-button"
+                on:click={clearSearchField}
+              >
+                <i class="sap-icon--decline" />
+              </button>
+            {/if}
+            <button
+              aria-label="button-search"
+              class="fd-shellbar__button fd-button"
+              on:click={searchBtnClicked}
+            >
+              <i class="sap-icon--search" />
+            </button>
+          </span>
+        {/if}
+      </div>
+      {#if !isCustomSearchRenderer}
+        <div
+          class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
+          aria-hidden={!displaySearchResult}
+        >
+          <nav class="fd-menu">
+            {#if searchResult}
+              <ul
+                class="fd-menu__list fd-menu__list--top"
+                bind:this={luigiCustomSearchItemRenderer__slotContainer}
+              >
+                {#each searchResult as result, index}
+                  <li
+                    class="fd-menu__item luigi-search-result-item__{index}"
+                    on:click={event =>
+                      onSearchResultItemSelected(result, event)}
+                    on:keyup={event => handleKeydown(result, event)}
+                    tabindex="0"
+                  >
+                    {#if !isCustomSearchResultItemRenderer}
+                      <a
+                        class="fd-menu__link"
+                        on:click|preventDefault={() => {}}
+                      >
+                        <div class="fd-product-switch__text">
+                          <div class="fd-product-switch__title">
+                            {result.label}
+                          </div>
+                          <div class="fd-product-switch__subtitle">
+                            {result.description}
+                          </div>
+                        </div>
+                      </a>
+                    {:else}
+                      {@html renderCustomSearchItem(
+                        result,
+                        luigiCustomSearchItemRenderer__slotContainer,
+                        index
+                      )}
+                    {/if}
+                  </li>
+                {/each}
+              </ul>
+            {/if}
+          </nav>
+        </div>
+      {:else}
+        <div bind:this={luigiCustomSearchRenderer__slot} />
+      {/if}
+    </div>
+  </div>
+</div>
+{#if !isSearchFieldVisible}
+  <div class="lui-global-search-btn">
+    <div on:click|stopPropagation={() => {}}>
+      <button
+        class="fd-button fd-shellbar__button"
+        aria-haspopup="true"
+        aria-expanded={!isSearchFieldVisible}
+        on:click={toggleSearch}
+        data-testid="luigi-search-btn-desktop"
+      >
+        <i class="sap-icon sap-icon--search" />
+      </button>
+    </div>
+  </div>
+{/if}
+{#if isSearchFieldVisible}
+  <div
+    class="lui-global-search-cancel-btn {isSearchFieldVisible
+      ? 'lui-global-search-cancel-btn--active'
+      : ''}"
+  >
+    <button
+      class="fd-button fd-shellbar__button"
+      aria-haspopup="true"
+      aria-expanded={!isSearchFieldVisible}
+      on:click|stopPropagation={() => toggleSearch()}
+      data-testid="luigi-search-cancel-btn"
+    >
+      {$getTranslation(cancelBtn)}
+    </button>
+  </div>
+{/if}
+
 <style type="text/scss">
   @import 'styles/variables';
   //remove default browser outline on focus for search results
