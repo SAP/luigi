@@ -14,37 +14,48 @@ describe('Escaping-helpers', () => {
       sanitizedHtml2,
       'This is text &lt;img src=&quot;http://url.to.file.which/not.exist&quot; onerror=alert(document.cookie); onclick=alert(document.cookie)&gt;&lt;br&gt;&lt;IMG SRC=j&amp;#X41vascript:alert(&#39;test2&#39;)&gt;&lt;br&gt;'
     );
+    const sanitizedHtml3 = EscapingHelpers.sanitizeHtml();
+    assert.equal(sanitizedHtml3, '');
   });
 
   it('restoreSanitizedBrs', () => {
     const text = '&lt;br&gt; &lt;br &gt; &lt;br /&gt; &lt;br/&gt;';
     const restoredHtml = EscapingHelpers.restoreSanitizedBrs(text);
     assert.equal(restoredHtml, '<br> <br> <br> <br>');
+    const restoredHtml2 = EscapingHelpers.restoreSanitizedBrs();
+    assert.equal(restoredHtml2, '');
   });
 
   it('restoreSanitizedElements', () => {
-    const text =
-      '&lt;br&gt; &lt;b &gt; &lt;del /&gt; &lt;i/&gt; &lt;strong&gt;';
+    const text = '&lt;br&gt; &lt;b &gt; &lt;del /&gt; &lt;i/&gt; &lt;strong&gt;';
     const restoredHtml = EscapingHelpers.restoreSanitizedElements(text);
     assert.equal(restoredHtml, '<br> <b> <del> <i> <strong>');
+    const restoredHtml2 = EscapingHelpers.restoreSanitizedElements();
+    assert.equal(restoredHtml2, '');
   });
 
   it('sanatizeHtmlExceptTextFormatting', () => {
     const text = '<br> <b> <del> <i> <strong> <script>';
     const restoredHtml = EscapingHelpers.sanatizeHtmlExceptTextFormatting(text);
     assert.equal(restoredHtml, '<br> <b> <del> <i> <strong> &lt;script&gt;');
+    const restoredHtml2 = EscapingHelpers.sanatizeHtmlExceptTextFormatting();
+    assert.equal(restoredHtml2, '');
   });
 
   it('sanitizeParam', () => {
     const param = '<>"\'/';
     const sanitizedParam = EscapingHelpers.sanitizeParam(param);
     assert.equal(sanitizedParam, '&lt;&gt;&quot;&#39;&sol;');
+    const sanitizedParam2 = EscapingHelpers.sanitizeParam();
+    assert.equal(sanitizedParam2, '');
   });
 
   it('escapeKeyForRegexp', () => {
     const key = 'some/*/thing';
     const escapedRegexp = EscapingHelpers.escapeKeyForRegexp(key);
     assert.equal(escapedRegexp, 'some\\/\\*\\/thing');
+    const escapedRegexp2 = EscapingHelpers.escapeKeyForRegexp();
+    assert.equal(escapedRegexp2, '');
   });
 
   describe('processTextAndLinks', () => {
@@ -79,11 +90,7 @@ describe('Escaping-helpers', () => {
         links: []
       };
 
-      assert.deepEqual(
-        escapedTextAndLinks,
-        expectedResult,
-        'excaped text object with empty link array'
-      );
+      assert.deepEqual(escapedTextAndLinks, expectedResult, 'excaped text object with empty link array');
     });
 
     it('with links', () => {
@@ -102,11 +109,7 @@ describe('Escaping-helpers', () => {
       const uniqueID = 1234567890;
 
       // when
-      const escapedTextAndLinks = EscapingHelpers.processTextAndLinks(
-        text,
-        links,
-        uniqueID
-      );
+      const escapedTextAndLinks = EscapingHelpers.processTextAndLinks(text, links, uniqueID);
 
       // then
       const expectedResult = {
@@ -126,11 +129,7 @@ describe('Escaping-helpers', () => {
         ]
       };
 
-      assert.deepEqual(
-        escapedTextAndLinks,
-        expectedResult,
-        'excaped text and links object'
-      );
+      assert.deepEqual(escapedTextAndLinks, expectedResult, 'excaped text and links object');
     });
   });
 });
