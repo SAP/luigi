@@ -70,7 +70,7 @@ class LuigiRouting {
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash, paramPrefix);
-    }else{
+    } else {
       RoutingHelpers.modifySearchParam(params, url.searchParams, paramPrefix);
     }
 
