@@ -1,6 +1,6 @@
 // Helper methods that deal with character escaping.
 class EscapingHelpersClass {
-  sanitizeHtml(text) {
+  sanitizeHtml(text = '') {
     return text
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -10,7 +10,7 @@ class EscapingHelpersClass {
       .replace(/javascript:/g, '');
   }
 
-  restoreSanitizedBrs(text) {
+  restoreSanitizedBrs(text = '') {
     return text
       .replace(/&lt;br\/&gt;/g, '<br>')
       .replace(/&lt;br \/&gt;/g, '<br>')
@@ -18,7 +18,7 @@ class EscapingHelpersClass {
       .replace(/&lt;br &gt;/g, '<br>');
   }
 
-  restoreSanitizedElements(text) {
+  restoreSanitizedElements(text = '') {
     let result = text;
     const elements = ['i', 'b', 'br', 'mark', 'strong', 'em', 'small', 'del', 'ins', 'sub', 'sup'];
 
@@ -47,11 +47,11 @@ class EscapingHelpersClass {
     return result;
   }
 
-  sanatizeHtmlExceptTextFormatting(text) {
+  sanatizeHtmlExceptTextFormatting(text = '') {
     return this.restoreSanitizedElements(this.sanitizeHtml(text));
   }
 
-  sanitizeParam(param) {
+  sanitizeParam(param = '') {
     return String(param)
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -60,11 +60,11 @@ class EscapingHelpersClass {
       .replace(/\//g, '&sol;');
   }
 
-  escapeKeyForRegexp(str) {
+  escapeKeyForRegexp(str = '') {
     return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
   }
 
-  processTextAndLinks(text, links, uniqueID) {
+  processTextAndLinks(text = '', links, uniqueID) {
     let sanitizedText = this.restoreSanitizedBrs(this.sanitizeHtml(text));
     let initialValue = { sanitizedText, links: [] };
 

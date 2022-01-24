@@ -216,7 +216,13 @@ export const projectDetailNavStructure = projectId => [
         viewUrl: '/sampleapp.html#/on-node-activation/conditionally-navigated',
         openNodeInModal: true,
         onNodeActivation: () => {
-          return Luigi.showConfirmationModal({}).then(() => true, () => false);
+          const settings = {
+            header: 'Confirmation',
+            body: 'Are you sure you want to do this?',
+            buttonConfirm: 'Yes',
+            buttonDismiss: 'No'
+          };
+          return Luigi.showConfirmationModal(settings).then(() => true, () => false);
         }
       }
     ]
