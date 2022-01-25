@@ -599,7 +599,7 @@ class RoutingHelpersClass {
   }
 
   // Adds and remove properties from searchParams
-  modifySearchParam(params, searchParams, paramPrefix) {
+  modifySearchParams(params, searchParams, paramPrefix) {
     for (const [key, value] of Object.entries(params)) {
       const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
 
