@@ -108,7 +108,7 @@
         !isAuthorizationEnabled && isProfileLogoutItem}
         <div class="fd-bar__element" data-testid="{getTestId(profileNav.logout)}">
           <button
-            class="fd-button fd-button--transparent"
+            class="fd-button fd-button--transparent fd-button--compact"
             tabindex="0"
             on:click="{onLogoutClick}"
             data-testid="logout-btn"
@@ -118,7 +118,7 @@
         </div>
         {/if} {#if isAuthorizationEnabled && !isLoggedIn}
         <button
-          class="fd-button fd-button--transparent"
+          class="fd-button fd-button--transparent fd-button--compact"
           tabindex="0"
           on:click="{startAuthorization}"
           data-testid="login-btn"
@@ -126,7 +126,7 @@
           Login
         </button>
         <button
-          class="fd-button fd-button--transparent"
+          class="fd-button fd-button--transparent fd-button--compact"
           tabindex="0"
           on:click="{startAuthorization}"
           data-testid="login-btn"
