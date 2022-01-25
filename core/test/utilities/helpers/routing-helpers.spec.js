@@ -850,7 +850,7 @@ describe('Routing-helpers', () => {
       assert.equal(actual, expected);
     });
   });
-  describe('modifySearchParam', () => {
+  describe('modifySearchParams', () => {
     beforeEach(() => {
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -860,14 +860,14 @@ describe('Routing-helpers', () => {
     afterEach(() => {
       sinon.restore();
     });
-    it('modifySearchParam', () => {
+    it('modifySearchParams', () => {
       const searchParams = new URLSearchParams('mario=rocks');
-      RoutingHelpers.modifySearchParam({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
+      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
       assert.equal(searchParams.toString(), 'test=tets&luigi=rocks');
     });
-    it('modifySearchParam with paramPrefix', () => {
+    it('modifySearchParams with paramPrefix', () => {
       const searchParams = new URLSearchParams('~mario=rocks');
-      RoutingHelpers.modifySearchParam({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
+      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
   });

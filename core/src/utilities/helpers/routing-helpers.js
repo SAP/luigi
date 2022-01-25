@@ -610,14 +610,14 @@ class RoutingHelpersClass {
     }
   }
 
-  addParamsOnHashRouting(params, hash,  paramPrefix){
+  addParamsOnHashRouting(params, hash, paramPrefix) {
     let localhash = hash;
     const [hashValue, givenQueryParamsString] = localhash.split('?');
     const searchParams = new URLSearchParams(givenQueryParamsString);
-    this.modifySearchParam(params, searchParams, paramPrefix);
+    this.modifySearchParams(params, searchParams, paramPrefix);
     localhash = hashValue;
     if (searchParams.toString() !== '') {
-     localhash += `?${decodeURIComponent(searchParams.toString())}`;
+      localhash += `?${decodeURIComponent(searchParams.toString())}`;
     }
     return localhash;
   }
