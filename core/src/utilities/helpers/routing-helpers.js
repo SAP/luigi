@@ -605,7 +605,7 @@ class RoutingHelpersClass {
 
       searchParams.set(paramKey, value);
       if (value === undefined) {
-        searchParams.delete(paramKey);//TODO change to key
+        searchParams.delete(paramKey);
       }
     }
   }
