@@ -21,10 +21,10 @@ export class linkManager extends LuigiCoreAPIBase {
     };
   }
 
-  navigate(path, preserveView, modalSettings, splitViewSettings, drawerSettings) {
+  async navigate(path, preserveView, modalSettings, splitViewSettings, drawerSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
-      return;
+      return false;
     }
 
     this.options.preserveView = preserveView;
@@ -32,7 +32,7 @@ export class linkManager extends LuigiCoreAPIBase {
 
     if (path === '/' && (modalSettings || splitViewSettings || drawerSettings)) {
       console.warn('Navigation with an absolute path prevented.');
-      return;
+      return false;
     }
 
     const navigationOpenMsg = {
@@ -47,6 +47,8 @@ export class linkManager extends LuigiCoreAPIBase {
     };
 
     this.sendPostMessageToLuigiCore(navigationOpenMsg);
+
+    return await this.pathExists(path);
   }
 
   openAsModal(path, modalSettings = {}) {
