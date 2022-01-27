@@ -395,6 +395,14 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
   withoutSync: () => this;
+
+  /**
+   * Disables the navigation handling for a single navigation request
+   * @since @nextVersion
+   * @example
+   * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
+   */
+  updateModalPathInternalNavigation: (path: string, modalSettings: Object, sessionId: string) => void;
 }
 
 export declare interface StorageManager {

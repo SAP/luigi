@@ -88,23 +88,25 @@ export class linkManager extends LuigiClientBase {
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
   }
 
-  updateModalPathInternalNavigation(path) {
-    helpers.setTargetOrigin('http://localhost:4100');
+  /**
+   * Updates path of the modalPathParam when internal navigation occurs.
+   * @memberof linkManager
+   * @param {string} path
+   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+   * @param {string} sessionId current Luigi **sessionId**
+   * @example
+   * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+   */
+  updateModalPathInternalNavigation(path, modalSettings, sessionId) {
     const navigationOpenMsg = {
       msg: 'luigi.navigation.updateModalDataPath',
-      // sessionId: sessionId,
+      sessionId: sessionId, //do I need it?
       params: Object.assign(this.options, {
-        link: path
-        // relative: relativePath,
-        // intent: hasIntent,
-        // modal: modalSettings,
-        // splitView: splitViewSettings,
-        // drawer: drawerSettings
+        link: path,
+        modal: modalSettings
       })
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
-
-    // luigi.auth.updateModalDataPath
   }
 
   /**
@@ -196,6 +198,7 @@ export class linkManager extends LuigiClientBase {
     }
     return this;
   }
+  
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof linkManager

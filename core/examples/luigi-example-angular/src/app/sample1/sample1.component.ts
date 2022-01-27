@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { linkManager } from '@luigi-project/client';
 
 @Component({
   selector: 'app-sample1',
@@ -6,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class Sample1Component {
   constructor() {}
+
+  openModal() {
+    linkManager().openAsModal('home.html');
+  }
+
+  // goTo() {
+  //   linkManager().updateModalPathInternalNavigation('/mfe', {}, 'sessionId');
+  // }
 }

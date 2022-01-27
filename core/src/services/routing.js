@@ -519,9 +519,32 @@ class RoutingClass {
     WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
   }
 
-  updateModalDataInUrl(message) {
+  updateModalDataInUrl(modalPath, modalParams) {
     // this.removeModalDataFromUrl();
-    console.log(message, data.params.link);
+    console.log(modalPath);
+    let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
+    const params = RoutingHelpers.getQueryParams();
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+
+    const prevModalPath = params[modalParamName];
+    if (prevModalPath !== modalPath) {
+      params[modalParamName] = modalPath;
+      if (modalParams && Object.keys(modalParams).length) {
+        params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+      }
+      const url = new URL(location.href);
+      const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+      if (hashRoutingActive) {
+        const queryParamIndex = location.hash.indexOf(queryParamSeparator);
+        if (queryParamIndex !== -1) {
+          url.hash = url.hash.slice(0, queryParamIndex);
+        }
+        url.hash = `${url.hash}${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+      } else {
+        url.search = `?${RoutingHelpers.encodeParams(params)}`;
+      }
+      history.replaceState(window.state, '', url.href);
+    }
   }
 
   appendModalDataToUrl(modalPath, modalParams) {

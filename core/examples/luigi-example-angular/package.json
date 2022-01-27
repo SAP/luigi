@@ -16,12 +16,15 @@
     "@angular/platform-browser": "^10.2.2",
     "@angular/platform-browser-dynamic": "^10.2.2",
     "@angular/router": "^10.2.2",
-    "@luigi-project/client": "^1.14.0",
+    "@luigi-project/client": "^1.20.0",
+    "@luigi-project/client-support-angular": "^1.20.1",
     "@luigi-project/core": "^1.14.0",
     "@sap-theming/theming-base-content": "11.1.28",
     "core-js": "3.15.1",
     "fundamental-styles": "0.18.0",
+    "node-sass": "^4.14.1",
     "rxjs": "6.5.3",
+    "sass": "^1.49.0",
     "zone.js": "0.9.1"
   },
   "devDependencies": {

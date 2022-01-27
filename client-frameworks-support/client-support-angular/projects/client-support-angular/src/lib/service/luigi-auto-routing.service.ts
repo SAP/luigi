@@ -78,11 +78,6 @@ export class LuigiAutoRoutingService implements OnDestroy {
       
       if (current.data.luigiRoute) {
         let route = current.data.luigiRoute;
-        //modalPathParam change here?
-        if (current.data.updateModalPathParam) {
-          let lm = linkManager();
-          lm.updateModalPathInternalNavigation(current.data.luigiRoute);
-        }
 
         if (current.params) {
           const pmap: ParamMap = convertToParamMap(current.params);
@@ -127,6 +122,12 @@ export class LuigiAutoRoutingService implements OnDestroy {
           .fromVirtualTreeRoot()
           .withoutSync()
           .navigate(url);
+      }
+      if(current.data.updateModalDataPath) {
+        let lm = linkManager();
+        if (current.data.path){
+          lm.updateModalPathInternalNavigation(current.data.path, {}, '');
+        }
       }
     }
   }
