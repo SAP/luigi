@@ -816,8 +816,10 @@
     </div>
     {#if footerText || semiCollapsibleButton}
       <div class="fd-side-nav__utility">
-        <span class="lui-side-nav__footer">
-          <span class="lui-side-nav__footer--text fd-has-type-minus-1"
+        <span class="lui-side-nav__footer" data-testid="lui-side-nav__footer">
+          <span
+            class="lui-side-nav__footer--text fd-has-type-minus-1"
+            data-testid="lui-side-nav__footer--text"
             >{footerText ? footerText : ''}</span
           >
           {#if semiCollapsibleButton}
