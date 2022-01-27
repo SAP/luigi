@@ -731,8 +731,6 @@ describe('Fiddle', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
-    });
-    beforeEach(() => {
       newConfig.globalSearch = {
         searchFieldCentered: true,
         searchProvider: {}
@@ -903,6 +901,129 @@ describe('Fiddle', () => {
       newConfig.navigation.nodes[0].children[0].children[0].navHeader.label = 'test';
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'test');
+    });
+  });
+  describe('LuigiClient add and delete node and search params', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.routing.useHashRouting = true;
+      const node = {
+        pathSegment: 'mynode',
+        label: 'MyNode',
+        viewUrl: '/examples/microfrontends/luigi-client-test.html',
+        clientPermissions: {
+          urlParameters: {
+            luigi: {
+              read: true,
+              write: true
+            },
+            q: {
+              read: true,
+              write: true
+            }
+          }
+        }
+      };
+      newConfig.navigation.nodes[0].children.push(node);
+    });
+
+    it('Add and delete search params hash routing enabled', () => {
+      cy.visitWithFiddleConfig('/home/mynode', newConfig);
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('[data-testid="lui-add-search-params"]')
+          .invoke('show');
+        cy.wrap($body)
+          .contains('add search params')
+          .click();
+      });
+      cy.expectPathToBe('/home/mynode?luigi=rocks&q=test');
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('[data-testid="lui-delete-search-params"]')
+          .invoke('show');
+        cy.wrap($body)
+          .contains('delete search params')
+          .click();
+      });
+      cy.expectPathToBe('/home/mynode?luigi=rocks');
+    });
+    it('Add and delete node params hash routing enabled', () => {
+      cy.visitWithFiddleConfig('/home/mynode', newConfig);
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('[data-testid="lui-add-node-params"]')
+          .invoke('show');
+        cy.wrap($body)
+          .contains('add node params')
+          .click();
+      });
+      cy.expectPathToBe('/home/mynode?~q=test&~luigi=rocks');
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('[data-testid="lui-delete-node-params"]')
+          .invoke('show');
+        cy.wrap($body)
+          .contains('delete node params')
+          .click();
+      });
+      cy.expectPathToBe('/home/mynode?~luigi=rocks');
+    });
+  });
+  describe('LuigiClient add and delete node and search paramstest', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.routing.useHashRouting = false;
+      const node = {
+        pathSegment: 'mynode',
+        label: 'MyNode',
+        viewUrl: '/examples/microfrontends/luigi-client-test.html',
+        clientPermissions: {
+          urlParameters: {
+            luigi: {
+              read: true,
+              write: true
+            },
+            q: {
+              read: true,
+              write: true
+            }
+          }
+        }
+      };
+      newConfig.navigation.nodes[0].children.push(node);
+    });
+    it('Add and delete search params path routing enabled', () => {
+      newConfig.routing.useHashRouting = false;
+      cy.visitFiddleConfigWithPathRouting('', newConfig);
+      cy.get('.fd-side-nav__main-navigation')
+        .contains('MyNode')
+        .click();
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('[data-testid="lui-add-search-params"]')
+          .invoke('show');
+        cy.wrap($body)
+          .contains('add search params')
+          .click();
+      });
+      cy.location().should(location => {
+        expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks&q=test');
+      });
+
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('[data-testid="lui-delete-search-params"]')
+          .invoke('show');
+        cy.wrap($body)
+          .contains('delete search params')
+          .click();
+      });
+      cy.location().should(location => {
+        expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks');
+      });
     });
   });
 });
