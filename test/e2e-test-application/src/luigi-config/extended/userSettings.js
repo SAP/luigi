@@ -12,7 +12,8 @@ class UserSettings {
     userAccount: {
       label: 'User Account',
       sublabel: 'username',
-      icon: 'account',
+      icon: '/assets/favicon-sap.ico',
+      iconClassAttribute: 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail',
       title: 'User Account',
       settings: {
         name: { type: 'string', label: 'Name', placeholder: 'Name' },
@@ -47,7 +48,12 @@ class UserSettings {
           type: 'enum',
           label: 'Language and Region',
           placeholder: 'Language and Region',
-          options: [{ value: 'de', label: 'Deutsch (de)' }, { value: 'en', label: 'English (en)' }, 'Français', '简体中文'],
+          options: [
+            { value: 'de', label: 'Deutsch (de)' },
+            { value: 'en', label: 'English (en)' },
+            'Français',
+            '简体中文'
+          ],
           description: 'After you save your settings, the browser will refresh for the new language to take effect.'
         },
         date: { type: 'string', label: 'Date Format', placeholder: 'DD-MM-YYYY' },
