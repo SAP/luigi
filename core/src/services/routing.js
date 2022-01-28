@@ -378,8 +378,9 @@ class RoutingClass {
             msg: 'luigi.navigate',
             viewUrl: viewUrl,
             context: JSON.stringify(componentData.context),
-            nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
-            pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
+            nodeParams: JSON.stringify(componentData.nodeParams),
+            pathParams: JSON.stringify(componentData.pathParams),
+            searchParams: JSON.stringify(RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)),
             internal: JSON.stringify(internalData),
             withoutSync: true
           });

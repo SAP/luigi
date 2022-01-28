@@ -51,31 +51,13 @@ class LuigiRouting {
     }
     const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      const [hashValue, givenQueryParamsString] = url.hash.split('?');
-      const searchParams = new URLSearchParams(givenQueryParamsString);
-      this._modifySearchParam(params, searchParams);
-      url.hash = hashValue;
-      if (searchParams.toString() !== '') {
-        url.hash += `?${decodeURIComponent(searchParams.toString())}`;
-      }
+      url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash);
     } else {
-      this._modifySearchParam(params, url.searchParams);
+      RoutingHelpers.modifySearchParams(params, url.searchParams);
     }
 
     this.handleBrowserHistory(keepBrowserHistory, url.href);
     LuigiConfig.configChanged();
-  }
-
-  // Adds and remove properties from searchParams
-  _modifySearchParam(params, searchParams, paramPrefix) {
-    for (const [key, value] of Object.entries(params)) {
-      const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
-
-      searchParams.set(paramKey, value);
-      if (value === undefined) {
-        searchParams.delete(key);
-      }
-    }
   }
 
   addNodeParams(params, keepBrowserHistory) {
@@ -86,7 +68,11 @@ class LuigiRouting {
 
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
     const url = new URL(location);
-    this._modifySearchParam(params, url.searchParams, paramPrefix);
+    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash, paramPrefix);
+    } else {
+      RoutingHelpers.modifySearchParams(params, url.searchParams, paramPrefix);
+    }
 
     this.handleBrowserHistory(keepBrowserHistory, url.href);
     LuigiConfig.configChanged();
