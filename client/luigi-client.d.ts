@@ -412,12 +412,12 @@ export declare interface LinkManager {
   withoutSync: () => this;
 
   /**
-   * Disables the navigation handling for a single navigation request
+   * Updates path of the modalPathParam when internal navigation occurs
    * @since NEXT_RELEASE
    * @example
-   * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
    */
-  updateModalPathInternalNavigation: (path: string, modalSettings: Object, sessionId: string) => void;
+  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, sessionId?: string) => void;
 
   /**
    * Enables navigating to a new tab.
