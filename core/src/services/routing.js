@@ -1,8 +1,8 @@
 // Methods related to the routing. They mostly end up changing the iframe view which is handled by `iframe.js` file;
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
-import { GenericHelpers, RoutingHelpers, IframeHelpers, EventListenerHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiNavigation } from '../core-api';
+import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+import { LuigiConfig, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
@@ -57,17 +57,21 @@ class RoutingClass {
       return;
     }
     const hashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+    const preserveQueryParams = LuigiConfig.getConfigValue('routing.preserveQueryParams');
     let url = new URL(location.href);
-    hashRouting ? (url.hash = route) : (url.pathname = route);
+    route = preserveQueryParams ? RoutingHelpers.composeSearchParamsToRoute(route) : route;
+    if (hashRouting) {
+      url.hash = route;
+    }
 
     const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
     const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
     window.history[method](
       {
-        path: hashRouting ? url.hash : decodeURIComponent(url.pathname)
+        path: hashRouting ? url.hash : route
       },
       '',
-      hashRouting ? url.hash : decodeURIComponent(url.pathname)
+      hashRouting ? url.hash : route
     );
 
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
@@ -135,8 +139,12 @@ class RoutingClass {
     if (/\?intent=/i.test(window.location.hash)) {
       const hash = window.location.hash.replace('#/#', '').replace('#', '');
       const intentPath = RoutingHelpers.getIntentPath(hash);
+      // if intent faulty or illegal then skip
       if (intentPath) {
-        // if intent faulty or illegal then skip
+        const isReplaceRouteActivated = Luigi.getConfigValue('routing.replaceIntentRoute');
+        if (isReplaceRouteActivated) {
+          history.replaceState(window.state, '', intentPath);
+        }
         return intentPath;
       }
     }
@@ -181,8 +189,10 @@ class RoutingClass {
       if (featureToggleProperty) {
         RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
       }
-
-      await this.handleBookmarkableModalPath();
+      const isShowModalPathInUrl = LuigiConfig.getConfigValue('routing.showModalPathInUrl');
+      if (isShowModalPathInUrl) {
+        await this.handleBookmarkableModalPath();
+      }
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
@@ -284,18 +294,25 @@ class RoutingClass {
 
       let cNode2 = currentNode;
       let hideSideNavInherited = nodeObject.hideSideNav;
-      while (cNode2) {
-        if (cNode2.tabNav && cNode2.hideSideNav === true) {
-          hideSideNavInherited = true;
-          break;
+      if (hideSideNavInherited === undefined) {
+        while (cNode2) {
+          if (cNode2.tabNav && cNode2.hideSideNav === true) {
+            hideSideNavInherited = true;
+            break;
+          }
+          if (cNode2.hideSideNav === false) {
+            hideSideNavInherited = false;
+            break;
+          }
+          cNode2 = cNode2.parent;
         }
-        if (cNode2.hideSideNav === false) {
-          hideSideNavInherited = false;
-          break;
-        }
-        cNode2 = cNode2.parent;
       }
 
+      const ctx = RoutingHelpers.substituteDynamicParamsInObject(
+        Object.assign({}, pathData.context, currentNode.context),
+        pathData.pathParams
+      );
+      pathData.navigationPath._context = ctx;
       const newNodeData = {
         hideNav,
         viewUrl,
@@ -304,10 +321,7 @@ class RoutingClass {
         urlParamsRaw,
         currentNode,
         navigationPath: pathData.navigationPath,
-        context: RoutingHelpers.substituteDynamicParamsInObject(
-          Object.assign({}, pathData.context, currentNode.context),
-          pathData.pathParams
-        ),
+        context: ctx,
         pathParams: pathData.pathParams,
         hideSideNav: hideSideNavInherited || false,
         isolateView: nodeObject.isolateView || false,
@@ -337,26 +351,19 @@ class RoutingClass {
           }
         }
       }
-      if (config.iframe !== null) {
-        const prevUrl = config.iframe.luigi.viewUrl.split('/').pop();
-        if (path !== prevUrl) {
-          const { nodeObject, pathData } = await Navigation.extractDataFromPath(prevUrl);
-          const previousNode = nodeObject;
-          Navigation.onNodeChange(previousNode, currentNode);
-        }
-      }
+
       if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
         Iframe.switchActiveIframe(iframeElement, undefined, false);
-        this.navigateWebComponentCompound(config, component, iframeElement, nodeObject, iContainer);
+        this.navigateWebComponentCompound(component, nodeObject);
       } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
         Iframe.switchActiveIframe(iframeElement, undefined, false);
-        this.navigateWebComponent(config, component, iframeElement, nodeObject, iContainer);
+        this.navigateWebComponent(component, nodeObject);
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
@@ -371,13 +378,16 @@ class RoutingClass {
             msg: 'luigi.navigate',
             viewUrl: viewUrl,
             context: JSON.stringify(componentData.context),
-            nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
-            pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
+            nodeParams: JSON.stringify(componentData.nodeParams),
+            pathParams: JSON.stringify(componentData.pathParams),
+            searchParams: JSON.stringify(RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)),
             internal: JSON.stringify(internalData),
             withoutSync: true
           });
         }
       }
+
+      Navigation.onNodeChange(previousCompData.currentNode, currentNode);
     } catch (err) {
       console.info('Could not handle route change', err);
     }
@@ -459,25 +469,13 @@ class RoutingClass {
   }
 
   async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
-    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    const redirectPathFromNotFoundHandler = RoutingHelpers.getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched);
 
-    if (typeof pageNotFoundHandler === 'function') {
-      //custom 404 handler is provided, use it
-      const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
-      if (result && result.redirectTo) {
-        this.navigateTo(result.redirectTo);
-      }
+    if (redirectPathFromNotFoundHandler) {
+      this.navigateTo(redirectPathFromNotFoundHandler);
       return;
     }
-
-    const alertSettings = {
-      text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
-        route: notFoundPath
-      }),
-      type: 'error',
-      ttl: 1 //how many redirections the alert will 'survive'.
-    };
-    component.showAlert(alertSettings, false);
+    RoutingHelpers.showRouteNotFoundAlert(component, notFoundPath, isAnyPathMatched);
     this.navigateTo(GenericHelpers.addLeadingSlash(pathToRedirect));
   }
 
@@ -490,6 +488,7 @@ class RoutingClass {
   }
 
   navigateToExternalLink(externalLink) {
+    externalLink.url = RoutingHelpers.getI18nViewUrl(externalLink.url);
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink
@@ -497,26 +496,33 @@ class RoutingClass {
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
-  navigateWebComponent(config, component, node, navNode, iframeContainer) {
+  navigateWebComponent(component, navNode) {
+    const wc_container = this.removeLastChildFromWCContainer();
+    if (!wc_container) return;
+
     const componentData = component.get();
-    const wc_container = document.querySelector('.wcContainer');
-
-    while (wc_container.lastChild) {
-      wc_container.lastChild.remove();
-    }
-
     WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
   }
 
-  navigateWebComponentCompound(config, component, node, navNode, iframeContainer) {
-    const componentData = component.get();
-    const wc_container = document.querySelector('.wcContainer');
+  navigateWebComponentCompound(component, navNode) {
+    const wc_container = this.removeLastChildFromWCContainer();
+    if (!wc_container) return;
 
+    const componentData = component.get();
+    const { compound } = navNode;
+    if (compound && compound.children) {
+      compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
+    }
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+  }
+
+  removeLastChildFromWCContainer() {
+    const wc_container = document.querySelector('.wcContainer');
+    if (!wc_container) return;
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
     }
-
-    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    return wc_container;
   }
 
   updateModalDataInUrl(modalPath, modalParams) {

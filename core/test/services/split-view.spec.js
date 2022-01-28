@@ -4,11 +4,7 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { SplitViewSvc } from '../../src/services';
-import {
-  GenericHelpers,
-  IframeHelpers,
-  RoutingHelpers
-} from '../../src/utilities/helpers';
+import { GenericHelpers, IframeHelpers, RoutingHelpers } from '../../src/utilities/helpers';
 import { Navigation } from '../../src/navigation/services/navigation';
 import { LuigiConfig, LuigiElements } from '../../src/core-api';
 
@@ -67,13 +63,22 @@ describe('SplitViewSvc', () => {
       sinon.assert.calledWith(document.getElementById, 'splitViewDragger');
       assert.equal(res, mockElem);
     });
+    it('getDraggerButton()', () => {
+      document.querySelector.returns(mockElem);
+      const res = SplitViewSvc.getDraggerButton();
+      sinon.assert.calledWith(document.querySelector, '#splitViewDragger>.lui-collapse-btn');
+      assert.equal(res, mockElem);
+    });
+    it('getCollapsedDraggerButton()', () => {
+      document.querySelector.returns(mockElem);
+      const res = SplitViewSvc.getCollapsedDraggerButton();
+      sinon.assert.calledWith(document.querySelector, '#splitViewDraggerCollapsed>.lui-collapse-btn');
+      assert.equal(res, mockElem);
+    });
     it('getDraggerBackdrop()', () => {
       const res = SplitViewSvc.getDraggerBackdrop();
 
-      sinon.assert.calledWith(
-        document.getElementById,
-        'splitViewDraggerBackdrop'
-      );
+      sinon.assert.calledWith(document.getElementById, 'splitViewDraggerBackdrop');
       assert.equal(res, mockElem);
     });
   });
@@ -109,11 +114,7 @@ describe('SplitViewSvc', () => {
 
       const res = SplitViewSvc.setIframe('viewUrl', 'componentData', component);
 
-      sinon.assert.calledWith(
-        RoutingHelpers.substituteViewUrl,
-        'viewUrl',
-        'componentData'
-      );
+      sinon.assert.calledWith(RoutingHelpers.substituteViewUrl, 'viewUrl', 'componentData');
       sinon.assert.calledWith(IframeHelpers.createIframe, 'otherUrl');
       assert.deepEqual(res, splitFrame);
     });
@@ -176,30 +177,15 @@ describe('SplitViewSvc', () => {
       SplitViewSvc.calculateAndSetSplitViewValues(40, mockValues);
 
       // when
-      sinon.assert.calledWithExactly(
-        GenericHelpers.computePxFromPercent,
-        mockValues.rightContentHeight,
-        60
-      );
+      sinon.assert.calledWithExactly(GenericHelpers.computePxFromPercent, mockValues.rightContentHeight, 60);
       const newBottom = 430; // mockCalculated.bottom + shellbarHeight;
       const newTop = 570; // values.innerHeight - newBottom
-      sinon.assert.calledWithExactly(
-        SplitViewSvc.enforceTresholds,
-        newBottom,
-        newTop,
-        mockValues
-      );
+      sinon.assert.calledWithExactly(SplitViewSvc.enforceTresholds, newBottom, newTop, mockValues);
       assert.deepEqual(SplitViewSvc.splitViewValues, mockCalculated);
     });
 
     describe('prepareSplitViewData', () => {
-      let pathUrlRaw,
-        navigationNodes,
-        pathData,
-        params,
-        nodeParams,
-        lastNode,
-        splitViewSettings;
+      let pathUrlRaw, navigationNodes, pathData, params, nodeParams, lastNode, splitViewSettings;
 
       const setMockReturns = () => {
         GenericHelpers.getPathWithoutHash.returns(pathUrlRaw);
@@ -233,21 +219,11 @@ describe('SplitViewSvc', () => {
         await SplitViewSvc.prepareSplitViewData(component, testPath);
 
         // when
-        sinon.assert.calledWithExactly(
-          GenericHelpers.getPathWithoutHash,
-          testPath
-        );
-        sinon.assert.calledWithExactly(
-          Navigation.getNavigationPath,
-          navigationNodes,
-          testPath
-        );
+        sinon.assert.calledWithExactly(GenericHelpers.getPathWithoutHash, testPath);
+        sinon.assert.calledWithExactly(Navigation.getNavigationPath, navigationNodes, testPath);
         sinon.assert.calledWithExactly(RoutingHelpers.parseParams, 'order=asc');
         sinon.assert.calledWithExactly(RoutingHelpers.getNodeParams, params);
-        sinon.assert.calledWithExactly(
-          RoutingHelpers.getLastNodeObject,
-          pathData
-        );
+        sinon.assert.calledWithExactly(RoutingHelpers.getLastNodeObject, pathData);
         sinon.assert.calledWithExactly(component.set, {
           splitViewSettings: {
             collapsed: true,
@@ -277,21 +253,11 @@ describe('SplitViewSvc', () => {
         await SplitViewSvc.prepareSplitViewData(component, testPath);
 
         // when
-        sinon.assert.calledWithExactly(
-          GenericHelpers.getPathWithoutHash,
-          testPath
-        );
-        sinon.assert.calledWithExactly(
-          Navigation.getNavigationPath,
-          navigationNodes,
-          testPath
-        );
+        sinon.assert.calledWithExactly(GenericHelpers.getPathWithoutHash, testPath);
+        sinon.assert.calledWithExactly(Navigation.getNavigationPath, navigationNodes, testPath);
         sinon.assert.calledWithExactly(RoutingHelpers.parseParams, 'order=asc');
         sinon.assert.calledWithExactly(RoutingHelpers.getNodeParams, params);
-        sinon.assert.calledWithExactly(
-          RoutingHelpers.getLastNodeObject,
-          pathData
-        );
+        sinon.assert.calledWithExactly(RoutingHelpers.getLastNodeObject, pathData);
         sinon.assert.calledWithExactly(component.set, {
           splitViewSettings: {
             collapsed: true,
@@ -317,21 +283,11 @@ describe('SplitViewSvc', () => {
         await SplitViewSvc.prepareSplitViewData(component, testPath);
 
         // when
-        sinon.assert.calledWithExactly(
-          GenericHelpers.getPathWithoutHash,
-          testPath
-        );
-        sinon.assert.calledWithExactly(
-          Navigation.getNavigationPath,
-          navigationNodes,
-          testPath
-        );
+        sinon.assert.calledWithExactly(GenericHelpers.getPathWithoutHash, testPath);
+        sinon.assert.calledWithExactly(Navigation.getNavigationPath, navigationNodes, testPath);
         sinon.assert.calledWithExactly(RoutingHelpers.parseParams, 'order=asc');
         sinon.assert.calledWithExactly(RoutingHelpers.getNodeParams, params);
-        sinon.assert.calledWithExactly(
-          RoutingHelpers.getLastNodeObject,
-          pathData
-        );
+        sinon.assert.calledWithExactly(RoutingHelpers.getLastNodeObject, pathData);
         sinon.assert.calledWithExactly(component.set, {
           splitViewSettings,
           lastNode,
@@ -373,13 +329,10 @@ describe('SplitViewSvc', () => {
 
       SplitViewSvc.sendMessageToClients('test', mockData);
 
-      sinon.assert.calledWithExactly(
-        IframeHelpers.sendMessageToVisibleIframes,
-        {
-          msg: `luigi.navigation.splitview.test`,
-          data: mockData
-        }
-      );
+      sinon.assert.calledWithExactly(IframeHelpers.sendMessageToVisibleIframes, {
+        msg: `luigi.navigation.splitview.test`,
+        data: mockData
+      });
     });
   });
 });

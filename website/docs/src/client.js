@@ -8,7 +8,7 @@ import { ScrollAnchorsHandler } from './client-js/smooth-scroll-anchors';
 import { SearchTagHandler } from './client-js/search-tag';
 
 sapper.start({
-	target: document.querySelector('#sapper')
+  target: document.querySelector('#sapper')
 });
 
 new CopyCodeHandler().init();

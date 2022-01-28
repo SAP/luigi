@@ -272,7 +272,8 @@ class IframeClass {
           viewUrl,
           canCache ? componentData.viewGroup : undefined,
           component.get().currentNode,
-          'main'
+          'main',
+          componentData
         );
 
         node.insertBefore(config.iframe, node.firstChild);
@@ -311,12 +312,28 @@ class IframeClass {
         context: JSON.stringify(Object.assign({}, componentData.context, { goBackContext })),
         nodeParams: JSON.stringify(Object.assign({}, componentData.nodeParams)),
         pathParams: JSON.stringify(Object.assign({}, componentData.pathParams)),
+        searchParams: JSON.stringify(
+          Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+        ),
         internal: JSON.stringify(internalData)
       };
 
       const withSync = componentData.isNavigationSyncEnabled;
       if (withSync) {
-        // default, send navigation event to client
+        IframeHelpers.getVisibleIframes().forEach(iframe => {
+          if (iframe !== config.iframe) {
+            IframeHelpers.sendMessageToIframe(iframe, {
+              msg: 'luigi.navigate',
+              context: iframe.luigi._lastUpdatedMessage.context,
+              nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
+              pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
+              searchParams: JSON.stringify(
+                Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+              ),
+              internal: iframe.luigi._lastUpdatedMessage.internal
+            });
+          }
+        });
         IframeHelpers.sendMessageToIframe(config.iframe, message);
         this.setOkResponseHandler(config, component, node);
       } else {

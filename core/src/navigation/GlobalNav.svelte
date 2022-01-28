@@ -1,76 +1,10 @@
-<svelte:window on:click="{closeAllDropdowns}" on:blur="{closeAllDropdowns}" />
-{#if showGlobalNav}
-<div class="lui-globalnav">
-  <nav class="fd-side-nav fd-side-nav--condensed">
-    <div class="fd-side-nav__main-navigation">
-      {#if children && pathData.length > 0}
-      <ul class="fd-nested-list">
-        {#each children as node, i} {#if node.globalNav === true && !node.separator}
-        <li
-          class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
-          data-testid="{getTestId(node)}"
-        >
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            <div class="lui-text">{getNodeLabel(node)}</div>
-            <div class="lui-indicator"></div>
-          </div>
-        </li>
-        {/if} {/each}
-      </ul>
-      {/if}
-    </div>
-    <div class="fd-side-nav__utility" aria-label="Utility Menu">
-      {#if children && pathData.length > 0}
-      <ul class="fd-nested-list">
-        {#each children as node, i} {#if node.globalNav === 'bottom' && !node.separator}
-        <li
-          class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
-          data-testid="{getTestId(node)}"
-        >
-          <div class="lui-fd-nested-list__content" on:click="{() => handleClick(node)}">
-            {#if node.icon} {#if hasOpenUIicon(node)}
-            <span class="lui-text fd-top-nav__icon sap-icon--{node.icon}"></span>
-            {:else}
-            <img
-              class="fd-top-nav__icon nav-icon"
-              src="{node.icon}"
-              alt="{node.altText ? node.altText : ''}"
-            />
-            {/if}
-            <!-- end hasOpenUIicon-->
-            {/if}
-            <!-- end node.icon -->
-            <div class="lui-text">{getNodeLabel(node)}</div>
-            <div class="lui-indicator"></div>
-          </div>
-        </li>
-        {/if} {/each}
-      </ul>
-      {/if}
-    </div>
-  </nav>
-</div>
-{/if}
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
+  import { LuigiConfig, LuigiI18N } from '../core-api';
   import {
     NavigationHelpers,
     RoutingHelpers,
     StateHelpers,
-    EventListenerHelpers,
     GenericHelpers
   } from '../utilities/helpers';
 
@@ -83,11 +17,12 @@
   export let selectedNode;
 
   let store = getContext('store');
-  let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+  let getTranslation = getContext('getTranslation');
 
   export let showGlobalNav;
   export let hideNavComponent;
   export let responsiveNavSetting;
+  let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setTopNavData = async () => {
     if (pathData && 0 < pathData.length) {
@@ -119,7 +54,12 @@
     if (!previousPathData || previousPathData != pathData) {
       setTopNavData();
     }
+    addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   });
+
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
+  }
 
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);
@@ -158,6 +98,105 @@
     // }
   }
 </script>
+
+<svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} />
+{#if showGlobalNav}
+  <div class="lui-globalnav">
+    <nav class="fd-side-nav fd-side-nav--condensed">
+      <div class="fd-side-nav__main-navigation">
+        {#if children && pathData.length > 0}
+          <ul class="fd-nested-list">
+            {#each children as node, i}
+              {#if node.globalNav === true && !node.separator}
+                <li
+                  class="fd-nested-list__item {node === selectedNode
+                    ? 'is-selected'
+                    : ''}"
+                  data-testid={getTestId(node)}
+                >
+                  <a
+                    href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
+                    title={$getTranslation(node.label)}
+                    on:click|preventDefault={() => handleClick(node)}
+                    role="button"
+                  >
+                    <div class="lui-fd-nested-list__content">
+                      {#if node.icon}
+                        {#if hasOpenUIicon(node)}
+                          <span
+                            class="lui-text fd-top-nav__icon {getSapIconStr(
+                              node.icon
+                            )}"
+                          />
+                        {:else}
+                          <img
+                            class="fd-top-nav__icon nav-icon"
+                            src={node.icon}
+                            alt={node.altText ? node.altText : ''}
+                          />
+                        {/if}
+                        <!-- end hasOpenUIicon-->
+                      {/if}
+                      <!-- end node.icon -->
+                      <div class="lui-text">{getNodeLabel(node)}</div>
+                      <div class="lui-indicator" />
+                    </div>
+                  </a>
+                </li>
+              {/if}
+            {/each}
+          </ul>
+        {/if}
+      </div>
+      <div class="fd-side-nav__utility" aria-label="Utility Menu">
+        {#if children && pathData.length > 0}
+          <ul class="fd-nested-list">
+            {#each children as node, i}
+              {#if node.globalNav === 'bottom' && !node.separator}
+                <li
+                  class="fd-nested-list__item {node === selectedNode
+                    ? 'is-selected'
+                    : ''}"
+                  data-testid={getTestId(node)}
+                >
+                  <a
+                    href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
+                    title={$getTranslation(node.label)}
+                  >
+                    <div
+                      class="lui-fd-nested-list__content"
+                      on:click|preventDefault={() => handleClick(node)}
+                    >
+                      {#if node.icon}
+                        {#if hasOpenUIicon(node)}
+                          <span
+                            class="lui-text fd-top-nav__icon {getSapIconStr(
+                              node.icon
+                            )}"
+                          />
+                        {:else}
+                          <img
+                            class="fd-top-nav__icon nav-icon"
+                            src={node.icon}
+                            alt={node.altText ? node.altText : ''}
+                          />
+                        {/if}
+                        <!-- end hasOpenUIicon-->
+                      {/if}
+                      <!-- end node.icon -->
+                      <div class="lui-text">{getNodeLabel(node)}</div>
+                      <div class="lui-indicator" />
+                    </div>
+                  </a>
+                </li>
+              {/if}
+            {/each}
+          </ul>
+        {/if}
+      </div>
+    </nav>
+  </div>
+{/if}
 
 <style type="text/scss">
   @import 'styles/variables';
@@ -244,6 +283,11 @@
       display: block;
       margin-left: 5px;
       margin-bottom: 2px;
+    }
+
+    /*disable default red/purple outline*/
+    .fd-nested-list__item a {
+      text-decoration: none;
     }
   }
 </style>

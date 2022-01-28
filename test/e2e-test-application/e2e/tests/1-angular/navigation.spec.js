@@ -20,10 +20,9 @@ describe('Navigation', () => {
       cy.window().then(win => {
         cy.stub(win.console, 'warn').as('consoleWarn');
         win.Luigi.navigation().openAsModal('/');
-        
-        cy.get('div[data-testid="modal-mf"]')
-          .should('not.exist')
-          cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
+
+        cy.get('div[data-testid="modal-mf"]').should('not.exist');
+        cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
         cy.expectPathToBe('/overview');
       });
     });
@@ -31,9 +30,8 @@ describe('Navigation', () => {
       cy.window().then(win => {
         cy.stub(win.console, 'warn').as('consoleWarn');
         win.Luigi.navigation().openAsDrawer('/');
-        
-        cy.get('div[data-testid="drawer-mf"]')
-          .should('not.exist');
+
+        cy.get('div[data-testid="drawer-mf"]').should('not.exist');
         cy.get('@consoleWarn').should('be.calledWith', 'Navigation with an absolute path prevented.');
         cy.expectPathToBe('/overview');
       });
@@ -92,26 +90,36 @@ describe('Navigation', () => {
         }, 50);
       });
     });
-    it('Core API collapse in SplitView', () => {
+    it('Core API collapse in SplitView', done => {
       cy.window().then(win => {
         const handle = win.Luigi.navigation().openAsSplitView('/ext', {
           title: 'Preserved Split View',
           size: '40',
           collapsed: false
         });
-        handle.collapse();
-        cy.expect(handle.isCollapsed()).to.be.true;
+        setTimeout(() => {
+          handle.collapse();
+          setTimeout(() => {
+            cy.expect(handle.isCollapsed()).to.be.true;
+            done();
+          }, 50);
+        }, 50);
       });
     });
-    it('Core API expand SplitView', () => {
+    it('Core API expand SplitView', done => {
       cy.window().then(win => {
         const handle = win.Luigi.navigation().openAsSplitView('/ext', {
           title: 'Preserved Split View',
           size: '40',
           collapsed: false
         });
-        handle.expand();
-        cy.expect(handle.isExpanded()).to.be.true;
+        setTimeout(() => {
+          handle.expand();
+          setTimeout(() => {
+            cy.expect(handle.isExpanded()).to.be.true;
+            done();
+          }, 50);
+        }, 50);
       });
     });
     it('Core API open collapsed splitview and check if expand container will disappear after navigation', () => {
@@ -122,12 +130,14 @@ describe('Navigation', () => {
           size: '40',
           collapsed: true
         });
-        cy.get('#splitViewContainer').should('be.visible');
-        cy.get('.fd-shellbar')
+        setTimeout(() => {
+          cy.get('#splitViewContainer').should('be.visible');
+          cy.get('.fd-shellbar')
           .contains('Projects')
           .click();
-        cy.expectPathToBe('/projects');
-        cy.get('#splitViewContainer').should('not.be.visible');
+          cy.expectPathToBe('/projects');
+          cy.get('#splitViewContainer').should('not.be.visible');
+        }, 0);
       });
     });
     it('Core API navigate with params', () => {
@@ -261,13 +271,13 @@ describe('Navigation', () => {
     });
 
     it('Icon instead of label in TopNav', () => {
-      cy.get('button[title="Settings"]>.fd-top-nav__icon').should('exist');
-      cy.get('button[title="Settings"]').should('contain', '');
+      cy.get('[data-testid="settings_settings"]>.fd-top-nav__icon').should('exist');
+      cy.get('[data-testid="settings_settings"]').should('contain', '');
     });
 
     it('Icon with label label in TopNav', () => {
-      cy.get('button[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
-      cy.get('button[data-testid="icon-and-label"]').should('contain', 'Git');
+      cy.get('[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
+      cy.get('[data-testid="icon-and-label"]').should('contain', 'Git');
     });
 
     it('Icon with label in LeftNav', () => {
@@ -544,6 +554,7 @@ describe('Navigation', () => {
         });
       });
     });
+
     it('Nav sync - use synched nav', () => {
       // projects page
       cy.get('.fd-shellbar')
@@ -572,7 +583,91 @@ describe('Navigation', () => {
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
       });
     });
+
+    it('Node navigation title attr exist', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Miscellaneous2')
+        .parent()
+        .should('have.attr', 'title', 'Miscellaneous2');
+    });
+
+    it('Node navigation title attr tooltipText text', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Webcomponent')
+        .parent()
+        .should('have.attr', 'title', 'Webcomponent tooltipText');
+    });
+
+    it('Node navigation title attr tooltipText not exist', () => {
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+      cy.get('.fd-app__sidebar .fd-nested-list__item')
+        .contains('Project One')
+        .click();
+      cy.get('.fd-nested-list__link')
+        .contains('Miscellaneous2 (Isolated View)')
+        .parent()
+        .should('have.attr', 'title', 'Miscellaneous2 (Isolated View)');
+    });
+
+    it('Node navigation title attr default.tooltipText text', () => {
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          tooltipText: 'Defaults tooltipText'
+        };
+        win.Luigi.configChanged('settings.navigation');
+        cy.get('.fd-shellbar')
+          .contains('Projects')
+          .click();
+        cy.get('.fd-app__sidebar .fd-nested-list__item')
+          .contains('Project One')
+          .click();
+        cy.get('.fd-nested-list__link')
+          .contains('Default Child node Example')
+          .parent()
+          .should('have.attr', 'title', 'Defaults tooltipText');
+      });
+    });
+
+    it('Node navigation title attr default.tooltipText set false', () => {
+      cy.window().then(win => {
+        const config = win.Luigi.getConfig();
+        config.navigation.defaults = {
+          tooltipText: false
+        };
+        win.Luigi.configChanged('settings.navigation');
+        cy.get('.fd-shellbar')
+          .contains('Projects')
+          .click();
+        cy.get('.fd-app__sidebar .fd-nested-list__item')
+          .contains('Project One')
+          .click();
+        cy.get('.fd-nested-list__link')
+          .contains('Miscellaneous2')
+          .parent()
+          .should('have.attr', 'title', '');
+        cy.get('.fd-nested-list__link')
+          .contains('Webcomponent')
+          .parent()
+          .should('have.attr', 'title', 'Webcomponent tooltipText');
+      });
+    });
   });
+
   describe('Horizontal Tab Navigation', () => {
     context('Desktop', () => {
       it('Open horizontal navigation', () => {
@@ -621,7 +716,7 @@ describe('Navigation', () => {
       it('Horizontal Navigation on mobile', () => {
         cy.get('[data-testid="mobile-menu"]').click();
         cy.get('.fd-popover__body').within(() => {
-          cy.get('[data-testid="projects_projects"]').click();
+          cy.get('[data-testid="projects_projects-mobile"]').click();
         });
         cy.get('.lui-burger').click();
         cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
@@ -684,7 +779,7 @@ describe('Navigation', () => {
           cy.get('[data-testid="mobile-menu"]').click();
 
           cy.get('.fd-popover__body').within(() => {
-            cy.get('[data-testid="projects_projects"]').click();
+            cy.get('[data-testid="projects_projects-mobile"]').click();
           });
           cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
           cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
@@ -1046,8 +1141,11 @@ describe('Navigation', () => {
           cy.get('[data-testid="settings_settings"]')
             .should('exist')
             .not('.is-selected')
-            .click()
-            .should('have.class', 'is-selected');
+            .click();
+
+          // select global nav node again to wait for the rerendering of the element
+          cy.get('[data-testid="settings_settings"]').should('have.class', 'is-selected');
+
           cy.expectPathToBe('/settings');
         });
       });

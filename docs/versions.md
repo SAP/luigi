@@ -93,21 +93,13 @@ With Luigi v1.9.0, the new v0.14.0 of Fundamental Library Styles were included. 
 
 With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles were included. It led to having breaking changes in the Luigi Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accesibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/components-dialog--default-dialog) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/components-shellbar--primary)
 
+In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recommended to add ```@font-face``` from [Fundamental Styles](https://sap.github.io/fundamental-styles/?path=/docs/introduction-overview--page#project-configuration) project configuration, to your custom styles.
 <!-- accordion:end -->
 
 
 ## Docs for earlier versions
 
-<!-- add-attribute:class:warning -->
-> **NOTE**: Always download the latest patch version!
+The current documentation page describes the latest Luigi version. The documentation for earlier Luigi versions is provided as Markdown files in our GitHub repository.
 
-The current documentation page describes the latest Luigi version. You can find the documentation for earlier versions of Luigi here:
 
-* [1.2](https://github.com/SAP/luigi/tree/v1.2.4/docs)
-* [1.1](https://github.com/SAP/luigi/tree/v1.1.1/docs)
-* [1.0](https://github.com/SAP/luigi/tree/v1.0.1/docs)
-* [0.7](https://github.com/SAP/luigi/tree/v0.7.7/docs)
-* [0.6](https://github.com/SAP/luigi/tree/v0.6.6/docs)
-* [0.5](https://github.com/SAP/luigi/tree/v0.5.4/docs)
-* [0.4](https://github.com/SAP/luigi/tree/v0.4.12/docs)
-* [0.3](https://github.com/SAP/luigi/blob/v0.3.8/docs)
+<!-- oldVersionsDropdown -->

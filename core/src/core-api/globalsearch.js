@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 /**
  * Functions to use Luigi Global Search
  * @name GlobalSearch

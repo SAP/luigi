@@ -4,7 +4,7 @@
   "description": "luigi-auth-plugin-* development versions, only the public folders are being published to npm as a package",
   "repository": {
     "type": "git",
-    "url": "ssh://github.com/SAP/luigiluigi.git"
+    "url": "ssh://github.com/SAP/luigi.git"
   },
   "scripts": {
     "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
@@ -36,20 +36,22 @@
     "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.2.3",
     "@babel/runtime": "^7.9.6",
-    "acorn": "^6.0.5",
+    "acorn": ">=6.4.1",
     "babel-loader": "^8.0.5",
-    "bundlesize": "^0.17.0",
+    "bundlesize": "^0.18.1",
+    "browserslist": ">=4.16.5",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.0.1",
     "diff": ">=3.5.0",
     "lodash": ">=4.17.13",
     "lodash.merge": "^4.6.2",
     "mixin-deep": ">=1.3.2",
-    "npm": ">=6.13.4",
-    "oidc-client": "^1.10.1",
+    "npm": ">=6.14.6",
+    "oidc-client": "^1.11.5",
     "regenerator-runtime": "^0.13.3",
-    "serialize-javascript": ">=2.1.1",
+    "serialize-javascript": ">=3.1.0",
     "set-value": ">=2.0.1",
+    "ssri": ">=6.0.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.12"
   },

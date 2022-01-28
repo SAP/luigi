@@ -26,3 +26,15 @@ By default, Luigi Client navigation does not manipulate the browser history. Lui
   <body></body>
 </html>
 ```
+
+## Disable Luigi Core runtime error handling
+
+By default, Luigi Client listens to runtime errors and sends the [error event](https://developer.mozilla.org/en-US/docs/Web/API/ErrorEvent) properties to Luigi Core. 
+If a navigation node has configured a property called [runTimeErrorHandler](navigation-parameters-reference.md#node-parameters), you have the possibility to handle errors on the Luigi Core level. For example: 
+```html
+<!DOCTYPE html>
+<html>
+  <head disable-luigi-runtime-error-handling="true"> </head>
+  <body></body>
+</html>
+```

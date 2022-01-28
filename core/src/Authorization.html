@@ -34,7 +34,7 @@
   </div>
 
   <ul
-    class="fd-list fd-list--navigation fd-list--navigation-indication fd-list--no-border"
+    class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border"
     role="list"
   >
     {#each profileNav.items as profileItem}
@@ -49,11 +49,14 @@
         tabindex="0"
         class="fd-list__link"
         data-testid="luigi-topnav-profile-item"
-        href="{getRouteLink(profileItem)}"
         on:click|preventDefault="{() => {}}"
+        href="{addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}"
       >
         {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
-        <i role="presentation" class="fd-list__icon sap-icon--{profileItem.icon}"></i>
+        <i
+          role="presentation"
+          class="fd-list__icon {getSapIconStr(profileItem.icon)}"
+        ></i>
         {:else}
         <img
           class="fd-top-nav__icon nav-icon"
@@ -68,19 +71,20 @@
     <li
       tabindex="-1"
       role="listitem"
-      class="fd-list__item fd-list__item--link"
-      on:click="{onUserSettingsClick}"
+      class="fd-list__item fd-list__item--link lui-anchor-node"
+      on:click|preventDefault="{onUserSettingsClick}"
+      on:keyup="{(event) => handleKeyUp(event)}"
     >
       <a
         tabindex="0"
         class="fd-list__link"
-        aria-label="User Settings"
+        title="User Settings"
         data-testid="settings-link"
       >
         {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
         <i
           role="presentation"
-          class="fd-list__icon sap-icon--{profileNav.settings.icon}"
+          class="fd-list__icon {getSapIconStr(profileNav.settings.icon)}"
         ></i>
         {:else}
         <img
@@ -104,7 +108,7 @@
         !isAuthorizationEnabled && isProfileLogoutItem}
         <div class="fd-bar__element" data-testid="{getTestId(profileNav.logout)}">
           <button
-            class="fd-button fd-button--transparent"
+            class="fd-button fd-button--transparent fd-button--compact"
             tabindex="0"
             on:click="{onLogoutClick}"
             data-testid="logout-btn"
@@ -114,7 +118,7 @@
         </div>
         {/if} {#if isAuthorizationEnabled && !isLoggedIn}
         <button
-          class="fd-button fd-button--transparent"
+          class="fd-button fd-button--transparent fd-button--compact"
           tabindex="0"
           on:click="{startAuthorization}"
           data-testid="login-btn"
@@ -122,7 +126,7 @@
           Login
         </button>
         <button
-          class="fd-button fd-button--transparent"
+          class="fd-button fd-button--transparent fd-button--compact"
           tabindex="0"
           on:click="{startAuthorization}"
           data-testid="login-btn"
@@ -148,10 +152,12 @@
   } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
+  import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
 
   const dispatch = createEventDispatcher();
 
   export let isHidden = false;
+  export let addNavHrefForAnchor;
 
   let idpProviderInstance;
   let userInfo;
@@ -190,6 +196,10 @@
     AuthLayerSvc.startAuthorization();
   }
 
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
+  }
+
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);
   }
@@ -220,13 +230,13 @@
           const userSettings = userSettingsConfig
             ? userSettingsConfig
             : await LuigiConfig.getConfigValueAsync('settings.userSettings');
-          hasUserSettings = Boolean(userSettings);
+
           //check if Settings dropdown is enabled for navigation in Shellbar
           const profileNavData = {
             items:
               (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
           };
-          if (hasUserSettings) {
+          if (Boolean(userSettings)) {
             const userSettingsProfileMenuEntry =
               userSettings.userSettingsProfileMenuEntry;
             profileNavData['settings'] = {
@@ -248,6 +258,7 @@
             AuthLayerSvc.setProfileLogoutFn(logoutItem.customLogoutFn);
           }
           profileNav = profileNavData;
+          hasUserSettings = Boolean(userSettings);
         },
         ['navigation.profile']
       );
@@ -299,6 +310,12 @@
 
   export function logout() {
     AuthLayerSvc.logout();
+  }
+
+  export function handleKeyUp({ keyCode }) {
+    if (keyCode === KEYCODE_ENTER || keyCode === KEYCODE_SPACE) {
+      document.querySelector('.lui-anchor-node>.fd-list__link').click();
+    }
   }
 
   export let showUserInfo;
