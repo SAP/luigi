@@ -907,34 +907,32 @@ describe('Fiddle', () => {
   });
 
   describe('Custom text in the footer', () => {
-    context('Desktop', () => {
-      it('checks if the text in footer exist, defined by settings', () => {
-        cy.window().then(win => {
-          //define Footer text as part of the global config
-          const config = win.Luigi.getConfig();
-          config.settings.sideNavFooterText = 'Luigi Footer';
-          win.Luigi.configChanged();
+    it('checks if the text in footer exist, defined by settings', () => {
+      cy.window().then(win => {
+        //define Footer text as part of the global config
+        const config = win.Luigi.getConfig();
+        config.settings.sideNavFooterText = 'Luigi Footer';
+        win.Luigi.configChanged();
 
-          cy.get('[data-testid="lui-side-nav__footer--text"]').should('exist');
-          cy.get('[data-testid="lui-side-nav__footer--text"]').contains('Luigi Footer');
-        });
+        cy.get('[data-testid="lui-side-nav__footer--text"]').should('exist');
+        cy.get('[data-testid="lui-side-nav__footer--text"]').contains('Luigi Footer');
       });
+    });
 
-      it('checks if getNavFooterContainer() working', () => {
-        cy.window().then(win => {
-          //define Footer text as part of the global config
-          const config = win.Luigi.getConfig();
-          config.settings.sideNavFooterText = 'Luigi Footer';
-          win.Luigi.configChanged();
+    it('checks if getNavFooterContainer() working', () => {
+      cy.window().then(win => {
+        //define Footer text as part of the global config
+        const config = win.Luigi.getConfig();
+        config.settings.sideNavFooterText = 'Luigi Footer';
+        win.Luigi.configChanged();
 
-          //Checks if the DOM element required by getNavFooterContainer() exist
-          cy.get('[data-testid="lui-side-nav__footer"]').should('exist');
+        //Checks if the DOM element required by getNavFooterContainer() exist
+        cy.get('[data-testid="lui-side-nav__footer"]').should('exist');
 
-          const FooterContainer = win.Luigi.elements().getNavFooterContainer();
+        const FooterContainer = win.Luigi.elements().getNavFooterContainer();
 
-          //Checks if Luigi.elements().getNavFooterContainer() reads the appropriate DOM element.
-          cy.get(FooterContainer).contains('Luigi Footer');
-        });
+        //Checks if Luigi.elements().getNavFooterContainer() reads the appropriate DOM element.
+        cy.get(FooterContainer).contains('Luigi Footer');
       });
     });
   });
