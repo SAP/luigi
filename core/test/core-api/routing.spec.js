@@ -1,5 +1,6 @@
 import { afterEach } from 'mocha';
 import { LuigiRouting, LuigiConfig } from '../../src/core-api';
+import { RoutingHelpers } from '../../src/utilities/helpers';
 
 const chai = require('chai');
 const assert = chai.assert;
@@ -136,7 +137,7 @@ describe('Luigi routing', function() {
     });
   });
 
-  describe('modifySearchParam', () => {
+  describe('modifySearchParams', () => {
     beforeEach(() => {
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -146,14 +147,14 @@ describe('Luigi routing', function() {
     afterEach(() => {
       sinon.restore();
     });
-    it('_modifySearchParam', () => {
+    it('modifySearchParams', () => {
       const searchParams = new URLSearchParams('mario=rocks');
-      LuigiRouting._modifySearchParam({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
+      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
       assert.equal(searchParams.toString(), 'test=tets&luigi=rocks');
     });
-    it('_modifySearchParam with paramPrefix', () => {
+    it('modifySearchParams with paramPrefix', () => {
       const searchParams = new URLSearchParams('~mario=rocks');
-      LuigiRouting._modifySearchParam({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
+      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
   });
@@ -188,7 +189,7 @@ describe('Luigi routing', function() {
       LuigiRouting.addNodeParams('bar', true);
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
     });
-    it('remove node param if value of params object is undefined', ()=>{
+    it('remove node param if value of params object is undefined', () => {
       window.state = {};
       global.location = 'http://some.url.de';
       LuigiRouting.addNodeParams({ test: undefined }, false);
