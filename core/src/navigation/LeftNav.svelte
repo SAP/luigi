@@ -816,8 +816,10 @@
     </div>
     {#if footerText || semiCollapsibleButton}
       <div class="fd-side-nav__utility">
-        <span class="lui-side-nav__footer">
-          <span class="lui-side-nav__footer--text fd-has-type-minus-1"
+        <span class="lui-side-nav__footer" data-testid="lui-side-nav__footer">
+          <span
+            class="lui-side-nav__footer--text fd-has-type-minus-1"
+            data-testid="lui-side-nav__footer--text"
             >{footerText ? footerText : ''}</span
           >
           {#if semiCollapsibleButton}
@@ -1044,7 +1046,7 @@
 
   .lui-side-nav__footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     border-top: var(--sapList_BorderWidth, 0.0625rem) solid
       var(--sapList_BorderColor, #e4e4e4);
@@ -1054,7 +1056,7 @@
       color: var(--sapTextColor, #32363a);
       white-space: nowrap;
       width: auto;
-      padding: $footerPaddingVertical 20px;
+      padding: $footerPaddingVertical 15px;
       @include transition(all 0.1s linear);
       text-overflow: ellipsis;
       overflow: hidden;
@@ -1063,7 +1065,7 @@
 
     &--icon {
       cursor: pointer;
-      padding: $footerPaddingVertical 20px;
+      padding: $footerPaddingVertical 15px;
     }
   }
 
