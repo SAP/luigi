@@ -45,7 +45,7 @@ const replacePath = directory => {
     replace.sync({
       files: file,
       from: /@ui5\//g,
-      to: '../../vendor/ui5/'
+      to: '../vendor/ui5/'
     });
     replace.sync({
       files: file,
