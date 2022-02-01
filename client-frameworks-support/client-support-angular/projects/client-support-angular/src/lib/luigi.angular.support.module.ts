@@ -25,7 +25,7 @@ export const staticRoutes: Routes = [
     component: LuigiPreloadComponent,
     data: { reuse: true }
   },
-  /** here an example if you want to   */
+  /** here an example if you want to update modalPathParam on internal navigation  */
   {
     path: 'luigi-client-support-preload',
     component: LuigiPreloadComponent,
