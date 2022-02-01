@@ -526,8 +526,6 @@ class RoutingClass {
   }
 
   updateModalDataInUrl(modalPath, modalParams) {
-    // this.removeModalDataFromUrl();
-    console.log(modalPath);
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
@@ -549,7 +547,8 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
-      history.replaceState(window.state, '', url.href);
+      
+      window.location = url.href;
     }
   }
 

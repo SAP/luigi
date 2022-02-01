@@ -9,7 +9,7 @@ export class Sample1Component {
   constructor() {}
 
   openModal() {
-    linkManager().openAsModal('home.html');
+    linkManager().openAsModal('/home');
   }
 
   // goTo() {
