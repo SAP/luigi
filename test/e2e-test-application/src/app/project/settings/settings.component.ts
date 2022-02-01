@@ -30,7 +30,7 @@ export class SettingsComponent implements OnInit {
   callbackValue = 'default value';
   lcSubscription: Subscription;
   preservedViewCallbackContext: any;
-  private testFeatureToggleActive = false;
+  testFeatureToggleActive = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,

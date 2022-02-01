@@ -271,7 +271,7 @@
           ></app-code-snippet>
         </li>
         <li class="fd-list__item">
-          <a href="javascript:void(0)" class="fd-link" (click)="navigateAndShowAlert()">
+          <a href="javascript:void(0)" class="fd-link" (click)="linkManager().navigate('/settings', null, true)">
             with preserved view: project to global settings and back</a
           >
           <app-code-snippet
@@ -389,7 +389,7 @@
           </app-code-snippet>
         </li>
         <li class="fd-list__item">
-          <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack()">
+          <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack(true)">
             go back: single iframe, standard history back</a
           >
           <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>

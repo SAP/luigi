@@ -46,3 +46,5 @@ Thumbs.db
 /src/assets/*.bundle.js
 /src/assets/auth-oidc
 /src/assets/auth-oauth2
+
+/.angular

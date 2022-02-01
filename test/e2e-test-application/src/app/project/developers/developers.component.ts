@@ -7,7 +7,7 @@ import { addInitListener, removeInitListener } from '@luigi-project/client';
 })
 export class DevelopersComponent implements OnInit, OnDestroy {
   private initListener;
-  private visitors = 0;
+  public visitors = 0;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
