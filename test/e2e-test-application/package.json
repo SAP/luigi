@@ -40,6 +40,7 @@
   "devDependencies": {
     "@angular-builders/custom-webpack": "9.2.0",
     "@angular-devkit/build-angular": "0.901.15",
+    "@angular-builders/dev-server":"^7.3.1",
     "@angular-devkit/core": "~9.1.15",
     "@angular-devkit/schematics": "~9.1.15",
     "@angular/cli": "^9.1.15",
