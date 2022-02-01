@@ -22,7 +22,7 @@ module.exports = {
       `
     ),
 
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin({ patterns: [
       // idpProvider OAuth2 callback asset
       {
         from: 'node_modules/@luigi-project/plugin-auth-oauth2/callback.html',
@@ -33,7 +33,7 @@ module.exports = {
         from: 'node_modules/@luigi-project/plugin-auth-oidc',
         to: path.resolve(__dirname, 'src/assets') + '/auth-oidc/'
       }
-    ])
+    ]})
   ],
   module: {
     rules: [
