@@ -8,7 +8,7 @@ class GenericHelpersClass {
    * @returns random numeric value {number}
    * @private
    */
-  getRandomId() /* istanbul ignore next */ {
+  getRandomId() {
     // window.msCrypto for IE 11
     return (window.crypto || window.msCrypto).getRandomValues(new Uint32Array(1))[0];
   }
@@ -21,7 +21,7 @@ class GenericHelpersClass {
     return anyParam && this.isFunction(anyParam.then);
   }
 
-  isIE() /* istanbul ignore next */ {
+  isIE() {
     const ua = navigator.userAgent;
     /* MSIE used to detect old browsers and Trident used to newer ones*/
     return Boolean(ua.includes('MSIE ') || ua.includes('Trident/'));
@@ -209,26 +209,23 @@ class GenericHelpersClass {
     return processedString;
   }
 
-  getInnerHeight() /* istanbul ignore next */ {
+  getInnerHeight() {
     return LuigiElements.isCustomLuigiContainer() ? LuigiElements.getLuigiContainer().clientHeight : window.innerHeight;
   }
 
-  getContentAreaHeight /* istanbul ignore next */() {
+  getContentAreaHeight() {
     return this.getInnerHeight() - LuigiElements.getShellbar().clientHeight;
   }
 
   computePxFromPercent(fullPixels, requestedPercent) {
-    /* istanbul ignore next */
     return (fullPixels / 100) * requestedPercent;
   }
 
   computePercentFromPx(fullPixels, partialPixels) {
-    /* istanbul ignore next */
     return Math.floor((100 * partialPixels) / fullPixels);
   }
 
   isElementVisible(element) {
-    /* istanbul ignore next */
     const cssDisplayValue = window.getComputedStyle(element, null).getPropertyValue('display');
     return cssDisplayValue !== 'none';
   }
@@ -315,6 +312,44 @@ class GenericHelpersClass {
       console.warn('Experimental feature not enabled: ', expFeatureName);
     }
     return val;
+  }
+
+  createRemotePromise() {
+    let res, rej;
+    const prom = new Promise((resolve, reject) => {
+      res = () => {
+        resolve();
+      };
+      rej = () => {
+        reject(new Error());
+      };
+    });
+
+    let luiRP = LuigiConfig._remotePromises;
+    if (!luiRP) {
+      luiRP = {
+        counter: 0,
+        promises: []
+      };
+      LuigiConfig._remotePromises = luiRP;
+    }
+    prom.id = luiRP.counter++;
+    luiRP.promises[prom.id] = prom;
+
+    prom.doResolve = () => {
+      delete luiRP.promises[prom.id];
+      res();
+    };
+    prom.doReject = () => {
+      delete luiRP.promises[prom.id];
+      rej();
+    };
+
+    return prom;
+  }
+
+  getRemotePromise(id) {
+    return LuigiConfig._remotePromises ? LuigiConfig._remotePromises.promises[id] : undefined;
   }
 }
 

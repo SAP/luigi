@@ -345,7 +345,7 @@
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    Routing.navigateTo(path, true, isNavigationSyncEnabled);
+    return Routing.navigateTo(path, true, isNavigationSyncEnabled);
   };
 
   const removeQueryParams = str => str.split('?')[0];
@@ -366,7 +366,7 @@
   };
 
   const getUnsavedChangesModalPromise = source => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
@@ -379,7 +379,9 @@
             }
             resolve();
           },
-          () => {}
+          () => {
+            reject();
+          }
         );
       } else {
         resolve();
@@ -832,10 +834,7 @@
   export const showAlert = (settings, openFromClient = false) => {
     const customAlertHandler = LuigiConfig.getConfigValue('settings.customAlertHandler');
     if (GenericHelpers.isFunction(customAlertHandler)) {
-      const customReturnValue = customAlertHandler(settings, openFromClient);
-      if (customReturnValue !== false) {
-        return customReturnValue;
-      }
+      return customAlertHandler(settings, openFromClient);
     }
     const currentAlerts = alerts;
 
@@ -1351,34 +1350,45 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
+
+        const previousUrl = window.location.href;
+
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
-        const params = e.data.params;
-        const { intent, newTab, modal, splitView, drawer, withoutSync } = params;
-        const isSpecial = newTab || modal || splitView || drawer;
+
+        const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+
+        const resolveRemotePromise = () => {
+          if (remotePromise) {
+            remotePromise.doResolve();
+          }
+        };
+        const rejectRemotePromise = () => {
+          if (remotePromise) {
+            remotePromise.doReject();
+          }
+        };
+
+        const checkResolve = checkLocationChange => {
+          if (!checkLocationChange || previousUrl !== window.location.href) {
+            resolveRemotePromise();
+          } else {
+            rejectRemotePromise();
+          }
+        };
 
         if (e.source !== window && !intent && params.link) {
           params.link = params.link.split('?')[0];
         }
 
-        if (!isSpecial) {
-          getUnsavedChangesModalPromise().then(() => {
-            isNavigationSyncEnabled = !withoutSync;
-            handleNavigation(e.data, config, srcNode, srcPathParams);
-            closeModal();
-            closeSplitView();
-            closeDrawer();
-            isNavigationSyncEnabled = true;
-          });
-        } else {
+        if (e.data.params.newTab) {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
-
-          if (newTab) {
-            openViewInNewTab(path);
-            return;
-          }
-
+          await openViewInNewTab(path);
+          checkResolve();
+        } else if (e.data.params.modal !== undefined) {
+          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          path = GenericHelpers.addLeadingSlash(path);
           const pathExist = await pathExists(path);
           path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
             getComponentWrapper(),
@@ -1386,20 +1396,69 @@
             pathExist
           );
           if (!path) {
+            rejectRemotePromise();
             return;
           }
           contentNode = node;
-
-          if (modal !== undefined) {
-            resetMicrofrontendModalData();
-            openViewInModal(path, modal === true ? {} : modal);
-          } else if (splitView !== undefined) {
-            openSplitView(path, splitView);
-          } else if (drawer !== undefined) {
-            resetMicrofrontendDrawerData();
-            drawer.isDrawer = true;
-            openViewInDrawer(path, drawer);
+          resetMicrofrontendModalData();
+          await openViewInModal(
+            path,
+            e.data.params.modal === true ? {} : e.data.params.modal
+          );
+          checkResolve();
+        } else if (e.data.params.splitView !== undefined) {
+          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          path = GenericHelpers.addLeadingSlash(path);
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
+          if (!path) {
+            rejectRemotePromise();
+            return;
           }
+          contentNode = node;
+          await openSplitView(path, e.data.params.splitView);
+          checkResolve();
+        } else if (e.data.params.drawer !== undefined) {
+          let path = buildPath(e.data.params, srcNode, srcPathParams);
+          path = GenericHelpers.addLeadingSlash(path);
+          const pathExist = await pathExists(path);
+          path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
+            getComponentWrapper(),
+            path,
+            pathExist
+          );
+          if (!path) {
+            rejectRemotePromise();
+            return;
+          }
+          contentNode = node;
+          resetMicrofrontendDrawerData();
+          e.data.params.drawer.isDrawer = true;
+          await openViewInDrawer(path, e.data.params.drawer);
+          checkResolve();
+        } else {
+          getUnsavedChangesModalPromise()
+            .then(() => {
+              isNavigationSyncEnabled = !e.data.params.withoutSync;
+              handleNavigation(e.data, config, srcNode, srcPathParams)
+                .then(() => {
+                  checkResolve(true);
+                })
+                .catch(() => {
+                  rejectRemotePromise();
+                });
+              closeModal();
+              closeSplitView();
+              closeDrawer();
+              isNavigationSyncEnabled = true;
+            })
+            .catch(() => {
+              rejectRemotePromise();
+            });
         }
       }
 
@@ -1577,22 +1636,8 @@
           iframe.luigi.currentNode.clientPermissions &&
           iframe.luigi.currentNode.clientPermissions.urlParameters
         ) {
-          const { data, keepBrowserHistory } = e.data;
-          RoutingHelpers.addSearchParamsFromClient(
-            iframe.luigi.currentNode,
-            data,
-            keepBrowserHistory
-          );
-        } else {
-          console.warn('No client permissions to add url parameter for this node.');
+          RoutingHelpers.addSearchParamsFromClient(iframe.luigi.currentNode, e.data.data);
         }
-      }
-
-      if ('luigi.addNodeParams' === e.data.msg) {
-        if (isSpecialIframe) return;
-
-        const { data, keepBrowserHistory } = e.data;
-        LuigiRouting.addNodeParams(data, keepBrowserHistory);
       }
     });
 
@@ -1781,7 +1826,6 @@
   .iframeContainer {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    line-height: initial; /*disable the double-scroll when zooming out the browser*/
   }
 
   .iframeContainer :global(iframe) {
@@ -2151,6 +2195,10 @@
   :global(.fd-menu) {
     :global(.fd-menu__list) {
       box-shadow: none;
+
+      :global(.fd-menu__item:first-child) {
+        border-bottom: rgba(243, 244, 245, 0.8);
+      }
     }
   }
 
@@ -2193,8 +2241,8 @@
     }
 
     //Recalculate height for mobile devices
-    height: calc(var(--vh, 1vh) * 100});
-    max-height: calc(var(--vh, 1vh) * 100});
+    height: calc(var(--vh, 1vh) * 100);
+    max-height: calc(var(--vh, 1vh) * 100);
     -webkit-overflow-scrolling: touch;
   }
 
