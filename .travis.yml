@@ -2,6 +2,8 @@ version: ~> 1.0 # enables build config validation beta feature: https://docs.tra
 language: node_js
 node_js:
   - '14.18.2' #TODO: change it to 'node' once Travis supports the newest version
+before_install:
+  - npm i -g npm@7.20.5
 dist: xenial
 cache:
   directories:
@@ -51,7 +53,6 @@ integration-testing: &integration-testing
     # chrome: beta
     chrome: stable
   before_install:
-    - npm i -g npm@7.20.5
     # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
