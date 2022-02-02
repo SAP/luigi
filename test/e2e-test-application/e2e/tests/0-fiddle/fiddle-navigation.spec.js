@@ -903,6 +903,7 @@ describe('Fiddle', () => {
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'test');
     });
   });
+
   describe('LuigiClient add and delete node and search params', () => {
     let newConfig;
     beforeEach(() => {
@@ -1023,6 +1024,37 @@ describe('Fiddle', () => {
       });
       cy.location().should(location => {
         expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks');
+
+      });
+    });
+  });
+  describe('Custom text in the footer', () => {
+    it('checks if the text in footer exist, defined by settings', () => {
+      cy.window().then(win => {
+        //define Footer text as part of the global config
+        const config = win.Luigi.getConfig();
+        config.settings.sideNavFooterText = 'Luigi Footer';
+        win.Luigi.configChanged();
+
+        cy.get('[data-testid="lui-side-nav__footer--text"]').should('exist');
+        cy.get('[data-testid="lui-side-nav__footer--text"]').contains('Luigi Footer');
+      });
+    });
+
+    it('checks if getNavFooterContainer() working', () => {
+      cy.window().then(win => {
+        //define Footer text as part of the global config
+        const config = win.Luigi.getConfig();
+        config.settings.sideNavFooterText = 'Luigi Footer';
+        win.Luigi.configChanged();
+
+        //Checks if the DOM element required by getNavFooterContainer() exist
+        cy.get('[data-testid="lui-side-nav__footer"]').should('exist');
+
+        const FooterContainer = win.Luigi.elements().getNavFooterContainer();
+
+        //Checks if Luigi.elements().getNavFooterContainer() reads the appropriate DOM element.
+        cy.get(FooterContainer).contains('Luigi Footer');
       });
     });
   });
