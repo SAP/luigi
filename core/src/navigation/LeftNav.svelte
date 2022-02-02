@@ -982,7 +982,9 @@
       position: absolute;
     }
   }
-
+  .hasOnlyFooterText .fd-side-nav--condensed .fd-side-nav__utility {
+    display: none;
+  }
   :global(.fd-nested-list__item) {
     &:not(.lui-collapsible-item) {
       .fd-nested-list__link {
