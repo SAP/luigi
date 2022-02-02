@@ -7,7 +7,6 @@
     "@babel/core": "^7.6.2",
     "@babel/node": "^7.6.2",
     "@babel/plugin-transform-runtime": "^7.6.2",
-    "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
     "@sap-theming/theming-base-content": "~11.1.28",
