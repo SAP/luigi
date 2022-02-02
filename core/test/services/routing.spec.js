@@ -363,6 +363,11 @@ describe('Routing', function() {
     let config;
 
     beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+
       sinon.stub(Iframe, 'setOkResponseHandler');
       const sampleLuigiConfig = {
         navigation: {
@@ -476,7 +481,13 @@ describe('Routing', function() {
         navigateOk: null
       };
       sinon.stub(Routing, 'navigateTo');
+      sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
       sinon.stub(GenericHelpers, 'isElementVisible').callsFake(element => element);
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
     });
 
     it('should set component data with hash path', async () => {

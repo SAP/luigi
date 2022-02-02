@@ -18,7 +18,7 @@ class RoutingClass {
     let url = new URL(path, 'http://valid.url');
     const ret = url.pathname + url.search + url.hash;
     if (!hasLeadingSlash && ret.indexOf('/') === 0) {
-      return ret.substr(1);
+      return ret.substring(1);
     }
     return ret;
   }
