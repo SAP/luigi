@@ -109,6 +109,18 @@ class LuigiElements {
   getCurrentMicrofrontendIframe() {
     return IframeHelpers.getCurrentMicrofrontendIframe();
   }
+
+  /**
+   * Returns a navigation footer container.
+   * @returns {HTMLElement} the navigation footer DOM element
+   * @memberof Elements
+   * @since NEXTRELEASE
+   * @example
+   * Luigi.elements().getNavFooterContainer();
+   */
+  getNavFooterContainer() {
+    return document.getElementsByClassName('lui-side-nav__footer')[0];
+  }
 }
 
 export const elements = new LuigiElements();
