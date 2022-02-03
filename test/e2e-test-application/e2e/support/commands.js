@@ -25,6 +25,17 @@ const setLuigiConfig = (win, config) => {
   }, 20);
 };
 
+Cypress.Commands.add('visitFiddleConfigWithPathRouting', (path = '/', config = fiddleConfig) => {
+  cy.visit(`http://localhost:8080/${path}`, {
+    onBeforeLoad: win => {
+      win.localStorage.clear();
+      win.sessionStorage.clear();
+      setAcceptedCookies(win);
+      setLuigiConfig(win, config);
+    }
+  });
+});
+
 Cypress.Commands.add('visitWithFiddleConfig', (path = '/', config = fiddleConfig) => {
   cy.visit(`http://localhost:8080/#${path}`, {
     onBeforeLoad: win => {
