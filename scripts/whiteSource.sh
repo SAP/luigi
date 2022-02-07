@@ -20,7 +20,12 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "56eb623145264763a82330025e4f11efd538074a3cd04791ab6ab87293174aca"
                           )
 
-
+echo 'ls .cache dir'
+cd $BASE_DIR/../../../../.cache
+ls -la
+cd whitesource
+ls -la
+echo "Cached whitesource user agent: $CACHED_WHITESOURCE_UA"
 if [ -f "$CACHED_WHITESOURCE_UA" ]; then
     echo "$CACHED_WHITESOURCE_UA exists. Take from Cache."
 else 
