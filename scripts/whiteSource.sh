@@ -19,12 +19,6 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "8b3ce944979d49c8b1d2917533199aeb4e73a993843f4820a509a33932e18a29"
                            "56eb623145264763a82330025e4f11efd538074a3cd04791ab6ab87293174aca"
                           )
-
-echo 'ls .cache dir'
-cd $BASE_DIR/../../../../.cache
-ls -la
-cd whitesource
-ls -la
 CACHED_WHITESOURCE_UA=$BASE_DIR/../../../../.cache/whitesource/wss-unified-agent.jar
 echo "Cached whitesource user agent: $CACHED_WHITESOURCE_UA"
 if [ -f "$CACHED_WHITESOURCE_UA" ]; then
