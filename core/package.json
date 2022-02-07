@@ -76,7 +76,7 @@
   "bundlesize": [
     {
       "path": "./public/luigi.js",
-      "maxSize": "600 kB",
+      "maxSize": "650 kB",
       "compression": "none"
     },
     {
