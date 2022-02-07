@@ -7,7 +7,6 @@ const fundamentalStyles = require('./fundamentalStyleClasses');
 
 const luigifiles = [
   ...fundamentalStyles,
-  './node_modules/@babel/polyfill/dist/polyfill.js',
   './node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
   './src/main.js'
 ];
