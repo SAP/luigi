@@ -330,7 +330,8 @@ class IframeClass {
               searchParams: JSON.stringify(
                 Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
               ),
-              internal: iframe.luigi._lastUpdatedMessage.internal
+              // internal: iframe.luigi._lastUpdatedMessage.internal
+              internal: message.internal
             });
           }
         });
