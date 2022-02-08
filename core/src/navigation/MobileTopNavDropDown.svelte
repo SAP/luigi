@@ -1,5 +1,5 @@
 <script>
-  import BadgeCounter from './BadgeCounter.svelte';
+  import BadgeCounter from './BadgeCounter';
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
@@ -45,7 +45,7 @@
           {#if nodes}
             {#each nodes as node}
               <li
-                class="fd-product-switch__item {noSubTitle == 'true'
+                class="fd-product-switch__item {noSubTitle === 'true'
                   ? 'y-has-no-subtitle'
                   : ''} {node.selected ? 'selected' : ''}"
                 on:click={() => onActionClick(node)}
@@ -57,8 +57,7 @@
                     <i
                       class="sap-icon {node.icon && hasOpenUIicon(node)
                         ? getSapIconStr(node.icon)
-                        : ''}"
-                    />
+                        : ''}"></i>
                   {:else}
                     <img
                       src={node.icon}

@@ -1,47 +1,3 @@
-<svelte:window on:keydown="{handleKeydown}" />
-<div
-  class="fd-message-box-docs-static fd-message-box fd-message-box--{settings.type} fd-message-box--active"
-  data-testid="luigi-confirmation-modal"
->
-  <section class="fd-message-box__content">
-    <header class="fd-bar fd-bar--header fd-message-box__header">
-      <div class="fd-bar__left">
-        <div class="fd-bar__element">
-          {#if settings.type}
-          <i class="{getSapIconStr(settings.icon)}"></i>
-          {/if}
-          <h2 class="fd-title fd-title--h5">{settings.header}</h2>
-        </div>
-      </div>
-    </header>
-    <div class="fd-message-box__body">{@html settings.body}</div>
-    <footer class="fd-bar fd-bar--footer fd-message-box__footer">
-      <div class="fd-bar__right">
-        {#if settings.buttonConfirm !== false}
-        <div class="fd-bar__element">
-          <button
-            on:click="{() => dispatch('modalConfirm')}"
-            data-testid="luigi-modal-confirm"
-            class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
-          >
-            {settings.buttonConfirm}
-          </button>
-        </div>
-        {/if}
-        <div class="fd-bar__element">
-          <button
-            on:click="{() => dispatch('modalDismiss')}"
-            data-testid="luigi-modal-dismiss"
-            class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
-          >
-            {settings.buttonDismiss}
-          </button>
-        </div>
-      </div>
-    </footer>
-  </section>
-</div>
-
 <script>
   import { createEventDispatcher, onMount } from 'svelte';
   import { LuigiI18N } from './core-api';
@@ -94,6 +50,50 @@
     }
   }
 </script>
+
+<svelte:window on:keydown="{handleKeydown}" />
+<div
+  class="fd-message-box-docs-static fd-message-box fd-message-box--{settings.type} fd-message-box--active"
+  data-testid="luigi-confirmation-modal"
+>
+  <section class="fd-message-box__content">
+    <header class="fd-bar fd-bar--header fd-message-box__header">
+      <div class="fd-bar__left">
+        <div class="fd-bar__element">
+          {#if settings.type}
+          <i class="{getSapIconStr(settings.icon)}"></i>
+          {/if}
+          <h2 class="fd-title fd-title--h5">{settings.header}</h2>
+        </div>
+      </div>
+    </header>
+    <div class="fd-message-box__body">{@html settings.body}</div>
+    <footer class="fd-bar fd-bar--footer fd-message-box__footer">
+      <div class="fd-bar__right">
+        {#if settings.buttonConfirm !== false}
+        <div class="fd-bar__element">
+          <button
+            on:click="{() => dispatch('modalConfirm')}"
+            data-testid="luigi-modal-confirm"
+            class="fd-button fd-button--emphasized fd-button--compact fd-message-box__decisive-button confirm-button"
+          >
+            {settings.buttonConfirm}
+          </button>
+        </div>
+        {/if}
+        <div class="fd-bar__element">
+          <button
+            on:click="{() => dispatch('modalDismiss')}"
+            data-testid="luigi-modal-dismiss"
+            class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
+          >
+            {settings.buttonDismiss}
+          </button>
+        </div>
+      </div>
+    </footer>
+  </section>
+</div>
 
 <style type="text/scss">
   @import 'styles/variables';

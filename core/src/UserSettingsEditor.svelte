@@ -1,9 +1,5 @@
-<svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"></svelte:window>
 <script>
   import {
-    onMount,
-    afterUpdate,
-    beforeUpdate,
     createEventDispatcher,
     getContext
   } from 'svelte';
@@ -14,7 +10,6 @@
   export let storedUserSettingData;
   const dispatch = createEventDispatcher();
   let settingsSchema;
-  let displayOptions;
   let getTranslation = getContext('getTranslation');
   let selectedLanguageLabel;
 
@@ -22,7 +17,7 @@
     dispatch('updateSettingsObject', { storedUserSettingData });
   }
 
-  function closeAllCombos(self) {
+  function closeAllCombos() {
     document
       .querySelectorAll('.lui-usersettings-content .fd-popover__control')
       .forEach(elem => {
@@ -132,39 +127,10 @@
 
   /*to display a language on first load of the User Settings dialog*/
   getLabelForValue();
-  
+
 </script>
 
-<style>
-  .lui-usersettings-content .fd-row {
-    min-height: 2rem; /*required for empty labels to not shrink*/
-  }
-
-  .lui-usersettings-content .fd-col {
-    overflow: visible; /*make dropdown visible above the text below*/
-  }
-
-  .lui-usersettings-content .fd-col--8 .fd-form-label {
-    float: left;
-  }
-
-  /*Vertical alignement for mobile label/input view*/
-  @media (max-width: 600px) {
-    .lui-usersettings-content .fd-col--4,
-    .lui-usersettings-content .fd-col--8 {
-      min-width: 100%;
-      max-width: 100%;
-    }
-    .lui-usersettings-content .fd-col--4 .fd-form-label {
-      float: left;
-    }
-  }
-
-  /*Override of FDF Styles margin v0.20.0 due to the row width*/
-  .fd-row .fd-col .fd-select__control.lui-anchor-node {
-    margin: 0;
-  }
-</style>
+<svelte:window on:click="{closeAllCombos}" on:blur="{closeAllCombos}"/>
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]} {#if
   userSettingGroup[1].settings}
@@ -186,14 +152,14 @@
             data-testid="lui-us-input{i}"
             id="lui-us-input{i}"
             bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
-            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+            disabled="{!(schemaItem.isEditable===undefined || schemaItem.isEditable)}"
           />
           {:else}
           <div
             class="fd-text"
             data-testid="lui-us-input{i}"
             id="lui-us-input{i}"
-            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+            disabled="{!(schemaItem.isEditable===undefined || schemaItem.isEditable)}"
             >{storedUserSettingData[userSettingGroup[0]][key]}
           </div>
           {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
@@ -220,7 +186,7 @@
                     <span
                       class="fd-select__text-content"
                       data-testid="lui-us-input{i}"
-                      disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                      disabled="{!(schemaItem.isEditable===undefined || schemaItem.isEditable)}"
                       >{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key],
                       schemaItem.options)}
                     </span>
@@ -269,7 +235,7 @@
                 on:click="{() => updateEnumButton(key,option)}"
                 id="{getEnumButtonId('lui-us-enum_button', key, option)}"
                 data-testid="{getEnumButtonId('lui-us-enum_button', key, option)}"
-                disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                disabled="{!(schemaItem.isEditable===undefined || schemaItem.isEditable)}"
               >
                 {getLabel(option)}
               </button>
@@ -288,7 +254,7 @@
                 type="checkbox"
                 aria-labelledby="label1"
                 data-testid="lui-us-checkbox-switch_{key}"
-                disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+                disabled="{!(schemaItem.isEditable===undefined || schemaItem.isEditable)}"
                 bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
               />
               <div class="fd-switch__slider">
@@ -302,7 +268,7 @@
           <input
             type="checkbox"
             class="fd-checkbox"
-            disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
+            disabled="{!(schemaItem.isEditable===undefined || schemaItem.isEditable)}"
             bind:checked="{storedUserSettingData[userSettingGroup[0]][key]}"
           />
           {/if}
@@ -313,3 +279,34 @@
   </div>
   {/if} {/if}
 </div>
+
+<style>
+  .lui-usersettings-content .fd-row {
+    min-height: 2rem; /*required for empty labels to not shrink*/
+  }
+
+  .lui-usersettings-content .fd-col {
+    overflow: visible; /*make dropdown visible above the text below*/
+  }
+
+  .lui-usersettings-content .fd-col--8 .fd-form-label {
+    float: left;
+  }
+
+  /*Vertical alignement for mobile label/input view*/
+  @media (max-width: 600px) {
+    .lui-usersettings-content .fd-col--4,
+    .lui-usersettings-content .fd-col--8 {
+      min-width: 100%;
+      max-width: 100%;
+    }
+    .lui-usersettings-content .fd-col--4 .fd-form-label {
+      float: left;
+    }
+  }
+
+  /*Override of FDF Styles margin v0.20.0 due to the row width*/
+  .fd-row .fd-col .fd-select__control.lui-anchor-node {
+    margin: 0;
+  }
+</style>

@@ -1,143 +1,15 @@
-<svelte:window on:resize="{onResize}" />
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':''} {noAnimation?'no-animation':''}"
->
-  {#if alerts && alerts.length}
-  <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
-  {/if} {#if mfModal.displayed}
-  <Modal
-    settings="{mfModal.settings}"
-    nodepath="{mfModal.nodepath}"
-    on:close="{closeModal}"
-    on:iframeCreated="{modalIframeCreated}"
-    on:wcCreated="{modalWCCreated}"
-  ></Modal>
-  {/if} {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
-  <Modal
-    settings="{mfDrawer.settings}"
-    nodepath="{mfDrawer.nodepath}"
-    on:close="{closeDrawer}"
-    on:drawerState="{setDrawerState}"
-    on:iframeCreated="{drawerIframeCreated}"
-    on:wcCreated="{drawerWCCreated}"
-  >
-    <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
-  </Modal>
-  {/if} {#if confirmationModal.displayed}
-  <ConfirmationModal
-    settings="{confirmationModal.settings}"
-    on:modalConfirm="{()=> handleModalResult(true)}"
-    on:modalDismiss="{() => handleModalResult(false)}"
-  ></ConfirmationModal>
-  {/if} {#if internalUserSettingsObject.displayed}
-  <UserSettingsDialog
-    on:close="{closeUserSettings}"
-    userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
-    bind:storedUserSettings
-  ></UserSettingsDialog>
-  {/if}
-  <Backdrop disable="{disableBackdrop}">
-    <div
-      class="fd-page iframeContainer"
-      class:lui-split-view="{mfSplitView.displayed}"
-      class:lui-collapsed="{mfSplitView.collapsed}"
-      tabindex="0"
-      use:init
-    >
-      <Backdrop area="main" disable="{disableBackdrop}"></Backdrop>
-      <div class="wcContainer"></div>
-    </div>
-    {#if mfSplitView.displayed}
-    <SplitView
-      splitViewSettings="{mfSplitView.settings}"
-      collapsed="{mfSplitView.collapsed}"
-      nodepath="{mfSplitView.nodepath}"
-      on:iframeCreated="{splitViewIframeCreated}"
-      on:statusChanged="{splitViewStatusChanged}"
-      on:wcCreated="{splitViewWCCreated}"
-      disableBackdrop="{disableBackdrop}"
-    ></SplitView>
-    {/if}
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div
-    in:fade="{{delay: 250, duration: 250}}"
-    out:fade="{{duration: 250}}"
-    class="fd-page spinnerContainer"
-    aria-hidden="false"
-    aria-label="Loading"
-  >
-    <div
-      class="fd-busy-indicator--m"
-      aria-hidden="false"
-      aria-label="Loading"
-      data-testid="luigi-loading-spinner"
-    >
-      <div class="fd-busy-indicator--circle-0"></div>
-      <div class="fd-busy-indicator--circle-1"></div>
-      <div class="fd-busy-indicator--circle-2"></div>
-    </div>
-  </div>
-  {/if}
-  <TopNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}"
-    on:toggleSearch="{toggleSearch}"
-    on:closeSearchResult="{closeSearchResult}"
-    on:handleSearchNavigation="{handleSearchNavigation}"
-    bind:isSearchFieldVisible
-    bind:displaySearchResult
-    bind:displayCustomSearchResult
-    bind:searchResult
-    bind:inputElem
-    bind:luigiCustomSearchRenderer__slot
-    burgerTooltip="{burgerTooltip}"
-  />
-  {#if !(hideNav)}
-  <GlobalNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-  />
-  {#if breadcrumbsEnabled}
-  <Breadcrumb
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-  />
-  {/if} {/if} {#if !(hideNav||hideSideNav)}
-  <LeftNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}"
-    burgerTooltip="{burgerTooltip}"
-  />
-  {/if} {#if (tabNav && !hideNav)}
-  <TabNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    resizeTabNavToggle="{resizeTabNavToggle}"
-  />
-  {/if}
-</div>
-
 <script type="text/javascript">
-  import Alerts from './Alerts.html';
-  import ConfirmationModal from './ConfirmationModal.html';
-  import Modal from './Modal.html';
-  import UserSettingsDialog from './UserSettingsDialog.html';
-  import Backdrop from './Backdrop.html';
-  import SplitView from './SplitView.html';
-  import LeftNav from './navigation/LeftNav.svelte';
-  import TopNav from './navigation/TopNav.svelte';
-  import TabNav from './navigation/TabNav.svelte';
-  import GlobalNav from './navigation/GlobalNav.svelte';
-  import Breadcrumb from './navigation/Breadcrumb.svelte';
+  import Alerts from './Alerts';
+  import ConfirmationModal from './ConfirmationModal';
+  import Modal from './Modal';
+  import UserSettingsDialog from './UserSettingsDialog';
+  import Backdrop from './Backdrop';
+  import SplitView from './SplitView';
+  import LeftNav from './navigation/LeftNav';
+  import TopNav from './navigation/TopNav';
+  import TabNav from './navigation/TabNav';
+  import GlobalNav from './navigation/GlobalNav';
+  import Breadcrumb from './navigation/Breadcrumb';
   import {
     afterUpdate,
     beforeUpdate,
@@ -319,11 +191,11 @@
         path:
           config.iframe.luigi && config.iframe.luigi.pathParams
             ? GenericHelpers.replaceVars(
-                nodePath,
-                config.iframe.luigi.pathParams,
-                ':',
-                false
-              )
+              nodePath,
+              config.iframe.luigi.pathParams,
+              ':',
+              false
+            )
             : nodePath,
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
         context
@@ -1463,9 +1335,9 @@
         const path = buildPath(data, srcNode, srcPathParams);
         const pathData = path
           ? await Navigation.getNavigationPath(
-              LuigiConfig.getConfigValueAsync('navigation.nodes'),
-              path
-            )
+            LuigiConfig.getConfigValueAsync('navigation.nodes'),
+            path
+          )
           : false;
         const message = {
           msg: 'luigi.navigation.pathExists.answer',
@@ -1624,9 +1496,9 @@
     const builtPath = buildPath(data);
     const pathData = builtPath
       ? await Navigation.getNavigationPath(
-          LuigiConfig.getConfigValueAsync('navigation.nodes'),
-          builtPath
-        )
+        LuigiConfig.getConfigValueAsync('navigation.nodes'),
+        builtPath
+      )
       : false;
     return pathData ? pathData.isExistingRoute : false;
   };
@@ -1702,6 +1574,134 @@
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
   });
 </script>
+
+<svelte:window on:resize="{onResize}" />
+<div
+  id="app"
+  class="{hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':''} {noAnimation?'no-animation':''}"
+>
+  {#if alerts && alerts.length}
+    <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"/>
+  {/if} {#if mfModal.displayed}
+  <Modal
+    settings="{mfModal.settings}"
+    nodepath="{mfModal.nodepath}"
+    on:close="{closeModal}"
+    on:iframeCreated="{modalIframeCreated}"
+    on:wcCreated="{modalWCCreated}"
+  />
+  {/if} {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
+  <Modal
+    settings="{mfDrawer.settings}"
+    nodepath="{mfDrawer.nodepath}"
+    on:close="{closeDrawer}"
+    on:drawerState="{setDrawerState}"
+    on:iframeCreated="{drawerIframeCreated}"
+    on:wcCreated="{drawerWCCreated}"
+  >
+    <Backdrop area="drawer" disable="{disableBackdrop}"/>
+  </Modal>
+  {/if} {#if confirmationModal.displayed}
+  <ConfirmationModal
+    settings="{confirmationModal.settings}"
+    on:modalConfirm="{()=> handleModalResult(true)}"
+    on:modalDismiss="{() => handleModalResult(false)}"
+  />
+  {/if} {#if internalUserSettingsObject.displayed}
+  <UserSettingsDialog
+    on:close="{closeUserSettings}"
+    userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
+    bind:storedUserSettings
+  />
+  {/if}
+  <Backdrop disable="{disableBackdrop}">
+    <div
+      class="fd-page iframeContainer"
+      class:lui-split-view="{mfSplitView.displayed}"
+      class:lui-collapsed="{mfSplitView.collapsed}"
+      tabindex="0"
+      use:init
+    >
+      <Backdrop area="main" disable="{disableBackdrop}"/>
+      <div class="wcContainer"></div>
+    </div>
+    {#if mfSplitView.displayed}
+    <SplitView
+      splitViewSettings="{mfSplitView.settings}"
+      collapsed="{mfSplitView.collapsed}"
+      nodepath="{mfSplitView.nodepath}"
+      on:iframeCreated="{splitViewIframeCreated}"
+      on:statusChanged="{splitViewStatusChanged}"
+      on:wcCreated="{splitViewWCCreated}"
+      disableBackdrop="{disableBackdrop}"
+    />
+    {/if}
+  </Backdrop>
+  {#if showLoadingIndicator}
+  <div
+    in:fade="{{delay: 250, duration: 250}}"
+    out:fade="{{duration: 250}}"
+    class="fd-page spinnerContainer"
+    aria-hidden="false"
+    aria-label="Loading"
+  >
+    <div
+      class="fd-busy-indicator--m"
+      aria-hidden="false"
+      aria-label="Loading"
+      data-testid="luigi-loading-spinner"
+    >
+      <div class="fd-busy-indicator--circle-0"></div>
+      <div class="fd-busy-indicator--circle-1"></div>
+      <div class="fd-busy-indicator--circle-2"></div>
+    </div>
+  </div>
+  {/if}
+  <TopNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}"
+    on:toggleSearch="{toggleSearch}"
+    on:closeSearchResult="{closeSearchResult}"
+    on:handleSearchNavigation="{handleSearchNavigation}"
+    bind:isSearchFieldVisible
+    bind:displaySearchResult
+    bind:displayCustomSearchResult
+    bind:searchResult
+    bind:inputElem
+    bind:luigiCustomSearchRenderer__slot
+    burgerTooltip="{burgerTooltip}"
+  />
+  {#if !(hideNav)}
+  <GlobalNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
+  {#if breadcrumbsEnabled}
+  <Breadcrumb
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+  />
+  {/if} {/if} {#if !(hideNav||hideSideNav)}
+  <LeftNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+    on:resizeTabNav="{onResizeTabNav}"
+    burgerTooltip="{burgerTooltip}"
+  />
+  {/if} {#if (tabNav && !hideNav)}
+  <TabNav
+    pathData="{navigationPath}"
+    pathParams="{pathParams}"
+    on:handleClick="{handleNavClick}"
+    resizeTabNavToggle="{resizeTabNavToggle}"
+  />
+  {/if}
+</div>
 
 <style type="text/scss">
   @import 'styles/fonts';
@@ -2139,7 +2139,7 @@
     padding-right: 0.5625rem !important;
   }
   :global(.fd-shellbar__logo) {
-    margin-right: 0px;
+    margin-right: 0;
   }
 
   :global(.fd-menu__link) {
@@ -2193,8 +2193,8 @@
     }
 
     //Recalculate height for mobile devices
-    height: calc(var(--vh, 1vh) * 100});
-    max-height: calc(var(--vh, 1vh) * 100});
+    height: calc(var(--vh, 1vh) * 100);
+    max-height: calc(var(--vh, 1vh) * 100);
     -webkit-overflow-scrolling: touch;
   }
 

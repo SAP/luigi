@@ -1,14 +1,14 @@
 <script>
-  import LogoTitle from './LogoTitle.svelte';
-  import BadgeCounter from './BadgeCounter.svelte';
-  import Authorization from '../Authorization.html';
-  import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.html';
-  import TopNavDropDown from '../TopNavDropDown.html';
-  import ContextSwitcher from './ContextSwitcher.svelte';
-  import ProductSwitcher from './ProductSwitcher.svelte';
-  import GlobalSearch from './GlobalSearch.svelte';
-  import GlobalSearchCentered from './GlobalSearchCentered.svelte';
-  import TopNavNode from './TopNavNode.svelte';
+  import LogoTitle from './LogoTitle';
+  import BadgeCounter from './BadgeCounter';
+  import Authorization from '../Authorization';
+  import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu';
+  import TopNavDropDown from '../TopNavDropDown';
+  import ContextSwitcher from './ContextSwitcher';
+  import ProductSwitcher from './ProductSwitcher';
+  import GlobalSearch from './GlobalSearch';
+  import GlobalSearchCentered from './GlobalSearchCentered';
+  import TopNavNode from './TopNavNode';
   import {
     beforeUpdate,
     createEventDispatcher,

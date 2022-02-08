@@ -1,54 +1,8 @@
-<svelte:window on:resize="{setViewportHeightVariable}" />
-{#if !isMobile}
-<nav class="fd-menu">
-  <ul class="fd-menu__list fd-menu__list--top fd-menu__list--no-shadow">
-    {#if children} {#each children as node}
-    <li
-      class="fd-menu__item"
-      on:click="{() => onActionClick(node)}"
-      data-testid="{getTestId(node)}"
-    >
-      <a
-        href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
-        on:click|preventDefault="{() => {}}"
-        class="fd-menu__link"
-      >
-        <span class="fd-top-nav__icon">
-          {#if node.icon && hasOpenUIicon(node)}
-          <i class="sap-icon {getSapIconStr(node.icon)}"></i>
-          {:else}
-          <img
-            class="sap-icon"
-            src="{node.icon}"
-            alt="{node.altText ? node.altText : ''}"
-          />
-          {/if}
-          <BadgeCounter {node} />
-        </span>
-        <span class="fd-menu__title">{getNodeLabel(node)}</span>
-      </a>
-    </li>
-    {/each} {/if}
-  </ul>
-</nav>
-{/if} {#if isMobile}
-<MobileTopNav
-  on:click="{closeSubNav}"
-  on:listClick="{onActionClickExternal}"
-  nodes="{node.children}"
-  label="{getNodeLabel(node)}"
-  {hasOpenUIicon}
-  {getNodeLabel}
-  {getNodeSubtitle}
-  {getTestId}
-  noSubTitle="true"
-/>
-{/if}
 <script>
-  import BadgeCounter from './navigation/BadgeCounter.svelte';
-  import MobileTopNav from './navigation/MobileTopNavDropDown.svelte';
+  import BadgeCounter from './navigation/BadgeCounter';
+  import MobileTopNav from './navigation/MobileTopNavDropDown';
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { Routing } from './services/routing';
+  import { Routing } from './services';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
   import { RoutingHelpers } from './utilities/helpers';
@@ -143,6 +97,54 @@
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
 </script>
+
+<svelte:window on:resize="{setViewportHeightVariable}" />
+{#if !isMobile}
+<nav class="fd-menu">
+  <ul class="fd-menu__list fd-menu__list--top fd-menu__list--no-shadow">
+    {#if children} {#each children as node}
+    <li
+      class="fd-menu__item"
+      on:click="{() => onActionClick(node)}"
+      data-testid="{getTestId(node)}"
+    >
+      <a
+        href="{addNavHrefForAnchor ? getRouteLink(node) : undefined}"
+        on:click|preventDefault="{() => {}}"
+        class="fd-menu__link"
+      >
+        <span class="fd-top-nav__icon">
+          {#if node.icon && hasOpenUIicon(node)}
+          <i class="sap-icon {getSapIconStr(node.icon)}"></i>
+          {:else}
+          <img
+            class="sap-icon"
+            src="{node.icon}"
+            alt="{node.altText ? node.altText : ''}"
+          />
+          {/if}
+          <BadgeCounter {node} />
+        </span>
+        <span class="fd-menu__title">{getNodeLabel(node)}</span>
+      </a>
+    </li>
+    {/each} {/if}
+  </ul>
+</nav>
+{/if}
+{#if isMobile}
+<MobileTopNav
+  on:click="{closeSubNav}"
+  on:listClick="{onActionClickExternal}"
+  nodes="{node.children}"
+  label="{getNodeLabel(node)}"
+  {hasOpenUIicon}
+  {getNodeLabel}
+  {getNodeSubtitle}
+  {getTestId}
+  noSubTitle="true"
+/>
+{/if}
 
 <style type="text/scss">
   .fd-top-nav__icon {

@@ -1,7 +1,7 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import * as Header from './services/header';
-  import { Routing } from '../services/routing';
+  import { Routing } from '../services';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();

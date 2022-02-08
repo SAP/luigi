@@ -12,7 +12,7 @@
   } from '../utilities/helpers';
   import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
-  import BadgeCounter from './BadgeCounter.svelte';
+  import BadgeCounter from './BadgeCounter';
 
   //TODO refactor
   const __this = {

@@ -1,34 +1,5 @@
-<svelte:window on:resize="{updateSizes}" />
-<div id="splitViewContainer" class="splitViewContainer {collapsed?'lui-collapsed':''}">
-  <Backdrop
-    area="split-view"
-    disable="{disableBackdrop}"
-    on:stateChanged="{backdropStateChanged}"
-  ></Backdrop>
-  <div class="lui-split-view">
-    {#if collapsed}
-    <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
-      <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{expand}">
-        <i class="sap-icon sap-icon--navigation-up-arrow"></i>
-      </a>
-    </div>
-    <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
-    {:else}
-    <div class="iframeSplitViewCnt"></div>
-    {/if}
-  </div>
-</div>
-{#if !collapsed}
-<div id="splitViewDraggerBackdrop"></div>
-<div id="splitViewDragger" on:mousedown|stopPropagation="{onDragStart}">
-  <div class="splitViewSeparator"></div>
-  <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{collapse}">
-    <i class="sap-icon sap-icon--navigation-down-arrow"></i>
-  </a>
-</div>
-{/if}
 <script>
-  import Backdrop from './Backdrop.html';
+  import Backdrop from './Backdrop';
   import {
     afterUpdate,
     onDestroy,
@@ -310,6 +281,36 @@
     setDraggerVisibility(!event.detail || event.detail.backdropActive !== true);
   };
 </script>
+
+<svelte:window on:resize="{updateSizes}" />
+<div id="splitViewContainer" class="splitViewContainer {collapsed?'lui-collapsed':''}">
+  <Backdrop
+    area="split-view"
+    disable="{disableBackdrop}"
+    on:stateChanged="{backdropStateChanged}"
+  />
+  <div class="lui-split-view">
+    {#if collapsed}
+    <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
+      <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{expand}">
+        <i class="sap-icon sap-icon--navigation-up-arrow"></i>
+      </a>
+    </div>
+    <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
+    {:else}
+    <div class="iframeSplitViewCnt"></div>
+    {/if}
+  </div>
+</div>
+{#if !collapsed}
+<div id="splitViewDraggerBackdrop"></div>
+<div id="splitViewDragger" on:mousedown|stopPropagation="{onDragStart}">
+  <div class="splitViewSeparator"></div>
+  <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{collapse}">
+    <i class="sap-icon sap-icon--navigation-down-arrow"></i>
+  </a>
+</div>
+{/if}
 
 <style type="text/scss">
   @import 'styles/variables';

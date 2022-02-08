@@ -1,71 +1,5 @@
-<svelte:window on:keydown="{handleKeydown}" />
-<div
-  class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
-  style="{isModal?'z-index:1001':''}"
->
-  <div
-    class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
-    data-testid="{isModal?'modal-mf':'drawer-mf'}"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="dialog-title-1"
-  >
-    {#if isModal || (isDrawer && settings.header)}
-    <div class="fd-dialog__header fd-bar fd-bar--header">
-      <Backdrop on:stateChanged="{backdropStateChanged}"></Backdrop>
-      <div class="fd-bar__left">
-        <div class="fd-bar__element">
-          {#if settings.title}
-          <h2 class="fd-title fd-title--h5" id="dialog-title-1">
-            {settings.title}
-          </h2>
-          {/if}
-        </div>
-      </div>
-      <div class="fd-bar__right">
-        <div class="fd-bar__element">
-          <button
-            class="fd-button fd-button--transparent fd-button--compact"
-            on:click="{() => dispatch('close',{ activeDrawer: false })}"
-            aria-label="close"
-          >
-            <i class="sap-icon sap-icon--decline"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    {/if}
-    <div class="fd-dialog__body">
-      {#if isDrawer}
-      <slot></slot>
-      {/if}
-      <div class="iframeModalCtn {isDrawer?'_drawer':'_modal'}"></div>
-    </div>
-    {#if showLoadingIndicator}
-    <div
-      in:fade="{{delay: 250, duration: 250}}"
-      out:fade="{{duration: 250}}"
-      class="fd-page spinnerContainer"
-      aria-hidden="false"
-      aria-label="Loading"
-    >
-      <div
-        class="fd-busy-indicator--m"
-        aria-hidden="false"
-        aria-label="Loading"
-        data-testid="luigi-loading-spinner"
-      >
-        <div class="fd-busy-indicator--circle-0"></div>
-        <div class="fd-busy-indicator--circle-1"></div>
-        <div class="fd-busy-indicator--circle-2"></div>
-      </div>
-    </div>
-    {/if}
-  </div>
-</div>
-
 <script>
-  import Backdrop from './Backdrop.html';
+  import Backdrop from './Backdrop';
   import { afterUpdate, createEventDispatcher, onMount, onDestroy } from 'svelte';
   import { fade } from 'svelte/transition';
   const dispatch = createEventDispatcher();
@@ -77,7 +11,6 @@
     IframeHelpers,
     RoutingHelpers
   } from './utilities/helpers';
-  import { LuigiConfig } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
 
@@ -210,7 +143,7 @@
     return iframe;
   };
 
-  async function setDrawerSize(elem) {
+  async function setDrawerSize() {
     let styleSettings = '';
     const elemDrawer = document.getElementsByClassName('drawer');
     const drawerDialog = document.getElementsByClassName('drawer-dialog');
@@ -297,6 +230,72 @@
   }
 </script>
 
+<svelte:window on:keydown="{handleKeydown}" />
+<div
+  class="{(isModal || (isDrawer && settings.backdrop))?'fd-dialog fd-dialog--active':'drawer-dialog'}"
+  style="{isModal?'z-index:1001':''}"
+>
+  <div
+    class="fd-dialog__content {isDrawer? (settings.backdrop?'drawer drawer-dialog__content drawer__backdrop':'drawer drawer-dialog__content'):'lui-modal-mf'}"
+    data-testid="{isModal?'modal-mf':'drawer-mf'}"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog-title-1"
+  >
+    {#if isModal || (isDrawer && settings.header)}
+    <div class="fd-dialog__header fd-bar fd-bar--header">
+      <Backdrop on:stateChanged="{backdropStateChanged}"/>
+      <div class="fd-bar__left">
+        <div class="fd-bar__element">
+          {#if settings.title}
+          <h2 class="fd-title fd-title--h5" id="dialog-title-1">
+            {settings.title}
+          </h2>
+          {/if}
+        </div>
+      </div>
+      <div class="fd-bar__right">
+        <div class="fd-bar__element">
+          <button
+            class="fd-button fd-button--transparent fd-button--compact"
+            on:click="{() => dispatch('close',{ activeDrawer: false })}"
+            aria-label="close"
+          >
+            <i class="sap-icon sap-icon--decline"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    {/if}
+    <div class="fd-dialog__body">
+      {#if isDrawer}
+      <slot></slot>
+      {/if}
+      <div class="iframeModalCtn {isDrawer?'_drawer':'_modal'}"></div>
+    </div>
+    {#if showLoadingIndicator}
+    <div
+      in:fade="{{delay: 250, duration: 250}}"
+      out:fade="{{duration: 250}}"
+      class="fd-page spinnerContainer"
+      aria-hidden="false"
+      aria-label="Loading"
+    >
+      <div
+        class="fd-busy-indicator--m"
+        aria-hidden="false"
+        aria-label="Loading"
+        data-testid="luigi-loading-spinner"
+      >
+        <div class="fd-busy-indicator--circle-0"></div>
+        <div class="fd-busy-indicator--circle-1"></div>
+        <div class="fd-busy-indicator--circle-2"></div>
+      </div>
+    </div>
+    {/if}
+  </div>
+</div>
+
 <style type="text/scss">
   @import 'styles/variables';
   :global(.lui-breadcrumb) .drawer-dialog {
@@ -357,7 +356,6 @@
     right: 0;
     min-width: auto;
     min-height: auto;
-    display: flex;
     width: 100%;
     height: 100%;
   }

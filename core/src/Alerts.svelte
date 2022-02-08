@@ -1,27 +1,3 @@
-<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false" bind:this={alertElement}>
-  {#each alertQueue as al}
-  <div
-    class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
-    role="alert"
-    id="j2ALl423"
-    data-testid="luigi-alert"
-  >
-    <p class="fd-message-strip__text">
-      {@html al.dataSanitized ? al.settings.text: ''}
-    </p>
-    <button
-      class="fd-button fd-button--transparent fd-button--compact fd-message-strip__close"
-      on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
-      aria-label="Close"
-      aria-controls="j2ALl423"
-      data-testid="luigi-alert-dismiss"
-    >
-      <i class="sap-icon sap-icon--decline"></i>
-    </button>
-  </div>
-  {/each}
-</div>
-
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
 
@@ -51,7 +27,7 @@
     }
 
     const processedAlerts = alertQueue.map(alert => {
-      const { text, links, closeAfter } = alert.settings;
+      const { text, links } = alert.settings;
       const processedData = EscapingHelpers.processTextAndLinks(
         text,
         links,
@@ -77,7 +53,7 @@
           },
           element: el
         });
-      };
+      }
 
       return {
         settings: { ...alert.settings, text: processedData.sanitizedText },
@@ -121,6 +97,30 @@
     }
   }
 </script>
+
+<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false" bind:this={alertElement}>
+  {#each alertQueue as al}
+  <div
+    class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
+    role="alert"
+    id="j2ALl423"
+    data-testid="luigi-alert"
+  >
+    <p class="fd-message-strip__text">
+      {@html al.dataSanitized ? al.settings.text: ''}
+    </p>
+    <button
+      class="fd-button fd-button--transparent fd-button--compact fd-message-strip__close"
+      on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
+      aria-label="Close"
+      aria-controls="j2ALl423"
+      data-testid="luigi-alert-dismiss"
+    >
+      <i class="sap-icon sap-icon--decline"></i>
+    </button>
+  </div>
+  {/each}
+</div>
 
 <style type="text/scss">
   .luigi-alert--overlay {

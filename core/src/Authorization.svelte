@@ -1,156 +1,14 @@
-{#if !isHidden}
-<div class="fd-user-menu__body lui-user-menu-fiori">
-  {#if showUserInfo}
-  <div class="fd-user-menu__header">
-    {#if userInfo.picture}
-    <span
-      class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
-      aria-label="Avatar"
-      data-testid="luigi-topnav-profile-avatar"
-      style="background-image:url('{userInfo.picture}')"
-    ></span>
-    {:else}
-    <span
-      class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
-      aria-label="Avatar"
-      >{userInfo.initials ? userInfo.initials : ''}</span
-    >
-    {/if}
-  </div>
-  <div class="fd-user-menu__subheader">
-    {#if userInfo.name}
-    <div
-      class="fd-user-menu__user-name"
-      id="username"
-      data-testid="luigi-topnav-profile-username"
-    >
-      {userInfo.name}
-    </div>
-    {/if} {#if userInfo.description}
-    <div class="fd-user-menu__user-role" data-testid="luigi-topnav-profile-description">
-      {userInfo.description}
-    </div>
-    {/if}
-  </div>
-
-  <ul
-    class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border"
-    role="list"
-  >
-    {#each profileNav.items as profileItem}
-    <li
-      tabindex="-1"
-      role="listitem"
-      class="fd-list__item fd-list__item--link"
-      on:click="{() => onActionClick(profileItem)}"
-      data-testid="{getTestId(profileItem)}"
-    >
-      <a
-        tabindex="0"
-        class="fd-list__link"
-        data-testid="luigi-topnav-profile-item"
-        on:click|preventDefault="{() => {}}"
-        href="{addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}"
-      >
-        {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
-        <i
-          role="presentation"
-          class="fd-list__icon {getSapIconStr(profileItem.icon)}"
-        ></i>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          style="background-image:url('{userInfo.icon}')"
-          alt="{profileItem.altText ? profileItem.altText : ''}"
-        />
-        {/if} {/if}
-        <span class="fd-list__title">{$getTranslation(profileItem.label)}</span>
-      </a>
-    </li>
-    {/each} {#if hasUserSettings}
-    <li
-      tabindex="-1"
-      role="listitem"
-      class="fd-list__item fd-list__item--link lui-anchor-node"
-      on:click|preventDefault="{onUserSettingsClick}"
-      on:keyup="{(event) => handleKeyUp(event)}"
-    >
-      <a
-        tabindex="0"
-        class="fd-list__link"
-        title="User Settings"
-        data-testid="settings-link"
-      >
-        {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
-        <i
-          role="presentation"
-          class="fd-list__icon {getSapIconStr(profileNav.settings.icon)}"
-        ></i>
-        {:else}
-        <img
-          class="fd-top-nav__icon nav-icon"
-          src="{profileNav.settings.icon}"
-          alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
-        />
-        {/if}{/if}
-        <span class="fd-list__title">{$getTranslation(profileNav.settings.label)}</span>
-      </a>
-    </li>
-    {/if}
-  </ul>
-  {/if}
-</div>
-<div class="fd-popover__body-footer">
-  <div class="fd-bar fd-bar--footer">
-    <div class="fd-bar__right">
-      <div class="fd-bar__element">
-        {#if isAuthorizationEnabled || isProfileLogoutItem} {#if isLoggedIn ||
-        !isAuthorizationEnabled && isProfileLogoutItem}
-        <div class="fd-bar__element" data-testid="{getTestId(profileNav.logout)}">
-          <button
-            class="fd-button fd-button--transparent fd-button--compact"
-            tabindex="0"
-            on:click="{onLogoutClick}"
-            data-testid="logout-btn"
-          >
-            {$getTranslation(profileNav.logout.label)}
-          </button>
-        </div>
-        {/if} {#if isAuthorizationEnabled && !isLoggedIn}
-        <button
-          class="fd-button fd-button--transparent fd-button--compact"
-          tabindex="0"
-          on:click="{startAuthorization}"
-          data-testid="login-btn"
-        >
-          Login
-        </button>
-        <button
-          class="fd-button fd-button--transparent fd-button--compact"
-          tabindex="0"
-          on:click="{startAuthorization}"
-          data-testid="login-btn"
-        >
-          Login
-        </button>
-        {/if}{/if}
-      </div>
-    </div>
-  </div>
-</div>
-{/if}
 <script>
   import { AuthLayerSvc } from './services';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiUX } from './core-api';
   import {
-    AuthHelpers,
     GenericHelpers,
     NavigationHelpers,
     StateHelpers,
     RoutingHelpers
   } from './utilities/helpers';
-  import { AuthStoreSvc, Routing } from './services';
+  import { Routing } from './services';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
   import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
 
@@ -321,6 +179,148 @@
   export let showUserInfo;
   $: showUserInfo = Boolean(userInfo && (userInfo.name || userInfo.email));
 </script>
+
+{#if !isHidden}
+<div class="fd-user-menu__body lui-user-menu-fiori">
+  {#if showUserInfo}
+  <div class="fd-user-menu__header">
+    {#if userInfo.picture}
+    <span
+      class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+      aria-label="Avatar"
+      data-testid="luigi-topnav-profile-avatar"
+      style="background-image:url('{userInfo.picture}')"
+    ></span>
+    {:else}
+    <span
+      class="fd-avatar fd-avatar--xl fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+      aria-label="Avatar"
+      >{userInfo.initials ? userInfo.initials : ''}</span
+    >
+    {/if}
+  </div>
+  <div class="fd-user-menu__subheader">
+    {#if userInfo.name}
+    <div
+      class="fd-user-menu__user-name"
+      id="username"
+      data-testid="luigi-topnav-profile-username"
+    >
+      {userInfo.name}
+    </div>
+    {/if} {#if userInfo.description}
+    <div class="fd-user-menu__user-role" data-testid="luigi-topnav-profile-description">
+      {userInfo.description}
+    </div>
+    {/if}
+  </div>
+
+  <ul
+    class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border"
+    role="list"
+  >
+    {#each profileNav.items as profileItem}
+    <li
+      tabindex="-1"
+      role="listitem"
+      class="fd-list__item fd-list__item--link"
+      on:click="{() => onActionClick(profileItem)}"
+      data-testid="{getTestId(profileItem)}"
+    >
+      <a
+        tabindex="0"
+        class="fd-list__link"
+        data-testid="luigi-topnav-profile-item"
+        on:click|preventDefault="{() => {}}"
+        href="{addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}"
+      >
+        {#if profileItem.icon} {#if hasOpenUIicon(profileItem)}
+        <i
+          role="presentation"
+          class="fd-list__icon {getSapIconStr(profileItem.icon)}"
+        ></i>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          style="background-image:url('{userInfo.icon}')"
+          alt="{profileItem.altText ? profileItem.altText : ''}"
+        />
+        {/if} {/if}
+        <span class="fd-list__title">{$getTranslation(profileItem.label)}</span>
+      </a>
+    </li>
+    {/each} {#if hasUserSettings}
+    <li
+      tabindex="-1"
+      role="listitem"
+      class="fd-list__item fd-list__item--link lui-anchor-node"
+      on:click|preventDefault="{onUserSettingsClick}"
+      on:keyup="{(event) => handleKeyUp(event)}"
+    >
+      <a
+        tabindex="0"
+        class="fd-list__link"
+        title="User Settings"
+        data-testid="settings-link"
+      >
+        {#if profileNav.settings.icon} {#if hasOpenUIicon(profileNav.settings)}
+        <i
+          role="presentation"
+          class="fd-list__icon {getSapIconStr(profileNav.settings.icon)}"
+        ></i>
+        {:else}
+        <img
+          class="fd-top-nav__icon nav-icon"
+          src="{profileNav.settings.icon}"
+          alt="{profileNav.settings.altText ? profileNav.settings.altText : ''}"
+        />
+        {/if}{/if}
+        <span class="fd-list__title">{$getTranslation(profileNav.settings.label)}</span>
+      </a>
+    </li>
+    {/if}
+  </ul>
+  {/if}
+</div>
+<div class="fd-popover__body-footer">
+  <div class="fd-bar fd-bar--footer">
+    <div class="fd-bar__right">
+      <div class="fd-bar__element">
+        {#if isAuthorizationEnabled || isProfileLogoutItem} {#if isLoggedIn ||
+        !isAuthorizationEnabled && isProfileLogoutItem}
+        <div class="fd-bar__element" data-testid="{getTestId(profileNav.logout)}">
+          <button
+            class="fd-button fd-button--transparent fd-button--compact"
+            tabindex="0"
+            on:click="{onLogoutClick}"
+            data-testid="logout-btn"
+          >
+            {$getTranslation(profileNav.logout.label)}
+          </button>
+        </div>
+        {/if} {#if isAuthorizationEnabled && !isLoggedIn}
+        <button
+          class="fd-button fd-button--transparent fd-button--compact"
+          tabindex="0"
+          on:click="{startAuthorization}"
+          data-testid="login-btn"
+        >
+          Login
+        </button>
+        <button
+          class="fd-button fd-button--transparent fd-button--compact"
+          tabindex="0"
+          on:click="{startAuthorization}"
+          data-testid="login-btn"
+        >
+          Login
+        </button>
+        {/if}{/if}
+      </div>
+    </div>
+  </div>
+</div>
+{/if}
 
 <style type="text/scss">
   .fd-top-nav__icon {

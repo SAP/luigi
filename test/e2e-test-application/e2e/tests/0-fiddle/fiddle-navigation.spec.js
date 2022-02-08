@@ -1,7 +1,7 @@
 import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
-describe('Fiddle', () => {
+describe.skip('Fiddle', () => {
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
       beforeEach(() => {
@@ -1024,7 +1024,6 @@ describe('Fiddle', () => {
       });
       cy.location().should(location => {
         expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks');
-
       });
     });
   });

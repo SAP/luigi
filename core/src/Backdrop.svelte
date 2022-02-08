@@ -1,11 +1,3 @@
-<div
-  class="{backdropClass}"
-  aria-hidden="false"
-  style="{area === 'main' ? 'z-index: 0;' : ''}"
->
-  <slot></slot>
-</div>
-
 <script>
   import { beforeUpdate, onMount, createEventDispatcher } from 'svelte';
   import { LuigiConfig } from './core-api';
@@ -42,10 +34,8 @@
     const microfrontend = allMessagesSources.find(
       mf => mf.container && mf.container.contentWindow === e.source
     );
-    if (microfrontend && area === microfrontend.type) {
-      return false;
-    }
-    return true;
+
+    return !(microfrontend && area === microfrontend.type);
   };
 
   onMount(() => {
@@ -83,6 +73,14 @@
     }
   });
 </script>
+
+<div
+  class="{backdropClass}"
+  aria-hidden="false"
+  style="{area === 'main' ? 'z-index: 0;' : ''}"
+>
+  <slot></slot>
+</div>
 
 <style type="text/scss">
   .lui-backdrop {
