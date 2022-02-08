@@ -17,6 +17,7 @@
   :global(.fd-shellbar__action) {
     .fd-shellbar__counter--notification {
       top: 0;
+      color: var(--sapContent_BadgeTextColor, #fff);
     }
 
     .fd-menu .fd-top-nav__icon {
