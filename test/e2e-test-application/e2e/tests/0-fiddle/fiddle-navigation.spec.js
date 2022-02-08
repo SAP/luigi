@@ -1,7 +1,7 @@
 import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
-describe.skip('Fiddle', () => {
+describe('Fiddle', () => {
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
       beforeEach(() => {
