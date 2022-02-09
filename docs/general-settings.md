@@ -141,14 +141,14 @@ You can set the following values:
   * `simple` displays the button on the left side of the top navigation regardless of the browser window´s size.
   * `simpleMobileOnly` displays the button on the left side of the top navigation when the browser window is narrower than `600px`.
   * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.
-  * `Fiori3` displays the button on the left side of the top navigation. Once you click the button, the navigation shows up or collapses.<br>
+  * `Fiori3` displays the button on the left side of the top navigation. Once you click the button, the navigation shows up or collapses.
 - **default**: if you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node.
 
 ### profileType
-- **description**: allows applying different layouts of Profile Menu in Shellbar once a user authorized.
+- **description**: allows applying different layouts of Profile Menu in the shellbar once a user is authorized.
 You can set the following values:
   * `simple` displays basic profile menu list of entities.
-  * `Fiori3` displays renewed profile menu layout according to Fiori 3 styleguides. It containes avatar of a user, if applicable and additional description. **since**: v1.14.0<br>
+  * `Fiori3` displays renewed profile menu layout according to the Fiori 3 styleguides. It contains the avatar of a user, if applicable, and additional description. **since**: v1.14.0
 - **default**: if you don't specify any value for **profileType**, the `simple` layout will be used as a default one.
 
 ### sideNavFooterText
