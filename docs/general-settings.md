@@ -240,9 +240,9 @@ To detect whether the user's browser supports the mechanism, use the script in t
 
 ### Parameters
 
-#### thirdPartyCookieErrorHandling
+#### thirdPartyCookieCheck
 - **type**: object
-- **description**: object defined in the general settings part of the Luigi configuration file, containing the
+- **description**: object defined in the general settings part of the Luigi configuration file, containing the **thirdPartyCookieErrorHandling** function and an optional **thirdPartyCookiesScriptLocation** parameter.
 
 #### thirdPartyCookieErrorHandling
 - **type**: function
