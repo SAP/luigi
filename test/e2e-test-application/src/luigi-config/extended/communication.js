@@ -26,6 +26,10 @@ class Communication {
     },
     'my-micro-frontend-is-ready': () => {
       Luigi.ux().hideAppLoadingIndicator();
+    },
+    'my-custom-message.update-user-settings': (customMessage, mfObject, mfNodeObj) => {
+      debugger;
+      Luigi.storeUserSettings({ theming: { theme: customMessage.theme } });
     }
   };
 }

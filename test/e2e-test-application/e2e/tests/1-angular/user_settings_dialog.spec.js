@@ -326,5 +326,31 @@ describe('Navigation', () => {
           .should('have.class', 'red');
       });
     });
+    it('Ctx update after storing user settings data using custom messages', () => {
+      cy.visitLoggedIn('/');
+      cy.get('.fd-shellbar__button--user-menu .fd-button').click();
+      cy.get('.lui-profile-simple-menu')
+        .contains('My Settings')
+        .click();
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
+        .eq(3)
+        .should('contain', 'Theming');
+      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
+        .eq(3)
+        .click();
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(iframe => {
+        expect(iframe[0].baseURI).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
+
+        cy.wrap(iframe)
+          .contains('Yellow')
+          .should('have.class', 'yellow');
+        cy.wrap(iframe)
+          .contains('Yellow')
+          .click();
+        cy.wrap(iframe)
+          .contains('Yellow')
+          .should('have.class', 'active');
+      });
+    });
   });
 });
