@@ -106,7 +106,6 @@ describe('Context switcher', () => {
 
   it('Preserve sub path on switch', () => {
     cy.window().then(win => {
-      cy.wait(300);
       const config = win.Luigi.getConfig();
       config.navigation.contextSwitcher.preserveSubPathOnSwitch = true;
       const environmentsNode = config.navigation.nodes.find(element => element.pathSegment === 'environments');
@@ -141,7 +140,6 @@ describe('Context switcher', () => {
       cy.expectPathToBe('/environments/env3/tets2');
 
       cy.getIframeBody().then($iframeBody => {
-        cy.wait(300);
         cy.wrap($iframeBody).should('contain', 'Env3 content.');
       });
     });
@@ -149,7 +147,6 @@ describe('Context switcher', () => {
 
   it('aways show dropdown option - many options', () => {
     cy.window().then(win => {
-      cy.wait(300);
       const config = win.Luigi.getConfig();
       config.navigation.contextSwitcher.alwaysShowDropdown = false;
       win.Luigi.configChanged('navigation');
@@ -168,7 +165,6 @@ describe('Context switcher', () => {
 
   it('aways show dropdown option - one option only', () => {
     cy.window().then(win => {
-      cy.wait(300);
       const config = win.Luigi.getConfig();
       config.navigation.contextSwitcher.alwaysShowDropdown = false;
       config.navigation.contextSwitcher.options = [
@@ -288,7 +284,6 @@ describe('AppSwitcher', () => {
   });
   it('Clicking around the app switcher', () => {
     cy.window().then(win => {
-      cy.wait(300);
       const config = win.Luigi.getConfig();
 
       // check initial title and subtitle

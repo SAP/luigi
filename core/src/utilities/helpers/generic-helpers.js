@@ -1,6 +1,5 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
-import { LuigiElements } from '../../core-api';
-import { LuigiConfig } from '../../core-api';
+import { LuigiElements, LuigiConfig } from '../../core-api';
 
 class GenericHelpersClass {
   /**
@@ -8,7 +7,7 @@ class GenericHelpersClass {
    * @returns random numeric value {number}
    * @private
    */
-  getRandomId() {
+  getRandomId /* istanbul ignore next */() {
     // window.msCrypto for IE 11
     return (window.crypto || window.msCrypto).getRandomValues(new Uint32Array(1))[0];
   }
@@ -21,9 +20,9 @@ class GenericHelpersClass {
     return anyParam && this.isFunction(anyParam.then);
   }
 
-  isIE() {
+  isIE /* istanbul ignore next */() {
     const ua = navigator.userAgent;
-    /* MSIE used to detect old browsers and Trident used to newer ones*/
+    /* MSIE used to detect old browsers and Trident used to newer ones */
     return Boolean(ua.includes('MSIE ') || ua.includes('Trident/'));
   }
 
@@ -94,8 +93,8 @@ class GenericHelpersClass {
    */
   getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var result = regex.exec(window.location.search);
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const result = regex.exec(window.location.search);
     return (result && decodeURIComponent(result[1].replace(/\+/g, ' '))) || '';
   }
 
@@ -154,7 +153,7 @@ class GenericHelpersClass {
   }
 
   getTrimmedUrl(path) {
-    const pathUrl = 0 < path.length ? this.getPathWithoutHash(path) : path;
+    const pathUrl = path.length > 0 ? this.getPathWithoutHash(path) : path;
     return this.trimTrailingSlash(pathUrl.split('?')[0]);
   }
 
@@ -209,23 +208,26 @@ class GenericHelpersClass {
     return processedString;
   }
 
-  getInnerHeight() {
+  getInnerHeight /* istanbul ignore next */() {
     return LuigiElements.isCustomLuigiContainer() ? LuigiElements.getLuigiContainer().clientHeight : window.innerHeight;
   }
 
-  getContentAreaHeight() {
+  getContentAreaHeight /* istanbul ignore next */() {
     return this.getInnerHeight() - LuigiElements.getShellbar().clientHeight;
   }
 
   computePxFromPercent(fullPixels, requestedPercent) {
+    /* istanbul ignore next */
     return (fullPixels / 100) * requestedPercent;
   }
 
   computePercentFromPx(fullPixels, partialPixels) {
+    /* istanbul ignore next */
     return Math.floor((100 * partialPixels) / fullPixels);
   }
 
   isElementVisible(element) {
+    /* istanbul ignore next */
     const cssDisplayValue = window.getComputedStyle(element, null).getPropertyValue('display');
     return cssDisplayValue !== 'none';
   }
@@ -285,11 +287,11 @@ class GenericHelpersClass {
    * ['1.3', '1.2', '1.4', '1.1'].sort(semverCompare)
    */
   semverCompare(a, b) {
-    var pa = a.split('-')[0].split('.');
-    var pb = b.split('-')[0].split('.');
-    for (var i = 0; i < 3; i++) {
-      var na = Number(pa[i]);
-      var nb = Number(pb[i]);
+    const pa = a.split('-')[0].split('.');
+    const pb = b.split('-')[0].split('.');
+    for (let i = 0; i < 3; i++) {
+      const na = Number(pa[i]);
+      const nb = Number(pb[i]);
       if (na > nb) return 1;
       if (nb > na) return -1;
       if (!isNaN(na) && isNaN(nb)) return 1;
