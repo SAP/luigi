@@ -327,7 +327,7 @@ describe('Navigation', () => {
       });
     });
 
-    it.only('Ctx update after storing user settings data using custom messages', () => {
+    it('Ctx update after storing user settings data using custom messages', () => {
       let $iframeBody;
       //Click on custom2
       cy.get('[data-testid="us-navigation-item"]')
