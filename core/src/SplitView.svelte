@@ -1,47 +1,18 @@
-<svelte:window on:resize="{updateSizes}" />
-<div id="splitViewContainer" class="splitViewContainer {collapsed?'lui-collapsed':''}">
-  <Backdrop
-    area="split-view"
-    disable="{disableBackdrop}"
-    on:stateChanged="{backdropStateChanged}"
-  ></Backdrop>
-  <div class="lui-split-view">
-    {#if collapsed}
-    <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
-      <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{expand}">
-        <i class="sap-icon sap-icon--navigation-up-arrow"></i>
-      </a>
-    </div>
-    <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
-    {:else}
-    <div class="iframeSplitViewCnt"></div>
-    {/if}
-  </div>
-</div>
-{#if !collapsed}
-<div id="splitViewDraggerBackdrop"></div>
-<div id="splitViewDragger" on:mousedown|stopPropagation="{onDragStart}">
-  <div class="splitViewSeparator"></div>
-  <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault="{collapse}">
-    <i class="sap-icon sap-icon--navigation-down-arrow"></i>
-  </a>
-</div>
-{/if}
 <script>
-  import Backdrop from './Backdrop.html';
+  import Backdrop from './Backdrop.svelte';
   import {
     afterUpdate,
     onDestroy,
     onMount,
     createEventDispatcher,
-    getContext
+    getContext,
   } from 'svelte';
   import { LuigiElements } from './core-api';
   import { SplitViewSvc } from './services';
   import {
     EventListenerHelpers,
     GenericHelpers,
-    IframeHelpers
+    IframeHelpers,
   } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -49,7 +20,7 @@
   let elements = {
     draggable: null,
     iframe: null,
-    split: null
+    split: null,
   };
   let lastNode;
   let pathData;
@@ -66,7 +37,9 @@
   export let isDataPrepared = false;
   export let disableBackdrop;
   let wasDataPrepared = false;
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -83,12 +56,12 @@
           splitViewIframe,
           splitViewIframeData,
           splitViewWC,
-          splitViewWCData
+          splitViewWCData,
         };
       },
-      set: obj => {
+      set: (obj) => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach(prop => {
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
             if (prop === 'splitViewSettings') {
               splitViewSettings = obj.splitViewSettings;
             } else if (prop === 'lastNode') {
@@ -116,7 +89,7 @@
         }
       },
       dispatch,
-      getUnsavedChangesModalPromise
+      getUnsavedChangesModalPromise,
     };
   };
 
@@ -299,17 +272,59 @@
     SplitViewSvc.getDraggerBackdrop().style.display = 'block';
   }
 
-  const setDraggerVisibility = visible => {
+  const setDraggerVisibility = (visible) => {
     let dragger = SplitViewSvc.getDraggerButton();
     if (dragger) dragger.style.display = visible ? 'block' : 'none';
     dragger = SplitViewSvc.getCollapsedDraggerButton();
     if (dragger) dragger.style.display = visible ? 'block' : 'none';
   };
 
-  const backdropStateChanged = event => {
+  const backdropStateChanged = (event) => {
     setDraggerVisibility(!event.detail || event.detail.backdropActive !== true);
   };
 </script>
+
+<svelte:window on:resize={updateSizes} />
+<div
+  id="splitViewContainer"
+  class="splitViewContainer {collapsed ? 'lui-collapsed' : ''}"
+>
+  <Backdrop
+    area="split-view"
+    disable={disableBackdrop}
+    on:stateChanged={backdropStateChanged}
+  />
+  <div class="lui-split-view">
+    {#if collapsed}
+      <div
+        id="splitViewDraggerCollapsed"
+        class="splitViewSeparator isCollapsed"
+      >
+        <a
+          class="lui-collapse-btn"
+          on:click|stopPropagation|preventDefault={expand}
+        >
+          <i class="sap-icon sap-icon--navigation-up-arrow" />
+        </a>
+      </div>
+      <h1 class="fd-splitView__title">{splitViewSettings.title}</h1>
+    {:else}
+      <div class="iframeSplitViewCnt" />
+    {/if}
+  </div>
+</div>
+{#if !collapsed}
+  <div id="splitViewDraggerBackdrop" />
+  <div id="splitViewDragger" on:mousedown|stopPropagation={onDragStart}>
+    <div class="splitViewSeparator" />
+    <a
+      class="lui-collapse-btn"
+      on:click|stopPropagation|preventDefault={collapse}
+    >
+      <i class="sap-icon sap-icon--navigation-down-arrow" />
+    </a>
+  </div>
+{/if}
 
 <style type="text/scss">
   @import 'styles/variables';
@@ -441,7 +456,7 @@
     }
   }
 
-  @media (max-width: $desktopMinWidth - 1) {
+  @media (max-width: ($desktopMinWidth - 1)) {
     :global(body.lui-simpleSlideInNav) {
       :global(.fd-app__sidebar) {
         left: calc(var(--luigi__left-sidenav--width) * -1);
