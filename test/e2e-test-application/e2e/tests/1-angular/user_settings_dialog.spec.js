@@ -327,25 +327,19 @@ describe('Navigation', () => {
       });
     });
     it('Ctx update after storing user settings data using custom messages', () => {
-      cy.visitLoggedIn('/');
-      cy.get('.fd-shellbar__button--user-menu .fd-button').click();
-      cy.get('.lui-profile-simple-menu')
-        .contains('My Settings')
-        .click();
-      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
-        .eq(3)
-        .should('contain', 'Theming');
-      cy.get('.lui-usersettings-left-nav .lui-us-navlist__item')
+      let $iframeBody;
+      cy.get('[data-testid="us-navigation-item"]')
         .eq(3)
         .click();
-      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(iframe => {
-        cy.wrap(iframe)
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
           .contains('Yellow')
           .should('have.class', 'yellow');
-        cy.wrap(iframe)
+        cy.wrap($iframeBody)
           .contains('Yellow')
           .click();
-        cy.wrap(iframe)
+        cy.wrap($iframeBody)
           .contains('Yellow')
           .should('have.class', 'active');
       });
