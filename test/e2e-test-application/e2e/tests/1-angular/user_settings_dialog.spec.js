@@ -293,12 +293,12 @@ describe('Navigation', () => {
         cy.wrap($iframeBody)
           .contains('Yellow')
           .should('not.have.class', 'active');
-        cy.wrap($iframeBody)
-          .contains('Yellow')
-          .click();
-        cy.wrap($iframeBody)
-          .contains('Yellow')
-          .should('have.class', 'active');
+        // cy.wrap($iframeBody)
+        //   .contains('Yellow')
+        //   .click();
+        // cy.wrap($iframeBody)
+        //   .contains('Yellow')
+        //   .should('have.class', 'active');
       });
     });
 
