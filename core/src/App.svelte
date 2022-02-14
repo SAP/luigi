@@ -1,138 +1,10 @@
-<svelte:window on:resize="{onResize}" />
-<div
-  id="app"
-  class="{hideNav? 'no-nav' : ''} {hideSideNav ? 'no-side-nav':''} {noAnimation?'no-animation':''}"
->
-  {#if alerts && alerts.length}
-  <Alerts alertQueue="{alerts}" on:alertDismiss="{handleAlertDismissExternal}"></Alerts>
-  {/if} {#if mfModal.displayed}
-  <Modal
-    settings="{mfModal.settings}"
-    nodepath="{mfModal.nodepath}"
-    on:close="{closeModal}"
-    on:iframeCreated="{modalIframeCreated}"
-    on:wcCreated="{modalWCCreated}"
-  ></Modal>
-  {/if} {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
-  <Modal
-    settings="{mfDrawer.settings}"
-    nodepath="{mfDrawer.nodepath}"
-    on:close="{closeDrawer}"
-    on:drawerState="{setDrawerState}"
-    on:iframeCreated="{drawerIframeCreated}"
-    on:wcCreated="{drawerWCCreated}"
-  >
-    <Backdrop area="drawer" disable="{disableBackdrop}"></Backdrop>
-  </Modal>
-  {/if} {#if confirmationModal.displayed}
-  <ConfirmationModal
-    settings="{confirmationModal.settings}"
-    on:modalConfirm="{()=> handleModalResult(true)}"
-    on:modalDismiss="{() => handleModalResult(false)}"
-  ></ConfirmationModal>
-  {/if} {#if internalUserSettingsObject.displayed}
-  <UserSettingsDialog
-    on:close="{closeUserSettings}"
-    userSettingGroups="{internalUserSettingsObject.userSettingGroups}"
-    bind:storedUserSettings
-  ></UserSettingsDialog>
-  {/if}
-  <Backdrop disable="{disableBackdrop}">
-    <div
-      class="fd-page iframeContainer"
-      class:lui-split-view="{mfSplitView.displayed}"
-      class:lui-collapsed="{mfSplitView.collapsed}"
-      tabindex="0"
-      use:init
-    >
-      <Backdrop area="main" disable="{disableBackdrop}"></Backdrop>
-      <div class="wcContainer"></div>
-    </div>
-    {#if mfSplitView.displayed}
-    <SplitView
-      splitViewSettings="{mfSplitView.settings}"
-      collapsed="{mfSplitView.collapsed}"
-      nodepath="{mfSplitView.nodepath}"
-      on:iframeCreated="{splitViewIframeCreated}"
-      on:statusChanged="{splitViewStatusChanged}"
-      on:wcCreated="{splitViewWCCreated}"
-      disableBackdrop="{disableBackdrop}"
-    ></SplitView>
-    {/if}
-  </Backdrop>
-  {#if showLoadingIndicator}
-  <div
-    in:fade="{{delay: 250, duration: 250}}"
-    out:fade="{{duration: 250}}"
-    class="fd-page spinnerContainer"
-    aria-hidden="false"
-    aria-label="Loading"
-  >
-    <div
-      class="fd-busy-indicator--m"
-      aria-hidden="false"
-      aria-label="Loading"
-      data-testid="luigi-loading-spinner"
-    >
-      <div class="fd-busy-indicator--circle-0"></div>
-      <div class="fd-busy-indicator--circle-1"></div>
-      <div class="fd-busy-indicator--circle-2"></div>
-    </div>
-  </div>
-  {/if}
-  <TopNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}"
-    on:toggleSearch="{toggleSearch}"
-    on:closeSearchResult="{closeSearchResult}"
-    on:handleSearchNavigation="{handleSearchNavigation}"
-    bind:isSearchFieldVisible
-    bind:displaySearchResult
-    bind:displayCustomSearchResult
-    bind:searchResult
-    bind:inputElem
-    bind:luigiCustomSearchRenderer__slot
-    burgerTooltip="{burgerTooltip}"
-  />
-  {#if !(hideNav)}
-  <GlobalNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-  />
-  {#if breadcrumbsEnabled}
-  <Breadcrumb
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-  />
-  {/if} {/if} {#if !(hideNav||hideSideNav)}
-  <LeftNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    on:resizeTabNav="{onResizeTabNav}"
-    burgerTooltip="{burgerTooltip}"
-  />
-  {/if} {#if (tabNav && !hideNav)}
-  <TabNav
-    pathData="{navigationPath}"
-    pathParams="{pathParams}"
-    on:handleClick="{handleNavClick}"
-    resizeTabNavToggle="{resizeTabNavToggle}"
-  />
-  {/if}
-</div>
-
 <script type="text/javascript">
-  import Alerts from './Alerts.html';
-  import ConfirmationModal from './ConfirmationModal.html';
-  import Modal from './Modal.html';
+  import Alerts from './Alerts.svelte';
+  import ConfirmationModal from './ConfirmationModal.svelte';
+  import Modal from './Modal.svelte';
   import UserSettingsDialog from './UserSettingsDialog.html';
-  import Backdrop from './Backdrop.html';
-  import SplitView from './SplitView.html';
+  import Backdrop from './Backdrop.svelte';
+  import SplitView from './SplitView.svelte';
   import LeftNav from './navigation/LeftNav.svelte';
   import TopNav from './navigation/TopNav.svelte';
   import TabNav from './navigation/TabNav.svelte';
@@ -143,7 +15,7 @@
     beforeUpdate,
     onMount,
     setContext,
-    createEventDispatcher
+    createEventDispatcher,
   } from 'svelte';
   import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
@@ -156,7 +28,7 @@
     AuthHelpers,
     StorageHelper,
     UserSettingsHelper,
-    NavigationHelpers
+    NavigationHelpers,
   } from './utilities/helpers';
   import {
     LuigiI18N,
@@ -165,7 +37,7 @@
     LuigiGlobalSearch,
     LuigiFeatureToggles,
     LuigiTheming,
-    LuigiRouting
+    LuigiRouting,
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -184,7 +56,7 @@
   let showLoadingIndicator = false;
 
   let mfSplitView = {
-    displayed: false
+    displayed: false,
   };
   let splitViewValues;
 
@@ -224,7 +96,7 @@
   let preservedViews = [];
   let unsavedChanges = {
     isDirty: false,
-    persistUrl: null
+    persistUrl: null,
   };
   let simpleSlideInNav;
   let responsiveNavSetting;
@@ -243,7 +115,7 @@
   export let storedUserSettings;
   let breadcrumbsEnabled;
 
-  const prepareInternalData = async config => {
+  const prepareInternalData = async (config) => {
     const iframeConf = config.iframe.luigi;
     const userSettingsGroupName =
       iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
@@ -258,12 +130,14 @@
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
         : iframeConf.clientPermissions,
-      userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null
+      userSettings: hasUserSettings
+        ? userSettingGroups[userSettingsGroupName]
+        : null,
     });
 
     IframeHelpers.specialIframeTypes
-      .map(o => o.iframeConfigKey)
-      .forEach(key => {
+      .map((o) => o.iframeConfigKey)
+      .forEach((key) => {
         internalData[key] = config[key] || false;
       });
 
@@ -281,24 +155,30 @@
       context: JSON.stringify(
         Object.assign({}, config.context || context, goBackContext)
       ),
-      nodeParams: JSON.stringify(Object.assign({}, config.nodeParams || nodeParams)),
-      pathParams: JSON.stringify(Object.assign({}, config.pathParams || pathParams)),
+      nodeParams: JSON.stringify(
+        Object.assign({}, config.nodeParams || nodeParams)
+      ),
+      pathParams: JSON.stringify(
+        Object.assign({}, config.pathParams || pathParams)
+      ),
       searchParams: JSON.stringify(
         Object.assign(
           {},
-          RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)
+          RoutingHelpers.prepareSearchParamsForClient(
+            config.iframe.luigi.currentNode
+          )
         )
       ),
       internal: JSON.stringify(await prepareInternalData(config)),
-      authData: AuthHelpers.getStoredAuthData()
+      authData: AuthHelpers.getStoredAuthData(),
     };
     config.iframe.luigi._lastUpdatedMessage = message;
     IframeHelpers.sendMessageToIframe(config.iframe, message);
   };
-  const sendAuthDataToClient = authData => {
+  const sendAuthDataToClient = (authData) => {
     const message = {
       msg: 'luigi.auth.tokenIssued',
-      authData
+      authData,
     };
     IframeHelpers.broadcastMessageToAllIframes(message);
   };
@@ -321,7 +201,7 @@
               )
             : nodePath,
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
-        context
+        context,
       });
 
       // Mark iframe with pv if there is a preserved view situation
@@ -343,7 +223,7 @@
     Routing.navigateTo(path, true, isNavigationSyncEnabled);
   };
 
-  const removeQueryParams = str => str.split('?')[0];
+  const removeQueryParams = (str) => str.split('?')[0];
 
   const isValidBackRoute = (preservedViews, routeHash) => {
     if (preservedViews.length === 0) {
@@ -355,13 +235,13 @@
     const lastPreservedView = [...preservedViews].pop();
     const paths = [
       removeQueryParams(lastPreservedView.path),
-      removeQueryParams(lastPreservedView.nextPath)
+      removeQueryParams(lastPreservedView.nextPath),
     ];
     return paths.includes(removeQueryParams(routePath));
   };
 
-  const getUnsavedChangesModalPromise = source => {
-    return new Promise(resolve => {
+  const getUnsavedChangesModalPromise = (source) => {
+    return new Promise((resolve) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
@@ -409,13 +289,13 @@
           tabNav,
           isNavigateBack,
           goBackContext,
-          isNavigationSyncEnabled
+          isNavigationSyncEnabled,
         };
       },
-      set: obj => {
+      set: (obj) => {
         if (obj) {
           noAnimation = false;
-          Object.getOwnPropertyNames(obj).forEach(prop => {
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
             if (prop === 'hideNav') {
               hideNav = obj.hideNav;
             } else if (prop === 'viewUrl') {
@@ -478,7 +358,7 @@
       showUnsavedChangesModal,
       showAlert,
       prepareInternalData,
-      dispatch
+      dispatch,
     };
   };
 
@@ -489,7 +369,12 @@
       () => {
         NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
-        Routing.handleRouteChange(currentPath, getComponentWrapper(), node, config);
+        Routing.handleRouteChange(
+          currentPath,
+          getComponentWrapper(),
+          node,
+          config
+        );
       },
       ['navigation.nodes']
     );
@@ -506,7 +391,13 @@
 
       closeSplitView();
 
-      Routing.handleRouteChange(path, getComponentWrapper(), node, config, withoutSync);
+      Routing.handleRouteChange(
+        path,
+        getComponentWrapper(),
+        node,
+        config,
+        withoutSync
+      );
     });
   };
 
@@ -536,14 +427,17 @@
     let path = params.link;
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const node = [...localNavPath].reverse().find(n => n.virtualTree);
+      const node = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!node) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
         );
         return;
       }
-      path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
+      path = Routing.concatenatePath(
+        getSubPath(node, localPathParams),
+        params.link
+      );
     } else if (params.fromParent) {
       // from direct parent
       path = Routing.concatenatePath(
@@ -554,26 +448,37 @@
       // from the closest navigation context
       const node = [...localNavPath]
         .reverse()
-        .find(n => n.navigationContext && n.navigationContext.length > 0);
-      path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
+        .find((n) => n.navigationContext && n.navigationContext.length > 0);
+      path = Routing.concatenatePath(
+        getSubPath(node, localPathParams),
+        params.link
+      );
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
       const node = [...localNavPath]
         .reverse()
-        .find(n => navigationContext === n.navigationContext);
-      path = Routing.concatenatePath(getSubPath(node, localPathParams), params.link);
+        .find((n) => navigationContext === n.navigationContext);
+      path = Routing.concatenatePath(
+        getSubPath(node, localPathParams),
+        params.link
+      );
     } else if (params.intent) {
       path = RoutingHelpers.getIntentPath(params.link);
     } else if (params.relative) {
       // relative
-      path = Routing.concatenatePath(getSubPath(localNode, localPathParams), params.link);
+      path = Routing.concatenatePath(
+        getSubPath(localNode, localPathParams),
+        params.link
+      );
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
       path += path.includes('?') ? '&' : '?';
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
-          encodeURIComponent(RoutingHelpers.getContentViewParamPrefix() + entry[0]) +
+          encodeURIComponent(
+            RoutingHelpers.getContentViewParamPrefix() + entry[0]
+          ) +
           '=' +
           encodeURIComponent(entry[1]) +
           (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
@@ -582,13 +487,16 @@
     return path;
   };
 
-  const handleNavClick = event => {
+  const handleNavClick = (event) => {
     const node = event.detail.node;
     getUnsavedChangesModalPromise().then(() => {
       closeLeftNav();
       if (node.openNodeInModal) {
         const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        openViewInModal(route, node.openNodeInModal === true ? {} : node.openNodeInModal);
+        openViewInModal(
+          route,
+          node.openNodeInModal === true ? {} : node.openNodeInModal
+        );
       } else if (node.drawer) {
         const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
         node.drawer.isDrawer = true;
@@ -608,7 +516,7 @@
 
   ////GLOBALSEARCH
 
-  const checkSearchProvider = searchProvider => {
+  const checkSearchProvider = (searchProvider) => {
     if (!searchProvider) {
       console.warn('No search provider defined.');
       return false;
@@ -655,7 +563,7 @@
     }
   };
 
-  export const setGlobalSearchString = searchString => {
+  export const setGlobalSearchString = (searchString) => {
     if (checkSearchProvider(searchProvider)) {
       if (inputElem) {
         inputElem.value = searchString;
@@ -670,21 +578,23 @@
     }
   };
 
-  export const setSearchInputPlaceholder = placeholderString => {
+  export const setSearchInputPlaceholder = (placeholderString) => {
     if (checkSearchProvider(searchProvider) && inputElem) {
       inputElem.placeholder = placeholderString;
     }
   };
 
-  export const showSearchResult = arr => {
+  export const showSearchResult = (arr) => {
     if (checkSearchProvider(searchProvider)) {
       if (arr && arr.length > 0) {
-        if (GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)) {
+        if (
+          GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
+        ) {
           displayCustomSearchResult = true;
           let searchApiObj = {
-            fireItemSelected: item => {
+            fireItemSelected: (item) => {
               searchProvider.onSearchResultItemSelected(item);
-            }
+            },
           };
           searchProvider.customSearchResultRenderer(
             arr,
@@ -715,13 +625,13 @@
     }
   };
 
-  export const handleSearchNavigation = event => {
+  export const handleSearchNavigation = (event) => {
     let node = event.detail.node;
     let data = {
       params: {
         link: node.link,
-        nodeParams: node.params
-      }
+        nodeParams: node.params,
+      },
     };
     handleNavigation(data);
   };
@@ -767,13 +677,13 @@
     return mfSplitView.displayed;
   };
 
-  const splitViewIframeCreated = event => {
+  const splitViewIframeCreated = (event) => {
     splitViewIframe = event.detail.splitViewIframe;
     splitViewIframeData = event.detail.splitViewIframeData;
     $: mfSplitView.collapsed = event.detail.collapsed;
   };
 
-  const splitViewStatusChanged = event => {
+  const splitViewStatusChanged = (event) => {
     $: if (event.detail.displayed !== undefined) {
       mfSplitView.displayed = event.detail.displayed;
     }
@@ -782,7 +692,7 @@
     }
   };
 
-  const splitViewWCCreated = event => {
+  const splitViewWCCreated = (event) => {
     splitViewWC = event.detail.splitViewWC;
     splitViewWCData = event.detail.splitViewWCData;
     $: mfSplitView.collapsed = event.detail.collapsed;
@@ -821,11 +731,13 @@
 
   const getAlertWithId = (alertQueue, id) => {
     if (!alertQueue || !(alertQueue.length > 0)) return;
-    return alertQueue.filter(alert => alert.settings.id === id)[0];
+    return alertQueue.filter((alert) => alert.settings.id === id)[0];
   };
 
   export const showAlert = (settings, openFromClient = false) => {
-    const customAlertHandler = LuigiConfig.getConfigValue('settings.customAlertHandler');
+    const customAlertHandler = LuigiConfig.getConfigValue(
+      'settings.customAlertHandler'
+    );
     if (GenericHelpers.isFunction(customAlertHandler)) {
       const customReturnValue = customAlertHandler(settings, openFromClient);
       if (customReturnValue !== false) {
@@ -839,7 +751,11 @@
       settings.id = GenericHelpers.getRandomId();
     }
 
-    if (settings.id && currentAlerts && getAlertWithId(currentAlerts, settings.id)) {
+    if (
+      settings.id &&
+      currentAlerts &&
+      getAlertWithId(currentAlerts, settings.id)
+    ) {
       console.error(
         `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
       );
@@ -862,8 +778,8 @@
           displayed: true,
           settings,
           openFromClient,
-          promise: { resolve }
-        }
+          promise: { resolve },
+        },
       ];
     });
   };
@@ -876,14 +792,14 @@
       return;
     }
 
-    alerts = alerts.filter(a => a.settings.id !== id);
+    alerts = alerts.filter((a) => a.settings.id !== id);
 
     if (alert.openFromClient) {
       const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
         msg: 'luigi.ux.alert.hide',
         id,
-        dismissKey
+        dismissKey,
         //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
@@ -892,7 +808,7 @@
     }
   };
 
-  const handleAlertDismissExternal = event => {
+  const handleAlertDismissExternal = (event) => {
     handleAlertDismiss(event.detail.id, event.detail.dismissKey);
   };
 
@@ -905,7 +821,7 @@
       displayed: false,
       content: {},
       openFromClient: false,
-      promise: null
+      promise: null,
     };
   };
 
@@ -917,12 +833,12 @@
         displayed: true,
         settings,
         openFromClient,
-        promise: { resolve, reject }
+        promise: { resolve, reject },
       };
     });
   };
 
-  const handleModalResult = result => {
+  const handleModalResult = (result) => {
     const { promise, openFromClient } = confirmationModal;
 
     resetConfirmationModalData();
@@ -937,13 +853,13 @@
       const iframe = Iframe.getActiveIframe(contentNode);
       const message = {
         msg: 'luigi.ux.confirmationModal.hide',
-        data: { confirmed: result }
+        data: { confirmed: result },
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
     }
   };
 
-  const shouldShowUnsavedChangesModal = source => {
+  const shouldShowUnsavedChangesModal = (source) => {
     if (
       //TODO GenericHelpers.canComponentHandleModal(this) &&
       unsavedChanges.dirtySet
@@ -962,7 +878,7 @@
       header: LuigiI18N.getTranslation('luigi.unsavedChangesAlert.header'),
       body: LuigiI18N.getTranslation('luigi.unsavedChangesAlert.body'),
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
-      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
+      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm'),
     });
   };
 
@@ -997,17 +913,17 @@
     }
   };
 
-  const modalIframeCreated = event => {
+  const modalIframeCreated = (event) => {
     modalIframe = event.detail.modalIframe;
     modalIframeData = event.detail.modalIframeData;
   };
 
-  const modalWCCreated = event => {
+  const modalWCCreated = (event) => {
     modalWC = event.detail.modalWC;
     modalWCData = event.detail.modalWCData;
   };
 
-  const closeModal = event => {
+  const closeModal = (event) => {
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
@@ -1075,31 +991,37 @@
 
       const { width } = getComputedStyle(drawer);
       const clientWidth = currentMfIframe.clientWidth;
-      currentMfIframe.setAttribute('style', `width: calc(${clientWidth}px - ${width})`);
+      currentMfIframe.setAttribute(
+        'style',
+        `width: calc(${clientWidth}px - ${width})`
+      );
     }
   };
 
-  const drawerIframeCreated = event => {
+  const drawerIframeCreated = (event) => {
     drawerIframe = event.detail.modalIframe;
     drawerIframeData = event.detail.modalIframeData;
     resizeMicrofrontendIframe();
   };
 
-  const drawerWCCreated = event => {
+  const drawerWCCreated = (event) => {
     drawerWC = event.detail.modalWC;
     drawerWCData = event.detail.modalWCData;
     resizeMicrofrontendIframe();
   };
 
-  const setDrawerState = event => {
+  const setDrawerState = (event) => {
     activeDrawer = event.detail.activeDrawer;
   };
 
-  const closeDrawer = event => {
+  const closeDrawer = (event) => {
     if (event && event.detail && event.detail.activeDrawer !== undefined) {
       activeDrawer = event.detail.activeDrawer;
     }
-    if (!activeDrawer || (event && event.detail && event.detail.type !== 'modal')) {
+    if (
+      !activeDrawer ||
+      (event && event.detail && event.detail.type !== 'modal')
+    ) {
       try {
         if (drawerIframe) {
           getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
@@ -1110,7 +1032,10 @@
             resetMicrofrontendDrawerData();
           });
         }
-        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute('style', null);
+        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
+          'style',
+          null
+        );
       } catch (e) {
         console.log(e);
       }
@@ -1137,7 +1062,7 @@
 
   // Open View in New Tab
 
-  const openViewInNewTab = async nodepath => {
+  const openViewInNewTab = async (nodepath) => {
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
@@ -1152,7 +1077,9 @@
   };
 
   function init(node) {
-    const isolateAllViews = LuigiConfig.getConfigValue('navigation.defaults.isolateView');
+    const isolateAllViews = LuigiConfig.getConfigValue(
+      'navigation.defaults.isolateView'
+    );
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
       'navigation.defaults.pageErrorHandler'
     );
@@ -1164,22 +1091,22 @@
       navigateOk: null,
       builderCompatibilityMode: Boolean(window.builderCompatibilityMode),
       isolateAllViews,
-      defaultPageErrorHandler
+      defaultPageErrorHandler,
     };
-    LuigiI18N.addCurrentLocaleChangeListener(locale => {
+    LuigiI18N.addCurrentLocaleChangeListener((locale) => {
       const message = {
         msg: 'luigi.current-locale-changed',
-        currentLocale: locale
+        currentLocale: locale,
       };
       IframeHelpers.broadcastMessageToAllIframes(message);
     });
 
-    EventListenerHelpers.addEventListener('popstate', async e => {
+    EventListenerHelpers.addEventListener('popstate', async (e) => {
       const alertQueue = alerts;
       if (!alertQueue || !(alertQueue.length > 0)) return;
 
       const updatedAlerts = alertQueue
-        .map(a => {
+        .map((a) => {
           if (a && !a.openFromClient && typeof a.settings.ttl === 'number') {
             //alert has some TTL set
             if (a.settings.ttl === 0) {
@@ -1193,12 +1120,12 @@
           //return either unchanged Alert or the one with reduced TTL value
           return a;
         })
-        .filter(a => a); //remove empty alerts from array
+        .filter((a) => a); //remove empty alerts from array
 
       alerts = updatedAlerts;
     });
 
-    EventListenerHelpers.addEventListener('message', async e => {
+    EventListenerHelpers.addEventListener('message', async (e) => {
       const iframe = IframeHelpers.getValidMessageSource(e);
       const specialIframeProps = {
         modalIframe,
@@ -1209,23 +1136,24 @@
         modal,
         splitViewIframe,
         splitViewIframeData,
-        splitView
+        splitView,
       };
 
       if (!iframe) return;
       iframe._ready = true;
 
-      const specialIframeMessageSource = IframeHelpers.getSpecialIframeMessageSource(
-        e,
-        specialIframeProps
-      );
+      const specialIframeMessageSource =
+        IframeHelpers.getSpecialIframeMessageSource(e, specialIframeProps);
       const isSpecialIframe =
         specialIframeMessageSource && specialIframeMessageSource.length > 0;
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
-          LuigiConfig.getConfigValue('communication.customMessagesListeners') || {};
-        const message = MessagesListeners.convertCustomMessageInternalToUser(e.data);
+          LuigiConfig.getConfigValue('communication.customMessagesListeners') ||
+          {};
+        const message = MessagesListeners.convertCustomMessageInternalToUser(
+          e.data
+        );
         const customMessageListener = customMessagesListeners[message.id];
         const userSettingsCMKey = 'luigi.updateUserSettings';
         if (internalUserSettingsObject && message.id === userSettingsCMKey) {
@@ -1237,7 +1165,7 @@
           return;
         }
         if (typeof customMessageListener === 'function') {
-          const microfrontend = LuigiElements.getMicrofrontends().find(mf =>
+          const microfrontend = LuigiElements.getMicrofrontends().find((mf) =>
             IframeHelpers.isMessageSource(e, mf.container)
           );
 
@@ -1276,7 +1204,7 @@
         iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
         if (isSpecialIframe) {
-          specialIframeMessageSource.forEach(async typ => {
+          specialIframeMessageSource.forEach(async (typ) => {
             let ctx = specialIframeProps[typ.dataKey].context;
             const conf = {
               ...config,
@@ -1289,11 +1217,14 @@
               ),
               modal: typ.iframeKey.startsWith('modal'),
               drawer: typ.iframeKey.startsWith('drawer'),
-              splitView: typ.iframeKey.startsWith('splitView')
+              splitView: typ.iframeKey.startsWith('splitView'),
             };
             await sendContextToClient(conf, {});
           });
-        } else if (config.iframe && IframeHelpers.isMessageSource(e, config.iframe)) {
+        } else if (
+          config.iframe &&
+          IframeHelpers.isMessageSource(e, config.iframe)
+        ) {
           await sendContextToClient(config, {});
           const loadingIndicatorAutoHideEnabled =
             !currentNode ||
@@ -1312,23 +1243,21 @@
               context: {},
               nodeParams: {},
               pathParams: {},
-              internal: {}
+              internal: {},
             },
             {}
           );
         } else {
-          let userSettingsIframe = UserSettingsHelper.findActiveCustomUserSettingsIframe(
-            e.source
-          );
+          let userSettingsIframe =
+            UserSettingsHelper.findActiveCustomUserSettingsIframe(e.source);
           if (userSettingsIframe) {
-            let userSettingsGroupKey = userSettingsIframe.getAttribute(
-              'userSettingsGroup'
-            );
+            let userSettingsGroupKey =
+              userSettingsIframe.getAttribute('userSettingsGroup');
             let config = {
               context: {
-                userSettingsData: storedUserSettings[userSettingsGroupKey]
+                userSettingsData: storedUserSettings[userSettingsGroupKey],
               }, // nur für spezielen Iframe
-              iframe: userSettingsIframe
+              iframe: userSettingsIframe,
             };
             await sendContextToClient(config);
           }
@@ -1347,9 +1276,12 @@
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
-        const srcPathParams = isSpecialIframe ? iframe.luigi.pathParams : undefined;
+        const srcPathParams = isSpecialIframe
+          ? iframe.luigi.pathParams
+          : undefined;
         const params = e.data.params;
-        const { intent, newTab, modal, splitView, drawer, withoutSync } = params;
+        const { intent, newTab, modal, splitView, drawer, withoutSync } =
+          params;
         const isSpecial = newTab || modal || splitView || drawer;
 
         if (e.source !== window && !intent && params.link) {
@@ -1402,12 +1334,14 @@
         if (IframeHelpers.isMessageSource(e, modalIframe)) {
           closeModal();
           await sendContextToClient(config, {
-            goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
+            goBackContext:
+              e.data.goBackContext && JSON.parse(e.data.goBackContext),
           });
         } else if (IframeHelpers.isMessageSource(e, splitViewIframe)) {
           closeSplitView();
           await sendContextToClient(config, {
-            goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
+            goBackContext:
+              e.data.goBackContext && JSON.parse(e.data.goBackContext),
           });
         } else if (IframeHelpers.isMessageSource(e, drawerIframe)) {
           if (activeDrawer) {
@@ -1415,7 +1349,8 @@
           }
           closeDrawer();
           await sendContextToClient(config, {
-            goBackContext: e.data.goBackContext && JSON.parse(e.data.goBackContext)
+            goBackContext:
+              e.data.goBackContext && JSON.parse(e.data.goBackContext),
           });
         } else {
           // go back: context from the view
@@ -1428,7 +1363,8 @@
               config.iframe = Iframe.getActiveIframe(node);
               isNavigateBack = true;
               preservedViews = preservedViews;
-              goBackContext = e.data.goBackContext && JSON.parse(e.data.goBackContext);
+              goBackContext =
+                e.data.goBackContext && JSON.parse(e.data.goBackContext);
               // TODO: check if getNavigationPath or history pop to update hash / path
               handleNavigation(
                 { params: { link: previousActiveIframeData.path } },
@@ -1466,8 +1402,8 @@
           msg: 'luigi.navigation.pathExists.answer',
           data: {
             correlationId: data.id,
-            pathExists: pathData ? pathData.isExistingRoute : false
-          }
+            pathExists: pathData ? pathData.isExistingRoute : false,
+          },
         };
         IframeHelpers.sendMessageToIframe(iframe, message);
       }
@@ -1477,7 +1413,7 @@
           const dirtySet = new Set();
           dirtySet.add(e.source);
           unsavedChanges = {
-            dirtySet: dirtySet
+            dirtySet: dirtySet,
           };
         }
         unsavedChanges.persistUrl = window.location.href;
@@ -1579,7 +1515,9 @@
             keepBrowserHistory
           );
         } else {
-          console.warn('No client permissions to add url parameter for this node.');
+          console.warn(
+            'No client permissions to add url parameter for this node.'
+          );
         }
       }
 
@@ -1600,21 +1538,23 @@
   setContext('store', store);
   setContext('getTranslation', getTranslation);
 
-  const tpcErrorHandling = thirdpartycookiecheck => {
+  const tpcErrorHandling = (thirdpartycookiecheck) => {
     if (
       thirdPartyCookiesCheck &&
       thirdPartyCookiesCheck.thirdPartyCookieErrorHandling &&
-      GenericHelpers.isFunction(thirdPartyCookiesCheck.thirdPartyCookieErrorHandling)
+      GenericHelpers.isFunction(
+        thirdPartyCookiesCheck.thirdPartyCookieErrorHandling
+      )
     ) {
       thirdPartyCookiesCheck.thirdPartyCookieErrorHandling();
     }
   };
 
-  export const pathExists = async path => {
+  export const pathExists = async (path) => {
     const data = {
       link: path,
       relative: path[0] !== '/',
-      intent: RoutingHelpers.hasIntent(path)
+      intent: RoutingHelpers.hasIntent(path),
     };
     const builtPath = buildPath(data);
     const pathData = builtPath
@@ -1633,16 +1573,16 @@
   onMount(() => {
     LuigiTheming._init();
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
-    responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+    responsiveNavSetting = LuigiConfig.getConfigValue(
+      'settings.responsiveNavigation'
+    );
     previousWindowWidth = window.innerWidth;
     if (responsiveNavSetting === 'simple') {
       document.body.classList.add('lui-simpleSlideInNav');
       simpleSlideInNav = true;
       if (NavigationHelpers.getBurgerTooltipConfig()) {
-        const [
-          collapseNavTooltip,
-          expandNavTooltip
-        ] = NavigationHelpers.getBurgerTooltipConfig();
+        const [collapseNavTooltip, expandNavTooltip] =
+          NavigationHelpers.getBurgerTooltipConfig();
         if (collapseNavTooltip && expandNavTooltip) {
           burgerTooltip = document.body.classList.contains('lui-leftNavToggle')
             ? collapseNavTooltip
@@ -1654,21 +1594,26 @@
       simpleSlideInNav = true;
     } else if (responsiveNavSetting === 'semiCollapsible' || 'Fiori3') {
       if (NavigationHelpers.getBurgerTooltipConfig()) {
-        const [
-          collapseNavTooltip,
-          expandNavTooltip
-        ] = NavigationHelpers.getBurgerTooltipConfig();
+        const [collapseNavTooltip, expandNavTooltip] =
+          NavigationHelpers.getBurgerTooltipConfig();
         if (collapseNavTooltip && expandNavTooltip) {
           const collapsedNavState = JSON.parse(
             localStorage.getItem(NavigationHelpers.COL_NAV_KEY)
           );
-          burgerTooltip = collapsedNavState ? collapseNavTooltip : expandNavTooltip;
+          burgerTooltip = collapsedNavState
+            ? collapseNavTooltip
+            : expandNavTooltip;
         }
       }
       document.body.classList.add('lui-semiCollapsible');
     }
-    thirdPartyCookiesCheck = LuigiConfig.getConfigValue('settings.thirdPartyCookieCheck');
-    if (thirdPartyCookiesCheck && thirdPartyCookiesCheck.thirdPartyCookieScriptLocation) {
+    thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
+      'settings.thirdPartyCookieCheck'
+    );
+    if (
+      thirdPartyCookiesCheck &&
+      thirdPartyCookiesCheck.thirdPartyCookieScriptLocation
+    ) {
       setTimeout(() => {
         let thirdPartyCookieCheckIframe = document.createElement('iframe');
         thirdPartyCookieCheckIframe.width = '0px';
@@ -1676,7 +1621,7 @@
         thirdPartyCookieCheckIframe.src =
           thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
         document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function() {
+        thirdPartyCookieCheckIframe.onload = function () {
           setTimeout(() => {
             if (thirdPartyCookiesStatus() === 'disabled') {
               tpcErrorHandling(thirdPartyCookiesCheck);
@@ -1693,10 +1638,148 @@
   });
 
   beforeUpdate(() => {
-    breadcrumbsEnabled = GenericHelpers.requestExperimentalFeature('breadcrumbs');
+    breadcrumbsEnabled =
+      GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
   });
 </script>
+
+<svelte:window on:resize={onResize} />
+<div
+  id="app"
+  class="{hideNav ? 'no-nav' : ''} {hideSideNav
+    ? 'no-side-nav'
+    : ''} {noAnimation ? 'no-animation' : ''}"
+>
+  {#if alerts && alerts.length}
+    <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
+  {/if}
+  {#if mfModal.displayed}
+    <Modal
+      settings={mfModal.settings}
+      nodepath={mfModal.nodepath}
+      on:close={closeModal}
+      on:iframeCreated={modalIframeCreated}
+      on:wcCreated={modalWCCreated}
+    />
+  {/if}
+  {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
+    <Modal
+      settings={mfDrawer.settings}
+      nodepath={mfDrawer.nodepath}
+      on:close={closeDrawer}
+      on:drawerState={setDrawerState}
+      on:iframeCreated={drawerIframeCreated}
+      on:wcCreated={drawerWCCreated}
+    >
+      <Backdrop area="drawer" disable={disableBackdrop} />
+    </Modal>
+  {/if}
+  {#if confirmationModal.displayed}
+    <ConfirmationModal
+      settings={confirmationModal.settings}
+      on:modalConfirm={() => handleModalResult(true)}
+      on:modalDismiss={() => handleModalResult(false)}
+    />
+  {/if}
+  {#if internalUserSettingsObject.displayed}
+    <UserSettingsDialog
+      on:close={closeUserSettings}
+      userSettingGroups={internalUserSettingsObject.userSettingGroups}
+      bind:storedUserSettings
+    />
+  {/if}
+  <Backdrop disable={disableBackdrop}>
+    <div
+      class="fd-page iframeContainer"
+      class:lui-split-view={mfSplitView.displayed}
+      class:lui-collapsed={mfSplitView.collapsed}
+      tabindex="0"
+      use:init
+    >
+      <Backdrop area="main" disable={disableBackdrop} />
+      <div class="wcContainer" />
+    </div>
+    {#if mfSplitView.displayed}
+      <SplitView
+        splitViewSettings={mfSplitView.settings}
+        collapsed={mfSplitView.collapsed}
+        nodepath={mfSplitView.nodepath}
+        on:iframeCreated={splitViewIframeCreated}
+        on:statusChanged={splitViewStatusChanged}
+        on:wcCreated={splitViewWCCreated}
+        {disableBackdrop}
+      />
+    {/if}
+  </Backdrop>
+  {#if showLoadingIndicator}
+    <div
+      in:fade={{ delay: 250, duration: 250 }}
+      out:fade={{ duration: 250 }}
+      class="fd-page spinnerContainer"
+      aria-hidden="false"
+      aria-label="Loading"
+    >
+      <div
+        class="fd-busy-indicator--m"
+        aria-hidden="false"
+        aria-label="Loading"
+        data-testid="luigi-loading-spinner"
+      >
+        <div class="fd-busy-indicator--circle-0" />
+        <div class="fd-busy-indicator--circle-1" />
+        <div class="fd-busy-indicator--circle-2" />
+      </div>
+    </div>
+  {/if}
+  <TopNav
+    pathData={navigationPath}
+    {pathParams}
+    on:handleClick={handleNavClick}
+    on:resizeTabNav={onResizeTabNav}
+    on:toggleSearch={toggleSearch}
+    on:closeSearchResult={closeSearchResult}
+    on:handleSearchNavigation={handleSearchNavigation}
+    bind:isSearchFieldVisible
+    bind:displaySearchResult
+    bind:displayCustomSearchResult
+    bind:searchResult
+    bind:inputElem
+    bind:luigiCustomSearchRenderer__slot
+    {burgerTooltip}
+  />
+  {#if !hideNav}
+    <GlobalNav
+      pathData={navigationPath}
+      {pathParams}
+      on:handleClick={handleNavClick}
+    />
+    {#if breadcrumbsEnabled}
+      <Breadcrumb
+        pathData={navigationPath}
+        {pathParams}
+        on:handleClick={handleNavClick}
+      />
+    {/if}
+  {/if}
+  {#if !(hideNav || hideSideNav)}
+    <LeftNav
+      pathData={navigationPath}
+      {pathParams}
+      on:handleClick={handleNavClick}
+      on:resizeTabNav={onResizeTabNav}
+      {burgerTooltip}
+    />
+  {/if}
+  {#if tabNav && !hideNav}
+    <TabNav
+      pathData={navigationPath}
+      {pathParams}
+      on:handleClick={handleNavClick}
+      {resizeTabNavToggle}
+    />
+  {/if}
+</div>
 
 <style type="text/scss">
   @import 'styles/fonts';
@@ -1800,7 +1883,9 @@
   }
 
   :global(.lui-breadcrumb) .iframeContainerTabNav {
-    top: calc(#{$topNavHeight} + #{$topNavHeightTab} + var(--luigi__breadcrumb--height));
+    top: calc(
+      #{$topNavHeight} + #{$topNavHeightTab} + var(--luigi__breadcrumb--height)
+    );
   }
 
   .iframeContainerTabNav {
@@ -2019,7 +2104,7 @@
     }
   }
 
-  @media (max-width: $desktopMinWidth - 1) {
+  @media (max-width: ($desktopMinWidth - 1)) {
     :global(body.lui-simpleSlideInNav) {
       .iframeContainer,
       .spinnerContainer {
@@ -2188,8 +2273,8 @@
     }
 
     //Recalculate height for mobile devices
-    height: calc(var(--vh, 1vh) * 100});
-    max-height: calc(var(--vh, 1vh) * 100});
+    height: calc(var(--vh, 1vh) * 100);
+    max-height: calc(var(--vh, 1vh) * 100);
     -webkit-overflow-scrolling: touch;
   }
 
@@ -2227,7 +2312,7 @@
     }
   }
 
-  @media (max-width: $desktopMaxWidth - 1) {
+  @media (max-width: ($desktopMaxWidth - 1)) {
     :global(.fd-shellbar__action--desktop) {
       display: none;
     }
