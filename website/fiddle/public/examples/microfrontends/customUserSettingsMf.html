@@ -1,102 +1,102 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title></title>
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
-    />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' *; img-src https://*; child-src 'none';"> -->
     <link rel="stylesheet" type="text/css" href="index.css" media="screen" />
     <style>
-      .green {
-        color: green;
-      }
-
-      .red {
-        color: red;
-      }
-
-      .yellow {
-        color: yellow;
-      }
-
-      .active {
-        font-size: 30px;
-      }
-
-      .mobileBack {
-        display: none;
-      }
-
-      @media (max-width: 600px) {
-        .mobileBack {
-          display: block;
+        .green {
+            color: green;
         }
-      }
-    </style>
-  </head>
 
-  <body>
+        .red {
+            color: red;
+        }
+
+        .yellow {
+            color: yellow;
+        }
+
+        .active {
+            font-size: 30px;
+        }
+
+        .mobileBack {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .mobileBack {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <script src="/vendor/luigi-client/luigi-client.js"></script>
     <script>
-      let myUserSettings = {};
-      window.LuigiClient.addInitListener((context, origin) => {
-        renderData(context);
-      });
+        let myUserSettings = {};
+        window.LuigiClient.addInitListener((context, origin) => {
+            renderData(context);
+        });
 
-      window.LuigiClient.addContextUpdateListener((context, origin) => {
-        renderData(context);
-      });
+        window.LuigiClient.addContextUpdateListener((context, origin) => {
+            renderData(context);
+        });
 
-      function renderData(context) {
-        myUserSettings = context.userSettingsData;
-        if (myUserSettings.theme) {
-          let button = document.querySelector('.' + myUserSettings.theme);
-          button.classList.add('active');
+        function renderData(context) {
+            myUserSettings = context.userSettingsData;
+            if (myUserSettings && myUserSettings.theme) {
+                let button = document.querySelector('.' + myUserSettings.theme);
+                button.classList.add('active');
+            }
         }
-      }
 
-      function changeTheming(theme) {
-        document.querySelectorAll('.btnList button').forEach(button => {
-          button.classList.remove('active');
-        });
-        document.querySelector('.' + theme).classList.add('active');
-        myUserSettings.theme = theme;
-        window.LuigiClient.sendCustomMessage({
-          id: 'luigi.updateUserSettings',
-          data: myUserSettings
-        });
-      }
+        function changeTheming(theme) {
+            document.querySelectorAll('.btnList button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector('.' + theme).classList.add('active');
+            myUserSettings.theme = theme;
+            window.LuigiClient.sendCustomMessage({
+                id: 'luigi.updateUserSettings',
+                data: myUserSettings
+            });
+        }
 
-      function setYellowTheme(theme) {
-        window.LuigiClient.sendCustomMessage({
-          id: 'my-custom-message.update-user-settings',
-          theme: 'yellow'
-        });
-      }
+        function setYellowTheme(theme) {
+            window.LuigiClient.sendCustomMessage({
+                id: 'my-custom-message.update-user-settings',
+                theme: 'yellow'
+            });
+        }
     </script>
     <div>
-      <ul class="btnList">
-        <li>
-          <button class="red" onclick="changeTheming('red')">
-            Red
-          </button>
-        </li>
-        <br /><br />
-        <li>
-          <button class="green" onclick="changeTheming('green')">
-            Green
-          </button>
-        </li>
-        <br /><br />
-        <li>
-          <button class="yellow" onclick="setYellowTheme('yellow')">
-            Yellow
-          </button>
-        </li>
-      </ul>
+        <ul class="btnList">
+            <li>
+                <button class="red" onclick="changeTheming('red')">
+                    Red
+                </button>
+            </li>
+            <br /><br />
+            <li>
+                <button class="green" onclick="changeTheming('green')">
+                    Green
+                </button>
+            </li>
+            <br /><br />
+            <li>
+                <button class="yellow" onclick="setYellowTheme('yellow')">
+                    Yellow
+                </button>
+            </li>
+        </ul>
     </div>
-  </body>
+</body>
+
 </html>
