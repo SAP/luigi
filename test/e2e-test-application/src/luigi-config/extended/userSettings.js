@@ -92,7 +92,7 @@ class UserSettings {
         theme: {
           type: 'enum',
           label: 'theme',
-          options: ['red', 'green']
+          options: ['red', 'green', 'yellow']
         }
       }
     },
