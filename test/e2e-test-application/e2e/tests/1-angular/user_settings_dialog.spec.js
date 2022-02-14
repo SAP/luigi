@@ -331,11 +331,15 @@ describe('Navigation', () => {
       cy.get('[data-testid="us-navigation-item"]')
         .eq(3)
         .click();
+      cy.wait(1000);
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody)
           .contains('Yellow')
           .should('have.class', 'yellow');
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .should('not.have.class', 'active');
         cy.wrap($iframeBody)
           .contains('Yellow')
           .click();
