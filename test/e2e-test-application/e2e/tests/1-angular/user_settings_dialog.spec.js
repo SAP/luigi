@@ -18,7 +18,7 @@ describe('Navigation', () => {
     //Check we have 5 left bar items
     cy.get('.lui-us-list')
       .find('[data-testid="us-navigation-item"]')
-      .should('have.length', 5);
+      .should('have.length', 6);
   };
 
   const saveSettings = () => {
@@ -278,30 +278,6 @@ describe('Navigation', () => {
       closeSettings();
     });
 
-    // it('Ctx update after storing user settings data using custom messages', () => {
-    //   let $iframeBody;
-    //   //Click on theming
-    //   cy.get('[data-testid="us-navigation-item"]')
-    //     .eq(3)
-    //     .click();
-    //   //Check if iframe is loaded and have a red button
-    //   cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
-    //     $iframeBody = result;
-    //     cy.wrap($iframeBody)
-    //       .contains('Yellow')
-    //       .should('have.class', 'yellow');
-    //     cy.wrap($iframeBody)
-    //       .contains('Yellow')
-    //       .should('not.have.class', 'active');
-    //     cy.wrap($iframeBody)
-    //       .contains('Yellow')
-    //       .click();
-    //     cy.wrap($iframeBody)
-    //       .contains('Yellow')
-    //       .should('have.class', 'active');
-    //   });
-    // });
-
     it('Fill Theming (which is custom mf) and save; reopen and check saved value', () => {
       let $iframeBody;
       //Click on theming
@@ -314,9 +290,6 @@ describe('Navigation', () => {
         cy.wrap($iframeBody)
           .contains('Red')
           .should('have.class', 'red');
-        cy.wrap($iframeBody)
-          .contains('Yellow')
-          .should('have.class', 'yellow');
         cy.wrap($iframeBody)
           .contains('Red')
           .should('not.have.class', 'active');
@@ -351,6 +324,30 @@ describe('Navigation', () => {
         cy.wrap($iframeBody)
           .contains('Red')
           .should('have.class', 'red');
+      });
+    });
+
+    it('Ctx update after storing user settings data using custom messages', () => {
+      let $iframeBody;
+      //Click on custom2
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(5)
+        .click();
+      //Check if iframe is loaded and have a red button
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .should('have.class', 'yellow');
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .should('not.have.class', 'active');
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .click();
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .should('have.class', 'active');
       });
     });
   });

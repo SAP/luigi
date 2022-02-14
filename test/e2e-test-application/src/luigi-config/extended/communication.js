@@ -28,7 +28,7 @@ class Communication {
       Luigi.ux().hideAppLoadingIndicator();
     },
     'my-custom-message.update-user-settings': (customMessage, mfObject, mfNodeObj) => {
-      Luigi.storeUserSettings({ theming: { theme: customMessage.theme } });
+      Luigi.storeUserSettings({ custom2: { theme: customMessage.theme } });
     }
   };
 }
