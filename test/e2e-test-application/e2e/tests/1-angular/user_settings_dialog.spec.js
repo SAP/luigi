@@ -339,8 +339,6 @@ describe('Navigation', () => {
         .eq(3)
         .click();
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(iframe => {
-        expect(iframe[0].baseURI).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
-
         cy.wrap(iframe)
           .contains('Yellow')
           .should('have.class', 'yellow');
