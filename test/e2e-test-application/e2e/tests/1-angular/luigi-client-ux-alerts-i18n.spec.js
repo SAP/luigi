@@ -61,6 +61,33 @@ describe('Luigi Client UX Alerts + Localization', () => {
       cy.get('[data-testid=luigi-alert]').should('not.exist');
     });
 
+    it('hides Alert and returns dismissKey ', () => {
+      cy.goToUxManagerMethods($iframeBody);
+
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
+
+      cy.wrap($iframeBody)
+        .find('[data-testid=luigi-alert-type]')
+        .select('success');
+      cy.wrap($iframeBody)
+        .find('[data-testid=show-luigi-alert]')
+        .click();
+
+      cy.wrap($iframeBody)
+        .get('[id$=_neverShowItAgain]')
+        .click();
+
+      cy.wrap($iframeBody)
+        .find('[data-testid=luigi-alert-result]')
+        .contains('has been dismissed');
+
+      cy.wrap($iframeBody)
+        .find('[data-testid=luigi-dismissKey-result]')
+        .contains('has been returned');
+
+      cy.get('[data-testid=luigi-alert]').should('not.exist');
+    });
+
     it('can queue Alerts', () => {
       const numberOfAlerts = 3;
 

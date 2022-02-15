@@ -237,10 +237,25 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 -   **since**: 1.4.0
 
+#### addNodeParams
+
+Sets node parameters in Luigi Core. The parameters will be added to the URL.
+
+##### Parameters
+
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
+
+##### Examples
+
+```javascript
+LuigiClient.addNodeParams({luigi:'rocks'}, true);
+```
+
 #### getNodeParams
 
 Returns the node parameters of the active URL.
-Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc~page=3`.
+Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
 
 <!-- add-attribute:class:warning -->
 
@@ -271,6 +286,33 @@ const pathParams = LuigiClient.getPathParams()
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
+
+#### getCoreSearchParams
+
+Read search query parameters which are sent from Luigi Core
+
+##### Examples
+
+```javascript
+LuigiClient.getCoreSearchParams();
+```
+
+Returns **any** Core search query parameters
+
+#### addCoreSearchParams
+
+Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
+
+##### Parameters
+
+-   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
+
+##### Examples
+
+```javascript
+LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
+```
 
 #### getClientPermissions
 
@@ -371,6 +413,29 @@ The Link Manager allows you to navigate to another route. Use it instead of an i
 -   Reflect the route.
 -   Keep the navigation state in Luigi.
 
+#### navigateToIntent
+
+Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+parameters.
+This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+Consequently, the following calls shall have the exact same effect:
+
+-   linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+-   linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
+
+##### Parameters
+
+-   `semanticSlug` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`. (optional, default `{}`)
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+LuigiClient.linkManager().navigateToIntent('Sales-settings')
+```
+
 #### withoutSync
 
 Disables the navigation handling for a single navigation request
@@ -387,6 +452,39 @@ LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings'
 **Meta**
 
 -   **since**: 0.7.7
+
+#### newTab
+
+Enables navigating to a new tab.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+```
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+#### preserveQueryParams
+
+Keeps the URL's query parameters for a navigation request.
+
+##### Parameters
+
+-   `preserve` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation. (optional, default `false`)
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
+LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
+```
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
 
 #### navigate
 
@@ -435,10 +533,25 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
 ```
 
+#### updateModalSettings
+
+Update current title and size of a modal.
+
+##### Parameters
+
+-   `updatedModalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** possibility to update the active modal. (optional, default `{}`)
+    -   `updatedModalSettings.title` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `title` of the active modal.
+    -   `updatedModalSettings.size` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `size` of the active modal.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+```
+
 #### openAsSplitView
 
--   **See: [splitView](#splitview) for further documentation about the returned instance
-    **
+-   **See: [splitView](#splitview) for further documentation about the returned instance**
 
 Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
 
@@ -473,6 +586,7 @@ Opens a view in a drawer. You can specify the size of the drawer, whether the dr
     -   `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
     -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
     -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"` \| `"xs"`)** size of the drawer (optional, default `"s"`)
+    -   `drawerSettings.overlap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** enable resizing of main microfrontend iFrame after drawer open (optional, default `true`)
 
 ##### Examples
 
@@ -865,6 +979,7 @@ Shows an alert.
         -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
             -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
             -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+            -   `settings.links.LINK_KEY.dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** dismissKey which represents the key of the link.
     -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
 
 ##### Examples
@@ -878,6 +993,7 @@ const settings = {
    goToHome: { text: 'homepage', url: '/overview' },
    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+   neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
  },
  closeAfter: 3000
 }
@@ -936,7 +1052,7 @@ Returns **any** current themeObj
 ### storageManager
 
 StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by Luigi Core.
-The idea is that different micro frontends can share or persist items using local storage.
+The idea is that different micro frontends can share or persist items using local storage, as long as they come from the same domain and follow the [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
 Since all storage operations are asynchronous (sending an event to Luigi Core that will reply once operation is finished), all the methods return Promises.
 
 #### setItem

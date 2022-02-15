@@ -1,3 +1,4 @@
+/*istanbul ignore file */
 class MessagesListenersClass {
   convertCustomMessageInternalToUser(internalMessage) {
     return internalMessage.data;

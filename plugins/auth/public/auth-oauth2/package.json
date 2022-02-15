@@ -1,6 +1,5 @@
 {
   "name": "@luigi-project/plugin-auth-oauth2",
-  "version": "1.14.3",
   "description": "OAuth2 implicit grant provider plugin for @luigi-project/core",
   "license": "Apache-2.0",
   "main": "plugin.js",
@@ -16,5 +15,6 @@
     "core",
     "oauth2",
     "provider"
-  ]
+  ],
+  "version": "1.20.1"
 }

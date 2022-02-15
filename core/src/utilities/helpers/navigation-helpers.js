@@ -1,8 +1,9 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
 import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
-import { AuthHelpers, GenericHelpers } from './';
+import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
+import { reject, get } from 'lodash';
 
 class NavigationHelpersClass {
   constructor() {
@@ -38,18 +39,10 @@ class NavigationHelpersClass {
     return result;
   }
 
-  isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
-    if (LuigiAuth.isAuthorizationEnabled()) {
-      const loggedIn = AuthHelpers.isLoggedIn();
-      const anon = nodeToCheckPermissionFor.anonymousAccess;
-
-      if ((loggedIn && anon === 'exclusive') || (!loggedIn && anon !== 'exclusive' && anon !== true)) {
-        return false;
-      }
-    }
-    if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
-      let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
-      for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
+  checkVisibleForFeatureToggles(nodeToCheckPermission) {
+    if (nodeToCheckPermission && nodeToCheckPermission.visibleForFeatureToggles) {
+      const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
+      for (const ft of nodeToCheckPermission.visibleForFeatureToggles) {
         if (ft.startsWith('!')) {
           if (activeFeatureToggles.includes(ft.slice(1))) {
             return false;
@@ -61,6 +54,21 @@ class NavigationHelpersClass {
         }
       }
     }
+    return true;
+  }
+
+  isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
+    if (LuigiAuth.isAuthorizationEnabled()) {
+      const loggedIn = AuthHelpers.isLoggedIn();
+      const anon = nodeToCheckPermissionFor.anonymousAccess;
+
+      if ((loggedIn && anon === 'exclusive') || (!loggedIn && anon !== 'exclusive' && anon !== true)) {
+        return false;
+      }
+    }
+
+    if (!this.checkVisibleForFeatureToggles(nodeToCheckPermissionFor)) return false;
+
     const permissionCheckerFn = LuigiConfig.getConfigValue('navigation.nodeAccessibilityResolver');
     if (typeof permissionCheckerFn !== 'function') {
       return true;
@@ -90,7 +98,7 @@ class NavigationHelpersClass {
   }
 
   groupNodesBy(nodes, property, useVirtualGroups) {
-    const result = {};
+    let result = {};
     let groupCounter = 0;
     let virtualGroupCounter = 0;
 
@@ -106,8 +114,8 @@ class NavigationHelpersClass {
       let key;
       let metaInfo;
       const category = node[property];
-      if (category && typeof category === 'object') {
-        key = category.label;
+      if (GenericHelpers.isObject(category)) {
+        key = category.id ? category.id : category.label;
         metaInfo = Object.assign({}, category);
       } else {
         key = category;
@@ -115,7 +123,8 @@ class NavigationHelpersClass {
           key = this.virtualGroupPrefix + virtualGroupCounter;
         }
         metaInfo = {
-          label: key
+          label: key,
+          _fromString: true
         };
       }
 
@@ -133,6 +142,10 @@ class NavigationHelpersClass {
       if (!arr.metaInfo) {
         arr.metaInfo = metaInfo;
       }
+      if (GenericHelpers.isObject(category) && arr.metaInfo._fromString) {
+        delete arr.metaInfo._fromString;
+        arr.metaInfo = { ...arr.metaInfo, ...category };
+      }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
       }
@@ -141,12 +154,35 @@ class NavigationHelpersClass {
       }
     });
     Object.keys(result).forEach(category => {
+      const metaInfo = result[category].metaInfo;
+      if (metaInfo && metaInfo.id) {
+        result[metaInfo.label] = result[metaInfo.id];
+        delete result[metaInfo.id];
+      }
+    });
+
+    Object.keys(result).forEach(category => {
       orderNodes(result[category]);
       if (result[category].length === 0) {
         delete result[category];
       }
     });
     return result;
+  }
+
+  generateTooltipText(node, translation) {
+    let ttText = node.tooltipText;
+    if (ttText === undefined) {
+      ttText = LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
+    }
+
+    if (ttText === undefined) {
+      return translation;
+    } else if (ttText === false) {
+      return '';
+    } else {
+      return LuigiI18N.getTranslation(ttText);
+    }
   }
 
   async generateTopNavNodes(pathData) {
@@ -274,6 +310,23 @@ class NavigationHelpersClass {
     return /^[a-z0-9\-]+$/i.test(string);
   }
 
+  /**
+   * Checks, if icon class is businessSuiteInAppSymbols or TNT suite and renders the icon name accordingly
+   * I.e. will return sap-icon--home or sap-icon-TNT--systemjava or sap-icon-businessSuiteInAppSymbols--birthday
+   * @param {*} iconString icon name
+   * @returns properly formatted icon name.
+   */
+  renderIconClassName(iconString) {
+    if (!iconString) return '';
+    let iconClass = 'sap-icon-';
+    if (iconString.startsWith('businessSuiteInAppSymbols') || iconString.startsWith('TNT')) {
+      iconClass += iconString;
+    } else {
+      iconClass += '-' + iconString;
+    }
+    return iconClass;
+  }
+
   handleUnresponsiveClient(node) {
     if (node.errorFn) {
       node.errorFn();
@@ -298,12 +351,116 @@ class NavigationHelpersClass {
     return undefined;
   }
 
+  /* istanbul ignore next */
   stripNode(node) {
     const strippedNode = { ...node };
     delete strippedNode.parent;
     delete strippedNode.children;
     delete strippedNode.navHeader;
     return strippedNode;
+  }
+
+  /**
+   * Checks if for the given node path navigation should be prevented or not
+   * @param {string} nodepath path to check
+   * @returns {boolean} navigation should be prevented or not
+   */
+  async shouldPreventNavigationForPath(nodepath) {
+    const { nodeObject } = await Navigation.extractDataFromPath(nodepath);
+    if (await Navigation.shouldPreventNavigation(nodeObject)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Returns a nested property value defined by a chain string
+   * @param {*} obj the object
+   * @param {*} propChain a string defining the property chain
+   * @param {*} fallback fallback value if resolution fails
+   * @returns the value or fallback
+   */
+  getPropertyChainValue(obj, propChain, fallback) {
+    if (!propChain || !obj) {
+      return fallback;
+    }
+    return get(obj, propChain, fallback);
+  }
+
+  substituteVars(resolver, context) {
+    const resolverString = JSON.stringify(resolver);
+    const resString = resolverString.replace(/\$\{[a-zA-Z0-9$_.]+\}/g, match => {
+      const chain = match.substr(2, match.length - 3);
+      return this.getPropertyChainValue(context, chain) || match;
+    });
+    return JSON.parse(resString);
+  }
+
+  _fetch(url, options) {
+    return fetch(url, options);
+  }
+
+  processTitleData(data, resolver) {
+    let label = this.getPropertyChainValue(data, resolver.titlePropertyChain);
+    if (label) {
+      label = label.trim();
+    }
+    if (label && resolver.titleDecorator) {
+      label = resolver.titleDecorator.replace('%s', label);
+    }
+    const titleData = {
+      label: label || resolver.fallbackTitle,
+      icon: this.getPropertyChainValue(data, resolver.iconPropertyChain, resolver.fallbackIcon)
+    };
+
+    return titleData;
+  }
+
+  async fetchNodeTitleData(node, context) {
+    return new Promise((resolve, reject) => {
+      if (!node.titleResolver) {
+        reject(new Error('No title resolver defined at node'));
+        return;
+      }
+      const strippedResolver = { ...node.titleResolver };
+      delete strippedResolver._cache;
+
+      const resolver = this.substituteVars(strippedResolver, context);
+      const resolverString = JSON.stringify(resolver);
+      if (node.titleResolver._cache) {
+        if (node.titleResolver._cache.key === resolverString) {
+          resolve(node.titleResolver._cache.value);
+          return;
+        }
+      }
+
+      const requestOptions = resolver.request;
+
+      this._fetch(requestOptions.url, {
+        method: requestOptions.method,
+        headers: requestOptions.headers,
+        body: JSON.stringify(requestOptions.body)
+      })
+        .then(response => {
+          response.json().then(data => {
+            try {
+              const titleData = this.processTitleData(data, resolver, node);
+              node.titleResolver._cache = {
+                key: resolverString,
+                value: titleData
+              };
+              resolve(titleData);
+            } catch (e) {
+              reject(e);
+            }
+          });
+        })
+        .catch(error => {
+          reject(error);
+        });
+    }).catch(error => {
+      reject(error);
+    });
   }
 }
 

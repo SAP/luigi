@@ -162,9 +162,11 @@
         closeNavOnCategoryClickMobile();
       }
     } else {
-      document
-        .querySelectorAll('.lui-us-list .lui-us-navlist__item')[0]
-        .classList.add('is-selected');
+      const firstListItem = document.querySelectorAll(
+        '.lui-us-list .lui-us-navlist__item'
+      )[0];
+      firstListItem.classList.add('is-selected');
+      firstListItem.focus();
       if (
         window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
@@ -262,6 +264,11 @@
       handleSaveBtnVisibility();
     }
   }
+
+  function getSapIconStr(iconString) {
+    return NavigationHelpers.renderIconClassName(iconString);
+  }
+
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);
   }
@@ -347,6 +354,10 @@
     width: var(--left-fd-side-nav-width);
     height: 100%;
     z-index: 2;
+  }
+
+  .lui-usersettings-left-nav .fd-list__byline {
+    padding-top: 0.6em;
   }
 
   .fd-side-nav {
@@ -463,6 +474,7 @@
     }
 
     .lui-usersettings-content-header__back-btn {
+      margin-right: 0.5em;
       display: inline-block;
       position: relative;
       z-index: 1;
@@ -470,7 +482,7 @@
   }
 </style>
 <svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
-<div class="fd-dialog fd-dialog--active lui-usersettings-dialog">
+<div class="fd-dialog fd-dialog--active lui-usersettings-dialog" tabindex="0">
   <div
     class="fd-dialog__content lui-usersettings-dialog-size"
     role="dialog"
@@ -494,7 +506,6 @@
               {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
               <li
                 role="listitem"
-                tabindex="-1"
                 class="fd-list__item fd-list__item--link lui-us-navlist__item"
                 data-testid="us-navigation-item"
                 on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
@@ -506,12 +517,12 @@
                   <span class="fd-list__thumbnail">
                     <i
                       role="presentation"
-                      class="sap-icon--{userSettingsGroupProperty[1].icon}"
+                      class="{getSapIconStr(userSettingsGroupProperty[1].icon)}"
                     ></i>
                   </span>
                   {:else}
                   <span
-                    class="fd-image--s fd-list__thumbnail"
+                    class="{userSettingsGroupProperty[1].iconClassAttribute || 'fd-image--s fd-list__thumbnail'}"
                     aria-label="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
                     style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
                   ></span>
@@ -536,7 +547,7 @@
       </div>
       <div class="fd-side-nav__group-header lui-usersettings-dialog-sub-header">
         <button
-          class="fd-button fd-button--transparent lui-usersettings-content-header__back-btn"
+          class="fd-button fd-button--transparent fd-button--compact lui-usersettings-content-header__back-btn"
           on:click="{toggleNavMobile}"
         >
           <i class="sap-icon--navigation-left-arrow"></i>

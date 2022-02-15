@@ -1,5 +1,6 @@
 import { linkManager } from './_internalLinkManager';
 
+/* istanbul ignore file */
 class LuigiNavigationManager {
   /**
    * Use these functions for navigation-related features.
@@ -77,9 +78,7 @@ class LuigiNavigationManager {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }
-
-    Luigi.splitView.openAsSplitView(path, splitViewSettings);
-    return Luigi.splitView.splitViewHandle;
+    return new linkManager().openAsSplitView(path, splitViewSettings);
   }
 
   /**

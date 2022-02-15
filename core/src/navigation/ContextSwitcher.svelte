@@ -1,106 +1,7 @@
-{#if contextSwitcherEnabled}
-<!-- DESKTOP VERSION (popover): -->
-{#if !isMobile}
-<div class="fd-shellbar__action fd-shellbar__action--desktop">
-  <div class="fd-popover fd-popover--right">
-    <div class="fd-popover__control" on:click|stopPropagation="{()=> {}}">
-      <button
-        class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
-        aria-expanded="{dropDownStates.contextSwitcherPopover || false}"
-        aria-haspopup="true"
-        title="{selectedLabel ? selectedLabel : config.defaultLabel}"
-        on:click="{()=> {if (renderAsDropdown) toggleDropdownState()}}"
-        aria-disabled="{!renderAsDropdown}"
-        data-testid="luigi-contextswitcher-button"
-      >
-        {#if selectedOption && customSelectedOptionRenderer } {@html
-        customSelectedOptionRenderer(selectedOption)} {:else} {#if
-        !selectedLabel}{$getTranslation(config.defaultLabel)} {:else}{selectedLabel}{/if}
-        <i class="sap-icon--megamenu fd-shellbar__button--icon"></i>
-        {/if}
-      </button>
-    </div>
-    <div
-      class="fd-popover__body fd-popover__body--right"
-      aria-hidden="{!(dropDownStates.contextSwitcherPopover || false)}"
-      id="contextSwitcherPopover"
-      data-testid="luigi-contextswitcher-popover"
-    >
-      <ContextSwitcherNav
-        {actions}
-        {config}
-        {customOptionsRenderer}
-        {options}
-        {selectedLabel}
-        {selectedOption}
-        {getNodeName}
-        {getRouteLink}
-        {getTestId}
-        {getTranslation}
-        {isMobile}
-        on:onActionClick="{onActionClick}"
-        on:goToOption="{goToOption}"
-      />
-    </div>
-  </div>
-</div>
-{/if}
-<!-- MOBILE VERSION (fullscreen dialog): -->
-{#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
-<div class="fd-dialog fd-dialog--active" on:click|stopPropagation="{()=>{}}">
-  <div
-    class="fd-dialog__content fd-dialog__content--mobile"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="dialog-title-3"
-  >
-    <div class="fd-dialog__header fd-bar fd-bar--header">
-      <div class="fd-bar__left">
-        <div class="fd-bar__element">
-          <h2 class="fd-title fd-title--h5" id="dialog-title-3">
-            {#if !selectedLabel} {$getTranslation(config.defaultLabel)} {/if} {#if
-            selectedLabel} {selectedLabel} {/if}
-          </h2>
-        </div>
-      </div>
-    </div>
-    <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
-      <ContextSwitcherNav
-        {actions}
-        {config}
-        {customOptionsRenderer}
-        {options}
-        {selectedLabel}
-        {selectedOption}
-        {getNodeName}
-        {getRouteLink}
-        {getTestId}
-        {getTranslation}
-        {isMobile}
-        on:onActionClick="{onActionClick}"
-        on:goToOption="{goToOption}"
-      />
-    </div>
-    <footer class="fd-dialog__footer fd-bar fd-bar--cosy fd-bar--footer">
-      <div class="fd-bar__right">
-        <div class="fd-bar__element">
-          <button
-            class="fd-button fd-button--light fd-dialog__decisive-button"
-            on:click="{toggleDropdownState}"
-            data-testid="mobile-topnav-close"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-    </footer>
-  </div>
-</div>
-{/if} {/if}
 <script>
   import { createEventDispatcher, onMount, getContext, beforeUpdate } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
-  import ContextSwitcherNav from './ContextSwitcherNav.html';
+  import ContextSwitcherNav from './ContextSwitcherNav.svelte';
   import { LuigiConfig } from '../core-api';
   import { Routing } from '../services/routing';
   import {
@@ -139,6 +40,8 @@
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let prevContextSwitcherToggle = false;
+  let selectedNodePath;
+  let addNavHrefForAnchor;
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
@@ -249,6 +152,11 @@
       parentNodePath,
       fallbackLabelResolver
     );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
+      currentPath,
+      options,
+      parentNodePath
+    );
     preserveSubPathOnSwitch = conf.preserveSubPathOnSwitch;
   }
 
@@ -266,6 +174,11 @@
       options,
       parentNodePath,
       fallbackLabelResolver
+    );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
+      currentPath,
+      options,
+      parentNodePath
     );
   }
 
@@ -319,6 +232,142 @@
     }
   }
 </script>
+
+{#if contextSwitcherEnabled}
+  <!-- DESKTOP VERSION (popover): -->
+  {#if !isMobile}
+    <div class="fd-shellbar__action fd-shellbar__action--desktop">
+      <div class="fd-popover fd-popover--right">
+        <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
+          {#if addNavHrefForAnchor && selectedOption !== config.defaultLabel}
+            <a
+              href={selectedNodePath}
+              class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
+              aria-expanded={dropDownStates.contextSwitcherPopover || false}
+              aria-haspopup="true"
+              title={selectedLabel ? selectedLabel : config.defaultLabel}
+              on:click|preventDefault={() => {
+                if (renderAsDropdown) toggleDropdownState();
+              }}
+              aria-disabled={!renderAsDropdown}
+              data-testid="luigi-contextswitcher-button"
+            >
+              {#if selectedOption && customSelectedOptionRenderer}
+                {@html customSelectedOptionRenderer(selectedOption)}
+              {:else}
+                {#if !selectedLabel}
+                  {$getTranslation(config.defaultLabel)}
+                {:else}
+                  {selectedLabel}
+                {/if}
+                <i class="sap-icon--megamenu fd-shellbar__button--icon" />
+              {/if}
+            </a>
+          {:else}
+            <button
+              class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
+              aria-expanded={dropDownStates.contextSwitcherPopover || false}
+              aria-haspopup="true"
+              title={selectedLabel ? selectedLabel : config.defaultLabel}
+              on:click={() => {
+                if (renderAsDropdown) toggleDropdownState();
+              }}
+              aria-disabled={!renderAsDropdown}
+              data-testid="luigi-contextswitcher-button"
+            >
+              {#if selectedOption && customSelectedOptionRenderer}
+                {@html customSelectedOptionRenderer(selectedOption)}
+              {:else}
+                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
+                {:else}{selectedLabel}{/if}
+                <i class="sap-icon--megamenu fd-shellbar__button--icon" />
+              {/if}
+            </button>
+          {/if}
+        </div>
+        <div
+          class="fd-popover__body fd-popover__body--right"
+          aria-hidden={!(dropDownStates.contextSwitcherPopover || false)}
+          id="contextSwitcherPopover"
+          data-testid="luigi-contextswitcher-popover"
+        >
+          <ContextSwitcherNav
+            {actions}
+            {config}
+            {customOptionsRenderer}
+            {options}
+            {selectedLabel}
+            {selectedOption}
+            {getNodeName}
+            {getRouteLink}
+            {getTestId}
+            {getTranslation}
+            {isMobile}
+            on:onActionClick={onActionClick}
+            on:goToOption={goToOption}
+          />
+        </div>
+      </div>
+    </div>
+  {/if}
+  <!-- MOBILE VERSION (fullscreen dialog): -->
+  {#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
+    <div
+      class="fd-dialog fd-dialog--active"
+      on:click|stopPropagation={() => {}}
+    >
+      <div
+        class="fd-dialog__content fd-dialog__content--mobile"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dialog-title-3"
+      >
+        <div class="fd-dialog__header fd-bar fd-bar--header">
+          <div class="fd-bar__left">
+            <div class="fd-bar__element">
+              <h2 class="fd-title fd-title--h5" id="dialog-title-3">
+                {#if !selectedLabel}
+                  {$getTranslation(config.defaultLabel)}
+                {/if}
+                {#if selectedLabel} {selectedLabel} {/if}
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
+          <ContextSwitcherNav
+            {actions}
+            {config}
+            {customOptionsRenderer}
+            {options}
+            {selectedLabel}
+            {selectedOption}
+            {getNodeName}
+            {getRouteLink}
+            {getTestId}
+            {getTranslation}
+            {isMobile}
+            on:onActionClick={onActionClick}
+            on:goToOption={goToOption}
+          />
+        </div>
+        <footer class="fd-dialog__footer fd-bar fd-bar--cosy fd-bar--footer">
+          <div class="fd-bar__right">
+            <div class="fd-bar__element">
+              <button
+                class="fd-button fd-button--light fd-dialog__decisive-button"
+                on:click={toggleDropdownState}
+                data-testid="mobile-topnav-close"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  {/if}
+{/if}
 
 <style type="text/scss">
   .lui-ctx-switch-menu {

@@ -81,13 +81,9 @@ describe('Navigation', () => {
         .eq(1)
         .should('have.class', 'is-selected');
 
-      //Check Language and Region Input exist
-      cy.get('[data-testid="lui-us-input0"]').should('exist');
-
-      //Check Language and Region Input has placeholder
-      cy.get('[data-testid="lui-us-input0"]')
-        .invoke('attr', 'placeholder')
-        .should('contain', 'Language and Region');
+      //Check Language and Region Dropdown wth arrow should exist
+      cy.get('[data-testid="lui-us-language-dropdown"]').should('exist');
+      cy.get('.lui-activate-language-dropdown').should('exist');
 
       //Check Date Format Input exist
       cy.get('[data-testid="lui-us-input1"]').should('exist');
@@ -138,7 +134,7 @@ describe('Navigation', () => {
       //Email Input field should be disabled and a usual text
       cy.get('[data-testid="lui-us-input1"]')
         .should('exist')
-        .should('have.class', 'fd-form-label')
+        .should('have.class', 'fd-text')
         .should('have.attr', 'disabled');
 
       cy.get('[data-testid="lui-us-label-switch_checkbox"]')
@@ -181,25 +177,25 @@ describe('Navigation', () => {
       //Open button to show enumeration list options
       cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
         .eq(0)
-        .find('.fd-input-group__button')
+        .find('.lui-activate-language-dropdown')
         .click();
 
       //Check we should have 4 options
       cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
         .eq(0)
-        .find(' .fd-list--dropdown .fd-list__item')
+        .find('.fd-list--dropdown .fd-list__item')
         .children()
         .should('have.length', 4);
 
-      //Click on Spanish list item
+      //Click on Français list item
       cy.get('[data-testid="lui-us-option0_2"]')
         .should('exist')
         .click();
 
-      //Check Placeholder of input field is Spanish
+      //Check Placeholder of input field is Français
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('have.value', 'Spanish');
+        .should('contain', 'Français');
 
       //Check Date Formant Input field and type a new format
       cy.get('[data-testid="lui-us-input1"]')
@@ -217,10 +213,10 @@ describe('Navigation', () => {
         .eq(1)
         .click();
 
-      //Check Placeholder of input field is Spanish
+      //Check Placeholder of input field is Français
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')
-        .should('have.value', 'Spanish');
+        .should('contain', 'Français');
 
       //Check Name Input field and type a new name
       cy.get('[data-testid="lui-us-input1"]').should('have.value', setting_date_format);

@@ -1,19 +1,23 @@
-{#if node && node.badgeCounter} {#await node.badgeCounter.count()} {:then count} {#if
-count > 0}
-<span
-  class="fd-counter fd-counter--notification fd-shellbar__counter--notification"
-  aria-label="{node.badgeCounter.label}"
-  >{count}</span
->
-{/if} {:catch error} {/await} {/if}
 <script>
   export let node;
 </script>
+
+{#if node && node.badgeCounter}
+  {#await node.badgeCounter.count() then count}
+    {#if count > 0}
+      <span
+        class="fd-counter fd-counter--notification fd-shellbar__counter--notification"
+        aria-label={node.badgeCounter.label}>{count}</span
+      >
+    {/if}
+  {/await}
+{/if}
 
 <style type="text/scss">
   :global(.fd-shellbar__action) {
     .fd-shellbar__counter--notification {
       top: 0;
+      color: var(--sapContent_BadgeTextColor, #fff);
     }
 
     .fd-menu .fd-top-nav__icon {

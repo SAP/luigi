@@ -24,7 +24,7 @@ This is a collection of advanced use cases and example implementations. If you a
 #### Overview
 
 
-This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) and [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) methods. 
+This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) and [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) methods.
 
 If you are running Luigi Core v0.7.7+, you can use [fromClosestContext](luigi-client-api.md#fromclosestcontext) instead of `fromVirtualTreeRoot`, which requires a [navigationContext](luigi-client-api.md#navigationcontext) at the `virtualTree` node configuration.
 
@@ -111,7 +111,7 @@ This example shows you how to use Luigi with a Google account.
 #### Steps
 
 1. Register a project and generate an OAuth2 Web Client based on [Google Developers Identity - OAuth2UserAgent](https://developers.google.com/identity/protocols/OAuth2UserAgent).
-2. To get your app running locally, set the Authorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
+2. To get your app running locally, set the Authorized JavaScript Origins URIs to `http://localhost:[PORT]` (replace PORT by the port of your locally running luigi app, e.g. `4200` for Angular). Then, set Authorized redirect URIs to `http://localhost:[PORT]/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
 3. Copy the Client ID which ends with `apps.googleusercontent.com`.
 4. Update the LuigiConfig auth section. In this example, we have also provided a configuration for logout and getting user information:
 
@@ -155,8 +155,8 @@ Google's `id_token` contains basic identity data like name and user ID, which al
 ### Use Feature Toggles in Luigi
 There are two possibilities to add feature toggles to the active feature toggles list. On the one hand you can use the core api and on the other hand it is possible to add a feature toggle through url parameters.
 
-#### Overview 
-Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code. 
+#### Overview
+Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code.
 
 #### Usage
 * Before using feature toggles, you first have to include the feature toggle query parameter in the [general settings](general-settings.md) part of your Luigi configuration file. This allows you to enable setting the feature toggles via URL :
@@ -210,11 +210,11 @@ Luigi allows you to implement and configure feature toggles. They can be used to
     if (LuigiClient.getActiveFeatureToggles().includes('ft1')) {
       //display content
     }
-  ``` 
+  ```
 
 ### Use Intent-Based Navigation in Luigi Client
 
-#### Overview 
+#### Overview
 Luigi Client allows you to navigate through micro frontends by using an intent-based navigation. This type of navigation decouples navigation triggers from the actual navigation targets. Rather than directly encoding the name of the target app into the URL fragment, app developers provide a navigation intent such as `display` or `edit` as shown in the examples below.
 
 #### Usage
@@ -234,7 +234,7 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
   ];
   ```
   1. The intent link is built using the `semanticObject`, `action` and optional parameters in the following format:
-  `#?intent=semanticObject-action?params`. 
+  `#?intent=semanticObject-action?params`.
   An example of an intent link would be as follows:
   ```javascript
     #?intent=Sales-edit?id=100
@@ -254,9 +254,9 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
     https://example.com/#?intent=Sales-edit?id=100;
   ```
 
-### Defer Luigi Client Initialization 
+### Defer Luigi Client Initialization
 
-#### Overview 
+#### Overview
 
 In some scenarios, the micro frontend application needs to decide when to finalize the Luigi Client initialization. By default, Luigi Client is initialized when you import the library in your micro frontend application.
 However, it can be the case that a complex application takes too long to load all the modules. Since Luigi Client initialization is done automatically when it is imported, Luigi Core will assume that the micro frontend is fully loaded and ready for further actions when it is not.
@@ -265,7 +265,7 @@ This may lead to some problems, such as UI synchronization issues where the side
 #### Usage
 
 These are the steps you can use to defer Luigi Client initialization :
-  
+
   1. In your micro frontend HTML that serves as entry file, you must add the `defer-luigi-init` attribute into the `<head>` element as follows:
   ```html
       <html>

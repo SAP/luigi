@@ -25,6 +25,17 @@ const setLuigiConfig = (win, config) => {
   }, 20);
 };
 
+Cypress.Commands.add('visitFiddleConfigWithPathRouting', (path = '/', config = fiddleConfig) => {
+  cy.visit(`http://localhost:8080/${path}`, {
+    onBeforeLoad: win => {
+      win.localStorage.clear();
+      win.sessionStorage.clear();
+      setAcceptedCookies(win);
+      setLuigiConfig(win, config);
+    }
+  });
+});
+
 Cypress.Commands.add('visitWithFiddleConfig', (path = '/', config = fiddleConfig) => {
   cy.visit(`http://localhost:8080/#${path}`, {
     onBeforeLoad: win => {
@@ -116,13 +127,13 @@ Cypress.Commands.add('goToLinkManagerMethods', iframe => {
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
-  cy.get('button[data-testid="overview_overview"]')
+  cy.get('[data-testid="overview_overview"]')
     .should('exist')
     .click();
 });
 
 Cypress.Commands.add('goToProjectsPage', () => {
-  cy.get('button[data-testid="projects_projects"]')
+  cy.get('[data-testid="projects_projects"]')
     .should('exist')
     .click();
 });

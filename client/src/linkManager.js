@@ -26,7 +26,9 @@ export class linkManager extends LuigiClientBase {
       fromVirtualTreeRoot: false,
       fromParent: false,
       relative: false,
-      link: ''
+      link: '',
+      newTab: false,
+      preserveQueryParams: false
     };
   }
 
@@ -71,21 +73,72 @@ export class linkManager extends LuigiClientBase {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }
-
-    const hasIntent = path.toLowerCase().includes('?intent=');
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
       sessionId: sessionId,
       params: Object.assign(this.options, {
         link: path,
         relative: relativePath,
-        intent: hasIntent,
+        intent: helpers.hasIntent(path),
         modal: modalSettings,
         splitView: splitViewSettings,
         drawer: drawerSettings
       })
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
+  }
+
+  /**
+   * Updates path of the modalPathParam when internal navigation occurs.
+   * @memberof linkManager
+   * @param {string} path
+   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+   * @param {string} sessionId current Luigi **sessionId**
+   * @example
+   * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+   */
+  updateModalPathInternalNavigation(path, modalSettings = {}, sessionId) {
+    const navigationOpenMsg = {
+      msg: 'luigi.navigation.updateModalDataPath',
+      sessionId: sessionId, //do I need it?
+      params: Object.assign(this.options, {
+        link: path,
+        modal: modalSettings
+      })
+    };
+    helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
+  }
+
+  /**
+   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+   * parameters.
+   * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+   * input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+   * Consequently, the following calls shall have the exact same effect:
+   * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
+   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`.
+   * @example
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings')
+   */
+  navigateToIntent(semanticSlug, params = {}) {
+    let newPath = '#?intent=';
+    newPath += semanticSlug;
+    if (params) {
+      const paramList = Object.entries(params);
+      // append parameters to the path if any
+      if (paramList.length > 0) {
+        newPath += '?';
+        for (const [key, value] of paramList) {
+          newPath += key + '=' + value + '&';
+        }
+        // trim potential excessive ampersand & at the end
+        newPath = newPath.slice(0, -1);
+      }
+    }
+    this.navigate(newPath);
   }
 
   /**
@@ -100,6 +153,23 @@ export class linkManager extends LuigiClientBase {
    */
   openAsModal(path, modalSettings = {}) {
     this.navigate(path, 0, true, modalSettings);
+  }
+
+  /**
+   * Update current title and size of a modal.
+   * @memberof linkManager
+   * @param {Object} updatedModalSettings possibility to update the active modal.
+   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
+   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @example
+   * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+   */
+  updateModalSettings(updatedModalSettings = {}) {
+    const message = {
+      msg: 'luigi.navigation.updateModalSettings',
+      updatedModalSettings
+    };
+    helpers.sendPostMessageToLuigiCore(message);
   }
 
   /**
@@ -129,6 +199,7 @@ export class linkManager extends LuigiClientBase {
    * @param {any} drawerSettings.header By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
    * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
    * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
+   * @param {boolean} [drawerSettings.overlap=true] enable resizing of main microfrontend iFrame after drawer open
    * @since 1.6.0
    * @example
    * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
@@ -177,6 +248,7 @@ export class linkManager extends LuigiClientBase {
     }
     return this;
   }
+  
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof linkManager
@@ -269,6 +341,7 @@ export class linkManager extends LuigiClientBase {
       data: Object.assign(this.options, {
         id: currentId,
         link: path,
+        intent: helpers.hasIntent(path),
         relative: path[0] !== '/'
       })
     };
@@ -311,6 +384,30 @@ export class linkManager extends LuigiClientBase {
    */
   withoutSync() {
     this.options.withoutSync = true;
+    return this;
+  }
+
+  /**
+   * Enables navigating to a new tab.
+   * @since NEXT_RELEASE
+   * @example
+   * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+   */
+  newTab() {
+    this.options.newTab = true;
+    return this;
+  }
+
+  /**
+   * Keeps the URL's query parameters for a navigation request.
+   * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
+   * @since NEXT_RELEASE
+   * @example
+   * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
+   * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
+   */
+  preserveQueryParams(preserve = false) {
+    this.options.preserveQueryParams = preserve;
     return this;
   }
 }

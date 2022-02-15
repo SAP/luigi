@@ -102,6 +102,7 @@ burgerTooltip = {
   };
 ```
 * **sideNavFooterText** is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
+* **getNavFooterContainer** in addition to **sideNavFooterText** a client can insert custom HTML under the footer section. 
 * **sideNavCompactMode** reduces the dimensions of the side navigation and allows you to display more information.
 * **customTranslationImplementation** provides a custom localization implementation. It can be an Object or a Function returning an Object. This Object must provide the **getTranslation** Function as property:
 ```javascript
@@ -158,6 +159,21 @@ theming : {
      }
   }
 ```
+* **customAlertHandler** is a function which will be called if it is defined. With this function, Luigi alerts will be disabled and you can implement your own alerts. This function gets `settings` and `openFromClient` as parameters. It must either return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which gets resolved when the alert is dismissed, or `false` if the default Luigi alert should be shown. This example shows how the function can be used: 
+
+```javascript
+Luigi.setConfig({
+  ...,
+  settings: {
+    customAlertHandler: ()=>{
+     return new Promise((resolve, reject) => {
+       //custom alert implementation
+     });
+    }
+  }
+})
+```
+
 
 ### Third-party cookies support check
 

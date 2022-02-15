@@ -53,28 +53,6 @@ class IframeHelpersClass {
     });
   }
 
-  replaceVars(viewUrl, params, prefix, parenthesis = true) {
-    let processedUrl = viewUrl;
-    if (params) {
-      Object.entries(params).forEach(entry => {
-        processedUrl = processedUrl.replace(
-          new RegExp(
-            GenericHelpers.escapeRegExp((parenthesis ? '{' : '') + prefix + entry[0] + (parenthesis ? '}' : '')),
-            'g'
-          ),
-          encodeURIComponent(entry[1])
-        );
-      });
-    }
-    if (parenthesis) {
-      processedUrl = processedUrl.replace(
-        new RegExp('\\{' + GenericHelpers.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
-        ''
-      );
-    }
-    return processedUrl;
-  }
-
   isSameDomain(config, component) {
     //TODO rename to reflect the fact that it checks for URL till hash (which is more than just domain)
     if (config.iframe) {
@@ -164,11 +142,15 @@ class IframeHelpersClass {
     return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
   }
 
+  getCurrentWebcomponentCtnInDom() {
+    return document.querySelector('.iframeContainer.lui-webComponent');
+  }
+
   getCurrentMicrofrontendIframe() {
     const modalIframes = this.getModalIframes();
     const mainIframes = this.getMainIframes().filter(GenericHelpers.isElementVisible);
-
-    return modalIframes[0] || mainIframes[0] || null;
+    const webComponentCtn = this.getCurrentWebcomponentCtnInDom();
+    return modalIframes[0] || mainIframes[0] || webComponentCtn || null;
   }
 
   getIframesWithType(type) {
@@ -209,7 +191,7 @@ class IframeHelpersClass {
     IframeHelpers.getMicrofrontendIframes().forEach(iframe => this.sendMessageToIframe(iframe, message));
   }
 
-  createIframe(viewUrl, viewGroup, currentNode, microFrontendType) {
+  createIframe(viewUrl, viewGroup, currentNode, microFrontendType, componentData) {
     const luigiDefaultSandboxRules = [
       'allow-forms', // Allows the resource to submit forms. If this keyword is not used, form submission is blocked.
       'allow-modals', // Lets the resource open modal windows.
@@ -241,7 +223,8 @@ class IframeHelpersClass {
       viewUrl,
       currentNode,
       createdAt: new Date().getTime(),
-      id: GenericHelpers.getRandomId()
+      id: GenericHelpers.getRandomId(),
+      pathParams: componentData ? componentData.pathParams : undefined
     };
     if (viewGroup) {
       iframe.vg = viewGroup;
@@ -286,6 +269,35 @@ class IframeHelpersClass {
     }
 
     return iframe;
+  }
+
+  getSpecialIframeMessageSource(e, specialIframeProps) {
+    return IframeHelpers.specialIframeTypes.filter(typ =>
+      IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
+    );
+  }
+
+  disableA11yOfInactiveIframe(srcIframe) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      el.setAttribute('oldTab', el.getAttribute('tabindex'));
+      if (el !== srcIframe) {
+        el.setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
+  enableA11yOfInactiveIframe() {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      const restoreVal = el.getAttribute('oldTab');
+      if (restoreVal) {
+        el.setAttribute('tabindex', restoreVal);
+        el.removeAttribute('oldTab');
+      } else {
+        el.removeAttribute('tabindex');
+      }
+    });
   }
 }
 

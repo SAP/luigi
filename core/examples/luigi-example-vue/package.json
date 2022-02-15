@@ -7,8 +7,8 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@luigi-project/client": "^1.13.0",
-    "@luigi-project/core": "^1.13.0",
+    "@luigi-project/client": "^1.17.0",
+    "@luigi-project/core": "^1.17.0",
     "@sap-theming/theming-base-content": "^11.1.28",
     "fundamental-styles": "0.18.0",
     "vue": "2.6.10",
@@ -21,18 +21,21 @@
     "@vue/cli-plugin-babel": "4.0.5",
     "@vue/cli-service": "^4.5.13",
     "copy-webpack-plugin": "5.1.2",
+    "glob-parent": "^5.1.2",
     "lodash": ">=4.17.21",
     "lodash.defaultsdeep": ">=4.6.1",
     "lodash.mergewith": ">=4.6.2",
     "mem": ">=4.0.0",
-    "sass-loader": "10.2.0",
     "node-sass": "6.0.0",
+    "normalize-url": "^4.5.1",
+    "sass-loader": "10.2.0",
     "serialize-javascript": ">=3.1.0",
-    "vue-template-compiler": "2.6.10",
-    "webpack-dev-server": "3.11.2",
     "selfsigned": "1.10.8",
+    "set-value": ">=4.0.1",
+    "tar": ">=6.1.9",
+    "trim-newlines": ">=3.0.1",
     "postcss": "^8.2.10",
-    "glob-parent": "^5.1.2",
-    "normalize-url": "^4.5.1"
+    "vue-template-compiler": "2.6.10",
+    "webpack-dev-server": "3.11.2"
   }
 }
