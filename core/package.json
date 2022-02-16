@@ -36,7 +36,7 @@
     "mkdirp": "^1.0.3",
     "mocha": "^7.1.1",
     "mock-local-storage": "^1.1.15",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "nyc": "^15.0.0",
     "oidc-client": "^1.5.2",
     "postcss": "^8.2.10",

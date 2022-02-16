@@ -1,9 +1,9 @@
 <script>
   import LogoTitle from './LogoTitle.svelte';
   import BadgeCounter from './BadgeCounter.svelte';
-  import Authorization from '../Authorization.html';
-  import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.html';
-  import TopNavDropDown from '../TopNavDropDown.html';
+  import Authorization from '../Authorization.svelte';
+  import AuthorizationSimpleProfileMenu from '../AuthorizationSimpleProfileMenu.svelte';
+  import TopNavDropDown from '../TopNavDropDown.svelte';
   import ContextSwitcher from './ContextSwitcher.svelte';
   import ProductSwitcher from './ProductSwitcher.svelte';
   import GlobalSearch from './GlobalSearch.svelte';

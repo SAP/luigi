@@ -1,11 +1,3 @@
-<div
-  class="{backdropClass}"
-  aria-hidden="false"
-  style="{area === 'main' ? 'z-index: 0;' : ''}"
->
-  <slot></slot>
-</div>
-
 <script>
   import { beforeUpdate, onMount, createEventDispatcher } from 'svelte';
   import { LuigiConfig } from './core-api';
@@ -31,16 +23,16 @@
     }
   };
 
-  const isValidForArea = e => {
+  const isValidForArea = (e) => {
     if (!area) {
       return true;
     }
     const allMessagesSources = [
       ...IframeHelpers.getMicrofrontendsInDom(),
-      { contentWindow: window, luigi: { viewUrl: window.location.href } }
+      { contentWindow: window, luigi: { viewUrl: window.location.href } },
     ];
     const microfrontend = allMessagesSources.find(
-      mf => mf.container && mf.container.contentWindow === e.source
+      (mf) => mf.container && mf.container.contentWindow === e.source
     );
     if (microfrontend && area === microfrontend.type) {
       return false;
@@ -49,10 +41,12 @@
   };
 
   onMount(() => {
-    const backdropDisabled = LuigiConfig.getConfigValue('settings.backdropDisabled');
+    const backdropDisabled = LuigiConfig.getConfigValue(
+      'settings.backdropDisabled'
+    );
     if (!backdropDisabled) {
       setBackdropClass();
-      EventListenerHelpers.addEventListener('message', e => {
+      EventListenerHelpers.addEventListener('message', (e) => {
         const srcIframe = IframeHelpers.getValidMessageSource(e);
         if (!srcIframe) return;
         if (disable !== true) {
@@ -83,6 +77,14 @@
     }
   });
 </script>
+
+<div
+  class={backdropClass}
+  aria-hidden="false"
+  style={area === 'main' ? 'z-index: 0;' : ''}
+>
+  <slot />
+</div>
 
 <style type="text/scss">
   .lui-backdrop {
