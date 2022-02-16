@@ -215,7 +215,7 @@
       luigiCustomSearchRenderer__slot
     });
 
-    if (search.searchProvider && GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
+    if (search && search.searchProvider && GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
       const fieldVisible =
         isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
       search.searchProvider.toggleSearch(inputElem, fieldVisible);
