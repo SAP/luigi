@@ -9,35 +9,6 @@ class UserSettings {
     dismissBtn: 'Abbreche'
   };
   userSettingGroups = {
-    userAccount: {
-      label: 'User Account',
-      sublabel: 'username',
-      icon: '/assets/favicon-sap.ico',
-      iconClassAttribute: 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail',
-      title: 'User Account',
-      settings: {
-        name: { type: 'string', label: 'Name', placeholder: 'Name' },
-        email: { type: 'string', label: 'E-Mail', isEditable: false },
-        server: { type: 'string', label: 'Server', isEditable: false },
-        checkbox: {
-          type: 'boolean',
-          label: 'Checkbox',
-          // style: 'checkbox',
-          isEditable: true
-        },
-        checkbox2: {
-          type: 'boolean',
-          label: 'Checkbox2'
-          // style: 'checkbox'
-        },
-        checkbox3: {
-          type: 'boolean',
-          label: 'Checkbox23',
-          // style: 'checkbox',
-          isEditable: false
-        }
-      }
-    },
     language: {
       label: 'Language & Region',
       sublabel: 'EN | Time Format: 12h',
@@ -62,6 +33,36 @@ class UserSettings {
           style: 'button',
           label: 'Time Format',
           options: ['12 h', '24 h']
+        }
+      }
+    },
+    userAccount: {
+      label: 'User Account',
+      sublabel: 'username',
+      //icon: '',
+      iconClassAttribute: 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail',
+      initials: 'LU',
+      title: 'User Account',
+      settings: {
+        name: { type: 'string', label: 'Name', placeholder: 'Name' },
+        email: { type: 'string', label: 'E-Mail', isEditable: false },
+        server: { type: 'string', label: 'Server', isEditable: false },
+        checkbox: {
+          type: 'boolean',
+          label: 'Checkbox',
+          // style: 'checkbox',
+          isEditable: true
+        },
+        checkbox2: {
+          type: 'boolean',
+          label: 'Checkbox2'
+          // style: 'checkbox'
+        },
+        checkbox3: {
+          type: 'boolean',
+          label: 'Checkbox23',
+          // style: 'checkbox',
+          isEditable: false
         }
       }
     },
@@ -95,12 +96,6 @@ class UserSettings {
           options: ['red', 'green']
         }
       }
-    },
-    custom: {
-      label: 'Custom',
-      title: 'Custom',
-      icon: 'private',
-      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
     }
   };
 }

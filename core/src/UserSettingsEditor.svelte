@@ -8,7 +8,7 @@
     getContext
   } from 'svelte';
   import { GenericHelpers } from './utilities/helpers';
-  import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
+  import { KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_ARROW_UP, KEYCODE_ARROW_DOWN } from './utilities/keycode.js';
   export let userSettingGroup;
   export let userSettingsGroupKey;
   export let storedUserSettingData;
@@ -17,9 +17,14 @@
   let displayOptions;
   let getTranslation = getContext('getTranslation');
   let selectedLanguageLabel;
+  export let isComboOpen;
 
   export function updateSettingsObject() {
     dispatch('updateSettingsObject', { storedUserSettingData });
+  }
+
+  export const closeDropDown = () => {
+    closeAllCombos();
   }
 
   function closeAllCombos(self) {
@@ -64,12 +69,14 @@
     optionsPopover.setAttribute('aria-hidden', !value);
     optionsSelectControl.setAttribute('aria-expanded', value);
     indicatorBtn.setAttribute('aria-expanded', value);
+    isComboOpen = value;
   }
 
   function updateComboBox(key, option, optionIndex) {
     selectedLanguageLabel = optionIndex;
     storedUserSettingData[userSettingGroup[0]][key] = option.value || option;
-  }
+
+  } 
 
   function updateEnumButton(key, option) {
     document
@@ -116,20 +123,36 @@
       : `${prefix}_${key}_${option}`;
   }
 
-  export function handleKeyUp({ keyCode }) {
-    if (keyCode === KEYCODE_SPACE) {
-      document.querySelector('.lui-anchor-node').click();
-    }
+  export function handleKeyListDropdown(event, index) {
+    let thisDropdown = document.querySelectorAll('.lui-usersettings-content .lui-anchor-node')[index];
+
+    if (isComboOpen) {
+      if (event.keyCode === KEYCODE_ARROW_UP && event.altKey){
+        thisDropdown.click();
+        thisDropdown.focus();
+      }
+    } else {
+      thisDropdown.focus();
+      if (event.keyCode === KEYCODE_ARROW_DOWN && event.altKey){
+        thisDropdown.click();
+      }
+    } 
   }
 
-  export function handleKeyListItem(event, index) {
-    if (event.keyCode === KEYCODE_ENTER || event.keyCode === KEYCODE_SPACE) {
-      document
-        .querySelectorAll('.lui-usersettings-content li.fd-list__item')
-        [index].click();
-    }
+  export function keyPressDropdownNode(event, index){
+    if (isComboOpen) {
+      let dropdownHTMLElement = document.querySelectorAll('.lui-usersettings-content .lui-anchor-node')[0];
+      dropdownHTMLElement.blur();
+      if (event.keyCode === KEYCODE_SPACE || event.keyCode === KEYCODE_ENTER){
+        document.querySelectorAll('.lui-usersettings-content li.fd-list__item')[index].click();
+        closeAllCombos();
+        setTimeout(() => {
+          dropdownHTMLElement.focus();
+      }, 0);
+      }
+    } 
   }
-
+  
   /*to display a language on first load of the User Settings dialog*/
   getLabelForValue();
   
@@ -164,16 +187,21 @@
   .fd-row .fd-col .fd-select__control.lui-anchor-node {
     margin: 0;
   }
+  .fd-select__control.lui-anchor-node[aria-expanded='true']:focus{
+    outline: none;
+  }
 </style>
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]} {#if
   userSettingGroup[1].settings}
   <div class="fd-page__content">
     <div class="fd-container fd-form-layout-grid-container">
-      {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
+      {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], index}
       <div class="fd-row">
         <div class="fd-col fd-col--4">
-          <label class="fd-form-label" for="lui-us-input{i}">{$getTranslation(schemaItem.label)}: </label>
+          <label 
+            class="fd-form-label"
+            for="fd-form-input-{index}">{$getTranslation(schemaItem.label)}: </label>
         </div>
         <div class="fd-col fd-col--8">
           {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
@@ -183,16 +211,16 @@
             type="text"
             aria-label="Image label"
             placeholder="{$getTranslation(schemaItem.placeholder)}"
-            data-testid="lui-us-input{i}"
-            id="lui-us-input{i}"
+            data-testid="lui-us-input{index}"
+            id="fd-form-input-{index}"
             bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
           />
           {:else}
           <div
             class="fd-text"
-            data-testid="lui-us-input{i}"
-            id="lui-us-input{i}"
+            data-testid="lui-us-input{index}"
+            id="fd-form-input-{index}"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
             >{storedUserSettingData[userSettingGroup[0]][key]}
           </div>
@@ -212,14 +240,13 @@
                     aria-expanded="false"
                     aria-haspopup="listbox"
                     aria-label="Language"
-                    id="lui-select-input{i}"
                     class="fd-select__control lui-anchor-node"
-                    on:keyup="{(event) => handleKeyUp(event)}"
                     data-testid="lui-us-language-dropdown"
-                  >
+                    id="fd-form-input-{index}"
+                    on:keydown="{(event) => handleKeyListDropdown(event,[index])}">
                     <span
                       class="fd-select__text-content"
-                      data-testid="lui-us-input{i}"
+                      data-testid="lui-us-input{index}"
                       disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
                       >{getLabelForValue(storedUserSettingData[userSettingGroup[0]][key],
                       schemaItem.options)}
@@ -237,17 +264,17 @@
               >
                 {#if Array.isArray(schemaItem.options)}
                   <ul class="fd-list fd-list--compact fd-list--dropdown" role="listbox">
-                    {#each schemaItem.options as option, optionIndex}
+                    {#each schemaItem.options as option, index}
                     <li
                       role="option"
-                      tabindex="0"
                       class="fd-list__item"
-                      class:is-selected={selectedLanguageLabel === optionIndex}
-                      data-testid="lui-us-option{i}_{optionIndex}"
-                      on:click="{() => updateComboBox(key,option,optionIndex)}"
-                      on:keyup="{(event) => handleKeyListItem(event,[optionIndex])}"
-                    >
-                      <span class="fd-list__title">{getLabel(option)}</span>
+                      class:is-selected={selectedLanguageLabel === index}
+                      class:is-focus={selectedLanguageLabel === index}
+                      data-testid="lui-us-option{index}_{index}"
+                      on:click="{() => updateComboBox(key,option,index)}"
+                      on:keydown="{(event) => keyPressDropdownNode(event,[index])}"
+                      tabindex="0">
+                        <span class="fd-list__title">{getLabel(option)}</span>
                     </li>
                     {/each}
                   </ul>
