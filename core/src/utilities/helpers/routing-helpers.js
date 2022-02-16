@@ -512,7 +512,9 @@ class RoutingHelpersClass {
       return;
     }
     Object.keys(localSearchParams).forEach(key => {
-      localSearchParams[key] = encodeURIComponent(localSearchParams[key]);
+      if (localSearchParams[key] !== undefined) {
+        localSearchParams[key] = encodeURIComponent(localSearchParams[key]);
+      }
     });
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       const filteredObj = {};
