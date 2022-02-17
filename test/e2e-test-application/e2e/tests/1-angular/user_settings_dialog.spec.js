@@ -334,8 +334,9 @@ describe('Navigation', () => {
       cy.get('[data-testid="us-navigation-item"]')
         .eq(5)
         .click();
-      //Check if iframe is loaded and have a red button
-      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn iframe').then(result => {
+      cy.wait(2000);
+      cy.get('.iframeUserSettingsCtn iframe').then(result => {
+        //Check if iframe is loaded and have a red button
         $iframeBody = result;
         cy.wrap($iframeBody)
           .find('[data-testid="yellowBtn"]')
