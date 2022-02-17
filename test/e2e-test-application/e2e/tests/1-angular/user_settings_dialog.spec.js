@@ -328,28 +328,28 @@ describe('Navigation', () => {
     });
 
     // Follow-up 2552
-    // it('Ctx update after storing user settings data using custom messages', () => {
-    //   let $iframeBody;
-    //   //Click on custom2
-    //   cy.get('[data-testid="us-navigation-item"]')
-    //     .eq(5)
-    //     .click();
-    //   //Check if iframe is loaded and have a red button
-    //   cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
-    //     $iframeBody = result;
-    //     cy.wrap($iframeBody)
-    //       .find('[data-testid="yellowBtn"]')
-    //       .should('have.class', 'yellow');
-    //     cy.wrap($iframeBody)
-    //       .find('[data-testid="yellowBtn"]')
-    //       .should('not.have.class', 'active');
-    //     cy.wrap($iframeBody)
-    //       .find('[data-testid="yellowBtn"]')
-    //       .click();
-    //     cy.wrap($iframeBody)
-    //       .find('[data-testid="yellowBtn"]')
-    //       .should('have.class', 'active');
-    //   });
-    // });
+    it('Ctx update after storing user settings data using custom messages', () => {
+      let $iframeBody;
+      //Click on custom2
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(5)
+        .click();
+      //Check if iframe is loaded and have a red button
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn iframe').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
+          .find('[data-testid="yellowBtn"]')
+          .should('have.class', 'yellow');
+        cy.wrap($iframeBody)
+          .find('[data-testid="yellowBtn"]')
+          .should('not.have.class', 'active');
+        cy.wrap($iframeBody)
+          .find('[data-testid="yellowBtn"]')
+          .click();
+        cy.wrap($iframeBody)
+          .find('[data-testid="yellowBtn"]')
+          .should('have.class', 'active');
+      });
+    });
   });
 });
