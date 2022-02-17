@@ -10,8 +10,8 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@luigi-project/client": "^1.17.0",
-    "@luigi-project/core": "^1.17.0",
+    "@luigi-project/client": "^1.20.1",
+    "@luigi-project/core": "^1.20.1",
     "copy-webpack-plugin": "^5.1.1",
     "@sap-theming/theming-base-content": "^11.1.28",
     "fundamental-styles": "^0.18.0",
