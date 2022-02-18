@@ -43,6 +43,7 @@
   });
 
   function getCustomRenderer() {
+    if(!search.searchProvider)return;
     isCustomSearchRenderer = GenericHelpers.isFunction(
       search.searchProvider.customSearchResultRenderer
     );
@@ -87,7 +88,7 @@
   }
 
   function onKeyUp({ keyCode }) {
-    if (search) {
+    if (search && search.searchProvider) {
       if (
         GenericHelpers.isFunction(search.searchProvider.onEnter) &&
         keyCode === KEYCODE_ENTER
@@ -214,7 +215,7 @@
       luigiCustomSearchRenderer__slot
     });
 
-    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
+    if (search && search.searchProvider && GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
       const fieldVisible =
         isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
       search.searchProvider.toggleSearch(inputElem, fieldVisible);
