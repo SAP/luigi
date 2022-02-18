@@ -322,6 +322,14 @@ describe('Iframe-helpers', () => {
         .stub(LuigiI18N, 'getCurrentLocale')
         .returns({ currentLocaleStorageKey: 'luigi.currentluigi', defaultLocale: 'luigi' });
       const internalData = { context: 'luigi' };
+      const expected = { 
+          activeFeatureToggleList: ['featureToggle'],
+          currentLocale: {
+              currentLocaleStorageKey: 'luigi.currentluigi',
+              defaultLocale: 'luigi'
+          },
+          currentTheme: 'any'
+        }
       assert.deepEqual(IframeHelpers.applyCoreStateData(internalData), {
         context: 'luigi',
         activeFeatureToggleList: ['featureToggle'],
