@@ -332,12 +332,7 @@ describe('Iframe-helpers', () => {
         }
       assert.deepEqual(IframeHelpers.applyCoreStateData(internalData), {
         context: 'luigi',
-        activeFeatureToggleList: ['featureToggle'],
-        currentLocale: {
-          currentLocaleStorageKey: 'luigi.currentluigi',
-          defaultLocale: 'luigi'
-        },
-        currentTheme: 'any'
+        ...expected
       });
       assert.deepEqual(IframeHelpers.applyCoreStateData(undefined), {
         activeFeatureToggleList: ['featureToggle'],
