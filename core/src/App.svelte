@@ -155,8 +155,6 @@
       return;
     }
 
-    console.log('test');
-
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(

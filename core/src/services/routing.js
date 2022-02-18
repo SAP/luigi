@@ -548,7 +548,7 @@ class RoutingClass {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
       
-      window.location = url.href;
+      history.replaceState(window.state, '', url.href);
     }
   }
 

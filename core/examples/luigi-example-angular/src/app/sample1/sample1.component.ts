@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { linkManager } from '@luigi-project/client';
+import { linkManager, setTargetOrigin } from '@luigi-project/client';
 
 @Component({
   selector: 'app-sample1',
@@ -9,7 +9,8 @@ export class Sample1Component {
   constructor() {}
 
   openModal() {
-    linkManager().openAsModal('/home');
+    linkManager().openAsModal('/sample1');
+    setTargetOrigin('http://localhost:4200');
   }
 
   // goTo() {
