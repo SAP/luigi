@@ -16,7 +16,7 @@
     "axios": ">=0.21.2",
     "babel-loader": "^8.0.4",
     "bundlesize": "^0.17.0",
-    "chai": "^4.2.0",
+    "chai": "^4.3.6",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.2.1",
