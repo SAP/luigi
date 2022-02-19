@@ -6,6 +6,7 @@
 	export let label;
 	export let compoundConfig;
 
+	let initialized = false;
 	let mainComponent;
 	let eventBusElement;
 	
@@ -50,7 +51,7 @@
 	let deferInit = !!thisComponent.attributes['defer-init'];
 	
 	thisComponent.init = () => {
-		if(!thisComponent.compoundConfig) return;
+		if(!thisComponent.compoundConfig || initialized) return;
 		deferInit = false;
 		console.log('init compound');
 		const node = {
@@ -59,6 +60,7 @@
 		webcomponentService.renderWebComponentCompound(node, mainComponent, context).then((compCnt) => {
 			eventBusElement = compCnt;
 		});
+		initialized = true;
 	};
 		
 	containerService.registerContainer(thisComponent);
