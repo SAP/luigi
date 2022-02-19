@@ -22,3 +22,10 @@ body > nav {
 .hidden {
 	display: none;
 }
+
+@font-face {
+    font-family: "SAP-icons";
+    src: url("https://unpkg.com/@sap-theming/theming-base-content/content/Base/baseLib/sap_horizon/fonts/SAP-icons.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
