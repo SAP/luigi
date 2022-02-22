@@ -47,11 +47,20 @@ auth: {
 }
 ```
 
-- **use** defines the active authorization provider.
-- **disableAutoLogin** allows you to disable the automatic login flow that is provided by default.
+For each specific provider, use the settings described further in this document. You can use these parameters to configure the general authorization:
 
-Optionally, you can also add:
-- **storage** parameter which allows you to set the storage type. It can be set to `localStorage`, `sessionStorage` or `none`. For example:
+#### use
+- **type**: string
+- **description**: defines the active authorization provider.
+
+#### disableAutoLogin
+- **type**: boolean
+- **description**: allows you to disable the automatic login flow that is provided by default.
+
+#### storage
+- **type**: string
+- **description**: parameter which allows you to set the storage type. It can be set to `localStorage`, `sessionStorage` or `none`.
+- **example**:
 ```javascript
 auth: {
    storage: 'sessionStorage'
@@ -97,16 +106,42 @@ auth: {
 }
 ```
 
-- **authority** contains the OpenID Connect server address used to authenticate.
-- **client_id** contains your app client ID.
-- **scope** defines the permissions to request at login.
-- **redirect_uri** sets the URL to return to after login. The default application root is `/`.
-- **post_logout_redirect_uri** sets the URL to return after logout. The default URL is `/logout.html`.
-- **automaticSilentRenew** enables the automatic silent renewal of the token if it is supported by the server. The default value is `false`. For this mechanism to work, the browser must have third-party cookies support enabled.
-- **accessTokenExpiringNotificationTime** is the number of seconds before an access token expires and triggers silent token refresh. The default value is `60` seconds.
-- **thirdPartyCookiesScriptLocation** is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
-- **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
-- **profileStorageInterceptorFn** provides a function to mutate the profile values of the [JSON Web Token (JWT)](https://jwt.io) before it gets stored in Luigi. It allows the removal of values like **email** to comply with data privacy restrictions. Since it is async, you could use it to enrich the profile data, but it should not get mixed up with **userInfoFn** which is specifically designed to define user information.
+### Parameters
+
+#### authority
+- **type**: string
+- **description**: contains the OpenID Connect server address used to authenticate.
+#### client_id
+- **type**: string
+- **description**: contains your app client ID.
+#### scope
+- **type**: string
+- **description**: defines the permissions to request at login.
+#### redirect_uri
+- **type**: string
+- **description**: sets the URL to return to after login.
+- **default**: the default application root is `/`.
+#### post_logout_redirect_uri
+- **type**: string
+- **description**: sets the URL to return after logout.
+- **default**: `/logout.html`.
+#### automaticSilentRenew
+- **type**: boolean
+- **description**: enables the automatic silent renewal of the token if it is supported by the server. For this mechanism to work, the browser must have third-party cookies support enabled.
+- **default**: `false`
+#### accessTokenExpiringNotificationTime
+- **type**: number
+- **description**: is the number of seconds before an access token expires and triggers silent token refresh.
+- **default**: `60` seconds
+#### thirdPartyCookiesScriptLocation
+- **type**: string
+- **description**: is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
+#### userInfoFn
+- **type**: function
+- **description**: provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
+#### profileStorageInterceptorFn
+- **type**: function
+- **description**: provides a function to mutate the profile values of the [JSON Web Token (JWT)](https://jwt.io) before it gets stored in Luigi. It allows the removal of values like **email** to comply with data privacy restrictions. Since it is async, you could use it to enrich the profile data, but it should not get mixed up with **userInfoFn** which is specifically designed to define user information.
 
 ### Third-party cookies and silent token refresh
 
@@ -152,18 +187,46 @@ auth: {
   disableAutoLogin: false
 ```
 
-- **authorizeUrl** contains the URL or address of the OAuth2 authorization server.
-- **logoutUrl** contains the endpoint to terminate the authorization session.
-- **oAuthData** comprises the object with data sent to the **authorizeUrl**.
-- **client_id** holds your application client ID.
-- **scope** defines permissions that are requested at login.
-- **redirect_uri** contains the URL to return to after login. The default application root is `/`.
-- **response_type** defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
-- **nonceFn** provides a function that returns a string in order to override the default **nonce**.
-- **logoutFn** provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback(redirectUri)** function after logout. Its parameter **redirectUri** is an URL or path to redirect to after executing **logoutCallback**. If no **redirectUri** is defined, Luigi stays in the current state.
-- **userInfoFn** provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
-- **accessTokenExpiringNotificationTime** number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired. The default value is `60` seconds.
-- **expirationCheckInterval** the number of seconds to pass between each check if the token is about to expire. The default value is `5` seconds.
+### Parameters
+
+#### authorizeUrl
+- **type**: string
+- **description**: contains the URL or address of the OAuth2 authorization server.
+#### logoutUrl
+- **type**: string
+- **description**: contains the endpoint to terminate the authorization session.
+#### oAuthData
+- **type**: object
+- **description**: comprises the object with data sent to the **authorizeUrl**.
+#### client_id
+- **type**: string
+- **description**: holds your application client ID.
+#### scope
+- **description**: defines permissions that are requested at login.
+#### redirect_uri
+- **type**: string
+- **description**: contains the URL to return to after login.
+- **default**: the default application root is `/`.
+#### response_type
+- **type**: string
+- **description**: defaults to the **id_token**. Any other parameter that is added to oAuthData is also added to the authorization payload.
+#### nonceFn
+- **type**: function
+- **description**: provides a function that returns a string in order to override the default **nonce**.
+#### logoutFn
+- **type**: function
+- **description**: provides the function to override the **logoutUrl** functionality for a custom logout. It needs to execute the **logoutCallback(redirectUri)** function after logout. Its parameter **redirectUri** is an URL or path to redirect to after executing **logoutCallback**. If no **redirectUri** is defined, Luigi stays in the current state.
+#### userInfoFn
+- **type**: function
+- **description**:provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
+#### accessTokenExpiringNotificationTime
+- **type**: number
+- **description**: number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired.
+- **default**: the default value is `60` seconds.
+#### expirationCheckInterval
+- **type**: number
+- **description**: the number of seconds to pass between each check if the token is about to expire.
+- **default**: the default value is `5` seconds.
 
 
 ## Custom authorization provider

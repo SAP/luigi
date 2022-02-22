@@ -512,7 +512,9 @@ class RoutingHelpersClass {
       return;
     }
     Object.keys(localSearchParams).forEach(key => {
-      localSearchParams[key] = encodeURIComponent(localSearchParams[key]);
+      if (localSearchParams[key] !== undefined) {
+        localSearchParams[key] = encodeURIComponent(localSearchParams[key]);
+      }
     });
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       const filteredObj = {};
@@ -596,6 +598,30 @@ class RoutingHelpersClass {
       ttl: 1 //how many redirections the alert will 'survive'.
     };
     component.showAlert(alertSettings, false);
+  }
+
+  // Adds and remove properties from searchParams
+  modifySearchParams(params, searchParams, paramPrefix) {
+    for (const [key, value] of Object.entries(params)) {
+      const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
+
+      searchParams.set(paramKey, value);
+      if (value === undefined) {
+        searchParams.delete(paramKey);
+      }
+    }
+  }
+
+  addParamsOnHashRouting(params, hash, paramPrefix) {
+    let localhash = hash;
+    const [hashValue, givenQueryParamsString] = localhash.split('?');
+    const searchParams = new URLSearchParams(givenQueryParamsString);
+    this.modifySearchParams(params, searchParams, paramPrefix);
+    localhash = hashValue;
+    if (searchParams.toString() !== '') {
+      localhash += `?${decodeURIComponent(searchParams.toString())}`;
+    }
+    return localhash;
   }
 }
 

@@ -137,15 +137,11 @@
 
 <style>
   .lui-usersettings-content .fd-row {
-    min-height: 2.75rem; /*required for empty labels to not shrink*/
+    min-height: 2rem; /*required for empty labels to not shrink*/
   }
 
   .lui-usersettings-content .fd-col {
     overflow: visible; /*make dropdown visible above the text below*/
-  }
-
-  .lui-fd-enum-button {
-    margin-top: 6px;
   }
 
   .lui-usersettings-content .fd-col--8 .fd-form-label {
@@ -181,7 +177,7 @@
       {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], i}
       <div class="fd-row">
         <div class="fd-col fd-col--4">
-          <label class="fd-form-label">{$getTranslation(schemaItem.label)}: </label>
+          <label class="fd-form-label" for="lui-us-input{i}">{$getTranslation(schemaItem.label)}: </label>
         </div>
         <div class="fd-col fd-col--8">
           {#if schemaItem.type==='string'} {#if schemaItem.isEditable ||
@@ -192,16 +188,18 @@
             aria-label="Image label"
             placeholder="{$getTranslation(schemaItem.placeholder)}"
             data-testid="lui-us-input{i}"
+            id="lui-us-input{i}"
             bind:value="{storedUserSettingData[userSettingGroup[0]][key]}"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
           />
           {:else}
-          <label
-            class="fd-form-label"
+          <div
+            class="fd-text"
             data-testid="lui-us-input{i}"
+            id="lui-us-input{i}"
             disabled="{schemaItem.isEditable===undefined || schemaItem.isEditable?false:true}"
             >{storedUserSettingData[userSettingGroup[0]][key]}
-          </label>
+          </div>
           {/if} {/if} {#if schemaItem.type==='enum' && (schemaItem.style === undefined ||
           schemaItem.style === 'list')}
           <div class="fd-form-item">
@@ -218,6 +216,7 @@
                     aria-expanded="false"
                     aria-haspopup="listbox"
                     aria-label="Language"
+                    id="lui-select-input{i}"
                     class="fd-select__control lui-anchor-node"
                     on:keyup="{(event) => handleKeyUp(event)}"
                     data-testid="lui-us-language-dropdown"
@@ -241,7 +240,7 @@
                 aria-hidden="true"
               >
                 {#if Array.isArray(schemaItem.options)}
-                  <ul class="fd-list fd-list--dropdown" role="listbox">
+                  <ul class="fd-list fd-list--compact fd-list--dropdown" role="listbox">
                     {#each schemaItem.options as option, optionIndex}
                     <li role="option"
                       tabindex="0"

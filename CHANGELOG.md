@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.20.1] (2022-01-21)
+
+#### :bug: Fixed
+* [#2483](https://github.com/SAP/luigi/pull/2483) Escaping helpers improvement and config fix of e2e app ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2475](https://github.com/SAP/luigi/pull/2475) Fix - getCoreSearchParams should not return undefined ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2424](https://github.com/SAP/luigi/pull/2424) Fixed navigation flyout styles CSS variables ([@rafalgamon](https://github.com/rafalgamon))
+* [#2474](https://github.com/SAP/luigi/pull/2474) Style active node in ShellBar ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2472](https://github.com/SAP/luigi/pull/2472) Node params are not deleted ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2466](https://github.com/SAP/luigi/pull/2466) Proper styling for App Switcher with one entity ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2467](https://github.com/SAP/luigi/pull/2467) Oidc mockserver fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2469](https://github.com/SAP/luigi/pull/2469) Fixed additional sap icon fonts ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
 ## [v1.20.0] (2021-12-23)
 
 #### :rocket: Added
@@ -1301,3 +1314,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.18.1]: https://github.com/SAP/luigi/compare/v1.18.0...v1.18.1
 [v1.19.0]: https://github.com/SAP/luigi/compare/v1.18.1...v1.19.0
 [v1.20.0]: https://github.com/SAP/luigi/compare/v1.19.0...v1.20.0
+[v1.20.1]: https://github.com/SAP/luigi/compare/v1.20.0...v1.20.1
