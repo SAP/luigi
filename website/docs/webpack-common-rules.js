@@ -1,6 +1,6 @@
 const { readFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const sass = require('node-sass');
+const sass = require('sass');
 
 const mode = process.env.NODE_ENV || 'development';
 const prod = mode === 'production';
