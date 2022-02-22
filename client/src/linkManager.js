@@ -352,9 +352,9 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * Disables the navigation handling for a single navigation request
-   * It prevents Luigi Core from handling url change after `navigate()`.
-   * Used for auto-navigation
+   * Disables the navigation handling for a single navigation request.
+   * It prevents Luigi Core from handling the URL change after `navigate()`.
+   * Used for auto-navigation.
    * @since 0.7.7
    * @example
    * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
