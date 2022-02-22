@@ -44,11 +44,13 @@
     getCustomRenderer();
     GlobalSearchHelper.handleVisibilityGlobalSearch();
     const globalSearchCtn = document.querySelector('.lui-global-search');
-    const resizeObserver = new ResizeObserver(entries => {
-      GlobalSearchHelper.handleVisibilityGlobalSearch();
-    });
-
-    resizeObserver.observe(globalSearchCtn);
+    if (globalSearchCtn) {
+      const resizeObserver = new ResizeObserver(entries => {
+        GlobalSearchHelper.handleVisibilityGlobalSearch();
+      });
+  
+      resizeObserver.observe(globalSearchCtn);
+    }
   });
 
   beforeUpdate(() => {
