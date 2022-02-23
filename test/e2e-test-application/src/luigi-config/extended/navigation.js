@@ -344,7 +344,7 @@ class Navigation {
   getProductSwitcherItems = () => {
     const items = [
       {
-        icon: 'contacts',
+        icon: 'https://pbs.twimg.com/profile_images/1143452953858183170/QLk-HGmK_bigger.png',
         label: 'hybris',
         subTitle: 'first subtitle',
         externalLink: {
@@ -373,7 +373,7 @@ class Navigation {
     icon: 'grid',
     // icon: '/assets/favicon-sap.ico',
     items: this.getProductSwitcherItems,
-    columns: 'auto'
+    columns: 3
   };
 
   getProfileItems = () => {
