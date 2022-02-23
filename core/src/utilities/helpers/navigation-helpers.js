@@ -23,14 +23,12 @@ class NavigationHelpersClass {
     let productSwitcherItemsAmount = productSwitcherConfig.items().length;
     if (productSwitcherColumns === 'auto') {
       if (productSwitcherItemsAmount <= 6) {
-        return 3;
+        return productSwitcherConfig.columns === 3;
       } else {
-        return 4;
+        return productSwitcherConfig.columns === 4;
       }
-    } else if (productSwitcherColumns === 3) {
-      return 3;
     } else {
-      return 4;
+      return productSwitcherConfig.columns === 3 ? 3 : 4;
     }
   }
 
