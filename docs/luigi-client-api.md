@@ -243,7 +243,7 @@ Sets node parameters in Luigi Core. The parameters will be added to the URL.
 
 ##### Parameters
 
--   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 -   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
 
 ##### Examples
@@ -305,7 +305,7 @@ Sends search query parameters to Luigi Core. If they are allowed on node level, 
 
 ##### Parameters
 
--   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 -   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
 
 ##### Examples
@@ -438,9 +438,9 @@ LuigiClient.linkManager().navigateToIntent('Sales-settings')
 
 #### withoutSync
 
-Disables the navigation handling for a single navigation request
-It prevents Luigi Core from handling url change after `navigate()`.
-Used for auto-navigation
+Disables the navigation handling for a single navigation request.
+It prevents Luigi Core from handling the URL change after `navigate()`.
+Used for auto-navigation.
 
 ##### Examples
 
@@ -608,7 +608,7 @@ Sets the current navigation context to that of a specific parent node which has 
 
 ##### Parameters
 
--   `navigationContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `navigationContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 ##### Examples
 
@@ -668,7 +668,7 @@ Sends node parameters to the route. The parameters are used by the `navigate` fu
 
 ##### Parameters
 
--   `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 
 ##### Examples
 
@@ -726,8 +726,8 @@ LuigiClient.linkManager().goBack(true);
 
 ### splitView
 
-Split view 
-Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`. 
+Split view
+Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`.
 At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
 When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
 `openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
@@ -929,8 +929,9 @@ Removes the backdrop.
 
 #### setDirtyStatus
 
-This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms.
+This method informs the main application that there are unsaved changes in the current view of the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms.
 
+If you use `withoutSync()` together with `setDirtyStatus()`, this is a special case in which the dirty state logic needs to be handled by the micro frontend. For example, if the user navigates with an Angular router, which would trigger `withoutSync()`, Angular needs to take care about dirty state, prevent the navigation and ask for permission to navigate away, through `uxManager().showConfirmationModal(settings)`.
 ##### Parameters
 
 -   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
@@ -995,7 +996,7 @@ const settings = {
  links: {
    goToHome: { text: 'homepage', url: '/overview' },
    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
    neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
  },
  closeAfter: 3000
