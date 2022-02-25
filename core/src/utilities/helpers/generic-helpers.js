@@ -316,14 +316,18 @@ class GenericHelpersClass {
     return val;
   }
 
+  /**
+   * Creates a remote promise.
+   * @returns {Promise} which returns true when the promise will be resolved and returns false if the promise will be rejected.
+   */
   createRemotePromise() {
     let res, rej;
-    const prom = new Promise((resolve, reject) => {
+    const prom = new Promise(resolve => {
       res = () => {
-        resolve();
+        resolve(true);
       };
       rej = () => {
-        reject(new Error());
+        resolve(false);
       };
     });
 

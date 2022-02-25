@@ -1326,7 +1326,7 @@
               isNavigationSyncEnabled = !e.data.params.withoutSync;
               handleNavigation(e.data, config, srcNode, srcPathParams)
                 .then(() => {
-                  checkResolve(false);
+                  checkResolve(true);
                 })
                 .catch(() => {
                   rejectRemotePromise();
