@@ -832,19 +832,20 @@
 
   resetConfirmationModalData();
 
-  export const showModal = (settings, openFromClient = false) => {
+  export const showModal = (settings, openFromClient = false, targetIframe) => {debugger;
     return new Promise((resolve, reject) => {
       confirmationModal = {
         displayed: true,
         settings,
         openFromClient,
         promise: { resolve, reject },
+        targetIframe,
       };
     });
   };
 
   const handleModalResult = (result) => {
-    const { promise, openFromClient } = confirmationModal;
+    const { promise, openFromClient, targetIframe } = confirmationModal;
 
     resetConfirmationModalData();
 
@@ -854,13 +855,12 @@
       promise.reject();
     }
 
-    if (openFromClient) {
-      const iframe = Iframe.getActiveIframe(contentNode);
+    if (openFromClient && targetIframe) {
       const message = {
         msg: 'luigi.ux.confirmationModal.hide',
         data: { confirmed: result },
       };
-      IframeHelpers.sendMessageToIframe(iframe, message);
+      IframeHelpers.sendMessageToIframe(targetIframe, message);
     }
   };
 
@@ -1433,7 +1433,7 @@
         const settings = e.data.data.settings;
         contentNode = node;
         resetConfirmationModalData();
-        showModal(settings, true).catch(() => {
+        showModal(settings, true, iframe).catch(() => {
           /* keep it to avoid runtime errors in browser console */
         });
       }

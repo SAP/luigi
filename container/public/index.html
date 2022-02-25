@@ -6,8 +6,8 @@
 
     <title>Luigi MFE Container</title>
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="stylesheet" href="/global.css" />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link rel="stylesheet" href="./global.css" />
 
     <script type="module">
       import { LuigiContainer, LuigiCompoundContainer } from './build/bundle.js';
@@ -395,7 +395,10 @@
 
       //   document.querySelector('luigi-compound-container')?.init();
 
-      document.querySelectorAll('luigi-container').forEach(luigiContainer => {
+      [
+        ...document.querySelectorAll('luigi-container'),
+        ...document.querySelectorAll('luigi-compound-container')
+      ].forEach(luigiContainer => {
         luigiContainer.addEventListener('navigate', event => {
           console.log(event.detail);
           window.location.hash = event.detail.params.link;

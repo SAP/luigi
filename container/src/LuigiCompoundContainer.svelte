@@ -22,11 +22,11 @@
 			linkManager: () => {},//window.Luigi.navigation,
 			uxManager: () => { return {
 				showAlert: (alertSettings) => {
-					dispatchEvent('alert-request', alertSettings);
+					dispatchLuigiEvent('alert-request', alertSettings);
 				},
 				showConfirmationModal: async (settings) => {
 					return new Promise((resolve, reject) => {
-					dispatchEvent('confirmation-request', settings, (data) => {
+					dispatchLuigiEvent('confirmation-request', settings, (data) => {
 						if(data) {
 						resolve(data);
 						} else {
@@ -64,6 +64,10 @@
 	};
 		
 	containerService.registerContainer(thisComponent);
+	
+	function dispatchLuigiEvent(msg, data, callback) {
+		containerService.dispatch(msg, thisComponent, data, callback);
+	}
 
 	onMount(async () => {
 		const ctx = context ? JSON.parse(context) : undefined;
