@@ -146,7 +146,7 @@ class UxManager extends LuigiClientBase {
    *  links: {
    *    goToHome: { text: 'homepage', url: '/overview' },
    *    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-   *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+   *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
    *    neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
    *  },
    *  closeAfter: 3000
