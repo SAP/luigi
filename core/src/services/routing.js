@@ -469,10 +469,15 @@ class RoutingClass {
   }
 
   async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
-    const redirectPathFromNotFoundHandler = RoutingHelpers.getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched);
+    const redirectResult = RoutingHelpers.getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched);
+    const redirectPathFromNotFoundHandler = redirectResult.path;
 
     if (redirectPathFromNotFoundHandler) {
-      this.navigateTo(redirectPathFromNotFoundHandler);
+      if (redirectResult.keepURL) {
+        this.handleRouteChange(redirectPathFromNotFoundHandler, component, IframeHelpers.getIframeContainer(), {});
+      } else {
+        this.navigateTo(redirectPathFromNotFoundHandler);
+      }
       return;
     }
     RoutingHelpers.showRouteNotFoundAlert(component, notFoundPath, isAnyPathMatched);
