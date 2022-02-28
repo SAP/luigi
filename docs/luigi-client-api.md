@@ -507,8 +507,6 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
     -   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
     -   `drawerSettings.size` **(`"l"` \| `"m"` \| `"s"` \| `"xs"`)** size of the drawer (optional, default `"s"`)
 
-##### Return
-- **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** When return `resolve` with `true` navigation finished without errors. When return `resolve` with `false` or `reject` navigation finished with errors or not finished.
 
 ##### Examples
 
