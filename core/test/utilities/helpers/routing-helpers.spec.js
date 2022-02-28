@@ -737,7 +737,7 @@ describe('Routing-helpers', () => {
     });
   });
 
-  describe('getPageNotFoundRedirectPath', () => {
+  describe('getPageNotFoundRedirectResult', () => {
     afterEach(() => {
       sinon.restore();
       sinon.reset();
@@ -751,7 +751,7 @@ describe('Routing-helpers', () => {
         .returns(() => {
           return { redirectTo: customRedirect };
         });
-      const expected = await RoutingHelpers.getPageNotFoundRedirectPath('notFoundPath');
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
       assert.equal(customRedirect, expected);
     });
 
@@ -759,9 +759,9 @@ describe('Routing-helpers', () => {
       sinon
         .stub(LuigiConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
-        .returns(undefined);
-      const expected = await RoutingHelpers.getPageNotFoundRedirectPath('notFoundPath');
-      assert.equal(undefined, expected);
+        .returns();
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath');
+      assert.deepEqual({}, expected);
     });
 
     it('with custom pageNotFoundHandler not a function', async () => {
@@ -769,7 +769,7 @@ describe('Routing-helpers', () => {
         .stub(LuigiConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
         .returns({ thisObject: 'should be function instead' });
-      const expected = await RoutingHelpers.getPageNotFoundRedirectPath('notFoundPath');
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
       assert.equal(undefined, expected);
     });
   });
@@ -782,7 +782,7 @@ describe('Routing-helpers', () => {
     beforeEach(() => {
       console.warn = sinon.spy();
       sinon.stub(LuigiI18N, 'getTranslation');
-      sinon.stub(RoutingHelpers, 'getPageNotFoundRedirectPath');
+      sinon.stub(RoutingHelpers, 'getPageNotFoundRedirectResult');
       sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
       sinon.stub(component, 'showAlert');
     });
@@ -799,12 +799,12 @@ describe('Routing-helpers', () => {
     });
 
     it('with custom pageNotFoundHandler defined', async () => {
-      const redirectPath = 'somepathtoredirect';
+      const redirectPath = { path: 'somepathtoredirect' };
       // define pageNotFoundHandler return value with stub
-      RoutingHelpers.getPageNotFoundRedirectPath.returns(redirectPath);
+      RoutingHelpers.getPageNotFoundRedirectResult.returns(redirectPath);
       // call function being tested
       const expected = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(component, redirectPath, false);
-      assert.equal(redirectPath, expected);
+      assert.equal(redirectPath.path, expected);
     });
 
     it('with custom pageNotFoundHandler as not defined', async () => {
@@ -813,7 +813,7 @@ describe('Routing-helpers', () => {
         .withArgs('luigi.requestedRouteNotFound', { route: path })
         .returns('Could not find the requested route');
       // set pageNotFoundHandler as undefined with stub
-      RoutingHelpers.getPageNotFoundRedirectPath.returns(undefined);
+      RoutingHelpers.getPageNotFoundRedirectResult.returns({});
       // call function being tested
       const expected = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(component, path, false);
       sinon.assert.calledWith(console.warn, `Could not find the requested route: ${path}`);
