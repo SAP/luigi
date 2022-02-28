@@ -1,7 +1,7 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
-import { LuigiConfig } from '../../core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiTheming } from '../../core-api';
 import { ViewUrlDecorator } from '../../services';
 
 class IframeHelpersClass {
@@ -298,6 +298,15 @@ class IframeHelpersClass {
         el.removeAttribute('tabindex');
       }
     });
+  }
+
+  applyCoreStateData(data) {
+    return {
+      ...data,
+      activeFeatureToggleList: LuigiFeatureToggles.getActiveFeatureToggleList(),
+      currentLocale: LuigiI18N.getCurrentLocale(),
+      currentTheme: LuigiTheming.getCurrentTheme()
+    };
   }
 }
 
