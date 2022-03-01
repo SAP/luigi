@@ -50,7 +50,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### pageNotFoundHandler
 - **type**: any
-- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to true will keep the erroneous url onto the browsers address bar.  
+- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar. 
 - **attributes**:
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
