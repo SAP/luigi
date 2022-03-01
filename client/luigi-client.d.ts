@@ -653,12 +653,24 @@ export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
 
 /**
- * Returns the anchor of path parameters of the active URL.
- * @returns {String} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
+ * Returns the anchor of active URL.
+ * @returns {String} the anchor string
  * @memberof Lifecycle
+ * @example
+ * LuigiClient.getAnchor();
  */
 export function getAnchor(): String;
 export type getAnchor = () => String;
+
+/**
+* Sets the anchor of active URL.
+* @param {string} anchor
+* @memberof Lifecycle
+* @example
+* LuigiClient.setAnchor('luigi');
+*/
+export function setAnchor(anchor: String): void;
+export type setAnchor = (anchor: String) => void;
 
 /**
  * Read search query parameters which are sent from Luigi core
