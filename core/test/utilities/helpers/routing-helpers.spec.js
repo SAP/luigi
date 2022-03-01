@@ -743,7 +743,7 @@ describe('Routing-helpers', () => {
       sinon.reset();
     });
 
-    it('with custom pageNotFoundHandler defined', async () => {
+    it('with custom pageNotFoundHandler defined redirectTo path', async () => {
       const customRedirect = 'somecustompath';
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -753,6 +753,28 @@ describe('Routing-helpers', () => {
         });
       const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
       assert.equal(customRedirect, expected);
+    });
+
+    it('with custom pageNotFoundHandler defined keepURL', async () => {
+      const customKeepURL = true;
+      const somePath = 'somePath';
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.pageNotFoundHandler')
+        .returns(() => {
+          return {
+            redirectTo: somePath,
+            keepURL: customKeepURL
+          };
+        });
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('');
+      assert.deepEqual(
+        {
+          path: somePath,
+          keepURL: customKeepURL
+        },
+        expected
+      );
     });
 
     it('with custom pageNotFoundHandler not defined', async () => {
