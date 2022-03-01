@@ -651,7 +651,6 @@ describe('Luigi client linkManager', () => {
     });
   });
 
-
   describe('Webcomponent compound view test', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr1/wc_grid_compound');
@@ -664,8 +663,9 @@ describe('Luigi client linkManager', () => {
 
     it('open webcomponent btn', () => {
       cy.window().then(win => {
-        cy.wait(500);
+        cy.wait(700);
         cy.get('.wcContainer>div>div>*').then(container => {
+          cy.wait(500);
           const root = container.children().prevObject[0].shadowRoot;
           const wcContent = root.querySelector('button').innerText;
 
@@ -739,7 +739,7 @@ describe('Luigi client linkManager', () => {
           cy.wait(500);
 
           const wcContentStart = container.children().prevObject[1].shadowRoot.querySelector('p').innerText;
-  
+
           rootBtn.querySelector('button').click();
           const wcContent = rootBtn.querySelector('button').innerText;
           expect(wcContent).to.equal('Start');
@@ -751,7 +751,7 @@ describe('Luigi client linkManager', () => {
       });
     });
   });
-      
+
   describe('linkManager preserveQueryParams features', () => {
     let $iframeBody;
     beforeEach(() => {
