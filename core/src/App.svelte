@@ -220,7 +220,7 @@
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    Routing.navigateTo(path, true, isNavigationSyncEnabled);
+    return Routing.navigateTo(path, true, isNavigationSyncEnabled);
   };
 
   const removeQueryParams = (str) => str.split('?')[0];
@@ -241,7 +241,7 @@
   };
 
   const getUnsavedChangesModalPromise = (source) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
@@ -254,7 +254,9 @@
             }
             resolve();
           },
-          () => {}
+          () => {
+            reject();
+          }
         );
       } else {
         resolve();
@@ -1275,6 +1277,9 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
+
+        const previousUrl = window.location.href;
+
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe
           ? iframe.luigi.pathParams
@@ -1284,25 +1289,58 @@
           params;
         const isSpecial = newTab || modal || splitView || drawer;
 
+        const resolveRemotePromise = () => {
+          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          if (remotePromise) {
+            remotePromise.doResolve();
+          }
+        };
+
+        const rejectRemotePromise = () => {
+          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          if (remotePromise) {
+            remotePromise.doReject();
+          }
+        };
+
+        const checkResolve = checkLocationChange => {
+          if (!checkLocationChange || previousUrl !== window.location.href) {
+            resolveRemotePromise();
+          } else {
+            rejectRemotePromise();
+          }
+        };
+
         if (e.source !== window && !intent && params.link) {
           params.link = params.link.split('?')[0];
         }
 
         if (!isSpecial) {
-          getUnsavedChangesModalPromise().then(() => {
-            isNavigationSyncEnabled = !withoutSync;
-            handleNavigation(e.data, config, srcNode, srcPathParams);
-            closeModal();
-            closeSplitView();
-            closeDrawer();
-            isNavigationSyncEnabled = true;
-          });
+          getUnsavedChangesModalPromise()
+            .then(() => {
+              isNavigationSyncEnabled = !e.data.params.withoutSync;
+              handleNavigation(e.data, config, srcNode, srcPathParams)
+                .then(() => {
+                  checkResolve(true);
+                })
+                .catch(() => {
+                  rejectRemotePromise();
+                });
+              closeModal();
+              closeSplitView();
+              closeDrawer();
+              isNavigationSyncEnabled = true;
+            })
+            .catch(() => {
+              rejectRemotePromise();
+            });
         } else {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
 
           if (newTab) {
-            openViewInNewTab(path);
+            await openViewInNewTab(path);
+            checkResolve();
             return;
           }
 
@@ -1312,20 +1350,26 @@
             path,
             pathExist
           );
+
           if (!path) {
+            rejectRemotePromise();
             return;
           }
+
           contentNode = node;
 
           if (modal !== undefined) {
             resetMicrofrontendModalData();
-            openViewInModal(path, modal === true ? {} : modal);
+            await openViewInModal(path, modal === true ? {} : modal);
+            checkResolve();
           } else if (splitView !== undefined) {
-            openSplitView(path, splitView);
+            await openSplitView(path, splitView);
+            checkResolve();
           } else if (drawer !== undefined) {
             resetMicrofrontendDrawerData();
             drawer.isDrawer = true;
-            openViewInDrawer(path, drawer);
+            await openViewInDrawer(path, drawer);
+            checkResolve();
           }
         }
       }
