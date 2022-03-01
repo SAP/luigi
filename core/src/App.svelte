@@ -113,12 +113,10 @@
   export let displayCustomSearchResult = true;
   export let searchResult;
   export let storedUserSettings;
-  let featureToggleList;
   let breadcrumbsEnabled;
 
   const prepareInternalData = async (config) => {
     const iframeConf = config.iframe.luigi;
-    featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
     const userSettingsGroupName =
       iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
     const userSettingGroups = await LuigiConfig.readUserSettings();
@@ -126,19 +124,16 @@
       userSettingsGroupName &&
       typeof userSettingGroups === 'object' &&
       userSettingGroups !== null;
-    const internalData = {
+    const internalData = IframeHelpers.applyCoreStateData({
       isNavigateBack,
       viewStackSize: preservedViews.length,
-      activeFeatureToggleList: featureToggleList,
-      currentLocale: LuigiI18N.getCurrentLocale(),
-      currentTheme: LuigiTheming.getCurrentTheme(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
         : iframeConf.clientPermissions,
       userSettings: hasUserSettings
         ? userSettingGroups[userSettingsGroupName]
         : null,
-    };
+    });
 
     IframeHelpers.specialIframeTypes
       .map((o) => o.iframeConfigKey)
