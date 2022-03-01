@@ -133,6 +133,7 @@
       userSettings: hasUserSettings
         ? userSettingGroups[userSettingsGroupName]
         : null,
+      anchor: LuigiRouting.getAnchor(),
     });
 
     IframeHelpers.specialIframeTypes
@@ -1526,6 +1527,11 @@
 
         const { data, keepBrowserHistory } = e.data;
         LuigiRouting.addNodeParams(data, keepBrowserHistory);
+      }
+
+      if ('luigi.setAnchor' === e.data.msg) {
+        const { anchor } = e.data;
+        LuigiRouting.setAnchor(anchor);
       }
     });
 

@@ -61,9 +61,9 @@ export declare interface Context {
   };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
+  anchor?: string;
   [key: string]: any;
 }
-
 export declare interface NodeParams {
   [key: string]: string;
 }
@@ -651,6 +651,14 @@ export type getActiveFeatureToggles = () => Array<String>;
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Returns the anchor of path parameters of the active URL.
+ * @returns {String} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
+ * @memberof Lifecycle
+ */
+export function getAnchor(): String;
+export type getAnchor = () => String;
 
 /**
  * Read search query parameters which are sent from Luigi core

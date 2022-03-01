@@ -200,4 +200,31 @@ describe('Luigi routing', function() {
       sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/');
     });
   });
+
+  describe('Anchor', () => {
+    it('Set and get anchor', () => {
+      const anchor = '#myanchor';
+      LuigiRouting.setAnchor(anchor);
+      assert.equal(window.location.hash, anchor);
+
+      const expected = LuigiRouting.getAnchor();
+      assert.equal(`#${expected}`, anchor);
+    });
+
+    it('get anchor when no anchor set', () => {
+      global.location = 'http://some.url.de';
+
+      const actual = LuigiRouting.getAnchor();
+      const expected = '';
+      assert.equal(actual, expected);
+    });
+
+    it('set anchor', () => {
+      global.location = 'http://some.url.de';
+      const anchor = '#myanchor';
+      LuigiRouting.setAnchor(anchor);
+      const expected = 'http://some.url.de#myanchor';
+      assert.equal(global.location + window.location.hash, expected);
+    });
+  });
 });

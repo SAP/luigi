@@ -527,5 +527,23 @@ class LifecycleManager extends LuigiClientBase {
   getUserSettings() {
     return this.currentContext.internal.userSettings;
   }
+
+  /**
+   * Read search query parameters which are sent from Luigi Core
+   * @memberof Lifecycle
+   * @returns anchor of url
+   * @example
+   * LuigiClient.getAnchor();
+   */
+  getAnchor() {
+    return this.currentContext.internal.anchor || '';
+  }
+
+  setAnchor(anchor) {
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.setAnchor',
+      anchor
+    });
+  }
 }
 export const lifecycleManager = new LifecycleManager();
