@@ -96,7 +96,6 @@ class LuigiRouting {
   setAnchor(value) {
     const { hash } = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      // hash :  #/projects/pr1#myanchor
       const arr = hash.split('#').slice(0, -1);
       window.location.hash = [...arr, value].join('#');;
     } else {
