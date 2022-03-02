@@ -529,7 +529,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Read search query parameters which are sent from Luigi Core
+   * Returns the current anchor based on active url
    * @memberof Lifecycle
    * @returns anchor of url
    * @example
@@ -539,6 +539,14 @@ class LifecycleManager extends LuigiClientBase {
     return this.currentContext.internal.anchor || '';
   }
 
+  /**
+   * Sends anchor to Luigi Core. The anchor will be added to the URL.
+   * @param {String} anchor
+   * @param {boolean} keepBrowserHistory
+   * @memberof Lifecycle
+   * @example
+   * LuigiClient.setAnchor('luigi');
+   */
   setAnchor(anchor) {
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.setAnchor',
