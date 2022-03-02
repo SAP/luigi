@@ -248,16 +248,16 @@ class NavigationClass {
   }
 
   findMatchingNode(urlPathElement, nodes) {
-    // TODO  need to adjust urlPathElement, with hash tag it becomes to pr1#anchor
-    const localUrlPathElement = urlPathElement.split('#').shift();
     let result = null;
     const segmentsLength = nodes.filter(n => !!n.pathSegment).length;
     const dynamicSegmentsLength = nodes.filter(n => n.pathSegment && n.pathSegment.startsWith(':')).length;
+    urlPathElement = urlPathElement.includes('#') ? urlPathElement.split('#').shift() : urlPathElement;
+
     if (segmentsLength > 1) {
       if (dynamicSegmentsLength === 1) {
         console.warn(
           'Invalid node setup detected. \nStatic and dynamic nodes cannot be used together on the same level. Static node gets cleaned up. \nRemove the static node from the configuration to resolve this warning. \nAffected pathSegment:',
-          localUrlPathElement,
+          urlPathElement,
           'Children:',
           nodes
         );
@@ -274,7 +274,7 @@ class NavigationClass {
     nodes.some(node => {
       if (
         // Static nodes
-        node.pathSegment === localUrlPathElement ||
+        node.pathSegment === urlPathElement ||
         // Dynamic nodes
         (node.pathSegment && node.pathSegment.startsWith(':'))
       ) {
