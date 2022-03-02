@@ -541,8 +541,7 @@ class LifecycleManager extends LuigiClientBase {
 
   /**
    * Sends anchor to Luigi Core. The anchor will be added to the URL.
-   * @param {String} anchor
-   * @param {boolean} keepBrowserHistory
+   * @param {string} anchor
    * @memberof Lifecycle
    * @example
    * LuigiClient.setAnchor('luigi');
