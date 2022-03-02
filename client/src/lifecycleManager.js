@@ -529,9 +529,9 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Returns the current anchor based on active url
+   * Returns the current anchor based on active URL
    * @memberof Lifecycle
-   * @returns anchor of url
+   * @returns anchor of URL
    * @example
    * LuigiClient.getAnchor();
    */
