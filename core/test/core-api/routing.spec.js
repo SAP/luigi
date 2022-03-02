@@ -221,9 +221,34 @@ describe('Luigi routing', function() {
 
     it('set anchor', () => {
       global.location = 'http://some.url.de';
-      const anchor = '#myanchor';
+      const anchor = 'myanchor';
       LuigiRouting.setAnchor(anchor);
       const expected = 'http://some.url.de#myanchor';
+      assert.equal(global.location + window.location.hash, expected);
+    });
+  });
+
+  describe('Anchor with hash routing', () => {
+    beforeEach(() => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.useHashRouting')
+        .returns(true);
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('get anchor', () => {
+      global.location = 'http://some.url.de/#/luigi#myanchor';
+      const actual = LuigiRouting.getAnchor();
+      const expected = 'myanchor';
+      assert.equal(actual, expected);
+    });
+    it('set anchor', () => {
+      global.location = 'http://some.url.de/#/luigi';
+      const anchor = 'myanchor';
+      LuigiRouting.setAnchor(anchor);
+      const expected = 'http://some.url.de/#/luigi#myanchor';
       assert.equal(global.location + window.location.hash, expected);
     });
   });
