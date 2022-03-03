@@ -333,15 +333,26 @@ class IframeClass {
                 });
               });
             } else {
-              IframeHelpers.sendMessageToIframe(iframe, {
-                msg: 'luigi.navigate',
-                context: iframe.luigi._lastUpdatedMessage.context,
-                nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
-                pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
-                searchParams: JSON.stringify(
-                  Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
-                ),
-                internal: IframeHelpers.applyCoreStateData(iframe.luigi._lastUpdatedMessage.internal)
+              const userSettingsGroupName = iframe.currentNode && iframe.currentNode.userSettingsGroup;
+              LuigiConfig.readUserSettings().then(storedUserSettings => {
+                const userSettingGroups = storedUserSettings;
+                const hasUserSettings =
+                  userSettingsGroupName && typeof userSettingGroups === 'object' && userSettingGroups !== null;
+                IframeHelpers.sendMessageToIframe(iframe, {
+                  msg: 'luigi.navigate',
+                  context: iframe.luigi.currentNode.context,
+                  nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
+                  pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
+                  searchParams: JSON.stringify(
+                    Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+                  ),
+                  internal: IframeHelpers.applyCoreStateData({
+                    isNavigateBack: iframe.luigi._lastUpdatedMessage.internal.isNavigateBack,
+                    viewStackSize: iframe.luigi._lastUpdatedMessage.internal.viewStackSize,
+                    clientPermissions: iframe.nextViewUrl ? iframe.nextClientPermissions : iframe.clientPermissions,
+                    userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null
+                  })
+                });
               });
             }
           }
