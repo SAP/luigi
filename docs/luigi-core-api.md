@@ -530,7 +530,9 @@ Navigates to the given path in the application. It contains either a full absolu
 -   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard [navigate()](#navigate) function instead of [goBack()](#goBack)
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
-    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal or (optional, default `"l"`)
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals width. Allowed entities 'px', '%', 'rem' and 'em'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals height. Allowed entities 'px', '%', 'rem' and 'em'.
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
@@ -558,6 +560,8 @@ Opens a view in a modal. You can specify the modal's title and size. If you do n
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals width. Allowed entities 'px', '%', 'rem' and 'em'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals height. Allowed entities 'px', '%', 'rem' and 'em'.
 
 ##### Examples
 

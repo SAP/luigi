@@ -26,6 +26,16 @@ describe('Fiddle', () => {
           .click();
         cy.expectPathToBe('/home/two');
       });
+      it('Open modal via core api with "px"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf')
+          .should('have.css', 'width', '500px')
+          .and('have.css', 'height', '500px');
+        cy.get('[aria-label="close"]').click();
+      });
     });
     describe('Normal navigation', () => {
       beforeEach(() => {
@@ -1024,7 +1034,6 @@ describe('Fiddle', () => {
       });
       cy.location().should(location => {
         expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks');
-
       });
     });
   });

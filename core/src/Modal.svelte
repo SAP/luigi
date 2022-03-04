@@ -12,11 +12,11 @@
   import { Navigation } from './navigation/services/navigation';
   import {
     EventListenerHelpers,
+    EscapingHelpers,
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers,
   } from './utilities/helpers';
-  import { LuigiConfig } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
 
@@ -123,8 +123,20 @@
       } else if (settings.size === 's') {
         modalSize = '40%';
       }
+      elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
+    }else if(settings.width && settings.height){
+      const height = EscapingHelpers.sanitizeHtml(settings.height);
+      const width = EscapingHelpers.sanitizeHtml(settings.width);
+      if(width.match(/[0-9]{1,3}[px]|[em]|[rem]/)){
+        console.log('test');
+      }
+      if(width.match(/[0-9]{1,3}[px]|[em]|[rem]|[%]/) && height.match(/[0-9]{1,3}[px]|[em]|[rem]|[%]/)){
+        console.log('test2');
+        elem[0].setAttribute('style', `width:${width};height:${height}`);
+      }
+    }else{
+      elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
     }
-    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
   };
 
   const createIframeModal = async (viewUrl, componentData) => {
