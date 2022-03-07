@@ -389,7 +389,7 @@
                         {/if}
                       {:else if userSettingsGroupProperty[1].initials}
                         <span
-                          class="fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar"
+                          class="fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar lui-avatar-space"
                           aria-label="Avatar"
                           >{userSettingsGroupProperty[1].initials
                             ? userSettingsGroupProperty[1].initials
@@ -547,6 +547,10 @@
   .lui-us-sidenav-image {
     width: 3rem;
     height: 3rem;
+  }
+
+  .lui-avatar-space {
+    margin-right: 0.75rem;
   }
 
   .iframeUserSettingsCtn {
