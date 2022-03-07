@@ -215,8 +215,7 @@
                             class="fd-select__control lui-anchor-node"
                             data-testid="lui-us-language-dropdown"
                             id="fd-form-input-{index}"
-                            on:keydown={event =>
-                              handleKeyListDropdown(event, [index])}
+                            on:keydown={event => handleKeyListDropdown(event)}
                           >
                             <span
                               class="fd-select__text-content"
@@ -247,18 +246,19 @@
                             class="fd-list fd-list--compact fd-list--dropdown"
                             role="listbox"
                           >
-                            {#each schemaItem.options as option, index}
+                            {#each schemaItem.options as option, optionIndex}
                               <li
                                 role="option"
                                 class="fd-list__item"
                                 class:is-selected={selectedLanguageLabel ===
-                                  index}
-                                class:is-focus={selectedLanguageLabel === index}
-                                data-testid="lui-us-option{index}_{index}"
+                                  optionIndex}
+                                class:is-focus={selectedLanguageLabel ===
+                                  optionIndex}
+                                data-testid="lui-us-option{index}_{optionIndex}"
                                 on:click={() =>
-                                  updateComboBox(key, option, index)}
+                                  updateComboBox(key, option, optionIndex)}
                                 on:keydown={event =>
-                                  keyPressDropdownNode(event, [index])}
+                                  keyPressDropdownNode(event)}
                                 tabindex="0"
                               >
                                 <span class="fd-list__title"
