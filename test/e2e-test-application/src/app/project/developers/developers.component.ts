@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { addInitListener, removeInitListener } from '@luigi-project/client';
+import { addInitListener, removeInitListener, linkManager } from '@luigi-project/client';
 @Component({
   selector: 'app-developers',
   templateUrl: './developers.component.html',
@@ -28,5 +28,12 @@ export class DevelopersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     removeInitListener(this.initListener);
+  }
+
+  async test() {
+    const promiseA = linkManager().pathExists('a');
+    const promiseB = linkManager().pathExists('b');
+    console.log((await promiseA) + '3');
+    console.log((await promiseB) + '2');
   }
 }

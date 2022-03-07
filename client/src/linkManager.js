@@ -289,7 +289,7 @@ export class linkManager extends LuigiClientBase {
    *  );
    */
   pathExists(path) {
-    const currentId = Date.now();
+    const currentId = helpers.getRandomId();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
       resolveFn: function() {},
