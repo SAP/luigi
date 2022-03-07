@@ -9,33 +9,6 @@ class UserSettings {
     dismissBtn: 'Abbreche'
   };
   userSettingGroups = {
-    language: {
-      label: 'Language & Region',
-      sublabel: 'EN | Time Format: 12h',
-      icon: '/assets/github-logo.png',
-      title: 'Language & Region',
-      settings: {
-        language: {
-          type: 'enum',
-          label: 'Language and Region',
-          placeholder: 'Language and Region',
-          options: [
-            { value: 'de', label: 'Deutsch (de)' },
-            { value: 'en', label: 'English (en)' },
-            'Français',
-            '简体中文'
-          ],
-          description: 'After you save your settings, the browser will refresh for the new language to take effect.'
-        },
-        date: { type: 'string', label: 'Date Format', placeholder: 'DD-MM-YYYY' },
-        time: {
-          type: 'enum',
-          style: 'button',
-          label: 'Time Format',
-          options: ['12 h', '24 h']
-        }
-      }
-    },
     userAccount: {
       label: 'User Account',
       sublabel: 'username',
@@ -63,6 +36,33 @@ class UserSettings {
           label: 'Checkbox23',
           // style: 'checkbox',
           isEditable: false
+        }
+      }
+    },
+    language: {
+      label: 'Language & Region',
+      sublabel: 'EN | Time Format: 12h',
+      icon: '/assets/github-logo.png',
+      title: 'Language & Region',
+      settings: {
+        language: {
+          type: 'enum',
+          label: 'Language and Region',
+          placeholder: 'Language and Region',
+          options: [
+            { value: 'de', label: 'Deutsch (de)' },
+            { value: 'en', label: 'English (en)' },
+            'Français',
+            '简体中文'
+          ],
+          description: 'After you save your settings, the browser will refresh for the new language to take effect.'
+        },
+        date: { type: 'string', label: 'Date Format', placeholder: 'DD-MM-YYYY' },
+        time: {
+          type: 'enum',
+          style: 'button',
+          label: 'Time Format',
+          options: ['12 h', '24 h']
         }
       }
     },
@@ -96,6 +96,12 @@ class UserSettings {
           options: ['red', 'green']
         }
       }
+    },
+    custom: {
+      label: 'Custom',
+      title: 'Custom',
+      icon: 'private',
+      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
     }
   };
 }
