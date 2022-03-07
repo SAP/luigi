@@ -4,14 +4,14 @@
   "devDependencies": {
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^5.2.0",
-    "css-loader": "^2.1.1",
+    "css-loader": "3.6.0",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.13.1",
     "serve": "^11.0.0",
     "style-loader": "^0.23.1",
     "svelte": "^3.20.1",
     "svelte-loader": "2.13.3",
-    "webpack": "^4.42.1",
+    "webpack": "^4.46.0",
     "webpack-cli": "^3.3.11",
     "concurrently": "^5.1.0",
     "local-web-server": "^3.0.7"
@@ -21,12 +21,12 @@
     "build:dev": "webpack",
     "dev": "concurrently \"npm run build:dev -- --watch\" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
     "serve": "concurrently \"npm run build:prod \" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
-    "serve:luigi": "cd public && ws --spa index.html --port 5000",
-    "serve:microfrontend": "cd public && ws --spa mf.html --port 5001"
+    "serve:luigi": "cd public && ws --spa index.html --port 5100",
+    "serve:microfrontend": "cd public && ws --spa mf.html --port 5101"
   },
   "dependencies": {
-    "@luigi-project/client": "^1.17.0",
-    "@luigi-project/core": "^1.17.0",
+    "@luigi-project/client": "^1.20.1",
+    "@luigi-project/core": "^1.20.1",
     "@sap-theming/theming-base-content": "^11.1.28",
     "fundamental-styles": "^0.18.0",
     "svelte-routing": "^1.4.2"
