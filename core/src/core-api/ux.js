@@ -34,7 +34,7 @@ class LuigiUX {
    * @param {Object} settings.links provides links data
    * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
-   * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+   * @param {string} settings.links.LINK_KEY.url URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
    * @param {string} settings.links.LINK_KEY.dismissKey dismissKey which represents the key of the link.
    * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
    * @returns {promise} which is resolved when the alert is dismissed
