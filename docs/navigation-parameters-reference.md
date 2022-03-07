@@ -220,8 +220,8 @@ Node parameters are all the parameters that can be added to an individual naviga
 
 ### children
 - **type**: array | function
-- **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix url.
-For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children urls.
+- **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix URL.
+For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children URLs.
 ```javascript
 navigation: {
     nodes: [{
