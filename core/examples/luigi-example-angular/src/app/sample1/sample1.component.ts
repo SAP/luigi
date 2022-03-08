@@ -13,7 +13,7 @@ export class Sample1Component {
     setTargetOrigin('http://localhost:4200');
   }
 
-  // goTo() {
-  //   linkManager().updateModalPathInternalNavigation('/mfe', {}, 'sessionId');
-  // }
+  goTo() {
+    linkManager().updateModalPathInternalNavigation('/sample2', true, '');
+  }
 }

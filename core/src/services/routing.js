@@ -525,12 +525,13 @@ class RoutingClass {
     return wc_container;
   }
 
-  updateModalDataInUrl(modalPath, modalParams) {
+  updateModalDataInUrl(modalPath, modalParams, addHistoryEntry) {
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
 
     const prevModalPath = params[modalParamName];
+    console.log('prevModal !== modalPath: ' + eval(prevModalPath !== modalPath));
     if (prevModalPath !== modalPath) {
       params[modalParamName] = modalPath;
       if (modalParams && Object.keys(modalParams).length) {
@@ -548,7 +549,12 @@ class RoutingClass {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
       
-      history.replaceState(window.state, '', url.href);
+      if (!addHistoryEntry) {
+        history.replaceState(window.state, '', url.href);
+      } else {
+        history.pushState(window.state, '', url.href);
+      }
+      
     }
   }
 

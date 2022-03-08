@@ -92,17 +92,22 @@ export class linkManager extends LuigiClientBase {
    * Updates path of the modalPathParam when internal navigation occurs.
    * @memberof linkManager
    * @param {string} path
+   * @param {boolean} addHistoryEntry adds an entry in the history
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
-   * @param {string} sessionId current Luigi **sessionId**
    * @example
    * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
    */
-  updateModalPathInternalNavigation(path, modalSettings = {}, sessionId) {
+  updateModalPathInternalNavigation(path, addHistoryEntry = false, modalSettings = {}) {
+    if (!path) {
+      console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
+      return;
+    }
+
     const navigationOpenMsg = {
       msg: 'luigi.navigation.updateModalDataPath',
-      sessionId: sessionId, //do I need it?
       params: Object.assign(this.options, {
         link: path,
+        addHistoryEntry,
         modal: modalSettings
       })
     };
