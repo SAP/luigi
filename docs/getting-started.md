@@ -172,7 +172,7 @@ The whole tutorial should take about an hour to complete. The source code for th
 
 ### e2e example
 
-This example application was created for testing purposes and it includes all possible Luigi features in one place. It might be complicated and unsuitable for beginners, but useful if you want to explore our framework in more detail or [contribute](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md) to the Luigi project.
+This example application was created for testing purposes and it includes all possible Luigi features in one place. It is useful if you want to explore our framework in more detail or [contribute](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md) to the Luigi project.
 
 You can find the e2e test application and instructions on how to install it [here](https://github.com/SAP/luigi/tree/master/test/e2e-test-application#luigi-sample-and-e2e-test-application-written-in-angular).
 

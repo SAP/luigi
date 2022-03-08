@@ -12,9 +12,11 @@
     </div>
   </section>
 
-  <p>Home.html</p>
+  <p>Sample1.html</p>
   <button (click)="openModal()">Open modal</button>
   <form action="sampleapp.html#/sample2">
-    <button type="submit">Mfe</button>
+    <button type="submit" onclick="goTo()">Sample2</button>
   </form>
+  
+  <a routerLink="/sample2" routerLinkActive="active">Sample2</a>
 </div>

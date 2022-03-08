@@ -120,9 +120,9 @@ export class LuigiAutoRoutingService implements OnDestroy {
         console.debug('Calling fromVirtualTreeRoot for url ==> ' + url);
         linkManager().fromVirtualTreeRoot().withoutSync().navigate(url);
       }
-      if (current.data.updateModalDataPath && current.data.path) {
-        let lm = linkManager();
-        lm.updateModalPathInternalNavigation(current.data.path, {}, '');
+      if (current.data.updateModalDataPath && current.routeConfig?.path) {
+        const lm = linkManager();
+        lm.updateModalPathInternalNavigation(current.routeConfig.path, {}, '');
       }
     }
   }

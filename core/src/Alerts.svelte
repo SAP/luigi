@@ -1,29 +1,10 @@
-<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false" bind:this={alertElement}>
-  {#each alertQueue as al}
-  <div
-    class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
-    role="alert"
-    id="j2ALl423"
-    data-testid="luigi-alert"
-  >
-    <p class="fd-message-strip__text">
-      {@html al.dataSanitized ? al.settings.text: ''}
-    </p>
-    <button
-      class="fd-button fd-button--transparent fd-button--compact fd-message-strip__close"
-      on:click="{() => dispatch('alertDismiss',{id: al.settings.id})}"
-      aria-label="Close"
-      aria-controls="j2ALl423"
-      data-testid="luigi-alert-dismiss"
-    >
-      <i class="sap-icon sap-icon--decline"></i>
-    </button>
-  </div>
-  {/each}
-</div>
-
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext,
+  } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -34,10 +15,12 @@
     info: 'information',
     success: 'success',
     warning: 'warning',
-    error: 'error'
+    error: 'error',
   };
   let alertElement;
-  const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  const getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
   const handleNavigation = getContext('handleNavigation');
 
   beforeUpdate(() => {
@@ -50,7 +33,7 @@
       return;
     }
 
-    const processedAlerts = alertQueue.map(alert => {
+    const processedAlerts = alertQueue.map((alert) => {
       const { text, links, closeAfter } = alert.settings;
       const processedData = EscapingHelpers.processTextAndLinks(
         text,
@@ -60,28 +43,28 @@
 
       setTimeout(() => {
         // this needs to be done after links are rendered
-        processedData.links.forEach(link => {
+        processedData.links.forEach((link) => {
           addClickListener(link, alert.settings.id);
         });
       });
 
-      if(alert.settings.afterInit) {
+      if (alert.settings.afterInit) {
         const el = alertElement;
         alert.settings.afterInit({
           dismiss: () => {
-            if(el && el.isConnected) {
+            if (el && el.isConnected) {
               dispatch('alertDismiss', { id: alert.settings.id });
             } else {
               console.debug('Alert already dismissed: ', el);
             }
           },
-          element: el
+          element: el,
         });
-      };
+      }
 
       return {
         settings: { ...alert.settings, text: processedData.sanitizedText },
-        dataSanitized: true
+        dataSanitized: true,
       };
     });
     processedAlerts.processed = true;
@@ -94,10 +77,10 @@
   function addClickListener(link, alertId) {
     try {
       const linkElem = document.getElementById(link.elemId);
-      if(linkElem.dismissListener) {
+      if (linkElem.dismissListener) {
         linkElem.removeEventListener('click', linkElem.dismissListener);
       }
-      const listener = event => {
+      const listener = (event) => {
         if (link.url) {
           const isRelative = !link.url.startsWith('/');
           event.stopPropagation();
@@ -105,13 +88,16 @@
             const data = {
               params: {
                 link: link.url,
-                relative: isRelative
-              }
+                relative: isRelative,
+              },
             };
             handleNavigation(data);
           });
         } else if (link.dismissKey) {
-          dispatch('alertDismiss', { id: alertId, dismissKey: link.dismissKey });
+          dispatch('alertDismiss', {
+            id: alertId,
+            dismissKey: link.dismissKey,
+          });
         }
       };
       linkElem.addEventListener('click', listener);
@@ -121,6 +107,36 @@
     }
   }
 </script>
+
+<div
+  class="fd-shell__overlay luigi-alert--overlay"
+  aria-hidden="false"
+  bind:this={alertElement}
+>
+  {#each alertQueue as al}
+    <div
+      class="fd-message-strip fd-message-strip--{alertTypeMap[
+        al.settings.type
+      ]} fd-message-strip--dismissible"
+      role="alert"
+      id="j2ALl423"
+      data-testid="luigi-alert"
+    >
+      <p class="fd-message-strip__text">
+        {@html al.dataSanitized ? al.settings.text : ''}
+      </p>
+      <button
+        class="fd-button fd-button--transparent fd-button--compact fd-message-strip__close"
+        on:click={() => dispatch('alertDismiss', { id: al.settings.id })}
+        aria-label="Close"
+        aria-controls="j2ALl423"
+        data-testid="luigi-alert-dismiss"
+      >
+        <i class="sap-icon sap-icon--decline" />
+      </button>
+    </div>
+  {/each}
+</div>
 
 <style type="text/scss">
   .luigi-alert--overlay {

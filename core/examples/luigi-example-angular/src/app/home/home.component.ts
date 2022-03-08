@@ -1,7 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   addInitListener,
-  addContextUpdateListener
+  addContextUpdateListener,
+  linkManager,
+  setTargetOrigin
 } from '@luigi-project/client';
 
 @Component({
@@ -27,4 +29,11 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  openModal() {
+    linkManager().openAsModal('sample1');
+    // linkManager().openAsModal('/sample1');
+    setTargetOrigin('http://localhost:4200');
+  }
+
 }
