@@ -114,29 +114,22 @@
 
   const setModalSize = async () => {
     const elem = document.getElementsByClassName('lui-modal-mf');
-    let modalSize = '80%';
+    let height = '80%';
+    let width = '80%';
     if (settings.size) {
-      if (settings.size === 'l') {
-        modalSize = '80%';
-      } else if (settings.size === 'm') {
-        modalSize = '60%';
+      if (settings.size === 'm') {
+        height, width = '60%';
       } else if (settings.size === 's') {
-        modalSize = '40%';
+        height, width = '40%';
       }
-      elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
     }else if(settings.width && settings.height){
-      const height = EscapingHelpers.sanitizeHtml(settings.height);
-      const width = EscapingHelpers.sanitizeHtml(settings.width);
-      if(width.match(/[0-9]{1,3}[px]|[em]|[rem]/)){
-        console.log('test');
+      const regex = /^.?[0-9]{1,3}(%|px|rem)$/;
+      if(settings.width.match(regex) && settings.height.match(regex)){
+        height = settings.height;
+        width = settings.width;
       }
-      if(width.match(/[0-9]{1,3}[px]|[em]|[rem]|[%]/) && height.match(/[0-9]{1,3}[px]|[em]|[rem]|[%]/)){
-        console.log('test2');
-        elem[0].setAttribute('style', `width:${width};height:${height}`);
-      }
-    }else{
-      elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
     }
+    elem[0].setAttribute('style', `width:${width};height:${height};`);
   };
 
   const createIframeModal = async (viewUrl, componentData) => {

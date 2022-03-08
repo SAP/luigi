@@ -36,6 +36,30 @@ describe('Fiddle', () => {
           .and('have.css', 'height', '500px');
         cy.get('[aria-label="close"]').click();
       });
+      it('Open modal via core api with "%"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
+        cy.get('[aria-label="close"]').click();
+      });
+      it('Open modal via core api with "rem"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '33rem', height: '70rem' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:33rem;height:70rem;');
+        cy.get('[aria-label="close"]').click();
+      });
+      it('Open modal via core api with "rem"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:80%;height:80%;');
+        cy.get('[aria-label="close"]').click();
+      });
     });
     describe('Normal navigation', () => {
       beforeEach(() => {
