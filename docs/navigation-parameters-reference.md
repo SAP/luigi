@@ -557,7 +557,8 @@ runTimeErrorHandler: {
 - **description**:  configures the settings of a view which opens in a modal. You can set the **openNodeInModal** parameter to `true` to use the default modal title and size, or you can specify them using these attributes:
 - **attributes**:
   - **title** is the modal title. By default, it is the node label. If there is no label, it is left empty.
-  - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size.
+  - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size or
+  - **width** and **height** can be used to specify the size of the modal more precise. In that case the size attribute is not needed. Allowd entities are `%`, `px`, `rem` and `em`.
 
 ### pageErrorHandler
 <!-- add-attribute:class:warning -->
