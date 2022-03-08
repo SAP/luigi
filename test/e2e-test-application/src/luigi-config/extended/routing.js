@@ -26,14 +26,6 @@ class Routing {
    * Default: /access_token=/, /id_token=/
    */
   skipRoutingForUrlPatterns = [/access_token=/, /id_token=/];
-  pageNotFoundHandler = (wrongPath, wasAnyPathFitted) => {
-    console.log('wrongPath', wrongPath);
-    console.log('wasAnyPathFitted', wasAnyPathFitted);
-    return {
-      redirectTo: '/settings',
-      keepURL: true
-    };
-  };
 }
 
 export const routing = new Routing();
