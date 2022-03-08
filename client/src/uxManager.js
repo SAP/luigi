@@ -57,7 +57,7 @@ class UxManager extends LuigiClientBase {
     helpers.sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
   /**
-   * This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms.
+   * This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms. If you use `withoutSync()` together with `setDirtyStatus()`, this is a special case in which the dirty state logic needs to be handled by the micro frontend. For example, if the user navigates with an Angular router, which would trigger `withoutSync()`, Angular needs to take care about dirty state, prevent the navigation and ask for permission to navigate away, through `uxManager().showConfirmationModal(settings)`.
    * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
    * @memberof uxManager
    */
@@ -134,7 +134,7 @@ class UxManager extends LuigiClientBase {
    * @param {Object} settings.links provides links data
    * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
-   * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+   * @param {string} settings.links.LINK_KEY.url URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
    * @param {string} settings.links.LINK_KEY.dismissKey dismissKey which represents the key of the link.
    * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
    * @returns {promise} which is resolved when the alert is dismissed
@@ -146,7 +146,7 @@ class UxManager extends LuigiClientBase {
    *  links: {
    *    goToHome: { text: 'homepage', url: '/overview' },
    *    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-   *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+   *    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
    *    neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
    *  },
    *  closeAfter: 3000

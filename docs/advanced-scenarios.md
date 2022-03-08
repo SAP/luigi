@@ -153,7 +153,7 @@ Google's `id_token` contains basic identity data like name and user ID, which al
 ```
 
 ### Use Feature Toggles in Luigi
-There are two possibilities to add feature toggles to the active feature toggles list. On the one hand you can use the core api and on the other hand it is possible to add a feature toggle through url parameters.
+There are two possibilities to add feature toggles to the active feature toggles list. On the one hand, you can use the Core API and on the other hand, it is possible to add a feature toggle through URL parameters.
 
 #### Overview
 Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code.

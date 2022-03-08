@@ -1048,7 +1048,7 @@
 
   .lui-side-nav__footer {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     border-top: var(--sapList_BorderWidth, 0.0625rem) solid
       var(--sapList_BorderColor, #e4e4e4);
