@@ -113,12 +113,10 @@
   export let displayCustomSearchResult = true;
   export let searchResult;
   export let storedUserSettings;
-  let featureToggleList;
   let breadcrumbsEnabled;
 
   const prepareInternalData = async (config) => {
     const iframeConf = config.iframe.luigi;
-    featureToggleList = LuigiFeatureToggles.getActiveFeatureToggleList();
     const userSettingsGroupName =
       iframeConf.currentNode && iframeConf.currentNode.userSettingsGroup;
     const userSettingGroups = await LuigiConfig.readUserSettings();
@@ -126,19 +124,16 @@
       userSettingsGroupName &&
       typeof userSettingGroups === 'object' &&
       userSettingGroups !== null;
-    const internalData = {
+    const internalData = IframeHelpers.applyCoreStateData({
       isNavigateBack,
       viewStackSize: preservedViews.length,
-      activeFeatureToggleList: featureToggleList,
-      currentLocale: LuigiI18N.getCurrentLocale(),
-      currentTheme: LuigiTheming.getCurrentTheme(),
       clientPermissions: iframeConf.nextViewUrl
         ? iframeConf.nextClientPermissions
         : iframeConf.clientPermissions,
       userSettings: hasUserSettings
         ? userSettingGroups[userSettingsGroupName]
         : null,
-    };
+    });
 
     IframeHelpers.specialIframeTypes
       .map((o) => o.iframeConfigKey)
@@ -225,7 +220,7 @@
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    Routing.navigateTo(path, true, isNavigationSyncEnabled);
+    return Routing.navigateTo(path, true, isNavigationSyncEnabled);
   };
 
   const removeQueryParams = (str) => str.split('?')[0];
@@ -246,7 +241,7 @@
   };
 
   const getUnsavedChangesModalPromise = (source) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
@@ -259,7 +254,9 @@
             }
             resolve();
           },
-          () => {}
+          () => {
+            reject();
+          }
         );
       } else {
         resolve();
@@ -832,19 +829,20 @@
 
   resetConfirmationModalData();
 
-  export const showModal = (settings, openFromClient = false) => {
+  export const showModal = (settings, openFromClient = false, targetIframe) => {
     return new Promise((resolve, reject) => {
       confirmationModal = {
         displayed: true,
         settings,
         openFromClient,
         promise: { resolve, reject },
+        targetIframe,
       };
     });
   };
 
   const handleModalResult = (result) => {
-    const { promise, openFromClient } = confirmationModal;
+    const { promise, openFromClient, targetIframe } = confirmationModal;
 
     resetConfirmationModalData();
 
@@ -854,13 +852,12 @@
       promise.reject();
     }
 
-    if (openFromClient) {
-      const iframe = Iframe.getActiveIframe(contentNode);
+    if (openFromClient && targetIframe) {
       const message = {
         msg: 'luigi.ux.confirmationModal.hide',
         data: { confirmed: result },
       };
-      IframeHelpers.sendMessageToIframe(iframe, message);
+      IframeHelpers.sendMessageToIframe(targetIframe, message);
     }
   };
 
@@ -1280,6 +1277,9 @@
 
       if ('luigi.navigation.open' === e.data.msg) {
         isNavigateBack = false;
+
+        const previousUrl = window.location.href;
+
         const srcNode = isSpecialIframe ? iframe.luigi.currentNode : undefined;
         const srcPathParams = isSpecialIframe
           ? iframe.luigi.pathParams
@@ -1289,25 +1289,58 @@
           params;
         const isSpecial = newTab || modal || splitView || drawer;
 
+        const resolveRemotePromise = () => {
+          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          if (remotePromise) {
+            remotePromise.doResolve();
+          }
+        };
+
+        const rejectRemotePromise = () => {
+          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          if (remotePromise) {
+            remotePromise.doReject();
+          }
+        };
+
+        const checkResolve = checkLocationChange => {
+          if (!checkLocationChange || previousUrl !== window.location.href) {
+            resolveRemotePromise();
+          } else {
+            rejectRemotePromise();
+          }
+        };
+
         if (e.source !== window && !intent && params.link) {
           params.link = params.link.split('?')[0];
         }
 
         if (!isSpecial) {
-          getUnsavedChangesModalPromise().then(() => {
-            isNavigationSyncEnabled = !withoutSync;
-            handleNavigation(e.data, config, srcNode, srcPathParams);
-            closeModal();
-            closeSplitView();
-            closeDrawer();
-            isNavigationSyncEnabled = true;
-          });
+          getUnsavedChangesModalPromise()
+            .then(() => {
+              isNavigationSyncEnabled = !e.data.params.withoutSync;
+              handleNavigation(e.data, config, srcNode, srcPathParams)
+                .then(() => {
+                  checkResolve(true);
+                })
+                .catch(() => {
+                  rejectRemotePromise();
+                });
+              closeModal();
+              closeSplitView();
+              closeDrawer();
+              isNavigationSyncEnabled = true;
+            })
+            .catch(() => {
+              rejectRemotePromise();
+            });
         } else {
           let path = buildPath(e.data.params, srcNode, srcPathParams);
           path = GenericHelpers.addLeadingSlash(path);
 
           if (newTab) {
-            openViewInNewTab(path);
+            await openViewInNewTab(path);
+            checkResolve();
             return;
           }
 
@@ -1317,20 +1350,26 @@
             path,
             pathExist
           );
+
           if (!path) {
+            rejectRemotePromise();
             return;
           }
+
           contentNode = node;
 
           if (modal !== undefined) {
             resetMicrofrontendModalData();
-            openViewInModal(path, modal === true ? {} : modal);
+            await openViewInModal(path, modal === true ? {} : modal);
+            checkResolve();
           } else if (splitView !== undefined) {
-            openSplitView(path, splitView);
+            await openSplitView(path, splitView);
+            checkResolve();
           } else if (drawer !== undefined) {
             resetMicrofrontendDrawerData();
             drawer.isDrawer = true;
-            openViewInDrawer(path, drawer);
+            await openViewInDrawer(path, drawer);
+            checkResolve();
           }
         }
       }
@@ -1433,7 +1472,7 @@
         const settings = e.data.data.settings;
         contentNode = node;
         resetConfirmationModalData();
-        showModal(settings, true).catch(() => {
+        showModal(settings, true, iframe).catch(() => {
           /* keep it to avoid runtime errors in browser console */
         });
       }
