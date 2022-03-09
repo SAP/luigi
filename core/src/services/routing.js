@@ -530,31 +530,26 @@ class RoutingClass {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
 
-    const prevModalPath = params[modalParamName];
-    console.log('prevModal !== modalPath: ' + eval(prevModalPath !== modalPath));
-    if (prevModalPath !== modalPath) {
-      params[modalParamName] = modalPath;
-      if (modalParams && Object.keys(modalParams).length) {
-        params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+    params[modalParamName] = modalPath;
+    if (modalParams && Object.keys(modalParams).length) {
+      params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+    }
+    const url = new URL(location.href);
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    if (hashRoutingActive) {
+      const queryParamIndex = location.hash.indexOf(queryParamSeparator);
+      if (queryParamIndex !== -1) {
+        url.hash = url.hash.slice(0, queryParamIndex);
       }
-      const url = new URL(location.href);
-      const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
-      if (hashRoutingActive) {
-        const queryParamIndex = location.hash.indexOf(queryParamSeparator);
-        if (queryParamIndex !== -1) {
-          url.hash = url.hash.slice(0, queryParamIndex);
-        }
-        url.hash = `${url.hash}${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
-      } else {
-        url.search = `?${RoutingHelpers.encodeParams(params)}`;
-      }
-      
-      if (!addHistoryEntry) {
-        history.replaceState(window.state, '', url.href);
-      } else {
-        history.pushState(window.state, '', url.href);
-      }
-      
+      url.hash = `${url.hash}${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+    } else {
+      url.search = `?${RoutingHelpers.encodeParams(params)}`;
+    }
+    
+    if (!addHistoryEntry) {
+      history.replaceState(window.state, '', url.href);
+    } else {
+      history.pushState(window.state, '', url.href);
     }
   }
 

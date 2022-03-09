@@ -1091,21 +1091,20 @@ describe('Routing', function() {
       sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/settings?~luigi=mario');
     });
 
-    it.only('should update path of the modal when changing template in the modal, save history', () => {
+    it('should update path of the modal when changing template in the modal, save history', () => {
       sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
       global.location = {
         href: 'http://some.url.de/settings'
       };
       window.state = {};
       const addHistoryEntry = true;
-      console.log('path routing ', global.location);
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       try {
-        console.log(modalPath);
-        Routing.updateModalDataInUrl('/modalPath', modalParams, addHistoryEntry);
+        modalPath = encodeURIComponent('/modalPath');
+        Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry);
       } catch (error) {
         console.log('error', error);
       }
@@ -1117,7 +1116,6 @@ describe('Routing', function() {
         'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252FmodalPath&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );
     });
-
     
     it('should update path of the modal when changing template in the modal, do not save history', () => {
       sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
@@ -1126,13 +1124,12 @@ describe('Routing', function() {
       };
       window.state = {};
       const addHistoryEntry = false;
-      console.log('path routing ', global.location);
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       try {
-        console.log(modalPath);
+        modalPath = encodeURIComponent('/project-modal');
         Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry); 
       } catch (error) {
         console.log('error', error);
