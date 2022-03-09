@@ -26,7 +26,7 @@ class LuigiNavigationManager {
    * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal or
+   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {string} modalSettings.width possible to specify modals width. Allowed entities 'px', '%', 'rem' and 'em'.
    * @param {string} modalSettings.height possible to specify modals height. Allowed entities 'px', '%', 'rem' and 'em'.
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
