@@ -28,7 +28,7 @@ class LuigiNavigationManager {
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem' and 'em'.
-   * @param {string} modalSettings.height possible to specify modals height. Allowed entities 'px', '%', 'rem' and 'em'.
+   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem' and 'em'.
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
