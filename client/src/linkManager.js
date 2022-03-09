@@ -129,7 +129,7 @@ export class linkManager extends LuigiClientBase {
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {string} modalSettings.width possible to specify modals width. Allowed entities 'px', '%', 'rem' and 'em'.
+   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem' and 'em'.
    * @param {string} modalSettings.height possible to specify modals height. Allowed entities 'px', '%', 'rem' and 'em'.
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
