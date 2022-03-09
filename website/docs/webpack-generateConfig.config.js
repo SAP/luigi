@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const sass = require('node-sass');
+const sass = require('sass');
 const commonRules = require('./webpack-common-rules');
 
 module.exports = {
