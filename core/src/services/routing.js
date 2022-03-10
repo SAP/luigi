@@ -259,7 +259,7 @@ class RoutingClass {
             '/'
           );
           const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw, false, config);
         }
         return;
       }
@@ -327,7 +327,6 @@ class RoutingClass {
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited
       };
-
       component.set(
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
@@ -468,11 +467,15 @@ class RoutingClass {
     }
   }
 
-  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
-    const redirectPathFromNotFoundHandler = RoutingHelpers.getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched);
-
+  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false, config = {}) {
+    const redirectResult = RoutingHelpers.getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched);
+    const redirectPathFromNotFoundHandler = redirectResult.path;
     if (redirectPathFromNotFoundHandler) {
-      this.navigateTo(redirectPathFromNotFoundHandler);
+      if (redirectResult.keepURL) {
+        this.handleRouteChange(redirectPathFromNotFoundHandler, component, IframeHelpers.getIframeContainer(), config);
+      } else {
+        this.navigateTo(redirectPathFromNotFoundHandler);
+      }
       return;
     }
     RoutingHelpers.showRouteNotFoundAlert(component, notFoundPath, isAnyPathMatched);
