@@ -97,7 +97,7 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
    */
-  updateModalPathInternalNavigation(path, addHistoryEntry = false, modalSettings = {}) {
+  updateModalPathInternalNavigation(path, modalSettings = {}, addHistoryEntry = false) {
     if (!path) {
       console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
       return;
@@ -107,8 +107,8 @@ export class linkManager extends LuigiClientBase {
       msg: 'luigi.navigation.updateModalDataPath',
       params: Object.assign(this.options, {
         link: path,
-        addHistoryEntry,
-        modal: modalSettings
+        modal: modalSettings,
+        addHistoryEntry
       })
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
