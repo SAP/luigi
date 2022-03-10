@@ -201,7 +201,7 @@ describe('Luigi routing', function() {
     });
   });
 
-  describe('Anchor', () => {
+  describe('Anchor without hash routing', () => {
     it('Set and get anchor', () => {
       const anchor = '#myanchor';
       LuigiRouting.setAnchor(anchor);
