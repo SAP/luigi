@@ -417,7 +417,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
    */
-  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry: boolean) => void;
+  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry?: boolean) => void;
 
   /**
    * Enables navigating to a new tab.

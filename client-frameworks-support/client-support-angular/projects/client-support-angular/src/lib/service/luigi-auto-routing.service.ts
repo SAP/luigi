@@ -122,7 +122,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
       }
       if (current.data.updateModalDataPath && current.routeConfig?.path) {
         const lm = linkManager();
-        lm.updateModalPathInternalNavigation(current.routeConfig.path, {}, '');
+        lm.updateModalPathInternalNavigation(current.routeConfig.path);
       }
     }
   }
