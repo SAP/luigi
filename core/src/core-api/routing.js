@@ -94,10 +94,13 @@ class LuigiRouting {
   }
 
   setAnchor(value) {
-    const { hash } = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
-      const arr = hash.split('#').slice(0, -1);
-      window.location.hash = [...arr, value].join('#');;
+      const { hash } = new URL(location);
+      const hashArray = hash.split('#');
+      const hasExistingHash = hashArray.length > 2;
+      const newHashArray = hasExistingHash ? hashArray.slice(0, -1) : hashArray;
+
+      window.location.hash = [...newHashArray, value].join('#');
     } else {
       window.location.hash = value;
     }

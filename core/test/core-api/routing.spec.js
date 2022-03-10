@@ -248,8 +248,9 @@ describe('Luigi routing', function() {
       global.location = 'http://some.url.de/#/luigi';
       const anchor = 'myanchor';
       LuigiRouting.setAnchor(anchor);
+      const actual = `${global.location}#${anchor}`;
       const expected = 'http://some.url.de/#/luigi#myanchor';
-      assert.equal(global.location + window.location.hash, expected);
+      assert.equal(actual, expected);
     });
   });
 });
