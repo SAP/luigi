@@ -20,6 +20,8 @@ export declare interface ConfirmationModalSettings {
 export declare interface ModalSettings {
   title?: string;
   size?: 'l' | 'm' | 's';
+  width?: string;
+  height?: string;
 }
 
 export declare interface SplitViewSettings {
