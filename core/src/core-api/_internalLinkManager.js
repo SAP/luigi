@@ -21,10 +21,10 @@ export class linkManager extends LuigiCoreAPIBase {
     };
   }
 
-  navigate(path, preserveView, modalSettings, splitViewSettings, drawerSettings) {
+  async navigate(path, preserveView, modalSettings, splitViewSettings, drawerSettings) {
     if (this.options.errorSkipNavigation) {
       this.options.errorSkipNavigation = false;
-      return;
+      return Promise.reject(new Error('navigation skipped'));
     }
 
     this.options.preserveView = preserveView;
@@ -32,8 +32,10 @@ export class linkManager extends LuigiCoreAPIBase {
 
     if (path === '/' && (modalSettings || splitViewSettings || drawerSettings)) {
       console.warn('Navigation with an absolute path prevented.');
-      return;
+      return Promise.reject(new Error('Navigation with an absolute path prevented.'));
     }
+
+    const remotePromise = GenericHelpers.createRemotePromise();
 
     const navigationOpenMsg = {
       msg: 'luigi.navigation.open',
@@ -43,10 +45,12 @@ export class linkManager extends LuigiCoreAPIBase {
         modal: modalSettings,
         splitView: splitViewSettings,
         drawer: drawerSettings
-      })
+      }),
+      remotePromiseId: remotePromise.id
     };
 
     this.sendPostMessageToLuigiCore(navigationOpenMsg);
+    return remotePromise;
   }
 
   openAsModal(path, modalSettings = {}) {
