@@ -558,7 +558,7 @@ runTimeErrorHandler: {
 - **attributes**:
   - **title** is the modal title. By default, it is the node label. If there is no label, it is left empty.
   - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size or
-  - **width** and **height** can be used to specify the size of the modal more precisely. In that case, the **size** attribute is not needed. Allowed units are `%`, `px`, `rem` and `em`.
+  - **width** and **height** can be used to specify the size of the modal more precisely. In that case, the **size** attribute is not needed. Allowed units are `%`, `px`, `rem`, `em`, `vh` and `vw`.
 
 ### pageErrorHandler
 <!-- add-attribute:class:warning -->

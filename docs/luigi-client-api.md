@@ -498,8 +498,8 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
-    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals width. Allowed entities 'px', '%', 'rem' and 'em'.
-    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals height. Allowed entities 'px', '%', 'rem' and 'em'.
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
@@ -528,8 +528,8 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
-    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals width. Allowed entities 'px', '%', 'rem' and 'em'.
-    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** possible to specify modals height. Allowed entities 'px', '%', 'rem' and 'em'.
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
 
 ##### Examples
 

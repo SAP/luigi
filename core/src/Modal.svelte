@@ -123,7 +123,7 @@
         height, width = '40%';
       }
     }else if(settings.width && settings.height){
-      const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vg)$/;
+      const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
       if(settings.width.match(regex) && settings.height.match(regex)){
         height = settings.height;
         width = settings.width;
