@@ -324,27 +324,33 @@ class IframeClass {
           if (iframe !== config.iframe) {
             if (iframe.userSettingsGroup) {
               Luigi.readUserSettings().then(storedUserSettings => {
-                IframeHelpers.sendMessageToIframe(iframe, {
+                const message = {
                   msg: 'luigi.navigate',
                   context: {
                     userSettingsData: storedUserSettings[iframe.userSettingsGroup]
                   },
                   internal: IframeHelpers.applyCoreStateData(iframe.luigi._lastUpdatedMessage.internal)
-                });
+                };
+                IframeHelpers.sendMessageToIframe(iframe, message);
               });
             } else {
-              const userSettingsGroupName = iframe.currentNode && iframe.currentNode.userSettingsGroup;
+              const userSettingsGroupName = iframe.luigi.currentNode && iframe.luigi.currentNode.userSettingsGroup;
               LuigiConfig.readUserSettings().then(storedUserSettings => {
                 const userSettingGroups = storedUserSettings;
                 const hasUserSettings =
                   userSettingsGroupName && typeof userSettingGroups === 'object' && userSettingGroups !== null;
-                IframeHelpers.sendMessageToIframe(iframe, {
+                const ctx = NavigationHelpers.applyContext(
+                  JSON.parse(iframe.luigi._lastUpdatedMessage.context),
+                  iframe.luigi.currentNode.context,
+                  iframe.luigi.currentNode.navigationContext
+                );
+                const message = {
                   msg: 'luigi.navigate',
-                  context: iframe.luigi.currentNode.context,
+                  context: ctx,
                   nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
                   pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
                   searchParams: JSON.stringify(
-                    Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+                    Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(iframe.luigi.currentNode))
                   ),
                   internal: IframeHelpers.applyCoreStateData({
                     isNavigateBack: iframe.luigi._lastUpdatedMessage.internal.isNavigateBack,
@@ -352,7 +358,8 @@ class IframeClass {
                     clientPermissions: iframe.nextViewUrl ? iframe.nextClientPermissions : iframe.clientPermissions,
                     userSettings: hasUserSettings ? userSettingGroups[userSettingsGroupName] : null
                   })
-                });
+                };
+                IframeHelpers.sendMessageToIframe(iframe, message);
               });
             }
           }
