@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { addInitListener, removeInitListener } from '@luigi-project/client';
+import { addInitListener, removeInitListener, linkManager } from '@luigi-project/client';
 @Component({
   selector: 'app-developers',
   templateUrl: './developers.component.html',
@@ -24,6 +24,15 @@ export class DevelopersComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  async checkPath() {
+    let promiseA = linkManager().pathExists('/home2/test2');
+    let promiseB = linkManager().pathExists('/home2/tes');
+    // promiseA.then(val => console.log('vala', val));
+    // promiseB.then(val => console.log('valb', val));
+    console.log('a', await promiseA);
+    console.log('b', await promiseB);
   }
 
   ngOnDestroy() {
