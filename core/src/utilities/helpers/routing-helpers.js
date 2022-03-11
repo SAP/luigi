@@ -545,18 +545,21 @@ class RoutingHelpersClass {
    * Queries the pageNotFoundHandler configuration and returns redirect path if it exists
    * If the there is no `pageNotFoundHandler` defined we return undefined.
    * @param {*} notFoundPath the path to check
-   * @returns redirect path if it exists, else return undefined
+   * @returns an object optionally containing the path to redirect, the keepURL option or an empty object if handler is undefined
    */
-  getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched = false) {
+  getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched = false) {
     const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
     if (typeof pageNotFoundHandler === 'function') {
       // custom 404 handler is provided, use it
       const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
       if (result && result.redirectTo) {
-        return result.redirectTo;
+        return {
+          path: result.redirectTo,
+          keepURL: result.keepURL
+        };
       }
     }
-    return undefined;
+    return {};
   }
 
   /**
@@ -572,7 +575,7 @@ class RoutingHelpersClass {
     if (pathExists) {
       return path;
     }
-    const redirectPath = this.getPageNotFoundRedirectPath(path);
+    const redirectPath = this.getPageNotFoundRedirectResult(path).path;
     if (redirectPath !== undefined) {
       return redirectPath;
     } else {
