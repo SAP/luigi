@@ -5,7 +5,7 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig } from '../../../src/core-api';
+import { LuigiConfig, LuigiI18N, LuigiTheming, LuigiFeatureToggles } from '../../../src/core-api';
 import { ViewUrlDecorator } from '../../../src/services';
 
 describe('Iframe-helpers', () => {
@@ -44,10 +44,7 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with view group', () => {
-      const iframe = IframeHelpers.createIframe(
-        'http://luigi.url.de/',
-        'ananas'
-      );
+      const iframe = IframeHelpers.createIframe('http://luigi.url.de/', 'ananas');
       assert.equal(iframe.src, 'http://luigi.url.de/');
       assert.equal(iframe.vg, 'ananas');
     });
@@ -77,12 +74,7 @@ describe('Iframe-helpers', () => {
       const node = {
         pathSegment: 'tets'
       };
-      const iframe = IframeHelpers.createIframe(
-        'http://luigi.url.com/',
-        'vg1',
-        node,
-        'main'
-      );
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/', 'vg1', node, 'main');
       assert(interceptor.calledWith(iframe, 'vg1', node, 'main'));
     });
     it('createIframe with viewUrlDecorator', () => {
@@ -105,10 +97,7 @@ describe('Iframe-helpers', () => {
     };
     IframeHelpers.removeIframe('two', testNode);
     assert.equal(testNode.removeChild.callCount, 1, 'removeChild call count');
-    assert(
-      testNode.removeChild.calledWith('two'),
-      'correct node child was deleted'
-    );
+    assert(testNode.removeChild.calledWith('two'), 'correct node child was deleted');
   });
 
   describe('ie fix for domain check', () => {
@@ -153,9 +142,7 @@ describe('Iframe-helpers', () => {
         return a1.protocol === 'https:' ? a1.hostname + ':443' : a1.hostname;
       });
       sb.stub(a2, 'host').get(() => {
-        return a2.protocol === 'https:'
-          ? a2.hostname + ':443' + a2.port
-          : a2.hostname;
+        return a2.protocol === 'https:' ? a2.hostname + ':443' + a2.port : a2.hostname;
       });
       assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
       expect(a1.host).to.equal('luigi.url.com:443');
@@ -287,17 +274,9 @@ describe('Iframe-helpers', () => {
       .returns(['firstIframe', 'secondIframe']);
 
     // first
-    assert.equal(
-      IframeHelpers.getIframeContainer(),
-      undefined,
-      'no iframe found'
-    );
+    assert.equal(IframeHelpers.getIframeContainer(), undefined, 'no iframe found');
     // second
-    assert.equal(
-      IframeHelpers.getIframeContainer(),
-      'firstIframe',
-      'returns first iframe'
-    );
+    assert.equal(IframeHelpers.getIframeContainer(), 'firstIframe', 'returns first iframe');
   });
 
   describe('getMicrofrontendsInDom', () => {
@@ -327,16 +306,35 @@ describe('Iframe-helpers', () => {
       assert.equal(iframes.filter(i => i.active).length, 5, 'active iframes');
 
       const expectedKeys = ['id', 'container', 'active', 'type'];
-      assert.deepEqual(
-        Object.keys(iframes[0]),
-        expectedKeys,
-        'contains all required keys'
-      );
+      assert.deepEqual(Object.keys(iframes[0]), expectedKeys, 'contains all required keys');
 
       const mainIframes = IframeHelpers.getMainIframes('main');
       assert.equal(mainIframes.length, 2);
       const modalIframes = IframeHelpers.getModalIframes('modal');
       assert.equal(modalIframes.length, 1);
+    });
+  });
+  describe('applyCoreStateData', () => {
+    it('applyCoreStateData', () => {
+      sinon.stub(LuigiTheming, 'getCurrentTheme').returns('any');
+      sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList').returns(['featureToggle']);
+      sinon
+        .stub(LuigiI18N, 'getCurrentLocale')
+        .returns({ currentLocaleStorageKey: 'luigi.currentluigi', defaultLocale: 'luigi' });
+      const internalData = { context: 'luigi' };
+      const expected = {
+        activeFeatureToggleList: ['featureToggle'],
+        currentLocale: {
+          currentLocaleStorageKey: 'luigi.currentluigi',
+          defaultLocale: 'luigi'
+        },
+        currentTheme: 'any'
+      };
+      assert.deepEqual(IframeHelpers.applyCoreStateData(internalData), {
+        context: 'luigi',
+        ...expected
+      });
+      assert.deepEqual(IframeHelpers.applyCoreStateData(undefined), expected);
     });
   });
 });

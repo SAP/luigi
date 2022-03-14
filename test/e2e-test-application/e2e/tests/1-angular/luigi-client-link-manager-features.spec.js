@@ -663,8 +663,9 @@ describe('Luigi client linkManager', () => {
 
     it('open webcomponent btn', () => {
       cy.window().then(win => {
-        cy.wait(500);
+        cy.wait(700);
         cy.get('.wcContainer>div>div>*').then(container => {
+          cy.wait(500);
           const root = container.children().prevObject[0].shadowRoot;
           const wcContent = root.querySelector('button').innerText;
 

@@ -50,9 +50,9 @@ describe('Modal Microfrontend', () => {
         .get('[data-testid=modal-mf]')
         .should('be.visible');
 
-      cy.get('[data-testid=modal-mf] iframe').then(ifr => {
-        cy.wrap(ifr[0].contentDocument)
-          .its('body')
+      cy.getIframeBody({}, 0, '.iframeModalCtn._modal').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
           .contains('Close modal')
           .click();
 

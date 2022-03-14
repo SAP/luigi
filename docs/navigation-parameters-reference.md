@@ -50,7 +50,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### pageNotFoundHandler
 - **type**: any
-- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution.
+- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar. 
 - **attributes**:
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
@@ -220,8 +220,8 @@ Node parameters are all the parameters that can be added to an individual naviga
 
 ### children
 - **type**: array | function
-- **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix url.
-For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children urls.
+- **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix URL.
+For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children URLs.
 ```javascript
 navigation: {
     nodes: [{
