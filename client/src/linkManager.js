@@ -28,7 +28,8 @@ export class linkManager extends LuigiClientBase {
       relative: false,
       link: '',
       newTab: false,
-      preserveQueryParams: false
+      preserveQueryParams: false,
+      anchor: ''
     };
   }
 

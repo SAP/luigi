@@ -61,9 +61,9 @@ export declare interface Context {
   };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
+  anchor?: string;
   [key: string]: any;
 }
-
 export declare interface NodeParams {
   [key: string]: string;
 }
@@ -651,6 +651,26 @@ export type getActiveFeatureToggles = () => Array<String>;
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Returns the anchor of active URL.
+ * @returns {String} the anchor string
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.getAnchor();
+ */
+export function getAnchor(): String;
+export type getAnchor = () => String;
+
+/**
+* Sets the anchor of active URL.
+* @param {string} anchor
+* @memberof Lifecycle
+* @example
+* LuigiClient.setAnchor('luigi');
+*/
+export function setAnchor(anchor: String): void;
+export type setAnchor = (anchor: String) => void;
 
 /**
  * Read search query parameters which are sent from Luigi core
