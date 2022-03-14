@@ -246,6 +246,14 @@ export const projectDetailNavStructure = projectId => [
     testId: 'myTestId'
   },
   {
+    category: { label: 'Settings', icon: 'action-settings' },
+    pathSegment: 'privacy_settings',
+    label: 'Privacy Settings',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings',
+    userSettingsGroup: 'privacy'
+  },
+  {
     category: { label: 'Feature Toggle: Settings 2', icon: 'action-settings' },
     pathSegment: 'settings_ft',
     label: 'Project Settings 2',
