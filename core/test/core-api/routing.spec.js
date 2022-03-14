@@ -200,4 +200,57 @@ describe('Luigi routing', function() {
       sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/');
     });
   });
+
+  describe('Anchor without hash routing', () => {
+    it('Set and get anchor', () => {
+      const anchor = '#myanchor';
+      LuigiRouting.setAnchor(anchor);
+      assert.equal(window.location.hash, anchor);
+
+      const expected = LuigiRouting.getAnchor();
+      assert.equal(`#${expected}`, anchor);
+    });
+
+    it('get anchor when no anchor set', () => {
+      global.location = 'http://some.url.de';
+
+      const actual = LuigiRouting.getAnchor();
+      const expected = '';
+      assert.equal(actual, expected);
+    });
+
+    it('set anchor', () => {
+      global.location = 'http://some.url.de';
+      const anchor = 'myanchor';
+      LuigiRouting.setAnchor(anchor);
+      const expected = 'http://some.url.de#myanchor';
+      assert.equal(global.location + window.location.hash, expected);
+    });
+  });
+
+  describe('Anchor with hash routing', () => {
+    beforeEach(() => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.useHashRouting')
+        .returns(true);
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('get anchor', () => {
+      global.location = 'http://some.url.de/#/luigi#myanchor';
+      const actual = LuigiRouting.getAnchor();
+      const expected = 'myanchor';
+      assert.equal(actual, expected);
+    });
+    it('set anchor', () => {
+      global.location = 'http://some.url.de/#/luigi';
+      const anchor = 'myanchor';
+      LuigiRouting.setAnchor(anchor);
+      const actual = `${global.location}#${anchor}`;
+      const expected = 'http://some.url.de/#/luigi#myanchor';
+      assert.equal(actual, expected);
+    });
+  });
 });

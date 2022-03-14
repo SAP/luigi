@@ -85,6 +85,28 @@ class LuigiRouting {
       window.history.replaceState({}, '', href);
     }
   }
+
+  getAnchor() {
+    const { hash } = new URL(location);
+    const useHashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+
+    return (useHashRouting && hash.split('#').length === 2) ? '' : hash.split('#').pop();
+  }
+
+  setAnchor(value) {
+    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      const { hash } = new URL(location);
+      const hashArray = hash.split('#');
+      const hasExistingHash = hashArray.length > 2;
+      const newHashArray = hasExistingHash ? hashArray.slice(0, -1) : hashArray;
+
+      window.location.hash = [...newHashArray, value].join('#');
+    } else {
+      window.location.hash = value;
+    }
+
+    LuigiConfig.configChanged();
+  }
 }
 
 export const routing = new LuigiRouting();

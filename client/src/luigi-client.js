@@ -95,6 +95,12 @@ class LuigiClient {
   luigiClientInit() {
     return lifecycleManager.luigiClientInit();
   }
+  getAnchor() {
+    return lifecycleManager.getAnchor();
+  }
+  setAnchor(value) {
+    return lifecycleManager.setAnchor(value);
+  }
 
   /**
    * @private
