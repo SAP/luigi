@@ -35,13 +35,122 @@ Imagine your application hosts two micro frontend views: `http://example.com/a#e
 
 Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy.
 
+To make sure view groups work properly, it is recommended to install both Luigi Core and **Luigi Client**. See [this document](luigi-client-setup.md) for instructions, or for a simpler implementation include this line in your application: 
+`<script src="https://unpkg.com/@luigi-project/client/luigi-client.js"></script>`
+
+Paste this example in [Luigi Fiddle](fiddle.luigi-project.io) to see view groups in action: 
+
+<!-- accordion:start -->
+
+### Code example 
+Luigi.setConfig({
+  navigation: {
+    validWebcomponentUrls:['.*?'],
+    preloadViewGroups: true,
+    viewGroupSettings:{
+      vg1: {
+          preloadUrl: 'https://sapui5.netweaver.ondemand.com/'
+       }
+    },
+    nodes: () => [
+      {
+        pathSegment: 'settings',
+        label: 'Settings',
+        defaultChildNode: 'agents',
+        children: [
+          {
+            viewGroup: 'vg1',
+            pathSegment: 'agents',
+            label: 'Agent List',
+            hideSideNav: false,
+            loadingIndicator: {
+              hideAutomatically: true,
+              enabled: false
+            },
+            viewUrl: 'https://sapui5.netweaver.ondemand.com/#/api',
+          },
+          {
+            viewGroup: 'vg1',
+            pathSegment: 'agentgroups',
+            label: 'Agent Groups',
+            hideSideNav: false,
+            loadingIndicator: {
+              hideAutomatically: true,
+              enabled: false
+            },
+            viewUrl: 'https://sapui5.netweaver.ondemand.com/#/api/sap.m',
+          },
+        ]
+      }
+    ],
+    profile: {
+      logout: {
+        label: 'Sign Out',
+        icon: "sys-cancel",
+        customLogoutFn: () => {}
+      },
+    }
+  },
+  routing: {
+    /**
+     * Development:
+     * For path routing, set to false
+     * For hash routing, set to true
+     */
+    useHashRouting: false
+  },
+  userSettings: {
+    userSettingGroups: {
+      theming: {
+        label: 'Theming',
+        title: 'Theming',
+        icon: 'private',
+        viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
+        settings: {
+          theme: {
+            type: 'enum',
+            label: 'sap-theme',
+            options: ['sap_fiori_3', 'sap_fiori_3_hcb', 'sap_fiori_3_hcw']
+          }
+        }
+      }
+    }
+  },
+  settings: {
+    appLoadingIndicator: {
+      enabled: false,
+      hideAutomatically: true
+    },
+    experimental: {
+      webcomponents: true
+    },
+    header: {
+      title: 'IRPA Luigi Testing Framework'
+    },
+    theming : {
+      themes: () => [
+        { id: 'sap_fiori_3', name: 'sap_fiori_3' },
+        { id: 'sap_fiori_3_hcb', name: 'sap_fiori_3_hcb' },
+        { id: 'sap_fiori_3_hcw', name: 'sap_fiori_3_hcw' }
+      ],
+      defaultTheme: 'sap_fiori_3',
+      nodeViewURLDecorator: {
+        queryStringParameter: {
+          keyName: 'sap-theme'
+        }
+      }
+    }
+  }
+});
+<!-- accordion:end -->
+
 The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for the view group under **navigation.viewGroupSettings**.
 
 You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with the [**preloadViewGroups**](navigation-parameters-reference.md#preloadviewgroups) configuration flag.
 
 For more information on setting caching with view refreshing and preloading for view groups, read [this document](navigation-parameters-reference.md#node-parameters).
 
-Further options related to view groups can be configured using the parameters listed here. These parameters should be placed just before `nodes:` in the `navigation:` section of the configuration file:
+Further options related to view groups can be configured using the parameters listed below. These parameters should be placed just before `nodes:` in the `navigation:` section of the configuration file:
 
 ### viewGroupSettings
 - **type**: object
