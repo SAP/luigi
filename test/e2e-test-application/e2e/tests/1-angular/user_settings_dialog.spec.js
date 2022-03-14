@@ -349,4 +349,87 @@ describe('Navigation', () => {
       });
     });
   });
+
+  describe('Send user settings data update to special Iframes', () => {
+    const name = 'Luigi';
+    const date_format = 'dd-mm-yy';
+    const privacy = 'top secret';
+    it('Send user settings data update to special Iframes', () => {
+      //Click on User Account and fill name
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(0)
+        .click();
+      cy.get('[data-testid="lui-us-input0"]')
+        .should('exist')
+        .type(name);
+
+      //Check Language & Region and fill data format
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(1)
+        .click();
+      cy.get('[data-testid="lui-us-input1"]')
+        .should('exist')
+        .type(date_format);
+
+      //Click on Privacy
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(2)
+        .click();
+      cy.get('[data-testid="lui-us-input0"]').type(privacy);
+
+      saveSettings();
+      cy.window().then(win => {
+        win.Luigi.navigation().navigate('/projects/pr2/user_settings');
+        win.Luigi.navigation().openAsSplitView('/projects/pr2/settings', { title: 'language settings', size: '40' });
+        win.Luigi.navigation().openAsDrawer('/projects/pr2/privacy_settings');
+      });
+      cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
+        cy.wrap(result).contains('"policy": "top secret"');
+      });
+      cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+        cy.wrap(result).contains('"name": "Luigi"');
+      });
+      cy.getIframeBody({}, 0, '.iframeSplitViewCnt').then(result => {
+        cy.wrap(result).contains('"date": "dd-mm-yy"');
+      });
+
+      openSettingsDialogBox();
+      //Click on User Account and fill name
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(0)
+        .click();
+      cy.get('[data-testid="lui-us-input0"]')
+        .should('exist')
+        .type(' rocks!');
+
+      //Check Language & Region and fill data format
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(1)
+        .click();
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(1)
+        .should('have.class', 'is-selected');
+      cy.get('[data-testid="lui-us-input1"]')
+        .should('exist')
+        .type('yy');
+
+      //Click on Privacy
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(2)
+        .click();
+      cy.get('[data-testid="lui-us-input0"]').type('!!!');
+
+      saveSettings();
+
+      cy.getIframeBody({}, 0, '.iframeModalCtn._drawer').then(result => {
+        cy.wrap(result).contains('"policy": "top secret!!!"');
+      });
+      cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+        cy.wrap(result).contains('"name": "Luigi rocks!"');
+      });
+      cy.getIframeBody({}, 0, '.iframeSplitViewCnt').then(result => {
+        cy.wrap(result).contains('"date": "dd-mm-yyyy"');
+      });
+    });
+  });
 });
