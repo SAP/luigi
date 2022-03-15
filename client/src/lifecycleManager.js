@@ -527,5 +527,30 @@ class LifecycleManager extends LuigiClientBase {
   getUserSettings() {
     return this.currentContext.internal.userSettings;
   }
+
+  /**
+   * Returns the current anchor based on active URL.
+   * @memberof Lifecycle
+   * @returns anchor of URL
+   * @example
+   * LuigiClient.getAnchor();
+   */
+  getAnchor() {
+    return this.currentContext.internal.anchor || '';
+  }
+
+  /**
+   * Sends anchor to Luigi Core. The anchor will be added to the URL.
+   * @param {string} anchor
+   * @memberof Lifecycle
+   * @example
+   * LuigiClient.setAnchor('luigi');
+   */
+  setAnchor(anchor) {
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.setAnchor',
+      anchor
+    });
+  }
 }
 export const lifecycleManager = new LifecycleManager();
