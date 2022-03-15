@@ -294,7 +294,7 @@ export class linkManager extends LuigiClientBase {
    *  );
    */
   pathExists(path) {
-    const currentId = Date.now();
+    const currentId = helpers.getRandomId();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
       resolveFn: function() {},
@@ -310,12 +310,14 @@ export class linkManager extends LuigiClientBase {
       function(e, listenerId) {
         const data = e.data.data;
         const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
-        if (pathExistsPromises[data.correlationId]) {
-          pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
-          delete pathExistsPromises[data.correlationId];
-          this.setPromise('pathExistsPromises', pathExistsPromises);
+        if (data.correlationId === currentId) {
+          if (pathExistsPromises[data.correlationId]) {
+            pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
+            delete pathExistsPromises[data.correlationId];
+            this.setPromise('pathExistsPromises', pathExistsPromises);
+          }
+          helpers.removeEventListener(listenerId);
         }
-        helpers.removeEventListener(listenerId);
       }.bind(this)
     );
 

@@ -21,20 +21,22 @@ export class LuigiElement extends HTMLElement {
     const template = document.createElement('template');
     template.innerHTML = this.render(ctx);
     const attCnt = () => {
-      this._shadowRoot.appendChild(template.content.cloneNode(true));
-      Reflect.ownKeys(Reflect.getPrototypeOf(this)).forEach(el => {
-        if (el.startsWith('$_')) {
-          this._shadowRoot[el] = this[el].bind(this);
-        }
-      });
-      const elementsWithIds = this._shadowRoot.querySelectorAll('[id]');
-      if (elementsWithIds) {
-        elementsWithIds.forEach(el => {
-          this['$' + el.getAttribute('id')] = el;
+      if (!this.__initialized) {
+        this._shadowRoot.appendChild(template.content.cloneNode(true));
+        Reflect.ownKeys(Reflect.getPrototypeOf(this)).forEach(el => {
+          if (el.startsWith('$_')) {
+            this._shadowRoot[el] = this[el].bind(this);
+          }
         });
+        const elementsWithIds = this._shadowRoot.querySelectorAll('[id]');
+        if (elementsWithIds) {
+          elementsWithIds.forEach(el => {
+            this['$' + el.getAttribute('id')] = el;
+          });
+        }
+        this.afterInit(ctx);
+        this.__initialized = true;
       }
-      this.afterInit(ctx);
-      this.__initialized = true;
     };
     if (this.luigiConfig && this.luigiConfig.styleSources && this.luigiConfig.styleSources.length > 0) {
       let nr_styles = this.luigiConfig.styleSources.length;
