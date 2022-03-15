@@ -122,7 +122,7 @@
     }
 
     elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
-    elements.iframe.style.paddingBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
+    elements.iframe.style.marginBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
   };
 
   function _messageHandler(e) {
@@ -335,7 +335,7 @@
   /* splitview start */
   $collapsedSplitviewHeight: 38px;
   :global(.lui-collapsed.iframeContainer.lui-split-view) {
-    padding-bottom: $collapsedSplitviewHeight;
+    margin-bottom: $collapsedSplitviewHeight;
   }
 
   :global(.splitViewContainer) {
