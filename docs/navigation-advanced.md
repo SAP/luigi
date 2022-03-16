@@ -51,7 +51,7 @@ Luigi.setConfig({
                 preloadViewGroups: true,
                 viewGroupSettings: {
                     vg1: {
-                        preloadUrl: '/examples/microfrontends/multipurpose.html/#/preload'
+                        preloadUrl: '/examples/microfrontends/multipurpose.html#/preload'
                     }
                 },
                 nodes: () => [
@@ -69,7 +69,7 @@ Luigi.setConfig({
                                     hideAutomatically: true,
                                     enabled: true
                                 },
-                                viewUrl: '/examples/microfrontends/multipurpose.html/#/route1',
+                                viewUrl: '/examples/microfrontends/multipurpose.html#/route1',
                             },
                             {
                                 viewGroup: 'vg1',
@@ -80,7 +80,7 @@ Luigi.setConfig({
                                     hideAutomatically: true,
                                     enabled: true
                                 },
-                                viewUrl: '/#route1/examples/microfrontends/multipurpose.html/#/route2',
+                                viewUrl: '/#route1/examples/microfrontends/multipurpose.html#/route2',
                             },
                         ]
                     }
