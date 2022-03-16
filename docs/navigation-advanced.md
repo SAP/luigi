@@ -35,10 +35,11 @@ Imagine your application hosts two micro frontend views: `http://example.com/a#e
 
 Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy.
 
-To make sure view groups work properly, it is recommended to install both Luigi Core and **Luigi Client**. See [this document](luigi-client-setup.md) for instructions, or for a simpler implementation include this line in your application:
+<!-- add-attribute:class:warning -->
+>**NOTE**: To make sure view groups work properly, you need to install both Luigi Core and **Luigi Client**. See [this document](luigi-client-setup.md) for instructions, or for a simpler implementation include this line in your application:
 `<script src="https://unpkg.com/@luigi-project/client/luigi-client.js"></script>`
 
-Paste this example in [Luigi Fiddle](https://fiddle.luigi-project.io/) to see view groups in action:
+You can paste this view group example in [Luigi Fiddle](https://fiddle.luigi-project.io/):
 
 <!-- accordion:start -->
 
@@ -46,104 +47,56 @@ Paste this example in [Luigi Fiddle](https://fiddle.luigi-project.io/) to see vi
 
 ```javascript
 Luigi.setConfig({
-  navigation: {
-    validWebcomponentUrls:['.*?'],
-    preloadViewGroups: true,
-    viewGroupSettings:{
-      vg1: {
-          preloadUrl: 'https://sapui5.netweaver.ondemand.com/'
-       }
-    },
-    nodes: () => [
-      {
-        pathSegment: 'settings',
-        label: 'Settings',
-        defaultChildNode: 'agents',
-        children: [
-          {
-            viewGroup: 'vg1',
-            pathSegment: 'agents',
-            label: 'Agent List',
-            hideSideNav: false,
-            loadingIndicator: {
-              hideAutomatically: true,
-              enabled: false
+            navigation: {
+                preloadViewGroups: true,
+                viewGroupSettings: {
+                    vg1: {
+                        preloadUrl: '/examples/microfrontends/multipurpose.html'
+                    }
+                },
+                nodes: () => [
+                    {
+                        pathSegment: 'settings',
+                        label: 'Settings',
+                        defaultChildNode: 'agents',
+                        children: [
+                            {
+                                viewGroup: 'vg1',
+                                pathSegment: 'agents',
+                                label: 'Agent Lists',
+                                hideSideNav: false,
+                                loadingIndicator: {
+                                    hideAutomatically: true,
+                                    enabled: true
+                                },
+                                viewUrl: '/examples/microfrontends/multipurpose.html',
+                            },
+                            {
+                                viewGroup: 'vg1',
+                                pathSegment: 'agentgroups',
+                                label: 'Agent Groups',
+                                hideSideNav: false,
+                                loadingIndicator: {
+                                    hideAutomatically: true,
+                                    enabled: true
+                                },
+                                viewUrl: '/examples/microfrontends/multipurpose.html',
+                            },
+                        ]
+                    }
+                ],
+                profile: {
+                    logout: {
+                        label: 'Sign Out',
+                        icon: "sys-cancel",
+                        customLogoutFn: () => { }
+                    },
+                }
             },
-            viewUrl: 'https://sapui5.netweaver.ondemand.com/#/api',
-          },
-          {
-            viewGroup: 'vg1',
-            pathSegment: 'agentgroups',
-            label: 'Agent Groups',
-            hideSideNav: false,
-            loadingIndicator: {
-              hideAutomatically: true,
-              enabled: false
-            },
-            viewUrl: 'https://sapui5.netweaver.ondemand.com/#/api/sap.m',
-          },
-        ]
-      }
-    ],
-    profile: {
-      logout: {
-        label: 'Sign Out',
-        icon: "sys-cancel",
-        customLogoutFn: () => {}
-      },
-    }
-  },
-  routing: {
-    /**
-     * Development:
-     * For path routing, set to false
-     * For hash routing, set to true
-     */
-    useHashRouting: false
-  },
-  userSettings: {
-    userSettingGroups: {
-      theming: {
-        label: 'Theming',
-        title: 'Theming',
-        icon: 'private',
-        viewUrl: 'http://localhost:8090/customUserSettingsMf.html',
-        settings: {
-          theme: {
-            type: 'enum',
-            label: 'sap-theme',
-            options: ['sap_fiori_3', 'sap_fiori_3_hcb', 'sap_fiori_3_hcw']
-          }
-        }
-      }
-    }
-  },
-  settings: {
-    appLoadingIndicator: {
-      enabled: false,
-      hideAutomatically: true
-    },
-    experimental: {
-      webcomponents: true
-    },
-    header: {
-      title: 'IRPA Luigi Testing Framework'
-    },
-    theming : {
-      themes: () => [
-        { id: 'sap_fiori_3', name: 'sap_fiori_3' },
-        { id: 'sap_fiori_3_hcb', name: 'sap_fiori_3_hcb' },
-        { id: 'sap_fiori_3_hcw', name: 'sap_fiori_3_hcw' }
-      ],
-      defaultTheme: 'sap_fiori_3',
-      nodeViewURLDecorator: {
-        queryStringParameter: {
-          keyName: 'sap-theme'
-        }
-      }
-    }
-  }
-});
+            routing: {
+                useHashRouting: true
+            }
+        });
 ```
 
 <!-- accordion:end -->
