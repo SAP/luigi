@@ -36,7 +36,7 @@ Imagine your application hosts two micro frontend views: `http://example.com/a#e
 Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy.
 
 <!-- add-attribute:class:warning -->
->**NOTE**: To make sure view groups work properly, you need to install both Luigi Core and **Luigi Client**. See [this document](luigi-client-setup.md) for instructions, or for a simpler implementation include this line in your application:
+>**NOTE**: To make sure view groups work properly, you need to include **Luigi Client** in your micro frontend. See [this document](luigi-client-setup.md) for instructions, or for a simpler implementation include this line in your application:
 `<script src="https://unpkg.com/@luigi-project/client/luigi-client.js"></script>`
 
 You can paste this view group example in [Luigi Fiddle](https://fiddle.luigi-project.io/):
