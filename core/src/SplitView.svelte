@@ -287,7 +287,7 @@
 <svelte:window on:resize={updateSizes} />
 <div
   id="splitViewContainer"
-  class="splitViewContainer {collapsed ? 'lui-collapsed' : ''}"
+  class="fd-page splitViewContainer {collapsed ? 'lui-collapsed' : ''}"
 >
   <Backdrop
     area="split-view"
@@ -440,7 +440,7 @@
     }
 
     .iframeSplitViewCnt {
-      background-color: var(--fd-background-color);
+      background-color: var(--sapBackgroundColor);
       position: absolute;
       width: 100%;
       bottom: 0;
