@@ -51,12 +51,6 @@ Luigi.setConfig({
 		...
 		]
 	}
-    settings: {
-   ...
-        experimental: {
-        webcomponents:true
-        }
-	.......
 })
 ```
 

@@ -632,11 +632,6 @@ describe('Luigi client linkManager', () => {
   describe('Webcomponent visibleForFeatureToggles test', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr1/wc_grid');
-      cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.settings.experimental = { webcomponents: true };
-        win.Luigi.configChanged();
-      });
     });
 
     it('open webcomponent with visibleForFeatureToggles', () => {
@@ -654,11 +649,6 @@ describe('Luigi client linkManager', () => {
   describe('Webcomponent compound view test', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr1/wc_grid_compound');
-      cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.settings.experimental = { webcomponents: true };
-        win.Luigi.configChanged();
-      });
     });
 
     it('open webcomponent btn', () => {
