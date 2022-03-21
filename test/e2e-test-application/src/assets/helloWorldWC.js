@@ -7,12 +7,19 @@ export default class extends HTMLElement {
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button>Click me!</button>';
 
+    const empty = document.createElement('template');
+    empty.innerHTML = `<section><p>Test!</p><br/><br/></section>`;
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
     });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
+
+    for (let index = 0; index < 20; index++) {
+      this._shadowRoot.appendChild(empty.content.cloneNode(true));
+    }
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('button');
