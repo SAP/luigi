@@ -61,9 +61,9 @@ export declare interface Context {
   };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
+  anchor?: string;
   [key: string]: any;
 }
-
 export declare interface NodeParams {
   [key: string]: string;
 }
@@ -140,7 +140,7 @@ export declare interface UxManager {
    * @param {Object} settings.links provides links data
    * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
-   * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+   * @param {string} settings.links.LINK_KEY.url URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
    * @param {string} settings.links.LINK_KEY.dismissKey dismissKey which represents the key of the link.
    * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
    * @returns {promise} which is resolved when the alert is dismissed
@@ -368,6 +368,17 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+
+  /**
+   * Update current title and size of a modal.
+   * @memberof linkManager
+   * @param {Object} updatedModalSettings possibility to update the active modal.
+   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
+   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @example
+   * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+   */
+  updateModalSettings: (updatedModalSettings: Object) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
@@ -651,6 +662,26 @@ export type getActiveFeatureToggles = () => Array<String>;
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Returns the anchor of active URL.
+ * @returns {String} the anchor string
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.getAnchor();
+ */
+export function getAnchor(): String;
+export type getAnchor = () => String;
+
+/**
+* Sets the anchor of active URL.
+* @param {string} anchor
+* @memberof Lifecycle
+* @example
+* LuigiClient.setAnchor('luigi');
+*/
+export function setAnchor(anchor: String): void;
+export type setAnchor = (anchor: String) => void;
 
 /**
  * Read search query parameters which are sent from Luigi core

@@ -46,11 +46,8 @@ class NavigationClass {
         rootNode.children,
         rootNode.context || {}
       );
-
       const navPathSegments = navObj.navigationPath.filter(x => x.pathSegment).map(x => x.pathSegment);
-
       navObj.isExistingRoute = !activePath || nodeNamesInCurrentPath.length === navPathSegments.length;
-
       const pathSegments = activePath.split('/');
       navObj.matchedPath = pathSegments
         .filter((segment, index) => {
@@ -254,6 +251,8 @@ class NavigationClass {
     let result = null;
     const segmentsLength = nodes.filter(n => !!n.pathSegment).length;
     const dynamicSegmentsLength = nodes.filter(n => n.pathSegment && n.pathSegment.startsWith(':')).length;
+    urlPathElement = urlPathElement.includes('#') ? urlPathElement.split('#').shift() : urlPathElement;
+
     if (segmentsLength > 1) {
       if (dynamicSegmentsLength === 1) {
         console.warn(

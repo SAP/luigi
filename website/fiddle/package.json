@@ -27,10 +27,10 @@
     "@luigi-project/plugin-auth-oauth2": "1.20.1",
     "@luigi-project/plugin-auth-oidc": "1.20.1",
     "@sap-theming/theming-base-content": "~11.1.28",
-    "@ui5/webcomponents": "^1.0.2",
-    "@ui5/webcomponents-fiori": "^1.0.2",
+    "@ui5/webcomponents": "^1.1.2",
+    "@ui5/webcomponents-fiori": "^1.1.2",
     "ace-builds": "1.4.14",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^10.0.1",
     "fundamental-styles": "0.18.0"
   }
 }
