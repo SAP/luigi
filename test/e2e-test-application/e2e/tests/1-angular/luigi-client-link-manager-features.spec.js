@@ -584,7 +584,7 @@ describe('Luigi client linkManager', () => {
               .invoke('height')
               .should('eq', splitViewHeight);
 
-            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).marginBottom) {
               cy.log('Positive');
             } else {
               cy.error('Negative');
@@ -617,7 +617,7 @@ describe('Luigi client linkManager', () => {
 
             const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
 
-            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).marginBottom) {
               cy.log('Positive');
             } else {
               cy.error('Negative');
