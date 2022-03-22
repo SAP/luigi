@@ -74,7 +74,8 @@
     }
     if (isDataPrepared) {
       if (nodeObject.webcomponent) {
-        //"Workaround" because we need a webcomponent client api to hide/show the loadingIndicator
+        //"Workaround" because we need a webcomponent client api
+        // to hide/show the loadingIndicator
         showLoadingIndicator = false;
         if (isDrawer) {
           await setDrawerSize();
