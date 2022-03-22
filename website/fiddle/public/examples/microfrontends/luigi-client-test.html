@@ -14,9 +14,11 @@
 <body>
     <button data-testid="lui-add-search-params" class="lui-hide-button" onclick="addSearchParams()">add search params</button>
 	<button data-testid="lui-delete-search-params" class="lui-hide-button" onclick="deleteSearchParam()">delete search params</button>
+	<button data-testid="lui-get-search-params" class="lui-hide-button" onclick="getSearchParam()">get search params</button>
 	<button data-testid="lui-add-node-params" class="lui-hide-button" onclick="addNodeParams()">add node params</button>
 	<button data-testid="lui-delete-node-params" class="lui-hide-button" onclick="deleteNodeParam()">delete node params</button>
-    <script>
+    <div>current search params: <span id="currentSearchParams"></span></div>
+	<script>
         function addSearchParams(){
 			LuigiClient.addCoreSearchParams({q:'test', luigi:'rocks', tets:'tets'});
 		}
@@ -28,6 +30,10 @@
 		}
 		function deleteNodeParam(){
 			LuigiClient.addNodeParams({q:undefined, luigi:'rocks'});
+		}
+		function getSearchParam() {
+			const params = LuigiClient.getCoreSearchParams();
+			document.getElementById('currentSearchParams').innerHTML = JSON.stringify(params);
 		}
 	</script>
     </script>
