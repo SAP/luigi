@@ -122,7 +122,7 @@
     }
 
     elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
-    elements.iframe.style.paddingBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
+    elements.iframe.style.marginBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
   };
 
   function _messageHandler(e) {
@@ -287,7 +287,7 @@
 <svelte:window on:resize={updateSizes} />
 <div
   id="splitViewContainer"
-  class="splitViewContainer {collapsed ? 'lui-collapsed' : ''}"
+  class="fd-page splitViewContainer {collapsed ? 'lui-collapsed' : ''}"
 >
   <Backdrop
     area="split-view"
@@ -335,7 +335,7 @@
   /* splitview start */
   $collapsedSplitviewHeight: 38px;
   :global(.lui-collapsed.iframeContainer.lui-split-view) {
-    padding-bottom: $collapsedSplitviewHeight;
+    margin-bottom: $collapsedSplitviewHeight;
   }
 
   :global(.splitViewContainer) {
@@ -440,7 +440,7 @@
     }
 
     .iframeSplitViewCnt {
-      background-color: var(--fd-background-color);
+      background-color: var(--sapBackgroundColor);
       position: absolute;
       width: 100%;
       bottom: 0;
