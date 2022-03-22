@@ -12,11 +12,11 @@
   import { Navigation } from './navigation/services/navigation';
   import {
     EventListenerHelpers,
+    EscapingHelpers,
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers,
   } from './utilities/helpers';
-  import { LuigiConfig } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
 
@@ -74,7 +74,8 @@
     }
     if (isDataPrepared) {
       if (nodeObject.webcomponent) {
-        //"Workaround" because we need a webcomponent client api to hide/show the loadingIndicator
+        //"Workaround" because we need a webcomponent client api
+        // to hide/show the loadingIndicator
         showLoadingIndicator = false;
         if (isDrawer) {
           await setDrawerSize();
@@ -114,17 +115,22 @@
 
   const setModalSize = async () => {
     const elem = document.getElementsByClassName('lui-modal-mf');
-    let modalSize = '80%';
+    let height = '80%';
+    let width = '80%';
     if (settings.size) {
-      if (settings.size === 'l') {
-        modalSize = '80%';
-      } else if (settings.size === 'm') {
-        modalSize = '60%';
+      if (settings.size === 'm') {
+        height, width = '60%';
       } else if (settings.size === 's') {
-        modalSize = '40%';
+        height, width = '40%';
+      }
+    }else if(settings.width && settings.height){
+      const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
+      if(settings.width.match(regex) && settings.height.match(regex)){
+        height = settings.height;
+        width = settings.width;
       }
     }
-    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
+    elem[0].setAttribute('style', `width:${width};height:${height};`);
   };
 
   const createIframeModal = async (viewUrl, componentData) => {
