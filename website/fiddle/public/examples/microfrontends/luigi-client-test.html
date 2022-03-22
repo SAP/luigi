@@ -17,7 +17,7 @@
 	<button data-testid="lui-get-search-params" class="lui-hide-button" onclick="getSearchParam()">get search params</button>
 	<button data-testid="lui-add-node-params" class="lui-hide-button" onclick="addNodeParams()">add node params</button>
 	<button data-testid="lui-delete-node-params" class="lui-hide-button" onclick="deleteNodeParam()">delete node params</button>
-    <div>current search params: <span id="currentSearchParams"></span></div>
+    <div class="lui-hide-button">current search params: <span id="currentSearchParams"></span></div>
 	<script>
         function addSearchParams(){
 			LuigiClient.addCoreSearchParams({q:'test', luigi:'rocks', tets:'tets'});
