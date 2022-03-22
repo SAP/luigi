@@ -584,7 +584,7 @@ describe('Luigi client linkManager', () => {
               .invoke('height')
               .should('eq', splitViewHeight);
 
-            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).marginBottom) {
               cy.log('Positive');
             } else {
               cy.error('Negative');
@@ -617,7 +617,7 @@ describe('Luigi client linkManager', () => {
 
             const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
 
-            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).marginBottom) {
               cy.log('Positive');
             } else {
               cy.error('Negative');
@@ -663,8 +663,9 @@ describe('Luigi client linkManager', () => {
 
     it('open webcomponent btn', () => {
       cy.window().then(win => {
-        cy.wait(500);
+        cy.wait(700);
         cy.get('.wcContainer>div>div>*').then(container => {
+          cy.wait(500);
           const root = container.children().prevObject[0].shadowRoot;
           const wcContent = root.querySelector('button').innerText;
 

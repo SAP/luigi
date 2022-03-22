@@ -21,7 +21,7 @@
     "@sap-theming/theming-base-content": "11.1.28",
     "core-js": "3.15.1",
     "fundamental-styles": "0.18.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "rxjs": "6.5.3",
     "zone.js": "0.9.1"
   },

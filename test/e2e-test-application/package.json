@@ -30,7 +30,7 @@
     "@luigi-project/plugin-auth-oauth2": "1.0.0",
     "@luigi-project/plugin-auth-oidc": "1.0.0",
     "@sap-theming/theming-base-content": "~11.1.28",
-    "ajv": "^6.1.1",
+    "ajv": "^6.12.3",
     "core-js": "^2.4.1",
     "fundamental-styles": "^0.17.0",
     "lodash": ">=4.17.13",
