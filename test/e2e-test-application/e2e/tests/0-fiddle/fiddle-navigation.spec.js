@@ -1016,6 +1016,17 @@ describe('Fiddle', () => {
 
       cy.getIframeBody().then($body => {
         cy.wrap($body)
+          .find('[data-testid="lui-get-search-params"]')
+          .invoke('show');
+        cy.wrap($body)
+          .contains('get search params')
+          .click();
+        cy.wrap($body)
+          .find('#currentSearchParams').should('have.text', '{"luigi":"rocks","q":"test"}')
+      });
+
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
           .find('[data-testid="lui-delete-search-params"]')
           .invoke('show');
         cy.wrap($body)
