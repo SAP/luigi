@@ -22,7 +22,7 @@
     "@sap-theming/theming-base-content": "11.1.28",
     "core-js": "3.15.1",
     "fundamental-styles": "0.18.0",
-    "node-sass": "^7.0.0",
+    "node-sass": "^4.14.1",
     "rxjs": "6.5.3",
     "sass": "^1.49.0",
     "zone.js": "0.11.4"
@@ -48,7 +48,7 @@
     "tar": ">=5.0.10",
     "ts-node": "4.1.0",
     "tslint": "6.1.3",
-    "typescript": "^4.1.5",
+    "typescript": "^4.1.6",
     "webpack": "^4.42.1",
     "webpack-cli": "4.1.0",
     "webpack-dev-server": "^3.11.0",

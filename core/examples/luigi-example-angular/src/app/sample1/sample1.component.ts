@@ -14,6 +14,6 @@ export class Sample1Component {
   }
 
   goTo() {
-    linkManager().updateModalPathInternalNavigation('/sample2', '');
+    linkManager().updateModalPathInternalNavigation('sample2');
   }
 }

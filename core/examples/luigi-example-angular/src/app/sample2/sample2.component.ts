@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { linkManager } from '@luigi-project/client';
+import { linkManager, setTargetOrigin } from '@luigi-project/client';
 
 @Component({
   selector: 'app-sample2',
@@ -10,9 +10,10 @@ export class Sample2Component {
 
   openModal() {
     linkManager().openAsModal('/sample2');
+    setTargetOrigin('http://localhost:4200');
   }
 
-  // goTo() {
-  //   linkManager().updateModalPathInternalNavigation('/home');
-  // }
+  goTo() {
+    linkManager().updateModalPathInternalNavigation('sample1');
+  }
 }
