@@ -1433,7 +1433,7 @@
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal);
+        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {

@@ -109,7 +109,7 @@ export class linkManager extends LuigiClientBase {
       params: Object.assign(this.options, {
         link: path,
         modal: modalSettings,
-        addHistoryEntry
+        history: addHistoryEntry
       })
     };
     helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
