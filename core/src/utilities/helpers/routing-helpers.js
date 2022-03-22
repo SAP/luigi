@@ -511,11 +511,7 @@ class RoutingHelpersClass {
     if (!GenericHelpers.isObject(localSearchParams)) {
       return;
     }
-    Object.keys(localSearchParams).forEach(key => {
-      if (localSearchParams[key] !== undefined) {
-        localSearchParams[key] = encodeURIComponent(localSearchParams[key]);
-      }
-    });
+
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       const filteredObj = {};
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
