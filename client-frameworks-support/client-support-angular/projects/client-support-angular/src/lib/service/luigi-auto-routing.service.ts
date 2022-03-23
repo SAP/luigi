@@ -7,7 +7,7 @@ import {
   Router,
   RouterEvent,
 } from '@angular/router';
-import { linkManager } from '@luigi-project/client';
+import { linkManager, uxManager } from '@luigi-project/client';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiContextService } from './luigi-context-service';
@@ -120,9 +120,10 @@ export class LuigiAutoRoutingService implements OnDestroy {
         console.debug('Calling fromVirtualTreeRoot for url ==> ' + url);
         linkManager().fromVirtualTreeRoot().withoutSync().navigate(url);
       }
-      if (current.data.updateModalDataPath && current.routeConfig?.path) {
+      const ux = uxManager();
+      if (ux.isModal() && current.data.updateModalDataPath && current.routeConfig?.path) {
         const lm = linkManager();
-        lm.updateModalPathInternalNavigation(current.routeConfig.path);
+        lm.updateModalPathInternalNavigation(current.routeConfig.path, {}, current.data.addHistoryEntry);
       }
     }
   }

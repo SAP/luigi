@@ -15,7 +15,7 @@
 <p>Sample2.html</p>
 <button (click)="openModal()">Open modal</button>
 <form action="sampleapp.html#/sample1">
-  <button type="submit">Sample1</button>
+  <button type="submit" (click)="goTo()">Sample1</button>
 </form>
 
 <a routerLink="/sample1" routerLinkActive="active">Sample1</a>
