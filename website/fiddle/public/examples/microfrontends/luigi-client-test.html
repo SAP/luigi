@@ -6,18 +6,20 @@
 	<link href="../../styles/styles.css" rel="stylesheet">
 	<script src="/vendor/luigi-client/luigi-client.js"></script>
     <style>
-		.lui-hide-button{
+		.hide{
 			display:none;
 		}
 	</style>
 </head>
 <body>
-    <button data-testid="lui-add-search-params" class="lui-hide-button" onclick="addSearchParams()">add search params</button>
-	<button data-testid="lui-delete-search-params" class="lui-hide-button" onclick="deleteSearchParam()">delete search params</button>
-	<button data-testid="lui-get-search-params" class="lui-hide-button" onclick="getSearchParam()">get search params</button>
-	<button data-testid="lui-add-node-params" class="lui-hide-button" onclick="addNodeParams()">add node params</button>
-	<button data-testid="lui-delete-node-params" class="lui-hide-button" onclick="deleteNodeParam()">delete node params</button>
-    <div class="lui-hide-button">current search params: <span id="currentSearchParams"></span></div>
+	<section class="hide">
+		<button data-testid="lui-add-search-params" onclick="addSearchParams()">add search params</button>
+		<button data-testid="lui-delete-search-params" onclick="deleteSearchParam()">delete search params</button>
+		<button data-testid="lui-get-search-params" onclick="getSearchParam()">get search params</button>
+		<button data-testid="lui-add-node-params" onclick="addNodeParams()">add node params</button>
+		<button data-testid="lui-delete-node-params" onclick="deleteNodeParam()">delete node params</button>
+		<div>current search params: <span id="currentSearchParams"></span></div>
+	</section>
 	<script>
         function addSearchParams(){
 			LuigiClient.addCoreSearchParams({q:'test', luigi:'rocks', tets:'tets'});
