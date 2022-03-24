@@ -215,11 +215,7 @@
             data-testid="luigi-topnav-profile-item"
             href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
             on:click={(event) => {
-              if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                event.preventDefault();
-              } else {
-                event.stopPropagation();
-              }
+              NavigationHelpers.handleNavAnchorClick(event);
             }}
           >
             {#if profileItem.icon}

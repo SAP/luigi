@@ -139,12 +139,7 @@
       : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
     on:click={(event) => {
-      if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-        event.preventDefault();
-        goTo('/');
-      } else {
-        event.stopPropagation();
-      }
+      NavigationHelpers.handleNavAnchorClick(event, goTo, '/');
     }}
     href="/"
     role="button"
@@ -176,12 +171,7 @@
         class="fd-shellbar__title lui-shellbar-single-app-title"
         data-testid="luigi-topnav-title"
         on:click={(event) => {
-          if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-            event.preventDefault();
-            goTo('/');
-          } else {
-            event.stopPropagation();
-          }
+          NavigationHelpers.handleNavAnchorClick(event, goTo, '/');
         }}
         href="/"
       >
@@ -296,12 +286,7 @@
                       role="button"
                       class="fd-menu__link"
                       on:click={(event) => {
-                        if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                          event.preventDefault();
-                          goTo(item.link)
-                        } else {
-                          event.stopPropagation();
-                        }
+                        NavigationHelpers.handleNavAnchorClick(event, goTo, item.link);
                       }}
                       href={addNavHrefForAnchor
                         ? getRouteLink(item, pathParams)

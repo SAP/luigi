@@ -1,5 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import { NavigationHelpers } from '../utilities/helpers';
+
 
   export let actions = [];
   export let config = {};
@@ -68,11 +70,7 @@
               <a
                 href={getRouteLink(node)}
                 on:click={(event) => {
-                  if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                    event.preventDefault();
-                  } else {
-                    event.stopPropagation();
-                  }
+                  NavigationHelpers.handleNavAnchorClick(event);
                 }}
                 class="fd-menu__link {label === selectedLabel
                   ? 'is-selected'
@@ -99,11 +97,7 @@
             <a
               href={getRouteLink(node)}
               on:click={(event) => {
-                if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                  event.preventDefault();
-                } else {
-                  event.stopPropagation();
-                }
+                NavigationHelpers.handleNavAnchorClick(event);
               }}
               class="fd-menu__link"
             >

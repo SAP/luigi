@@ -430,12 +430,7 @@
                       aria-expanded="false"
                       aria-haspopup="true"
                       on:click={(event) => {
-                        if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                          event.preventDefault();
-                          handleClick(node);
-                        } else {
-                          event.stopPropagation();
-                        }
+                        NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
                       }}
                       data-testid={getTestId(node)}
                     >

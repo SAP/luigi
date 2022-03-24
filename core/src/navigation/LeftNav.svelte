@@ -508,12 +508,7 @@
                             ? 'is-selected'
                             : ''}"
                           on:click={(event) => {
-                            if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                              event.preventDefault();
-                              handleClick(node)
-                            } else {
-                              event.stopPropagation();
-                            }
+                            NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
                           }}
                           data-testid={getTestId(node)}
                         >
@@ -655,12 +650,7 @@
                                   ? 'is-selected'
                                   : ''}"
                                 on:click={(event) => {
-                                  if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                                    event.preventDefault();
-                                    handleClick(node)
-                                  } else {
-                                    event.stopPropagation();
-                                  }
+                                  NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
                                 }}
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
@@ -704,12 +694,7 @@
                                         ? 'is-selected'
                                         : ''}"
                                       on:click={(event) => {
-                                        if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                                          event.preventDefault();
-                                          handleClick(node)
-                                        } else {
-                                          event.stopPropagation();
-                                        }
+                                        NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
                                       }}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
@@ -783,12 +768,7 @@
                               ? 'is-selected'
                               : ''}"
                             on:click={(event) => {
-                              if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                                event.preventDefault();
-                                handleClick(node)
-                              } else {
-                                event.stopPropagation();
-                              }
+                              NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
                             }}
                             data-testid={getTestId(node)}
                           >

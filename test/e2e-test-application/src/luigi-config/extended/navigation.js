@@ -165,12 +165,13 @@ class Navigation {
     }, // showing an anonymous content is possible only with auto login disabled
 
     {
-      category: 'Misc',
       pathSegment: 'all-users',
       label: 'Visible for all users',
-      anonymousAccess: true,
       viewUrl: '/sampleapp.html#/anonymous',
-      hideSideNav: true
+      hideSideNav: true,
+      globalNav: true,
+      icon: 'settings',
+      viewGroup: 'tets'
     },
     {
       pathSegment: 'anonymous',
@@ -221,7 +222,8 @@ class Navigation {
       label: 'Errors',
       pathSegment: 'errors',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
-      hideSideNav: true,
+      // hideSideNav: true,
+      globalNav: true,
       icon: 'alert',
       context: {
         label: 'Errors'
@@ -250,6 +252,7 @@ class Navigation {
       category: 'Messages',
       label: 'Notifications',
       pathSegment: 'notifications',
+      globalNav: true,
       hideSideNav: true,
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/notifications',
       icon: 'ui-notifications',
