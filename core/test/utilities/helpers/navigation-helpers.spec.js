@@ -695,7 +695,7 @@ describe('Navigation-helpers', () => {
         'luigi.preferences.navigation.expandedCategories',
         JSON.stringify(['home:cat'])
       );
-      });
+    });
   });
   describe('renderIconClassName', () => {
     it('should render sap-icon to standard icon suite', () => {
@@ -712,6 +712,51 @@ describe('Navigation-helpers', () => {
     });
     it('render icon class name without name', () => {
       assert.equal(NavigationHelpers.renderIconClassName(''), '');
+    });
+  });
+
+  describe('handleNavAnchorClick', () => {
+    var event;
+    var fn;
+    beforeEach(() => {
+      event = new Event('click');
+      fn = sinon.stub();
+      event.preventDefault = sinon.spy();
+      event.stopPropagation = sinon.spy();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('call the function with one argument only', () => {
+      NavigationHelpers.handleNavAnchorClick(event);
+      sinon.assert.calledOnce(event.preventDefault);
+      sinon.assert.notCalled(event.stopPropagation);
+    });
+
+    it('call the function with one argument and CTRL pressed', () => {
+      event.ctrlKey = true;
+      NavigationHelpers.handleNavAnchorClick(event);
+      sinon.assert.notCalled(event.preventDefault);
+      sinon.assert.calledOnce(event.stopPropagation);
+    });
+
+    it('call the function with callback arguments and CTRL pressed', () => {
+      const param = 'test';
+      event.ctrlKey = true;
+      NavigationHelpers.handleNavAnchorClick(event, fn, param);
+      sinon.assert.notCalled(event.preventDefault);
+      sinon.assert.calledOnce(event.stopPropagation);
+    });
+
+    it('call the function with callback function and no CTRL pressed', () => {
+      const param = 'test';
+      NavigationHelpers.handleNavAnchorClick(event, fn, param);
+      sinon.assert.calledOnce(event.preventDefault);
+      sinon.assert.notCalled(event.stopPropagation);
+      sinon.assert.calledWithExactly(fn, param);
     });
   });
 });
