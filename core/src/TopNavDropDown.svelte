@@ -121,7 +121,14 @@
           >
             <a
               href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
-              on:click|preventDefault={() => {}}
+              on:click={(event) => {
+                if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                  console.log('Click Auth 004 product switcher');
+                  event.preventDefault();
+                } else {
+                  event.stopPropagation();
+                }
+              }}
               class="fd-menu__link"
             >
               <span class="fd-top-nav__icon">

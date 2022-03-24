@@ -462,6 +462,13 @@ class NavigationHelpersClass {
       reject(error);
     });
   }
+
+  handleNavAnchorClick(event) {
+    if (!(event.ctrlKey || event.metaKey)) {
+      console.log('Click Auth 004 product switcher');
+      event.preventDefault();
+    }
+  }
 }
 
 export const NavigationHelpers = new NavigationHelpersClass();

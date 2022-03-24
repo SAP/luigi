@@ -246,7 +246,14 @@
               tabindex="0"
               class="fd-list__link"
               data-testid="luigi-topnav-profile-item"
-              on:click|preventDefault={() => {}}
+              on:click={(event) => {
+                if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                  console.log('Click Auth 004 product switcher');
+                  event.preventDefault();
+                } else {
+                  event.stopPropagation();
+                }
+              }}
               href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
             >
               {#if profileItem.icon}

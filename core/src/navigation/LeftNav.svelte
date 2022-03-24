@@ -507,7 +507,15 @@
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
-                          on:click|preventDefault={() => handleClick(node)}
+                          on:click={(event) => {
+                            if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                              console.log('Click Auth 004 product switcher');
+                              event.preventDefault();
+                              handleClick(node)
+                            } else {
+                              event.stopPropagation();
+                            }
+                          }}
                           data-testid={getTestId(node)}
                         >
                           {#if node.icon}
@@ -647,8 +655,15 @@
                                 selectedNode
                                   ? 'is-selected'
                                   : ''}"
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
+                                on:click={(event) => {
+                                  if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                                    console.log('Click Auth 004 product switcher');
+                                    event.preventDefault();
+                                    handleClick(node)
+                                  } else {
+                                    event.stopPropagation();
+                                  }
+                                }}
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
@@ -690,8 +705,15 @@
                                       selectedNode
                                         ? 'is-selected'
                                         : ''}"
-                                      on:click|preventDefault={() =>
-                                        handleClick(node)}
+                                      on:click={(event) => {
+                                        if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                                          console.log('Click Auth 004 product switcher');
+                                          event.preventDefault();
+                                          handleClick(node)
+                                        } else {
+                                          event.stopPropagation();
+                                        }
+                                      }}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
@@ -763,7 +785,14 @@
                             class="fd-nested-list__link {node === selectedNode
                               ? 'is-selected'
                               : ''}"
-                            on:click|preventDefault={() => handleClick(node)}
+                            on:click={(event) => {
+                              if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                                event.preventDefault();
+                                handleClick(node)
+                              } else {
+                                event.stopPropagation();
+                              }
+                            }}
                             data-testid={getTestId(node)}
                           >
                             {#if node.icon}

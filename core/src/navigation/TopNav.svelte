@@ -429,7 +429,14 @@
                       title={resolveTooltipText(node, getNodeLabel(node))}
                       aria-expanded="false"
                       aria-haspopup="true"
-                      on:click|preventDefault={() => handleClick(node)}
+                      on:click={(event) => {
+                        if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                          event.preventDefault();
+                          handleClick(node);
+                        } else {
+                          event.stopPropagation();
+                        }
+                      }}
                       data-testid={getTestId(node)}
                     >
                       <TopNavNode bind:node />

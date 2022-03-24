@@ -67,7 +67,13 @@
             {:else}
               <a
                 href={getRouteLink(node)}
-                on:click|preventDefault={() => {}}
+                on:click={(event) => {
+                  if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                    event.preventDefault();
+                  } else {
+                    event.stopPropagation();
+                  }
+                }}
                 class="fd-menu__link {label === selectedLabel
                   ? 'is-selected'
                   : ''}"
@@ -92,7 +98,13 @@
           >
             <a
               href={getRouteLink(node)}
-              on:click|preventDefault={() => {}}
+              on:click={(event) => {
+                if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                  event.preventDefault();
+                } else {
+                  event.stopPropagation();
+                }
+              }}
               class="fd-menu__link"
             >
               <span class="fd-menu__title">{$getTranslation(node.label)}</span>

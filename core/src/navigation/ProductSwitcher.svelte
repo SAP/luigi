@@ -140,7 +140,14 @@
                       {#if addNavHrefForAnchor}
                         <a
                           href={getRouteLink(productSwitcherItem)}
-                          on:click|preventDefault={() => {}}
+                          on:click={(event) => {
+                            if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                              console.log('Click Auth 004 product switcher');
+                              event.preventDefault();
+                            } else {
+                              event.stopPropagation();
+                            }
+                          }}
                           class="fd-menu__link"
                         >
                           <div class="lui-product-switch__icon">

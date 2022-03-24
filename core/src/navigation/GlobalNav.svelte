@@ -117,7 +117,15 @@
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
                     title={$getTranslation(node.label)}
-                    on:click|preventDefault={() => handleClick(node)}
+                    on:click={(event) => {
+                      if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                        console.log('Click Auth 004 product switcher');
+                        event.preventDefault();
+                        handleClick(node);
+                      } else {
+                        event.stopPropagation();
+                      }
+                    }}
                     role="button"
                   >
                     <div class="lui-fd-nested-list__content">

@@ -138,7 +138,15 @@
       ? 'fd-shellbar__logo--image-replaced'
       : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
-    on:click|preventDefault={() => goTo('/')}
+    on:click={(event) => {
+      if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+        console.log('Click Auth 004 product switcher');
+        event.preventDefault();
+        goTo('/');
+      } else {
+        event.stopPropagation();
+      }
+    }}
     href="/"
     role="button"
     tabindex="0"
@@ -168,7 +176,15 @@
       <a
         class="fd-shellbar__title lui-shellbar-single-app-title"
         data-testid="luigi-topnav-title"
-        on:click|preventDefault={() => goTo('/')}
+        on:click={(event) => {
+          if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+            console.log('Click Auth 004 product switcher');
+            event.preventDefault();
+            goTo('/');
+          } else {
+            event.stopPropagation();
+          }
+        }}
         href="/"
       >
         {$getTranslation(title)}
@@ -281,7 +297,15 @@
                     <a
                       role="button"
                       class="fd-menu__link"
-                      on:click|preventDefault={() => goTo(item.link)}
+                      on:click={(event) => {
+                        if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+                          console.log('Click Auth 004 product switcher');
+                          event.preventDefault();
+                          goTo(item.link)
+                        } else {
+                          event.stopPropagation();
+                        }
+                      }}
                       href={addNavHrefForAnchor
                         ? getRouteLink(item, pathParams)
                         : undefined}
