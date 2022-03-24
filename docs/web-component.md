@@ -51,14 +51,10 @@ Luigi.setConfig({
 		...
 		]
 	}
-    settings: {
-   ...
-        experimental: {
-        webcomponents:true
-        }
-	.......
 })
 ```
+
+> **NOTE:** With Luigi version NEXTRELEASE we removed the experimental flag for webcomponents. 
 
 ### Write a Web Component
 
