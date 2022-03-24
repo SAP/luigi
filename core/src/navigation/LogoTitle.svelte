@@ -140,7 +140,6 @@
     aria-label={title}
     on:click={(event) => {
       if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-        console.log('Click Auth 004 product switcher');
         event.preventDefault();
         goTo('/');
       } else {
@@ -178,7 +177,6 @@
         data-testid="luigi-topnav-title"
         on:click={(event) => {
           if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-            console.log('Click Auth 004 product switcher');
             event.preventDefault();
             goTo('/');
           } else {
@@ -299,7 +297,6 @@
                       class="fd-menu__link"
                       on:click={(event) => {
                         if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                          console.log('Click Auth 004 product switcher');
                           event.preventDefault();
                           goTo(item.link)
                         } else {

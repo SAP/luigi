@@ -119,7 +119,6 @@
                     title={$getTranslation(node.label)}
                     on:click={(event) => {
                       if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
-                        console.log('Click Auth 004 product switcher');
                         event.preventDefault();
                         handleClick(node);
                       } else {
