@@ -994,7 +994,7 @@ describe('Fiddle', () => {
           .contains('add node params')
           .click();
       });
-      cy.expectPathToBe('/home/mynode?%7Eq=test&%7Eluigi=rocks');
+      cy.expectPathToBe('/home/mynode?%7Eq=test&~luigi=rocks');
       cy.getIframeBody().then($body => {
         cy.wrap($body)
           .find('[data-testid="lui-delete-node-params"]')
