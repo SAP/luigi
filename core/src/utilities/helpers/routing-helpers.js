@@ -618,7 +618,7 @@ class RoutingHelpersClass {
     this.modifySearchParams(params, searchParams, paramPrefix);
     localhash = hashValue;
     if (searchParams.toString() !== '') {
-      localhash += `?${decodeURIComponent(searchParams.toString())}`;
+      localhash += `?${searchParams.toString()}`;
     }
     return localhash;
   }
