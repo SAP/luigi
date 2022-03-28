@@ -120,7 +120,7 @@ describe('Luigi routing', function() {
         window.history.pushState,
         window.state,
         '',
-        'http://some.url.de/#/?~luigi=rocks&foo=bar'
+        'http://some.url.de/#/?%7Eluigi=rocks&foo=bar'
       );
     });
     it('call addSearchParams with wrong argument hash routing', () => {
