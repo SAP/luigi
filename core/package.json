@@ -78,7 +78,6 @@
     {
       "path": "./public/luigi.js",
       "maxSize": "650 kB",
-
       "compression": "none"
     },
     {
