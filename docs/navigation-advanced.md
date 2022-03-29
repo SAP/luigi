@@ -80,7 +80,7 @@ Luigi.setConfig({
                                     hideAutomatically: true,
                                     enabled: true
                                 },
-                                viewUrl: '/#route1/examples/microfrontends/multipurpose.html#/route2',
+                                viewUrl: '/examples/microfrontends/multipurpose.html#/route2',
                             },
                         ]
                     }

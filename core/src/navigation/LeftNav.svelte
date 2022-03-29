@@ -553,7 +553,7 @@
                     {/if}
                   {/if}
                 {/each}
-              {:else}
+              {:else if nodes.filter(node => (!node.hideFromNav && node.label)).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
                   <li
