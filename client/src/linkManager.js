@@ -97,6 +97,7 @@ export class linkManager extends LuigiClientBase {
    * @param {string} path
    * @param {boolean} addHistoryEntry adds an entry in the history
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+   * @since NEXTRELEASE
    * @example
    * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
    */
