@@ -1,9 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {
   addInitListener,
-  addContextUpdateListener,
-  linkManager,
-  setTargetOrigin
+  addContextUpdateListener
 } from '@luigi-project/client';
 
 @Component({
@@ -28,12 +26,6 @@ export class HomeComponent implements OnInit {
         this.ref.detectChanges();
       }
     });
-  }
-
-  openModal() {
-    linkManager().openAsModal('sample1');
-    // linkManager().openAsModal('/sample1');
-    setTargetOrigin('http://localhost:4200');
   }
 
 }

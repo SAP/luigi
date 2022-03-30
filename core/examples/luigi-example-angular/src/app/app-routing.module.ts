@@ -6,17 +6,8 @@ import { Sample2Component } from './sample2/sample2.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
-  // { path: 'sample1', component: Sample1Component },
-  { 
-    path: 'sample2',
-    component: Sample2Component, 
-    data: { updateModalDataPath: true, addHistoryEntry: true }
-  },
-  {
-    path: 'sample1',
-    component: Sample1Component,
-    // data: { updateModalDataPath: true, addHistoryEntry: true }
-  }
+  { path: 'sample1', component: Sample1Component },
+  { path: 'sample2', component: Sample2Component }
 ];
 
 @NgModule({

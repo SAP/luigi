@@ -37,16 +37,6 @@ Luigi.setConfig({
       }
     ]
   },
-  routing: {
-    /**
-     * Development:
-     * For path routing, set to false
-     * For hash routing, set to true
-     */
-    // useHashRouting: true,
-    showModalPathInUrl: true,
-    // modalPathParam: 'modalPathParam'
-  },
   settings: {
     header: {
       title: 'Luigi Angular App',
