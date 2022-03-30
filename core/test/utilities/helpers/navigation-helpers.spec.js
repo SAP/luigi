@@ -126,13 +126,45 @@ describe('Navigation-helpers', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
-        columns: 3
+        columns: 'auto',
+        items: () => {
+          return [{}, {}, {}]
+        }
       });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
       assert.equal(columns, 3);
     });
     it('should return number from config file even if columns are not defined', () => {
-      LuigiConfig.getConfigValue.returns({ icon: 'grid', label: 'Products' });
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        items: () => {
+          return [{}, {}, {}, {}, {}, {}, {}] //7
+        }
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+
+    it('should return number from config file if columns are defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: () => {return []},
+        columns: 3
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 3);
+    });
+
+    it('should return number from config file if columns are defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: () => {return []},
+        columns: '110'
+      });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
       assert.equal(columns, 4);
     });
@@ -695,7 +727,7 @@ describe('Navigation-helpers', () => {
         'luigi.preferences.navigation.expandedCategories',
         JSON.stringify(['home:cat'])
       );
-      });
+    });
   });
   describe('renderIconClassName', () => {
     it('should render sap-icon to standard icon suite', () => {

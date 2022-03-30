@@ -817,7 +817,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 ### columns
 - **type**: number
-- **description**: gives the possibility to define a number of columns to display products. It may be 3 or 4 columns. If nothing is specified, it is 4 columns by default.
+- **description**: gives the possibility to define a number of columns to be displayed within the product switcher. It may be 3 or 4 columns, or `'auto'`. If nothing is specified, it is 4 columns by default. Parameter `columns: 'auto'` sets the number of columns to 3, in case the entities in  **productSwitcher** are equal to or less than 6. If there are more than 6, the number of columns will be automatically adjusted to 4. 
 
 ### icon
 - **type**: string

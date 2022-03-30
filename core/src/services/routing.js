@@ -351,13 +351,13 @@ class RoutingClass {
         }
       }
 
-      if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
+      if (nodeObject.compound) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
         Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponentCompound(component, nodeObject);
-      } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
+      } else if (nodeObject.webcomponent) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }

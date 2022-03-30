@@ -148,6 +148,10 @@
     float: left;
   }
 
+  .lui-usersettings-content .fd-select .fd-select__control {
+    margin: 0;
+  }
+
   /*Vertical alignement for mobile label/input view*/
   @media (max-width: 600px) {
     .lui-usersettings-content .fd-col--4,
@@ -238,15 +242,13 @@
                 {#if Array.isArray(schemaItem.options)}
                   <ul class="fd-list fd-list--compact fd-list--dropdown" role="listbox">
                     {#each schemaItem.options as option, optionIndex}
-                    <li
-                      role="option"
+                    <li role="option"
                       tabindex="0"
                       class="fd-list__item"
                       class:is-selected={selectedLanguageLabel === optionIndex}
                       data-testid="lui-us-option{i}_{optionIndex}"
                       on:click="{() => updateComboBox(key,option,optionIndex)}"
-                      on:keyup="{(event) => handleKeyListItem(event,[optionIndex])}"
-                    >
+                      on:keyup="{(event) => handleKeyListItem(event,[optionIndex])}">
                       <span class="fd-list__title">{getLabel(option)}</span>
                     </li>
                     {/each}

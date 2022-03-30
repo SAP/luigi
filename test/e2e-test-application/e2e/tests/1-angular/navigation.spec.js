@@ -133,8 +133,8 @@ describe('Navigation', () => {
         setTimeout(() => {
           cy.get('#splitViewContainer').should('be.visible');
           cy.get('.fd-shellbar')
-          .contains('Projects')
-          .click();
+            .contains('Projects')
+            .click();
           cy.expectPathToBe('/projects');
           cy.get('#splitViewContainer').should('not.be.visible');
         }, 0);

@@ -188,12 +188,12 @@ Luigi.setConfig({
                 logo: 'img/luigi.png', 
                 title: 'Luigi Fiddle'
             },
-            experimental: {
-              webcomponents:true
-            },
             burgerTooltip: {
                 navExpanded: 'Collapse navigation',
                 navCollapsed: 'Expand navigation'
+            },
+            experimental:{
+                webcomponents: true
             }
         }
     });    
