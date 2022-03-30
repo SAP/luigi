@@ -19,7 +19,17 @@ class NavigationHelpersClass {
 
   getProductSwitcherColumnsNumber() {
     const productSwitcherConfig = this.getProductSwitcherConfig();
-    return productSwitcherConfig.columns === 3 ? 3 : 4;
+    let productSwitcherColumns = productSwitcherConfig.columns;
+    let productSwitcherItemsAmount = productSwitcherConfig.items().length;
+    if (productSwitcherColumns === 'auto') {
+      if (productSwitcherItemsAmount <= 6) {
+        return productSwitcherConfig.columns = 3;
+      } else {
+        return productSwitcherConfig.columns = 4;
+      }
+    } else {
+      return productSwitcherConfig.columns === 3 ? 3 : 4;
+    }
   }
 
   prepareForTests(...parts) {
