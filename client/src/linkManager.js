@@ -92,6 +92,33 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * Updates path of the modalPathParam when internal navigation occurs.
+   * @memberof linkManager
+   * @param {string} path
+   * @param {boolean} addHistoryEntry adds an entry in the history
+   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+   */
+  updateModalPathInternalNavigation(path, modalSettings = {}, addHistoryEntry = false) {
+    if (!path) {
+      console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
+      return;
+    }
+
+    const navigationOpenMsg = {
+      msg: 'luigi.navigation.updateModalDataPath',
+      params: Object.assign(this.options, {
+        link: path,
+        modal: modalSettings,
+        history: addHistoryEntry
+      })
+    };
+    helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
+  }
+
+  /**
    * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
    * parameters.
    * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
@@ -232,6 +259,7 @@ export class linkManager extends LuigiClientBase {
     }
     return this;
   }
+  
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof linkManager
