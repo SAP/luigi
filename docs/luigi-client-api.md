@@ -381,6 +381,40 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 -   **since**: 1.7.1
 
+#### getAnchor
+
+Returns the current anchor based on active URL.
+
+##### Examples
+
+```javascript
+LuigiClient.getAnchor();
+```
+
+Returns **any** anchor of URL
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### setAnchor
+
+Sends anchor to Luigi Core. The anchor will be added to the URL.
+
+##### Parameters
+
+-   `anchor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+LuigiClient.setAnchor('luigi');
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 ### Lifecycle~initListenerCallback
 
 Callback of the addInitListener
@@ -465,7 +499,7 @@ LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.16.0
 
 #### preserveQueryParams
 
@@ -484,7 +518,7 @@ LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foob
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.19.0
 
 #### navigate
 
@@ -1057,7 +1091,6 @@ Returns **any** current themeObj
 
 StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by Luigi Core.
 The idea is that different micro frontends can share or persist items using local storage, as long as they come from the same domain and follow the [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
-The idea is that different micro frontends can share or persist items using local storage.
 Since all storage operations are asynchronous (sending an event to Luigi Core that will reply once operation is finished), all the methods return Promises.
 
 #### setItem

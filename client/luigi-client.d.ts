@@ -434,7 +434,7 @@ export declare interface LinkManager {
 
   /**
    * Enables navigating to a new tab.
-   * @since NEXT_RELEASE
+   * @since 1.16.0
    * @example
    * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
@@ -443,7 +443,7 @@ export declare interface LinkManager {
   /**
    * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
-   * @since NEXT_RELEASE
+   * @since 1.19.0
    * @example
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
@@ -684,12 +684,12 @@ export function getAnchor(): String;
 export type getAnchor = () => String;
 
 /**
-* Sets the anchor of active URL.
-* @param {string} anchor
-* @memberof Lifecycle
-* @example
-* LuigiClient.setAnchor('luigi');
-*/
+ * Sets the anchor of active URL.
+ * @param {string} anchor
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.setAnchor('luigi');
+ */
 export function setAnchor(anchor: String): void;
 export type setAnchor = (anchor: String) => void;
 
