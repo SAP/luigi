@@ -474,7 +474,7 @@ class NavigationHelpersClass {
   }
 
   /**
-   * This function checks if the CTRL, CMD or SHIFT key are pressed on the click event.
+   * This function checks if the CTRL, CMD or SHIFT key is pressed on the click event.
    * If one of these keyboard controls is pressed, default behavior (open in new tab/window) should be allowed.
    * In addition custom behavior that might be inflicted from any parent click event should be stopped,
    * to make way for the default behavior, ergo the stopPropagation() function in the else condition.
