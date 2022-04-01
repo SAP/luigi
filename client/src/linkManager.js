@@ -92,6 +92,33 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * Updates path of the modalPathParam when internal navigation occurs.
+   * @memberof linkManager
+   * @param {string} path
+   * @param {boolean} addHistoryEntry adds an entry in the history
+   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+   */
+  updateModalPathInternalNavigation(path, modalSettings = {}, addHistoryEntry = false) {
+    if (!path) {
+      console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
+      return;
+    }
+
+    const navigationOpenMsg = {
+      msg: 'luigi.navigation.updateModalDataPath',
+      params: Object.assign(this.options, {
+        link: path,
+        modal: modalSettings,
+        history: addHistoryEntry
+      })
+    };
+    helpers.sendPostMessageToLuigiCore(navigationOpenMsg);
+  }
+
+  /**
    * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
    * parameters.
    * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
@@ -232,6 +259,7 @@ export class linkManager extends LuigiClientBase {
     }
     return this;
   }
+  
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof linkManager
@@ -374,7 +402,7 @@ export class linkManager extends LuigiClientBase {
 
   /**
    * Enables navigating to a new tab.
-   * @since NEXT_RELEASE
+   * @since 1.16.0
    * @example
    * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
@@ -386,7 +414,7 @@ export class linkManager extends LuigiClientBase {
   /**
    * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
-   * @since NEXT_RELEASE
+   * @since 1.19.0
    * @example
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');

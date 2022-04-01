@@ -9,4 +9,4 @@ export * from './state-helpers';
 export * from './event-listener-helpers';
 export * from './storage-helper';
 export * from './usersetting-dialog-helpers';
-export * from './global-search-helpers'
+export * from './global-search-helpers';

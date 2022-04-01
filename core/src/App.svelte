@@ -1432,6 +1432,10 @@
         sendAuthDataToClient(e.data.authData);
       }
 
+      if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
+        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
+      }
+
       if ('luigi.navigation.pathExists' === e.data.msg) {
         const srcNode = iframe.luigi.currentNode;
         const srcPathParams = iframe.luigi.pathParams;

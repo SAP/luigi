@@ -24,6 +24,12 @@ export const staticRoutes: Routes = [
     path: 'luigi-client-support-preload=component',
     component: LuigiPreloadComponent,
     data: { reuse: true }
+  },
+  /** here an example if you want to update modalPathParam on internal navigation  */
+  {
+    path: 'luigi-client-support-preload',
+    component: LuigiPreloadComponent,
+    data: { updateModalPathParam: true }
   }
 ];
 
@@ -43,8 +49,5 @@ export const staticRoutes: Routes = [
   exports: [LuigiPreloadComponent]
 })
 export class LuigiAngularSupportModule {
-  constructor(
-    navigation: LuigiAutoRoutingService,
-    context: LuigiContextService
-  ) {}
+  constructor(navigation: LuigiAutoRoutingService, context: LuigiContextService) {}
 }
