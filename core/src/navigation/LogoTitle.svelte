@@ -286,7 +286,7 @@
                       role="button"
                       class="fd-menu__link"
                       on:click={(event) => {
-                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event, goTo, item.link);
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo(item.link);
                       }}
                       href={addNavHrefForAnchor
                         ? getRouteLink(item, pathParams)
