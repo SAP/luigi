@@ -141,7 +141,7 @@
                         <a
                           href={getRouteLink(productSwitcherItem)}
                           on:click={(event) => {
-                            NavigationHelpers.handleNavAnchorClick(event);
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
                           }}
                           class="fd-menu__link"
                         >

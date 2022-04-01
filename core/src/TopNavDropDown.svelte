@@ -122,7 +122,7 @@
             <a
               href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
               on:click={(event) => {
-                NavigationHelpers.handleNavAnchorClick(event);
+                NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
               }}
               class="fd-menu__link"
             >

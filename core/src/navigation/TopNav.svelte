@@ -430,7 +430,7 @@
                       aria-expanded="false"
                       aria-haspopup="true"
                       on:click={(event) => {
-                        NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                       }}
                       data-testid={getTestId(node)}
                     >

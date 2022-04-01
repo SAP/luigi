@@ -118,7 +118,7 @@
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
                     title={$getTranslation(node.label)}
                     on:click={(event) => {
-                      NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
+                      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                     }}
                     role="button"
                   >

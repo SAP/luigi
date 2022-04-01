@@ -750,12 +750,10 @@ describe('Navigation-helpers', () => {
       assert.equal(NavigationHelpers.renderIconClassName(''), '');
     });
   });
-  describe('handleNavAnchorClick', () => {
+  describe('handleNavAnchorClickedWithoutMetaKey', () => {
     let event;
-    let fn;
     beforeEach(() => {
       event = new Event('click');
-      fn = sinon.stub();
       event.preventDefault = sinon.spy();
       event.stopPropagation = sinon.spy();
     });
@@ -765,33 +763,17 @@ describe('Navigation-helpers', () => {
       sinon.reset();
     });
 
-    it('call the function with one argument only', () => {
-      NavigationHelpers.handleNavAnchorClick(event);
-      sinon.assert.calledOnce(event.preventDefault);
-      sinon.assert.notCalled(event.stopPropagation);
-    });
-
-    it('call the function with one argument and CTRL pressed', () => {
+    it('call the function with keyboard meta control pressed should return false', () => {
       event.ctrlKey = true;
-      NavigationHelpers.handleNavAnchorClick(event);
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), false);
       sinon.assert.notCalled(event.preventDefault);
       sinon.assert.calledOnce(event.stopPropagation);
     });
 
-    it('call the function with callback arguments and CTRL pressed', () => {
-      const param = 'test';
-      event.ctrlKey = true;
-      NavigationHelpers.handleNavAnchorClick(event, fn, param);
-      sinon.assert.notCalled(event.preventDefault);
-      sinon.assert.calledOnce(event.stopPropagation);
-    });
-
-    it('call the function with callback function and no CTRL pressed', () => {
-      const param = 'test';
-      NavigationHelpers.handleNavAnchorClick(event, fn, param);
+    it('call the function without keyboard meta control pressed should return true', () => {
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), true);
       sinon.assert.calledOnce(event.preventDefault);
       sinon.assert.notCalled(event.stopPropagation);
-      sinon.assert.calledWithExactly(fn, param);
     });
   });
 });

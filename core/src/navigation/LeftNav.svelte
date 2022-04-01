@@ -508,7 +508,7 @@
                             ? 'is-selected'
                             : ''}"
                           on:click={(event) => {
-                            NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event, handleClick, node);
                           }}
                           data-testid={getTestId(node)}
                         >
@@ -650,7 +650,7 @@
                                   ? 'is-selected'
                                   : ''}"
                                 on:click={(event) => {
-                                  NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
+                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                                 }}
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
@@ -694,7 +694,7 @@
                                         ? 'is-selected'
                                         : ''}"
                                       on:click={(event) => {
-                                        NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
+                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                                       }}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
@@ -768,7 +768,7 @@
                               ? 'is-selected'
                               : ''}"
                             on:click={(event) => {
-                              NavigationHelpers.handleNavAnchorClick(event, handleClick, node);
+                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                             }}
                             data-testid={getTestId(node)}
                           >
