@@ -508,7 +508,7 @@
                             ? 'is-selected'
                             : ''}"
                           on:click={(event) => {
-                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event, handleClick, node);
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                           }}
                           data-testid={getTestId(node)}
                         >
