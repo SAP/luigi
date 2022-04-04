@@ -216,6 +216,13 @@ class IframeHelpersClass {
     const iframe = document.createElement('iframe');
     iframe.src = ViewUrlDecorator.hasDecorators() ? ViewUrlDecorator.applyDecorators(viewUrl) : viewUrl;
     if (allowRules) {
+      allowRules.forEach((rule, index) => {
+        if (rule.indexOf(';') != -1) {
+          allowRules[index] = rule;
+        } else {
+          allowRules[index] = rule + ';';
+        }
+      });
       iframe.allow = allowRules.join(' ');
     }
     iframe.sandbox = activeSandboxRules.join(' ');
