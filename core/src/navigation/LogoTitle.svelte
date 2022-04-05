@@ -138,7 +138,9 @@
       ? 'fd-shellbar__logo--image-replaced'
       : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
-    on:click|preventDefault={() => goTo('/')}
+    on:click={(event) => {
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
+    }}
     href="/"
     role="button"
     tabindex="0"
@@ -168,7 +170,9 @@
       <a
         class="fd-shellbar__title lui-shellbar-single-app-title"
         data-testid="luigi-topnav-title"
-        on:click|preventDefault={() => goTo('/')}
+        on:click={(event) => {
+          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
+        }}
         href="/"
       >
         {$getTranslation(title)}
@@ -281,7 +285,9 @@
                     <a
                       role="button"
                       class="fd-menu__link"
-                      on:click|preventDefault={() => goTo(item.link)}
+                      on:click={(event) => {
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo(item.link);
+                      }}
                       href={addNavHrefForAnchor
                         ? getRouteLink(item, pathParams)
                         : undefined}

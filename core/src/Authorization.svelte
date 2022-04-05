@@ -246,7 +246,9 @@
               tabindex="0"
               class="fd-list__link"
               data-testid="luigi-topnav-profile-item"
-              on:click|preventDefault={() => {}}
+              on:click={(event) => {
+                NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+              }}
               href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
             >
               {#if profileItem.icon}
