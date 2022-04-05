@@ -117,7 +117,9 @@
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
                     title={$getTranslation(node.label)}
-                    on:click|preventDefault={() => handleClick(node)}
+                    on:click={(event) => {
+                      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                    }}
                     role="button"
                   >
                     <div class="lui-fd-nested-list__content">
