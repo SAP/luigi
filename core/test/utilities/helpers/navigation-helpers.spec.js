@@ -128,7 +128,7 @@ describe('Navigation-helpers', () => {
         label: 'Products',
         columns: 'auto',
         items: () => {
-          return [{}, {}, {}]
+          return [{}, {}, {}];
         }
       });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
@@ -140,7 +140,7 @@ describe('Navigation-helpers', () => {
         label: 'Products',
         columns: 'auto',
         items: () => {
-          return [{}, {}, {}, {}, {}, {}, {}] //7
+          return [{}, {}, {}, {}, {}, {}, {}]; //7
         }
       });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
@@ -151,7 +151,9 @@ describe('Navigation-helpers', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
-        items: () => {return []},
+        items: () => {
+          return [];
+        },
         columns: 3
       });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
@@ -162,7 +164,9 @@ describe('Navigation-helpers', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
-        items: () => {return []},
+        items: () => {
+          return [];
+        },
         columns: '110'
       });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
@@ -744,6 +748,32 @@ describe('Navigation-helpers', () => {
     });
     it('render icon class name without name', () => {
       assert.equal(NavigationHelpers.renderIconClassName(''), '');
+    });
+  });
+  describe('handleNavAnchorClickedWithoutMetaKey', () => {
+    let event;
+    beforeEach(() => {
+      event = new Event('click');
+      event.preventDefault = sinon.spy();
+      event.stopPropagation = sinon.spy();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('call the function with keyboard meta control pressed should return false', () => {
+      event.ctrlKey = true;
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), false);
+      sinon.assert.notCalled(event.preventDefault);
+      sinon.assert.calledOnce(event.stopPropagation);
+    });
+
+    it('call the function without keyboard meta control pressed should return true', () => {
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), true);
+      sinon.assert.calledOnce(event.preventDefault);
+      sinon.assert.notCalled(event.stopPropagation);
     });
   });
 });
