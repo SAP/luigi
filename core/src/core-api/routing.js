@@ -56,7 +56,7 @@ class LuigiRouting {
       RoutingHelpers.modifySearchParams(params, url.searchParams);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url.href);
+    this.handleBrowserHistory(keepBrowserHistory, url);
     LuigiConfig.configChanged();
   }
 
@@ -74,15 +74,15 @@ class LuigiRouting {
       RoutingHelpers.modifySearchParams(params, url.searchParams, paramPrefix);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url.href);
+    this.handleBrowserHistory(keepBrowserHistory, url);
     LuigiConfig.configChanged();
   }
 
-  handleBrowserHistory(keepBrowserHistory, href) {
+  handleBrowserHistory(keepBrowserHistory, url) {
     if (keepBrowserHistory) {
-      window.history.pushState({}, '', href);
+      window.history.pushState({}, '', url.href);
     } else {
-      window.history.replaceState({}, '', href);
+      window.history.replaceState({}, '', url.href);
     }
   }
 
@@ -90,7 +90,7 @@ class LuigiRouting {
     const { hash } = new URL(location);
     const useHashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
 
-    return (useHashRouting && hash.split('#').length === 2) ? '' : hash.split('#').pop();
+    return useHashRouting && hash.split('#').length === 2 ? '' : hash.split('#').pop();
   }
 
   setAnchor(value) {
