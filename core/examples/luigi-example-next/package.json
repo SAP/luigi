@@ -11,7 +11,7 @@
     "@luigi-project/client": "^1.17.0",
     "@luigi-project/core": "^1.17.0",
     "@sap-theming/theming-base-content": "^11.1.28",
-    "next": "9.5.2",
+    "next": "12.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   }
