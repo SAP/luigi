@@ -56,7 +56,7 @@ class LuigiRouting {
       RoutingHelpers.modifySearchParams(params, url.searchParams);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url.href);
+    this.handleBrowserHistory(keepBrowserHistory, url);
     LuigiConfig.configChanged();
   }
 
@@ -74,22 +74,21 @@ class LuigiRouting {
       RoutingHelpers.modifySearchParams(params, url.searchParams, paramPrefix);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url.href);
+    this.handleBrowserHistory(keepBrowserHistory, url);
     LuigiConfig.configChanged();
   }
 
-  handleBrowserHistory(keepBrowserHistory, href) {
+  handleBrowserHistory(keepBrowserHistory, url) {
     const currentUrl = new URL(location);
-    const newUrl = new URL(href);
-    if (currentUrl.origin !== newUrl.origin) {
+    if (currentUrl.origin !== url.origin) {
       console.warn('URL Validation error, origin changed.');
       return;
     }
 
     if (keepBrowserHistory) {
-      window.history.pushState({}, '', href);
+      window.history.pushState({}, '', url.href);
     } else {
-      window.history.replaceState({}, '', href);
+      window.history.replaceState({}, '', url.href);
     }
   }
 
