@@ -56,7 +56,7 @@ class LuigiRouting {
       RoutingHelpers.modifySearchParams(params, url.searchParams);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url);
+    this.handleBrowserHistory(keepBrowserHistory, url.href);
     LuigiConfig.configChanged();
   }
 
@@ -67,22 +67,22 @@ class LuigiRouting {
     }
 
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
-    const url = new URL(location);
+    const url = new URL(location.href);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash, paramPrefix);
     } else {
       RoutingHelpers.modifySearchParams(params, url.searchParams, paramPrefix);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url);
+    this.handleBrowserHistory(keepBrowserHistory, url.href);
     LuigiConfig.configChanged();
   }
 
-  handleBrowserHistory(keepBrowserHistory, url) {
+  handleBrowserHistory(keepBrowserHistory, href) {
     if (keepBrowserHistory) {
-      window.history.pushState({}, '', encodeURI(url.href));
+      window.history.pushState({}, '', href);
     } else {
-      window.history.replaceState({}, '', encodeURI(url.href));
+      window.history.replaceState({}, '', href);
     }
   }
 
