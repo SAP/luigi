@@ -78,17 +78,17 @@ class LuigiRouting {
     LuigiConfig.configChanged();
   }
 
+  sanitizeUrl(url) {
+    return url;
+  }
+
   handleBrowserHistory(keepBrowserHistory, url) {
-    const currentUrl = new URL(location);
-    if (currentUrl.origin !== url.origin) {
-      console.warn('URL Validation error, origin changed.');
-      return;
-    }
+    const href = this.sanitizeUrl(url.href);
 
     if (keepBrowserHistory) {
-      window.history.pushState({}, '', url.href);
+      window.history.pushState({}, '', href);
     } else {
-      window.history.replaceState({}, '', url.href);
+      window.history.replaceState({}, '', href);
     }
   }
 
