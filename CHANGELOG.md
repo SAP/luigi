@@ -35,7 +35,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2598](https://github.com/SAP/luigi/pull/2598) keepURL in pagenotfoundhandler ([@hardl](https://github.com/hardl))
 * [#2509](https://github.com/SAP/luigi/pull/2509) Core navigate function returns promise ([@rafalgamon](https://github.com/rafalgamon))
 * [#2488](https://github.com/SAP/luigi/pull/2488) Add function which allows to get the footer container ([@UlianaMunich](https://github.com/UlianaMunich))
-* [#2599](https://github.com/SAP/luigi/pull/2627) Url anchor support for micro frontends([@stanleychh](https://github.com/stanleychh))
+* [#2599](https://github.com/SAP/luigi/pull/2599) Url anchor support for micro frontends([@stanleychh](https://github.com/stanleychh))
 
 #### :bug: Fixed
 * [#2629](https://github.com/SAP/luigi/pull/2629) Fix click support for open in new tab function ([@ndricimrr](https://github.com/ndricimrr))
