@@ -15,6 +15,12 @@ meta -->
 
 # Getting started
 
+This document contains the following sections:
+* [Overview](#overview)
+* [Quick setup](#quick-setup)
+* [Examples](#examples)
+* [How to obtain support](#how-to-obtain-support)
+
 ## Overview
 
 Luigi is an open source JavaScript framework for **micro frontends**. Micro frontends can be used to divide big frontend monoliths into smaller, simpler, independent chunks.
@@ -43,7 +49,7 @@ Luigi consists of two main parts:
 * [API](luigi-client-api.md)  - diverse API functions which can be used on the micro frontend side.
 * [Communication](communication.md)  - sending messages between the micro frontend and the main application (Luigi Core module).
 
-## Setup
+## Quick setup
 
 If you want to begin developing your own app with Luigi, start here:
 
@@ -178,6 +184,14 @@ You can find the e2e test application and instructions on how to install it [her
 
 ### Advanced scenarios
 
-In the [expert scenarios](advanced-scenarios.md) section of the documentatation, you can find implementations of more complex Luigi use cases, such as using feature toggles or authenticating with Google Cloud Identity.
+In the [expert scenarios](advanced-scenarios.md) section of the documentation, you can find implementations of more complex Luigi use cases, such as using feature toggles or authenticating with Google Cloud Identity.
 
 <!-- accordion:end -->
+
+## How to obtain support
+
+* [GitHub Discussions](https://github.com/SAP/luigi/discussions) - ask (or answer) questions related to Luigi, search for previously answered questions, and rate the answers for helpfulness.
+
+* [Slack Channel](https://luigi-project.slack.com) - get Luigi updates, contact the Luigi team on Slack, and explore previous discussions.
+
+* [GitHub contribution](https://github.com/SAP/luigi) - if you have a specific improvement idea or want to contribute to Luigi, you can create an [issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) and [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Please follow our [contribution guidelines](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md) when doing so.
