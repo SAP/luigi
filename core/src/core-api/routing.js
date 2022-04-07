@@ -80,9 +80,9 @@ class LuigiRouting {
 
   handleBrowserHistory(keepBrowserHistory, url) {
     if (keepBrowserHistory) {
-      window.history.pushState({}, '', url.href);
+      window.history.pushState({}, '', encodeURI(url.href));
     } else {
-      window.history.replaceState({}, '', url.href);
+      window.history.replaceState({}, '', encodeURI(url.href));
     }
   }
 
