@@ -79,6 +79,7 @@ class LuigiRouting {
   }
 
   sanitizeUrl(url) {
+    console.log('##############################', location.origin, new URL(url).origin);
     return location.origin === new URL(url).origin ? url : undefined;
   }
 
