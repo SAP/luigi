@@ -79,11 +79,16 @@ class LuigiRouting {
   }
 
   sanitizeUrl(url) {
-    return url;
+    return location.origin === new URL(url).origin ? url : undefined;
   }
 
   handleBrowserHistory(keepBrowserHistory, url) {
     const href = this.sanitizeUrl(url.href);
+
+    if (!href) {
+      console.warn('invalid url: ' + href);
+      return;
+    }
 
     if (keepBrowserHistory) {
       window.history.pushState({}, '', href);
