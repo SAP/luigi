@@ -1347,5 +1347,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.19.0]: https://github.com/SAP/luigi/compare/v1.18.1...v1.19.0
 [v1.20.0]: https://github.com/SAP/luigi/compare/v1.19.0...v1.20.0
 [v1.20.1]: https://github.com/SAP/luigi/compare/v1.20.0...v1.20.1
-
 [v1.21.0]: https://github.com/SAP/luigi/compare/v1.20.1...v1.21.0
