@@ -67,7 +67,7 @@ class LuigiRouting {
     }
 
     const paramPrefix = RoutingHelpers.getContentViewParamPrefix();
-    const url = new URL(location.href);
+    const url = new URL(location);
     if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
       url.hash = RoutingHelpers.addParamsOnHashRouting(params, url.hash, paramPrefix);
     } else {
@@ -79,6 +79,13 @@ class LuigiRouting {
   }
 
   handleBrowserHistory(keepBrowserHistory, href) {
+    const currentUrl = new URL(location);
+    const newUrl = new URL(href);
+    if (currentUrl.origin !== newUrl.origin) {
+      console.warn('URL Validation error, origin changed.');
+      return;
+    }
+
     if (keepBrowserHistory) {
       window.history.pushState({}, '', href);
     } else {
