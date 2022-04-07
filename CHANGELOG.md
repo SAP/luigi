@@ -35,6 +35,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2598](https://github.com/SAP/luigi/pull/2598) keepURL in pagenotfoundhandler ([@hardl](https://github.com/hardl))
 * [#2509](https://github.com/SAP/luigi/pull/2509) Core navigate function returns promise ([@rafalgamon](https://github.com/rafalgamon))
 * [#2488](https://github.com/SAP/luigi/pull/2488) Add function which allows to get the footer container ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2599](https://github.com/SAP/luigi/pull/2627) Url anchor support for micro frontends([@stanleychh](https://github.com/stanleychh))
 
 #### :bug: Fixed
 * [#2629](https://github.com/SAP/luigi/pull/2629) Fix click support for open in new tab function ([@ndricimrr](https://github.com/ndricimrr))
@@ -51,6 +52,8 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2498](https://github.com/SAP/luigi/pull/2498) Hide side navigation footer when it is collapsed and has "Fiori3" type ([@UlianaMunich](https://github.com/UlianaMunich))
 * [#2490](https://github.com/SAP/luigi/pull/2490) Fix node params not working when hashrouting enabled ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#2452](https://github.com/SAP/luigi/pull/2452) Make User Setting dialog to use compact controls and add User Account avatar([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2627](https://github.com/SAP/luigi/pull/2627) Fixed search params encoded twice issue ([@stanleychh](https://github.com/stanleychh))
+
 
 
 
