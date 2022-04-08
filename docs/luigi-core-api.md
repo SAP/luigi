@@ -361,7 +361,7 @@ Returns **[HTMLElement](https://developer.mozilla.org/docs/Web/HTML/Element)** t
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.21.0
 
 ## Luigi.auth()
 
