@@ -426,7 +426,7 @@ export declare interface LinkManager {
 
   /**
    * Updates path of the modalPathParam when internal navigation occurs
-   * @since NEXTRELEASE
+   * @since 1.21.0
    * @example
    * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
    */

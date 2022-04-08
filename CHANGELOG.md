@@ -25,6 +25,41 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.21.0] (2022-04-07)
+
+#### :rocket: Added
+* [#2505](https://github.com/SAP/luigi/pull/2505) withoutSync navigation for modalPathParam ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2584](https://github.com/SAP/luigi/pull/2584) Update Fundamental Styles in Luigi Core to v0.20.0 ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2622](https://github.com/SAP/luigi/pull/2622) Remove experimental flag for webcomponents ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2607](https://github.com/SAP/luigi/pull/2607) Set modal size more precise ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2598](https://github.com/SAP/luigi/pull/2598) keepURL in pagenotfoundhandler ([@hardl](https://github.com/hardl))
+* [#2509](https://github.com/SAP/luigi/pull/2509) Core navigate function returns promise ([@rafalgamon](https://github.com/rafalgamon))
+* [#2488](https://github.com/SAP/luigi/pull/2488) Add function which allows to get the footer container ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2599](https://github.com/SAP/luigi/pull/2599) Url anchor support for micro frontends([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#2629](https://github.com/SAP/luigi/pull/2629) Fix click support for open in new tab function ([@ndricimrr](https://github.com/ndricimrr))
+* [#2626](https://github.com/SAP/luigi/pull/2626) Hide empty categories ([@hardl](https://github.com/hardl))
+* [#2620](https://github.com/SAP/luigi/pull/2620) Fix splitview overlapping issue ([@ndricimrr](https://github.com/ndricimrr))
+* [#2605](https://github.com/SAP/luigi/pull/2605) Fix faulty pathExists race condition ([@ndricimrr](https://github.com/ndricimrr))
+* [#2610](https://github.com/SAP/luigi/pull/2610) Add updateModalSettings typings ([@ndricimrr](https://github.com/ndricimrr))
+* [#2611](https://github.com/SAP/luigi/pull/2611) Prevent double init in web components ([@hardl](https://github.com/hardl))
+* [#2537](https://github.com/SAP/luigi/pull/2537) Context update for user settings microfrontends ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2594](https://github.com/SAP/luigi/pull/2594) Confirmation modal from special iframe mfes ([@hardl](https://github.com/hardl))
+* [#2527](https://github.com/SAP/luigi/pull/2527) Error handling global search centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2512](https://github.com/SAP/luigi/pull/2512) Set CSS-variable for badge color ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2492](https://github.com/SAP/luigi/pull/2492) Fix Search params not being deleted ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2498](https://github.com/SAP/luigi/pull/2498) Hide side navigation footer when it is collapsed and has "Fiori3" type ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2490](https://github.com/SAP/luigi/pull/2490) Fix node params not working when hashrouting enabled ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2452](https://github.com/SAP/luigi/pull/2452) Make User Setting dialog to use compact controls and add User Account avatar([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2627](https://github.com/SAP/luigi/pull/2627) Fixed search params encoded twice issue ([@stanleychh](https://github.com/stanleychh))
+
+
+
+
+
+
+
 ## [v1.20.1] (2022-01-21)
 
 #### :bug: Fixed
@@ -1315,3 +1350,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.19.0]: https://github.com/SAP/luigi/compare/v1.18.1...v1.19.0
 [v1.20.0]: https://github.com/SAP/luigi/compare/v1.19.0...v1.20.0
 [v1.20.1]: https://github.com/SAP/luigi/compare/v1.20.0...v1.20.1
+[v1.21.0]: https://github.com/SAP/luigi/compare/v1.20.1...v1.21.0
