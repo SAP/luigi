@@ -395,7 +395,7 @@ Returns **any** anchor of URL
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.21.0
 
 #### setAnchor
 
@@ -413,7 +413,7 @@ LuigiClient.setAnchor('luigi');
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.21.0
 
 ### Lifecycle~initListenerCallback
 
@@ -551,6 +551,26 @@ LuigiClient.linkManager().navigate('users/groups/stakeholders')
 LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
 ```
+
+#### updateModalPathInternalNavigation
+
+Updates path of the modalPathParam when internal navigation occurs.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
+-   `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history (optional, default `false`)
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+```
+
+**Meta**
+
+-   **since**: 1.21.0
 
 #### openAsModal
 
