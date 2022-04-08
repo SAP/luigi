@@ -51,7 +51,7 @@
         } else {
           document.body.style.display = 'block';
           document.getElementById('title').innerHTML = route
-            ? `<h2>${route.replace('#/', '')}</h2>`
+            ? `<h2>${encodeURIComponent(route.replace('#/', ''))}</h2>`
             : '';
         }
       }
