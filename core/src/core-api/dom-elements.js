@@ -114,7 +114,7 @@ class LuigiElements {
    * Returns a navigation footer container.
    * @returns {HTMLElement} the navigation footer DOM element
    * @memberof Elements
-   * @since NEXTRELEASE
+   * @since 1.21.0
    * @example
    * Luigi.elements().getNavFooterContainer();
    */

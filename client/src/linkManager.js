@@ -97,7 +97,7 @@ export class linkManager extends LuigiClientBase {
    * @param {string} path
    * @param {boolean} addHistoryEntry adds an entry in the history
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
-   * @since NEXTRELEASE
+   * @since 1.21.0
    * @example
    * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
    */
@@ -259,7 +259,7 @@ export class linkManager extends LuigiClientBase {
     }
     return this;
   }
-  
+
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof linkManager

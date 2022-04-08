@@ -395,7 +395,7 @@ Returns **any** anchor of URL
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.21.0
 
 #### setAnchor
 
@@ -413,7 +413,7 @@ LuigiClient.setAnchor('luigi');
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.21.0
 
 ### Lifecycle~initListenerCallback
 
@@ -571,6 +571,7 @@ LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
 **Meta**
 
 -   **since**: NEXTRELEASE
+
 
 #### openAsModal
 
