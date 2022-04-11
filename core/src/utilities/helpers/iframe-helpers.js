@@ -217,11 +217,7 @@ class IframeHelpersClass {
     iframe.src = ViewUrlDecorator.hasDecorators() ? ViewUrlDecorator.applyDecorators(viewUrl) : viewUrl;
     if (allowRules) {
       allowRules.forEach((rule, index) => {
-        if (rule.indexOf(';') != -1) {
-          allowRules[index] = rule;
-        } else {
-          allowRules[index] = rule + ';';
-        }
+        allowRules[index] = rule + (rule.includes(';') ? '' : ';');
       });
       iframe.allow = allowRules.join(' ');
     }
