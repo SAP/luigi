@@ -19,8 +19,9 @@ class NavigationHelpersClass {
 
   getProductSwitcherColumnsNumber() {
     const productSwitcherConfig = this.getProductSwitcherConfig();
+    if (!productSwitcherConfig.items) return;
     let productSwitcherColumns = productSwitcherConfig.columns;
-    let productSwitcherItemsAmount = productSwitcherConfig.items().length;
+    let productSwitcherItemsAmount = productSwitcherConfig.items.length;
     if (productSwitcherColumns === 'auto') {
       if (productSwitcherItemsAmount <= 6) {
         return (productSwitcherConfig.columns = 3);
