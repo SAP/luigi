@@ -30,6 +30,8 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/bas
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
 
 sed 's#"src/styles.css"#"src/styles.css",\
+             "node_modules/fundamental-styles/dist/theming/sap_fiori_3.css",\
+             "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css",\
              "node_modules/fundamental-styles/dist/fundamental-styles.css"#g' angular.json > tmp.json && mv tmp.json angular.json
 sed 's#"src/assets"#"src/assets",\
               "src/index.html",\
