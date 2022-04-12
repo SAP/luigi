@@ -10,7 +10,7 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
-    "@sap-theming/theming-base-content": "~11.1.28",
+    "@sap-theming/theming-base-content": "~11.1.30",
     "@webcomponents/webcomponentsjs": "^2.3.0",
     "acorn": "^6.4.1",
     "axios": ">=0.21.2",
@@ -24,7 +24,7 @@
     "esm": "^3.2.25",
     "file-loader": "^2.0.0",
     "fs-extra": "9.0.0",
-    "fundamental-styles": "^0.18.0",
+    "fundamental-styles": "^0.20.0",
     "glob-parent": ">=5.1.2",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
@@ -82,7 +82,7 @@
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "600 kB",
+      "maxSize": "650 kB",
       "compression": "none"
     },
     {
@@ -92,7 +92,7 @@
     },
     {
       "path": "./public-ie11/luigi-ie11.css",
-      "maxSize": "600 kB",
+      "maxSize": "650 kB",
       "compression": "none"
     }
   ],

@@ -112,6 +112,17 @@ describe('Luigi routing', function() {
         'http://some.url.de/#/?test=tets&foo=bar'
       );
     });
+    it('add search params to hash routing with special characters', () => {
+      window.state = {};
+      global.location = 'http://some.url.de/#/?test=tets';
+      LuigiRouting.addSearchParams({ foo: '%bar#foo@bar&foo' }, true);
+      sinon.assert.calledWithExactly(
+        window.history.pushState,
+        window.state,
+        '',
+        'http://some.url.de/#/?test=tets&foo=%25bar%23foo%40bar%26foo'
+      );
+    });
     it('add search params to hash routing', () => {
       window.state = {};
       global.location = 'http://some.url.de/#/?~luigi=rocks';
@@ -120,7 +131,7 @@ describe('Luigi routing', function() {
         window.history.pushState,
         window.state,
         '',
-        'http://some.url.de/#/?~luigi=rocks&foo=bar'
+        'http://some.url.de/#/?%7Eluigi=rocks&foo=bar'
       );
     });
     it('call addSearchParams with wrong argument hash routing', () => {

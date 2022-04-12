@@ -5,16 +5,16 @@ import {
   NavigationEnd,
   ParamMap,
   Router,
-  RouterEvent
+  RouterEvent,
 } from '@angular/router';
-import { linkManager } from '@luigi-project/client';
+import { linkManager, uxManager } from '@luigi-project/client';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiContextService } from './luigi-context-service';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LuigiAutoRoutingService implements OnDestroy {
   private subscription: Subscription = new Subscription();
@@ -48,10 +48,13 @@ export class LuigiAutoRoutingService implements OnDestroy {
    * Another option is to specify the LuigiPath: if you add in route data luigiRoute:'/xxxx/xxx';
    * in the case we will update the path in LuigiCore navigation, here an example
    * {path: 'demo', component: DemoComponent, data:{luigiRoute: '/home/demo''}}
+   * If updateModalPathParam is specified, than modalPathParam will be updated upon internal navigation:
+   * {path: 'demo', component: DemoComponent, data:{updateModalPathParam: true}}
    * @param event the NavigationEnd event
    */
   doSubscription(event: NavigationEnd): void {
-    let current: ActivatedRouteSnapshot | null = LuigiActivatedRouteSnapshotHelper.getCurrent();
+    let current: ActivatedRouteSnapshot | null =
+      LuigiActivatedRouteSnapshotHelper.getCurrent();
 
     if (!current) {
       current = this.router.routerState.root.snapshot;
@@ -59,7 +62,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
         // handle multiple children
         let primary: ActivatedRouteSnapshot | null = null;
 
-        current?.children.forEach(childSnapshot => {
+        current?.children.forEach((childSnapshot) => {
           if (childSnapshot.outlet === 'primary') {
             primary = childSnapshot;
           }
@@ -73,15 +76,14 @@ export class LuigiAutoRoutingService implements OnDestroy {
         }
       }
     }
-
     if (current?.data) {
       if (current.data.luigiRoute) {
         let route = current.data.luigiRoute;
 
         if (current.params) {
           const pmap: ParamMap = convertToParamMap(current.params);
-          pmap.keys.forEach(key => {
-            const val = pmap.getAll(key).forEach(param => {
+          pmap.keys.forEach((key) => {
+            const val = pmap.getAll(key).forEach((param) => {
               route = route.replace(':' + key, param);
             });
           });
@@ -111,16 +113,17 @@ export class LuigiAutoRoutingService implements OnDestroy {
           if (truncate.indexOf('*') === 0) {
             const index = url.indexOf(truncate.substr(1));
             url = url.substr(index + truncate.length - 1);
-          }
-          else if (url.indexOf(truncate) === 0) {
+          } else if (url.indexOf(truncate) === 0) {
             url = url.substr(truncate.length);
           }
         }
         console.debug('Calling fromVirtualTreeRoot for url ==> ' + url);
-        linkManager()
-          .fromVirtualTreeRoot()
-          .withoutSync()
-          .navigate(url);
+        linkManager().fromVirtualTreeRoot().withoutSync().navigate(url);
+      }
+      const ux = uxManager();
+      if (ux.isModal() && current.data.updateModalDataPath && current.routeConfig?.path) {
+        const lm = linkManager();
+        lm.updateModalPathInternalNavigation(current.routeConfig.path, {}, current.data.addHistoryEntry);
       }
     }
   }

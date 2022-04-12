@@ -15,6 +15,9 @@ meta -->
 
 # Frequently asked questions about Luigi
 
+<!-- add-attribute:class:success -->
+>**TIP:** You can go to our [GitHub Discussions page](https://github.com/SAP/luigi/discussions) to find the answers to more questions not listed here.
+
 This page contains FAQs about Luigi in the following categories:
 - [Basics](#basic-questions)
 - [User interface/appearance](#ui-questions)

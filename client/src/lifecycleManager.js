@@ -531,6 +531,7 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Returns the current anchor based on active URL.
    * @memberof Lifecycle
+   * @since 1.21.0
    * @returns anchor of URL
    * @example
    * LuigiClient.getAnchor();
@@ -542,6 +543,7 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Sends anchor to Luigi Core. The anchor will be added to the URL.
    * @param {string} anchor
+   * @since 1.21.0
    * @memberof Lifecycle
    * @example
    * LuigiClient.setAnchor('luigi');

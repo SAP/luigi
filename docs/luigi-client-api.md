@@ -381,6 +381,40 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 -   **since**: 1.7.1
 
+#### getAnchor
+
+Returns the current anchor based on active URL.
+
+##### Examples
+
+```javascript
+LuigiClient.getAnchor();
+```
+
+Returns **any** anchor of URL
+
+**Meta**
+
+-   **since**: 1.21.0
+
+#### setAnchor
+
+Sends anchor to Luigi Core. The anchor will be added to the URL.
+
+##### Parameters
+
+-   `anchor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+LuigiClient.setAnchor('luigi');
+```
+
+**Meta**
+
+-   **since**: 1.21.0
+
 ### Lifecycle~initListenerCallback
 
 Callback of the addInitListener
@@ -465,7 +499,7 @@ LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.16.0
 
 #### preserveQueryParams
 
@@ -484,7 +518,7 @@ LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foob
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.19.0
 
 #### navigate
 
@@ -517,6 +551,26 @@ LuigiClient.linkManager().navigate('users/groups/stakeholders')
 LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
 ```
+
+#### updateModalPathInternalNavigation
+
+Updates path of the modalPathParam when internal navigation occurs.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
+-   `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history (optional, default `false`)
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+```
+
+**Meta**
+
+-   **since**: 1.21.0
 
 #### openAsModal
 

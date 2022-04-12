@@ -1,6 +1,7 @@
 <script>
   import BadgeCounter from './BadgeCounter.svelte';
   import { createEventDispatcher } from 'svelte';
+  import { NavigationHelpers } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
 

@@ -507,7 +507,9 @@
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
-                          on:click|preventDefault={() => handleClick(node)}
+                          on:click={(event) => {
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                          }}
                           data-testid={getTestId(node)}
                         >
                           {#if node.icon}
@@ -551,7 +553,7 @@
                     {/if}
                   {/if}
                 {/each}
-              {:else}
+              {:else if nodes.filter(node => (!node.hideFromNav && node.label)).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
                   <li
@@ -647,8 +649,9 @@
                                 selectedNode
                                   ? 'is-selected'
                                   : ''}"
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
+                                on:click={(event) => {
+                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                }}
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
@@ -690,8 +693,9 @@
                                       selectedNode
                                         ? 'is-selected'
                                         : ''}"
-                                      on:click|preventDefault={() =>
-                                        handleClick(node)}
+                                      on:click={(event) => {
+                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                      }}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
@@ -763,7 +767,9 @@
                             class="fd-nested-list__link {node === selectedNode
                               ? 'is-selected'
                               : ''}"
-                            on:click|preventDefault={() => handleClick(node)}
+                            on:click={(event) => {
+                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                            }}
                             data-testid={getTestId(node)}
                           >
                             {#if node.icon}
