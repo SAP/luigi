@@ -133,6 +133,7 @@
       userSettings: hasUserSettings
         ? userSettingGroups[userSettingsGroupName]
         : null,
+      anchor: LuigiRouting.getAnchor(),
     });
 
     IframeHelpers.specialIframeTypes
@@ -1431,6 +1432,10 @@
         sendAuthDataToClient(e.data.authData);
       }
 
+      if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
+        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
+      }
+
       if ('luigi.navigation.pathExists' === e.data.msg) {
         const srcNode = iframe.luigi.currentNode;
         const srcPathParams = iframe.luigi.pathParams;
@@ -1570,6 +1575,11 @@
 
         const { data, keepBrowserHistory } = e.data;
         LuigiRouting.addNodeParams(data, keepBrowserHistory);
+      }
+
+      if ('luigi.setAnchor' === e.data.msg) {
+        const { anchor } = e.data;
+        LuigiRouting.setAnchor(anchor);
       }
     });
 

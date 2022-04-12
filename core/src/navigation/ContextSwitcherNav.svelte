@@ -1,5 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import { NavigationHelpers } from '../utilities/helpers';
+
 
   export let actions = [];
   export let config = {};
@@ -67,7 +69,9 @@
             {:else}
               <a
                 href={getRouteLink(node)}
-                on:click|preventDefault={() => {}}
+                on:click={(event) => {
+                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+                }}
                 class="fd-menu__link {label === selectedLabel
                   ? 'is-selected'
                   : ''}"
@@ -92,7 +96,9 @@
           >
             <a
               href={getRouteLink(node)}
-              on:click|preventDefault={() => {}}
+              on:click={(event) => {
+                NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+              }}
               class="fd-menu__link"
             >
               <span class="fd-menu__title">{$getTranslation(node.label)}</span>

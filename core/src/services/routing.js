@@ -259,7 +259,7 @@ class RoutingClass {
             '/'
           );
           const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw, false, config);
         }
         return;
       }
@@ -327,7 +327,6 @@ class RoutingClass {
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited
       };
-
       component.set(
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
@@ -352,13 +351,13 @@ class RoutingClass {
         }
       }
 
-      if (nodeObject.compound && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
+      if (nodeObject.compound) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
         Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponentCompound(component, nodeObject);
-      } else if (nodeObject.webcomponent && GenericHelpers.requestExperimentalFeature('webcomponents', true)) {
+      } else if (nodeObject.webcomponent) {
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
@@ -468,11 +467,15 @@ class RoutingClass {
     }
   }
 
-  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false) {
-    const redirectPathFromNotFoundHandler = RoutingHelpers.getPageNotFoundRedirectPath(notFoundPath, isAnyPathMatched);
-
+  async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false, config = {}) {
+    const redirectResult = RoutingHelpers.getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched);
+    const redirectPathFromNotFoundHandler = redirectResult.path;
     if (redirectPathFromNotFoundHandler) {
-      this.navigateTo(redirectPathFromNotFoundHandler);
+      if (redirectResult.keepURL) {
+        this.handleRouteChange(redirectPathFromNotFoundHandler, component, IframeHelpers.getIframeContainer(), config);
+      } else {
+        this.navigateTo(redirectPathFromNotFoundHandler);
+      }
       return;
     }
     RoutingHelpers.showRouteNotFoundAlert(component, notFoundPath, isAnyPathMatched);
@@ -523,6 +526,34 @@ class RoutingClass {
       wc_container.lastChild.remove();
     }
     return wc_container;
+  }
+
+  updateModalDataInUrl(modalPath, modalParams, addHistoryEntry) {
+    let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
+    const params = RoutingHelpers.getQueryParams();
+    const modalParamName = RoutingHelpers.getModalViewParamName();
+
+    params[modalParamName] = modalPath;
+    if (modalParams && Object.keys(modalParams).length) {
+      params[`${modalParamName}Params`] = JSON.stringify(modalParams);
+    }
+    const url = new URL(location.href);
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    if (hashRoutingActive) {
+      const queryParamIndex = location.hash.indexOf(queryParamSeparator);
+      if (queryParamIndex !== -1) {
+        url.hash = url.hash.slice(0, queryParamIndex);
+      }
+      url.hash = `${url.hash}${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+    } else {
+      url.search = `?${RoutingHelpers.encodeParams(params)}`;
+    }
+
+    if (!addHistoryEntry) {
+      history.replaceState(window.state, '', url.href);
+    } else {
+      history.pushState(window.state, '', url.href);
+    }
   }
 
   appendModalDataToUrl(modalPath, modalParams) {

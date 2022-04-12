@@ -584,7 +584,7 @@ describe('Luigi client linkManager', () => {
               .invoke('height')
               .should('eq', splitViewHeight);
 
-            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).marginBottom) {
               cy.log('Positive');
             } else {
               cy.error('Negative');
@@ -617,7 +617,7 @@ describe('Luigi client linkManager', () => {
 
             const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
 
-            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).paddingBottom) {
+            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).marginBottom) {
               cy.log('Positive');
             } else {
               cy.error('Negative');
@@ -632,11 +632,6 @@ describe('Luigi client linkManager', () => {
   describe('Webcomponent visibleForFeatureToggles test', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr1/wc_grid');
-      cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.settings.experimental = { webcomponents: true };
-        win.Luigi.configChanged();
-      });
     });
 
     it('open webcomponent with visibleForFeatureToggles', () => {
@@ -654,11 +649,6 @@ describe('Luigi client linkManager', () => {
   describe('Webcomponent compound view test', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/projects/pr1/wc_grid_compound');
-      cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.settings.experimental = { webcomponents: true };
-        win.Luigi.configChanged();
-      });
     });
 
     it('open webcomponent btn', () => {

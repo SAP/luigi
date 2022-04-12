@@ -429,7 +429,9 @@
                       title={resolveTooltipText(node, getNodeLabel(node))}
                       aria-expanded="false"
                       aria-haspopup="true"
-                      on:click|preventDefault={() => handleClick(node)}
+                      on:click={(event) => {
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                      }}
                       data-testid={getTestId(node)}
                     >
                       <TopNavNode bind:node />

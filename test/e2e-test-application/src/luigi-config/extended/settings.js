@@ -64,8 +64,7 @@ class Settings {
   // globalSideNavigation = true;
   // experimental = {
   //   profileMenuFiori3: true,
-  //   globalNav: true,
-  //   webcomponents: true
+  //   globalNav: true
   // };
   // globalSideNavigation = true;
 }

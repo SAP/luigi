@@ -381,6 +381,40 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 -   **since**: 1.7.1
 
+#### getAnchor
+
+Returns the current anchor based on active URL.
+
+##### Examples
+
+```javascript
+LuigiClient.getAnchor();
+```
+
+Returns **any** anchor of URL
+
+**Meta**
+
+-   **since**: 1.21.0
+
+#### setAnchor
+
+Sends anchor to Luigi Core. The anchor will be added to the URL.
+
+##### Parameters
+
+-   `anchor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+LuigiClient.setAnchor('luigi');
+```
+
+**Meta**
+
+-   **since**: 1.21.0
+
 ### Lifecycle~initListenerCallback
 
 Callback of the addInitListener
@@ -465,7 +499,7 @@ LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.16.0
 
 #### preserveQueryParams
 
@@ -484,7 +518,7 @@ LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foob
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.19.0
 
 #### navigate
 
@@ -498,6 +532,8 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
@@ -516,6 +552,26 @@ LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
 ```
 
+#### updateModalPathInternalNavigation
+
+Updates path of the modalPathParam when internal navigation occurs.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
+-   `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history (optional, default `false`)
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+```
+
+**Meta**
+
+-   **since**: 1.21.0
+
 #### openAsModal
 
 Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
@@ -526,6 +582,8 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
 
 ##### Examples
 
@@ -1052,7 +1110,7 @@ Returns **any** current themeObj
 ### storageManager
 
 StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by Luigi Core.
-The idea is that different micro frontends can share or persist items using local storage.
+The idea is that different micro frontends can share or persist items using local storage, as long as they come from the same domain and follow the [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
 Since all storage operations are asynchronous (sending an event to Luigi Core that will reply once operation is finished), all the methods return Promises.
 
 #### setItem

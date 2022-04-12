@@ -20,6 +20,8 @@ export declare interface ConfirmationModalSettings {
 export declare interface ModalSettings {
   title?: string;
   size?: 'l' | 'm' | 's';
+  width?: string;
+  height?: string;
 }
 
 export declare interface SplitViewSettings {
@@ -61,9 +63,9 @@ export declare interface Context {
   };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
+  anchor?: string;
   [key: string]: any;
 }
-
 export declare interface NodeParams {
   [key: string]: string;
 }
@@ -370,6 +372,17 @@ export declare interface LinkManager {
   openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
 
   /**
+   * Update current title and size of a modal.
+   * @memberof linkManager
+   * @param {Object} updatedModalSettings possibility to update the active modal.
+   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
+   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @example
+   * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+   */
+  updateModalSettings: (updatedModalSettings: Object) => void;
+
+  /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
    * @memberof linkManager
    * @param {string} path navigation path
@@ -412,8 +425,16 @@ export declare interface LinkManager {
   withoutSync: () => this;
 
   /**
+   * Updates path of the modalPathParam when internal navigation occurs
+   * @since 1.21.0
+   * @example
+   * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
+   */
+  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry?: boolean) => void;
+
+  /**
    * Enables navigating to a new tab.
-   * @since NEXT_RELEASE
+   * @since 1.16.0
    * @example
    * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
@@ -422,7 +443,7 @@ export declare interface LinkManager {
   /**
    * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
-   * @since NEXT_RELEASE
+   * @since 1.19.0
    * @example
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
@@ -651,6 +672,26 @@ export type getActiveFeatureToggles = () => Array<String>;
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Returns the anchor of active URL.
+ * @returns {String} the anchor string
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.getAnchor();
+ */
+export function getAnchor(): String;
+export type getAnchor = () => String;
+
+/**
+ * Sets the anchor of active URL.
+ * @param {string} anchor
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.setAnchor('luigi');
+ */
+export function setAnchor(anchor: String): void;
+export type setAnchor = (anchor: String) => void;
 
 /**
  * Read search query parameters which are sent from Luigi core

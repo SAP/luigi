@@ -50,7 +50,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### pageNotFoundHandler
 - **type**: any
-- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution.
+- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar. 
 - **attributes**:
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
@@ -557,7 +557,8 @@ runTimeErrorHandler: {
 - **description**:  configures the settings of a view which opens in a modal. You can set the **openNodeInModal** parameter to `true` to use the default modal title and size, or you can specify them using these attributes:
 - **attributes**:
   - **title** is the modal title. By default, it is the node label. If there is no label, it is left empty.
-  - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size.
+  - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size or
+  - **width** and **height** can be used to specify the size of the modal more precisely. In that case, the **size** attribute is not needed. Allowed units are `%`, `px`, `rem`, `em`, `vh` and `vw`.
 
 ### pageErrorHandler
 <!-- add-attribute:class:warning -->
@@ -816,7 +817,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 ### columns
 - **type**: number
-- **description**: gives the possibility to define a number of columns to display products. It may be 3 or 4 columns. If nothing is specified, it is 4 columns by default.
+- **description**: gives the possibility to define a number of columns to be displayed within the product switcher. It may be 3 or 4 columns, or `'auto'`. If nothing is specified, it is 4 columns by default. Parameter `columns: 'auto'` sets the number of columns to 3, in case the entities in  **productSwitcher** are equal to or less than 6. If there are more than 6, the number of columns will be automatically adjusted to 4. 
 
 ### icon
 - **type**: string

@@ -1020,7 +1020,7 @@ describe('Routing', function() {
     });
   });
   describe('append and remove modal data from URL using path routing', () => {
-    const modalPath = encodeURIComponent('/project-modal');
+    let modalPath = encodeURIComponent('/project-modal');
     const modalParams = { hello: 'world' };
     const params = {
       '~luigi': 'mario'
@@ -1030,6 +1030,7 @@ describe('Routing', function() {
 
     beforeEach(() => {
       history.replaceState = sinon.spy();
+      history.pushState = sinon.spy();
       sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
       sinon.stub(RoutingHelpers, 'getHashQueryParamSeparator').returns('?');
       sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
@@ -1088,6 +1089,58 @@ describe('Routing', function() {
         console.log('error', error);
       }
       sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/settings?~luigi=mario');
+    });
+
+    it('should update path of the modal when changing template in the modal, save history', () => {
+      sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
+      global.location = {
+        href: 'http://some.url.de/settings'
+      };
+      window.state = {};
+      const addHistoryEntry = true;
+      sinon
+        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .withArgs('routing.useHashRouting')
+        .returns(false);
+      try {
+        modalPath = encodeURIComponent('/modalPath');
+        Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry);
+      } catch (error) {
+        console.log('error', error);
+      }
+      // then
+      sinon.assert.calledWith(
+        history.pushState,
+        window.state,
+        '',
+        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252FmodalPath&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+      );
+    });
+
+    it('should update path of the modal when changing template in the modal, do not save history', () => {
+      sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
+      global.location = {
+        href: 'http://some.url.de/settings'
+      };
+      window.state = {};
+      const addHistoryEntry = false;
+      sinon
+        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .withArgs('routing.useHashRouting')
+        .returns(false);
+      try {
+        modalPath = encodeURIComponent('/project-modal');
+        Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry);
+      } catch (error) {
+        console.log('error', error);
+      }
+      // then
+      sinon.assert.calledWith(
+        history.replaceState,
+        window.state,
+        '',
+        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+      );
     });
   });
 

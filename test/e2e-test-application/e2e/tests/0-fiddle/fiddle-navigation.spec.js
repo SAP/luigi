@@ -26,6 +26,40 @@ describe('Fiddle', () => {
           .click();
         cy.expectPathToBe('/home/two');
       });
+      it('Open modal via core api with "px"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf')
+          .should('have.css', 'width', '500px')
+          .and('have.css', 'height', '500px');
+        cy.get('[aria-label="close"]').click();
+      });
+      it('Open modal via core api with "%"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
+        cy.get('[aria-label="close"]').click();
+      });
+      it('Open modal via core api with "rem"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '33rem', height: '70rem' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:33rem;height:70rem;');
+        cy.get('[aria-label="close"]').click();
+      });
+      it('Open modal via core api with "rem"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:80%;height:80%;');
+        cy.get('[aria-label="close"]').click();
+      });
     });
     describe('Normal navigation', () => {
       beforeEach(() => {
@@ -960,7 +994,7 @@ describe('Fiddle', () => {
           .contains('add node params')
           .click();
       });
-      cy.expectPathToBe('/home/mynode?~q=test&~luigi=rocks');
+      cy.expectPathToBe('/home/mynode?%7Eq=test&%7Eluigi=rocks');
       cy.getIframeBody().then($body => {
         cy.wrap($body)
           .find('[data-testid="lui-delete-node-params"]')
@@ -969,7 +1003,7 @@ describe('Fiddle', () => {
           .contains('delete node params')
           .click();
       });
-      cy.expectPathToBe('/home/mynode?~luigi=rocks');
+      cy.expectPathToBe('/home/mynode?%7Eluigi=rocks');
     });
   });
   describe('LuigiClient add and delete node and search paramstest', () => {
@@ -996,6 +1030,7 @@ describe('Fiddle', () => {
       };
       newConfig.navigation.nodes[0].children.push(node);
     });
+
     it('Add and delete search params path routing enabled', () => {
       newConfig.routing.useHashRouting = false;
       cy.visitFiddleConfigWithPathRouting('', newConfig);

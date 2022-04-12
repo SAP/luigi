@@ -140,7 +140,9 @@
                       {#if addNavHrefForAnchor}
                         <a
                           href={getRouteLink(productSwitcherItem)}
-                          on:click|preventDefault={() => {}}
+                          on:click={(event) => {
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+                          }}
                           class="fd-menu__link"
                         >
                           <div class="lui-product-switch__icon">
