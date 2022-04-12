@@ -386,16 +386,20 @@
                             style="background-image:url('{userSettingsGroupProperty[1]
                               .icon}'); background-size:cover;"
                           />
+                          {#if userSettingsGroupProperty[1].initials}
+                            <span
+                              class={userSettingsGroupProperty[1]
+                                .iconClassAttribute + ' lui-profile-initials' ||
+                                'fd-image--s fd-list__thumbnail'}
+                              aria-label={userSettingsGroupProperty[1].altText
+                                ? userSettingsGroupProperty[1].altText
+                                : ''}
+                              >{userSettingsGroupProperty[1].initials
+                                ? userSettingsGroupProperty[1].initials
+                                : ''}</span
+                            >
+                          {/if}
                         {/if}
-                      {:else if userSettingsGroupProperty[1].initials}
-                        <span
-                          class="fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail fd-user-menu__avatar lui-avatar-space"
-                          aria-label="Avatar"
-                          >{userSettingsGroupProperty[1].initials
-                            ? userSettingsGroupProperty[1].initials
-                            : ''}</span
-                        >
-                      {:else}
                         <i role="presentation" class="sap-icon" />
                       {/if}
 
@@ -590,6 +594,22 @@
 
   .usersettingseditor {
     padding: 20px;
+  }
+
+  .fd-avatar {
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+    /* border: 1px solid var(--sapList_Background, #fff);*/
+  }
+
+  .lui-profile-initials {
+    position: absolute;
+    z-index: 1;
+    background-color: var(
+      --fdAvatar_BackgroundColor,
+      var(--sapAccentColor6, #286eb4)
+    );
   }
 
   /*Fiori 3 guidlines*/
