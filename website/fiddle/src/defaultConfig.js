@@ -191,9 +191,6 @@ Luigi.setConfig({
             burgerTooltip: {
                 navExpanded: 'Collapse navigation',
                 navCollapsed: 'Expand navigation'
-            },
-            experimental:{
-                webcomponents: true
             }
         }
     });    
