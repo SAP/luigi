@@ -1,8 +1,8 @@
 <script>
-  import { createEventDispatcher, onMount } from 'svelte';
+  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
   import { LuigiI18N } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
-  import { EscapingHelpers, NavigationHelpers } from './utilities/helpers';
+  import { EscapingHelpers, NavigationHelpers, IframeHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -14,6 +14,10 @@
     error: 'message-error',
     success: 'message-success',
   };
+
+  onDestroy(()=> {
+    IframeHelpers.enableA11YKeyboardBackdrop();
+  })
 
   onMount(() => {
     const defaultSettings = {
@@ -29,6 +33,8 @@
     };
     settings = Object.assign(defaultSettings, settings);
 
+    IframeHelpers.disableA11YKeyboardExceptClassName('.fd-message-box-docs-static');
+
     const focusedButton = settings.buttonConfirm
       ? 'confirm-button'
       : 'dismiss-button';
@@ -39,6 +45,7 @@
       console.warn(`Couldn't focus ${focusedButton} in modal`);
     }
   });
+
 
   function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
