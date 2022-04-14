@@ -46,7 +46,6 @@
     }
   });
 
-
   function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
   }
