@@ -158,6 +158,27 @@ describe('Navigation-helpers', () => {
       assert.equal(columns, 4);
     });
 
+    it('should return undefined if no items in config defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto'
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, undefined);
+    });
+
+    it('should return undefined if empty array items in config defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        item: []
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, undefined);
+    });
+
     it('should return number from config file if columns are defined', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
