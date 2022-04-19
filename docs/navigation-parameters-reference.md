@@ -865,6 +865,45 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 - **type**: boolean
 - **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
 
+### customAppSwitcherItemRenderer
+- **type**: Function
+- **description**: This function allows you to customize the single list element rendered in the default app switcher popover.
+- **attributes**:
+  - **item** single application element
+  - **slot** `ul` element as slot. You can append your custom `li` entries to this `ul` element.
+- **example**:
+  ```javascript
+    appSwitcher: {
+      items:[...],
+      customAppSwitcherItemRenderer: (item, slot) => {
+        let li = document.createElement('li');
+        li.setAttribute('class', 'fd-menu__item');
+        let a = document.createElement('a');
+        a.setAttribute('class', 'fd-menu__link');
+        a.addEventListener('click', e => {
+          Luigi.navigation().navigate(item.link);
+          e.stopPropagation();
+        });
+        let span = document.createElement('span');
+        span.setAttribute('class', 'fd-menu__addon-before');
+        let i = document.createElement('i');
+        if (item.title === 'Application One') {
+          i.setAttribute('class', 'sap-icon--phone');
+        } else {
+          i.setAttribute('class', 'sap-icon--settings');
+        }
+        span.appendChild(i);
+        let spanText = document.createElement('span');
+        spanText.setAttribute('class', 'fd-menu__title');
+        spanText.innerText = item.title;
+        a.appendChild(span);
+        a.appendChild(spanText);
+        li.appendChild(a);
+        slot.appendChild(li);
+      }
+    }
+  ```
+- **since**: NEXTRELEASE
 
 ## Global search
 

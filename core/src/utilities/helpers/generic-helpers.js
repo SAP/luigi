@@ -140,6 +140,9 @@ class GenericHelpersClass {
    * @returns {string} string without leading slash
    */
   trimLeadingSlash(str) {
+    if (typeof str !== 'string') {
+      return '';
+    }
     return str.replace(/^\/+/g, '');
   }
 
@@ -149,6 +152,9 @@ class GenericHelpersClass {
    * @returns string string without any trailing slash
    */
   trimTrailingSlash(str) {
+    if (typeof str !== 'string') {
+      return '';
+    }
     return str.replace(/\/+$/, '');
   }
 

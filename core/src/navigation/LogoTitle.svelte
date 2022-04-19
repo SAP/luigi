@@ -2,7 +2,7 @@
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import * as Header from './services/header';
   import { Routing } from '../services/routing';
-  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -15,11 +15,13 @@
   export let selectedItem;
   export let defaultTitle;
   export let appSwitcherItems;
+  export let customAppSwitcherItemRenderer;
   export let pathParams;
   export let subTitle;
   export let defaultSubTitle;
   export let pathData;
   export let addNavHrefForAnchor;
+  let luigiCustomAppSwitcherItemRenderer__slotContainer;
   let previousPathData;
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let getTranslation = getContext('getTranslation');
@@ -33,6 +35,7 @@
           pathData,
           pathParams,
           appSwitcherItems,
+          customAppSwitcherItemRenderer,
           selectedItem,
           defaultTitle,
           title,
@@ -51,7 +54,9 @@
               pathData = obj.pathData;
             } else if (prop === 'appSwitcherItems') {
               appSwitcherItems = obj.appSwitcherItems;
-            } else if (prop === 'pathParams') {
+            } else if (prop === 'customAppSwitcherItemRenderer') {
+              customAppSwitcherItemRenderer = obj.customAppSwitcherItemRenderer;
+            }else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
             } else if (prop === 'selectedItem') {
               selectedItem = obj.selectedItem;
@@ -89,6 +94,13 @@
       previousPathData = pathData;
     }
   });
+
+  function renderCustomList(item, slot){
+    setTimeout(()=>{
+      customAppSwitcherItemRenderer(item,slot);
+    });
+    return '';
+  }
 
   export function goTo(path) {
     getUnsavedChangesModalPromise().then(() => {
@@ -138,8 +150,9 @@
       ? 'fd-shellbar__logo--image-replaced'
       : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
-    on:click={(event) => {
-      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
+    on:click={event => {
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+        goTo('/');
     }}
     href="/"
     role="button"
@@ -170,8 +183,9 @@
       <a
         class="fd-shellbar__title lui-shellbar-single-app-title"
         data-testid="luigi-topnav-title"
-        on:click={(event) => {
-          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
+        on:click={event => {
+          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
+            goTo('/');
         }}
         href="/"
       >
@@ -191,8 +205,9 @@
         {#if addNavHrefForAnchor}
           {#if appSwitcherItems && appSwitcherItems.length === 1}
             <a
-              href="{getRouteLink(appSwitcherItems[0])}"
-              class="fd-shellbar__title lui-shellbar-single-app-title">
+              href={getRouteLink(appSwitcherItems[0])}
+              class="fd-shellbar__title lui-shellbar-single-app-title"
+            >
               <span>
                 {$getTranslation(appSwitcherItems[0].title)}
               </span>
@@ -262,7 +277,10 @@
         id="appSwitcherPopover"
       >
         <nav class="fd-menu">
-          <ul class="fd-menu__list fd-menu__list--no-shadow">
+          <ul
+            class="fd-menu__list fd-menu__list--no-shadow"
+            bind:this={luigiCustomAppSwitcherItemRenderer__slotContainer}
+          >
             {#if showMainAppEntry && selectedItem}
               <li class="fd-menu__item">
                 <a
@@ -280,13 +298,22 @@
             {/if}
             {#if appSwitcherItems && appSwitcherItems.length > 0}
               {#each appSwitcherItems as item}
-                {#if item !== selectedItem && hasValidLink(item, pathParams)}
+                {#if GenericHelpers.isFunction(customAppSwitcherItemRenderer)}
+                  {#if luigiCustomAppSwitcherItemRenderer__slotContainer}
+                    {@html renderCustomList(
+                      item,
+                      luigiCustomAppSwitcherItemRenderer__slotContainer
+                    )}
+                  {/if}
+                {:else if item !== selectedItem && hasValidLink(item, pathParams)}
                   <li class="fd-menu__item">
                     <a
                       role="button"
                       class="fd-menu__link"
-                      on:click={(event) => {
-                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo(item.link);
+                      on:click={event => {
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                          event
+                        ) && goTo(item.link);
                       }}
                       href={addNavHrefForAnchor
                         ? getRouteLink(item, pathParams)
