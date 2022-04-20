@@ -853,20 +853,8 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 The app switcher is a drop-down list available in the top navigation bar. It allows you to switch between application elements displayed in the drop-down. To do so, add the **appSwitcher** parameter to the **navigation** object using the following optional parameters:
 
-### items
-- **type**: array
-- **description**: defines the list of application elements.
-- **attributes**:
-  - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
-  - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
-  - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
-
-### showMainAppEntry
-- **type**: boolean
-- **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
-
 ### customAppSwitcherItemRenderer
-- **type**: Function
+- **type**: function
 - **description**: This function allows you to customize the single list element rendered in the default app switcher popover.
 - **attributes**:
   - **item** single application element
@@ -904,6 +892,18 @@ The app switcher is a drop-down list available in the top navigation bar. It all
     }
   ```
 - **since**: NEXTRELEASE
+
+### items
+- **type**: array
+- **description**: defines the list of application elements.
+- **attributes**:
+  - **title** defines the application title. This is shown in the **appSwitcher** drop-down as well as the title in the header of the Luigi application if a user is in the context of the app.
+  - **subTitle** defines the application sub-title. This is shown as the sub-title in the header of the Luigi application if a user is in the context of the app.
+  - **link** is a link within the Luigi application that defines the root of the app. It is used to switch to the application if the drop-down entry is selected. It is also used to determine if a user is within the app's scope, so that the corresponding title and sub-title can be rendered in the header.
+
+### showMainAppEntry
+- **type**: boolean
+- **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
 
 ## Global search
 
