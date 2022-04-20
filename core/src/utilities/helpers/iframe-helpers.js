@@ -312,11 +312,9 @@ class IframeHelpersClass {
       // save tabIndex in case one already exists
       if (prevTabIndex || prevTabIndex === 0) {
         element.setAttribute('oldTab', prevTabIndex);
-        // set tabindex to negative only if the current element is not a descendant of element with class 'customClassName'
-        !element.closest(customClassName) ? element.setAttribute('tabindex', '-1') : '';
-      } else {
-        !element.closest(customClassName) ? element.setAttribute('tabindex', '-1') : '';
       }
+      // set tabindex to negative only if the current element is not a descendant of element with class 'customClassName'
+      !element.closest(customClassName) ? element.setAttribute('tabindex', '-1') : '';
     });
   }
 

@@ -337,4 +337,40 @@ describe('Iframe-helpers', () => {
       assert.deepEqual(IframeHelpers.applyCoreStateData(undefined), expected);
     });
   });
+
+  describe('disableA11YKeyboardExceptClassName', () => {
+    let doc = document.implementation.createHTMLDocument('New Document');
+    // var parser = new DOMParser();
+    // var fakeDocument = parser.parseFromString(`
+    //   <div>
+    //     <span>I am a text</span>
+    //     <div>
+    //       <p>Hello world</p>
+    //       <button class='old' tabindex='0'>Focus me</button>
+    //       <span>Some span</span>
+    //     </div>
+    //     <div class='modalElement'>
+    //       <p>Another one</p>
+    //       <button >Click me</button>
+    //       <button >Click that</button>
+    //       <button class='oldInModal' tabindex='1'>Click this</button>
+    //     </div>
+    //     <span>Some other text</span>
+    //   </div>`,
+
+    //   "text/html");
+    beforeEach(() => {
+      // window.document= fakeDocument
+    });
+
+    it('saves old tabindex value properly', () => {
+      IframeHelpers.disableA11YKeyboardExceptClassName('modalELement');
+      const elemementOutsideModalWithPrevTabIndex = window.document.getElementsByClassName('old');
+      const elemementInsideModalWithPrevTabIndex = window.document.getElementsByClassName('oldInModal');
+      // assert.deepEqual(elemementOutsideModalWithPrevTabIndex.getAttribute('old'), 0);
+      // assert.deepEqual(elemementOutsideModalWithPrevTabIndex.getAttribute('oldInModal'), 1);
+    });
+
+    it('set tabindex properly on all but specified classname element', () => {});
+  });
 });
