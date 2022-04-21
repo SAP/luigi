@@ -339,36 +339,57 @@ describe('Iframe-helpers', () => {
   });
 
   describe('disableA11YKeyboardExceptClassName', () => {
-    let doc = document.implementation.createHTMLDocument('New Document');
-    // var parser = new DOMParser();
-    // var fakeDocument = parser.parseFromString(`
-    //   <div>
-    //     <span>I am a text</span>
-    //     <div>
-    //       <p>Hello world</p>
-    //       <button class='old' tabindex='0'>Focus me</button>
-    //       <span>Some span</span>
-    //     </div>
-    //     <div class='modalElement'>
-    //       <p>Another one</p>
-    //       <button >Click me</button>
-    //       <button >Click that</button>
-    //       <button class='oldInModal' tabindex='1'>Click this</button>
-    //     </div>
-    //     <span>Some other text</span>
-    //   </div>`,
+    const doc = document.implementation.createHTMLDocument('New Document');
+    const divParent = doc.createElement('div');
+    doc.body.appendChild(divParent);
 
-    //   "text/html");
+    const spanChild = doc.createElement('span');
+    spanChild.textContent = 'I am some text';
+    spanChild.className = 'outsideModal';
+    divParent.appendChild(spanChild);
+
+    let spanChild2 = doc.createElement('span');
+    spanChild2.textContent = 'I am a text span with existing tabindex value';
+    spanChild2.setAttribute('tabindex', '0');
+    spanChild2.className = 'oldTabIndexOutsideModal';
+
+    divParent.appendChild(spanChild2);
+    divParent.appendChild(spanChild2);
+
+    const divChild = doc.createElement('div');
+    divChild.className = 'modalElement';
+
+    const childButton1 = doc.createElement('button');
+    childButton1.textContent = 'Click me';
+
+    const childButton2 = doc.createElement('button');
+    childButton2.textContent = 'Click that';
+    childButton2.className = 'oldTabIndexInModal';
+    childButton2.setAttribute('tabindex', '1');
+
+    divChild.appendChild(childButton1);
+    divChild.appendChild(childButton2);
+    divParent.appendChild(divChild);
+
+    // const jsdom = require("jsdom");
+    // const { JSDOM } = jsdom;
+    // const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+
     beforeEach(() => {
-      // window.document= fakeDocument
+      // sinon.stub(LuigiConfig, 'getConfigValue').returns(customSandboxRules);
+      global.document = doc;
     });
 
     it('saves old tabindex value properly', () => {
-      IframeHelpers.disableA11YKeyboardExceptClassName('modalELement');
-      const elemementOutsideModalWithPrevTabIndex = window.document.getElementsByClassName('old');
-      const elemementInsideModalWithPrevTabIndex = window.document.getElementsByClassName('oldInModal');
-      // assert.deepEqual(elemementOutsideModalWithPrevTabIndex.getAttribute('old'), 0);
-      // assert.deepEqual(elemementOutsideModalWithPrevTabIndex.getAttribute('oldInModal'), 1);
+      IframeHelpers.disableA11YKeyboardExceptClassName('modalElement');
+      // assert.equal(doc, {});
+      const elemementOutsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexOutsideModal');
+      const elemementInsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexInModal');
+      assert.equal(elemementOutsideModalWithPrevTabIndex.length, 1);
+      assert.equal(elemementInsideModalWithPrevTabIndex.length, 1);
+
+      assert.equal(elemementOutsideModalWithPrevTabIndex[0].getAttribute('old'), 0);
+      assert.equal(elemementInsideModalWithPrevTabIndex[0].getAttribute('old'), 1);
     });
 
     it('set tabindex properly on all but specified classname element', () => {});
