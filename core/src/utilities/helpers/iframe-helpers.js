@@ -312,7 +312,7 @@ class IframeHelpersClass {
       const prevTabIndex = element.getAttribute('tabindex');
       // save tabIndex in case one already exists
       if ((prevTabIndex || prevTabIndex === 0) && isNotAChildOfTargetElement) {
-        element.setAttribute('oldTab', prevTabIndex);
+        element.setAttribute('oldtab', prevTabIndex);
       }
       // set tabindex to negative only if the current element is not a descendant of element with class 'targetElementClassName'
       isNotAChildOfTargetElement ? element.setAttribute('tabindex', '-1') : '';
@@ -320,17 +320,19 @@ class IframeHelpersClass {
   }
 
   /**
-   * Resets tabindex value to previous value if it exists, or remove altogether if not
+   * Resets tabindex value to previous value if it exists, or remove altogether if not.
+   * Applies to all elements except for the target element which we do not touch
    */
-  enableA11YKeyboardBackdrop() {
+  enableA11YKeyboardBackdropExceptClassName(targetElementClassName) {
     const nodeList = document.querySelectorAll('*');
     [...nodeList].forEach(el => {
       const restoreVal = el.getAttribute('oldtab');
+      const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
       if (restoreVal) {
         el.setAttribute('tabindex', restoreVal);
         el.removeAttribute('oldtab');
       } else {
-        el.removeAttribute('tabindex');
+        isNotAChildOfTargetElement ? el.removeAttribute('tabindex') : '';
       }
     });
   }

@@ -338,60 +338,118 @@ describe('Iframe-helpers', () => {
     });
   });
 
-  describe('disableA11YKeyboardExceptClassName', () => {
-    const doc = document.implementation.createHTMLDocument('New Document');
+  describe('disable/enable keyboard accessibility on background elements', () => {
+    const doc = document.implementation.createHTMLDocument('Mocked DOM');
     const divParent = doc.createElement('div');
     doc.body.appendChild(divParent);
-
     const spanChild = doc.createElement('span');
     spanChild.textContent = 'I am some text';
     spanChild.className = 'outsideModal';
     divParent.appendChild(spanChild);
-
-    let spanChild2 = doc.createElement('span');
+    const spanChild2 = doc.createElement('span');
     spanChild2.textContent = 'I am a text span with existing tabindex value';
     spanChild2.setAttribute('tabindex', '0');
     spanChild2.className = 'oldTabIndexOutsideModal';
-
     divParent.appendChild(spanChild2);
     divParent.appendChild(spanChild2);
-
     const divChild = doc.createElement('div');
     divChild.className = 'modalElement';
-
     const childButton1 = doc.createElement('button');
     childButton1.textContent = 'Click me';
-
     const childButton2 = doc.createElement('button');
     childButton2.textContent = 'Click that';
     childButton2.className = 'oldTabIndexInModal';
     childButton2.setAttribute('tabindex', '1');
-
     divChild.appendChild(childButton1);
     divChild.appendChild(childButton2);
     divParent.appendChild(divChild);
 
-    // const jsdom = require("jsdom");
-    // const { JSDOM } = jsdom;
-    // const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+    // The lines above produce this html
+    /**
+     * <html>
+     * <head>
+     *    <title>Mocked DOM</title>
+     * </head>
+     * <body>
+     *   <div>
+     *     <span class="outsideModal">I am some text</span>
+     *     <span tabindex="0" class="oldTabIndexOutsideModal">I am a text span with existing tabindex value</span>
+     *     <div class="modalElement">
+     *        <button>Click me</button>
+     *        <button class="oldTabIndexInModal" tabindex="1">Click that</button>
+     *     </div>
+     *   </div>
+     * </body>
+     * </html>
+     */
 
-    beforeEach(() => {
-      // sinon.stub(LuigiConfig, 'getConfigValue').returns(customSandboxRules);
-      global.document = doc;
+    describe('disableA11YKeyboardExceptClassName', () => {
+      beforeEach(() => {
+        global.document = doc;
+      });
+
+      it('saves old tabindex value properly', () => {
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+
+        const elemementOutsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexOutsideModal');
+        const elemementInsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexInModal');
+        assert.equal(elemementOutsideModalWithPrevTabIndex.length, 1);
+        assert.equal(elemementInsideModalWithPrevTabIndex.length, 1);
+
+        assert.equal(elemementOutsideModalWithPrevTabIndex[0].getAttribute('oldtab'), 0);
+        assert.isNull(elemementInsideModalWithPrevTabIndex[0].getAttribute('oldtab'));
+      });
+
+      it('set tabindex properly on all but specified classname element', () => {
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+        assert.equal(divParent.getAttribute('tabindex'), -1);
+        assert.equal(spanChild.getAttribute('tabindex'), -1);
+        assert.equal(spanChild2.getAttribute('tabindex'), -1);
+        assert.isNull(divChild.getAttribute('tabindex'));
+        assert.isNull(childButton1.getAttribute('tabindex'));
+        assert.equal(childButton2.getAttribute('tabindex'), 1);
+      });
     });
 
-    it('saves old tabindex value properly', () => {
-      IframeHelpers.disableA11YKeyboardExceptClassName('modalElement');
-      // assert.equal(doc, {});
-      const elemementOutsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexOutsideModal');
-      const elemementInsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexInModal');
-      assert.equal(elemementOutsideModalWithPrevTabIndex.length, 1);
-      assert.equal(elemementInsideModalWithPrevTabIndex.length, 1);
+    describe('enableA11YKeyboardBackdrop', () => {
+      beforeEach(() => {
+        global.document = doc;
+      });
 
-      assert.equal(elemementOutsideModalWithPrevTabIndex[0].getAttribute('old'), 0);
-      assert.equal(elemementInsideModalWithPrevTabIndex[0].getAttribute('old'), 1);
+      it('check oldtab property properly removed', () => {
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+        IframeHelpers.enableA11YKeyboardBackdrop('.modalElement');
+        assert.isNull(divParent.getAttribute('oldtab'));
+        assert.isNull(spanChild.getAttribute('oldtab'));
+        assert.isNull(spanChild2.getAttribute('oldtab'));
+        assert.isNull(divChild.getAttribute('oldtab'));
+        assert.isNull(childButton1.getAttribute('oldtab'));
+        assert.isNull(childButton2.getAttribute('oldtab'));
+      });
+
+      it('check oldtabindex value properly restored', () => {
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+        IframeHelpers.enableA11YKeyboardBackdrop('.modalElement');
+
+        const elemementOutsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexOutsideModal');
+        const elemementInsideModalWithPrevTabIndex = global.document.getElementsByClassName('oldTabIndexInModal');
+        assert.equal(elemementOutsideModalWithPrevTabIndex.length, 1);
+        assert.equal(elemementInsideModalWithPrevTabIndex.length, 1);
+
+        assert.equal(elemementOutsideModalWithPrevTabIndex[0].getAttribute('tabindex'), 0);
+        assert.equal(elemementInsideModalWithPrevTabIndex[0].getAttribute('tabindex'), 1);
+      });
+
+      it('check negative tabindex values properly removed', () => {
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+        IframeHelpers.enableA11YKeyboardBackdrop('.modalElement');
+
+        assert.isNull(divParent.getAttribute('tabindex'));
+        assert.isNull(spanChild.getAttribute('tabindex'));
+        assert.isNull(divChild.getAttribute('tabindex'));
+        assert.isNull(childButton1.getAttribute('tabindex'));
+        assert.deepEqual(global.document.body, doc.body);
+      });
     });
-
-    it('set tabindex properly on all but specified classname element', () => {});
   });
 });
