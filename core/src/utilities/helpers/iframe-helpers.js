@@ -325,14 +325,14 @@ class IframeHelpersClass {
    */
   enableA11YKeyboardBackdropExceptClassName(targetElementClassName) {
     const nodeList = document.querySelectorAll('*');
-    [...nodeList].forEach(el => {
-      const restoreVal = el.getAttribute('oldtab');
+    [...nodeList].forEach(element => {
+      const restoreVal = element.getAttribute('oldtab');
       const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
       if (restoreVal) {
-        el.setAttribute('tabindex', restoreVal);
-        el.removeAttribute('oldtab');
+        element.setAttribute('tabindex', restoreVal);
+        element.removeAttribute('oldtab');
       } else {
-        isNotAChildOfTargetElement ? el.removeAttribute('tabindex') : '';
+        isNotAChildOfTargetElement ? element.removeAttribute('tabindex') : '';
       }
     });
   }
