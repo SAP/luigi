@@ -16,7 +16,7 @@
   };
 
   onDestroy(()=> {
-    IframeHelpers.enableA11YKeyboardBackdrop();
+    IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-message-box-docs-static');
   })
 
   onMount(() => {
