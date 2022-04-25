@@ -12,6 +12,7 @@ describe('Iframe-helpers', () => {
   let component;
   let customSandboxRules = ['allow-scripts', 'rules1', 'rules2'];
   let allowRules = ['microphone', 'geolocation'];
+  let allowRulesWorkAround = ['microphone;', 'geolocation;'];
 
   beforeEach(() => {
     let lastObj = {};
@@ -61,7 +62,13 @@ describe('Iframe-helpers', () => {
     it('createIframe with allowrules', () => {
       sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRules);
       const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
-      assert.equal(iframe.allow, 'microphone geolocation');
+      assert.equal(iframe.allow, 'microphone; geolocation;');
+    });
+
+    it('createIframe with workarounds for allowrules', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRulesWorkAround);
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(iframe.allow, 'microphone; geolocation;');
     });
 
     it('createIframe with interceptor', () => {
