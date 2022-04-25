@@ -207,7 +207,7 @@ or execute these commands manually to get the same result:
 ### Click to expand
 ```bash
 # create sample vue app
-vue create -d $folder && cd $folder
+vue create -d $my-vue-app && cd $my-vue-app
 
 # install dependencies
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/package.json > package.json
@@ -218,11 +218,11 @@ npm i webpack-cli@4.2.0 node-sass@4.14.1
 mkdir -p src/luigi-config src/assets/scss src/views public/assets
 
 # cleanup default installation
-rm public/index.html src/app.vue # remove default index, will be replaced with example assets
+# remove default index, will be replaced with example assets
+rm public/index.html src/app.vue
 rm -rf src/components
 
-echo "@import '~fundamental-styles/dist/fundamental-styles.css';
-" > src/assets/scss/style.scss
+echo "@import '~fundamental-styles/dist/fundamental-styles.css';" > src/assets/scss/style.scss
 
 # set scripts
 echo "const webpack = require('webpack');
@@ -278,7 +278,7 @@ module.exports = {
         filename: 'luigi-config.js',
         path: path.resolve(__dirname, 'public'),
     },
-};">webpack.config.js
+};" > webpack.config.js
 
 sed 's/"scripts": {/"scripts": {\
 \    "buildConfig":"webpack --config webpack.config.js",/1' package.json > p.tmp.json && mv p.tmp.json package.json
@@ -287,7 +287,7 @@ echo '{
     "globals": {
         "Luigi": "readonly"
     }
-}'>.eslintrc.json
+}' > .eslintrc.json
 
 mkdir -p src/luigi-config
 
