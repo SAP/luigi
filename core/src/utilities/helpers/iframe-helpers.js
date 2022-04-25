@@ -216,6 +216,9 @@ class IframeHelpersClass {
     const iframe = document.createElement('iframe');
     iframe.src = ViewUrlDecorator.hasDecorators() ? ViewUrlDecorator.applyDecorators(viewUrl) : viewUrl;
     if (allowRules) {
+      allowRules.forEach((rule, index) => {
+        allowRules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');
+      });
       iframe.allow = allowRules.join(' ');
     }
     iframe.sandbox = activeSandboxRules.join(' ');
