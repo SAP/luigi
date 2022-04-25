@@ -100,7 +100,7 @@ These parameters used in the example above allow you to configure the items in t
 #### icon
 
 - **type** string (optional)
-- **description** name of the icon, without the `sap-icon--` prefix or path to an image. It is also possible to use a picture instead of an icon via passing the right path to it. 
+- **description** name of the icon, without the `sap-icon--` prefix. It is also possible to use an image instead of an icon by specifying its path.  
 
 #### initials
 
