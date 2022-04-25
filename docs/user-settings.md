@@ -58,6 +58,7 @@ userSettings:{
       sublabel: 'account',
       icon: 'account',
       title: 'Account Settings',
+      initials: 'AA',
       settings: {
         name: { type: 'string', label: 'Name' , isEditable: true},
         checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
@@ -99,7 +100,12 @@ These parameters used in the example above allow you to configure the items in t
 #### icon
 
 - **type** string (optional)
-- **description** name of the icon, without the `sap-icon--` prefix or path to an image.
+- **description** name of the icon, without the `sap-icon--` prefix or path to an image. It is also possible to use a picture instead of an icon via passing the right path to it. 
+
+#### initials
+
+- **type** string (optional)
+- **description** a fallback, which is displayed in the account section if the `icon:` attribute is not defined, or the link is broken, or not reachable. 
 
 #### iconClassAttribute
 
