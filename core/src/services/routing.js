@@ -548,7 +548,7 @@ class RoutingClass {
     } else {
       url.search = `?${RoutingHelpers.encodeParams(params)}`;
     }
-    
+
     if (!addHistoryEntry) {
       history.replaceState(window.state, '', url.href);
     } else {
