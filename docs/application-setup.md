@@ -207,7 +207,7 @@ or execute these commands manually to get the same result:
 ### Click to expand
 ```bash
 # create sample vue app
-vue create -d $my-vue-app && cd $my-vue-app
+vue create -d my-vue-app && cd my-vue-app
 
 # install dependencies
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/package.json > package.json
