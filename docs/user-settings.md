@@ -105,7 +105,7 @@ These parameters used in the example above allow you to configure the items in t
 #### initials
 
 - **type** string (optional)
-- **description** a fallback, which is displayed in the account section if the `icon:` attribute is not defined, or the link is broken, or not reachable. 
+- **description** the initials are displayed in the account section in case the `icon:` attribute is not defined, or if the icon link is broken or unreachable. 
 
 #### iconClassAttribute
 
