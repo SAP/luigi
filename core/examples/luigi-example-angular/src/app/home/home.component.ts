@@ -1,8 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import {
-  addInitListener,
-  addContextUpdateListener
-} from '@luigi-project/client';
+import { addInitListener, addContextUpdateListener } from '@luigi-project/client';
 
 @Component({
   selector: 'app-home',
@@ -27,5 +24,4 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
 }
