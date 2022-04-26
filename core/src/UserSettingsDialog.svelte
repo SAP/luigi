@@ -15,13 +15,14 @@
   } from './utilities/helpers';
   import { MessagesListeners } from './services/messages-listeners';
   import { ViewUrlDecorator } from './services/viewurl-decorator';
-  import UserSettingsEditor from './UserSettingsEditor.html';
+  import UserSettingsEditor from './UserSettingsEditor.svelte';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import { LuigiConfig } from './core-api';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
-  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
+  import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_HOME, KEYCODE_END } from './utilities/keycode.js';
   export let schemaObj;
   export let userSettingGroups;
+
 
   const dispatch = createEventDispatcher();
   let userSettingGroup;
@@ -37,6 +38,8 @@
   let storedUserSettingsData;
   let key;
   let userSettingsGroupTitle;
+  let isComboOpen;
+  let closeDropDown;
 
   onMount(() => {
     const usLocalizationConfig = LuigiConfig.getConfigValue(
@@ -166,7 +169,6 @@
         '.lui-us-list .lui-us-navlist__item'
       )[0];
       firstListItem.classList.add('is-selected');
-      firstListItem.focus();
       if (
         window.innerWidth !== 0 &&
         window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
@@ -305,18 +307,177 @@
     previousWindowWidth = window.innerWidth;
   };
 
-  export function handleKeydown(event) {
-    if (event.keyCode === KEYCODE_ESC) {
-      dispatch('close');
+
+  export function handleKeyUp(event, index) {
+    let luiNavListItemArray = document.querySelectorAll('.lui-us-list .lui-us-navlist__item');
+    if (event.keyCode === KEYCODE_ENTER || event.keyCode === KEYCODE_SPACE) {
+      luiNavListItemArray[index].click();
+    }
+    if (event.keyCode === KEYCODE_END) {
+      luiNavListItemArray[Object.keys(userSettingGroups).length-1].focus();
+    }
+    if (event.keyCode === KEYCODE_HOME) {
+      luiNavListItemArray[0].focus();
     }
   }
 
-  export function handleKeyUp(event, index) {
-    if (event.keyCode === KEYCODE_ENTER || event.keyCode === KEYCODE_SPACE) {
-      document.querySelectorAll('.lui-us-list .lui-us-navlist__item')[index].click();
+  export function handleKeyDown(event) {
+    if (event.keyCode === KEYCODE_ESC && isComboOpen) {
+      closeDropDown();
+    } else if (event.keyCode === KEYCODE_ESC && !isComboOpen) {
+      dispatch('close');
     }
   }
 </script>
+
+<svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
+<div class="fd-dialog fd-dialog--active lui-usersettings-dialog" tabindex="0">
+  <div
+    class="fd-dialog__content lui-usersettings-dialog-size"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="dialog-title-2"
+  >
+    <div class="fd-dialog__body lui-usersettings-body">
+      <div class="lui-usersettings-left-nav">
+        <div class="fd-side-nav">
+          <div class="fd-side-nav__group-header">
+            <h2 class="fd-title fd-title--h5" id="dialog-title-2">
+              {$getTranslation(dialogHeader)}
+            </h2>
+          </div>
+          <div
+            class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation"
+          >
+            <ul
+              class="fd-list fd-list--byline fd-list--navigation lui-us-list"
+              role="list"
+            >
+              {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
+                {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
+                  <li
+                    role="listitem"
+                    class="fd-list__item fd-list__item--link lui-us-navlist__item"
+                    data-testid="us-navigation-item"
+                    on:click|preventDefault={() =>
+                      openEditor(userSettingsGroupProperty, event)}
+                    on:keydown={event => handleKeyUp(event, [index])}
+                    tabindex="0"
+                  >
+                    <a tabindex="-1" class="fd-list__link" href="#">
+                      {#if userSettingsGroupProperty[1].icon}
+                        {#if hasOpenUIicon(userSettingsGroupProperty[1])}
+                          <span class="fd-list__thumbnail">
+                            <i
+                              role="presentation"
+                              class={getSapIconStr(
+                                userSettingsGroupProperty[1].icon
+                              )}
+                            />
+                          </span>
+                        {:else}
+                          <span
+                            class={userSettingsGroupProperty[1]
+                              .iconClassAttribute ||
+                              'fd-image--s fd-list__thumbnail'}
+                            aria-label={userSettingsGroupProperty[1].altText
+                              ? userSettingsGroupProperty[1].altText
+                              : ''}
+                            style="background-image:url('{userSettingsGroupProperty[1]
+                              .icon}'); background-size:cover;"
+                          />
+                          {#if userSettingsGroupProperty[1].initials}
+                            <span
+                              class={userSettingsGroupProperty[1]
+                                .iconClassAttribute + ' lui-profile-initials' ||
+                                'fd-image--s fd-list__thumbnail'}
+                              aria-label={userSettingsGroupProperty[1].altText
+                                ? userSettingsGroupProperty[1].altText
+                                : ''}
+                              >{userSettingsGroupProperty[1].initials
+                                ? userSettingsGroupProperty[1].initials
+                                : ''}</span
+                            >
+                          {/if}
+                        {/if}
+                        <i role="presentation" class="sap-icon" />
+                      {/if}
+
+                      <div class="fd-list__content">
+                        <div class="fd-list__title">
+                          {$getTranslation(
+                            userSettingsGroupProperty[1].label
+                              ? userSettingsGroupProperty[1].label
+                              : ''
+                          )}
+                        </div>
+                        <div class="fd-list__byline">
+                          {$getTranslation(
+                            userSettingsGroupProperty[1].sublabel
+                              ? userSettingsGroupProperty[1].sublabel
+                              : ''
+                          )}
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                {/each}
+              {/each}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="fd-side-nav__group-header lui-usersettings-dialog-sub-header">
+        <button
+          class="fd-button fd-button--transparent fd-button--compact lui-usersettings-content-header__back-btn"
+          on:click={toggleNavMobile}
+        >
+          <i class="sap-icon--navigation-left-arrow" />
+        </button>
+        <h2 class="fd-title fd-title--h5">
+          {$getTranslation(userSettingsGroupTitle)}
+        </h2>
+      </div>
+
+      <div class="lui-usersettings-content">
+        <div class="usersettingseditor mf-wrapper">
+          {#if userSettingGroup}
+            <UserSettingsEditor
+              storedUserSettingData={storedUserSettings}
+              {userSettingGroup}
+              on:updateSettingsObject={updateSettingsObject}
+              bind:closeDropDown
+              bind:isComboOpen
+            />
+          {/if}
+        </div>
+        <div class="iframeUserSettingsCtn iframe-wrapper" />
+      </div>
+    </div>
+    <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+      <div class="fd-bar__right">
+        <div class="fd-bar__element">
+          <button
+            on:click={() => storeUserSettings()}
+            data-testid="lui-us-saveBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button"
+          >
+            {$getTranslation(saveBtn)}
+          </button>
+        </div>
+        <div class="fd-bar__element">
+          <button
+            on:click={() => dispatch('close')}
+            data-testid="lui-us-dismissBtn"
+            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+          >
+            {$getTranslation(dismissBtn)}
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
 
 <style>
   :root {
@@ -392,6 +553,10 @@
     height: 3rem;
   }
 
+  .lui-avatar-space {
+    margin-right: 0.75rem;
+  }
+
   .iframeUserSettingsCtn {
     position: relative;
     width: 100%;
@@ -429,6 +594,22 @@
 
   .usersettingseditor {
     padding: 20px;
+  }
+
+  .fd-avatar {
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+    /* border: 1px solid var(--sapList_Background, #fff);*/
+  }
+
+  .lui-profile-initials {
+    position: absolute;
+    z-index: 1;
+    background-color: var(
+      --fdAvatar_BackgroundColor,
+      var(--sapAccentColor6, #286eb4)
+    );
   }
 
   /*Fiori 3 guidlines*/
@@ -481,116 +662,3 @@
     }
   }
 </style>
-<svelte:window on:keydown="{handleKeydown}" on:resize="{onResize}" />
-<div class="fd-dialog fd-dialog--active lui-usersettings-dialog" tabindex="0">
-  <div
-    class="fd-dialog__content lui-usersettings-dialog-size"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="dialog-title-2"
-  >
-    <div class="fd-dialog__body lui-usersettings-body">
-      <div class="lui-usersettings-left-nav">
-        <div class="fd-side-nav">
-          <div class="fd-side-nav__group-header">
-            <h2 class="fd-title fd-title--h5" id="dialog-title-2">
-              {$getTranslation(dialogHeader)}
-            </h2>
-          </div>
-          <div class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation">
-            <ul
-              class="fd-list fd-list--byline fd-list--navigation lui-us-list"
-              role="list"
-            >
-              {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
-              {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
-              <li
-                role="listitem"
-                class="fd-list__item fd-list__item--link lui-us-navlist__item"
-                data-testid="us-navigation-item"
-                on:click|preventDefault="{() => openEditor(userSettingsGroupProperty, event)}"
-                on:keyup="{(event) => handleKeyUp(event,[index])}"
-              >
-                <a tabindex="0" class="fd-list__link" href="#">
-                  {#if userSettingsGroupProperty[1].icon} {#if
-                  hasOpenUIicon(userSettingsGroupProperty[1])}
-                  <span class="fd-list__thumbnail">
-                    <i
-                      role="presentation"
-                      class="{getSapIconStr(userSettingsGroupProperty[1].icon)}"
-                    ></i>
-                  </span>
-                  {:else}
-                  <span
-                    class="{userSettingsGroupProperty[1].iconClassAttribute || 'fd-image--s fd-list__thumbnail'}"
-                    aria-label="{userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}"
-                    style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
-                  ></span>
-                  {/if} {:else}
-                  <i role="presentation" class="sap-icon"></i>
-                  {/if}
-
-                  <div class="fd-list__content">
-                    <div class="fd-list__title">
-                      {$getTranslation(userSettingsGroupProperty[1].label?userSettingsGroupProperty[1].label:'')}
-                    </div>
-                    <div class="fd-list__byline">
-                      {$getTranslation(userSettingsGroupProperty[1].sublabel?userSettingsGroupProperty[1].sublabel:'')}
-                    </div>
-                  </div>
-                </a>
-              </li>
-              {/each} {/each}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="fd-side-nav__group-header lui-usersettings-dialog-sub-header">
-        <button
-          class="fd-button fd-button--transparent fd-button--compact lui-usersettings-content-header__back-btn"
-          on:click="{toggleNavMobile}"
-        >
-          <i class="sap-icon--navigation-left-arrow"></i>
-        </button>
-        <h2 class="fd-title fd-title--h5">
-          {$getTranslation(userSettingsGroupTitle)}
-        </h2>
-      </div>
-
-      <div class="lui-usersettings-content">
-        <div class="usersettingseditor mf-wrapper">
-          {#if userSettingGroup}
-          <UserSettingsEditor
-            storedUserSettingData="{storedUserSettings}"
-            userSettingGroup="{userSettingGroup}"
-            on:updateSettingsObject="{updateSettingsObject}"
-          ></UserSettingsEditor>
-          {/if}
-        </div>
-        <div class="iframeUserSettingsCtn iframe-wrapper"></div>
-      </div>
-    </div>
-    <footer class="fd-dialog__footer fd-bar fd-bar--footer">
-      <div class="fd-bar__right">
-        <div class="fd-bar__element">
-          <button
-            on:click="{() => storeUserSettings()}"
-            data-testid="lui-us-saveBtn"
-            class="fd-dialog__decisive-button fd-button fd-button--emphasized fd-button--compact confirm-button"
-          >
-            {$getTranslation(saveBtn)}
-          </button>
-        </div>
-        <div class="fd-bar__element">
-          <button
-            on:click="{() => dispatch('close')}"
-            data-testid="lui-us-dismissBtn"
-            class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
-          >
-            {$getTranslation(dismissBtn)}
-          </button>
-        </div>
-      </div>
-    </footer>
-  </div>
-</div>
