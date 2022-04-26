@@ -570,7 +570,8 @@ LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
 
 **Meta**
 
--   **since**: 1.21.0
+-   **since**: NEXTRELEASE
+
 
 #### openAsModal
 
