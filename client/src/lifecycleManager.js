@@ -430,7 +430,7 @@ class LifecycleManager extends LuigiClientBase {
    * const nodeParams = LuigiClient.getNodeParams()
    */
   getNodeParams() {
-    return this.currentContext.nodeParams;
+    return helpers.deSanitizeParamsMap(this.currentContext.nodeParams);
   }
 
   /**
