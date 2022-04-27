@@ -1030,7 +1030,7 @@ describe('Fiddle', () => {
       };
       newConfig.navigation.nodes[0].children.push(node);
     });
-    
+
     it('Add and delete search params path routing enabled', () => {
       newConfig.routing.useHashRouting = false;
       cy.visitFiddleConfigWithPathRouting('', newConfig);
