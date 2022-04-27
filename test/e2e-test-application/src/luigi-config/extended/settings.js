@@ -66,7 +66,6 @@ class Settings {
   //   profileMenuFiori3: true,
   //   globalNav: true
   // };
-  // globalSideNavigation = true;
 }
 
 export const settings = new Settings();

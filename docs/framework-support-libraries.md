@@ -43,12 +43,13 @@ imports: [
 These are the main features provided by the library:
 * [LuigiContextService](#LuigiContextService)
 * [LuigiAutoRoutingService](#LuigiAutoRoutingService)
-* [Preload component](#preload-component-example) - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings).
-* [LuigiRouteStrategy](#LuigiRouteStrategy)
+  * [Preload component](#preload-component-example) - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings).
+  * [LuigiRouteStrategy](#LuigiRouteStrategy)
+  * [AutoRouting for modals](#autorouting-for-modals)
 * [LuigiMockModule](#LuigiMockModule) - an Angular module that listens to Luigi Client calls and messages and sends a mocked response back. See also [LuigiMockUtil](https://docs.luigi-project.io/docs/framework-support-libraries/?section=luigi-testing-utilities). 
 
 
-#### LuigiContextService
+### LuigiContextService
 
 You can inject this service inside your Angular items in order to:
 * Get the current (latest) Context that we received from Luigi Core
@@ -75,7 +76,7 @@ providers: [
 ]
  ```
 
-#### LuigiAutoRoutingService
+### LuigiAutoRoutingService
 
 This service cannot be used directly, but it will provide useful features on how to synchronize your Angular application with Luigi navigation.
 It can happen that in your micro frontend, user can navigate through different components/pages.
@@ -114,7 +115,7 @@ With `data: { luigiRoute: '/home/sample2', fromContext: 'localContext' }`, uses 
 More information about linkManager can be found [here](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager).
 
 
-### LuigiRouteStrategy
+#### LuigiRouteStrategy
 
 To use **LuigiAutoRoutingService**, this library defines a new **RouteReuseStrategy** named **LuigiRouteStrategy**.
 If you need to define your own **RouteReuseStrategy**, you can extend **LuigiRouteStrategy** by overriding it in this way:
@@ -137,6 +138,20 @@ and define the provider:
  }
  ```
 
+#### AutoRouting for modals
+
+Similarly to other components, modals which have a [modalPathParam](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=modalpathparam) can trigger a change in the URL when navigation occurs. In the Angular router of your Luigi app, you can enable auto-routing for modals using these parameters: 
+- `updateModalDataPath` - if set to `true`, the URL will be updated automatically every time the user navigates within a modal. 
+- `addHistoryEntry` - if set to `true`, changes in the modal will also add a history element in the history of the tab.
+
+For example: 
+```javascript
+{
+    path: 'luigi-client-support-preload',
+    component: LuigiPreloadComponent,
+    data: { updateModalPathParam: true, addHistoryEntry: true }
+  }
+```
 
 ### LuigiMockModule
 
