@@ -1116,7 +1116,7 @@ describe('Routing', function() {
         'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252FmodalPath&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );
     });
-    
+
     it('should update path of the modal when changing template in the modal, do not save history', () => {
       sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
       global.location = {
@@ -1130,7 +1130,7 @@ describe('Routing', function() {
         .returns(false);
       try {
         modalPath = encodeURIComponent('/project-modal');
-        Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry); 
+        Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry);
       } catch (error) {
         console.log('error', error);
       }

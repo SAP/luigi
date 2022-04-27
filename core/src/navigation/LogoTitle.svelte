@@ -56,7 +56,7 @@
               appSwitcherItems = obj.appSwitcherItems;
             } else if (prop === 'customAppSwitcherItemRenderer') {
               customAppSwitcherItemRenderer = obj.customAppSwitcherItemRenderer;
-            }else if (prop === 'pathParams') {
+            } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
             } else if (prop === 'selectedItem') {
               selectedItem = obj.selectedItem;
