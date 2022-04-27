@@ -140,10 +140,7 @@ class GenericHelpersClass {
    * @returns {string} string without leading slash
    */
   trimLeadingSlash(str) {
-    if (typeof str !== 'string') {
-      return '';
-    }
-    return str.replace(/^\/+/g, '');
+    return isString(str) ? str.replace(/^\/+/g, '') : '';
   }
 
   /**
@@ -152,10 +149,7 @@ class GenericHelpersClass {
    * @returns string string without any trailing slash
    */
   trimTrailingSlash(str) {
-    if (typeof str !== 'string') {
-      return '';
-    }
-    return str.replace(/\/+$/, '');
+    return isString(str) ? str.replace(/\/+$/, '') : '';
   }
 
   getTrimmedUrl(path) {
@@ -362,6 +356,10 @@ class GenericHelpersClass {
 
   getRemotePromise(id) {
     return LuigiConfig._remotePromises ? LuigiConfig._remotePromises.promises[id] : undefined;
+  }
+
+  isString(value) {
+    typeof value === 'string' || value instanceof String;
   }
 }
 
