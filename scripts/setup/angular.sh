@@ -13,7 +13,7 @@ fi
 echo ""
 ng new $folder --routing && cd $folder
 
-npm i -P @luigi-project/core @luigi-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader 
+npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader 
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 mkdir -p src/luigi-config
@@ -30,6 +30,8 @@ curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/bas
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
 
 sed 's#"src/styles.css"#"src/styles.css",\
+             "node_modules/fundamental-styles/dist/theming/sap_fiori_3.css",\
+             "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css",\
              "node_modules/fundamental-styles/dist/fundamental-styles.css"#g' angular.json > tmp.json && mv tmp.json angular.json
 sed 's#"src/assets"#"src/assets",\
               "src/index.html",\
