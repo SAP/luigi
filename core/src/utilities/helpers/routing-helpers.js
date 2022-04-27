@@ -362,44 +362,15 @@ class RoutingHelpersClass {
   getIntentObject(intentLink) {
     const intentParams = intentLink.split('?intent=')[1];
     if (intentParams) {
-      const firstDash = intentParams.indexOf('-');
-      if (firstDash > 0) {
-        const elements = [intentParams.slice(0, firstDash), intentParams.slice(firstDash + 1)];
-        // avoids usage of '-' in semantic object and action
-        const semanticObject = elements[0];
-        const actionAndParams = elements[1].split('?');
-        // length 2 involves parameters, length 1 involves no parameters
-        if (actionAndParams.length === 2 || actionAndParams.length === 1) {
-          const action = actionAndParams[0];
-          let params = actionAndParams[1];
-          // parse parameters, if any
-          if (params) {
-            params = params.split('&');
-            const paramObjects = [];
-            params.forEach(item => {
-              const param = item.split('=');
-              param.length === 2 && paramObjects.push({ [param[0]]: param[1] });
-            });
-            params = paramObjects;
-          }
-          const alphanumeric = /^[0-9a-zA-Z]+$/;
-          const alphanumericOrUnderscores = /^[0-9a-zA-Z_]+$/;
-          // TODO: check for character size limit
-          if (semanticObject.match(alphanumeric) && action.match(alphanumericOrUnderscores)) {
-            return {
-              semanticObject,
-              action,
-              params
-            };
-          } else {
-            console.warn(
-              'Intent found contains illegal characters. Semantic object must be alphanumeric, action must be (alphanumeric+underscore)'
-            );
-          }
-        }
-      }
+      const intentObj = intentParams.split('?');
+      const semanticObjectAndAction = intentObj[0].split('-');
+      const params = Object.fromEntries(new URLSearchParams(intentObj[1]).entries());
+      return {
+        semanticObject: semanticObjectAndAction[0],
+        action: semanticObjectAndAction[1],
+        params
+      };
     }
-    return false;
   }
 
   /**
@@ -436,20 +407,17 @@ class RoutingHelpersClass {
           return false;
         }
         realPath = realPath.pathSegment;
-        if (intentObject.params) {
+        const params = Object.entries(intentObject.params);
+        if (params && params.length > 0) {
           // resolve dynamic parameters in the path if any
           realPath = this.resolveDynamicIntentPath(realPath, intentObject.params);
           // get custom node param prefixes if any or default to ~
           let nodeParamPrefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
           nodeParamPrefix = nodeParamPrefix || '~';
           realPath = realPath.concat(`?${nodeParamPrefix}`);
-          intentObject.params.forEach(param => {
-            realPath = realPath.concat(Object.keys(param)[0]); // append param name
-            realPath = realPath.concat('=');
-            // append param value and prefix in case of multiple params
-            realPath = realPath.concat(param[Object.keys(param)[0]]).concat(`&${nodeParamPrefix}`);
+          params.forEach(([key, value], index) => {
+            realPath += `${index > 0 ? '&' + nodeParamPrefix : ''}${key}=${value}`;
           });
-          realPath = realPath.slice(0, -(nodeParamPrefix.length + 1)); // slice extra prefix
         }
         return realPath;
       } else {
@@ -480,9 +448,7 @@ class RoutingHelpersClass {
       return path;
     }
     let newPath = path;
-    // merge list of objects into one single object for easier iteration
-    const mergedParams = Object.assign({}, ...parameters);
-    for (const [key, value] of Object.entries(mergedParams)) {
+    for (const [key, value] of Object.entries(parameters)) {
       // regular expression to detect dynamic parameter patterns:
       // /some/path/:param1/example/:param2/sample
       // /some/path/example/:param1
