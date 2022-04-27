@@ -389,7 +389,7 @@ productSwitcher: {
 
 ![App switcher](assets/app-switcher.jpg)
 
-The app switcher is a drop-down in top the navigation which allows you to switch between applications.To use it, you need to:
+The app switcher is a dropdown at the top of the navigation which allows you to switch between applications. To use it, you need to:
 1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
 2. Add the **appSwitcher** parameter to the **navigation** object.
 
