@@ -140,7 +140,7 @@ class GenericHelpersClass {
    * @returns {string} string without leading slash
    */
   trimLeadingSlash(str) {
-    return isString(str) ? str.replace(/^\/+/g, '') : '';
+    return this.isString(str) ? str.replace(/^\/+/g, '') : '';
   }
 
   /**
@@ -149,7 +149,7 @@ class GenericHelpersClass {
    * @returns string string without any trailing slash
    */
   trimTrailingSlash(str) {
-    return isString(str) ? str.replace(/\/+$/, '') : '';
+    return this.isString(str) ? str.replace(/\/+$/, '') : '';
   }
 
   getTrimmedUrl(path) {
@@ -359,7 +359,7 @@ class GenericHelpersClass {
   }
 
   isString(value) {
-    typeof value === 'string' || value instanceof String;
+    return typeof value === 'string' || value instanceof String;
   }
 }
 
