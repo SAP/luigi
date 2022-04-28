@@ -353,7 +353,7 @@ class RoutingHelpersClass {
    *  {
    *    semanticObject: "Sales",
    *    action: "order",
-   *    params: [{param1: "value1"},{param2: "value2"}]
+   *    params: {param1: "value1",param2: "value2"}
    *  };
    * ```
    * @param {string} link  the intent link represents the semantic intent defined by the user
