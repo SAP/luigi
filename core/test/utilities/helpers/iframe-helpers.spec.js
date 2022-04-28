@@ -347,7 +347,7 @@ describe('Iframe-helpers', () => {
 
   describe('disable/enable keyboard accessibility on background elements', () => {
     /**
-     * Ths function produces this html containing 6 DOM elements inside the body tag
+     * Ths function produces this html containing 6 DOM elements inside a body tag
      * <html>
      * <head>
      *    <title>Mocked DOM</title>
