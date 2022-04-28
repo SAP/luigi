@@ -122,18 +122,43 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 ### header.logo
 - **type**: icon
 - **description**: defines the top left navigation logo. It has a fixed height of 28px.
+- **example**: 
+```
+ header: {  object / function / Promise
+    logo: 'path/to/image.png'
+  },
+```
 
 ### header.altText
 - **type**: string
 - **description**: adds the HTML `alt` attribute to the logo image.
+- **example**: 
+```
+ header: {  object / function / Promise
+    logo: 'path/to/image.png', 
+    altText: 'alternative text'
+  },
+```
 
 ### header.title
 - **type**: string
 - **description**: defines the top left navigation title.
+- **example**: 
+```
+ header: {  object / function / Promise
+    title: 'Luigi Demo'
+  },
+```
 
 ### header.favicon
 - **type**: icon
 - **description**: defines the favicon. It requires a standard favicon file with the `.ico` extension, and 16x16px or 32x32px dimensions.
+- **example**: 
+```
+ header: {  object / function / Promise
+    favicon: 'path/to/favicon.ico'
+  },
+```
 
 ### responsiveNavigation
 - **description**: allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons.
