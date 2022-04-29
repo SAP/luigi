@@ -2,7 +2,7 @@
   import Alerts from './Alerts.svelte';
   import ConfirmationModal from './ConfirmationModal.svelte';
   import Modal from './Modal.svelte';
-  import UserSettingsDialog from './UserSettingsDialog.html';
+  import UserSettingsDialog from './UserSettingsDialog.svelte';
   import Backdrop from './Backdrop.svelte';
   import SplitView from './SplitView.svelte';
   import LeftNav from './navigation/LeftNav.svelte';
