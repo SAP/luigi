@@ -431,7 +431,7 @@ class LifecycleManager extends LuigiClientBase {
    * const nodeParams = LuigiClient.getNodeParams()
    * const nodeParams = LuigiClient.getNodeParams(true)
    */
-  getNodeParams(shouldDesanitise) {
+  getNodeParams(shouldDesanitise = false) {
     return shouldDesanitise
       ? helpers.deSanitizeParamsMap(this.currentContext.nodeParams)
       : this.currentContext.nodeParams;

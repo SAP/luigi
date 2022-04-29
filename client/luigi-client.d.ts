@@ -656,8 +656,8 @@ export type addNodeParams = (params: NodeParams, keepBrowserHistory: Boolean) =>
  * const nodeParams = LuigiClient.getNodeParams()
  * const nodeParams = LuigiClient.getNodeParams(true)
  */
-export function getNodeParams(shouldDesanitise?: Boolean): NodeParams;
-export type getNodeParams = (shouldDesanitise?: Boolean) => NodeParams;
+export function getNodeParams(shouldDesanitise?: boolean): NodeParams;
+export type getNodeParams = (shouldDesanitise?: boolean) => NodeParams;
 
 /**
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`

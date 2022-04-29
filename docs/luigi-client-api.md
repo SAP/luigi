@@ -263,7 +263,7 @@ Node parameters are defined like URL query parameters but with a specific prefix
 
 ##### Parameters
 
--   `shouldDesanitise` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** defines whether the specially encoded characters should be desanitised
+-   `shouldDesanitise` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** defines whether the specially encoded characters should be desanitised (optional, default `false`)
 
 ##### Examples
 
