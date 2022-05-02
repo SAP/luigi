@@ -11,6 +11,7 @@
   const dispatch = createEventDispatcher();
   let getTranslation = getContext('getTranslation');
   let selectedLanguageLabel;
+  let luigiLanguage__slotContainer;
   export let isComboOpen;
 
   export function updateSettingsObject() {
@@ -132,6 +133,81 @@
     } 
   }
 
+  export function handleKeyUp({keyCode}) {
+    if (keyCode === KEYCODE_SPACE) {
+      document.querySelector('.lui-anchor-node').click();
+    }
+
+    if (
+      keyCode === KEYCODE_ARROW_DOWN ||
+      keyCode === KEYCODE_ARROW_UP ||
+      keyCode === KEYCODE_ENTER
+    ) {
+      let childdren = luigiLanguage__slotContainer.children;
+      let childdrenLength = childdren.length;
+      let selectedChild;
+
+      if (document.querySelector('[aria-label="Language"]').ariaExpanded === 'true') {
+        [...childdren].forEach((node, index) => {
+          if (node.classList.contains('is-selected')) {
+            selectedChild = index;
+          }
+        });
+        if (selectedChild === undefined && keyCode === KEYCODE_ARROW_UP) {
+          selectedChild = childdrenLength - 1;
+          childdren.item(selectedChild).classList.add('is-selected');
+        }
+        if (selectedChild === undefined && keyCode === KEYCODE_ARROW_DOWN) {
+          selectedChild = 0;
+          childdren.item(selectedChild).classList.add('is-selected');
+        }
+        if (
+          keyCode === KEYCODE_ARROW_UP &&
+          selectedChild > 0 &&
+          selectedChild < childdrenLength
+        ) {
+          childdren.item(selectedChild).classList.remove('is-selected');
+          selectedChild -= 1;
+          childdren.item(selectedChild).classList.add('is-selected');
+        }
+        if (
+          keyCode === KEYCODE_ARROW_DOWN &&
+          selectedChild > -1 &&
+          selectedChild < childdrenLength - 1
+        ) {
+          childdren.item(selectedChild).classList.remove('is-selected');
+          selectedChild += 1;
+          childdren.item(selectedChild).classList.add('is-selected');
+        }
+        console.log('Enter? ' + keyCode === KEYCODE_ENTER);
+        if (keyCode === KEYCODE_ENTER) {
+          childdren.item(selectedChild).click();
+        }
+      } else {
+        [...childdren].forEach((node, index) => {
+          if (node.classList.contains('is-selected')) {
+            selectedChild = index;
+          }
+        });
+        if (
+          keyCode === KEYCODE_ARROW_UP &&
+          selectedChild > 0 &&
+          selectedChild < childdrenLength
+        ) {
+          selectedChild -= 1;
+        }
+        if (
+          keyCode === KEYCODE_ARROW_DOWN &&
+          selectedChild > -1 &&
+          selectedChild < childdrenLength - 1
+        ) {
+          selectedChild += 1;
+        }
+        childdren.item(selectedChild).click();
+      }
+    }
+  }
+
   export function keyPressDropdownNode(event){
     if (isComboOpen) {
       let dropdownHTMLElement = closest(event.target, '.fd-popover', 20);
@@ -215,6 +291,7 @@
                             class="fd-select__control lui-anchor-node"
                             data-testid="lui-us-language-dropdown"
                             id="fd-form-input-{index}"
+                            on:keyup="{event => handleKeyUp(event)}"
                             on:keydown={event => handleKeyListDropdown(event)}
                           >
                             <span
@@ -245,6 +322,7 @@
                           <ul
                             class="fd-list fd-list--compact fd-list--dropdown"
                             role="listbox"
+                            bind:this="{luigiLanguage__slotContainer}"
                           >
                             {#each schemaItem.options as option, optionIndex}
                               <li
