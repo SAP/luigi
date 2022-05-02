@@ -143,48 +143,48 @@
       keyCode === KEYCODE_ARROW_UP ||
       keyCode === KEYCODE_ENTER
     ) {
-      let childdren = luigiLanguage__slotContainer.children;
-      let childdrenLength = childdren.length;
+      let languageChildren = luigiLanguage__slotContainer.children;
+      let languageChildrenLength = languageChildren.length;
       let selectedChild;
 
       if (document.querySelector('[aria-label="Language"]').ariaExpanded === 'true') {
-        [...childdren].forEach((node, index) => {
+        [...languageChildren].forEach((node, index) => {
           if (node.classList.contains('is-selected')) {
             selectedChild = index;
           }
         });
         if (selectedChild === undefined && keyCode === KEYCODE_ARROW_UP) {
-          selectedChild = childdrenLength - 1;
-          childdren.item(selectedChild).classList.add('is-selected');
+          selectedChild = languageChildrenLength - 1;
+          languageChildren.item(selectedChild).classList.add('is-selected');
         }
         if (selectedChild === undefined && keyCode === KEYCODE_ARROW_DOWN) {
           selectedChild = 0;
-          childdren.item(selectedChild).classList.add('is-selected');
+          languageChildren.item(selectedChild).classList.add('is-selected');
         }
         if (
           keyCode === KEYCODE_ARROW_UP &&
           selectedChild > 0 &&
-          selectedChild < childdrenLength
+          selectedChild < languageChildrenLength
         ) {
-          childdren.item(selectedChild).classList.remove('is-selected');
+          languageChildren.item(selectedChild).classList.remove('is-selected');
           selectedChild -= 1;
-          childdren.item(selectedChild).classList.add('is-selected');
+          languageChildren.item(selectedChild).classList.add('is-selected');
         }
         if (
           keyCode === KEYCODE_ARROW_DOWN &&
           selectedChild > -1 &&
-          selectedChild < childdrenLength - 1
+          selectedChild < languageChildrenLength - 1
         ) {
-          childdren.item(selectedChild).classList.remove('is-selected');
+          languageChildren.item(selectedChild).classList.remove('is-selected');
           selectedChild += 1;
-          childdren.item(selectedChild).classList.add('is-selected');
+          languageChildren.item(selectedChild).classList.add('is-selected');
         }
         console.log('Enter? ' + keyCode === KEYCODE_ENTER);
         if (keyCode === KEYCODE_ENTER) {
-          childdren.item(selectedChild).click();
+          languageChildren.item(selectedChild).click();
         }
       } else {
-        [...childdren].forEach((node, index) => {
+        [...languageChildren].forEach((node, index) => {
           if (node.classList.contains('is-selected')) {
             selectedChild = index;
           }
@@ -192,18 +192,18 @@
         if (
           keyCode === KEYCODE_ARROW_UP &&
           selectedChild > 0 &&
-          selectedChild < childdrenLength
+          selectedChild < languageChildrenLength
         ) {
           selectedChild -= 1;
         }
         if (
           keyCode === KEYCODE_ARROW_DOWN &&
           selectedChild > -1 &&
-          selectedChild < childdrenLength - 1
+          selectedChild < languageChildrenLength - 1
         ) {
           selectedChild += 1;
         }
-        childdren.item(selectedChild).click();
+        languageChildren.item(selectedChild).click();
       }
     }
   }
