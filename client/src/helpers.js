@@ -125,6 +125,22 @@ class Helpers {
   hasIntent(path) {
     return !!path && path.toLowerCase().includes('#?intent=');
   }
+
+  deSanitizeParamsMap(paramsMap) {
+    return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
+      sanitizedMap[this.deSanitizeParam(paramPair[0])] = this.deSanitizeParam(paramPair[1]);
+      return sanitizedMap;
+    }, {});
+  }
+
+  deSanitizeParam(param = '') {
+    return String(param)
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>')
+      .replaceAll('&quot;', '"')
+      .replaceAll('&#39;', "'")
+      .replaceAll('&sol;', '/');
+  }
 }
 
 export const helpers = new Helpers();
