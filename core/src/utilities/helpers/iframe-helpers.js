@@ -303,6 +303,43 @@ class IframeHelpersClass {
     });
   }
 
+  /**
+   * Sets tabindex for all elements to -1, except for one element and all its children which needs the focus.
+   * Setting tabindex to a negative value removes keyboard acessibility from the specified elements.
+   * @param {string} targetElementClassName the class name/s of the element to be excluded
+   */
+  disableA11YKeyboardExceptClassName(targetElementClassName) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(element => {
+      const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
+      const prevTabIndex = element.getAttribute('tabindex');
+      // save tabIndex in case one already exists
+      if ((prevTabIndex || prevTabIndex === 0) && isNotAChildOfTargetElement) {
+        element.setAttribute('oldtab', prevTabIndex);
+      }
+      // set tabindex to negative only if the current element is not a descendant of element with class 'targetElementClassName'
+      isNotAChildOfTargetElement ? element.setAttribute('tabindex', '-1') : '';
+    });
+  }
+
+  /**
+   * Resets tabindex value to previous value if it exists, or remove altogether if not.
+   * Applies to all elements except for the target element which we do not touch
+   */
+  enableA11YKeyboardBackdropExceptClassName(targetElementClassName) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(element => {
+      const restoreVal = element.getAttribute('oldtab');
+      const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
+      if (restoreVal) {
+        element.setAttribute('tabindex', restoreVal);
+        element.removeAttribute('oldtab');
+      } else {
+        isNotAChildOfTargetElement ? element.removeAttribute('tabindex') : '';
+      }
+    });
+  }
+
   applyCoreStateData(data) {
     return {
       ...data,

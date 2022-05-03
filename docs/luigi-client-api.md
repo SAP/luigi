@@ -261,10 +261,15 @@ Node parameters are defined like URL query parameters but with a specific prefix
 
 > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
 
+##### Parameters
+
+-   `shouldDesanitise` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** defines whether the specially encoded characters should be desanitised (optional, default `false`)
+
 ##### Examples
 
 ```javascript
 const nodeParams = LuigiClient.getNodeParams()
+const nodeParams = LuigiClient.getNodeParams(true)
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
@@ -567,11 +572,6 @@ Updates path of the modalPathParam when internal navigation occurs.
 ```javascript
 LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
 ```
-
-**Meta**
-
--   **since**: NEXTRELEASE
-
 
 #### openAsModal
 
