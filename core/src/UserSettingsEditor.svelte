@@ -147,7 +147,7 @@
       let languageChildrenLength = languageChildren.length;
       let selectedChild;
 
-      if (document.querySelector('[aria-label="Language"]').ariaExpanded === 'true') {
+      if (document.querySelector('.lui-anchor-node').ariaExpanded === 'true') {
         [...languageChildren].forEach((node, index) => {
           if (node.classList.contains('is-selected')) {
             selectedChild = index;
@@ -179,7 +179,6 @@
           selectedChild += 1;
           languageChildren.item(selectedChild).classList.add('is-selected');
         }
-        console.log('Enter? ' + keyCode === KEYCODE_ENTER);
         if (keyCode === KEYCODE_ENTER) {
           languageChildren.item(selectedChild).click();
         }
