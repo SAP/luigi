@@ -1,5 +1,6 @@
 module.exports = [
-  './node_modules/fundamental-styles/dist/variables.css',
+  './node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css',
+  './node_modules/fundamental-styles/dist/theming/sap_fiori_3.css',
   './node_modules/fundamental-styles/dist/icon.css',
   './node_modules/fundamental-styles/dist/layout.css',
   './node_modules/fundamental-styles/dist/action-bar.css',
