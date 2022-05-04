@@ -150,15 +150,6 @@ describe('Routing', function() {
       };
       assert.deepEqual(actual, expected);
     });
-    /***
-     * Redundant test, can be deleted since this is handled in getIntentPath()
-     */
-    /*
-    it('falsy intentObject from provided intent link with illegal characters', () => {
-      const actual = RoutingHelpers.getIntentObject('#?intent=Sales-$et$$tings');
-      assert.isNotOk(actual);
-    });
-    */
   });
 
   describe('getIntentPath()', () => {
