@@ -158,6 +158,28 @@ describe('Luigi client linkManager', () => {
       });
     });
 
+    it('navigate with preserve view and goBack dynamic context', localRetries, () => {
+      // navigate with preserve view functionality
+      cy.wrap($iframeBody)
+        .contains('with preserved view: to dynamic node and go back')
+        .click();
+      cy.expectPathToBe('/projects/pr1/users/groups/test1/settings');
+
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('projects/pr1/users/groups/test2/settings')
+          .click();
+        cy.expectPathToBe('/projects/pr1/users/groups/test2/settings');
+
+        cy.getIframeBody().then($iframeBody => {
+          cy.wrap($iframeBody)
+            .contains('Go Back')
+            .click();
+          cy.expectPathToBe('/projects/pr1/users/groups/test1/settings');
+        });
+      });
+    });
+
     it('path exists check', localRetries, () => {
       [
         // non-existent relative path
