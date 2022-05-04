@@ -11,7 +11,6 @@
   const dispatch = createEventDispatcher();
   let getTranslation = getContext('getTranslation');
   let selectedLanguageLabel;
-  let luigiLanguage__slotContainer;
   export let isComboOpen;
 
   export function updateSettingsObject() {
@@ -133,7 +132,10 @@
     } 
   }
 
-  export function handleKeyUp({keyCode}) {
+  export function handleKeyUp(event) {
+    const keyCode = event.keyCode;
+    const element = closest(event.target, '.fd-popover', 20).children[1].children[0];
+    
     if (keyCode === KEYCODE_SPACE) {
       document.querySelector('.lui-anchor-node').click();
     }
@@ -143,47 +145,48 @@
       keyCode === KEYCODE_ARROW_UP ||
       keyCode === KEYCODE_ENTER
     ) {
-      let languageChildren = luigiLanguage__slotContainer.children;
-      let languageChildrenLength = languageChildren.length;
+
+      let children = element.children;
+      let childrenLength = children.length;
       let selectedChild;
 
-      if (document.querySelector('.lui-anchor-node').ariaExpanded === 'true') {
-        [...languageChildren].forEach((node, index) => {
+      if (element.parentNode.ariaHidden === 'false') {
+        [...children].forEach((node, index) => {
           if (node.classList.contains('is-selected')) {
             selectedChild = index;
           }
         });
         if (selectedChild === undefined && keyCode === KEYCODE_ARROW_UP) {
-          selectedChild = languageChildrenLength - 1;
-          languageChildren.item(selectedChild).classList.add('is-selected');
+          selectedChild = childrenLength - 1;
+          children.item(selectedChild).classList.add('is-selected');
         }
         if (selectedChild === undefined && keyCode === KEYCODE_ARROW_DOWN) {
           selectedChild = 0;
-          languageChildren.item(selectedChild).classList.add('is-selected');
+          children.item(selectedChild).classList.add('is-selected');
         }
         if (
           keyCode === KEYCODE_ARROW_UP &&
           selectedChild > 0 &&
-          selectedChild < languageChildrenLength
+          selectedChild < childrenLength
         ) {
-          languageChildren.item(selectedChild).classList.remove('is-selected');
+          children.item(selectedChild).classList.remove('is-selected');
           selectedChild -= 1;
-          languageChildren.item(selectedChild).classList.add('is-selected');
+          children.item(selectedChild).classList.add('is-selected');
         }
         if (
           keyCode === KEYCODE_ARROW_DOWN &&
           selectedChild > -1 &&
-          selectedChild < languageChildrenLength - 1
+          selectedChild < childrenLength - 1
         ) {
-          languageChildren.item(selectedChild).classList.remove('is-selected');
+          children.item(selectedChild).classList.remove('is-selected');
           selectedChild += 1;
-          languageChildren.item(selectedChild).classList.add('is-selected');
+          children.item(selectedChild).classList.add('is-selected');
         }
         if (keyCode === KEYCODE_ENTER) {
-          languageChildren.item(selectedChild).click();
+          children.item(selectedChild).click();
         }
       } else {
-        [...languageChildren].forEach((node, index) => {
+        [...children].forEach((node, index) => {
           if (node.classList.contains('is-selected')) {
             selectedChild = index;
           }
@@ -191,18 +194,18 @@
         if (
           keyCode === KEYCODE_ARROW_UP &&
           selectedChild > 0 &&
-          selectedChild < languageChildrenLength
+          selectedChild < childrenLength
         ) {
           selectedChild -= 1;
         }
         if (
           keyCode === KEYCODE_ARROW_DOWN &&
           selectedChild > -1 &&
-          selectedChild < languageChildrenLength - 1
+          selectedChild < childrenLength - 1
         ) {
           selectedChild += 1;
         }
-        languageChildren.item(selectedChild).click();
+        children.item(selectedChild).click();
       }
     }
   }
@@ -321,7 +324,6 @@
                           <ul
                             class="fd-list fd-list--compact fd-list--dropdown"
                             role="listbox"
-                            bind:this="{luigiLanguage__slotContainer}"
                           >
                             {#each schemaItem.options as option, optionIndex}
                               <li
