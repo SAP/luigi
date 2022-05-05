@@ -82,7 +82,7 @@
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "650 kB",
+      "maxSize": "1.24 MB",
       "compression": "none"
     },
     {
@@ -92,7 +92,7 @@
     },
     {
       "path": "./public-ie11/luigi-ie11.css",
-      "maxSize": "650 kB",
+      "maxSize": "1.24 MB",
       "compression": "none"
     }
   ],
