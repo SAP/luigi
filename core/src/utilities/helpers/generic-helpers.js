@@ -1,5 +1,6 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
 import { LuigiElements, LuigiConfig } from '../../core-api';
+import { replace, get } from 'lodash';
 
 class GenericHelpersClass {
   /**
@@ -195,12 +196,22 @@ class GenericHelpersClass {
   replaceVars(inputString, params, prefix, parenthesis = true) {
     let processedString = inputString;
     if (params) {
-      Object.entries(params).forEach(entry => {
-        processedString = processedString.replace(
-          new RegExp(this.escapeRegExp((parenthesis ? '{' : '') + prefix + entry[0] + (parenthesis ? '}' : '')), 'g'),
-          encodeURIComponent(entry[1])
-        );
-      });
+      if (parenthesis) {
+        processedString = replace(processedString, /{([\s\S]+?)}/g, val => {
+          let repl = val.slice(1, -1).trim();
+          if (repl.indexOf(prefix) === 0) {
+            repl = repl.substring(prefix.length);
+          }
+          return get(params, repl, val);
+        });
+      } else {
+        Object.entries(params).forEach(entry => {
+          processedString = processedString.replace(
+            new RegExp(this.escapeRegExp(prefix + entry[0]), 'g'),
+            encodeURIComponent(entry[1])
+          );
+        });
+      }
     }
     if (parenthesis) {
       processedString = processedString.replace(new RegExp('\\{' + this.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'), '');
