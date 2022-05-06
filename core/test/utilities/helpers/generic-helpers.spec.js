@@ -86,6 +86,30 @@ describe('Generic-helpers', () => {
     assert.deepEqual(GenericHelpers.removeProperties(input, keys), expected);
   });
 
+  it('replaceVars', () => {
+    const context = {
+      a: 'a_val',
+      b: {
+        c: 'c_val'
+      }
+    };
+    assert.equal(
+      GenericHelpers.replaceVars('index.html#/{context.a}', context, 'context.'),
+      'index.html#/a_val',
+      'first level context vars being interpolated'
+    );
+    assert.equal(
+      GenericHelpers.replaceVars('index.html#/{context.b.c}', context, 'context.'),
+      'index.html#/c_val',
+      'nested context vars being interpolated'
+    );
+    assert.equal(
+      GenericHelpers.replaceVars('index.html#/:a/{context.b.c}', context, ':', false),
+      'index.html#/a_val/{context.b.c}',
+      'colon prefix, no paranthesis'
+    );
+  });
+
   describe('semverCompare', () => {
     it('standard versions', () => {
       const input = ['1.1.1', '0.6.4', '0.7.7', '0.7.1', '1.0.0'];

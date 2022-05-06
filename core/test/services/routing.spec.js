@@ -837,6 +837,16 @@ describe('Routing', function() {
       assert.equal(Routing.getModifiedPathname(), mockPathName);
     });
 
+    it('without state and with query params', () => {
+      const mockPathName = 'projects?~test=param';
+      sinon.stub(window.history, 'state').returns(null);
+      sinon.stub(window, 'location').value({
+        pathname: '/projects',
+        search: '?~test=param'
+      });
+      assert.equal(Routing.getModifiedPathname(), mockPathName);
+    });
+
     it('with state path', () => {
       sinon.stub(window.history, 'state').value({
         path: '/this/is/some/'
