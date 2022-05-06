@@ -110,6 +110,19 @@ describe('Routing-helpers', () => {
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });
+
+    it('substituteViewUrl - substitutes nested context variable', () => {
+      const viewUrl = '/{i18n.currentLocale}/microfrontend.html#/:var1/{context.nested.value}/{nodeParams.param1}';
+      const expected = '/en/microfrontend.html#/var1_value/context_nested_value/nodeparam_value';
+
+      expect(
+        RoutingHelpers.substituteViewUrl(viewUrl, {
+          pathParams: { var1: 'var1_value' },
+          context: { nested: { value: 'context_nested_value' } },
+          nodeParams: { param1: 'nodeparam_value' }
+        })
+      ).to.equal(expected);
+    });
   });
   describe('substitute search query params', () => {
     afterEach(() => {
