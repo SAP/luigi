@@ -424,13 +424,17 @@ class LifecycleManager extends LuigiClientBase {
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
    * <!-- add-attribute:class:warning -->
    * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+   * @param {boolean} shouldDesanitise defines whether the specially encoded characters should be desanitised
    * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
    * @memberof Lifecycle
    * @example
    * const nodeParams = LuigiClient.getNodeParams()
+   * const nodeParams = LuigiClient.getNodeParams(true)
    */
-  getNodeParams() {
-    return this.currentContext.nodeParams;
+  getNodeParams(shouldDesanitise = false) {
+    return shouldDesanitise
+      ? helpers.deSanitizeParamsMap(this.currentContext.nodeParams)
+      : this.currentContext.nodeParams;
   }
 
   /**
@@ -531,7 +535,7 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Returns the current anchor based on active URL.
    * @memberof Lifecycle
-   * @since NEXTRELEASE
+   * @since 1.21.0
    * @returns anchor of URL
    * @example
    * LuigiClient.getAnchor();
@@ -543,7 +547,7 @@ class LifecycleManager extends LuigiClientBase {
   /**
    * Sends anchor to Luigi Core. The anchor will be added to the URL.
    * @param {string} anchor
-   * @since NEXTRELEASE
+   * @since 1.21.0
    * @memberof Lifecycle
    * @example
    * LuigiClient.setAnchor('luigi');

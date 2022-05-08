@@ -128,7 +128,8 @@ class RoutingClass {
       const intentPath = RoutingHelpers.getIntentPath(hash);
       return intentPath ? intentPath : '/';
     }
-    const path = (window.history.state && window.history.state.path) || window.location.pathname;
+    const params = window.location.search ? window.location.search : '';
+    const path = (window.history.state && window.history.state.path) || window.location.pathname + params;
     return path
       .split('/')
       .slice(1)
@@ -548,7 +549,7 @@ class RoutingClass {
     } else {
       url.search = `?${RoutingHelpers.encodeParams(params)}`;
     }
-    
+
     if (!addHistoryEntry) {
       history.replaceState(window.state, '', url.href);
     } else {

@@ -15,6 +15,9 @@ meta -->
 
 # Frequently asked questions about Luigi
 
+<!-- add-attribute:class:success -->
+>**TIP:** You can go to our [GitHub Discussions page](https://github.com/SAP/luigi/discussions) to find the answers to more questions not listed here.
+
 This page contains FAQs about Luigi in the following categories:
 - [Basics](#basic-questions)
 - [User interface/appearance](#ui-questions)
@@ -98,7 +101,7 @@ Yes, it is already being used in production and close-to-production within SAP. 
 There are a few options to do that at the moment:
 - Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
 - Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi.
-- Turn off Luigi view components completely via the [hideNavigation](general-settings.md) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
+- Turn off Luigi view components completely via the [hideNavigation](general-settings.md#hidenavigation) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
 - You can use this simple example with a completely customized shell as a starting point:
 ```html
 <!DOCTYPE html>
