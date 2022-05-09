@@ -159,7 +159,7 @@ describe('Luigi client linkManager', () => {
     });
 
     it('navigate with preserve view and goBack dynamic context', localRetries, () => {
-      // navigate with preserve view functionality
+      //navigate with preserve view functionality
       cy.wrap($iframeBody)
         .contains('with preserved view: to dynamic node and go back')
         .click();
