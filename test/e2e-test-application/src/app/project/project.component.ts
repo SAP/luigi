@@ -75,6 +75,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }, 2000);
   }
 
+  navigatePreservedViewGoBack() {
+    linkManager().navigate('/projects/pr1/users/groups/test1/settings', null, true);
+  }
+
   navigateWithSync(path) {
     linkManager()['options'].withoutSync = false;
     linkManager().navigate(path);
@@ -206,7 +210,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
     uxManager()
       .showAlert(settings)
-      .then((data) => {
+      .then(data => {
         if (typeof data === 'string' && data.includes('neverShowItAgain')) {
           this.alertDismissKey = true;
         }
