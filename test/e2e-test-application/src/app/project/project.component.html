@@ -404,6 +404,18 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              (click)="navigatePreservedViewGoBack()"
+            >
+              with preserved view: to dynamic node and go back
+            </a>
+            <app-code-snippet
+              data="linkManager().navigate('/projects/pr1/users/groups/test1/settings', null, true);"
+            ></app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="
                 linkManager()
                   .withParams({ test: true })
