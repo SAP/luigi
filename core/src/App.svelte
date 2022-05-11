@@ -1836,6 +1836,7 @@
 </div>
 
 <style type="text/scss">
+  @import 'styles/fonts';
   @import 'styles/mixins';
   @import 'styles/variables';
 
