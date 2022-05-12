@@ -50,8 +50,8 @@ class LuigiClient {
   addNodeParams(params, keepBrowserHistory) {
     return lifecycleManager.addNodeParams(params, keepBrowserHistory);
   }
-  getNodeParams() {
-    return lifecycleManager.getNodeParams();
+  getNodeParams(shouldDesanitise) {
+    return lifecycleManager.getNodeParams(shouldDesanitise);
   }
   getActiveFeatureToggles() {
     return lifecycleManager.getActiveFeatureToggles();
