@@ -14,6 +14,8 @@ class LuigiFeatureToggles {
    * @example Luigi.featureToggles().setFeatureToggle('featureToggleName');
    */
   setFeatureToggle(featureToggleName) {
+    if (featureToggleName.startsWith('!')) return;
+  
     if (featureToggleName && typeof featureToggleName === 'string') {
       if (!get(this.featureToggleList).includes(featureToggleName)) {
         get(this.featureToggleList).push(featureToggleName);

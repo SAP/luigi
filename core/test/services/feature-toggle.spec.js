@@ -11,6 +11,7 @@ describe('Feature Toggle', () => {
     assert.equal(LuigiFeatureToggles.getActiveFeatureToggleList(), 'test');
     LuigiFeatureToggles.unsetFeatureToggle('test');
 
+    LuigiFeatureToggles.setFeatureToggle('!bar');
     LuigiFeatureToggles.setFeatureToggle('test2');
     LuigiFeatureToggles.setFeatureToggle('test');
 
@@ -20,6 +21,11 @@ describe('Feature Toggle', () => {
     ]);
 
     LuigiFeatureToggles.unsetFeatureToggle('test');
+    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
+      'test2'
+    ]);
+
+    LuigiFeatureToggles.setFeatureToggle('!foo');
     assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
       'test2'
     ]);
