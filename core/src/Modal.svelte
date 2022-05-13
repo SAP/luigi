@@ -236,10 +236,13 @@
 
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
+    IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog');
+    window.focus();
   });
 
   onDestroy(() => {
     EventListenerHelpers.removeEventListener('message', onMessage);
+    IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog');
   });
 
   // [svelte-upgrade suggestion]
