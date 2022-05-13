@@ -245,7 +245,7 @@
     IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog');
   });
 
-  // [svelte-upgrade suggestion]
+  //  [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
