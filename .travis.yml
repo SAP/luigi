@@ -167,3 +167,12 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+
+ - name: 'Test Angular setup script'
+      if: type = cron
+      script:
+        - mkdir setupTestFolder && cd setupTestFolder
+        - URL='https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh'
+        - FOLDER='angularTest' 
+        - TESTURL='http://localhost:4200/'
+        - (sleep 300; cypress run --env configFile=setuptest,url=$TESTURL --browser chrome -c video=false && npm stop && rm -rf $FOLDER) & (curl -s $URL > ./setup.sh printf "\n" | source ./setup.sh $FOLDER)
