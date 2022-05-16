@@ -169,7 +169,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
 
  - name: 'Test Angular setup script'
-      if: type = cron
+      if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
         - mkdir setupTestFolder && cd setupTestFolder
         - URL='https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh'
