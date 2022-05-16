@@ -173,12 +173,9 @@ jobs:
       name: 'Test Angular setup script'
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
-        - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
-        - echo $BASE_DIR
-        - ls
         - source ./scripts/shared/bashHelpers.sh
-        - npm install -g npm@latest
         - npm install -g @angular/cli
+        - npm install cypress --save-dev
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false && killWebserver 4200) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
@@ -186,12 +183,41 @@ jobs:
   
     - name: 'Test Vue setup script'
       script:
-        - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
         - source ./scripts/shared/bashHelpers.sh
         - npm install -g @vue/cli
+        - npm install cypress --save-dev
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh vuetest)
+
+    - name: 'Test React setup script'
+      script:
+        - source ./scripts/shared/bashHelpers.sh
+        - npm install -g react-cli react
+        - npm install cypress --save-dev
+        - mkdir setupTestFolder && cd setupTestFolder
+        - (sleep 600; cypress run --env configFile=setuptest,url=http://localhost:3000/ --browser chrome -c video=false && killWebserver 3000) & (
+          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh' > ./setup.sh &&
+          printf '\n' | source ./setup.sh reacttest)
+      
+    - name: 'Test UI5 setup script'
+      script:
+        - source ./scripts/shared/bashHelpers.sh
+        - npm install --g @ui5/cli
+        - npm install cypress --save-dev
+        - mkdir setupTestFolder && cd setupTestFolder
+        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/index.html#/home --browser chrome -c video=false && killWebserver 8080) & (
+          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh' > ./setup.sh &&
+          printf '\n' | source ./setup.sh ui5Test)
+      
+    - name: 'Test No-Framework setup script'
+      script:
+        - source ./scripts/shared/bashHelpers.sh
+        - npm install cypress --save-dev
+        - mkdir setupTestFolder && cd setupTestFolder
+        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
+          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh' > ./setup.sh &&
+          printf '\n' | source ./setup.sh noFrameWorkTest)
 
         
