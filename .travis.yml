@@ -142,8 +142,8 @@ jobs:
         - rm -rf ~/.npm/_cacache
 
     # ----- INTEGRATION -----
-    - name: 'Integration Testing 1'
-      <<: *integration-testing
+    #- name: 'Integration Testing 1'
+    #  <<: *integration-testing
 
     # ----- NPM PUBLISH -----
     - stage: 'Publish'
@@ -174,17 +174,11 @@ jobs:
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
         - mkdir setupTestFolder && cd setupTestFolder
-        - URL='https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh'
-        - FOLDER='angularTest' 
-        - TESTURL='http://localhost:4200/'
-        - (sleep 300; cypress run --env configFile=setuptest,url=$TESTURL --browser chrome -c video=false && npm stop && rm -rf $FOLDER) & (curl -s $URL > ./setup.sh printf "\n" | source ./setup.sh $FOLDER)
+        - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false) & (curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh printf '\n' | source ./setup.sh angularTest)
   
     - name: 'Test Vue setup script'
       script:
         - mkdir setupTestFolder && cd setupTestFolder
-        - URL='https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh'
-        - FOLDER='vuetest' 
-        - TESTURL='http://localhost:8080/'
-        - (sleep 450; cypress run --env configFile=setuptest,url=$TESTURL --browser chrome -c video=false && npm stop && rm -rf $FOLDER) & (curl -s $URL > ./setup.sh printf "\n" | source ./setup.sh $FOLDER)
+        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false) & (curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh printf '\n' | source ./setup.sh vuetest)
 
         
