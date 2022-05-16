@@ -173,17 +173,22 @@ jobs:
       name: 'Test Angular setup script'
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
+        - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+        - source $BASE_DIR/../scripts/shared/bashHelpers.sh
+        - npm install -g npm@latest
         - npm install -g @angular/cli
         - mkdir setupTestFolder && cd setupTestFolder
-        - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false) & (
+        - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false && killWebserver 4200) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh angularTest)
   
     - name: 'Test Vue setup script'
       script:
+        - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+        - source $BASE_DIR/../scripts/shared/bashHelpers.sh
         - npm install -g @vue/cli
         - mkdir setupTestFolder && cd setupTestFolder
-        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false) & (
+        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh vuetest)
 
