@@ -175,14 +175,14 @@ jobs:
       script:
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false) & (
-          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh 
+          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh angularTest)
   
     - name: 'Test Vue setup script'
       script:
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false) & (
-          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh 
+          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh vuetest)
 
         
