@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '12.20.2' #TODO: change it to 'node' once Travis supports the newest version
+  - '14.18.1' #TODO: change it to 'node' once Travis supports the newest version
 dist: xenial
 cache:
   directories:
@@ -175,8 +175,8 @@ jobs:
       script:
         - source ./scripts/shared/bashHelpers.sh
         - npm install -g @angular/cli
-        - npm install cypress --save-dev
         - mkdir setupTestFolder && cd setupTestFolder
+        - npm install cypress --save-dev
         - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false && killWebserver 4200) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh angularTest)
@@ -185,8 +185,8 @@ jobs:
       script:
         - source ./scripts/shared/bashHelpers.sh
         - npm install -g @vue/cli
-        - npm install cypress --save-dev
         - mkdir setupTestFolder && cd setupTestFolder
+        - npm install cypress --save-dev
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh vuetest)
@@ -195,8 +195,8 @@ jobs:
       script:
         - source ./scripts/shared/bashHelpers.sh
         - npm install -g react-cli react
-        - npm install cypress --save-dev
         - mkdir setupTestFolder && cd setupTestFolder
+        - npm install cypress --save-dev
         - (sleep 600; cypress run --env configFile=setuptest,url=http://localhost:3000/ --browser chrome -c video=false && killWebserver 3000) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh reacttest)
@@ -205,8 +205,8 @@ jobs:
       script:
         - source ./scripts/shared/bashHelpers.sh
         - npm install --g @ui5/cli
-        - npm install cypress --save-dev
         - mkdir setupTestFolder && cd setupTestFolder
+        - npm install cypress --save-dev
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/index.html#/home --browser chrome -c video=false && killWebserver 8080) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh ui5Test)
@@ -214,8 +214,8 @@ jobs:
     - name: 'Test No-Framework setup script'
       script:
         - source ./scripts/shared/bashHelpers.sh
-        - npm install cypress --save-dev
         - mkdir setupTestFolder && cd setupTestFolder
+        - npm install cypress --save-dev
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh noFrameWorkTest)
