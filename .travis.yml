@@ -174,8 +174,9 @@ jobs:
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
         - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+        - echo $BASE_DIR
         - ls
-        - source $BASE_DIR/luigi/scripts/shared/bashHelpers.sh
+        - source ./scripts/shared/bashHelpers.sh
         - npm install -g npm@latest
         - npm install -g @angular/cli
         - mkdir setupTestFolder && cd setupTestFolder
@@ -186,7 +187,7 @@ jobs:
     - name: 'Test Vue setup script'
       script:
         - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
-        - source $BASE_DIR/luigi/scripts/shared/bashHelpers.sh
+        - source ./scripts/shared/bashHelpers.sh
         - npm install -g @vue/cli
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
