@@ -173,6 +173,7 @@ jobs:
       name: 'Test Angular setup script'
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
+        - npm install -g @angular/cli
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
@@ -180,6 +181,7 @@ jobs:
   
     - name: 'Test Vue setup script'
       script:
+        - npm install -g @vue/cli
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh &&
