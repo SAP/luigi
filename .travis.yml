@@ -186,7 +186,7 @@ jobs:
                   "viewportWidth": 1250,
                   "viewportHeight": 790,
                   "baseUrl": "http://localhost:4200/"
-                }'>setuptest.json
+                }' > setuptest.json
         - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false && killWebserver 4200) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh angularTest)
