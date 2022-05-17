@@ -20,7 +20,9 @@ killWebserver() {
 
   if [ ! -z "$SPAPID" ]; then
     # echoe "Cleanup: Stopping webserver on port $PORT"
-    kill -9 $SPAPID || /bin/true
+    RV=$?
+    kill $SPAPID
+    exit $RV
   fi
 }
 
