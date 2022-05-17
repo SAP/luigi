@@ -49,6 +49,6 @@ echo "{
 }" > setuptest.json
 
 #Run acutal test
-(sleep 150; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
+(sleep 300; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)
