@@ -31,8 +31,7 @@ cd ..
 mkdir setupTestFolder && cd setupTestFolder
 
 #Install necessary dependencies
-npm install -g $CLI cypress
-npm install --unsafe-perm -g node-sass
+npm install -g $CLI cypress tar@latest
 
 #Create Cypress Config
 echo "{}" > cypress.json
