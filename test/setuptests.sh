@@ -21,6 +21,7 @@ killWebserver() {
     # echoe "Cleanup: Stopping webserver on port $PORT"
     RV=$?
     kill $SPAPID
+    set +e
     exit 0
   fi
 }
