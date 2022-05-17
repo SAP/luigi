@@ -243,7 +243,7 @@
 
   onDestroy(() => {
     EventListenerHelpers.removeEventListener('message', onMessage);
-    // only disable accessibility for all cases other than a drawer without backdrop 
+    // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop) ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog') : '';
   });
 
