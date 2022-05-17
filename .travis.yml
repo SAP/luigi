@@ -175,52 +175,62 @@ jobs:
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - source ./scripts/shared/bashHelpers.sh
-        - npm install -g @angular/cli cypress
         - mkdir setupTestFolder && cd setupTestFolder
+        - npm install -g @angular/cli cypress
+        - echo '{}' > cypress.json
+        - ls
+        - echo '{
+                  "integrationFolder": "./cypress/integration",
+                  "pluginsFile": false,
+                  "chromeWebSecurity": false,
+                  "viewportWidth": 1250,
+                  "viewportHeight": 790,
+                  "baseUrl": "http://localhost:4200/"
+                }'>setuptest.json
         - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false && killWebserver 4200) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh angularTest)
   
-    - name: 'Test Vue setup script'
-      script:
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - source ./scripts/shared/bashHelpers.sh
-        - npm install -g @vue/cli cypress
-        - mkdir setupTestFolder && cd setupTestFolder
-        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
-          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh &&
-          printf '\n' | source ./setup.sh vuetest)
+#    - name: 'Test Vue setup script'
+#      script:
+#        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+#        - source ./scripts/shared/bashHelpers.sh
+#        - npm install -g @vue/cli cypress
+#        - mkdir setupTestFolder && cd setupTestFolder
+#        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
+#          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh' > ./setup.sh &&
+#         printf '\n' | source ./setup.sh vuetest)
 
-    - name: 'Test React setup script'
-      script:
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
-        - source ./scripts/shared/bashHelpers.sh
-        - npm install -g react-cli react
-        - cd $BASE_DIR
-        - mkdir setupTestFolder && cd setupTestFolder
-        - (sleep 600; cypress run --env configFile=setuptest,url=http://localhost:3000/ --browser chrome -c video=false && killWebserver 3000) & (
-          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh' > ./setup.sh &&
-          printf '\n' | source ./setup.sh reacttest)
+#    - name: 'Test React setup script'
+#      script:
+#        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+#        - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+#        - source ./scripts/shared/bashHelpers.sh
+#        - npm install -g react-cli react
+#        - cd $BASE_DIR
+#        - mkdir setupTestFolder && cd setupTestFolder
+#        - (sleep 600; cypress run --env configFile=setuptest,url=http://localhost:3000/ --browser chrome -c video=false && killWebserver 3000) & (
+#          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh' > ./setup.sh &&
+#          printf '\n' | source ./setup.sh reacttest)
       
-    - name: 'Test UI5 setup script'
-      script:
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - source ./scripts/shared/bashHelpers.sh
-        - npm install -g @ui5/cli cypress
-        - mkdir setupTestFolder && cd setupTestFolder
-        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/index.html#/home --browser chrome -c video=false && killWebserver 8080) & (
-          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh' > ./setup.sh &&
-          printf '\n' | source ./setup.sh ui5Test)
+#    - name: 'Test UI5 setup script'
+#      script:
+#        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+#        - source ./scripts/shared/bashHelpers.sh
+#        - npm install -g @ui5/cli cypress
+#        - mkdir setupTestFolder && cd setupTestFolder
+#        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/index.html#/home --browser chrome -c video=false && killWebserver 8080) & (
+#          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh' > ./setup.sh &&
+#          printf '\n' | source ./setup.sh ui5Test)
       
-    - name: 'Test No-Framework setup script'
-      script:
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - source ./scripts/shared/bashHelpers.sh
-        - npm install -g cypress
-        - mkdir setupTestFolder && cd setupTestFolder
-        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
-          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh' > ./setup.sh &&
-          printf '\n' | source ./setup.sh noFrameWorkTest)
+#    - name: 'Test No-Framework setup script'
+#      script:
+#        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+#        - source ./scripts/shared/bashHelpers.sh
+#        - npm install -g cypress
+#        - mkdir setupTestFolder && cd setupTestFolder
+#        - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
+#          curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh' > ./setup.sh &&
+#          printf '\n' | source ./setup.sh noFrameWorkTest)
 
         
