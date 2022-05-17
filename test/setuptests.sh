@@ -5,7 +5,22 @@ PORT=$2
 TESTURL=$3
 URL=$4
 
-source ./scripts/shared/bashHelpers.sh
+# Define Kill Webserver method
+killWebserver() {
+  PORT=$1
+  SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+  if [ "$SPAPID" == "" ]; then
+    # Fallback
+    # the [] is a workaround to prevent ps showing up itself
+    # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
+    SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
+  fi
+
+  if [ ! -z "$SPAPID" ]; then
+    # echoe "Cleanup: Stopping webserver on port $PORT"
+    kill -9 $SPAPID || /bin/true
+  fi
+}
 
 #Create new folder for setup
 cd ..
@@ -30,6 +45,6 @@ echo "{
 }" > setuptest.json
 
 #Run acutal test
-(sleep 150; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && exit 0) & (
+(sleep 150; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)
