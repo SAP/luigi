@@ -21,7 +21,7 @@ killWebserver() {
   if [ ! -z "$SPAPID" ]; then
     # echoe "Cleanup: Stopping webserver on port $PORT"
     RV=$?
-    kill $SPAPID
+    kill -9 $SPAPID
     exit $RV
   fi
 }
@@ -32,6 +32,7 @@ mkdir setupTestFolder && cd setupTestFolder
 
 #Install necessary dependencies
 npm install -g $CLI cypress
+npm install --unsafe-perm -g node-sass
 
 #Create Cypress Config
 echo "{}" > cypress.json
