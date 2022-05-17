@@ -6,6 +6,7 @@ CLI=$1
 PORT=$2
 TESTURL=$3
 URL=$4
+TIME=$5
 
 # Define Kill Webserver method
 killWebserver() {
@@ -21,7 +22,7 @@ killWebserver() {
   if [ ! -z "$SPAPID" ]; then
     # echoe "Cleanup: Stopping webserver on port $PORT"
     RV=$?
-    travis_terminate 0
+    kill $SPAPID
     exit $RV
   fi
 }
@@ -49,6 +50,6 @@ echo "{
 }" > setuptest.json
 
 #Run acutal test
-(sleep 300; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
+(sleep $TIME; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)

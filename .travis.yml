@@ -174,33 +174,24 @@ jobs:
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh
+        - bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 200 || travis_terminate 0
   
     - name: 'Test Vue setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - cd ..
-        - mkdir setupTestFolder && cd setupTestFolder
-        - npm install -g @vue/cli cypress
-        - echo "{}" > cypress.json
-        - mkdir cypress
-        - mkdir cypress/integration
-        - cp ../luigi/test/e2e-test-application/e2e/test3/0-setuptests/setup-test.spec.js ./cypress/integration/setup-test.spec.js
-        - (sleep 300; cypress run --env configFile=setuptest.json,url=http://localhost:8080/ --browser chrome -c video=false && travis_terminate 0) & (
-          curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh > ./setup.sh &&
-          printf '\n' | source ./setup.sh test)
+        - bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 || travis_terminate 0
 
     - name: 'Test React setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh
+        - bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 300 || travis_terminate 0
       
     - name: 'Test UI5 setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh
+        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html#/home" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 || travis_terminate 0
       
     - name: 'Test No-Framework setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh
+        - bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 150 || travis_terminate 0
