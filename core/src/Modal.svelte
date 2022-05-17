@@ -236,13 +236,15 @@
 
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
-    IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog');
+    // only disable accessibility for all cases other than a drawer without a backdrop
+    !(settings.isDrawer && !settings.backdrop) ? IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog') : '';
     window.focus();
   });
 
   onDestroy(() => {
     EventListenerHelpers.removeEventListener('message', onMessage);
-    IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog');
+    // only disable accessibility for all cases other than a drawer without a backdrop 
+    !(settings.isDrawer && !settings.backdrop) ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog') : '';
   });
 
   //  [svelte-upgrade suggestion]
