@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '14.18.1' #TODO: change it to 'node' once Travis supports the newest version
+  - '16.15.0' #TODO: change it to 'node' once Travis supports the newest version
 dist: xenial
 cache:
   directories:
@@ -174,6 +174,7 @@ jobs:
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application
         - source ./scripts/shared/bashHelpers.sh
         - npm install -g @angular/cli
         - mkdir setupTestFolder && cd setupTestFolder
@@ -184,6 +185,7 @@ jobs:
     - name: 'Test Vue setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application
         - source ./scripts/shared/bashHelpers.sh
         - npm install -g @vue/cli
         - mkdir setupTestFolder && cd setupTestFolder
@@ -195,6 +197,7 @@ jobs:
     - name: 'Test React setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application
         - BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
         - source ./scripts/shared/bashHelpers.sh
         - npm install -g react-cli react
@@ -207,6 +210,7 @@ jobs:
     - name: 'Test UI5 setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application
         - source ./scripts/shared/bashHelpers.sh
         - npm install --g @ui5/cli
         - mkdir setupTestFolder && cd setupTestFolder
@@ -217,6 +221,7 @@ jobs:
     - name: 'Test No-Framework setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application
         - source ./scripts/shared/bashHelpers.sh
         - mkdir setupTestFolder && cd setupTestFolder
         - (sleep 450; cypress run --env configFile=setuptest,url=http://localhost:8080/ --browser chrome -c video=false && killWebserver 8080) & (
