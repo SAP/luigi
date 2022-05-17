@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e # exit on errors
-
 CLI=$1
 PORT=$2
 TESTURL=$3
@@ -23,7 +21,7 @@ killWebserver() {
     # echoe "Cleanup: Stopping webserver on port $PORT"
     RV=$?
     kill $SPAPID
-    exit $RV
+    return 0
   fi
 }
 
@@ -39,15 +37,6 @@ echo "{}" > cypress.json
 mkdir cypress
 mkdir cypress/integration
 cp ../luigi/test/e2e-test-application/e2e/test3/0-setuptests/setup-test.spec.js ./cypress/integration/setup-test.spec.js
-
-echo "{
-  'integrationFolder': './cypress/integration',
-  'pluginsFile': false,
-  'chromeWebSecurity': false,
-  'viewportWidth': 1250,
-  'viewportHeight': 790,
-  'baseUrl': 'http://localhost:4200/'
-}" > setuptest.json
 
 #Run acutal test
 (sleep $TIME; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
