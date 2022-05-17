@@ -178,15 +178,8 @@ jobs:
         - mkdir setupTestFolder && cd setupTestFolder
         - npm install -g @angular/cli cypress
         - echo '{}' > cypress.json
+        - echo '{}' > setuptest.json
         - ls
-        - echo '{
-                  "integrationFolder": "./cypress/integration",
-                  "pluginsFile": false,
-                  "chromeWebSecurity": false,
-                  "viewportWidth": 1250,
-                  "viewportHeight": 790,
-                  "baseUrl": "http://localhost:4200/"
-                }' > setuptest.json
         - (sleep 300; cypress run --env configFile=setuptest,url=http://localhost:4200/ --browser chrome -c video=false && killWebserver 4200) & (
           curl -s 'https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh' > ./setup.sh &&
           printf '\n' | source ./setup.sh angularTest)
