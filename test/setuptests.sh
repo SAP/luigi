@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-CLI = $1
-PORT = $2
-TESTURL = $3
-URL = $4
+CLI=$1
+PORT=$2
+TESTURL=$3
+URL=$4
 
 source ./scripts/shared/bashHelpers.sh
 
