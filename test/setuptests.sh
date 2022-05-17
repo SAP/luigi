@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e # exit on errors
+
 CLI=$1
 PORT=$2
 TESTURL=$3
