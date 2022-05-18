@@ -173,7 +173,6 @@ jobs:
       name: 'Test Angular setup script'
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
-        - trap "echo tapped SIGHUP; exit 0" 1
         - bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300
         - RV=$?
         - echo $RV
@@ -181,7 +180,6 @@ jobs:
 
     - name: 'Test Vue setup script'
       script:
-        - trap "echo tapped SIGHUP; exit 0" 1
         - bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 
         - RV=$?
         - echo $RV
@@ -189,7 +187,6 @@ jobs:
 
     - name: 'Test React setup script'
       script:
-        - trap "echo tapped SIGHUP; exit 0" 1
         - bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200
         - RV=$?
         - echo $RV
@@ -197,7 +194,6 @@ jobs:
 
     - name: 'Test UI5 setup script'
       script:
-        - trap "echo tapped SIGHUP; exit 0" 1
         - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html#/home" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 
         - RV=$?
         - echo $RV
