@@ -194,8 +194,7 @@ jobs:
     - name: 'Test UI5 setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 || if [$? == 0];
-          then
+        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 || if [$? == 0]; then
             travis_terminate 0
           else
             travis_terminate 1
