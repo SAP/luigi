@@ -174,30 +174,34 @@ jobs:
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh ' ' 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300
+        - bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300
         - RV=$?
-        - echo $RV
         - travis_terminate $RV
   
     - name: 'Test Vue setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 || echo $?
+        - bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 
+        - RV=$?
+        - travis_terminate $RV
 
     - name: 'Test React setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200 || echo $?
-      
+        - bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200 
+        - RV=$?
+        - travis_terminate $RV
+
     - name: 'Test UI5 setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 
+        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html#/home" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 
         - RV=$?
-        - echo $RV
         - travis_terminate $RV
       
     - name: 'Test No-Framework setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 || echo $?
+        - bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 
+        - RV=$?
+        - travis_terminate $RV
