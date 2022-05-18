@@ -177,14 +177,15 @@ jobs:
         - RV=$TRAVIS_TEST_RESULT
         - echo "RV is $RV"
         - echo "Out is $OUT"
-        - if [[ $RV == 1 && $OUT == 1  ]] || [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 1; else travis_terminate 0; fi
+        - if [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 0; else travis_terminate 1; fi
+        
     - name: 'Test Vue setup script'
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 | grep -c 143)
         - RV=$TRAVIS_TEST_RESULT
         - echo "RV is $RV"
         - echo "Out is $OUT"
-        - if [[ $RV == 1 && $OUT == 1  ]] || [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 1; else travis_terminate 0; fi
+        - if [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test React setup script'
       script:
@@ -192,7 +193,7 @@ jobs:
         - RV=$TRAVIS_TEST_RESULT
         - echo "RV is $RV"
         - echo "Out is $OUT"
-        - if [[ $RV == 1 && $OUT == 1  ]] || [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 1; else travis_terminate 0; fi
+        - if [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test UI5 setup script'
       script:
@@ -200,7 +201,7 @@ jobs:
         - RV=$TRAVIS_TEST_RESULT
         - echo "RV is $RV"
         - echo "Out is $OUT"
-        - if [[ $RV == 1 && $OUT == 1  ]] || [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 1; else travis_terminate 0; fi
+        - if [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 0; else travis_terminate 1; fi
       
     - name: 'Test No-Framework setup script'
       script:
@@ -208,4 +209,4 @@ jobs:
         - RV=$TRAVIS_TEST_RESULT
         - echo "RV is $RV"
         - echo "Out is $OUT"
-        - if [[ $RV == 1 && $OUT == 1  ]] || [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 1; else travis_terminate 0; fi
+        - if [[ $RV == 1 && $OUT == 0 ]]; then travis_terminate 0; else travis_terminate 1; fi
