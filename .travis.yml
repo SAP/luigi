@@ -199,4 +199,4 @@ jobs:
       script:
         - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 | grep -c 143)
         - echo $OUT
-        - if [[ TRAVIS_TEST_RESULT == 1 && $OUT == 1  ]]; then travis_terminate 1; else travis_terminate 0; fi
+        - if [[ TRAVIS_TEST_RESULT == 1 && $OUT == 1  ]] || [[ TRAVIS_TEST_RESULT == 1 && $OUT == 0 ]]; then travis_terminate 1; else travis_terminate 0; fi
