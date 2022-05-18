@@ -174,7 +174,12 @@ jobs:
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh ' ' 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 || echo $?
+        - bash ./test/setuptests.sh ' ' 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 || if [$? == 0];
+          then
+            travis_terminate 0
+          else
+            travis_terminate 1
+          fi
   
     - name: 'Test Vue setup script'
       script:
@@ -189,7 +194,12 @@ jobs:
     - name: 'Test UI5 setup script'
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 || echo $?
+        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 || if [$? == 0];
+          then
+            travis_terminate 0
+          else
+            travis_terminate 1
+          fi
       
     - name: 'Test No-Framework setup script'
       script:
