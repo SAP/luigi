@@ -117,7 +117,12 @@
     const { size, width: settingsWidth, height: settingsHeight } = settings;
     const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
 
-    if (settingsWidth?.match(regex) && settingsHeight?.match(regex)) {
+    if (
+      settingsWidth &&
+      settingsWidth.match(regex) &&
+      settingsHeight &&
+      settingsHeight.match(regex)
+    ) {
       height = settingsHeight;
       width = settingsWidth;
     } else {
