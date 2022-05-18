@@ -7,7 +7,7 @@ URL=$4
 TIME=$5
 
 # Define Kill Webserver method
-getWebserver() {
+killWebserver() {
   PORT=$1
   SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
   if [ "$SPAPID" == "" ]; then
@@ -19,7 +19,8 @@ getWebserver() {
 
   if [ ! -z "$SPAPID" ]; then
     # echoe "Cleanup: Stopping webserver on port $PORT"
-    return $SPAPID;
+    kill $SPAPID;
+    exit 0
   fi
 }
 
@@ -37,6 +38,6 @@ mkdir cypress/integration
 cp ../luigi/test/e2e-test-application/e2e/test3/0-setuptests/setup-test.spec.js ./cypress/integration/setup-test.spec.js
 
 #Run acutal test
-(sleep $TIME; set -e && cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && getWebserver $PORT || echo "sub shell echo $?" && kill $? || exit $?) & (
+(sleep $TIME; set -e && cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT && echo "sub shell echo $?" && exit 0) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)
