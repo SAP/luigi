@@ -220,4 +220,4 @@ jobs:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 
         - RV=$?
-        - if [ "$RV" == 0 ] || [ "$RV" == 143 ] then travis_terminate 0 else travis_terminate 1 fi
+        - if [[ "$RV" == "0"  || "$RV" == "143" ]]; then travis_terminate 0 else travis_terminate 1 fi
