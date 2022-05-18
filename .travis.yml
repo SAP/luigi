@@ -175,28 +175,28 @@ jobs:
       script:
         - OUT=$(bash ./test/setuptests.sh ' ' 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 | grep -c 143)
         - echo $OUT
-        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ TRAVIS_TEST_RESULT == 0 && $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test Vue setup script'
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 | grep -c 143)
         - echo $OUT
-        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ TRAVIS_TEST_RESULT == 0 && $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test React setup script'
       script:
         - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200 | grep -c 143)
         - echo $OUT
-        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ TRAVIS_TEST_RESULT == 0 && $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test UI5 setup script'
       script:
         - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 | grep -c 143)
         - echo $OUT
-        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ TRAVIS_TEST_RESULT == 0 && $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
       
     - name: 'Test No-Framework setup script'
       script:
         - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 | grep -c 143)
         - echo $OUT
-        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - if [ $TRAVIS_TEST_RESULT == 0 ] || [ TRAVIS_TEST_RESULT == 0 && $OUT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
