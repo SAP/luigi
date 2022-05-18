@@ -115,8 +115,6 @@ class LuigiRouting {
     } else {
       window.location.hash = value;
     }
-
-    LuigiConfig.configChanged();
   }
 }
 
