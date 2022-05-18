@@ -21,7 +21,6 @@ killWebserver() {
     # echoe "Cleanup: Stopping webserver on port $PORT"
     RV=$?
     kill $SPAPID
-    set +e
     exit 0
   fi
 }
@@ -40,6 +39,6 @@ mkdir cypress/integration
 cp ../luigi/test/e2e-test-application/e2e/test3/0-setuptests/setup-test.spec.js ./cypress/integration/setup-test.spec.js
 
 #Run acutal test
-(sleep $TIME; cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
+(sleep $TIME; set -e && cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)
