@@ -173,30 +173,30 @@ jobs:
       name: 'Test Angular setup script'
       if: repo = SAP/luigi AND branch = 1323-programmatically-test-examples
       script:
-        - bash ./test/setuptests.sh ' ' 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300
-        - echo $TRAVIS_TEST_RESULT
-        - if [ $RV == 1 ] || [ $RV == 143 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 | grep -c 143)
+        - echo $OUT
+        - if [ $TRAVIS_TEST_RESULT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test Vue setup script'
       script:
-        - bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 
-        - echo $TRAVIS_TEST_RESULT
-        - if [ $RV == 1 ] || [ $RV == 143 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 | grep -c 143)
+        - echo $OUT
+        - if [ $TRAVIS_TEST_RESULT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test React setup script'
       script:
-        - bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200
-        - echo $TRAVIS_TEST_RESULT
-        - if [ $RV == 1 ] || [ $RV == 143 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200 | grep -c 143)
+        - echo $OUT
+        - if [ $TRAVIS_TEST_RESULT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test UI5 setup script'
       script:
-        - bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 
-        - echo $TRAVIS_TEST_RESULT
-        - if [ $RV == 1 ] || [ $RV == 143 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 "http://localhost:8080/index.html#/home" https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 | grep -c 143)
+        - echo $OUT
+        - if [ $TRAVIS_TEST_RESULT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
       
     - name: 'Test No-Framework setup script'
       script:
-        - bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200
-        - echo $TRAVIS_TEST_RESULT
-        - if [ $RV == 1 ] || [ $RV == 143 ]; then travis_terminate 0; else travis_terminate 1; fi
+        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 | grep -c 143)
+        - echo $OUT
+        - if [ $TRAVIS_TEST_RESULT == 0 ]; then travis_terminate 0; else travis_terminate 1; fi
