@@ -236,13 +236,18 @@
 
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
+    // only disable accessibility for all cases other than a drawer without backdrop
+    !(settings.isDrawer && !settings.backdrop) ? IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog') : '';
+    window.focus();
   });
 
   onDestroy(() => {
     EventListenerHelpers.removeEventListener('message', onMessage);
+    // only disable accessibility for all cases other than a drawer without backdrop
+    !(settings.isDrawer && !settings.backdrop) ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog') : '';
   });
 
-  // [svelte-upgrade suggestion]
+  //  [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
