@@ -1,7 +1,0 @@
-{
-  "integrationFolder": "e2e/test3",
-  "pluginsFile": false,
-  "chromeWebSecurity": false,
-  "viewportWidth": 1250,
-  "viewportHeight": 790
-}
