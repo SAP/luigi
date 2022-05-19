@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Publishes the current version
+# Publishes the current version 
 
 set -e # exit on errors
 
