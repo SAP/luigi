@@ -197,6 +197,37 @@ describe('Navigation', () => {
         .should('exist')
         .should('contain', 'Français');
 
+      //Open button to show enumeration list options
+      cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
+        .eq(0)
+        .find('.lui-activate-language-dropdown')
+        .click();
+
+      //Choose option one above French
+      cy.get('[data-testid="lui-us-language-dropdown"]')
+        .should('exist')
+        .type('{upArrow}');
+
+      //Confirm with keyboard: Enter
+      cy.get('.fd-popover__body--dropdown-fill')
+        .should('exist')
+        .type('{enter}');
+
+      //Check Placeholder of input field is English (en)
+      cy.get('[data-testid="lui-us-input0"]')
+        .should('exist')
+        .should('contain', 'English (en)');
+
+      //Choose option one below English
+      cy.get('[data-testid="lui-us-language-dropdown"]')
+        .should('exist')
+        .type('{downArrow}');
+
+      //Confirm with keyboard: Enter
+      cy.get('.fd-popover__body--dropdown-fill')
+        .should('exist')
+        .type('{enter}');
+
       //Check Date Formant Input field and type a new format
       cy.get('[data-testid="lui-us-input1"]')
         .should('exist')
