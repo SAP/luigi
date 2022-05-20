@@ -46,11 +46,21 @@ class LuigiFeatureToggles {
    * @example Luigi.featureToggles().getActiveFeatureToggleList();
    */
   getActiveFeatureToggleList() {
+    return [...get(this.featureToggleList)].filter(ft => !ft.startsWith('!'));
+  }
+
+  /**
+   * Get a list of active feature toggles
+   * @memberof FeatureToggles
+   * @return {Array} of feature toggles
+   * @example Luigi.featureToggles().getFeatureToggleList();
+   */
+  getFeatureToggleList() {
     return [...get(this.featureToggleList)];
   }
 
   isValid(featureToggleName) {
-    if (isString(featureToggleName) && !featureToggleName.startsWith('!')) return true;
+    if (isString(featureToggleName)) return true;
 
     console.warn('Feature toggle name is not valid or not a type of string');
     return false;
