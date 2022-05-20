@@ -50,9 +50,9 @@ class LuigiFeatureToggles {
   }
 
   isValid(featureToggleName) {
-    if (isString(featureToggleName)) return true;
+    if (isString(featureToggleName) && !featureToggleName.startsWith('!')) return true;
 
-    console.warn('Feature toggle name is empty or not a type of string');
+    console.warn('Feature toggle name is not valid or not a type of string');
     return false;
   }
 

@@ -18,22 +18,21 @@ describe('Feature Toggle', () => {
     LuigiFeatureToggles.setFeatureToggle('test');
 
     assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
-      '!bar',
       'test2',
       'test'
     ]);
 
     LuigiFeatureToggles.setFeatureToggle('bar');
     assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
-      '!bar',
       'test2',
-      'test'
+      'test',
+      'bar',
     ]);
 
     LuigiFeatureToggles.unsetFeatureToggle('test');
     assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
-      '!bar',
-      'test2'
+      'test2',
+      'bar'
     ]);
   });
 });
