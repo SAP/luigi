@@ -1,4 +1,5 @@
 import { get, writable } from 'svelte/store';
+import { isString } from 'lodash';
 /**
  * Functions to use feature toggles in Luigi
  * @name FeatureToggles
@@ -14,17 +15,10 @@ class LuigiFeatureToggles {
    * @example Luigi.featureToggles().setFeatureToggle('featureToggleName');
    */
   setFeatureToggle(featureToggleName) {
-    if (featureToggleName.startsWith('!')) return;
-  
-    if (featureToggleName && typeof featureToggleName === 'string') {
-      if (!get(this.featureToggleList).includes(featureToggleName)) {
-        get(this.featureToggleList).push(featureToggleName);
-      } else {
-        console.warn('Feature toggle name already exists');
-      }
-    } else {
-      console.warn('Feature toggle name is empty or not a type of string');
-    }
+    if (!this.isValid(featureToggleName)) return;
+    if (this.isDuplicateOrDisabled(featureToggleName)) return;
+
+    get(this.featureToggleList).push(featureToggleName);
   }
 
   /**
@@ -34,18 +28,14 @@ class LuigiFeatureToggles {
    * @example Luigi.featureToggles().unsetFeatureToggle('featureToggleName');
    */
   unsetFeatureToggle(featureToggleName) {
-    if (featureToggleName && typeof featureToggleName === 'string') {
-      if (get(this.featureToggleList).includes(featureToggleName)) {
-        let index = get(this.featureToggleList).indexOf(featureToggleName);
-        if (index > -1) {
-          get(this.featureToggleList).splice(index, 1);
-        }
-      } else {
-        console.warn('Feature toggle name is not in the list.');
-      }
-    } else {
-      console.warn('Feature toggle name is empty or not a type of string');
+    if (!this.isValid(featureToggleName)) return;
+
+    const index = get(this.featureToggleList).indexOf(featureToggleName);
+    if (index === -1) {
+      console.warn('Feature toggle name is not in the list.');
+      return;
     }
+    get(this.featureToggleList).splice(index, 1);
   }
 
   /**
@@ -57,6 +47,26 @@ class LuigiFeatureToggles {
    */
   getActiveFeatureToggleList() {
     return [...get(this.featureToggleList)];
+  }
+
+  isValid(featureToggleName) {
+    if (isString(featureToggleName)) return true;
+
+    console.warn('Feature toggle name is empty or not a type of string');
+    return false;
+  }
+
+  isDuplicateOrDisabled(featureToggleName) {
+    if (get(this.featureToggleList).includes(`${featureToggleName}`)) {
+      console.warn('Feature toggle name already exists');
+      return true;
+    }
+
+    if (get(this.featureToggleList).includes(`!${featureToggleName}`)) {
+      console.warn('Disabled feature toggle can not be activateable');
+      return true;
+    }
+    return false;
   }
 }
 export const featureToggles = new LuigiFeatureToggles();
