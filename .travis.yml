@@ -115,7 +115,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/../luigi-compatibility-testing # remove compatibility build cache
 
-    #----- DOCU -----
+    # ----- DOCU -----
     - name: 'Check Documentation'
       if: repo = SAP/luigi AND type != cron AND type != api
       script:
@@ -125,7 +125,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    #----- WHITESOURCE -----
+    # ----- WHITESOURCE -----
     - name: 'Whitesource check'
       if: repo = SAP/luigi AND branch = master AND type != cron AND type != api
       # Whitesource can't deal with symlinking, therefore we can't use lerna
@@ -141,7 +141,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-     ----- INTEGRATION -----
+    # ----- INTEGRATION -----
     - name: 'Integration Testing 1'
       <<: *integration-testing
 
@@ -168,7 +168,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-
+    # ----- SETUP-EXAMPLE TESTS -----
     - stage: 'Testing setup example scripts'
       name: 'Test Angular setup script'
       if: branch = master AND type = cron
