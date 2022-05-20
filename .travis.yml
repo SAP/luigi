@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '16.15.0' #TODO: change it to 'node' once Travis supports the newest version
+  - '16.15.0'
 dist: xenial
 cache:
   directories:
