@@ -20,5 +20,6 @@ describe('ClientSupportAngularComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    console.log(component)
   });
 });
