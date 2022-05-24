@@ -67,13 +67,13 @@ class LuigiFeatureToggles {
   }
 
   isDuplicateOrDisabled(featureToggleName) {
-    if (get(this.featureToggleList).includes(`${featureToggleName}`)) {
+    if (get(this.featureToggleList).includes(featureToggleName)) {
       console.warn('Feature toggle name already exists');
       return true;
     }
 
     if (get(this.featureToggleList).includes(`!${featureToggleName}`)) {
-      console.warn('Disabled feature toggle can not be activateable');
+      console.warn('Disabled feature toggle can not be activated');
       return true;
     }
     return false;
