@@ -25,4 +25,4 @@ Luigi [allowRules](https://docs.luigi-project.io/docs/general-settings/?section=
 
 #### Bugfixes
 
-For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/master/CHANGELOG.md).
+For a full list of bugfixes, see the [GitHub release page](https://github.com/SAP/luigi/releases/tag/v1.22.0).
