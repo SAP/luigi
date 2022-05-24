@@ -168,7 +168,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    # ----- SETUP-EXAMPLE TESTS -----
+    # ----- SETUP EXAMPLE TESTS -----
     - stage: 'Testing setup example scripts'
       name: 'Test Angular setup script'
       if: branch = master AND type = cron
