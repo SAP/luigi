@@ -13,7 +13,7 @@ You can read about the new features in Luigi v1.22.0 in the release notes below.
 
 #### Update to Fundamental Styles v0.23.0
 
-With the new release, we updated Luigi Core to version 0.23.0 of Fundamental Styles. You can read about all changes on the [Fundamental Library Styles page](https://blogs.sap.com/2022/04/14/fundamental-library-styles-update/). You can also review the Luigi changes [here](https://github.com/SAP/luigi/pull/2698). 
+With the new release, we updated Luigi Core to version 0.23.0 of Fundamental Styles. You can read about all changes in the [release notes](https://github.com/SAP/fundamental-styles/releases/tag/v0.23.0). This update brought breaking changes and was described in the [Fundamental Library blog post](https://blogs.sap.com/2022/04/14/fundamental-library-styles-update/). You can also review the Luigi changes [here](https://github.com/SAP/luigi/pull/2698). 
 
 #### Disable keyboard accessibility on all elements outside drawers and modals
 
