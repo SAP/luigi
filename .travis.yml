@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '16.15.0'
+  - '14.19.3'
 dist: xenial
 cache:
   directories:
@@ -168,7 +168,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    # ----- SETUP EXAMPLE TESTS -----
+    # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Testing setup example scripts'
       name: 'Test Angular setup script'
       if: branch = master AND type = cron
