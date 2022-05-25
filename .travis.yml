@@ -98,8 +98,8 @@ jobs:
         - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
         - npm test --prefix client-frameworks-support/client-support-angular/
-      addons: 
-      chrome: stable
+      # addons: 
+      #   chrome: stable
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9876 http://localhost &
       before_cache:
