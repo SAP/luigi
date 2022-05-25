@@ -48,6 +48,7 @@ integration-testing: &integration-testing
         - libxtst6
         - xauth
         - xvfb
+        - google-chrome
     # chrome: beta
     chrome: stable
   before_install:
