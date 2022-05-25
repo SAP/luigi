@@ -12,12 +12,12 @@ class LuigiFeatureToggles {
    * Add a feature toggle to an active feature toggles list
    * @memberof FeatureToggles
    * @since 1.4.0
-   * @example Luigi.featureToggles().setFeatureToggle('featureToggleName');
+   * @example Luigi.featureToggles().setFeatureToggle('featureToggleName', true);
    */
   setFeatureToggle(featureToggleName, fromUrlQuery = false) {
     if (!this.isValid(featureToggleName)) return;
     if (featureToggleName.startsWith('!') && !fromUrlQuery) return;
-    if (this.isDuplicateOrDisabled(featureToggleName)) return;
+    if (this.isDuplicatedOrDisabled(featureToggleName)) return;
 
     get(this.featureToggleList).push(featureToggleName);
   }
@@ -50,14 +50,30 @@ class LuigiFeatureToggles {
     return [...get(this.featureToggleList)].filter(ft => !ft.startsWith('!'));
   }
 
+  /**
+   * Check if it is a valid feature toggle
+   * @memberof FeatureToggles
+   * @param {string} featureToggleName
+   * @since 1.22.0
+   * @return {boolean} of valid feature toggle name
+   * @example Luigi.featureToggles().isValid('foo');
+   */
   isValid(featureToggleName) {
     if (GenericHelpers.isString(featureToggleName)) return true;
 
-    console.warn('Feature toggle name is not valid or not a type of string');
+    console.warn(`Feature toggle name is not valid or not of type 'string'`);
     return false;
   }
 
-  isDuplicateOrDisabled(featureToggleName) {
+  /**
+   * Check if feature toggle is duplicated or already disabled
+   * @memberof FeatureToggles
+   * @param {string} featureToggleName
+   * @since 1.22.0
+   * @return {boolean} of valid feature toggle name
+   * @example Luigi.featureToggles().isDuplicateOrDisabled('foo');
+   */
+  isDuplicatedOrDisabled(featureToggleName) {
     if (get(this.featureToggleList).includes(featureToggleName)) {
       console.warn('Feature toggle name already exists');
       return true;
