@@ -1,5 +1,5 @@
 import { get, writable } from 'svelte/store';
-import { isString } from 'lodash';
+import { GenericHelpers } from '../utilities/helpers';
 /**
  * Functions to use feature toggles in Luigi
  * @name FeatureToggles
@@ -14,8 +14,9 @@ class LuigiFeatureToggles {
    * @since 1.4.0
    * @example Luigi.featureToggles().setFeatureToggle('featureToggleName');
    */
-  setFeatureToggle(featureToggleName) {
+  setFeatureToggle(featureToggleName, fromUrlQuery = false) {
     if (!this.isValid(featureToggleName)) return;
+    if (featureToggleName.startsWith('!') && !fromUrlQuery) return;
     if (this.isDuplicateOrDisabled(featureToggleName)) return;
 
     get(this.featureToggleList).push(featureToggleName);
@@ -49,18 +50,8 @@ class LuigiFeatureToggles {
     return [...get(this.featureToggleList)].filter(ft => !ft.startsWith('!'));
   }
 
-  /**
-   * Get a list of active feature toggles
-   * @memberof FeatureToggles
-   * @return {Array} of feature toggles
-   * @example Luigi.featureToggles().getFeatureToggleList();
-   */
-  getFeatureToggleList() {
-    return [...get(this.featureToggleList)];
-  }
-
   isValid(featureToggleName) {
-    if (isString(featureToggleName)) return true;
+    if (GenericHelpers.isString(featureToggleName)) return true;
 
     console.warn('Feature toggle name is not valid or not a type of string');
     return false;

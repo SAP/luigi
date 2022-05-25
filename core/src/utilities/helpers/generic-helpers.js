@@ -21,6 +21,10 @@ class GenericHelpersClass {
     return anyParam && this.isFunction(anyParam.then);
   }
 
+  isString(value) {
+    return typeof value === 'string' || value instanceof String;
+  }
+
   isIE /* istanbul ignore next */() {
     const ua = navigator.userAgent;
     /* MSIE used to detect old browsers and Trident used to newer ones */
