@@ -4,8 +4,6 @@ const assert = chai.assert;
 
 describe('Feature Toggle', () => {
   it('Set and unset feature toggle to list', async () => {
-    //given
-
     assert.equal(LuigiFeatureToggles.getActiveFeatureToggleList(), 0);
     LuigiFeatureToggles.setFeatureToggle('test');
     LuigiFeatureToggles.setFeatureToggle(12345);
@@ -35,5 +33,21 @@ describe('Feature Toggle', () => {
       'test2',
       'bar'
     ]);
+
+    assert.equal(LuigiFeatureToggles.isDuplicatedOrDisabled('bar'), true);
+    assert.equal(LuigiFeatureToggles.isDuplicatedOrDisabled('foo'), false);
+  });
+
+  it('check feature toggle is valid with a string', () => {
+    const actual = LuigiFeatureToggles.isValid('foo');
+    const expect = true;
+
+    assert.equal(actual, expect);
+  });
+  it('check feature toggle is valid with a number', () => {
+    const actual = LuigiFeatureToggles.isValid(123);
+    const expect = false;
+
+    assert.equal(actual, expect);
   });
 });
