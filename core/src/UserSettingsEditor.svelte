@@ -141,29 +141,29 @@
         console.log('ARROW DOWN: List open.');
         if (chosenElementIndex === -1) {
           chosenElementIndex = 0;
-          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected');
           return;
         }
         if (chosenElementIndex < schemaItem.options.length - 1) {
-          list.item(chosenElementIndex).classList.remove('is-selected', 'is-focus');
+          list.item(chosenElementIndex).classList.remove('is-selected');
           chosenElementIndex += 1;
-          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected');
         }
       }
       if (event.keyCode === KEYCODE_ARROW_UP && !event.altKey) {
         console.log('ARROW UP: List open.');
         if (chosenElementIndex === -1) {
           chosenElementIndex = chosenElementIndex.length - 1;
-          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected');
           return;
         }
         if (
           chosenElementIndex > 0 &&
           chosenElementIndex < schemaItem.options.length
         ) {
-          list.item(chosenElementIndex).classList.remove('is-selected', 'is-focus');
+          list.item(chosenElementIndex).classList.remove('is-selected');
           chosenElementIndex -= 1;
-          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected');
         }
       }
       if (event.keyCode === KEYCODE_ENTER) {
