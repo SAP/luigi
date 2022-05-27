@@ -141,35 +141,29 @@
         console.log('ARROW DOWN: List open.');
         if (chosenElementIndex === -1) {
           chosenElementIndex = 0;
-          list.item(chosenElementIndex).classList.add('is-selected');
-          list.item(chosenElementIndex).classList.add('is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
           return;
         }
         if (chosenElementIndex < schemaItem.options.length - 1) {
-          list.item(chosenElementIndex).classList.remove('is-selected');
-          list.item(chosenElementIndex).classList.remove('is-focus');
+          list.item(chosenElementIndex).classList.remove('is-selected', 'is-focus');
           chosenElementIndex += 1;
-          list.item(chosenElementIndex).classList.add('is-selected');
-          list.item(chosenElementIndex).classList.add('is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
         }
       }
       if (event.keyCode === KEYCODE_ARROW_UP && !event.altKey) {
         console.log('ARROW UP: List open.');
         if (chosenElementIndex === -1) {
           chosenElementIndex = chosenElementIndex.length - 1;
-          list.item(chosenElementIndex).classList.add('is-selected');
-          list.item(chosenElementIndex).classList.add('is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
           return;
         }
         if (
           chosenElementIndex > 0 &&
           chosenElementIndex < schemaItem.options.length
         ) {
-          list.item(chosenElementIndex).classList.remove('is-selected');
-          list.item(chosenElementIndex).classList.remove('is-focus');
+          list.item(chosenElementIndex).classList.remove('is-selected', 'is-focus');
           chosenElementIndex -= 1;
-          list.item(chosenElementIndex).classList.add('is-selected');
-          list.item(chosenElementIndex).classList.add('is-focus');
+          list.item(chosenElementIndex).classList.add('is-selected', 'is-focus');
         }
       }
       if (event.keyCode === KEYCODE_ENTER) {
