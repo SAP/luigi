@@ -1,11 +1,4 @@
 describe('Luigi client linkManager webcomponent drawer', () => {
-  const localRetries = {
-    retries: {
-      runMode: 3,
-      openMode: 3
-    }
-  };
-
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
