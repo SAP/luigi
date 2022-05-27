@@ -13,7 +13,7 @@ describe('Luigi client linkManager features', () => {
   describe('linkManager preserve view, pathExists', () => {
     let $iframeBody;
     beforeEach(() => {
-      // "clear" variables to make sure they are not reused and throw error in case something goes wrong
+      // "clear" variables to make sure they are not reused and throw error in case something goes wrong 
       $iframeBody = undefined;
       cy.visitLoggedIn('/projects/pr2');
       cy.getIframeBody().then(result => {
