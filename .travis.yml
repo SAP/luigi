@@ -3,6 +3,8 @@ language: node_js
 node_js:
   - '12.18.4' #TODO: change it to 'node' once Travis supports the newest version
 dist: xenial
+addons:
+  chrome: stable
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
@@ -48,7 +50,7 @@ integration-testing: &integration-testing
         - libxtst6
         - xauth
         - xvfb
-        - google-chrome
+        - google-chrome-stable
     # chrome: beta
     chrome: stable
   before_install:
@@ -105,8 +107,12 @@ jobs:
 
     # ----- UNIT TESTS IN CLIENT-SUPPORT-ANGULAR -----
     - stage: 'Unit tests in client-support-angular'
-    - script:
-       - npm run test --prefix client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+      name: 'client-support-angular unit tests'
+      script:
+       - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
 
 
     # ----- NPM PUBLISH -----
