@@ -1,4 +1,4 @@
-describe('Luigi client linkManager webcomponent drawer', () => {
+describe('Luigi Client linkManager webcomponent drawer', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
