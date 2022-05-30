@@ -171,7 +171,7 @@ jobs:
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Testing setup example scripts'
       name: 'Test Angular setup script'
-      if: branch = master AND type = cron
+      if: type = cron
       script:
         - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 | grep -c "Stopping webserver on port 4200")
         - echo "Out is $OUT"
