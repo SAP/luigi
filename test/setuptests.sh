@@ -6,9 +6,6 @@ TESTURL=$3
 URL=$4
 TIME=$5
 
-rm -rdf ~/.config/google-chrome
-rm -rdf ~/.cache/google-chrome
-
 # Define Kill Webserver method
 killWebserver() {
   PORT=$1
