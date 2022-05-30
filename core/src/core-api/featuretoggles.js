@@ -11,6 +11,8 @@ class LuigiFeatureToggles {
   /**
    * Add a feature toggle to an active feature toggles list
    * @memberof FeatureToggles
+   * @param {string} featureToggleName the name of the feature toogle
+   * @param {boolean} fromUrlQuery whether the feature toogle is sent from url query. Default is false.
    * @since 1.4.0
    * @example Luigi.featureToggles().setFeatureToggle('featureToggleName', true);
    */

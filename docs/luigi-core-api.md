@@ -1275,12 +1275,13 @@ Add a feature toggle to an active feature toggles list
 
 ##### Parameters
 
--   `featureToggleName`  
+-   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the name of the feature toogle
+-   `fromUrlQuery` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** whether the feature toogle is sent from url query. Default is false. (optional, default `false`)
 
 ##### Examples
 
 ```javascript
-Luigi.featureToggles().setFeatureToggle('featureToggleName');
+Luigi.featureToggles().setFeatureToggle('featureToggleName', true);
 ```
 
 **Meta**
@@ -1320,6 +1321,46 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 **Meta**
 
 -   **since**: 1.4.0
+
+#### isValid
+
+Check if it is a valid feature toggle
+
+##### Parameters
+
+-   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+Luigi.featureToggles().isValid('foo');
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** of valid feature toggle name
+
+**Meta**
+
+-   **since**: 1.22.0
+
+#### isDuplicatedOrDisabled
+
+Check if feature toggle is duplicated or already disabled
+
+##### Parameters
+
+-   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+Luigi.featureToggles().isDuplicateOrDisabled('foo');
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** of valid feature toggle name
+
+**Meta**
+
+-   **since**: 1.22.0
 
 ## Luigi.routing()
 
