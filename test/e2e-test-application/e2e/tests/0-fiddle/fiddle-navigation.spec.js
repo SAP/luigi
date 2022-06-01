@@ -31,7 +31,7 @@ describe('Fiddle', () => {
           win.Luigi.navigation().openAsModal('/home/two', { size: 'fullscreen' });
         });
         cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.class', 'fullscreen');
+        cy.get('.lui-modal-mf').should('have.class', 'lui-modal-fullscreen');
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:100vw;height:100vh;');
         cy.get('[aria-label="close"]').click();
       });
