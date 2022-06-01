@@ -130,7 +130,7 @@
         case 'fullscreen':
           height = '100vh';
           width = '100vw';
-          elem.classList.add('fullscreen');
+          elem.classList.add('lui-modal-fullscreen');
           break;
         case 'm':
           height = '80%';
@@ -398,7 +398,7 @@
       left: 0;
     }
   }
-  .fullscreen {
+  .lui-modal-fullscreen {
     max-height: none;
     max-width: none;
     border-radius: 0;
