@@ -3,8 +3,6 @@ language: node_js
 node_js:
   - '12.18.4' #TODO: change it to 'node' once Travis supports the newest version
 dist: xenial
-addons:
-  chrome: stable
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
@@ -41,7 +39,7 @@ integration-testing: &integration-testing
         # needed dependencies for cypress 5.3.0
         - libgtk2.0-0
         - libgtk-3-0
-        - libgbm-dev  
+        - libgbm-dev
         - libnotify-dev
         - libgconf-2-4
         - libnss3
@@ -61,7 +59,6 @@ integration-testing: &integration-testing
     - rm -rf ~/.npm/_logs
     - rm -rf ~/.npm/_cacache
     - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
-
 
 jobs:
   include:
@@ -109,11 +106,14 @@ jobs:
     - stage: 'Unit tests in client-support-angular'
       name: 'client-support-angular unit tests'
       script:
-       - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+      addons:
+        chrome: stable
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
-
 
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
@@ -144,11 +144,11 @@ jobs:
       # Whitesource can't deal with symlinking, therefore we can't use lerna
       script:
         - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
-            npm --prefix ./client ci ./client;
-            npm --prefix ./core ci ./core;
-            npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
-            npm --prefix ./website/fiddle install ./website/fiddle;
-            bash ./scripts/whiteSource.sh;
+          npm --prefix ./client ci ./client;
+          npm --prefix ./core ci ./core;
+          npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
+          npm --prefix ./website/fiddle install ./website/fiddle;
+          bash ./scripts/whiteSource.sh;
           fi'
       before_cache:
         - rm -rf ~/.npm/_logs
