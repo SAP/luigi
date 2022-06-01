@@ -26,6 +26,15 @@ describe('Fiddle', () => {
           .click();
         cy.expectPathToBe('/home/two');
       });
+      it('Open modal via core api with "fullscreen"', () => {
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { size: 'fullscreen' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.class', 'lui-modal-fullscreen');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:100vw;height:100vh;');
+        cy.get('[aria-label="close"]').click();
+      });
       it('Open modal via core api with "px"', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });

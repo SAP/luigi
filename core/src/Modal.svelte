@@ -7,12 +7,9 @@
     onDestroy,
   } from 'svelte';
   import { fade } from 'svelte/transition';
-  const dispatch = createEventDispatcher();
-
   import { Navigation } from './navigation/services/navigation';
   import {
     EventListenerHelpers,
-    EscapingHelpers,
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers,
@@ -23,6 +20,7 @@
   export let settings;
   export let isDataPrepared = false;
   export let nodepath;
+  const dispatch = createEventDispatcher();
   let nodeObject;
   let pathData;
   let nodeParams;
@@ -114,23 +112,40 @@
   };
 
   const setModalSize = async () => {
-    const elem = document.getElementsByClassName('lui-modal-mf');
-    let height = '80%';
-    let width = '80%';
-    if (settings.size) {
-      if (settings.size === 'm') {
-        height, width = '60%';
-      } else if (settings.size === 's') {
-        height, width = '40%';
-      }
-    }else if(settings.width && settings.height){
-      const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
-      if(settings.width.match(regex) && settings.height.match(regex)){
-        height = settings.height;
-        width = settings.width;
+    let height, width;
+    const elem = document.querySelector('.lui-modal-mf');
+    const { size, width: settingsWidth, height: settingsHeight } = settings;
+    const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
+
+    if (
+      settingsWidth &&
+      settingsWidth.match(regex) &&
+      settingsHeight &&
+      settingsHeight.match(regex)
+    ) {
+      height = settingsHeight;
+      width = settingsWidth;
+    } else {
+      switch (size) {
+        case 'fullscreen':
+          height = '100vh';
+          width = '100vw';
+          elem.classList.add('lui-modal-fullscreen');
+          break;
+        case 'm':
+          height = '80%';
+          width = '60%';
+          break;
+        case 's':
+          height = '80%';
+          width = '40%';
+          break;
+        default:
+          height = '80%';
+          width = '80%';
       }
     }
-    elem[0].setAttribute('style', `width:${width};height:${height};`);
+    elem.setAttribute('style', `width:${width};height:${height};`);
   };
 
   const createIframeModal = async (viewUrl, componentData) => {
@@ -237,14 +252,18 @@
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
-    !(settings.isDrawer && !settings.backdrop) ? IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog') : '';
+    !(settings.isDrawer && !settings.backdrop)
+      ? IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog')
+      : '';
     window.focus();
   });
 
   onDestroy(() => {
     EventListenerHelpers.removeEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
-    !(settings.isDrawer && !settings.backdrop) ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog') : '';
+    !(settings.isDrawer && !settings.backdrop)
+      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog')
+      : '';
   });
 
   //  [svelte-upgrade suggestion]
@@ -378,6 +397,11 @@
     .spinnerContainer {
       left: 0;
     }
+  }
+  .lui-modal-fullscreen {
+    max-height: none;
+    max-width: none;
+    border-radius: 0;
   }
   .spinnerContainer {
     display: flex;
