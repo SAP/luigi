@@ -423,4 +423,34 @@ export class linkManager extends LuigiClientBase {
     this.options.preserveQueryParams = preserve;
     return this;
   }
+  
+   /**
+    * Gets the current route
+    * @param {*} preserve 
+    * @returns 
+    */
+   getCurrentRoute(preserve = false) {
+      helpers.sendPostMessageToLuigiCore({
+        msg: 'luigi.navigation.currentRoute',
+      });
+  
+      const currentRoutePromise = {};
+      currentRoutePromise.promise = new Promise((resolve, reject) => {
+        currentRoutePromise.resolveFn = resolve;
+        currentRoutePromise.rejectFn = reject;
+      });
+      this.setPromise('getCurrentRoute', currentRoutePromise);
+
+
+      helpers.addEventListener(
+        'luigi.navigation.currentRoute.answer', (e, listenerId) => {
+
+          console.log('Route received', e)
+          helpers.removeEventListener(listenerId);
+        });
+
+        
+      
+      return currentRoutePromise.promise;
+   }
 }
