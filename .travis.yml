@@ -202,108 +202,30 @@ jobs:
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
-    - name: 'Test Vue setup script'
-      #if: type = cron
-      script:
-        - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 | grep -c "Stopping webserver on port 8080")
-        - echo "Out is $OUT"
-        - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-            # needed dependencies for cypress 5.3.0
-            - libgtk2.0-0
-            - libgtk-3-0
-            - libgbm-dev  
-            - libnotify-dev
-            - libgconf-2-4
-            - libnss3
-            - libxss1
-            - libasound2
-            - libxtst6
-            - xauth
-            - xvfb
-        # chrome: beta
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-        - rm -rf ~/.cache/Cypress/cy/production/browsers
+    #- name: 'Test Vue setup script'
+    #  #if: type = cron
+    #  script:
+    #    - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 | grep -c "Stopping webserver on port 8080")
+    #    - echo "Out is $OUT"
+    #    - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
-    - name: 'Test React setup script'
-      #if: type = cron
-      script:
-        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200 | grep -c "Stopping webserver on port 3000")
-        - echo "Out is $OUT"
-        - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-            # needed dependencies for cypress 5.3.0
-            - libgtk2.0-0
-            - libgtk-3-0
-            - libgbm-dev  
-            - libnotify-dev
-            - libgconf-2-4
-            - libnss3
-            - libxss1
-            - libasound2
-            - libxtst6
-            - xauth
-            - xvfb
-        # chrome: beta
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-        - rm -rf ~/.cache/Cypress/cy/production/browsers
+    #- name: 'Test React setup script'
+    #  #if: type = cron
+    #  script:
+    #    - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 200 | grep -c "Stopping webserver on port 3000")
+    #    - echo "Out is $OUT"
+    #    - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
-    - name: 'Test UI5 setup script'
-      #if: type = cron
-      script:
-        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 | grep -c "Stopping webserver on port 8080")
-        - echo "Out is $OUT"
-        - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-            # needed dependencies for cypress 5.3.0
-            - libgtk2.0-0
-            - libgtk-3-0
-            - libgbm-dev  
-            - libnotify-dev
-            - libgconf-2-4
-            - libnss3
-            - libxss1
-            - libasound2
-            - libxtst6
-            - xauth
-            - xvfb
-        # chrome: beta
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-      before_cache:
-        - rm -rf ~/.npm/_logs
-        - rm -rf ~/.npm/_cacache
-        - rm -rf ~/.cache/Cypress/cy/production/browsers
-      
-    - name: 'Test No-Framework setup script'
-      #if: type = cron
-      script:
-        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 | grep -c "Stopping webserver on port 8080")
-        - echo "Out is $OUT"
-        - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
+    #- name: 'Test UI5 setup script'
+    #  #if: type = cron
+    #  script:
+    #    - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 250 | grep -c "Stopping webserver on port 8080")
+    #    - echo "Out is $OUT"
+    #    - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
+            
+    #- name: 'Test No-Framework setup script'
+    #  #if: type = cron
+    #  script:
+    #    - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 | grep -c "Stopping webserver on port 8080")
+    #    - echo "Out is $OUT"
+    #    - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
