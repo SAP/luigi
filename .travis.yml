@@ -168,7 +168,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
 
     # ----- SETUP EXAMPLES TESTS -----
-    - stage: 'Testing setup example scripts'
+    - stage: 'Test Angular setup script'
       name: 'Test Angular setup script'
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
@@ -198,7 +198,8 @@ jobs:
       before_install:
         - google-chrome-stable --headless --disable-gpu --disable-software-rasterizer
 
-    - name: 'Test Vue setup script'
+    - stage: 'Test Vue setup script'
+      name: 'Test Vue setup script'
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - npx browserslist@latest --update-db
