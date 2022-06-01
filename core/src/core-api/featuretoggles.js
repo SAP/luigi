@@ -54,9 +54,9 @@ class LuigiFeatureToggles {
 
   /**
    * Check if it is a valid feature toggle
+   * @private
    * @memberof FeatureToggles
    * @param {string} featureToggleName
-   * @since 1.22.0
    * @return {boolean} of valid feature toggle name
    * @example Luigi.featureToggles().isValid('foo');
    */
@@ -69,9 +69,9 @@ class LuigiFeatureToggles {
 
   /**
    * Check if feature toggle is duplicated or already disabled
+   * @private
    * @memberof FeatureToggles
    * @param {string} featureToggleName
-   * @since 1.22.0
    * @return {boolean} of valid feature toggle name
    * @example Luigi.featureToggles().isDuplicateOrDisabled('foo');
    */
