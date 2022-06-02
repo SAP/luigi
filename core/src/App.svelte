@@ -47,6 +47,7 @@
   import { MessagesListeners } from './services/messages-listeners';
   import { thirdPartyCookiesStatus } from './utilities/third-party-cookies-check.js';
   import { NodeDataManagementStorage } from './services/node-data-management.js';
+import { navigation } from './core-api/navigation';
 
   const dispatch = createEventDispatcher();
 
@@ -428,6 +429,10 @@
     }
 
     let path = params.link;
+
+
+
+
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
@@ -443,6 +448,7 @@
       );
     } else if (params.fromParent) {
       // from direct parent
+      console.log('getSubPath',getSubPath(node, localPathParams))
       path = Routing.concatenatePath(
         getSubPath(localNode.parent, localPathParams),
         params.link
@@ -487,7 +493,12 @@
           (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
       });
     }
+    console.log(path);
+    // console.log('getSubPath',getSubPath(node, localPathParams))
+    console.log('params.link',params.link)
+    console.log(path);
     return path;
+    
   };
 
   const handleNavClick = (event) => {
@@ -1426,6 +1437,21 @@
             window.history.back();
           }
         }
+      }
+
+      if ('luigi.navigation.currentRoute' === e.data.msg) {
+        const data = e.data.data;
+        console.log(navigationPath, currentNode);
+        const message = {
+          msg: 'luigi.navigation.currentRoute.answer',
+          data: {
+            route: '/project/1',
+            correlationId: data.id,
+            // navPath: navigationPath,
+            // currNode: currentNode
+          },
+        };
+        IframeHelpers.sendMessageToIframe(iframe, message);
       }
 
       if ('luigi.auth.tokenIssued' === e.data.msg) {

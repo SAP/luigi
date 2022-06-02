@@ -424,33 +424,47 @@ export class linkManager extends LuigiClientBase {
     return this;
   }
   
-   /**
-    * Gets the current route
-    * @param {*} preserve 
-    * @returns 
-    */
-   getCurrentRoute(preserve = false) {
-      helpers.sendPostMessageToLuigiCore({
-        msg: 'luigi.navigation.currentRoute',
-      });
-  
-      const currentRoutePromise = {};
-      currentRoutePromise.promise = new Promise((resolve, reject) => {
-        currentRoutePromise.resolveFn = resolve;
-        currentRoutePromise.rejectFn = reject;
-      });
-      this.setPromise('getCurrentRoute', currentRoutePromise);
+  /**
+  * Gets the current route
+  * @returns promise resolviong in route to be returned
+  */
+  getCurrentRoute() {
+    const currentId = helpers.getRandomId();
 
+    const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
+    currentRoutePromise[currentId] = {
+      resolveFn: function() {},
+      then: function(resolveFn) {
+        this.resolveFn = resolveFn;
+      }
+    };
 
-      helpers.addEventListener(
-        'luigi.navigation.currentRoute.answer', (e, listenerId) => {
+    this.setPromise('getCurrentRoute', currentRoutePromise);
 
-          console.log('Route received', e)
+    helpers.addEventListener(
+      'luigi.navigation.currentRoute.answer', (e, listenerId) => {
+
+        const data = e.data.data;
+        const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
+
+        if (data.correlationId === currentId ) {
+          if (currentRoutePromise[data.correlationId]) {
+            currentRoutePromise[data.correlationId].resolveFn(data.route);
+            delete currentRoutePromise[data.correlationId];
+            this.setPromise('getCurrentRoute', currentRoutePromise);
+          }
           helpers.removeEventListener(listenerId);
-        });
+        }
+        helpers.removeEventListener(listenerId);
+    });
 
-        
-      
-      return currentRoutePromise.promise;
-   }
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.navigation.currentRoute',
+      data: {
+        id: currentId
+      }
+    });
+    
+    return currentRoutePromise[currentId];
+  }
 }
