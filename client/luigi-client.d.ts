@@ -19,7 +19,7 @@ export declare interface ConfirmationModalSettings {
 
 export declare interface ModalSettings {
   title?: string;
-  size?: 'l' | 'm' | 's';
+  size?: 'fullscreen' | 'l' | 'm' | 's';
   width?: string;
   height?: string;
 }
@@ -300,7 +300,7 @@ export declare interface LinkManager {
    * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
@@ -365,7 +365,7 @@ export declare interface LinkManager {
    * @param {string} path navigation path
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
