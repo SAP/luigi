@@ -37,6 +37,15 @@ class GenericHelpersClass {
   }
 
   /**
+   * Simple object check.
+   * @param item mixed
+   * @returns {boolean}
+   */
+  isEmptyObject(item) {
+     return this.isObject(item) && Object.keys(item).length === 0
+  }
+
+  /**
    * Deep merge two objects.
    * @param target
    * @param ...sources
@@ -195,8 +204,12 @@ class GenericHelpersClass {
 
   replaceVars(inputString, params, prefix, parenthesis = true) {
     let processedString = inputString;
+    console.log('inputString', 'params', 'prefix', 'parenthesis');
+    console.log(inputString, params, prefix, parenthesis);
     if (params) {
+      console.log('test,params', params)
       if (parenthesis) {
+        console.log('test,parenthesis', parenthesis)
         processedString = replace(processedString, /{([\s\S]+?)}/g, val => {
           let repl = val.slice(1, -1).trim();
           if (repl.indexOf(prefix) === 0) {
@@ -205,11 +218,17 @@ class GenericHelpersClass {
           return get(params, repl, val);
         });
       } else {
+        console.log('test,else')
         Object.entries(params).forEach(entry => {
+          console.log('entry[0]', entry[0], 'entry[1]', entry[1], '\nprocessedString', processedString);
+      
+          console.log('regex', new RegExp(this.escapeRegExp(prefix + entry[0]), 'g'));
+          console.log('encode....', encodeURIComponent(entry[1]));
           processedString = processedString.replace(
             new RegExp(this.escapeRegExp(prefix + entry[0]), 'g'),
             encodeURIComponent(entry[1])
           );
+          console.log('processedString finished:', processedString)
         });
       }
     }

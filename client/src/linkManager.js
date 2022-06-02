@@ -425,8 +425,13 @@ export class linkManager extends LuigiClientBase {
   }
   
   /**
-  * Gets the current route
-  * @returns promise resolviong in route to be returned
+  * Gets the luigi route associated with the current micro frontend.
+  * @returns {promise} a promise which resolves to a String value specifying the current luigi route 
+  * @since NEXTRELEASE
+  * @example
+  * LuigiClient.linkManager().getCurrentRoute();
+  * LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+  * LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
   */
   getCurrentRoute() {
     const currentId = helpers.getRandomId();
@@ -460,9 +465,9 @@ export class linkManager extends LuigiClientBase {
 
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.navigation.currentRoute',
-      data: {
-        id: currentId
-      }
+      data: Object.assign(this.options, {
+        id: currentId,
+      })
     });
     
     return currentRoutePromise[currentId];

@@ -415,7 +415,9 @@
 
   const buildPath = (params, srcNode, srcNodePathParams) => {
     const localNode = srcNode || currentNode;
-    const localPathParams = srcNodePathParams || pathParams;
+    const localPathParams = GenericHelpers.isEmptyObject(srcNodePathParams) ? pathParams : srcNodePathParams;
+    console.log('srcNode', srcNodePathParams, 'pathParams', pathParams);
+    console.log('localPathParams', localPathParams)
     let localNavPath = navigationPath;
     if (srcNode) {
       let parent = srcNode.parent;
@@ -428,6 +430,7 @@
     }
 
     let path = params.link;
+    console.log('params', params);
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
@@ -437,13 +440,31 @@
         );
         return;
       }
+      console.log('virtualTree built')
+      console.log('virtualTree localPathParams', localPathParams)
+      console.log('virtualTree  params.link',  params.link)
+      console.log('virtualTree  getsubpath', getSubPath(node, localPathParams))
+
       path = Routing.concatenatePath(
         getSubPath(node, localPathParams),
         params.link
       );
+
+      console.log('path right before isEmpty re-check:' , path);
+
+      if (!GenericHelpers.isEmptyObject(localPathParams) && !path.includes('virtualSegment_') && !params.link){
+        console.log('test111', Object.keys(localPathParams)[0]);
+        if (Object.keys(localPathParams)[0].includes('virtualSegment_')){
+          console.log('test222');
+          Object.entries(localPathParams).forEach((virtualParam)=> {
+            console.log('test333');
+            path += '/' + virtualParam[1]
+          });
+        }
+      }
+      console.log('path after:', path)
     } else if (params.fromParent) {
       // from direct parent
-      console.log('getSubPath',getSubPath(node, localPathParams))
       path = Routing.concatenatePath(
         getSubPath(localNode.parent, localPathParams),
         params.link
@@ -475,6 +496,10 @@
         getSubPath(localNode, localPathParams),
         params.link
       );
+    } else {
+      // only receive path
+      console.log('executed simple call as well')
+      path = getSubPath(localNode, localPathParams);
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
       path += path.includes('?') ? '&' : '?';
@@ -488,12 +513,7 @@
           (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
       });
     }
-    console.log(path);
-    // console.log('getSubPath',getSubPath(node, localPathParams))
-    console.log('params.link',params.link)
-    console.log(path);
     return path;
-    
   };
 
   const handleNavClick = (event) => {
@@ -1434,20 +1454,21 @@
         }
       }
 
-      // if ('luigi.navigation.currentRoute' === e.data.msg) {
-      //   const data = e.data.data;
-      //   console.log(navigationPath, currentNode);
-      //   const message = {
-      //     msg: 'luigi.navigation.currentRoute.answer',
-      //     data: {
-      //       route: '/project/1',
-      //       correlationId: data.id,
-      //       // navPath: navigationPath,
-      //       // currNode: currentNode
-      //     },
-      //   };
-      //   IframeHelpers.sendMessageToIframe(iframe, message);
-      // }
+      if ('luigi.navigation.currentRoute' === e.data.msg) {
+        const srcNode = iframe.luigi.currentNode;
+        const srcPathParams = iframe.luigi.pathParams;
+        const data = e.data.data;
+        const path = buildPath(data, srcNode, srcPathParams);
+
+        const message = {
+          msg: 'luigi.navigation.currentRoute.answer',
+          data: {
+            route: path,
+            correlationId: data.id
+          },
+        };
+        IframeHelpers.sendMessageToIframe(iframe, message);
+      }
 
       if ('luigi.auth.tokenIssued' === e.data.msg) {
         sendAuthDataToClient(e.data.authData);
