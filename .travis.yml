@@ -2,6 +2,7 @@ version: ~> 1.0 # enables build config validation beta feature: https://docs.tra
 language: node_js
 node_js:
   - '14.19.3'
+  - '16.15.1'
 dist: xenial
 cache:
   directories:
@@ -170,8 +171,10 @@ jobs:
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Test Angular setup script'
       name: 'Test Angular setup script'
+      node_js: '16.15.1'
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
+        - npx browserslist@latest --update-db
         - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 600 | grep -c "Stopping webserver on port 4200")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
@@ -199,6 +202,7 @@ jobs:
 
     - stage: 'Test Vue setup script'
       name: 'Test Vue setup script'
+      node_js: '16.15.1'
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 600 | grep -c "Stopping webserver on port 8080")
