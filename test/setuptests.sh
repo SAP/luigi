@@ -29,7 +29,7 @@ cd ..
 mkdir setupTestFolder && cd setupTestFolder
 
 #Install necessary dependencies
-npm install -g $CLI cypress tar@latest
+npm install -g $CLI cypress@5.3.0 tar@latest
 
 #Create Cypress Config
 echo "{}" > cypress.json
