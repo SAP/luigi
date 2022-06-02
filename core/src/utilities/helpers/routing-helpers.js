@@ -338,7 +338,7 @@ class RoutingHelpersClass {
     }
     const featureToggleList = featureTogglesFromUrl.split(',');
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
-      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft));
+      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft, true));
     }
   }
 
