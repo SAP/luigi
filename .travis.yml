@@ -1,8 +1,6 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - node
-  - lts/*
   - 14
   - 16
 dist: xenial
