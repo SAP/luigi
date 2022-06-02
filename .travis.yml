@@ -1,8 +1,10 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '14.19.3'
-  - '16.15.1'
+  - node
+  - lts/*
+  - 14
+  - 16
 dist: xenial
 cache:
   directories:
@@ -171,7 +173,7 @@ jobs:
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Test Angular setup script'
       name: 'Test Angular setup script'
-      node_js: '16.15.1'
+      node_js: 16
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - npx browserslist@latest --update-db
@@ -202,7 +204,7 @@ jobs:
 
     - stage: 'Test Vue setup script'
       name: 'Test Vue setup script'
-      node_js: '16.15.1'
+      node_js: 16
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 600 | grep -c "Stopping webserver on port 8080")
