@@ -178,84 +178,35 @@ jobs:
         - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 | grep -c "Stopping webserver on port 4200")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-            # needed dependencies for cypress 5.3.0
-            - libgtk2.0-0
-            - libgtk-3-0
-            - libgbm-dev  
-            - libnotify-dev
-            - libgconf-2-4
-            - libnss3
-            - libxss1
-            - libasound2
-            - libxtst6
-            - xauth
-            - xvfb  
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --disable-software-rasterizer
 
-    - stage: 'Test Vue setup script'
-      name: 'Test Vue setup script'
+    - name: 'Test Vue setup script'
       node_js: 16
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 | grep -c "Stopping webserver on port 8080")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-            # needed dependencies for cypress 5.3.0
-            - libgtk2.0-0
-            - libgtk-3-0
-            - libgbm-dev  
-            - libnotify-dev
-            - libgconf-2-4
-            - libnss3
-            - libxss1
-            - libasound2
-            - libxtst6
-            - xauth
-            - xvfb  
-        chrome: stable
-      before_install:
-        - google-chrome-stable --headless --disable-gpu --disable-software-rasterizer
 
-    # - name: 'Test React setup script'
-    #   if: type = cron OR (type = api AND commit_message = test-setup-scripts)
-    #   script:
-    #     - npx browserslist@latest --update-db
-    #     - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 600 | grep -c "Stopping webserver on port 3000")
-    #     - echo "Out is $OUT"
-    #     - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-    #   before_install:
-    #     - google-chrome --disable-gpu --disable-software-rasterizer
+    - name: 'Test React setup script'
+      node_js: 16
+      if: type = cron OR (type = api AND commit_message = test-setup-scripts)
+      script:
+        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 300 | grep -c "Stopping webserver on port 3000")
+        - echo "Out is $OUT"
+        - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
-    # - name: 'Test UI5 setup script'
-    #   if: type = cron OR (type = api AND commit_message = test-setup-scripts)
-    #   script:
-    #     - npx browserslist@latest --update-db
-    #     - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 600 | grep -c "Stopping webserver on port 8080")
-    #     - echo "Out is $OUT"
-    #     - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-    #   before_install:
-    #     - google-chrome --disable-gpu --disable-software-rasterizer
+    - name: 'Test UI5 setup script'
+      node_js: 16
+      if: type = cron OR (type = api AND commit_message = test-setup-scripts)
+      script:
+        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 200 | grep -c "Stopping webserver on port 8080")
+        - echo "Out is $OUT"
+        - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
             
-    # - name: 'Test No-Framework setup script'
-    #   if: type = cron OR (type = api AND commit_message = test-setup-scripts)
-    #   script:
-    #     - npx browserslist@latest --update-db
-    #     - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 600 | grep -c "Stopping webserver on port 8080")
-    #     - echo "Out is $OUT"
-    #     - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-    #   before_install:
-    #     - google-chrome --disable-gpu --disable-software-rasterizer
+    - name: 'Test No-Framework setup script'
+      node_js: 16
+      if: type = cron OR (type = api AND commit_message = test-setup-scripts)
+      script:
+        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 200 | grep -c "Stopping webserver on port 8080")
+        - echo "Out is $OUT"
+        - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
