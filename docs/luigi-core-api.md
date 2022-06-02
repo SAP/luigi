@@ -1275,8 +1275,8 @@ Add a feature toggle to an active feature toggles list
 
 ##### Parameters
 
--   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the name of the feature toogle
--   `fromUrlQuery` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** whether the feature toogle is sent from url query. Default is false. (optional, default `false`)
+-   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the name of the feature toggle
+-   `fromUrlQuery` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** specifies whether the feature toggle is sent from a URL query. The default is `false`.(optional, default `false`)
 
 ##### Examples
 
