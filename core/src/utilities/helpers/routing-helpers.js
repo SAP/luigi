@@ -163,12 +163,12 @@ class RoutingHelpersClass {
 
   getModalPathFromPath() {
     const path = this.getQueryParam(this.getModalViewParamName());
-    return path && decodeURIComponent(path);
+    return path;
   }
 
   getModalParamsFromPath() {
     const modalParamsStr = this.getQueryParam(`${this.getModalViewParamName()}Params`);
-    return modalParamsStr && JSON.parse(decodeURIComponent(modalParamsStr));
+    return modalParamsStr && JSON.parse(modalParamsStr);
   }
 
   addRouteChangeListener(callback) {
