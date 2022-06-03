@@ -440,7 +440,6 @@
         );
         return;
       }
-      console.log('virtualTree built')
       console.log('virtualTree localPathParams', localPathParams)
       console.log('virtualTree  params.link',  params.link)
       console.log('virtualTree  getsubpath', getSubPath(node, localPathParams))
