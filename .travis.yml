@@ -105,10 +105,13 @@ jobs:
     # ----- UNIT TESTS IN CLIENT-SUPPORT-ANGULAR -----
     - stage: 'Unit tests in client-support-angular'
       name: 'client-support-angular unit tests'
-      script:
-        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+      # script:
+      #   - npm install karma //the same version
+      #   - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+      script: $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/karma/bin/karma start $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/karma.conf.js --single-run
       addons:
         chrome: stable
+      before_script: npm install
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
