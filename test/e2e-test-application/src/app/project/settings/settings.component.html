@@ -353,6 +353,26 @@
             class="fd-link"
             (click)="
               linkManager().openAsModal('/projects/pr2/webcomponent', {
+                title: 'Webcomponent in a fullscreen modal',
+                size: 'fullscreen'
+              })
+            "
+            >Open webcomponent in a fullscreen modal</a
+          >
+          <app-code-snippet
+            data="linkManager().openAsModal('/projects/pr2/webcomponent', {
+              title: 'Webcomponent in a modal',
+              size: 'fullscreen'
+            })"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="
+              linkManager().openAsModal('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a modal',
                 size: 'm'
               })
@@ -360,8 +380,7 @@
             >Open webcomponent in a modal</a
           >
           <app-code-snippet
-            data="linkManager()
-            .openAsModal('/projects/pr2/webcomponent', {
+            data="linkManager().openAsModal('/projects/pr2/webcomponent', {
               title: 'Webcomponent in a modal',
               size: 'm'
             })"
