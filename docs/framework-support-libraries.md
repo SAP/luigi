@@ -149,7 +149,7 @@ For example:
 {
     path: 'luigi-client-support-preload',
     component: LuigiPreloadComponent,
-    data: { updateModalPathParam: true, addHistoryEntry: true }
+    data: { updateModalDataPath: true, addHistoryEntry: true }
   }
 ```
 
