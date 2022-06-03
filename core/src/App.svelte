@@ -498,7 +498,9 @@
     } else {
       // only receive path
       console.log('executed simple call as well')
-      path = getSubPath(localNode, localPathParams);
+      if (params.getCurrentPath) {
+        path = getSubPath(localNode, localPathParams);
+      }
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
       path += path.includes('?') ? '&' : '?';
@@ -1457,6 +1459,8 @@
         const srcNode = iframe.luigi.currentNode;
         const srcPathParams = iframe.luigi.pathParams;
         const data = e.data.data;
+        data.getCurrentPath = true;
+        console.log('data1461:', data)
         const path = buildPath(data, srcNode, srcPathParams);
 
         const message = {
