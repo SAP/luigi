@@ -240,7 +240,7 @@ Luigi.clearNavigationCache();
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.19.0
 
 ## Luigi.elements()
 
