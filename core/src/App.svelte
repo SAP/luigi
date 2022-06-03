@@ -451,17 +451,21 @@
 
       console.log('path right before isEmpty re-check:' , path);
 
-      if (!GenericHelpers.isEmptyObject(localPathParams) && !path.includes('virtualSegment_') && !params.link){
+      const isGetCurrentPathRequired = !GenericHelpers.isEmptyObject(localPathParams) &&
+                                     !path.includes('virtualSegment_') &&
+                                     !params.link && 
+                                     params.getCurrentPath &&
+                                     Object.keys(localPathParams)[0].includes('virtualSegment_');
+      if (isGetCurrentPathRequired){
         console.log('test111', Object.keys(localPathParams)[0]);
-        if (Object.keys(localPathParams)[0].includes('virtualSegment_')){
+        let virtualPath = '';
+        Object.entries(localPathParams).forEach((virtualParam)=> {
           console.log('test222');
-          Object.entries(localPathParams).forEach((virtualParam)=> {
-            console.log('test333');
-            path += '/' + virtualParam[1]
-          });
-        }
+          virtualPath += '/' + virtualParam[1]
+        });
+        path = virtualPath;
       }
-      console.log('path after:', path)
+      console.log('path after virtual tree:', path)
     } else if (params.fromParent) {
       // from direct parent
       path = Routing.concatenatePath(
@@ -483,8 +487,18 @@
       const node = [...localNavPath]
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
-      path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
+        console.log('1',node);
+        console.log('localPathParams',localPathParams);
+        console.log('params.link',params.link);
+        console.log('localNavPath',localNavPath);
+        console.log('getSubPath',getSubPath(node, localPathParams));
+        console.log('getSubPath2',getSubPath(localNode, localPathParams));
+
+        const pathUpToContext = getSubPath(node, localPathParams);
+        const fullPath = getSubPath(localNode, localPathParams)
+      path = params.getCurrentPath ? fullPath.substring(pathUpToContext.length) :
+      Routing.concatenatePath(
+        pathUpToContext,
         params.link
       );
     } else if (params.intent) {
