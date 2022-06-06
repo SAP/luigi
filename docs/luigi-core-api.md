@@ -1275,12 +1275,13 @@ Add a feature toggle to an active feature toggles list
 
 ##### Parameters
 
--   `featureToggleName`  
+-   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the name of the feature toggle
+-   `fromUrlQuery` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** specifies whether the feature toggle is sent from a URL query. The default is `false`. (optional, default `false`)
 
 ##### Examples
 
 ```javascript
-Luigi.featureToggles().setFeatureToggle('featureToggleName');
+Luigi.featureToggles().setFeatureToggle('featureToggleName', true);
 ```
 
 **Meta**
