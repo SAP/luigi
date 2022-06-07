@@ -1433,7 +1433,8 @@
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
+        const route = GenericHelpers.addLeadingSlash(buildPath(e.data.params, undefined, undefined));
+        Routing.updateModalDataInUrl(route, e.data.params.modal, e.data.params.history);
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {
