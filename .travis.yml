@@ -176,7 +176,7 @@ jobs:
       if: repo = SAP/luigi
       #if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
-        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 | grep -c "Stopping webserver on port 4200")
+        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ file:///luigi/scripts/setup/angular.sh 300 | grep -c "Stopping webserver on port 4200")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
@@ -185,7 +185,7 @@ jobs:
       if: repo = SAP/luigi
       #if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
-        - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh 450 | grep -c "Stopping webserver on port 8080")
+        - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ file:///luigi/scripts/setup/vue.sh 450 | grep -c "Stopping webserver on port 8080")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
@@ -194,7 +194,7 @@ jobs:
       if: repo = SAP/luigi
       #if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
-        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh 600 | grep -c "Stopping webserver on port 3000")
+        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ file:///luigi/scripts/setup/react.sh 600 | grep -c "Stopping webserver on port 3000")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
@@ -203,7 +203,7 @@ jobs:
       if: repo = SAP/luigi
       #if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
-        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh 600 | grep -c "Stopping webserver on port 8080")
+        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home file:///luigi/scripts/setup/openui5.sh 600 | grep -c "Stopping webserver on port 8080")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
             
@@ -212,6 +212,6 @@ jobs:
       if: repo = SAP/luigi
       #if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
-        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh 600 | grep -c "Stopping webserver on port 8080")
+        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ file:///luigi/scripts/setup/no-framework.sh 600 | grep -c "Stopping webserver on port 8080")
         - echo "Out is $OUT"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi

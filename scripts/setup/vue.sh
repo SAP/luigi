@@ -22,7 +22,7 @@ vue create -d $folder && cd $folder
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/package.json > package.json
 npm i
 # as soon as new package.json under vue example released this line can be removed
-npm i webpack-cli@4.2.0 node-sass@4.14.1
+# npm i webpack-cli@4.2.0 node-sass@4.14.1
 
 mkdir -p src/luigi-config src/assets/scss src/views public/assets
 

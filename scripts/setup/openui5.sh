@@ -17,7 +17,7 @@ mkdir -p ./webapp/home ./webapp/libs ./webapp/sample1 ./webapp/sample2 ./webapp/
 
 export UI5EX_REPO_URL="https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-openui5"
 
-curl --silent $UI5EX_REPO_URL/webapp/sample2/Sample2.view.xml > ./webapp/sample2/Sample2.view.xml
+#curl --silent $UI5EX_REPO_URL/webapp/sample2/Sample2.view.xml > ./webapp/sample2/Sample2.view.xml
 curl --silent $UI5EX_REPO_URL/webapp/sample2/sample2.html > ./webapp/sample2/sample2.html
 curl --silent $UI5EX_REPO_URL/webapp/sample2/index.js > ./webapp/sample2/index.js
 curl --silent $UI5EX_REPO_URL/webapp/sample2/Sample2.controller.js > ./webapp/sample2/Sample2.controller.js
