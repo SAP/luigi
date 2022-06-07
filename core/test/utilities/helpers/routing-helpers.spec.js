@@ -593,40 +593,31 @@ describe('Routing-helpers', () => {
   });
 
   describe('getModalPathFromPath & getModalParamsFromPath', () => {
+    const mockLocation = new URL('http://localhost');
     beforeEach(() => {
       sinon.stub(RoutingHelpers, 'getModalViewParamName').returns('modal');
-      sinon.stub(RoutingHelpers, 'getQueryParams');
+      sinon.stub(RoutingHelpers, 'getLocation');
+      RoutingHelpers.getLocation.returns(mockLocation);
+      mockLocation.href = 'http://localhost';
     });
     afterEach(() => {
       sinon.restore();
     });
     it('without modal param', () => {
-      RoutingHelpers.getQueryParams.returns({});
       assert.equal(RoutingHelpers.getModalPathFromPath('/path/one'), null);
     });
     it('with modal', () => {
-      const allQueryParams = {
-        modal: '%2Fhome%2Fchild-2'
-      };
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      mockLocation.search = '?modal=%2Fhome%2Fchild-2';
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
     });
     it('with modal params', () => {
-      const allQueryParams = {
-        modal: '%2Fhome%2Fchild-2',
-        modalParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
-      };
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      mockLocation.search = '?modal=%2Fhome%2Fchild-2&modalParams=%7B%22title%22%3A%22Real%20Child%22%7D';
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
       assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
     });
     it('with custom modal param name', () => {
-      const allQueryParams = {
-        custom: '%2Fhome%2Fchild-2',
-        customParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
-      };
+      mockLocation.search = '?custom=%2Fhome%2Fchild-2&customParams=%7B%22title%22%3A%22Real%20Child%22%7D';
       RoutingHelpers.getModalViewParamName.returns('custom');
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
 
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
       assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
