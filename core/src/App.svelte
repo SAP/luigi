@@ -1433,8 +1433,12 @@
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        const route = GenericHelpers.addLeadingSlash(buildPath(e.data.params, undefined, undefined));
-        Routing.updateModalDataInUrl(route, e.data.params.modal, e.data.params.history);
+        if (isSpecialIframe) {
+          const route = GenericHelpers.addLeadingSlash(buildPath(e.data.params, iframe.luigi.currentNode, iframe.luigi.pathParams));
+          Routing.updateModalDataInUrl(route, e.data.params.modal, e.data.params.history);
+        } else {
+          console.warn('updateModalDataPath can only be called from modal, ignoring.');
+        }
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {
