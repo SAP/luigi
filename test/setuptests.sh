@@ -18,7 +18,7 @@ killWebserver() {
   fi
 
   if [ ! -z "$SPAPID" ]; then
-    echo "Stopping webserver on port $PORT"
+  #  echo "Stopping webserver on port $PORT"
     kill $SPAPID;
     exit 0
   fi
