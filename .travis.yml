@@ -110,10 +110,11 @@ jobs:
       #   - npm install karma //the same version
       #   - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
       # script: $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ node_modules/karma/bin/karma start $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/karma.conf.js --single-run
-      script: npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadless
+      script:
+        - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ && npm install
+        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadless
       addons:
         chrome: stable
-      before_script: cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ && npm install
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
