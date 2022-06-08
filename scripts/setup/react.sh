@@ -21,7 +21,7 @@ npm i copy-webpack-plugin@5 webpack webpack-cli @babel/core @babel/preset-env ba
 
 # replace strings in some places
 sed "s/const HtmlWebpackPlugin = require('html-webpack-plugin');/const HtmlWebpackPlugin = require('html-webpack-plugin');const CopyWebpackPlugin = require('copy-webpack-plugin');/g" config/webpack.config.js > config/webpack.config.tmp.js && mv config/webpack.config.tmp.js config/webpack.config.js
-sed "s/new HtmlWebpackPlugin(/new CopyWebpackPlugin([\
+#sed "s/new HtmlWebpackPlugin(/new CopyWebpackPlugin([\
   {context: 'public', to: 'index.html', from: 'index.html'  },\
   {context: 'node_modules\/@luigi-project\/core',to: '.\/luigi-core',from: {glob: '**',dot: true}}],\
   {ignore: ['.gitkeep', '**\/.DS_Store', '**\/Thumbs.db'],debug: 'warning'\
