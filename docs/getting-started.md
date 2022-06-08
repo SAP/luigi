@@ -35,12 +35,13 @@ Some benefits of a micro frontend architecture include:
 
 | Micro frontends   |      Monolithic applications      | 
 |-------------------|-----------------------------------|
-| multiple technologies in the same app | lock-in to one technology |
-| future-proof and scalable | not suitable for fast-growing applications |
-| can be managed by independent teams  | must align with a central design team |
-| fast deployment of new features and bugfixes | cannot deploy without changing the entire monolith |
-| smaller, manageable codebase | larger, complex codebase |
-| reduced maintenance cost |  more difficult to test and maintain | 
+| Multiple technologies in the same app | Lock-in to one technology |
+| Future-proof and scalable | Not suitable for fast-growing applications |
+| Can be managed by independent teams  | Must align with a central design team |
+| Fast deployment of new features and bugfixes | Cannot deploy without changing the entire monolith |
+| Smaller, manageable codebase | Larger, complex codebase |
+| Reduced maintenance cost |  More difficult to test and maintain | 
+
 
 ### Main features
 
