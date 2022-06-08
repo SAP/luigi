@@ -334,8 +334,6 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     });
   });
 
-  // /projects/pr1/users/groups/avengers
-
   describe('getCurrentRoute', () => {
     let $iframeBody;
     beforeEach(() => {
@@ -354,6 +352,10 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       cy.getIframeBody().then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('This is a dynamic node with');
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-button"]')
+          .click();
 
         cy.wrap($iframeBody)
           .find('[data-testid="curr-button"]')
