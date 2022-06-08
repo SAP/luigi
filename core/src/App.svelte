@@ -416,8 +416,6 @@
   const buildPath = (params, srcNode, srcNodePathParams) => {
     const localNode = srcNode || currentNode;
     const localPathParams = GenericHelpers.isEmptyObject(srcNodePathParams) ? pathParams : srcNodePathParams;
-    console.log('srcNode', srcNodePathParams, 'pathParams', pathParams);
-    console.log('localPathParams', localPathParams)
     let localNavPath = navigationPath;
     if (srcNode) {
       let parent = srcNode.parent;
@@ -430,7 +428,6 @@
     }
 
     let path = params.link;
-    console.log('params', params);
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
@@ -440,16 +437,10 @@
         );
         return;
       }
-      console.log('virtualTree localPathParams', localPathParams)
-      console.log('virtualTree  params.link',  params.link)
-      console.log('virtualTree  getsubpath', getSubPath(node, localPathParams))
-
       path = Routing.concatenatePath(
         getSubPath(node, localPathParams),
         params.link
       );
-
-      console.log('path right before isEmpty re-check:' , path);
 
       const isGetCurrentPathRequired = !GenericHelpers.isEmptyObject(localPathParams) &&
                                      !path.includes('virtualSegment_') &&
@@ -457,15 +448,12 @@
                                      params.getCurrentPath &&
                                      Object.keys(localPathParams)[0].includes('virtualSegment_');
       if (isGetCurrentPathRequired){
-        console.log('test111', Object.keys(localPathParams)[0]);
         let virtualPath = '';
         Object.entries(localPathParams).forEach((virtualParam)=> {
-          console.log('test222');
           virtualPath += '/' + virtualParam[1]
         });
         path = virtualPath;
       }
-      console.log('path after virtual tree:', path)
     } else if (params.fromParent) {
       // from direct parent
       path = Routing.concatenatePath(
@@ -487,13 +475,6 @@
       const node = [...localNavPath]
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
-        console.log('1',node);
-        console.log('localPathParams',localPathParams);
-        console.log('params.link',params.link);
-        console.log('localNavPath',localNavPath);
-        console.log('getSubPath',getSubPath(node, localPathParams));
-        console.log('getSubPath2',getSubPath(localNode, localPathParams));
-
         const pathUpToContext = getSubPath(node, localPathParams);
         const fullPath = getSubPath(localNode, localPathParams)
       path = params.getCurrentPath ? fullPath.substring(pathUpToContext.length) :
@@ -511,7 +492,6 @@
       );
     } else {
       // only receive path
-      console.log('executed simple call as well')
       if (params.getCurrentPath) {
         path = getSubPath(localNode, localPathParams);
       }
@@ -1474,7 +1454,6 @@
         const srcPathParams = iframe.luigi.pathParams;
         const data = e.data.data;
         data.getCurrentPath = true;
-        console.log('data1461:', data)
         const path = buildPath(data, srcNode, srcPathParams);
 
         const message = {
