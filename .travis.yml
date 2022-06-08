@@ -112,7 +112,7 @@ jobs:
       script: npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadless
       addons:
         chrome: stable
-      before_script: npm install
+      before_script: cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ && npm install
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
