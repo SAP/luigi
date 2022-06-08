@@ -32,7 +32,6 @@ export class LuigiAutoNavigationService implements OnDestroy {
                 .fromVirtualTreeRoot()
                 .withoutSync()
                 .navigate(ev.url);
-                console.log('done here--------->')
             } else {
               linkManager()
                 .fromClosestContext()

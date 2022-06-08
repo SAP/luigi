@@ -72,13 +72,22 @@ describe('Generic-helpers', () => {
   });
 
   it('isObject', () => {
-    const obj = { foo : 'bar' };
+    const obj = { foo: 'bar' };
     const func = () => {};
     assert.equal(GenericHelpers.isObject(obj), true);
     assert.equal(GenericHelpers.isObject(func), false);
     assert.equal(GenericHelpers.isObject('foo'), false);
     assert.equal(GenericHelpers.isObject(true), false);
     assert.equal(GenericHelpers.isObject(12345), false);
+  });
+
+  it('isEmptyObject', () => {
+    const obj = { foo: 'bar' };
+    const obj2 = {};
+    const obj3 = undefined;
+    assert.equal(GenericHelpers.isEmptyObject(obj), false);
+    assert.equal(GenericHelpers.isEmptyObject(obj2), true);
+    assert.equal(GenericHelpers.isEmptyObject(obj3), false);
   });
 
   it('removeInternalProperties', () => {

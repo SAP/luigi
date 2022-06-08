@@ -18,11 +18,5 @@
       "tabWidth": 2,
       "singleQuote": true,
       "printWidth": 90
-   },
-   "svelte": {
-      "parser": "svelte",
-      "tabWidth": 2,
-      "singleQuote": true,
-      "printWidth": 90
    }
 }
