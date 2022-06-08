@@ -105,6 +105,7 @@ jobs:
     # ----- UNIT TESTS IN CLIENT-SUPPORT-ANGULAR -----
     - stage: 'Unit tests in client-support-angular'
       name: 'client-support-angular unit tests'
+      if: type = api AND commit_message = test-angular-support
       # script:
       #   - npm install karma //the same version
       #   - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
