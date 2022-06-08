@@ -443,7 +443,7 @@
       );
 
       const isGetCurrentPathRequired = !GenericHelpers.isEmptyObject(localPathParams) &&
-                                            !path.includes('virtualSegment_') &&
+                                                 !path.includes('virtualSegment_') &&
                                      !params.link && 
                                                 params.getCurrentPath &&
                                      Object.keys(localPathParams)[0].includes('virtualSegment_');
