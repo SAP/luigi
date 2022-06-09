@@ -176,8 +176,9 @@ jobs:
       #if: repo = SAP/luigi
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
-        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 | tee /dev/fd/2; exit ${PIPESTATUS[0]} && grep -c "Stopping webserver on port 4200")
-        - echo "Out is $OUT"
+        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh 300 | tee /dev/fd/2)
+        - RES=grep -c "Stopping webserver on port 4200" <<< "$OUT"
+        - echo "$RES"
         - if [ $OUT == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     # - name: 'Test Vue setup script'
