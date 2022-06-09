@@ -212,16 +212,24 @@
 
   const handleNavigation = (data, config, srcNode, srcPathParams) => {
     let path = buildPath(data.params, srcNode, srcPathParams);
+    const { preventHistoryEntry, preserveQueryParams, preventContextUpdate } =
+      data.params;
+
+    const options = {
+      keepBrowserHistory: !preventHistoryEntry,
+      navSync: isNavigationSyncEnabled,
+      preventContextUpdate,
+    };
 
     path = GenericHelpers.addLeadingSlash(path);
-    path = data.params.preserveQueryParams
+    path = preserveQueryParams
       ? RoutingHelpers.composeSearchParamsToRoute(path)
       : path;
     addPreserveView(data, config);
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    return Routing.navigateTo(path, true, isNavigationSyncEnabled);
+    return Routing.navigateTo(path, options);
   };
 
   const removeQueryParams = (str) => str.split('?')[0];
@@ -383,7 +391,8 @@
     );
 
     // subsequential route handling
-    RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
+    RoutingHelpers.addRouteChangeListener((path, eventDetail) => {
+      const { withoutSync, preventContextUpdate } = eventDetail;
       const pv = preservedViews;
       // TODO: check if bookmarkable modal is interferring here
       if (!isValidBackRoute(pv, path)) {
@@ -399,7 +408,8 @@
         getComponentWrapper(),
         node,
         config,
-        withoutSync
+        withoutSync,
+        preventContextUpdate
       );
     });
   };
@@ -1291,20 +1301,24 @@
         const isSpecial = newTab || modal || splitView || drawer;
 
         const resolveRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doResolve();
           }
         };
 
         const rejectRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doReject();
           }
         };
 
-        const checkResolve = checkLocationChange => {
+        const checkResolve = (checkLocationChange) => {
           if (!checkLocationChange || previousUrl !== window.location.href) {
             resolveRemotePromise();
           } else {
@@ -1433,7 +1447,8 @@
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
+        const { link, modal, history } = e.data.params;
+        Routing.updateModalDataInUrl(link, modal, history);
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {
