@@ -24,6 +24,18 @@ killWebserver() {
   fi
 }
 
+waitForWebServer() {
+  PORT=$1
+  TESTURL=$2
+
+  while [`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` == ""]
+  do
+    sleep 5
+  done
+
+  cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT
+}
+
 #Create new folder for setup
 cd ..
 mkdir setupTestFolder && cd setupTestFolder
@@ -38,6 +50,6 @@ mkdir cypress/integration
 cp ../luigi/test/e2e-test-application/e2e/test3/0-setuptests/setup-test.spec.js ./cypress/integration/setup-test.spec.js
 
 #Run acutal test
-(sleep $TIME; set -e && cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT) & (
+(set -e && waitForWebServer $PORT $TESTURL) & (
 curl -s $URL > ./setup.sh &&
 printf '\n' | source ./setup.sh test)
