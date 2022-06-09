@@ -97,7 +97,7 @@ class Helpers {
   /**
    * Simple object check.
    * @private
-   * @param {object} item
+   * @param {Object} item
    * @returns {boolean}
    */
   isObject(item) {

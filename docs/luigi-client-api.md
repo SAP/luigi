@@ -741,6 +741,24 @@ LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).na
 
 Returns **[linkManager](#linkmanager)** link manager instance
 
+#### withOptions
+
+Sends options to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+
+##### Parameters
+
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().withOptions(
+{ preventContextUpdate:true, preventHistoryEntry: true }
+).navigate('/overview')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
 #### pathExists
 
 Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
