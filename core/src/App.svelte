@@ -415,7 +415,9 @@
 
   const buildPath = (params, srcNode, srcNodePathParams) => {
     const localNode = srcNode || currentNode;
-    const localPathParams = GenericHelpers.isEmptyObject(srcNodePathParams) ? pathParams : srcNodePathParams;
+    const localPathParams = GenericHelpers.isEmptyObject(srcNodePathParams)
+      ? pathParams
+      : srcNodePathParams;
     let localNavPath = navigationPath;
     if (srcNode) {
       let parent = srcNode.parent;
@@ -442,15 +444,16 @@
         params.link
       );
 
-      const isGetCurrentPathRequired = !GenericHelpers.isEmptyObject(localPathParams) &&
-                                                 !path.includes('virtualSegment_') &&
-                                       !params.link && 
-                                            params.getCurrentPath &&
-                                        Object.keys(localPathParams)[0].includes('virtualSegment_');
-      if (isGetCurrentPathRequired){
+      const isGetCurrentPathRequired =
+        !GenericHelpers.isEmptyObject(localPathParams) &&
+        !path.includes('virtualSegment_') &&
+        !params.link &&
+        params.getCurrentPath &&
+        Object.keys(localPathParams)[0].includes('virtualSegment_');
+      if (isGetCurrentPathRequired) {
         let virtualPath = '';
-        Object.entries(localPathParams).forEach((virtualParam)=> {
-          virtualPath += '/' + virtualParam[1]
+        Object.entries(localPathParams).forEach((virtualParam) => {
+          virtualPath += '/' + virtualParam[1];
         });
         path = virtualPath;
       }
@@ -475,13 +478,11 @@
       const node = [...localNavPath]
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
-        const pathUpToContext = getSubPath(node, localPathParams);
-        const fullPath = getSubPath(localNode, localPathParams)
-      path = params.getCurrentPath ? fullPath.substring(pathUpToContext.length) :
-      Routing.concatenatePath(
-        pathUpToContext,
-        params.link
-      );
+      const pathUpToContext = getSubPath(node, localPathParams);
+      const fullPath = getSubPath(localNode, localPathParams);
+      path = params.getCurrentPath
+        ? fullPath.substring(pathUpToContext.length)
+        : Routing.concatenatePath(pathUpToContext, params.link);
     } else if (params.intent) {
       path = RoutingHelpers.getIntentPath(params.link);
     } else if (params.relative) {
@@ -1312,20 +1313,24 @@
         const isSpecial = newTab || modal || splitView || drawer;
 
         const resolveRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doResolve();
           }
         };
 
         const rejectRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doReject();
           }
         };
 
-        const checkResolve = checkLocationChange => {
+        const checkResolve = (checkLocationChange) => {
           if (!checkLocationChange || previousUrl !== window.location.href) {
             resolveRemotePromise();
           } else {
@@ -1460,7 +1465,7 @@
           msg: 'luigi.navigation.currentRoute.answer',
           data: {
             route: path,
-            correlationId: data.id
+            correlationId: data.id,
           },
         };
         IframeHelpers.sendMessageToIframe(iframe, message);
@@ -1471,7 +1476,11 @@
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
+        Routing.updateModalDataInUrl(
+          e.data.params.link,
+          e.data.params.modal,
+          e.data.params.history
+        );
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {
