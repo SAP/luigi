@@ -4,7 +4,6 @@ CLI=$1
 PORT=$2
 TESTURL=$3
 URL=$4
-TIME=$5
 
 # Define Kill Webserver method
 killWebserver() {
@@ -18,7 +17,7 @@ killWebserver() {
   fi
 
   if [ ! -z "$SPAPID" ]; then
-    echo "Stopping webserver on port $PORT"
+    #echo "Stopping webserver on port $PORT"
     kill $SPAPID;
     exit 0
   fi
@@ -30,7 +29,7 @@ waitForWebServer() {
 
   while [`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2` == ""]
   do
-    sleep 5
+    sleep 15
   done
 
   cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false
