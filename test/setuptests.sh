@@ -33,7 +33,8 @@ waitForWebServer() {
     sleep 5
   done
 
-  cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false && killWebserver $PORT
+  cypress run --env configFile=setuptest.json,url=$TESTURL --browser chrome -c video=false
+  killWebserver $PORT
 }
 
 #Create new folder for setup
