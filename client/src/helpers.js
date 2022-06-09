@@ -94,6 +94,16 @@ class Helpers {
     return typeof item === 'function';
   }
 
+  /**
+   * Simple object check.
+   * @private
+   * @param {object} item
+   * @returns {boolean}
+   */
+  isObject(item) {
+    return Object.prototype.toString.call(item) === '[object Object]';
+  }
+
   getLuigiCoreDomain() {
     return this.origin;
   }
