@@ -444,6 +444,7 @@
         params.link
       );
 
+      // boolean predicate, changes the path only if getCurrentPath function used
       const isGetCurrentPathRequired =
         !GenericHelpers.isEmptyObject(localPathParams) &&
         !path.includes('virtualSegment_') &&
@@ -492,7 +493,7 @@
         params.link
       );
     } else {
-      // only receive path
+      // retrieve path for getCurrentPath method when no options used 
       if (params.getCurrentPath) {
         path = getSubPath(localNode, localPathParams);
       }
@@ -1454,6 +1455,7 @@
         }
       }
 
+      // handle getCurrentRoute message coming from client
       if ('luigi.navigation.currentRoute' === e.data.msg) {
         const srcNode = iframe.luigi.currentNode;
         const srcPathParams = iframe.luigi.pathParams;
@@ -1461,6 +1463,7 @@
         data.getCurrentPath = true;
         const path = buildPath(data, srcNode, srcPathParams);
 
+        // send answer back to client
         const message = {
           msg: 'luigi.navigation.currentRoute.answer',
           data: {
