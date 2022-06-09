@@ -123,6 +123,8 @@ jobs:
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm install
       script:
+        - npm i -g lerna
+        - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm run test
       # script:
