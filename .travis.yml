@@ -187,7 +187,7 @@ jobs:
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh | tee /dev/fd/2)
-        - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
+        - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
@@ -197,7 +197,7 @@ jobs:
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh | tee /dev/fd/2)
-        - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
+        - RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
@@ -207,7 +207,7 @@ jobs:
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh | tee /dev/fd/2)
-        - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
+        - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
             
@@ -217,6 +217,6 @@ jobs:
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
         - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh | tee /dev/fd/2)
-        - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
+        - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
