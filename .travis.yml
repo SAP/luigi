@@ -196,7 +196,7 @@ jobs:
       #if: repo = SAP/luigi
       if: type = cron OR (type = api AND commit_message = test-setup-scripts)
       script:
-        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ file:///$TRAVIS_BUILD_DIR/scripts/setup/react.sh | tee /dev/fd/2)
+        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
