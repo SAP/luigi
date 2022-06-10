@@ -125,6 +125,7 @@ jobs:
         - npm install
       script:
         - npm i -g lerna
+        - lerna clean --yes
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
         # Make sure client is build first, required for client-support-angular
         - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
