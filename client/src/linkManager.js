@@ -321,7 +321,6 @@ export class linkManager extends LuigiClientBase {
   withOptions(options) {
     if (!helpers.isObject(options)) return this;
 
-
     if (options['preventHistoryEntry'] !== undefined) {
       this.options.preventHistoryEntry = options['preventHistoryEntry'];
     }
@@ -330,13 +329,6 @@ export class linkManager extends LuigiClientBase {
       this.options.preventContextUpdate = options['preventContextUpdate'];
     }
 
-    //preventHistoryEntry
-    //preventContextUpdate
-    // for (const [key, value] of Object.entries(options)) {
-    //   if (this.options[key] !== undefined) {
-    //     this.options[key] = value;
-    //   }
-    // }
     return this;
   }
 

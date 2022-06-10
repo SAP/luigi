@@ -45,7 +45,7 @@ class RoutingClass {
     navigateTo used for navigation
     Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
     @param {string} route absolute path of the new route
-    @param {Object} options includes keepBrowserHistory, navSync, preventContextUpdate
+    @param {Object} options navigation options of keepBrowserHistory, navSync, preventContextUpdate
    */
   async navigateTo(route, options = {}) {
     const { nodeObject } = await Navigation.extractDataFromPath(route);
@@ -84,13 +84,13 @@ class RoutingClass {
     if (GenericHelpers.isIE()) {
       event = new Event('popstate', {'bubbles':true, 'cancelable':true});
     } else {
-      const eventDetails = { 
-        detail: { 
+      const eventDetail = {
+        detail: {
           preventContextUpdate,
           withoutSync: !navSync
-        } 
+        }
       };
-      event = new CustomEvent('popstate', eventDetails);
+      event = new CustomEvent('popstate', eventDetail);
     }
 
     window.dispatchEvent(event);
@@ -381,7 +381,6 @@ class RoutingClass {
           if (!withoutSync) {
             await Iframe.navigateIframe(config, component, iframeElement);
           } else {
-            console.log('sendMessageToIframe');
             const componentData = component.get();
             const internalData = await component.prepareInternalData(config);
             // send a message to the iFrame to trigger a context update listener when withoutSync enabled
