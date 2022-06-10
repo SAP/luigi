@@ -248,6 +248,41 @@ describe('Navigation', () => {
     });
   });
 
+  describe('Link withOptions', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+    });
+
+    it('withOptions - no context updated -> it should remain on the current page', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        // Link on Main page PR2 exist
+        cy.wrap(result).contains('LuigiClient - withOptions()');
+        cy.wrap(result)
+          .find('a[data-testid="navigate-withOptions-no-context"]')
+          .click();
+
+        cy.expectPathToBe('/projects');
+      });
+    });
+
+    it('withOptions - no history kept', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        // Link on Main page PR2 exist
+        cy.wrap(result).contains('LuigiClient - withOptions()');
+
+        cy.wrap(result)
+          .find('a[data-testid="navigate-withOptions-no-history"]')
+          .click();
+
+        cy.expectPathToBe('/overview');
+        cy.go('back');
+        cy.expectPathToBe('/overview');
+      });
+    });
+  });
+
   describe('ProfileMenu Fiori 3 Style', () => {
     context('Desktop', () => {
       it('not render Fiori3 profile in Shellbar when profileType is equal "simple"', () => {

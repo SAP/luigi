@@ -811,13 +811,13 @@
               (click)="
                 linkManager()
                   .withOptions({preventContextUpdate:true})
-                  .navigate('/overview')
+                  .navigate('/projects')
               "
               data-testid="navigate-withOptions-no-context"
-              >Go to /overview using withOptions() which makes no context update.
+              >Go to /projects using withOptions() which makes no context update.
             </a>
             <app-code-snippet
-              data="linkManager().withOptions({preventContextUpdate:true}).navigate('/overview')"
+              data="linkManager().withOptions({preventContextUpdate:true}).navigate('/projects')"
             >
             </app-code-snippet>
           </li>
