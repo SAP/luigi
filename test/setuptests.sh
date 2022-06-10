@@ -2,7 +2,7 @@
 
 CLI=$1
 PORT=$2
-TESTURL="http://localhost:3000/" # $3
+TESTURL=$3
 URL=$4
 
 # Define Kill Webserver method
