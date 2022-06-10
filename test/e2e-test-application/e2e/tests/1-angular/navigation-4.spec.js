@@ -253,7 +253,7 @@ describe('Navigation', () => {
       cy.visitLoggedIn('/projects/pr2');
     });
 
-    it('withOptions - no context updated -> it should remain on the current page', () => {
+    it.only('withOptions - no context updated -> it should remain on the current page', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.getIframeBody().then(result => {
         // Link on Main page PR2 exist
@@ -262,7 +262,11 @@ describe('Navigation', () => {
           .find('a[data-testid="navigate-withOptions-no-context"]')
           .click();
 
+        // Url should changed in the main window
         cy.expectPathToBe('/projects');
+        cy.wrap(result).contains('LuigiClient - withOptions()');
+        cy.get('[data-testid="pr1_projectone"]').should('exist');
+        cy.get('[data-testid="storage_storage"]').should('exist');
       });
     });
 
