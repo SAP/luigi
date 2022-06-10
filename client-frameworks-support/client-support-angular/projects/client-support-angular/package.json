@@ -9,7 +9,7 @@
   "peerDependencies": {
     "@angular/common": "^11.0.0 || ^12.0.0 || ^13.0.0",
     "@angular/core": "^11.0.0 || ^12.0.0 || ^13.0.0",
-    "@luigi-project/client": "^1.18.1"
+    "@luigi-project/client": "^1.22.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
