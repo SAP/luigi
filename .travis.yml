@@ -137,7 +137,8 @@ jobs:
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
         - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run build --ignore docs || travis_terminate 1
-        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+        - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ 
+        - npm run test --watch=false --no-progress --browsers=ChromeHeadless
         # - npm i -g lerna
         # - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
         # - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
