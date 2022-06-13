@@ -72,7 +72,7 @@ describe('Generic-helpers', () => {
   });
 
   it('isObject', () => {
-    const obj = { foo : 'bar' };
+    const obj = { foo: 'bar' };
     const func = () => {};
     assert.equal(GenericHelpers.isObject(obj), true);
     assert.equal(GenericHelpers.isObject(func), false);
