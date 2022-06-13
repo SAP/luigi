@@ -2,7 +2,7 @@ describe('Luigi client linkManager', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
-  
+
   describe('Goes back and pass data ', () => {
     let $iframeBody;
     const $inputTypeNormal = 'Buongiorno Luigi';

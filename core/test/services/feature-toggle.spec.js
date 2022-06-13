@@ -16,23 +16,13 @@ describe('Feature Toggle', () => {
     LuigiFeatureToggles.setFeatureToggle('test2');
     LuigiFeatureToggles.setFeatureToggle('test');
 
-    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
-      'test2',
-      'test'
-    ]);
+    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), ['test2', 'test']);
 
     LuigiFeatureToggles.setFeatureToggle('bar');
-    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
-      'test2',
-      'test',
-      'bar'
-    ]);
+    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), ['test2', 'test', 'bar']);
 
     LuigiFeatureToggles.unsetFeatureToggle('test');
-    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), [
-      'test2',
-      'bar'
-    ]);
+    assert.deepEqual(LuigiFeatureToggles.getActiveFeatureToggleList(), ['test2', 'bar']);
 
     assert.equal(LuigiFeatureToggles.isDuplicatedOrDisabled('bar'), true);
     assert.equal(LuigiFeatureToggles.isDuplicatedOrDisabled('foo'), false);
