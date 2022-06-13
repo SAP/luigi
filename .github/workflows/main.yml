@@ -1,4 +1,7 @@
-on: workflow_dispatch
+on:   
+  # Triggers this action every Monday (1) at 6:00 o'clock. Explanation: https://dev.to/anshuman_bhardwaj/free-cron-jobs-with-github-actions-31d6 
+  schedule:
+    - cron: "0 6 * * 1"
 
 jobs:
   trigger-script-test:
