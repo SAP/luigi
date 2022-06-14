@@ -1,5 +1,5 @@
 on:   
-  # Triggers this action every Monday (1) at 6:00 o'clock. Explanation: https://dev.to/anshuman_bhardwaj/free-cron-jobs-with-github-actions-31d6 
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule 
   schedule:
     - cron: "0 6 * * 1"
 
