@@ -4,6 +4,7 @@ node_js:
   - '12.18.4' # Default node version for CI testing
   - 16 # Optional node version for setup scripts
 dist: xenial
+name: Setup node environment
 script: echo "npm test temporarily disabled"
 cache:
   directories:
@@ -64,6 +65,7 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
+      if: if NOT commit_message = test-setup-scripts
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
