@@ -29,17 +29,11 @@ describe('Luigi Client linkManager Modal', () => {
 
         cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2FvirtualTree');
 
-        cy.window().then(win => {
-          const config = win.Luigi.getConfig();
-          config.routing.showModalPathInUrl = true;
-          win.Luigi.configChanged('routing');
+        cy.wrap($iframeBody)
+          .find('[data-testid=update-modal-path-virtual-tree]')
+          .click();
 
-          cy.wrap($iframeBody)
-            .find('[data-testid=update-modal-path-virtual-tree]')
-            .click();
-
-          cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
-        });
+        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
       });
     });
 
@@ -56,10 +50,10 @@ describe('Luigi Client linkManager Modal', () => {
 
         cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2FvirtualTree');
         cy.wrap($iframeBody)
-          .find('[data-testid=update-modal-path-virtual-tree]')
+          .find('[data-testid=update-modal-path-from-context]')
           .click();
 
-        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
+        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fxyz');
       });
     });
 
@@ -76,10 +70,10 @@ describe('Luigi Client linkManager Modal', () => {
 
         cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2FvirtualTree');
         cy.wrap($iframeBody)
-          .find('[data-testid=update-modal-path-virtual-tree]')
+          .find('[data-testid=update-modal-path-closest-context]')
           .click();
 
-        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
+        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fxyz');
       });
     });
 
@@ -96,10 +90,10 @@ describe('Luigi Client linkManager Modal', () => {
 
         cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2FvirtualTree');
         cy.wrap($iframeBody)
-          .find('[data-testid=update-modal-path-virtual-tree]')
+          .find('[data-testid=update-modal-path-from-parent]')
           .click();
 
-        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
+        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2Fxyz');
       });
     });
   });
