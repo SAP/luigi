@@ -333,5 +333,4 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
   });
-
 });
