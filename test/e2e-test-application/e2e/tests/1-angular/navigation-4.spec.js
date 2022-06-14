@@ -2,7 +2,7 @@ describe('Navigation', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
-  
+
   describe('Collapsible Categories / Accordion', () => {
     it('It should have multiple categories collapsed', () => {
       cy.visit('/projects/pr2/collapsibles');
