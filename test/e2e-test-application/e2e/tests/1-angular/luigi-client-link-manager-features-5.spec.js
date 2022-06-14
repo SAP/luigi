@@ -9,6 +9,11 @@ describe('Luigi Client linkManager Modal', () => {
       cy.getIframeBody().then(result => {
         $iframeBody = result;
         cy.goToLinkManagerMethods($iframeBody);
+        cy.window().then(win => {
+          const config = win.Luigi.getConfig();
+          config.routing.showModalPathInUrl = true;
+          win.Luigi.configChanged('routing');
+        });
       });
     });
     it('update modalPath fromVirtualTreeRoot', () => {
@@ -50,18 +55,11 @@ describe('Luigi Client linkManager Modal', () => {
         cy.wrap($iframeBody).contains('Settings of pr2');
 
         cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2FvirtualTree');
+        cy.wrap($iframeBody)
+          .find('[data-testid=update-modal-path-virtual-tree]')
+          .click();
 
-        cy.window().then(win => {
-          const config = win.Luigi.getConfig();
-          config.routing.showModalPathInUrl = true;
-          win.Luigi.configChanged('routing');
-
-          cy.wrap($iframeBody)
-            .find('[data-testid=update-modal-path-virtual-tree]')
-            .click();
-
-          cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
-        });
+        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
       });
     });
 
@@ -77,18 +75,11 @@ describe('Luigi Client linkManager Modal', () => {
         cy.wrap($iframeBody).contains('Settings of pr2');
 
         cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2FvirtualTree');
+        cy.wrap($iframeBody)
+          .find('[data-testid=update-modal-path-virtual-tree]')
+          .click();
 
-        cy.window().then(win => {
-          const config = win.Luigi.getConfig();
-          config.routing.showModalPathInUrl = true;
-          win.Luigi.configChanged('routing');
-
-          cy.wrap($iframeBody)
-            .find('[data-testid=update-modal-path-virtual-tree]')
-            .click();
-
-          cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
-        });
+        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
       });
     });
 
@@ -104,18 +95,11 @@ describe('Luigi Client linkManager Modal', () => {
         cy.wrap($iframeBody).contains('Settings of pr2');
 
         cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Finternal%2FvirtualTree');
+        cy.wrap($iframeBody)
+          .find('[data-testid=update-modal-path-virtual-tree]')
+          .click();
 
-        cy.window().then(win => {
-          const config = win.Luigi.getConfig();
-          config.routing.showModalPathInUrl = true;
-          win.Luigi.configChanged('routing');
-
-          cy.wrap($iframeBody)
-            .find('[data-testid=update-modal-path-virtual-tree]')
-            .click();
-
-          cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
-        });
+        cy.expectSearchToBe('?modal=%2Fprojects%2Fpr2%2Fdevelopers%2Fxyz');
       });
     });
   });

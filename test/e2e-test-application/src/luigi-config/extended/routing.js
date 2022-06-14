@@ -18,8 +18,6 @@ class Routing {
   nodeParamPrefix = '~';
   disableBrowserHistory = false;
 
-  showModalPathInUrl = true;
-
   /**
    * skipRoutingForUrlPatterns
    * Define regex patterns that prevent the router from handling path changes.
