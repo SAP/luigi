@@ -135,9 +135,5 @@ describe('Luigi client linkManager', () => {
       cy.expectPathToBe('/projects/pr1/settings');
       cy.expectSearchToBe('?~project=pr1&~param2=22');
     });
-
-
-
   });
-
 });
