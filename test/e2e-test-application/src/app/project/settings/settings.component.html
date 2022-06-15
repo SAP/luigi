@@ -166,6 +166,58 @@
           <a
             href="javascript:void(0)"
             class="fd-link"
+            data-testid="update-modal-path-virtual-tree"
+            (click)="linkManager().fromVirtualTreeRoot().updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromVirtualTreeRoot</a
+          >
+          <app-code-snippet
+            data="linkManager().fromVirtualTreeRoot().updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="update-modal-path-from-parent"
+            (click)="linkManager().fromParent().updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromParent</a
+          >
+          <app-code-snippet
+            data="linkManager().fromParent().updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="update-modal-path-from-context"
+            (click)="linkManager().fromContext('project').updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromContext</a
+          >
+          <app-code-snippet
+            data="linkManager().fromContext('project').updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="update-modal-path-closest-context"
+            (click)="linkManager().fromClosestContext().updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromClosestContext</a
+          >
+          <app-code-snippet
+            data="linkManager().fromClosestContext().updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
             (click)="linkManager().navigate('/overview')"
             >absolute: to overview</a
           >
