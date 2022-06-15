@@ -256,13 +256,13 @@ describe('Navigation', () => {
     it.only('withOptions - no context updated -> it should remain on the current page', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.getIframeBody().then(result => {
-        // Link on Main page PR2 exist
+        // Link on Main page PR2 exists
         cy.wrap(result).contains('LuigiClient - withOptions()');
         cy.wrap(result)
           .find('a[data-testid="navigate-withOptions-no-context"]')
           .click();
 
-        // Url should changed in the main window
+        // Url should be changed in the main window
         cy.expectPathToBe('/projects');
         cy.wrap(result).contains('LuigiClient - withOptions()');
         cy.get('[data-testid="pr1_projectone"]').should('exist');
