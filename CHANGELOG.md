@@ -25,6 +25,28 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.23.0] (2022-06-17)
+
+#### :rocket: Added
+* [#2752](https://github.com/SAP/luigi/pull/2752) Disable keyboard accessibility for user settings dialog ([@ndricimrr](https://github.com/ndricimrr))
+* [#2739](https://github.com/SAP/luigi/pull/2739) getCurrentRoute linkmanager ([@ndricimrr](https://github.com/ndricimrr))
+* [#2691](https://github.com/SAP/luigi/pull/2691) 2565: Scalable keyboard accessibility for Dropdown in User Settings Dialog ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2723](https://github.com/SAP/luigi/pull/2723) Update all Core examples with latest versions of Luigi Core/Client and FD Styles ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2753](https://github.com/SAP/luigi/pull/2753) Feature toggles reading phase ([@hardl](https://github.com/hardl))
+* [#2742](https://github.com/SAP/luigi/pull/2742) Fix updateModalPathInternalNavigation not working with options ([@hardl](https://github.com/hardl))
+* [#2745](https://github.com/SAP/luigi/pull/2745) Signout entry misaligned in simple Profile Menu ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2740](https://github.com/SAP/luigi/pull/2740) Fix typo in angular support lib docu ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+#### :house: Internal
+* [#2715](https://github.com/SAP/luigi/pull/2715) Functionality to test examples programmatically ([@viktorsperling](https://github.com/viktorsperling))
+
+
+
+
+
+
 ## [v1.22.0] (2022-05-19)
 
 #### :rocket: Added
@@ -1370,3 +1392,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.20.1]: https://github.com/SAP/luigi/compare/v1.20.0...v1.20.1
 [v1.21.0]: https://github.com/SAP/luigi/compare/v1.20.1...v1.21.0
 [v1.22.0]: https://github.com/SAP/luigi/compare/v1.21.0...v1.22.0
+[v1.23.0]: https://github.com/SAP/luigi/compare/v1.22.0...v1.23.0
