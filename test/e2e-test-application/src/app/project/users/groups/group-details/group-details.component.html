@@ -38,3 +38,18 @@
     </div>
   </div>
 </section>
+<section class="fd-section">
+  <div class="fd-layout-panel">
+    <div class="fd-layout-panel__body">
+      <app-code-snippet
+        data="{
+          LuigiClient.linkManager().fromContext('project').getCurrentRoute().then(...)
+        }"
+      ></app-code-snippet>
+      <button data-testid="curr-button" (click)="getCurrentRoute()">
+        getCurrentRoute
+      </button>
+      <p data-testid="curr-text">{{currentRoute}}</p>
+    </div>
+  </div>
+</section>
