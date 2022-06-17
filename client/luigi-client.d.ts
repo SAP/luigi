@@ -451,15 +451,15 @@ export declare interface LinkManager {
   preserveQueryParams: (preserve: boolean) => this;
 
   /**
-  * Gets the luigi route associated with the current micro frontend.
-  * @returns {promise} a promise which resolves to a String value specifying the current luigi route 
-  * @since NEXTRELEASE
-  * @example
-  * LuigiClient.linkManager().getCurrentRoute();
-  * LuigiClient.linkManager().fromContext('project').getCurrentRoute();
-  * LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
-  */
-  getCurrentRoute : () =>  Promise<string>;
+   * Gets the luigi route associated with the current micro frontend.
+   * @returns {promise} a promise which resolves to a String value specifying the current luigi route
+   * @since 1.23.0
+   * @example
+   * LuigiClient.linkManager().getCurrentRoute();
+   * LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+   * LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+   */
+  getCurrentRoute: () => Promise<string>;
 }
 
 export declare interface StorageManager {
