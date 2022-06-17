@@ -415,7 +415,9 @@
 
   const buildPath = (params, srcNode, srcNodePathParams) => {
     const localNode = srcNode || currentNode;
-    const localPathParams = srcNodePathParams || pathParams;
+    const localPathParams = GenericHelpers.isEmptyObject(srcNodePathParams)
+      ? pathParams
+      : srcNodePathParams;
     let localNavPath = navigationPath;
     if (srcNode) {
       let parent = srcNode.parent;
@@ -441,6 +443,21 @@
         getSubPath(node, localPathParams),
         params.link
       );
+
+      // boolean predicate, changes the path only if getCurrentPath function used
+      const isGetCurrentPathRequired =
+        !GenericHelpers.isEmptyObject(localPathParams) &&
+        !path.includes('virtualSegment_') &&
+        !params.link &&
+        params.getCurrentPath &&
+        Object.keys(localPathParams)[0].includes('virtualSegment_');
+      if (isGetCurrentPathRequired) {
+        let virtualPath = '';
+        Object.entries(localPathParams).forEach((virtualParam) => {
+          virtualPath += '/' + virtualParam[1];
+        });
+        path = virtualPath;
+      }
     } else if (params.fromParent) {
       // from direct parent
       path = Routing.concatenatePath(
@@ -462,10 +479,11 @@
       const node = [...localNavPath]
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
-      path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
-        params.link
-      );
+      const pathUpToContext = getSubPath(node, localPathParams);
+      const fullPath = getSubPath(localNode, localPathParams);
+      path = params.getCurrentPath
+        ? fullPath.substring(pathUpToContext.length)
+        : Routing.concatenatePath(pathUpToContext, params.link);
     } else if (params.intent) {
       path = RoutingHelpers.getIntentPath(params.link);
     } else if (params.relative) {
@@ -474,6 +492,11 @@
         getSubPath(localNode, localPathParams),
         params.link
       );
+    } else {
+      // retrieve path for getCurrentPath method when no options used 
+      if (params.getCurrentPath) {
+        path = getSubPath(localNode, localPathParams);
+      }
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
       path += path.includes('?') ? '&' : '?';
@@ -1291,20 +1314,24 @@
         const isSpecial = newTab || modal || splitView || drawer;
 
         const resolveRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doResolve();
           }
         };
 
         const rejectRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doReject();
           }
         };
 
-        const checkResolve = checkLocationChange => {
+        const checkResolve = (checkLocationChange) => {
           if (!checkLocationChange || previousUrl !== window.location.href) {
             resolveRemotePromise();
           } else {
@@ -1426,6 +1453,25 @@
             window.history.back();
           }
         }
+      }
+
+      // handle getCurrentRoute message coming from client
+      if ('luigi.navigation.currentRoute' === e.data.msg) {
+        const srcNode = iframe.luigi.currentNode;
+        const srcPathParams = iframe.luigi.pathParams;
+        const data = e.data.data;
+        data.getCurrentPath = true;
+        const path = buildPath(data, srcNode, srcPathParams);
+
+        // send answer back to client
+        const message = {
+          msg: 'luigi.navigation.currentRoute.answer',
+          data: {
+            route: path,
+            correlationId: data.id,
+          },
+        };
+        IframeHelpers.sendMessageToIframe(iframe, message);
       }
 
       if ('luigi.auth.tokenIssued' === e.data.msg) {
