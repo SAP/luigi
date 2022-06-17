@@ -52,7 +52,16 @@ class GenericHelpersClass {
    * @returns {boolean}
    */
   isObject(objectToCheck) {
-    return objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck);
+    return !!(objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck));
+  }
+
+  /**
+   * Check if object is empty
+   * @param item object to check
+   * @returns {boolean}
+   */
+  isEmptyObject(item) {
+    return this.isObject(item) && Object.keys(item).length === 0;
   }
 
   /**
