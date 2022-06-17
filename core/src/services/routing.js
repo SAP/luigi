@@ -157,9 +157,7 @@ class RoutingClass {
   }
 
   async handleRouteChange(path, component, iframeElement, config, withoutSync) {
-    const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam')
-      ? LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam')
-      : undefined;
+    const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
     if (featureToggleProperty) {
       RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
     }
