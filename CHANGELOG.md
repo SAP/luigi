@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.23.1] (2022-06-20)
+
+#### :rocket: Added
+* [#2748](https://github.com/SAP/luigi/pull/2748) Improve dom selectors in Luigi API ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2756](https://github.com/SAP/luigi/pull/2756) Fix getCurrentPath collision with buildPath ([@hardl](https://github.com/hardl))
+
+
+
+
+
+
 ## [v1.23.0] (2022-06-17)
 
 #### :rocket: Added
@@ -1389,3 +1402,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.21.0]: https://github.com/SAP/luigi/compare/v1.20.1...v1.21.0
 [v1.22.0]: https://github.com/SAP/luigi/compare/v1.21.0...v1.22.0
 [v1.23.0]: https://github.com/SAP/luigi/compare/v1.22.0...v1.23.0
+[v1.23.1]: https://github.com/SAP/luigi/compare/v1.23.0...v1.23.1
