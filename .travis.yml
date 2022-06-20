@@ -123,8 +123,10 @@ jobs:
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm install
       script:
-        - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
+        - npm i -g lerna
         - lerna clean --yes
+        - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
+        - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm run test
 
     # ----- NPM PUBLISH -----
