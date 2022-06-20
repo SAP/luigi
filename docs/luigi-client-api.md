@@ -761,11 +761,13 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 #### withOptions
 
-Sends options to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
 
 ##### Parameters
 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** navigation options
+    -   `options.preventHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no browser history be kept.
+    -   `options.preventContextUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no context update be triggered.
 
 ##### Examples
 
@@ -776,6 +778,10 @@ LuigiClient.linkManager().withOptions(
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### pathExists
 
