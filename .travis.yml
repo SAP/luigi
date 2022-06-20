@@ -113,8 +113,6 @@ jobs:
         chrome: stable
       before_install:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-        - export CHROME_BIN=usr/bin/chromium
-        - export DISPLAY=:99.0
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
@@ -123,11 +121,12 @@ jobs:
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm install
       script:
+        - export CHROME_BIN=usr/bin/chromium
+        - export DISPLAY=:99.0
         - npm i -g lerna
         - lerna clean --yes
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
-        - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
-        - npm run test
+        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadless
 
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
