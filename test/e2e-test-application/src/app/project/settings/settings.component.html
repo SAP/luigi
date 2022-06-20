@@ -139,6 +139,32 @@
         <li class="fd-list__item">
           <a
             href="javascript:void(0)"
+            data-testid="curr-link-virtualtree"
+            class="fd-link"
+            (click)="getCurrentRouteFromVirtualTree()"
+            >getCurrentRoute fromVirtualTreeRoot</a
+          >
+          <app-code-snippet
+            data="linkManager().fromVirtualTreeRoot().getCurrentRoute().then(...)"
+          ></app-code-snippet>
+          <p data-testid="curr-text-virtualtree">{{currentRouteVirtual}}</p>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            data-testid="curr-link-no-option"
+            class="fd-link"
+            (click)="getCurrentRoute()"
+            >getCurrentRoute</a
+          >
+          <app-code-snippet
+            data="linkManager().getCurrentRoute().then(...)"
+          ></app-code-snippet>
+          <p data-testid="curr-text-no-option">{{currentRoute}}</p>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
             class="fd-link"
             data-testid="update-modal-path-virtual-tree"
             (click)="linkManager().fromVirtualTreeRoot().updateModalPathInternalNavigation('xyz')"
@@ -256,6 +282,7 @@
         <li class="fd-list__item">
           <a
             href="javascript:void(0)"
+            data-testid="fromcontext-settings-link"
             class="fd-link"
             (click)="
               linkManager()

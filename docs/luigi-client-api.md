@@ -525,6 +525,24 @@ LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foob
 
 -   **since**: 1.19.0
 
+#### getCurrentRoute
+
+Gets the luigi route associated with the current micro frontend.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().getCurrentRoute();
+LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a String value specifying the current luigi route
+
+**Meta**
+
+-   **since**: 1.23.0
+
 #### navigate
 
 Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.

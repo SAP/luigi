@@ -164,7 +164,12 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-  async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate) {
+  async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+    const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
+    if (featureToggleProperty) {
+      RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
+    }
+
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
     const hasSkipMatches = patterns.filter(p => window.location.href.match(p)).length !== 0;
@@ -192,12 +197,6 @@ class RoutingClass {
         return;
       }
 
-      const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam')
-        ? LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam')
-        : undefined;
-      if (featureToggleProperty) {
-        RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
-      }
       const isShowModalPathInUrl = LuigiConfig.getConfigValue('routing.showModalPathInUrl');
       if (isShowModalPathInUrl) {
         await this.handleBookmarkableModalPath();

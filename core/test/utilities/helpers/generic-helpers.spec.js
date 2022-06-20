@@ -81,6 +81,15 @@ describe('Generic-helpers', () => {
     assert.equal(GenericHelpers.isObject(12345), false);
   });
 
+  it('isEmptyObject', () => {
+    const obj = { foo: 'bar' };
+    const obj2 = {};
+    const obj3 = undefined;
+    assert.equal(GenericHelpers.isEmptyObject(obj), false);
+    assert.equal(GenericHelpers.isEmptyObject(obj2), true);
+    assert.equal(GenericHelpers.isEmptyObject(obj3), false);
+  });
+
   it('removeInternalProperties', () => {
     const input = {
       some: true,
