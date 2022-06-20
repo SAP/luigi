@@ -262,7 +262,7 @@ describe('Navigation', () => {
           .find('a[data-testid="navigate-withOptions-no-context"]')
           .click();
 
-        // Url should be changed in the main window
+        // URL should be changed in the main window
         cy.expectPathToBe('/projects');
         cy.wrap(result).contains('LuigiClient - withOptions()');
         cy.get('[data-testid="pr1_projectone"]').should('exist');
