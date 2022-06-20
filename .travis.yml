@@ -126,7 +126,16 @@ jobs:
         - npm i -g lerna
         - lerna clean --yes
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
-        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ -- --watch=false --no-progress --browsers=ChromeHeadless
+        - mkdir -p $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/
+        - rm -rf $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/*
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/client
+        # Make sure client is build first, required for client-support-angular
+        - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
+        # Actual build
+        - lerna run bundle --ignore docs || travis_terminate 1
+        - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
+        - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
+        - npm run test
 
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
