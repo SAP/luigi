@@ -305,7 +305,9 @@
 <svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} />
 {#if showTopNav}
   <div
-    class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}"
+    class="fd-shellbar lui-shellbar-wrapper {hideNavComponent
+      ? 'hideNavComponent'
+      : ''}"
     tabindex="0"
   >
     <div class="fd-shellbar__group fd-shellbar__group--product">
@@ -344,7 +346,9 @@
         />
       </div>
     {/if}
-    <div class="fd-shellbar__group fd-shellbar__group--actions">
+    <div
+      class="fd-shellbar__group fd-shellbar__group--actions lui-shellbar_group--actions"
+    >
       {#if !authorizationEnabled || isLoggedIn}
         {#if globalSearchConfig && !isGlobalSearchCentered}
           <GlobalSearch
@@ -429,8 +433,10 @@
                       title={resolveTooltipText(node, getNodeLabel(node))}
                       aria-expanded="false"
                       aria-haspopup="true"
-                      on:click={(event) => {
-                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                      on:click={event => {
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                          event
+                        ) && handleClick(node);
                       }}
                       data-testid={getTestId(node)}
                     >
