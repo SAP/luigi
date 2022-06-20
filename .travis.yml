@@ -4,6 +4,7 @@ node_js:
   - '12.18.4' # Default node version for CI testing
   - 16 # Optional node version for setup scripts
 dist: xenial
+stage: Setup node environment
 script: echo "npm test temporarily disabled"
 cache:
   directories:
@@ -64,6 +65,7 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
+      if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
@@ -173,7 +175,7 @@ jobs:
     - stage: 'Test Setup Scripts'
       name: 'Test Angular setup script'
       node_js: 16
-      if: (branch = test-setup-branch AND type = cron) OR (type = api AND commit_message = test-setup-scripts)
+      if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
@@ -182,7 +184,7 @@ jobs:
 
     - name: 'Test Vue setup script'
       node_js: 16
-      if: (branch = test-setup-branch AND type = cron) OR (type = api AND commit_message = test-setup-scripts)
+      if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
@@ -191,7 +193,7 @@ jobs:
 
     - name: 'Test React setup script'
       node_js: 16
-      if: (branch = test-setup-branch AND type = cron) OR (type = api AND commit_message = test-setup-scripts)
+      if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
@@ -200,7 +202,7 @@ jobs:
 
     - name: 'Test UI5 setup script'
       node_js: 16
-      if: (branch = test-setup-branch AND type = cron) OR (type = api AND commit_message = test-setup-scripts)
+      if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
@@ -209,7 +211,7 @@ jobs:
             
     - name: 'Test No-Framework setup script'
       node_js: 16
-      if: (branch = test-setup-branch AND type = cron) OR (type = api AND commit_message = test-setup-scripts)
+      if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
