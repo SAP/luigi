@@ -311,7 +311,9 @@ export class linkManager extends LuigiClientBase {
   /**
    * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof linkManager
-   * @param {Object} options
+   * @param {Object} options navigation options
+   * @param {boolean} options.preventHistoryEntry By default, it is set to `false`. If it is set to `true`, there is no browser history be kept.
+   * @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update be triggered.
    * @returns {linkManager} link manager instance
    * @since NEXTRELEASE
    * @example

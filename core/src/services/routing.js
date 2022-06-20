@@ -45,7 +45,10 @@ class RoutingClass {
     navigateTo used for navigation
     Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
     @param {string} route absolute path of the new route
-    @param {Object} options navigation options of keepBrowserHistory, navSync, preventContextUpdate
+    @param {Object} options navigation options
+    @param {boolean} options.keepBrowserHistory By default, it is set to `true`. If it is set to `false`, there is no browser history be kept.
+    @param {boolean} options.navSync By default, it is set to `true`. If it is set to `false`, it disables the navigation handling for a single navigation request.
+    @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update be triggered.
    */
   async navigateTo(route, options = {}) {
     const { nodeObject } = await Navigation.extractDataFromPath(route);
