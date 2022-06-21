@@ -13,6 +13,5 @@
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"
-  ],
-  "skipLibCheck": true
+  ]
 }
