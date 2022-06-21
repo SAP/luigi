@@ -766,8 +766,8 @@ Sets options to customise route changing behaviour. The parameters are used by t
 ##### Parameters
 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** navigation options
-    -   `options.preventHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no browser history be kept.
-    -   `options.preventContextUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no context update be triggered.
+    -   `options.preventHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+    -   `options.preventContextUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
 
 ##### Examples
 
