@@ -811,6 +811,73 @@
         </ul>
       </div>
     </div>
+
+    <div class="fd-layout-panel luigi__margin-bottom--small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            LuigiClient - withOptions()
+          </h3>
+        </div>
+      </div>
+      <div class="fd-layout-panel__body">
+        <ul class="fd-list">
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager()
+                  .withOptions({preventContextUpdate:true})
+                  .navigate('/projects')
+              "
+              data-testid="navigate-withOptions-no-context"
+              >Go to /projects using withOptions() which makes no context update.
+            </a>
+            <app-code-snippet
+              data="linkManager().withOptions({preventContextUpdate:true}).navigate('/projects')"
+            >
+            </app-code-snippet>
+          </li>
+
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
+                linkManager()
+                  .withOptions({preventHistoryEntry: true})
+                  .navigate('/overview')
+              "
+              data-testid="navigate-withOptions-no-history"
+              >Go to /overview using withOptions() which makes no browser history be kept
+            </a>
+            <app-code-snippet
+              data="linkManager().withOptions({preventHistoryEntry: true}).navigate('/overview')"
+            >
+            </app-code-snippet>
+          </li>
+
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
+                linkManager()
+                  .withOptions({preventHistoryEntry: true, preventContextUpdate:true})
+                  .navigate('/overview')
+              "
+              data-testid="navigate-withOptions-no-history-context"
+              >Go to /overview using withOptions() which makes no browser history be kept and no context updated.
+            </a>
+            <app-code-snippet
+              data="linkManager().withOptions({preventHistoryEntry: true, preventContextUpdate:true}).navigate('/overview')"
+            >
+            </app-code-snippet>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
   <div *ngIf="projectId && projectId === 'tabNav'">
     <div class="fd-section__header">
