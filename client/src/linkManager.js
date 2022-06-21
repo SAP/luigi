@@ -29,7 +29,9 @@ export class linkManager extends LuigiClientBase {
       link: '',
       newTab: false,
       preserveQueryParams: false,
-      anchor: ''
+      anchor: '',
+      preventContextUpdate: false,
+      preventHistoryEntry: false
     };
   }
 
@@ -303,6 +305,33 @@ export class linkManager extends LuigiClientBase {
     if (nodeParams) {
       Object.assign(this.options.nodeParams, nodeParams);
     }
+    return this;
+  }
+
+  /**
+   * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+   * @memberof linkManager
+   * @param {Object} options navigation options
+   * @param {boolean} options.preventHistoryEntry By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+   * @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().withOptions(
+   * { preventContextUpdate:true, preventHistoryEntry: true }
+   * ).navigate('/overview')
+   */
+  withOptions(options) {
+    if (!helpers.isObject(options)) return this;
+
+    if (options['preventHistoryEntry'] !== undefined) {
+      this.options.preventHistoryEntry = options['preventHistoryEntry'];
+    }
+
+    if (options['preventContextUpdate'] !== undefined) {
+      this.options.preventContextUpdate = options['preventContextUpdate'];
+    }
+
     return this;
   }
 
