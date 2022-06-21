@@ -4,7 +4,7 @@
 			return { docs };
 		});
 	}
-	
+
 </script>
 
 <script>
@@ -26,7 +26,7 @@
 		{#if doc.shortName == "README"}
 			{@html doc.contents}
 		{:else}
-		  <!-- Used as sapper sitemap -->
+		  <!-- Used as SvelteKit sitemap -->
 			<li class="invisible"><a rel='prefetch' href='docs/{doc.shortName}'>{doc.name}</a></li>
 		{/if}
 {/each}
