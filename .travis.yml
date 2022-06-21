@@ -135,7 +135,6 @@ jobs:
         # Actual build
         - lerna run bundle --ignore docs || travis_terminate 1
         - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
-        - touch $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@types/jest/index.d.ts
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm run test
 

@@ -8,8 +8,7 @@
     ]
   },
   "files": [
-    "src/test.ts",
-    "../../node_modules/@types/jest/index.d.ts"
+    "src/test.ts"
   ],
   "include": [
     "**/*.spec.ts",
