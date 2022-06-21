@@ -1,0 +1,15 @@
+# DXP component metadata file
+
+kind: Component
+metadata:
+  displayName: Luigi Client Support for angular
+  description: This library contains angular services and components for easier integration with Luigi micro frontend framework
+  labels:
+    language: typescript
+  tags:
+    - luigi
+    - angular
+spec:
+  type:
+    name: ui
+    lifecycle: production
