@@ -8,8 +8,8 @@ export class Accordion {
     this.openAllOnDocSearchScraper();
   }
   openAllOnDocSearchScraper() {
-    if(isSearchBot) {
-      // timeout required: even with sapper export, its data get set with javascript
+    if (isSearchBot) {
+      // timeout required: even with SvelteKit export, its data get set with javascript
       setTimeout(() => {
         const accordionItems = document.querySelectorAll('.accordion-item');
         accordionItems.forEach(item => {

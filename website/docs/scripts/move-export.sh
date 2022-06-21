@@ -5,7 +5,7 @@ BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 Color_Off='\033[0m'       # Text Reset
 BIBlue='\033[1;34m'      # Light Blue, bold
 
-EXPORT_DIR=$BASE_DIR/../__sapper__/export/docu-microfrontend
+EXPORT_DIR=$BASE_DIR/../export/docu-microfrontend
 LUIGI_DIR=$BASE_DIR/../public
 
 if [ -d $LUIGI_DIR ]; then
@@ -18,7 +18,7 @@ mv $EXPORT_DIR/luigi/* $LUIGI_DIR
 mkdir -p $LUIGI_DIR/docu-microfrontend
 mv $EXPORT_DIR/* $LUIGI_DIR/docu-microfrontend
 
-# copy generated-json afterwards, since static files are only copied once by sapper in the beginning
+# copy generated-json afterwards, since static files are only copied once by SvelteKit in the beginning
 cp $BASE_DIR/../static/luigi/navigation-generated.json $LUIGI_DIR/
 
 # copy redirects file for netlify
