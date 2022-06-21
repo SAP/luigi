@@ -423,4 +423,51 @@ export class linkManager extends LuigiClientBase {
     this.options.preserveQueryParams = preserve;
     return this;
   }
+
+  /**
+   * Gets the luigi route associated with the current micro frontend.
+   * @returns {promise} a promise which resolves to a String value specifying the current luigi route
+   * @since 1.23.0
+   * @example
+   * LuigiClient.linkManager().getCurrentRoute();
+   * LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+   * LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+   */
+  getCurrentRoute() {
+    const currentId = helpers.getRandomId();
+
+    const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
+    currentRoutePromise[currentId] = {
+      resolveFn: function() {},
+      then: function(resolveFn) {
+        this.resolveFn = resolveFn;
+      }
+    };
+
+    this.setPromise('getCurrentRoute', currentRoutePromise);
+
+    helpers.addEventListener('luigi.navigation.currentRoute.answer', (e, listenerId) => {
+      const data = e.data.data;
+      const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
+
+      if (data.correlationId === currentId) {
+        if (currentRoutePromise[data.correlationId]) {
+          currentRoutePromise[data.correlationId].resolveFn(data.route);
+          delete currentRoutePromise[data.correlationId];
+          this.setPromise('getCurrentRoute', currentRoutePromise);
+        }
+        helpers.removeEventListener(listenerId);
+      }
+      helpers.removeEventListener(listenerId);
+    });
+
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.navigation.currentRoute',
+      data: Object.assign(this.options, {
+        id: currentId
+      })
+    });
+
+    return currentRoutePromise[currentId];
+  }
 }
