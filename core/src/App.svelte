@@ -1501,8 +1501,7 @@
       // handle getCurrentRoute message coming from client
       if ('luigi.navigation.currentRoute' === e.data.msg) {
         const data = e.data.data;
-        data.getCurrentPath = true;
-        const path = buildPathForGetCurrent(data, iframe);
+        const path = buildPathForGetCurrent(data);
 
         // send answer back to client
         const message = {
