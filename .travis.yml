@@ -124,6 +124,8 @@ jobs:
         - rm -rf ~/.npm/_cacache
       install:
         - npm set progress=false
+        - npm install -g @angular/core
+        - npm install -g @angular/common
         - npm install -g @angular/cli
         - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/
