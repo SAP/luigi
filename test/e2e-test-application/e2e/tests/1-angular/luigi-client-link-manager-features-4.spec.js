@@ -333,4 +333,92 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
   });
+
+  describe('getCurrentRoute', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      // "clear" variables to make sure they are not reused and throw error in case something goes wrong
+      $iframeBody = undefined;
+      cy.visitLoggedIn('/');
+    });
+
+    it('with fromContext option', () => {
+      const routeToCheck = '/projects/pr1/users/groups/avengers';
+      const routeFromContext = '/users/groups/avengers';
+      cy.visitLoggedIn(routeToCheck);
+
+      cy.expectPathToBe(routeToCheck);
+
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).contains('This is a dynamic node with');
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-button"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-button"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-text"]')
+          .should('contain', routeFromContext);
+      });
+    });
+
+    it('with fromVirtualTree option', () => {
+      const routeToCheck = '/projects/pr1/developers';
+      const routeVirtual = '/internal/virtualTree';
+      cy.visitLoggedIn(routeToCheck);
+      cy.expectPathToBe(routeToCheck);
+
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody).contains('Developers content.');
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="goToVirtualTree"]')
+          .click();
+
+        cy.expectPathToBe(routeToCheck + routeVirtual);
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-virtualtree"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-virtualtree"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-text-virtualtree"]')
+          .should('contain', routeVirtual);
+      });
+    });
+
+    it('with no option', () => {
+      const routeToCheck = '/projects/pr2/settings';
+      cy.visitLoggedIn(routeToCheck);
+      cy.expectPathToBe(routeToCheck);
+
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        // cy.wrap($iframeBody)
+        //   .contains('Developers content.')
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-no-option"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-no-option"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-text-no-option"]')
+          .should('contain', routeToCheck);
+      });
+    });
+  });
 });

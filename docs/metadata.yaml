@@ -1,0 +1,16 @@
+
+# DXP component metadata file
+
+kind: Component
+metadata:
+  displayName: Luigi Documentation
+  description: Contains documentation for Luigi core and client libraries
+  labels:
+    language: markdown
+  tags:
+    - luigi
+    - documentation
+spec:
+  type:
+    name: ui
+    lifecycle: production

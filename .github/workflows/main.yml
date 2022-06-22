@@ -1,0 +1,12 @@
+on:   
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule 
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  trigger-script-test:
+    name: Trigger script tests on travis
+    runs-on: ubuntu-latest
+    steps:
+      - name: cURL request
+        run: curl -X POST -d "{\"request\":{\"branch\":\"master\", \"message\":\"test-setup-scripts\"}}" -H "Content-Type:application/json" -H "Accept:application/json" -H "Travis-API-Version:3" -H "Authorization:token ${{ secrets.TRAVIS }}" https://api.travis-ci.com/repo/sap%2Fluigi/requests
