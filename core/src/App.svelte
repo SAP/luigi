@@ -1088,17 +1088,19 @@
     window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
 
-
-
-
-  // TODO needs to be consolidated with buildPath
-  const buildPathForGetCurrent = (params, srcNode, srcNodePathParams) => {
+  /**
+   * Builds the current path based on the navigation params received
+   * @param params {Object} navigation options
+   * @param iframe {Object} the current iframe making the call
+   * @returns {string} the path built 
+   */
+  const buildPathForGetCurrent = (params, iframe) => {
     const localCurrentNode = currentNode;
-    const localPathParams =  pathParams || srcNodePathParams;
+    const localPathParams =  pathParams;
     let localNavPath = navigationPath;
-    if (srcNode) {
-      let parent = srcNode.parent;
-      localNavPath = [srcNode];
+    if (localCurrentNode) {
+      let parent = localCurrentNode.parent;
+      localNavPath = [localCurrentNode];
       while (parent) {
         localNavPath.push(parent);
         parent = parent.parent;
@@ -1501,11 +1503,9 @@
 
       // handle getCurrentRoute message coming from client
       if ('luigi.navigation.currentRoute' === e.data.msg) {
-        const srcNode = iframe.luigi.currentNode;
-        const srcPathParams = iframe.luigi.pathParams;
         const data = e.data.data;
         data.getCurrentPath = true;
-        const path = buildPathForGetCurrent(data, srcNode, srcPathParams);
+        const path = buildPathForGetCurrent(data, iframe);
 
         // send answer back to client
         const message = {
