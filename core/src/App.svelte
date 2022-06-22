@@ -425,7 +425,7 @@
 
   const buildPath = (params, srcNode, srcNodePathParams) => {
     const localNode = srcNode || currentNode;
-    const localPathParams = srcNodePathParams || pathParams;
+    const pathParams = srcNodePathParams || pathParams;
     let localNavPath = navigationPath;
     if (srcNode) {
       let parent = srcNode.parent;
@@ -447,13 +447,13 @@
         return;
       }
       path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
+        getSubPath(node, pathParams),
         params.link
       );
     } else if (params.fromParent) {
       // from direct parent
       path = Routing.concatenatePath(
-        getSubPath(localNode.parent, localPathParams),
+        getSubPath(localNode.parent, pathParams),
         params.link
       );
     } else if (params.fromClosestContext) {
@@ -462,7 +462,7 @@
         .reverse()
         .find((n) => n.navigationContext && n.navigationContext.length > 0);
       path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
+        getSubPath(node, pathParams),
         params.link
       );
     } else if (params.fromContext) {
@@ -472,7 +472,7 @@
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
       path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
+        getSubPath(node, pathParams),
         params.link
       );
     } else if (params.intent) {
@@ -480,7 +480,7 @@
     } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(
-        getSubPath(localNode, localPathParams),
+        getSubPath(localNode, pathParams),
         params.link
       );
     }
@@ -1094,12 +1094,10 @@
    * @returns {string} the path built 
    */
   const buildPathForGetCurrent = (params) => {
-    const localCurrentNode = currentNode;
-    const localPathParams =  pathParams;
     let localNavPath = navigationPath;
-    if (localCurrentNode) {
-      let parent = localCurrentNode.parent;
-      localNavPath = [localCurrentNode];
+    if (currentNode) {
+      let parent = currentNode.parent;
+      localNavPath = [currentNode];
       while (parent) {
         localNavPath.push(parent);
         parent = parent.parent;
@@ -1108,7 +1106,7 @@
     }
 
     let path = params.link;
-    let localCurrentNodeViewUrl = getSubPath(localCurrentNode, localPathParams);
+    let currentNodeViewUrl = getSubPath(currentNode, pathParams);
   
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
@@ -1120,29 +1118,29 @@
         return;
       }
       // build virtualPath if there is any
-      const virtualTreeNodeViewUrl = getSubPath(virtualTreeNode, localPathParams);
-      path = localCurrentNodeViewUrl.split(virtualTreeNodeViewUrl).join('');;
+      const virtualTreeNodeViewUrl = getSubPath(virtualTreeNode, pathParams);
+      path = currentNodeViewUrl.split(virtualTreeNodeViewUrl).join('');;
     } else if (params.fromParent) {
-      const parentNodeViewUrl = getSubPath(localCurrentNode.parent, localPathParams);
-      path = localCurrentNodeViewUrl.split(parentNodeViewUrl).join('');
+      const parentNodeViewUrl = getSubPath(currentNode.parent, pathParams);
+      path = currentNodeViewUrl.split(parentNodeViewUrl).join('');
     } else if (params.fromClosestContext) {
       // from the closest navigation context
       const navContextNode = [...localNavPath]
         .reverse()
         .find((n) => n.navigationContext && n.navigationContext.length > 0);
-      const navContextNodeViewUrl = getSubPath(navContextNode, localPathParams);
-      path = localCurrentNodeViewUrl.split(navContextNodeViewUrl).join('');
+      const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
+      path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
       const navContextNode = [...localNavPath]
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
-      const navContextNodeViewUrl = getSubPath(navContextNode, localPathParams);
-      path = localCurrentNodeViewUrl.split(navContextNodeViewUrl).join('');
+      const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
+      path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else {
       // retrieve path for getCurrentPath method when no options used
-        path = localCurrentNodeViewUrl;
+        path = currentNodeViewUrl;
     }
     return path;
   };
