@@ -1091,10 +1091,9 @@
   /**
    * Builds the current path based on the navigation params received
    * @param params {Object} navigation options
-   * @param iframe {Object} the current iframe making the call
    * @returns {string} the path built 
    */
-  const buildPathForGetCurrent = (params, iframe) => {
+  const buildPathForGetCurrent = (params) => {
     const localCurrentNode = currentNode;
     const localPathParams =  pathParams;
     let localNavPath = navigationPath;
