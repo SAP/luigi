@@ -44,10 +44,16 @@ class RoutingClass {
   /**
     navigateTo used for navigation
     Triggers a frame reload if we are on the same route (eg. if we click on same navigation item again)
-    @param route string  absolute path of the new route
+    @param {string} route absolute path of the new route
+    @param {Object} options navigation options
+    @param {boolean} options.keepBrowserHistory By default, it is set to `true`. If it is set to `false`, there is no browser history be kept.
+    @param {boolean} options.navSync By default, it is set to `true`. If it is set to `false`, it disables the navigation handling for a single navigation request.
+    @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update be triggered.
    */
-  async navigateTo(route, pushState = true, navSync = true) {
+  async navigateTo(route, options = {}) {
     const { nodeObject } = await Navigation.extractDataFromPath(route);
+    const { keepBrowserHistory = true, navSync = true, preventContextUpdate = false } = options;
+    
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
     }
@@ -64,7 +70,7 @@ class RoutingClass {
       url.hash = route;
     }
 
-    const chosenHistoryMethod = pushState ? 'pushState' : 'replaceState';
+    const chosenHistoryMethod = keepBrowserHistory ? 'pushState' : 'replaceState';
     const method = LuigiConfig.getConfigValue('routing.disableBrowserHistory') ? 'replaceState' : chosenHistoryMethod;
     window.history[method](
       {
@@ -79,10 +85,15 @@ class RoutingClass {
     // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
     let event;
     if (GenericHelpers.isIE()) {
-      event = document.createEvent('Event');
-      event.initEvent('popstate', true, true);
+      event = new Event('popstate', {'bubbles':true, 'cancelable':true});
     } else {
-      event = navSync ? new CustomEvent('popstate') : new CustomEvent('popstate', { detail: { withoutSync: true } });
+      const eventDetail = {
+        detail: {
+          preventContextUpdate,
+          withoutSync: !navSync
+        }
+      };
+      event = new CustomEvent('popstate', eventDetail);
     }
 
     window.dispatchEvent(event);
@@ -156,7 +167,7 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-  async handleRouteChange(path, component, iframeElement, config, withoutSync) {
+  async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
     const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
     if (featureToggleProperty) {
       RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
@@ -238,7 +249,7 @@ class RoutingClass {
         if (pathData.isExistingRoute) {
           //normal navigation can be performed
           const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
-          this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, false);
+          this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, { keepBrowserHistory: false});
           // reset comp data
           component.set({ navigationPath: [] });
         } else {
@@ -367,22 +378,25 @@ class RoutingClass {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
         }
-        if (!withoutSync) {
-          await Iframe.navigateIframe(config, component, iframeElement);
-        } else {
-          const componentData = component.get();
-          const internalData = await component.prepareInternalData(config);
-          // send a message to the iFrame to trigger a context update listener when withoutSync enabled
-          IframeHelpers.sendMessageToIframe(config.iframe, {
-            msg: 'luigi.navigate',
-            viewUrl: viewUrl,
-            context: JSON.stringify(componentData.context),
-            nodeParams: JSON.stringify(componentData.nodeParams),
-            pathParams: JSON.stringify(componentData.pathParams),
-            searchParams: JSON.stringify(RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)),
-            internal: JSON.stringify(internalData),
-            withoutSync: true
-          });
+
+        if(!preventContextUpdate) {
+          if (!withoutSync) {
+            await Iframe.navigateIframe(config, component, iframeElement);
+          } else {
+            const componentData = component.get();
+            const internalData = await component.prepareInternalData(config);
+            // send a message to the iFrame to trigger a context update listener when withoutSync enabled
+            IframeHelpers.sendMessageToIframe(config.iframe, {
+              msg: 'luigi.navigate',
+              viewUrl: viewUrl,
+              context: JSON.stringify(componentData.context),
+              nodeParams: JSON.stringify(componentData.nodeParams),
+              pathParams: JSON.stringify(componentData.pathParams),
+              searchParams: JSON.stringify(RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)),
+              internal: JSON.stringify(internalData),
+              withoutSync: true
+            });
+          }
         }
       }
 

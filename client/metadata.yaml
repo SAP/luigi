@@ -1,0 +1,15 @@
+
+# DXP component metadata file
+
+kind: Component
+metadata:
+  displayName: Luigi Client
+  description: Library for building Luigi micro frontends
+  labels:
+    language: javascript
+  tags:
+    - luigi
+spec:
+  type:
+    name: ui
+    lifecycle: production

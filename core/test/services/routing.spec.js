@@ -97,7 +97,7 @@ describe('Routing', function() {
       };
 
       // when
-      await Routing.navigateTo(path, false);
+      await Routing.navigateTo(path, { keepBrowserHistory: false });
 
       // then
       sinon.assert.calledWithExactly(window.history.replaceState, { path }, '', '/projects/teams');
@@ -111,8 +111,9 @@ describe('Routing', function() {
       // when
       await Routing.navigateTo('/projects');
 
+      const eventDetail = { detail: { preventContextUpdate: false, withoutSync: false } };
       // then
-      sinon.assert.calledWithExactly(window.dispatchEvent, new CustomEvent('popstate'));
+      sinon.assert.calledWithExactly(window.dispatchEvent, new CustomEvent('popstate', eventDetail));
     });
   });
 
@@ -629,7 +630,7 @@ describe('Routing', function() {
       await Routing.handleRouteChange(path, component, node, config);
 
       // then
-      sinon.assert.calledWithExactly(Routing.navigateTo, expectedPath, false);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedPath, { keepBrowserHistory: false });
     });
 
     it("should set component's 'hideSideNav' property ", async () => {
