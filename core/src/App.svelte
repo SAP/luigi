@@ -1109,85 +1109,41 @@
     }
 
     let path = params.link;
+    const hasVirtualPathSegment = localPathParams && Object.keys(localPathParams)[0].includes('virtualSegment_');
+    let virtualPath = '';
+    if (hasVirtualPathSegment) {
+      Object.entries(localPathParams).forEach((virtualParam) => {
+        virtualPath += '/' + virtualParam[1];
+      });
+    }
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const node = [...localNavPath].reverse().find((n) => n.virtualTree);
-      if (!node) {
+      const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
+      if (!virtualTreeNode) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
         );
         return;
       }
-      path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
-        params.link
-      );
-
-      // boolean predicate, changes the path only if getCurrentPath function used
-      const isGetCurrentPathRequired =
-        !GenericHelpers.isEmptyObject(localPathParams) &&
-        !path.includes('virtualSegment_') &&
-        !params.link &&
-        params.getCurrentPath &&
-        Object.keys(localPathParams)[0].includes('virtualSegment_');
-      if (isGetCurrentPathRequired) {
-        let virtualPath = '';
-        Object.entries(localPathParams).forEach((virtualParam) => {
-          virtualPath += '/' + virtualParam[1];
-        });
-        path = virtualPath;
-      }
+      path = virtualPath;
     } else if (params.fromParent) {
-      // from direct parent
-      path = Routing.concatenatePath(
-        getSubPath(localNode.parent, localPathParams),
-        params.link
-      );
+      path = localNode.viewUrl.split(localNode.parent.viewUrl).join('') + virtualPath;
     } else if (params.fromClosestContext) {
       // from the closest navigation context
-      const node = [...localNavPath]
+      const navContextNode = [...localNavPath]
         .reverse()
         .find((n) => n.navigationContext && n.navigationContext.length > 0);
-      path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
-        params.link
-      );
+      path = localNode.viewUrl.split(navContextNode.viewUrl).join('') + virtualPath;
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const node = [...localNavPath]
+      const navContextNode = [...localNavPath]
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
-      const pathUpToContext = getSubPath(node, localPathParams);
-      const fullPath = getSubPath(localNode, localPathParams);
-      path = params.getCurrentPath
-        ? fullPath.substring(pathUpToContext.length)
-        : Routing.concatenatePath(pathUpToContext, params.link);
-    } else if (params.intent) {
-      path = RoutingHelpers.getIntentPath(params.link);
-    } else if (params.relative) {
-      // relative
-      path = Routing.concatenatePath(
-        getSubPath(localNode, localPathParams),
-        params.link
-      );
+      path = localNode.viewUrl.split(navContextNode.viewUrl).join('') + virtualPath;
     } else {
       // retrieve path for getCurrentPath method when no options used
-      if (params.getCurrentPath) {
-        path = getSubPath(localNode, localPathParams);
-      }
-    }
-    if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
-      path += path.includes('?') ? '&' : '?';
-      Object.entries(params.nodeParams).forEach((entry, index) => {
-        path +=
-          encodeURIComponent(
-            RoutingHelpers.getContentViewParamPrefix() + entry[0]
-          ) +
-          '=' +
-          encodeURIComponent(entry[1]) +
-          (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
-      });
+        path = getSubPath(localNode, localPathParams) + virtualPath;
     }
     return path;
   };

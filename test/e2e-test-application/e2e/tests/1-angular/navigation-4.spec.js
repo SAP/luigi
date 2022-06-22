@@ -253,7 +253,7 @@ describe('Navigation', () => {
       cy.visitLoggedIn('/projects/pr2');
     });
 
-    it.only('withOptions - no context updated -> it should remain on the current page', () => {
+    it('withOptions - no context updated -> it should remain on the current page', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.getIframeBody().then(result => {
         // Link on Main page PR2 exists
