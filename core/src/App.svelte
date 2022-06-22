@@ -425,7 +425,7 @@
 
   const buildPath = (params, srcNode, srcNodePathParams) => {
     const localNode = srcNode || currentNode;
-    const pathParams = srcNodePathParams || pathParams;
+    const localPathParams = srcNodePathParams || pathParams;
     let localNavPath = navigationPath;
     if (srcNode) {
       let parent = srcNode.parent;
@@ -447,13 +447,13 @@
         return;
       }
       path = Routing.concatenatePath(
-        getSubPath(node, pathParams),
+        getSubPath(node, localPathParams),
         params.link
       );
     } else if (params.fromParent) {
       // from direct parent
       path = Routing.concatenatePath(
-        getSubPath(localNode.parent, pathParams),
+        getSubPath(localNode.parent, localPathParams),
         params.link
       );
     } else if (params.fromClosestContext) {
@@ -462,7 +462,7 @@
         .reverse()
         .find((n) => n.navigationContext && n.navigationContext.length > 0);
       path = Routing.concatenatePath(
-        getSubPath(node, pathParams),
+        getSubPath(node, localPathParams),
         params.link
       );
     } else if (params.fromContext) {
@@ -472,7 +472,7 @@
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
       path = Routing.concatenatePath(
-        getSubPath(node, pathParams),
+        getSubPath(node, localPathParams),
         params.link
       );
     } else if (params.intent) {
@@ -480,7 +480,7 @@
     } else if (params.relative) {
       // relative
       path = Routing.concatenatePath(
-        getSubPath(localNode, pathParams),
+        getSubPath(localNode, localPathParams),
         params.link
       );
     }
