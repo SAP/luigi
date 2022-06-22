@@ -129,7 +129,8 @@ jobs:
         - npm install -g @angular/core
         - npm install -g @angular/common
         - npm install -g @angular/cli
-        # - npm install --save @types/jest
+        - npm install --save @types/jest --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
+        - npm install --save @types/jest --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/
         - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/
         - npm install @luigi-project/client@latest --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
