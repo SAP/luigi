@@ -119,12 +119,12 @@ jobs:
         - rm -rf ~/.npm/_cacache
       install:
         - npm set progress=false
-        - npm install -g lerna
-        - lerna clean --yes
         - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
         - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/
+        - npm install @luigi-project/client@latest --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
+        - npm install @luigi-project/client@latest --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/
       script:
-        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/  --watch false --browsers=ChromeHeadless
+        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ --watch false --browsers=ChromeHeadless
 
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
