@@ -66,5 +66,6 @@
       "usePrettier": true,
       "useEslint": false,
       "eslintStopCommit": true
-   }
+   },
+   "dependencies": {}
 }
