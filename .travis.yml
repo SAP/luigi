@@ -4,6 +4,8 @@ node_js:
   - '12.18.4' # Default node version for CI testing
   # - 16 # Optional node version for setup scripts
 dist: xenial
+services:
+  - xvfb
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
 cache:
@@ -116,7 +118,6 @@ jobs:
         - sudo apt-get install google-chrome-stable
         - export CHROME_BIN=usr/bin/google-chrome
         - export DISPLAY=:99.0
-        - sh -e /etc/init.d/xvfb start
       #   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
