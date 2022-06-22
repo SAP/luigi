@@ -812,6 +812,7 @@
 
   .fd-shellbar {
     padding: 0 0.5rem;
+    height: $topNavHeight;
   }
 
   .hideNavComponent {
