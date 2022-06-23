@@ -58,7 +58,7 @@ class LuigiElements {
    * Luigi.elements().getShellbar();
    */
   getShellbar() {
-    return document.getElementsByClassName('fd-shellbar')[0];
+    return document.getElementsByClassName('lui-shellbar-wrapper')[0];
   }
 
   /**
@@ -70,7 +70,7 @@ class LuigiElements {
    * Luigi.elements().getShellbarActions();
    */
   getShellbarActions() {
-    return document.getElementsByClassName('fd-shellbar__group--actions')[0];
+    return document.getElementsByClassName('lui-shellbar_group--actions')[0];
   }
 
   /**

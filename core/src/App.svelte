@@ -212,16 +212,24 @@
 
   const handleNavigation = (data, config, srcNode, srcPathParams) => {
     let path = buildPath(data.params, srcNode, srcPathParams);
+    const { preventHistoryEntry, preserveQueryParams, preventContextUpdate } =
+      data.params;
+
+    const options = {
+      keepBrowserHistory: !preventHistoryEntry,
+      navSync: isNavigationSyncEnabled,
+      preventContextUpdate,
+    };
 
     path = GenericHelpers.addLeadingSlash(path);
-    path = data.params.preserveQueryParams
+    path = preserveQueryParams
       ? RoutingHelpers.composeSearchParamsToRoute(path)
       : path;
     addPreserveView(data, config);
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    return Routing.navigateTo(path, true, isNavigationSyncEnabled);
+    return Routing.navigateTo(path, options);
   };
 
   const removeQueryParams = (str) => str.split('?')[0];
@@ -383,7 +391,8 @@
     );
 
     // subsequential route handling
-    RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
+    RoutingHelpers.addRouteChangeListener((path, eventDetail) => {
+      const { withoutSync, preventContextUpdate } = eventDetail || {};
       const pv = preservedViews;
       // TODO: check if bookmarkable modal is interferring here
       if (!isValidBackRoute(pv, path)) {
@@ -399,7 +408,8 @@
         getComponentWrapper(),
         node,
         config,
-        withoutSync
+        withoutSync,
+        preventContextUpdate
       );
     });
   };
@@ -426,7 +436,6 @@
       }
       localNavPath = [...localNavPath].reverse();
     }
-
     let path = params.link;
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
@@ -1079,6 +1088,110 @@
     window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
 
+
+
+
+  // TODO needs to be consolidated with buildPath
+  const buildPathForGetCurrent = (params, srcNode, srcNodePathParams) => {
+    const localNode = srcNode || currentNode;
+    const localPathParams = GenericHelpers.isEmptyObject(srcNodePathParams)
+      ? pathParams
+      : srcNodePathParams;
+    let localNavPath = navigationPath;
+    if (srcNode) {
+      let parent = srcNode.parent;
+      localNavPath = [srcNode];
+      while (parent) {
+        localNavPath.push(parent);
+        parent = parent.parent;
+      }
+      localNavPath = [...localNavPath].reverse();
+    }
+
+    let path = params.link;
+    if (params.fromVirtualTreeRoot) {
+      // from a parent node specified with virtualTree: true
+      const node = [...localNavPath].reverse().find((n) => n.virtualTree);
+      if (!node) {
+        console.error(
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
+        );
+        return;
+      }
+      path = Routing.concatenatePath(
+        getSubPath(node, localPathParams),
+        params.link
+      );
+
+      // boolean predicate, changes the path only if getCurrentPath function used
+      const isGetCurrentPathRequired =
+        !GenericHelpers.isEmptyObject(localPathParams) &&
+        !path.includes('virtualSegment_') &&
+        !params.link &&
+        params.getCurrentPath &&
+        Object.keys(localPathParams)[0].includes('virtualSegment_');
+      if (isGetCurrentPathRequired) {
+        let virtualPath = '';
+        Object.entries(localPathParams).forEach((virtualParam) => {
+          virtualPath += '/' + virtualParam[1];
+        });
+        path = virtualPath;
+      }
+    } else if (params.fromParent) {
+      // from direct parent
+      path = Routing.concatenatePath(
+        getSubPath(localNode.parent, localPathParams),
+        params.link
+      );
+    } else if (params.fromClosestContext) {
+      // from the closest navigation context
+      const node = [...localNavPath]
+        .reverse()
+        .find((n) => n.navigationContext && n.navigationContext.length > 0);
+      path = Routing.concatenatePath(
+        getSubPath(node, localPathParams),
+        params.link
+      );
+    } else if (params.fromContext) {
+      // from a given navigation context
+      const navigationContext = params.fromContext;
+      const node = [...localNavPath]
+        .reverse()
+        .find((n) => navigationContext === n.navigationContext);
+      const pathUpToContext = getSubPath(node, localPathParams);
+      const fullPath = getSubPath(localNode, localPathParams);
+      path = params.getCurrentPath
+        ? fullPath.substring(pathUpToContext.length)
+        : Routing.concatenatePath(pathUpToContext, params.link);
+    } else if (params.intent) {
+      path = RoutingHelpers.getIntentPath(params.link);
+    } else if (params.relative) {
+      // relative
+      path = Routing.concatenatePath(
+        getSubPath(localNode, localPathParams),
+        params.link
+      );
+    } else {
+      // retrieve path for getCurrentPath method when no options used
+      if (params.getCurrentPath) {
+        path = getSubPath(localNode, localPathParams);
+      }
+    }
+    if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
+      path += path.includes('?') ? '&' : '?';
+      Object.entries(params.nodeParams).forEach((entry, index) => {
+        path +=
+          encodeURIComponent(
+            RoutingHelpers.getContentViewParamPrefix() + entry[0]
+          ) +
+          '=' +
+          encodeURIComponent(entry[1]) +
+          (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
+      });
+    }
+    return path;
+  };
+
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
@@ -1291,20 +1404,24 @@
         const isSpecial = newTab || modal || splitView || drawer;
 
         const resolveRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doResolve();
           }
         };
 
         const rejectRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doReject();
           }
         };
 
-        const checkResolve = checkLocationChange => {
+        const checkResolve = (checkLocationChange) => {
           if (!checkLocationChange || previousUrl !== window.location.href) {
             resolveRemotePromise();
           } else {
@@ -1428,12 +1545,36 @@
         }
       }
 
+      // handle getCurrentRoute message coming from client
+      if ('luigi.navigation.currentRoute' === e.data.msg) {
+        const srcNode = iframe.luigi.currentNode;
+        const srcPathParams = iframe.luigi.pathParams;
+        const data = e.data.data;
+        data.getCurrentPath = true;
+        const path = buildPathForGetCurrent(data, srcNode, srcPathParams);
+
+        // send answer back to client
+        const message = {
+          msg: 'luigi.navigation.currentRoute.answer',
+          data: {
+            route: path,
+            correlationId: data.id,
+          },
+        };
+        IframeHelpers.sendMessageToIframe(iframe, message);
+      }
+
       if ('luigi.auth.tokenIssued' === e.data.msg) {
         sendAuthDataToClient(e.data.authData);
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
+        if (isSpecialIframe) {
+          const route = GenericHelpers.addLeadingSlash(buildPath(e.data.params, iframe.luigi.currentNode, iframe.luigi.pathParams));
+          Routing.updateModalDataInUrl(route, e.data.params.modal, e.data.params.history);
+        } else {
+          console.warn('updateModalDataPath can only be called from modal, ignoring.');
+        }
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {
