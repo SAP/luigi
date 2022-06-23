@@ -404,8 +404,6 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.getIframeBody().then(result => {
         $iframeBody = result;
-        // cy.wrap($iframeBody)
-        //   .contains('Developers content.')
 
         cy.wrap($iframeBody)
           .find('[data-testid="curr-link-no-option"]')
@@ -428,8 +426,6 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.getIframeBody().then(result => {
         $iframeBody = result;
-        // cy.wrap($iframeBody)
-        //   .contains('Developers content.')
 
         cy.wrap($iframeBody)
           .find('[data-testid="curr-link-from-parent"]')
@@ -452,9 +448,6 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.getIframeBody().then(result => {
         $iframeBody = result;
-        // cy.wrap($iframeBody)
-        //   .contains('Developers content.')
-
         cy.wrap($iframeBody)
           .find('[data-testid="curr-link-from-closest-context"]')
           .click();
