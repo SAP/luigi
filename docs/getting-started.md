@@ -33,15 +33,12 @@ Most importantly, Luigi is **technology-agnostic**, which means you can use virt
 
 Some benefits of a micro frontend architecture include:
 
-| Micro frontends   |      Monolithic applications      | 
-|:-------------------|:-----------------------------------|
-| Multiple technologies in the same app | Lock-in to one technology |
-| Future-proof and scalable | Not suitable for fast-growing applications |
-| Can be managed by independent teams  | Must align with a central design team |
-| Fast deployment of new features and bugfixes <span style='color: white'>---</span> | Cannot deploy without changing the entire monolith |
-| Smaller, manageable codebase | Larger, complex codebase |
-| Reduced maintenance cost |  More difficult to test and maintain | 
-
+* Future-proof and scalable 
+* Multiple technologies can co-exist in the same app
+* Can be managed by independent teams
+* Fast deployment of new features and bugfixes
+* Smaller, more manageable codebase
+* Reduced maintenance cost
 
 ### Main features
 
