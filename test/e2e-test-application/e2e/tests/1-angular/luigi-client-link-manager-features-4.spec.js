@@ -420,5 +420,53 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
           .should('contain', routeToCheck);
       });
     });
+
+    it('with fromParent option', () => {
+      const routeToCheck = '/projects/pr1/users/groups/avengers';
+      cy.visitLoggedIn(routeToCheck);
+      cy.expectPathToBe(routeToCheck);
+
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        // cy.wrap($iframeBody)
+        //   .contains('Developers content.')
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-from-parent"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-from-parent"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-text-from-parent"]')
+          .should('contain', '/avengers');
+      });
+    });
+
+    it('with fromClosestContext option', () => {
+      const routeToCheck = '/projects/pr1/users/groups/avengers';
+      cy.visitLoggedIn(routeToCheck);
+      cy.expectPathToBe(routeToCheck);
+
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        // cy.wrap($iframeBody)
+        //   .contains('Developers content.')
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-from-closest-context"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-link-from-closest-context"]')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('[data-testid="curr-text-from-closest-context"]')
+          .should('contain', '/users/groups/avengers');
+      });
+    });
   });
 });
