@@ -813,6 +813,10 @@
   .fd-shellbar:focus {
     outline: none;
   }
+  
+  .fd-shellbar:not(.fd-shellbar--responsive-paddings) {
+    padding: 0 0.5rem;
+  }
 
   .hideNavComponent {
     display: none;
