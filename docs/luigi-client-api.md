@@ -525,6 +525,24 @@ LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foob
 
 -   **since**: 1.19.0
 
+#### getCurrentRoute
+
+Gets the luigi route associated with the current micro frontend.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().getCurrentRoute();
+LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a String value specifying the current luigi route
+
+**Meta**
+
+-   **since**: 1.23.0
+
 #### navigate
 
 Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
@@ -740,6 +758,30 @@ LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).na
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
+
+#### withOptions
+
+Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+
+##### Parameters
+
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** navigation options
+    -   `options.preventHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+    -   `options.preventContextUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().withOptions(
+{ preventContextUpdate:true, preventHistoryEntry: true }
+).navigate('/overview')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### pathExists
 

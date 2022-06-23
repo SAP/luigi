@@ -1,12 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { OperatorFunction, PartialObserver, Subscription } from 'rxjs';
-import {
-  convertToParamMap,
-  NavigationEnd,
-  ParamMap,
-  Router,
-  RouterEvent,
-} from '@angular/router';
+import { convertToParamMap, NavigationEnd, ParamMap, Router, RouterEvent } from '@angular/router';
 import { linkManager, uxManager } from '@luigi-project/client';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
@@ -14,19 +8,14 @@ import { LuigiContextService } from './luigi-context-service';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class LuigiAutoRoutingService implements OnDestroy {
   private subscription: Subscription = new Subscription();
 
-  constructor(
-    private router: Router,
-    private luigiContextService: LuigiContextService
-  ) {
+  constructor(private router: Router, private luigiContextService: LuigiContextService) {
     this.subscription.add(
-      this.router.events
-        .pipe(this.doFilter())
-        .subscribe(this.doSubscription.bind(this) as () => void)
+      this.router.events.pipe(this.doFilter()).subscribe(this.doSubscription.bind(this) as () => void)
     );
   }
 
@@ -53,8 +42,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
    * @param event the NavigationEnd event
    */
   doSubscription(event: NavigationEnd): void {
-    let current: ActivatedRouteSnapshot | null =
-      LuigiActivatedRouteSnapshotHelper.getCurrent();
+    let current: ActivatedRouteSnapshot | null = LuigiActivatedRouteSnapshotHelper.getCurrent();
 
     if (!current) {
       current = this.router.routerState.root.snapshot;
@@ -62,7 +50,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
         // handle multiple children
         let primary: ActivatedRouteSnapshot | null = null;
 
-        current?.children.forEach((childSnapshot) => {
+        current?.children.forEach(childSnapshot => {
           if (childSnapshot.outlet === 'primary') {
             primary = childSnapshot;
           }
@@ -77,23 +65,24 @@ export class LuigiAutoRoutingService implements OnDestroy {
       }
     }
     if (current?.data) {
+      const ux = uxManager();
+      let lm = linkManager().withoutSync();
+      let route: string | undefined;
+
       if (current.data.luigiRoute) {
-        let route = current.data.luigiRoute;
+        route = current.data.luigiRoute;
 
         if (current.params) {
           const pmap: ParamMap = convertToParamMap(current.params);
-          pmap.keys.forEach((key) => {
-            const val = pmap.getAll(key).forEach((param) => {
-              route = route.replace(':' + key, param);
+          pmap.keys.forEach(key => {
+            const val = pmap.getAll(key).forEach(param => {
+              route = route?.replace(':' + key, param);
             });
           });
         }
-        let lm = linkManager();
         if (current.data.fromContext) {
           if (!this.luigiContextService.getContext()) {
-            console.debug(
-              'Ignoring auto navigation request, luigi context not set'
-            );
+            console.debug('Ignoring auto navigation request, luigi context not set');
             return;
           }
           if (current.data.fromContext === true) {
@@ -102,11 +91,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
             lm = lm.fromContext(current.data.fromContext);
           }
         }
-
-        lm.withoutSync().navigate(route);
-        return;
-      }
-      if (current.data.fromVirtualTreeRoot) {
+      } else if (current.data.fromVirtualTreeRoot) {
         let url = event.url;
         const truncate = current.data.fromVirtualTreeRoot.truncate;
         if (truncate) {
@@ -117,13 +102,17 @@ export class LuigiAutoRoutingService implements OnDestroy {
             url = url.substr(truncate.length);
           }
         }
-        console.debug('Calling fromVirtualTreeRoot for url ==> ' + url);
-        linkManager().fromVirtualTreeRoot().withoutSync().navigate(url);
+        route = url;
+        console.debug('Calling fromVirtualTreeRoot for url ==> ' + route);
+        lm = lm.fromVirtualTreeRoot();
       }
-      const ux = uxManager();
-      if (ux.isModal() && current.data.updateModalDataPath && current.routeConfig?.path) {
-        const lm = linkManager();
-        lm.updateModalPathInternalNavigation(current.routeConfig.path, {}, current.data.addHistoryEntry);
+
+      if (ux.isModal()) {
+        if (current.data.updateModalDataPath) {
+          lm.updateModalPathInternalNavigation(route as string, {}, current.data.addHistoryEntry);
+        }
+      } else if (route) {
+        lm.navigate(route);
       }
     }
   }
