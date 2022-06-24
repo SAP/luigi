@@ -162,7 +162,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 
 ### header.responsiveShellbarPaddings
 - **type**: boolean
-- **description**: based on the browser window size the responsiv padding will be applied to the Shellbar Component when set to `true`.
+- **description**: based on the browser window size, a responsive padding will be applied to the Shellbar Component when set to `true`.
 - **default**: by default, the parameter is set to `false` and the padding for Shellbar Component will stay the same and inherited from `.fd-shellbar` class.
 - **example**: 
 ```
