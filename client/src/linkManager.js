@@ -29,7 +29,9 @@ export class linkManager extends LuigiClientBase {
       link: '',
       newTab: false,
       preserveQueryParams: false,
-      anchor: ''
+      anchor: '',
+      preventContextUpdate: false,
+      preventHistoryEntry: false
     };
   }
 
@@ -41,7 +43,7 @@ export class linkManager extends LuigiClientBase {
    * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
@@ -156,7 +158,7 @@ export class linkManager extends LuigiClientBase {
    * @param {string} path navigation path
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @example
@@ -306,6 +308,33 @@ export class linkManager extends LuigiClientBase {
     return this;
   }
 
+  /**
+   * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+   * @memberof linkManager
+   * @param {Object} options navigation options
+   * @param {boolean} options.preventHistoryEntry By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+   * @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
+   * @returns {linkManager} link manager instance
+   * @since NEXTRELEASE
+   * @example
+   * LuigiClient.linkManager().withOptions(
+   * { preventContextUpdate:true, preventHistoryEntry: true }
+   * ).navigate('/overview')
+   */
+  withOptions(options) {
+    if (!helpers.isObject(options)) return this;
+
+    if (options['preventHistoryEntry'] !== undefined) {
+      this.options.preventHistoryEntry = options['preventHistoryEntry'];
+    }
+
+    if (options['preventContextUpdate'] !== undefined) {
+      this.options.preventContextUpdate = options['preventContextUpdate'];
+    }
+
+    return this;
+  }
+
   /** @lends linkManager */
   /**
    * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
@@ -422,5 +451,52 @@ export class linkManager extends LuigiClientBase {
   preserveQueryParams(preserve = false) {
     this.options.preserveQueryParams = preserve;
     return this;
+  }
+
+  /**
+   * Gets the luigi route associated with the current micro frontend.
+   * @returns {promise} a promise which resolves to a String value specifying the current luigi route
+   * @since 1.23.0
+   * @example
+   * LuigiClient.linkManager().getCurrentRoute();
+   * LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+   * LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+   */
+  getCurrentRoute() {
+    const currentId = helpers.getRandomId();
+
+    const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
+    currentRoutePromise[currentId] = {
+      resolveFn: function() {},
+      then: function(resolveFn) {
+        this.resolveFn = resolveFn;
+      }
+    };
+
+    this.setPromise('getCurrentRoute', currentRoutePromise);
+
+    helpers.addEventListener('luigi.navigation.currentRoute.answer', (e, listenerId) => {
+      const data = e.data.data;
+      const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
+
+      if (data.correlationId === currentId) {
+        if (currentRoutePromise[data.correlationId]) {
+          currentRoutePromise[data.correlationId].resolveFn(data.route);
+          delete currentRoutePromise[data.correlationId];
+          this.setPromise('getCurrentRoute', currentRoutePromise);
+        }
+        helpers.removeEventListener(listenerId);
+      }
+      helpers.removeEventListener(listenerId);
+    });
+
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.navigation.currentRoute',
+      data: Object.assign(this.options, {
+        id: currentId
+      })
+    });
+
+    return currentRoutePromise[currentId];
   }
 }

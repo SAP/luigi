@@ -286,7 +286,7 @@ class LuigiConfig {
    * @memberof Configuration
    * @example
    * Luigi.clearNavigationCache();
-   * @since NEXT_RELEASE
+   * @since 1.19.0
    */
   clearNavigationCache() {
     NodeDataManagementStorage.deleteCache();

@@ -138,13 +138,21 @@ class RoutingHelpersClass {
     return hashRoutingActive ? this.getLocationHashQueryParams() : this.getLocationSearchQueryParams();
   }
 
+  getLocation() {
+    return location;
+  }
+
   getLocationHashQueryParams() {
-    const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
-    return queryParamIndex !== -1 ? RoutingHelpers.parseParams(location.hash.slice(queryParamIndex + 1)) : {};
+    const queryParamIndex = RoutingHelpers.getLocation().hash.indexOf(this.defaultQueryParamSeparator);
+    return queryParamIndex !== -1
+      ? RoutingHelpers.parseParams(RoutingHelpers.getLocation().hash.slice(queryParamIndex + 1))
+      : {};
   }
 
   getLocationSearchQueryParams() {
-    return location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
+    return RoutingHelpers.getLocation().search
+      ? RoutingHelpers.parseParams(RoutingHelpers.getLocation().search.slice(1))
+      : {};
   }
 
   /**
@@ -163,12 +171,12 @@ class RoutingHelpersClass {
 
   getModalPathFromPath() {
     const path = this.getQueryParam(this.getModalViewParamName());
-    return path && decodeURIComponent(path);
+    return path;
   }
 
   getModalParamsFromPath() {
     const modalParamsStr = this.getQueryParam(`${this.getModalViewParamName()}Params`);
-    return modalParamsStr && JSON.parse(decodeURIComponent(modalParamsStr));
+    return modalParamsStr && JSON.parse(modalParamsStr);
   }
 
   addRouteChangeListener(callback) {
@@ -182,8 +190,8 @@ class RoutingHelpersClass {
     });
 
     EventListenerHelpers.addEventListener('popstate', e => {
-      const method = hashRoutingActive ? Routing.getHashPath(location.href) : Routing.getModifiedPathname();
-      callback(method, e.detail && e.detail.withoutSync);
+      const path = hashRoutingActive ? Routing.getHashPath(location.href) : Routing.getModifiedPathname();
+      callback(path, e.detail);
     });
   }
 
@@ -338,7 +346,7 @@ class RoutingHelpersClass {
     }
     const featureToggleList = featureTogglesFromUrl.split(',');
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
-      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft));
+      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft, true));
     }
   }
 

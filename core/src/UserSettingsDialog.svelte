@@ -41,6 +41,11 @@
   let isComboOpen;
   let closeDropDown;
 
+  onDestroy(() => {
+    // Enable keyboard accessibility to the rest of the elements after dialog is closed
+    IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.lui-usersettings-dialog');
+  });
+
   onMount(() => {
     const usLocalizationConfig = LuigiConfig.getConfigValue(
       'userSettings.userSettingsDialog'
@@ -109,6 +114,9 @@
           dispatch('close');
         }
       });
+
+    // disable keyboard accessibility for all elements outside the user settings dialog
+    IframeHelpers.disableA11YKeyboardExceptClassName('.lui-usersettings-dialog');
   });
 
   function prepareUserSettingsObj(userSettingGroups, storedUserSettingsData) {
