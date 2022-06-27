@@ -1093,7 +1093,7 @@
    * @param params {Object} navigation options
    * @returns {string} the path built 
    */
-  const buildPathForGetCurrent = (params) => {
+  const buildPathForGetCurrentRoute = (params) => {
     let localNavPath = navigationPath;
     if (currentNode) {
       let parent = currentNode.parent;
@@ -1119,7 +1119,7 @@
       }
       // build virtualPath if there is any
       const virtualTreeNodeViewUrl = getSubPath(virtualTreeNode, pathParams);
-      path = currentNodeViewUrl.split(virtualTreeNodeViewUrl).join('');;
+      path = currentNodeViewUrl.split(virtualTreeNodeViewUrl).join('');
     } else if (params.fromParent) {
       const parentNodeViewUrl = getSubPath(currentNode.parent, pathParams);
       path = currentNodeViewUrl.split(parentNodeViewUrl).join('');
@@ -1501,7 +1501,7 @@
       // handle getCurrentRoute message coming from client
       if ('luigi.navigation.currentRoute' === e.data.msg) {
         const data = e.data.data;
-        const path = buildPathForGetCurrent(data);
+        const path = buildPathForGetCurrentRoute(data);
 
         // send answer back to client
         const message = {
