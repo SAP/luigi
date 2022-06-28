@@ -17,11 +17,10 @@ meta -->
 
 # Luigi UX features
 
-- [Luigi UX features](#luigi-ux-features)
-  - [Rendering of Luigi application in the DOM](#rendering-of-luigi-application-in-the-dom)
-  - [Responsive application setup](#responsive-application-setup)
-  - [App loading indicator](#app-loading-indicator)
-  - [Collapsed left side navigation](#collapsed-left-side-navigation)
+- [Rendering of Luigi application in the DOM](#rendering-of-luigi-application-in-the-dom)
+- [Responsive application setup](#responsive-application-setup)
+- [App loading indicator](#app-loading-indicator)
+- [Collapsed left side navigation](#collapsed-left-side-navigation)
 
 ## Rendering of Luigi application in the DOM
 
