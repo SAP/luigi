@@ -3,7 +3,8 @@
   "node": {
     "label": "Getting started",
     "category": {
-      "label": "Basics"
+      "label": "Basics",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 1,

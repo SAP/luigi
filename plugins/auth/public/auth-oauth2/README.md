@@ -3,7 +3,8 @@
   "node": {
     "label": "OAuth2",
     "category": {
-      "label": "Authorization Plugins"
+      "label": "Authorization Plugins",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,

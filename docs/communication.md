@@ -3,7 +3,8 @@
   "node": {
     "label": "Custom messages",
     "category": {
-      "label": "Advanced"
+      "label": "Advanced",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 4,

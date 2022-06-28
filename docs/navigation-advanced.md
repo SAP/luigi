@@ -3,7 +3,8 @@
   "node": {
     "label": "Advanced navigation",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
@@ -17,15 +18,26 @@ meta -->
 
 This document shows you how to configure the following Luigi features:
 
-* [View groups](#view-groups)
-* [Dynamically changeable paths](#dynamically-changeable-paths)
-* [Contexts](#contexts)
-* [Profile](#profile) 
-* [Context switcher](#context-switcher) 
-* [Product switcher](#product-switcher) 
-* [App switcher](#app-switcher) 
-* [Tab navigation](#tab-navigation)
-* [Additional options](#additional-options)
+- [Advanced navigation](#advanced-navigation)
+  - [View groups](#view-groups)
+    - [Code example](#code-example)
+    - [viewGroupSettings](#viewgroupsettings)
+    - [preloadViewGroups](#preloadviewgroups)
+    - [defaults.isolateView](#defaultsisolateview)
+  - [Dynamically changeable paths](#dynamically-changeable-paths)
+    - [Dynamic path parameters](#dynamic-path-parameters)
+    - [Dynamic viewUrl parameters](#dynamic-viewurl-parameters)
+    - [Dynamic Node parameters](#dynamic-node-parameters)
+    - [Dynamic viewUrl](#dynamic-viewurl)
+  - [Contexts](#contexts)
+    - [context](#context)
+  - [Profile](#profile)
+  - [Context switcher](#contextswitcher)
+  - [Product switcher](#productswitcher)
+  - [App switcher](#appswitcher)
+  - [Tab navigation](#tab-navigation)
+    - [tabNav](#tabnav)
+  - [Additional options](#additional-options)
 
 ## View groups
 

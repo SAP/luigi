@@ -3,7 +3,8 @@
   "node": {
     "label": "User settings",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
@@ -21,12 +22,21 @@ meta -->
 
 This document explains how to configure a User Settings dialog in the top navigation of Luigi.
 
-- [Overview](#overview)
-- [Example](#example)
-- [Parameters](#parameters)
-- [Write a custom editor](#write-a-custom-editor)
-- [Customize the user settings dialog](#customize-the-user-settings-dialog)
-- [Override default read and store functionality](#override-default-read-and-store-functionality)
+- [User Settings](#user-settings)
+  - [Overview](#overview)
+  - [Example](#example)
+  - [Parameters](#parameters)
+      - [label](#label)
+      - [sublabel](#sublabel)
+      - [icon](#icon)
+      - [initials](#initials)
+      - [iconClassAttribute](#iconclassattribute)
+      - [title](#title)
+      - [viewURL](#viewurl)
+      - [settings](#settings)
+  - [Write a custom editor](#write-a-custom-editor)
+  - [Customize the user settings dialog](#customize-the-user-settings-dialog)
+  - [Override default read and store functionality](#override-default-read-and-store-functionality)
 
 ## Overview
 

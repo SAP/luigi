@@ -3,7 +3,8 @@
   "node": {
     "label": "Versions",
     "category": {
-      "label": "Basics"
+      "label": "Basics",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 1,
@@ -17,9 +18,13 @@ meta -->
 
 Read about the versions of Luigi in this document.
 
-* [Changelog](#changelog)
-* [Important version 1.x upgrades](#luigi-1.x-upgrades)
-* [Docs for earlier versions](#docs-for-earlier-versions)
+- [Versions](#versions)
+  - [Changelog](#changelog)
+  - [Luigi 1.x upgrades](#luigi-1x-upgrades)
+    - [Authorization Providers](#authorization-providers)
+    - [Internet Explorer 11 (IE11)](#internet-explorer-11-ie11)
+    - [Fundamental Library Styles](#fundamental-library-styles)
+  - [Docs for earlier versions](#docs-for-earlier-versions)
 
 ## Changelog
 
