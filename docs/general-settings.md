@@ -160,17 +160,6 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
   },
 ```
 
-### header.responsiveShellbarPaddings
-- **type**: boolean
-- **description**: based on the browser window size, a responsive padding will be applied to the Shellbar Component when set to `true`.
-- **default**: by default, the parameter is set to `false`, meaning that padding for the Shellbar Component will stay the same as inherited from the `.fd-shellbar` class.
-- **example**: 
-```
- header: {  object / function / Promise
-   responsiveTopNavPaddings: true
-  },
-```
-
 ### responsiveNavigation
 - **description**: allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons.
 You can set the following values:
