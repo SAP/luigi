@@ -1,7 +1,7 @@
 <!-- meta
 {
   "node": {
-    "label": "Installation",
+    "label": "Quick setup",
     "category": {
       "label": "Luigi Core",
       "collapsible": true
@@ -14,18 +14,18 @@
 }
 meta -->
 
-# Luigi Core Installation
+# Quick setup
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kEzTZ2U9KMM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-This document shows you how to set up a web application using the Luigi micro frontend framework. This involves a few basic steps:
+This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/master/core/examples). 
+
+Luigi can be added to any application using these steps:
 * Adding Luigi's `npm` packages to your project dependencies.
 * Giving Luigi exclusive control over your entry `index.html` file.
 * Starting the server to run your application.
 
-All those steps are achieved through a single **installer** script which sets up a Luigi application on your system. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere.
-
-Choose the framework to build your application:
+In this example, all these steps are achieved through a single **installer** script for any of the frameworks listed below. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere. 
 
 * [Application setup without a framework](#application-setup-without-a-framework)
 * [Angular](#application-setup-for-angular)
