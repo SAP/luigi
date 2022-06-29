@@ -916,9 +916,14 @@
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
-    mfModal.displayed = true;
-    mfModal.nodepath = nodepath;
-    mfModal.settings = settings;
+
+    mfModalList.push({
+      mfModal : {
+        displayed: true,
+        nodepath: nodepath,
+        settings: settings
+      }
+    });
 
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
@@ -961,7 +966,7 @@
 
 
   const closeModal = (event, index) => {
-    console.log(event, modalIndex);
+    console.log('close modal', event, modalIndex);
     const targetModal = mfModalList[index];
     if (targetModal.modalIframe) {
       getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
@@ -1744,7 +1749,7 @@
   };
 
   export const hasBack = () => {
-    return (mfModal && mfModal.displayed) || preservedViews.length !== 0;
+    return (mfModalList.length > 0) || preservedViews.length !== 0;
   };
 
   onMount(() => {
@@ -1832,17 +1837,17 @@
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
   {/if}
 
-  <!-- {#each mfModalList as modalItem, i} -->
-  {#if mfModal.displayed}
-    <Modal
-      settings={mfModal.settings}
-      nodepath={mfModal.nodepath}
-      on:close={() => closeModal(1)}
-      on:iframeCreated={event => modalIframeCreated(event, 1)}
-      on:wcCreated={event => modalWCCreated(event, 1)}
-    />
-  {/if}
-  <!-- {/each} -->
+  {#each mfModalList as modalItem, index}
+    {#if modalItem.mfModal.displayed}
+      <Modal
+        settings={modalItem.mfModal.settings}
+        nodepath={modalItem.mfModal.nodepath}
+        on:close={() => closeModal(index)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
+      />
+    {/if}
+  {/each}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
     <Modal
       settings={mfDrawer.settings}
