@@ -897,8 +897,6 @@
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
 
   //// MICRO-FRONTEND MODAL
-
-  let mfModal = {};
   // list containing the opened modals
   let mfModalList = [];
 
@@ -917,7 +915,10 @@
       return;
     }
 
-    mfModalList.push({
+    console.log('MODAL open', nodepath, settings);
+
+    let tempModalList = mfModalList;
+    tempModalList.push({
       mfModal : {
         displayed: true,
         nodepath: nodepath,
@@ -925,6 +926,8 @@
       }
     });
 
+    mfModalList = tempModalList;
+    console.log('MODAL open list', mfModalList);
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
@@ -934,19 +937,16 @@
   };
 
   const modalIframeCreated = (event, index) => {
-    mfModalList[index] = {
-      modalIframe : event.detail.modalIframe,
-      modalIframeData : event.detail.modalIframeData
-    }
+    mfModalList[index].modalIframe = event.detail.modalIframe;
+    mfModalList[index].modalIframeData = event.detail.modalIframeData;
     // modalIframe = event.detail.modalIframe;
     // modalIframeData = event.detail.modalIframeData;
   };
 
   const modalWCCreated = (event, index) => {
-    mfModalList[index] = {
-      modalWC : event.detail.modalWC,
-      modalWCData : event.detail.modalWCData
-    }
+    mfModalList[index].modalWC = event.detail.modalWC;
+    mfModalList[index].modalWCData = event.detail.modalWCData;
+
     // modalWC = event.detail.modalWC;
     // modalWCData = event.detail.modalWCData;
   };
@@ -1838,6 +1838,7 @@
   {/if}
 
   {#each mfModalList as modalItem, index}
+    <span>{modalItem.displayed}</span>
     {#if modalItem.mfModal.displayed}
       <Modal
         settings={modalItem.mfModal.settings}
