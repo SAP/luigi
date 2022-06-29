@@ -26,6 +26,11 @@
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
+  const appSwitcherApiObj = {
+    closeDropDown: ()=>{
+      toggleDropdownState('appSwitcherPopover');
+    }
+  } 
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -95,9 +100,11 @@
     }
   });
 
-  function renderCustomList(item, slot){
+  function renderCustomList(item, slot, index){
     setTimeout(()=>{
-      customAppSwitcherItemRenderer(item,slot);
+      if(slot){
+        customAppSwitcherItemRenderer(item, slot.children[index], appSwitcherApiObj);
+      }
     });
     return '';
   }
@@ -297,13 +304,16 @@
               </li>
             {/if}
             {#if appSwitcherItems && appSwitcherItems.length > 0}
-              {#each appSwitcherItems as item}
+              {#each appSwitcherItems as item, index}
                 {#if GenericHelpers.isFunction(customAppSwitcherItemRenderer)}
                   {#if luigiCustomAppSwitcherItemRenderer__slotContainer}
-                    {@html renderCustomList(
-                      item,
-                      luigiCustomAppSwitcherItemRenderer__slotContainer
-                    )}
+                    <li class="fd-menu__item" tabindex="0">
+                      {@html renderCustomList(
+                        item,
+                        luigiCustomAppSwitcherItemRenderer__slotContainer,
+                        index
+                      )}
+                    </li>
                   {/if}
                 {:else if item !== selectedItem && hasValidLink(item, pathParams)}
                   <li class="fd-menu__item">

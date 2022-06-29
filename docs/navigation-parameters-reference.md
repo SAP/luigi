@@ -861,18 +861,21 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
 - **attributes**:
   - **item** single application element
   - **slot** `ul` element as slot. You can append your custom `li` entries to this `ul` element.
+  - **appSwitcherApiObj**
+      - **type**: Object
+      - **description**: It is an object with a function `closeDropDown` as property. This function closes the custom app switcher dropdown.
 - **example**:
   ```javascript
     appSwitcher: {
       items:[...],
-      customAppSwitcherItemRenderer: (item, slot) => {
-        let li = document.createElement('li');
-        li.setAttribute('class', 'fd-menu__item');
+      customAppSwitcherItemRenderer: (item, slot, appSwitcherApiObj) => {
         let a = document.createElement('a');
-        a.setAttribute('class', 'fd-menu__link');
+        a.setAttribute('class', 'fd-menu__link test');
         a.addEventListener('click', e => {
           Luigi.navigation().navigate(item.link);
+          appSwitcherApiObj.closeDropDown();
           e.stopPropagation();
+          Luigi.configChanged('navigation')
         });
         let span = document.createElement('span');
         span.setAttribute('class', 'fd-menu__addon-before');
@@ -888,8 +891,7 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
         spanText.innerText = item.title;
         a.appendChild(span);
         a.appendChild(spanText);
-        li.appendChild(a);
-        slot.appendChild(li);
+        slot.appendChild(a);
       }
     }
   ```
