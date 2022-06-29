@@ -22,7 +22,6 @@ meta -->
 
 This document explains how to configure a User Settings dialog in the top navigation of Luigi.
 
-- [User Settings](#user-settings)
   - [Overview](#overview)
   - [Example](#example)
   - [Parameters](#parameters)
