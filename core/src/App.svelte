@@ -585,7 +585,7 @@
           console.error(
             'onInput is not a function. Please check the global search configuration.'
           );
-        }
+        } 
       }
     }
   };
@@ -899,6 +899,8 @@
   //// MICRO-FRONTEND MODAL
 
   let mfModal = {};
+  // list containing the opened modals
+  let mfModalList = [];
 
   const resetMicrofrontendModalData = () => {
     mfModal.displayed = false;
@@ -926,16 +928,20 @@
   };
 
   const modalIframeCreated = (event) => {
-    modalIframe = event.detail.modalIframe;
-    modalIframeData = event.detail.modalIframeData;
+    const modalItem = {}; 
+    modalItem.modalIframe = event.detail.modalIframe;
+    modalItem.modalIframeData = event.detail.modalIframeData;
+    mfModalList.push(modalItem);
   };
 
   const modalWCCreated = (event) => {
-    modalWC = event.detail.modalWC;
-    modalWCData = event.detail.modalWCData;
+    const modalItem = {}; 
+    modalItem.modalWC = event.detail.modalWC;
+    modalItem.modalWCData = event.detail.modalWCData;
   };
 
   const closeModal = (event) => {
+    console.log('closemodal event', event)
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
@@ -1799,15 +1805,18 @@
   {#if alerts && alerts.length}
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
   {/if}
-  {#if mfModal.displayed}
-    <Modal
-      settings={mfModal.settings}
-      nodepath={mfModal.nodepath}
-      on:close={closeModal}
-      on:iframeCreated={modalIframeCreated}
-      on:wcCreated={modalWCCreated}
-    />
-  {/if}
+
+  {#each mfModalList as modalItem, i}
+    {#if modalItem.displayed}
+      <Modal
+        settings={modalItem.settings}
+        nodepath={modalItem.nodepath}
+        on:close={closeModal}
+        on:iframeCreated={modalIframeCreated}
+        on:wcCreated={modalWCCreated}
+      />
+    {/if}
+  {/each}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
     <Modal
       settings={mfDrawer.settings}
