@@ -902,11 +902,12 @@
   // list containing the opened modals
   let mfModalList = [];
 
-  const resetMicrofrontendModalData = () => {
-    mfModal.displayed = false;
-    mfModal.nodepath = undefined;
-    mfModal.settings = {};
-    modalIframe = undefined;
+  const resetMicrofrontendModalData = (index) => {
+    if (index !== undefined) {
+      mfModalList[index] = {};   
+    } else {
+      mfModalList = [];
+    }
   };
 
   resetMicrofrontendModalData();
@@ -927,14 +928,22 @@
     }
   };
 
-  const modalIframeCreated = (event) => {
-    modalIframe = event.detail.modalIframe;
-    modalIframeData = event.detail.modalIframeData;
+  const modalIframeCreated = (event, index) => {
+    mfModalList[index] = {
+      modalIframe : event.detail.modalIframe,
+      modalIframeData : event.detail.modalIframeData
+    }
+    // modalIframe = event.detail.modalIframe;
+    // modalIframeData = event.detail.modalIframeData;
   };
 
-  const modalWCCreated = (event) => {
-    modalWC = event.detail.modalWC;
-    modalWCData = event.detail.modalWCData;
+  const modalWCCreated = (event, index) => {
+    mfModalList[index] = {
+      modalWC : event.detail.modalWC,
+      modalWCData : event.detail.modalWCData
+    }
+    // modalWC = event.detail.modalWC;
+    // modalWCData = event.detail.modalWCData;
   };
 
   // const modalIframeCreated = (event) => {
@@ -951,26 +960,27 @@
   // };
 
 
-  const closeModal = (event, modalIndex) => {
+  const closeModal = (event, index) => {
     console.log(event, modalIndex);
-    if (modalIframe) {
-      getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
+    const targetModal = mfModalList[index];
+    if (targetModal.modalIframe) {
+      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
         if (showModalPathInUrl) {
           Routing.removeModalDataFromUrl();
         }
-        resetMicrofrontendModalData();
+        resetMicrofrontendModalData(index);
       });
-    } else if (modalWC) {
+    } else if (targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
       );
       if (showModalPathInUrl) {
         Routing.removeModalDataFromUrl();
       }
-      resetMicrofrontendModalData();
+      resetMicrofrontendModalData(index);
     }
   };
 
@@ -1414,7 +1424,11 @@
                 .catch(() => {
                   rejectRemotePromise();
                 });
-              closeModal();
+              // close all modals and navigate to the non-special view
+              mfModalList.forEach((m, index) => {
+                closeModal(undefined, index);
+              });
+              
               closeSplitView();
               closeDrawer();
               isNavigationSyncEnabled = true;
@@ -1447,7 +1461,8 @@
           contentNode = node;
 
           if (modal !== undefined) {
-            resetMicrofrontendModalData();
+            // no need to reset because we are adding new modal on top
+            // resetMicrofrontendModalData();
             await openViewInModal(path, modal === true ? {} : modal);
             checkResolve();
           } else if (splitView !== undefined) {
@@ -1464,7 +1479,7 @@
 
       if ('luigi.navigation.back' === e.data.msg) {
         if (IframeHelpers.isMessageSource(e, modalIframe)) {
-          closeModal();
+          closeModal(mfModalList.length - 1);
           await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext),
@@ -1822,9 +1837,9 @@
     <Modal
       settings={mfModal.settings}
       nodepath={mfModal.nodepath}
-      on:close={event => closeModal(event, 1)}
-      on:iframeCreated={modalIframeCreated}
-      on:wcCreated={modalWCCreated}
+      on:close={() => closeModal(1)}
+      on:iframeCreated={event => modalIframeCreated(event, 1)}
+      on:wcCreated={event => modalWCCreated(event, 1)}
     />
   {/if}
   <!-- {/each} -->
