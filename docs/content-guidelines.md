@@ -1,28 +1,14 @@
 # Content Guidelines
 
 This page contains instructions on how to create documentation for Luigi. It defines the rules for each of these topics:
-- [Content Guidelines](#content-guidelines)
-  - [Overview](#overview)
-  - [Structure](#structure)
-    - [Basics](#basics)
-    - [Luigi Core](#luigi-core)
-    - [Luigi Client](#luigi-client)
-    - [Advanced](#advanced)
-    - [Examples](#examples)
-  - [Metadata](#metadata)
-    - [Navigation metadata](#navigation-metadata)
-    - [Alert blocks metadata](#alert-blocks-metadata)
-  - [API Documentation](#api-documentation)
-  - [Audience and language](#audience-and-language)
-  - [Format](#format)
-    - [Headings](#headings)
-    - [Lists](#lists)
-    - [Tables](#tables)
-    - [Code snippets](#code-snippets)
-    - [Styles](#styles)
-  - [Links](#links)
-  - [Screenshots and diagrams](#screenshots-and-diagrams)
-  - [Glossary](#glossary)
+* [Structure](#structure)
+* [Metadata](#metadata)
+* [API documentation](#API-documentation)
+* [Audience and language](#audience-and-language)
+* [Format](#format)
+* [Links](#links)
+* [Screenshots and diagrams](#screenshots-and-diagrams)
+* [Glossary](#glossary)
 
 ## Overview
 
