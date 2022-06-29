@@ -118,46 +118,46 @@ integration-testing: &integration-testing
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/../luigi-compatibility-testing # remove compatibility build cache
 
-    # # ----- DOCU -----
-    # - name: 'Check Documentation'
-    #   if: repo = SAP/luigi AND type != cron AND type != api
-    #   script:
-    #     - cd $TRAVIS_BUILD_DIR/scripts && npm ci
-    #     - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
+    # ----- DOCU -----
+    - name: 'Check Documentation'
+      if: repo = SAP/luigi AND type != cron AND type != api
+      script:
+        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+        - cd $TRAVIS_BUILD_DIR && bash ./scripts/docuCheck.sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
 
-    # # ----- WHITESOURCE -----
-    # - name: 'Whitesource check'
-    #   if: repo = SAP/luigi AND branch = master AND type != cron AND type != api
-    #   # Whitesource can't deal with symlinking, therefore we can't use lerna
-    #   script:
-    #     - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
-    #         npm --prefix ./client ci ./client;
-    #         npm --prefix ./core ci ./core;
-    #         npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
-    #         npm --prefix ./website/fiddle install ./website/fiddle;
-    #         bash ./scripts/whiteSource.sh;
-    #       fi'
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
+    # ----- WHITESOURCE -----
+    - name: 'Whitesource check'
+      if: repo = SAP/luigi AND branch = master AND type != cron AND type != api
+      # Whitesource can't deal with symlinking, therefore we can't use lerna
+      script:
+        - 'if [ ! -z "${WHITESOURCE_APIKEY}" ]; then
+            npm --prefix ./client ci ./client;
+            npm --prefix ./core ci ./core;
+            npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
+            npm --prefix ./website/fiddle install ./website/fiddle;
+            bash ./scripts/whiteSource.sh;
+          fi'
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
 
-    # # ----- INTEGRATION -----
-    # - name: 'Integration Testing 1'
-    #   <<: *integration-testing
+    # ----- INTEGRATION -----
+    - name: 'Integration Testing 1'
+      <<: *integration-testing
 
-    # # ----- NPM PUBLISH -----
-    # - stage: 'Publish'
-    #   name: 'Publish to NPM'
-    #   # run only when a release in github was created
-    #   if: repo = SAP/luigi AND tag ~= ^v AND type != cron AND type != api
-    #   script:
-    #     - bash ./scripts/npmPublish.sh
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
+    # ----- NPM PUBLISH -----
+    - stage: 'Publish'
+      name: 'Publish to NPM'
+      # run only when a release in github was created
+      if: repo = SAP/luigi AND tag ~= ^v AND type != cron AND type != api
+      script:
+        - bash ./scripts/npmPublish.sh
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
 
     # - name: 'Nightly release'
     #   if: (branch = master AND type = cron) OR (type = api AND commit_message = publish)
