@@ -59,6 +59,7 @@
   export let displayCustomSearchResult;
   export let searchResult;
   export let burgerTooltip;
+  export let responsiveShellbarPadding;
 
   let store = getContext('store');
   let contextSwitcherToggle = false;
@@ -108,6 +109,9 @@
         );
         profileTypeSettings = LuigiConfig.getConfigValue(
           'settings.profileType'
+        );
+        responsiveShellbarPadding = LuigiConfig.getConfigValue(
+          'settings.header.responsiveShellbarPaddings'
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
@@ -305,9 +309,9 @@
 <svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} />
 {#if showTopNav}
   <div
-    class="fd-shellbar lui-shellbar-wrapper {hideNavComponent
-      ? 'hideNavComponent'
-      : ''}"
+    class="fd-shellbar {responsiveShellbarPadding
+      ? 'fd-shellbar--responsive-paddings'
+      : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''} "
     tabindex="0"
   >
     <div class="fd-shellbar__group fd-shellbar__group--product">
@@ -809,8 +813,8 @@
   .fd-shellbar:focus {
     outline: none;
   }
-
-  .fd-shellbar {
+  
+  .fd-shellbar:not(.fd-shellbar--responsive-paddings) {
     padding: 0 0.5rem;
   }
 
