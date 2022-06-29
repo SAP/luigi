@@ -23,14 +23,22 @@ This document contains the following sections:
 
 ## Overview
 
-Luigi is an open source JavaScript framework for **micro frontends**. Micro frontends can be used to divide big frontend monoliths into smaller, simpler, independent chunks.
+Luigi is an open source JavaScript framework for **micro frontends**. Micro frontend architecture breaks down big frontend monoliths into smaller and simpler chunks which can be developed by independent teams.
 
-<!-- add-attribute:class:success -->
->**TIP:** Go to our [FAQ section](faq.md) to find more detailed answers to questions like *What are micro frontends?*
+The Luigi framework provides configuration options, API functions, and out-of-the-box features which make migrating to a micro frontend architecture easier. Luigi provides a consistent user navigation for all your micro frontends, ensuring a better user experience. 
 
-The Luigi framework provides configuration options, API functions, and out-of-the-box features which make migrating to a micro frontend architecture easier.
+Most importantly, Luigi is **technology-agnostic**, which means you can use virtually any toolkit (including, but not limited to: Angular, React, Vue, or UI5) to create your frontend. 
 
-Furthermore, Luigi is **technology-agnostic**, which means you can use toolkits like OpenUI5, Angular, React, Vue, or anything else to create your frontend.
+### Benefits
+
+Some benefits of a micro frontend architecture include:
+
+* Future-proof and scalable 
+* Multiple technologies can co-exist in the same app
+* Can be managed by independent teams
+* Fast deployment of new features and bugfixes
+* Smaller, more manageable codebase
+* Reduced maintenance cost
 
 ### Main features
 
@@ -82,7 +90,7 @@ Here you can find some Luigi example applications and scenarios, starting from s
 
  ### HTML file
 
-This is a *very simple* example of a Luigi application inside a single HTML file. It is not intended for any real-life use.
+This is a simple example of a Luigi application inside a single HTML file. It is not intended for any real-life use.
 
 You can run it by copying and pasting this code in a text editor, then saving it as an HTML file:
 
@@ -174,7 +182,7 @@ Our [tutorial](https://developers.sap.com/group.luigi-app.html) on how to create
 - how to create a micro frontend
 - how to add localization to your app and display it in multiple languages
 
-The whole tutorial should take about an hour to complete. The source code for the tutorial app can be found [here](https://github.com/SAP-samples/luigi-micro-frontend-application).
+Alternatively, the tutorial app can be installed directly by following the `README` file of [this GitHub repository](https://github.com/SAP-samples/luigi-micro-frontend-application).
 
 ### e2e example
 
