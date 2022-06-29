@@ -902,8 +902,13 @@
 
   const resetMicrofrontendModalData = (index) => {
     if (index !== undefined) {
-      mfModalList[index] = {};   
+      let tempMfModalList = mfModalList;
+      // use splice to remove the modal element and re-index the list.
+      tempMfModalList.splice(index, 1);
+      // svelte components rendered from a list, expect list changes to be done through variable re-assignment
+      mfModalList = tempMfModalList;
     } else {
+      // reset all modal list
       mfModalList = [];
     }
   };
@@ -915,8 +920,6 @@
       return;
     }
 
-    console.log('MODAL open', nodepath, settings);
-
     let tempModalList = mfModalList;
     tempModalList.push({
       mfModal : {
@@ -927,7 +930,6 @@
     });
 
     mfModalList = tempModalList;
-    console.log('MODAL open list', mfModalList);
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
@@ -965,9 +967,9 @@
   // };
 
 
-  const closeModal = (event, index) => {
-    console.log('close modal', event, modalIndex);
+  const closeModal = (index) => {
     const targetModal = mfModalList[index];
+
     if (targetModal.modalIframe) {
       getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
@@ -1838,11 +1840,11 @@
   {/if}
 
   {#each mfModalList as modalItem, index}
-    <span>{modalItem.displayed}</span>
     {#if modalItem.mfModal.displayed}
       <Modal
         settings={modalItem.mfModal.settings}
         nodepath={modalItem.mfModal.nodepath}
+        modalIndex={index}
         on:close={() => closeModal(index)}
         on:iframeCreated={event => modalIframeCreated(event, index)}
         on:wcCreated={event => modalWCCreated(event, index)}

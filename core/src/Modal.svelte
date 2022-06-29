@@ -20,6 +20,8 @@
   export let settings;
   export let isDataPrepared = false;
   export let nodepath;
+  export let modalIndex;
+
   const dispatch = createEventDispatcher();
   let nodeObject;
   let pathData;
@@ -113,7 +115,7 @@
 
   const setModalSize = async () => {
     let height, width;
-    const elem = document.querySelector('.lui-modal-mf');
+    const elem = document.querySelector('.lui-modal-index-' + modalIndex);
     const { size, width: settingsWidth, height: settingsHeight } = settings;
     const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
 
@@ -166,7 +168,7 @@
       componentData
     );
 
-    const iframeCtn = document.querySelector('.iframeModalCtn');
+    const iframeCtn = document.querySelector('.iframeModalIndex-' + modalIndex);
     iframeCtn.appendChild(iframe);
     return iframe;
   };
@@ -287,7 +289,7 @@
       ? settings.backdrop
         ? 'drawer drawer-dialog__content drawer__backdrop'
         : 'drawer drawer-dialog__content'
-      : 'lui-modal-mf'}"
+      : 'lui-modal-mf lui-modal-index-' + modalIndex}"
     data-testid={isModal ? 'modal-mf' : 'drawer-mf'}
     role="dialog"
     aria-modal="true"
@@ -322,7 +324,11 @@
       {#if isDrawer}
         <slot />
       {/if}
-      <div class="iframeModalCtn {isDrawer ? '_drawer' : '_modal'}" />
+      <div
+        class="iframeModalCtn {isDrawer
+          ? '_drawer'
+          : '_modal' + ' iframeModalIndex-' + modalIndex}"
+      />
     </div>
     {#if showLoadingIndicator}
       <div
