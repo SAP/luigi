@@ -928,20 +928,31 @@
   };
 
   const modalIframeCreated = (event) => {
-    const modalItem = {}; 
-    modalItem.modalIframe = event.detail.modalIframe;
-    modalItem.modalIframeData = event.detail.modalIframeData;
-    mfModalList.push(modalItem);
+    modalIframe = event.detail.modalIframe;
+    modalIframeData = event.detail.modalIframeData;
   };
 
   const modalWCCreated = (event) => {
-    const modalItem = {}; 
-    modalItem.modalWC = event.detail.modalWC;
-    modalItem.modalWCData = event.detail.modalWCData;
+    modalWC = event.detail.modalWC;
+    modalWCData = event.detail.modalWCData;
   };
 
-  const closeModal = (event) => {
-    console.log('closemodal event', event)
+  // const modalIframeCreated = (event) => {
+  //   const modalItem = {}; 
+  //   modalItem.modalIframe = event.detail.modalIframe;
+  //   modalItem.modalIframeData = event.detail.modalIframeData;
+  //   mfModalList.push(modalItem);
+  // };
+
+  // const modalWCCreated = (event) => {
+  //   const modalItem = {}; 
+  //   modalItem.modalWC = event.detail.modalWC;
+  //   modalItem.modalWCData = event.detail.modalWCData;
+  // };
+
+
+  const closeModal = (event, modalIndex) => {
+    console.log(event, modalIndex);
     if (modalIframe) {
       getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
@@ -1806,17 +1817,17 @@
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
   {/if}
 
-  {#each mfModalList as modalItem, i}
-    {#if modalItem.displayed}
-      <Modal
-        settings={modalItem.settings}
-        nodepath={modalItem.nodepath}
-        on:close={closeModal}
-        on:iframeCreated={modalIframeCreated}
-        on:wcCreated={modalWCCreated}
-      />
-    {/if}
-  {/each}
+  <!-- {#each mfModalList as modalItem, i} -->
+  {#if mfModal.displayed}
+    <Modal
+      settings={mfModal.settings}
+      nodepath={mfModal.nodepath}
+      on:close={event => closeModal(event, 1)}
+      on:iframeCreated={modalIframeCreated}
+      on:wcCreated={modalWCCreated}
+    />
+  {/if}
+  <!-- {/each} -->
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
     <Modal
       settings={mfDrawer.settings}
