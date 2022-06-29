@@ -15,6 +15,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public groupLabel: string;
   private lcSubscription: Subscription;
   public currentRoute: string;
+  public currentRouteFromClosestContext: string;
+  public currentRouteFromParent: string;
 
   constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) {}
 
@@ -45,6 +47,24 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
       .getCurrentRoute()
       .then(route => {
         this.currentRoute = route;
+      });
+  }
+
+  getCurrentRouteFromParent() {
+    linkManager()
+      .fromParent()
+      .getCurrentRoute()
+      .then(route => {
+        this.currentRouteFromParent = route;
+      });
+  }
+
+  getCurrentRouteFromClosestContext() {
+    linkManager()
+      .fromClosestContext()
+      .getCurrentRoute()
+      .then(route => {
+        this.currentRouteFromClosestContext = route;
       });
   }
 }
