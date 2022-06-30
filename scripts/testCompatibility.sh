@@ -238,6 +238,8 @@ verifyAndStartWebserver() {
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
     runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
   done
+
+  cd APP_FOLDERS[0] && npm run startExternalMf
 }
 
 startE2eTestrunner() {
