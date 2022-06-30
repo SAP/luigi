@@ -1,7 +1,7 @@
 $mobileMinWidth: 375px;
 $desktopMinWidth: 600px;
 $desktopMaxWidth: 900px;
-$topNavHeight: 2.75rem;
+$topNavHeight: var(--luigi__shellbar--height);
 $topNavHeightTab: 2.75rem;
 $leftNavWidthCollapsed: 2.75rem;
 $zindex-dialog-box: 1000;
