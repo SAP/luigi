@@ -122,7 +122,8 @@ var params = {
     ['/public-ie11', './public-ie11'],
     ['/public_client', '../client/public']
   ],
-  logLevel: 0
+  logLevel: 0,
+  cors: true
 };
 
 liveServer.start(params);
