@@ -61,10 +61,6 @@
   let splitViewValues;
 
   /// MFs
-  let modalIframe;
-  let modalIframeData;
-  let modalWC;
-  let modalWCData;
   let modal;
   let activeDrawer = false;
   let disableBackdrop;
@@ -970,7 +966,7 @@
   const closeModal = (index) => {
     const targetModal = mfModalList[index];
 
-    if (targetModal.modalIframe) {
+    if (targetModal && targetModal.modalIframe) {
       getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
@@ -980,7 +976,7 @@
         }
         resetMicrofrontendModalData(index);
       });
-    } else if (targetModal.modalWC) {
+    } else if (targetModal && targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
       );
@@ -1230,6 +1226,10 @@
 
     EventListenerHelpers.addEventListener('message', async (e) => {
       const iframe = IframeHelpers.getValidMessageSource(e);
+      const topMostModal = mfModalList[(mfModalList.length - 1)];
+      const modalIframe = topMostModal && topMostModal.modalIframe;
+      const modalIframeData = topMostModal && topMostModal.modalIframeData;
+      
       const specialIframeProps = {
         modalIframe,
         modalIframeData,
@@ -1433,7 +1433,8 @@
                 });
               // close all modals and navigate to the non-special view
               mfModalList.forEach((m, index) => {
-                closeModal(undefined, index);
+                // close modals 
+                closeModal(index);
               });
               
               closeSplitView();
@@ -1485,7 +1486,8 @@
       }
 
       if ('luigi.navigation.back' === e.data.msg) {
-        if (IframeHelpers.isMessageSource(e, modalIframe)) {
+        const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
+        if (IframeHelpers.isMessageSource(e, mfModalTopMostElement && mfModalTopMostElement.modalIframe)) {
           closeModal(mfModalList.length - 1);
           await sendContextToClient(config, {
             goBackContext:
