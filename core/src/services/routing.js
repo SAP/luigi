@@ -53,7 +53,7 @@ class RoutingClass {
   async navigateTo(route, options = {}) {
     const { nodeObject } = await Navigation.extractDataFromPath(route);
     const { keepBrowserHistory = true, navSync = true, preventContextUpdate = false } = options;
-    
+
     if (await Navigation.shouldPreventNavigation(nodeObject)) {
       return;
     }
@@ -85,7 +85,7 @@ class RoutingClass {
     // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
     let event;
     if (GenericHelpers.isIE()) {
-      event = new Event('popstate', {'bubbles':true, 'cancelable':true});
+      event = new Event('popstate', { bubbles: true, cancelable: true });
     } else {
       const eventDetail = {
         detail: {
@@ -249,7 +249,9 @@ class RoutingClass {
         if (pathData.isExistingRoute) {
           //normal navigation can be performed
           const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
-          this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, { keepBrowserHistory: false});
+          this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, {
+            keepBrowserHistory: false
+          });
           // reset comp data
           component.set({ navigationPath: [] });
         } else {
@@ -379,7 +381,7 @@ class RoutingClass {
           iContainer.classList.remove('lui-webComponent');
         }
 
-        if(!preventContextUpdate) {
+        if (!preventContextUpdate) {
           if (!withoutSync) {
             await Iframe.navigateIframe(config, component, iframeElement);
           } else {
@@ -392,7 +394,9 @@ class RoutingClass {
               context: JSON.stringify(componentData.context),
               nodeParams: JSON.stringify(componentData.nodeParams),
               pathParams: JSON.stringify(componentData.pathParams),
-              searchParams: JSON.stringify(RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)),
+              searchParams: JSON.stringify(
+                RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)
+              ),
               internal: JSON.stringify(internalData),
               withoutSync: true
             });
@@ -448,6 +452,9 @@ class RoutingClass {
           }
         }
       }
+    } else {
+      // If previous component data can't be determined, clear cache to avoid conflicts with dynamic nodes
+      NodeDataManagementStorage.deleteCache();
     }
   }
 
