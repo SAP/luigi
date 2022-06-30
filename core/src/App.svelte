@@ -1416,7 +1416,7 @@
                 .catch(() => {
                   rejectRemotePromise();
                 });
-              // close all modals and navigate to the non-special view
+              // close all modals to allow navigation to the non-special view
               mfModalList.forEach((m, index) => {
                 // close modals 
                 closeModal(index);
@@ -1454,8 +1454,6 @@
           contentNode = node;
 
           if (modal !== undefined) {
-            // no need to reset because we are adding new modal on top
-            // resetMicrofrontendModalData();
             await openViewInModal(path, modal === true ? {} : modal);
             checkResolve();
           } else if (splitView !== undefined) {
