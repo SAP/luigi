@@ -84,12 +84,12 @@
         }
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
-          document.querySelector('.iframeModalCtn'),
+          document.querySelector('.iframeModalIndex-' + modalIndex),
           pathData.context,
           nodeObject
         );
         dispatch('wcCreated', {
-          modalWC: document.querySelector('.iframeModalCtn'),
+          modalWC: document.querySelector('.iframeModalIndex-' + modalIndex),
           modalWCData: { ...pathData, nodeParams },
         });
         wcCreated = true;
