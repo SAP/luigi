@@ -109,7 +109,8 @@ integration-testing: &integration-testing
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
-      if: type = api AND commit_message = test-compatibility # repo = SAP/luigi AND branch = master AND type = push
+      # repo = SAP/luigi AND branch = master AND type = push
+      if: type = api AND commit_message = test-compatibility
       script:
         # - bash -xv ./scripts/testCompatibility.sh --tag latest || travis_terminate 1 # to run with verbose mode
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
@@ -159,17 +160,17 @@ integration-testing: &integration-testing
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    # - name: 'Nightly release'
-    #   if: (branch = master AND type = cron) OR (type = api AND commit_message = publish)
-    #   script:
-    #     - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
-    #     - cd $TRAVIS_BUILD_DIR/scripts && npm ci
-    #     - cd $TRAVIS_BUILD_DIR/scripts && NIGHTLY=true npm run release
-    #     - cd $TRAVIS_BUILD_DIR/scripts && npm run publish:nightly
-    #     - echo "" > ~/.npmrc
-    #   before_cache:
-    #     - rm -rf ~/.npm/_logs
-    #     - rm -rf ~/.npm/_cacache
+    - name: 'Nightly release'
+      if: (branch = master AND type = cron) OR (type = api AND commit_message = publish)
+      script:
+        - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+        - cd $TRAVIS_BUILD_DIR/scripts && NIGHTLY=true npm run release
+        - cd $TRAVIS_BUILD_DIR/scripts && npm run publish:nightly
+        - echo "" > ~/.npmrc
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
 
     # # ----- SETUP EXAMPLES TESTS -----
     # - stage: 'Test Setup Scripts'
