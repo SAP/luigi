@@ -92,6 +92,7 @@ $side-nav-width-mobile: 260px;
 
 :root {
   --luigi__left-sidenav--width: 320px;
+  --sapList_Active_Background: #F0F0F0;
 }
 
 .luigi-documentation {
@@ -416,7 +417,7 @@ $side-nav-width-mobile: 260px;
   .fd-nested-list__link {
     font-size: 15px;
     height: auto;
-    padding: 1px 10px;
+    padding: 1px 7px;
     border-left: 2px solid transparent;
     border-bottom: none;
     border-top: none;
