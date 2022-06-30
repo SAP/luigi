@@ -108,7 +108,6 @@
               title={config.label}
               data-testid={getTestId(config)}
             >
-              <div class="lui-product-switch__icon">
                 {#if hasOpenUIicon(config)}
                   <!-- default: sap-icon--grid -->
                   <i class="sap-icon {getSapIconStr(config.icon)}" />
@@ -118,7 +117,6 @@
                     alt={config.altText ? config.altText : ''}
                   />
                 {/if}
-              </div>
             </button>
           </div>
           <div
