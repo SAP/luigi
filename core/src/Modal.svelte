@@ -255,7 +255,7 @@
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
-      ? IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog')
+      ? IframeHelpers.disableA11YKeyboardExceptClassName('.lui-modal-index-' + modalIndex)
       : '';
     window.focus();
   });
@@ -264,7 +264,7 @@
     EventListenerHelpers.removeEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
-      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog')
+      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.lui-modal-index-' + modalIndex)
       : '';
   });
 

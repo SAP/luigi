@@ -581,7 +581,7 @@
           console.error(
             'onInput is not a function. Please check the global search configuration.'
           );
-        } 
+        }
       }
     }
   };
@@ -916,7 +916,7 @@
       return;
     }
 
-    let tempModalList = mfModalList;
+    const tempModalList = mfModalList;
     tempModalList.push({
       mfModal : {
         displayed: true,
@@ -937,32 +937,17 @@
   const modalIframeCreated = (event, index) => {
     mfModalList[index].modalIframe = event.detail.modalIframe;
     mfModalList[index].modalIframeData = event.detail.modalIframeData;
-    // modalIframe = event.detail.modalIframe;
-    // modalIframeData = event.detail.modalIframeData;
   };
 
   const modalWCCreated = (event, index) => {
     mfModalList[index].modalWC = event.detail.modalWC;
     mfModalList[index].modalWCData = event.detail.modalWCData;
-
-    // modalWC = event.detail.modalWC;
-    // modalWCData = event.detail.modalWCData;
   };
 
-  // const modalIframeCreated = (event) => {
-  //   const modalItem = {}; 
-  //   modalItem.modalIframe = event.detail.modalIframe;
-  //   modalItem.modalIframeData = event.detail.modalIframeData;
-  //   mfModalList.push(modalItem);
-  // };
-
-  // const modalWCCreated = (event) => {
-  //   const modalItem = {}; 
-  //   modalItem.modalWC = event.detail.modalWC;
-  //   modalItem.modalWCData = event.detail.modalWCData;
-  // };
-
-
+  /**
+   * Closes the modal given the respective modal index. Index is used due to multiple modals functionality
+   * @param index the index of the modal to be closed corresponding to the 'mfModalList' array
+   */
   const closeModal = (index) => {
     const targetModal = mfModalList[index];
 
