@@ -36,7 +36,9 @@
               "projects/client-support-angular/tsconfig.lib.json",
               "projects/client-support-angular/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
