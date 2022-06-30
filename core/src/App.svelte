@@ -1489,7 +1489,7 @@
           } else {
             if (e.data.goBackContext) {
               console.warn(
-                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://docs.luigi-project.io/docs/luigi-client-api.md#navigate`
+                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://docs.luigi-project.io/docs/luigi-core-api/?section=parameters-7`
               );
             }
             // TODO: does not work with default child node behavior, fixed by #216
@@ -1937,6 +1937,7 @@
     --luigi__app-title--width: 60vw;
     --luigi__multi-app-dropdown--width: 60vw;
     --luigi__breadcrumb--height: 2.75rem;
+    --luigi__shellbar--height: 2.75rem;
   }
 
   :global(html) {
