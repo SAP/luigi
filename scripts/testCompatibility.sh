@@ -251,9 +251,7 @@ startE2eTestrunner() {
     SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
     echoe "----------------"
     echoe "----------------"
-    echoe " "
-    echoe "Webserver PID is: $SPAID"
-    echoe " "
+    echoe "Webserver PID is: $SPAPID"
     echoe "----------------"
     echoe "----------------"
   done
@@ -261,8 +259,8 @@ startE2eTestrunner() {
     echoe "----------------"
     echoe " "
     echoe "Curling externalMf"
-    curl --output /dev/null --silent --head --fail http://localhost:8090/customUserSettingsMf.html
-    echoe " "
+    OUTPUT = $(curl --output /dev/null --silent --head --fail http://localhost:8090/customUserSettingsMf.html)
+    echoe "$OUTPUT"
     echoe "----------------"
     echoe "----------------"
   echoe "Starting e2e test headless"
