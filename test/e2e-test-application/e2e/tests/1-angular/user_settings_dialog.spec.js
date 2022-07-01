@@ -360,7 +360,7 @@ describe('Navigation', () => {
       });
     });
 
-    it('Ctx update after storing user settings data using custom messages', () => {
+    it('Ctx update after storing user settings data using custom messages 22222222', () => {
       let $iframeBody;
       cy.get('[data-testid="us-navigation-item"]')
         .eq(5)
@@ -371,7 +371,7 @@ describe('Navigation', () => {
           .contains('Red')
           .should('have.class', 'red');
         cy.wrap($iframeBody)
-          .contains('Red')
+          .contains('failcheck')
           .should('not.have.class', 'active');
         cy.wrap($iframeBody)
           .contains('Red')
