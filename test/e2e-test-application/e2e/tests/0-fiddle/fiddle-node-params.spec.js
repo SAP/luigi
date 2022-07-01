@@ -2,6 +2,12 @@ import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('Fiddle 3', () => {
+  const localRetries = {
+    retries: {
+      runMode: 4,
+      openMode: 4
+    }
+  };
   describe('LuigiClient add and delete node and search params', () => {
     let newConfig;
     beforeEach(() => {
@@ -95,7 +101,7 @@ describe('Fiddle 3', () => {
       newConfig.navigation.nodes[0].children.push(node);
     });
 
-    it('Add and delete search params path routing enabled', () => {
+    it('Add and delete search params path routing enabled', localRetries, () => {
       newConfig.routing.useHashRouting = false;
       cy.visitFiddleConfigWithPathRouting('', newConfig);
       cy.get('.fd-side-nav__main-navigation')

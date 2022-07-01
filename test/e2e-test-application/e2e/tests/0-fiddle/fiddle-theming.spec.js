@@ -2,12 +2,21 @@ import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('Fiddle 2', () => {
+  const localRetries = {
+    retries: {
+      runMode: 4,
+      openMode: 4
+    }
+  };
   describe('Theming', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
       newConfig.settings.theming = {
-        themes: () => [{ id: 'light', name: 'Fiori3 Light' }, { id: 'dark', name: 'Fiori3 Dark' }],
+        themes: () => [
+          { id: 'light', name: 'Fiori3 Light' },
+          { id: 'dark', name: 'Fiori3 Dark' }
+        ],
         defaultTheme: 'light'
         // nodeViewURLDecorator: {
         //   queryStringParameter: {
@@ -474,7 +483,7 @@ describe('Fiddle 2', () => {
       cy.get('[data-testid=breadcrumb_dynValue_index2]').should('be.visible');
       cy.get('[data-testid=breadcrumb_1_index3]').should('be.visible');
     });
-    it('Breadcrumbs with virtual nodes', () => {
+    it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');

@@ -2,6 +2,12 @@ import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('Fiddle', () => {
+  const localRetries = {
+    retries: {
+      runMode: 4,
+      openMode: 4
+    }
+  };
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
       beforeEach(() => {
@@ -83,7 +89,7 @@ describe('Fiddle', () => {
         });
       });
     });
-    describe('virtualTree with fromVirtualTreeRoot', () => {
+    describe('virtualTree with fromVirtualTreeRoot', localRetries, () => {
       beforeEach(() => {
         const newConfig = cloneDeep(fiddleConfig);
 
