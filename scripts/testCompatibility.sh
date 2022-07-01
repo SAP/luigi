@@ -248,7 +248,7 @@ verifyAndStartWebserver() {
 
 startE2eTestrunner() {
   for i in "${!APP_PORTS[@]}"; do
-    SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+    SPAPID=`lsof -i :${i} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
     echoe "----------------"
     echoe "----------------"
     echoe "Webserver PID is: $SPAPID"
@@ -259,7 +259,7 @@ startE2eTestrunner() {
     echoe "----------------"
     echoe " "
     echoe "Curling externalMf"
-    OUTPUT = $(curl --output /dev/null --silent --head --fail http://localhost:8090/customUserSettingsMf.html)
+    OUTPUT=$(curl --output /dev/null --silent --head --fail http://localhost:8090/customUserSettingsMf.html)
     echoe "$OUTPUT"
     echoe "----------------"
     echoe "----------------"
