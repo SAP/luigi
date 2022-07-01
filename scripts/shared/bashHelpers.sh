@@ -46,15 +46,17 @@ runWebserver() {
   # wait until example is built and running
   local SLEEPSECS=1 # sleep time between webserver availability check
   local WAITCOUNT=0
-  until $(curl --output /dev/null --silent --head --fail http://localhost:$PORT$TESTPATH); do
-    if [ $WAITCOUNT -gt 15 ]; then
-      echo "Starting Webserver on $PORT timed out."
-      exit 1;
-    fi
-    printf '.'
-    sleep $SLEEPSECS
-    WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
-  done
+  if [ $PORT != "8090" ] then;
+    until $(curl --output /dev/null --silent --head --fail http://localhost:$PORT$TESTPATH); do
+      if [ $WAITCOUNT -gt 15 ]; then
+        echo "Starting Webserver on $PORT timed out."
+        exit 1;
+      fi
+      printf '.'
+      sleep $SLEEPSECS
+      WAITCOUNT=$(($WAITCOUNT + $SLEEPSECS))
+    done
+  fi;
   echo ""
   echo "Webserver was ready after $WAITCOUNT seconds"
 }
