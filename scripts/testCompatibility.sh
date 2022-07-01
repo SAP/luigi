@@ -68,7 +68,7 @@ declare -a APP_PORTS=(
 declare -a APP_PUBLIC_FOLDERS=(
   "dist" # e2e-test-application
   "public" # fiddle
-  "externalMf" # externalMf
+  "/" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
