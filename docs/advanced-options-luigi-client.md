@@ -3,7 +3,8 @@
   "node": {
     "label": "Advanced configuration options",
     "category": {
-      "label": "Luigi Client"
+      "label": "Luigi Client",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 4,
@@ -38,3 +39,4 @@ If a navigation node has configured a property called [runTimeErrorHandler](navi
   <body></body>
 </html>
 ```
+
