@@ -112,6 +112,7 @@ jobs:
       if: type = api AND commit_message = test-compatibility
       script:
         # - bash -xv ./scripts/testCompatibility.sh --tag latest || travis_terminate 1 # to run with verbose mode
+        - sudo chown -R travis:travis ~/boot/efi
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
