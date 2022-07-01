@@ -74,7 +74,7 @@ declare -a APP_PUBLIC_FOLDERS=(
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
   "/bundle.js" # fiddle
-  "/index.html" # externalMf
+  "/customUserSettingsMf.html" # externalMf
 )
 
 killWebServers() {
