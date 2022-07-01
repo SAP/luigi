@@ -367,7 +367,6 @@ describe('Navigation', () => {
         .click();
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
-        console.log(result);
         cy.wrap($iframeBody)
           .contains('Yellow')
           .should('have.class', 'yellow');
