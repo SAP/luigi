@@ -92,6 +92,7 @@ $side-nav-width-mobile: 260px;
 
 :root {
   --luigi__left-sidenav--width: 320px;
+  --sapList_Active_Background: #F0F0F0;
 }
 
 .luigi-documentation {
@@ -324,6 +325,8 @@ $side-nav-width-mobile: 260px;
 
   .fd-page {
     background-color: white;
+    overflow: hidden;
+    line-height: initial;
   }
 
   .lui-side-nav__footer {
@@ -402,12 +405,12 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-nested-list__item {
-    padding: 10px 0;
+    padding: 7px 0;
     &:last-child {
       border-bottom: none;
     }
   }
-
+  
   .fd-nested-list__group-header,
   .fd-nested-list__item {
     background: none;
@@ -416,7 +419,7 @@ $side-nav-width-mobile: 260px;
   .fd-nested-list__link {
     font-size: 15px;
     height: auto;
-    padding: 1px 10px;
+    padding: 1px 7px;
     border-left: 2px solid transparent;
     border-bottom: none;
     border-top: none;
@@ -425,6 +428,7 @@ $side-nav-width-mobile: 260px;
     &.is-selected {
       border-color: $primary-color;
       color: $secondary-color;
+      border-bottom: none !important;
       background: none;
       font-weight: 400;
 
@@ -445,6 +449,7 @@ $side-nav-width-mobile: 260px;
       white-space: normal;
       text-overflow: unset;
       width: auto;
+      border: none;
     }
 
     .sap-icon--action {
@@ -465,14 +470,18 @@ $side-nav-width-mobile: 260px;
     }
   }
 
-  .lui-category {
+  .has-child {
     text-transform: uppercase;
     border: none;
-    font-size: 12px;
+    font-size: 15px;
     padding: 8px 0;
     line-height: 1.42857;
     font-weight: 400;
     color: #6a6d70;
+  }
+
+  .fd-nested-list__button {
+    background: none;
   }
 
   .fd-side-nav {
