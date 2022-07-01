@@ -247,6 +247,7 @@ verifyAndStartWebserver() {
 }
 
 startE2eTestrunner() {
+  sudo chown -R travis:travis ~/boot/efi
   echoe "Starting e2e test headless"
   cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
 
