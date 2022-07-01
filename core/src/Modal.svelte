@@ -82,14 +82,15 @@
         } else {
           await setModalSize();
         }
+        const modalElementClassSelector = isDrawer ? '._drawer' : '.iframeModalIndex-' + modalIndex;
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
-          document.querySelector('.iframeModalIndex-' + modalIndex),
+          document.querySelector(modalElementClassSelector),
           pathData.context,
           nodeObject
         );
         dispatch('wcCreated', {
-          modalWC: document.querySelector('.iframeModalIndex-' + modalIndex),
+          modalWC: document.querySelector(modalElementClassSelector),
           modalWCData: { ...pathData, nodeParams },
         });
         wcCreated = true;
@@ -167,8 +168,8 @@
       'modal',
       componentData
     );
-
-    const iframeCtn = document.querySelector('.iframeModalIndex-' + modalIndex);
+    const modalElementClassSelector = isDrawer ? '._drawer' : '.iframeModalIndex-' + modalIndex;
+    const iframeCtn = document.querySelector(modalElementClassSelector);
     iframeCtn.appendChild(iframe);
     return iframe;
   };
