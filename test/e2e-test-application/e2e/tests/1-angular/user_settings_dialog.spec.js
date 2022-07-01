@@ -369,7 +369,7 @@ describe('Navigation', () => {
         $iframeBody = result;
         cy.wrap($iframeBody)
           .contains('Red')
-          .should('have.class', 'Red');
+          .should('have.class', 'red');
         cy.wrap($iframeBody)
           .contains('Red')
           .should('not.have.class', 'active');
