@@ -108,7 +108,7 @@ class UserSettings {
       label: 'Custom 2',
       title: 'Custom 2',
       icon: 'private',
-      viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
+      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
     }
   };
 }

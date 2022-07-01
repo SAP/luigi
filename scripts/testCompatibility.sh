@@ -55,26 +55,22 @@ source $BASE_DIR/shared/bashHelpers.sh
 declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
   "/website/fiddle"
-  "/test/e2e-test-application/externalMf"
 )
 
 # Used for setting up webserver and killing them
 declare -a APP_PORTS=(
   4200 # e2e-test-application
   8080 # fiddle
-  8090 # externalMf
 )
 
 declare -a APP_PUBLIC_FOLDERS=(
   "dist" # e2e-test-application
   "public" # fiddle
-  "/" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
   "/bundle.js" # fiddle
-  "/customUserSettingsMf.html" # externalMf
 )
 
 killWebServers() {
@@ -228,11 +224,9 @@ linkLuigi() {
 
 bundleApps() {
   for FOLDER in "${APP_FOLDERS[@]}"; do
-    if [ $FOLDER != "/test/e2e-test-application/externalMf" ]; then
-      echoe "Bundling app $FOLDER"
-      cd $LUIGI_DIR_TESTING/$FOLDER
-      npm run build
-    fi;
+    echoe "Bundling app $FOLDER"
+    cd $LUIGI_DIR_TESTING/$FOLDER
+    npm run build
   done
 }
 
@@ -247,22 +241,6 @@ verifyAndStartWebserver() {
 }
 
 startE2eTestrunner() {
-  for i in "${!APP_PORTS[@]}"; do
-    SPAPID=`lsof -i :${i} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
-    echoe "----------------"
-    echoe "----------------"
-    echoe "Webserver PID is: $SPAPID"
-    echoe "----------------"
-    echoe "----------------"
-  done
-    echoe "----------------"
-    echoe "----------------"
-    echoe " "
-    echoe "Curling externalMf"
-    OUTPUT=$(curl --output /dev/null --silent --head --fail http://localhost:8090/customUserSettingsMf.html)
-    echoe "$OUTPUT"
-    echoe "----------------"
-    echoe "----------------"
   echoe "Starting e2e test headless"
   cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
 
