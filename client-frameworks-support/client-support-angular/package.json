@@ -7,8 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "build:lib": "ng build client-support-angular --prod",
-    "bundle": "ng build client-support-angular --prod",
+    "build:lib": "ng build client-support-angular --configuration production",
+    "bundle": "ng build client-support-angular --configuration production",
     "bundle-develop": "ng build client-support-angular --watch"
   },
   "private": true,

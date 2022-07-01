@@ -18,7 +18,7 @@
     "tag": "client-support-angular"
   },
   "devDependencies": {
-    "@luigi-project/client": "^1.5.0"
+    "@luigi-project/client": "^1.23.1"
   },
   "version": "1.23.1"
 }
