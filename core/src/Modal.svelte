@@ -41,7 +41,7 @@
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
     isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
-    modalElementClassSelector = isDrawer ? '._drawer' : '.iframeModalIndex-' + modalIndex;
+    modalElementClassSelector = isDrawer ? '._drawer' : '.modalContainerIndex-' + modalIndex;
     if (isDrawer) {
       isModal = false;
       if (settings.header === undefined) {
@@ -329,7 +329,7 @@
       <div
         class="iframeModalCtn {isDrawer
           ? '_drawer'
-          : '_modal' + ' iframeModalIndex-' + modalIndex}"
+          : '_modal' + ' modalContainerIndex-' + modalIndex}"
       />
     </div>
     {#if showLoadingIndicator}
