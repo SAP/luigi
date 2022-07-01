@@ -31,6 +31,7 @@
   let showLoadingIndicator = true;
   let isDrawer = false;
   let isModal = true;
+  let modalElementClassSelector;
 
   const prepareNodeData = async (path) => {
     const pathUrlRaw =
@@ -40,6 +41,7 @@
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
     isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
+    modalElementClassSelector = isDrawer ? '._drawer' : '.iframeModalIndex-' + modalIndex;
     if (isDrawer) {
       isModal = false;
       if (settings.header === undefined) {
@@ -82,7 +84,7 @@
         } else {
           await setModalSize();
         }
-        const modalElementClassSelector = isDrawer ? '._drawer' : '.iframeModalIndex-' + modalIndex;
+       
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),
@@ -168,7 +170,6 @@
       'modal',
       componentData
     );
-    const modalElementClassSelector = isDrawer ? '._drawer' : '.iframeModalIndex-' + modalIndex;
     const iframeCtn = document.querySelector(modalElementClassSelector);
     iframeCtn.appendChild(iframe);
     return iframe;
