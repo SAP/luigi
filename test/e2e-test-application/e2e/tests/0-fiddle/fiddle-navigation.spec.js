@@ -55,13 +55,13 @@ describe('Fiddle', () => {
       });
       it('Open modal via core api with "rem"', () => {
         cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '33rem', height: '70rem' });
+          win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
         cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:33rem;height:70rem;');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
         cy.get('[aria-label="close"]').click();
       });
-      it('Open modal via core api with "rem"', () => {
+      it('Open modal via core api with "rem" & "psx"', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
