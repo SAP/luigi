@@ -55,22 +55,26 @@ source $BASE_DIR/shared/bashHelpers.sh
 declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
   "/website/fiddle"
+  "/test/e2e-test-application/externalMf"
 )
 
 # Used for setting up webserver and killing them
 declare -a APP_PORTS=(
   4200 # e2e-test-application
   8080 # fiddle
+  8090 # externalMf
 )
 
 declare -a APP_PUBLIC_FOLDERS=(
   "dist" # e2e-test-application
   "public" # fiddle
+  "externalMf" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
   "/bundle.js" # fiddle
+  "/index.html" # externalMf
 )
 
 killWebServers() {
@@ -238,9 +242,6 @@ verifyAndStartWebserver() {
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
     runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
   done
-
-  (E2EPATH="$LUIGI_DIR/test/e2e-test-application";
-  cd $E2EPATH && npm run startExternalMf);
 }
 
 startE2eTestrunner() {
