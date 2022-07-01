@@ -368,16 +368,16 @@ describe('Navigation', () => {
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody)
-          .contains('Yellow')
-          .should('have.class', 'yellow');
+          .contains('Red')
+          .should('have.class', 'Red');
         cy.wrap($iframeBody)
-          .contains('Yellow')
+          .contains('Red')
           .should('not.have.class', 'active');
         cy.wrap($iframeBody)
-          .contains('Yellow')
+          .contains('Red')
           .click();
         cy.wrap($iframeBody)
-          .contains('Yellow')
+          .contains('Red')
           .should('have.class', 'active');
       });
     });
