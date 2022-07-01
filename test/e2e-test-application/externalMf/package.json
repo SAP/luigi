@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.html",
   "license": "MIT",
+  "scripts": {
+    "build": "http-server --port 8090"
+  },
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
     "fundamental-styles": "^0.10.0"
