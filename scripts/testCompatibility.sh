@@ -247,7 +247,24 @@ verifyAndStartWebserver() {
 }
 
 startE2eTestrunner() {
-  sudo chown -R travis:travis ~/boot/efi
+  for i in "${!APP_PORTS[@]}"; do
+    SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+    echoe "----------------"
+    echoe "----------------"
+    echoe " "
+    echoe "Webserver PID is: $SPAID"
+    echoe " "
+    echoe "----------------"
+    echoe "----------------"
+  done
+    echoe "----------------"
+    echoe "----------------"
+    echoe " "
+    echoe "Curling externalMf"
+    curl --output /dev/null --silent --head --fail http://localhost:8090/customUserSettingsMf.html
+    echoe " "
+    echoe "----------------"
+    echoe "----------------"
   echoe "Starting e2e test headless"
   cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
 
