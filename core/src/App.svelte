@@ -442,7 +442,7 @@
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!node) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation.'
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
         );
         return;
       }
