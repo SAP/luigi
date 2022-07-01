@@ -228,9 +228,11 @@ linkLuigi() {
 
 bundleApps() {
   for FOLDER in "${APP_FOLDERS[@]}"; do
-    echoe "Bundling app $FOLDER"
-    cd $LUIGI_DIR_TESTING/$FOLDER
-    npm run build
+    if [ $FOLDER != "/test/e2e-test-application/externalMf" ]; then
+      echoe "Bundling app $FOLDER"
+      cd $LUIGI_DIR_TESTING/$FOLDER
+      npm run build
+    fi;
   done
 }
 
