@@ -3,7 +3,8 @@
   "node": {
     "label": "API Reference",
     "category": {
-      "label": "Luigi Client"
+      "label": "Luigi Client",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 3,
