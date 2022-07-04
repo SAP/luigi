@@ -119,7 +119,7 @@ jobs:
       services:
         - xvfb
       before_install:
-        - npm install -g @angular/cli
+        - npm install --location=global @angular/cli
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
