@@ -120,7 +120,8 @@ jobs:
         - xvfb
       before_install:
         - npm install --location=global @angular/cli
-        - lerna bootstrap
+        - npm install --location=global lerna
+        - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
