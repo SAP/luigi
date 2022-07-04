@@ -10,6 +10,7 @@ metadata:
   tags:
     - luigi
     - documentation
+    - dxp-project-documentation
 spec:
   type:
     name: ui

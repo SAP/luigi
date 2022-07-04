@@ -67,7 +67,8 @@ This type of metadata determines where to display the document in the navigation
   "node": {
     "label": "Overview",
     "category": {
-      "label": "Basics"
+      "label": "Basics",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 1,
