@@ -515,19 +515,36 @@ describe('Routing-helpers', () => {
 
     const viewGroupInNodeParent = {
       link: 'child-node',
+      viewUrl: './relative',
       parent: {
         pathSegment: 'parent-node',
-        viewGroup: 'tets 1-1'
+        viewGroup: 'tets 1-1',
+        viewUrl: './relative/foo/bar'
       }
     };
 
     const viewGroupInParentOfNodeParent = {
       link: 'child-node',
+      viewUrl: 'http://bla.blub/but/something/else',
       parent: {
         pathSegment: 'parent-node',
         parent: {
           pathSegment: 'parent-parent-node',
-          viewGroup: 'tets 1-1-1'
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
+        }
+      }
+    };
+
+    const viewGroupInParentOfNodeParentDifferentUrl = {
+      link: 'child-node',
+      viewUrl: 'http://bla2.blub/foo/bar',
+      parent: {
+        pathSegment: 'parent-node',
+        parent: {
+          pathSegment: 'parent-parent-node',
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
         }
       }
     };
@@ -544,8 +561,12 @@ describe('Routing-helpers', () => {
       assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent), 'tets 1-1-1');
     });
 
+    it('do not return viewGroup from parent at node.parent if domains do not match', () => {
+      assert.equal(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParentDifferentUrl), undefined);
+    });
+
     it('return undefined if viewGroup is not inside node', () => {
-      assert.deepEqual(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
+      assert.equal(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
     });
   });
   describe('set feature toggle from url', () => {
