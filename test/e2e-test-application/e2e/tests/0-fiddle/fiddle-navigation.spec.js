@@ -67,7 +67,7 @@ describe('Fiddle', () => {
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
         cy.get('[aria-label="close"]').click();
       });
-      it('Open modal via core api with "rem" & "psx"', () => {
+      it('Open modal via core api with "rem" & "non existent unit"', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
