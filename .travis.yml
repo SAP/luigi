@@ -121,11 +121,11 @@ jobs:
       before_install:
         - npm install --location=global @angular/cli
         - npm install --location=global lerna
-        - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
       script:
+        - lerna bootstrap --force-local
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
         - npm install
         - npm run test
