@@ -4,8 +4,8 @@ import { cloneDeep } from 'lodash';
 describe('Fiddle 2', () => {
   const localRetries = {
     retries: {
-      runMode: 4,
-      openMode: 4
+      runMode: 5,
+      openMode: 5
     }
   };
   describe('Theming', () => {
@@ -467,16 +467,16 @@ describe('Fiddle 2', () => {
         ]
       };
     });
-    it('Breadcrumb container visible with static nodes', () => {
+    it('Breadcrumb container visible with static nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home', newConfig);
-      cy.wait(1000);
+      // cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_static_index1]').should('be.visible');
     });
-    it('Breadcrumbs with dynamic nodes', () => {
+    it('Breadcrumbs with dynamic nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-      cy.wait(1000);
+      // cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_dyn_index1]').should('be.visible');
@@ -485,18 +485,18 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
-      cy.wait(1000);
+      // cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_VirtualTree_index1]').should('be.visible');
       cy.get('[data-testid=breadcrumb_virtualValue_index2]').should('be.visible');
       cy.get('[data-testid=breadcrumb_test_index3]').should('be.visible');
     });
-    it('dynamic nav header', () => {
+    it('dynamic nav header', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');
     });
-    it('static nav header', () => {
+    it('static nav header', localRetries, () => {
       newConfig.navigation.nodes[0].children[0].children[0].navHeader.label = 'test';
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'test');
