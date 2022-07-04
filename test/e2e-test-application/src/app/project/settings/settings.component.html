@@ -470,6 +470,48 @@
           <a
             href="javascript:void(0)"
             class="fd-link"
+            data-testid="open-modal-pr2-large"
+            (click)="
+              linkManager().openAsModal('/projects/pr2', {
+                title: 'microfrontend in a modal',
+                size: 'l'
+              })
+            "
+            >Open a modal large size</a
+          >
+          <app-code-snippet
+            data="linkManager().openAsModal('/projects/pr2', {
+              title: 'microfrontend in a modal',
+              size: 'l'
+            })"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="open-modal-pr2-s"
+            (click)="
+              linkManager().openAsModal('/projects/pr2', {
+                title: 'microfrontend in a modal',
+                size: 's'
+              })
+            "
+            >Open a modal small size</a
+          >
+          <app-code-snippet
+            data="linkManager().openAsModal('/projects/pr2', {
+              title: 'microfrontend in a modal',
+              size: 's'
+            })"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
             (click)="
               linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a split view',

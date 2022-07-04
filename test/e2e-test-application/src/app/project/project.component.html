@@ -520,6 +520,48 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              data-testid="open-modal-to-settings-fullscreen"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/settings', {
+                  title: 'microfrontend in a modal',
+                  size: 'fullscreen'
+                })
+              "
+              >Open a modal fullscreen</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
+                title: 'microfrontend in a modal',
+                size: 'fullscreen'
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-to-settings-medium"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/settings', {
+                  title: 'microfrontend in a modal',
+                  size: 'm'
+                })
+              "
+              >Open a modal medium</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
+                title: 'microfrontend in a modal',
+                size: 'm'
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="
                 linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                   title: 'Webcomponent in a split view',
@@ -868,7 +910,8 @@
                   .navigate('/overview')
               "
               data-testid="navigate-withOptions-no-history-context"
-              >Go to /overview using withOptions() which makes no browser history be kept and no context updated.
+              >Go to /overview using withOptions() which makes no browser history be kept
+              and no context updated.
             </a>
             <app-code-snippet
               data="linkManager().withOptions({preventHistoryEntry: true, preventContextUpdate:true}).navigate('/overview')"
