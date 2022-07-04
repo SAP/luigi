@@ -112,30 +112,21 @@ jobs:
     # ----- UNIT TESTS IN CLIENT-SUPPORT-ANGULAR -----
     - stage: 'Unit tests in client-support-angular'
       name: 'client-support-angular unit tests'
+      if: type = api AND commit_message = test-client-support
       addons:
         chrome: stable
       services:
         - xvfb
       before_install:
-        - sudo apt-get install google-chrome-stable
-        - export CHROME_BIN=usr/bin/google-chrome
-        - export DISPLAY=:99.0
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - npm install -g @angular/cli
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
-      install:
-        - npm set progress=false
-        # - npm install -g @angular/core
-        # - npm install -g @angular/common
-        # - npm install -g @angular/cli
-        - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
-        - npm install --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/
-        # - npm install @luigi-project/client@latest --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/
-        # - npm install @luigi-project/client@latest --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/projects/client-support-angular/
       script:
-        - npm run test --prefix $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/ --watch false --browsers=ChromeHeadless
-
+        - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
+        - npm install
+        - npm run test
+    
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
