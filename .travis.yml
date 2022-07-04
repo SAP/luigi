@@ -112,6 +112,7 @@ jobs:
     # ----- UNIT TESTS IN CLIENT-SUPPORT-ANGULAR -----
     - stage: 'Unit tests in client-support-angular'
       name: 'client-support-angular unit tests'
+      node_js: 16
       if: type = api AND commit_message = test-client-support
       addons:
         chrome: stable
