@@ -55,22 +55,26 @@ source $BASE_DIR/shared/bashHelpers.sh
 declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
   "/website/fiddle"
+  "/test/e2e-test-application"
 )
 
 # Used for setting up webserver and killing them
 declare -a APP_PORTS=(
   4200 # e2e-test-application
   8080 # fiddle
+  8090 # externalMf
 )
 
 declare -a APP_PUBLIC_FOLDERS=(
   "dist" # e2e-test-application
   "public" # fiddle
+  "externalMf" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
   "/bundle.js" # fiddle
+  "/customUserSettingsMf.html" # externalMf
 )
 
 killWebServers() {
@@ -184,8 +188,14 @@ checkoutLuigiToTestfolder() {
     cd $LUIGI_DIR_TESTING/$FOLDER
     npm i
   done
-  
+
+  # TODO: Current workaround, change back with new release! 
+  echoe "Replcace userSettings.js with current version as workaround:"
+  NEWFILE=$(curl -s https://raw.githubusercontent.com/SAP/luigi/0767e8473d2ff7fb8f7f5e4e017b89a26b7b6fcf/test/e2e-test-application/src/luigi-config/extended/userSettings.js)
+
   cd /home/travis/build/SAP/luigi/scripts/../../luigi-compatibility-testing/test/e2e-test-application/src/luigi-config/extended/
+
+  echoe $NEWFILE
 
   curl -s https://raw.githubusercontent.com/SAP/luigi/0767e8473d2ff7fb8f7f5e4e017b89a26b7b6fcf/test/e2e-test-application/src/luigi-config/extended/userSettings.js > userSettings.js
 }

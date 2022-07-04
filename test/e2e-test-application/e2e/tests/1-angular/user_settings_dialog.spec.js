@@ -360,7 +360,7 @@ describe('Navigation', () => {
       });
     });
 
-    it('Ctx update after storing user settings data using custom messages 22222222', () => {
+    it('Ctx update after storing user settings data using custom messages', () => {
       let $iframeBody;
       cy.get('[data-testid="us-navigation-item"]')
         .eq(5)
@@ -368,16 +368,16 @@ describe('Navigation', () => {
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody)
-          .contains('Red')
-          .should('have.class', 'red');
+          .contains('Yellow')
+          .should('have.class', 'yellow');
         cy.wrap($iframeBody)
-          .contains('failcheck')
+          .contains('Yellow')
           .should('not.have.class', 'active');
         cy.wrap($iframeBody)
-          .contains('Red')
+          .contains('Yellow')
           .click();
         cy.wrap($iframeBody)
-          .contains('Red')
+          .contains('Yellow')
           .should('have.class', 'active');
       });
     });
