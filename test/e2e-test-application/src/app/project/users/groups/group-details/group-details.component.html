@@ -51,5 +51,32 @@
       </button>
       <p data-testid="curr-text">{{currentRoute}}</p>
     </div>
+    <div class="fd-layout-panel__body">
+      <app-code-snippet
+        data="{
+          LuigiClient.linkManager().fromParent().getCurrentRoute().then(...)
+        }"
+      ></app-code-snippet>
+      <button data-testid="curr-link-from-parent" (click)="getCurrentRouteFromParent()">
+        getCurrentRoute fromParent
+      </button>
+      <p data-testid="curr-text-from-parent">{{currentRouteFromParent}}</p>
+    </div>
+    <div class="fd-layout-panel__body">
+      <app-code-snippet
+        data="{
+          LuigiClient.linkManager().fromClosestContext().getCurrentRoute().then(...)
+        }"
+      ></app-code-snippet>
+      <button
+        data-testid="curr-link-from-closest-context"
+        (click)="getCurrentRouteFromClosestContext()"
+      >
+        getCurrentRoute fromClosestContext
+      </button>
+      <p data-testid="curr-text-from-closest-context">
+        {{currentRouteFromClosestContext}}
+      </p>
+    </div>
   </div>
 </section>

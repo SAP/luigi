@@ -3,7 +3,8 @@
   "node": {
     "label": "UI features",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,

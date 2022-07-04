@@ -1088,19 +1088,16 @@
     window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
 
-
-
-
-  // TODO needs to be consolidated with buildPath
-  const buildPathForGetCurrent = (params, srcNode, srcNodePathParams) => {
-    const localNode = srcNode || currentNode;
-    const localPathParams = GenericHelpers.isEmptyObject(srcNodePathParams)
-      ? pathParams
-      : srcNodePathParams;
+  /**
+   * Builds the current path based on the navigation params received
+   * @param params {Object} navigation options
+   * @returns {string} the path built 
+   */
+  const buildPathForGetCurrentRoute = (params) => {
     let localNavPath = navigationPath;
-    if (srcNode) {
-      let parent = srcNode.parent;
-      localNavPath = [srcNode];
+    if (currentNode) {
+      let parent = currentNode.parent;
+      localNavPath = [currentNode];
       while (parent) {
         localNavPath.push(parent);
         parent = parent.parent;
@@ -1109,85 +1106,41 @@
     }
 
     let path = params.link;
+    let currentNodeViewUrl = getSubPath(currentNode, pathParams);
+  
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const node = [...localNavPath].reverse().find((n) => n.virtualTree);
-      if (!node) {
+      const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
+      if (!virtualTreeNode) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
         );
         return;
       }
-      path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
-        params.link
-      );
-
-      // boolean predicate, changes the path only if getCurrentPath function used
-      const isGetCurrentPathRequired =
-        !GenericHelpers.isEmptyObject(localPathParams) &&
-        !path.includes('virtualSegment_') &&
-        !params.link &&
-        params.getCurrentPath &&
-        Object.keys(localPathParams)[0].includes('virtualSegment_');
-      if (isGetCurrentPathRequired) {
-        let virtualPath = '';
-        Object.entries(localPathParams).forEach((virtualParam) => {
-          virtualPath += '/' + virtualParam[1];
-        });
-        path = virtualPath;
-      }
+      // build virtualPath if there is any
+      const virtualTreeNodeViewUrl = getSubPath(virtualTreeNode, pathParams);
+      path = currentNodeViewUrl.split(virtualTreeNodeViewUrl).join('');
     } else if (params.fromParent) {
-      // from direct parent
-      path = Routing.concatenatePath(
-        getSubPath(localNode.parent, localPathParams),
-        params.link
-      );
+      const parentNodeViewUrl = getSubPath(currentNode.parent, pathParams);
+      path = currentNodeViewUrl.split(parentNodeViewUrl).join('');
     } else if (params.fromClosestContext) {
       // from the closest navigation context
-      const node = [...localNavPath]
+      const navContextNode = [...localNavPath]
         .reverse()
         .find((n) => n.navigationContext && n.navigationContext.length > 0);
-      path = Routing.concatenatePath(
-        getSubPath(node, localPathParams),
-        params.link
-      );
+      const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
+      path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else if (params.fromContext) {
       // from a given navigation context
       const navigationContext = params.fromContext;
-      const node = [...localNavPath]
+      const navContextNode = [...localNavPath]
         .reverse()
         .find((n) => navigationContext === n.navigationContext);
-      const pathUpToContext = getSubPath(node, localPathParams);
-      const fullPath = getSubPath(localNode, localPathParams);
-      path = params.getCurrentPath
-        ? fullPath.substring(pathUpToContext.length)
-        : Routing.concatenatePath(pathUpToContext, params.link);
-    } else if (params.intent) {
-      path = RoutingHelpers.getIntentPath(params.link);
-    } else if (params.relative) {
-      // relative
-      path = Routing.concatenatePath(
-        getSubPath(localNode, localPathParams),
-        params.link
-      );
+      const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
+      path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else {
       // retrieve path for getCurrentPath method when no options used
-      if (params.getCurrentPath) {
-        path = getSubPath(localNode, localPathParams);
-      }
-    }
-    if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
-      path += path.includes('?') ? '&' : '?';
-      Object.entries(params.nodeParams).forEach((entry, index) => {
-        path +=
-          encodeURIComponent(
-            RoutingHelpers.getContentViewParamPrefix() + entry[0]
-          ) +
-          '=' +
-          encodeURIComponent(entry[1]) +
-          (index < Object.keys(params.nodeParams).length - 1 ? '&' : '');
-      });
+        path = currentNodeViewUrl;
     }
     return path;
   };
@@ -1536,7 +1489,7 @@
           } else {
             if (e.data.goBackContext) {
               console.warn(
-                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://docs.luigi-project.io/docs/luigi-client-api.md#navigate`
+                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://docs.luigi-project.io/docs/luigi-core-api/?section=parameters-7`
               );
             }
             // TODO: does not work with default child node behavior, fixed by #216
@@ -1547,11 +1500,8 @@
 
       // handle getCurrentRoute message coming from client
       if ('luigi.navigation.currentRoute' === e.data.msg) {
-        const srcNode = iframe.luigi.currentNode;
-        const srcPathParams = iframe.luigi.pathParams;
         const data = e.data.data;
-        data.getCurrentPath = true;
-        const path = buildPathForGetCurrent(data, srcNode, srcPathParams);
+        const path = buildPathForGetCurrentRoute(data);
 
         // send answer back to client
         const message = {
@@ -1987,6 +1937,7 @@
     --luigi__app-title--width: 60vw;
     --luigi__multi-app-dropdown--width: 60vw;
     --luigi__breadcrumb--height: 2.75rem;
+    --luigi__shellbar--height: 2.75rem;
   }
 
   :global(html) {
