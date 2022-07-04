@@ -120,15 +120,14 @@ jobs:
         - xvfb
       before_install:
         - npm install --location=global @angular/cli
+        - lerna bootstrap
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
       script:
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
-        - echoe $TRAVIS_BUILD_DIR
-        - ls
-      #  - npm install
-      #  - npm run test
+        - npm install
+        - npm run test
     
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
