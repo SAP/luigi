@@ -188,16 +188,6 @@ checkoutLuigiToTestfolder() {
     cd $LUIGI_DIR_TESTING/$FOLDER
     npm i
   done
-
-  # TODO: Current workaround, change back with new release! 
-  echoe "Replcace userSettings.js with current version as workaround:"
-  NEWFILE=$(curl -s https://raw.githubusercontent.com/SAP/luigi/0767e8473d2ff7fb8f7f5e4e017b89a26b7b6fcf/test/e2e-test-application/src/luigi-config/extended/userSettings.js)
-
-  cd /home/travis/build/SAP/luigi/scripts/../../luigi-compatibility-testing/test/e2e-test-application/src/luigi-config/extended/
-
-  echoe $NEWFILE
-
-  curl -s https://raw.githubusercontent.com/SAP/luigi/0767e8473d2ff7fb8f7f5e4e017b89a26b7b6fcf/test/e2e-test-application/src/luigi-config/extended/userSettings.js > userSettings.js
 }
 
 linkLuigi() {
