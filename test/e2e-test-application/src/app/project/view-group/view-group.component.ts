@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ export class ViewGroupComponent implements OnInit {
   config: string;
   time: string;
 
-  constructor(private route: ActivatedRoute, private window: Window) {}
+  constructor(@Inject(ActivatedRoute) private route: ActivatedRoute, @Inject(Window) private window: Window) {}
 
   ngOnInit() {
     let iframes = Array.from(this.window.parent.document.querySelectorAll('iframe'));

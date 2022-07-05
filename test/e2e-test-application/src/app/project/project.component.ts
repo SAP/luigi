@@ -20,8 +20,8 @@ import { delay, timeout } from 'rxjs/operators';
   styleUrls: ['./project.component.scss']
 })
 export class ProjectComponent implements OnInit, OnDestroy {
-  @ViewChild('luigiAlertForm', { static: false }) luigiAlertForm: NgForm;
-  @ViewChild('luigiLocalizationForm', { static: false }) luigiLocalizationForm: NgForm;
+  @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
+  @ViewChild('luigiLocalizationForm') luigiLocalizationForm: NgForm;
   public linkManager = linkManager;
   public uxManager = uxManager;
   public projectId: string;
