@@ -217,7 +217,5 @@ describe('Luigi Client linkManager Modal', () => {
         });
       });
     });
-
-    // multiple modals with modalpath param
   });
 });
