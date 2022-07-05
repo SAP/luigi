@@ -1,7 +1,7 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
-import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers } from './';
+import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers, IframeHelpers } from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
@@ -93,11 +93,23 @@ class RoutingHelpersClass {
     return result;
   }
 
-  findViewGroup(node) {
+  findViewGroup(node, originalNode) {
     if (node.viewGroup) {
-      return node.viewGroup;
+      if (originalNode && originalNode !== node) {
+        if (
+          node.viewUrl &&
+          originalNode.viewUrl &&
+          IframeHelpers.getLocation(node.viewUrl) === IframeHelpers.getLocation(originalNode.viewUrl)
+        ) {
+          return node.viewGroup;
+        }
+
+        return undefined;
+      } else {
+        return node.viewGroup;
+      }
     } else if (node.parent) {
-      return this.findViewGroup(node.parent);
+      return this.findViewGroup(node.parent, originalNode || node);
     }
   }
 
