@@ -59,7 +59,7 @@ describe('Fiddle', () => {
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
         cy.get('[aria-label="close"]').click();
       });
-      it('Open modal via core api with "rem"', () => {
+      it('Open modal via core api with "rem"', localRetries, () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
@@ -67,7 +67,7 @@ describe('Fiddle', () => {
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
         cy.get('[aria-label="close"]').click();
       });
-      it('Open modal via core api with "rem" & "non existent unit"', () => {
+      it('Open modal via core api with "rem" & "non existent unit"', localRetries, () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
@@ -105,7 +105,7 @@ describe('Fiddle', () => {
         });
         cy.visitWithFiddleConfig('/virtual', newConfig);
       });
-      it('navigate', () => {
+      it('navigate', localRetries, () => {
         cy.getIframeBody().then($body => {
           cy.wrap($body)
             .find('button')
