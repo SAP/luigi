@@ -34,6 +34,7 @@
     "core-js": "^2.4.1",
     "fundamental-styles": "^0.17.0",
     "lodash": ">=4.17.13",
+    "sass": "^1.53.0",
     "rxjs": "6.2.0",
     "zone.js": "^0.8.14"
   },
