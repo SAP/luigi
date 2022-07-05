@@ -20,8 +20,8 @@ import { delay, timeout } from 'rxjs/operators';
   styleUrls: ['./project.component.scss']
 })
 export class ProjectComponent implements OnInit, OnDestroy {
-  @ViewChild('luigiAlertForm') luigiAlertForm: NgForm;
-  @ViewChild('luigiLocalizationForm') luigiLocalizationForm: NgForm;
+  @ViewChild('luigiAlertForm', { static: false }) luigiAlertForm: NgForm;
+  @ViewChild('luigiLocalizationForm', { static: false }) luigiLocalizationForm: NgForm;
   public linkManager = linkManager;
   public uxManager = uxManager;
   public projectId: string;
@@ -319,7 +319,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public storage_clear() {
     const promiseStorage = storageManager().clear();
-    this.executeWithTimeout(promiseStorage, 100, result => 'success', result => 'Clear all the storage');
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => 'success',
+      result => 'Clear all the storage'
+    );
   }
 
   public storage_has() {
