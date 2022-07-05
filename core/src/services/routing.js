@@ -295,8 +295,39 @@ class RoutingClass {
       const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
       const viewUrl = nodeObject.viewUrl || '';
-      
-      if (await this.handleViewUrlMisconfigured(pathUrlRaw, nodeObject, previousCompData, component)) return;
+
+      //if (await this.handleViewUrlMisconfigured(pathUrlRaw, nodeObject, previousCompData, component)) return;
+      const hasChildrenNode =
+        (nodeObject.children && Array.isArray(nodeObject.children) && nodeObject.children.length > 0) ||
+        nodeObject.children ||
+        false;
+      const intendToHaveEmptyViewUrl =
+        (nodeObject.intendToHaveEmptyViewUrl && nodeObject.intendToHaveEmptyViewUrl === true) || false;
+
+      if (!nodeObject.compound && viewUrl.trim() === '' && !hasChildrenNode && !intendToHaveEmptyViewUrl) {
+        console.warn(
+          "The intended target route can't be accessed since it has neither a viewUrl nor children. This is most likely a misconfiguration."
+        );
+
+        // redirect to root when this empty viewUrl node be reached directly
+        if (
+          !(
+            previousCompData &&
+            (previousCompData.viewUrl || (previousCompData.currentNode && previousCompData.currentNode.compound))
+          )
+        ) {
+          const rootPathData = await Navigation.getNavigationPath(
+            LuigiConfig.getConfigValueAsync('navigation.nodes'),
+            '/'
+          );
+          const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
+          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
+          this.navigateTo(rootPath);
+        }
+
+        return;
+      }
+
       if (await this.handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config)) return;
 
       const hideNav = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
