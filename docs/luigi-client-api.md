@@ -1,13 +1,13 @@
 <!-- meta
 {
   "node": {
-    "label": "API Reference",
+    "label": "Luigi Client API",
     "category": {
-      "label": "Luigi Client",
+      "label": "API Reference",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 3,
+      "categoryPosition": 6,
       "position": 1
     }
   }

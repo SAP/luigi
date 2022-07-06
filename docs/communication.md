@@ -3,12 +3,12 @@
   "node": {
     "label": "Custom messages",
     "category": {
-      "label": "Advanced",
+      "label": "Luigi Client",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 4,
-      "position": 0
+      "categoryPosition": 5,
+      "position": 3
     }
   }
 }

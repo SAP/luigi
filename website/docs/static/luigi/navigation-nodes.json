@@ -15,8 +15,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular"
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 1
+      "categoryPosition": 7,
+      "position": 2
     }
   },
   {
@@ -35,8 +35,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue"
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 2
+      "categoryPosition": 7,
+      "position": 3
     }
   },
   {
@@ -55,8 +55,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react"
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 3
+      "categoryPosition": 7,
+      "position": 4
     }
   },
   {
@@ -75,8 +75,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js"
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 4
+      "categoryPosition": 7,
+      "position": 5
     }
   },
   {
@@ -95,8 +95,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5"
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 5
+      "categoryPosition": 7,
+      "position": 6
     }
   },
   {
@@ -115,8 +115,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte"
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 6
+      "categoryPosition": 7,
+      "position": 7
     }
   },
   {
@@ -135,8 +135,8 @@
       "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-next"
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 7
+      "categoryPosition": 7,
+      "position": 8
     }
   }
 ]

@@ -1,14 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "API Reference",
+    "label": "Luigi Core API",
     "category": {
-      "label": "Luigi Core",
+      "label": "API Reference",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 11
+      "categoryPosition": 6,
+      "position": 0
     }
   }
 }

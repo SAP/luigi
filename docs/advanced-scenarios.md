@@ -3,12 +3,12 @@
   "node": {
     "label": "Expert scenarios",
     "category": {
-      "label": "Advanced",
+      "label": "Examples",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 4,
-      "position": 1
+      "categoryPosition": 7,
+      "position": 0
     }
   }
 }
