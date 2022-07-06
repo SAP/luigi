@@ -870,7 +870,7 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
       items:[...],
       customAppSwitcherItemRenderer: (item, slot, appSwitcherApiObj) => {
         let a = document.createElement('a');
-        a.setAttribute('class', 'fd-menu__link test');
+        a.setAttribute('class', 'fd-menu__link');
         a.addEventListener('click', e => {
           Luigi.navigation().navigate(item.link);
           appSwitcherApiObj.closeDropDown();

@@ -27,7 +27,7 @@
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
   const appSwitcherApiObj = {
-    closeDropDown: ()=>{
+    closeDropDown: () => {
       toggleDropdownState('appSwitcherPopover');
     }
   } 
