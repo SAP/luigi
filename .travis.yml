@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '12.18.4' # Default node version for CI testing
+  - '14.17.3' # Default node version for CI testing
   #- 16  Optional node version for setup scripts
 dist: xenial
 stage: Setup node environment
@@ -65,7 +65,7 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
-      node_js: 16
+      node_js: 14.17.3
       if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
@@ -175,7 +175,6 @@ jobs:
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Test Setup Scripts'
       name: 'Test Angular setup script'
-      node_js: 16
       if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
