@@ -99,10 +99,10 @@ describe('Fiddle 3', () => {
         }
       };
       newConfig.navigation.nodes[0].children.push(node);
+      cy.visitFiddleConfigWithPathRouting('', newConfig);
     });
 
     it('Add and delete search params path routing enabled', localRetries, () => {
-      cy.visitFiddleConfigWithPathRouting('', newConfig);
       cy.get('.fd-side-nav__main-navigation')
         .contains('MyNode')
         .click();
