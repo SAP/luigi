@@ -469,14 +469,14 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumb container visible with static nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home', newConfig);
-      cy.wait(2000);
+      cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_static_index1]').should('be.visible');
     });
     it('Breadcrumbs with dynamic nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-      cy.wait(2000);
+      cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_dyn_index1]').should('be.visible');
@@ -485,7 +485,7 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
-      cy.wait(2000);
+      cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_VirtualTree_index1]').should('be.visible');
