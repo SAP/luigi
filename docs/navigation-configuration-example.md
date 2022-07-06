@@ -3,7 +3,8 @@
   "node": {
     "label": "Navigation configuration Example",
     "category": {
-      "label": "Examples"
+      "label": "Examples",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 5,

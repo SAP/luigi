@@ -23,14 +23,15 @@ Open [http://localhost:5000](http://localhost:5000), it is exported to `public` 
 
 ## Adding Documents
 
-Put markdown files to /docs folder, and add frontmatter metadata at the beginning of the file:
+Put markdown files to /docs folder, and add formatter metadata at the beginning of the file:
 ```
 <!-- meta
 {
   "node": {
     "label": "FAQ",
     "category": {
-      "label": "Basics"
+      "label": "Basics",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 1,

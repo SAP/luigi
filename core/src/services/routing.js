@@ -452,6 +452,9 @@ class RoutingClass {
           }
         }
       }
+    } else {
+      // If previous component data can't be determined, clear cache to avoid conflicts with dynamic nodes
+      NodeDataManagementStorage.deleteCache();
     }
   }
 
