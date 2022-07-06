@@ -43,6 +43,7 @@ class ViewUrlDecoratorSvc {
     }
     if (decode) {
       urlObj.search = decodeURIComponent(urlObj.search);
+      urlObj.hash = decodeURIComponent(urlObj.hash);
     }
     return urlObj.href;
   }
