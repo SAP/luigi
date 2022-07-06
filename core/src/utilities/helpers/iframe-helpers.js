@@ -214,7 +214,9 @@ class IframeHelpersClass {
       : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
-    iframe.src = ViewUrlDecorator.hasDecorators() ? ViewUrlDecorator.applyDecorators(viewUrl) : viewUrl;
+    iframe.src = ViewUrlDecorator.hasDecorators()
+      ? ViewUrlDecorator.applyDecorators(viewUrl, currentNode ? currentNode.decodeViewUrl : undefined)
+      : viewUrl;
     if (allowRules) {
       allowRules.forEach((rule, index) => {
         allowRules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');
