@@ -76,10 +76,10 @@ describe('Fiddle 3', () => {
       cy.expectPathToBe('/home/mynode?%7Eluigi=rocks');
     });
   });
+
   describe('LuigiClient add and delete node and search paramstest', () => {
-    let newConfig;
+    let newConfig = cloneDeep(fiddleConfig);
     beforeEach(() => {
-      newConfig = cloneDeep(fiddleConfig);
       newConfig.routing.useHashRouting = false;
       const node = {
         pathSegment: 'mynode',
@@ -102,7 +102,6 @@ describe('Fiddle 3', () => {
     });
 
     it('Add and delete search params path routing enabled', localRetries, () => {
-      newConfig.routing.useHashRouting = false;
       cy.visitFiddleConfigWithPathRouting('', newConfig);
       cy.get('.fd-side-nav__main-navigation')
         .contains('MyNode')
@@ -132,6 +131,7 @@ describe('Fiddle 3', () => {
       });
     });
   });
+
   describe('Custom text in the footer', () => {
     it('checks if the text in footer exist, defined by settings', () => {
       cy.window().then(win => {
