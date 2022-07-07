@@ -35,9 +35,9 @@
     LuigiConfig,
     LuigiElements,
     LuigiGlobalSearch,
-    LuigiFeatureToggles,
     LuigiTheming,
     LuigiRouting,
+    LuigiUX,
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -400,6 +400,9 @@
         Iframe.removeInactiveIframes(node);
       }
       closeModal();
+
+      // remove backdrop
+      LuigiUX.removeBackdrop();
 
       closeSplitView();
 
