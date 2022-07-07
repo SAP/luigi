@@ -14,5 +14,8 @@
     "module": "esnext",
     "baseUrl": "./",
     "allowSyntheticDefaultImports": true
+  },
+  "angularCompilerOptions": {
+    "enableIvy": false
   }
 }

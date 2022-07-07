@@ -66,5 +66,8 @@
       "usePrettier": true,
       "useEslint": false,
       "eslintStopCommit": true
+   },
+   "dependencies": {
+      "node-gyp": "^9.0.0"
    }
 }
