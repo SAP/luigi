@@ -2,7 +2,7 @@ version: ~> 1.0 # enables build config validation beta feature: https://docs.tra
 language: node_js
 node_js:
   - '14.15.5' # Default node version for CI testing
-  #- 16  #Optional node version for setup scripts
+  - 16  #Optional node version for setup scripts
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
