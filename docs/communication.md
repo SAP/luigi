@@ -1,14 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "Custom messages",
+    "label": "Core/Client communication",
     "category": {
-      "label": "Luigi Client",
+      "label": "Advanced",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 5,
-      "position": 3
+      "categoryPosition": 7,
+      "position": 1
     }
   }
 }
