@@ -502,10 +502,6 @@ describe('Fiddle 2', () => {
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
       newConfig.settings.theming = {
-        themes: () => [
-          { id: 'light', name: 'Fiori3 Light' },
-          { id: 'dark', name: 'Fiori3 Dark' }
-        ],
         defaultTheme: 'light',
         nodeViewURLDecorator: {
           queryStringParameter: {
@@ -520,8 +516,7 @@ describe('Fiddle 2', () => {
         pathSegment: 'nondecodeviewurl',
         label: 'NonDecoded ViewUrl',
         viewUrl:
-          'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar',
-        icon: 'employee'
+          'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar'
       });
 
       newConfig.navigation.nodes.push({
