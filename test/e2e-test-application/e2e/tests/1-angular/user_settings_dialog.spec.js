@@ -377,6 +377,7 @@ describe('Navigation', () => {
           .contains('Yellow')
           .click();
         cy.wrap($iframeBody)
+          .wait(300)
           .contains('Yellow')
           .should('have.class', 'active');
       });
