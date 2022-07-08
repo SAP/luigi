@@ -442,7 +442,7 @@
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!node) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
         );
         return;
       }
@@ -1113,7 +1113,7 @@
       const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!virtualTreeNode) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
         );
         return;
       }
@@ -1245,7 +1245,7 @@
           );
         } else {
           console.warn(
-            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file. Documentation: https://docs.luigi-project.io/docs/communication?section=custom-messages`
+            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file.`
           );
         }
       }
@@ -1489,7 +1489,7 @@
           } else {
             if (e.data.goBackContext) {
               console.warn(
-                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://docs.luigi-project.io/docs/luigi-core-api/?section=parameters-7`
+                `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`
               );
             }
             // TODO: does not work with default child node behavior, fixed by #216
