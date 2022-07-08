@@ -113,6 +113,9 @@ jobs:
       if: type = api AND commit_message = test-compatibility
       script:
         # - bash -xv ./scripts/testCompatibility.sh --tag latest || travis_terminate 1 # to run with verbose mode
+        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - ls $CYPRESS_CACHE_FOLDER
+        - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application @babel/plugin-proposal-class-properties
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
