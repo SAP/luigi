@@ -1277,7 +1277,6 @@ Add a feature toggle to an active feature toggles list
 ##### Parameters
 
 -   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the name of the feature toggle
--   `fromUrlQuery`   (optional, default `false`)
 
 ##### Examples
 
