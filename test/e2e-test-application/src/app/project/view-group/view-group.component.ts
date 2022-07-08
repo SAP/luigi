@@ -13,7 +13,7 @@ export class ViewGroupComponent implements OnInit {
   config: string;
   time: string;
 
-  constructor(@Inject(ActivatedRoute) private route: ActivatedRoute, @Inject(Window) private window: Window) {}
+  constructor(private route: ActivatedRoute, @Inject('Window') private window: any) {}
 
   ngOnInit() {
     let iframes = Array.from(this.window.parent.document.querySelectorAll('iframe'));
