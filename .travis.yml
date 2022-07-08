@@ -27,7 +27,8 @@ notifications:
     secure: nls0RW4RKEHLnRBgOi25UTpjjSBFGnXgOnbxuiPsSjBFWehXvH8SfMYGfsDdp6lfH9ljDFA6KiJFauAAgQ+vImaZNHvrHeCitQDqWraXeD1CyzOYGp+8Bx/JyR1bcBKewvQVqNpnhk4hoIEI4Gu2i1NGq1/pAkHOeetw7PVmnpEG/QyQQ8YDXbySzWl39iZc8HWVT4svKV8BqYx+KzqRqE09XSfhiecZ00DVjZEMyKD6oCttOlJ/Vo0Z7QgzAEDaIhb+jrojJ2HD1PPWjiQqfpuyBY6GjeFGwNebevhmVngvQ3+69xn0ydOct3HTR/uSNJexY/Hq9W98QuGliihWwx1ksjFZnKtZ42FRY9p8jD/hw+ySJRwrAvbZtrWA0xmU85Fz/kRMocum5I7UJDGOTvklNYMFT/Rlh5w08DWXx8YCYyvXxsTee7dNELwefYnOL/FZRzHaNKnXqimYsE8dIlbfMBKD2Kh4Hr0+NZlBBaZ71w2+4Cp1mdJnSEFN7zuOrwqdQdjCDAeqttcSOvuQAR/BMGwtN30BrjW16n2YOuqwBoWsp7zUdpSyWp600mTn+vYulue4hvpwpbfELVXRtaggrVvolW9fBtACXE6+G9rqzJRgRLLNGM9i7dbiX2OFx1olMTu0n7XN7MNFdwFH4X0sycfi02GlZb/5L/ntrJY=
 
 integration-testing: &integration-testing
-  if: repo = SAP/luigi AND type != cron AND type != api
+  #if: repo = SAP/luigi AND type != cron AND type != api
+  if: type = api AND commit_message = test-compatibility
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
@@ -117,9 +118,34 @@ jobs:
         - ls $CYPRESS_CACHE_FOLDER
         - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application @babel/plugin-proposal-class-properties
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
+      addons:
+        apt:
+          packages:
+            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
+            - libgconf-2-4
+            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
+            # needed dependencies for cypress 5.3.0
+            - libgtk2.0-0
+            - libgtk-3-0
+            - libgbm-dev  
+            - libnotify-dev
+            - libgconf-2-4
+            - libnss3
+            - libxss1
+            - libasound2
+            - libxtst6
+            - xauth
+            - xvfb
+        # chrome: beta
+        chrome: stable
+      before_install:
+        # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
         - rm -rf $TRAVIS_BUILD_DIR/../luigi-compatibility-testing # remove compatibility build cache
 
     # ----- DOCU -----
