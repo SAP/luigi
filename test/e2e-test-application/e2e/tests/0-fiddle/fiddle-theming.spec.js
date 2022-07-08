@@ -4,8 +4,8 @@ import { cloneDeep } from 'lodash';
 describe('Fiddle 2', () => {
   const localRetries = {
     retries: {
-      runMode: 5,
-      openMode: 5
+      runMode: 4,
+      openMode: 4
     }
   };
   describe('Theming', () => {
