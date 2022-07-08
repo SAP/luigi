@@ -856,7 +856,7 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
 1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
 2. Add the **appSwitcher** parameter to the **navigation** object using the optional parameters listed below.
 
-### customAppSwitcherItemRenderer
+### itemRenderer
 - **type**: function
 - **description**: This function allows you to customize the single list element rendered in the default app switcher popover.
 - **attributes**:
@@ -869,7 +869,7 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
   ```javascript
     appSwitcher: {
       items:[...],
-      customAppSwitcherItemRenderer: (item, slot, appSwitcherApiObj) => {
+      itemRenderer: (item, slot, appSwitcherApiObj) => {
         let a = document.createElement('a');
         a.setAttribute('class', 'fd-menu__link');
         a.addEventListener('click', e => {

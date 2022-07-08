@@ -15,13 +15,13 @@
   export let selectedItem;
   export let defaultTitle;
   export let appSwitcherItems;
-  export let customAppSwitcherItemRenderer;
+  export let itemRenderer;
   export let pathParams;
   export let subTitle;
   export let defaultSubTitle;
   export let pathData;
   export let addNavHrefForAnchor;
-  let luigiCustomAppSwitcherItemRenderer__slotContainer;
+  let customItemRenderer__slotContainer;
   let previousPathData;
   let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let getTranslation = getContext('getTranslation');
@@ -40,7 +40,7 @@
           pathData,
           pathParams,
           appSwitcherItems,
-          customAppSwitcherItemRenderer,
+          itemRenderer,
           selectedItem,
           defaultTitle,
           title,
@@ -59,8 +59,8 @@
               pathData = obj.pathData;
             } else if (prop === 'appSwitcherItems') {
               appSwitcherItems = obj.appSwitcherItems;
-            } else if (prop === 'customAppSwitcherItemRenderer') {
-              customAppSwitcherItemRenderer = obj.customAppSwitcherItemRenderer;
+            } else if (prop === 'itemRenderer') {
+              itemRenderer = obj.itemRenderer;
             } else if (prop === 'pathParams') {
               pathParams = obj.pathParams;
             } else if (prop === 'selectedItem') {
@@ -103,7 +103,7 @@
   function renderCustomList(item, slot, index){
     setTimeout(()=>{
       if(slot){
-        customAppSwitcherItemRenderer(item, slot.children[index], appSwitcherApiObj);
+        itemRenderer(item, slot.children[index], appSwitcherApiObj);
       }
     });
     return '';
@@ -286,7 +286,7 @@
         <nav class="fd-menu">
           <ul
             class="fd-menu__list fd-menu__list--no-shadow"
-            bind:this={luigiCustomAppSwitcherItemRenderer__slotContainer}
+            bind:this={customItemRenderer__slotContainer}
           >
             {#if showMainAppEntry && selectedItem}
               <li class="fd-menu__item">
@@ -305,12 +305,12 @@
             {/if}
             {#if appSwitcherItems && appSwitcherItems.length > 0}
               {#each appSwitcherItems as item, index}
-                {#if GenericHelpers.isFunction(customAppSwitcherItemRenderer)}
-                  {#if luigiCustomAppSwitcherItemRenderer__slotContainer}
+                {#if GenericHelpers.isFunction(itemRenderer)}
+                  {#if customItemRenderer__slotContainer}
                     <li class="fd-menu__item" tabindex="0">
                       {@html renderCustomList(
                         item,
-                        luigiCustomAppSwitcherItemRenderer__slotContainer,
+                        customItemRenderer__slotContainer,
                         index
                       )}
                     </li>
