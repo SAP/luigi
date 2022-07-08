@@ -206,7 +206,8 @@ describe('Navigation', () => {
       //Choose option one above French
       cy.get('[data-testid="lui-us-language-dropdown"]')
         .should('exist')
-        .type('{upArrow}').type('{enter}');
+        .type('{upArrow}')
+        .type('{enter}');
 
       //Confirm with keyboard: Enter
       cy.get('.fd-popover__body--dropdown-fill')
@@ -221,7 +222,8 @@ describe('Navigation', () => {
       //Choose option one below English
       cy.get('[data-testid="lui-us-language-dropdown"]')
         .should('exist')
-        .type('{downArrow}').type('{enter}');
+        .type('{downArrow}')
+        .type('{enter}');
 
       //Confirm with keyboard: Enter
       cy.get('.fd-popover__body--dropdown-fill')

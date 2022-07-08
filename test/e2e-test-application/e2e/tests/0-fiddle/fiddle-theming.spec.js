@@ -7,7 +7,10 @@ describe('Fiddle 2', () => {
     beforeEach(() => {
       newConfig = cloneDeep(fiddleConfig);
       newConfig.settings.theming = {
-        themes: () => [{ id: 'light', name: 'Fiori3 Light' }, { id: 'dark', name: 'Fiori3 Dark' }],
+        themes: () => [
+          { id: 'light', name: 'Fiori3 Light' },
+          { id: 'dark', name: 'Fiori3 Dark' }
+        ],
         defaultTheme: 'light'
         // nodeViewURLDecorator: {
         //   queryStringParameter: {
