@@ -3,7 +3,8 @@
   "node": {
     "label": "Framework support libraries",
     "category": {
-      "label": "Luigi Client"
+      "label": "Luigi Client",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 3,
@@ -149,7 +150,7 @@ For example:
 {
     path: 'luigi-client-support-preload',
     component: LuigiPreloadComponent,
-    data: { updateModalPathParam: true, addHistoryEntry: true }
+    data: { updateModalDataPath: true, addHistoryEntry: true }
   }
 ```
 

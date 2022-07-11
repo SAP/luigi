@@ -10,11 +10,11 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@luigi-project/client": "^1.20.1",
-    "@luigi-project/core": "^1.20.1",
+    "@luigi-project/client": "^1.22.0",
+    "@luigi-project/core": "^1.22.0",
     "copy-webpack-plugin": "^5.1.1",
-    "@sap-theming/theming-base-content": "^11.1.28",
-    "fundamental-styles": "^0.18.0",
+    "@sap-theming/theming-base-content": "^11.1.38",
+    "fundamental-styles": "^0.23.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }

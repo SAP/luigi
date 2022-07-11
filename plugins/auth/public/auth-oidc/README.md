@@ -3,7 +3,8 @@
   "node": {
     "label": "OpenID Connect",
     "category": {
-      "label": "Authorization Plugins"
+      "label": "Authorization Plugins",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,

@@ -25,6 +25,55 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.23.1] (2022-06-20)
+
+#### :rocket: Added
+* [#2748](https://github.com/SAP/luigi/pull/2748) Improve dom selectors in Luigi API ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2756](https://github.com/SAP/luigi/pull/2756) Fix getCurrentPath collision with buildPath ([@hardl](https://github.com/hardl))
+
+
+
+
+
+
+## [v1.23.0] (2022-06-17)
+
+#### :rocket: Added
+* [#2752](https://github.com/SAP/luigi/pull/2752) Disable keyboard accessibility for user settings dialog ([@ndricimrr](https://github.com/ndricimrr))
+* [#2739](https://github.com/SAP/luigi/pull/2739) Add getCurrentRoute linkmanager ([@ndricimrr](https://github.com/ndricimrr))
+* [#2691](https://github.com/SAP/luigi/pull/2691) Scalable keyboard accessibility for Dropdown in User Settings Dialog ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2723](https://github.com/SAP/luigi/pull/2723) Update all Core examples with latest versions of Luigi Core/Client and FD Styles ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2753](https://github.com/SAP/luigi/pull/2753) FIx feature toggles reading phase ([@hardl](https://github.com/hardl))
+* [#2742](https://github.com/SAP/luigi/pull/2742) Fix updateModalPathInternalNavigation not working with options ([@hardl](https://github.com/hardl))
+* [#2745](https://github.com/SAP/luigi/pull/2745) Signout entry misaligned in simple Profile Menu ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2740](https://github.com/SAP/luigi/pull/2740) Fix typo in angular support lib docu ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
+
+
+
+## [v1.22.0] (2022-05-19)
+
+#### :rocket: Added
+* [#2704](https://github.com/SAP/luigi/pull/2704) Disable keyboard accessibility outside drawer and modal ([@ndricimrr](https://github.com/ndricimrr))
+* [#2672](https://github.com/SAP/luigi/pull/2672) Disable keyboard accessibility on confirmation modal background elements  ([@ndricimrr](https://github.com/ndricimrr))
+* [#2642](https://github.com/SAP/luigi/pull/2642) Add functionality for allow attribute to be separated by semicolons ([@viktorsperling](https://github.com/viktorsperling))
+
+#### :bug: Fixed
+* [#2709](https://github.com/SAP/luigi/pull/2709) Fix configChange event firing twice ([@ndricimrr](https://github.com/ndricimrr))
+* [#2692](https://github.com/SAP/luigi/pull/2692) Fix empty nodeParams on browser back navigation ([@ndricimrr](https://github.com/ndricimrr))
+* [#2694](https://github.com/SAP/luigi/pull/2694) Fix bug for nested properties for viewUrl replacement ([@hardl](https://github.com/hardl))
+* [#2686](https://github.com/SAP/luigi/pull/2686) Fix getNodeParams decoding issue ([@ndricimrr](https://github.com/ndricimrr))
+* [#2566](https://github.com/SAP/luigi/pull/2566) Keyboard accessibility for user settings dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2666](https://github.com/SAP/luigi/pull/2666) Error handling on productswitcher columns calculation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v1.21.0] (2022-04-07)
 
 #### :rocket: Added
@@ -1351,3 +1400,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.20.0]: https://github.com/SAP/luigi/compare/v1.19.0...v1.20.0
 [v1.20.1]: https://github.com/SAP/luigi/compare/v1.20.0...v1.20.1
 [v1.21.0]: https://github.com/SAP/luigi/compare/v1.20.1...v1.21.0
+[v1.22.0]: https://github.com/SAP/luigi/compare/v1.21.0...v1.22.0
+[v1.23.0]: https://github.com/SAP/luigi/compare/v1.22.0...v1.23.0
+[v1.23.1]: https://github.com/SAP/luigi/compare/v1.23.0...v1.23.1

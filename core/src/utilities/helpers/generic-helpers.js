@@ -13,12 +13,31 @@ class GenericHelpersClass {
     return (window.crypto || window.msCrypto).getRandomValues(new Uint32Array(1))[0];
   }
 
-  isFunction(anyParam) {
-    return anyParam && {}.toString.call(anyParam) === '[object Function]';
+  /**
+   * Checks if input is a function.
+   * @param functionToCheck mixed
+   * @returns {boolean}
+   */
+  isFunction(functionToCheck) {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
   }
 
-  isPromise(anyParam) {
-    return anyParam && this.isFunction(anyParam.then);
+  /**
+   * Checks if input is a promise.
+   * @param promiseToCheck mixed
+   * @returns {boolean}
+   */
+  isPromise(promiseToCheck) {
+    return promiseToCheck && this.isFunction(promiseToCheck.then);
+  }
+
+  /**
+   * Checks if input is a string.
+   * @param stringToCheck mixed
+   * @returns {boolean}
+   */
+  isString(stringToCheck) {
+    return typeof stringToCheck === 'string' || stringToCheck instanceof String;
   }
 
   isIE /* istanbul ignore next */() {
@@ -28,12 +47,21 @@ class GenericHelpersClass {
   }
 
   /**
-   * Simple object check.
-   * @param item mixed
+   * Checks if input is an object.
+   * @param objectToCheck mixed
    * @returns {boolean}
    */
-  isObject(item) {
-    return item && typeof item === 'object' && !Array.isArray(item);
+  isObject(objectToCheck) {
+    return !!(objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck));
+  }
+
+  /**
+   * Check if object is empty
+   * @param item object to check
+   * @returns {boolean}
+   */
+  isEmptyObject(item) {
+    return this.isObject(item) && Object.keys(item).length === 0;
   }
 
   /**
@@ -141,7 +169,7 @@ class GenericHelpersClass {
    * @returns {string} string without leading slash
    */
   trimLeadingSlash(str) {
-    return str.replace(/^\/+/g, '');
+    return this.isString(str) ? str.replace(/^\/+/g, '') : '';
   }
 
   /**
@@ -150,7 +178,7 @@ class GenericHelpersClass {
    * @returns string string without any trailing slash
    */
   trimTrailingSlash(str) {
-    return str.replace(/\/+$/, '');
+    return this.isString(str) ? str.replace(/\/+$/, '') : '';
   }
 
   getTrimmedUrl(path) {
@@ -367,6 +395,10 @@ class GenericHelpersClass {
 
   getRemotePromise(id) {
     return LuigiConfig._remotePromises ? LuigiConfig._remotePromises.promises[id] : undefined;
+  }
+
+  isString(value) {
+    return typeof value === 'string' || value instanceof String;
   }
 }
 

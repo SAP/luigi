@@ -3,7 +3,8 @@
   "node": {
     "label": "Navigation parameters reference",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
@@ -855,6 +856,48 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
 1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
 2. Add the **appSwitcher** parameter to the **navigation** object using the optional parameters listed below.
 
+### itemRenderer
+- **type**: function
+- **description**: This function allows you to customize the single list element rendered in the default app switcher popover.
+- **attributes**:
+  - **item** single application element
+  - **slot** `ul` element as slot. You can append your custom `li` entries to this `ul` element.
+  - **appSwitcherApiObj**
+      - **type**: Object
+      - **description**: It is an object with a function `closeDropDown` as property. This function closes the custom app switcher dropdown.
+- **example**:
+  ```javascript
+    appSwitcher: {
+      items:[...],
+      itemRenderer: (item, slot, appSwitcherApiObj) => {
+        let a = document.createElement('a');
+        a.setAttribute('class', 'fd-menu__link');
+        a.addEventListener('click', e => {
+          Luigi.navigation().navigate(item.link);
+          appSwitcherApiObj.closeDropDown();
+          e.stopPropagation();
+          Luigi.configChanged('navigation')
+        });
+        let span = document.createElement('span');
+        span.setAttribute('class', 'fd-menu__addon-before');
+        let i = document.createElement('i');
+        if (item.title === 'Application One') {
+          i.setAttribute('class', 'sap-icon--phone');
+        } else {
+          i.setAttribute('class', 'sap-icon--settings');
+        }
+        span.appendChild(i);
+        let spanText = document.createElement('span');
+        spanText.setAttribute('class', 'fd-menu__title');
+        spanText.innerText = item.title;
+        a.appendChild(span);
+        a.appendChild(spanText);
+        slot.appendChild(a);
+      }
+    }
+  ```
+- **since**: NEXTRELEASE
+
 ### items
 - **type**: array
 - **description**: defines the list of application elements.
@@ -866,7 +909,6 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
 ### showMainAppEntry
 - **type**: boolean
 - **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
-
 
 ## Global search
 

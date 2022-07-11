@@ -1,10 +1,12 @@
 <script>
-  import {
-    createEventDispatcher,
-    getContext
-  } from 'svelte';
+  import { createEventDispatcher, getContext } from 'svelte';
   import { GenericHelpers } from './utilities/helpers';
-  import { KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_ARROW_UP, KEYCODE_ARROW_DOWN } from './utilities/keycode.js';
+  import {
+    KEYCODE_ENTER,
+    KEYCODE_SPACE,
+    KEYCODE_ARROW_UP,
+    KEYCODE_ARROW_DOWN,
+  } from './utilities/keycode.js';
   export let userSettingGroup;
   export let userSettingsGroupKey;
   export let storedUserSettingData;
@@ -19,12 +21,12 @@
 
   export const closeDropDown = () => {
     closeAllCombos();
-  }
+  };
 
   function closeAllCombos(self) {
     document
       .querySelectorAll('.lui-usersettings-content .fd-popover__control')
-      .forEach(elem => {
+      .forEach((elem) => {
         setExpandedState(elem, false);
       });
   }
@@ -58,7 +60,9 @@
   function setExpandedState(self, value) {
     const indicatorBtn = self.querySelector('.lui-activate-language-dropdown');
     const optionsPopover = self.parentNode.querySelector('.fd-popover__body');
-    const optionsSelectControl = self.parentNode.querySelector('.fd-select__control');
+    const optionsSelectControl = self.parentNode.querySelector(
+      '.fd-select__control'
+    );
     self.setAttribute('aria-expanded', value);
     optionsPopover.setAttribute('aria-hidden', !value);
     optionsSelectControl.setAttribute('aria-expanded', value);
@@ -69,13 +73,12 @@
   function updateComboBox(key, option, optionIndex) {
     selectedLanguageLabel = optionIndex;
     storedUserSettingData[userSettingGroup[0]][key] = option.value || option;
-
-  } 
+  }
 
   function updateEnumButton(key, option) {
     document
       .querySelectorAll('.enum-buttons-container-' + key + ' button')
-      .forEach(button => {
+      .forEach((button) => {
         const buttonId = button.getAttribute('id');
         const optionId = `lui-us-enum_button_${key}_option`;
         buttonId === optionId
@@ -117,38 +120,102 @@
       : `${prefix}_${key}_${option}`;
   }
 
-  export function handleKeyListDropdown(event) {
+  export function handleKeyListDropdown(event, key, elementIndex, schemaItem) {
     let thisDropdown = closest(event.target, '.lui-anchor-node', 20);
+    const list = document.getElementById(
+      `fd-form-input-dropdown-${elementIndex}`
+    ).children;
+    let chosenElementIndex = -1;
+    [...list].forEach((node, index) => {
+      if (node.classList.contains('is-focus')) {
+        chosenElementIndex = index;
+      }
+    });
+
     if (isComboOpen) {
-      if (event.keyCode === KEYCODE_ARROW_UP && event.altKey){
+      if (event.keyCode === KEYCODE_ARROW_UP && event.altKey) {
         thisDropdown.click();
         thisDropdown.focus();
       }
+      if (event.keyCode === KEYCODE_ARROW_DOWN && !event.altKey) {
+        if (chosenElementIndex === -1) {
+          chosenElementIndex = 0;
+          list.item(chosenElementIndex).classList.add('is-focus');
+          return;
+        }
+        if (chosenElementIndex < schemaItem.options.length - 1) {
+          list.item(chosenElementIndex).classList.remove('is-focus');
+          chosenElementIndex += 1;
+          list.item(chosenElementIndex).classList.add('is-focus');
+        }
+      }
+      if (event.keyCode === KEYCODE_ARROW_UP && !event.altKey) {
+        if (chosenElementIndex === -1) {
+          chosenElementIndex = chosenElementIndex.length - 1;
+          list.item(chosenElementIndex).classList.add('is-focus');
+          return;
+        }
+        if (
+          chosenElementIndex > 0 &&
+          chosenElementIndex < schemaItem.options.length
+        ) {
+          list.item(chosenElementIndex).classList.remove('is-focus');
+          chosenElementIndex -= 1;
+          list.item(chosenElementIndex).classList.add('is-focus');
+        }
+      }
+      if (event.keyCode === KEYCODE_ENTER) {
+        updateComboBox(
+          key,
+          schemaItem.options[chosenElementIndex],
+          chosenElementIndex
+        );
+      }
     } else {
       thisDropdown.focus();
-      if (event.keyCode === KEYCODE_ARROW_DOWN && event.altKey){
+      if (event.keyCode === KEYCODE_ARROW_DOWN && event.altKey) {
         thisDropdown.click();
       }
-    } 
+      if (event.keyCode === KEYCODE_ARROW_DOWN && !event.altKey) {
+        if (chosenElementIndex < (schemaItem.options.length - 1)) {
+          updateComboBox(
+            key,
+            schemaItem.options[chosenElementIndex + 1],
+            chosenElementIndex + 1
+          );
+        }
+      }
+      if (event.keyCode === KEYCODE_ARROW_UP && !event.altKey) {
+        if (
+          chosenElementIndex > 0 &&
+          chosenElementIndex < schemaItem.options.length
+        ) {
+          updateComboBox(
+            key,
+            schemaItem.options[chosenElementIndex - 1],
+            chosenElementIndex - 1
+          );
+        }
+      }
+    }
   }
 
-  export function keyPressDropdownNode(event){
+  export function keyPressDropdownNode(event) {
     if (isComboOpen) {
       let dropdownHTMLElement = closest(event.target, '.fd-popover', 20);
       dropdownHTMLElement.blur();
-      if (event.keyCode === KEYCODE_SPACE || event.keyCode === KEYCODE_ENTER){
+      if (event.keyCode === KEYCODE_SPACE || event.keyCode === KEYCODE_ENTER) {
         event.target.click();
         closeAllCombos();
         setTimeout(() => {
           dropdownHTMLElement.focus();
-      }, 0);
+        }, 0);
       }
-    } 
+    }
   }
-  
+
   /*to display a language on first load of the User Settings dialog*/
   getLabelForValue();
-
 </script>
 
 <svelte:window on:click={closeAllCombos} on:blur={closeAllCombos} />
@@ -215,7 +282,13 @@
                             class="fd-select__control lui-anchor-node"
                             data-testid="lui-us-language-dropdown"
                             id="fd-form-input-{index}"
-                            on:keydown={event => handleKeyListDropdown(event)}
+                            on:keydown={(event) =>
+                              handleKeyListDropdown(
+                                event,
+                                key,
+                                index,
+                                schemaItem
+                              )}
                           >
                             <span
                               class="fd-select__text-content"
@@ -244,6 +317,7 @@
                         {#if Array.isArray(schemaItem.options)}
                           <ul
                             class="fd-list fd-list--compact fd-list--dropdown"
+                            id="fd-form-input-dropdown-{index}"
                             role="listbox"
                           >
                             {#each schemaItem.options as option, optionIndex}
@@ -257,7 +331,7 @@
                                 data-testid="lui-us-option{index}_{optionIndex}"
                                 on:click={() =>
                                   updateComboBox(key, option, optionIndex)}
-                                on:keydown={event =>
+                                on:keydown={(event) =>
                                   keyPressDropdownNode(event)}
                                 tabindex="0"
                               >

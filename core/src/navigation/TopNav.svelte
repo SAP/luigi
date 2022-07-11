@@ -59,6 +59,7 @@
   export let displayCustomSearchResult;
   export let searchResult;
   export let burgerTooltip;
+  export let responsiveShellbarPadding;
 
   let store = getContext('store');
   let contextSwitcherToggle = false;
@@ -108,6 +109,9 @@
         );
         profileTypeSettings = LuigiConfig.getConfigValue(
           'settings.profileType'
+        );
+        responsiveShellbarPadding = LuigiConfig.getConfigValue(
+          'settings.header.responsiveShellbarPaddings'
         );
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
@@ -305,7 +309,9 @@
 <svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} />
 {#if showTopNav}
   <div
-    class="fd-shellbar {hideNavComponent ? 'hideNavComponent' : ''}"
+    class="fd-shellbar {responsiveShellbarPadding
+      ? 'fd-shellbar--responsive-paddings'
+      : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''} "
     tabindex="0"
   >
     <div class="fd-shellbar__group fd-shellbar__group--product">
@@ -344,7 +350,9 @@
         />
       </div>
     {/if}
-    <div class="fd-shellbar__group fd-shellbar__group--actions">
+    <div
+      class="fd-shellbar__group fd-shellbar__group--actions lui-shellbar_group--actions"
+    >
       {#if !authorizationEnabled || isLoggedIn}
         {#if globalSearchConfig && !isGlobalSearchCentered}
           <GlobalSearch
@@ -429,8 +437,10 @@
                       title={resolveTooltipText(node, getNodeLabel(node))}
                       aria-expanded="false"
                       aria-haspopup="true"
-                      on:click={(event) => {
-                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                      on:click={event => {
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                          event
+                        ) && handleClick(node);
                       }}
                       data-testid={getTestId(node)}
                     >
@@ -804,8 +814,12 @@
     outline: none;
   }
 
-  .fd-shellbar {
+  .fd-shellbar:not(.fd-shellbar--responsive-paddings) {
     padding: 0 0.5rem;
+  }
+
+  .fd-shellbar {
+    height: $topNavHeight;
   }
 
   .hideNavComponent {

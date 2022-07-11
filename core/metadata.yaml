@@ -1,0 +1,16 @@
+
+# DXP component metadata file
+
+kind: Component
+metadata:
+  displayName: Luigi Core
+  description: Core library for Luigi applications
+  labels:
+    language: javascript
+  tags:
+    - luigi
+    - svelte
+spec:
+  type:
+    name: ui
+    lifecycle: production

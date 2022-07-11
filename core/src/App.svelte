@@ -212,16 +212,24 @@
 
   const handleNavigation = (data, config, srcNode, srcPathParams) => {
     let path = buildPath(data.params, srcNode, srcPathParams);
+    const { preventHistoryEntry, preserveQueryParams, preventContextUpdate } =
+      data.params;
+
+    const options = {
+      keepBrowserHistory: !preventHistoryEntry,
+      navSync: isNavigationSyncEnabled,
+      preventContextUpdate,
+    };
 
     path = GenericHelpers.addLeadingSlash(path);
-    path = data.params.preserveQueryParams
+    path = preserveQueryParams
       ? RoutingHelpers.composeSearchParamsToRoute(path)
       : path;
     addPreserveView(data, config);
 
     // Navigate to the raw path. Any errors/alerts are handled later.
     // Make sure we use `replaceState` instead of `pushState` method if navigation sync is disabled.
-    return Routing.navigateTo(path, true, isNavigationSyncEnabled);
+    return Routing.navigateTo(path, options);
   };
 
   const removeQueryParams = (str) => str.split('?')[0];
@@ -383,7 +391,8 @@
     );
 
     // subsequential route handling
-    RoutingHelpers.addRouteChangeListener((path, withoutSync) => {
+    RoutingHelpers.addRouteChangeListener((path, eventDetail) => {
+      const { withoutSync, preventContextUpdate } = eventDetail || {};
       const pv = preservedViews;
       // TODO: check if bookmarkable modal is interferring here
       if (!isValidBackRoute(pv, path)) {
@@ -399,7 +408,8 @@
         getComponentWrapper(),
         node,
         config,
-        withoutSync
+        withoutSync,
+        preventContextUpdate
       );
     });
   };
@@ -426,14 +436,13 @@
       }
       localNavPath = [...localNavPath].reverse();
     }
-
     let path = params.link;
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!node) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible, not inside a virtualTree navigation. Docs: https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=virtualtree'
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
         );
         return;
       }
@@ -1079,6 +1088,63 @@
     window.open(nodepath, '_blank', 'noopener,noreferrer');
   };
 
+  /**
+   * Builds the current path based on the navigation params received
+   * @param params {Object} navigation options
+   * @returns {string} the path built 
+   */
+  const buildPathForGetCurrentRoute = (params) => {
+    let localNavPath = navigationPath;
+    if (currentNode) {
+      let parent = currentNode.parent;
+      localNavPath = [currentNode];
+      while (parent) {
+        localNavPath.push(parent);
+        parent = parent.parent;
+      }
+      localNavPath = [...localNavPath].reverse();
+    }
+
+    let path = params.link;
+    let currentNodeViewUrl = getSubPath(currentNode, pathParams);
+  
+    if (params.fromVirtualTreeRoot) {
+      // from a parent node specified with virtualTree: true
+      const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
+      if (!virtualTreeNode) {
+        console.error(
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
+        );
+        return;
+      }
+      // build virtualPath if there is any
+      const virtualTreeNodeViewUrl = getSubPath(virtualTreeNode, pathParams);
+      path = currentNodeViewUrl.split(virtualTreeNodeViewUrl).join('');
+    } else if (params.fromParent) {
+      const parentNodeViewUrl = getSubPath(currentNode.parent, pathParams);
+      path = currentNodeViewUrl.split(parentNodeViewUrl).join('');
+    } else if (params.fromClosestContext) {
+      // from the closest navigation context
+      const navContextNode = [...localNavPath]
+        .reverse()
+        .find((n) => n.navigationContext && n.navigationContext.length > 0);
+      const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
+      path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
+    } else if (params.fromContext) {
+      // from a given navigation context
+      const navigationContext = params.fromContext;
+      const navContextNode = [...localNavPath]
+        .reverse()
+        .find((n) => navigationContext === n.navigationContext);
+      const navContextNodeViewUrl = getSubPath(navContextNode, pathParams);
+      path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
+    } else {
+      // retrieve path for getCurrentPath method when no options used
+        path = currentNodeViewUrl;
+    }
+    return path;
+  };
+
   function init(node) {
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
@@ -1179,7 +1245,7 @@
           );
         } else {
           console.warn(
-            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file. Documentation: https://docs.luigi-project.io/docs/communication?section=custom-messages`
+            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file.`
           );
         }
       }
@@ -1291,20 +1357,24 @@
         const isSpecial = newTab || modal || splitView || drawer;
 
         const resolveRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doResolve();
           }
         };
 
         const rejectRemotePromise = () => {
-          const remotePromise = GenericHelpers.getRemotePromise(e.data.remotePromiseId);
+          const remotePromise = GenericHelpers.getRemotePromise(
+            e.data.remotePromiseId
+          );
           if (remotePromise) {
             remotePromise.doReject();
           }
         };
 
-        const checkResolve = checkLocationChange => {
+        const checkResolve = (checkLocationChange) => {
           if (!checkLocationChange || previousUrl !== window.location.href) {
             resolveRemotePromise();
           } else {
@@ -1419,7 +1489,7 @@
           } else {
             if (e.data.goBackContext) {
               console.warn(
-                `Warning: goBack() does not support goBackContext value. This is available only when using preserved views feature. Documentation: https://docs.luigi-project.io/docs/luigi-client-api.md#navigate`
+                `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`
               );
             }
             // TODO: does not work with default child node behavior, fixed by #216
@@ -1428,12 +1498,33 @@
         }
       }
 
+      // handle getCurrentRoute message coming from client
+      if ('luigi.navigation.currentRoute' === e.data.msg) {
+        const data = e.data.data;
+        const path = buildPathForGetCurrentRoute(data);
+
+        // send answer back to client
+        const message = {
+          msg: 'luigi.navigation.currentRoute.answer',
+          data: {
+            route: path,
+            correlationId: data.id,
+          },
+        };
+        IframeHelpers.sendMessageToIframe(iframe, message);
+      }
+
       if ('luigi.auth.tokenIssued' === e.data.msg) {
         sendAuthDataToClient(e.data.authData);
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        Routing.updateModalDataInUrl(e.data.params.link, e.data.params.modal, e.data.params.history);
+        if (isSpecialIframe) {
+          const route = GenericHelpers.addLeadingSlash(buildPath(e.data.params, iframe.luigi.currentNode, iframe.luigi.pathParams));
+          Routing.updateModalDataInUrl(route, e.data.params.modal, e.data.params.history);
+        } else {
+          console.warn('updateModalDataPath can only be called from modal, ignoring.');
+        }
       }
 
       if ('luigi.navigation.pathExists' === e.data.msg) {
@@ -1846,6 +1937,7 @@
     --luigi__app-title--width: 60vw;
     --luigi__multi-app-dropdown--width: 60vw;
     --luigi__breadcrumb--height: 2.75rem;
+    --luigi__shellbar--height: 2.75rem;
   }
 
   :global(html) {
