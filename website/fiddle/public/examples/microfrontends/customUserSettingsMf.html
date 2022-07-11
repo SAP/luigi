@@ -92,7 +92,17 @@
         </li>
         <br /><br />
         <li>
-          <button class="yellow" onclick="setYellowTheme('yellow')">Yellow</button>
+          <button class="yellow" onclick="setYellowTheme('yellow')">
+            Yellow
+          </button>
+        </li>
+        <br /><br />
+        <li>
+          <span data-testid="iframesrc">
+            <script>
+              window.document.write(document.location.href);
+            </script>
+          </span>
         </li>
       </ul>
     </div>
