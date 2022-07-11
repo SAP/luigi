@@ -39,4 +39,3 @@ If a navigation node has configured a property called [runTimeErrorHandler](navi
   <body></body>
 </html>
 ```
-
