@@ -500,6 +500,7 @@
                       <li class="fd-nested-list__item">
                         <a
                           href={getRouteLink(node)}
+                          tabindex="0"
                           title={resolveTooltipText(
                             node,
                             $getTranslation(node.label)
@@ -507,8 +508,10 @@
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
-                          on:click={(event) => {
-                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                          on:click={event => {
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                              event
+                            ) && handleClick(node);
                           }}
                           data-testid={getTestId(node)}
                         >
@@ -553,7 +556,7 @@
                     {/if}
                   {/if}
                 {/each}
-              {:else if nodes.filter(node => (!node.hideFromNav && node.label)).length > 0}
+              {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
                   <li
@@ -568,7 +571,6 @@
                   >
                     <div class="fd-nested-list__content has-child">
                       <a
-                        href="javascript:void(null)"
                         title={resolveTooltipText(nodes, $getTranslation(key))}
                         class="fd-nested-list__link {isExpanded(
                           nodes,
@@ -576,7 +578,7 @@
                         )
                           ? 'is-expanded'
                           : ''}"
-                        tabindex="-1"
+                        tabindex={isExpanded ? '0' : '-1'}
                         id="collapsible_listnode_{index}"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
@@ -649,9 +651,12 @@
                                 selectedNode
                                   ? 'is-selected'
                                   : ''}"
-                                on:click={(event) => {
-                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                on:click={event => {
+                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                    event
+                                  ) && handleClick(node);
                                 }}
+                                tabindex="0"
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
@@ -693,8 +698,11 @@
                                       selectedNode
                                         ? 'is-selected'
                                         : ''}"
-                                      on:click={(event) => {
-                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                      tabindex="0"
+                                      on:click={event => {
+                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                          event
+                                        ) && handleClick(node);
                                       }}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
@@ -764,11 +772,14 @@
                         >
                           <a
                             href={getRouteLink(node)}
+                            tabindex="0"
                             class="fd-nested-list__link {node === selectedNode
                               ? 'is-selected'
                               : ''}"
-                            on:click={(event) => {
-                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                            on:click={event => {
+                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                event
+                              ) && handleClick(node);
                             }}
                             data-testid={getTestId(node)}
                           >
