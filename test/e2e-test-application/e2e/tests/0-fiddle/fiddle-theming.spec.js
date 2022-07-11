@@ -502,4 +502,59 @@ describe('Fiddle 2', () => {
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'test');
     });
   });
+
+  describe('Encoded ViewURL Search Params with Decorators', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(fiddleConfig);
+      newConfig.settings.theming = {
+        defaultTheme: 'light',
+        nodeViewURLDecorator: {
+          queryStringParameter: {
+            keyName: 'sap-theme',
+            value: () => {
+              return 'green';
+            }
+          }
+        }
+      };
+      newConfig.navigation.nodes.push({
+        pathSegment: 'nondecodeviewurl',
+        label: 'NonDecoded ViewUrl',
+        viewUrl:
+          'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar'
+      });
+
+      newConfig.navigation.nodes.push({
+        pathSegment: 'decodeviewurl',
+        label: 'Decoded ViewUrl',
+        decodeViewUrl: true,
+        viewUrl:
+          'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar'
+      });
+    });
+
+    it('opens navigation node with decodeViewUrl true', () => {
+      cy.visitWithFiddleConfig('/decodeviewurl', newConfig);
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('span[data-testid="iframesrc"]')
+          .contains(
+            'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar&sap-theme=green'
+          );
+      });
+    });
+
+    it('opens navigation node with decodeViewUrl false', () => {
+      cy.visitWithFiddleConfig('/nondecodeviewurl', newConfig);
+
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .find('span[data-testid="iframesrc"]')
+          .contains(
+            'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&sap-theme=green'
+          );
+      });
+    });
+  });
 });
