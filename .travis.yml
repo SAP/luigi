@@ -2,7 +2,7 @@ version: ~> 1.0 # enables build config validation beta feature: https://docs.tra
 language: node_js
 node_js:
   - '12.18.4' # Default node version for CI testing
-  # - 16 # Optional node version for setup scripts
+  - 16 # Optional node version for setup scripts
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
@@ -27,8 +27,7 @@ notifications:
     secure: nls0RW4RKEHLnRBgOi25UTpjjSBFGnXgOnbxuiPsSjBFWehXvH8SfMYGfsDdp6lfH9ljDFA6KiJFauAAgQ+vImaZNHvrHeCitQDqWraXeD1CyzOYGp+8Bx/JyR1bcBKewvQVqNpnhk4hoIEI4Gu2i1NGq1/pAkHOeetw7PVmnpEG/QyQQ8YDXbySzWl39iZc8HWVT4svKV8BqYx+KzqRqE09XSfhiecZ00DVjZEMyKD6oCttOlJ/Vo0Z7QgzAEDaIhb+jrojJ2HD1PPWjiQqfpuyBY6GjeFGwNebevhmVngvQ3+69xn0ydOct3HTR/uSNJexY/Hq9W98QuGliihWwx1ksjFZnKtZ42FRY9p8jD/hw+ySJRwrAvbZtrWA0xmU85Fz/kRMocum5I7UJDGOTvklNYMFT/Rlh5w08DWXx8YCYyvXxsTee7dNELwefYnOL/FZRzHaNKnXqimYsE8dIlbfMBKD2Kh4Hr0+NZlBBaZ71w2+4Cp1mdJnSEFN7zuOrwqdQdjCDAeqttcSOvuQAR/BMGwtN30BrjW16n2YOuqwBoWsp7zUdpSyWp600mTn+vYulue4hvpwpbfELVXRtaggrVvolW9fBtACXE6+G9rqzJRgRLLNGM9i7dbiX2OFx1olMTu0n7XN7MNFdwFH4X0sycfi02GlZb/5L/ntrJY=
 
 integration-testing: &integration-testing
-  #if: repo = SAP/luigi AND type != cron AND type != api
-  if: type = api AND commit_message = test-compatibility
+  if: repo = SAP/luigi AND type != cron AND type != api
   script:
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
@@ -66,7 +65,7 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
-      if: NOT (commit_message = test-compatibility)
+      if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
@@ -110,38 +109,9 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
-      # if: repo = SAP/luigi AND branch = master AND type = push
-      if: type = api AND commit_message = test-compatibility
+      if: repo = SAP/luigi AND branch = master AND type = push
       script:
-        # - bash -xv ./scripts/testCompatibility.sh --tag latest || travis_terminate 1 # to run with verbose mode
-        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
-        - ls $CYPRESS_CACHE_FOLDER
-        - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application @babel/plugin-proposal-class-properties
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
-      addons:
-        apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-            # needed dependencies for cypress 5.3.0
-            - libgtk2.0-0
-            - libgtk-3-0
-            - libgbm-dev  
-            - libnotify-dev
-            - libgconf-2-4
-            - libnss3
-            - libxss1
-            - libasound2
-            - libxtst6
-            - xauth
-            - xvfb
-        # chrome: beta
-        chrome: stable
-      before_install:
-        # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-        # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
@@ -205,7 +175,7 @@ jobs:
     - stage: 'Test Setup Scripts'
       name: 'Test Angular setup script'
       node_js: 16
-      if: type = api AND commit_message = test-setup-scripts
+      if: type = api AND commit_message = c
       script:
         - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
         - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
