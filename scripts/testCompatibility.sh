@@ -188,6 +188,11 @@ checkoutLuigiToTestfolder() {
     cd $LUIGI_DIR_TESTING/$FOLDER
     npm i
   done
+
+  echoe "Replcace user_setting_dialog.spec.js with current version as test:"
+  cd /home/travis/build/SAP/luigi/scripts/../../luigi-compatibility-testing/test/e2e-test-application/e2e/tests/1-angular
+
+  curl -s https://raw.githubusercontent.com/SAP/luigi/2759-investigating-failing-compatibility-tests/test/e2e-test-application/e2e/tests/1-angular/user_settings_dialog.spec.js > user_settings_dialog.spec.js
 }
 
 linkLuigi() {
