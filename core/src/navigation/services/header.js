@@ -9,6 +9,7 @@ export const processHeaderSettings = component => {
       if (appSwitcher) {
         component.set({ appSwitcherItems: appSwitcher.items });
         component.set({ showMainAppEntry: appSwitcher.showMainAppEntry });
+        component.set({ itemRenderer: appSwitcher.itemRenderer });
       }
       component.set({
         hasApps:
