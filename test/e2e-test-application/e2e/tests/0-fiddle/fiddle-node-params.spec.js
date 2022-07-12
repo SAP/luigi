@@ -2,6 +2,12 @@ import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
 describe('Fiddle 3', () => {
+  const localRetries = {
+    retries: {
+      runMode: 4,
+      openMode: 4
+    }
+  };
   describe('LuigiClient add and delete node and search params', () => {
     let newConfig;
     beforeEach(() => {
@@ -70,10 +76,10 @@ describe('Fiddle 3', () => {
       cy.expectPathToBe('/home/mynode?%7Eluigi=rocks');
     });
   });
+
   describe('LuigiClient add and delete node and search paramstest', () => {
-    let newConfig;
+    let newConfig = cloneDeep(fiddleConfig);
     beforeEach(() => {
-      newConfig = cloneDeep(fiddleConfig);
       newConfig.routing.useHashRouting = false;
       const node = {
         pathSegment: 'mynode',
@@ -95,9 +101,9 @@ describe('Fiddle 3', () => {
       newConfig.navigation.nodes[0].children.push(node);
     });
 
-    it('Add and delete search params path routing enabled', () => {
-      newConfig.routing.useHashRouting = false;
+    it('Add and delete search params path routing enabled', localRetries, () => {
       cy.visitFiddleConfigWithPathRouting('', newConfig);
+
       cy.get('.fd-side-nav__main-navigation')
         .contains('MyNode')
         .click();
@@ -126,6 +132,7 @@ describe('Fiddle 3', () => {
       });
     });
   });
+
   describe('Custom text in the footer', () => {
     it('checks if the text in footer exist, defined by settings', () => {
       cy.window().then(win => {
