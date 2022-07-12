@@ -1,5 +1,6 @@
 import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
+import { exists } from 'fs';
 
 describe('Fiddle 2', () => {
   const localRetries = {
@@ -536,10 +537,13 @@ describe('Fiddle 2', () => {
 
     it('opens navigation node with decodeViewUrl true', () => {
       cy.visitWithFiddleConfig('/decodeviewurl', newConfig);
+
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('span[data-testid="iframesrc"]')
-          .contains(
+          .find('a[data-testid="iframesrc"]')
+          .should(
+            'have.attr',
+            'href',
             'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar&sap-theme=green'
           );
       });
@@ -550,8 +554,10 @@ describe('Fiddle 2', () => {
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('span[data-testid="iframesrc"]')
-          .contains(
+          .find('a[data-testid="iframesrc"]')
+          .should(
+            'have.attr',
+            'href',
             'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&sap-theme=green'
           );
       });

@@ -42,6 +42,7 @@
     <script src="/vendor/luigi-client/luigi-client.js"></script>
     <script>
       let myUserSettings = {};
+
       window.LuigiClient.addInitListener((context, origin) => {
         renderData(context);
       });
@@ -98,11 +99,10 @@
         </li>
         <br /><br />
         <li>
-          <span data-testid="iframesrc">
-            <script>
-              window.document.write(document.location.href);
-            </script>
-          </span>
+          <a data-testid="iframesrc" id="iframeHref">Link</a>
+          <script>
+            window.document.getElementById('iframeHref').href = window.location.href;
+          </script>
         </li>
       </ul>
     </div>
