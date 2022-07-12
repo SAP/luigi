@@ -93,7 +93,19 @@ describe('Iframe-helpers', () => {
       assert.equal(iframe.src, mockUrl);
 
       sinon.assert.calledOnce(ViewUrlDecorator.hasDecorators);
-      sinon.assert.calledWithExactly(ViewUrlDecorator.applyDecorators, mockUrl);
+      sinon.assert.calledWithExactly(ViewUrlDecorator.applyDecorators, mockUrl, undefined);
+    });
+
+    it('createIframe with viewUrlDecorator and decode url', () => {
+      const mockUrl = 'http://luigi.url.com/';
+      ViewUrlDecorator.hasDecorators.returns(true);
+
+      const iframe = IframeHelpers.createIframe(mockUrl, undefined, { decodeViewUrl: true });
+
+      assert.equal(iframe.src, mockUrl);
+
+      sinon.assert.calledOnce(ViewUrlDecorator.hasDecorators);
+      sinon.assert.calledWithExactly(ViewUrlDecorator.applyDecorators, mockUrl, true);
     });
   });
 
