@@ -470,6 +470,7 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumb container visible with static nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home', newConfig);
+      cy.expectPathToBe('/home/static');
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
@@ -477,6 +478,7 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumbs with dynamic nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+      cy.expectPathToBe('/home/dyn/dynValue/1');
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
@@ -486,6 +488,7 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
+      cy.expectPathToBe('/home/virtual-tree/virtualValue/test');
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
@@ -495,11 +498,16 @@ describe('Fiddle 2', () => {
     });
     it('dynamic nav header', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+      cy.expectPathToBe('/home/dyn/dynValue/1');
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');
     });
     it('static nav header', localRetries, () => {
       newConfig.navigation.nodes[0].children[0].children[0].navHeader.label = 'test';
-      cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+
+      cy.visitWithFiddleConfig('/home/dyn/dynValue/1', newConfig);
+
+      cy.expectPathToBe('/home/dyn/dynValue/1');
+
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'test');
     });
   });
@@ -537,8 +545,8 @@ describe('Fiddle 2', () => {
 
     it('opens navigation node with decodeViewUrl true', () => {
       cy.visitWithFiddleConfig('/decodeviewurl', newConfig);
-
       cy.expectPathToBe('/decodeviewurl');
+
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
           .find('a[data-testid="iframesrc"]')
