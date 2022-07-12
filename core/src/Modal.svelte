@@ -329,7 +329,7 @@
       <div
         class="iframeModalCtn {isDrawer
           ? '_drawer'
-          : '_modal' + ' modalContainerIndex-' + modalIndex}"
+          : '_modal modalContainerIndex-' + modalIndex}"
       />
     </div>
     {#if showLoadingIndicator}
