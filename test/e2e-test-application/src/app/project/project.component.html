@@ -18,6 +18,29 @@
           <app-code-snippet data="uxManager().removeBackdrop()"></app-code-snippet>
         </p>
       </div>
+      <div class="fd-list__item">
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          data-testid="add-backdrop-from-mfe"
+          (click)="uxManager().addBackdrop()"
+        >
+          Add backdrop only</a
+        >
+        <app-code-snippet data="uxManager().addBackdrop()"> </app-code-snippet>
+      </div>
+      <div class="fd-list__item">
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          data-testid="navigate-to-project-2"
+          (click)="linkManager().navigate('/projects/pr2')"
+        >
+          Navigate away to project 2</a
+        >
+        <app-code-snippet data="linkManager().navigate('/projects/pr2')">
+        </app-code-snippet>
+      </div>
     </div>
     <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
