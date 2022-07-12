@@ -538,6 +538,7 @@ describe('Fiddle 2', () => {
     it('opens navigation node with decodeViewUrl true', () => {
       cy.visitWithFiddleConfig('/decodeviewurl', newConfig);
 
+      cy.expectPathToBe('/decodeviewurl');
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
           .find('a[data-testid="iframesrc"]')
@@ -551,6 +552,7 @@ describe('Fiddle 2', () => {
 
     it('opens navigation node with decodeViewUrl false', () => {
       cy.visitWithFiddleConfig('/nondecodeviewurl', newConfig);
+      cy.expectPathToBe('/nondecodeviewurl');
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
