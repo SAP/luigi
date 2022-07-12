@@ -3,12 +3,12 @@
   "node": {
     "label": "Authorization",
     "category": {
-      "label": "Luigi Core",
+      "label": "Authorization",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 4
+      "categoryPosition": 4,
+      "position": 0
     }
   }
 }
