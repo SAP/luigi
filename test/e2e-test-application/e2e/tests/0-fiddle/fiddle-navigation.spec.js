@@ -105,15 +105,14 @@ describe('Fiddle', () => {
         });
         cy.visitWithFiddleConfig('/virtual', newConfig);
       });
-      it('navigate', localRetries, () => {
-        cy.getIframeBody().then($body => {
-          cy.wrap($body)
-            .find('button')
-            .contains('virtual')
-            .click();
 
-          cy.expectPathToBe('/virtual/this/is/a/tree');
-        });
+      it('navigate', localRetries, () => {
+        cy.getIframeBodyWithRetries()
+          .find('button')
+          .contains('virtual')
+          .click();
+
+        cy.expectPathToBe('/virtual/this/is/a/tree');
       });
     });
     describe('ContextSwitcher', () => {
