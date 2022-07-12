@@ -161,7 +161,7 @@ Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerS
 // retrieves the <iframe /> element directly
 Cypress.Commands.add('getIframe', () => {
   // get the iframe > document > body
-  // and retry until the body element is not empty
+  // and retry until the body element is not undefined
   return (
     cy
       .get('.iframeContainer > iframe')
@@ -177,7 +177,7 @@ Cypress.Commands.add('getIframe', () => {
 // only works if iframe and parent window are of the same origin
 Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
   // get the iframe > document
-  // and retry until the body element is not empty
+  // and retry until the body element is not undefined
   return (
     cy
       .get('.iframeContainer > iframe')
