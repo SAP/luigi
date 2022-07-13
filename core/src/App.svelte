@@ -904,16 +904,16 @@
    * @param index {number|undefined}  the index of the modal to reset
    */
   const resetMicrofrontendModalData = (index) => {
-    if (index !== undefined) {
-      let tempMfModalList = mfModalList;
+    if (typeof index === 'undefined') {
+      // reset all modal list
+      mfModalList = [];
+      return;
+    } 
+    let tempMfModalList = mfModalList;
       // use splice to remove the modal element and re-index the list.
       tempMfModalList.splice(index, 1);
       // svelte components rendered from a list, expect list changes to be done through variable re-assignment
       mfModalList = tempMfModalList;
-    } else {
-      // reset all modal list
-      mfModalList = [];
-    }
   };
 
   resetMicrofrontendModalData();
@@ -930,15 +930,14 @@
     }
 
     // insert modal into the modals list to be viewed on top of other modals
-    const tempModalList = mfModalList;
-    tempModalList.push({
+    const newModal = {
       mfModal : {
         displayed: true,
         nodepath,
         settings
       }
-    });
-    mfModalList = tempModalList;
+    };
+    mfModalList = [ ...mfModalList, newModal ];
 
     // check if modalPath feature enable and set URL accordingly
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
