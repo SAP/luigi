@@ -177,7 +177,7 @@ class RoutingClass {
   }
 
 /**
- * If routing matches defined patterns, it will be skipped.
+ * If the current route matches any of the defined patterns, it will be skipped.
  * @returns {boolean} true if the current route matches any of the patterns, false otherwise
  */
   shouldSkipRoutingForUrlPatterns() {
