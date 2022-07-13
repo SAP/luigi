@@ -219,7 +219,7 @@ class RoutingClass {
   }
 
  /**
-  * Deal with view url is misconfigured.
+  * Handles viewUrl misconfiguration scenario
   * @param {Object} nodeObject active node data
   * @param {string} viewUrl the url of the current mf view
   * @param {Object} previousCompData previous component data
