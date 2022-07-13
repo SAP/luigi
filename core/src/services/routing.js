@@ -238,7 +238,7 @@ class RoutingClass {
         "The intended target route can't be accessed since it has neither a viewUrl nor children. This is most likely a misconfiguration."
       );
 
-      // redirect to root when this empty viewUrl node be reached directly
+      // redirect to root when this empty viewUrl node cannot be reached directly
       if (
         !(
           previousCompData &&
