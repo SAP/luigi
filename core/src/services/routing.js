@@ -169,7 +169,7 @@ class RoutingClass {
 
 /**
  * Set feature toggole. If `queryStringParam` is provided at config file.
- * @param {string} path
+ * @param {string} path used for retrieving and appending the path parameters
  */
   setFeatureToggle(path) {
     const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
