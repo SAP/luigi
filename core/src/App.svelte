@@ -909,11 +909,8 @@
       mfModalList = [];
       return;
     } 
-    let tempMfModalList = mfModalList;
-      // use splice to remove the modal element and re-index the list.
-      tempMfModalList.splice(index, 1);
-      // svelte components rendered from a list, expect list changes to be done through variable re-assignment
-      mfModalList = tempMfModalList;
+    // remove the item with specified index from the list
+    mfModalList = mfModalList.filter((item, i) => index !== i);
   };
 
   resetMicrofrontendModalData();
