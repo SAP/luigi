@@ -1,7 +1,14 @@
 import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
+import { exists } from 'fs';
 
 describe('Fiddle 2', () => {
+  const localRetries = {
+    retries: {
+      runMode: 4,
+      openMode: 4
+    }
+  };
   describe('Theming', () => {
     let newConfig;
     beforeEach(() => {
@@ -461,15 +468,17 @@ describe('Fiddle 2', () => {
         ]
       };
     });
-    it('Breadcrumb container visible with static nodes', () => {
+    it('Breadcrumb container visible with static nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home', newConfig);
+      cy.expectPathToBe('/home/static');
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_static_index1]').should('be.visible');
     });
-    it('Breadcrumbs with dynamic nodes', () => {
+    it('Breadcrumbs with dynamic nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+      cy.expectPathToBe('/home/dyn/dynValue/1');
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
@@ -477,8 +486,9 @@ describe('Fiddle 2', () => {
       cy.get('[data-testid=breadcrumb_dynValue_index2]').should('be.visible');
       cy.get('[data-testid=breadcrumb_1_index3]').should('be.visible');
     });
-    it('Breadcrumbs with virtual nodes', () => {
+    it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
+      cy.expectPathToBe('/home/virtual-tree/virtualValue/test');
       cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
@@ -486,13 +496,18 @@ describe('Fiddle 2', () => {
       cy.get('[data-testid=breadcrumb_virtualValue_index2]').should('be.visible');
       cy.get('[data-testid=breadcrumb_test_index3]').should('be.visible');
     });
-    it('dynamic nav header', () => {
+    it('dynamic nav header', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+      cy.expectPathToBe('/home/dyn/dynValue/1');
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');
     });
-    it('static nav header', () => {
+    it('static nav header', localRetries, () => {
       newConfig.navigation.nodes[0].children[0].children[0].navHeader.label = 'test';
-      cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
+
+      cy.visitWithFiddleConfig('/home/dyn/dynValue/1', newConfig);
+
+      cy.expectPathToBe('/home/dyn/dynValue/1');
+
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'test');
     });
   });
@@ -530,10 +545,14 @@ describe('Fiddle 2', () => {
 
     it('opens navigation node with decodeViewUrl true', () => {
       cy.visitWithFiddleConfig('/decodeviewurl', newConfig);
+      cy.expectPathToBe('/decodeviewurl');
+
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('span[data-testid="iframesrc"]')
-          .contains(
+          .find('a[data-testid="iframesrc"]')
+          .should(
+            'have.attr',
+            'href',
             'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar&sap-theme=green'
           );
       });
@@ -541,11 +560,14 @@ describe('Fiddle 2', () => {
 
     it('opens navigation node with decodeViewUrl false', () => {
       cy.visitWithFiddleConfig('/nondecodeviewurl', newConfig);
+      cy.expectPathToBe('/nondecodeviewurl');
 
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
-          .find('span[data-testid="iframesrc"]')
-          .contains(
+          .find('a[data-testid="iframesrc"]')
+          .should(
+            'have.attr',
+            'href',
             'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&sap-theme=green'
           );
       });
