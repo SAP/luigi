@@ -187,7 +187,7 @@ class RoutingClass {
   }
 
 /**
- * If routing matches defined patterns, it will be skipped.
+ * Fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
  * @param {string} path the path of the view to open
  * @param {Object} component current component data
  * @param {Object} iframeElement the dom element of active iframe
