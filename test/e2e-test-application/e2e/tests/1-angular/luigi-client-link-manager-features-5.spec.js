@@ -98,7 +98,7 @@ describe('Luigi Client linkManager Modal', () => {
     });
   });
 
-  describe('linkManager open multiple modals', () => {
+  describe('linkManager open multiple modals: keepPrevious=true', () => {
     let $iframeBody;
     beforeEach(() => {
       cy.getIframeBody().then(result => {
