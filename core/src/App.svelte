@@ -1475,6 +1475,7 @@
           contentNode = node;
 
           if (modal !== undefined) {
+            !modal.keepPrevious && resetMicrofrontendModalData();
             await openViewInModal(path, modal === true ? {} : modal);
             checkResolve();
           } else if (splitView !== undefined) {
