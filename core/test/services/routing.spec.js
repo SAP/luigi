@@ -1301,5 +1301,30 @@ describe('Routing', function() {
       assert.equal(actual, expect);
     });
   });
-  
+
+  describe('shouldShowModalPathInUrl()', () => {
+    beforeEach(() => {
+      LuigiConfig.getConfigValue.restore();
+      sinon.stub(Routing, 'handleBookmarkableModalPath');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('handleBookmarkableModalPath should be triggered when showModalPathInUrl is true', () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.showModalPathInUrl')
+        .returns(true);
+      Routing.shouldShowModalPathInUrl();
+      sinon.assert.calledOnce(Routing.handleBookmarkableModalPath);
+    });
+    it('handleBookmarkableModalPath should not be triggered when showModalPathInUrl is false', () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.showModalPathInUrl')
+        .returns(false);
+      Routing.shouldShowModalPathInUrl();
+      sinon.assert.notCalled(Routing.handleBookmarkableModalPath);
+    });
+  });
 });
