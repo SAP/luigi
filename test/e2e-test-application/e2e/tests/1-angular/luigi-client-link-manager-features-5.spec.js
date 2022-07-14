@@ -170,7 +170,7 @@ describe('Luigi Client linkManager Modal', () => {
           cy.wrap($iframeBody).contains('Settings of pr2');
 
           cy.expectSearchToBe(
-            '?modal=%2Fprojects%2Fpr2%2Fsettings&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22fullscreen%22%7D'
+            '?modal=%2Fprojects%2Fpr2%2Fsettings&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22fullscreen%22%2C%22keepPrevious%22%3Atrue%7D'
           );
 
           cy.wrap($iframeBody)
@@ -178,7 +178,7 @@ describe('Luigi Client linkManager Modal', () => {
             .click();
 
           cy.expectSearchToBe(
-            '?modal=%2Fprojects%2Fpr2&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22l%22%7D'
+            '?modal=%2Fprojects%2Fpr2&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22l%22%2C%22keepPrevious%22%3Atrue%7D'
           );
 
           // second modal - large
@@ -191,7 +191,7 @@ describe('Luigi Client linkManager Modal', () => {
               .click();
 
             cy.expectSearchToBe(
-              '?modal=%2Fprojects%2Fpr2%2Fsettings&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22m%22%7D'
+              '?modal=%2Fprojects%2Fpr2%2Fsettings&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22m%22%2C%22keepPrevious%22%3Atrue%7D'
             );
 
             // thrid modal - medium
@@ -204,7 +204,7 @@ describe('Luigi Client linkManager Modal', () => {
                 .click();
 
               cy.expectSearchToBe(
-                '?modal=%2Fprojects%2Fpr2&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22s%22%7D'
+                '?modal=%2Fprojects%2Fpr2&modalParams=%7B%22title%22%3A%22microfrontend%20in%20a%20modal%22%2C%22size%22%3A%22s%22%2C%22keepPrevious%22%3Atrue%7D'
               );
 
               // fourth modal - small
