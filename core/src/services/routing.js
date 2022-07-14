@@ -184,7 +184,7 @@ class RoutingClass {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
 
-    return patterns.filter(p => window.location.href.match(p)).length !== 0;
+    return patterns.filter(p => location.href.match(p)).length !== 0;
   }
 
 /**
