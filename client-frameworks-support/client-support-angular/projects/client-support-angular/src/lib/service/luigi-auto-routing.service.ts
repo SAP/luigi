@@ -109,7 +109,8 @@ export class LuigiAutoRoutingService implements OnDestroy {
 
       if (ux.isModal()) {
         if (current.data.updateModalDataPath) {
-          lm.updateModalPathInternalNavigation(route as string, {}, current.data.addHistoryEntry);
+          console.log("test works")
+          //lm.updateModalPathInternalNavigation(route as string, {}, current.data.addHistoryEntry);
         }
       } else if (route) {
         lm.navigate(route);
