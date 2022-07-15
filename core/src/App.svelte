@@ -61,10 +61,6 @@
   let splitViewValues;
 
   /// MFs
-  let modalIframe;
-  let modalIframeData;
-  let modalWC;
-  let modalWCData;
   let modal;
   let activeDrawer = false;
   let disableBackdrop;
@@ -900,26 +896,47 @@
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
 
   //// MICRO-FRONTEND MODAL
+  // list containing the opened modals
+  let mfModalList = [];
 
-  let mfModal = {};
-
-  const resetMicrofrontendModalData = () => {
-    mfModal.displayed = false;
-    mfModal.nodepath = undefined;
-    mfModal.settings = {};
-    modalIframe = undefined;
+  /**
+   * Resets the mf modal data given the index and updates the 'mfModalList'. If no index given, resets the whole list instead
+   * @param index {number|undefined}  the index of the modal to reset
+   */
+  const resetMicrofrontendModalData = (index) => {
+    if (typeof index === 'undefined') {
+      // reset all modal list
+      mfModalList = [];
+      return;
+    } 
+    // remove the item with specified index from the list
+    mfModalList = mfModalList.filter((item, i) => index !== i);
   };
 
   resetMicrofrontendModalData();
 
+  /**
+   * Opens the (iframe/wc) view in a modal given in the nodepath 
+   * @param nodepath {string} the path of the view to open
+   * @param settings {Object} the respective modal settings
+   */
   const openViewInModal = async (nodepath, settings) => {
+    // check if navigation to this path is allowed or not
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
-    mfModal.displayed = true;
-    mfModal.nodepath = nodepath;
-    mfModal.settings = settings;
 
+    // insert modal into the modals list to be viewed on top of other modals
+    const newModal = {
+      mfModal : {
+        displayed: true,
+        nodepath,
+        settings
+      }
+    };
+    mfModalList = [ ...mfModalList, newModal ];
+
+    // check if modalPath feature enable and set URL accordingly
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
@@ -928,35 +945,51 @@
     }
   };
 
-  const modalIframeCreated = (event) => {
-    modalIframe = event.detail.modalIframe;
-    modalIframeData = event.detail.modalIframeData;
+  /**
+   * Event handler called when the iframe of the modal is created inside Modal component
+   * @param event {Object} event data of the instantiated Modal component instance
+   * @param index {number} the index of the modal to be instantiated 
+   */
+  const modalIframeCreated = (event, index) => {
+    mfModalList[index].modalIframe = event.detail.modalIframe;
+    mfModalList[index].modalIframeData = event.detail.modalIframeData;
   };
 
-  const modalWCCreated = (event) => {
-    modalWC = event.detail.modalWC;
-    modalWCData = event.detail.modalWCData;
+  /**
+   * Event handler called when the web component of the modal is created inside Modal component
+   * @param event {Object} event data of the instantiated Modal component instance
+   * @param index {number} the index of the modal to be instantiated 
+   */
+  const modalWCCreated = (event, index) => {
+    mfModalList[index].modalWC = event.detail.modalWC;
+    mfModalList[index].modalWCData = event.detail.modalWCData;
   };
 
-  const closeModal = (event) => {
-    if (modalIframe) {
-      getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
+  /**
+   * Closes the modal given the respective modal index. Index is used due to multiple modals functionality
+   * @param index the index of the modal to be closed corresponding to the 'mfModalList' array
+   */
+  const closeModal = (index) => {
+    const targetModal = mfModalList[index];
+
+    if (targetModal && targetModal.modalIframe) {
+      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
         if (showModalPathInUrl) {
           Routing.removeModalDataFromUrl();
         }
-        resetMicrofrontendModalData();
+        resetMicrofrontendModalData(index);
       });
-    } else if (modalWC) {
+    } else if (targetModal && targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
       );
       if (showModalPathInUrl) {
         Routing.removeModalDataFromUrl();
       }
-      resetMicrofrontendModalData();
+      resetMicrofrontendModalData(index);
     }
   };
 
@@ -1199,6 +1232,10 @@
 
     EventListenerHelpers.addEventListener('message', async (e) => {
       const iframe = IframeHelpers.getValidMessageSource(e);
+      const topMostModal = mfModalList[(mfModalList.length - 1)];
+      const modalIframe = topMostModal && topMostModal.modalIframe;
+      const modalIframeData = topMostModal && topMostModal.modalIframeData;
+      
       const specialIframeProps = {
         modalIframe,
         modalIframeData,
@@ -1400,7 +1437,12 @@
                 .catch(() => {
                   rejectRemotePromise();
                 });
-              closeModal();
+              // close all modals to allow navigation to the non-special view
+              mfModalList.forEach((m, index) => {
+                // close modals 
+                closeModal(index);
+              });
+              
               closeSplitView();
               closeDrawer();
               isNavigationSyncEnabled = true;
@@ -1433,7 +1475,7 @@
           contentNode = node;
 
           if (modal !== undefined) {
-            resetMicrofrontendModalData();
+            !modal.keepPrevious && resetMicrofrontendModalData();
             await openViewInModal(path, modal === true ? {} : modal);
             checkResolve();
           } else if (splitView !== undefined) {
@@ -1449,8 +1491,9 @@
       }
 
       if ('luigi.navigation.back' === e.data.msg) {
-        if (IframeHelpers.isMessageSource(e, modalIframe)) {
-          closeModal();
+        const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
+        if (IframeHelpers.isMessageSource(e, mfModalTopMostElement && mfModalTopMostElement.modalIframe)) {
+          closeModal(mfModalList.length - 1);
           await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext),
@@ -1715,7 +1758,7 @@
   };
 
   export const hasBack = () => {
-    return (mfModal && mfModal.displayed) || preservedViews.length !== 0;
+    return (mfModalList.length > 0) || preservedViews.length !== 0;
   };
 
   onMount(() => {
@@ -1802,15 +1845,19 @@
   {#if alerts && alerts.length}
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
   {/if}
-  {#if mfModal.displayed}
-    <Modal
-      settings={mfModal.settings}
-      nodepath={mfModal.nodepath}
-      on:close={closeModal}
-      on:iframeCreated={modalIframeCreated}
-      on:wcCreated={modalWCCreated}
-    />
-  {/if}
+
+  {#each mfModalList as modalItem, index}
+    {#if modalItem.mfModal.displayed}
+      <Modal
+        settings={modalItem.mfModal.settings}
+        nodepath={modalItem.mfModal.nodepath}
+        modalIndex={index}
+        on:close={() => closeModal(index)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
+      />
+    {/if}
+  {/each}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
     <Modal
       settings={mfDrawer.settings}
