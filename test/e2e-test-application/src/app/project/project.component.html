@@ -543,6 +543,52 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              data-testid="open-modal-to-settings-fullscreen"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/settings', {
+                  title: 'microfrontend in a modal',
+                  size: 'fullscreen',
+                  keepPrevious: true
+                })
+              "
+              >Open a modal fullscreen</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
+                title: 'microfrontend in a modal',
+                size: 'fullscreen',
+                keepPrevious: true
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-to-settings-medium"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/settings', {
+                  title: 'microfrontend in a modal',
+                  size: 'm',
+                  keepPrevious: true
+                })
+              "
+              >Open a modal medium</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
+                title: 'microfrontend in a modal',
+                size: 'm',
+                keepPrevious: true
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="
                 linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                   title: 'Webcomponent in a split view',
