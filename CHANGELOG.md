@@ -34,8 +34,8 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :bug: Fixed
 * [#2807](https://github.com/SAP/luigi/pull/2807) Remove backdrop on node change ([@ndricimrr](https://github.com/ndricimrr))
-* [#2792](https://github.com/SAP/luigi/pull/2792) fix patchy product switch grid icon ([@hardl](https://github.com/hardl))
-* [#2783](https://github.com/SAP/luigi/pull/2783) fixed viewgroup inheritance ([@hardl](https://github.com/hardl))
+* [#2792](https://github.com/SAP/luigi/pull/2792) Fix patchy product switch grid icon ([@hardl](https://github.com/hardl))
+* [#2783](https://github.com/SAP/luigi/pull/2783) Fixed viewgroup inheritance ([@hardl](https://github.com/hardl))
 * [#2765](https://github.com/SAP/luigi/pull/2765) Refactor buildpath for getcurrentpath ([@ndricimrr](https://github.com/ndricimrr))
 
 
