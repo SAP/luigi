@@ -56,7 +56,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 
 
-
 ## [v1.23.0] (2022-06-17)
 
 #### :rocket: Added
