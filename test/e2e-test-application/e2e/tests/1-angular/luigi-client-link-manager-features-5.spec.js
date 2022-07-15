@@ -114,7 +114,7 @@ describe('Luigi Client linkManager Modal', () => {
         .click();
 
       // first modal - fullscreen
-      cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-0').then(result => {
+      cy.getIframeBody({}, 0, '[modal-container-index=0]').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody).contains('Settings of pr2');
 
@@ -125,7 +125,7 @@ describe('Luigi Client linkManager Modal', () => {
           .click();
 
         // second modal - large
-        cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-1').then(result => {
+        cy.getIframeBody({}, 0, '[modal-container-index=1]').then(result => {
           $iframeBody = result;
           cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
 
@@ -134,7 +134,7 @@ describe('Luigi Client linkManager Modal', () => {
             .click();
 
           // thrid modal - medium
-          cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-2').then(result => {
+          cy.getIframeBody({}, 0, '[modal-container-index=2]').then(result => {
             $iframeBody = result;
             cy.wrap($iframeBody).contains('Settings of pr2');
 
@@ -143,7 +143,7 @@ describe('Luigi Client linkManager Modal', () => {
               .click();
 
             // fourth modal - small
-            cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-3').then(result => {
+            cy.getIframeBody({}, 0, '[modal-container-index=3]').then(result => {
               $iframeBody = result;
               cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
             });
@@ -165,7 +165,7 @@ describe('Luigi Client linkManager Modal', () => {
           .click();
 
         // first modal - fullscreen
-        cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-0').then(result => {
+        cy.getIframeBody({}, 0, '[modal-container-index=0]').then(result => {
           $iframeBody = result;
           cy.wrap($iframeBody).contains('Settings of pr2');
 
@@ -182,7 +182,7 @@ describe('Luigi Client linkManager Modal', () => {
           );
 
           // second modal - large
-          cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-1').then(result => {
+          cy.getIframeBody({}, 0, '[modal-container-index=1]').then(result => {
             $iframeBody = result;
             cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
 
@@ -195,7 +195,7 @@ describe('Luigi Client linkManager Modal', () => {
             );
 
             // thrid modal - medium
-            cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-2').then(result => {
+            cy.getIframeBody({}, 0, '[modal-container-index=2]').then(result => {
               $iframeBody = result;
               cy.wrap($iframeBody).contains('Settings of pr2');
 
@@ -208,7 +208,7 @@ describe('Luigi Client linkManager Modal', () => {
               );
 
               // fourth modal - small
-              cy.getIframeBody({}, 0, '.iframeModalCtn.modalContainerIndex-3').then(result => {
+              cy.getIframeBody({}, 0, '[modal-container-index=3]').then(result => {
                 $iframeBody = result;
                 cy.wrap($iframeBody).contains('LuigiClient linkManager methods');
               });
