@@ -31,7 +31,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2803](https://github.com/SAP/luigi/pull/2803) Add decode mfe src url search params option ([@hardl](https://github.com/hardl))
 * [#2674](https://github.com/SAP/luigi/pull/2674) Custom item renderer for app switcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#2770](https://github.com/SAP/luigi/pull/2770) Responsive padding for the Shellbar Component ([@UlianaMunich](https://github.com/UlianaMunich))
-* [#2765](https://github.com/SAP/luigi/pull/2765) Refactor buildpath for getcurrentpath ([@ndricimrr](https://github.com/ndricimrr))
 
 #### :bug: Fixed
 * [#2807](https://github.com/SAP/luigi/pull/2807) Remove backdrop on node change ([@ndricimrr](https://github.com/ndricimrr))
