@@ -1,4 +1,5 @@
 # Page tree
+docs_dir: .
 nav:
   - Basics:
     - Getting Started: getting-started.md
