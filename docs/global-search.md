@@ -1,13 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "Global Search",
+    "label": "Global search",
     "category": {
-      "label": "Luigi Core"
+      "label": "Navigation",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 10
+      "categoryPosition": 3,
+      "position": 2
     }
   }
 }

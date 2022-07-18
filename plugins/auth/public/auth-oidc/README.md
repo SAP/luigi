@@ -1,13 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "OpenID Connect",
+    "label": "OpenID Connect Plugin",
     "category": {
-      "label": "Authorization Plugins"
+      "label": "Authorization",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 12
+      "categoryPosition": 4,
+      "position": 3
     }
   }
 }

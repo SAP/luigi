@@ -3,11 +3,12 @@
   "node": {
     "label": "Web Component",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 12
+      "position": 5
     }
   }
 }

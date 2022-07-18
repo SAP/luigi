@@ -3,11 +3,12 @@
   "node": {
     "label": "General settings",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 6
+      "position": 1
     }
   }
 }

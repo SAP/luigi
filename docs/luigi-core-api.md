@@ -1,13 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "API Reference",
+    "label": "Luigi Core API",
     "category": {
-      "label": "Luigi Core"
+      "label": "API Reference",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 11
+      "categoryPosition": 6,
+      "position": 0
     }
   }
 }
@@ -1276,6 +1277,7 @@ Add a feature toggle to an active feature toggles list
 ##### Parameters
 
 -   `featureToggleName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the name of the feature toggle
+-   `fromUrlQuery`   (optional, default `false`)
 
 ##### Examples
 

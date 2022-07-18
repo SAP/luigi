@@ -3,11 +3,12 @@
   "node": {
     "label": "Framework support libraries",
     "category": {
-      "label": "Luigi Client"
+      "label": "Luigi Client",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 3,
-      "position": 2
+      "categoryPosition": 5,
+      "position": 1
     }
   }
 }

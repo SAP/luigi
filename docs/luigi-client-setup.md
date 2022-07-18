@@ -3,10 +3,11 @@
   "node": {
     "label": "Installation",
     "category": {
-      "label": "Luigi Client"
+      "label": "Luigi Client",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 3,
+      "categoryPosition": 5,
       "position": 0
     }
   }

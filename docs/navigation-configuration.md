@@ -3,11 +3,12 @@
   "node": {
     "label": "Basic navigation",
     "category": {
-      "label": "Luigi Core"
+      "label": "Navigation",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 1
+      "categoryPosition": 3,
+      "position": 0
     }
   }
 }
