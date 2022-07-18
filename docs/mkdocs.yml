@@ -1,0 +1,44 @@
+# Page tree
+nav:
+  - Basics:
+    - Getting Started: getting-started.md
+    - Architecture: luigi-architecture.md
+    - FAQ: faq.md
+    - Versions: versions.md
+  - Luigi Core: 
+    - Quick setup: application-setup.md
+    - General settings: general-settings.md 
+    - UI features: luigi-ux-features.md 
+    - Lifecycle hooks: lifecycle-hooks.md 
+    - Internationalization: i18n.md 
+    - Web Component: web-component.md 
+  - Navigation: 
+    - Basic navigation: navigation-configuration.md
+    - Advanced navigation: navigation-advanced.md
+    - Global search: global-search.md
+    - User settings: user-settings.md
+    - Navigation parameters reference: navigation-parameters-reference.md
+  - Authorization: 
+    - Authorization configuration: authorization-configuration.md
+    - Authorization events: authorization-events.md
+    - OAuth2 plugin: plugins/auth/public/auth-oauth2/README.md
+    - OpenID Connect plugin: plugins/auth/public/auth-oidc/README.md
+  - Luigi Client: 
+    - Luigi Client Installation: luigi-client-setup.md
+    - Framework support libraries: framework-support-libraries.md
+    - Advanced configuration options: advanced-options-luigi-client.md
+  - API Reference: 
+    - Luigi Core API: luigi-core-api.md
+    - Luigi Client API: luigi-client-api.md
+  - Advanced: 
+    - Advanced scenarios: advanced-scenarios.md
+    - Core/Client Communication: communication.md
+  - Examples:
+    - Navigation configuration example: navigation-configuration-example.md
+    - Angular: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular
+    - Vue: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue
+    - React: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react
+    - Plain JavaScript: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js
+    - Svelte: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte
+    - OpenUI5: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5
+    - NextJS: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-next 
