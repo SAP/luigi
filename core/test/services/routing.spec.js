@@ -1058,7 +1058,7 @@ describe('Routing', function() {
         href: 'http://some.url.de/settings'
       };
       window.state = {};
-      console.log('path routing ', global.location);
+
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
@@ -1249,6 +1249,82 @@ describe('Routing', function() {
       assert.equal(Routing.concatenatePath('/home/overview/', 'test'), 'home/overview/test');
       assert.equal(Routing.concatenatePath('/home/overview/', '/test'), 'home/overview/test');
       assert.equal(Routing.concatenatePath('/home/overview/', 'test/'), 'home/overview/test/');
+    });
+  });
+
+  describe('shouldSkipRoutingForUrlPatterns()', () => {
+    let globalLocationRef = global.location;
+    afterEach(() => {
+      global.location = globalLocationRef;
+      sinon.restore();
+      sinon.reset();
+    });
+    it('should return true if path matches default patterns', () => {
+      global.location = {
+        href: 'http://some.url.de?access_token=bar'
+      };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = true;
+
+      assert.equal(actual, expect);
+    });
+    it('should return true if path matches default patterns', () => {
+      global.location = {
+        href: 'http://some.url.de?id_token=foo'
+      };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = true;
+
+      assert.equal(actual, expect);
+    });
+    it('should return true if path matches config patterns', () => {
+      sinon.restore();
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.skipRoutingForUrlPatterns')
+        .returns(['foo_bar']);
+      global.location = {
+          href: 'http://some.url.de?foo_bar'
+        };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = true;
+
+      assert.equal(actual, expect);
+    });
+    it('should return false if path does not matche patterns', () => {
+      global.location = {
+        href: 'http://some.url.de/settings'
+      };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = false;
+
+      assert.equal(actual, expect);
+    });
+  });
+
+  describe('shouldShowModalPathInUrl()', () => {
+    beforeEach(() => {
+      LuigiConfig.getConfigValue.restore();
+      sinon.stub(Routing, 'handleBookmarkableModalPath');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('handleBookmarkableModalPath should be triggered when showModalPathInUrl is true', () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.showModalPathInUrl')
+        .returns(true);
+      Routing.shouldShowModalPathInUrl();
+      sinon.assert.calledOnce(Routing.handleBookmarkableModalPath);
+    });
+    it('handleBookmarkableModalPath should not be triggered when showModalPathInUrl is false', () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.showModalPathInUrl')
+        .returns(false);
+      Routing.shouldShowModalPathInUrl();
+      sinon.assert.notCalled(Routing.handleBookmarkableModalPath);
     });
   });
 });
