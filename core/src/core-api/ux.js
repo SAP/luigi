@@ -1,6 +1,7 @@
 import { APP_LOADING_INDICATOR } from './../utilities/constants';
 import { GenericHelpers } from '../utilities/helpers';
 import { get, writable } from 'svelte/store';
+import { linkManager } from './_internalLinkManager';
 import { SemiCollapsibleNavigation } from './../navigation/services/semi-collapsed-navigation';
 /**
  * Functions to use Luigi Core UX features.
@@ -155,6 +156,15 @@ class LuigiUX {
    */
   closeUserSettings() /* istanbul ignore next */ {
     Luigi.closeUserSettings();
+  }
+
+  /**
+   * Removes backdrop. Function only used internally
+   * @memberof UX
+   * @private
+   */
+  removeBackdrop() {
+    new linkManager().sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
 }
 
