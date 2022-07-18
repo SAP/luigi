@@ -1,7 +1,14 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
-import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers, IframeHelpers } from './';
+import {
+  AsyncHelpers,
+  EscapingHelpers,
+  EventListenerHelpers,
+  GenericHelpers,
+  IframeHelpers,
+  NavigationHelpers
+} from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
@@ -213,10 +220,29 @@ class RoutingHelpersClass {
       : this.buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
   }
 
+  getContext(node, ctx) {
+    if (ctx) {
+      if (node.parent) {
+        return { ...this.getContext(node.parent), ...ctx };
+      } else {
+        return ctx;
+      }
+    } else {
+      return this.getContext(node, node.context || {});
+    }
+  }
+
   getRouteLink(node, pathParams, relativePathPrefix) {
     const pp = relativePathPrefix || '';
     if (node.externalLink && node.externalLink.url) {
-      return node.externalLink;
+      const url = node.externalLink.url;
+
+      const data = {
+        context: RoutingHelpers.substituteDynamicParamsInObject(this.getContext(node), pathParams),
+        pathParams: pathParams,
+        nodeParams: {}
+      };
+      return this.substituteViewUrl(url, data);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
       const link = node.link.startsWith('/') ? node.link : Routing.buildFromRelativePath(node);
@@ -227,14 +253,18 @@ class RoutingHelpersClass {
     return pp + GenericHelpers.replaceVars(route, pathParams, ':', false);
   }
 
+  calculateNodeHref(node, pathParams) {
+    const link = RoutingHelpers.getRouteLink(
+      node,
+      pathParams,
+      LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
+    );
+    return this.getI18nViewUrl(link.url) || link;
+  }
+
   getNodeHref(node, pathParams) {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
-      const link = RoutingHelpers.getRouteLink(
-        node,
-        pathParams,
-        LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
-      );
-      return this.getI18nViewUrl(link.url) || link;
+      return this.calculateNodeHref(node, pathParams);
     }
     return 'javascript:void(0)';
   }

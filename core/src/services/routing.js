@@ -461,14 +461,7 @@ class RoutingClass {
   handleRouteClick(node, component) {
     const route = RoutingHelpers.getRouteLink(node, component.get().pathParams);
     if (node.externalLink && node.externalLink.url) {
-      if (node.parent) {
-        const parentRoute = RoutingHelpers.getRouteLink(node.parent, component.get().pathParams);
-        Navigation.extractDataFromPath(parentRoute).then(parentData => {
-          this.navigateToExternalLink(route, node, parentData);
-        });
-      } else {
-        this.navigateToExternalLink(route);
-      }
+      this.navigateToExternalLink(route, node, component.get().pathParams);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
       this.navigateTo(route);
@@ -518,26 +511,12 @@ class RoutingClass {
     }
   }
 
-  navigateToExternalLink(externalLink, node, parentData) {
+  navigateToExternalLink(externalLink, node, pathParams) {
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink
     };
-
-    if (node && parentData && parentData.pathData) {
-      const data = {
-        context: RoutingHelpers.substituteDynamicParamsInObject(
-          Object.assign({}, parentData.pathData.context || {}, node.context || {}),
-          parentData.pathData.pathParams
-        ),
-        pathData: parentData.pathData,
-        nodeParams: {}
-      };
-      updatedExternalLink.url = RoutingHelpers.substituteViewUrl(updatedExternalLink.url, data);
-    } else {
-      updatedExternalLink.url = RoutingHelpers.getI18nViewUrl(updatedExternalLink.url);
-    }
-
+    updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
