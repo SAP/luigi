@@ -1,14 +1,14 @@
 <!-- meta
 {
   "node": {
-    "label": "Custom messages",
+    "label": "Core/Client communication",
     "category": {
       "label": "Advanced",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 4,
-      "position": 0
+      "categoryPosition": 7,
+      "position": 1
     }
   }
 }
