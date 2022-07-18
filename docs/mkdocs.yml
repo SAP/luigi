@@ -1,4 +1,5 @@
 # Page tree
+docs_dir: .
 nav:
   - Basics:
     - Getting Started: getting-started.md
@@ -21,8 +22,6 @@ nav:
   - Authorization: 
     - Authorization configuration: authorization-configuration.md
     - Authorization events: authorization-events.md
-    - OAuth2 plugin: plugins/auth/public/auth-oauth2/README.md
-    - OpenID Connect plugin: plugins/auth/public/auth-oidc/README.md
   - Luigi Client: 
     - Luigi Client Installation: luigi-client-setup.md
     - Framework support libraries: framework-support-libraries.md
@@ -35,10 +34,3 @@ nav:
     - Core/Client Communication: communication.md
   - Examples:
     - Navigation configuration example: navigation-configuration-example.md
-    - Angular: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular
-    - Vue: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue
-    - React: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react
-    - Plain JavaScript: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js
-    - Svelte: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte
-    - OpenUI5: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5
-    - NextJS: https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-next 
