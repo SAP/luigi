@@ -25,6 +25,25 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.24.0] (2022-07-15)
+
+#### :rocket: Added
+* [#2803](https://github.com/SAP/luigi/pull/2803) Add decode mfe src url search params option ([@hardl](https://github.com/hardl))
+* [#2674](https://github.com/SAP/luigi/pull/2674) Custom item renderer for app switcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2770](https://github.com/SAP/luigi/pull/2770) Responsive padding for the Shellbar Component ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2765](https://github.com/SAP/luigi/pull/2785) Multiple modal dialogs ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :bug: Fixed
+* [#2807](https://github.com/SAP/luigi/pull/2807) Remove backdrop on node change ([@ndricimrr](https://github.com/ndricimrr))
+* [#2792](https://github.com/SAP/luigi/pull/2792) Fix patchy product switch grid icon ([@hardl](https://github.com/hardl))
+* [#2783](https://github.com/SAP/luigi/pull/2783) Fixed viewgroup inheritance ([@hardl](https://github.com/hardl))
+* [#2765](https://github.com/SAP/luigi/pull/2765) Refactor buildpath for getcurrentpath ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
+
+
 ## [v1.23.1] (2022-06-20)
 
 #### :rocket: Added
@@ -32,7 +51,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :bug: Fixed
 * [#2756](https://github.com/SAP/luigi/pull/2756) Fix getCurrentPath collision with buildPath ([@hardl](https://github.com/hardl))
-
 
 
 
@@ -1403,3 +1421,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.22.0]: https://github.com/SAP/luigi/compare/v1.21.0...v1.22.0
 [v1.23.0]: https://github.com/SAP/luigi/compare/v1.22.0...v1.23.0
 [v1.23.1]: https://github.com/SAP/luigi/compare/v1.23.0...v1.23.1
+[v1.24.0]: https://github.com/SAP/luigi/compare/v1.23.1...v1.24.0
