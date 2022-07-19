@@ -11,7 +11,7 @@ You can read about the new features in Luigi v1.24.0 in the release notes below.
 <!-- Excerpt -->
 #### Custom item renderer for app switcher
 
-With this release, we added an `ìtemRenderer` to the app switcher which allows you to fully customize the list of items that appear in the app switcher. It also allows you to add a function to close the custom app switcher dropdown. You can find more information in the [documentation](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=app-switcher). 
+With this release, we added an `itemRenderer` to the app switcher which allows you to fully customize the list of items that appear in the app switcher. It also allows you to add a function to close the custom app switcher dropdown. You can find more information in the [documentation](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=app-switcher). 
 
 
 #### Responsive padding for the Shellbar Component
