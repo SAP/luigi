@@ -63,6 +63,8 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 }
 ```
 
+* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes.
+
 ## App loading indicator
 
 To show a loading indicator before Luigi Core or your first micro frontend is ready, add a container with the `luigi-app-loading-indicator` attribute to your `index.html` body or inside your `luigi-app-root` container.
