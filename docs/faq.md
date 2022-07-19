@@ -51,6 +51,10 @@ No, Luigi itself does not deliver any micro frontends. It is a framework that he
 
 No, Luigi can be used independently of SAP for a variety of purposes. You can find one example in [this article](https://medium.com/swlh/luigi-micro-fronteds-orchestrator-8c0eca710151) which describes how to create a small hobby project using Luigi.
 
+### What is the difference between Luigi and SAPUI5/OpenUI5?
+
+You can find a detailed response to this question [here](https://github.com/SAP/luigi/discussions/2809#discussioncomment-3137780).
+
 ### Where can I download Luigi?
 
 The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depending on the UI framework you use, there are different setups for Luigi. You can find more information here: [application setup](application-setup.md).
