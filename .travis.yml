@@ -111,11 +111,11 @@ jobs:
       # run only when merging from release-v branch to master
       if: repo = SAP/luigi AND branch = master AND type = push
       script:
-        # - bash -xv ./scripts/testCompatibility.sh --tag latest || travis_terminate 1 # to run with verbose mode
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
         - rm -rf $TRAVIS_BUILD_DIR/../luigi-compatibility-testing # remove compatibility build cache
 
     # ----- DOCU -----
