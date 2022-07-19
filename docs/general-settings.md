@@ -168,7 +168,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 - **example**:
 ```
  header: {  object / function / Promise
-   responsiveTopNavPaddings: true
+   responsiveShellbarPaddings: true
   },
 ```
 
