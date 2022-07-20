@@ -191,7 +191,7 @@ Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
 });
 
 Cypress.Commands.add('getIframeWindow', () => {
-  // get the iframe > contentwindow
+  // get the iframe > contentwindow 
   // and retry until the window content exists
   return cy
     .get('.iframeContainer > iframe')
