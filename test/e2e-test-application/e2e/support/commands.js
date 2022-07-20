@@ -176,7 +176,7 @@ Cypress.Commands.add('getIframe', () => {
 
 // only works if iframe and parent window are of the same origin
 Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
-  // get the iframe > document
+  // get the iframe > document 
   // and retry until the body element is not undefined
   return (
     cy
