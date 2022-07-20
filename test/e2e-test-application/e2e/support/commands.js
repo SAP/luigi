@@ -161,7 +161,7 @@ Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerS
 // retrieves the <iframe /> element directly
 Cypress.Commands.add('getIframe', () => {
   // get the iframe > document > body
-  // and retry until the body element is not undefined
+  // and retry until the body element is not undefined 
   return (
     cy
       .get('.iframeContainer > iframe')
