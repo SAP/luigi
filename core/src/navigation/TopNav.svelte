@@ -879,7 +879,8 @@
     padding-right: 0 !important;
   }
 
-  :global(.fd-shellbar .fd-shellbar__button.is-selected) {
+  :global(.fd-shellbar),
+  :global(.fd-shellbar__button.is-selected) {
     background: var(--sapShell_Active_Background, #354a5f);
     color: var(--sapShell_Active_TextColor, #fff);
   }
