@@ -8,7 +8,7 @@
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 6
+      "position": 1
     }
   }
 }
@@ -158,6 +158,17 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 ```
  header: {  object / function / Promise
     favicon: 'path/to/favicon.ico'
+  },
+```
+
+### header.responsiveShellbarPaddings
+- **type**: boolean
+- **description**: based on the browser window size, a responsive padding will be applied to the Shellbar Component when set to `true`.
+- **default**: by default, the parameter is set to `false`, meaning that padding for the Shellbar Component will stay the same as inherited from the `.fd-shellbar` class.
+- **example**:
+```
+ header: {  object / function / Promise
+   responsiveShellbarPaddings: true
   },
 ```
 

@@ -8,7 +8,7 @@
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 9
+      "position": 2
     }
   }
 }
@@ -62,6 +62,8 @@ You can quickly adjust the Luigi application to improve user experience on mobil
   --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
 }
 ```
+
+* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes.
 
 ## App loading indicator
 

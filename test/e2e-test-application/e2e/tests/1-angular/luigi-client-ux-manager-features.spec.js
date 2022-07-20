@@ -261,4 +261,27 @@ describe('Luigi Client ux manager features', () => {
       });
     });
   });
+
+  describe('removeBackdrop', () => {
+    it('backdrop removed after navigating away', () => {
+      cy.goToUxManagerMethods($iframeBody);
+
+      cy.wrap($iframeBody)
+        .find('a[data-testid="add-backdrop-from-mfe"]')
+        .click();
+
+      // check if backdrop exists
+      cy.get('.lui-backdrop').should('exist');
+
+      // navigate away
+      cy.wrap($iframeBody)
+        .find('a[data-testid="navigate-to-project-2"]')
+        .click();
+
+      cy.expectPathToBe('/projects/pr2');
+
+      // check that backdrop is removed
+      cy.get('.lui-backdrop').should('not.exist');
+    });
+  });
 });
