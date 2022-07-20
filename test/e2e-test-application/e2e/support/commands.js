@@ -158,7 +158,7 @@ Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerS
 });
 
 // More robust iframe retrival methods based on: https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/
-// retrieves the <iframe /> element directly
+// retrieves the <iframe /> element directly 
 Cypress.Commands.add('getIframe', () => {
   // get the iframe > document > body
   // and retry until the body element is not undefined 
