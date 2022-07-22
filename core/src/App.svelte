@@ -1080,10 +1080,7 @@
             resetMicrofrontendDrawerData();
           });
         }
-        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
-          'style',
-          null
-        );
+        IframeHelpers.getCurrentMicrofrontendIframe().style.cssText+='width:100%;height:100%;';
       } catch (e) {
         console.log(e);
       }
