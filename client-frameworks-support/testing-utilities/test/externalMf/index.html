@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>External micro frontend</title>
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+    <script src="./node_modules/@luigi-project/client/luigi-client.js"></script>
+    <script
+      type="module"
+      src="./node_modules/@luigi-project/client-support-angular/bundles/luigi-project-client-support-angular.umd.min.js"
+    ></script>
+    <script
+      type="module"
+      src="./node_modules/@luigi-project/testing-utilities/luigi-mock-util.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="./node_modules/fundamental-styles/dist/layout-panel.css"
+    />
+    <link rel="stylesheet" href="./node_modules/fundamental-styles/dist/button.css" />
+  </head>
+
+  <body>
+    <div class="fd-layout-panel">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            Just a test page from an external micro frontend.
+          </h3>
+        </div>
+      </div>
+    </div>
+    <script>
+      //const LuigiMockUtil = require("./node_modules/@luigi-project/testing-utilities/luigi-mock-util.js");
+      luigiMockUtil = new LuigiMockUtil(browser);
+      const settings = {
+        text: 'This is just a test alert for external micro frontend.',
+        type: 'success'
+      };
+      window.LuigiClient.addInitListener((context, origin) => {
+        LuigiClient.uxManager().showAlert(settings);
+      });
+      console.log(luigiMockUtil);
+    </script>
+  </body>
+</html>

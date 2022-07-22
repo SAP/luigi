@@ -1,0 +1,16 @@
+{
+  "name": "luigi-external-mf",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.html",
+  "license": "MIT",
+  "scripts": {
+    "start": "http-server"
+  },
+  "dependencies": {
+    "@luigi-project/client": "^1.24.0",
+    "@luigi-project/client-support-angular": "^1.24.0",
+    "@luigi-project/testing-utilities": "^1.24.0",
+    "fundamental-styles": "^0.10.0"
+  }
+}
