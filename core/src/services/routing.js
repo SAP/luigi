@@ -167,19 +167,19 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-/**
- * Set feature toggole. If `queryStringParam` is provided at config file.
- * @param {string} path used for retrieving and appending the path parameters
- */
+  /**
+   * Set feature toggole. If `queryStringParam` is provided at config file.
+   * @param {string} path used for retrieving and appending the path parameters
+   */
   setFeatureToggle(path) {
     const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
     featureToggleProperty && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
   }
 
-/**
- * If the current route matches any of the defined patterns, it will be skipped.
- * @returns {boolean} true if the current route matches any of the patterns, false otherwise
- */
+  /**
+   * If the current route matches any of the defined patterns, it will be skipped.
+   * @returns {boolean} true if the current route matches any of the patterns, false otherwise
+   */
   shouldSkipRoutingForUrlPatterns() {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
@@ -187,13 +187,13 @@ class RoutingClass {
     return patterns.filter(p => location.href.match(p)).length !== 0;
   }
 
-/**
- * Fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
- * @param {string} path the path of the view to open
- * @param {Object} component current component data
- * @param {Object} iframeElement the dom element of active iframe
- * @param {Object} config the configuration of application
- */
+  /**
+   * Fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   * @param {string} path the path of the view to open
+   * @param {Object} component current component data
+   * @param {Object} iframeElement the dom element of active iframe
+   * @param {Object} config the configuration of application
+   */
   showUnsavedChangesModal(path, component, iframeElement, config) {
     const newUrl = window.location.href;
     const oldUrl = component.get().unsavedChanges.persistUrl;
@@ -207,32 +207,29 @@ class RoutingClass {
           history.replaceState(window.state, '', newUrl);
       },
       () => {}
-    );  
+    );
   }
 
-/**
- * If `showModalPathInUrl` is provided, bookmarkable modal path will be triggered.
- */
+  /**
+   * If `showModalPathInUrl` is provided, bookmarkable modal path will be triggered.
+   */
   async shouldShowModalPathInUrl() {
     if (LuigiConfig.getConfigValue('routing.showModalPathInUrl')) {
       await this.handleBookmarkableModalPath();
     }
   }
 
- /**
-  * Handles viewUrl misconfiguration scenario
-  * @param {Object} nodeObject active node data
-  * @param {string} viewUrl the url of the current mf view
-  * @param {Object} previousCompData previous component data
-  * @param {string} pathUrlRaw path url without hash
-  * @param {Object} component current component data
-  */
+  /**
+   * Handles viewUrl misconfiguration scenario
+   * @param {Object} nodeObject active node data
+   * @param {string} viewUrl the url of the current mf view
+   * @param {Object} previousCompData previous component data
+   * @param {string} pathUrlRaw path url without hash
+   * @param {Object} component current component data
+   */
   async handleViewUrlMisconfigured(nodeObject, viewUrl, previousCompData, pathUrlRaw, component) {
-    const { children, intendToHaveEmptyViewUrl, compound } = nodeObject
-    const hasChildrenNode =
-      (children && Array.isArray(children) && children.length > 0) ||
-      children ||
-      false;
+    const { children, intendToHaveEmptyViewUrl, compound } = nodeObject;
+    const hasChildrenNode = (children && Array.isArray(children) && children.length > 0) || children || false;
 
     if (!compound && viewUrl.trim() === '' && !hasChildrenNode && !intendToHaveEmptyViewUrl) {
       console.warn(
@@ -256,19 +253,19 @@ class RoutingClass {
       }
       return true;
     }
-    return false
+    return false;
   }
 
   /**
-  * Deal with page not found scenario.
-  * @param {Object} nodeObject the data of node
-  * @param {string} viewUrl the url of the current mf view
-  * @param {Object} pathData the information of current path
-  * @param {string} path the path of the view to open
-  * @param {Object} component current component data
-  * @param {Object} pathUrlRaw path url without hash
-  * @param {Object} config the configuration of application
-  */
+   * Deal with page not found scenario.
+   * @param {Object} nodeObject the data of node
+   * @param {string} viewUrl the url of the current mf view
+   * @param {Object} pathData the information of current path
+   * @param {string} path the path of the view to open
+   * @param {Object} component current component data
+   * @param {Object} pathUrlRaw path url without hash
+   * @param {Object} config the configuration of application
+   */
   async handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config) {
     if (!viewUrl && !nodeObject.compound) {
       const defaultChildNode = await RoutingHelpers.getDefaultChildNode(pathData, async (node, ctx) => {
@@ -278,7 +275,9 @@ class RoutingClass {
       if (pathData.isExistingRoute) {
         //normal navigation can be performed
         const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
-        this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, { keepBrowserHistory: false});
+        this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, {
+          keepBrowserHistory: false
+        });
         // reset comp data
         component.set({ navigationPath: [] });
       } else {
@@ -312,15 +311,15 @@ class RoutingClass {
     return false;
   }
 
-/**
- * Deal with route changing scenario.
- * @param {string} path the path of the view to open
- * @param {Object} component the settings/functions of component (need refactoring)
- * @param {Object} iframeElement dom element of iframe
- * @param {Object} config the configuration of application
- * @param {boolean} withoutSync disables the navigation handling for a single navigation request.
- * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
- */
+  /**
+   * Deal with route changing scenario.
+   * @param {string} path the path of the view to open
+   * @param {Object} component the settings/functions of component (need refactoring)
+   * @param {Object} iframeElement dom element of iframe
+   * @param {Object} config the configuration of application
+   * @param {boolean} withoutSync disables the navigation handling for a single navigation request.
+   * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
+   */
   async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
@@ -426,16 +425,16 @@ class RoutingClass {
       }
 
       if (nodeObject.compound) {
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponentCompound(component, nodeObject);
       } else if (nodeObject.webcomponent) {
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponent(component, nodeObject);
       } else {
         if (iContainer) {
