@@ -13,19 +13,21 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
       processComment(node);
       isAccordion && processAccordionElements(node);
     });
-  }
+  };
 
   function getDefaultSettings() {
-    return Object.assign({}, {
-      defaultState: ''
-    });
+    return Object.assign(
+      {},
+      {
+        defaultState: ''
+      }
+    );
   }
 
   function beginQuestion(node) {
     currentQuestion = h('div.accordion-item', { class: settings.defaultState }, [
-      h('dt.accordion-item-title',
-        { onclick: 'accordionToggle(event, this)' }, Object.assign({}, node)),
-      h('dd.accordion-item-content', []),
+      h('dt.accordion-item-title', { onclick: 'accordionToggle(event, this)' }, Object.assign({}, node)),
+      h('dd.accordion-item-content', [])
     ]);
   }
 
@@ -36,8 +38,7 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
   }
 
   function clearNode(node) {
-    node.type = 'text',
-    node.value = '';
+    (node.type = 'text'), (node.value = '');
     node.children = [];
   }
 
@@ -50,13 +51,13 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
   }
 
   function processAccordionElements(node) {
-    if(currentQuestion && node.tagName === options.questionTagName) {
+    if (currentQuestion && node.tagName === options.questionTagName) {
       finishQuestion();
     }
 
-    if(!currentQuestion && node.tagName === options.questionTagName) {
+    if (!currentQuestion && node.tagName === options.questionTagName) {
       beginQuestion(node);
-    } else if(currentQuestion) {
+    } else if (currentQuestion) {
       // push answer line to item-answer container
       currentQuestion.children[1].children.push(Object.assign({}, node));
     }
@@ -80,7 +81,7 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
         isAccordion = false;
         settings = getDefaultSettings();
 
-        if(currentQuestion) {
+        if (currentQuestion) {
           finishQuestion();
         }
         // write accordion section and remove accordion
@@ -100,7 +101,7 @@ export default function wrapAccordion(options = { questionTagName: 'h3' }) {
 
   //   const htmlAST = parse5.parse(String(nodeHTML), {sourceCodeLocationInfo: false})
   //   const newNode = hastFromParse5(htmlAST, {file: nodeHTML}).children[0];
-    
+
   //   Object.assign(node, newNode);
   // }
 }

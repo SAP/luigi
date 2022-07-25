@@ -6,10 +6,10 @@ export class CopyCodeHandler {
       try {
         this.selectText(elem.parentNode.querySelector('code'));
         document.execCommand('copy');
-      } catch(e) {
+      } catch (e) {
         console.error('Browser copy command not supported?', e);
       }
-    }
+    };
   }
 
   selectText(node) {
@@ -24,7 +24,7 @@ export class CopyCodeHandler {
       selection.removeAllRanges();
       selection.addRange(range);
     } else {
-      console.warn("Could not select text in node: Unsupported browser.");
+      console.warn('Could not select text in node: Unsupported browser.');
     }
   }
 }

@@ -4,13 +4,13 @@ let modifiers = [];
 
 export default function addCopyToClipboard() {
   return function transformer(tree) {
-    visit(tree, ['element', 'comment'], function (node) {
+    visit(tree, ['element', 'comment'], function(node) {
       processComment(node);
       if (modifiers.length && node.type === 'element') {
         addAttributes(node);
       }
     });
-  }
+  };
 
   function processComment(node) {
     if (node.type === 'comment') {
@@ -24,9 +24,10 @@ export default function addCopyToClipboard() {
       }
     }
   }
+
   function addAttributes(node) {
     // foreach attribute add
-    modifiers.forEach((m) => {
+    modifiers.forEach(m => {
       node.properties[m.attr] = m.value;
     });
     // clear attributes for next run

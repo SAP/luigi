@@ -1,7 +1,7 @@
 import has from 'hast-util-has-property';
 import url from 'url';
 import visit from 'unist-util-visit';
-import { writeFileSync, appendFileSync } from 'fs';
+import { appendFileSync, writeFileSync } from 'fs';
 import { prependForExport } from './plugin-helpers';
 
 let log = () => {};

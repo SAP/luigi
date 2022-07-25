@@ -21,8 +21,7 @@
 @font-face {
   font-family: 'icon-font';
   src: url('/fonts/icon-font/icon-font.eot');
-  src: url('/fonts/icon-font/icon-font.eot?#iefix')
-  format('embedded-opentype'),
+  src: url('/fonts/icon-font/icon-font.eot?#iefix') format('embedded-opentype'),
   url('/fonts/icon-font/icon-font.woff') format('woff'),
   url('/fonts/icon-font/icon-font.ttf') format('truetype'),
   url('/fonts/icon-font/icon-font.svg#icon-font') format('svg');
@@ -59,20 +58,22 @@
 .icon-github-icon:before {
   content: "\61";
 }
+
 .icon-twitter-icon:before {
   content: "\62";
 }
+
 .icon-slack-icon:before {
   content: "\63";
 }
+
 .icon-burger-menu:before {
   content: "\64";
 }
+
 .icon-burger-menu-close:before {
   content: "\65";
 }
-
-
 
 
 $primary-color: #2deb8a;
@@ -129,6 +130,7 @@ $side-nav-width-mobile: 260px;
         padding-bottom: 0;
         margin-bottom: 0;
         height: auto;
+
         &.sap-icon--overflow {
           @include custom-icon;
 
@@ -184,21 +186,24 @@ $side-nav-width-mobile: 260px;
             &.is-hover,
             &:hover {
               background-color: transparent;
-              .fd-menu__title{
+
+              .fd-menu__title {
                 color: $primary-color;
               }
             }
+
             &.is-selected,
             &[aria-selected=true] {
               background-color: transparent;
               border-bottom: none;
-              .fd-menu__title{
+
+              .fd-menu__title {
                 color: $primary-color;
                 background-color: none;
               }
             }
 
-            .fd-menu__title{
+            .fd-menu__title {
               color: #fff;
               font-weight: 600;
             }
@@ -224,7 +229,7 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-shellbar {
-    .fd-search-input  {
+    .fd-search-input {
 
       a {
         text-decoration: none;
@@ -390,9 +395,11 @@ $side-nav-width-mobile: 260px;
   .sap-icon--twitter::before {
     content: "\62";
   }
+
   .sap-icon--slack::before {
     content: "\63";
   }
+
   .sap-icon--github::before {
     content: "\61";
   }
@@ -403,6 +410,7 @@ $side-nav-width-mobile: 260px;
 
   .fd-nested-list__item {
     padding: 10px 0;
+
     &:last-child {
       border-bottom: none;
     }
@@ -435,8 +443,9 @@ $side-nav-width-mobile: 260px;
 
     &:active {
       background-color: transparent;
+
       .fd-nested-list__title {
-        color: var(--sapList_TextColor,#32363a);
+        color: var(--sapList_TextColor, #32363a);
       }
     }
 
@@ -452,12 +461,12 @@ $side-nav-width-mobile: 260px;
     }
 
 
-
     .fd-nested-list__icon {
       display: none;
     }
 
   }
+
   //disable the dotted line on deep-click
   .fd-side-nav .fd-nested-list__link {
     &:focus {
@@ -491,6 +500,7 @@ $side-nav-width-mobile: 260px;
   .fd-side-nav__group {
     margin-bottom: 10px;
   }
+
   @media screen and (max-width: 599px) {
     .lui-burger {
       width: 50px;
@@ -541,7 +551,7 @@ $side-nav-width-mobile: 260px;
     &.lui-simpleSlideInNav.lui-leftNavToggle {
       .fd-app__sidebar,
       .fd-side-nav,
-      .lui-side-nav__footer{
+      .lui-side-nav__footer {
         display: flex;
       }
     }
@@ -550,7 +560,7 @@ $side-nav-width-mobile: 260px;
       left: -$side-nav-width-mobile;
     }*/
 
-    .lui-side-nav__footer{
+    .lui-side-nav__footer {
       display: none;
     }
 
