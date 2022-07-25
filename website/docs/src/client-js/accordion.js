@@ -1,4 +1,5 @@
 import { isSearchBot } from './helpers';
+
 export class Accordion {
   init() {
     window.accordionToggle = (event, element) => {
@@ -7,6 +8,7 @@ export class Accordion {
     };
     this.openAllOnDocSearchScraper();
   }
+
   openAllOnDocSearchScraper() {
     if (isSearchBot) {
       // timeout required: even with SvelteKit export, its data get set with javascript

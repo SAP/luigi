@@ -1,7 +1,7 @@
 import { isSearchBot } from './helpers';
 
 /**
- * Redirects to outer frame documentation if the 
+ * Redirects to outer frame documentation if the
  * microfrontend was opened directly without Luigi Core
  * Algolia Search Agent is skipped.
  */

@@ -11,29 +11,32 @@ import h from 'hastscript';
  */
 export default function addKeyWords() {
   return function transformer(tree) {
-    visit(tree, ['element', 'comment'], function (node) {
+    visit(tree, ['element', 'comment'], function(node) {
       processComment(node);
     });
-  }
+  };
 
   function processComment(node) {
     if (node.type === 'comment') {
       if (node.value.trim().startsWith('keywords')) {
         const parts = node.value.trim().split(':');
         // retrieve the list of words from the comment
-        const words = parts[1].split(',').map( word => {
-            return word.trim()
+        const words = parts[1].split(',').map(word => {
+          return word.trim();
         });
         // check if no keywords added
         // When the string is empty, split returns an array containing one empty string
         if (words[0] != '') {
-            // create a div containing multiple labels
-            const newNodeData = h('div.keyword-container',
-                words.map( word => {
-                    return h('label.keyword', { onclick: 'searchTag(event, "'+ word+'")', style: 'cursor:pointer;'}, [ word ] )
-                })
-            );
-            Object.assign(node, newNodeData);
+          // create a div containing multiple labels
+          const newNodeData = h(
+            'div.keyword-container',
+            words.map(word => {
+              return h('label.keyword', { onclick: 'searchTag(event, "' + word + '")', style: 'cursor:pointer;' }, [
+                word
+              ]);
+            })
+          );
+          Object.assign(node, newNodeData);
         }
       }
     }

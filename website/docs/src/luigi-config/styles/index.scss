@@ -21,8 +21,7 @@
 @font-face {
   font-family: 'icon-font';
   src: url('/fonts/icon-font/icon-font.eot');
-  src: url('/fonts/icon-font/icon-font.eot?#iefix')
-  format('embedded-opentype'),
+  src: url('/fonts/icon-font/icon-font.eot?#iefix') format('embedded-opentype'),
   url('/fonts/icon-font/icon-font.woff') format('woff'),
   url('/fonts/icon-font/icon-font.ttf') format('truetype'),
   url('/fonts/icon-font/icon-font.svg#icon-font') format('svg');
@@ -59,20 +58,22 @@
 .icon-github-icon:before {
   content: "\61";
 }
+
 .icon-twitter-icon:before {
   content: "\62";
 }
+
 .icon-slack-icon:before {
   content: "\63";
 }
+
 .icon-burger-menu:before {
   content: "\64";
 }
+
 .icon-burger-menu-close:before {
   content: "\65";
 }
-
-
 
 
 $primary-color: #2deb8a;
@@ -130,6 +131,7 @@ $side-nav-width-mobile: 260px;
         padding-bottom: 0;
         margin-bottom: 0;
         height: auto;
+
         &.sap-icon--overflow {
           @include custom-icon;
 
@@ -410,7 +412,7 @@ $side-nav-width-mobile: 260px;
       border-bottom: none;
     }
   }
-  
+
   .fd-nested-list__group-header,
   .fd-nested-list__item {
     background: none;

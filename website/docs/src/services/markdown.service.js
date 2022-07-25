@@ -17,6 +17,7 @@ import oldVersions from '../unified-plugins/rehype-luigi-oldVersions';
 
 // import highlight from 'rehype-highlight' // syntax highlight code blocks with lowlight: https://github.com/wooorm/lowlight
 import rehypeSection from '@agentofuser/rehype-section';
+
 const section = rehypeSection.default;
 
 class MarkdownService {

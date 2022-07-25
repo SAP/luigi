@@ -1,11 +1,12 @@
 import LuigiClient from '@luigi-project/client';
 
-
 export class ScrollAnchorsHandler {
   init() {
     // scroll if navigate param found
-    LuigiClient.addInitListener((ctx) => {
-      if (this.initDone) { return; }
+    LuigiClient.addInitListener(ctx => {
+      if (this.initDone) {
+        return;
+      }
       this.initDone = true;
       if (LuigiClient.getNodeParams().section) {
         this.scrollAnchor(null, LuigiClient.getNodeParams().section);
@@ -13,7 +14,7 @@ export class ScrollAnchorsHandler {
       window.scrollAnchor = this.scrollAnchor;
     });
 
-    LuigiClient.addContextUpdateListener((ctx) => {
+    LuigiClient.addContextUpdateListener(ctx => {
       if (LuigiClient.getNodeParams().section) {
         setTimeout(() => {
           this.scrollAnchor(null, LuigiClient.getNodeParams().section);
@@ -29,7 +30,7 @@ export class ScrollAnchorsHandler {
     let targetID;
     if (e) {
       e.preventDefault();
-      targetID = (respond) ? respond.getAttribute('href') : this.getAttribute('href');
+      targetID = respond ? respond.getAttribute('href') : this.getAttribute('href');
       targetID = `#${targetID.split('#').pop()}`;
     } else {
       targetID = '#' + respond;

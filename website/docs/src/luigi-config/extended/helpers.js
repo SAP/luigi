@@ -1,4 +1,3 @@
-
 export const projectsNavProviderFn = context =>
   new Promise(resolve => {
     getAllProjects().then(function(result) {
