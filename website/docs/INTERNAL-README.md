@@ -1,6 +1,6 @@
 # Luigi Documentation
 
-Based on SvelteKit with Svelte3, Webpack
+Based on SvelteKit with Svelte3
 
 ## Running
 
