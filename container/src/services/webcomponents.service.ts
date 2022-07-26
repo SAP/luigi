@@ -60,8 +60,8 @@ export class WebComponentService {
 
     if (wc.__postProcess) {
       const url =
-        new URL(document.baseURI).origin === new URL(viewUrl, document.baseURI).origin
-          ? new URL(viewUrl, document.baseURI)
+        new URL(document.baseURI).origin === new URL(viewUrl, document.baseURI).origin // TODO: check if needed
+          ? new URL('./', new URL(viewUrl, document.baseURI))
           : new URL('./', viewUrl);
       wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);
     } else {

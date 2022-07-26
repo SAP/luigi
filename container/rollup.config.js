@@ -49,7 +49,7 @@ export default {
         sourceMap: true
       })
     }),
-    typescript({ sourceMap: false }),
+    typescript({ sourceMap: true }),
     // we'll extract any component CSS out into
     // a separate file - better for performance
     // css({ output: 'bundle.css' }),
