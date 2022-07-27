@@ -908,7 +908,7 @@ describe('Routing', function() {
     });
     it('open external link in same tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
-      const node = { context: { someValue: 'Bar' }};
+      const node = { context: { someValue: 'bar' }, externalLink };
       const pathParams = { otherParam: 'foo' };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
@@ -920,7 +920,7 @@ describe('Routing', function() {
 
     it('open external link in new tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: false };
-      const node = { context: { someValue: 'Bar' }};
+      const node = { context: { someValue: 'bar' }, externalLink };
       const pathParams = { otherParam: 'foo' };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);

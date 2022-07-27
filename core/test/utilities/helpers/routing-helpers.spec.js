@@ -363,8 +363,10 @@ describe('Routing-helpers', () => {
       assert.deepEqual(RoutingHelpers.getContext(node, ctx), ctx);
     });
     it('get context with parent node', () => {
-      const nodeWithParent = { ...node, parent: { context: { someValue: 'parent' } } };
-      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, undefined), context);
+      const parentContext = { otherValue: 'parent' };
+      const nodeWithParent = { ...node, parent: { context: parentContext } };
+      const expect = { ...context, ...parentContext };
+      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, undefined), expect);
     });
   });
 
@@ -395,16 +397,6 @@ describe('Routing-helpers', () => {
     });
     afterEach(() => {
       sinon.restore();
-    });
-    it('externalLink', () => {
-      const expected = { url: 'https://luigi-project.io' };
-      const given = {
-        externalLink: expected,
-        link: 'something',
-        pathSegment: 'something-else'
-      };
-
-      assert.equal(RoutingHelpers.getRouteLink(given), expected);
     });
     it('when it starts with /', () => {
       const expected = '/projects';
