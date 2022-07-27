@@ -13,6 +13,7 @@
   import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.svelte';
+import { KEYCODE_ENTER } from '../utilities/keycode';
 
   //TODO refactor
   const __this = {
@@ -180,6 +181,7 @@
   let sideNavCompactMode;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
+  let addNavHrefForAnchor = false;
 
   const setLeftNavData = async () => {
     const componentData = __this.get();
@@ -198,6 +200,7 @@
   onMount(() => {
     semiCollapsibleButton =
       LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
+    addNavHrefForAnchor = LuigiConfig.getConfigValue('navigation.addNavHrefs');
     hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
     sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
     expandedCategories = NavigationHelpers.loadExpandedCategories();
@@ -403,6 +406,19 @@
     setBurgerTooltip();
   }
 
+  /**
+   * Handles pressing the enter key when addNavHref is disabled
+   * @param event the event of the anchor element currently focused on
+   * @param node the corresponding node selected
+   */
+  function handleEnterPressed(event, node) {
+    console.log('handleEnterPressed', event, event.code , node)
+    if(event.keyCode === KEYCODE_ENTER) {
+      console.log('test inside');
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+    }
+  }
+
   function setBurgerTooltip() {
     if (!NavigationHelpers.getBurgerTooltipConfig()) {
       return;
@@ -500,7 +516,6 @@
                       <li class="fd-nested-list__item">
                         <a
                           href={getRouteLink(node)}
-                          tabindex="0"
                           title={resolveTooltipText(
                             node,
                             $getTranslation(node.label)
@@ -513,6 +528,11 @@
                               event
                             ) && handleClick(node);
                           }}
+                          tabindex="0"
+                          on:keyup={!addNavHrefForAnchor
+                            ? event => handleEnterPressed(event, node)
+                            : undefined}
+                          role={!addNavHrefForAnchor ? 'button' : undefined}
                           data-testid={getTestId(node)}
                         >
                           {#if node.icon}
@@ -579,6 +599,10 @@
                           ? 'is-expanded'
                           : ''}"
                         tabindex={isExpanded ? '0' : '-1'}
+                        on:keyup={!addNavHrefForAnchor
+                          ? event => handleEnterPressed(event, node)
+                          : undefined}
+                        role={!addNavHrefForAnchor ? 'button' : undefined}
                         id="collapsible_listnode_{index}"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
@@ -656,6 +680,12 @@
                                     event
                                   ) && handleClick(node);
                                 }}
+                                on:keyup={!addNavHrefForAnchor
+                                  ? event => handleEnterPressed(event, node)
+                                  : undefined}
+                                role={!addNavHrefForAnchor
+                                  ? 'button'
+                                  : undefined}
                                 tabindex="0"
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
@@ -704,6 +734,13 @@
                                           event
                                         ) && handleClick(node);
                                       }}
+                                      on:keyup={!addNavHrefForAnchor
+                                        ? event =>
+                                            handleEnterPressed(event, node)
+                                        : undefined}
+                                      role={!addNavHrefForAnchor
+                                        ? 'button'
+                                        : undefined}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
@@ -781,6 +818,10 @@
                                 event
                               ) && handleClick(node);
                             }}
+                            on:keyup={!addNavHrefForAnchor
+                              ? event => handleEnterPressed(event, node)
+                              : undefined}
+                            role={!addNavHrefForAnchor ? 'button' : undefined}
                             data-testid={getTestId(node)}
                           >
                             {#if node.icon}
