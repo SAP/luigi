@@ -900,11 +900,19 @@ describe('Routing', function() {
   });
 
   describe('navigateToExternalLink()', () => {
+    beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+    });
     it('open external link in same tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
+      const node = { context: { someValue: 'Bar' }};
+      const pathParams = { otherParam: 'foo' };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink);
+      Routing.navigateToExternalLink(externalLink, node, pathParams);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
       sinon.assert.calledOnce(window.focus);
@@ -912,9 +920,11 @@ describe('Routing', function() {
 
     it('open external link in new tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: false };
+      const node = { context: { someValue: 'Bar' }};
+      const pathParams = { otherParam: 'foo' };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink);
+      Routing.navigateToExternalLink(externalLink, node, pathParams);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
       sinon.assert.calledOnce(window.focus);

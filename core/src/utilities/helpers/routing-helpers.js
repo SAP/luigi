@@ -236,10 +236,9 @@ class RoutingHelpersClass {
     const pp = relativePathPrefix || '';
     if (node.externalLink && node.externalLink.url) {
       const url = node.externalLink.url;
-
       const data = {
         context: RoutingHelpers.substituteDynamicParamsInObject(this.getContext(node), pathParams),
-        pathParams: pathParams,
+        pathParams,
         nodeParams: {}
       };
       return this.substituteViewUrl(url, data);

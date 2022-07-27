@@ -348,6 +348,26 @@ describe('Routing-helpers', () => {
     });
   });
 
+  describe('getContext', () => {
+    const context = { someValue: 'foo' };
+    const node = {
+      context,
+      externalLink: { url: 'https://someurl.com', sameWindow: false },
+      label: "External link"
+    };
+    it('get context from node', () => {
+      assert.deepEqual(RoutingHelpers.getContext(node, undefined), context);
+    });
+    it('get context directly', () => {
+      const ctx = { someValue: 'bar' };
+      assert.deepEqual(RoutingHelpers.getContext(node, ctx), ctx);
+    });
+    it('get context with parent node', () => {
+      const nodeWithParent = { ...node, parent: { context: { someValue: 'parent' } } };
+      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, undefined), context);
+    });
+  });
+
   describe('buildRoute', () => {
     const node = {
       pathSegment: 'one',
@@ -420,6 +440,32 @@ describe('Routing-helpers', () => {
       sinon.assert.notCalled(Routing.buildFromRelativePath);
       sinon.assert.calledWith(RoutingHelpers.buildRoute, given, '/' + given.pathSegment);
       sinon.assert.calledWith(GenericHelpers.replaceVars, expected, undefined, ':', false);
+    });
+  });
+  describe('calculateNodeHref', () => {
+    beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+      sinon.stub(RoutingHelpers, 'getRouteLink');
+      sinon
+      .stub(LuigiConfig, 'getConfigValue')
+      .withArgs('routing.useHashRouting')
+      .returns(false);
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('get node href', () => {
+      const url = 'https://luigi-project.io';
+      const node = {
+        externalLink: { url },
+        link: 'something',
+        pathSegment: 'something-else'
+      };
+      RoutingHelpers.getRouteLink.returns({ url });
+      expect(RoutingHelpers.calculateNodeHref(node , {})).to.equal('https://luigi-project.io');
     });
   });
   describe('getNodeHref', () => {
