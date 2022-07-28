@@ -353,7 +353,7 @@ class RoutingHelpersClass {
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.nodeParams, nodeParamsVarPrefix);
     viewUrl = this.getI18nViewUrl(viewUrl);
 
-    if (viewUrl.includes(searchQuery)) {
+    if (viewUrl && viewUrl.includes(searchQuery)) {
       const viewUrlSearchParam = viewUrl.split('?')[1];
       if (viewUrlSearchParam) {
         const key = viewUrlSearchParam.split('=')[0];

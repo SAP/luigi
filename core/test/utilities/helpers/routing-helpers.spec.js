@@ -390,6 +390,10 @@ describe('Routing-helpers', () => {
   });
   describe('getRouteLink', () => {
     beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
       sinon.stub(LuigiConfig, 'getConfigBooleanValue');
       sinon.stub(Routing, 'buildFromRelativePath');
       sinon.stub(RoutingHelpers, 'buildRoute');
@@ -397,6 +401,15 @@ describe('Routing-helpers', () => {
     });
     afterEach(() => {
       sinon.restore();
+    });
+    it('external link with context templating', () => {
+      const node = {
+        externalLink: { url: 'https://luigi.io?foo={context.someValue}', sameWindow: true },
+        context: { someValue: 'bar' }
+      };
+      const expected = 'https://luigi.io?foo=bar';
+      GenericHelpers.replaceVars.returns(expected);
+      assert.equal(RoutingHelpers.getRouteLink(node, {}), expected);
     });
     it('when it starts with /', () => {
       const expected = '/projects';
