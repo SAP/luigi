@@ -7,7 +7,6 @@ import {
   EventListenerHelpers,
   GenericHelpers,
   IframeHelpers,
-  NavigationHelpers
 } from './';
 import { Routing } from '../../services/routing';
 
