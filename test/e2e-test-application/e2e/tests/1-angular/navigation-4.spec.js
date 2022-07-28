@@ -351,4 +351,17 @@ describe('Navigation', () => {
       });
     });
   });
+
+  describe('External Link', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+    });
+
+    it('with context templating', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.get('[data-testid="superusefulgithublinks"]').click();
+      cy.get('a[data-testid="contextvaluereplacement-externallink"]')
+        .should("have.attr", "href", "https://www.sap.com/en?foo=bar");
+    });
+  });
 });
