@@ -107,26 +107,27 @@ describe('Fiddle 3', () => {
       cy.get('.fd-side-nav__main-navigation')
         .contains('MyNode')
         .click();
-      cy.getIframeBody().then($body => {
-        cy.wrap($body)
-          .find('[data-testid="lui-add-search-params"]')
-          .invoke('show');
-        cy.wrap($body)
-          .contains('add search params')
-          .click();
-      });
+
+      cy.getIframeBodyWithRetries()
+        .find('[data-testid="lui-add-search-params"]')
+        .invoke('show');
+
+      cy.getIframeBodyWithRetries()
+        .contains('add search params')
+        .click();
+
       cy.location().should(location => {
         expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks&q=test');
       });
 
-      cy.getIframeBody().then($body => {
-        cy.wrap($body)
-          .find('[data-testid="lui-delete-search-params"]')
-          .invoke('show');
-        cy.wrap($body)
-          .contains('delete search params')
-          .click();
-      });
+      cy.getIframeBodyWithRetries()
+        .find('[data-testid="lui-delete-search-params"]')
+        .invoke('show');
+
+      cy.getIframeBodyWithRetries()
+        .contains('delete search params')
+        .click();
+
       cy.location().should(location => {
         expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks');
       });
