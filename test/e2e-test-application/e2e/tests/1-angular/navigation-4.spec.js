@@ -361,7 +361,7 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr2');
       cy.get('[data-testid="superusefulgithublinks"]').click();
       cy.get('a[data-testid="contextvaluereplacement-externallink"]')
-        .should("have.attr", "href", "https://www.sap.com/en?foo=bar");
+        .should("have.attr", "href", "http://sap.com/en?foo=bar");
     });
   });
 });
