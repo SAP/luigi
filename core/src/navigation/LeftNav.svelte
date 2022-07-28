@@ -412,7 +412,6 @@ import { KEYCODE_ENTER } from '../utilities/keycode';
    * @param node the corresponding node selected
    */
   function handleEnterPressed(event, node) {
-    console.log('handleEnterPressed', event, event.code , node)
     if(event.keyCode === KEYCODE_ENTER) {
       console.log('test inside');
       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
