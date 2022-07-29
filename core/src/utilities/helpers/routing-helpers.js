@@ -219,16 +219,18 @@ class RoutingHelpersClass {
       : this.buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
   }
 
+  /**
+    * Get context from node
+    @param {Object} node node information
+    @param {Object} ctx context object
+    @returns {Object} context object. e.g. { someValue: 'foo' }
+  */
   getContext(node, ctx) {
-    if (ctx) {
-      if (node.parent) {
-        return { ...this.getContext(node.parent), ...ctx };
-      } else {
-        return ctx;
-      }
-    } else {
+    if (ctx === undefined || ctx === null) {
       return this.getContext(node, node.context || {});
     }
+
+    return node.parent ? { ...this.getContext(node.parent), ...ctx } : ctx;
   }
 
   getRouteLink(node, pathParams, relativePathPrefix) {
