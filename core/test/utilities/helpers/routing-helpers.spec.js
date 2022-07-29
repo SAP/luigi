@@ -430,10 +430,10 @@ describe('Routing-helpers', () => {
     afterEach(() => {
       sinon.restore();
     });
-    it('js:void on falsy config value', () => {
+    it('returns undefined on falsy config value', () => {
       LuigiConfig.getConfigBooleanValue.returns(false);
 
-      expect(RoutingHelpers.getNodeHref({}, {})).to.equal('javascript:void(0)');
+      expect(RoutingHelpers.getNodeHref({}, {})).to.equal(undefined);
       sinon.assert.notCalled(RoutingHelpers.getRouteLink);
       sinon.assert.calledWith(LuigiConfig.getConfigBooleanValue, 'navigation.addNavHrefs');
     });
