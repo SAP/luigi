@@ -266,7 +266,7 @@ class RoutingHelpersClass {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
       return this.calculateNodeHref(node, pathParams);
     }
-    return 'javascript:void(0)';
+    return undefined;
   }
 
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
