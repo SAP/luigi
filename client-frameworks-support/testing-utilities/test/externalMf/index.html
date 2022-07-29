@@ -7,14 +7,7 @@
       content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
     />
     <script src="./node_modules/@luigi-project/client/luigi-client.js"></script>
-    <script
-      type="module"
-      src="./node_modules/@luigi-project/client-support-angular/bundles/luigi-project-client-support-angular.umd.min.js"
-    ></script>
-    <script
-      type="module"
-      src="./node_modules/@luigi-project/testing-utilities/luigi-mock-util.js"
-    ></script>
+    <!--script type="module" src="./node_modules/@luigi-project/testing-utilities/index.js"></script-->
     <link
       rel="stylesheet"
       href="./node_modules/fundamental-styles/dist/layout-panel.css"
@@ -32,9 +25,10 @@
         </div>
       </div>
     </div>
-    <script>
-      //const LuigiMockUtil = require("./node_modules/@luigi-project/testing-utilities/luigi-mock-util.js");
-      luigiMockUtil = new LuigiMockUtil(browser);
+    <script type="module">
+      import { LuigiMockEngine } from './node_modules/@luigi-project/testing-utilities/luigi-mock-engine.js';
+      import { LuigiMockUtil } from './node_modules/@luigi-project/testing-utilities/luigi-mock-util.js';
+      //const LuigiMockUtil = require("./node_modules/@luigi-project/testing-utilities/luigi-mock-engine.js");
       const settings = {
         text: 'This is just a test alert for external micro frontend.',
         type: 'success'
@@ -42,7 +36,9 @@
       window.LuigiClient.addInitListener((context, origin) => {
         LuigiClient.uxManager().showAlert(settings);
       });
-      console.log(luigiMockUtil);
+      let mockEngine = new LuigiMockEngine();
+      let mockUtil = new LuigiMockUtil();
+      console.log(mockUtil);
     </script>
   </body>
 </html>
