@@ -288,6 +288,7 @@
   >
     {#if isModal || (isDrawer && settings.header)}
       <div class="fd-dialog__header fd-bar fd-bar--header">
+        <Backdrop />
         <div class="fd-bar__left">
           <div class="fd-bar__element">
             {#if settings.title}
