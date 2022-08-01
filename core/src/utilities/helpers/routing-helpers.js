@@ -236,7 +236,7 @@ class RoutingHelpersClass {
       );
       return this.getI18nViewUrl(link.url) || link;
     }
-    return 'javascript:void(0)';
+    return undefined;
   }
 
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
