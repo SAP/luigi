@@ -21,6 +21,7 @@
   export let isDataPrepared = false;
   export let nodepath;
   export let modalIndex;
+  export let disableBackdrop;
 
   const dispatch = createEventDispatcher();
   let nodeObject;
@@ -288,7 +289,7 @@
   >
     {#if isModal || (isDrawer && settings.header)}
       <div class="fd-dialog__header fd-bar fd-bar--header">
-        <Backdrop />
+        <Backdrop disable={disableBackdrop} />
         <div class="fd-bar__left">
           <div class="fd-bar__element">
             {#if settings.title}
