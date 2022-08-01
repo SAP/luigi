@@ -157,6 +157,63 @@ Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerS
     .iframe();
 });
 
+// More robust iframe retrival methods based on: https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/
+// retrieves the <iframe /> element directly 
+Cypress.Commands.add('getIframe', () => {
+  // get the iframe > document > body
+  // and retry until the body element is not undefined 
+  return (
+    cy
+      .get('.iframeContainer > iframe')
+      .its('0')
+      .should('not.be.undefined')
+      // wraps "body" DOM element to allow
+      // chaining more Cypress commands, like ".find(...)"
+      // https://on.cypress.io/wrap
+      .then(cy.wrap)
+  );
+});
+
+// only works if iframe and parent window are of the same origin
+Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
+  // get the iframe > document 
+  // and retry until the body element is not undefined
+  return (
+    cy
+      .get('.iframeContainer > iframe')
+      .its('0')
+      .should('not.be.undefined')
+      // wraps "body" DOM element to allow
+      // chaining more Cypress commands, like ".find(...)"
+      // https://on.cypress.io/wrap
+      .then(cy.wrap)
+  );
+});
+
+Cypress.Commands.add('getIframeWindow', () => {
+  // get the iframe > contentwindow 
+  // and retry until the window content exists
+  return cy
+    .get('.iframeContainer > iframe')
+    .its('0.contentWindow')
+    .should('exist');
+});
+
+// Retrives the iframe > document > body
+Cypress.Commands.add('getIframeBodyWithRetries', () => {
+  // retry until the body element is not empty
+  return (
+    cy
+      .get('.iframeContainer > iframe')
+      .its('0.contentDocument.body')
+      .should('not.be.empty')
+      // wraps "body" DOM element to allow
+      // chaining more Cypress commands, like ".find(...)"
+      // https://on.cypress.io/wrap
+      .then(cy.wrap)
+  );
+});
+
 const isHashRoutingOn = () => {
   const appWindow = cy.state('window');
   const { useHashRouting } =
