@@ -391,8 +391,8 @@
 {/if}
 
 <style type="text/scss">
-  @import 'styles/mixins';
-  @import 'styles/variables';
+  @import 'src/styles/_mixins.scss';
+  @import 'src/styles/_variables.scss';
 
   .tabsContainer {
     width: 100%;

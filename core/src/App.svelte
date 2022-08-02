@@ -908,7 +908,7 @@
       // reset all modal list
       mfModalList = [];
       return;
-    } 
+    }
     // remove the item with specified index from the list
     mfModalList = mfModalList.filter((item, i) => index !== i);
   };
@@ -916,7 +916,7 @@
   resetMicrofrontendModalData();
 
   /**
-   * Opens the (iframe/wc) view in a modal given in the nodepath 
+   * Opens the (iframe/wc) view in a modal given in the nodepath
    * @param nodepath {string} the path of the view to open
    * @param settings {Object} the respective modal settings
    */
@@ -948,7 +948,7 @@
   /**
    * Event handler called when the iframe of the modal is created inside Modal component
    * @param event {Object} event data of the instantiated Modal component instance
-   * @param index {number} the index of the modal to be instantiated 
+   * @param index {number} the index of the modal to be instantiated
    */
   const modalIframeCreated = (event, index) => {
     mfModalList[index].modalIframe = event.detail.modalIframe;
@@ -958,7 +958,7 @@
   /**
    * Event handler called when the web component of the modal is created inside Modal component
    * @param event {Object} event data of the instantiated Modal component instance
-   * @param index {number} the index of the modal to be instantiated 
+   * @param index {number} the index of the modal to be instantiated
    */
   const modalWCCreated = (event, index) => {
     mfModalList[index].modalWC = event.detail.modalWC;
@@ -1127,7 +1127,7 @@
   /**
    * Builds the current path based on the navigation params received
    * @param params {Object} navigation options
-   * @returns {string} the path built 
+   * @returns {string} the path built
    */
   const buildPathForGetCurrentRoute = (params) => {
     let localNavPath = navigationPath;
@@ -1143,7 +1143,7 @@
 
     let path = params.link;
     let currentNodeViewUrl = getSubPath(currentNode, pathParams);
-  
+
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
       const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
@@ -1235,7 +1235,7 @@
       const topMostModal = mfModalList[(mfModalList.length - 1)];
       const modalIframe = topMostModal && topMostModal.modalIframe;
       const modalIframeData = topMostModal && topMostModal.modalIframeData;
-      
+
       const specialIframeProps = {
         modalIframe,
         modalIframeData,
@@ -1439,10 +1439,10 @@
                 });
               // close all modals to allow navigation to the non-special view
               mfModalList.forEach((m, index) => {
-                // close modals 
+                // close modals
                 closeModal(index);
               });
-              
+
               closeSplitView();
               closeDrawer();
               isNavigationSyncEnabled = true;
@@ -1977,9 +1977,8 @@
 </div>
 
 <style type="text/scss">
-  @import 'styles/fonts';
-  @import 'styles/mixins';
-  @import 'styles/variables';
+  @import 'src/styles/_mixins.scss';
+  @import 'src/styles/_variables.scss';
 
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {

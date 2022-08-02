@@ -84,7 +84,7 @@
         } else {
           await setModalSize();
         }
-       
+
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),
@@ -355,7 +355,7 @@
 </div>
 
 <style type="text/scss">
-  @import 'styles/variables';
+  @import 'src/styles/_variables.scss';
   :global(.lui-breadcrumb) .drawer-dialog {
     top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }

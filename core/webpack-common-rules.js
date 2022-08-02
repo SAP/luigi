@@ -9,7 +9,7 @@ module.exports = {
       {
         loader: 'svelte-loader',
         options: {
-          emitCss: true,
+          emitCss: false,
           name: 'Luigi',
           preprocess: {
             style: ({ content, attributes }) => {

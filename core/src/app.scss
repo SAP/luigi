@@ -1,0 +1,127 @@
+/* Write your global styles here; in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+@import '@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/css_variables.css';
+@import 'fundamental-styles/dist/theming/sap_fiori_3.css';
+@import 'fundamental-styles/dist/icon.css';
+@import 'fundamental-styles/dist/layout.css';
+@import 'fundamental-styles/dist/action-bar.css';
+  // './node_modules/fundamental-styles/dist/alert.css';
+  //'./node_modules/fundamental-styles/dist/file-uploader.css';
+@import 'fundamental-styles/dist/avatar.css';
+  //'./node_modules/fundamental-styles/dist/badge.css';
+@import 'fundamental-styles/dist/bar.css';
+  //'./node_modules/fundamental-styles/dist/breadcrumb.css';
+@import 'fundamental-styles/dist/busy-indicator.css';
+@import 'fundamental-styles/dist/button.css';
+  //'./node_modules/fundamental-styles/dist/button-split.css';
+  //'./node_modules/fundamental-styles/dist/calendar.css';
+  // './node_modules/fundamental-styles/dist/checkbox.css';
+@import 'fundamental-styles/dist/counter.css';
+@import 'fundamental-styles/dist/dialog.css';
+  //'./node_modules/fundamental-styles/dist/fieldset.css';
+@import 'fundamental-styles/dist/form-group.css';
+@import 'fundamental-styles/dist/form-item.css';
+@import 'fundamental-styles/dist/form-label.css';
+  //'./node_modules/fundamental-styles/dist/form-message.css';
+@import 'fundamental-styles/dist/form-layout-grid.css';
+  //'./node_modules/fundamental-styles/dist/inline-help.css';
+@import 'fundamental-styles/dist/input.css';
+@import 'fundamental-styles/dist/input-group.css';
+  //'./node_modules/fundamental-styles/dist/info-label.css';
+@import 'fundamental-styles/dist/layout-grid.css';
+  //'./node_modules/fundamental-styles/dist/layout-panel.css';
+@import 'fundamental-styles/dist/link.css';
+@import 'fundamental-styles/dist/list.css';
+  //'./node_modules/fundamental-styles/dist/localization-editor.css';
+@import 'fundamental-styles/dist/menu.css';
+@import 'fundamental-styles/dist/message-box.css';
+@import 'fundamental-styles/dist/message-strip.css';
+  //'./node_modules/fundamental-styles/dist/message-toast.css';
+  //'./node_modules/fundamental-styles/dist/notification.css';
+  //'./node_modules/fundamental-styles/dist/numeric-content.css';
+  //'./node_modules/fundamental-styles/dist/object-status.css';
+@import 'fundamental-styles/dist/page.css';
+  //'./node_modules/fundamental-styles/dist/pagination.css';
+  //'./node_modules/fundamental-styles/dist/panel.css';
+@import 'fundamental-styles/dist/popover.css';
+@import 'fundamental-styles/dist/product-switch.css';
+  // './node_modules/fundamental-styles/dist/radio.css';
+  //'./node_modules/fundamental-styles/dist/section.css';
+@import 'fundamental-styles/dist/segmented-button.css';
+@import 'fundamental-styles/dist/select.css';
+@import 'fundamental-styles/dist/shellbar.css';
+@import 'fundamental-styles/dist/side-nav.css';
+@import 'fundamental-styles/dist/switch.css';
+  //'./node_modules/fundamental-styles/dist/step-input.css'
+  //'./node_modules/fundamental-styles/dist/table.css';
+@import 'fundamental-styles/dist/tabs.css';
+  // './node_modules/fundamental-styles/dist/textarea.css';
+  //'./node_modules/fundamental-styles/dist/tile.css';
+  //'./node_modules/fundamental-styles/dist/time.css';
+@import 'fundamental-styles/dist/title.css';
+  //'./node_modules/fundamental-styles/dist/token.css';
+  //'./node_modules/fundamental-styles/dist/tokenizer.css';
+@import 'fundamental-styles/dist/toolbar.css';
+  //'./node_modules/fundamental-styles/dist/tree.css';
+@import 'fundamental-styles/dist/helpers.css';
+@import 'fundamental-styles/dist/user-menu.css';
+
+
+@font-face {
+  font-family: '72';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-Light-full.woff')
+    format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: '72';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-Light-full.woff2')
+    format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '72';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-Bold-full.woff')
+    format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: '72';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-Bold-full.woff2')
+    format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '72';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-Regular-full.woff')
+    format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: '72';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/72-Regular-full.woff2')
+    format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SAP-icons';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/SAP-icons.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SAP-icons';
+  src: url('@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts/SAP-icons.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
