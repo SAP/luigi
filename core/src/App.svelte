@@ -1080,10 +1080,7 @@
             resetMicrofrontendDrawerData();
           });
         }
-        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
-          'style',
-          null
-        );
+        IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
       } catch (e) {
         console.log(e);
       }
@@ -1342,7 +1339,6 @@
           if (loadingIndicatorAutoHideEnabled) {
             showLoadingIndicator = false;
           }
-
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
           // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
