@@ -461,7 +461,7 @@
       :global(.fd-app__sidebar) {
         left: calc(var(--luigi__left-sidenav--width) * -1);
       }
-      :global(#splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
+      :global(#splitViewContainer), :global(#splitViewDragger), :global(#splitViewDraggerBackdrop) {
         left: 0;
       }
     }
