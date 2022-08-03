@@ -11,7 +11,7 @@
 
 Luigi consists of Luigi Core application and Luigi Client libraries. They establish secure communication between the core application and the micro frontend using postMessage API.
 
-Read the [Getting started guide](docs/getting-started.md) to learn more about micro frontends and the structure of Luigi.
+Read the [Getting started guide](https://docs.luigi-project.io/docs/getting-started) to learn more about micro frontends and the structure of Luigi.
 
 ## Requirements
 
@@ -19,7 +19,7 @@ Luigi can run on any operating system and there are no specific requirements for
 
 ## Download and installation
 
-Follow the instructions in [this](docs/application-setup.md) document to install Luigi Core. Read [this](client/README.md) document to install the Luigi Client.
+Follow the instructions in [this](https://docs.luigi-project.io/docs/application-setup) document to install Luigi Core. Read [this](https://docs.luigi-project.io/docs/luigi-client-setup) document to install the Luigi Client.
 
 
 ## Usage
@@ -32,7 +32,7 @@ Go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site to see Luigi in a
 
 ### Documentation
 
-For details, see [Luigi documentation](docs/README.md).
+For details, see [Luigi documentation](https://docs.luigi-project.io).
 
 ## Browser support
 
@@ -108,11 +108,11 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 
 ## How to obtain support
 
-If you have further questions about Luigi, you can contact us on our [Slack channel](https://slack.luigi-project.io/). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
+If you have further questions about Luigi, you can check the [GitHub Discussions page](https://github.com/SAP/luigi/discussions) or contact us on our [Slack channel](https://slack.luigi-project.io/). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
 
 ## Contributing
 
-Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file in this repository for instrcutions on how to contribute to Luigi.
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file in this repository for instructions on how to contribute to Luigi.
 
 ## Licensing
 

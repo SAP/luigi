@@ -1851,6 +1851,7 @@
         on:close={() => closeModal(index)}
         on:iframeCreated={event => modalIframeCreated(event, index)}
         on:wcCreated={event => modalWCCreated(event, index)}
+        {disableBackdrop}
       />
     {/if}
   {/each}
