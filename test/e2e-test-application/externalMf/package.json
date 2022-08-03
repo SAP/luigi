@@ -5,7 +5,7 @@
   "main": "index.html",
   "license": "MIT",
   "dependencies": {
-    "@luigi-project/client": "^1.1.0",
+    "@luigi-project/client": "1.24.0",
     "fundamental-styles": "^0.10.0"
   }
 }
