@@ -496,7 +496,7 @@ describe('Fiddle', () => {
           }
         });
       });
-      it.only('test', () => {
+      it('test', () => {
         cy.visitWithFiddleConfig('/home/test', newConfig);
         let $iframeBody;
         cy.getIframeBody({}, 0, '.iframeContainer').then(result => {

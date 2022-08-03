@@ -2,7 +2,7 @@ version: ~> 1.0 # enables build config validation beta feature: https://docs.tra
 language: node_js
 node_js:
   - '12.18.4' # Default node version for CI testing
-  - 16 # Optional node version for setup scripts
+  #- 16 # Optional node version for setup scripts
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
@@ -109,7 +109,7 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
-      if: repo = SAP/luigi AND branch = master AND type = push
+      if: type = api AND commit_message = test-compatibility
       script:
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
