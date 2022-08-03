@@ -460,5 +460,52 @@ describe('Fiddle', () => {
         cy.get('[data-testid="settings-link"]').should('not.exist');
       });
     });
+    describe('', () => {
+      let newConfig;
+      beforeEach(() => {
+        newConfig = cloneDeep(fiddleConfig);
+        newConfig.navigation.profile = {
+          logout: {
+            label: 'Bye bye',
+            icon: 'sys-cancel'
+          }
+        };
+        newConfig.settings = {
+          userSettings: {
+            userSettingsProfileMenuEntry: {
+              label: 'My UserSettings',
+              icon: 'settings'
+            }
+          }
+        };
+        newConfig.userSettings = {
+          userSettingGroups: {
+            custom2: {
+              label: 'Custom 2',
+              title: 'Custom 2',
+              icon: 'private',
+              viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
+            }
+          }
+        }
+        newConfig.navigation.nodes[0].children.push({
+          pathSegment: 'test',
+          label: 'Test',
+          viewUrl: 'http://localhost:8090/userSettingsMf.html',
+          loadingIndicator: {
+            enabled: false
+          }
+        });
+      });
+      it.only('test', () => {
+        cy.visitWithFiddleConfig('/home/test', newConfig);
+        let $iframeBody;
+        cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+          $iframeBody = result;
+          cy.wrap($iframeBody)
+            .contains('Just a test page from an external micro frontend.');
+        });
+      });
+    });
   });
 });

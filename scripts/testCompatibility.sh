@@ -55,26 +55,26 @@ source $BASE_DIR/shared/bashHelpers.sh
 declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
   "/website/fiddle"
-  "/test/e2e-test-application"
+  # "/test/e2e-test-application"
 )
 
 # Used for setting up webserver and killing them
 declare -a APP_PORTS=(
   4200 # e2e-test-application
   8080 # fiddle
-  8090 # externalMf
+  # 8090 # externalMf
 )
 
 declare -a APP_PUBLIC_FOLDERS=(
   "dist" # e2e-test-application
   "public" # fiddle
-  "externalMf" # externalMf
+  # "externalMf" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
   "/bundle.js" # fiddle
-  "/customUserSettingsMf.html" # externalMf
+  # "/customUserSettingsMf.html" # externalMf
 )
 
 killWebServers() {
