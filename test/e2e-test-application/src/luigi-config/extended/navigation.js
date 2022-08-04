@@ -20,7 +20,8 @@ class Navigation {
   preloadViewGroups = true;
   viewGroupSettings = {
     tets: {
-      preloadUrl: '/sampleapp.html#/preload'
+      preloadUrl: '/sampleapp.html#/preload',
+      background: true
     },
     view_group_components: {
       preloadUrl: '/sampleapp.html#/view-group/preload'

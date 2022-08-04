@@ -9,7 +9,7 @@ class ViewGroupPreloadingClass {
     this.shouldPreload = false;
   }
 
-  preloadViewGroups(batchSize = 3) {
+  preloadViewGroups(batchSize = 3, backgroundMfeOnly) {
     const preloadViewGroupsSetting = LuigiConfig.getConfigValue('navigation.preloadViewGroups');
     if (preloadViewGroupsSetting === false) {
       return;
@@ -28,25 +28,36 @@ class ViewGroupPreloadingClass {
       console.debug('skipping view group preloading (busy)');
       return;
     }
+
     const existingVGs = iframes.map(iframe => iframe.vg).filter(Boolean);
+
     Object.entries(vgSettings)
       .filter(([name, _]) => !existingVGs.includes(name))
       .filter(([_, settings]) => settings && settings.preloadUrl)
       .filter((_, index) => index < batchSize)
       .forEach(([name, settings]) => {
-        console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
-        const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
-        iframe.style.display = 'none';
-        iframe.luigi.preloading = true;
-        iframeContainer.appendChild(iframe);
+        // console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
+        if (backgroundMfeOnly) {
+          if (settings.background) {
+            const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
+            iframe.style.display = 'none';
+            iframe.luigi.preloading = true;
+            iframeContainer.appendChild(iframe);
+          }
+        } else {
+          const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
+          iframe.style.display = 'none';
+          iframe.luigi.preloading = true;
+          iframeContainer.appendChild(iframe);
+        }
       });
   }
 
-  preload() {
+  preload(backgroundMfeOnly) {
     if (this.shouldPreload) {
       setTimeout(() => {
-        this.preloadViewGroups(this.preloadBatchSize);
-      });
+        this.preloadViewGroups(this.preloadBatchSize, backgroundMfeOnly);
+      }, backgroundMfeOnly);
     }
     this.shouldPreload = true;
   }

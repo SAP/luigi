@@ -1179,6 +1179,11 @@
   };
 
   function init(node) {
+    console.log('Running init()', node);
+    ViewGroupPreloading.shouldPreload = true;
+    ViewGroupPreloading.preload(true);
+    ViewGroupPreloading.shouldPreload = false;
+
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
@@ -1296,6 +1301,7 @@
       }
 
       if ('luigi.navigate.ok' === e.data.msg) {
+        console.log('inside navigate.ok', e.data.msg);
         iframe.luigi.viewUrl = iframe.luigi.nextViewUrl;
         iframe.luigi.nextViewUrl = '';
         iframe.luigi.clientPermissions = iframe.luigi.nextClientPermissions;
@@ -1715,6 +1721,8 @@
         LuigiRouting.setAnchor(anchor);
       }
     });
+
+
 
     // listeners are not automatically removed — cancel
     // them to prevent memory leaks
