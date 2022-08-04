@@ -28,15 +28,13 @@ class ViewGroupPreloadingClass {
       console.debug('skipping view group preloading (busy)');
       return;
     }
-
     const existingVGs = iframes.map(iframe => iframe.vg).filter(Boolean);
-
     Object.entries(vgSettings)
       .filter(([name, _]) => !existingVGs.includes(name))
       .filter(([_, settings]) => settings && settings.preloadUrl)
       .filter((_, index) => index < batchSize)
       .forEach(([name, settings]) => {
-        // console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
+        console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
         if (backgroundMfeOnly) {
           if (settings.background) {
             const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
