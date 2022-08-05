@@ -29,26 +29,38 @@ class ViewGroupPreloadingClass {
       return;
     }
     const existingVGs = iframes.map(iframe => iframe.vg).filter(Boolean);
-    Object.entries(vgSettings)
+    console.log('batch size:', batchSize);
+    const settingsWithPreload = Object.entries(vgSettings)
       .filter(([name, _]) => !existingVGs.includes(name))
-      .filter(([_, settings]) => settings && settings.preloadUrl)
-      .filter((_, index) => index < batchSize)
-      .forEach(([name, settings]) => {
-        console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
-        if (backgroundMfeOnly) {
-          if (settings.background) {
-            const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
-            iframe.style.display = 'none';
-            iframe.luigi.preloading = true;
-            iframeContainer.appendChild(iframe);
-          }
-        } else {
-          const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
-          iframe.style.display = 'none';
-          iframe.luigi.preloading = true;
-          iframeContainer.appendChild(iframe);
+      .filter(([_, settings]) => settings && settings.preloadUrl);
+
+    backgroundMfeOnly &&
+      settingsWithPreload.forEach(([name, settings]) => {
+        if (settings.background) {
+          preloadIframeOnBackground(settings, name, iframeContainer);
         }
       });
+
+    !backgroundMfeOnly &&
+      settingsWithPreload
+        .filter((_, index) => index < batchSize)
+        .forEach(([name, settings]) => {
+          console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
+          preloadIframeOnBackground(settings, name, iframeContainer);
+        });
+  }
+
+  /**
+   * Loads an iframe on the background by keeping the display to none.
+   * @param {*} settings the viewgroup settings
+   * @param {*} name the property name of the viewgroup
+   * @param {*} iframeContainer the container to attach the iframe to
+   */
+  preloadIframeOnBackground(settings, name, iframeContainer) {
+    const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
+    iframe.style.display = 'none';
+    iframe.luigi.preloading = true;
+    iframeContainer.appendChild(iframe);
   }
 
   preload(backgroundMfeOnly) {
