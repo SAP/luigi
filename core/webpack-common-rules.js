@@ -14,7 +14,7 @@ module.exports = {
           preprocess: {
             style: ({ content, attributes }) => {
               if (attributes.type !== 'text/scss') return;
-              return new Promise((fulfil, reject) => {
+              return new Promise((fullfil, reject) => {
                 sass.render(
                   {
                     data: content,
@@ -25,7 +25,7 @@ module.exports = {
                   (err, result) => {
                     if (err) return reject(err);
 
-                    fulfil({
+                    fullfil({
                       code: result.css.toString(),
                       map: result.map.toString()
                     });

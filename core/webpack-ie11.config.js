@@ -35,7 +35,7 @@ class PatchLuigiPlugin {
     if (compiler.hooks) {
       compiler.hooks.afterEmit.tap('Luigi Patch', () =>
         exec(
-          'babel public-ie11/luigi-ie11.js --out-file public-ie11/luigi-ie11.js --presets=@babel/preset-env --root . --root-mode upward' +
+          'babel public-ie11/luigi-ie11.js --out-file public-ie11/luigi-ie11.js --presets=@babel/preset-env --root-mode upward' +
             (process.env.MINIFY === 'false' ? '' : ' --minified'),
           PatchLuigiPlugin.execHandler
         )
