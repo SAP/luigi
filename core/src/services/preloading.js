@@ -29,7 +29,7 @@ class ViewGroupPreloadingClass {
       return;
     }
     const existingVGs = iframes.map(iframe => iframe.vg).filter(Boolean);
-    console.log('batch size:', batchSize);
+
     const settingsWithPreload = Object.entries(vgSettings)
       .filter(([name, _]) => !existingVGs.includes(name))
       .filter(([_, settings]) => settings && settings.preloadUrl);
@@ -37,7 +37,7 @@ class ViewGroupPreloadingClass {
     backgroundMfeOnly &&
       settingsWithPreload.forEach(([name, settings]) => {
         if (settings.background) {
-          preloadIframeOnBackground(settings, name, iframeContainer);
+          this.preloadIframeOnBackground(settings, name, iframeContainer);
         }
       });
 
@@ -46,7 +46,7 @@ class ViewGroupPreloadingClass {
         .filter((_, index) => index < batchSize)
         .forEach(([name, settings]) => {
           console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
-          preloadIframeOnBackground(settings, name, iframeContainer);
+          this.preloadIframeOnBackground(settings, name, iframeContainer);
         });
   }
 
