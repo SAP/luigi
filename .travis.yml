@@ -127,7 +127,7 @@ jobs:
       script:
         - lerna bootstrap --force-local
         - cd $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
-        - npm install
+        - npm install --legacy-peer-deps
         - npm run test
     
     # ----- NPM PUBLISH -----
