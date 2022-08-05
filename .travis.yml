@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '12.18.4' # Default node version for CI testing
+  - #'12.18.4' # Default node version for CI testing
   - 16 # Optional node version for setup scripts
 dist: xenial
 stage: Setup node environment
