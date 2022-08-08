@@ -24,13 +24,12 @@ export default defineConfig({
   assetsInclude: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
   base: '',
   build: {
-    watch: {},
     sourcemap: true,
     rollupOptions: {
       input: 'src/main.js',
       output: {
         entryFileNames: 'luigi.js',
-        format: 'cjs',
+        format: 'es',
         assetFileNames: assetInfo => {
           if (assetInfo.name.endsWith('main.css')) {
             return 'luigi.css';
@@ -41,7 +40,6 @@ export default defineConfig({
       plugins: []
     }
   },
-
-  publicDir: false,
+  publicDir: true,
   plugins: [luigiPlugin(), svelte()]
 });

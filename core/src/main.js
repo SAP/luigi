@@ -60,65 +60,65 @@ const configReadyCallback = () => {
         });
 
         Luigi.showAlert = settings => {
-          return app.$$.ctx.showAlert(settings);
+          return app.showAlert(settings);
         };
 
         Luigi.showConfirmationModal = settings => {
-          return app.$$.ctx.showModal(settings);
+          return app.showModal(settings);
         };
 
         Luigi.closeSearchField = () => {
-          return app.$$.ctx.closeSearchField();
+          return app.closeSearchField();
         };
         Luigi.openSearchField = () => {
-          return app.$$.ctx.openSearchField();
+          return app.openSearchField();
         };
 
         Luigi.getGlobalSearchString = () => {
-          return app.$$.ctx.getGlobalSearchString();
+          return app.getGlobalSearchString();
         };
 
         Luigi.setGlobalSearchString = searchString => {
-          app.$$.ctx.setGlobalSearchString(searchString);
+          app.setGlobalSearchString(searchString);
         };
 
         Luigi.showSearchResult = arr => {
-          return app.$$.ctx.showSearchResult(arr);
+          return app.showSearchResult(arr);
         };
 
         Luigi.closeSearchResult = () => {
-          app.$$.ctx.closeSearchResult();
+          app.closeSearchResult();
         };
 
         Luigi.clearSearchField = () => {
-          app.$$.ctx.clearSearchField();
+          app.clearSearchField();
         };
 
         Luigi.splitView = {
           splitViewHandle: {
-            close: () => app.$$.ctx.closeSplitView(),
-            collapse: () => app.$$.ctx.collapseSplitView(),
-            expand: () => app.$$.ctx.expandSplitView(),
-            isCollapsed: () => app.$$.ctx.isSplitViewCollapsed(),
-            isExpanded: () => app.$$.ctx.isSplitViewExpanded(),
-            exists: () => app.$$.ctx.existsSplitView()
+            close: () => app.closeSplitView(),
+            collapse: () => app.collapseSplitView(),
+            expand: () => app.expandSplitView(),
+            isCollapsed: () => app.isSplitViewCollapsed(),
+            isExpanded: () => app.isSplitViewExpanded(),
+            exists: () => app.existsSplitView()
           }
         };
 
         Luigi.pathExists = path => {
-          return app.$$.ctx.pathExists(path);
+          return app.pathExists(path);
         };
 
         Luigi.hasBack = () => {
-          return app.$$.ctx.hasBack();
+          return app.hasBack();
         };
 
         Luigi.openUserSettings = () => {
-          app.$$.ctx.openUserSettings();
+          app.openUserSettings();
         };
 
         Luigi.closeUserSettings = () => {
-          app.$$.ctx.closeUserSettings();
+          app.closeUserSettings();
         };
 
         resolve();

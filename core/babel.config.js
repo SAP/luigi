@@ -4,15 +4,14 @@ module.exports = function(api) {
     [
       '@babel/preset-env',
       {
-        useBuiltIns: 'usage',
-        corejs: 3
+        targets: {
+          node: 'current'
+        },
+        loose: true
       }
     ]
   ];
-  const plugins = [
-    '@babel/plugin-syntax-dynamic-import',
-    '@babel/plugin-transform-regenerator'
-  ];
+  const plugins = ['@babel/plugin-syntax-dynamic-import'];
   return {
     presets,
     plugins
