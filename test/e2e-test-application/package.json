@@ -45,7 +45,7 @@
     "@angular-devkit/core": "0.6.8",
     "@angular-devkit/schematics": "^0.6.8",
     "@angular/cli": "^7.3.10",
-    "@angular/compiler-cli": "^7.2.15",
+    "@angular/compiler-cli": "^7.2.16",
     "@angular/language-service": "^7.2.16",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.2.3",
