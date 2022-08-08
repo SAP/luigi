@@ -28,28 +28,28 @@
       </div>
     </div>
     <script type="module">
-
-        import { LuigiMockUtil } from '/node_modules/@luigi-project/testing-utilities/index.js';
         import { LuigiMockEngine } from './node_modules/@luigi-project/testing-utilities/index.js'
         const settings = {
             text: 'This is just a test alert for external micro frontend.',
             type: 'success'
         };
 
-        let mockEngine = new LuigiMockEngine();
-        let mockUtil = new LuigiMockUtil();
-        
-        let initPostMessageMthd = await Promise.resolve(LuigiMockEngine.initPostMessageHook());
-        eval(initPostMessageMthd);
-        console.log(initPostMessageMthd)
+        let initPostMessageMthd = await Promise.resolve(LuigiMockEngine.initPostMessageHook()); 
 
+        initPostMessageMthd();
+
+        console.log(window)
         window.LuigiClient.addInitListener((context, origin) => {
             LuigiClient.uxManager().showAlert(settings);
         });
 
         window.LuigiClient.setTargetOrigin("/")
-
-        window.LuigiClient.linkManager().openAsModal('/', {title:'User Settings', size:'m'});
+        const alertSettings = {
+          text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+          type: 'info',
+          closeAfter: 3000
+        }
+        window.LuigiClient.uxManager().showAlert(alertSettings)
         
     </script>
   </body>
