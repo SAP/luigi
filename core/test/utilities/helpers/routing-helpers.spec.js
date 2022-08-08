@@ -357,6 +357,7 @@ describe('Routing-helpers', () => {
     };
     it('get context from node', () => {
       assert.deepEqual(RoutingHelpers.getContext(node, undefined), context);
+      assert.deepEqual(RoutingHelpers.getContext(node, null), context);
     });
     it('get context directly', () => {
       const ctx = { someValue: 'bar' };
@@ -367,6 +368,7 @@ describe('Routing-helpers', () => {
       const nodeWithParent = { ...node, parent: { context: parentContext } };
       const expect = { ...context, ...parentContext };
       assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, undefined), expect);
+      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, null), expect);
     });
   });
 
