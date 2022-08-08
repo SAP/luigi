@@ -1,25 +1,30 @@
 import { GenericHelpers } from '../../src/utilities/helpers';
 import { config } from '../../src/core-api/config';
 
+import { LuigiI18N, LuigiConfig } from '../../src/core-api';
+
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 
-import { LuigiI18N } from '../../src/core-api';
-import { LuigiConfig } from '../../src/core-api';
-
 describe('I18N', function() {
-  this.retries(2);
+  jest.retryTimes(2);
+  let sessionStorageSpy;
 
   beforeEach(() => {
-    global['sessionStorage'] = {
+    const storageMock = {
       getItem: sinon.stub(),
       setItem: sinon.stub()
     };
+    sessionStorageSpy = jest.spyOn(global, 'sessionStorage', 'get');
+    sessionStorageSpy.mockImplementation(() => {
+      return storageMock;
+    });
     sinon.stub(config, 'configChanged');
   });
   afterEach(() => {
     sinon.restore();
+    sessionStorageSpy.mockRestore();
   });
 
   describe('current locale', () => {
@@ -37,11 +42,7 @@ describe('I18N', function() {
     it('sets locale', () => {
       sinon.stub(LuigiI18N, '_notifyLocaleChange');
       LuigiI18N.setCurrentLocale('de');
-      sinon.assert.calledWithExactly(
-        global.sessionStorage.setItem,
-        'luigi.currentLocale',
-        'de'
-      );
+      sinon.assert.calledWithExactly(global.sessionStorage.setItem, 'luigi.currentLocale', 'de');
       sinon.assert.calledWithExactly(LuigiI18N._notifyLocaleChange, 'de');
     });
 
@@ -56,13 +57,8 @@ describe('I18N', function() {
   describe('current locale listeners', () => {
     it('does not add listener when it is not a function', () => {
       sinon.stub(GenericHelpers, 'isFunction').returns(false);
-      const listenerId = LuigiI18N.addCurrentLocaleChangeListener(
-        'mock-listener'
-      );
-      sinon.assert.calledWithExactly(
-        GenericHelpers.isFunction,
-        'mock-listener'
-      );
+      const listenerId = LuigiI18N.addCurrentLocaleChangeListener('mock-listener');
+      sinon.assert.calledWithExactly(GenericHelpers.isFunction, 'mock-listener');
       assert.equal(Object.getOwnPropertyNames(LuigiI18N.listeners).length, 0);
       assert.equal(listenerId, undefined);
     });
@@ -107,8 +103,8 @@ describe('I18N', function() {
 
   describe('custom translation', () => {
     let mockConfig;
-    //custom config
-    let luigi = {
+    // custom config
+    const luigi = {
       en: {
         tets: 'tests'
       },
@@ -157,19 +153,10 @@ describe('I18N', function() {
       };
       LuigiI18N.translationTable = translationTable;
       assert.equal(
-        LuigiI18N.findTranslation(
-          'luigi.luigiModal.body.success',
-          LuigiI18N.translationTable
-        ),
+        LuigiI18N.findTranslation('luigi.luigiModal.body.success', LuigiI18N.translationTable),
         'Luigi is happy!'
       );
-      assert.equal(
-        LuigiI18N.findTranslation(
-          'luigi.button.confirm',
-          LuigiI18N.translationTable
-        ),
-        'yes'
-      );
+      assert.equal(LuigiI18N.findTranslation('luigi.button.confirm', LuigiI18N.translationTable), 'yes');
     });
 
     it('custom translation test', () => {
@@ -182,10 +169,7 @@ describe('I18N', function() {
       assert.equal(LuigiI18N.getTranslation('tets'), 'tets');
       assert.equal(LuigiI18N.getTranslation('luigi.it.da'), 'Toni');
       // //not matching key
-      assert.equal(
-        LuigiI18N.getTranslation('luigi.de.project'),
-        'luigi.de.project'
-      );
+      assert.equal(LuigiI18N.getTranslation('luigi.de.project'), 'luigi.de.project');
     });
   });
 });

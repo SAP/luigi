@@ -8,30 +8,44 @@ const sinon = require('sinon');
 import { AuthStoreSvc } from '../../src/services';
 
 describe('AuthStore', () => {
-  // this.retries(1);
   beforeEach(() => {
     sinon.stub(AuthStoreSvc, '_setStore');
     sinon.stub(AuthStoreSvc, '_getStore');
+
+    console.error = sinon.spy();
   });
   afterEach(() => {
     sinon.restore();
   });
   describe('Internal fns', () => {
+    let sessionStorageSpy;
+    let localStorageSpy;
+
     beforeEach(() => {
       AuthStoreSvc._setStore.restore();
       AuthStoreSvc._getStore.restore();
-      global['sessionStorage'] = {
+      const sstorageMock = {
         getItem: sinon.stub(),
         setItem: sinon.stub()
       };
-      global['localStorage'] = {
+      const lstorageMock = {
         getItem: sinon.stub(),
         setItem: sinon.stub()
       };
+      sessionStorageSpy = jest.spyOn(global, 'sessionStorage', 'get');
+      localStorageSpy = jest.spyOn(global, 'localStorage', 'get');
+      sessionStorageSpy.mockImplementation(() => {
+        return sstorageMock;
+      });
+      localStorageSpy.mockImplementation(() => {
+        return lstorageMock;
+      });
       sinon.stub(AuthStoreSvc, 'getStorageType').returns('localStorage');
     });
     afterEach(() => {
       sinon.restore();
+      sessionStorageSpy.mockRestore();
+      localStorageSpy.mockRestore();
     });
 
     describe('_setStore', () => {
@@ -42,11 +56,7 @@ describe('AuthStore', () => {
         // ERROR opaque origins
         AuthStoreSvc._setStore(mockKey, mockData);
 
-        sinon.assert.calledWithExactly(
-          global.localStorage.setItem,
-          mockKey,
-          JSON.stringify(mockData)
-        );
+        sinon.assert.calledWithExactly(global.localStorage.setItem, mockKey, JSON.stringify(mockData));
       });
       xit('sessionStorage: stores a value in sessionStorage', () => {
         // ERROR opaque origins
@@ -157,11 +167,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.setAuthData(mockData);
 
-        sinon.assert.calledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.auth',
-          mockData
-        );
+        sinon.assert.calledWithExactly(AuthStoreSvc._setStore, 'luigi.auth', mockData);
         sinon.restore();
       });
       describe('removeAuthData', () => {
@@ -169,11 +175,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.removeAuthData();
 
-        sinon.assert.calledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.auth',
-          undefined
-        );
+        sinon.assert.calledWithExactly(AuthStoreSvc._setStore, 'luigi.auth', undefined);
         sinon.restore();
       });
       describe('isNewlyAuthorized', () => {
@@ -182,10 +184,7 @@ describe('AuthStore', () => {
 
           const result = AuthStoreSvc.isNewlyAuthorized();
 
-          sinon.assert.alwaysCalledWithExactly(
-            AuthStoreSvc._getStore,
-            'luigi.newlyAuthorized'
-          );
+          sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._getStore, 'luigi.newlyAuthorized');
           assert.isFalse(result);
         });
         it('gets true from defined value', () => {
@@ -193,10 +192,7 @@ describe('AuthStore', () => {
 
           const result = AuthStoreSvc.isNewlyAuthorized();
 
-          sinon.assert.alwaysCalledWithExactly(
-            AuthStoreSvc._getStore,
-            'luigi.newlyAuthorized'
-          );
+          sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._getStore, 'luigi.newlyAuthorized');
           assert.isTrue(result);
         });
       });
@@ -205,11 +201,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.setNewlyAuthorized();
 
-        sinon.assert.alwaysCalledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.newlyAuthorized',
-          true
-        );
+        sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._setStore, 'luigi.newlyAuthorized', true);
         sinon.restore();
       });
       describe('removeNewlyAuthorized', () => {
@@ -217,11 +209,7 @@ describe('AuthStore', () => {
 
         AuthStoreSvc.removeNewlyAuthorized();
 
-        sinon.assert.alwaysCalledWithExactly(
-          AuthStoreSvc._setStore,
-          'luigi.newlyAuthorized',
-          undefined
-        );
+        sinon.assert.alwaysCalledWithExactly(AuthStoreSvc._setStore, 'luigi.newlyAuthorized', undefined);
         sinon.restore();
       });
     });

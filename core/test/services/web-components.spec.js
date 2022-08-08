@@ -1,28 +1,40 @@
+import { WebComponentService } from '../../src/services/web-components';
+import { LuigiConfig, LuigiI18N } from '../../src/core-api';
+
+import { DefaultCompoundRenderer } from '../../src/utilities/helpers/web-component-helpers';
+import { LuigiElement } from '../../../client/src/luigi-element';
+
 const chai = require('chai');
 const sinon = require('sinon');
 const expect = chai.expect;
 const assert = chai.assert;
 
-import { WebComponentService } from '../../src/services/web-components';
-import { LuigiConfig } from '../../src/core-api';
-import { LuigiI18N } from '../../src/core-api';
-import { DefaultCompoundRenderer } from '../../src/utilities/helpers/web-component-helpers';
-import { LuigiElement } from '../../../client/src/luigi-element';
-import { fail } from 'sinon/lib/sinon/mock-expectation';
-
 describe('WebComponentService', function() {
+  let customElementsGetSpy;
+  let customElementsDefineSpy;
+
+  beforeEach(() => {
+    customElementsGetSpy = jest.spyOn(globalThis.customElements, 'get');
+    customElementsDefineSpy = jest.spyOn(globalThis.customElements, 'define');
+  });
+
+  afterEach(() => {
+    customElementsGetSpy.mockRestore();
+    customElementsDefineSpy.mockRestore();
+  });
+
   describe('generate web component id', function() {
     const someRandomString = 'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
 
     it('check determinism', () => {
-      let wcId = WebComponentService.generateWCId(someRandomString);
-      let wcId2 = WebComponentService.generateWCId(someRandomString);
+      const wcId = WebComponentService.generateWCId(someRandomString);
+      const wcId2 = WebComponentService.generateWCId(someRandomString);
       expect(wcId).to.equal(wcId2);
     });
 
     it('check uniqueness', () => {
-      let wcId = WebComponentService.generateWCId(someRandomString);
-      let wcId2 = WebComponentService.generateWCId('someOtherRandomString_9843utieuhfgiasdf');
+      const wcId = WebComponentService.generateWCId(someRandomString);
+      const wcId2 = WebComponentService.generateWCId('someOtherRandomString_9843utieuhfgiasdf');
       expect(wcId).to.not.equal(wcId2);
     });
   });
@@ -33,7 +45,7 @@ describe('WebComponentService', function() {
     let itemPlaceholder;
     const ctx = { someValue: true };
 
-    before(() => {
+    beforeAll(() => {
       window.Luigi = {
         navigation: 'mock1',
         ux: 'mock2',
@@ -71,13 +83,13 @@ describe('WebComponentService', function() {
 
     it('check post-processing', () => {
       const wc_id = 'my-wc';
-      var MyLuigiElement = class extends LuigiElement {
+      const MyLuigiElement = class extends LuigiElement {
         render(ctx) {
           return '<div></div>';
         }
       };
 
-      var myEl = Object.create(MyLuigiElement.prototype, {});
+      const myEl = Object.create(MyLuigiElement.prototype, {});
       sb.stub(myEl, '__postProcess').callsFake(() => {});
       sb.stub(document, 'createElement')
         .callThrough()
@@ -109,7 +121,7 @@ describe('WebComponentService', function() {
           resolve({ default: {} });
         })
       );
-      window.customElements = {
+      const customElementsMock = {
         define: (id, clazz) => {
           definedId = id;
         },
@@ -117,6 +129,8 @@ describe('WebComponentService', function() {
           return undefined;
         }
       };
+      customElementsGetSpy.mockImplementation(customElementsMock.get);
+      customElementsDefineSpy.mockImplementation(customElementsMock.define);
 
       WebComponentService.registerWCFromUrl('url', 'id').then(() => {
         expect(definedId).to.equal('id');
@@ -131,11 +145,12 @@ describe('WebComponentService', function() {
           reject({ default: {} });
         })
       );
-      window.customElements = {
+      const customElementsMock = {
         define: (id, clazz) => {
           definedId = id;
         }
       };
+      customElementsGetSpy.mockImplementation(customElementsMock.define);
 
       WebComponentService.registerWCFromUrl('url', 'id')
         .then(() => {
@@ -167,11 +182,11 @@ describe('WebComponentService', function() {
     const sb = sinon.createSandbox();
     const node = {};
 
-    before(() => {
+    beforeAll(() => {
       window.Luigi = { mario: 'luigi', luigi: window.luigi };
     });
 
-    after(() => {
+    afterAll(() => {
       window.Luigi = window.Luigi.luigi;
     });
 
@@ -189,7 +204,9 @@ describe('WebComponentService', function() {
     });
 
     it('check attachment of already existing wc', done => {
-      window.customElements = {
+      let definedId;
+
+      const customElementsMock = {
         define: (id, clazz) => {
           definedId = id;
         },
@@ -198,8 +215,11 @@ describe('WebComponentService', function() {
         }
       };
 
+      customElementsGetSpy.mockImplementation(customElementsMock.get);
+      customElementsDefineSpy.mockImplementation(customElementsMock.define);
+
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
-        assert(false, 'should not be here');
+        assert('i am here', 'should not be here');
       });
 
       sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context) => {
@@ -214,7 +234,7 @@ describe('WebComponentService', function() {
     it('check invocation of custom function', done => {
       let definedId;
 
-      window.customElements = {
+      const customElementsMock = {
         define: (id, clazz) => {
           definedId = id;
         },
@@ -222,6 +242,9 @@ describe('WebComponentService', function() {
           return false;
         }
       };
+
+      customElementsGetSpy.mockImplementation(customElementsMock.get);
+      customElementsGetSpy.mockImplementation(customElementsMock.define);
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         assert(false, 'should not be here');
@@ -243,7 +266,7 @@ describe('WebComponentService', function() {
     it('check creation and attachment of new wc', done => {
       let definedId;
 
-      window.customElements = {
+      const customElementsMock = {
         define: (id, clazz) => {
           definedId = id;
         },
@@ -251,6 +274,9 @@ describe('WebComponentService', function() {
           return false;
         }
       };
+
+      customElementsGetSpy.mockImplementation(customElementsMock.get);
+      customElementsGetSpy.mockImplementation(customElementsMock.define);
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         return new Promise((resolve, reject) => {
@@ -276,14 +302,14 @@ describe('WebComponentService', function() {
     });
 
     it('check permission for relative and absolute urls from same domain', () => {
-      let relative1 = WebComponentService.checkWCUrl('/folder/sth.js');
+      const relative1 = WebComponentService.checkWCUrl('/folder/sth.js');
       expect(relative1).to.be.true;
-      let relative2 = WebComponentService.checkWCUrl('folder/sth.js');
+      const relative2 = WebComponentService.checkWCUrl('folder/sth.js');
       expect(relative2).to.be.true;
-      let relative3 = WebComponentService.checkWCUrl('./folder/sth.js');
+      const relative3 = WebComponentService.checkWCUrl('./folder/sth.js');
       expect(relative3).to.be.true;
 
-      let absolute = WebComponentService.checkWCUrl(window.location.href + '/folder/sth.js');
+      const absolute = WebComponentService.checkWCUrl(window.location.href + '/folder/sth.js');
       expect(absolute).to.be.true;
     });
 
@@ -293,14 +319,14 @@ describe('WebComponentService', function() {
         'https://docs.luigi-project.io/.?'
       ]);
 
-      let valid1 = WebComponentService.checkWCUrl('https://fiddle.luigi-project.io/folder/sth.js');
+      const valid1 = WebComponentService.checkWCUrl('https://fiddle.luigi-project.io/folder/sth.js');
       expect(valid1).to.be.true;
-      let valid2 = WebComponentService.checkWCUrl('https://docs.luigi-project.io/folder/sth.js');
+      const valid2 = WebComponentService.checkWCUrl('https://docs.luigi-project.io/folder/sth.js');
       expect(valid2).to.be.true;
 
-      let invalid1 = WebComponentService.checkWCUrl('http://fiddle.luigi-project.io/folder/sth.js');
+      const invalid1 = WebComponentService.checkWCUrl('http://fiddle.luigi-project.io/folder/sth.js');
       expect(invalid1).to.be.false;
-      let invalid2 = WebComponentService.checkWCUrl('https://slack.luigi-project.io/folder/sth.js');
+      const invalid2 = WebComponentService.checkWCUrl('https://slack.luigi-project.io/folder/sth.js');
       expect(invalid2).to.be.false;
     });
   });
@@ -313,11 +339,11 @@ describe('WebComponentService', function() {
       }
     };
 
-    before(() => {
+    beforeAll(() => {
       window.Luigi = { mario: 'luigi', luigi: window.luigi };
     });
 
-    after(() => {
+    afterAll(() => {
       window.Luigi = window.Luigi.luigi;
     });
 
@@ -350,7 +376,7 @@ describe('WebComponentService', function() {
     });
 
     it('check compound container created', done => {
-      let renderer = new DefaultCompoundRenderer();
+      const renderer = new DefaultCompoundRenderer();
       sb.spy(renderer);
       WebComponentService.createCompoundContainerAsync(renderer).then(
         () => {
@@ -365,7 +391,7 @@ describe('WebComponentService', function() {
     });
 
     it('check nesting mfe created', done => {
-      let renderer = new DefaultCompoundRenderer();
+      const renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = 'mfe.js';
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
       sb.stub(WebComponentService, 'initWC').returns();
@@ -438,11 +464,11 @@ describe('WebComponentService', function() {
       }
     };
 
-    before(() => {
+    beforeAll(() => {
       window.Luigi = { mario: 'luigi', luigi: window.luigi };
     });
 
-    after(() => {
+    afterAll(() => {
       window.Luigi = window.Luigi.luigi;
     });
 
@@ -461,7 +487,7 @@ describe('WebComponentService', function() {
           expect(wc_container.children.length).to.equal(1);
 
           // eventbus test
-          let evBus = compoundCnt.eventBus;
+          const evBus = compoundCnt.eventBus;
           const listeners = evBus.listeners[eventEmitter + '.' + eventName];
           expect(listeners.length).to.equal(1);
           const target = compoundCnt.querySelector('[nodeId=' + listeners[0].wcElementId + ']');
@@ -482,15 +508,16 @@ describe('WebComponentService', function() {
 
     it('render nested compound', done => {
       const wc_container = document.createElement('div');
-      const compoundCnt = document.createElement('div');
       const node = JSON.parse(JSON.stringify(navNode));
       node.viewUrl = 'mfe.js';
       node.webcomponent = true;
-      window.customElements = {
+      const customElementsMock = {
         get: () => {
           return false;
         }
       };
+
+      customElementsGetSpy.mockImplementation(customElementsMock.get);
 
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
@@ -499,7 +526,7 @@ describe('WebComponentService', function() {
           expect(WebComponentService.registerWCFromUrl.callCount).to.equal(3);
 
           // eventbus test
-          let evBus = compoundCnt.eventBus;
+          const evBus = compoundCnt.eventBus;
           sb.spy(compoundCnt, 'dispatchEvent');
           evBus.onPublishEvent(new CustomEvent(eventName), eventEmitter);
           assert(compoundCnt.dispatchEvent.calledOnce);

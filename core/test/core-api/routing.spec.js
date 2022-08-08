@@ -1,4 +1,3 @@
-import { afterEach } from 'mocha';
 import { LuigiRouting, LuigiConfig } from '../../src/core-api';
 import { RoutingHelpers } from '../../src/utilities/helpers';
 
@@ -7,45 +6,60 @@ const assert = chai.assert;
 const sinon = require('sinon');
 
 describe('Luigi routing', function() {
-  const globalLocationRef = global.location;
+  let locationSpy;
 
   beforeEach(() => {
+    locationSpy = jest.spyOn(window, 'location', 'get');
     window.history.pushState = sinon.spy();
     window.history.replaceState = sinon.spy();
     sinon.stub(LuigiConfig, 'configChanged');
   });
+
   afterEach(() => {
-    global.location = globalLocationRef;
+    locationSpy.mockRestore();
     sinon.restore();
   });
+
   describe('SearchParams path routing', () => {
     it('get searchparams', () => {
-      global.location = 'http://some.url.de?test=tets&luigi=rocks';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de?test=tets&luigi=rocks');
+      });
       assert.deepEqual(LuigiRouting.getSearchParams(), { test: 'tets', luigi: 'rocks' });
     });
     it('get searchparams', () => {
-      global.location = 'http://some.url.de/something?test=tets&luigi=rocks';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/something?test=tets&luigi=rocks');
+      });
       assert.deepEqual(LuigiRouting.getSearchParams(), { test: 'tets', luigi: 'rocks' });
     });
     it('get searchparams when no query parameter', () => {
-      global.location = 'http://some.url.de';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       assert.deepEqual(LuigiRouting.getSearchParams(), {});
     });
     it('set searchparams', () => {
       window.state = {};
-      global.location = 'http://some.url.de';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       LuigiRouting.addSearchParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?foo=bar');
     });
     it('set searchparams without keeping browser history', () => {
       window.state = {};
-      global.location = 'http://some.url.de';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       LuigiRouting.addSearchParams({ foo: 'bar' }, false);
       sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/?foo=bar');
     });
     it('add search params to searchparams', () => {
       window.state = {};
-      global.location = 'http://some.url.de?test=tets';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de?test=tets');
+      });
       LuigiRouting.addSearchParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(
         window.history.pushState,
@@ -56,19 +70,25 @@ describe('Luigi routing', function() {
     });
     it('call addSearchParams with wrong argument', () => {
       console.log = sinon.spy();
-      global.location = 'http://some.url.de';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       LuigiRouting.addSearchParams('bar', true);
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
     });
     it('delete search params from url with keepBrowserHistory is true', () => {
       window.state = {};
-      global.location = 'http://some.url.de?luigi=rocks&mario=red';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de?luigi=rocks&mario=red');
+      });
       LuigiRouting.addSearchParams({ mario: undefined }, true);
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?luigi=rocks');
     });
     it('delete search params from url with keepBrowserHistory is false', () => {
       window.state = {};
-      global.location = 'http://some.url.de?luigi=rocks&mario=red';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de?luigi=rocks&mario=red');
+      });
       LuigiRouting.addSearchParams({ mario: undefined }, false);
       sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/?luigi=rocks');
     });
@@ -84,26 +104,36 @@ describe('Luigi routing', function() {
       sinon.restore();
     });
     it('get searchparams hash routing', () => {
-      global.location = 'http://some.url.de/#/?test=tets&luigi=rocks';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/?test=tets&luigi=rocks');
+      });
       assert.deepEqual(LuigiRouting.getSearchParams(), { test: 'tets', luigi: 'rocks' });
     });
     it('get searchparams', () => {
-      global.location = 'http://some.url.de/#/something?test=tets&luigi=rocks';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/something?test=tets&luigi=rocks');
+      });
       assert.deepEqual(LuigiRouting.getSearchParams(), { test: 'tets', luigi: 'rocks' });
     });
     it('get searchparams hash routing', () => {
-      global.location = 'http://some.url.de/#/';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/');
+      });
       assert.deepEqual(LuigiRouting.getSearchParams(), {});
     });
     it('add searchparams hash routing', () => {
       window.state = {};
-      global.location = 'http://some.url.de/#/';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/');
+      });
       LuigiRouting.addSearchParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/#/?foo=bar');
     });
     it('add search params to hash routing', () => {
       window.state = {};
-      global.location = 'http://some.url.de/#/?test=tets';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/?test=tets');
+      });
       LuigiRouting.addSearchParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(
         window.history.pushState,
@@ -114,7 +144,10 @@ describe('Luigi routing', function() {
     });
     it('add search params to hash routing with special characters', () => {
       window.state = {};
-      global.location = 'http://some.url.de/#/?test=tets';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/?test=tets');
+      });
       LuigiRouting.addSearchParams({ foo: '%bar#foo@bar&foo' }, true);
       sinon.assert.calledWithExactly(
         window.history.pushState,
@@ -125,7 +158,10 @@ describe('Luigi routing', function() {
     });
     it('add search params to hash routing', () => {
       window.state = {};
-      global.location = 'http://some.url.de/#/?~luigi=rocks';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/?~luigi=rocks');
+      });
       LuigiRouting.addSearchParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(
         window.history.pushState,
@@ -136,13 +172,18 @@ describe('Luigi routing', function() {
     });
     it('call addSearchParams with wrong argument hash routing', () => {
       console.log = sinon.spy();
-      global.location = 'http://some.url.de/#/';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/');
+      });
       LuigiRouting.addSearchParams('bar', true);
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
     });
     it('delete search params from url', () => {
       window.state = {};
-      global.location = 'http://some.url.de/#/?luigi=rocks&mario=red';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/?luigi=rocks&mario=red');
+      });
       LuigiRouting.addSearchParams({ mario: undefined }, true);
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/#/?luigi=rocks');
     });
@@ -173,19 +214,28 @@ describe('Luigi routing', function() {
   describe('addNodeParams', () => {
     it('add node Params', () => {
       window.state = {};
-      global.location = 'http://some.url.de';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       LuigiRouting.addNodeParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(window.history.pushState, window.state, '', 'http://some.url.de/?%7Efoo=bar');
     });
     it('add node Params without keeping browser history', () => {
       window.state = {};
-      global.location = 'http://some.url.de';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       LuigiRouting.addNodeParams({ foo: 'bar' }, false);
       sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/?%7Efoo=bar');
     });
     it('add more node param to existing node params', () => {
       window.state = {};
-      global.location = 'http://some.url.de?~test=tets';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de?~test=tets');
+      });
       LuigiRouting.addNodeParams({ foo: 'bar' }, true);
       sinon.assert.calledWithExactly(
         window.history.pushState,
@@ -196,13 +246,19 @@ describe('Luigi routing', function() {
     });
     it('call addNodeParams with wrong argument', () => {
       console.log = sinon.spy();
-      global.location = 'http://some.url.de';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       LuigiRouting.addNodeParams('bar', true);
       sinon.assert.calledWith(console.log, 'Params argument must be an object');
     });
     it('remove node param if value of params object is undefined', () => {
       window.state = {};
-      global.location = 'http://some.url.de';
+
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
       LuigiRouting.addNodeParams({ test: undefined }, false);
       sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', 'http://some.url.de/');
       LuigiRouting.addNodeParams({ foo: 'bar' }, false);
@@ -223,7 +279,9 @@ describe('Luigi routing', function() {
     });
 
     it('get anchor when no anchor set', () => {
-      global.location = 'http://some.url.de';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de');
+      });
 
       const actual = LuigiRouting.getAnchor();
       const expected = '';
@@ -231,11 +289,11 @@ describe('Luigi routing', function() {
     });
 
     it('set anchor', () => {
-      global.location = 'http://some.url.de';
+      const href = window.location.href;
       const anchor = 'myanchor';
       LuigiRouting.setAnchor(anchor);
-      const expected = 'http://some.url.de#myanchor';
-      assert.equal(global.location + window.location.hash, expected);
+      const expected = href + '#myanchor';
+      assert.equal(window.location + window.location.hash, expected);
     });
   });
 
@@ -250,16 +308,20 @@ describe('Luigi routing', function() {
       sinon.restore();
     });
     it('get anchor', () => {
-      global.location = 'http://some.url.de/#/luigi#myanchor';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/luigi#myanchor');
+      });
       const actual = LuigiRouting.getAnchor();
       const expected = 'myanchor';
       assert.equal(actual, expected);
     });
     it('set anchor', () => {
-      global.location = 'http://some.url.de/#/luigi';
+      locationSpy.mockImplementation(() => {
+        return new URL('http://some.url.de/#/luigi');
+      });
       const anchor = 'myanchor';
       LuigiRouting.setAnchor(anchor);
-      const actual = `${global.location}#${anchor}`;
+      const actual = `${window.location}#${anchor}`;
       const expected = 'http://some.url.de/#/luigi#myanchor';
       assert.equal(actual, expected);
     });

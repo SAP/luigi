@@ -1,12 +1,11 @@
-const chai = require('chai');
-const assert = chai.assert;
-const sinon = require('sinon');
-import { afterEach } from 'mocha';
-
 import { Iframe } from '../../src/services/iframe';
 import { IframeHelpers, GenericHelpers } from '../../src/utilities/helpers';
 import { ViewGroupPreloading, ViewUrlDecorator } from '../../src/services';
 import { LuigiConfig } from '../../src/core-api';
+
+const chai = require('chai');
+const assert = chai.assert;
+const sinon = require('sinon');
 
 describe('Iframe', () => {
   let component;
@@ -18,7 +17,7 @@ describe('Iframe', () => {
 
   beforeEach(() => {
     clock = sinon.useFakeTimers();
-    let lastObj = {};
+    const lastObj = {};
     component = {
       set: obj => {
         Object.assign(lastObj, obj);
@@ -119,12 +118,12 @@ describe('Iframe', () => {
       assert.equal(iframes[0].luigi.preloading, undefined);
       assert.equal(iframes[0].style.display, 'block');
       assert.equal(iframes[0].vg, 'tets1');
-      assert.equal(iframes[1].src, 'ham.html');
+      assert.equal(iframes[1].src, 'http://localhost/ham.html');
       assert.equal(iframes[1].luigi.viewUrl, 'ham.html');
       assert.equal(iframes[1].luigi.preloading, true);
       assert.equal(iframes[1].style.display, 'none');
       assert.equal(iframes[1].vg, 'ham');
-      assert.equal(iframes[2].src, 'cheese.html');
+      assert.equal(iframes[2].src, 'http://localhost/cheese.html');
       assert.equal(iframes[2].luigi.viewUrl, 'cheese.html');
       assert.equal(iframes[2].luigi.preloading, true);
       assert.equal(iframes[2].style.display, 'none');
@@ -165,7 +164,7 @@ describe('Iframe', () => {
       assert.equal(iframes[2].luigi.viewUrl, 'cheese2.html');
       assert.equal(iframes[2].luigi.preloading, undefined);
       assert.equal(iframes[2].vg, 'cheese');
-      assert.equal(iframes[3].src, 'ananas.html');
+      assert.equal(iframes[3].src, 'http://localhost/ananas.html');
       assert.equal(iframes[3].luigi.viewUrl, 'ananas.html');
       assert.equal(iframes[3].luigi.preloading, true);
       assert.equal(iframes[3].style.display, 'none');
@@ -222,12 +221,12 @@ describe('Iframe', () => {
       assert.equal(iframes[1].luigi.viewUrl, 'sandwich.html');
       assert.equal(iframes[1].src, 'sandwich.html');
       assert.equal(iframes[1].luigi.preloading, true);
-      assert.equal(iframes[2].src, 'ham.html');
+      assert.equal(iframes[2].src, 'http://localhost/ham.html');
       assert.equal(iframes[2].luigi.viewUrl, 'ham.html');
       assert.equal(iframes[2].luigi.preloading, true);
       assert.equal(iframes[2].style.display, 'none');
       assert.equal(iframes[2].vg, 'ham');
-      assert.equal(iframes[3].src, 'cheese.html');
+      assert.equal(iframes[3].src, 'http://localhost/cheese.html');
       assert.equal(iframes[3].luigi.viewUrl, 'cheese.html');
       assert.equal(iframes[3].luigi.preloading, true);
       assert.equal(iframes[3].style.display, 'none');

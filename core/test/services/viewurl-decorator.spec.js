@@ -1,5 +1,3 @@
-import { afterEach } from 'mocha';
-
 import { ViewUrlDecorator } from '../../src/services';
 import { GenericHelpers } from '../../src/utilities/helpers';
 const chai = require('chai');

@@ -6,7 +6,7 @@ const sinon = require('sinon');
 import { LuigiConfig, LuigiTheming } from '../../src/core-api';
 
 describe('Core API - Theming', function() {
-  this.retries(1);
+  jest.retryTimes(2);
   const getMockTheming = () => {
     return {
       themes: [

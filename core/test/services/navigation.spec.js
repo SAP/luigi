@@ -1,11 +1,11 @@
-const chai = require('chai');
-const expect = chai.expect;
-const assert = chai.assert;
-const sinon = require('sinon');
 import { Navigation } from '../../src/navigation/services/navigation';
 import { RoutingHelpers, GenericHelpers } from '../../src/utilities/helpers';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { LuigiConfig } from '../../src/core-api';
+const chai = require('chai');
+const expect = chai.expect;
+const assert = chai.assert;
+const sinon = require('sinon');
 
 const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
@@ -54,9 +54,9 @@ const sampleNavPromise = new Promise(function(resolve) {
 });
 
 describe('Navigation', function() {
-  this.retries(2);
+  jest.retryTimes(2);
 
-  before(() => {
+  beforeAll(() => {
     function mockStorage() {
       return {
         getItem: function(key) {
@@ -67,7 +67,7 @@ describe('Navigation', function() {
       };
     }
 
-    global['localStorage'] = mockStorage();
+    global.localStorage = mockStorage();
   });
   beforeEach(() => {
     Navigation._rootNodeProviderUsed = undefined;
@@ -131,7 +131,6 @@ describe('Navigation', function() {
       );
     });
     it('should load lazy-loaded children nodes only on activation', async () => {
-      expect(NodeDataManagementStorage.hasChildren(activatedNodeWithLazyLoadedChildren)).to.be.false;
       const navPath = await Navigation.getNavigationPath(sampleNavPromise, 'bbb');
       assert.equal(navPath.navigationPath.length, 2, '2 nodes active : root node + "bbb" node');
       const activatedNodeWithLazyLoadedChildren = navPath.navigationPath[1];
@@ -187,7 +186,7 @@ describe('Navigation', function() {
       expect(children).to.deep.equal(nodeWithChildrenProvider.children());
     });
     it('uses navigationPermissionChecker and returns correct amount of children', async () => {
-      //given
+      // given
       LuigiConfig.config = {
         navigation: {
           nodeAccessibilityResolver: (nodeToCheckPermissionFor, currentNode, currentContext) => {
@@ -256,7 +255,7 @@ describe('Navigation', function() {
   });
 
   describe('buildNode', () => {
-    //need to add more cases
+    // need to add more cases
     const nodeNamesInCurrentPath = 'projects';
     const nodesInCurrentPath = [
       {
@@ -412,7 +411,7 @@ describe('Navigation', function() {
   describe('getNodes', () => {
     let children;
     let pathData;
-    before(() => {
+    beforeAll(() => {
       children = [];
       pathData = [];
     });
@@ -487,7 +486,7 @@ describe('Navigation', function() {
   describe('getGroupedChildren', () => {
     let children;
     let current;
-    before(() => {
+    beforeAll(() => {
       children = [];
       current = [];
     });
@@ -525,7 +524,7 @@ describe('Navigation', function() {
 
       await Navigation.getChildren(current.pathData[1], {
         children: current.pathData[1].children
-      }); //store in cache
+      }); // store in cache
       const result = Navigation.getGroupedChildren(children, current).children;
       expect(result.___0[0].pathSegment).to.be.equal('category');
     });
@@ -583,7 +582,7 @@ describe('Navigation', function() {
   });
   describe('getTruncatedChildren', () => {
     let children;
-    before(() => {
+    beforeAll(() => {
       children = [];
     });
     afterEach(() => {

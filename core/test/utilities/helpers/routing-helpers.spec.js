@@ -870,17 +870,23 @@ describe('Routing-helpers', () => {
   });
 
   describe('composeSearchParamsToRoute', () => {
-    let globalLocationRef = global.location;
     const route = '/home';
+    let locationSpy;
+
+    beforeEach(() => {
+      locationSpy = jest.spyOn(window, 'location', 'get');
+    });
 
     afterEach(() => {
-      global.location = globalLocationRef;
+      locationSpy.mockRestore();
     });
 
     it('with location search params', () => {
-      global.location = {
-        search: '?query=params'
-      };
+      locationSpy.mockImplementation(() => {
+        return {
+          search: '?query=params'
+        };
+      });
       const actual = RoutingHelpers.composeSearchParamsToRoute(route);
       const expected = '/home?query=params';
 
@@ -888,9 +894,11 @@ describe('Routing-helpers', () => {
     });
 
     it('without location search params', () => {
-      global.location = {
-        search: ''
-      };
+      locationSpy.mockImplementation(() => {
+        return {
+          search: ''
+        };
+      });
       const actual = RoutingHelpers.composeSearchParamsToRoute(route);
       const expected = '/home';
 

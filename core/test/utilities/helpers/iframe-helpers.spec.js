@@ -1,21 +1,20 @@
-const chai = require('chai');
-const assert = chai.assert;
-const expect = chai.expect;
-const sinon = require('sinon');
-import { afterEach } from 'mocha';
-
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig, LuigiI18N, LuigiTheming, LuigiFeatureToggles } from '../../../src/core-api';
 import { ViewUrlDecorator } from '../../../src/services';
 
+const chai = require('chai');
+const assert = chai.assert;
+const expect = chai.expect;
+const sinon = require('sinon');
+
 describe('Iframe-helpers', () => {
   let component;
-  let customSandboxRules = ['allow-scripts', 'rules1', 'rules2'];
-  let allowRules = ['microphone', 'geolocation'];
-  let allowRulesWorkAround = ['microphone;', 'geolocation;'];
+  const customSandboxRules = ['allow-scripts', 'rules1', 'rules2'];
+  const allowRules = ['microphone', 'geolocation'];
+  const allowRulesWorkAround = ['microphone;', 'geolocation;'];
 
   beforeEach(() => {
-    let lastObj = {};
+    const lastObj = {};
     component = {
       set: obj => {
         Object.assign(lastObj, obj);
@@ -128,19 +127,19 @@ describe('Iframe-helpers', () => {
     });
 
     it('urlMatchesTheDomain', () => {
-      let domain = 'https://luigi.url.com/fd';
+      const domain = 'https://luigi.url.com/fd';
       assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
     });
 
     it('!urlMatchesTheDomain', () => {
-      let domain = 'http://luigi.url.com/fd';
+      const domain = 'http://luigi.url.com/fd';
       assert.isFalse(IframeHelpers.urlMatchesTheDomain(href, domain));
     });
 
     it('ie11 urlMatchesTheDomain', () => {
-      let domain = 'https://luigi.url.com/bla/bli';
-      let a1 = document.createElement('a');
-      let a2 = document.createElement('a');
+      const domain = 'https://luigi.url.com/bla/bli';
+      const a1 = document.createElement('a');
+      const a2 = document.createElement('a');
       sb.stub(document, 'createElement')
         .callThrough()
         .withArgs('a')
@@ -379,7 +378,7 @@ describe('Iframe-helpers', () => {
      * @returns mocked data
      */
     const getMockedDocument = () => {
-      let doc = document.implementation.createHTMLDocument('Mocked DOM');
+      const doc = document.implementation.createHTMLDocument('Mocked DOM');
 
       const divParent = doc.createElement('div');
       divParent.className = 'divParent';
@@ -417,51 +416,67 @@ describe('Iframe-helpers', () => {
     };
 
     describe('disableA11YKeyboardExceptClassName', () => {
+      let docQuerySelectorAllSpy;
+      const docMock = getMockedDocument();
       beforeEach(() => {
-        global.document = getMockedDocument();
+        docQuerySelectorAllSpy = jest.spyOn(document, 'querySelectorAll');
+        docQuerySelectorAllSpy.mockImplementation(selector => {
+          return docMock.querySelectorAll(selector);
+        });
+      });
+      afterEach(() => {
+        docQuerySelectorAllSpy.mockRestore();
       });
 
       it('saves old tabindex value properly', () => {
         IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
-        assert.equal(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('oldtab'), 0);
-        assert.isNull(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('oldtab'));
+        assert.equal(docMock.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('oldtab'), '0');
+        assert.isNull(docMock.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('oldtab'));
       });
 
       it('set tabindex properly on all but specified classname element', () => {
         IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
-        assert.equal(global.document.getElementsByClassName('divParent')[0].getAttribute('tabindex'), -1);
-        assert.equal(global.document.getElementsByClassName('spanChild')[0].getAttribute('tabindex'), -1);
-        assert.equal(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('tabindex'), -1);
-        assert.isNull(global.document.getElementsByClassName('modalElement')[0].getAttribute('tabindex'));
-        assert.isNull(global.document.getElementsByClassName('childButton1')[0].getAttribute('tabindex'));
-        assert.equal(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('tabindex'), 1);
+        assert.equal(docMock.getElementsByClassName('divParent')[0].getAttribute('tabindex'), '-1');
+        assert.equal(docMock.getElementsByClassName('spanChild')[0].getAttribute('tabindex'), '-1');
+        assert.equal(docMock.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('tabindex'), '-1');
+        assert.isNull(docMock.getElementsByClassName('modalElement')[0].getAttribute('tabindex'));
+        assert.isNull(docMock.getElementsByClassName('childButton1')[0].getAttribute('tabindex'));
+        assert.equal(docMock.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('tabindex'), '1');
       });
     });
 
     describe('enableA11YKeyboardBackdrop', () => {
+      let docQuerySelectorAllSpy;
+      const docMock = getMockedDocument();
       beforeEach(() => {
-        global.document = getMockedDocument();
+        docQuerySelectorAllSpy = jest.spyOn(document, 'querySelectorAll');
+        docQuerySelectorAllSpy.mockImplementation(selector => {
+          return docMock.querySelectorAll(selector);
+        });
         IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+      });
+      afterEach(() => {
+        docQuerySelectorAllSpy.mockRestore();
       });
 
       it('check oldtab property properly removed', () => {
         IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.modalElement');
-        assert.isNull(global.document.getElementsByClassName('divParent')[0].getAttribute('oldtab'));
-        assert.isNull(global.document.getElementsByClassName('spanChild')[0].getAttribute('oldtab'));
-        assert.isNull(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('oldtab'));
-        assert.isNull(global.document.getElementsByClassName('modalElement')[0].getAttribute('oldtab'));
-        assert.isNull(global.document.getElementsByClassName('childButton1')[0].getAttribute('oldtab'));
-        assert.isNull(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('oldtab'));
+        assert.isNull(docMock.getElementsByClassName('divParent')[0].getAttribute('oldtab'));
+        assert.isNull(docMock.getElementsByClassName('spanChild')[0].getAttribute('oldtab'));
+        assert.isNull(docMock.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('oldtab'));
+        assert.isNull(docMock.getElementsByClassName('modalElement')[0].getAttribute('oldtab'));
+        assert.isNull(docMock.getElementsByClassName('childButton1')[0].getAttribute('oldtab'));
+        assert.isNull(docMock.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('oldtab'));
       });
 
       it('check oldtabindex value properly restored', () => {
         IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.modalElement');
-        assert.isNull(global.document.getElementsByClassName('divParent')[0].getAttribute('tabindex'));
-        assert.isNull(global.document.getElementsByClassName('spanChild')[0].getAttribute('tabindex'));
-        assert.equal(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('tabindex'), 0);
-        assert.isNull(global.document.getElementsByClassName('modalElement')[0].getAttribute('tabindex'));
-        assert.isNull(global.document.getElementsByClassName('childButton1')[0].getAttribute('tabindex'));
-        assert.equal(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('tabindex'), 1);
+        assert.isNull(docMock.getElementsByClassName('divParent')[0].getAttribute('tabindex'));
+        assert.isNull(docMock.getElementsByClassName('spanChild')[0].getAttribute('tabindex'));
+        assert.equal(docMock.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('tabindex'), '0');
+        assert.isNull(docMock.getElementsByClassName('modalElement')[0].getAttribute('tabindex'));
+        assert.isNull(docMock.getElementsByClassName('childButton1')[0].getAttribute('tabindex'));
+        assert.equal(docMock.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('tabindex'), '1');
       });
     });
   });

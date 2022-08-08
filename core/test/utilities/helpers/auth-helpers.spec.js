@@ -7,7 +7,7 @@ import { AuthStoreSvc } from '../../../src/services';
 import { LuigiAuth } from '../../../src/core-api';
 
 describe('Auth-helpers', function() {
-  this.retries(2);
+  jest.retryTimes(2);
 
   let windowLocationImplementation;
   beforeEach(() => {
@@ -124,10 +124,7 @@ describe('Auth-helpers', function() {
     });
 
     it('with error param', async () => {
-      await AuthHelpers.handleUrlAuthErrors(
-        mockProviderInstanceSettings,
-        'mockError'
-      );
+      await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings, 'mockError');
       assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce);
     });
 
@@ -135,11 +132,7 @@ describe('Auth-helpers', function() {
       const error = 'mockError';
       const errorDescription = 'An error description';
 
-      await AuthHelpers.handleUrlAuthErrors(
-        mockProviderInstanceSettings,
-        error,
-        errorDescription
-      );
+      await AuthHelpers.handleUrlAuthErrors(mockProviderInstanceSettings, error, errorDescription);
 
       assert.isTrue(LuigiAuth.handleAuthEvent.calledOnce, 'called once');
       LuigiAuth.handleAuthEvent.calledWith(

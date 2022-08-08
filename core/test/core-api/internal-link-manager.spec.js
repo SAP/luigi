@@ -23,13 +23,13 @@ describe('linkManager', function() {
     });
 
     it('should not open a drawer if path is absolute', () => {
-      lm.openAsDrawer('/');
+      lm.openAsDrawer('/').catch(e => {});
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.calledOnce(console.warn);
     });
     it('should not open a modal if path is absolute', () => {
-      lm.openAsModal('/');
+      lm.openAsModal('/').catch(e => {});
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.calledOnce(console.warn);
@@ -43,14 +43,14 @@ describe('linkManager', function() {
 
     it('should not navigate if errorSkipNavigation is true', () => {
       lm.options.errorSkipNavigation = true;
-      lm.navigate('http://google.co');
+      lm.navigate('http://google.co').catch(e => {});
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.match(lm.options.errorSkipNavigation, false);
     });
 
     it('should call sendPostMessageToLuigiCore', () => {
-      this.options = {
+      const options = {
         preserveView: false,
         nodeParams: {},
         errorSkipNavigation: false,
@@ -66,7 +66,7 @@ describe('linkManager', function() {
       const relativePath = path[0] !== '/';
       const navigationOpenMsg = {
         msg: 'luigi.navigation.open',
-        params: Object.assign(this.options, {
+        params: Object.assign(options, {
           link: path,
           relative: relativePath,
           modal: modalSettings,
@@ -80,7 +80,7 @@ describe('linkManager', function() {
     });
 
     it('should call sendPostMessageToLuigiCore with Promise', () => {
-      this.options = {
+      const options = {
         preserveView: false,
         nodeParams: {},
         errorSkipNavigation: false,
@@ -97,7 +97,7 @@ describe('linkManager', function() {
       const relativePath = path[0] !== '/';
       const navigationOpenMsg = {
         msg: 'luigi.navigation.open',
-        params: Object.assign(this.options, {
+        params: Object.assign(options, {
           link: path,
           relative: relativePath,
           modal: modalSettings,

@@ -6,7 +6,7 @@ import { GenericHelpers } from '../../../src/utilities/helpers';
 
 describe('Generic-helpers', () => {
   let windowLocationImplementation;
-  before(() => {
+  beforeAll(() => {
     windowLocationImplementation = window.location;
     delete window.location;
     window.location = {
@@ -15,7 +15,7 @@ describe('Generic-helpers', () => {
       }
     };
   });
-  after(() => {
+  afterAll(() => {
     window.location = windowLocationImplementation;
   });
 

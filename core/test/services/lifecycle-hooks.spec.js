@@ -1,13 +1,11 @@
-const chai = require('chai');
-const assert = chai.assert;
-const sinon = require('sinon');
-import { afterEach } from 'mocha';
-
 import { LifecycleHooks } from '../../src/services/lifecycle-hooks';
 import { LuigiConfig, LuigiUX } from '../../src/core-api';
 
+const chai = require('chai');
+const sinon = require('sinon');
+
 describe('LifecycleHooks', function() {
-  this.retries(2);
+  jest.retryTimes(2);
   let clock;
 
   beforeEach(() => {
