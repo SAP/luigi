@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "module": "commonjs",
-    "target": "es2015",
+    "module": "es6",
+    "target": "es2017",
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src"        

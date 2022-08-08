@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>External micro frontend</title>
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
+    />
+    <script src="./node_modules/@luigi-project/client/luigi-client.js"></script>
+    <link
+      rel="stylesheet"
+      href="./node_modules/fundamental-styles/dist/layout-panel.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./node_modules/fundamental-styles/dist/button.css"
+    />
+  </head>
+
+  <body>
+    <div class="fd-layout-panel">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            Just a test page from an external micro frontend.
+          </h3>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+
+        import { LuigiMockUtil } from '/node_modules/@luigi-project/testing-utilities/index.js';
+        import { LuigiMockEngine } from './node_modules/@luigi-project/testing-utilities/index.js'
+        const settings = {
+            text: 'This is just a test alert for external micro frontend.',
+            type: 'success'
+        };
+
+        let mockEngine = new LuigiMockEngine();
+        let mockUtil = new LuigiMockUtil();
+        
+        let initPostMessageMthd = await Promise.resolve(LuigiMockEngine.initPostMessageHook());
+        eval(initPostMessageMthd);
+        console.log(initPostMessageMthd)
+
+        window.LuigiClient.addInitListener((context, origin) => {
+            LuigiClient.uxManager().showAlert(settings);
+        });
+
+        window.LuigiClient.setTargetOrigin("/")
+
+        window.LuigiClient.linkManager().openAsModal('/', {title:'User Settings', size:'m'});
+        
+    </script>
+  </body>
+</html>

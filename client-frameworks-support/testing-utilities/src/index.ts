@@ -1,2 +1,2 @@
-export { LuigiMockUtil } from './luigi-mock-util';
-export { LuigiMockEngine } from './luigi-mock-engine';
+export { LuigiMockUtil } from './luigi-mock-util.js';
+export { LuigiMockEngine } from './luigi-mock-engine.js';
