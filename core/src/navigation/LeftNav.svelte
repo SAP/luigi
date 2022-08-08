@@ -13,6 +13,7 @@
   import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.svelte';
+import { KEYCODE_ENTER } from '../utilities/keycode';
 
   //TODO refactor
   const __this = {
@@ -180,6 +181,7 @@
   let sideNavCompactMode;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
+  let addNavHrefForAnchor = false;
 
   const setLeftNavData = async () => {
     const componentData = __this.get();
@@ -198,6 +200,7 @@
   onMount(() => {
     semiCollapsibleButton =
       LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
+    addNavHrefForAnchor = LuigiConfig.getConfigValue('navigation.addNavHrefs');
     hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
     sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
     expandedCategories = NavigationHelpers.loadExpandedCategories();
@@ -403,6 +406,18 @@
     setBurgerTooltip();
   }
 
+  /**
+   * Handles pressing the enter key when addNavHref is disabled
+   * @param event the event of the anchor element currently focused on
+   * @param node the corresponding node selected
+   */
+  function handleEnterPressed(event, node) {
+    if(event.keyCode === KEYCODE_ENTER) {
+      console.log('test inside');
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+    }
+  }
+
   function setBurgerTooltip() {
     if (!NavigationHelpers.getBurgerTooltipConfig()) {
       return;
@@ -507,9 +522,16 @@
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
-                          on:click={(event) => {
-                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                          on:click={event => {
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                              event
+                            ) && handleClick(node);
                           }}
+                          tabindex="0"
+                          on:keyup={!addNavHrefForAnchor
+                            ? event => handleEnterPressed(event, node)
+                            : undefined}
+                          role={!addNavHrefForAnchor ? 'button' : undefined}
                           data-testid={getTestId(node)}
                         >
                           {#if node.icon}
@@ -553,7 +575,7 @@
                     {/if}
                   {/if}
                 {/each}
-              {:else if nodes.filter(node => (!node.hideFromNav && node.label)).length > 0}
+              {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
                   <li
@@ -568,7 +590,6 @@
                   >
                     <div class="fd-nested-list__content has-child">
                       <a
-                        href="javascript:void(null)"
                         title={resolveTooltipText(nodes, $getTranslation(key))}
                         class="fd-nested-list__link {isExpanded(
                           nodes,
@@ -576,7 +597,11 @@
                         )
                           ? 'is-expanded'
                           : ''}"
-                        tabindex="-1"
+                        tabindex={isExpanded ? '0' : '-1'}
+                        on:keyup={!addNavHrefForAnchor
+                          ? event => handleEnterPressed(event, node)
+                          : undefined}
+                        role={!addNavHrefForAnchor ? 'button' : undefined}
                         id="collapsible_listnode_{index}"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
@@ -649,9 +674,18 @@
                                 selectedNode
                                   ? 'is-selected'
                                   : ''}"
-                                on:click={(event) => {
-                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                on:click={event => {
+                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                    event
+                                  ) && handleClick(node);
                                 }}
+                                on:keyup={!addNavHrefForAnchor
+                                  ? event => handleEnterPressed(event, node)
+                                  : undefined}
+                                role={!addNavHrefForAnchor
+                                  ? 'button'
+                                  : undefined}
+                                tabindex="0"
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
@@ -693,9 +727,19 @@
                                       selectedNode
                                         ? 'is-selected'
                                         : ''}"
-                                      on:click={(event) => {
-                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                      tabindex="0"
+                                      on:click={event => {
+                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                          event
+                                        ) && handleClick(node);
                                       }}
+                                      on:keyup={!addNavHrefForAnchor
+                                        ? event =>
+                                            handleEnterPressed(event, node)
+                                        : undefined}
+                                      role={!addNavHrefForAnchor
+                                        ? 'button'
+                                        : undefined}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
@@ -764,12 +808,19 @@
                         >
                           <a
                             href={getRouteLink(node)}
+                            tabindex="0"
                             class="fd-nested-list__link {node === selectedNode
                               ? 'is-selected'
                               : ''}"
-                            on:click={(event) => {
-                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                            on:click={event => {
+                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                event
+                              ) && handleClick(node);
                             }}
+                            on:keyup={!addNavHrefForAnchor
+                              ? event => handleEnterPressed(event, node)
+                              : undefined}
+                            role={!addNavHrefForAnchor ? 'button' : undefined}
                             data-testid={getTestId(node)}
                           >
                             {#if node.icon}

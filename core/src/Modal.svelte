@@ -21,6 +21,7 @@
   export let isDataPrepared = false;
   export let nodepath;
   export let modalIndex;
+  export let disableBackdrop;
 
   const dispatch = createEventDispatcher();
   let nodeObject;
@@ -242,17 +243,6 @@
     }
   };
 
-  const backdropStateChanged = (event) => {
-    if (
-      event &&
-      event.detail &&
-      event.detail.backdropActive &&
-      event.detail.drawer
-    ) {
-      //renderBackdrop = false;
-    }
-  };
-
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
@@ -299,7 +289,7 @@
   >
     {#if isModal || (isDrawer && settings.header)}
       <div class="fd-dialog__header fd-bar fd-bar--header">
-        <Backdrop on:stateChanged={backdropStateChanged} />
+        <Backdrop disable={disableBackdrop} />
         <div class="fd-bar__left">
           <div class="fd-bar__element">
             {#if settings.title}
