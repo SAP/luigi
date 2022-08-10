@@ -299,18 +299,5 @@ describe('Iframe', () => {
       sinon.assert.calledOnce(IframeHelpers.createIframe);
       sinon.assert.calledOnce(iframeContainer.appendChild);
     });
-
-    // it('preloadViewGroups()', () => {
-    //   ViewGroupPreloading.preloadBatchSize = 4;
-    //   ViewGroupPreloading.shouldPreload = true;
-
-    //   assert.equal(iframes.length, 1);
-
-    //   preloadingAllowed = true;
-    //   ViewGroupPreloading.preload();
-    //   clock.tick(1);
-
-    //   assert.equal(iframes.length, 4);
-    // });
   });
 });
