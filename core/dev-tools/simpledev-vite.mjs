@@ -116,8 +116,7 @@ var params = {
   file: 'index.html',
   wait: 1000,
   mount: [
-    ['/public', './dist'],
-    ['/public-ie11', './public-ie11'],
+    ['/public', './public'],
     ['/public_client', '../client/public']
   ],
   logLevel: 0,

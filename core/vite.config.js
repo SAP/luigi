@@ -38,8 +38,9 @@ export default defineConfig({
         }
       },
       plugins: []
-    }
+    },
+    outDir: 'public'
   },
-  publicDir: true,
+  publicDir: 'public_root',
   plugins: [luigiPlugin(), svelte()]
 });

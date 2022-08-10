@@ -31,6 +31,7 @@
     "bundlesizeOnly": "bundlesize",
     "build": "vite build",
     "watch": "vite build --watch",
+    "bundle": "npm run build",
     "simpledev": "node ./dev-tools/simpledev-vite.mjs"
   },
   "bundlesize": [
