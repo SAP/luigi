@@ -115,7 +115,7 @@ Further options related to view groups can be configured using the parameters li
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It may not be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
-  - **loadOnStartup**(boolean): when set to true it loads the respective view group with the respective preloadUrl in the background, when the app first starts. 
+  - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 ### preloadViewGroups
 - **type**: boolean
 - **description**: allows deactivating the default preloading of view group iframes.
