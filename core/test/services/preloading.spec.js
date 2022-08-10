@@ -60,8 +60,16 @@ describe('Iframe', () => {
       cheese: {
         preloadUrl: 'cheese.html'
       },
+      banana: {
+        preloadUrl: 'banana.html',
+        background: true
+      },
       ananas: {
         preloadUrl: 'ananas.html'
+      },
+      schnitzel: {
+        preloadUrl: 'schnitzel.html',
+        background: true
       }
     };
     sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
@@ -274,5 +282,35 @@ describe('Iframe', () => {
 
       assert.equal(iframe.luigi.preloading, false);
     });
+
+    it('preloadIframeOnBackground()', () => {
+      const iframeContainer = {
+        appendChild: sinon.stub()
+      };
+      sinon.stub(IframeHelpers, 'createIframe').returns({
+        style: {
+          display: 'test'
+        },
+        luigi: {
+          preloading: false
+        }
+      });
+      ViewGroupPreloading.preloadIframeOnBackground({ preloadUrl: 'test' }, 'name', iframeContainer);
+      sinon.assert.calledOnce(IframeHelpers.createIframe);
+      sinon.assert.calledOnce(iframeContainer.appendChild);
+    });
+
+    // it('preloadViewGroups()', () => {
+    //   ViewGroupPreloading.preloadBatchSize = 4;
+    //   ViewGroupPreloading.shouldPreload = true;
+
+    //   assert.equal(iframes.length, 1);
+
+    //   preloadingAllowed = true;
+    //   ViewGroupPreloading.preload();
+    //   clock.tick(1);
+
+    //   assert.equal(iframes.length, 4);
+    // });
   });
 });
