@@ -62,14 +62,14 @@ describe('Iframe', () => {
       },
       banana: {
         preloadUrl: 'banana.html',
-        background: true
+        loadOnStartup: true
       },
       ananas: {
         preloadUrl: 'ananas.html'
       },
       schnitzel: {
         preloadUrl: 'schnitzel.html',
-        background: true
+        loadOnStartup: true
       }
     };
     sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {

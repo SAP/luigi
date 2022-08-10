@@ -36,7 +36,7 @@ class ViewGroupPreloadingClass {
 
     backgroundMfeOnly &&
       settingsWithPreload.forEach(([name, settings]) => {
-        if (settings.background) {
+        if (settings.loadOnStartup) {
           this.preloadIframeOnBackground(settings, name, iframeContainer);
         }
       });
