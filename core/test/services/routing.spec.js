@@ -648,41 +648,41 @@ describe('Routing', function() {
       assert.equal(component.get().hideSideNav, true);
     });
 
-    it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
-      //given
-      const path = 'compound';
-      const node = { compound: { renderer: () => {} } };
+    // it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
+    //   //given
+    //   const path = 'compound';
+    //   const node = { compound: { renderer: () => {} } };
 
-      //when
-      console.warn = sinon.spy();
-      component.showAlert = sinon.spy();
-      component.shouldShowUnsavedChangesModal = sinon.spy();
+    //   //when
+    //   console.warn = sinon.spy();
+    //   component.showAlert = sinon.spy();
+    //   component.shouldShowUnsavedChangesModal = sinon.spy();
 
-      await Routing.handleRouteChange(path, component, node, config).catch(error => {
-        console.log(error);
-      });
+    //   await Routing.handleRouteChange(path, component, node, config).catch(error => {
+    //     console.log(error);
+    //   });
 
-      //then
-      sinon.assert.calledOnce(console.warn);
-    });
+    //   //then
+    //   sinon.assert.calledOnce(console.warn);
+    // });
 
-    it('should navigate to rootPath if node can be reached directly', async () => {
-      //given
-      const path = 'compound2';
-      const node = { compound: { renderer: () => {} } };
+    // it('should navigate to rootPath if node can be reached directly', async () => {
+    //   //given
+    //   const path = 'compound2';
+    //   const node = { compound: { renderer: () => {} } };
 
-      //when
-      component.viewUrl = path;
-      component.showAlert = sinon.spy();
-      component.shouldShowUnsavedChangesModal = sinon.spy();
+    //   //when
+    //   component.viewUrl = path;
+    //   component.showAlert = sinon.spy();
+    //   component.shouldShowUnsavedChangesModal = sinon.spy();
 
-      await Routing.handleRouteChange(path, component, node, config).catch(error => {
-        console.log(error);
-      });
+    //   await Routing.handleRouteChange(path, component, node, config).catch(error => {
+    //     console.log(error);
+    //   });
 
-      //then
-      sinon.assert.calledWithExactly(Routing.navigateTo, 'projects');
-    });
+    //   //then
+    //   sinon.assert.calledWithExactly(Routing.navigateTo, 'projects');
+    // });
 
     it('should handle nodeObject that is compound', async () => {
       //given
@@ -1284,8 +1284,8 @@ describe('Routing', function() {
         .withArgs('routing.skipRoutingForUrlPatterns')
         .returns(['foo_bar']);
       global.location = {
-          href: 'http://some.url.de?foo_bar'
-        };
+        href: 'http://some.url.de?foo_bar'
+      };
       const actual = Routing.shouldSkipRoutingForUrlPatterns();
       const expect = true;
 
