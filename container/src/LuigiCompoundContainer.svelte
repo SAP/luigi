@@ -1,10 +1,10 @@
-<svelte:options tag={null}/>
+<svelte:options tag={null} accessors={true}/>
 
 <script>
-	export let viewurl;
+	// export let viewurl;
 	export let context;
-	export let label;
-	export let compoundConfig;
+	// export let label;
+	let compoundConfig;
 
 	let initialized = false;
 	let mainComponent;
