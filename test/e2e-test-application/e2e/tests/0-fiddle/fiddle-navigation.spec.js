@@ -99,6 +99,9 @@ describe('Fiddle', () => {
           label: 'Virtual',
           virtualTree: true,
           viewUrl: '/examples/microfrontends/multipurpose.html#',
+          loadingIndicator: {
+            enabled: false
+          },
           context: {
             content:
               '<button  onClick="LuigiClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
@@ -108,11 +111,15 @@ describe('Fiddle', () => {
       });
 
       it('navigate', localRetries, () => {
-        cy.getIframeBodyWithRetries()
-          .find('button')
-          .contains('virtual')
-          .click();
+        let $iframeBody;
 
+        cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+          $iframeBody = result;
+          cy.wrap($iframeBody)
+            .find('button')
+            .contains('virtual')
+            .click();
+        });
         cy.expectPathToBe('/virtual/this/is/a/tree');
       });
     });
