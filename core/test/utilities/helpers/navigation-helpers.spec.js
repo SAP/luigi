@@ -126,13 +126,103 @@ describe('Navigation-helpers', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
-        columns: 3
+        columns: 'auto',
+        items: () => {
+          return [{}, {}, {}];
+        }
       });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
       assert.equal(columns, 3);
     });
     it('should return number from config file even if columns are not defined', () => {
-      LuigiConfig.getConfigValue.returns({ icon: 'grid', label: 'Products' });
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        items: () => {
+          return [{}, {}, {}, {}, {}, {}, {}]; //7
+        }
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+
+    it('should return number from config file even if columns are not defined and items proberty is an array', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        items: [{}, {}, {}, {}, {}, {}, {}]
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+
+    it('should return undefined if no items in config defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto'
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, undefined);
+    });
+
+    it('should return undefined if empty array items in config defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        item: []
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, undefined);
+    });
+
+    it('should return number from config file if columns are defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: () => {
+          return [];
+        },
+        columns: 3
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 3);
+    });
+
+    it('should return number from config file if columns are defined and items proberty is an array', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: [],
+        columns: 3
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 3);
+    });
+
+    it('should return number from config file if columns are defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: () => {
+          return [];
+        },
+        columns: '110'
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+
+    it('should return number from config file if columns are defined and items proberty is an array', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: [],
+        columns: '110'
+      });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
       assert.equal(columns, 4);
     });
@@ -695,7 +785,7 @@ describe('Navigation-helpers', () => {
         'luigi.preferences.navigation.expandedCategories',
         JSON.stringify(['home:cat'])
       );
-      });
+    });
   });
   describe('renderIconClassName', () => {
     it('should render sap-icon to standard icon suite', () => {
@@ -712,6 +802,32 @@ describe('Navigation-helpers', () => {
     });
     it('render icon class name without name', () => {
       assert.equal(NavigationHelpers.renderIconClassName(''), '');
+    });
+  });
+  describe('handleNavAnchorClickedWithoutMetaKey', () => {
+    let event;
+    beforeEach(() => {
+      event = new Event('click');
+      event.preventDefault = sinon.spy();
+      event.stopPropagation = sinon.spy();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('call the function with keyboard meta control pressed should return false', () => {
+      event.ctrlKey = true;
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), false);
+      sinon.assert.notCalled(event.preventDefault);
+      sinon.assert.calledOnce(event.stopPropagation);
+    });
+
+    it('call the function without keyboard meta control pressed should return true', () => {
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), true);
+      sinon.assert.calledOnce(event.preventDefault);
+      sinon.assert.notCalled(event.stopPropagation);
     });
   });
 });

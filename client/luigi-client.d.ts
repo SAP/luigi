@@ -19,7 +19,9 @@ export declare interface ConfirmationModalSettings {
 
 export declare interface ModalSettings {
   title?: string;
-  size?: 'l' | 'm' | 's';
+  size?: 'fullscreen' | 'l' | 'm' | 's';
+  width?: string;
+  height?: string;
 }
 
 export declare interface SplitViewSettings {
@@ -61,9 +63,9 @@ export declare interface Context {
   };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
+  anchor?: string;
   [key: string]: any;
 }
-
 export declare interface NodeParams {
   [key: string]: string;
 }
@@ -140,7 +142,7 @@ export declare interface UxManager {
    * @param {Object} settings.links provides links data
    * @param {Object} settings.links.LINK_KEY object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
    * @param {string} settings.links.LINK_KEY.text text which replaces the link identifier in the alert content
-   * @param {string} settings.links.LINK_KEY.url url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+   * @param {string} settings.links.LINK_KEY.url URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
    * @param {string} settings.links.LINK_KEY.dismissKey dismissKey which represents the key of the link.
    * @param {number} settings.closeAfter (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
    * @returns {promise} which is resolved when the alert is dismissed
@@ -298,7 +300,7 @@ export declare interface LinkManager {
    * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
@@ -363,11 +365,23 @@ export declare interface LinkManager {
    * @param {string} path navigation path
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+
+  /**
+   * Update current title and size of a modal.
+   * @memberof linkManager
+   * @param {Object} updatedModalSettings possibility to update the active modal.
+   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
+   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @example
+   * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+   */
+  updateModalSettings: (updatedModalSettings: Object) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
@@ -412,8 +426,16 @@ export declare interface LinkManager {
   withoutSync: () => this;
 
   /**
+   * Updates path of the modalPathParam when internal navigation occurs
+   * @since 1.21.0
+   * @example
+   * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
+   */
+  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry?: boolean) => void;
+
+  /**
    * Enables navigating to a new tab.
-   * @since NEXT_RELEASE
+   * @since 1.16.0
    * @example
    * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
@@ -422,12 +444,23 @@ export declare interface LinkManager {
   /**
    * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
-   * @since NEXT_RELEASE
+   * @since 1.19.0
    * @example
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
    */
   preserveQueryParams: (preserve: boolean) => this;
+
+  /**
+   * Gets the luigi route associated with the current micro frontend.
+   * @returns {promise} a promise which resolves to a String value specifying the current luigi route
+   * @since 1.23.0
+   * @example
+   * LuigiClient.linkManager().getCurrentRoute();
+   * LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+   * LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+   */
+  getCurrentRoute: () => Promise<string>;
 }
 
 export declare interface StorageManager {
@@ -622,16 +655,21 @@ export type getContext = () => Context;
  */
 export function addNodeParams(params: NodeParams, keepBrowserHistory: Boolean): void;
 export type addNodeParams = (params: NodeParams, keepBrowserHistory: Boolean) => void;
+
 /**
  * Returns the node parameters of the active URL.
  * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
  * <!-- add-attribute:class:warning -->
  * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+ * @param {boolean} shouldDesanitise defines whether the specially encoded characters should be desanitised
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
  * @memberof Lifecycle
+ * @example
+ * const nodeParams = LuigiClient.getNodeParams()
+ * const nodeParams = LuigiClient.getNodeParams(true)
  */
-export function getNodeParams(): NodeParams;
-export type getNodeParams = () => NodeParams;
+export function getNodeParams(shouldDesanitise?: boolean): NodeParams;
+export type getNodeParams = (shouldDesanitise?: boolean) => NodeParams;
 
 /**
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
@@ -651,6 +689,26 @@ export type getActiveFeatureToggles = () => Array<String>;
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
+
+/**
+ * Returns the anchor of active URL.
+ * @returns {String} the anchor string
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.getAnchor();
+ */
+export function getAnchor(): String;
+export type getAnchor = () => String;
+
+/**
+ * Sets the anchor of active URL.
+ * @param {string} anchor
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.setAnchor('luigi');
+ */
+export function setAnchor(anchor: String): void;
+export type setAnchor = (anchor: String) => void;
 
 /**
  * Read search query parameters which are sent from Luigi core

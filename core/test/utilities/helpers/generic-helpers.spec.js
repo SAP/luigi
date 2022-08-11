@@ -57,6 +57,39 @@ describe('Generic-helpers', () => {
     assert.equal(GenericHelpers.trimLeadingSlash('/luigi'), 'luigi');
   });
 
+  it('isString', () => {
+    assert.equal(GenericHelpers.isString('foo'), true);
+    assert.equal(GenericHelpers.isString(true), false);
+    assert.equal(GenericHelpers.isString(12345), false);
+  });
+
+  it('isFunction', () => {
+    const func = () => {};
+    assert.equal(GenericHelpers.isFunction(func), true);
+    assert.equal(GenericHelpers.isFunction('foo'), false);
+    assert.equal(GenericHelpers.isFunction(true), false);
+    assert.equal(GenericHelpers.isFunction(12345), false);
+  });
+
+  it('isObject', () => {
+    const obj = { foo: 'bar' };
+    const func = () => {};
+    assert.equal(GenericHelpers.isObject(obj), true);
+    assert.equal(GenericHelpers.isObject(func), false);
+    assert.equal(GenericHelpers.isObject('foo'), false);
+    assert.equal(GenericHelpers.isObject(true), false);
+    assert.equal(GenericHelpers.isObject(12345), false);
+  });
+
+  it('isEmptyObject', () => {
+    const obj = { foo: 'bar' };
+    const obj2 = {};
+    const obj3 = undefined;
+    assert.equal(GenericHelpers.isEmptyObject(obj), false);
+    assert.equal(GenericHelpers.isEmptyObject(obj2), true);
+    assert.equal(GenericHelpers.isEmptyObject(obj3), false);
+  });
+
   it('removeInternalProperties', () => {
     const input = {
       some: true,
@@ -84,6 +117,30 @@ describe('Generic-helpers', () => {
       some: true
     };
     assert.deepEqual(GenericHelpers.removeProperties(input, keys), expected);
+  });
+
+  it('replaceVars', () => {
+    const context = {
+      a: 'a_val',
+      b: {
+        c: 'c_val'
+      }
+    };
+    assert.equal(
+      GenericHelpers.replaceVars('index.html#/{context.a}', context, 'context.'),
+      'index.html#/a_val',
+      'first level context vars being interpolated'
+    );
+    assert.equal(
+      GenericHelpers.replaceVars('index.html#/{context.b.c}', context, 'context.'),
+      'index.html#/c_val',
+      'nested context vars being interpolated'
+    );
+    assert.equal(
+      GenericHelpers.replaceVars('index.html#/:a/{context.b.c}', context, ':', false),
+      'index.html#/a_val/{context.b.c}',
+      'colon prefix, no paranthesis'
+    );
   });
 
   describe('semverCompare', () => {

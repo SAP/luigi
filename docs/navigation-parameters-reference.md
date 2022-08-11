@@ -3,11 +3,12 @@
   "node": {
     "label": "Navigation parameters reference",
     "category": {
-      "label": "Luigi Core"
+      "label": "Navigation",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 3
+      "categoryPosition": 3,
+      "position": 4
     }
   }
 }
@@ -50,7 +51,7 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### pageNotFoundHandler
 - **type**: any
-- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution.
+- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar. 
 - **attributes**:
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
@@ -220,8 +221,8 @@ Node parameters are all the parameters that can be added to an individual naviga
 
 ### children
 - **type**: array | function
-- **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix url.
-For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children urls.
+- **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix URL.
+For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children URLs.
 ```javascript
 navigation: {
     nodes: [{
@@ -557,7 +558,8 @@ runTimeErrorHandler: {
 - **description**:  configures the settings of a view which opens in a modal. You can set the **openNodeInModal** parameter to `true` to use the default modal title and size, or you can specify them using these attributes:
 - **attributes**:
   - **title** is the modal title. By default, it is the node label. If there is no label, it is left empty.
-  - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size.
+  - **size** specifies the size of the modal. The default size is `l`, which means 80% of the main window size. You can also use `m` (60%) and `s` (40%) to set the modal size or
+  - **width** and **height** can be used to specify the size of the modal more precisely. In that case, the **size** attribute is not needed. Allowed units are `%`, `px`, `rem`, `em`, `vh` and `vw`.
 
 ### pageErrorHandler
 <!-- add-attribute:class:warning -->
@@ -816,7 +818,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 ### columns
 - **type**: number
-- **description**: gives the possibility to define a number of columns to display products. It may be 3 or 4 columns. If nothing is specified, it is 4 columns by default.
+- **description**: gives the possibility to define a number of columns to be displayed within the product switcher. It may be 3 or 4 columns, or `'auto'`. If nothing is specified, it is 4 columns by default. Parameter `columns: 'auto'` sets the number of columns to 3, in case the entities in  **productSwitcher** are equal to or less than 6. If there are more than 6, the number of columns will be automatically adjusted to 4. 
 
 ### icon
 - **type**: string
@@ -850,7 +852,51 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 ## App switcher
 
-The app switcher is a drop-down list available in the top navigation bar. It allows you to switch between application elements displayed in the drop-down. To do so, add the **appSwitcher** parameter to the **navigation** object using the following optional parameters:
+The app switcher is a dropdown list available in the top navigation bar. It allows you to switch between application elements displayed in the dropdown. To use it, you need to:
+1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
+2. Add the **appSwitcher** parameter to the **navigation** object using the optional parameters listed below.
+
+### itemRenderer
+- **type**: function
+- **description**: This function allows you to customize the single list element rendered in the default app switcher popover.
+- **attributes**:
+  - **item** single application element
+  - **slot** `ul` element as slot. You can append your custom `li` entries to this `ul` element.
+  - **appSwitcherApiObj**
+      - **type**: Object
+      - **description**: It is an object with a function `closeDropDown` as property. This function closes the custom app switcher dropdown.
+- **example**:
+  ```javascript
+    appSwitcher: {
+      items:[...],
+      itemRenderer: (item, slot, appSwitcherApiObj) => {
+        let a = document.createElement('a');
+        a.setAttribute('class', 'fd-menu__link');
+        a.addEventListener('click', e => {
+          Luigi.navigation().navigate(item.link);
+          appSwitcherApiObj.closeDropDown();
+          e.stopPropagation();
+          Luigi.configChanged('navigation')
+        });
+        let span = document.createElement('span');
+        span.setAttribute('class', 'fd-menu__addon-before');
+        let i = document.createElement('i');
+        if (item.title === 'Application One') {
+          i.setAttribute('class', 'sap-icon--phone');
+        } else {
+          i.setAttribute('class', 'sap-icon--settings');
+        }
+        span.appendChild(i);
+        let spanText = document.createElement('span');
+        spanText.setAttribute('class', 'fd-menu__title');
+        spanText.innerText = item.title;
+        a.appendChild(span);
+        a.appendChild(spanText);
+        slot.appendChild(a);
+      }
+    }
+  ```
+- **since**: NEXTRELEASE
 
 ### items
 - **type**: array
@@ -863,7 +909,6 @@ The app switcher is a drop-down list available in the top navigation bar. It all
 ### showMainAppEntry
 - **type**: boolean
 - **description**: includes the link to the root of the Luigi application in the drop-down using the **title** specified in the **settings/header** section of the configuration as a label.
-
 
 ## Global search
 

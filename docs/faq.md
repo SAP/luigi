@@ -3,7 +3,8 @@
   "node": {
     "label": "FAQ",
     "category": {
-      "label": "Basics"
+      "label": "Basics",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 1,
@@ -14,6 +15,9 @@
 meta -->
 
 # Frequently asked questions about Luigi
+
+<!-- add-attribute:class:success -->
+>**TIP:** You can go to our [GitHub Discussions page](https://github.com/SAP/luigi/discussions) to find the answers to more questions not listed here.
 
 This page contains FAQs about Luigi in the following categories:
 - [Basics](#basic-questions)
@@ -46,6 +50,10 @@ No, Luigi itself does not deliver any micro frontends. It is a framework that he
 ### Is Luigi only useful in the context of SAP or very large corporate applications?
 
 No, Luigi can be used independently of SAP for a variety of purposes. You can find one example in [this article](https://medium.com/swlh/luigi-micro-fronteds-orchestrator-8c0eca710151) which describes how to create a small hobby project using Luigi.
+
+### What is the difference between Luigi and SAPUI5/OpenUI5?
+
+You can find a detailed response to this question [here](https://github.com/SAP/luigi/discussions/2809#discussioncomment-3137780).
 
 ### Where can I download Luigi?
 
@@ -98,7 +106,7 @@ Yes, it is already being used in production and close-to-production within SAP. 
 There are a few options to do that at the moment:
 - Use the Fundamental Styles theming capabilities which already allow you to achieve a lot by customizing the CSS variables. Find more info [here](https://github.com/SAP/theming-base-content).
 - Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi.
-- Turn off Luigi view components completely via the [hideNavigation](general-settings.md) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
+- Turn off Luigi view components completely via the [hideNavigation](general-settings.md#hidenavigation) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
 - You can use this simple example with a completely customized shell as a starting point:
 ```html
 <!DOCTYPE html>

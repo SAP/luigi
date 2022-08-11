@@ -1,13 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { OperatorFunction, PartialObserver, Subscription } from 'rxjs';
-import {
-  convertToParamMap,
-  NavigationEnd,
-  ParamMap,
-  Router,
-  RouterEvent
-} from '@angular/router';
-import { linkManager } from '@luigi-project/client';
+import { convertToParamMap, NavigationEnd, ParamMap, Router, RouterEvent } from '@angular/router';
+import { linkManager, uxManager } from '@luigi-project/client';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiContextService } from './luigi-context-service';
@@ -19,14 +13,9 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 export class LuigiAutoRoutingService implements OnDestroy {
   private subscription: Subscription = new Subscription();
 
-  constructor(
-    private router: Router,
-    private luigiContextService: LuigiContextService
-  ) {
+  constructor(private router: Router, private luigiContextService: LuigiContextService) {
     this.subscription.add(
-      this.router.events
-        .pipe(this.doFilter())
-        .subscribe(this.doSubscription.bind(this) as () => void)
+      this.router.events.pipe(this.doFilter()).subscribe(this.doSubscription.bind(this) as () => void)
     );
   }
 
@@ -48,6 +37,8 @@ export class LuigiAutoRoutingService implements OnDestroy {
    * Another option is to specify the LuigiPath: if you add in route data luigiRoute:'/xxxx/xxx';
    * in the case we will update the path in LuigiCore navigation, here an example
    * {path: 'demo', component: DemoComponent, data:{luigiRoute: '/home/demo''}}
+   * If updateModalPathParam is specified, than modalPathParam will be updated upon internal navigation:
+   * {path: 'demo', component: DemoComponent, data:{updateModalPathParam: true}}
    * @param event the NavigationEnd event
    */
   doSubscription(event: NavigationEnd): void {
@@ -73,25 +64,25 @@ export class LuigiAutoRoutingService implements OnDestroy {
         }
       }
     }
-
     if (current?.data) {
+      const ux = uxManager();
+      let lm = linkManager().withoutSync();
+      let route: string | undefined;
+
       if (current.data.luigiRoute) {
-        let route = current.data.luigiRoute;
+        route = current.data.luigiRoute;
 
         if (current.params) {
           const pmap: ParamMap = convertToParamMap(current.params);
           pmap.keys.forEach(key => {
             const val = pmap.getAll(key).forEach(param => {
-              route = route.replace(':' + key, param);
+              route = route?.replace(':' + key, param);
             });
           });
         }
-        let lm = linkManager();
         if (current.data.fromContext) {
           if (!this.luigiContextService.getContext()) {
-            console.debug(
-              'Ignoring auto navigation request, luigi context not set'
-            );
+            console.debug('Ignoring auto navigation request, luigi context not set');
             return;
           }
           if (current.data.fromContext === true) {
@@ -100,27 +91,28 @@ export class LuigiAutoRoutingService implements OnDestroy {
             lm = lm.fromContext(current.data.fromContext);
           }
         }
-
-        lm.withoutSync().navigate(route);
-        return;
-      }
-      if (current.data.fromVirtualTreeRoot) {
+      } else if (current.data.fromVirtualTreeRoot) {
         let url = event.url;
         const truncate = current.data.fromVirtualTreeRoot.truncate;
         if (truncate) {
           if (truncate.indexOf('*') === 0) {
             const index = url.indexOf(truncate.substr(1));
             url = url.substr(index + truncate.length - 1);
-          }
-          else if (url.indexOf(truncate) === 0) {
+          } else if (url.indexOf(truncate) === 0) {
             url = url.substr(truncate.length);
           }
         }
-        console.debug('Calling fromVirtualTreeRoot for url ==> ' + url);
-        linkManager()
-          .fromVirtualTreeRoot()
-          .withoutSync()
-          .navigate(url);
+        route = url;
+        console.debug('Calling fromVirtualTreeRoot for url ==> ' + route);
+        lm = lm.fromVirtualTreeRoot();
+      }
+
+      if (ux.isModal()) {
+        if (current.data.updateModalDataPath) {
+          lm.updateModalPathInternalNavigation(route as string, {}, current.data.addHistoryEntry);
+        }
+      } else if (route) {
+        lm.navigate(route);
       }
     }
   }

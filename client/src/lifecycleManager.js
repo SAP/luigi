@@ -50,7 +50,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
+   * Starts the handshake with Luigi Core and thereafter results in initialization of Luigi Client. It is always ran by default when importing the Luigi Client package in your micro frontend. Note that when using `defer-luigi-init` to defer default initialization, you will need to initialize the handshake using this function manually wherever needed.
    * @since 1.12.0
    * @memberof Lifecycle
    * @example
@@ -424,13 +424,17 @@ class LifecycleManager extends LuigiClientBase {
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
    * <!-- add-attribute:class:warning -->
    * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+   * @param {boolean} shouldDesanitise defines whether the specially encoded characters should be desanitised
    * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
    * @memberof Lifecycle
    * @example
    * const nodeParams = LuigiClient.getNodeParams()
+   * const nodeParams = LuigiClient.getNodeParams(true)
    */
-  getNodeParams() {
-    return this.currentContext.nodeParams;
+  getNodeParams(shouldDesanitise = false) {
+    return shouldDesanitise
+      ? helpers.deSanitizeParamsMap(this.currentContext.nodeParams)
+      : this.currentContext.nodeParams;
   }
 
   /**
@@ -460,7 +464,8 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
+   * Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using {@link navigation-parameters-reference.md#clientpermissionsurlparameters clientPermissions.urlParameters}.
+
    * @param {Object} searchParams
    * @param {boolean} keepBrowserHistory
    * @memberof Lifecycle
@@ -526,6 +531,33 @@ class LifecycleManager extends LuigiClientBase {
    */
   getUserSettings() {
     return this.currentContext.internal.userSettings;
+  }
+
+  /**
+   * Returns the current anchor based on active URL.
+   * @memberof Lifecycle
+   * @since 1.21.0
+   * @returns anchor of URL
+   * @example
+   * LuigiClient.getAnchor();
+   */
+  getAnchor() {
+    return this.currentContext.internal.anchor || '';
+  }
+
+  /**
+   * Sends anchor to Luigi Core. The anchor will be added to the URL.
+   * @param {string} anchor
+   * @since 1.21.0
+   * @memberof Lifecycle
+   * @example
+   * LuigiClient.setAnchor('luigi');
+   */
+  setAnchor(anchor) {
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.setAnchor',
+      anchor
+    });
   }
 }
 export const lifecycleManager = new LifecycleManager();

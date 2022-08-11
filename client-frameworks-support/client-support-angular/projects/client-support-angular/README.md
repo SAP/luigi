@@ -108,8 +108,17 @@ If you want to use **LuigiReuseRouteStrategy** (it is not enabled by default), y
  }
  ```
 
+### AutoRouting for modals
 
+Similarly to other components, modals which have a [modalPathParam](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=modalpathparam) can trigger a change in the URL when navigation occurs. In the Angular router of your Luigi app, you can enable auto-routing for modals using these parameters: 
+- `updateModalDataPath` - if set to `true`, the URL will be updated automatically every time the user navigates within a modal. 
+- `addHistoryEntry` - if set to `true`, changes in the modal will also add a history element in the history of the tab.
 
-
- 
- 
+For example: 
+```javascript
+{
+    path: 'luigi-client-support-preload',
+    component: LuigiPreloadComponent,
+    data: { updateModalDataPath: true, addHistoryEntry: true }
+  }
+```

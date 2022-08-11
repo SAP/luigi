@@ -110,6 +110,19 @@ describe('Routing-helpers', () => {
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
     });
+
+    it('substituteViewUrl - substitutes nested context variable', () => {
+      const viewUrl = '/{i18n.currentLocale}/microfrontend.html#/:var1/{context.nested.value}/{nodeParams.param1}';
+      const expected = '/en/microfrontend.html#/var1_value/context_nested_value/nodeparam_value';
+
+      expect(
+        RoutingHelpers.substituteViewUrl(viewUrl, {
+          pathParams: { var1: 'var1_value' },
+          context: { nested: { value: 'context_nested_value' } },
+          nodeParams: { param1: 'nodeparam_value' }
+        })
+      ).to.equal(expected);
+    });
   });
   describe('substitute search query params', () => {
     afterEach(() => {
@@ -417,10 +430,10 @@ describe('Routing-helpers', () => {
     afterEach(() => {
       sinon.restore();
     });
-    it('js:void on falsy config value', () => {
+    it('returns undefined on falsy config value', () => {
       LuigiConfig.getConfigBooleanValue.returns(false);
 
-      expect(RoutingHelpers.getNodeHref({}, {})).to.equal('javascript:void(0)');
+      expect(RoutingHelpers.getNodeHref({}, {})).to.equal(undefined);
       sinon.assert.notCalled(RoutingHelpers.getRouteLink);
       sinon.assert.calledWith(LuigiConfig.getConfigBooleanValue, 'navigation.addNavHrefs');
     });
@@ -502,19 +515,36 @@ describe('Routing-helpers', () => {
 
     const viewGroupInNodeParent = {
       link: 'child-node',
+      viewUrl: './relative',
       parent: {
         pathSegment: 'parent-node',
-        viewGroup: 'tets 1-1'
+        viewGroup: 'tets 1-1',
+        viewUrl: './relative/foo/bar'
       }
     };
 
     const viewGroupInParentOfNodeParent = {
       link: 'child-node',
+      viewUrl: 'http://bla.blub/but/something/else',
       parent: {
         pathSegment: 'parent-node',
         parent: {
           pathSegment: 'parent-parent-node',
-          viewGroup: 'tets 1-1-1'
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
+        }
+      }
+    };
+
+    const viewGroupInParentOfNodeParentDifferentUrl = {
+      link: 'child-node',
+      viewUrl: 'http://bla2.blub/foo/bar',
+      parent: {
+        pathSegment: 'parent-node',
+        parent: {
+          pathSegment: 'parent-parent-node',
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
         }
       }
     };
@@ -531,8 +561,12 @@ describe('Routing-helpers', () => {
       assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent), 'tets 1-1-1');
     });
 
+    it('do not return viewGroup from parent at node.parent if domains do not match', () => {
+      assert.equal(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParentDifferentUrl), undefined);
+    });
+
     it('return undefined if viewGroup is not inside node', () => {
-      assert.deepEqual(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
+      assert.equal(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
     });
   });
   describe('set feature toggle from url', () => {
@@ -580,40 +614,31 @@ describe('Routing-helpers', () => {
   });
 
   describe('getModalPathFromPath & getModalParamsFromPath', () => {
+    const mockLocation = new URL('http://localhost');
     beforeEach(() => {
       sinon.stub(RoutingHelpers, 'getModalViewParamName').returns('modal');
-      sinon.stub(RoutingHelpers, 'getQueryParams');
+      sinon.stub(RoutingHelpers, 'getLocation');
+      RoutingHelpers.getLocation.returns(mockLocation);
+      mockLocation.href = 'http://localhost';
     });
     afterEach(() => {
       sinon.restore();
     });
     it('without modal param', () => {
-      RoutingHelpers.getQueryParams.returns({});
       assert.equal(RoutingHelpers.getModalPathFromPath('/path/one'), null);
     });
     it('with modal', () => {
-      const allQueryParams = {
-        modal: '%2Fhome%2Fchild-2'
-      };
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      mockLocation.search = '?modal=%2Fhome%2Fchild-2';
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
     });
     it('with modal params', () => {
-      const allQueryParams = {
-        modal: '%2Fhome%2Fchild-2',
-        modalParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
-      };
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      mockLocation.search = '?modal=%2Fhome%2Fchild-2&modalParams=%7B%22title%22%3A%22Real%20Child%22%7D';
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
       assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
     });
     it('with custom modal param name', () => {
-      const allQueryParams = {
-        custom: '%2Fhome%2Fchild-2',
-        customParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
-      };
+      mockLocation.search = '?custom=%2Fhome%2Fchild-2&customParams=%7B%22title%22%3A%22Real%20Child%22%7D';
       RoutingHelpers.getModalViewParamName.returns('custom');
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
 
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
       assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
@@ -737,13 +762,13 @@ describe('Routing-helpers', () => {
     });
   });
 
-  describe('getPageNotFoundRedirectPath', () => {
+  describe('getPageNotFoundRedirectResult', () => {
     afterEach(() => {
       sinon.restore();
       sinon.reset();
     });
 
-    it('with custom pageNotFoundHandler defined', async () => {
+    it('with custom pageNotFoundHandler defined redirectTo path', async () => {
       const customRedirect = 'somecustompath';
       sinon
         .stub(LuigiConfig, 'getConfigValue')
@@ -751,17 +776,39 @@ describe('Routing-helpers', () => {
         .returns(() => {
           return { redirectTo: customRedirect };
         });
-      const expected = await RoutingHelpers.getPageNotFoundRedirectPath('notFoundPath');
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
       assert.equal(customRedirect, expected);
+    });
+
+    it('with custom pageNotFoundHandler defined keepURL', async () => {
+      const customKeepURL = true;
+      const somePath = 'somePath';
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.pageNotFoundHandler')
+        .returns(() => {
+          return {
+            redirectTo: somePath,
+            keepURL: customKeepURL
+          };
+        });
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('');
+      assert.deepEqual(
+        {
+          path: somePath,
+          keepURL: customKeepURL
+        },
+        expected
+      );
     });
 
     it('with custom pageNotFoundHandler not defined', async () => {
       sinon
         .stub(LuigiConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
-        .returns(undefined);
-      const expected = await RoutingHelpers.getPageNotFoundRedirectPath('notFoundPath');
-      assert.equal(undefined, expected);
+        .returns();
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath');
+      assert.deepEqual({}, expected);
     });
 
     it('with custom pageNotFoundHandler not a function', async () => {
@@ -769,7 +816,7 @@ describe('Routing-helpers', () => {
         .stub(LuigiConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
         .returns({ thisObject: 'should be function instead' });
-      const expected = await RoutingHelpers.getPageNotFoundRedirectPath('notFoundPath');
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
       assert.equal(undefined, expected);
     });
   });
@@ -782,7 +829,7 @@ describe('Routing-helpers', () => {
     beforeEach(() => {
       console.warn = sinon.spy();
       sinon.stub(LuigiI18N, 'getTranslation');
-      sinon.stub(RoutingHelpers, 'getPageNotFoundRedirectPath');
+      sinon.stub(RoutingHelpers, 'getPageNotFoundRedirectResult');
       sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
       sinon.stub(component, 'showAlert');
     });
@@ -799,12 +846,12 @@ describe('Routing-helpers', () => {
     });
 
     it('with custom pageNotFoundHandler defined', async () => {
-      const redirectPath = 'somepathtoredirect';
+      const redirectPath = { path: 'somepathtoredirect' };
       // define pageNotFoundHandler return value with stub
-      RoutingHelpers.getPageNotFoundRedirectPath.returns(redirectPath);
+      RoutingHelpers.getPageNotFoundRedirectResult.returns(redirectPath);
       // call function being tested
       const expected = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(component, redirectPath, false);
-      assert.equal(redirectPath, expected);
+      assert.equal(redirectPath.path, expected);
     });
 
     it('with custom pageNotFoundHandler as not defined', async () => {
@@ -813,7 +860,7 @@ describe('Routing-helpers', () => {
         .withArgs('luigi.requestedRouteNotFound', { route: path })
         .returns('Could not find the requested route');
       // set pageNotFoundHandler as undefined with stub
-      RoutingHelpers.getPageNotFoundRedirectPath.returns(undefined);
+      RoutingHelpers.getPageNotFoundRedirectResult.returns({});
       // call function being tested
       const expected = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(component, path, false);
       sinon.assert.calledWith(console.warn, `Could not find the requested route: ${path}`);

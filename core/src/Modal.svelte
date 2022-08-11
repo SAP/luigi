@@ -7,8 +7,6 @@
     onDestroy,
   } from 'svelte';
   import { fade } from 'svelte/transition';
-  const dispatch = createEventDispatcher();
-
   import { Navigation } from './navigation/services/navigation';
   import {
     EventListenerHelpers,
@@ -16,13 +14,16 @@
     IframeHelpers,
     RoutingHelpers,
   } from './utilities/helpers';
-  import { LuigiConfig } from './core-api';
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
 
   export let settings;
   export let isDataPrepared = false;
   export let nodepath;
+  export let modalIndex;
+  export let disableBackdrop;
+
+  const dispatch = createEventDispatcher();
   let nodeObject;
   let pathData;
   let nodeParams;
@@ -31,6 +32,7 @@
   let showLoadingIndicator = true;
   let isDrawer = false;
   let isModal = true;
+  let modalElementClassSelector;
 
   const prepareNodeData = async (path) => {
     const pathUrlRaw =
@@ -40,6 +42,7 @@
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
     isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
+    modalElementClassSelector = isDrawer ? '._drawer' : `[modal-container-index="${modalIndex}"]`;
     if (isDrawer) {
       isModal = false;
       if (settings.header === undefined) {
@@ -74,21 +77,23 @@
     }
     if (isDataPrepared) {
       if (nodeObject.webcomponent) {
-        //"Workaround" because we need a webcomponent client api to hide/show the loadingIndicator
+        //"Workaround" because we need a webcomponent client api
+        // to hide/show the loadingIndicator
         showLoadingIndicator = false;
         if (isDrawer) {
           await setDrawerSize();
         } else {
           await setModalSize();
         }
+       
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
-          document.querySelector('.iframeModalCtn'),
+          document.querySelector(modalElementClassSelector),
           pathData.context,
           nodeObject
         );
         dispatch('wcCreated', {
-          modalWC: document.querySelector('.iframeModalCtn'),
+          modalWC: document.querySelector(modalElementClassSelector),
           modalWCData: { ...pathData, nodeParams },
         });
         wcCreated = true;
@@ -113,18 +118,40 @@
   };
 
   const setModalSize = async () => {
-    const elem = document.getElementsByClassName('lui-modal-mf');
-    let modalSize = '80%';
-    if (settings.size) {
-      if (settings.size === 'l') {
-        modalSize = '80%';
-      } else if (settings.size === 'm') {
-        modalSize = '60%';
-      } else if (settings.size === 's') {
-        modalSize = '40%';
+    let height, width;
+    const elem = document.querySelector('.lui-modal-index-' + modalIndex);
+    const { size, width: settingsWidth, height: settingsHeight } = settings;
+    const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
+
+    if (
+      settingsWidth &&
+      settingsWidth.match(regex) &&
+      settingsHeight &&
+      settingsHeight.match(regex)
+    ) {
+      height = settingsHeight;
+      width = settingsWidth;
+    } else {
+      switch (size) {
+        case 'fullscreen':
+          height = '100vh';
+          width = '100vw';
+          elem.classList.add('lui-modal-fullscreen');
+          break;
+        case 'm':
+          height = '80%';
+          width = '60%';
+          break;
+        case 's':
+          height = '80%';
+          width = '40%';
+          break;
+        default:
+          height = '80%';
+          width = '80%';
       }
     }
-    elem[0].setAttribute('style', `width:${modalSize};height:${modalSize}`);
+    elem.setAttribute('style', `width:${width};height:${height};`);
   };
 
   const createIframeModal = async (viewUrl, componentData) => {
@@ -144,8 +171,7 @@
       'modal',
       componentData
     );
-
-    const iframeCtn = document.querySelector('.iframeModalCtn');
+    const iframeCtn = document.querySelector(modalElementClassSelector);
     iframeCtn.appendChild(iframe);
     return iframe;
   };
@@ -217,26 +243,24 @@
     }
   };
 
-  const backdropStateChanged = (event) => {
-    if (
-      event &&
-      event.detail &&
-      event.detail.backdropActive &&
-      event.detail.drawer
-    ) {
-      //renderBackdrop = false;
-    }
-  };
-
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
+    // only disable accessibility for all cases other than a drawer without backdrop
+    !(settings.isDrawer && !settings.backdrop)
+      ? IframeHelpers.disableA11YKeyboardExceptClassName('.lui-modal-index-' + modalIndex)
+      : '';
+    window.focus();
   });
 
   onDestroy(() => {
     EventListenerHelpers.removeEventListener('message', onMessage);
+    // only disable accessibility for all cases other than a drawer without backdrop
+    !(settings.isDrawer && !settings.backdrop)
+      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.lui-modal-index-' + modalIndex)
+      : '';
   });
 
-  // [svelte-upgrade suggestion]
+  //  [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
@@ -257,7 +281,7 @@
       ? settings.backdrop
         ? 'drawer drawer-dialog__content drawer__backdrop'
         : 'drawer drawer-dialog__content'
-      : 'lui-modal-mf'}"
+      : 'lui-modal-mf lui-modal-index-' + modalIndex}"
     data-testid={isModal ? 'modal-mf' : 'drawer-mf'}
     role="dialog"
     aria-modal="true"
@@ -265,7 +289,7 @@
   >
     {#if isModal || (isDrawer && settings.header)}
       <div class="fd-dialog__header fd-bar fd-bar--header">
-        <Backdrop on:stateChanged={backdropStateChanged} />
+        <Backdrop disable={disableBackdrop} />
         <div class="fd-bar__left">
           <div class="fd-bar__element">
             {#if settings.title}
@@ -292,7 +316,10 @@
       {#if isDrawer}
         <slot />
       {/if}
-      <div class="iframeModalCtn {isDrawer ? '_drawer' : '_modal'}" />
+      <div
+        class="iframeModalCtn {isDrawer ? '_drawer' : '_modal'} "
+        modal-container-index={!isDrawer ? modalIndex : undefined}
+      />
     </div>
     {#if showLoadingIndicator}
       <div
@@ -367,6 +394,11 @@
     .spinnerContainer {
       left: 0;
     }
+  }
+  .lui-modal-fullscreen {
+    max-height: none;
+    max-width: none;
+    border-radius: 0;
   }
   .spinnerContainer {
     display: flex;

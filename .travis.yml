@@ -1,8 +1,11 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '12.18.4' #TODO: change it to 'node' once Travis supports the newest version
+  - '12.18.4' # Default node version for CI testing
+  - 16 # Optional node version for setup scripts
 dist: xenial
+stage: Setup node environment
+script: echo "npm test temporarily disabled"
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
@@ -59,10 +62,10 @@ integration-testing: &integration-testing
     - rm -rf ~/.npm/_cacache
     - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
-
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
+      if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
@@ -108,14 +111,14 @@ jobs:
       # run only when merging from release-v branch to master
       if: repo = SAP/luigi AND branch = master AND type = push
       script:
-        # - bash -xv ./scripts/testCompatibility.sh --tag latest || travis_terminate 1 # to run with verbose mode
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
         - rm -rf $TRAVIS_BUILD_DIR/../luigi-compatibility-testing # remove compatibility build cache
 
-    #----- DOCU -----
+    # ----- DOCU -----
     - name: 'Check Documentation'
       if: repo = SAP/luigi AND type != cron AND type != api
       script:
@@ -125,7 +128,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
 
-    #----- WHITESOURCE -----
+    # ----- WHITESOURCE -----
     - name: 'Whitesource check'
       if: repo = SAP/luigi AND branch = master AND type != cron AND type != api
       # Whitesource can't deal with symlinking, therefore we can't use lerna
@@ -157,7 +160,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
 
     - name: 'Nightly release'
-      if: type = cron OR (type = api AND commit_message = publish)
+      if: (branch = master AND type = cron) OR (type = api AND commit_message = publish)
       script:
         - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
@@ -167,3 +170,50 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+
+    # ----- SETUP EXAMPLES TESTS -----
+    - stage: 'Test Setup Scripts'
+      name: 'Test Angular setup script'
+      node_js: 16
+      if: type = api AND commit_message = test-setup-scripts
+      script:
+        - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
+        - RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
+        - echo "$RES"
+        - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
+
+    - name: 'Test Vue setup script'
+      node_js: 16
+      if: type = api AND commit_message = test-setup-scripts
+      script:
+        - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh | tee /dev/fd/2)
+        - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+        - echo "$RES"
+        - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
+
+    - name: 'Test React setup script'
+      node_js: 16
+      if: type = api AND commit_message = test-setup-scripts
+      script:
+        - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh | tee /dev/fd/2)
+        - RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
+        - echo "$RES"
+        - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
+
+    - name: 'Test UI5 setup script'
+      node_js: 16
+      if: type = api AND commit_message = test-setup-scripts
+      script:
+        - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh | tee /dev/fd/2)
+        - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+        - echo "$RES"
+        - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
+            
+    - name: 'Test No-Framework setup script'
+      node_js: 16
+      if: type = api AND commit_message = test-setup-scripts
+      script:
+        - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh | tee /dev/fd/2)
+        - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+        - echo "$RES"
+        - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi

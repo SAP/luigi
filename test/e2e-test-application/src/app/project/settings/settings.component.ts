@@ -31,6 +31,8 @@ export class SettingsComponent implements OnInit {
   lcSubscription: Subscription;
   preservedViewCallbackContext: any;
   private testFeatureToggleActive = false;
+  currentRouteVirtual: string;
+  currentRoute: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -89,5 +91,22 @@ export class SettingsComponent implements OnInit {
     // going back with some sample callback context,
     // that will be handed over to previous view
     linkManager().goBack(this.callbackValue);
+  }
+
+  getCurrentRouteFromVirtualTree() {
+    linkManager()
+      .fromVirtualTreeRoot()
+      .getCurrentRoute()
+      .then(route => {
+        this.currentRouteVirtual = route;
+      });
+  }
+
+  getCurrentRoute() {
+    linkManager()
+      .getCurrentRoute()
+      .then(route => {
+        this.currentRoute = route;
+      });
   }
 }

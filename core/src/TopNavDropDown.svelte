@@ -121,7 +121,9 @@
           >
             <a
               href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
-              on:click|preventDefault={() => {}}
+              on:click={(event) => {
+                NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+              }}
               class="fd-menu__link"
             >
               <span class="fd-top-nav__icon">

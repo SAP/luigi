@@ -1,6 +1,6 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
-import { LuigiElements } from '../../core-api';
-import { LuigiConfig } from '../../core-api';
+import { LuigiElements, LuigiConfig } from '../../core-api';
+import { replace, get } from 'lodash';
 
 class GenericHelpersClass {
   /**
@@ -8,32 +8,60 @@ class GenericHelpersClass {
    * @returns random numeric value {number}
    * @private
    */
-  getRandomId() /* istanbul ignore next */ {
+  getRandomId /* istanbul ignore next */() {
     // window.msCrypto for IE 11
     return (window.crypto || window.msCrypto).getRandomValues(new Uint32Array(1))[0];
   }
 
-  isFunction(anyParam) {
-    return anyParam && {}.toString.call(anyParam) === '[object Function]';
+  /**
+   * Checks if input is a function.
+   * @param functionToCheck mixed
+   * @returns {boolean}
+   */
+  isFunction(functionToCheck) {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
   }
 
-  isPromise(anyParam) {
-    return anyParam && this.isFunction(anyParam.then);
+  /**
+   * Checks if input is a promise.
+   * @param promiseToCheck mixed
+   * @returns {boolean}
+   */
+  isPromise(promiseToCheck) {
+    return promiseToCheck && this.isFunction(promiseToCheck.then);
   }
 
-  isIE() /* istanbul ignore next */ {
+  /**
+   * Checks if input is a string.
+   * @param stringToCheck mixed
+   * @returns {boolean}
+   */
+  isString(stringToCheck) {
+    return typeof stringToCheck === 'string' || stringToCheck instanceof String;
+  }
+
+  isIE /* istanbul ignore next */() {
     const ua = navigator.userAgent;
-    /* MSIE used to detect old browsers and Trident used to newer ones*/
+    /* MSIE used to detect old browsers and Trident used to newer ones */
     return Boolean(ua.includes('MSIE ') || ua.includes('Trident/'));
   }
 
   /**
-   * Simple object check.
-   * @param item mixed
+   * Checks if input is an object.
+   * @param objectToCheck mixed
    * @returns {boolean}
    */
-  isObject(item) {
-    return item && typeof item === 'object' && !Array.isArray(item);
+  isObject(objectToCheck) {
+    return !!(objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck));
+  }
+
+  /**
+   * Check if object is empty
+   * @param item object to check
+   * @returns {boolean}
+   */
+  isEmptyObject(item) {
+    return this.isObject(item) && Object.keys(item).length === 0;
   }
 
   /**
@@ -94,8 +122,8 @@ class GenericHelpersClass {
    */
   getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var result = regex.exec(window.location.search);
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const result = regex.exec(window.location.search);
     return (result && decodeURIComponent(result[1].replace(/\+/g, ' '))) || '';
   }
 
@@ -141,7 +169,7 @@ class GenericHelpersClass {
    * @returns {string} string without leading slash
    */
   trimLeadingSlash(str) {
-    return str.replace(/^\/+/g, '');
+    return this.isString(str) ? str.replace(/^\/+/g, '') : '';
   }
 
   /**
@@ -150,11 +178,11 @@ class GenericHelpersClass {
    * @returns string string without any trailing slash
    */
   trimTrailingSlash(str) {
-    return str.replace(/\/+$/, '');
+    return this.isString(str) ? str.replace(/\/+$/, '') : '';
   }
 
   getTrimmedUrl(path) {
-    const pathUrl = 0 < path.length ? this.getPathWithoutHash(path) : path;
+    const pathUrl = path.length > 0 ? this.getPathWithoutHash(path) : path;
     return this.trimTrailingSlash(pathUrl.split('?')[0]);
   }
 
@@ -196,12 +224,22 @@ class GenericHelpersClass {
   replaceVars(inputString, params, prefix, parenthesis = true) {
     let processedString = inputString;
     if (params) {
-      Object.entries(params).forEach(entry => {
-        processedString = processedString.replace(
-          new RegExp(this.escapeRegExp((parenthesis ? '{' : '') + prefix + entry[0] + (parenthesis ? '}' : '')), 'g'),
-          encodeURIComponent(entry[1])
-        );
-      });
+      if (parenthesis) {
+        processedString = replace(processedString, /{([\s\S]+?)}/g, val => {
+          let repl = val.slice(1, -1).trim();
+          if (repl.indexOf(prefix) === 0) {
+            repl = repl.substring(prefix.length);
+          }
+          return get(params, repl, val);
+        });
+      } else {
+        Object.entries(params).forEach(entry => {
+          processedString = processedString.replace(
+            new RegExp(this.escapeRegExp(prefix + entry[0]), 'g'),
+            encodeURIComponent(entry[1])
+          );
+        });
+      }
     }
     if (parenthesis) {
       processedString = processedString.replace(new RegExp('\\{' + this.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'), '');
@@ -209,7 +247,7 @@ class GenericHelpersClass {
     return processedString;
   }
 
-  getInnerHeight() /* istanbul ignore next */ {
+  getInnerHeight /* istanbul ignore next */() {
     return LuigiElements.isCustomLuigiContainer() ? LuigiElements.getLuigiContainer().clientHeight : window.innerHeight;
   }
 
@@ -288,11 +326,11 @@ class GenericHelpersClass {
    * ['1.3', '1.2', '1.4', '1.1'].sort(semverCompare)
    */
   semverCompare(a, b) {
-    var pa = a.split('-')[0].split('.');
-    var pb = b.split('-')[0].split('.');
-    for (var i = 0; i < 3; i++) {
-      var na = Number(pa[i]);
-      var nb = Number(pb[i]);
+    const pa = a.split('-')[0].split('.');
+    const pb = b.split('-')[0].split('.');
+    for (let i = 0; i < 3; i++) {
+      const na = Number(pa[i]);
+      const nb = Number(pb[i]);
       if (na > nb) return 1;
       if (nb > na) return -1;
       if (!isNaN(na) && isNaN(nb)) return 1;
@@ -315,6 +353,52 @@ class GenericHelpersClass {
       console.warn('Experimental feature not enabled: ', expFeatureName);
     }
     return val;
+  }
+
+  /**
+   * Creates a remote promise.
+   * @returns {Promise} which returns true when the promise will be resolved and returns false if the promise will be rejected.
+   */
+  createRemotePromise() {
+    let res, rej;
+    const prom = new Promise(resolve => {
+      res = () => {
+        resolve(true);
+      };
+      rej = () => {
+        resolve(false);
+      };
+    });
+
+    let luiRP = LuigiConfig._remotePromises;
+    if (!luiRP) {
+      luiRP = {
+        counter: 0,
+        promises: []
+      };
+      LuigiConfig._remotePromises = luiRP;
+    }
+    prom.id = luiRP.counter++;
+    luiRP.promises[prom.id] = prom;
+
+    prom.doResolve = () => {
+      delete luiRP.promises[prom.id];
+      res();
+    };
+    prom.doReject = () => {
+      delete luiRP.promises[prom.id];
+      rej();
+    };
+
+    return prom;
+  }
+
+  getRemotePromise(id) {
+    return LuigiConfig._remotePromises ? LuigiConfig._remotePromises.promises[id] : undefined;
+  }
+
+  isString(value) {
+    return typeof value === 'string' || value instanceof String;
   }
 }
 

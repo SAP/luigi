@@ -3,11 +3,12 @@
   "node": {
     "label": "UI features",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 9
+      "position": 2
     }
   }
 }
@@ -42,9 +43,9 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
 ```
 
-* Define and apply [**responsiveNavigation**](general-settings.md) settings to make the left navigation responsive.
+* Define and apply [**responsiveNavigation**](general-settings.md#responsivenavigation) settings to make the left navigation responsive.
 
-* Define and apply [**profileType**](general-settings.md) **'simple'**  or **'Fiori3'** to change the Profile Menu layout and design.
+* Define and apply [**profileType**](general-settings.md#profiletype) **'simple'**  or **'Fiori3'** to change the Profile Menu layout and design.
 
 * Define a custom width for the left side navigation. To do so, simply add the code below to the top of your `index.html`. The default width is 15rem.
 
@@ -61,6 +62,8 @@ You can quickly adjust the Luigi application to improve user experience on mobil
   --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
 }
 ```
+
+* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes.
 
 ## App loading indicator
 

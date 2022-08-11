@@ -5,13 +5,14 @@ const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
-import { LuigiConfig } from '../../../src/core-api';
+import { LuigiConfig, LuigiI18N, LuigiTheming, LuigiFeatureToggles } from '../../../src/core-api';
 import { ViewUrlDecorator } from '../../../src/services';
 
 describe('Iframe-helpers', () => {
   let component;
   let customSandboxRules = ['allow-scripts', 'rules1', 'rules2'];
   let allowRules = ['microphone', 'geolocation'];
+  let allowRulesWorkAround = ['microphone;', 'geolocation;'];
 
   beforeEach(() => {
     let lastObj = {};
@@ -44,10 +45,7 @@ describe('Iframe-helpers', () => {
     });
 
     it('createIframe with view group', () => {
-      const iframe = IframeHelpers.createIframe(
-        'http://luigi.url.de/',
-        'ananas'
-      );
+      const iframe = IframeHelpers.createIframe('http://luigi.url.de/', 'ananas');
       assert.equal(iframe.src, 'http://luigi.url.de/');
       assert.equal(iframe.vg, 'ananas');
     });
@@ -64,7 +62,13 @@ describe('Iframe-helpers', () => {
     it('createIframe with allowrules', () => {
       sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRules);
       const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
-      assert.equal(iframe.allow, 'microphone geolocation');
+      assert.equal(iframe.allow, 'microphone; geolocation;');
+    });
+
+    it('createIframe with workarounds for allowrules', () => {
+      sinon.stub(LuigiConfig, 'getConfigValue').returns(allowRulesWorkAround);
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/');
+      assert.equal(iframe.allow, 'microphone; geolocation;');
     });
 
     it('createIframe with interceptor', () => {
@@ -77,12 +81,7 @@ describe('Iframe-helpers', () => {
       const node = {
         pathSegment: 'tets'
       };
-      const iframe = IframeHelpers.createIframe(
-        'http://luigi.url.com/',
-        'vg1',
-        node,
-        'main'
-      );
+      const iframe = IframeHelpers.createIframe('http://luigi.url.com/', 'vg1', node, 'main');
       assert(interceptor.calledWith(iframe, 'vg1', node, 'main'));
     });
     it('createIframe with viewUrlDecorator', () => {
@@ -94,7 +93,19 @@ describe('Iframe-helpers', () => {
       assert.equal(iframe.src, mockUrl);
 
       sinon.assert.calledOnce(ViewUrlDecorator.hasDecorators);
-      sinon.assert.calledWithExactly(ViewUrlDecorator.applyDecorators, mockUrl);
+      sinon.assert.calledWithExactly(ViewUrlDecorator.applyDecorators, mockUrl, undefined);
+    });
+
+    it('createIframe with viewUrlDecorator and decode url', () => {
+      const mockUrl = 'http://luigi.url.com/';
+      ViewUrlDecorator.hasDecorators.returns(true);
+
+      const iframe = IframeHelpers.createIframe(mockUrl, undefined, { decodeViewUrl: true });
+
+      assert.equal(iframe.src, mockUrl);
+
+      sinon.assert.calledOnce(ViewUrlDecorator.hasDecorators);
+      sinon.assert.calledWithExactly(ViewUrlDecorator.applyDecorators, mockUrl, true);
     });
   });
 
@@ -105,10 +116,7 @@ describe('Iframe-helpers', () => {
     };
     IframeHelpers.removeIframe('two', testNode);
     assert.equal(testNode.removeChild.callCount, 1, 'removeChild call count');
-    assert(
-      testNode.removeChild.calledWith('two'),
-      'correct node child was deleted'
-    );
+    assert(testNode.removeChild.calledWith('two'), 'correct node child was deleted');
   });
 
   describe('ie fix for domain check', () => {
@@ -153,9 +161,7 @@ describe('Iframe-helpers', () => {
         return a1.protocol === 'https:' ? a1.hostname + ':443' : a1.hostname;
       });
       sb.stub(a2, 'host').get(() => {
-        return a2.protocol === 'https:'
-          ? a2.hostname + ':443' + a2.port
-          : a2.hostname;
+        return a2.protocol === 'https:' ? a2.hostname + ':443' + a2.port : a2.hostname;
       });
       assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
       expect(a1.host).to.equal('luigi.url.com:443');
@@ -287,17 +293,9 @@ describe('Iframe-helpers', () => {
       .returns(['firstIframe', 'secondIframe']);
 
     // first
-    assert.equal(
-      IframeHelpers.getIframeContainer(),
-      undefined,
-      'no iframe found'
-    );
+    assert.equal(IframeHelpers.getIframeContainer(), undefined, 'no iframe found');
     // second
-    assert.equal(
-      IframeHelpers.getIframeContainer(),
-      'firstIframe',
-      'returns first iframe'
-    );
+    assert.equal(IframeHelpers.getIframeContainer(), 'firstIframe', 'returns first iframe');
   });
 
   describe('getMicrofrontendsInDom', () => {
@@ -327,16 +325,144 @@ describe('Iframe-helpers', () => {
       assert.equal(iframes.filter(i => i.active).length, 5, 'active iframes');
 
       const expectedKeys = ['id', 'container', 'active', 'type'];
-      assert.deepEqual(
-        Object.keys(iframes[0]),
-        expectedKeys,
-        'contains all required keys'
-      );
+      assert.deepEqual(Object.keys(iframes[0]), expectedKeys, 'contains all required keys');
 
       const mainIframes = IframeHelpers.getMainIframes('main');
       assert.equal(mainIframes.length, 2);
       const modalIframes = IframeHelpers.getModalIframes('modal');
       assert.equal(modalIframes.length, 1);
+    });
+  });
+  describe('applyCoreStateData', () => {
+    it('applyCoreStateData', () => {
+      sinon.stub(LuigiTheming, 'getCurrentTheme').returns('any');
+      sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList').returns(['featureToggle']);
+      sinon
+        .stub(LuigiI18N, 'getCurrentLocale')
+        .returns({ currentLocaleStorageKey: 'luigi.currentluigi', defaultLocale: 'luigi' });
+      const internalData = { context: 'luigi' };
+      const expected = {
+        activeFeatureToggleList: ['featureToggle'],
+        currentLocale: {
+          currentLocaleStorageKey: 'luigi.currentluigi',
+          defaultLocale: 'luigi'
+        },
+        currentTheme: 'any'
+      };
+      assert.deepEqual(IframeHelpers.applyCoreStateData(internalData), {
+        context: 'luigi',
+        ...expected
+      });
+      assert.deepEqual(IframeHelpers.applyCoreStateData(undefined), expected);
+    });
+  });
+
+  describe('disable/enable keyboard accessibility on background elements', () => {
+    /**
+     * Ths function produces this html containing 6 DOM elements inside a body tag
+     * <html>
+     * <head>
+     *    <title>Mocked DOM</title>
+     * </head>
+     * <body>
+     *   <div>
+     *     <span class="outsideModal">I am some text</span>
+     *     <span tabindex="0" class="oldTabIndexOutsideModal">I am a text span with existing tabindex value</span>
+     *     <div class="modalElement">
+     *        <button>Click me</button>
+     *        <button class="oldTabIndexInModal" tabindex="1">Click that</button>
+     *     </div>
+     *   </div>
+     * </body>
+     * </html>
+     *
+     * @returns mocked data
+     */
+    const getMockedDocument = () => {
+      let doc = document.implementation.createHTMLDocument('Mocked DOM');
+
+      const divParent = doc.createElement('div');
+      divParent.className = 'divParent';
+      doc.body.appendChild(divParent);
+
+      const spanChild = doc.createElement('span');
+      spanChild.textContent = 'I am some text';
+      spanChild.className = 'spanChild';
+      divParent.appendChild(spanChild);
+
+      const spanChild2 = doc.createElement('span');
+      spanChild2.textContent = 'I am a text span with existing tabindex value';
+      spanChild2.setAttribute('tabindex', '0');
+      spanChild2.className = 'oldTabIndexOutsideModal';
+
+      divParent.appendChild(spanChild2);
+      divParent.appendChild(spanChild2);
+
+      const divChild = doc.createElement('div');
+      divChild.className = 'modalElement';
+
+      const childButton1 = doc.createElement('button');
+      childButton1.textContent = 'Click me';
+      childButton1.className = 'childButton1';
+
+      const childButton2 = doc.createElement('button');
+      childButton2.textContent = 'Click that';
+      childButton2.className = 'oldTabIndexInModal';
+      childButton2.setAttribute('tabindex', '1');
+
+      divChild.appendChild(childButton1);
+      divChild.appendChild(childButton2);
+      divParent.appendChild(divChild);
+      return doc;
+    };
+
+    describe('disableA11YKeyboardExceptClassName', () => {
+      beforeEach(() => {
+        global.document = getMockedDocument();
+      });
+
+      it('saves old tabindex value properly', () => {
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+        assert.equal(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('oldtab'), 0);
+        assert.isNull(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('oldtab'));
+      });
+
+      it('set tabindex properly on all but specified classname element', () => {
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+        assert.equal(global.document.getElementsByClassName('divParent')[0].getAttribute('tabindex'), -1);
+        assert.equal(global.document.getElementsByClassName('spanChild')[0].getAttribute('tabindex'), -1);
+        assert.equal(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('tabindex'), -1);
+        assert.isNull(global.document.getElementsByClassName('modalElement')[0].getAttribute('tabindex'));
+        assert.isNull(global.document.getElementsByClassName('childButton1')[0].getAttribute('tabindex'));
+        assert.equal(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('tabindex'), 1);
+      });
+    });
+
+    describe('enableA11YKeyboardBackdrop', () => {
+      beforeEach(() => {
+        global.document = getMockedDocument();
+        IframeHelpers.disableA11YKeyboardExceptClassName('.modalElement');
+      });
+
+      it('check oldtab property properly removed', () => {
+        IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.modalElement');
+        assert.isNull(global.document.getElementsByClassName('divParent')[0].getAttribute('oldtab'));
+        assert.isNull(global.document.getElementsByClassName('spanChild')[0].getAttribute('oldtab'));
+        assert.isNull(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('oldtab'));
+        assert.isNull(global.document.getElementsByClassName('modalElement')[0].getAttribute('oldtab'));
+        assert.isNull(global.document.getElementsByClassName('childButton1')[0].getAttribute('oldtab'));
+        assert.isNull(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('oldtab'));
+      });
+
+      it('check oldtabindex value properly restored', () => {
+        IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.modalElement');
+        assert.isNull(global.document.getElementsByClassName('divParent')[0].getAttribute('tabindex'));
+        assert.isNull(global.document.getElementsByClassName('spanChild')[0].getAttribute('tabindex'));
+        assert.equal(global.document.getElementsByClassName('oldTabIndexOutsideModal')[0].getAttribute('tabindex'), 0);
+        assert.isNull(global.document.getElementsByClassName('modalElement')[0].getAttribute('tabindex'));
+        assert.isNull(global.document.getElementsByClassName('childButton1')[0].getAttribute('tabindex'));
+        assert.equal(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('tabindex'), 1);
+      });
     });
   });
 });

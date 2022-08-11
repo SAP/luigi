@@ -56,7 +56,7 @@ class LuigiRouting {
       RoutingHelpers.modifySearchParams(params, url.searchParams);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url.href);
+    this.handleBrowserHistory(keepBrowserHistory, url);
     LuigiConfig.configChanged();
   }
 
@@ -74,15 +74,46 @@ class LuigiRouting {
       RoutingHelpers.modifySearchParams(params, url.searchParams, paramPrefix);
     }
 
-    this.handleBrowserHistory(keepBrowserHistory, url.href);
+    this.handleBrowserHistory(keepBrowserHistory, url);
     LuigiConfig.configChanged();
   }
 
-  handleBrowserHistory(keepBrowserHistory, href) {
+  sanitizeUrl(url) {
+    return new URL(location).origin === new URL(url).origin ? url : undefined;
+  }
+
+  handleBrowserHistory(keepBrowserHistory, url) {
+    const href = this.sanitizeUrl(url.href);
+
+    if (!href) {
+      console.warn('invalid url: ' + href);
+      return;
+    }
+
     if (keepBrowserHistory) {
       window.history.pushState({}, '', href);
     } else {
       window.history.replaceState({}, '', href);
+    }
+  }
+
+  getAnchor() {
+    const { hash } = new URL(location);
+    const useHashRouting = LuigiConfig.getConfigValue('routing.useHashRouting');
+
+    return useHashRouting && hash.split('#').length === 2 ? '' : hash.split('#').pop();
+  }
+
+  setAnchor(value) {
+    if (LuigiConfig.getConfigValue('routing.useHashRouting')) {
+      const { hash } = new URL(location);
+      const hashArray = hash.split('#');
+      const hasExistingHash = hashArray.length > 2;
+      const newHashArray = hasExistingHash ? hashArray.slice(0, -1) : hashArray;
+
+      window.location.hash = [...newHashArray, value].join('#');
+    } else {
+      window.location.hash = value;
     }
   }
 }

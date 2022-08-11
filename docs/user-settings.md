@@ -3,11 +3,12 @@
   "node": {
     "label": "User settings",
     "category": {
-      "label": "Luigi Core"
+      "label": "Navigation",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 13
+      "categoryPosition": 3,
+      "position": 3
     }
   }
 }
@@ -21,12 +22,12 @@ meta -->
 
 This document explains how to configure a User Settings dialog in the top navigation of Luigi.
 
-- [Overview](#overview)
-- [Example](#example)
-- [Parameters](#parameters)
-- [Write a custom editor](#write-a-custom-editor)
-- [Customize the user settings dialog](#customize-the-user-settings-dialog)
-- [Override default read and store functionality](#override-default-read-and-store-functionality)
+  - [Overview](#overview)
+  - [Example](#example)
+  - [Parameters](#parameters)
+  - [Write a custom editor](#write-a-custom-editor)
+  - [Customize the user settings dialog](#customize-the-user-settings-dialog)
+  - [Override default read and store functionality](#override-default-read-and-store-functionality)
 
 ## Overview
 
@@ -58,6 +59,7 @@ userSettings:{
       sublabel: 'account',
       icon: 'account',
       title: 'Account Settings',
+      initials: 'AA',
       settings: {
         name: { type: 'string', label: 'Name' , isEditable: true},
         checkbox: { type: 'boolean', label: 'Checkbox', isEditable: true },
@@ -99,7 +101,12 @@ These parameters used in the example above allow you to configure the items in t
 #### icon
 
 - **type** string (optional)
-- **description** name of the icon, without the `sap-icon--` prefix or path to an image.
+- **description** name of the icon, without the `sap-icon--` prefix. It is also possible to use an image instead of an icon by specifying its path.  
+
+#### initials
+
+- **type** string (optional)
+- **description** the initials are displayed in the account section in case the `icon:` attribute is not defined, or if the icon link is broken or unreachable. 
 
 #### iconClassAttribute
 

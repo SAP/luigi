@@ -1,12 +1,13 @@
 <!-- meta
 {
   "node": {
-    "label": "API Reference",
+    "label": "Luigi Client API",
     "category": {
-      "label": "Luigi Client"
+      "label": "API Reference",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 3,
+      "categoryPosition": 6,
       "position": 1
     }
   }
@@ -50,7 +51,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### luigiClientInit
 
-Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
+Starts the handshake with Luigi Core and thereafter results in initialization of Luigi Client. It is always ran by default when importing the Luigi Client package in your micro frontend. Note that when using `defer-luigi-init` to defer default initialization, you will need to initialize the handshake using this function manually wherever needed.
 
 ##### Examples
 
@@ -261,10 +262,15 @@ Node parameters are defined like URL query parameters but with a specific prefix
 
 > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
 
+##### Parameters
+
+-   `shouldDesanitise` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** defines whether the specially encoded characters should be desanitised (optional, default `false`)
+
 ##### Examples
 
 ```javascript
 const nodeParams = LuigiClient.getNodeParams()
+const nodeParams = LuigiClient.getNodeParams(true)
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
@@ -301,7 +307,7 @@ Returns **any** Core search query parameters
 
 #### addCoreSearchParams
 
-Sends search query parameters to Luigi Core. If they are allowed on node level, the search parameters will be added to the URL.
+Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using [clientPermissions.urlParameters](navigation-parameters-reference.md#clientpermissionsurlparameters).
 
 ##### Parameters
 
@@ -381,6 +387,40 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 -   **since**: 1.7.1
 
+#### getAnchor
+
+Returns the current anchor based on active URL.
+
+##### Examples
+
+```javascript
+LuigiClient.getAnchor();
+```
+
+Returns **any** anchor of URL
+
+**Meta**
+
+-   **since**: 1.21.0
+
+#### setAnchor
+
+Sends anchor to Luigi Core. The anchor will be added to the URL.
+
+##### Parameters
+
+-   `anchor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+LuigiClient.setAnchor('luigi');
+```
+
+**Meta**
+
+-   **since**: 1.21.0
+
 ### Lifecycle~initListenerCallback
 
 Callback of the addInitListener
@@ -438,9 +478,9 @@ LuigiClient.linkManager().navigateToIntent('Sales-settings')
 
 #### withoutSync
 
-Disables the navigation handling for a single navigation request
-It prevents Luigi Core from handling url change after `navigate()`.
-Used for auto-navigation
+Disables the navigation handling for a single navigation request.
+It prevents Luigi Core from handling the URL change after `navigate()`.
+Used for auto-navigation.
 
 ##### Examples
 
@@ -465,7 +505,7 @@ LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.16.0
 
 #### preserveQueryParams
 
@@ -484,7 +524,25 @@ LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foob
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: 1.19.0
+
+#### getCurrentRoute
+
+Gets the luigi route associated with the current micro frontend.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().getCurrentRoute();
+LuigiClient.linkManager().fromContext('project').getCurrentRoute();
+LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a String value specifying the current luigi route
+
+**Meta**
+
+-   **since**: 1.23.0
 
 #### navigate
 
@@ -497,7 +555,9 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 -   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard [navigate()](#navigate) function instead of [goBack()](#goBack)
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
-    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.size` **(`"fullscreen"` \| `"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
@@ -516,6 +576,26 @@ LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
 LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
 ```
 
+#### updateModalPathInternalNavigation
+
+Updates path of the modalPathParam when internal navigation occurs.
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
+-   `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history (optional, default `false`)
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+```
+
+**Meta**
+
+-   **since**: 1.21.0
+
 #### openAsModal
 
 Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
@@ -525,7 +605,10 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 -   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
-    -   `modalSettings.size` **(`"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.size` **(`"fullscreen"` \| `"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
 
 ##### Examples
 
@@ -677,6 +760,30 @@ LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).na
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
+
+#### withOptions
+
+Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+
+##### Parameters
+
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** navigation options
+    -   `options.preventHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+    -   `options.preventContextUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
+
+##### Examples
+
+```javascript
+LuigiClient.linkManager().withOptions(
+{ preventContextUpdate:true, preventHistoryEntry: true }
+).navigate('/overview')
+```
+
+Returns **[linkManager](#linkmanager)** link manager instance
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### pathExists
 
@@ -926,7 +1033,7 @@ Removes the backdrop.
 
 #### setDirtyStatus
 
-This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms.
+This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms. If you use `withoutSync()` together with `setDirtyStatus()`, this is a special case in which the dirty state logic needs to be handled by the micro frontend. For example, if the user navigates with an Angular router, which would trigger `withoutSync()`, Angular needs to take care about dirty state, prevent the navigation and ask for permission to navigate away, through `uxManager().showConfirmationModal(settings)`.
 
 ##### Parameters
 
@@ -978,7 +1085,7 @@ Shows an alert.
     -   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
         -   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
             -   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
-            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** url to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+            -   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
             -   `settings.links.LINK_KEY.dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** dismissKey which represents the key of the link.
     -   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
 
@@ -992,7 +1099,7 @@ const settings = {
  links: {
    goToHome: { text: 'homepage', url: '/overview' },
    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' }
+   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
    neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
  },
  closeAfter: 3000

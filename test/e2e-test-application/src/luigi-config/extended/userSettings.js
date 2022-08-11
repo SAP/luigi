@@ -13,7 +13,9 @@ class UserSettings {
       label: 'User Account',
       sublabel: 'username',
       icon: '/assets/favicon-sap.ico',
-      iconClassAttribute: 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail',
+      //icon: 'private',
+      iconClassAttribute: 'fd-avatar fd-avatar--s fd-avatar--circle fd-avatar--thumbnail lui-avatar-space',
+      initials: 'LU',
       title: 'User Account',
       settings: {
         name: { type: 'string', label: 'Name', placeholder: 'Name' },
@@ -101,6 +103,12 @@ class UserSettings {
       title: 'Custom',
       icon: 'private',
       viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
+    },
+    custom2: {
+      label: 'Custom 2',
+      title: 'Custom 2',
+      icon: 'private',
+      viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
     }
   };
 }

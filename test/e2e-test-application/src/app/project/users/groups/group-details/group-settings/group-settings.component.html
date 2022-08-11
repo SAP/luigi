@@ -31,7 +31,26 @@
         projects/pr2/users/groups/others/settings/dyn1
       </div>
       <br />
-
+      <div
+        class="clickable"
+        (click)="
+        linkManager().navigate(
+          '/projects/pr1/users/groups/test2/settings', null, true
+        )
+      "
+      >
+        projects/pr1/users/groups/test2/settings
+      </div>
+      <br />
+      <div
+        class="clickable"
+        (click)="
+        linkManager().goBack()
+      "
+      >
+        <b>Go Back</b>
+      </div>
+      <br />
       <a
         class="fd-link clickable"
         (click)="

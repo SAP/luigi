@@ -18,7 +18,7 @@ describe('Navigation', () => {
     //Check we have 5 left bar items
     cy.get('.lui-us-list')
       .find('[data-testid="us-navigation-item"]')
-      .should('have.length', 5);
+      .should('have.length', 6);
   };
 
   const saveSettings = () => {
@@ -197,6 +197,39 @@ describe('Navigation', () => {
         .should('exist')
         .should('contain', 'Français');
 
+      //Open button to show enumeration list options
+      cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
+        .eq(0)
+        .find('.lui-activate-language-dropdown')
+        .click();
+
+      //Choose option one above French
+      cy.get('[data-testid="lui-us-language-dropdown"]')
+        .should('exist')
+        .type('{upArrow}')
+        .type('{enter}');
+
+      //Confirm with keyboard: Enter
+      cy.get('.fd-popover__body--dropdown-fill')
+        .should('exist')
+        .type('{enter}');
+
+      //Check Placeholder of input field is English (en)
+      cy.get('[data-testid="lui-us-input0"]')
+        .should('exist')
+        .should('contain', 'English (en)');
+
+      //Choose option one below English
+      cy.get('[data-testid="lui-us-language-dropdown"]')
+        .should('exist')
+        .type('{downArrow}')
+        .type('{enter}');
+
+      //Confirm with keyboard: Enter
+      cy.get('.fd-popover__body--dropdown-fill')
+        .should('exist')
+        .type('{enter}');
+
       //Check Date Formant Input field and type a new format
       cy.get('[data-testid="lui-us-input1"]')
         .should('exist')
@@ -324,6 +357,28 @@ describe('Navigation', () => {
         cy.wrap($iframeBody)
           .contains('Red')
           .should('have.class', 'red');
+      });
+    });
+
+    it('Ctx update after storing user settings data using custom messages', () => {
+      let $iframeBody;
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(5)
+        .click();
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .should('have.class', 'yellow');
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .should('not.have.class', 'active');
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .click();
+        cy.wrap($iframeBody)
+          .contains('Yellow')
+          .should('have.class', 'active');
       });
     });
   });

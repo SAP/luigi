@@ -18,6 +18,29 @@
           <app-code-snippet data="uxManager().removeBackdrop()"></app-code-snippet>
         </p>
       </div>
+      <div class="fd-list__item">
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          data-testid="add-backdrop-from-mfe"
+          (click)="uxManager().addBackdrop()"
+        >
+          Add backdrop only</a
+        >
+        <app-code-snippet data="uxManager().addBackdrop()"> </app-code-snippet>
+      </div>
+      <div class="fd-list__item">
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          data-testid="navigate-to-project-2"
+          (click)="linkManager().navigate('/projects/pr2')"
+        >
+          Navigate away to project 2</a
+        >
+        <app-code-snippet data="linkManager().navigate('/projects/pr2')">
+        </app-code-snippet>
+      </div>
     </div>
     <div class="fd-layout-panel luigi__margin-bottom--small">
       <div class="fd-layout-panel__header">
@@ -404,6 +427,19 @@
             <a
               href="javascript:void(0)"
               class="fd-link"
+              (click)="navigatePreservedViewGoBack()"
+            >
+              with preserved view: to dynamic node and go back
+            </a>
+            <app-code-snippet
+              data="linkManager().navigate('/projects/pr1/users/groups/test1/settings', null, true);"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
               (click)="
                 linkManager()
                   .withParams({ test: true })
@@ -499,6 +535,52 @@
               .openAsModal('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a modal',
                 size: 'm'
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-to-settings-fullscreen"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/settings', {
+                  title: 'microfrontend in a modal',
+                  size: 'fullscreen',
+                  keepPrevious: true
+                })
+              "
+              >Open a modal fullscreen</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
+                title: 'microfrontend in a modal',
+                size: 'fullscreen',
+                keepPrevious: true
+              })"
+            >
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-to-settings-medium"
+              (click)="
+                linkManager().openAsModal('/projects/pr2/settings', {
+                  title: 'microfrontend in a modal',
+                  size: 'm',
+                  keepPrevious: true
+                })
+              "
+              >Open a modal medium</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
+                title: 'microfrontend in a modal',
+                size: 'm',
+                keepPrevious: true
               })"
             >
             </app-code-snippet>
@@ -636,6 +718,23 @@
               add node params</a
             >
             <app-code-snippet data="linkManager().addNodeParams({luigi:'rocks'}, false)">
+            </app-code-snippet>
+          </li>
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-virtual-tree"
+              (click)="
+                linkManager()
+                  .openAsModal('/projects/pr2/developers/internal/virtualTree')
+              "
+            >
+              open modal virtual-tree</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/developers/internal/virtualTree')"
+            >
             </app-code-snippet>
           </li>
         </ul>
@@ -776,6 +875,74 @@
               >Go to /projects/pr2/virtual-tree NOT using withoutSync()
             </a>
             <app-code-snippet data="linkManager().navigate('/projects/pr2/virtual-tree')">
+            </app-code-snippet>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fd-layout-panel luigi__margin-bottom--small">
+      <div class="fd-layout-panel__header">
+        <div class="fd-layout-panel__head">
+          <h3 class="fd-layout-panel__title">
+            LuigiClient - withOptions()
+          </h3>
+        </div>
+      </div>
+      <div class="fd-layout-panel__body">
+        <ul class="fd-list">
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
+                linkManager()
+                  .withOptions({preventContextUpdate:true})
+                  .navigate('/projects')
+              "
+              data-testid="navigate-withOptions-no-context"
+              >Go to /projects using withOptions() which makes no context update.
+            </a>
+            <app-code-snippet
+              data="linkManager().withOptions({preventContextUpdate:true}).navigate('/projects')"
+            >
+            </app-code-snippet>
+          </li>
+
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
+                linkManager()
+                  .withOptions({preventHistoryEntry: true})
+                  .navigate('/overview')
+              "
+              data-testid="navigate-withOptions-no-history"
+              >Go to /overview using withOptions() which makes no browser history be kept
+            </a>
+            <app-code-snippet
+              data="linkManager().withOptions({preventHistoryEntry: true}).navigate('/overview')"
+            >
+            </app-code-snippet>
+          </li>
+
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
+                linkManager()
+                  .withOptions({preventHistoryEntry: true, preventContextUpdate:true})
+                  .navigate('/overview')
+              "
+              data-testid="navigate-withOptions-no-history-context"
+              >Go to /overview using withOptions() which makes no browser history be kept
+              and no context updated.
+            </a>
+            <app-code-snippet
+              data="linkManager().withOptions({preventHistoryEntry: true, preventContextUpdate:true}).navigate('/overview')"
+            >
             </app-code-snippet>
           </li>
         </ul>

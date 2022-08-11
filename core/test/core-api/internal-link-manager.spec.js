@@ -1,3 +1,5 @@
+import { GenericHelpers } from '../../src/utilities/helpers';
+
 const sinon = require('sinon');
 
 import { linkManager } from '../../src/core-api/_internalLinkManager';
@@ -71,6 +73,38 @@ describe('linkManager', function() {
           splitView: splitViewSettings,
           drawer: drawerSettings
         })
+      };
+
+      lm.navigate(path, true, modalSettings, splitViewSettings, drawerSettings);
+      lm.sendPostMessageToLuigiCore.calledOnceWithExactly(navigationOpenMsg);
+    });
+
+    it('should call sendPostMessageToLuigiCore with Promise', () => {
+      this.options = {
+        preserveView: false,
+        nodeParams: {},
+        errorSkipNavigation: false,
+        fromContext: null,
+        fromClosestContext: false,
+        relative: false,
+        link: ''
+      };
+      const remotePromise = GenericHelpers.createRemotePromise();
+      const modalSettings = { modalSetting: 'modalValue' };
+      const splitViewSettings = { splitViewSetting: 'splitViewValue' };
+      const drawerSettings = { drawerSetting: 'drawerValue' };
+      const path = '/path';
+      const relativePath = path[0] !== '/';
+      const navigationOpenMsg = {
+        msg: 'luigi.navigation.open',
+        params: Object.assign(this.options, {
+          link: path,
+          relative: relativePath,
+          modal: modalSettings,
+          splitView: splitViewSettings,
+          drawer: drawerSettings
+        }),
+        remotePromiseId: remotePromise.id
       };
 
       lm.navigate(path, true, modalSettings, splitViewSettings, drawerSettings);

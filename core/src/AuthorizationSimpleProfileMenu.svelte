@@ -214,7 +214,9 @@
             class="fd-menu__link"
             data-testid="luigi-topnav-profile-item"
             href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
-            on:click|preventDefault={() => {}}
+            on:click={(event) => {
+              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+            }}
           >
             {#if profileItem.icon}
               {#if hasOpenUIicon(profileItem)}
@@ -281,7 +283,7 @@
           >
             <button
               title="Logout"
-              class="fd-menu__link"
+              class="fd-menu__link lui-logout-btn"
               data-testid="logout-btn"
             >
               {#if profileNav.logout.icon}
@@ -348,6 +350,10 @@
   .lui-profile-simple-menu {
     max-height: calc(100vh - 60px);
     overflow-y: auto;
+  }
+
+  .lui-profile-simple-menu .lui-logout-btn{
+    text-align: left;
   }
 
   li > button.fd-menu__link {
