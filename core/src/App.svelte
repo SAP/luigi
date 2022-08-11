@@ -1179,7 +1179,6 @@
   };
 
   function init(node) {
-    console.log('Run init on node:', node);
     ViewGroupPreloading.shouldPreload = true;
     ViewGroupPreloading.preload(true);
     ViewGroupPreloading.shouldPreload = false;
