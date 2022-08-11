@@ -32,6 +32,7 @@ Cypress.Commands.add('visitFiddleConfigWithPathRouting', (path = '/', config = f
       win.sessionStorage.clear();
       setAcceptedCookies(win);
       setLuigiConfig(win, config);
+      cy.wait(1000);
     }
   });
 });
@@ -43,6 +44,7 @@ Cypress.Commands.add('visitWithFiddleConfig', (path = '/', config = fiddleConfig
       win.sessionStorage.clear();
       setAcceptedCookies(win);
       setLuigiConfig(win, config);
+      cy.wait(1000);
     }
   });
 });
@@ -56,6 +58,7 @@ Cypress.Commands.add('visitWithFiddleConfigString', (path = '/', config = fiddle
       const strConfig = typeof config === 'object' ? JSON.stringify(config) : config;
       win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
       win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+      cy.wait(1000);
     }
   });
 });
@@ -71,6 +74,7 @@ Cypress.Commands.add('visitLoggedInWithFiddleConfig', (path = '/', config = fidd
       const strConfig = typeof config === 'object' ? JSON.stringify(config) : config;
       win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
       win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+      cy.wait(1000);
     }
   });
 });
@@ -158,10 +162,10 @@ Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerS
 });
 
 // More robust iframe retrival methods based on: https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/
-// retrieves the <iframe /> element directly 
+// retrieves the <iframe /> element directly
 Cypress.Commands.add('getIframe', () => {
   // get the iframe > document > body
-  // and retry until the body element is not undefined 
+  // and retry until the body element is not undefined
   return (
     cy
       .get('.iframeContainer > iframe')
@@ -176,7 +180,7 @@ Cypress.Commands.add('getIframe', () => {
 
 // only works if iframe and parent window are of the same origin
 Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
-  // get the iframe > document 
+  // get the iframe > document
   // and retry until the body element is not undefined
   return (
     cy
@@ -191,7 +195,7 @@ Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
 });
 
 Cypress.Commands.add('getIframeWindow', () => {
-  // get the iframe > contentwindow 
+  // get the iframe > contentwindow
   // and retry until the window content exists
   return cy
     .get('.iframeContainer > iframe')
