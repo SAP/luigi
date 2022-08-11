@@ -60,16 +60,8 @@ describe('Iframe', () => {
       cheese: {
         preloadUrl: 'cheese.html'
       },
-      banana: {
-        preloadUrl: 'banana.html',
-        loadOnStartup: true
-      },
       ananas: {
         preloadUrl: 'ananas.html'
-      },
-      schnitzel: {
-        preloadUrl: 'schnitzel.html',
-        loadOnStartup: true
       }
     };
     sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
