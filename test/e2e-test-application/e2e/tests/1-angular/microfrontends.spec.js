@@ -223,12 +223,12 @@ describe('iframeCreationInterceptor test', () => {
   });
 
   it('modal iframe intercepted', () => {
-    cy.getIframeBody().then($iframeBody => {
-      cy.wrap($iframeBody)
-        .contains('rendered in a modal')
-        .click();
-      cy.get('[data-testid=modal-mf] iframe').should('have.attr', 'style', 'border: 3px dashed blue;');
-    });
+    cy.getIframeBodyWithRetries()
+      .find('a')
+      .contains('rendered in a modal')
+      .click();
+
+    cy.get('[data-testid=modal-mf] iframe').should('have.attr', 'style', 'border: 3px dashed blue;');
   });
 });
 
