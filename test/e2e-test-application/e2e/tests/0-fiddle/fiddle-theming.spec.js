@@ -42,13 +42,11 @@ describe('Fiddle 2', () => {
     it('Client get and set theme', () => {
       cy.visitWithFiddleConfig('/theming', newConfig);
 
-      cy.getIframeBodyWithRetries().find('h2');
-
-      // cy.getIframeBody().then($body => {
-      //   cy.wrap($body)
-      //     .find('h2')
-      //     .contains('light');
-      // });
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .find('h2')
+          .contains('light');
+      });
     });
     it('Iframe Url should get set with value by default', () => {
       newConfig.settings.theming.nodeViewURLDecorator = {
@@ -479,9 +477,8 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumbs with dynamic nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-      cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-      cy.wait(1000);
       cy.expectPathToBe('/home/dyn/dynValue/1');
+      cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_dyn_index1]').should('be.visible');
@@ -490,9 +487,8 @@ describe('Fiddle 2', () => {
     });
     it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
-      cy.visitWithFiddleConfig('/home/virtual-tree/virtualValue/test', newConfig);
-      cy.wait(1000);
       cy.expectPathToBe('/home/virtual-tree/virtualValue/test');
+      cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_VirtualTree_index1]').should('be.visible');
@@ -501,15 +497,12 @@ describe('Fiddle 2', () => {
     });
     it('dynamic nav header', localRetries, () => {
       cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-      cy.visitWithFiddleConfig('/home/dyn/dynValue', newConfig);
-      cy.wait(1000);
       cy.expectPathToBe('/home/dyn/dynValue/1');
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');
     });
     it('static nav header', localRetries, () => {
       newConfig.navigation.nodes[0].children[0].children[0].navHeader.label = 'test';
 
-      cy.visitWithFiddleConfig('/home/dyn/dynValue/1', newConfig);
       cy.visitWithFiddleConfig('/home/dyn/dynValue/1', newConfig);
 
       cy.expectPathToBe('/home/dyn/dynValue/1');
@@ -551,8 +544,6 @@ describe('Fiddle 2', () => {
 
     it('opens navigation node with decodeViewUrl true', () => {
       cy.visitWithFiddleConfig('/decodeviewurl', newConfig);
-      cy.visitWithFiddleConfig('/decodeviewurl', newConfig);
-      cy.wait(1000);
       cy.expectPathToBe('/decodeviewurl');
 
       cy.getIframe().should(
@@ -564,8 +555,6 @@ describe('Fiddle 2', () => {
 
     it('opens navigation node with decodeViewUrl false', () => {
       cy.visitWithFiddleConfig('/nondecodeviewurl', newConfig);
-      cy.visitWithFiddleConfig('/nondecodeviewurl', newConfig);
-      cy.wait(1000);
       cy.expectPathToBe('/nondecodeviewurl');
 
       cy.getIframe().should(
