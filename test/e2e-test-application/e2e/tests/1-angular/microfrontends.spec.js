@@ -225,6 +225,10 @@ describe('iframeCreationInterceptor test', () => {
   it('modal iframe intercepted', () => {
     cy.getIframeBodyWithRetries()
       .find('a')
+      .contains('rendered in a modal');
+
+    cy.getIframeBodyWithRetries()
+      .find('a')
       .contains('rendered in a modal')
       .trigger('click');
 
