@@ -205,7 +205,7 @@ describe('iframeCreationInterceptor test', () => {
             break;
         }
       };
-      win.Luigi.configChanged('settings.header');
+      win.Luigi.configChanged();
     });
   });
 
