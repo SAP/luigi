@@ -232,7 +232,7 @@ describe('iframeCreationInterceptor test', () => {
   });
 });
 
-describe('Context Update Listener test', () => {
+describe('Context Update Listener content area', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/projects/pr1/miscellaneous2');
   });
@@ -257,7 +257,7 @@ describe('Context Update Listener test', () => {
   });
 });
 
-describe('Context Update Listener test', () => {
+describe('Context Update Listener modal', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
     cy.visitLoggedIn('/projects/pr1');
