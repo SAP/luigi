@@ -56,9 +56,7 @@ describe('Navigation', () => {
         config.navigation.defaults = {
           sideNavAccordionMode: true
         };
-        // apply twice since the Cypress doesn't properly wait for configChanged as its an internal call
         win.Luigi.configChanged();
-        cy.wait(1000);
         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
@@ -69,7 +67,6 @@ describe('Navigation', () => {
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
 
-        cy.wait(1000);
         cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
 
         // Second one is open only
