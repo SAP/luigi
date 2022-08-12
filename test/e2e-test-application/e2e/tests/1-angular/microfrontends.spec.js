@@ -226,7 +226,7 @@ describe('iframeCreationInterceptor test', () => {
     cy.getIframeBodyWithRetries()
       .find('a')
       .contains('rendered in a modal')
-      .click();
+      .trigger('click');
 
     cy.get('[data-testid=modal-mf] iframe').should('have.attr', 'style', 'border: 3px dashed blue;');
   });
