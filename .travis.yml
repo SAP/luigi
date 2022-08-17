@@ -15,7 +15,7 @@ cache:
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/externalMf
-    - $TRAVIS_BUILD_DIR/test/e2e-js-test-application/public
+    - $TRAVIS_BUILD_DIR/test/e2e-js-test-application
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
     - $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist
@@ -136,7 +136,7 @@ jobs:
             npm --prefix ./client ci ./client;
             npm --prefix ./core ci ./core;
             npm --prefix ./website/landingpage/dev install ./website/landingpage/dev;
-            npm --prefix ./test/e2e-js-test-application install ./test/e2e-js-test-application;
+            npm --prefix ./website/fiddle install ./website/fiddle;
             bash ./scripts/whiteSource.sh;
           fi'
       before_cache:
