@@ -23,6 +23,12 @@ if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
   ln -s $NG_MODULES $NG_MODULES_EXTERNALMF
 fi
 
+NG_MODULES_JS_APP="$BASE_DIR/../e2e-js-test-application"
+if [[ ! -L $NG_MODULES ]] && [[ ! -d $NG_MODULES ]]; then
+  echo "Creating symlink for example node_modules";
+  ln -s $NG_MODULES $NG_MODULES_JS_APP
+fi
+
 
 echo ""
 echo "Angular App"
@@ -40,7 +46,7 @@ WS_EXT_PID=$PID
 
 echo ""
 echo "Js Test App"
-cd $BASE_DIR/../test/e2e-js-test-application
+cd $BASE_DIR/../e2e-js-test-application
 killWebserver 4500
 npm run dev &
 WS_FID_PID=$PID
