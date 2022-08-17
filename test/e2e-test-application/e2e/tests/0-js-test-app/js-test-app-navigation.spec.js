@@ -10,65 +10,103 @@ describe('JS-TEST-APP', () => {
   };
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
+      let newConfig;
+      const target = document.querySelector('body');
+      const config = { childList: true };
+      // Start the observer
+
       beforeEach(() => {
-        cy.visitTestApp('/');
+        newConfig = cloneDeep(defaultLuigiConfig);
       });
       it('Core API navigate and open and close modal', () => {
-        cy.window().then(win => {
-          win.Luigi.navigation().navigate('/home/two');
-        });
-        cy.expectPathToBe('/home/two');
+        cy.visitTestApp('/', newConfig);
+        const observer = new MutationObserver(() => {
+          if (document.getElementById('app')) {
+            cy.window().then(win => {
+              win.Luigi.navigation().navigate('/home/two');
+            });
+            cy.expectPathToBe('/home/two');
 
-        cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/settings', {
-            title: 'Preserved View',
-            size: 'm'
-          });
-        });
+            cy.window().then(win => {
+              win.Luigi.navigation().openAsModal('/settings', {
+                title: 'Preserved View',
+                size: 'm'
+              });
+            });
 
-        cy.contains('Preserved View');
-        cy.get('body')
-          .find('[aria-label="close"]', { timeout: 5000 })
-          .click();
-        cy.expectPathToBe('/home/two');
+            cy.contains('Preserved View');
+            cy.get('body')
+              .find('[aria-label="close"]', { timeout: 5000 })
+              .click();
+            cy.expectPathToBe('/home/two');
+            observer.disconnect();
+          }
+          observer.observe(target, config);
+        });
       });
       it('Open modal via core api with "fullscreen"', () => {
-        cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { size: 'fullscreen' });
+        cy.visitTestApp('/', newConfig);
+        const observer = new MutationObserver(() => {
+          if (document.getElementById('app')) {
+            cy.window().then(win => {
+              win.Luigi.navigation().openAsModal('/home/two', { size: 'fullscreen' });
+            });
+            cy.get('.lui-modal-mf').should('exist');
+            cy.get('.lui-modal-mf').should('have.class', 'lui-modal-fullscreen');
+            cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:100vw;height:100vh;');
+            cy.get('[aria-label="close"]').click();
+          }
+          observer.observe(target, config);
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.class', 'lui-modal-fullscreen');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:100vw;height:100vh;');
-        cy.get('[aria-label="close"]').click();
       });
       it('Open modal via core api with "px"', () => {
-        cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
+        cy.visitTestApp('/', newConfig);
+        const observer = new MutationObserver(() => {
+          if (document.getElementById('app')) {
+            cy.window().then(win => {
+              win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
+            });
+            cy.get('.lui-modal-mf').should('exist');
+            cy.get('.lui-modal-mf')
+              .should('have.css', 'width', '500px')
+              .and('have.css', 'height', '500px');
+            cy.get('[aria-label="close"]').click();
+          }
+          observer.observe(target, config);
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf')
-          .should('have.css', 'width', '500px')
-          .and('have.css', 'height', '500px');
-        cy.get('[aria-label="close"]').click();
       });
       it('Open modal via core api with "%"', () => {
-        cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
+        cy.visitTestApp('/', newConfig);
+        const observer = new MutationObserver(() => {
+          if (document.getElementById('app')) {
+            cy.window().then(win => {
+              win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
+            });
+            cy.get('.lui-modal-mf').should('exist');
+            cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
+            cy.get('[aria-label="close"]').click();
+          }
+          observer.observe(target, config);
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
-        cy.get('[aria-label="close"]').click();
       });
       it('Open modal via core api with "rem"', localRetries, () => {
-        cy.window().then(win => {
-          win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
+        cy.visitTestApp('/', newConfig);
+        const observer = new MutationObserver(() => {
+          if (document.getElementById('app')) {
+            cy.window().then(win => {
+              win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
+            });
+            cy.get('.lui-modal-mf').should('exist');
+            cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
+            cy.get('[aria-label="close"]').click();
+          }
+          observer.observe(target, config);
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
-        cy.get('[aria-label="close"]').click();
       });
 
       it('Open modal via core api with "rem" and  "non existent unit"', localRetries, () => {
+        cy.visitTestApp('/', newConfig);
+
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
@@ -299,7 +337,8 @@ describe('JS-TEST-APP', () => {
     });
     describe('With Auth', () => {
       let newConfig;
-
+      const target = document.querySelector('body');
+      const config = { childList: true };
       beforeEach(() => {
         newConfig = cloneDeep(defaultLuigiConfig);
         newConfig.auth = {
@@ -410,13 +449,16 @@ describe('JS-TEST-APP', () => {
         cfg.auth.myOAuth2.idpProvider = 'LuigiAuthOAuth2';
 
         cy.visitTestAppLoggedIn('/', cfg);
-
-        cy.window().then(win => {
-          cy.log('Trigger auth().logout()');
-          win.Luigi.auth().logout();
+        const observer = new MutationObserver(() => {
+          if (document.getElementById('app')) {
+            cy.window().then(win => {
+              cy.log('Trigger auth().logout()');
+              win.Luigi.auth().logout();
+            });
+            cy.contains('Login again');
+          }
+          observer.disconnect();
         });
-
-        cy.contains('Login again');
       });
 
       it('User settings in profile menu with custom label', () => {

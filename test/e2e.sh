@@ -42,7 +42,7 @@ echo ""
 echo "Js Test App"
 cd $BASE_DIR/../test/e2e-js-test-application
 killWebserver 4500
-runWebserver 4500 public 
+npm run dev &
 WS_FID_PID=$PID
 
 cd $NG_EXAMPLE
