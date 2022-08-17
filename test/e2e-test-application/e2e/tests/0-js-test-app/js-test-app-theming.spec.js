@@ -292,9 +292,10 @@ describe('JS-TEST-APP 2', () => {
       newConfig.routing.showModalPathInUrl = true;
       newConfig.routing.modalPathParam = 'mymodal';
       newConfig.routing.useHashRouting = true;
+      newConfig.tag = 'bookmarkable-mf-1';
 
       cy.visitTestApp('/home', newConfig);
-
+      cy.get('#app[configversion="bookmarkable-mf-1"]');
       cy.window().then(win => {
         win.Luigi.navigation()
           .withParams({ mp: 'one' })
@@ -315,9 +316,10 @@ describe('JS-TEST-APP 2', () => {
       newConfig.routing.showModalPathInUrl = true;
       newConfig.routing.modalPathParam = 'mymodal';
       newConfig.routing.useHashRouting = false;
+      newConfig.tag = 'bookmarkable-mf-2';
 
       cy.visitTestApp('/home', newConfig);
-
+      cy.get('#app[configversion="bookmarkable-mf-2"]');
       cy.window().then(win => {
         win.Luigi.navigation()
           .withParams({ mp: 'one' })

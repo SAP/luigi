@@ -74,10 +74,11 @@ Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false, con
     .should('have.value', password);
 
   cy.get('.fd-button').click();
-
-  cy.window().then(win => {
-    win.Luigi.setConfig(config);
-  });
+  if (config) {
+    cy.window().then(win => {
+      win.Luigi.setConfig(config);
+    });
+  }
 
   if (!skipReturnPathCheck) {
     cy.get('.fd-shellbar').contains('Overview');
