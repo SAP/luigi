@@ -42,7 +42,6 @@ echo ""
 echo "Js Test App"
 cd "$BASE_DIR/e2e-js-test-application"
 killWebserver 4500
-echo $(pwd)
 npm run dev &
 WS_FID_PID=$PID
 

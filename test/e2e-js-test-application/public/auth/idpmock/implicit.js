@@ -1,6 +1,5 @@
 window.onload = function() {
   const loginButton = document.getElementById('login-button');
-  console.log('onload implicit');
   const expiresIn = 3600;
   const state = encodeURIComponent(new URLSearchParams(window.location.search).get('state'));
   const goTo = scope => {
@@ -17,7 +16,6 @@ window.onload = function() {
   };
 
   loginButton.addEventListener('click', function(ev) {
-    console.log('eventListener click');
     ev.preventDefault();
     const username = document.getElementById('username').value;
     const scope = username == 'admin' ? 'admin' : 'viewer';

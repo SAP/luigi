@@ -9,7 +9,7 @@
     "e2e:open": "cypress open --env configFile=e2etestapp",
     "e2e:open:external": "cypress open --env configFile=externalmf",
     "e2e:run": "cypress run --env configFile=e2etestapp --browser chrome -c video=false",
-    "e2e:run:external": "cypress run --env configFile=externalmf --browser chromium -c video=false",
+    "e2e:run:external": "cypress run --env configFile=externalmf --browser chrome -c video=false",
     "e2e:run:electron": "cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
     "startExternalMf": "http-server --port 8090 ./externalMf",

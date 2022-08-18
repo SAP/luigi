@@ -74,6 +74,7 @@ Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false, con
     .should('have.value', password);
 
   cy.get('.fd-button').click();
+
   if (config) {
     cy.window().then(win => {
       win.Luigi.setConfig(config);
