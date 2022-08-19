@@ -216,6 +216,7 @@ describe('iframeCreationInterceptor test', () => {
   });
 
   it('split-view iframe intercepted', () => {
+    cy.get('#app[configversion="iframeInterceptorTest"]');
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('open view in split view')
@@ -225,6 +226,7 @@ describe('iframeCreationInterceptor test', () => {
   });
 
   it('modal iframe intercepted', () => {
+    cy.get('#app[configversion="iframeInterceptorTest"]');
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')
