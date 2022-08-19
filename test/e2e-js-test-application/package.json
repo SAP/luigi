@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite -l error",
+    "dev": "vite -l warn",
     "start": "vite",
     "preview": "vite preview"
   },

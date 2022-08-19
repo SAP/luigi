@@ -163,6 +163,7 @@ describe('JS-TEST-APP 2', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig.tag = 'user-settings-dialog';
       newConfig.userSettings = {
         userSettingGroups: {
           userAccount: {
@@ -207,7 +208,7 @@ describe('JS-TEST-APP 2', () => {
             sublabel: 'Theme',
             icon: '/assets/github-logo.png',
             title: 'Theming',
-            viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
+            viewUrl: 'http://localhost:4500/examples/microfrontends/customUserSettingsMf.html',
             settings: {
               theme: {
                 type: 'enum',
@@ -222,7 +223,7 @@ describe('JS-TEST-APP 2', () => {
     });
     it('User settings dialog', () => {
       cy.visitTestApp('/', newConfig);
-      cy.wait(1000);
+      cy.get('#app[configversion="user-settings-dialog"]');
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
       });
@@ -264,7 +265,7 @@ describe('JS-TEST-APP 2', () => {
     });
     it('Check if external mf is loaded in custom user settings editor', () => {
       cy.visitTestApp('/', newConfig);
-      cy.wait(1000);
+      cy.get('#app[configversion="user-settings-dialog"]');
       cy.window().then(win => {
         win.Luigi.ux().openUserSettings();
       });
@@ -277,7 +278,7 @@ describe('JS-TEST-APP 2', () => {
         .click();
 
       cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
-        expect(ifr[0].src).to.equal('http://localhost:8080/examples/microfrontends/customUserSettingsMf.html');
+        expect(ifr[0].src).to.equal('http://localhost:4500/examples/microfrontends/customUserSettingsMf.html');
       });
     });
   });
@@ -418,7 +419,7 @@ describe('JS-TEST-APP 2', () => {
           breadcrumbs: true
         }
       };
-
+      newConfig.tag = 'breadcrumbs';
       newConfig.navigation = {
         breadcrumbs: breadcrumbsConfig,
         nodes: [
@@ -482,16 +483,17 @@ describe('JS-TEST-APP 2', () => {
     });
     it('Breadcrumb container visible with static nodes', localRetries, () => {
       cy.visitTestApp('/home', newConfig);
+      cy.get('#app[configversion="breadcrumbs"]');
       cy.expectPathToBe('/home/static');
-      cy.wait(1000);
+
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_static_index1]').should('be.visible');
     });
     it('Breadcrumbs with dynamic nodes', localRetries, () => {
       cy.visitTestApp('/home/dyn/dynValue', newConfig);
+      cy.get('#app[configversion="breadcrumbs"]');
       cy.expectPathToBe('/home/dyn/dynValue/1');
-      cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_dyn_index1]').should('be.visible');
@@ -500,8 +502,8 @@ describe('JS-TEST-APP 2', () => {
     });
     it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitTestApp('/home/virtual-tree/virtualValue/test', newConfig);
+      cy.get('#app[configversion="breadcrumbs"]');
       cy.expectPathToBe('/home/virtual-tree/virtualValue/test');
-      cy.wait(1000);
       cy.get('.lui-breadcrumb-container').should('be.visible');
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_VirtualTree_index1]').should('be.visible');
@@ -510,6 +512,7 @@ describe('JS-TEST-APP 2', () => {
     });
     it('dynamic nav header', localRetries, () => {
       cy.visitTestApp('/home/dyn/dynValue', newConfig);
+      cy.get('#app[configversion="breadcrumbs"]');
       cy.expectPathToBe('/home/dyn/dynValue/1');
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');
     });
@@ -517,7 +520,7 @@ describe('JS-TEST-APP 2', () => {
       newConfig.navigation.nodes[0].children[0].children[0].navHeader.label = 'test';
 
       cy.visitTestApp('/home/dyn/dynValue/1', newConfig);
-
+      cy.get('#app[configversion="breadcrumbs"]');
       cy.expectPathToBe('/home/dyn/dynValue/1');
 
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'test');
@@ -528,6 +531,7 @@ describe('JS-TEST-APP 2', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig.tag = 'encodeViewURL';
       newConfig.settings.theming = {
         defaultTheme: 'light',
         nodeViewURLDecorator: {
@@ -543,7 +547,7 @@ describe('JS-TEST-APP 2', () => {
         pathSegment: 'nondecodeviewurl',
         label: 'NonDecoded ViewUrl',
         viewUrl:
-          'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar'
+          'http://localhost:4500/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar'
       });
 
       newConfig.navigation.nodes.push({
@@ -551,29 +555,31 @@ describe('JS-TEST-APP 2', () => {
         label: 'Decoded ViewUrl',
         decodeViewUrl: true,
         viewUrl:
-          'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar'
+          'http://localhost:4500/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar'
       });
     });
 
     it('opens navigation node with decodeViewUrl true', () => {
       cy.visitTestApp('/decodeviewurl', newConfig);
+      cy.get('#app[configversion="encodeViewURL"]');
       cy.expectPathToBe('/decodeviewurl');
 
       cy.getIframe().should(
         'have.attr',
         'src',
-        'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar&sap-theme=green'
+        'http://localhost:4500/examples/microfrontends/customUserSettingsMf.html?someURL=http://some.url/foo/bar&sap-theme=green'
       );
     });
 
     it('opens navigation node with decodeViewUrl false', () => {
       cy.visitTestApp('/nondecodeviewurl', newConfig);
+      cy.get('#app[configversion="encodeViewURL"]');
       cy.expectPathToBe('/nondecodeviewurl');
 
       cy.getIframe().should(
         'have.attr',
         'src',
-        'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&sap-theme=green'
+        'http://localhost:4500/examples/microfrontends/customUserSettingsMf.html?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&sap-theme=green'
       );
     });
   });
