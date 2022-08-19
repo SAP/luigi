@@ -56,7 +56,9 @@ describe('Navigation', () => {
         config.navigation.defaults = {
           sideNavAccordionMode: true
         };
-        win.Luigi.configChanged('settings.navigation');
+        config.tag = 'accordion';
+        win.Luigi.configChanged();
+        cy.get('#app[configversion="accordion"]');
         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
