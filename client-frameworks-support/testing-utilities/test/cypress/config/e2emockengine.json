@@ -1,0 +1,9 @@
+{
+    "integrationFolder": "e2e/test4",
+    "pluginsFile": false,
+    "chromeWebSecurity": false,
+    "viewportWidth": 1250,
+    "viewportHeight": 790,
+    "baseUrl": "http://localhost:8080/"
+  }
+  
