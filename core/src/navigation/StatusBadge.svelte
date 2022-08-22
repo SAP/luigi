@@ -5,7 +5,7 @@
   const type = STATUS.includes(statusType) ? statusType : 'neutral';
 </script>
 
-{#if node.statusBadge && node.statusBadge.label !== ''}
+{#if node.statusBadge && node.statusBadge.label}
   <span
     class="fd-object-status fd-object-status--{type} fd-object-status--inverted"
   >
