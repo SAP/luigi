@@ -306,7 +306,7 @@ class RoutingClass {
 
     if (!pathData.isExistingRoute) {
       this.showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true);
-      returntrue;
+      return true;
     }
     return false;
   }
