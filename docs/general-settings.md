@@ -268,6 +268,10 @@ Luigi.setConfig({
 })
 ```
 
+### hideTopNavigation
+- **type**: boolean
+- **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top is no longer visible.
+- **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
 
 ## Third-party cookies support check
 

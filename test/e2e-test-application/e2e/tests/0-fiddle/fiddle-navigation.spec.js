@@ -1,6 +1,5 @@
 import fiddleConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
-
 describe('Fiddle', () => {
   const localRetries = {
     retries: {
@@ -78,16 +77,27 @@ describe('Fiddle', () => {
       });
     });
     describe('Normal navigation', () => {
+      let newConfig;
       beforeEach(() => {
-        const newConfig = cloneDeep(fiddleConfig);
+        newConfig = cloneDeep(fiddleConfig);
         newConfig.navigation.nodes[0].viewUrl = null;
-        cy.visitWithFiddleConfig('/', newConfig);
       });
       it('defaultChildNode', () => {
+        cy.visitWithFiddleConfig('/', newConfig);
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           cy.expectPathToBe('/home/two');
         });
+      });
+      it('hideShellbar', () => {
+        cy.visitWithFiddleConfig('/', newConfig);
+        cy.wait(1000);
+        cy.get('.fd-shellbar').should('exist');
+        newConfig.settings.hideTopNavigation = true;
+        cy.window().then(win => {
+          win.Luigi.configChanged();
+        });
+        cy.contains('.fd-shellbar').should('not.exist');
       });
     });
     describe('virtualTree with fromVirtualTreeRoot', localRetries, () => {

@@ -716,6 +716,7 @@
   let noAnimation;
   let previousWindowWidth;
   let configTag;
+  let hideShellbarComponent;
 
   const closeLeftNav = () => {
     document.body.classList.remove('lui-leftNavToggle');
@@ -1830,6 +1831,7 @@
       GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
+    hideShellbarComponent = LuigiConfig.getConfigValue('settings.hideTopNavigation');
   });
 </script>
 
@@ -1838,8 +1840,10 @@
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
     ? 'no-side-nav'
-    : ''} {noAnimation ? 'no-animation' : ''}"
-  configversion="{configTag}"
+    : ''} {hideShellbarComponent ? 'no-top-nav' : ''} {noAnimation
+    ? 'no-animation'
+    : ''}"
+  configversion={configTag}
 >
   {#if alerts && alerts.length}
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
@@ -2127,6 +2131,19 @@
 
     :global(.fd-app__sidebar) {
       display: none;
+    }
+  }
+
+  .no-top-nav {
+    .iframeContainer,
+    .spinnerContainer {
+      top: 0;
+    }
+    :global(.fd-app__sidebar) {
+      top: 0;
+    }
+    :global(.lui-globalnav) {
+      top: 0;
     }
   }
 

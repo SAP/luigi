@@ -30,7 +30,10 @@ class Settings {
     navCollapsed: 'Expand navigation test'
   };
   theming = {
-    themes: () => [{ id: 'light', name: 'Fiori3 Light' }, { id: 'dark', name: 'Fiori3 Dark' }],
+    themes: () => [
+      { id: 'light', name: 'Fiori3 Light' },
+      { id: 'dark', name: 'Fiori3 Dark' }
+    ],
     defaultTheme: 'light'
     // nodeViewURLDecorator: {
     //   queryStringParameter: {
@@ -45,6 +48,7 @@ class Settings {
   featureToggles = {
     queryStringParam: 'ft'
   };
+  // hideTopNavigation = true;
 
   // customAlertHandler = (settings, openFromClient = false) =>{
   //   window.open('http://localhost:4200',settings.title , `width=${settings.width},height=${settings.height}`);
