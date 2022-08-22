@@ -1831,7 +1831,7 @@
       GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
-    hideShellbarComponent = LuigiConfig.getConfigValue('settings.hideTopNavigation');
+    hideShellbarComponent = LuigiConfig.getConfigValue('settings.header.disabled');
   });
 </script>
 

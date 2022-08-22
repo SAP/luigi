@@ -145,7 +145,7 @@
 
   beforeUpdate(() => {
     hideShellbarComponent = LuigiConfig.getConfigBooleanValue(
-          'settings.hideTopNavigation'
+          'settings.header.disabled'
         );
     if (!previousPathData || previousPathData != pathData) {
       setTopNavData();
