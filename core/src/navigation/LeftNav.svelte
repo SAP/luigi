@@ -442,10 +442,8 @@
    * @param node the corresponding node selected
    */
   function handleEnterPressed(event, node) {
-    if (event.keyCode === KEYCODE_ENTER) {
-      console.log('test inside');
-      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
-        handleClick(node);
+    if(event.keyCode === KEYCODE_ENTER) {
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
     }
   }
 

@@ -1,7 +1,7 @@
-import fiddleConfig from '../../configs/default';
+import defaultLuigiConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
-describe('Fiddle', () => {
+describe('JS-TEST-APP', () => {
   const localRetries = {
     retries: {
       runMode: 4,
@@ -10,10 +10,14 @@ describe('Fiddle', () => {
   };
   describe('Navigation', () => {
     describe('Core api navigation test', () => {
+      let newConfig;
       beforeEach(() => {
-        cy.visitWithFiddleConfig('/');
+        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig.tag = 'js-test-app-core-api-nav-test';
       });
       it('Core API navigate and open and close modal', () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('#app[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home/two');
         });
@@ -33,6 +37,8 @@ describe('Fiddle', () => {
         cy.expectPathToBe('/home/two');
       });
       it('Open modal via core api with "fullscreen"', () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { size: 'fullscreen' });
         });
@@ -42,6 +48,8 @@ describe('Fiddle', () => {
         cy.get('[aria-label="close"]').click();
       });
       it('Open modal via core api with "px"', () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
         });
@@ -52,6 +60,8 @@ describe('Fiddle', () => {
         cy.get('[aria-label="close"]').click();
       });
       it('Open modal via core api with "%"', () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
         });
@@ -60,6 +70,8 @@ describe('Fiddle', () => {
         cy.get('[aria-label="close"]').click();
       });
       it('Open modal via core api with "rem"', localRetries, () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
@@ -69,6 +81,8 @@ describe('Fiddle', () => {
       });
 
       it('Open modal via core api with "rem" and  "non existent unit"', localRetries, () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
@@ -78,140 +92,148 @@ describe('Fiddle', () => {
       });
     });
     describe('Normal navigation', () => {
+      let newConfig;
       beforeEach(() => {
-        const newConfig = cloneDeep(fiddleConfig);
+        newConfig = cloneDeep(defaultLuigiConfig);
         newConfig.navigation.nodes[0].viewUrl = null;
-        cy.visitWithFiddleConfig('/', newConfig);
       });
       it('defaultChildNode', () => {
+        cy.visitTestApp('/', newConfig);
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           cy.expectPathToBe('/home/two');
         });
       });
     });
-    describe('virtualTree with fromVirtualTreeRoot', localRetries, () => {
-      beforeEach(() => {
-        const newConfig = cloneDeep(fiddleConfig);
-
-        newConfig.navigation.nodes.push({
-          pathSegment: 'virtual',
-          label: 'Virtual',
-          virtualTree: true,
-          viewUrl: '/examples/microfrontends/multipurpose.html#',
-          context: {
-            content:
-              '<button  onClick="LuigiClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
+  });
+  describe('ContextSwitcher', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig.navigation.nodes.push({
+        hideFromNav: true,
+        pathSegment: 'environments',
+        viewUrl: '/examples/microfrontends/multipurpose.html',
+        children: [
+          {
+            pathSegment: ':environmentId',
+            viewUrl: '/examples/microfrontends/multipurpose.html'
           }
-        });
-        cy.visitWithFiddleConfig('/virtual', newConfig);
+        ]
       });
+      newConfig.navigation.contextSwitcher = {
+        defaultLabel: 'Select Environment',
+        parentNodePath: '/environments',
+        lazyloadOptions: true,
+        options: function() {
+          return [
+            {
+              label: 'Environment 1',
+              pathValue: 'env1',
+              customRendererCategory: 'production'
+            },
+            {
+              label: 'Environment 2',
+              pathValue: 'env2',
+              customRendererCategory: 'stage'
+            }
+          ];
+        },
+        customSelectedOptionRenderer: function(option) {
+          if (option.customRendererCategory === 'production') {
+            return `<label style='color: rgb(136, 255, 0); font-weight:700'>
+                  ${option.label}
+                  </label>`;
+          } else if (option.customRendererCategory === 'stage') {
+            return `<label style='color: rgb(0, 136, 255); font-weight:700'>
+                      ${option.label}
+                      </label>`;
+          }
+        }
+      };
+    });
+    it('custom selected option renderer', () => {
+      cy.visitTestApp('/', newConfig);
 
-      it('navigate', localRetries, () => {
-        cy.getIframeBodyWithRetries()
+      cy.contains('Select Environment')
+        .should('exist')
+        .click();
+      cy.contains('Environment 1')
+        .should('exist')
+        .click();
+      cy.get('[data-testid=luigi-contextswitcher-button]')
+        .find('label')
+        .should('have.css', 'color', 'rgb(136, 255, 0)')
+        .and('have.css', 'font-weight', '700');
+
+      cy.get('[data-testid=luigi-contextswitcher-button]')
+        .should('exist')
+        .click();
+      cy.contains('Environment 2')
+        .should('exist')
+        .click();
+      cy.get('[data-testid=luigi-contextswitcher-button]')
+        .find('label')
+        .should('have.css', 'color', 'rgb(0, 136, 255)')
+        .and('have.css', 'font-weight', '700');
+
+      // checks if there is only one selected item
+      cy.get('#context_menu_middle .is-selected').should('have.length', 1);
+    });
+
+    it('using fallbackLabelResolver', () => {
+      newConfig.navigation.contextSwitcher.customSelectedOptionRenderer = undefined;
+      newConfig.navigation.contextSwitcher.fallbackLabelResolver = id => id.toUpperCase();
+      newConfig.navigation.contextSwitcher.options = [{ pathValue: 'env1' }, { pathValue: 'env2' }];
+
+      cy.visitTestApp('/', newConfig);
+
+      cy.get('#context_menu_middle .is-selected').should('have.length', 0);
+
+      cy.contains('Select Environment').click();
+      cy.contains('ENV1').click(); // fb label resolver used
+
+      // checks if there is only one selected item
+      cy.get('#context_menu_middle .is-selected').should('have.length', 1);
+    });
+  });
+  describe('virtualTree with fromVirtualTreeRoot', localRetries, () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig.navigation.nodes.push({
+        pathSegment: 'virtual',
+        label: 'Virtual',
+        virtualTree: true,
+        viewUrl: '/examples/microfrontends/multipurpose.html#',
+        loadingIndicator: {
+          enabled: false
+        },
+        context: {
+          content:
+            '<button  onClick="LuigiClient.linkManager().fromVirtualTreeRoot().navigate(\'/this/is/a/tree\')">virtual</button>'
+        }
+      });
+    });
+    it('navigate', localRetries, () => {
+      cy.visitTestApp('/virtual', newConfig);
+      let $iframeBody;
+
+      cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
           .find('button')
           .contains('virtual')
           .click();
-
-        cy.expectPathToBe('/virtual/this/is/a/tree');
       });
-    });
-    describe('ContextSwitcher', () => {
-      let newConfig;
-      beforeEach(() => {
-        newConfig = cloneDeep(fiddleConfig);
-        newConfig.navigation.nodes.push({
-          hideFromNav: true,
-          pathSegment: 'environments',
-          viewUrl: '/examples/microfrontends/multipurpose.html',
-          children: [
-            {
-              pathSegment: ':environmentId',
-              viewUrl: '/examples/microfrontends/multipurpose.html'
-            }
-          ]
-        });
-        newConfig.navigation.contextSwitcher = {
-          defaultLabel: 'Select Environment',
-          parentNodePath: '/environments',
-          lazyloadOptions: true,
-          options: () => {
-            return [
-              {
-                label: 'Environment 1',
-                pathValue: 'env1',
-                customRendererCategory: 'production'
-              },
-              {
-                label: 'Environment 2',
-                pathValue: 'env2',
-                customRendererCategory: 'stage'
-              }
-            ];
-          },
-          customSelectedOptionRenderer: option => {
-            if (option.customRendererCategory === 'production') {
-              return `<label style='color: rgb(136, 255, 0); font-weight:700'>
-                    ${option.label}
-                    </label>`;
-            } else if (option.customRendererCategory === 'stage') {
-              return `<label style='color: rgb(0, 136, 255); font-weight:700'>
-                        ${option.label}
-                        </label>`;
-            }
-          }
-        };
-      });
-      it('custom selected option renderer', () => {
-        cy.visitWithFiddleConfig('/', newConfig);
-
-        cy.contains('Select Environment')
-          .should('exist')
-          .click();
-        cy.contains('Environment 1')
-          .should('exist')
-          .click();
-        cy.get('[data-testid=luigi-contextswitcher-button]')
-          .find('label')
-          .should('have.css', 'color', 'rgb(136, 255, 0)')
-          .and('have.css', 'font-weight', '700');
-
-        cy.get('[data-testid=luigi-contextswitcher-button]')
-          .should('exist')
-          .click();
-        cy.contains('Environment 2')
-          .should('exist')
-          .click();
-        cy.get('[data-testid=luigi-contextswitcher-button]')
-          .find('label')
-          .should('have.css', 'color', 'rgb(0, 136, 255)')
-          .and('have.css', 'font-weight', '700');
-
-        // checks if there is only one selected item
-        cy.get('#context_menu_middle .is-selected').should('have.length', 1);
-      });
-
-      it('using fallbackLabelResolver', () => {
-        newConfig.navigation.contextSwitcher.customSelectedOptionRenderer = undefined;
-        newConfig.navigation.contextSwitcher.fallbackLabelResolver = id => id.toUpperCase();
-        newConfig.navigation.contextSwitcher.options = [{ pathValue: 'env1' }, { pathValue: 'env2' }];
-
-        cy.visitWithFiddleConfig('/', newConfig);
-
-        cy.get('#context_menu_middle .is-selected').should('have.length', 0);
-
-        cy.contains('Select Environment').click();
-        cy.contains('ENV1').click(); // fb label resolver used
-
-        // checks if there is only one selected item
-        cy.get('#context_menu_middle .is-selected').should('have.length', 1);
-      });
+      cy.expectPathToBe('/virtual/this/is/a/tree');
     });
   });
   describe('Unload and load Luigi', () => {
+    let newConfig;
     beforeEach(() => {
-      const newConfig = cloneDeep(fiddleConfig);
-      cy.visitWithFiddleConfig('/home/two', newConfig);
+      newConfig = cloneDeep(defaultLuigiConfig);
+      cy.visitTestApp('/home/two', newConfig);
     });
     it('Core API unload', () => {
       let config;
@@ -249,8 +271,9 @@ describe('Fiddle', () => {
       return cy.get('[data-testid="logout-btn"]');
     };
     describe('No Auth', () => {
+      let newConfig;
       beforeEach(() => {
-        const newConfig = cloneDeep(fiddleConfig);
+        newConfig = cloneDeep(defaultLuigiConfig);
         newConfig.auth = undefined;
         newConfig.navigation.profile = {
           logout: {
@@ -258,9 +281,9 @@ describe('Fiddle', () => {
             icon: 'sys-cancel'
           }
         };
-        cy.visitWithFiddleConfig('/home/two', newConfig);
       });
       it('Static profile, and logging out with customLogoutFn', () => {
+        cy.visitTestApp('/home/two', newConfig);
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
@@ -290,22 +313,12 @@ describe('Fiddle', () => {
     });
     describe('With Auth', () => {
       let newConfig;
-
-      const visitLoggedInWithAuthConfig = (path = '/', newConfig) => {
-        const strConfig = JSON.stringify(newConfig).replace('"OAUTH2_PROVIDER"', 'window.LuigiAuthOAuth2'); // workaround else it would just be undefined
-        cy.visitLoggedInWithFiddleConfig(path, strConfig);
-      };
-      const visitWithAuthConfig = (path = '/', newConfig) => {
-        const strConfig = JSON.stringify(newConfig).replace('"OAUTH2_PROVIDER"', 'window.LuigiAuthOAuth2'); // workaround else it would just be undefined
-        cy.visitWithFiddleConfigString(path, strConfig);
-      };
-
       beforeEach(() => {
-        newConfig = cloneDeep(fiddleConfig);
+        newConfig = cloneDeep(defaultLuigiConfig);
         newConfig.auth = {
           use: 'myOAuth2',
           myOAuth2: {
-            idpProvider: 'OAUTH2_PROVIDER',
+            idpProvider: 'LuigiAuthOAuth2',
             authorizeUrl: '/auth/idpmock/implicit.html',
             logoutUrl: '/auth/idpmock/logout.html',
             post_logout_redirect_uri: '/auth/logout.html',
@@ -332,7 +345,7 @@ describe('Fiddle', () => {
 
       it('Profile, no auto-login, logged out', () => {
         newConfig.auth.disableAutoLogin = true;
-        visitWithAuthConfig('/', newConfig);
+        cy.visitTestApp('/', newConfig);
 
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('not.exist');
@@ -342,7 +355,7 @@ describe('Fiddle', () => {
       it('No Profile, no auto-login, logged out and login', () => {
         newConfig.auth.disableAutoLogin = true;
         newConfig.navigation.profile = undefined;
-        visitWithAuthConfig('/', newConfig);
+        cy.visitTestApp('/', newConfig);
 
         // Logged out
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
@@ -351,14 +364,9 @@ describe('Fiddle', () => {
 
         // Log in
         loginLink().click();
-        cy.login('tets@email.com', 'tets', true);
+        cy.login('tets@email.com', 'tets', true, newConfig);
 
-        // Logged in
-        cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
-        loginLink().should('not.exist');
-        logoutLink().should('exist');
-
-        // Verify default value
+        // // Verify default value
         logoutLink().contains('Sign Out');
       });
 
@@ -370,8 +378,7 @@ describe('Fiddle', () => {
           }
         };
         newConfig.auth.disableAutoLogin = false;
-        visitLoggedInWithAuthConfig('/', newConfig);
-
+        cy.visitTestAppLoggedIn('/', newConfig);
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
         loginLink().should('not.exist');
@@ -383,7 +390,7 @@ describe('Fiddle', () => {
       it('No profile, logged in', () => {
         newConfig.navigation.profile = undefined;
         newConfig.auth.disableAutoLogin = false;
-        visitLoggedInWithAuthConfig('/', newConfig);
+        cy.visitTestAppLoggedIn('/', newConfig);
 
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
@@ -396,7 +403,9 @@ describe('Fiddle', () => {
       it('Trigger Login and Logout with Core API', () => {
         newConfig.navigation.profile = undefined;
         newConfig.auth.disableAutoLogin = true;
-        visitWithAuthConfig('/', newConfig);
+        newConfig.tag = 'loginlogoutcoreapi';
+        let cfg = cloneDeep(newConfig);
+        cy.visitTestApp('/', cfg);
 
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         loginLink().should('exist');
@@ -406,16 +415,20 @@ describe('Fiddle', () => {
           win.Luigi.auth().login();
         });
 
-        cy.login('tets@email.com', 'tets', true);
+        cy.login('tets@email.com', 'tets', true, cfg);
 
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
+        cfg = cloneDeep(newConfig);
+        cy.visit('http://localhost:4500/auth/logout.html');
+        cfg.auth.myOAuth2.idpProvider = 'LuigiAuthOAuth2';
 
+        cy.visitTestAppLoggedIn('/', cfg);
+        cy.get('#app[configversion="loginlogoutcoreapi"]');
         cy.window().then(win => {
           cy.log('Trigger auth().logout()');
           win.Luigi.auth().logout();
         });
-
         cy.contains('Login again');
       });
 
@@ -428,7 +441,7 @@ describe('Fiddle', () => {
             }
           }
         };
-        visitLoggedInWithAuthConfig('/', newConfig);
+        cy.visitTestAppLoggedIn('/', newConfig);
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('My UserSettings');
@@ -438,7 +451,7 @@ describe('Fiddle', () => {
         newConfig.settings = {
           userSettings: {}
         };
-        visitLoggedInWithAuthConfig('/', newConfig);
+        cy.visitTestAppLoggedIn('/', newConfig);
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         cy.get('[data-testid="settings-link"]').should('exist');
         cy.get('[data-testid="settings-link"]').contains('Settings');
@@ -452,7 +465,7 @@ describe('Fiddle', () => {
           }
         };
         newConfig.auth.disableAutoLogin = false;
-        visitLoggedInWithAuthConfig('/', newConfig);
+        cy.visitTestAppLoggedIn('/', newConfig);
 
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');

@@ -485,6 +485,18 @@ export const projectDetailNavStructure = projectId => [
     icon: 'globe'
   },
   {
+    label: 'Context Value Replacement - External link',
+    category: 'Super useful Github links',
+    context: {
+      someValue: 'bar'
+    },
+    externalLink: {
+      url: 'http://sap.com/{i18n.currentLocale}?foo={context.someValue}',
+      sameWindow: true
+    },
+    icon: 'globe'
+  },
+  {
     pathSegment: 'collapsibles',
     label: 'Collapsible categories',
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
