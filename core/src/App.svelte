@@ -1931,22 +1931,24 @@
       </div>
     </div>
   {/if}
-  <TopNav
-    pathData={navigationPath}
-    {pathParams}
-    on:handleClick={handleNavClick}
-    on:resizeTabNav={onResizeTabNav}
-    on:toggleSearch={toggleSearch}
-    on:closeSearchResult={closeSearchResult}
-    on:handleSearchNavigation={handleSearchNavigation}
-    bind:isSearchFieldVisible
-    bind:displaySearchResult
-    bind:displayCustomSearchResult
-    bind:searchResult
-    bind:inputElem
-    bind:luigiCustomSearchRenderer__slot
-    {burgerTooltip}
-  />
+  {#if !hideShellbarComponent}
+    <TopNav
+      pathData={navigationPath}
+      {pathParams}
+      on:handleClick={handleNavClick}
+      on:resizeTabNav={onResizeTabNav}
+      on:toggleSearch={toggleSearch}
+      on:closeSearchResult={closeSearchResult}
+      on:handleSearchNavigation={handleSearchNavigation}
+      bind:isSearchFieldVisible
+      bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:searchResult
+      bind:inputElem
+      bind:luigiCustomSearchRenderer__slot
+      {burgerTooltip}
+    />
+  {/if}
   {#if !hideNav}
     <GlobalNav
       pathData={navigationPath}

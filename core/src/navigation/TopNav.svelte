@@ -60,7 +60,6 @@
   export let searchResult;
   export let burgerTooltip;
   export let responsiveShellbarPadding;
-  let hideShellbarComponent;
 
   let store = getContext('store');
   let contextSwitcherToggle = false;
@@ -144,9 +143,6 @@
   });
 
   beforeUpdate(() => {
-    hideShellbarComponent = LuigiConfig.getConfigBooleanValue(
-          'settings.header.disabled'
-        );
     if (!previousPathData || previousPathData != pathData) {
       setTopNavData();
     }
@@ -315,9 +311,7 @@
   <div
     class="fd-shellbar {responsiveShellbarPadding
       ? 'fd-shellbar--responsive-paddings'
-      : ''} lui-shellbar-wrapper {hideNavComponent
-      ? 'hideNavComponent'
-      : ''} {hideShellbarComponent ? 'hideShellbarComponent' : ''} "
+      : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''}"
     tabindex="0"
   >
     <div class="fd-shellbar__group fd-shellbar__group--product">
@@ -892,9 +886,5 @@
 
   .fd-user-menu .fd-avatar {
     cursor: pointer;
-  }
-
-  .hideShellbarComponent {
-    display: none;
   }
 </style>
