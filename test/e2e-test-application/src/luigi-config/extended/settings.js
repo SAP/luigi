@@ -8,6 +8,7 @@ class Settings {
     subTitle: version || 'unknown',
     favicon: '/assets/favicon-sap.ico',
     responsiveShellbarPaddings: false
+    //disabled:true
   };
   appLoadingIndicator = {
     hideAutomatically: false
@@ -48,7 +49,6 @@ class Settings {
   featureToggles = {
     queryStringParam: 'ft'
   };
-  // hideTopNavigation = true;
 
   // customAlertHandler = (settings, openFromClient = false) =>{
   //   window.open('http://localhost:4200',settings.title , `width=${settings.width},height=${settings.height}`);
