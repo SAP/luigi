@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite -l warn",
-    "start": "vite",
-    "preview": "vite preview"
+    "dev": "live-server --port=4500 --mount='/node_modules':'./node_modules' ./public --no-browser"
   },
   "devDependencies": {
     "@luigi-project/core": "^1.24.0",
@@ -14,6 +12,6 @@
     "@luigi-project/plugin-auth-oauth2": "^1.24.0",
     "@sap-theming/theming-base-content": "~11.1.35",
     "fundamental-styles": "0.23.0",
-    "vite": "^3.0.6"
+    "live-server": "^1.2.2"
   }
 }
