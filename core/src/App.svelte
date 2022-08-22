@@ -1839,7 +1839,7 @@
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
     ? 'no-side-nav'
     : ''} {noAnimation ? 'no-animation' : ''}"
-  configversion="{configTag}"
+  configversion={configTag}
 >
   {#if alerts && alerts.length}
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />

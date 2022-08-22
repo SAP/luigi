@@ -413,7 +413,6 @@ import { KEYCODE_ENTER } from '../utilities/keycode';
    */
   function handleEnterPressed(event, node) {
     if(event.keyCode === KEYCODE_ENTER) {
-      console.log('test inside');
       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
     }
   }
