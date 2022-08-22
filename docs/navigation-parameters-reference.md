@@ -699,7 +699,7 @@ settings: {
 - **type**: object
 - **description**: allows to set a status badge for this node. 
 - **attributes**:
-  - **label**: string, the text is displayed on badge.
+  - **label**: string specifying the text displayed on the status badge.
   - **type**: string. Allowed are `negative`, `positive`, `critical`, `informative`, or default as `neutral`.
 - **example**:
     ```javascript
