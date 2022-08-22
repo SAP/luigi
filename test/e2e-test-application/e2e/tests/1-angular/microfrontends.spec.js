@@ -188,6 +188,7 @@ describe('iframeCreationInterceptor test', () => {
     cy.visitLoggedIn('/projects/pr2');
     cy.window().then(win => {
       const config = win.Luigi.getConfig();
+      config.tag = 'iframeInterceptorTest';
       config.settings.iframeCreationInterceptor = (iframe, viewGroup, navigationNode, microFrontendType) => {
         const style = 'border: 3px dashed ';
         switch (microFrontendType) {
@@ -205,15 +206,17 @@ describe('iframeCreationInterceptor test', () => {
             break;
         }
       };
-      win.Luigi.configChanged('settings.header');
+      win.Luigi.configChanged();
     });
   });
 
   it('main iframe intercepted', () => {
+    cy.get('#app[configversion="iframeInterceptorTest"]');
     cy.get('iframe').should('have.attr', 'style', 'border: 3px dashed green;');
   });
 
   it('split-view iframe intercepted', () => {
+    cy.get('#app[configversion="iframeInterceptorTest"]');
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('open view in split view')
@@ -223,6 +226,7 @@ describe('iframeCreationInterceptor test', () => {
   });
 
   it('modal iframe intercepted', () => {
+    cy.get('#app[configversion="iframeInterceptorTest"]');
     cy.getIframeBody().then($iframeBody => {
       cy.wrap($iframeBody)
         .contains('rendered in a modal')

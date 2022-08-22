@@ -172,6 +172,11 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
   },
 ```
 
+### header.disabled
+- **type**: boolean
+- **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top navigation is hidden and only the left-side navigation is visible.
+- **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
+
 ### responsiveNavigation
 - **description**: allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons.
 You can set the following values:
@@ -267,11 +272,6 @@ Luigi.setConfig({
   }
 })
 ```
-
-### hideTopNavigation
-- **type**: boolean
-- **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top is no longer visible.
-- **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
 
 ## Third-party cookies support check
 

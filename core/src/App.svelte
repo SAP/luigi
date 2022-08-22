@@ -716,7 +716,7 @@
   let noAnimation;
   let previousWindowWidth;
   let configTag;
-  let hideShellbarComponent;
+  let isHeaderDisabled;
 
   const closeLeftNav = () => {
     document.body.classList.remove('lui-leftNavToggle');
@@ -1831,7 +1831,7 @@
       GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
-    hideShellbarComponent = LuigiConfig.getConfigValue('settings.header.disabled');
+    isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
   });
 </script>
 
@@ -1840,7 +1840,7 @@
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
     ? 'no-side-nav'
-    : ''} {hideShellbarComponent ? 'no-top-nav' : ''} {noAnimation
+    : ''} {isHeaderDisabled ? 'no-top-nav' : ''} {noAnimation
     ? 'no-animation'
     : ''}"
   configversion={configTag}
@@ -1931,7 +1931,7 @@
       </div>
     </div>
   {/if}
-  {#if !hideShellbarComponent}
+  {#if !isHeaderDisabled}
     <TopNav
       pathData={navigationPath}
       {pathParams}
