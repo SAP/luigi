@@ -1,4 +1,4 @@
-import fiddleConfig from '../configs/default';
+import defaultLuigiConfig from '../configs/default';
 
 const setAcceptedCookies = win => {
   win.localStorage.setItem('cookiesAccepted', 'true');
@@ -16,61 +16,35 @@ const setLoggedIn = win => {
   win.localStorage.setItem(key, JSON.stringify(newLuigiAuth));
 };
 
-const setLuigiConfig = (win, config) => {
-  const intv = setInterval(function() {
-    if (win.Luigi) {
+Cypress.Commands.add('vistTestAppPathRouting', (path = '/', config = defaultLuigiConfig) => {
+  cy.visit(`http://localhost:4500/`, {
+    onLoad: win => {
       win.Luigi.setConfig(config);
-      clearInterval(intv);
-    }
-  }, 20);
-};
-
-Cypress.Commands.add('visitFiddleConfigWithPathRouting', (path = '/', config = fiddleConfig) => {
-  cy.visit(`http://localhost:8080/${path}`, {
-    onBeforeLoad: win => {
-      win.localStorage.clear();
-      win.sessionStorage.clear();
-      setAcceptedCookies(win);
-      setLuigiConfig(win, config);
     }
   });
 });
 
-Cypress.Commands.add('visitWithFiddleConfig', (path = '/', config = fiddleConfig) => {
-  cy.visit(`http://localhost:8080/#${path}`, {
-    onBeforeLoad: win => {
-      win.localStorage.clear();
-      win.sessionStorage.clear();
-      setAcceptedCookies(win);
-      setLuigiConfig(win, config);
-    }
-  });
-});
-Cypress.Commands.add('visitWithFiddleConfigString', (path = '/', config = fiddleConfig) => {
-  cy.visit(`http://localhost:8080/#${path}`, {
-    onBeforeLoad: win => {
-      win.localStorage.clear();
-      win.sessionStorage.clear();
-      setAcceptedCookies(win);
-      // Not using setLuigiConfig(win, config);
-      const strConfig = typeof config === 'object' ? JSON.stringify(config) : config;
-      win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
-      win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+Cypress.Commands.add('visitTestApp', (path = '/', config = defaultLuigiConfig) => {
+  cy.visit(`http://localhost:4500/#${path}`, {
+    onLoad: win => {
+      if (config.auth) {
+        config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
+      }
+      win.Luigi.setConfig(config);
     }
   });
 });
 
-Cypress.Commands.add('visitLoggedInWithFiddleConfig', (path = '/', config = fiddleConfig) => {
-  cy.visit(`http://localhost:8080/#${path}`, {
+Cypress.Commands.add('visitTestAppLoggedIn', (path = '/', config = defaultLuigiConfig) => {
+  cy.visit(`http://localhost:4500/#${path}`, {
     onBeforeLoad: win => {
-      win.localStorage.clear();
-      win.sessionStorage.clear();
-      setAcceptedCookies(win);
       setLoggedIn(win);
-
-      const strConfig = typeof config === 'object' ? JSON.stringify(config) : config;
-      win.sessionStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
-      win.localStorage.setItem('fiddle', `Luigi.setConfig(${strConfig})`);
+    },
+    onLoad: win => {
+      if (config.auth) {
+        config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
+      }
+      win.Luigi.setConfig(config);
     }
   });
 });
@@ -86,7 +60,7 @@ Cypress.Commands.add('visitLoggedIn', (path = '/') => {
   });
 });
 
-Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false) => {
+Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false, config) => {
   cy.get('.fd-input')
     .first()
     .clear()
@@ -100,6 +74,12 @@ Cypress.Commands.add('login', (email, password, skipReturnPathCheck = false) => 
     .should('have.value', password);
 
   cy.get('.fd-button').click();
+
+  if (config) {
+    cy.window().then(win => {
+      win.Luigi.setConfig(config);
+    });
+  }
 
   if (!skipReturnPathCheck) {
     cy.get('.fd-shellbar').contains('Overview');
@@ -158,10 +138,10 @@ Cypress.Commands.add('getIframeBody', (getIframeOpts = {}, index = 0, containerS
 });
 
 // More robust iframe retrival methods based on: https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/
-// retrieves the <iframe /> element directly 
+// retrieves the <iframe /> element directly
 Cypress.Commands.add('getIframe', () => {
   // get the iframe > document > body
-  // and retry until the body element is not undefined 
+  // and retry until the body element is not undefined
   return (
     cy
       .get('.iframeContainer > iframe')
@@ -176,7 +156,7 @@ Cypress.Commands.add('getIframe', () => {
 
 // only works if iframe and parent window are of the same origin
 Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
-  // get the iframe > document 
+  // get the iframe > document
   // and retry until the body element is not undefined
   return (
     cy
@@ -191,7 +171,7 @@ Cypress.Commands.add('getIframeDocumentSameOrigin', () => {
 });
 
 Cypress.Commands.add('getIframeWindow', () => {
-  // get the iframe > contentwindow 
+  // get the iframe > contentwindow
   // and retry until the window content exists
   return cy
     .get('.iframeContainer > iframe')

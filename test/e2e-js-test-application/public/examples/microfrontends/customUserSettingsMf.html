@@ -8,13 +8,41 @@
     />
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' *; img-src https://*; child-src 'none';"> -->
     <link rel="stylesheet" type="text/css" href="index.css" media="screen" />
+    <style>
+      .green {
+        color: green;
+      }
+
+      .red {
+        color: red;
+      }
+
+      .yellow {
+        color: yellow;
+      }
+
+      .active {
+        font-size: 30px;
+      }
+
+      .mobileBack {
+        display: none;
+      }
+
+      @media (max-width: 600px) {
+        .mobileBack {
+          display: block;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script src="node_modules/@luigi-project/client/luigi-client.js"></script>
+    <script src="/node_modules/@luigi-project/client/luigi-client.js"></script>
     <script>
       let myUserSettings = {};
+
       window.LuigiClient.addInitListener((context, origin) => {
         renderData(context);
       });
@@ -53,26 +81,23 @@
     <div>
       <ul class="btnList">
         <li>
-          <button class="red" style="color:red" onclick="changeTheming('red')">
+          <button class="red" onclick="changeTheming('red')">
             Red
           </button>
         </li>
         <br /><br />
         <li>
-          <button class="green" style="color: green" onclick="changeTheming('green')">
+          <button class="green" onclick="changeTheming('green')">
             Green
           </button>
         </li>
         <br /><br />
         <li>
-          <button
-            class="yellow"
-            data-testid="yellowBtn"
-            onclick="setYellowTheme('yellow')"
-          >
+          <button class="yellow" onclick="setYellowTheme('yellow')">
             Yellow
           </button>
         </li>
+        <br /><br />
       </ul>
     </div>
   </body>
