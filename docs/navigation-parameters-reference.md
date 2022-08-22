@@ -695,6 +695,27 @@ settings: {
 
 
 
+### statusBadge
+- **type**: object
+- **description**: allows to set a status badge for this node. 
+- **attributes**:
+  - **label**: string, the text is displayed on badge.
+  - **type**: string. Allowed are `negative`, `positive`, `critical`, `informative`, or default as `neutral`.
+- **example**:
+    ```javascript
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: '/sampleapp.html#/settings',
+      statusBadge: {
+        label: 'Settings',
+        type: 'positive'
+      }
+    }
+    ```
+
+
+
 
 ## Context switcher
 
