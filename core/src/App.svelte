@@ -715,6 +715,7 @@
   let hideSideNav;
   let noAnimation;
   let previousWindowWidth;
+  let configTag;
 
   const closeLeftNav = () => {
     document.body.classList.remove('lui-leftNavToggle');
@@ -908,7 +909,7 @@
       // reset all modal list
       mfModalList = [];
       return;
-    } 
+    }
     // remove the item with specified index from the list
     mfModalList = mfModalList.filter((item, i) => index !== i);
   };
@@ -916,7 +917,7 @@
   resetMicrofrontendModalData();
 
   /**
-   * Opens the (iframe/wc) view in a modal given in the nodepath 
+   * Opens the (iframe/wc) view in a modal given in the nodepath
    * @param nodepath {string} the path of the view to open
    * @param settings {Object} the respective modal settings
    */
@@ -948,7 +949,7 @@
   /**
    * Event handler called when the iframe of the modal is created inside Modal component
    * @param event {Object} event data of the instantiated Modal component instance
-   * @param index {number} the index of the modal to be instantiated 
+   * @param index {number} the index of the modal to be instantiated
    */
   const modalIframeCreated = (event, index) => {
     mfModalList[index].modalIframe = event.detail.modalIframe;
@@ -958,7 +959,7 @@
   /**
    * Event handler called when the web component of the modal is created inside Modal component
    * @param event {Object} event data of the instantiated Modal component instance
-   * @param index {number} the index of the modal to be instantiated 
+   * @param index {number} the index of the modal to be instantiated
    */
   const modalWCCreated = (event, index) => {
     mfModalList[index].modalWC = event.detail.modalWC;
@@ -1080,10 +1081,7 @@
             resetMicrofrontendDrawerData();
           });
         }
-        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
-          'style',
-          null
-        );
+        IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
       } catch (e) {
         console.log(e);
       }
@@ -1127,7 +1125,7 @@
   /**
    * Builds the current path based on the navigation params received
    * @param params {Object} navigation options
-   * @returns {string} the path built 
+   * @returns {string} the path built
    */
   const buildPathForGetCurrentRoute = (params) => {
     let localNavPath = navigationPath;
@@ -1143,7 +1141,7 @@
 
     let path = params.link;
     let currentNodeViewUrl = getSubPath(currentNode, pathParams);
-  
+
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
       const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
@@ -1235,7 +1233,7 @@
       const topMostModal = mfModalList[(mfModalList.length - 1)];
       const modalIframe = topMostModal && topMostModal.modalIframe;
       const modalIframeData = topMostModal && topMostModal.modalIframeData;
-      
+
       const specialIframeProps = {
         modalIframe,
         modalIframeData,
@@ -1342,7 +1340,6 @@
           if (loadingIndicatorAutoHideEnabled) {
             showLoadingIndicator = false;
           }
-
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
           // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
@@ -1439,10 +1436,10 @@
                 });
               // close all modals to allow navigation to the non-special view
               mfModalList.forEach((m, index) => {
-                // close modals 
+                // close modals
                 closeModal(index);
               });
-              
+
               closeSplitView();
               closeDrawer();
               isNavigationSyncEnabled = true;
@@ -1832,6 +1829,7 @@
     breadcrumbsEnabled =
       GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
+    configTag = LuigiConfig.getConfigValue('tag');
   });
 </script>
 
@@ -1841,6 +1839,7 @@
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
     ? 'no-side-nav'
     : ''} {noAnimation ? 'no-animation' : ''}"
+  configversion={configTag}
 >
   {#if alerts && alerts.length}
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
@@ -1855,6 +1854,7 @@
         on:close={() => closeModal(index)}
         on:iframeCreated={event => modalIframeCreated(event, index)}
         on:wcCreated={event => modalWCCreated(event, index)}
+        {disableBackdrop}
       />
     {/if}
   {/each}

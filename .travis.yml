@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - '14.15.5' # Default node version for CI testing
+  - 'v14.15.5' # Default node version for CI testing
   - 16 # Optional node version for setup scripts
 dist: xenial
 stage: Setup node environment
@@ -16,7 +16,7 @@ cache:
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/externalMf
-    - $TRAVIS_BUILD_DIR/website/fiddle/public
+    - $TRAVIS_BUILD_DIR/test/e2e-js-test-application
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
     - $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist
@@ -82,11 +82,11 @@ jobs:
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
         # Link fiddle manually:
-        - rm -rf $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/*
-        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/core
-        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/client
-        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oauth2
-        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc
+        - rm -rf $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/*
+        - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/core
+        - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/client
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/plugin-auth-oauth2
+        # - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc
         # WORKAROUND - END
         # Make sure client is build first, required for client-support-angular
         - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1

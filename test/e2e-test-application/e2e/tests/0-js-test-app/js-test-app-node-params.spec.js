@@ -1,7 +1,7 @@
-import fiddleConfig from '../../configs/default';
+import defaultLuigiConfig from '../../configs/default';
 import { cloneDeep } from 'lodash';
 
-describe('Fiddle 3', () => {
+describe('JS-TEST-APP 3', () => {
   const localRetries = {
     retries: {
       runMode: 4,
@@ -11,7 +11,7 @@ describe('Fiddle 3', () => {
   describe('LuigiClient add and delete node and search params', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(fiddleConfig);
+      newConfig = cloneDeep(defaultLuigiConfig);
       newConfig.routing.useHashRouting = true;
       const node = {
         pathSegment: 'mynode',
@@ -34,7 +34,7 @@ describe('Fiddle 3', () => {
     });
 
     it('Add and delete search params hash routing enabled', () => {
-      cy.visitWithFiddleConfig('/home/mynode', newConfig);
+      cy.visitTestApp('/home/mynode', newConfig);
       cy.getIframeBody().then($body => {
         cy.wrap($body)
           .find('[data-testid="lui-add-search-params"]')
@@ -55,7 +55,7 @@ describe('Fiddle 3', () => {
       cy.expectPathToBe('/home/mynode?luigi=rocks');
     });
     it('Add and delete node params hash routing enabled', () => {
-      cy.visitWithFiddleConfig('/home/mynode', newConfig);
+      cy.visitTestApp('/home/mynode', newConfig);
       cy.getIframeBody().then($body => {
         cy.wrap($body)
           .find('[data-testid="lui-add-node-params"]')
@@ -78,13 +78,17 @@ describe('Fiddle 3', () => {
   });
 
   describe('LuigiClient add and delete node and search paramstest', () => {
-    let newConfig = cloneDeep(fiddleConfig);
+    let newConfig;
     beforeEach(() => {
+      newConfig = cloneDeep(defaultLuigiConfig);
       newConfig.routing.useHashRouting = false;
       const node = {
         pathSegment: 'mynode',
         label: 'MyNode',
         viewUrl: '/examples/microfrontends/luigi-client-test.html',
+        loadingIndicator: {
+          enabled: false
+        },
         clientPermissions: {
           urlParameters: {
             luigi: {
@@ -98,35 +102,39 @@ describe('Fiddle 3', () => {
           }
         }
       };
+
       newConfig.navigation.nodes[0].children.push(node);
     });
 
     it('Add and delete search params path routing enabled', localRetries, () => {
-      cy.visitFiddleConfigWithPathRouting('', newConfig);
-
+      cy.vistTestAppPathRouting('');
+      cy.window().then(win => {
+        win.Luigi.setConfig(newConfig);
+      });
       cy.get('.fd-side-nav__main-navigation')
         .contains('MyNode')
         .click();
-      cy.getIframeBody().then($body => {
-        cy.wrap($body)
-          .find('[data-testid="lui-add-search-params"]')
-          .invoke('show');
-        cy.wrap($body)
-          .contains('add search params')
-          .click();
-      });
+
+      cy.getIframeBodyWithRetries()
+        .find('[data-testid="lui-add-search-params"]')
+        .invoke('show');
+
+      cy.getIframeBodyWithRetries()
+        .contains('add search params')
+        .click();
+
       cy.location().should(location => {
         expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks&q=test');
       });
 
-      cy.getIframeBody().then($body => {
-        cy.wrap($body)
-          .find('[data-testid="lui-delete-search-params"]')
-          .invoke('show');
-        cy.wrap($body)
-          .contains('delete search params')
-          .click();
-      });
+      cy.getIframeBodyWithRetries()
+        .find('[data-testid="lui-delete-search-params"]')
+        .invoke('show');
+
+      cy.getIframeBodyWithRetries()
+        .contains('delete search params')
+        .click();
+
       cy.location().should(location => {
         expect(location.pathname + location.search).to.eq('/home/mynode?luigi=rocks');
       });
