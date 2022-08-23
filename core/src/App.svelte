@@ -2137,16 +2137,7 @@
   }
 
   .no-top-nav {
-    .iframeContainer,
-    .spinnerContainer {
-      top: 0;
-    }
-    :global(.fd-app__sidebar) {
-      top: 0;
-    }
-    :global(.lui-globalnav) {
-      top: 0;
-    }
+    --luigi__shellbar--height: 0px;
   }
 
   :global(body.lui-simpleSlideInNav) {
