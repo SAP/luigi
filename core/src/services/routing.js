@@ -521,7 +521,7 @@ class RoutingClass {
   handleRouteClick(node, component) {
     const route = RoutingHelpers.getRouteLink(node, component.get().pathParams);
     if (node.externalLink && node.externalLink.url) {
-      this.navigateToExternalLink(route);
+      this.navigateToExternalLink(route, node, component.get().pathParams);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
       this.navigateTo(route);
@@ -571,12 +571,12 @@ class RoutingClass {
     }
   }
 
-  navigateToExternalLink(externalLink) {
-    externalLink.url = RoutingHelpers.getI18nViewUrl(externalLink.url);
+  navigateToExternalLink(externalLink, node, pathParams) {
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink
     };
+    updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
