@@ -38,7 +38,7 @@ module.exports = [
   //'./node_modules/fundamental-styles/dist/message-toast.css',
   //'./node_modules/fundamental-styles/dist/notification.css',
   //'./node_modules/fundamental-styles/dist/numeric-content.css',
-  //'./node_modules/fundamental-styles/dist/object-status.css',
+  './node_modules/fundamental-styles/dist/object-status.css',
   './node_modules/fundamental-styles/dist/page.css',
   //'./node_modules/fundamental-styles/dist/pagination.css',
   //'./node_modules/fundamental-styles/dist/panel.css',
