@@ -54,16 +54,24 @@ You can quickly adjust the Luigi application to improve user experience on mobil
   --luigi__left-sidenav--width: yourCustomWidth;
 }
 ```
-* Define a custom width for the App Title on desktop and mobile simultaneously. To do so, simply add the code below to the top of your `index.html`. The default width  `--luigi__app-title--width: 60vw;` and `--luigi__multi-app-dropdown--width: 50vw;`
+* Define a custom width for the App Title on desktop and mobile simultaneously. To do so, simply add the code below to the top of your `index.html`. The default width is `--luigi__app-title--width: 60vw;` and `--luigi__multi-app-dropdown--width: 50vw;`
 
 ```html
 :root{
-  --luigi__app-title--width: yourCustomSinglAppTtitleWidth;
+  --luigi__app-title--width: yourCustomSingleAppTtitleWidth;
   --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
 }
 ```
 
-* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes.
+* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes. 
+
+* Define a custom height for the top navigation/Shellbar by providing a single CSS variable To do so, simply add the code below to the top of your `index.html`. The default height is `--luigi__shellbar--height: 2.75rem`:
+
+```html
+    :root {
+      --luigi__shellbar--height: yourCustomShellbarwidth;
+    }
+```
 
 ## App loading indicator
 
@@ -79,7 +87,7 @@ To show a loading indicator before Luigi Core or your first micro frontend is re
 </div>
 ```
 
-To automatically remove the loadining indicator after Luigi initialization phase you can set [settings.appLoadingIndicator.hideAutomatically](navigation-parameters-reference.md#loadingindicatorhideautomatically) to `true`.
+To automatically remove the loading indicator after Luigi initialization phase you can set [settings.appLoadingIndicator.hideAutomatically](navigation-parameters-reference.md#loadingindicatorhideautomatically) to `true`.
 
 To keep the loading indicator until the first micro frontend is usable, follow these steps:
 
