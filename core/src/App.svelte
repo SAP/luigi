@@ -716,6 +716,7 @@
   let noAnimation;
   let previousWindowWidth;
   let configTag;
+  let isHeaderDisabled;
 
   const closeLeftNav = () => {
     document.body.classList.remove('lui-leftNavToggle');
@@ -1830,6 +1831,7 @@
       GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
+    isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
   });
 </script>
 
@@ -1838,7 +1840,9 @@
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
     ? 'no-side-nav'
-    : ''} {noAnimation ? 'no-animation' : ''}"
+    : ''} {isHeaderDisabled ? 'no-top-nav' : ''} {noAnimation
+    ? 'no-animation'
+    : ''}"
   configversion={configTag}
 >
   {#if alerts && alerts.length}
@@ -1927,22 +1931,24 @@
       </div>
     </div>
   {/if}
-  <TopNav
-    pathData={navigationPath}
-    {pathParams}
-    on:handleClick={handleNavClick}
-    on:resizeTabNav={onResizeTabNav}
-    on:toggleSearch={toggleSearch}
-    on:closeSearchResult={closeSearchResult}
-    on:handleSearchNavigation={handleSearchNavigation}
-    bind:isSearchFieldVisible
-    bind:displaySearchResult
-    bind:displayCustomSearchResult
-    bind:searchResult
-    bind:inputElem
-    bind:luigiCustomSearchRenderer__slot
-    {burgerTooltip}
-  />
+  {#if !isHeaderDisabled}
+    <TopNav
+      pathData={navigationPath}
+      {pathParams}
+      on:handleClick={handleNavClick}
+      on:resizeTabNav={onResizeTabNav}
+      on:toggleSearch={toggleSearch}
+      on:closeSearchResult={closeSearchResult}
+      on:handleSearchNavigation={handleSearchNavigation}
+      bind:isSearchFieldVisible
+      bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:searchResult
+      bind:inputElem
+      bind:luigiCustomSearchRenderer__slot
+      {burgerTooltip}
+    />
+  {/if}
   {#if !hideNav}
     <GlobalNav
       pathData={navigationPath}
@@ -2128,6 +2134,10 @@
     :global(.fd-app__sidebar) {
       display: none;
     }
+  }
+
+  .no-top-nav {
+    --luigi__shellbar--height: 0px;
   }
 
   :global(body.lui-simpleSlideInNav) {
