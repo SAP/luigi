@@ -44,7 +44,10 @@ class Navigation {
       pathSegment: 'overview',
       label: 'Overview',
       viewUrl: '/sampleapp.html#/overview',
-      hideSideNav: true
+      hideSideNav: true,
+      statusBadge: {
+        label: 'OV'
+      }
     },
     {
       pathSegment: 'projects',
@@ -139,7 +142,11 @@ class Navigation {
       showLabel: true,
       hideSideNav: false,
       globalNav: true,
-      testId: 'icon-and-label'
+      testId: 'icon-and-label',
+      statusBadge: {
+        label: 'Git',
+        type: 'negative'
+      }
     },
     {
       globalNav: true,

@@ -8,6 +8,7 @@ class Settings {
     subTitle: version || 'unknown',
     favicon: '/assets/favicon-sap.ico',
     responsiveShellbarPaddings: false
+    //disabled:true
   };
   appLoadingIndicator = {
     hideAutomatically: false
@@ -30,7 +31,10 @@ class Settings {
     navCollapsed: 'Expand navigation test'
   };
   theming = {
-    themes: () => [{ id: 'light', name: 'Fiori3 Light' }, { id: 'dark', name: 'Fiori3 Dark' }],
+    themes: () => [
+      { id: 'light', name: 'Fiori3 Light' },
+      { id: 'dark', name: 'Fiori3 Dark' }
+    ],
     defaultTheme: 'light'
     // nodeViewURLDecorator: {
     //   queryStringParameter: {

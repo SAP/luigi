@@ -52,7 +52,7 @@
     "svelte-loader": "2.13.6",
     "svelte-transitions": "^1.2.0",
     "tar": ">=5.0.10",
-    "terser": "^4.4.0",
+    "terser": "^4.8.1",
     "ts-node": "^10.0.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.42.1",
