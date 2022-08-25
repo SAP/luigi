@@ -1,5 +1,6 @@
 {
-    "integrationFolder": "e2e/test4",
+    "integrationFolder": "e2e/0-luigimockengine",  
+    "experimentalSourceRewriting": true,
     "pluginsFile": false,
     "chromeWebSecurity": false,
     "viewportWidth": 1250,

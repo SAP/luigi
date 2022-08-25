@@ -22,7 +22,7 @@
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-title fd-title--h3">
-            UX Manager testing features
+            UX Manager testing panel
           </h3>
           <div class="fd-layout-panel__actions">
             <button id="uxbutton1" class="fd-button" data-arg1="alert">
@@ -46,7 +46,7 @@
       <div class="fd-layout-panel__header">
         <div class="fd-layout-panel__head">
           <h3 class="fd-title fd-title--h3">
-            Link Manager testing features
+            Link Manager testing panel
           </h3>
           <div class="fd-layout-panel__actions">
             <button id="button1" class="fd-button" data-arg1="modal">
@@ -68,22 +68,11 @@
     <script type="module">
         import { LuigiMockEngine } from './node_modules/@luigi-project/testing-utilities/index.js';
 
-        const settings = {
-              text: 'This is just a test alert for external micro frontend.',
-              type: 'success'
-        };
-
-        const alertSettings = {
-          text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
-          type: 'info',
-          closeAfter: 3000
-        };
-
         let initPostMessageMthd = await Promise.resolve(LuigiMockEngine.initPostMessageHook()); 
         let buttonArray = ["button1", "button2", "button3", "button4", "uxbutton1", "uxbutton2", "uxbutton3", "uxbutton4"];
 
         //Set target origin for client
-        window.LuigiClient.setTargetOrigin("/");
+        window.LuigiClient.setTargetOrigin('*');
 
         //Attach post message hook from MockModule
         initPostMessageMthd();
@@ -91,9 +80,7 @@
         const callMockModule = () => {
           let msgType = event.target.getAttribute('data-arg1');
           let LuigiClient = window.LuigiClient;
-
-          console.log(msgType);
-
+          
           switch (msgType) {
             //Client Linkmanager features
             case "modal":
@@ -113,7 +100,11 @@
               break;
 
             //Client UX Manager features
-            case "alert":
+            case "alert":        
+              const settings = {
+                text: 'This is just a test alert for external micro frontend.',
+                type: 'success'
+              };
               LuigiClient.uxManager().showAlert(settings);
               break;
             
@@ -144,10 +135,6 @@
         //Attach event listeners to Buttons
         buttonArray.forEach((btn)=> {
           document.getElementById(btn).addEventListener("click", callMockModule);
-        });
-
-        window.LuigiClient.addInitListener((context, origin) => {
-            LuigiClient.uxManager().showAlert(settings);
         });
     </script>
   </body>
