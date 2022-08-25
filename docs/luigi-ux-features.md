@@ -58,7 +58,7 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 ```html
 :root{
-  --luigi__app-title--width: yourCustomSingleAppTtitleWidth;
+  --luigi__app-title--width: yourCustomSingleAppTitleWidth;
   --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
 }
 ```
