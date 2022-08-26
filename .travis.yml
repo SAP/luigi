@@ -114,7 +114,8 @@ jobs:
         - ls $CYPRESS_CACHE_FOLDER
         - npm i -g lerna
         - cd ./client-frameworks-support/testing-utilities/test/
-        - lerna bootstrap --force-local
+        - npm run bundle
+        - lerna bootstrap --ci --force-local
         - npm run e2e:run
 
     # ----- NPM PUBLISH -----
