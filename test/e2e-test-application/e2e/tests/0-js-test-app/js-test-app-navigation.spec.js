@@ -96,13 +96,25 @@ describe('JS-TEST-APP', () => {
       beforeEach(() => {
         newConfig = cloneDeep(defaultLuigiConfig);
         newConfig.navigation.nodes[0].viewUrl = null;
+        newConfig.tag = 'normal-navigation';
       });
       it('defaultChildNode', () => {
         cy.visitTestApp('/', newConfig);
+        cy.get('#app[configversion="normal-navigation"]');
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           cy.expectPathToBe('/home/two');
         });
+      });
+      it('hideShellbar', () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('#app[configversion="normal-navigation"]');
+        cy.get('.fd-shellbar').should('exist');
+        cy.window().then(win => {
+          win.Luigi.getConfig().settings.header.disabled = true;
+          win.Luigi.configChanged('settings');
+        });
+        cy.contains('.fd-shellbar').should('not.exist');
       });
     });
   });
