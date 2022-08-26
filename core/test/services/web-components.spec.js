@@ -11,6 +11,11 @@ import { LuigiElement } from '../../../client/src/luigi-element';
 import { fail } from 'sinon/lib/sinon/mock-expectation';
 
 describe('WebComponentService', function() {
+  global['sessionStorage'] = {
+    getItem: sinon.stub(),
+    setItem: sinon.stub()
+  };
+
   describe('generate web component id', function() {
     const someRandomString = 'dsfgljhbakjdfngb,mdcn vkjrzwero78to4     wfoasb    f,asndbf';
 
