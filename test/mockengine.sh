@@ -28,7 +28,7 @@ npm install
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 npm install
 
-rm -r /node_modules
+rm -r node_modules
 
 npm run bundle
 
