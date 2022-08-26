@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "cypress open --env configFile=e2emockengine",
+    "e2e:run": "cypress run --env configFile=e2emockengine --browser chrome -c video=false",
     "start": "http-server"
   },
   "dependencies": {
