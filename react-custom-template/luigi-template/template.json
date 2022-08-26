@@ -1,0 +1,17 @@
+{
+    "package": {
+      "dependencies": {
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^13.0.0",
+        "@testing-library/user-event": "^13.2.1",
+        "web-vitals": "^2.1.0",
+        "@luigi-project/client": "^1.24.0",
+        "@luigi-project/core": "^1.24.0",
+        "@sap-theming/theming-base-content": "^11.1.41",
+        "fundamental-styles": "^0.24.4"
+      },
+      "eslintConfig": {
+        "extends": ["react-app", "react-app/jest"]
+      }
+    }
+}
