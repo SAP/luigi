@@ -2,7 +2,7 @@ version: ~> 1.0 # enables build config validation beta feature: https://docs.tra
 language: node_js
 node_js:
   - 'v14.15.5' # Optional node version for setup scripts
-  - 16
+ # - 16
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
@@ -65,7 +65,8 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
-      if: NOT (commit_message = test-setup-scripts)
+      name: 'Precache & Unit Tests'
+      if: NOT (commit_message = test-setup-scripts) OR (commit_message = test-mockengine)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
@@ -104,6 +105,16 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
+
+    # ----- INTEGRATION WITH MOCKENGINE -----
+    - name: 'Run LuigiMockEngine tests'
+      if: type = api AND commit_message = test-mockengine
+      script: 
+        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - ls $CYPRESS_CACHE_FOLDER
+        - cd ./client-frameworks-support/testing-utilities/test/
+        - lerna bootstrap --force-local
+        - npm run e2e:run
 
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
