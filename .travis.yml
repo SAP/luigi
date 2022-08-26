@@ -1,8 +1,8 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - 'v14.15.5' # Optional node version for setup scripts
- # - 16
+ # - 'v14.15.5' # Optional node version for setup scripts
+  - 16
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
@@ -112,14 +112,10 @@ jobs:
       script: 
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - ls $CYPRESS_CACHE_FOLDER
+        - npm i -g cypress
         - npm i -g lerna
-        - npm install
-        - cd ./client-frameworks-support/testing-utilities
-        - npm install
-        - npm run bundle
-        - cd ./test
-        - lerna bootstrap --ci --force-local
-        - npm run e2e:run
+        - npm i -g http-server
+        - bash ./test/mockengine.sh
 
     # ----- NPM PUBLISH -----
     - stage: 'Documentation & Tests'
