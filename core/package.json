@@ -26,7 +26,7 @@
     "fs-extra": "9.0.0",
     "fundamental-styles": "0.23.0",
     "glob-parent": ">=6.0.1",
-    "jsdom": "15.0.0",
+    "jsdom": "16.5.0",
     "jsdom-global": "3.0.2",
     "json-schema": ">=0.4.0",
     "live-server": "^1.2.1",
