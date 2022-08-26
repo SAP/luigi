@@ -25,6 +25,11 @@ npm install --force
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
 npm install
 
+cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
+npm install
+
+rm -r /node_modules
+
 npm run bundle
 
 lerna bootstrap --force-local
