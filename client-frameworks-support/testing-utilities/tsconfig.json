@@ -4,7 +4,8 @@
     "target": "es2017",
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./src"        
+    "rootDir": "./src",
+    "moduleResolution":"node",        
   },
   "exclude": ["node_modules", "./dist/**/*"],
 }
