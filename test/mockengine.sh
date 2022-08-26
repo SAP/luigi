@@ -19,7 +19,7 @@ waitForWebServer() {
   killWebserver $PORT
 }
 
-cd ../client-frameworks-support/testing-utilities
+cd $BASE_DIR/../client-frameworks-support/testing-utilities
 npm install
 
 npm run bundle
