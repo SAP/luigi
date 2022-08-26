@@ -30,6 +30,8 @@ npm install
 
 rm -r node_modules
 
+cd ..
+
 npm run bundle
 
 lerna bootstrap --force-local
