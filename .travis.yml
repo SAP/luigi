@@ -113,6 +113,7 @@ jobs:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - ls $CYPRESS_CACHE_FOLDER
         - npm i -g lerna
+        - npm install
         - cd ./client-frameworks-support/testing-utilities
         - npm install
         - npm run bundle
