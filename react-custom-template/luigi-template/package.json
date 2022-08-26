@@ -1,7 +1,6 @@
 {
   "name": "luigi-template",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@luigi-project/client": "^1.24.0",
     "@luigi-project/core": "^1.24.0",
