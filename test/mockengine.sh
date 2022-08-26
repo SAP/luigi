@@ -19,6 +19,9 @@ waitForWebServer() {
   killWebserver $PORT
 }
 
+cd $BASE_DIR/../client-frameworks-support/client-support-angular
+npm install --force
+
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
 npm install
 
