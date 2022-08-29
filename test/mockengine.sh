@@ -19,17 +19,33 @@ waitForWebServer() {
   killWebserver $PORT
 }
 
+echo ""
 echo "INSTALL client-support-angular DEPS"
 echo ""
+
+ls
+
+echo ""
+
 cd $BASE_DIR/../client-frameworks-support/client-support-angular
 npm install --force
 
+echo ""
 echo "INSTALL testing-utilities DEPS"
+echo ""
+
+ls
+
 echo ""
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
 npm install
 
+echo ""
 echo "INSTALL testing-utilities/test DEPS"
+echo ""
+
+ls
+
 echo ""
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 npm install
@@ -40,8 +56,10 @@ cd ..
 
 npm run bundle
 
+cd .. 
+
 lerna bootstrap --ci --force-local
 
-cd test
+cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 #Run acutal test
 (set -e && waitForWebServer 8080) & (npm start)
