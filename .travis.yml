@@ -113,7 +113,7 @@ jobs:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - ls $CYPRESS_CACHE_FOLDER
         - npm i -g cypress
-        - npm i -g lerna
+        - npm i -g lerna@4.0.0
         - npm i -g http-server
         - bash ./test/mockengine.sh
 
