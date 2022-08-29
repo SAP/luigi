@@ -24,30 +24,35 @@ echo "INSTALL client-support-angular DEPS"
 echo ""
 
 cd $BASE_DIR/../client-frameworks-support/client-support-angular
+npm install --force
 echo ""
 ls
 echo ""
-npm install --force
 
 echo ""
 echo "INSTALL testing-utilities DEPS"
 echo ""
 
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
+npm install
 echo ""
 ls
 echo ""
-npm install
 
 echo ""
 echo "INSTALL testing-utilities/test DEPS"
 echo ""
 
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
+npm install
 echo ""
 ls
 echo ""
-npm install
+
+cd $BASE_DIR/../client-frameworks-support/testing-utilities/test/node_modules/@luigi-project/client
+echo ""
+ls
+echo ""
 
 cd ..
 
