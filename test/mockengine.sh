@@ -54,7 +54,7 @@ echo ""
 ls
 echo ""
 
-cd ..
+cd $BASE_DIR/../client-frameworks-support/testing-utilities
 
 npm run bundle
 
