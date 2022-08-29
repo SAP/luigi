@@ -25,28 +25,80 @@ Install the client in your project using npm:
 npm install @luigi-project/client
 ```
 
+## Configuration
+
 Import the client in places where you want to use it, depending on the environment of your choice:
-```javascript
-var LuigiClient = require('@luigi-project/client');
-```
-or
+
+### No framework/Svelte
+Add this line to the imports section of the `src/main.js` page:
 ```javascript
 import LuigiClient from '@luigi-project/client';
 ```
-or, if you are not using any bundler, Luigi is also available as a global object:
+
+### Angular:
+Add this line to the imports section of the src/main.js page:
+
+### SAPUI5/OpenUI5
+Add this line to the imports section of the src/main.js page:
+
+### Vue
+Add this line to the imports section of the src/main.js page:
+
+### React
+Add this line to the imports section of the `src/App.js` page:
+
+```javascript
+import LuigiClient from '@luigi-project/client';
+```
+### Next.JS
+
+<!-- add-attribute:class:success -->
+> **TIP:** You can find an Next.JS example using Luigi Client [here](core/examples/luigi-example-next/pages/sample1.js).
+
+1. Add this line to the imports section of the `src/App.js` page:
+
+```javascript
+import LuigiClient from '@luigi-project/client';
+```
+
+2. Add the `useEffect` function: 
+```javascript
+import { useEffect } from 'react'
+ 
+ export default function Home() {
+  // recommended by https://nextjs.org/docs/migrating/from-create-react-app#safely-accessing-web-apis
+  useEffect(() => {
+    var luigiClient = require('@luigi-project/client');
+    console.log("Load LuigiClient in useEffect: " + luigiClient);
+  }, [])
+```
+
+### Other
+
+If you are not using any bundler, Luigi is also available as a global object:
 ```javascript
 window.LuigiClient
 ```
-You can see Luigi Client in action by running the [Angular example application](/test/e2e-test-application).
+
+<!-- add-attribute:class:success -->
+> **TIP:** You can see Luigi Client in action by running the [Angular example application](/test/e2e-test-application).
 
 ## Usage
 
 This section contains additional instructions and guidelines you can use to work with Luigi Client.
 
-### Generate documentation
-Validate and generate documentation using npm:
+### Luigi Client API s
 
-```bash
-npm install
-npm run docu
-```
+In the [Luigi Client API](/docs/luigi-client-api.md), you will find functions that will allow you to configure your micro frontend in the context of the main Luigi Core app.
+
+For example, if you want to use the function `addInitListener` in order to display a Luigi [alert](/docs/luigi-client-api.md#showalert) in the micro frontend, it can look like this: 
+
+```js
+useEffect(() => {
+    const LuigiClient = require('@luigi-project/client');
+    LuigiClient.addInitListener(function(context) {
+        LuigiClient.showAlert({text: 'Hello'});
+    });
+  }, []);
+  ```
+
