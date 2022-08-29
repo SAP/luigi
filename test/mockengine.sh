@@ -49,16 +49,11 @@ ls
 echo ""
 npm install
 
-rm -r node_modules
-
 cd ..
 
 npm run bundle
 
-cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
-npm install @luigi-project/client
-
-cd ../..
+cd ..
 
 lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope luigi-mock-module-test-mf
 lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope @luigi-project/testing-utilities
