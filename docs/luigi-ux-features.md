@@ -65,7 +65,7 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 * Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes. 
 
-* Define a custom height for the top navigation/Shellbar by providing a single CSS variable To do so, simply add the code below to the top of your `index.html`. The default height is `--luigi__shellbar--height: 2.75rem`:
+* Define a custom height for the top navigation/Shellbar by providing a single CSS variable. To do so, simply add the code below to the top of your `index.html`. The default height is `--luigi__shellbar--height: 2.75rem`:
 
 ```html
     :root {
