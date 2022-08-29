@@ -1,4 +1,4 @@
-import * as sapper from '@sapper/app';
+import * as sapper from '$app/navigation';
 
 import { Accordion } from './client-js/accordion';
 import { CopyCodeHandler } from './client-js/copy-code';
