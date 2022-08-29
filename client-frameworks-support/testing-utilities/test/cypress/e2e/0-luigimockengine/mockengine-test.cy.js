@@ -22,6 +22,7 @@ describe('Luigi Mock Engine', () => {
       cy.get('[id^=uxbutton2]')
       .click();
       
+      //TODO: Check on luigi client side why an error message is returned
       cy.on('uncaught:exception', (err, runnable) => {
         // returning false here prevents Cypress from failing the test
         return false

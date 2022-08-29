@@ -57,7 +57,7 @@ npm run bundle
 
 cd .. 
 
-lerna bootstrap --no-ci --force-local
+lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope luigi-mock-module-test-mf
 
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 #Run acutal test
