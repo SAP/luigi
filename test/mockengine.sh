@@ -19,12 +19,18 @@ waitForWebServer() {
   killWebserver $PORT
 }
 
+echo "INSTALL client-support-angular DEPS"
+echo ""
 cd $BASE_DIR/../client-frameworks-support/client-support-angular
 npm install --force
 
+echo "INSTALL testing-utilities DEPS"
+echo ""
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
 npm install
 
+echo "INSTALL testing-utilities/test DEPS"
+echo ""
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 npm install
 
