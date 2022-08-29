@@ -34,7 +34,7 @@ cd ..
 
 npm run bundle
 
-lerna bootstrap --force-local
+lerna bootstrap --ci --force-local
 
 cd test
 #Run acutal test
