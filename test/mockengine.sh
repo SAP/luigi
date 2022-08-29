@@ -23,31 +23,30 @@ echo ""
 echo "INSTALL client-support-angular DEPS"
 echo ""
 
-ls
-
-echo ""
-
 cd $BASE_DIR/../client-frameworks-support/client-support-angular
+echo ""
+ls
+echo ""
 npm install --force
 
 echo ""
 echo "INSTALL testing-utilities DEPS"
 echo ""
 
-ls
-
-echo ""
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
+echo ""
+ls
+echo ""
 npm install
 
 echo ""
 echo "INSTALL testing-utilities/test DEPS"
 echo ""
 
-ls
-
-echo ""
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
+echo ""
+ls
+echo ""
 npm install
 
 rm -r node_modules
