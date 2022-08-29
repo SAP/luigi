@@ -1,6 +1,6 @@
 {
   "name": "cra-template-luigi-experimental",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "dependencies": {
     "@luigi-project/client": "^1.24.0",
     "@luigi-project/core": "^1.24.0",
