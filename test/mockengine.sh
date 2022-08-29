@@ -57,7 +57,7 @@ npm run bundle
 
 cd .. 
 
-lerna bootstrap --ci --force-local
+lerna bootstrap --no-ci --force-local
 
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 #Run acutal test
