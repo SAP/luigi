@@ -1,6 +1,6 @@
-# cra-template-redux
+# cra-template-luigi-experimental
 
-The SAP Luigi template for [Create React App](https://github.com/facebook/create-react-app)
+The [SAP Luigi](https://luigi-project.io/) template for [Create React App](https://github.com/facebook/create-react-app)
 
 ## Usage
 
