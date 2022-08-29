@@ -69,7 +69,7 @@
         "copy-webpack-plugin": "~4.4.1"
       },
       "eslintConfig": {
-        "extends": ["react-app", "react-app/jest"]
+        "extends": ["react-app"]
       }
     }
 }
