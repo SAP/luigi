@@ -2,7 +2,7 @@ let uxManager, linkManager;
 
 describe('Luigi Mock Engine', () => {
   before(() => {
-    cy.visit('/');
+    cy.visit('http://localhost:8080/');
   });
   /** 
   * Testing Luigi Client UX Manager features
