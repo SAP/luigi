@@ -55,16 +55,14 @@ cd ..
 
 npm run bundle
 
-cd $BASE_DIR/../client-frameworks-support/testing-utilities/test/node_modules/@luigi-project/client
-echo ""
-ls
-echo ""
+cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
+npm install @luigi-project/client
 
-cd .. 
+cd ../..
 
 lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope luigi-mock-module-test-mf
 lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope @luigi-project/testing-utilities
-lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope luigi-client-private
+lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope @luigi-project/client
 
 
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
