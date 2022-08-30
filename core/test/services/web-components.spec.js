@@ -198,16 +198,14 @@ describe('WebComponentService', function() {
     });
 
     it('check attachment of already existing wc', done => {
-      sb.replaceGetter(window, 'customElements', () => {
-        return {
-          define: (id, clazz) => {
-            definedId = id;
-          },
-          get: id => {
-            return true;
-          }
-        };
-      });
+      global['customElements'] = {
+        define: (id, clazz) => {
+          definedId = id;
+        },
+        get: id => {
+          return true;
+        }
+      }
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         assert(false, 'should not be here');
@@ -225,16 +223,14 @@ describe('WebComponentService', function() {
     it('check invocation of custom function', done => {
       let definedId;
 
-      sb.replaceGetter(window, 'customElements', () => {
-        return {
-          define: (id, clazz) => {
-            definedId = id;
-          },
-          get: id => {
-            return false;
-          }
-        };
-      });
+      global['customElements'] = {
+        define: (id, clazz) => {
+          definedId = id;
+        },
+        get: id => {
+          return false;
+        }
+      }
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         assert(false, 'should not be here');
@@ -256,16 +252,15 @@ describe('WebComponentService', function() {
     it('check creation and attachment of new wc', done => {
       let definedId;
 
-      sb.replaceGetter(window, 'customElements', () => {
-        return {
-          define: (id, clazz) => {
-            definedId = id;
-          },
-          get: id => {
-            return false;
-          }
-        };
-      });
+      global['customElements'] = {
+        define: (id, clazz) => {
+          definedId = id;
+        },
+        get: id => {
+          return false;
+        }
+      }
+
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         return new Promise((resolve, reject) => {
@@ -501,11 +496,13 @@ describe('WebComponentService', function() {
       const node = JSON.parse(JSON.stringify(navNode));
       node.viewUrl = 'mfe.js';
       node.webcomponent = true;
-      window.customElements = {
+
+      global['customElements'] = {
         get: () => {
           return false;
         }
       };
+    
 
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
