@@ -69,13 +69,18 @@
         "copy-webpack-plugin": "~4.4.1"
       },
       "eslintConfig": {
-        "extends": ["react-app"]
+        "extends": ["react-app", "react-app/jest"]
       },
       "scripts": {
         "start": "node scripts/start.js",
         "build": "node scripts/build.js",
         "test": "node scripts/test.js",
         "serve": "node scripts/server.js build"
+      },
+      "babel": {
+        "presets": [
+          "react-app"
+        ]
       }
     }
 }
