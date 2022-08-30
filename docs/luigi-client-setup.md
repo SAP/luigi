@@ -30,22 +30,36 @@ npm install @luigi-project/client
 Import the client in places where you want to use it, depending on the environment of your choice:
 
 ### No framework/Svelte
-Add this line to the imports section of the `src/main.js` page:
+Add this line to the imports section of the `src/main.js` file:
 ```javascript
 import LuigiClient from '@luigi-project/client';
 ```
 
 ### Angular:
-Add this line to the imports section of the src/main.js page:
+Add this line to the imports section of the `src/app/app.component.ts` file:
+```javascript
+import LuigiClient from '@luigi-project/client';
+```
 
 ### SAPUI5/OpenUI5
-Add this line to the imports section of the src/main.js page:
+Add this to the `webapp/home/Home.controller.js` file: 
+```js 
+sap.ui.define(
+  [
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/core/UIComponent',
+    'luigi/demo/libs/luigi-client/luigi-client'
+  ],
+```
 
 ### Vue
-Add this line to the imports section of the src/main.js page:
+Add this line to the imports section of the `src/main.js` file:
+```js
+import LuigiClient from '@luigi-project/client';
+```
 
 ### React
-Add this line to the imports section of the `src/App.js` page:
+Add this line to the imports section of the `src/App.js` file:
 
 ```javascript
 import LuigiClient from '@luigi-project/client';
@@ -55,7 +69,7 @@ import LuigiClient from '@luigi-project/client';
 <!-- add-attribute:class:success -->
 > **TIP:** You can find an Next.JS example using Luigi Client [here](core/examples/luigi-example-next/pages/sample1.js).
 
-1. Add this line to the imports section of the `src/App.js` page:
+1. Add this line to the imports section of the `src/App.js` file:
 
 ```javascript
 import LuigiClient from '@luigi-project/client';
