@@ -114,14 +114,16 @@ describe('WebComponentService', function() {
           resolve({ default: {} });
         })
       );
-      window.customElements = {
-        define: (id, clazz) => {
-          definedId = id;
-        },
-        get: id => {
-          return undefined;
-        }
-      };
+      sb.replaceGetter(window, 'customElements', () => {
+        return {
+          define: (id, clazz) => {
+            definedId = id;
+          },
+          get: id => {
+            return undefined;
+          }
+        };
+      });
 
       WebComponentService.registerWCFromUrl('url', 'id').then(() => {
         expect(definedId).to.equal('id');
@@ -136,11 +138,13 @@ describe('WebComponentService', function() {
           reject({ default: {} });
         })
       );
-      window.customElements = {
-        define: (id, clazz) => {
-          definedId = id;
-        }
-      };
+      sb.replaceGetter(window, 'customElements', () => {
+        return {
+          define: (id, clazz) => {
+            definedId = id;
+          }
+        };
+      });
 
       WebComponentService.registerWCFromUrl('url', 'id')
         .then(() => {
@@ -194,14 +198,16 @@ describe('WebComponentService', function() {
     });
 
     it('check attachment of already existing wc', done => {
-      window.customElements = {
-        define: (id, clazz) => {
-          definedId = id;
-        },
-        get: () => {
-          return true;
-        }
-      };
+      sb.replaceGetter(window, 'customElements', () => {
+        return {
+          define: (id, clazz) => {
+            definedId = id;
+          },
+          get: id => {
+            return true;
+          }
+        };
+      });
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         assert(false, 'should not be here');
@@ -219,14 +225,16 @@ describe('WebComponentService', function() {
     it('check invocation of custom function', done => {
       let definedId;
 
-      window.customElements = {
-        define: (id, clazz) => {
-          definedId = id;
-        },
-        get: () => {
-          return false;
-        }
-      };
+      sb.replaceGetter(window, 'customElements', () => {
+        return {
+          define: (id, clazz) => {
+            definedId = id;
+          },
+          get: id => {
+            return false;
+          }
+        };
+      });
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         assert(false, 'should not be here');
@@ -248,14 +256,16 @@ describe('WebComponentService', function() {
     it('check creation and attachment of new wc', done => {
       let definedId;
 
-      window.customElements = {
-        define: (id, clazz) => {
-          definedId = id;
-        },
-        get: () => {
-          return false;
-        }
-      };
+      sb.replaceGetter(window, 'customElements', () => {
+        return {
+          define: (id, clazz) => {
+            definedId = id;
+          },
+          get: id => {
+            return false;
+          }
+        };
+      });
 
       sb.stub(WebComponentService, 'registerWCFromUrl').callsFake(() => {
         return new Promise((resolve, reject) => {
