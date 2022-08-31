@@ -13,9 +13,6 @@
     "export:sapper": "NODE_ENV=production sapper export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
     "export:serve": "sirv public --single --dev --cors --port 5000 --host 0.0.0.0",
     "export": "npm run build:config && npm run export:sapper",
-    "test": "run-p --race dev cy:run",
-    "cy:run": "cypress run",
-    "cy:open": "cypress open",
     "mock:develop-plugins": "NODE_ENV=debug node -r esm scripts/markdown.unified-preview.js",
     "mock:develop-plugins:watch": "NODE_ENV=debug nodemon --watch src --watch scripts -e js,md -r esm scripts/markdown.unified-preview.js"
   },
@@ -54,7 +51,7 @@
     "sass": "^1.49.8",
     "sass-loader": "^8.0.0",
     "sirv-cli": "0.4.4",
-    "svelte": "^3.0.0",
+    "svelte": "^3.49.0",
     "svelte-loader": "^2.9.0",
     "svelte-preprocess": "^3.2.0",
     "unified": "^8.3.2",
