@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cypress open --env configFile=e2emockengine",
     "e2e:run": "cypress run --env configFile=e2emockengine --browser chrome -c video=false",
-    "start": "live-server --entry-file=index.html"
+    "start": "live-server --entry-file=index.html  --mount=./node_modules:/node_modules"
   },
   "dependencies": {
     "@luigi-project/client": "^1.1.0",
