@@ -35,7 +35,7 @@ Add this line to the imports section of the `src/main.js` file:
 import LuigiClient from '@luigi-project/client';
 ```
 
-### Angular:
+### Angular
 Add this line to the imports section of the `src/app/app.component.ts` file:
 ```javascript
 import LuigiClient from '@luigi-project/client';
@@ -101,7 +101,7 @@ window.LuigiClient
 
 This section contains additional instructions and guidelines you can use to work with Luigi Client.
 
-### Luigi Client API s
+### Luigi Client API
 
 In the [Luigi Client API](/docs/luigi-client-api.md), you will find functions that will allow you to configure your micro frontend in the context of the main Luigi Core app.
 
