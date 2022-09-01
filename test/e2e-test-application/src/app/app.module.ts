@@ -65,7 +65,7 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
   providers: [
     LuigiContextService,
     LuigiAutoNavigationService,
-    { provide: Window, useValue: window }
+    Window
   ],
   bootstrap: [AppComponent]
 })

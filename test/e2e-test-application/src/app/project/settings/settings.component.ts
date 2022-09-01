@@ -109,4 +109,17 @@ export class SettingsComponent implements OnInit {
         this.currentRoute = route;
       });
   }
+
+  navigateAndShowAlert() {
+    linkManager().navigate('/settings', null, true);
+
+    const type: any = 'info';
+    setTimeout(() => {
+      const settings = {
+        text: 'Information alert sent from an inactive iFrame',
+        type
+      };
+      uxManager().showAlert(settings);
+    }, 2000);
+  }
 }
