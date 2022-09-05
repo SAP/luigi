@@ -1181,6 +1181,10 @@
   };
 
   function init(node) {
+    ViewGroupPreloading.shouldPreload = true;
+    ViewGroupPreloading.preload(true);
+    ViewGroupPreloading.shouldPreload = false;
+
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
