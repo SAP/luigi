@@ -108,7 +108,7 @@ jobs:
 
     # ----- INTEGRATION WITH MOCKENGINE -----
     - name: 'Run LuigiMockEngine tests'
-      if: type = api AND commit_message = test-mockengine
+      if: NOT (commit_message = test-setup-scripts)
       script: 
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - ls $CYPRESS_CACHE_FOLDER
