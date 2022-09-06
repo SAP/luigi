@@ -55,9 +55,9 @@ echo ""
 # ls
 # echo ""
 
-# cd $BASE_DIR/../client-frameworks-support/testing-utilities
+cd $BASE_DIR/../client-frameworks-support/testing-utilities
 
-# npm run bundle
+npm run bundle
 
 cd ..
 
