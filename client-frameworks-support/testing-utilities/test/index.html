@@ -11,10 +11,7 @@
       rel="stylesheet"
       href="/node_modules/fundamental-styles/dist/layout-panel.css"
     />
-    <link
-      rel="stylesheet"
-      href="/node_modules/fundamental-styles/dist/button.css"
-    />
+    <link rel="stylesheet" href="/node_modules/fundamental-styles/dist/button.css" />
   </head>
 
   <body>
@@ -50,7 +47,7 @@
           </h3>
           <div class="fd-layout-panel__actions">
             <button id="button1" class="fd-button" data-arg1="modal">
-              Test MockModule Modal
+              Test MockModule Modal ----------------
             </button>
             <button id="button2" class="fd-button" data-arg1="split">
               Test MockModule Split
@@ -65,78 +62,96 @@
         </div>
       </div>
     </div>
-    <script type="module">
-        import { LuigiMockEngine } from './node_modules/@luigi-project/testing-utilities/index.js';
-
-        let initPostMessageMthd = await Promise.resolve(LuigiMockEngine.initPostMessageHook()); 
-        let buttonArray = ["button1", "button2", "button3", "button4", "uxbutton1", "uxbutton2", "uxbutton3", "uxbutton4"];
-
-        //Set target origin for client
-        //TODO: Check why this is required in a mock environment
-        window.LuigiClient.setTargetOrigin('*');
-
-        //Attach post message hook from MockModule
-        initPostMessageMthd();
-
-        const callMockModule = () => {
-          let msgType = event.target.getAttribute('data-arg1');
-          let LuigiClient = window.LuigiClient;
-          
-          switch (msgType) {
-            //Client Linkmanager features
-            case "modal":
-              LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
-              break;
-            
-            case "split":
-              LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
-              break;
-          
-            case "drawer":
-              LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
-              break;
-
-            case "pathExists":
-              LuigiClient.linkManager().pathExists('/');
-              break;
-
-            //Client UX Manager features
-            case "alert":        
-              const settings = {
-                text: 'This is just a test alert for external micro frontend.',
-                type: 'success'
-              };
-              LuigiClient.uxManager().showAlert(settings);
-              break;
-            
-            case "confirmModal":
-              const modalSettings = {
-                type: "confirmation",
-                header: "Confirmation",
-                body: "Are you sure you want to do this?",
-                buttonConfirm: "Yes",
-                buttonDismiss: "No"
-              };
-              LuigiClient.uxManager().showConfirmationModal(modalSettings);
-              break;
-
-            case "loadIndicator":
-              LuigiClient.uxManager().showLoadingIndicator();
-              break;
-            
-            case "setCurrentLocale":
-              LuigiClient.uxManager().setCurrentLocale("/");
-              break;
-
-            default:
-              break;
-          }
-        }
-
-        //Attach event listeners to Buttons
-        buttonArray.forEach((btn)=> {
-          document.getElementById(btn).addEventListener("click", callMockModule);
-        });
-    </script>
   </body>
 </html>
+<script type="module">
+  import { LuigiMockEngine } from './node_modules/@luigi-project/testing-utilities/dist/index.js';
+
+  let initPostMessageMthd = await Promise.resolve(LuigiMockEngine.initPostMessageHook());
+  let buttonArray = [
+    'button1',
+    'button2',
+    'button3',
+    'button4',
+    'uxbutton1',
+    'uxbutton2',
+    'uxbutton3',
+    'uxbutton4'
+  ];
+
+  //Set target origin for client
+  //TODO: Check why this is required in a mock environment
+  window.LuigiClient.setTargetOrigin('*');
+
+  //Attach post message hook from MockModule
+  initPostMessageMthd();
+  const callMockModule = () => {
+    let msgType = event.target.getAttribute('data-arg1');
+    let LuigiClient = window.LuigiClient;
+    switch (msgType) {
+      //Client Linkmanager features
+      case 'modal':
+        LuigiClient.linkManager().openAsModal('projects/pr1/users', {
+          title: 'Users',
+          size: 'm'
+        });
+        break;
+
+      case 'split':
+        LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {
+          title: 'Logs',
+          size: 40,
+          collapsed: true
+        });
+        break;
+
+      case 'drawer':
+        LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {
+          header: true,
+          backdrop: true,
+          size: 's'
+        });
+        break;
+
+      case 'pathExists':
+        LuigiClient.linkManager().pathExists('/');
+        break;
+
+      //Client UX Manager features
+      case 'alert':
+        const settings = {
+          text: 'This is just a test alert for external micro frontend.',
+          type: 'success'
+        };
+        LuigiClient.uxManager().showAlert(settings);
+        break;
+
+      case 'confirmModal':
+        const modalSettings = {
+          type: 'confirmation',
+          header: 'Confirmation',
+          body: 'Are you sure you want to do this?',
+          buttonConfirm: 'Yes',
+          buttonDismiss: 'No'
+        };
+        LuigiClient.uxManager().showConfirmationModal(modalSettings);
+        break;
+
+      case 'loadIndicator':
+        LuigiClient.uxManager().showLoadingIndicator();
+        break;
+
+      case 'setCurrentLocale':
+        LuigiClient.uxManager().setCurrentLocale('/');
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  //Attach event listeners to Buttons
+  buttonArray.forEach(btn => {
+    document.getElementById(btn).addEventListener('click', callMockModule);
+  });
+</script>
