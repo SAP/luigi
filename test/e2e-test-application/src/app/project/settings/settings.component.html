@@ -139,6 +139,84 @@
         <li class="fd-list__item">
           <a
             href="javascript:void(0)"
+            data-testid="curr-link-virtualtree"
+            class="fd-link"
+            (click)="getCurrentRouteFromVirtualTree()"
+            >getCurrentRoute fromVirtualTreeRoot</a
+          >
+          <app-code-snippet
+            data="linkManager().fromVirtualTreeRoot().getCurrentRoute().then(...)"
+          ></app-code-snippet>
+          <p data-testid="curr-text-virtualtree">{{currentRouteVirtual}}</p>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            data-testid="curr-link-no-option"
+            class="fd-link"
+            (click)="getCurrentRoute()"
+            >getCurrentRoute</a
+          >
+          <app-code-snippet
+            data="linkManager().getCurrentRoute().then(...)"
+          ></app-code-snippet>
+          <p data-testid="curr-text-no-option">{{currentRoute}}</p>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="update-modal-path-virtual-tree"
+            (click)="linkManager().fromVirtualTreeRoot().updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromVirtualTreeRoot</a
+          >
+          <app-code-snippet
+            data="linkManager().fromVirtualTreeRoot().updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="update-modal-path-from-parent"
+            (click)="linkManager().fromParent().updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromParent</a
+          >
+          <app-code-snippet
+            data="linkManager().fromParent().updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="update-modal-path-from-context"
+            (click)="linkManager().fromContext('project').updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromContext</a
+          >
+          <app-code-snippet
+            data="linkManager().fromContext('project').updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="update-modal-path-closest-context"
+            (click)="linkManager().fromClosestContext().updateModalPathInternalNavigation('xyz')"
+            >updateModalPathInternalNavigation fromClosestContext</a
+          >
+          <app-code-snippet
+            data="linkManager().fromClosestContext().updateModalPathInternalNavigation('xyz')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
             class="fd-link"
             (click)="linkManager().navigate('/overview')"
             >absolute: to overview</a
@@ -204,6 +282,7 @@
         <li class="fd-list__item">
           <a
             href="javascript:void(0)"
+            data-testid="fromcontext-settings-link"
             class="fd-link"
             (click)="
               linkManager()
@@ -353,6 +432,26 @@
             class="fd-link"
             (click)="
               linkManager().openAsModal('/projects/pr2/webcomponent', {
+                title: 'Webcomponent in a fullscreen modal',
+                size: 'fullscreen'
+              })
+            "
+            >Open webcomponent in a fullscreen modal</a
+          >
+          <app-code-snippet
+            data="linkManager().openAsModal('/projects/pr2/webcomponent', {
+              title: 'Webcomponent in a modal',
+              size: 'fullscreen'
+            })"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="
+              linkManager().openAsModal('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a modal',
                 size: 'm'
               })
@@ -360,10 +459,55 @@
             >Open webcomponent in a modal</a
           >
           <app-code-snippet
-            data="linkManager()
-            .openAsModal('/projects/pr2/webcomponent', {
+            data="linkManager().openAsModal('/projects/pr2/webcomponent', {
               title: 'Webcomponent in a modal',
               size: 'm'
+            })"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="open-modal-pr2-large"
+            (click)="
+              linkManager().openAsModal('/projects/pr2', {
+                title: 'microfrontend in a modal',
+                size: 'l',
+                keepPrevious: true
+              })
+            "
+            >Open a modal large size</a
+          >
+          <app-code-snippet
+            data="linkManager().openAsModal('/projects/pr2', {
+              title: 'microfrontend in a modal',
+              size: 'l',
+              keepPrevious: true
+            })"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            data-testid="open-modal-pr2-s"
+            (click)="
+              linkManager().openAsModal('/projects/pr2', {
+                title: 'microfrontend in a modal',
+                size: 's',
+                keepPrevious: true
+              })
+            "
+            >Open a modal small size</a
+          >
+          <app-code-snippet
+            data="linkManager().openAsModal('/projects/pr2', {
+              title: 'microfrontend in a modal',
+              size: 's',
+              keepPrevious: true
             })"
           >
           </app-code-snippet>
@@ -445,6 +589,40 @@
           >
           <app-code-snippet
             data="linkManager().fromClosestContext().withParams({ foo: 'bar' }).newTab().navigate('settings')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="
+              linkManager()
+                .preserveQueryParams(true)
+                .navigate('/projects/pr2')
+            "
+          >
+            navigate to project 2 with query parameters</a
+          >
+          <app-code-snippet
+            data="linkManager().preserveQueryParams(true).navigate('/projects/pr2')"
+          >
+          </app-code-snippet>
+        </li>
+        <li class="fd-list__item">
+          <a
+            href="javascript:void(0)"
+            class="fd-link"
+            (click)="
+              linkManager()
+                .preserveQueryParams(false)
+                .navigate('/projects/pr2')
+            "
+          >
+            navigate to project 2 without query parameters</a
+          >
+          <app-code-snippet
+            data="linkManager().preserveQueryParams(false).navigate('/projects/pr2')"
           >
           </app-code-snippet>
         </li>

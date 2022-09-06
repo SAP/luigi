@@ -1,7 +1,13 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
-import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers } from './';
+import {
+  AsyncHelpers,
+  EscapingHelpers,
+  EventListenerHelpers,
+  GenericHelpers,
+  IframeHelpers,
+} from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
@@ -13,7 +19,7 @@ class RoutingHelpersClass {
 
   getLastNodeObject(pathData) {
     const lastElement = [...pathData.navigationPath].pop();
-    return lastElement ? lastElement : {};
+    return lastElement || {};
   }
 
   async getDefaultChildNode(pathData, childrenResolverFn) {
@@ -36,7 +42,8 @@ class RoutingHelpersClass {
         );
       }
       const validChild = children.find(
-        child => child.pathSegment && (child.viewUrl || (child.externalLink && child.externalLink.url))
+        child =>
+          child.pathSegment && (child.viewUrl || child.compound || (child.externalLink && child.externalLink.url))
       );
       if (validChild) return validChild.pathSegment;
     }
@@ -45,6 +52,7 @@ class RoutingHelpersClass {
   }
 
   parseParams(paramsString) {
+    if (!paramsString) return {};
     const result = {};
     const viewParamString = paramsString;
     const pairs = viewParamString ? viewParamString.split('&') : null;
@@ -60,8 +68,8 @@ class RoutingHelpersClass {
   }
 
   encodeParams(dataObj) {
-    let queryArr = [];
-    for (let key in dataObj) {
+    const queryArr = [];
+    for (const key in dataObj) {
       queryArr.push(encodeURIComponent(key) + '=' + encodeURIComponent(dataObj[key]));
     }
     return queryArr.join('&');
@@ -91,11 +99,23 @@ class RoutingHelpersClass {
     return result;
   }
 
-  findViewGroup(node) {
+  findViewGroup(node, originalNode) {
     if (node.viewGroup) {
-      return node.viewGroup;
+      if (originalNode && originalNode !== node) {
+        if (
+          node.viewUrl &&
+          originalNode.viewUrl &&
+          IframeHelpers.getLocation(node.viewUrl) === IframeHelpers.getLocation(originalNode.viewUrl)
+        ) {
+          return node.viewGroup;
+        }
+
+        return undefined;
+      } else {
+        return node.viewGroup;
+      }
     } else if (node.parent) {
-      return this.findViewGroup(node.parent);
+      return this.findViewGroup(node.parent, originalNode || node);
     }
   }
 
@@ -130,41 +150,66 @@ class RoutingHelpersClass {
   getQueryParam(paramName) {
     return this.getQueryParams()[paramName];
   }
+
   getQueryParams() {
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
     return hashRoutingActive ? this.getLocationHashQueryParams() : this.getLocationSearchQueryParams();
   }
-  getLocationHashQueryParams() {
-    const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
-    return queryParamIndex !== -1 ? RoutingHelpers.parseParams(location.hash.slice(queryParamIndex + 1)) : {};
+
+  getLocation() {
+    return location;
   }
+
+  getLocationHashQueryParams() {
+    const queryParamIndex = RoutingHelpers.getLocation().hash.indexOf(this.defaultQueryParamSeparator);
+    return queryParamIndex !== -1
+      ? RoutingHelpers.parseParams(RoutingHelpers.getLocation().hash.slice(queryParamIndex + 1))
+      : {};
+  }
+
   getLocationSearchQueryParams() {
-    return location.search ? RoutingHelpers.parseParams(location.search.slice(1)) : {};
+    return RoutingHelpers.getLocation().search
+      ? RoutingHelpers.parseParams(RoutingHelpers.getLocation().search.slice(1))
+      : {};
+  }
+
+  /**
+    * Append search query parameters to the route
+    @param route string  absolute path of the new route
+    @returns resulting route with or without appended params, for example /someroute?query=test
+  */
+  composeSearchParamsToRoute(route) {
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    if (hashRoutingActive) {
+      const queryParamIndex = location.hash.indexOf(this.defaultQueryParamSeparator);
+      return queryParamIndex !== -1 ? route + location.hash.slice(queryParamIndex) : route;
+    }
+    return location.search ? route + location.search : route;
   }
 
   getModalPathFromPath() {
     const path = this.getQueryParam(this.getModalViewParamName());
-    return path && decodeURIComponent(path);
+    return path;
   }
 
   getModalParamsFromPath() {
     const modalParamsStr = this.getQueryParam(`${this.getModalViewParamName()}Params`);
-    return modalParamsStr && JSON.parse(decodeURIComponent(modalParamsStr));
+    return modalParamsStr && JSON.parse(modalParamsStr);
   }
 
   addRouteChangeListener(callback) {
     const hashRoutingActive = LuigiConfig.getConfigValue('routing.useHashRouting');
 
     EventListenerHelpers.addEventListener('message', e => {
-      if ('refreshRoute' === e.data.msg && e.origin === window.origin) {
+      if (e.data.msg === 'refreshRoute' && e.origin === window.origin) {
         const path = hashRoutingActive ? Routing.getHashPath() : Routing.getModifiedPathname();
         callback(path);
       }
     });
 
     EventListenerHelpers.addEventListener('popstate', e => {
-      const method = hashRoutingActive ? Routing.getHashPath(location.href) : Routing.getModifiedPathname();
-      callback(method, e.detail && e.detail.withoutSync);
+      const path = hashRoutingActive ? Routing.getHashPath(location.href) : Routing.getModifiedPathname();
+      callback(path, e.detail);
     });
   }
 
@@ -174,30 +219,54 @@ class RoutingHelpersClass {
       : this.buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
   }
 
+  /**
+    * Get context from node
+    @param {Object} node node information
+    @param {Object} ctx context object
+    @returns {Object} context object. e.g. { someValue: 'foo' }
+  */
+  getContext(node, ctx) {
+    if (ctx === undefined || ctx === null) {
+      return this.getContext(node, node.context || {});
+    }
+
+    return node.parent ? { ...this.getContext(node.parent), ...ctx } : ctx;
+  }
+
   getRouteLink(node, pathParams, relativePathPrefix) {
     const pp = relativePathPrefix || '';
     if (node.externalLink && node.externalLink.url) {
-      return node.externalLink;
+      const url = node.externalLink.url;
+      const data = {
+        context: RoutingHelpers.substituteDynamicParamsInObject(this.getContext(node), pathParams),
+        pathParams,
+        nodeParams: {}
+      };
+      return this.substituteViewUrl(url, data);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
       const link = node.link.startsWith('/') ? node.link : Routing.buildFromRelativePath(node);
       return pp + link;
     }
 
-    let route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+    const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
     return pp + GenericHelpers.replaceVars(route, pathParams, ':', false);
+  }
+
+  calculateNodeHref(node, pathParams) {
+    const link = RoutingHelpers.getRouteLink(
+      node,
+      pathParams,
+      LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
+    );
+    return this.getI18nViewUrl(link.url) || link;
   }
 
   getNodeHref(node, pathParams) {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
-      const link = RoutingHelpers.getRouteLink(
-        node,
-        pathParams,
-        LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
-      );
-      return link.url || link;
+      return this.calculateNodeHref(node, pathParams);
     }
-    return 'javascript:void(0)';
+    return undefined;
   }
 
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
@@ -262,21 +331,30 @@ class RoutingHelpersClass {
     return this.isDynamicNode(node) ? pathParams[node.pathSegment.substring(1)] : undefined;
   }
 
+  /**
+   * Returns the viewUrl with current locale, e.g. luigi/{i18n.currentLocale}/ -> luigi/en
+   * if viewUrl contains {i18n.currentLocale} term, it will be replaced by current locale
+   * @param {*} viewUrl
+   */
+  getI18nViewUrl(viewUrl) {
+    const i18n_currentLocale = '{i18n.currentLocale}';
+    const locale = LuigiI18N.getCurrentLocale();
+    const hasI18n = viewUrl && viewUrl.includes(i18n_currentLocale);
+
+    return hasI18n ? viewUrl.replace(i18n_currentLocale, locale) : viewUrl;
+  }
+
   substituteViewUrl(viewUrl, componentData) {
     const contextVarPrefix = 'context.';
     const nodeParamsVarPrefix = 'nodeParams.';
-    const i18n_currentLocale = '{i18n.currentLocale}';
     const searchQuery = 'routing.queryParams';
 
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.pathParams, ':', false);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.context, contextVarPrefix);
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.nodeParams, nodeParamsVarPrefix);
+    viewUrl = this.getI18nViewUrl(viewUrl);
 
-    if (viewUrl.includes(i18n_currentLocale)) {
-      viewUrl = viewUrl.replace(i18n_currentLocale, LuigiI18N.getCurrentLocale());
-    }
-
-    if (viewUrl.includes(searchQuery)) {
+    if (viewUrl && viewUrl.includes(searchQuery)) {
       const viewUrlSearchParam = viewUrl.split('?')[1];
       if (viewUrlSearchParam) {
         const key = viewUrlSearchParam.split('=')[0];
@@ -300,7 +378,7 @@ class RoutingHelpersClass {
 
   setFeatureToggles(featureToggleProperty, path) {
     let featureTogglesFromUrl;
-    let paramsMap = this.sanitizeParamsMap(this.parseParams(path.split('?')[1]));
+    const paramsMap = this.sanitizeParamsMap(this.parseParams(path.split('?')[1]));
 
     if (paramsMap[featureToggleProperty]) {
       featureTogglesFromUrl = paramsMap[featureToggleProperty];
@@ -308,9 +386,9 @@ class RoutingHelpersClass {
     if (!featureTogglesFromUrl) {
       return;
     }
-    let featureToggleList = featureTogglesFromUrl.split(',');
+    const featureToggleList = featureTogglesFromUrl.split(',');
     if (featureToggleList.length > 0 && featureToggleList[0] !== '') {
-      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft));
+      featureToggleList.forEach(ft => LuigiFeatureToggles.setFeatureToggle(ft, true));
     }
   }
 
@@ -325,7 +403,7 @@ class RoutingHelpersClass {
    *  {
    *    semanticObject: "Sales",
    *    action: "order",
-   *    params: [{param1: "value1"},{param2: "value2"}]
+   *    params: {param1: "value1",param2: "value2"}
    *  };
    * ```
    * @param {string} link  the intent link represents the semantic intent defined by the user
@@ -334,43 +412,15 @@ class RoutingHelpersClass {
   getIntentObject(intentLink) {
     const intentParams = intentLink.split('?intent=')[1];
     if (intentParams) {
-      const elements = intentParams.split('-');
-      if (elements.length === 2) {
-        // avoids usage of '-' in semantic object and action
-        const semanticObject = elements[0];
-        const actionAndParams = elements[1].split('?');
-        // length 2 involves parameters, length 1 involves no parameters
-        if (actionAndParams.length === 2 || actionAndParams.length === 1) {
-          let action = actionAndParams[0];
-          let params = actionAndParams[1];
-          // parse parameters, if any
-          if (params) {
-            params = params.split('&');
-            let paramObjects = [];
-            params.forEach(item => {
-              const param = item.split('=');
-              param.length === 2 && paramObjects.push({ [param[0]]: param[1] });
-            });
-            params = paramObjects;
-          }
-          const alphanumeric = /^[0-9a-zA-Z]+$/;
-          const alphanumericOrUnderscores = /^[0-9a-zA-Z_]+$/;
-          // TODO: check for character size limit
-          if (semanticObject.match(alphanumeric) && action.match(alphanumericOrUnderscores)) {
-            return {
-              semanticObject,
-              action,
-              params
-            };
-          } else {
-            console.warn(
-              'Intent found contains illegal characters. Semantic object must be alphanumeric, action must be (alphanumeric+underscore)'
-            );
-          }
-        }
-      }
+      const intentObj = intentParams.split('?');
+      const semanticObjectAndAction = intentObj[0].split('-');
+      const params = Object.fromEntries(new URLSearchParams(intentObj[1]).entries());
+      return {
+        semanticObject: semanticObjectAndAction[0],
+        action: semanticObjectAndAction[1],
+        params
+      };
     }
-    return false;
   }
 
   /**
@@ -407,20 +457,17 @@ class RoutingHelpersClass {
           return false;
         }
         realPath = realPath.pathSegment;
-        if (intentObject.params) {
+        const params = Object.entries(intentObject.params);
+        if (params && params.length > 0) {
           // resolve dynamic parameters in the path if any
           realPath = this.resolveDynamicIntentPath(realPath, intentObject.params);
           // get custom node param prefixes if any or default to ~
           let nodeParamPrefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
-          nodeParamPrefix = nodeParamPrefix ? nodeParamPrefix : '~';
+          nodeParamPrefix = nodeParamPrefix || '~';
           realPath = realPath.concat(`?${nodeParamPrefix}`);
-          intentObject.params.forEach(param => {
-            realPath = realPath.concat(Object.keys(param)[0]); // append param name
-            realPath = realPath.concat('=');
-            // append param value and prefix in case of multiple params
-            realPath = realPath.concat(param[Object.keys(param)[0]]).concat(`&${nodeParamPrefix}`);
+          params.forEach(([key, value], index) => {
+            realPath += `${index > 0 ? '&' + nodeParamPrefix : ''}${key}=${value}`;
           });
-          realPath = realPath.slice(0, -(nodeParamPrefix.length + 1)); // slice extra prefix
         }
         return realPath;
       } else {
@@ -451,9 +498,7 @@ class RoutingHelpersClass {
       return path;
     }
     let newPath = path;
-    // merge list of objects into one single object for easier iteration
-    const mergedParams = Object.assign({}, ...parameters);
-    for (const [key, value] of Object.entries(mergedParams)) {
+    for (const [key, value] of Object.entries(parameters)) {
       // regular expression to detect dynamic parameter patterns:
       // /some/path/:param1/example/:param2/sample
       // /some/path/example/:param1
@@ -466,7 +511,7 @@ class RoutingHelpersClass {
   }
 
   prepareSearchParamsForClient(currentNode) {
-    let filteredObj = {};
+    const filteredObj = {};
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
         if (key in LuigiRouting.getSearchParams() && currentNode.clientPermissions.urlParameters[key].read === true) {
@@ -477,18 +522,25 @@ class RoutingHelpersClass {
     return filteredObj;
   }
 
-  addSearchParamsFromClient(currentNode, searchParams) {
+  addSearchParamsFromClient(currentNode, searchParams, keepBrowserHistory) {
+    const localSearchParams = { ...searchParams };
+    if (!GenericHelpers.isObject(localSearchParams)) {
+      return;
+    }
+
     if (currentNode && currentNode.clientPermissions && currentNode.clientPermissions.urlParameters) {
-      let filteredObj = {};
+      const filteredObj = {};
       Object.keys(currentNode.clientPermissions.urlParameters).forEach(key => {
-        if (key in searchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
-          filteredObj[key] = searchParams[key];
-        } else {
-          console.warn(`No permission to add "${key}" to the url`);
+        if (key in localSearchParams && currentNode.clientPermissions.urlParameters[key].write === true) {
+          filteredObj[key] = localSearchParams[key];
+          delete localSearchParams[key];
         }
       });
+      for (const key in localSearchParams) {
+        console.warn(`No permission to add the search param "${key}" to the url`);
+      }
       if (Object.keys(filteredObj).length > 0) {
-        LuigiRouting.addSearchParams(filteredObj);
+        LuigiRouting.addSearchParams(filteredObj, keepBrowserHistory);
       }
     }
   }
@@ -499,6 +551,92 @@ class RoutingHelpersClass {
    */
   hasIntent(path) {
     return !!path && path.toLowerCase().includes('#?intent=');
+  }
+
+  /**
+   * Queries the pageNotFoundHandler configuration and returns redirect path if it exists
+   * If the there is no `pageNotFoundHandler` defined we return undefined.
+   * @param {*} notFoundPath the path to check
+   * @returns an object optionally containing the path to redirect, the keepURL option or an empty object if handler is undefined
+   */
+  getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched = false) {
+    const pageNotFoundHandler = LuigiConfig.getConfigValue('routing.pageNotFoundHandler');
+    if (typeof pageNotFoundHandler === 'function') {
+      // custom 404 handler is provided, use it
+      const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
+      if (result && result.redirectTo) {
+        return {
+          path: result.redirectTo,
+          keepURL: result.keepURL
+        };
+      }
+    }
+    return {};
+  }
+
+  /**
+   * Handles pageNotFound situation depending if path exists or not.
+   * If path exists simply return the given path, else fetch the pageNotFound redirect path and return it.
+   * In case there was no pageNotFound handler defined it shows an alert and returns undefined.
+   * @param {any} component the component to show the alert on
+   * @param {string} path the path to check for
+   * @param {boolean} pathExists defines if path exists or not
+   * @returns the path to redirect to or undefined if path doesn't exist and no redirect path is defined
+   */
+  async handlePageNotFoundAndRetrieveRedirectPath(component, path, pathExists) {
+    if (pathExists) {
+      return path;
+    }
+    const redirectPath = this.getPageNotFoundRedirectResult(path).path;
+    if (redirectPath !== undefined) {
+      return redirectPath;
+    } else {
+      // default behavior if `pageNotFoundHandler` did not produce a redirect path
+      this.showRouteNotFoundAlert(component, path);
+      console.warn(`Could not find the requested route: ${path}`);
+      return undefined;
+    }
+  }
+
+  /**
+   * Shows an alert on the given component given the path
+   * @param {*} component the component used to call the alert function upon
+   * @param {string} path the path to show in the alert
+   * @param {boolean} isAnyPathMatched shows whether a valid path was found / which means path was only partially wrong. Otherwise it is false.
+   */
+  showRouteNotFoundAlert(component, path, isAnyPathMatched = false) {
+    const alertSettings = {
+      text: LuigiI18N.getTranslation(isAnyPathMatched ? 'luigi.notExactTargetNode' : 'luigi.requestedRouteNotFound', {
+        route: path
+      }),
+      type: 'error',
+      ttl: 1 //how many redirections the alert will 'survive'.
+    };
+    component.showAlert(alertSettings, false);
+  }
+
+  // Adds and remove properties from searchParams
+  modifySearchParams(params, searchParams, paramPrefix) {
+    for (const [key, value] of Object.entries(params)) {
+      const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
+
+      searchParams.set(paramKey, value);
+      if (value === undefined) {
+        searchParams.delete(paramKey);
+      }
+    }
+  }
+
+  addParamsOnHashRouting(params, hash, paramPrefix) {
+    let localhash = hash;
+    const [hashValue, givenQueryParamsString] = localhash.split('?');
+    const searchParams = new URLSearchParams(givenQueryParamsString);
+    this.modifySearchParams(params, searchParams, paramPrefix);
+    localhash = hashValue;
+    if (searchParams.toString() !== '') {
+      localhash += `?${searchParams.toString()}`;
+    }
+    return localhash;
   }
 }
 

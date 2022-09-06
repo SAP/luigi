@@ -3,11 +3,12 @@
   "node": {
     "label": "Basic navigation",
     "category": {
-      "label": "Luigi Core"
+      "label": "Navigation",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 1
+      "categoryPosition": 3,
+      "position": 0
     }
   }
 }
@@ -127,7 +128,7 @@ The URL of the micro frontend which will be displayed in the main content area o
 You may use these parameters if you want to group related navigation nodes:
 
 ### category
-You can add the **category** property to navigation nodes you want to group. The resulting structure will be different depending on whether you want to group top or side navigation nodes. In both cases, you should define at least one node in a group with **label** and **icon** properties. For all other nodes, you can set **category** as a string with the label value.
+You can add the **category** property to navigation nodes you want to group. The resulting structure will be different depending on whether you want to group top or side navigation nodes. In both cases, you should define at least one node in a group with **label** and **icon** properties. In addition it is also possible to define an **id** property. In that case the **id** is responsible for grouping and the **label** of the group will be the name in the navigation. For all other nodes, you can set **category** as a string with the label value.
 
 * Top navigation:
 top navigation nodes in the same category will be rendered as a dropdown.
@@ -152,7 +153,35 @@ To define all subsequent nodes, use the category label:
 
 ```javascript
 {
-  category: Links,
+  category: 'Links',
+  externalLink: {
+    url: 'http://www.luigi-project.io',
+    sameWindow: false
+  },
+  label: 'Click here to visit the Luigi homepage',
+},
+...
+```
+
+This is an example of what a node with a category including an id, label and icon looks like:
+
+```javascript
+{
+  category: {id: 'anyId', label: 'Links', icon: 'myIcon', collapsible: true },
+  externalLink: {
+    url: 'http://www.luigi-project.io',
+    sameWindow: false
+  },
+  label: 'Click here to visit the Luigi homepage',
+},
+...
+```
+
+To define all subsequent nodes, use the category label:
+
+```javascript
+{
+  category: 'anyId',
   externalLink: {
     url: 'http://www.luigi-project.io',
     sameWindow: false

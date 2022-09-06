@@ -3,11 +3,12 @@
   "node": {
     "label": "Web Component",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 12
+      "position": 5
     }
   }
 }
@@ -37,7 +38,7 @@ If you want to declare a menu item to be open as Web Component, you need to spec
 Luigi.setConfig({
     navigation: {
    		// To enable CORS Web Component Loading: you need to add external domains where the Web Components are hosted;
-   		// in this example, we sepcify that we can load Web Components from everyhere
+   		// in this example, we sepcify that we can load Web Components from everywhere
 	    validWebcomponentUrls:['.*?'],
 	    nodes: [
 		...
@@ -51,9 +52,10 @@ Luigi.setConfig({
 		...
 		]
 	}
-	.......
 })
 ```
+
+> **NOTE:** With Luigi version 1.21.0 we removed the experimental flag for webcomponents. 
 
 ### Write a Web Component
 

@@ -3,7 +3,7 @@ import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../co
 import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
-import { reject } from 'lodash';
+import { reject, get } from 'lodash';
 
 class NavigationHelpersClass {
   constructor() {
@@ -19,7 +19,23 @@ class NavigationHelpersClass {
 
   getProductSwitcherColumnsNumber() {
     const productSwitcherConfig = this.getProductSwitcherConfig();
-    return productSwitcherConfig.columns === 3 ? 3 : 4;
+    if (!productSwitcherConfig.items) return;
+    let productSwitcherColumns = productSwitcherConfig.columns;
+    let productSwitcherItemsAmount;
+    if (GenericHelpers.isFunction(productSwitcherConfig.items)) {
+      productSwitcherItemsAmount = productSwitcherConfig.items().length;
+    } else {
+      productSwitcherItemsAmount = productSwitcherConfig.items.length;
+    }
+    if (productSwitcherColumns === 'auto') {
+      if (productSwitcherItemsAmount <= 6) {
+        return (productSwitcherConfig.columns = 3);
+      } else {
+        return (productSwitcherConfig.columns = 4);
+      }
+    } else {
+      return productSwitcherConfig.columns === 3 ? 3 : 4;
+    }
   }
 
   prepareForTests(...parts) {
@@ -39,18 +55,10 @@ class NavigationHelpersClass {
     return result;
   }
 
-  isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
-    if (LuigiAuth.isAuthorizationEnabled()) {
-      const loggedIn = AuthHelpers.isLoggedIn();
-      const anon = nodeToCheckPermissionFor.anonymousAccess;
-
-      if ((loggedIn && anon === 'exclusive') || (!loggedIn && anon !== 'exclusive' && anon !== true)) {
-        return false;
-      }
-    }
-    if (nodeToCheckPermissionFor && nodeToCheckPermissionFor.visibleForFeatureToggles) {
-      let activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
-      for (let ft of nodeToCheckPermissionFor.visibleForFeatureToggles) {
+  checkVisibleForFeatureToggles(nodeToCheckPermission) {
+    if (nodeToCheckPermission && nodeToCheckPermission.visibleForFeatureToggles) {
+      const activeFeatureToggles = LuigiFeatureToggles.getActiveFeatureToggleList();
+      for (const ft of nodeToCheckPermission.visibleForFeatureToggles) {
         if (ft.startsWith('!')) {
           if (activeFeatureToggles.includes(ft.slice(1))) {
             return false;
@@ -62,6 +70,21 @@ class NavigationHelpersClass {
         }
       }
     }
+    return true;
+  }
+
+  isNodeAccessPermitted(nodeToCheckPermissionFor, parentNode, currentContext) {
+    if (LuigiAuth.isAuthorizationEnabled()) {
+      const loggedIn = AuthHelpers.isLoggedIn();
+      const anon = nodeToCheckPermissionFor.anonymousAccess;
+
+      if ((loggedIn && anon === 'exclusive') || (!loggedIn && anon !== 'exclusive' && anon !== true)) {
+        return false;
+      }
+    }
+
+    if (!this.checkVisibleForFeatureToggles(nodeToCheckPermissionFor)) return false;
+
     const permissionCheckerFn = LuigiConfig.getConfigValue('navigation.nodeAccessibilityResolver');
     if (typeof permissionCheckerFn !== 'function') {
       return true;
@@ -91,7 +114,7 @@ class NavigationHelpersClass {
   }
 
   groupNodesBy(nodes, property, useVirtualGroups) {
-    const result = {};
+    let result = {};
     let groupCounter = 0;
     let virtualGroupCounter = 0;
 
@@ -107,8 +130,8 @@ class NavigationHelpersClass {
       let key;
       let metaInfo;
       const category = node[property];
-      if (category && typeof category === 'object') {
-        key = category.label;
+      if (GenericHelpers.isObject(category)) {
+        key = category.id ? category.id : category.label;
         metaInfo = Object.assign({}, category);
       } else {
         key = category;
@@ -116,7 +139,8 @@ class NavigationHelpersClass {
           key = this.virtualGroupPrefix + virtualGroupCounter;
         }
         metaInfo = {
-          label: key
+          label: key,
+          _fromString: true
         };
       }
 
@@ -134,6 +158,10 @@ class NavigationHelpersClass {
       if (!arr.metaInfo) {
         arr.metaInfo = metaInfo;
       }
+      if (GenericHelpers.isObject(category) && arr.metaInfo._fromString) {
+        delete arr.metaInfo._fromString;
+        arr.metaInfo = { ...arr.metaInfo, ...category };
+      }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
       }
@@ -142,12 +170,35 @@ class NavigationHelpersClass {
       }
     });
     Object.keys(result).forEach(category => {
+      const metaInfo = result[category].metaInfo;
+      if (metaInfo && metaInfo.id) {
+        result[metaInfo.label] = result[metaInfo.id];
+        delete result[metaInfo.id];
+      }
+    });
+
+    Object.keys(result).forEach(category => {
       orderNodes(result[category]);
       if (result[category].length === 0) {
         delete result[category];
       }
     });
     return result;
+  }
+
+  generateTooltipText(node, translation) {
+    let ttText = node.tooltipText;
+    if (ttText === undefined) {
+      ttText = LuigiConfig.getConfigValue('navigation.defaults.tooltipText');
+    }
+
+    if (ttText === undefined) {
+      return translation;
+    } else if (ttText === false) {
+      return '';
+    } else {
+      return LuigiI18N.getTranslation(ttText);
+    }
   }
 
   async generateTopNavNodes(pathData) {
@@ -275,6 +326,23 @@ class NavigationHelpersClass {
     return /^[a-z0-9\-]+$/i.test(string);
   }
 
+  /**
+   * Checks, if icon class is businessSuiteInAppSymbols or TNT suite and renders the icon name accordingly
+   * I.e. will return sap-icon--home or sap-icon-TNT--systemjava or sap-icon-businessSuiteInAppSymbols--birthday
+   * @param {*} iconString icon name
+   * @returns properly formatted icon name.
+   */
+  renderIconClassName(iconString) {
+    if (!iconString) return '';
+    let iconClass = 'sap-icon-';
+    if (iconString.startsWith('businessSuiteInAppSymbols') || iconString.startsWith('TNT')) {
+      iconClass += iconString;
+    } else {
+      iconClass += '-' + iconString;
+    }
+    return iconClass;
+  }
+
   handleUnresponsiveClient(node) {
     if (node.errorFn) {
       node.errorFn();
@@ -299,6 +367,7 @@ class NavigationHelpersClass {
     return undefined;
   }
 
+  /* istanbul ignore next */
   stripNode(node) {
     const strippedNode = { ...node };
     delete strippedNode.parent;
@@ -319,7 +388,7 @@ class NavigationHelpersClass {
     }
     return false;
   }
-  
+
   /**
    * Returns a nested property value defined by a chain string
    * @param {*} obj the object
@@ -331,14 +400,7 @@ class NavigationHelpersClass {
     if (!propChain || !obj) {
       return fallback;
     }
-    const propArray = propChain.split('.');
-    let val = obj;
-    propArray.forEach(el => {
-      if (val) {
-        val = val[el];
-      }
-    });
-    return val || fallback;
+    return get(obj, propChain, fallback);
   }
 
   substituteVars(resolver, context) {
@@ -415,6 +477,27 @@ class NavigationHelpersClass {
     }).catch(error => {
       reject(error);
     });
+  }
+
+  /**
+   * This function checks if the CTRL, CMD or SHIFT key is pressed on the click event.
+   * If one of these keyboard controls is pressed, default behavior (open in new tab/window) should be allowed.
+   * In addition custom behavior that might be inflicted from any parent click event should be stopped,
+   * to make way for the default behavior, ergo the stopPropagation() function in the else condition.
+   * If none of the buttons is pressed, then the default behavior is prevented and the custom behavior fn takes over.
+   * @param {*} event the click event to be handled
+   * @returns {boolean} true if keyboard meta controls are not pressed, false otherwise
+   */
+  handleNavAnchorClickedWithoutMetaKey(event) {
+    // keyboard Meta keys are not pressed
+    if (!(event.ctrlKey || event.metaKey || event.shiftKey)) {
+      event.preventDefault();
+      return true;
+    } else {
+      // keyboard meta keys are pressed
+      event.stopPropagation();
+      return false;
+    }
   }
 }
 

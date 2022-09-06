@@ -1,7 +1,7 @@
 // Methods related to managing the view in the iframe.
 // Please consider adding any new methods to 'iframe-helpers' if they don't require anything from this file.
 import { GenericHelpers, IframeHelpers, RoutingHelpers, NavigationHelpers } from '../utilities/helpers';
-import { LuigiConfig, LuigiI18N, LuigiRouting } from '../core-api';
+import { LuigiConfig, LuigiI18N } from '../core-api';
 
 class IframeClass {
   constructor() {
@@ -320,7 +320,32 @@ class IframeClass {
 
       const withSync = componentData.isNavigationSyncEnabled;
       if (withSync) {
-        // default, send navigation event to client
+        IframeHelpers.getVisibleIframes().forEach(iframe => {
+          if (iframe !== config.iframe) {
+            if (iframe.userSettingsGroup) {
+              Luigi.readUserSettings().then(storedUserSettings => {
+                IframeHelpers.sendMessageToIframe(iframe, {
+                  msg: 'luigi.navigate',
+                  context: {
+                    userSettingsData: storedUserSettings[iframe.userSettingsGroup]
+                  },
+                  internal: IframeHelpers.applyCoreStateData(iframe.luigi._lastUpdatedMessage.internal)
+                });
+              });
+            } else {
+              IframeHelpers.sendMessageToIframe(iframe, {
+                msg: 'luigi.navigate',
+                context: iframe.luigi._lastUpdatedMessage.context,
+                nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
+                pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
+                searchParams: JSON.stringify(
+                  Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode))
+                ),
+                internal: IframeHelpers.applyCoreStateData(iframe.luigi._lastUpdatedMessage.internal)
+              });
+            }
+          }
+        });
         IframeHelpers.sendMessageToIframe(config.iframe, message);
         this.setOkResponseHandler(config, component, node);
       } else {

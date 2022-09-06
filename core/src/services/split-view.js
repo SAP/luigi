@@ -133,7 +133,7 @@ class SplitViewSvcClass {
 
   // required for iOS to force repaint, else scrolling does not work
   /* istanbul ignore next */
-  fixIOSscroll() {
+  fixIOSscroll /* istanbul ignore next */() {
     const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
     if (!iOS) {
       return;
@@ -226,7 +226,7 @@ class SplitViewSvcClass {
           comp.dispatch('statusChanged', {
             displayed: false
           });
-          IframeHelpers.getIframeContainer().style.paddingBottom = '';
+          IframeHelpers.getIframeContainer().style.marginBottom = '';
           SplitViewSvc.sendMessageToClients('close.ok');
         });
     } else if (comp.get().mfSplitView.displayed) {
@@ -249,7 +249,7 @@ class SplitViewSvcClass {
     });
 
     this.getContainer().style.top = `${this.splitViewValues.top}px`;
-    IframeHelpers.getIframeContainer().style.paddingBottom = `${this.splitViewValues.bottom}px`;
+    IframeHelpers.getIframeContainer().style.marginBottom = `${this.splitViewValues.bottom}px`;
     setTimeout(() => {
       this.getDragger().style.top = `${this.splitViewValues.top}px`;
     });
@@ -273,7 +273,7 @@ class SplitViewSvcClass {
             collapsed: true
           });
           this.getContainer().style.top = '';
-          IframeHelpers.getIframeContainer().style.paddingBottom = '';
+          IframeHelpers.getIframeContainer().style.marginBottom = '';
         });
     }
   }

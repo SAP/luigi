@@ -25,6 +25,191 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.24.0] (2022-07-15)
+
+#### :rocket: Added
+* [#2803](https://github.com/SAP/luigi/pull/2803) Add decode mfe src url search params option ([@hardl](https://github.com/hardl))
+* [#2674](https://github.com/SAP/luigi/pull/2674) Custom item renderer for app switcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2770](https://github.com/SAP/luigi/pull/2770) Responsive padding for the Shellbar Component ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2765](https://github.com/SAP/luigi/pull/2785) Multiple modal dialogs ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :bug: Fixed
+* [#2807](https://github.com/SAP/luigi/pull/2807) Remove backdrop on node change ([@ndricimrr](https://github.com/ndricimrr))
+* [#2792](https://github.com/SAP/luigi/pull/2792) Fix patchy product switch grid icon ([@hardl](https://github.com/hardl))
+* [#2783](https://github.com/SAP/luigi/pull/2783) Fixed viewgroup inheritance ([@hardl](https://github.com/hardl))
+* [#2765](https://github.com/SAP/luigi/pull/2765) Refactor buildpath for getcurrentpath ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
+
+
+## [v1.23.1] (2022-06-20)
+
+#### :rocket: Added
+* [#2748](https://github.com/SAP/luigi/pull/2748) Improve dom selectors in Luigi API ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2756](https://github.com/SAP/luigi/pull/2756) Fix getCurrentPath collision with buildPath ([@hardl](https://github.com/hardl))
+
+
+
+
+
+## [v1.23.0] (2022-06-17)
+
+#### :rocket: Added
+* [#2752](https://github.com/SAP/luigi/pull/2752) Disable keyboard accessibility for user settings dialog ([@ndricimrr](https://github.com/ndricimrr))
+* [#2739](https://github.com/SAP/luigi/pull/2739) Add getCurrentRoute linkmanager ([@ndricimrr](https://github.com/ndricimrr))
+* [#2691](https://github.com/SAP/luigi/pull/2691) Scalable keyboard accessibility for Dropdown in User Settings Dialog ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2723](https://github.com/SAP/luigi/pull/2723) Update all Core examples with latest versions of Luigi Core/Client and FD Styles ([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2753](https://github.com/SAP/luigi/pull/2753) FIx feature toggles reading phase ([@hardl](https://github.com/hardl))
+* [#2742](https://github.com/SAP/luigi/pull/2742) Fix updateModalPathInternalNavigation not working with options ([@hardl](https://github.com/hardl))
+* [#2745](https://github.com/SAP/luigi/pull/2745) Signout entry misaligned in simple Profile Menu ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2740](https://github.com/SAP/luigi/pull/2740) Fix typo in angular support lib docu ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
+
+
+
+## [v1.22.0] (2022-05-19)
+
+#### :rocket: Added
+* [#2704](https://github.com/SAP/luigi/pull/2704) Disable keyboard accessibility outside drawer and modal ([@ndricimrr](https://github.com/ndricimrr))
+* [#2672](https://github.com/SAP/luigi/pull/2672) Disable keyboard accessibility on confirmation modal background elements  ([@ndricimrr](https://github.com/ndricimrr))
+* [#2642](https://github.com/SAP/luigi/pull/2642) Add functionality for allow attribute to be separated by semicolons ([@viktorsperling](https://github.com/viktorsperling))
+
+#### :bug: Fixed
+* [#2709](https://github.com/SAP/luigi/pull/2709) Fix configChange event firing twice ([@ndricimrr](https://github.com/ndricimrr))
+* [#2692](https://github.com/SAP/luigi/pull/2692) Fix empty nodeParams on browser back navigation ([@ndricimrr](https://github.com/ndricimrr))
+* [#2694](https://github.com/SAP/luigi/pull/2694) Fix bug for nested properties for viewUrl replacement ([@hardl](https://github.com/hardl))
+* [#2686](https://github.com/SAP/luigi/pull/2686) Fix getNodeParams decoding issue ([@ndricimrr](https://github.com/ndricimrr))
+* [#2566](https://github.com/SAP/luigi/pull/2566) Keyboard accessibility for user settings dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2666](https://github.com/SAP/luigi/pull/2666) Error handling on productswitcher columns calculation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+## [v1.21.0] (2022-04-07)
+
+#### :rocket: Added
+* [#2505](https://github.com/SAP/luigi/pull/2505) withoutSync navigation for modalPathParam ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2584](https://github.com/SAP/luigi/pull/2584) Update Fundamental Styles in Luigi Core to v0.20.0 ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2622](https://github.com/SAP/luigi/pull/2622) Remove experimental flag for webcomponents ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2607](https://github.com/SAP/luigi/pull/2607) Set modal size more precise ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2598](https://github.com/SAP/luigi/pull/2598) keepURL in pagenotfoundhandler ([@hardl](https://github.com/hardl))
+* [#2509](https://github.com/SAP/luigi/pull/2509) Core navigate function returns promise ([@rafalgamon](https://github.com/rafalgamon))
+* [#2488](https://github.com/SAP/luigi/pull/2488) Add function which allows to get the footer container ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2599](https://github.com/SAP/luigi/pull/2599) Url anchor support for micro frontends([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#2629](https://github.com/SAP/luigi/pull/2629) Fix click support for open in new tab function ([@ndricimrr](https://github.com/ndricimrr))
+* [#2626](https://github.com/SAP/luigi/pull/2626) Hide empty categories ([@hardl](https://github.com/hardl))
+* [#2620](https://github.com/SAP/luigi/pull/2620) Fix splitview overlapping issue ([@ndricimrr](https://github.com/ndricimrr))
+* [#2605](https://github.com/SAP/luigi/pull/2605) Fix faulty pathExists race condition ([@ndricimrr](https://github.com/ndricimrr))
+* [#2610](https://github.com/SAP/luigi/pull/2610) Add updateModalSettings typings ([@ndricimrr](https://github.com/ndricimrr))
+* [#2611](https://github.com/SAP/luigi/pull/2611) Prevent double init in web components ([@hardl](https://github.com/hardl))
+* [#2537](https://github.com/SAP/luigi/pull/2537) Context update for user settings microfrontends ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2594](https://github.com/SAP/luigi/pull/2594) Confirmation modal from special iframe mfes ([@hardl](https://github.com/hardl))
+* [#2527](https://github.com/SAP/luigi/pull/2527) Error handling global search centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2512](https://github.com/SAP/luigi/pull/2512) Set CSS-variable for badge color ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2492](https://github.com/SAP/luigi/pull/2492) Fix Search params not being deleted ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2498](https://github.com/SAP/luigi/pull/2498) Hide side navigation footer when it is collapsed and has "Fiori3" type ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2490](https://github.com/SAP/luigi/pull/2490) Fix node params not working when hashrouting enabled ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2452](https://github.com/SAP/luigi/pull/2452) Make User Setting dialog to use compact controls and add User Account avatar([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2627](https://github.com/SAP/luigi/pull/2627) Fixed search params encoded twice issue ([@stanleychh](https://github.com/stanleychh))
+
+
+
+
+
+
+
+## [v1.20.1] (2022-01-21)
+
+#### :bug: Fixed
+* [#2483](https://github.com/SAP/luigi/pull/2483) Escaping helpers improvement and config fix of e2e app ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2475](https://github.com/SAP/luigi/pull/2475) Fix - getCoreSearchParams should not return undefined ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2424](https://github.com/SAP/luigi/pull/2424) Fixed navigation flyout styles CSS variables ([@rafalgamon](https://github.com/rafalgamon))
+* [#2474](https://github.com/SAP/luigi/pull/2474) Style active node in ShellBar ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2472](https://github.com/SAP/luigi/pull/2472) Node params are not deleted ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2466](https://github.com/SAP/luigi/pull/2466) Proper styling for App Switcher with one entity ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2467](https://github.com/SAP/luigi/pull/2467) Oidc mockserver fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2469](https://github.com/SAP/luigi/pull/2469) Fixed additional sap icon fonts ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+## [v1.20.0] (2021-12-23)
+
+#### :rocket: Added
+* [#2432](https://github.com/SAP/luigi/pull/2432) Change sap-icon-- to icon function ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2385](https://github.com/SAP/luigi/pull/2385) Searchfield configurable - global searchfield centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2370](https://github.com/SAP/luigi/pull/2370) Dynamic pathSegment for breadcrumbs NavHeader ([@hardl](https://github.com/hardl))
+* [#2409](https://github.com/SAP/luigi/pull/2409) Params handling improvements ([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#2456](https://github.com/SAP/luigi/pull/2456) Disable double scroll when zooming in the browser ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2447](https://github.com/SAP/luigi/pull/2447) Fix category icon not applied if category not on first node ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2437](https://github.com/SAP/luigi/pull/2437) Fixed nodeChangeHook issues ([@hardl](https://github.com/hardl))
+* [#2393](https://github.com/SAP/luigi/pull/2393) Strip query params in linkmanager navigate ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2425](https://github.com/SAP/luigi/pull/2425) Search field clear btn on global search centered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2403](https://github.com/SAP/luigi/pull/2403) Fix Luigi Context Observable running outside of Angular Zone ([@SomeKay](https://github.com/SomeKay))
+
+
+
+## [v1.19.0] (2021-11-26)
+
+#### :rocket: Added
+* [#2383](https://github.com/SAP/luigi/pull/2383) Introduce clearNavigationCache() to clear children and titleResolver cache ([@stanleychh](https://github.com/stanleychh))
+* [#2369](https://github.com/SAP/luigi/pull/2369) Replace CSS static value with SAP Fiori 3 variable in LeftNav ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2352](https://github.com/SAP/luigi/pull/2352) Node category merging improvements ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#2391](https://github.com/SAP/luigi/pull/2391) Style language dropdown under User Settings Dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2375](https://github.com/SAP/luigi/pull/2375) Webcomponent drawer overlap bug ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2289](https://github.com/SAP/luigi/pull/2289) Fixed context update for special iframes ([@rafalgamon](https://github.com/rafalgamon))
+* [#2374](https://github.com/SAP/luigi/pull/2374) Make User Menu type of Fiori3 to use 'Compact' mode instead of 'Cozy' ([@UlianaMunich](https://github.com/UlianaMunich))
+
+
+## [v1.18.1] (2021-11-08)
+
+#### :bug: Fixed
+* [#license udpate](https://github.com/SAP/luigi/commit/a939f5af62f332a0941979d9bd93de93e8f9b776) Added license to client-support-angular library ([@hardl](https://github.com/hardl))
+
+## [v1.18.0] (2021-11-02)
+
+#### :rocket: Added
+* [#2298](https://github.com/SAP/luigi/pull/2298) Check if given path exists for core/client openAsX functions ([@ndricimrr](https://github.com/ndricimrr))
+* [#2336](https://github.com/SAP/luigi/pull/2336) Update Luigi Core/Client in examples Apps ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2280](https://github.com/SAP/luigi/pull/2280) Fixed visibleForFeatureToggles for Compound WebComponent ([@rafalgamon](https://github.com/rafalgamon))
+* [#2304](https://github.com/SAP/luigi/pull/2304) Feature - customAlertHandler ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2242](https://github.com/SAP/luigi/pull/2242) Add tooltipText param to TopNav and LeftNav ([@rafalgamon](https://github.com/rafalgamon))
+* [#2294](https://github.com/SAP/luigi/pull/2294) Fixed resizing main iframe container if a drawer is opened ([@rafalgamon](https://github.com/rafalgamon))
+* [#2322](https://github.com/SAP/luigi/pull/2322) Update modal title and size from micro frontend ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2288](https://github.com/SAP/luigi/pull/2288) Enable core api templating for compound children and external link node ([@stanleychh](https://github.com/stanleychh))
+
+#### :bug: Fixed
+* [#2333](https://github.com/SAP/luigi/pull/2333) Fix changeable settings config properties ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2332](https://github.com/SAP/luigi/pull/2332) Rename aria-label from Avatar to Username ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2350](https://github.com/SAP/luigi/pull/2350) Changeable routing config properties  ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+## [v1.17.0] (2021-10-12)
+
+#### :rocket: Added
+* [#2286](https://github.com/SAP/luigi/pull/2286) Resolve intent path to actual path ([@ndricimrr](https://github.com/ndricimrr))
+* [#2293](https://github.com/SAP/luigi/pull/2293) Refactor the Language Dropdown under User Settings Dialog ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2219](https://github.com/SAP/luigi/pull/2219) Expose getCurrentLocale in webcomponent luigi client ([@Patil2099](https://github.com/Patil2099))
+* [#2267](https://github.com/SAP/luigi/pull/2267) Expand path exists to intent check ([@ndricimrr](https://github.com/ndricimrr))
+* [#2256](https://github.com/SAP/luigi/pull/2256) Make Profile Dropdown entities accessible via keyboard([@UlianaMunich](https://github.com/UlianaMunich))
+
+#### :bug: Fixed
+* [#2306](https://github.com/SAP/luigi/pull/2306) Fixing cursor for a "Fiori3" Profile Dropdown in Shellbar ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2314](https://github.com/SAP/luigi/pull/2314) Fix navigation context for special iframes ([@hardl](https://github.com/hardl))
+* [#2253](https://github.com/SAP/luigi/pull/2253) Fix wc and splitview wc opened together ([@ndricimrr](https://github.com/ndricimrr))
+
+
 ## [v1.16.2] (2021-09-22)
 
 #### :bug: Fixed
@@ -1226,3 +1411,14 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.16.0]: https://github.com/SAP/luigi/compare/v1.15.0...v1.16.0
 [v1.16.1]: https://github.com/SAP/luigi/compare/v1.16.0...v1.16.1
 [v1.16.2]: https://github.com/SAP/luigi/compare/v1.16.1...v1.16.2
+[v1.17.0]: https://github.com/SAP/luigi/compare/v1.16.2...v1.17.0
+[v1.18.0]: https://github.com/SAP/luigi/compare/v1.17.0...v1.18.0
+[v1.18.1]: https://github.com/SAP/luigi/compare/v1.18.0...v1.18.1
+[v1.19.0]: https://github.com/SAP/luigi/compare/v1.18.1...v1.19.0
+[v1.20.0]: https://github.com/SAP/luigi/compare/v1.19.0...v1.20.0
+[v1.20.1]: https://github.com/SAP/luigi/compare/v1.20.0...v1.20.1
+[v1.21.0]: https://github.com/SAP/luigi/compare/v1.20.1...v1.21.0
+[v1.22.0]: https://github.com/SAP/luigi/compare/v1.21.0...v1.22.0
+[v1.23.0]: https://github.com/SAP/luigi/compare/v1.22.0...v1.23.0
+[v1.23.1]: https://github.com/SAP/luigi/compare/v1.23.0...v1.23.1
+[v1.24.0]: https://github.com/SAP/luigi/compare/v1.23.1...v1.24.0

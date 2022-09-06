@@ -1,7 +1,7 @@
 // Helper methods for 'iframe.js' file. They don't require any method from 'iframe.js` but are required by them.
 import { GenericHelpers } from './';
 import { MICROFRONTEND_TYPES } from './../constants';
-import { LuigiConfig } from '../../core-api';
+import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiTheming } from '../../core-api';
 import { ViewUrlDecorator } from '../../services';
 
 class IframeHelpersClass {
@@ -51,28 +51,6 @@ class IframeHelpersClass {
         node.removeChild(child);
       }
     });
-  }
-
-  replaceVars(viewUrl, params, prefix, parenthesis = true) {
-    let processedUrl = viewUrl;
-    if (params) {
-      Object.entries(params).forEach(entry => {
-        processedUrl = processedUrl.replace(
-          new RegExp(
-            GenericHelpers.escapeRegExp((parenthesis ? '{' : '') + prefix + entry[0] + (parenthesis ? '}' : '')),
-            'g'
-          ),
-          encodeURIComponent(entry[1])
-        );
-      });
-    }
-    if (parenthesis) {
-      processedUrl = processedUrl.replace(
-        new RegExp('\\{' + GenericHelpers.escapeRegExp(prefix) + '[^\\}]+\\}', 'g'),
-        ''
-      );
-    }
-    return processedUrl;
   }
 
   isSameDomain(config, component) {
@@ -164,11 +142,15 @@ class IframeHelpersClass {
     return this.getMicrofrontendsInDom().map(mfObj => mfObj.container);
   }
 
+  getCurrentWebcomponentCtnInDom() {
+    return document.querySelector('.iframeContainer.lui-webComponent');
+  }
+
   getCurrentMicrofrontendIframe() {
     const modalIframes = this.getModalIframes();
     const mainIframes = this.getMainIframes().filter(GenericHelpers.isElementVisible);
-
-    return modalIframes[0] || mainIframes[0] || null;
+    const webComponentCtn = this.getCurrentWebcomponentCtnInDom();
+    return modalIframes[0] || mainIframes[0] || webComponentCtn || null;
   }
 
   getIframesWithType(type) {
@@ -232,8 +214,13 @@ class IframeHelpersClass {
       : luigiDefaultSandboxRules;
 
     const iframe = document.createElement('iframe');
-    iframe.src = ViewUrlDecorator.hasDecorators() ? ViewUrlDecorator.applyDecorators(viewUrl) : viewUrl;
+    iframe.src = ViewUrlDecorator.hasDecorators()
+      ? ViewUrlDecorator.applyDecorators(viewUrl, currentNode ? currentNode.decodeViewUrl : undefined)
+      : viewUrl;
     if (allowRules) {
+      allowRules.forEach((rule, index) => {
+        allowRules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');
+      });
       iframe.allow = allowRules.join(' ');
     }
     iframe.sandbox = activeSandboxRules.join(' ');
@@ -293,6 +280,75 @@ class IframeHelpersClass {
     return IframeHelpers.specialIframeTypes.filter(typ =>
       IframeHelpers.isMessageSource(e, specialIframeProps[typ.iframeKey])
     );
+  }
+
+  disableA11yOfInactiveIframe(srcIframe) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      el.setAttribute('oldTab', el.getAttribute('tabindex'));
+      if (el !== srcIframe) {
+        el.setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
+  enableA11yOfInactiveIframe() {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(el => {
+      const restoreVal = el.getAttribute('oldTab');
+      if (restoreVal) {
+        el.setAttribute('tabindex', restoreVal);
+        el.removeAttribute('oldTab');
+      } else {
+        el.removeAttribute('tabindex');
+      }
+    });
+  }
+
+  /**
+   * Sets tabindex for all elements to -1, except for one element and all its children which needs the focus.
+   * Setting tabindex to a negative value removes keyboard acessibility from the specified elements.
+   * @param {string} targetElementClassName the class name/s of the element to be excluded
+   */
+  disableA11YKeyboardExceptClassName(targetElementClassName) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(element => {
+      const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
+      const prevTabIndex = element.getAttribute('tabindex');
+      // save tabIndex in case one already exists
+      if ((prevTabIndex || prevTabIndex === 0) && isNotAChildOfTargetElement) {
+        element.setAttribute('oldtab', prevTabIndex);
+      }
+      // set tabindex to negative only if the current element is not a descendant of element with class 'targetElementClassName'
+      isNotAChildOfTargetElement ? element.setAttribute('tabindex', '-1') : '';
+    });
+  }
+
+  /**
+   * Resets tabindex value to previous value if it exists, or remove altogether if not.
+   * Applies to all elements except for the target element which we do not touch
+   */
+  enableA11YKeyboardBackdropExceptClassName(targetElementClassName) {
+    const nodeList = document.querySelectorAll('*');
+    [...nodeList].forEach(element => {
+      const restoreVal = element.getAttribute('oldtab');
+      const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
+      if (restoreVal) {
+        element.setAttribute('tabindex', restoreVal);
+        element.removeAttribute('oldtab');
+      } else {
+        isNotAChildOfTargetElement ? element.removeAttribute('tabindex') : '';
+      }
+    });
+  }
+
+  applyCoreStateData(data) {
+    return {
+      ...data,
+      activeFeatureToggleList: LuigiFeatureToggles.getActiveFeatureToggleList(),
+      currentLocale: LuigiI18N.getCurrentLocale(),
+      currentTheme: LuigiTheming.getCurrentTheme()
+    };
   }
 }
 

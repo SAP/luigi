@@ -3,10 +3,11 @@
   "node": {
     "label": "Advanced configuration options",
     "category": {
-      "label": "Luigi Client"
+      "label": "Luigi Client",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 4,
+      "categoryPosition": 5,
       "position": 2
     }
   }

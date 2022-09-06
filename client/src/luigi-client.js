@@ -47,8 +47,11 @@ class LuigiClient {
   getContext() {
     return lifecycleManager.getContext();
   }
-  getNodeParams() {
-    return lifecycleManager.getNodeParams();
+  addNodeParams(params, keepBrowserHistory) {
+    return lifecycleManager.addNodeParams(params, keepBrowserHistory);
+  }
+  getNodeParams(shouldDesanitise) {
+    return lifecycleManager.getNodeParams(shouldDesanitise);
   }
   getActiveFeatureToggles() {
     return lifecycleManager.getActiveFeatureToggles();
@@ -59,8 +62,8 @@ class LuigiClient {
   getCoreSearchParams() {
     return lifecycleManager.getCoreSearchParams();
   }
-  addCoreSearchParams(searchParams) {
-    return lifecycleManager.addCoreSearchParams(searchParams);
+  addCoreSearchParams(searchParams, keepBrowserHistory) {
+    return lifecycleManager.addCoreSearchParams(searchParams, keepBrowserHistory);
   }
   getClientPermissions() {
     return lifecycleManager.getClientPermissions();
@@ -91,6 +94,12 @@ class LuigiClient {
   }
   luigiClientInit() {
     return lifecycleManager.luigiClientInit();
+  }
+  getAnchor() {
+    return lifecycleManager.getAnchor();
+  }
+  setAnchor(value) {
+    return lifecycleManager.setAnchor(value);
   }
 
   /**

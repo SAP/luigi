@@ -3,8 +3,8 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { AuthHelpers, NavigationHelpers, GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiAuth, LuigiConfig } from '../../../src/core-api';
+import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
+import { LuigiAuth, LuigiConfig, LuigiFeatureToggles } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { Navigation } from '../../../src/navigation/services/navigation';
 
@@ -126,13 +126,103 @@ describe('Navigation-helpers', () => {
       LuigiConfig.getConfigValue.returns({
         icon: 'grid',
         label: 'Products',
-        columns: 3
+        columns: 'auto',
+        items: () => {
+          return [{}, {}, {}];
+        }
       });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
       assert.equal(columns, 3);
     });
     it('should return number from config file even if columns are not defined', () => {
-      LuigiConfig.getConfigValue.returns({ icon: 'grid', label: 'Products' });
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        items: () => {
+          return [{}, {}, {}, {}, {}, {}, {}]; //7
+        }
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+
+    it('should return number from config file even if columns are not defined and items proberty is an array', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        items: [{}, {}, {}, {}, {}, {}, {}]
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+
+    it('should return undefined if no items in config defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto'
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, undefined);
+    });
+
+    it('should return undefined if empty array items in config defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        item: []
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, undefined);
+    });
+
+    it('should return number from config file if columns are defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: () => {
+          return [];
+        },
+        columns: 3
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 3);
+    });
+
+    it('should return number from config file if columns are defined and items proberty is an array', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: [],
+        columns: 3
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 3);
+    });
+
+    it('should return number from config file if columns are defined', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: () => {
+          return [];
+        },
+        columns: '110'
+      });
+      const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
+      assert.equal(columns, 4);
+    });
+
+    it('should return number from config file if columns are defined and items proberty is an array', () => {
+      LuigiConfig.getConfigValue.returns({
+        icon: 'grid',
+        label: 'Products',
+        items: [],
+        columns: '110'
+      });
       const columns = NavigationHelpers.getProductSwitcherColumnsNumber();
       assert.equal(columns, 4);
     });
@@ -267,7 +357,7 @@ describe('Navigation-helpers', () => {
       assert.equal(actual, false);
     });
   });
-  
+
   describe('node title data', () => {
     let object;
 
@@ -441,6 +531,303 @@ describe('Navigation-helpers', () => {
         assert.equal(titleData.icon, 'curriculum');
         assert.equal(titleData.label, 'Project');
       });
+    });
+
+    describe('groupNodesBy', () => {
+      let nodes;
+      beforeEach(() => {
+        nodes = [
+          {
+            category: '1',
+            pathSegment: 'luigi',
+            label: 'luigi',
+            viewUrl: '/microfrontend.html'
+          },
+          {
+            pathSegment: 'amfe',
+            label: 'a mfe',
+            viewUrl: '/microfrontend.html',
+            category: { label: 'test' }
+          },
+          {
+            pathSegment: 'amfe',
+            label: 'a mfe',
+            viewUrl: '/microfrontend.html',
+            category: { label: 'luigi' }
+          },
+          {
+            category: 'luigi',
+            pathSegment: 'luigi',
+            label: 'luigi',
+            viewUrl: '/microfrontend.html'
+          }
+        ];
+      });
+      it('group nodes by category id', () => {
+        nodes[1].category.id = '1';
+        nodes[1].category.collapsible = true;
+        const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
+        assert.deepEqual(Object.keys(result), ['luigi', 'test']);
+        assert.deepEqual(result.luigi['metaInfo'], { label: 'luigi', order: 1 });
+        assert.deepEqual(result.test['metaInfo'], {
+          label: 'test',
+          order: 0,
+          id: '1',
+          collapsible: true,
+          categoryUid: '1'
+        });
+      });
+      it('group nodes by category label', () => {
+        nodes[1].category.collapsible = true;
+        const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
+        assert.deepEqual(Object.keys(result), ['1', 'test', 'luigi']);
+        assert.deepEqual(result.test['metaInfo'], { categoryUid: 'test', label: 'test', collapsible: true, order: 1 });
+      });
+      it('first category object counts', () => {
+        const node = {
+          pathSegment: 'someNode',
+          label: 'someNode',
+          category: {
+            label: 'luigi',
+            collapsible: true,
+            icon: 'someIcon'
+          },
+          viewUrl: '/microfrontend.html'
+        };
+        nodes.push(node);
+        const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
+        assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2 });
+      });
+      it('first category object counts - part 2', () => {
+        const node = {
+          pathSegment: 'someNode',
+          label: 'someNode',
+          category: {
+            id: '1',
+            label: 'One',
+            collapsible: true,
+            icon: 'someIcon'
+          },
+          viewUrl: '/microfrontend.html'
+        };
+        nodes.push(node);
+        const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
+        assert.deepEqual(result.One.metaInfo, {
+          label: 'One',
+          order: 0,
+          id: '1',
+          collapsible: true,
+          icon: 'someIcon',
+          categoryUid: '1'
+        });
+        assert.equal(result.One[0].label, 'luigi');
+        assert.equal(result.One[1].label, 'someNode');
+      });
+    });
+  });
+  describe('generate tooltip text', () => {
+    let node;
+    beforeEach(() => {
+      node = {
+        label: 'LuigiNode'
+      };
+      sinon.stub(LuigiConfig, 'getConfigValue');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('tooltip text on node', () => {
+      node.tooltipText = 'MarioNode';
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'MarioNode');
+    });
+    it('tooltip turned off', () => {
+      node.tooltipText = false;
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
+    });
+    it('tooltip not defined', () => {
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), 'LuigiNode');
+    });
+    it('tooltip turned off used defaults', () => {
+      LuigiConfig.getConfigValue.returns(false);
+      assert.equal(NavigationHelpers.generateTooltipText(node, 'LuigiNode'), '');
+    });
+  });
+  describe('check visible for feature toggles', () => {
+    let nodeToCheckPermission;
+    beforeEach(() => {
+      nodeToCheckPermission = {
+        visibleForFeatureToggles: ['testFt']
+      };
+      sinon.stub(LuigiFeatureToggles, 'getActiveFeatureToggleList');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('Node is visible with Ft "testFT"', async () => {
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), true);
+    });
+    it('Node is NOT visible with Ft "testFT2"', async () => {
+      nodeToCheckPermission.visibleForFeatureToggles = ['!testFt2'];
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['testFt', 'testFt2']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
+    });
+    it('Node is NOT visible with Ft "testFT"', async () => {
+      LuigiFeatureToggles.getActiveFeatureToggleList.returns(['test']);
+      assert.equal(NavigationHelpers.checkVisibleForFeatureToggles(nodeToCheckPermission), false);
+    });
+  });
+  describe('generate top nav nodes', () => {
+    let pathData;
+    beforeEach(() => {
+      pathData = [
+        {
+          children: [
+            {
+              pathSegment: 'overview',
+              label: 'overview',
+              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+            },
+            {
+              pathSegment: 'projects',
+              label: 'Projects',
+              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+              children: [
+                {
+                  pathSegment: 'settings',
+                  label: 'Settings',
+                  viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                }
+              ]
+            },
+            {
+              pathSegment: 'user_management',
+              label: 'User Management',
+              category: { label: 'test' },
+              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+              children: [
+                {
+                  pathSegment: 'developers',
+                  label: 'Developers',
+                  viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          pathSegment: 'overview',
+          label: 'overview',
+          viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html'
+        }
+      ];
+    });
+    it('check visible nodes and children of top nav', async () => {
+      let tnd = await NavigationHelpers.generateTopNavNodes(pathData);
+      assert.equal(tnd.visibleNodeCount, 3);
+      assert.equal(tnd.children[0].label, 'overview');
+      assert.equal(tnd.children[1].label, 'Projects');
+      assert.equal(tnd.children[2].label, 'test');
+      assert.equal(tnd.children[2].isCat, true);
+    });
+  });
+  describe('prepare for test id if no testId is configured', () => {
+    it('prepare test id', () => {
+      assert.equal(NavigationHelpers.prepareForTests('Te st'), 'test');
+      assert.equal(NavigationHelpers.prepareForTests('TEST'), 'test');
+      assert.equal(NavigationHelpers.prepareForTests('te&st'), 'te%26st');
+      assert.equal(NavigationHelpers.prepareForTests(''), '');
+      assert.equal(NavigationHelpers.prepareForTests('Das', 'ist', 'ein', 'Test'), 'das_ist_ein_test');
+    });
+  });
+  describe('load and store expanded categories', () => {
+    beforeEach(() => {
+      global['localStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+    });
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+    it('load expanded category', () => {
+      localStorage.getItem.returns('["home:cat"]');
+      assert.deepEqual(NavigationHelpers.loadExpandedCategories(), ['home:cat']);
+    });
+    it('load expanded categories', () => {
+      localStorage.getItem.returns('["home:cat1", "home:cat2"]');
+      assert.deepEqual(NavigationHelpers.loadExpandedCategories(), ['home:cat1', 'home:cat2']);
+    });
+    it('store expanded state with empty expanded cat', () => {
+      const expandedList = NavigationHelpers.storeExpandedState('home:cat', true);
+      sinon.assert.calledWithExactly(
+        global.localStorage.setItem,
+        'luigi.preferences.navigation.expandedCategories',
+        JSON.stringify(['home:cat'])
+      );
+      assert.deepEqual(expandedList, ['home:cat']);
+    });
+    it('store expanded state with stored cat', () => {
+      sinon.stub(NavigationHelpers, 'loadExpandedCategories').returns(['home:cat', 'home:cat2']);
+      assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', true), ['home:cat', 'home:cat2']);
+      sinon.assert.calledWithExactly(
+        global.localStorage.setItem,
+        'luigi.preferences.navigation.expandedCategories',
+        JSON.stringify(['home:cat', 'home:cat2'])
+      );
+    });
+    it('store expanded state with stored cat', () => {
+      sinon.stub(NavigationHelpers, 'loadExpandedCategories').returns(['home:cat', 'home:cat2']);
+      assert.deepEqual(NavigationHelpers.storeExpandedState('home:cat2', false), ['home:cat']);
+      sinon.assert.calledWithExactly(
+        global.localStorage.setItem,
+        'luigi.preferences.navigation.expandedCategories',
+        JSON.stringify(['home:cat'])
+      );
+    });
+  });
+  describe('renderIconClassName', () => {
+    it('should render sap-icon to standard icon suite', () => {
+      assert.equal(NavigationHelpers.renderIconClassName('home'), 'sap-icon--home');
+    });
+    it('should render sap-icon to TNT suite', () => {
+      assert.equal(NavigationHelpers.renderIconClassName('TNT--home'), 'sap-icon-TNT--home');
+    });
+    it('should render sap-icon to businessSuiteInAppSymbols suite', () => {
+      assert.equal(
+        NavigationHelpers.renderIconClassName('businessSuiteInAppSymbols--home'),
+        'sap-icon-businessSuiteInAppSymbols--home'
+      );
+    });
+    it('render icon class name without name', () => {
+      assert.equal(NavigationHelpers.renderIconClassName(''), '');
+    });
+  });
+  describe('handleNavAnchorClickedWithoutMetaKey', () => {
+    let event;
+    beforeEach(() => {
+      event = new Event('click');
+      event.preventDefault = sinon.spy();
+      event.stopPropagation = sinon.spy();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('call the function with keyboard meta control pressed should return false', () => {
+      event.ctrlKey = true;
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), false);
+      sinon.assert.notCalled(event.preventDefault);
+      sinon.assert.calledOnce(event.stopPropagation);
+    });
+
+    it('call the function without keyboard meta control pressed should return true', () => {
+      assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), true);
+      sinon.assert.calledOnce(event.preventDefault);
+      sinon.assert.notCalled(event.stopPropagation);
     });
   });
 });

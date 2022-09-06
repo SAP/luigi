@@ -1,7 +1,9 @@
-import App from './App.html';
+import App from './App.svelte';
 import { LuigiConfig, LuigiI18N, LuigiElements } from './core-api';
 import { writable, readable } from 'svelte/store';
 import { AuthLayerSvc } from './services';
+/* istanbul ignore file */
+
 const createConfigStore = () => {
   const { subscribe, update, reset } = writable({});
   const scopeSubscribers = {};
@@ -92,7 +94,6 @@ const configReadyCallback = () => {
         };
 
         Luigi.splitView = {
-          openAsSplitView: (path, settings) => app.$$.ctx.openSplitView(path, settings),
           splitViewHandle: {
             close: () => app.$$.ctx.closeSplitView(),
             collapse: () => app.$$.ctx.collapseSplitView(),

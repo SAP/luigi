@@ -1,5 +1,113 @@
 export const projectDetailNavStructure = projectId => [
   {
+    pathSegment: 'wc_grid',
+    label: 'Grid',
+    hideFromNav: true,
+    category: {
+      label: 'Compound',
+      icon: 'attachment-html',
+      collapsible: true
+    },
+    compound: {
+      renderer: {
+        use: 'grid',
+        config: {
+          columns: '1fr 1fr',
+          layouts: [
+            {
+              minWidth: 0,
+              maxWidth: 600,
+              columns: '1fr',
+              gap: 0
+            },
+            {
+              minWidth: 600,
+              maxWidth: 1024,
+              columns: '1fr 1fr',
+              gap: '30px'
+            }
+          ]
+        }
+      },
+      children: [
+        {
+          id: 'input1',
+          viewUrl: '/assets/helloWorldWC.js',
+          context: {
+            title: 'Some input text !ft',
+            instant: true
+          },
+          visibleForFeatureToggles: ['!ft']
+        },
+        {
+          id: 'input12',
+          viewUrl: '/assets/helloWorldWC.js',
+          context: {
+            title: 'Some input text ft1',
+            instant: true
+          },
+          visibleForFeatureToggles: ['ft1']
+        }
+      ]
+    }
+  },
+  {
+    pathSegment: 'wc_grid_compound',
+    label: 'Grid Compound',
+    hideFromNav: true,
+    category: {
+      label: 'Compound',
+      icon: 'attachment-html',
+      collapsible: true
+    },
+    compound: {
+      renderer: {
+        use: 'grid',
+        config: {
+          columns: '1fr 1fr',
+          layouts: [
+            {
+              minWidth: 0,
+              maxWidth: 600,
+              columns: '1fr',
+              gap: 0
+            },
+            {
+              minWidth: 600,
+              maxWidth: 1024,
+              columns: '1fr 1fr',
+              gap: '30px'
+            }
+          ]
+        }
+      },
+      children: [
+        {
+          id: 'btn',
+          viewUrl: '/assets/wc_grid_btn.js',
+          context: {
+            text: 'Start'
+          }
+        },
+        {
+          id: 'timer',
+          viewUrl: '/assets/wc_grid_timer.js',
+          context: {
+            s: 0
+          },
+          eventListeners: [
+            {
+              source: 'btn',
+              name: 'sendBtn',
+              action: 'update',
+              dataConverter: data => data
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
     category: { label: 'User Management', icon: 'person-placeholder' },
     pathSegment: 'users',
     label: 'Users and Groups',
@@ -79,6 +187,10 @@ export const projectDetailNavStructure = projectId => [
       header: 'Test',
       backdrop: true,
       size: 'l'
+    },
+    statusBadge: {
+      label: 'Drawer',
+      type: 'negative'
     }
   },
   {
@@ -92,9 +204,9 @@ export const projectDetailNavStructure = projectId => [
         label: 'Prevent navigation',
         icon: 'stop',
         viewUrl: '/sampleapp.html#/on-node-activation/not-navigated',
-        onNodeActivation: node => {
+        onNodeActivation: () => {
           Luigi.showAlert({
-            text: `Showing an alert instead of navigating.`,
+            text: 'Showing an alert instead of navigating.',
             type: 'info',
             closeAfter: 3000
           });
@@ -107,8 +219,14 @@ export const projectDetailNavStructure = projectId => [
         icon: 'question-mark',
         viewUrl: '/sampleapp.html#/on-node-activation/conditionally-navigated',
         openNodeInModal: true,
-        onNodeActivation: node => {
-          return Luigi.showConfirmationModal({}).then(() => true, () => false);
+        onNodeActivation: () => {
+          const settings = {
+            header: 'Confirmation',
+            body: 'Are you sure you want to do this?',
+            buttonConfirm: 'Yes',
+            buttonDismiss: 'No'
+          };
+          return Luigi.showConfirmationModal(settings).then(() => true, () => false);
         }
       }
     ]
@@ -120,7 +238,11 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     userSettingsGroup: 'language',
-    testId: 'myTestId'
+    testId: 'myTestId',
+    statusBadge: {
+      label: 'Project',
+      type: 'informative'
+    }
   },
   {
     category: { label: 'Settings', icon: 'action-settings' },
@@ -129,7 +251,11 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     userSettingsGroup: 'userAccount',
-    testId: 'myTestId'
+    testId: 'myTestId',
+    statusBadge: {
+      label: 'Settings',
+      type: 'positive'
+    }
   },
   {
     category: { label: 'Feature Toggle: Settings 2', icon: 'action-settings' },
@@ -179,9 +305,14 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true,
-    openNodeInModal: true
+    openNodeInModal: true,
+    tooltipText: 'Webcomponent tooltipText',
+    statusBadge: {
+      label: '',
+      type: 'critical'
+    }
   },
   {
     pathSegment: 'webcomponent2',
@@ -193,13 +324,14 @@ export const projectDetailNavStructure = projectId => [
     context: {
       title: 'Hello WebComponent!'
     },
-    viewUrl: '/assets/helloWorldWC.js',
+    viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true
   },
   {
     pathSegment: 'misc2-isolated',
     label: 'Miscellaneous2 (Isolated View)',
     isolateView: true,
+    openNodeInModal: true,
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/miscellaneous2',
     userSettingsGroup: 'privacy',
     icon: 'sys-help-2'
@@ -339,6 +471,27 @@ export const projectDetailNavStructure = projectId => [
     category: 'Super useful Github links',
     externalLink: {
       url: 'http://github.com',
+      sameWindow: true
+    },
+    icon: 'globe'
+  },
+  {
+    label: 'Open SAP Website',
+    category: 'Super useful Github links',
+    externalLink: {
+      url: 'http://sap.com/{i18n.currentLocale}',
+      sameWindow: true
+    },
+    icon: 'globe'
+  },
+  {
+    label: 'Context Value Replacement - External link',
+    category: 'Super useful Github links',
+    context: {
+      someValue: 'bar'
+    },
+    externalLink: {
+      url: 'http://sap.com/{i18n.currentLocale}?foo={context.someValue}',
       sameWindow: true
     },
     icon: 'globe'

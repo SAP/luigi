@@ -3,11 +3,12 @@
   "node": {
     "label": "UI features",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 9
+      "position": 2
     }
   }
 }
@@ -42,9 +43,9 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
 ```
 
-* Define and apply [**responsiveNavigation**](general-settings.md) settings to make the left navigation responsive.
+* Define and apply [**responsiveNavigation**](general-settings.md#responsivenavigation) settings to make the left navigation responsive.
 
-* Define and apply [**profileType**](general-settings.md) **'simple'**  or **'Fiori3'** to change the Profile Menu layout and design.
+* Define and apply [**profileType**](general-settings.md#profiletype) **'simple'**  or **'Fiori3'** to change the Profile Menu layout and design.
 
 * Define a custom width for the left side navigation. To do so, simply add the code below to the top of your `index.html`. The default width is 15rem.
 
@@ -53,13 +54,23 @@ You can quickly adjust the Luigi application to improve user experience on mobil
   --luigi__left-sidenav--width: yourCustomWidth;
 }
 ```
-* Define a custom width for the App Title on desktop and mobile simultaneously. To do so, simply add the code below to the top of your `index.html`. The default width  `--luigi__app-title--width: 60vw;` and `--luigi__multi-app-dropdown--width: 50vw;`
+* Define a custom width for the App Title on desktop and mobile simultaneously. To do so, simply add the code below to the top of your `index.html`. The default width is `--luigi__app-title--width: 60vw;` and `--luigi__multi-app-dropdown--width: 50vw;`
 
 ```html
 :root{
-  --luigi__app-title--width: yourCustomSinglAppTtitleWidth;
+  --luigi__app-title--width: yourCustomSingleAppTitleWidth;
   --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
 }
+```
+
+* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes. 
+
+* Define a custom height for the top navigation/Shellbar by providing a single CSS variable. To do so, simply add the code below to the top of your `index.html`. The default height is `--luigi__shellbar--height: 2.75rem`:
+
+```html
+    :root {
+      --luigi__shellbar--height: yourCustomShellbarwidth;
+    }
 ```
 
 ## App loading indicator
@@ -76,9 +87,9 @@ To show a loading indicator before Luigi Core or your first micro frontend is re
 </div>
 ```
 
-By default, the loading indicator is removed after [Luigi.setConfig({})](luigi-core-api.md#setconfig) has been executed.
+To automatically remove the loading indicator after Luigi initialization phase you can set [settings.appLoadingIndicator.hideAutomatically](navigation-parameters-reference.md#loadingindicatorhideautomatically) to `true`.
 
-Alternatively, to keep the loading indicator until the first micro frontend is usable, follow these steps:
+To keep the loading indicator until the first micro frontend is usable, follow these steps:
 
 1. Set the app loading indicator parameter **hideAutomatically** to `false`
 

@@ -13,6 +13,7 @@ import addCustomAttributes from '../unified-plugins/rehype-add-custom-attributes
 import wrapAccordion from '../unified-plugins/rehype-accordion';
 import luigiNavigationBuilder from '../unified-plugins/remark-generate-luigi-navigation';
 import addKeyWords from '../unified-plugins/rehype-add-keywords';
+import oldVersions from '../unified-plugins/rehype-luigi-oldVersions';
 
 // import highlight from 'rehype-highlight' // syntax highlight code blocks with lowlight: https://github.com/wooorm/lowlight
 import rehypeSection from '@agentofuser/rehype-section';
@@ -23,10 +24,10 @@ class MarkdownService {
     return new Promise((resolve, reject) => {
       unified()
         .use(markdown)
-        .use(frontmatter, {type: 'json', fence: {open: '<!-- meta', close: 'meta -->'}})
+        .use(frontmatter, { type: 'json', fence: { open: '<!-- meta', close: 'meta -->' } })
         // .use(logger)
         .use(luigiNavigationBuilder, data)
-        .use(remark2rehype, {allowDangerousHTML: true})
+        .use(remark2rehype, { allowDangerousHTML: true })
         .use(raw)
         .use(addCustomAttributes)
         .use(wrapAccordion, { questionTagName: 'h3' })
@@ -34,12 +35,13 @@ class MarkdownService {
         .use(addIdsToHeadings)
         .use(addCopyToClipboard)
         .use(addKeyWords)
+        .use(oldVersions)
         .use(section) // section should be the last one
         .use(format)
         .use(html)
-        .process(String(value), function (err, file) {
-          if(err) {
-            console.error(err || file)
+        .process(String(value), function(err, file) {
+          if (err) {
+            console.error(err || file);
             return reject();
           }
           resolve(file.contents);

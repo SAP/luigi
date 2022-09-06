@@ -1,6 +1,6 @@
 import { CUSTOM_LUIGI_CONTAINER } from './../utilities/constants';
 import { IframeHelpers } from './../utilities/helpers';
-
+/* istanbul ignore file */
 /**
  * Use these functions to get DOM elements.
  * @namespace Elements
@@ -58,7 +58,7 @@ class LuigiElements {
    * Luigi.elements().getShellbar();
    */
   getShellbar() {
-    return document.getElementsByClassName('fd-shellbar')[0];
+    return document.getElementsByClassName('lui-shellbar-wrapper')[0];
   }
 
   /**
@@ -70,7 +70,7 @@ class LuigiElements {
    * Luigi.elements().getShellbarActions();
    */
   getShellbarActions() {
-    return document.getElementsByClassName('fd-shellbar__group--actions')[0];
+    return document.getElementsByClassName('lui-shellbar_group--actions')[0];
   }
 
   /**
@@ -108,6 +108,18 @@ class LuigiElements {
    */
   getCurrentMicrofrontendIframe() {
     return IframeHelpers.getCurrentMicrofrontendIframe();
+  }
+
+  /**
+   * Returns a navigation footer container.
+   * @returns {HTMLElement} the navigation footer DOM element
+   * @memberof Elements
+   * @since 1.21.0
+   * @example
+   * Luigi.elements().getNavFooterContainer();
+   */
+  getNavFooterContainer() {
+    return document.getElementsByClassName('lui-side-nav__footer')[0];
   }
 }
 

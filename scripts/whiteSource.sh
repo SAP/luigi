@@ -20,13 +20,24 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "56eb623145264763a82330025e4f11efd538074a3cd04791ab6ab87293174aca"
                           )
 
+CACHED_WHITESOURCE_UA=$BASE_DIR/../../../../.cache/whitesource/wss-unified-agent.jar
+if [ -f "$CACHED_WHITESOURCE_UA" ]; then
+    echo "$CACHED_WHITESOURCE_UA exists. Take from Cache."
+else 
+    # download jar file to /home/.cache/whitesource
+    cd $BASE_DIR/../../../../.cache/whitesource
+    echo "$CACHED_WHITESOURCE_UA does not exist."
+    echo "Start download.."
+    curl -LJO https://github.com/whitesource/unified-agent-distribution/releases/latest/download/wss-unified-agent.jar
+    echo "Downloaded"
+fi
+
 for ((i=0;i<${#FOLDERS[@]};++i)); do
   cd $BASE_DIR/../${FOLDERS[i]}
-
-  echo $(printf '{"apiKey": "%s","userKey": "%s","productName": "%s", "projectToken": "%s", "devDep": "false","forceUpdate": true,"checkPolicies": true}' "$WHITESOURCE_APIKEY" "$WHITESOURCE_USER_TOKEN" "$WHITESOURCE_PRODUCT_TOKEN" "${PROJECT_TOKENS[i]}" ) > $BASE_DIR/../${FOLDERS[i]}/whitesource.config.json
-
-  whitesource run
-
+  echo "Create config File:"
+  echo $'apiKey='${WHITESOURCE_APIKEY}$'\nuserKey='$WHITESOURCE_USER_TOKEN$'\nproductName='$WHITESOURCE_PRODUCT_TOKEN$'\nprojectToken='${PROJECT_TOKENS[i]}$'\ndevDep=false\nforceUpdate=true\ncheckPolicies=true\nwss.url=https://sap.whitesourcesoftware.com/agent' > wss-generated-file.config
+  java -jar $BASE_DIR/../../../../.cache/whitesource/wss-unified-agent.jar -c wss-generated-file.config -d . -scanComment "$(date)"
+  
   RV=$?
   echo "Exit code: $RV"
 

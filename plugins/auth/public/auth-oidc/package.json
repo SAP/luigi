@@ -1,6 +1,5 @@
 {
   "name": "@luigi-project/plugin-auth-oidc",
-  "version": "1.16.2",
   "description": "OpenID Connect provider plugin for @luigi-project/core",
   "license": "Apache-2.0",
   "main": "plugin.js",
@@ -17,5 +16,6 @@
     "oidc",
     "openid connect",
     "provider"
-  ]
+  ],
+  "version": "1.24.0"
 }

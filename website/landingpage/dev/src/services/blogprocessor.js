@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import frontmatter from 'frontmatter';
-import marked from 'marked';
+import { marked } from 'marked';
 import slugify from 'slugify';
 import { BlogFeeds } from './feeds.service';
 
@@ -9,27 +9,27 @@ const luigiRootFolder = __dirname + '/../../../../../';
 const blogMdPath = path.join(luigiRootFolder, 'blog');
 const blogHtmlPath = path.join(__dirname, '..', 'pages', 'blog');
 
-const hasValidDate = (dateStr) => {
+const hasValidDate = dateStr => {
   // Tests YYYY-MM-DD
   const dateRegExp = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/g;
   return dateRegExp.test(dateStr);
 };
 
-const getSlug = (fileName) => {
+const getSlug = fileName => {
   return slugify(fileName.slice(0, -3)); // remove .md from the end
-}
+};
 
 /**
  * Format english date from YYYY-MM-DD
  * @returns string 1. Mar, 2020
  */
-const formatDate = (date) => {
+const formatDate = date => {
   const d = new Date(Date.parse(date));
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   return d.toLocaleDateString('en-US', options);
-}
+};
 
-const getAuthors = (authors) => {
+const getAuthors = authors => {
   let authorStr;
   if (!authors) {
     return '';
@@ -38,10 +38,9 @@ const getAuthors = (authors) => {
   } else {
     return authors;
   }
-}
+};
 
 const generateBlogEntry = (blog, content, showButton = false) => {
-
   const button = showButton ? `<p><a href="/blog/${blog.slug}" class="button read-more-btn">Read more </a></p>` : '';
   return `
   <div class="blog-entry">
@@ -52,8 +51,8 @@ const generateBlogEntry = (blog, content, showButton = false) => {
     ${content}
     ${button}
   </div>
-  `
-}
+  `;
+};
 
 export const getBlogEntries = (singleSlug = false) => {
   return readdirSync(blogMdPath)
@@ -81,9 +80,9 @@ export const getBlogEntries = (singleSlug = false) => {
       entry.blogContent = generateBlogEntry(entry, entry.htmlContent);
       return entry;
     });
-}
+};
 
-const writeBlogFiles = (blogEntries) => {
+const writeBlogFiles = blogEntries => {
   blogEntries.forEach(entry => {
     const blogHtml = `---
 title: ${entry.title}
@@ -92,7 +91,7 @@ layout: blog
 ---
 ${entry.blogContent}`;
     writeFileSync(blogHtmlPath + `/${entry.slug}.html`, blogHtml);
-  })
+  });
 };
 
 export const processBlogFiles = () => {

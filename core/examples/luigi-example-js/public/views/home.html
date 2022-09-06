@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link
+      href="https://unpkg.com/@sap-theming/theming-base-content@11.1.35/content/Base/baseLib/sap_fiori_3/css_variables.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/fundamental-styles/fundamental-styles.css" />
     <style type="text/css">
       .fd-panel {
@@ -19,12 +23,10 @@
     <script type="text/javascript" src="/luigi-client/luigi-client.js"></script>
     <script type="text/javascript">
       LuigiClient.addContextUpdateListener(updatedContext => {
-        document.getElementById('init-text').textContent =
-          'Luigi Client updated.';
+        document.getElementById('init-text').textContent = 'Luigi Client updated.';
       });
       LuigiClient.addInitListener(initialContext => {
-        document.getElementById('init-text').textContent =
-          'Luigi Client initialized.';
+        document.getElementById('init-text').textContent = 'Luigi Client initialized.';
       });
     </script>
   </body>

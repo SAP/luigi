@@ -83,18 +83,45 @@ describe('Routing-helpers', () => {
         setItem: sinon.stub()
       };
       sinon.stub(config, 'configChanged');
+      sinon.stub(LuigiI18N, '_notifyLocaleChange');
+      LuigiI18N.setCurrentLocale('en');
     });
     afterEach(() => {
       sinon.restore();
     });
 
-    it('substitutes {i18n.currentLocale} variable to current locale', () => {
-      sinon.stub(LuigiI18N, '_notifyLocaleChange');
-      LuigiI18N.setCurrentLocale('en');
+    it('getI18nViewUrl - substitutes {i18n.currentLocale} variable to current locale', () => {
+      const viewUrl = '/{i18n.currentLocale}/microfrontend.html';
+      const expected = '/en/microfrontend.html';
+
+      expect(RoutingHelpers.getI18nViewUrl(viewUrl)).to.equal(expected);
+    });
+
+    it('No substitution if {i18n.currentLocale} variable is not provided', () => {
+      const viewUrl = '/{i18n}/microfrontend.html';
+      const expected = '/{i18n}/microfrontend.html';
+
+      expect(RoutingHelpers.getI18nViewUrl(viewUrl)).to.equal(expected);
+    });
+
+    it('substituteViewUrl - substitutes {i18n.currentLocale} variable to current locale', () => {
       const viewUrl = '/{i18n.currentLocale}/microfrontend.html';
       const expected = '/en/microfrontend.html';
 
       expect(RoutingHelpers.substituteViewUrl(viewUrl, {})).to.equal(expected);
+    });
+
+    it('substituteViewUrl - substitutes nested context variable', () => {
+      const viewUrl = '/{i18n.currentLocale}/microfrontend.html#/:var1/{context.nested.value}/{nodeParams.param1}';
+      const expected = '/en/microfrontend.html#/var1_value/context_nested_value/nodeparam_value';
+
+      expect(
+        RoutingHelpers.substituteViewUrl(viewUrl, {
+          pathParams: { var1: 'var1_value' },
+          context: { nested: { value: 'context_nested_value' } },
+          nodeParams: { param1: 'nodeparam_value' }
+        })
+      ).to.equal(expected);
     });
   });
   describe('substitute search query params', () => {
@@ -321,6 +348,30 @@ describe('Routing-helpers', () => {
     });
   });
 
+  describe('getContext', () => {
+    const context = { someValue: 'foo' };
+    const node = {
+      context,
+      externalLink: { url: 'https://someurl.com', sameWindow: false },
+      label: "External link"
+    };
+    it('get context from node', () => {
+      assert.deepEqual(RoutingHelpers.getContext(node, undefined), context);
+      assert.deepEqual(RoutingHelpers.getContext(node, null), context);
+    });
+    it('get context directly', () => {
+      const ctx = { someValue: 'bar' };
+      assert.deepEqual(RoutingHelpers.getContext(node, ctx), ctx);
+    });
+    it('get context with parent node', () => {
+      const parentContext = { otherValue: 'parent' };
+      const nodeWithParent = { ...node, parent: { context: parentContext } };
+      const expect = { ...context, ...parentContext };
+      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, undefined), expect);
+      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, null), expect);
+    });
+  });
+
   describe('buildRoute', () => {
     const node = {
       pathSegment: 'one',
@@ -341,6 +392,10 @@ describe('Routing-helpers', () => {
   });
   describe('getRouteLink', () => {
     beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
       sinon.stub(LuigiConfig, 'getConfigBooleanValue');
       sinon.stub(Routing, 'buildFromRelativePath');
       sinon.stub(RoutingHelpers, 'buildRoute');
@@ -349,15 +404,14 @@ describe('Routing-helpers', () => {
     afterEach(() => {
       sinon.restore();
     });
-    it('externalLink', () => {
-      const expected = { url: 'https://luigi-project.io' };
-      const given = {
-        externalLink: expected,
-        link: 'something',
-        pathSegment: 'something-else'
+    it('external link with context templating', () => {
+      const node = {
+        externalLink: { url: 'https://luigi.io?foo={context.someValue}', sameWindow: true },
+        context: { someValue: 'bar' }
       };
-
-      assert.equal(RoutingHelpers.getRouteLink(given), expected);
+      const expected = 'https://luigi.io?foo=bar';
+      GenericHelpers.replaceVars.returns(expected);
+      assert.equal(RoutingHelpers.getRouteLink(node, {}), expected);
     });
     it('when it starts with /', () => {
       const expected = '/projects';
@@ -395,6 +449,32 @@ describe('Routing-helpers', () => {
       sinon.assert.calledWith(GenericHelpers.replaceVars, expected, undefined, ':', false);
     });
   });
+  describe('calculateNodeHref', () => {
+    beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+      sinon.stub(RoutingHelpers, 'getRouteLink');
+      sinon
+      .stub(LuigiConfig, 'getConfigValue')
+      .withArgs('routing.useHashRouting')
+      .returns(false);
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('get node href', () => {
+      const url = 'https://luigi-project.io';
+      const node = {
+        externalLink: { url },
+        link: 'something',
+        pathSegment: 'something-else'
+      };
+      RoutingHelpers.getRouteLink.returns({ url });
+      expect(RoutingHelpers.calculateNodeHref(node , {})).to.equal('https://luigi-project.io');
+    });
+  });
   describe('getNodeHref', () => {
     beforeEach(() => {
       sinon.stub(LuigiConfig, 'getConfigBooleanValue');
@@ -403,10 +483,10 @@ describe('Routing-helpers', () => {
     afterEach(() => {
       sinon.restore();
     });
-    it('js:void on falsy config value', () => {
+    it('returns undefined on falsy config value', () => {
       LuigiConfig.getConfigBooleanValue.returns(false);
 
-      expect(RoutingHelpers.getNodeHref({}, {})).to.equal('javascript:void(0)');
+      expect(RoutingHelpers.getNodeHref({}, {})).to.equal(undefined);
       sinon.assert.notCalled(RoutingHelpers.getRouteLink);
       sinon.assert.calledWith(LuigiConfig.getConfigBooleanValue, 'navigation.addNavHrefs');
     });
@@ -488,19 +568,36 @@ describe('Routing-helpers', () => {
 
     const viewGroupInNodeParent = {
       link: 'child-node',
+      viewUrl: './relative',
       parent: {
         pathSegment: 'parent-node',
-        viewGroup: 'tets 1-1'
+        viewGroup: 'tets 1-1',
+        viewUrl: './relative/foo/bar'
       }
     };
 
     const viewGroupInParentOfNodeParent = {
       link: 'child-node',
+      viewUrl: 'http://bla.blub/but/something/else',
       parent: {
         pathSegment: 'parent-node',
         parent: {
           pathSegment: 'parent-parent-node',
-          viewGroup: 'tets 1-1-1'
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
+        }
+      }
+    };
+
+    const viewGroupInParentOfNodeParentDifferentUrl = {
+      link: 'child-node',
+      viewUrl: 'http://bla2.blub/foo/bar',
+      parent: {
+        pathSegment: 'parent-node',
+        parent: {
+          pathSegment: 'parent-parent-node',
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
         }
       }
     };
@@ -517,8 +614,12 @@ describe('Routing-helpers', () => {
       assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent), 'tets 1-1-1');
     });
 
+    it('do not return viewGroup from parent at node.parent if domains do not match', () => {
+      assert.equal(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParentDifferentUrl), undefined);
+    });
+
     it('return undefined if viewGroup is not inside node', () => {
-      assert.deepEqual(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
+      assert.equal(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
     });
   });
   describe('set feature toggle from url', () => {
@@ -566,40 +667,31 @@ describe('Routing-helpers', () => {
   });
 
   describe('getModalPathFromPath & getModalParamsFromPath', () => {
+    const mockLocation = new URL('http://localhost');
     beforeEach(() => {
       sinon.stub(RoutingHelpers, 'getModalViewParamName').returns('modal');
-      sinon.stub(RoutingHelpers, 'getQueryParams');
+      sinon.stub(RoutingHelpers, 'getLocation');
+      RoutingHelpers.getLocation.returns(mockLocation);
+      mockLocation.href = 'http://localhost';
     });
     afterEach(() => {
       sinon.restore();
     });
     it('without modal param', () => {
-      RoutingHelpers.getQueryParams.returns({});
       assert.equal(RoutingHelpers.getModalPathFromPath('/path/one'), null);
     });
     it('with modal', () => {
-      const allQueryParams = {
-        modal: '%2Fhome%2Fchild-2'
-      };
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      mockLocation.search = '?modal=%2Fhome%2Fchild-2';
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
     });
     it('with modal params', () => {
-      const allQueryParams = {
-        modal: '%2Fhome%2Fchild-2',
-        modalParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
-      };
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
+      mockLocation.search = '?modal=%2Fhome%2Fchild-2&modalParams=%7B%22title%22%3A%22Real%20Child%22%7D';
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
       assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
     });
     it('with custom modal param name', () => {
-      const allQueryParams = {
-        custom: '%2Fhome%2Fchild-2',
-        customParams: '%7B%22title%22%3A%22Real%20Child%22%7D'
-      };
+      mockLocation.search = '?custom=%2Fhome%2Fchild-2&customParams=%7B%22title%22%3A%22Real%20Child%22%7D';
       RoutingHelpers.getModalViewParamName.returns('custom');
-      RoutingHelpers.getQueryParams.returns(allQueryParams);
 
       assert.equal(RoutingHelpers.getModalPathFromPath('defined through stub'), '/home/child-2');
       assert.deepEqual(RoutingHelpers.getModalParamsFromPath('defined through stub'), { title: 'Real Child' });
@@ -664,7 +756,7 @@ describe('Routing-helpers', () => {
     it('Client can not write luigi url parameter', () => {
       currentNode.clientPermissions.urlParameters.luigi.write = false;
       RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
     });
     it('Client can only write specific url parameter', () => {
       currentNode.clientPermissions.urlParameters = {
@@ -679,7 +771,204 @@ describe('Routing-helpers', () => {
       };
       RoutingHelpers.addSearchParamsFromClient(currentNode, { luigi: 'rocks', test: 'tets' });
       sinon.assert.calledWith(LuigiRouting.addSearchParams, { test: 'tets' });
-      sinon.assert.calledWith(console.warn, 'No permission to add "luigi" to the url');
+      sinon.assert.calledWith(console.warn, 'No permission to add the search param "luigi" to the url');
+    });
+  });
+
+  describe('hasIntent', () => {
+    it('checks against correct intent keyword', () => {
+      const path = '#?intent=';
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isTrue(hasIntent);
+    });
+
+    it('check against incorrect intent keyword', () => {
+      const path = '#?int=';
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+
+    it('check against undefined intent keyword', () => {
+      const path = undefined;
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+  });
+
+  describe('hasIntent', () => {
+    it('checks against correct intent keyword', () => {
+      const path = '#?intent=';
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isTrue(hasIntent);
+    });
+
+    it('check against incorrect intent keyword', () => {
+      const path = '#?int=';
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+
+    it('check against undefined intent keyword', () => {
+      const path = undefined;
+      const hasIntent = RoutingHelpers.hasIntent(path);
+      assert.isFalse(hasIntent);
+    });
+  });
+
+  describe('getPageNotFoundRedirectResult', () => {
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('with custom pageNotFoundHandler defined redirectTo path', async () => {
+      const customRedirect = 'somecustompath';
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.pageNotFoundHandler')
+        .returns(() => {
+          return { redirectTo: customRedirect };
+        });
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
+      assert.equal(customRedirect, expected);
+    });
+
+    it('with custom pageNotFoundHandler defined keepURL', async () => {
+      const customKeepURL = true;
+      const somePath = 'somePath';
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.pageNotFoundHandler')
+        .returns(() => {
+          return {
+            redirectTo: somePath,
+            keepURL: customKeepURL
+          };
+        });
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('');
+      assert.deepEqual(
+        {
+          path: somePath,
+          keepURL: customKeepURL
+        },
+        expected
+      );
+    });
+
+    it('with custom pageNotFoundHandler not defined', async () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.pageNotFoundHandler')
+        .returns();
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath');
+      assert.deepEqual({}, expected);
+    });
+
+    it('with custom pageNotFoundHandler not a function', async () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.pageNotFoundHandler')
+        .returns({ thisObject: 'should be function instead' });
+      const expected = await RoutingHelpers.getPageNotFoundRedirectResult('notFoundPath').path;
+      assert.equal(undefined, expected);
+    });
+  });
+
+  describe('handlePageNotFoundAndRetrieveRedirectPath', () => {
+    const component = {
+      showAlert: () => {}
+    };
+
+    beforeEach(() => {
+      console.warn = sinon.spy();
+      sinon.stub(LuigiI18N, 'getTranslation');
+      sinon.stub(RoutingHelpers, 'getPageNotFoundRedirectResult');
+      sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
+      sinon.stub(component, 'showAlert');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+
+    it('when path exists should return path itself', async () => {
+      const path = 'existingpath';
+      const expected = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(component, path, true);
+      assert.equal(path, expected);
+    });
+
+    it('with custom pageNotFoundHandler defined', async () => {
+      const redirectPath = { path: 'somepathtoredirect' };
+      // define pageNotFoundHandler return value with stub
+      RoutingHelpers.getPageNotFoundRedirectResult.returns(redirectPath);
+      // call function being tested
+      const expected = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(component, redirectPath, false);
+      assert.equal(redirectPath.path, expected);
+    });
+
+    it('with custom pageNotFoundHandler as not defined', async () => {
+      const path = 'notFoundPath';
+      LuigiI18N.getTranslation
+        .withArgs('luigi.requestedRouteNotFound', { route: path })
+        .returns('Could not find the requested route');
+      // set pageNotFoundHandler as undefined with stub
+      RoutingHelpers.getPageNotFoundRedirectResult.returns({});
+      // call function being tested
+      const expected = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(component, path, false);
+      sinon.assert.calledWith(console.warn, `Could not find the requested route: ${path}`);
+      sinon.assert.calledOnce(RoutingHelpers.showRouteNotFoundAlert);
+      assert.equal(undefined, expected);
+    });
+  });
+
+  describe('composeSearchParamsToRoute', () => {
+    let globalLocationRef = global.location;
+    const route = '/home';
+
+    afterEach(() => {
+      global.location = globalLocationRef;
+    });
+
+    it('with location search params', () => {
+      global.location = {
+        search: '?query=params'
+      };
+      const actual = RoutingHelpers.composeSearchParamsToRoute(route);
+      const expected = '/home?query=params';
+
+      assert.equal(actual, expected);
+    });
+
+    it('without location search params', () => {
+      global.location = {
+        search: ''
+      };
+      const actual = RoutingHelpers.composeSearchParamsToRoute(route);
+      const expected = '/home';
+
+      assert.equal(actual, expected);
+    });
+  });
+  describe('modifySearchParams', () => {
+    beforeEach(() => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.useHashRouting')
+        .returns(false);
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('modifySearchParams', () => {
+      const searchParams = new URLSearchParams('mario=rocks');
+      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks', mario: undefined }, searchParams);
+      assert.equal(searchParams.toString(), 'test=tets&luigi=rocks');
+    });
+    it('modifySearchParams with paramPrefix', () => {
+      const searchParams = new URLSearchParams('~mario=rocks');
+      RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
+      assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
   });
 });

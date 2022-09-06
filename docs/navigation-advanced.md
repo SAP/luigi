@@ -3,11 +3,12 @@
   "node": {
     "label": "Advanced navigation",
     "category": {
-      "label": "Luigi Core"
+      "label": "Navigation",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 2
+      "categoryPosition": 3,
+      "position": 1
     }
   }
 }
@@ -20,10 +21,10 @@ This document shows you how to configure the following Luigi features:
 * [View groups](#view-groups)
 * [Dynamically changeable paths](#dynamically-changeable-paths)
 * [Contexts](#contexts)
-* [Profile](#profile) 
-* [Context switcher](#context-switcher) 
-* [Product switcher](#product-switcher) 
-* [App switcher](#app-switcher) 
+* [Profile](#profile) 
+* [Context switcher](#context-switcher) 
+* [Product switcher](#product-switcher) 
+* [App switcher](#app-switcher) 
 * [Tab navigation](#tab-navigation)
 * [Additional options](#additional-options)
 
@@ -35,20 +36,86 @@ Imagine your application hosts two micro frontend views: `http://example.com/a#e
 
 Nodes belonging to the same view group are always rendered in their own view group iframe. Nodes not belonging to any view group follow the same-origin iframe rendering policy.
 
+<!-- add-attribute:class:warning -->
+>**NOTE**: To make sure view groups work properly, you need to include **Luigi Client** in your micro frontend. See [this document](luigi-client-setup.md) for instructions, or for a simpler implementation include this line in your application:
+`<script src="https://unpkg.com/@luigi-project/client/luigi-client.js"></script>`
+
+You can paste this view group example in [Luigi Fiddle](https://fiddle.luigi-project.io/):
+
+<!-- accordion:start -->
+
+### Code example
+
+```javascript
+Luigi.setConfig({
+            navigation: {
+                preloadViewGroups: true,
+                viewGroupSettings: {
+                    vg1: {
+                        preloadUrl: '/examples/microfrontends/multipurpose.html#/preload'
+                    }
+                },
+                nodes: () => [
+                    {
+                        pathSegment: 'settings',
+                        label: 'Settings',
+                        defaultChildNode: 'agents',
+                        children: [
+                            {
+                                viewGroup: 'vg1',
+                                pathSegment: 'agents',
+                                label: 'Agent Lists',
+                                hideSideNav: false,
+                                loadingIndicator: {
+                                    hideAutomatically: true,
+                                    enabled: true
+                                },
+                                viewUrl: '/examples/microfrontends/multipurpose.html#/route1',
+                            },
+                            {
+                                viewGroup: 'vg1',
+                                pathSegment: 'agentgroups',
+                                label: 'Agent Groups',
+                                hideSideNav: false,
+                                loadingIndicator: {
+                                    hideAutomatically: true,
+                                    enabled: true
+                                },
+                                viewUrl: '/examples/microfrontends/multipurpose.html#/route2',
+                            },
+                        ]
+                    }
+                ],
+                profile: {
+                    logout: {
+                        label: 'Sign Out',
+                        icon: "sys-cancel",
+                        customLogoutFn: () => { }
+                    },
+                }
+            },
+            routing: {
+                useHashRouting: true
+            }
+        });
+```
+
+<!-- accordion:end -->
+
 The view groups feature also offers out-of-the-box caching. Each time you navigate to another view group, either a new iframe is created or it is reused if already exists. In both cases, the iframe you are navigating from becomes hidden and is available for you to use again. If you navigate back to the first iframe and it should be updated with new data, such when a new entry was added in the second iframe and you want to display it in a table in the first iframe, you must define a **preloadUrl** parameter for the view group under **navigation.viewGroupSettings**.
 
 You can also preload view groups. You just need to define which URL you want to preload, and Luigi will preload the view after some user interactions when the browser is most likely to be idle. This option is active by default, but you can deactivate it with the [**preloadViewGroups**](navigation-parameters-reference.md#preloadviewgroups) configuration flag.
 
 For more information on setting caching with view refreshing and preloading for view groups, read [this document](navigation-parameters-reference.md#node-parameters).
 
-Further options related to view groups can be configured using the parameters listed here. These parameters should be placed just before `nodes:` in the `navigation:` section of the configuration file:
+Further options related to view groups can be configured using the parameters listed below. These parameters should be placed just before `nodes:` in the `navigation:` section of the configuration file:
 
 ### viewGroupSettings
 - **type**: object
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It may not be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
-
+  - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 ### preloadViewGroups
 - **type**: boolean
 - **description**: allows deactivating the default preloading of view group iframes.
@@ -323,7 +390,11 @@ productSwitcher: {
 
 ![App switcher](assets/app-switcher.jpg)
 
-The app switcher is a drop-down in top the navigation which allows you to switch between applications. To use it, add the **appSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#app-switcher).
+The app switcher is a dropdown at the top of the navigation which allows you to switch between applications. To use it, you need to:
+1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
+2. Add the **appSwitcher** parameter to the **navigation** object.
+
+You may also add any of the parameters listed [here](navigation-parameters-reference.md#app-switcher).
 
 Example:
 

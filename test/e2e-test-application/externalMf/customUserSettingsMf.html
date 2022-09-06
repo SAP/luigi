@@ -19,9 +19,13 @@
         renderData(context);
       });
 
+      window.LuigiClient.addContextUpdateListener((context, origin) => {
+        renderData(context);
+      });
+
       function renderData(context) {
         myUserSettings = context.userSettingsData;
-        if (myUserSettings.theme) {
+        if (myUserSettings && myUserSettings.theme) {
           let button = document.querySelector('.' + myUserSettings.theme);
           button.classList.add('active');
         }
@@ -31,12 +35,18 @@
         document.querySelectorAll('.btnList button').forEach(button => {
           button.classList.remove('active');
         });
-        console.log('changeTheming');
         document.querySelector('.' + theme).classList.add('active');
         myUserSettings.theme = theme;
         window.LuigiClient.sendCustomMessage({
           id: 'luigi.updateUserSettings',
           data: myUserSettings
+        });
+      }
+
+      function setYellowTheme(theme) {
+        window.LuigiClient.sendCustomMessage({
+          id: 'my-custom-message.update-user-settings',
+          theme: 'yellow'
         });
       }
     </script>
@@ -49,12 +59,18 @@
         </li>
         <br /><br />
         <li>
-          <button
-            class="green"
-            style="color: green"
-            onclick="changeTheming('green')"
-          >
+          <button class="green" style="color: green" onclick="changeTheming('green')">
             Green
+          </button>
+        </li>
+        <br /><br />
+        <li>
+          <button
+            class="yellow"
+            data-testid="yellowBtn"
+            onclick="setYellowTheme('yellow')"
+          >
+            Yellow
           </button>
         </li>
       </ul>

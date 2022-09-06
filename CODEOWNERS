@@ -3,6 +3,5 @@
 # Each line is a file pattern followed by one or more owners.
 # The last matching pattern has the most precedence.
 # For more details, read the following article on GitHub: https://help.github.com/articles/about-codeowners/.
-
 # These are the default owners for the whole content of the `luigi` repository. The default owners are automatically added as reviewers when you open a pull request, unless different owners are specified in the file.
-* @alexandra-simeonova @hardl @johannesdoberer @ndricimrr @stanleychh @ulianamunich @wdoberschuetz @rafalgamon
+* @alexandra-simeonova @hardl @johannesdoberer @ndricimrr @wdoberschuetz @rafalgamon

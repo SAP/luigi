@@ -1,9 +1,10 @@
 <!-- meta
 {
   "node": {
-    "label": "Installation",
+    "label": "Quick setup",
     "category": {
-      "label": "Luigi Core"
+      "label": "Luigi Core",
+      "collapsible": true
     },
     "metaData": {
       "categoryPosition": 2,
@@ -13,18 +14,18 @@
 }
 meta -->
 
-# Luigi Core Installation
+# Quick setup
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kEzTZ2U9KMM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-This document shows you how to set up a web application using the Luigi micro frontend framework. This involves a few basic steps:
+This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/master/core/examples). 
+
+Luigi can be added to any application using these steps:
 * Adding Luigi's `npm` packages to your project dependencies.
 * Giving Luigi exclusive control over your entry `index.html` file.
 * Starting the server to run your application.
 
-All those steps are achieved through a single **installer** script which sets up a Luigi application on your system. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere.
-
-Choose the framework to build your application:
+In this example, all these steps are achieved through a single **installer** script for any of the frameworks listed below. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere. 
 
 * [Application setup without a framework](#application-setup-without-a-framework)
 * [Angular](#application-setup-for-angular)
@@ -146,7 +147,6 @@ or execute these commands manually to get the same result:
 ### Click to expand
 ```bash
 mkdir my-ui5-app && cd my-ui5-app
-npm init -y
 echo "Creating folders and downloading example assets"
 mkdir -p ./webapp/home ./webapp/libs ./webapp/sample1 ./webapp/sample2 ./webapp/i18n
 
@@ -207,42 +207,27 @@ or execute these commands manually to get the same result:
 <!-- accordion:start -->
 ### Click to expand
 ```bash
+# create sample vue app
 vue create -d my-vue-app && cd my-vue-app
-npm i vue-router vuex @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content
-npm i -D sass-loader node-sass webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader
+
+# install dependencies
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/package.json > package.json
+npm i
+# as soon as new package.json under vue example released this line can be removed
+npm i webpack-cli@4.2.0 node-sass@4.14.1
 
 mkdir -p src/luigi-config src/assets/scss src/views public/assets
 
 # cleanup default installation
-rm public/index.html src/app.vue # remove default index, will be replaced with example assets
+# remove default index, will be replaced with example assets
+rm public/index.html src/app.vue
 rm -rf src/components
 
-echo "@import '~fundamental-styles/dist/fundamental-styles.css';
-" > src/assets/scss/style.scss
-
-# fetch assets from vue example
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/app.vue > src/app.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/main.js > src/main.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/router.js > src/router.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/store.js > src/store.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/home.vue > src/views/home.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
-
-# generic assets
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > public/index.html
-
+echo "@import '~fundamental-styles/dist/fundamental-styles.css';" > src/assets/scss/style.scss
 
 # set scripts
-sed 's/"scripts": {/"scripts": {\
-  \  "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/public\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
-
-
 echo "const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
 module.exports = {
   pages: {
     sampleapp: {
@@ -285,10 +270,45 @@ module.exports = {
         {ignore:['.gitkeep','**/.DS_Store','**/Thumbs.db'],debug:'warning'}
       )]
     }
-  };" > vue.config.js
+};" > vue.config.js
+
+echo "const path = require('path');
+module.exports = {
+    entry: './src/luigi-config/luigi-config.es6.js',
+    output: {
+        filename: 'luigi-config.js',
+        path: path.resolve(__dirname, 'public'),
+    },
+};" > webpack.config.js
+
+sed 's/"scripts": {/"scripts": {\
+\    "buildConfig":"webpack --config webpack.config.js",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+
+echo '{
+    "globals": {
+        "Luigi": "readonly"
+    }
+}' > .eslintrc.json
+
+mkdir -p src/luigi-config
+
+# fetch assets from vue example
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/app.vue > src/app.vue
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/main.js > src/main.js
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
+
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/router.js > src/router.js
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/store.js > src/store.js
+
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/home.vue > src/views/home.vue
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
+
+# generic assets
 
 npm run buildConfig
-
 npm run serve
 ```
 <!-- accordion:end -->
@@ -313,7 +333,7 @@ echo yes | npm run eject
 
 
 # install dependencies
-npm i -P @luigi-project/core @luigi-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content react-router-dom
+npm i -P @luigi-project/core @luigi-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content react-router-dom@5.1.2
 npm i copy-webpack-plugin@5 webpack webpack-cli @babel/core @babel/preset-env babel-loader --save-dev
 
 # replace strings in some places

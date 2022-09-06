@@ -97,7 +97,7 @@ describe('Routing', function() {
       };
 
       // when
-      await Routing.navigateTo(path, false);
+      await Routing.navigateTo(path, { keepBrowserHistory: false });
 
       // then
       sinon.assert.calledWithExactly(window.history.replaceState, { path }, '', '/projects/teams');
@@ -111,8 +111,9 @@ describe('Routing', function() {
       // when
       await Routing.navigateTo('/projects');
 
+      const eventDetail = { detail: { preventContextUpdate: false, withoutSync: false } };
       // then
-      sinon.assert.calledWithExactly(window.dispatchEvent, new CustomEvent('popstate'));
+      sinon.assert.calledWithExactly(window.dispatchEvent, new CustomEvent('popstate', eventDetail));
     });
   });
 
@@ -136,7 +137,7 @@ describe('Routing', function() {
       const expected = {
         semanticObject: 'Sales',
         action: 'settings',
-        params: [{ param1: 'luigi' }, { param2: 'mario' }]
+        params: { param1: 'luigi', param2: 'mario' }
       };
       assert.deepEqual(actual, expected);
     });
@@ -146,14 +147,9 @@ describe('Routing', function() {
       const expected = {
         semanticObject: 'Sales',
         action: 'settings',
-        params: undefined
+        params: {}
       };
       assert.deepEqual(actual, expected);
-    });
-
-    it('falsy intentObject from provided intent link with illegal characters', () => {
-      const actual = RoutingHelpers.getIntentObject('#?intent=Sales-$et$$tings');
-      assert.isNotOk(actual);
     });
   });
 
@@ -204,7 +200,7 @@ describe('Routing', function() {
   describe('resolveDynamicIntentPath()', () => {
     it('returns resolved dynamic path with single dynamic parameter', () => {
       const path = '/projects/:id/details';
-      const parameters = [{ id: 123 }];
+      const parameters = { id: 123 };
       const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
       const expected = '/projects/123/details';
       assert.equal(actual, expected);
@@ -212,7 +208,7 @@ describe('Routing', function() {
 
     it('returns resolved dynamic path with multiple dynamic parameter', () => {
       const path = '/projects/:id/details/:componentId/view/:viewId/show';
-      const parameters = [{ id: 123, componentId: 444, viewId: '223' }];
+      const parameters = { id: 123, componentId: 444, viewId: '223' };
       const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
       const expected = '/projects/123/details/444/view/223/show';
       assert.equal(actual, expected);
@@ -220,7 +216,7 @@ describe('Routing', function() {
 
     it('returns resolved dynamic path with similiar named parameters', () => {
       const path = '/projects/:component/details/:componentId/view/:componentCount/show';
-      const parameters = [{ component: 123 }];
+      const parameters = { component: 123 };
       const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
       // check edge case when parameter names stat with same substring
       const expected = '/projects/123/details/:componentId/view/:componentCount/show';
@@ -237,7 +233,7 @@ describe('Routing', function() {
 
     it('input path not changed when no paramters match dynamic specification', () => {
       const path = '/projects/:component/details/:componentId/view/:componentCount/show';
-      const parameters = [{ other: 123, param: 343, not: '231', related: 'to dynamic ones' }];
+      const parameters = { other: 123, param: 343, not: '231', related: 'to dynamic ones' };
       const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
       const expected = '/projects/:component/details/:componentId/view/:componentCount/show';
       assert.equal(actual, expected);
@@ -245,7 +241,7 @@ describe('Routing', function() {
 
     it('returns resolved parameters when there is extra parameters given', () => {
       const path = '/projects/:other/details/:param/view/:not';
-      const parameters = [{ other: 123, param: 343, not: '231', related: 'to dynamic ones', sample: 'test' }];
+      const parameters = { other: 123, param: 343, not: '231', related: 'to dynamic ones', sample: 'test' };
       const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
       const expected = '/projects/123/details/343/view/231';
       assert.equal(actual, expected);
@@ -253,7 +249,7 @@ describe('Routing', function() {
 
     it('input path not changed when array has an empty object', () => {
       const path = '/projects/:other/details/:param/view/:not';
-      const parameters = [];
+      const parameters = {};
       const actual = RoutingHelpers.resolveDynamicIntentPath(path, parameters);
       const expected = '/projects/:other/details/:param/view/:not';
       assert.equal(actual, expected);
@@ -634,7 +630,7 @@ describe('Routing', function() {
       await Routing.handleRouteChange(path, component, node, config);
 
       // then
-      sinon.assert.calledWithExactly(Routing.navigateTo, expectedPath, false);
+      sinon.assert.calledWithExactly(Routing.navigateTo, expectedPath, { keepBrowserHistory: false });
     });
 
     it("should set component's 'hideSideNav' property ", async () => {
@@ -837,6 +833,16 @@ describe('Routing', function() {
       assert.equal(Routing.getModifiedPathname(), mockPathName);
     });
 
+    it('without state and with query params', () => {
+      const mockPathName = 'projects?~test=param';
+      sinon.stub(window.history, 'state').returns(null);
+      sinon.stub(window, 'location').value({
+        pathname: '/projects',
+        search: '?~test=param'
+      });
+      assert.equal(Routing.getModifiedPathname(), mockPathName);
+    });
+
     it('with state path', () => {
       sinon.stub(window.history, 'state').value({
         path: '/this/is/some/'
@@ -894,11 +900,19 @@ describe('Routing', function() {
   });
 
   describe('navigateToExternalLink()', () => {
+    beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+    });
     it('open external link in same tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
+      const node = { context: { someValue: 'bar' }, externalLink };
+      const pathParams = { otherParam: 'foo' };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink);
+      Routing.navigateToExternalLink(externalLink, node, pathParams);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
       sinon.assert.calledOnce(window.focus);
@@ -906,9 +920,11 @@ describe('Routing', function() {
 
     it('open external link in new tab', () => {
       const externalLink = { url: 'http://localhost', sameWindow: false };
+      const node = { context: { someValue: 'bar' }, externalLink };
+      const pathParams = { otherParam: 'foo' };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink);
+      Routing.navigateToExternalLink(externalLink, node, pathParams);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
       sinon.assert.calledOnce(window.focus);
@@ -924,14 +940,15 @@ describe('Routing', function() {
     let notFoundPath = '/this/does/not/exist';
     beforeEach(() => {
       sinon.stub(Routing, 'navigateTo');
+      sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
       sinon.stub(LuigiI18N, 'getTranslation');
       sinon.stub(component, 'showAlert');
     });
 
-    it('navigate to redirect path', () => {
+    it('navigate to redirect path', async () => {
       LuigiConfig.getConfigValue.returns(null);
 
-      Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
+      await Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
 
       sinon.assert.calledWithExactly(Routing.navigateTo, pathToRedirect);
     });
@@ -1019,7 +1036,7 @@ describe('Routing', function() {
     });
   });
   describe('append and remove modal data from URL using path routing', () => {
-    const modalPath = encodeURIComponent('/project-modal');
+    let modalPath = encodeURIComponent('/project-modal');
     const modalParams = { hello: 'world' };
     const params = {
       '~luigi': 'mario'
@@ -1029,6 +1046,7 @@ describe('Routing', function() {
 
     beforeEach(() => {
       history.replaceState = sinon.spy();
+      history.pushState = sinon.spy();
       sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
       sinon.stub(RoutingHelpers, 'getHashQueryParamSeparator').returns('?');
       sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
@@ -1050,7 +1068,7 @@ describe('Routing', function() {
         href: 'http://some.url.de/settings'
       };
       window.state = {};
-      console.log('path routing ', global.location);
+
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
@@ -1087,6 +1105,58 @@ describe('Routing', function() {
         console.log('error', error);
       }
       sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/settings?~luigi=mario');
+    });
+
+    it('should update path of the modal when changing template in the modal, save history', () => {
+      sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
+      global.location = {
+        href: 'http://some.url.de/settings'
+      };
+      window.state = {};
+      const addHistoryEntry = true;
+      sinon
+        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .withArgs('routing.useHashRouting')
+        .returns(false);
+      try {
+        modalPath = encodeURIComponent('/modalPath');
+        Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry);
+      } catch (error) {
+        console.log('error', error);
+      }
+      // then
+      sinon.assert.calledWith(
+        history.pushState,
+        window.state,
+        '',
+        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252FmodalPath&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+      );
+    });
+
+    it('should update path of the modal when changing template in the modal, do not save history', () => {
+      sinon.stub(RoutingHelpers, 'getQueryParams').returns(params);
+      global.location = {
+        href: 'http://some.url.de/settings'
+      };
+      window.state = {};
+      const addHistoryEntry = false;
+      sinon
+        .stub(LuigiConfig, 'getConfigBooleanValue')
+        .withArgs('routing.useHashRouting')
+        .returns(false);
+      try {
+        modalPath = encodeURIComponent('/project-modal');
+        Routing.updateModalDataInUrl(modalPath, modalParams, addHistoryEntry);
+      } catch (error) {
+        console.log('error', error);
+      }
+      // then
+      sinon.assert.calledWith(
+        history.replaceState,
+        window.state,
+        '',
+        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+      );
     });
   });
 
@@ -1177,6 +1247,94 @@ describe('Routing', function() {
     it('should leave query params and hash untouched', () => {
       const path = Routing.normalizePath('bla/blub/../x/?~a=b&~c=d#/something?~e=f&~g=h');
       assert.equal(path, 'bla/x/?~a=b&~c=d#/something?~e=f&~g=h');
+    });
+  });
+  describe('concatenate path', () => {
+    it('concatenate path', () => {
+      assert.equal(Routing.concatenatePath('/home/overview', 'settings'), 'home/overview/settings');
+      assert.equal(Routing.concatenatePath('/#/home/overview', 'settings'), 'home/overview/settings');
+      assert.equal(Routing.concatenatePath('', 'settings'), 'settings');
+      assert.equal(Routing.concatenatePath('/home/overview', ''), 'home/overview');
+      assert.equal(Routing.concatenatePath('/home/overview', '/test'), 'home/overview/test');
+      assert.equal(Routing.concatenatePath('/home/overview/', 'test'), 'home/overview/test');
+      assert.equal(Routing.concatenatePath('/home/overview/', '/test'), 'home/overview/test');
+      assert.equal(Routing.concatenatePath('/home/overview/', 'test/'), 'home/overview/test/');
+    });
+  });
+
+  describe('shouldSkipRoutingForUrlPatterns()', () => {
+    let globalLocationRef = global.location;
+    afterEach(() => {
+      global.location = globalLocationRef;
+      sinon.restore();
+      sinon.reset();
+    });
+    it('should return true if path matches default patterns', () => {
+      global.location = {
+        href: 'http://some.url.de?access_token=bar'
+      };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = true;
+
+      assert.equal(actual, expect);
+    });
+    it('should return true if path matches default patterns', () => {
+      global.location = {
+        href: 'http://some.url.de?id_token=foo'
+      };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = true;
+
+      assert.equal(actual, expect);
+    });
+    it('should return true if path matches config patterns', () => {
+      sinon.restore();
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.skipRoutingForUrlPatterns')
+        .returns(['foo_bar']);
+      global.location = {
+          href: 'http://some.url.de?foo_bar'
+        };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = true;
+
+      assert.equal(actual, expect);
+    });
+    it('should return false if path does not matche patterns', () => {
+      global.location = {
+        href: 'http://some.url.de/settings'
+      };
+      const actual = Routing.shouldSkipRoutingForUrlPatterns();
+      const expect = false;
+
+      assert.equal(actual, expect);
+    });
+  });
+
+  describe('shouldShowModalPathInUrl()', () => {
+    beforeEach(() => {
+      LuigiConfig.getConfigValue.restore();
+      sinon.stub(Routing, 'handleBookmarkableModalPath');
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('handleBookmarkableModalPath should be triggered when showModalPathInUrl is true', () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.showModalPathInUrl')
+        .returns(true);
+      Routing.shouldShowModalPathInUrl();
+      sinon.assert.calledOnce(Routing.handleBookmarkableModalPath);
+    });
+    it('handleBookmarkableModalPath should not be triggered when showModalPathInUrl is false', () => {
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.showModalPathInUrl')
+        .returns(false);
+      Routing.shouldShowModalPathInUrl();
+      sinon.assert.notCalled(Routing.handleBookmarkableModalPath);
     });
   });
 });

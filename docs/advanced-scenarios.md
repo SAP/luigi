@@ -3,11 +3,12 @@
   "node": {
     "label": "Expert scenarios",
     "category": {
-      "label": "Advanced"
+      "label": "Advanced",
+      "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 4,
-      "position": 1
+      "categoryPosition": 7,
+      "position": 0
     }
   }
 }
@@ -19,12 +20,12 @@ This is a collection of advanced use cases and example implementations. If you a
 
 <!-- accordion:start -->
 
-### Use a SPA router and keep Luigi Core URL in sync
+### Use a SPA router and keep Luigi Core URL in sync 
 
 #### Overview
 
 
-This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) and [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) methods. 
+This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) and [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) methods.
 
 If you are running Luigi Core v0.7.7+, you can use [fromClosestContext](luigi-client-api.md#fromclosestcontext) instead of `fromVirtualTreeRoot`, which requires a [navigationContext](luigi-client-api.md#navigationcontext) at the `virtualTree` node configuration.
 
@@ -49,6 +50,8 @@ If you are running Luigi Core v0.7.7+, you can use [fromClosestContext](luigi-cl
 ```
 
 2. Use an Angular Router for navigation.
+
+> **NOTE**: If your app is not using Angular, but SvelteKit for routing, read the instructions [here](#keep-luigi-core-url-in-synch-with-routing-from-sveltekit).
 
 Angular provides [Router events](https://angular.io/guide/router#router-events). We are reacting on `NavigationEnd` to update the URL after a successful route change.
 
@@ -102,6 +105,115 @@ export class LuigiAutoNavigationService implements OnDestroy {
 
 Other than the added service, which you can also implement as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionality to navigate.
 
+### Keep Luigi Core URL in sync with routing from SvelteKit
+
+#### Overview
+
+This example shows the steps to use Luigi with routing based on SvelteKit. It is also meant to show how to keep Luigi Core in sync with a Svelte micro frontend similarly to the [previous example for Angular](#use-a-spa-router-and-keep-luigi-core-url-in-sync).
+
+#### Steps 
+
+1. Create a SvelteKit app by following the steps [here](https://kit.svelte.dev/docs/introduction#getting-started).
+
+2. Include the Luigi Client script somewhere in your app. In this example, include the CDN version in your `app.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="https://unpkg.com/@luigi-project/client/luigi-client.js"></script>
+		%sveltekit.head%
+	</head>
+	<body>
+		<div>%sveltekit.body%</div>
+	</body>
+</html>
+```
+
+3. Connect inbound and outbound routing channels in an always-present Svelte component in order to have two-way route sync. In this example, paste the following inside `__layout.svelte`: 
+
+```html
+<script>
+	import Header from '$lib/header/Header.svelte';
+	import '../app.css';
+
+	import { onMount } from 'svelte';
+	import  { goto, afterNavigate } from '$app/navigation';
+
+	
+	onMount(async () => {
+		// react on Luigi-induced route changes
+		window.addEventListener('popstate', () => {
+			goto(window.location.href, { replaceState: true });
+		});
+	});
+
+	afterNavigate(navigation => {
+		// sync Luigi route after internal navigation
+		if( navigation.to && navigation.from && navigation.to.href !== navigation.from.href ) {
+			let luigiRoute = navigation.to.pathname;
+			if(luigiRoute === '/') {
+				luigiRoute += 'home';
+			}
+			LuigiClient.linkManager().withoutSync().fromParent().navigate(luigiRoute);
+		}
+	});
+</script>
+...
+```
+
+4. Now your micro frontend is configured and you can include it in your application. Below is an example configuration that you can test by going to [Luigi Fiddle](https://fiddle.luigi-project.io/) and clicking on "Modify Config". You need to replace `sveltekitMFEUrl` with the URL to your own micro frontend. 
+
+```javascript
+let sveltekitMFEUrl = 'http://127.0.0.1:5173/';
+
+Luigi.setConfig({
+    navigation: { 
+            nodes: [{ 
+                pathSegment: 'home', 
+                label: 'h', 
+                globalNav: true,
+                hideFromNav: true, 
+                children: [{ 
+                    pathSegment: 'home', 
+                    label: 'Home', 
+                    icon: sveltekitMFEUrl + 'src/lib/header/svelte-logo.svg',
+                    viewUrl: sveltekitMFEUrl,
+                    viewGroup: 'svelte'
+                },{ 
+                    pathSegment: 'about', 
+                    label: 'About', 
+                    icon: sveltekitMFEUrl + 'src/lib/header/svelte-logo.svg',
+                    viewUrl: sveltekitMFEUrl + 'about',
+                    viewGroup: 'svelte'
+                },{ 
+                    pathSegment: 'todos', 
+                    label: 'Todos', 
+                    icon: sveltekitMFEUrl + 'src/lib/header/svelte-logo.svg',
+                    viewUrl: sveltekitMFEUrl + 'todos',
+                    viewGroup: 'svelte'
+                }] 
+            }]
+        }, 
+        
+        routing: { 
+            useHashRouting: true 
+        }, 
+        settings: { 
+            responsiveNavigation: 'semiCollapsible',
+            header: { 
+                logo: 'img/luigi.png', 
+                title: 'Svelte kit poc'
+            }
+        }
+    });    
+```
+
+5. If you don't want to specify each subsequent navigation node in your application, you can use Luigi's [virtualTree](navigation-parameters-reference.md#virtualtree) feature.
+
 ### Authenticate Luigi with Google Cloud Identity
 
 #### Overview
@@ -111,7 +223,7 @@ This example shows you how to use Luigi with a Google account.
 #### Steps
 
 1. Register a project and generate an OAuth2 Web Client based on [Google Developers Identity - OAuth2UserAgent](https://developers.google.com/identity/protocols/OAuth2UserAgent).
-2. To get your app running locally, set the Authorized JavaScript Origins URIs to `http://localhost:4200` and Authorized redirect URIs to `http://localhost:4200/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
+2. To get your app running locally, set the Authorized JavaScript Origins URIs to `http://localhost:[PORT]` (replace PORT by the port of your locally running luigi app, e.g. `4200` for Angular). Then, set Authorized redirect URIs to `http://localhost:[PORT]/luigi-core/auth/oauth2/callback.html?storageType=localStorage`.
 3. Copy the Client ID which ends with `apps.googleusercontent.com`.
 4. Update the LuigiConfig auth section. In this example, we have also provided a configuration for logout and getting user information:
 
@@ -153,10 +265,10 @@ Google's `id_token` contains basic identity data like name and user ID, which al
 ```
 
 ### Use Feature Toggles in Luigi
-There are two possibilities to add feature toggles to the active feature toggles list. On the one hand you can use the core api and on the other hand it is possible to add a feature toggle through url parameters.
+There are two possibilities to add feature toggles to the active feature toggles list. On the one hand, you can use the Core API and on the other hand, it is possible to add a feature toggle through URL parameters.
 
-#### Overview 
-Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code. 
+#### Overview
+Luigi allows you to implement and configure feature toggles. They can be used to organize and compartmentalize your code.
 
 #### Usage
 * Before using feature toggles, you first have to include the feature toggle query parameter in the [general settings](general-settings.md) part of your Luigi configuration file. This allows you to enable setting the feature toggles via URL :
@@ -210,11 +322,11 @@ Luigi allows you to implement and configure feature toggles. They can be used to
     if (LuigiClient.getActiveFeatureToggles().includes('ft1')) {
       //display content
     }
-  ``` 
+  ```
 
 ### Use Intent-Based Navigation in Luigi Client
 
-#### Overview 
+#### Overview
 Luigi Client allows you to navigate through micro frontends by using an intent-based navigation. This type of navigation decouples navigation triggers from the actual navigation targets. Rather than directly encoding the name of the target app into the URL fragment, app developers provide a navigation intent such as `display` or `edit` as shown in the examples below.
 
 #### Usage
@@ -234,7 +346,7 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
   ];
   ```
   1. The intent link is built using the `semanticObject`, `action` and optional parameters in the following format:
-  `#?intent=semanticObject-action?params`. 
+  `#?intent=semanticObject-action?params`.
   An example of an intent link would be as follows:
   ```javascript
     #?intent=Sales-edit?id=100
@@ -254,9 +366,9 @@ Luigi Client allows you to navigate through micro frontends by using an intent-b
     https://example.com/#?intent=Sales-edit?id=100;
   ```
 
-### Defer Luigi Client Initialization 
+### Defer Luigi Client Initialization
 
-#### Overview 
+#### Overview
 
 In some scenarios, the micro frontend application needs to decide when to finalize the Luigi Client initialization. By default, Luigi Client is initialized when you import the library in your micro frontend application.
 However, it can be the case that a complex application takes too long to load all the modules. Since Luigi Client initialization is done automatically when it is imported, Luigi Core will assume that the micro frontend is fully loaded and ready for further actions when it is not.
@@ -265,7 +377,7 @@ This may lead to some problems, such as UI synchronization issues where the side
 #### Usage
 
 These are the steps you can use to defer Luigi Client initialization :
-  
+
   1. In your micro frontend HTML that serves as entry file, you must add the `defer-luigi-init` attribute into the `<head>` element as follows:
   ```html
       <html>

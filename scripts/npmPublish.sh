@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Publishes the current version
+# Publishes the current version 
 
 set -e # exit on errors
 
@@ -47,7 +47,7 @@ function prepublishCheck {
   cd $BASE_DIR/../$1
   VERSION=$(node -p "require('./package.json').version")
   
-  # Check if it can be published (github release must exist)
+  # Check if it can be published (github release must exist )
   TAGS_GREP=`git ls-remote --tags origin | grep "v$VERSION$" | wc -l`
   if [[ "$TAGS_GREP" =~ "0" ]]; then
     echo "Tag (github release) does not exist, not going to publish $VERSION to npm"
