@@ -54,8 +54,6 @@ integration-testing: &integration-testing
     # chrome: beta
     chrome: stable
   before_install:
-    # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-    # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   before_cache:
     - rm -rf ~/.npm/_logs
@@ -65,7 +63,6 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
-      name: 'Precache & Unit Tests'
       if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache

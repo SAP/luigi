@@ -34,18 +34,8 @@ runApp() {
 }
 
 echo ""
-echo "INSTALL client-support-angular DEPS"
+echo "INSTALL testing-utilities dependencies"
 echo ""
-
-# cd $BASE_DIR/../client-frameworks-support/client-support-angular
-# npm install --force
-# echo ""
-# ls
-# echo ""
-
-# echo ""
-# echo "INSTALL testing-utilities DEPS"
-# echo ""
 
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
 npm install
@@ -53,27 +43,18 @@ echo ""
 ls
 echo ""
 
-# echo ""
-# echo "INSTALL testing-utilities/test DEPS"
-# echo ""
-
-# cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
-# npm install
-# echo ""
-# ls
-# echo ""
-
-# cd $BASE_DIR/../client-frameworks-support/testing-utilities/test/node_modules/@luigi-project/client
-# echo ""
-# ls
-# echo ""
-
 cd $BASE_DIR/../client-frameworks-support/testing-utilities
 
+echo ""
+echo "Bundle testing-utilities"
+echo ""
 npm run bundle
 
 cd ..
 
+echo ""
+echo "Bootstrap packages"
+echo ""
 lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope luigi-mock-module-test-mf
 lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope @luigi-project/testing-utilities
 
@@ -84,6 +65,3 @@ PORT=8181
 runApp $PORT
 npm run e2e:run
 killWebserver $PORT
-# (set -e && waitForWebServer 8080) & (npm start)
-
-echo "Exiting script with 0.................."

@@ -3,8 +3,5 @@
   "dest": "../../dist/client-support-angular",
   "lib": {
     "entryFile": "src/public-api.ts"
-  },
-  "whitelistedNonPeerDependencies": [
-    "@luigi-project/testing-utilities"
-  ]
+  }
 }
