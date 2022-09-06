@@ -64,8 +64,7 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [
     LuigiContextService,
-    LuigiAutoNavigationService,
-    Window
+    LuigiAutoNavigationService
   ],
   bootstrap: [AppComponent]
 })
