@@ -19,7 +19,7 @@ waitForWebServer() {
   echo "Killing the webserver.................."
   # killWebserver $PORT
   echo "Exiting script with 0.................."
-  exit $?
+  break
 }
 
 echo ""
