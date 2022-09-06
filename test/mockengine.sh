@@ -17,9 +17,9 @@ waitForWebServer() {
 
   npm run e2e:run
   echo "Killing the webserver.................."
-  killWebserver $PORT
+  # killWebserver $PORT
   echo "Exiting script with 0.................."
-  exit 0
+  # exit 0
 }
 
 echo ""
