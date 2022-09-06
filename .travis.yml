@@ -118,22 +118,6 @@ jobs:
         - bash ./test/mockengine.sh  
       addons:
         apt:
-          packages:
-            # Ubuntu 16+ does not install this dependency by default, so we need to install it ourselves
-            - libgconf-2-4
-            #- chromium-browser=79.0.3945.130-0ubuntu0.16.04.1 # update also if you upgrade from Xenial
-            # needed dependencies for cypress 5.3.0
-            - libgtk2.0-0
-            - libgtk-3-0
-            - libgbm-dev  
-            - libnotify-dev
-            - libgconf-2-4
-            - libnss3
-            - libxss1
-            - libasound2
-            - libxtst6
-            - xauth
-            - xvfb
         chrome: stable
       before_install:
         # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
