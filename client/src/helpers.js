@@ -121,7 +121,7 @@ class Helpers {
 
   sendPostMessageToLuigiCore(msg) {
     if (this.origin) {
-      // protect against potential postMessage problems, since origin value can be set incorrectly
+      // protect against potential postMessage problems, since origin value may be set incorrectly
       try {
         window.parent.postMessage(msg, this.origin);
       } catch (error) {
