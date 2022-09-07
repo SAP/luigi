@@ -134,7 +134,10 @@
           buttonConfirm: 'Yes',
           buttonDismiss: 'No'
         };
-        LuigiClient.uxManager().showConfirmationModal(modalSettings);
+        LuigiClient.uxManager()
+          .showConfirmationModal(modalSettings)
+          .then(() => {})
+          .catch(e => {});
         break;
 
       case 'loadIndicator':
