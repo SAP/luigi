@@ -551,14 +551,14 @@
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
-                          on:click={(event) => {
+                          on:click={event => {
                             NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                               event
                             ) && handleClick(node);
                           }}
                           tabindex="0"
                           on:keyup={!addNavHrefForAnchor
-                            ? (event) => handleEnterPressed(event, node)
+                            ? event => handleEnterPressed(event, node)
                             : undefined}
                           role={!addNavHrefForAnchor ? 'button' : undefined}
                           data-testid={getTestId(node)}
@@ -590,7 +590,6 @@
                           <span class="fd-nested-list__title"
                             >{$getTranslation(node.label)}
                             <StatusBadge {node} />
-                            >
                             {#if node.externalLink && node.externalLink.url}
                               <i
                                 class="fd-nested-list__icon sap-icon sap-icon--action"
@@ -606,7 +605,7 @@
                     {/if}
                   {/if}
                 {/each}
-              {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
+              {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
                   <li
@@ -630,7 +629,7 @@
                           : ''}"
                         tabindex={isExpanded ? '0' : '-1'}
                         on:keyup={!addNavHrefForAnchor
-                          ? (event) => handleEnterPressed(event, node)
+                          ? event => handleEnterPressed(event, node)
                           : undefined}
                         role={!addNavHrefForAnchor ? 'button' : undefined}
                         id="collapsible_listnode_{index}"
@@ -705,13 +704,13 @@
                                 selectedNode
                                   ? 'is-selected'
                                   : ''}"
-                                on:click={(event) => {
+                                on:click={event => {
                                   NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                                     event
                                   ) && handleClick(node);
                                 }}
                                 on:keyup={!addNavHrefForAnchor
-                                  ? (event) => handleEnterPressed(event, node)
+                                  ? event => handleEnterPressed(event, node)
                                   : undefined}
                                 role={!addNavHrefForAnchor
                                   ? 'button'
@@ -759,13 +758,13 @@
                                         ? 'is-selected'
                                         : ''}"
                                       tabindex="0"
-                                      on:click={(event) => {
+                                      on:click={event => {
                                         NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                                           event
                                         ) && handleClick(node);
                                       }}
                                       on:keyup={!addNavHrefForAnchor
-                                        ? (event) =>
+                                        ? event =>
                                             handleEnterPressed(event, node)
                                         : undefined}
                                       role={!addNavHrefForAnchor
@@ -843,13 +842,13 @@
                             class="fd-nested-list__link {node === selectedNode
                               ? 'is-selected'
                               : ''}"
-                            on:click={(event) => {
+                            on:click={event => {
                               NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                                 event
                               ) && handleClick(node);
                             }}
                             on:keyup={!addNavHrefForAnchor
-                              ? (event) => handleEnterPressed(event, node)
+                              ? event => handleEnterPressed(event, node)
                               : undefined}
                             role={!addNavHrefForAnchor ? 'button' : undefined}
                             data-testid={getTestId(node)}
