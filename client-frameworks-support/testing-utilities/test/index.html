@@ -79,10 +79,6 @@
     'uxbutton4'
   ];
 
-  //Set target origin for client
-  //TODO: Check why this is required in a mock environment
-  window.LuigiClient.setTargetOrigin('*');
-
   //Attach post message hook from MockModule
   initPostMessageMthd();
   const callMockModule = () => {

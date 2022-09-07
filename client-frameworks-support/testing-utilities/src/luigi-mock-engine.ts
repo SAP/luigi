@@ -24,6 +24,11 @@ export class LuigiMockEngine {
           return;
         }
 
+        // mock target origin
+        if ((window as any).LuigiClient) {
+          (window as any).LuigiClient.setTargetOrigin('*');
+        }
+
         (window as any).luigiMockEnvironment = {
           msgListener: function(e: any) {
             if (e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage')) {
