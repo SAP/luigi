@@ -31,12 +31,7 @@
               },
               {
                 "glob": "**",
-                "input": "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_base_fiori/fonts",
-                "output": "/fonts"
-              },
-              {
-                "glob": "**",
-                "input": "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/sap_fiori_3/fonts/",
+                "input": "node_modules/@sap-theming/theming-base-content/content/Base/baseLib/baseTheme/fonts",
                 "output": "/fonts"
               },
               {
