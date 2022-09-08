@@ -1,11 +1,5 @@
 const template = document.createElement('template');
 template.innerHTML = `
-
-<!DOCTYPE html>
-<html lang="EN">
-<head>
-    <meta charset="utf-8">
-    <title>Editable List | Web Components</title>
     <style>
       .editable-list {
           color: #2b2b2b;
@@ -16,21 +10,17 @@ template.innerHTML = `
       }
 
     </style>
-</head>
-<body>
-      <editable-list
-          title="Editable List"
-          list-item-0="First item on the list"
-          list-item-1="Second item on the list"
-          list-item-2="Third item on the list"
-          list-item-3="Fourth item on the list"
-          list-item-4="Fifth item on the list"
-          listItem="This will not appear"
-          add-item-text="Add new list item:"
-      >
-      </editable-list>
-</body>
-</html>
+    <editable-list
+        title="Editable List"
+        list-item-0="First item on the list"
+        list-item-1="Second item on the list"
+        list-item-2="Third item on the list"
+        list-item-3="Fourth item on the list"
+        list-item-4="Fifth item on the list"
+        listItem="This will not appear"
+        add-item-text="Add new list item:"
+    >
+    </editable-list>
 `;
 
 

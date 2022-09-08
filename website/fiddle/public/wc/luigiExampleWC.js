@@ -4,36 +4,12 @@ import "./f_input.js";
 
 const template = document.createElement('template');
 template.innerHTML = `
+      <style>
+        .fd-page{
+          padding: 20px;
+        }
+      </style>
 
-<!DOCTYPE html>
-<html lang="EN">
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <link href="//unpkg.com/fundamental-styles@latest/dist/fundamental-styles.css" rel="stylesheet">
-    
-    <style>
-      .fd-page{
-        padding: 20px;
-      }
-    </style>
-    <script>
-        function toggleElAttrs(id, toggleAttrs) {
-            let ref = document.getElementById(id);
-            if (ref && Array.isArray(toggleAttrs) && toggleAttrs.length){
-                for(var i = 0; i < toggleAttrs.length; i++) {
-                    var val = ref.getAttribute(toggleAttrs[i]);
-                    if(val === 'true') {
-                        setElAttr(id, toggleAttrs[i], 'false');
-                    } else if (val === 'false') {
-                        setElAttr(id, toggleAttrs[i], 'true');
-                    }
-                }
-            }
-       }
-    </script>
-</head>
-<body>
       <main class="fd-page">
         <header>
             <div class="fd-container">
@@ -155,10 +131,7 @@ template.innerHTML = `
             <br />
         </div>
         <footer>
-        </footer>  
-</body>
-</html>
-
+        </footer>
 `;
 
 import EcEvent from "./wcEvent.js";
