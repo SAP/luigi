@@ -33,7 +33,7 @@
     "lodash": "^4.17.21",
     "cli-color": "^2.0.0",
     "diff": "^4.0.2",
-    "documentation": "^11.0.0",
+    "documentation": "^14.0.0",
     "glob-parent": ">=6.0.1",
     "json-schema": ">=0.4.0",
     "nodemon": "^2.0.4",
