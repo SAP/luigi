@@ -116,7 +116,7 @@ setLuigiNpmToken
 if [ "$1" = "cra-release" ]; then
   echo "$PWD"
   checkRequiredFiles  "cra-template/template/public" "index.html" "luigi-config.js"
-  publishPackage "cra-template" "cra-template/template"
+  publishPackage "cra-template" "cra-template"
 else
   # Luigi Client & Core
   prepublishChecks
