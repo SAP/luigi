@@ -1,5 +1,5 @@
 {
-  "name": "@luigi-project/cra-template-luigi",
+  "name": "@luigi-project/cra-template-luigi-microfrontend",
   "version": "0.3.0",
   "dependencies": {
     "@luigi-project/client": "^1.24.0",

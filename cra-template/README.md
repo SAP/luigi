@@ -1,4 +1,4 @@
-# cra-template-luigi-experimental
+# @luigi-project/cra-template-luigi-microfrontend (EXPERIMENTAL!!)
 
 The [SAP Luigi](https://luigi-project.io/) template for [Create React App](https://github.com/facebook/create-react-app)
 
@@ -9,9 +9,9 @@ To use this template within your project, add `--template luigi-experimental` wh
 For example:
 
 ```sh
-npx create-react-app my-app --template luigi-experimental
+npx create-react-app my-app --template luigi-microfrontend
 
 # or
 
-yarn create react-app my-app --template luigi-experimental
+yarn create react-app my-app --template luigi-microfrontend
 ```
