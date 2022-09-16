@@ -115,7 +115,7 @@ setLuigiNpmToken
 
 if [ "$1" = "cra-release" ]; then
   cd $BASE_DIR/../cra-template
-  checkRequiredFiles  "template/package.json" "README.md" "template.json" "template/public/luigi-config.js"
+  checkRequiredFiles  "template/public" "index.html" "luigi-config.js"
   publishPackage "cra-template" "cra-template/template"
 else
   # Luigi Client & Core
