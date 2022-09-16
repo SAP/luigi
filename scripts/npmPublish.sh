@@ -114,7 +114,8 @@ setLuigiNpmToken
 
 
 if [ "$1" = "cra-release" ]; then
-  cd $BASE_DIR/../cra-template
+  cd $BASE_DIR/cra-template
+  echo "$PWD"
   checkRequiredFiles  "template/public" "index.html" "luigi-config.js"
   publishPackage "cra-template" "cra-template/template"
 else
