@@ -115,6 +115,7 @@ describe('Luigi client linkManager', () => {
         root.querySelector('button').click();
         cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
         cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from uxManager in Web Component, Language:en');
+        cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles: ft1');
       });
     });
 
