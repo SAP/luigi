@@ -4,14 +4,14 @@ The [SAP Luigi](https://luigi-project.io/) template for [Create React App](https
 
 ## Usage
 
-To use this template within your project, add `--template luigi-experimental` when creating a new app.
+To use this template within your project, add `--template @luigi-project/luigi-microfrontend` when creating a new app.
 
 For example:
 
 ```sh
-npx create-react-app my-app --template luigi-microfrontend
+npx create-react-app my-app --template @luigi-project/luigi-microfrontend
 
 # or
 
-yarn create react-app my-app --template luigi-microfrontend
+yarn create react-app my-app --template @luigi-project/luigi-microfrontend
 ```
