@@ -172,7 +172,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
     
       name: 'Publish CRA template to NPM'
-      # run only when a release in github was created
+      # run only when custom commit message given to Travis
       if: repo = SAP/luigi AND (type = api AND commit_message = publish-cra-luigi)
       script:
         - bash ./scripts/npmPublish.sh cra-release
