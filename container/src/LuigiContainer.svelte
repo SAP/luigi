@@ -73,11 +73,11 @@
 	});
 
 	onDestroy(async () => {
-
+		
 	});
 </script>
 
-<main bind:this={mainComponent}>
+<main bind:this={mainComponent} class={isWebComponent() ? undefined : 'lui-isolated'}>
 	{#if !deferInit}
 		{#if !isWebComponent()}
 			<iframe bind:this={iframeHandle.iframe} src="{viewurl}" title="{label}"></iframe>
@@ -90,5 +90,9 @@
 		width:100%;
 		height: 100%;
 		border: none;
+	}
+
+	main.lui-isolated {
+		line-height: 0;
 	}
 </style>

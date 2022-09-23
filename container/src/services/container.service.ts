@@ -43,7 +43,10 @@ export class ContainerService {
                 target.postMessage({ msg: 'luigi.init', context: targetCnt.context, internal: {} }, '*');
                 break;
               case 'luigi.navigation.open':
-                this.dispatch('navigate', targetCnt, event.data);
+                this.dispatch('navigation-request', targetCnt, event.data.params);
+                break;
+              case 'luigi.ux.alert.show':
+                this.dispatch('alert-request', targetCnt, event.data.params);
                 break;
 
               default:
