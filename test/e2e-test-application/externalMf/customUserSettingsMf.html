@@ -35,7 +35,6 @@
         document.querySelectorAll('.btnList button').forEach(button => {
           button.classList.remove('active');
         });
-        console.log('changeTheming');
         document.querySelector('.' + theme).classList.add('active');
         myUserSettings.theme = theme;
         window.LuigiClient.sendCustomMessage({

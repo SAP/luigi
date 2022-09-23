@@ -9,7 +9,7 @@ class ViewGroupPreloadingClass {
     this.shouldPreload = false;
   }
 
-  preloadViewGroups(batchSize = 3) {
+  preloadViewGroups(batchSize = 3, backgroundMfeOnly) {
     const preloadViewGroupsSetting = LuigiConfig.getConfigValue('navigation.preloadViewGroups');
     if (preloadViewGroupsSetting === false) {
       return;
@@ -29,24 +29,45 @@ class ViewGroupPreloadingClass {
       return;
     }
     const existingVGs = iframes.map(iframe => iframe.vg).filter(Boolean);
-    Object.entries(vgSettings)
+
+    const settingsWithPreload = Object.entries(vgSettings)
       .filter(([name, _]) => !existingVGs.includes(name))
-      .filter(([_, settings]) => settings && settings.preloadUrl)
-      .filter((_, index) => index < batchSize)
-      .forEach(([name, settings]) => {
-        console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
-        const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
-        iframe.style.display = 'none';
-        iframe.luigi.preloading = true;
-        iframeContainer.appendChild(iframe);
+      .filter(([_, settings]) => settings && settings.preloadUrl);
+
+    backgroundMfeOnly &&
+      settingsWithPreload.forEach(([name, settings]) => {
+        if (settings.loadOnStartup) {
+          this.preloadIframeOnBackground(settings, name, iframeContainer);
+        }
       });
+
+    !backgroundMfeOnly &&
+      settingsWithPreload
+        .filter((_, index) => index < batchSize)
+        .forEach(([name, settings]) => {
+          console.debug('preloading view group ' + name + ' - ' + settings.preloadUrl);
+          this.preloadIframeOnBackground(settings, name, iframeContainer);
+        });
   }
 
-  preload() {
+  /**
+   * Loads an iframe on the background by keeping the display to none.
+   * @param {*} settings the viewgroup settings
+   * @param {*} name the property name of the viewgroup
+   * @param {*} iframeContainer the container to attach the iframe to
+   */
+  preloadIframeOnBackground(settings, name, iframeContainer) {
+    const iframe = IframeHelpers.createIframe(settings.preloadUrl, name, null, 'main');
+    iframe.style.display = 'none';
+    iframe.luigi.preloading = true;
+    iframeContainer.appendChild(iframe);
+  }
+
+  preload(backgroundMfeOnly) {
     if (this.shouldPreload) {
       setTimeout(() => {
-        this.preloadViewGroups(this.preloadBatchSize);
-      });
+        this.preloadViewGroups(this.preloadBatchSize, backgroundMfeOnly);
+      }, backgroundMfeOnly);
     }
     this.shouldPreload = true;
   }

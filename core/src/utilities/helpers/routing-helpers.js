@@ -213,10 +213,30 @@ class RoutingHelpersClass {
       : this.buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
   }
 
+  /**
+    * Get context from node
+    @param {Object} node node information
+    @param {Object} ctx context object
+    @returns {Object} context object. e.g. { someValue: 'foo' }
+  */
+  getContext(node, ctx) {
+    if (ctx === undefined || ctx === null) {
+      return this.getContext(node, node.context || {});
+    }
+
+    return node.parent ? { ...this.getContext(node.parent), ...ctx } : ctx;
+  }
+
   getRouteLink(node, pathParams, relativePathPrefix) {
     const pp = relativePathPrefix || '';
     if (node.externalLink && node.externalLink.url) {
-      return node.externalLink;
+      const url = node.externalLink.url;
+      const data = {
+        context: RoutingHelpers.substituteDynamicParamsInObject(this.getContext(node), pathParams),
+        pathParams,
+        nodeParams: {}
+      };
+      return this.substituteViewUrl(url, data);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
       const link = node.link.startsWith('/') ? node.link : Routing.buildFromRelativePath(node);
@@ -227,14 +247,18 @@ class RoutingHelpersClass {
     return pp + GenericHelpers.replaceVars(route, pathParams, ':', false);
   }
 
+  calculateNodeHref(node, pathParams) {
+    const link = RoutingHelpers.getRouteLink(
+      node,
+      pathParams,
+      LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
+    );
+    return this.getI18nViewUrl(link.url) || link;
+  }
+
   getNodeHref(node, pathParams) {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
-      const link = RoutingHelpers.getRouteLink(
-        node,
-        pathParams,
-        LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
-      );
-      return this.getI18nViewUrl(link.url) || link;
+      return this.calculateNodeHref(node, pathParams);
     }
     return undefined;
   }
@@ -324,7 +348,7 @@ class RoutingHelpersClass {
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.nodeParams, nodeParamsVarPrefix);
     viewUrl = this.getI18nViewUrl(viewUrl);
 
-    if (viewUrl.includes(searchQuery)) {
+    if (viewUrl && viewUrl.includes(searchQuery)) {
       const viewUrlSearchParam = viewUrl.split('?')[1];
       if (viewUrlSearchParam) {
         const key = viewUrlSearchParam.split('=')[0];

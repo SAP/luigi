@@ -8,6 +8,7 @@ class Settings {
     subTitle: version || 'unknown',
     favicon: '/assets/favicon-sap.ico',
     responsiveShellbarPaddings: false
+    //disabled:true
   };
   appLoadingIndicator = {
     hideAutomatically: false
