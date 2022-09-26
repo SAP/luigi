@@ -5,10 +5,9 @@
   "scripts": {
     "start": "run-p dev:*",
     "dev:config": "npm run build:config",
-    "dev:luigi": "sirv static/luigi --single --dev --cors --port 4000 --host 0.0.0.0",
     "debug:svelte": "PORT=4001 node --inspect node_modules/svelte/dist/cli.js dev",
     "fetchversions": "curl -H \"Accept: application/vnd.github.v3+json\" https://api.github.com/repos/SAP/luigi/tags?per_page=100 > static/versions.json",
-    "build:config": "npm run fetchversions && node scripts/generate-docu-sitemap.js && vite --config svelte.config.js",
+    "build:config": "npm run fetchversions && node --trace-warnings --experimental-modules --es-module-specifier-resolution=node scripts/generate-docu-sitemap.js && vite --config svelte.config.js --port 4000 --host 0.0.0.0",
     "export:svelte": "NODE_ENV=production vite export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
     "export:serve": "sirv public --single --dev --cors --port 5000 --host 0.0.0.0",
     "export": "npm run build:config && npm run export:svelte",
