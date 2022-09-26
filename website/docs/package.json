@@ -2,15 +2,14 @@
   "name": "luigi-documentation",
   "description": "Interactive documentation based on svelte3, svelte and luigi",
   "private": true,
-  "type": "module",
   "scripts": {
     "start": "run-p dev:*",
-    "dev:config": "npm run build:config -- --watch",
+    "dev:config": "npm run build:config",
     "dev:luigi": "sirv static/luigi --single --dev --cors --port 4000 --host 0.0.0.0",
     "debug:svelte": "PORT=4001 node --inspect node_modules/svelte/dist/cli.js dev",
     "fetchversions": "curl -H \"Accept: application/vnd.github.v3+json\" https://api.github.com/repos/SAP/luigi/tags?per_page=100 > static/versions.json",
-    "build:config": "npm run fetchversions && node -r esm scripts/generate-docu-sitemap.js && svelte --config svelte.config.js",
-    "export:svelte": "NODE_ENV=production svelte export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
+    "build:config": "npm run fetchversions && node scripts/generate-docu-sitemap.js && vite --config svelte.config.js",
+    "export:svelte": "NODE_ENV=production vite export --basepath /docu-microfrontend && sh ./scripts/move-export.sh",
     "export:serve": "sirv public --single --dev --cors --port 5000 --host 0.0.0.0",
     "export": "npm run build:config && npm run export:svelte",
     "mock:develop-plugins": "NODE_ENV=debug node -r esm scripts/markdown.unified-preview.js",
@@ -22,6 +21,7 @@
     "algoliasearch": "^4.6.0",
     "docsearch.js": "2.6.3"
   },
+  "type": "module",
   "devDependencies": {
     "@agentofuser/rehype-section": "^1.0.5",
     "@babel/core": "^7.4.0",
@@ -55,6 +55,7 @@
     "svelte-preprocess": "^3.2.0",
     "unified": "^8.3.2",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "vite": "^3.1.3"
   }
 }

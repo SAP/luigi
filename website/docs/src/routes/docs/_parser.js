@@ -3,15 +3,6 @@ import { readdirSync, readFileSync } from 'fs';
 import path from 'path';
 
 let parsedDocs;
-export function getParsedDocs() {
-  if (parsedDocs) {
-    return Promise.resolve(JSON.stringify(parsedDocs));
-  }
-  return setParsedDocs().then(docs => {
-    parsedDocs = docs;
-    return Promise.resolve(JSON.stringify(parsedDocs));
-  });
-}
 
 function setParsedDocs() {
   const dirs = ['./../../docs', './../../plugins/auth/public/auth-oauth2', './../../plugins/auth/public/auth-oidc'];
@@ -39,4 +30,14 @@ function setParsedDocs() {
       });
   });
   return Promise.all(parsingArr);
+}
+
+export function getParsedDocs() {
+  if (parsedDocs) {
+    return Promise.resolve(JSON.stringify(parsedDocs));
+  }
+  return setParsedDocs().then(docs => {
+    parsedDocs = docs;
+    return Promise.resolve(JSON.stringify(parsedDocs));
+  });
 }
