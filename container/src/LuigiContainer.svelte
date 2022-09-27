@@ -18,7 +18,13 @@
 	const webcomponentService = new WebComponentService();
 	webcomponentService.createClientAPI = (eventBusElement, nodeId, wc_id) => {
 		return {
-			linkManager: () => {},//window.Luigi.navigation,
+			linkManager: () => {
+				return {
+					navigate: (route) => {
+						dispatchLuigiEvent('navigation-request', { link: route });
+					}
+				}
+			},
 			uxManager: () => { return {
 				showAlert: (alertSettings) => {
 					dispatchLuigiEvent('alert-request', alertSettings);
@@ -73,7 +79,7 @@
 	});
 
 	onDestroy(async () => {
-		
+
 	});
 </script>
 
