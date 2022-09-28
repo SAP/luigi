@@ -1,17 +1,3 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-// TODO: Use MockEngine directly from the package after released
-// import { LuigiMockEngine } from '@luigi-project/testing-utilities';
-
-// @dynamic
-@NgModule({
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: LuigiMockEngine.initPostMessageHook,
-      multi: true
-    }
-  ]
-})
 /*
  * This class mocks Luigi Core related functionality.
  *
@@ -24,6 +10,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
  * global message event of the window object and mocking the callback.
  * In the normal workflow this message would picked up by Luigi Core which then sends the response back.
  */
+
 export class LuigiMockEngine {
   // Add a hook to the post message api to mock the LuigiCore response to the Client
   public static initPostMessageHook() {
