@@ -54,8 +54,6 @@ integration-testing: &integration-testing
     # chrome: beta
     chrome: stable
   before_install:
-    # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-    # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   before_cache:
     - rm -rf ~/.npm/_logs
@@ -104,6 +102,26 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
+
+    # ----- INTEGRATION WITH MOCKENGINE -----
+    - name: 'Run LuigiMockEngine tests'
+      if: NOT (commit_message = test-setup-scripts)
+      script: 
+        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - ls $CYPRESS_CACHE_FOLDER
+        - npm i -g cypress
+        - npm i -g lerna@4.0.0
+        - npm i -g live-server
+        - bash ./test/mockengine.sh  
+      addons:
+        apt:
+        chrome: stable
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
     # ----- Docu & Tests -----
     - stage: 'Documentation & Tests'
