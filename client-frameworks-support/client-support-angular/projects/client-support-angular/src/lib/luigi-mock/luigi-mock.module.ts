@@ -1,5 +1,4 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
-// TODO: Use MockEngine directly from the package after released
 import { LuigiMockEngine } from '@luigi-project/testing-utilities';
 
 // @dynamic
