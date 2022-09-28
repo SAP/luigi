@@ -46,8 +46,7 @@
               }
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/fundamental-styles/dist/fundamental-styles.css"
+              "src/styles.css"
             ],
             "scripts": []
           },
@@ -56,7 +55,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
