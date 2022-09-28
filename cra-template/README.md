@@ -1,4 +1,4 @@
-# @luigi-project/cra-template-luigi-microfrontend (EXPERIMENTAL!!)
+# Luigi Project Create React App Microfrontend Template
 
 The [SAP Luigi](https://luigi-project.io/) template for [Create React App](https://github.com/facebook/create-react-app)
 
