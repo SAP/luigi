@@ -104,7 +104,7 @@ jobs:
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
     # ----- INTEGRATION WITH MOCKENGINE -----
-    - name: 'Run LuigiMockEngine tests'
+    - stage: 'Run LuigiMockEngine tests'
       if: NOT (commit_message = test-setup-scripts)
       script: 
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
