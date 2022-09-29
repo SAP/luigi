@@ -107,39 +107,55 @@ function checkRequiredFiles {
   done
 }
 
-# Luigi Client & Core
+
+
+
 setLuigiNpmToken
-prepublishChecks
 
-checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
-publishPackage "core" "core/public"
 
-checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
-publishPackage "client" "client/public"
+if [ "$1" = "cra-release" ]; then
+  echo "$PWD"
+  checkRequiredFiles  "cra-template/template/public" "index.html" "luigi-config.js"
+  publishPackage "cra-template" "cra-template"
+else
+  # Luigi Client & Core
+  prepublishChecks
+  checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
+  publishPackage "core" "core/public"
 
-checkRequiredFiles "core/public-ie11" "luigi-ie11.js" "luigi-ie11.css" "README.md"
-publishPackage "core" "core/public-ie11"
+  checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
+  publishPackage "client" "client/public"
 
-checkRequiredFiles "client/public-ie11" "luigi-client-ie11.d.ts" "luigi-client-ie11.js" "README.md"
-publishPackage "client" "client/public-ie11"
+  checkRequiredFiles "core/public-ie11" "luigi-ie11.js" "luigi-ie11.css" "README.md"
+  publishPackage "core" "core/public-ie11"
 
-if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
-  checkRequiredFiles "plugins/auth/public/auth-oauth2" "plugin.js" "plugin-ie11.js" "README.md"
-  publishPackage "plugins" "plugins/auth/public/auth-oauth2"
+  checkRequiredFiles "client/public-ie11" "luigi-client-ie11.d.ts" "luigi-client-ie11.js" "README.md"
+  publishPackage "client" "client/public-ie11"
+
+  # Luigi OAuth Plugin
+  if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
+    checkRequiredFiles "plugins/auth/public/auth-oauth2" "plugin.js" "plugin-ie11.js" "README.md"
+    publishPackage "plugins" "plugins/auth/public/auth-oauth2"
+  fi
+
+  # Luigi Oidc Plugin
+  if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
+    checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "README.md"
+    publishPackage "plugins" "plugins/auth/public/auth-oidc"
+  fi
+
+  # Luigi Client Support Anguar
+  if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
+    checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"
+    publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
+  fi
+
+  # Luigi Testing Utilities
+  if ( prepublishCheck "client-frameworks-support/testing-utilities/dist"); then
+    checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
+    publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
+  fi
 fi
-if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
-  checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "README.md"
-  publishPackage "plugins" "plugins/auth/public/auth-oidc"
-fi
 
-if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
-  checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"
-  publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
-fi
-
-if ( prepublishCheck "client-frameworks-support/testing-utilities/dist"); then
-  checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
-  publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
-fi
 
 removeNpmToken
