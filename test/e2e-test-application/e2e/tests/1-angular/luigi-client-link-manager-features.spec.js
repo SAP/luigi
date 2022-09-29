@@ -118,6 +118,22 @@ describe('Luigi client linkManager', () => {
       });
     });
 
+    it('should be able to list active featureToggles from WC "API"', localRetries, () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.goToLinkManagerMethods($iframeBody);
+      // open webcomponent in splitview
+      cy.wrap($iframeBody)
+        .contains('Open webcomponent in splitView')
+        .click();
+      cy.get('.iframeSplitViewCnt>').then(container => {
+        const root = container.children().prevObject[0].shadowRoot;
+        const wcContent = root.querySelector('p').innerText;
+        expect(wcContent).to.equal('Hello WebComponent!');
+        root.querySelector('button').click();
+        cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles: ft1');
+      });
+    });
+
     it('navigate with intent', localRetries, () => {
       // navigate with intent
       cy.wrap($iframeBody)
