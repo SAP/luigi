@@ -1,23 +1,16 @@
-import "./f_selectbox.js";
-import "./f_busy.js";
-import "./f_input.js";
+import './f_selectbox.js';
+import './f_busy.js';
+import './f_input.js';
 
 const template = document.createElement('template');
 template.innerHTML = `
+      <style>
+        .fd-page{
+          padding: 20px;
+        }
+      </style>
 
-<!DOCTYPE html>
-<html lang="EN">
-<head>
-    <meta charset="utf-8">
-    <title></title>
-    <link href="//unpkg.com/fundamental-styles@latest/dist/fundamental-styles.css" rel="stylesheet">
-    
-    <style>
-      .fd-page{
-        padding: 20px;
-      }
-    </style>
-    <script>
+      <script>
         function toggleElAttrs(id, toggleAttrs) {
             let ref = document.getElementById(id);
             if (ref && Array.isArray(toggleAttrs) && toggleAttrs.length){
@@ -30,10 +23,9 @@ template.innerHTML = `
                     }
                 }
             }
-       }
-    </script>
-</head>
-<body>
+        }
+      </script>
+
       <main class="fd-page">
         <header>
             <div class="fd-container">
@@ -155,13 +147,10 @@ template.innerHTML = `
             <br />
         </div>
         <footer>
-        </footer>  
-</body>
-</html>
-
+        </footer>
 `;
 
-import EcEvent from "./wcEvent.js";
+import EcEvent from './wcEvent.js';
 
 export default class luigiExampleWC extends HTMLElement {
   constructor() {
@@ -171,71 +160,83 @@ export default class luigiExampleWC extends HTMLElement {
     this.addClickButtonBusy();
     this.addConfirmationModal();
 
-    this.addClickNavButton('#bOpenDialog', 'dialogUrl', url =>{
-      this.LuigiClient.linkManager().openAsModal(url, {title:'Example Dialog', size:'l'});
+    this.addClickNavButton('#bOpenDialog', 'dialogUrl', url => {
+      this.LuigiClient.linkManager().openAsModal(url, { title: 'Example Dialog', size: 'l' });
     });
-    this.addClickNavButton('#bSplitDialog', 'splitUrl', url =>{
-      this.LuigiClient.linkManager().openAsSplitView(url, {title:'Example Dialog', size:'40'});
+    this.addClickNavButton('#bSplitDialog', 'splitUrl', url => {
+      this.LuigiClient.linkManager().openAsSplitView(url, { title: 'Example Dialog', size: '40' });
     });
-    this.addClickNavButton('#bNavigation', 'navigationUrl', url =>{
+    this.addClickNavButton('#bNavigation', 'navigationUrl', url => {
       Luigi.navigation().navigate(url);
     });
-    this.addClickNavButton('#bDrawer', 'drawerUrl', url =>{
-      this.LuigiClient.linkManager().openAsDrawer(url, {header:true, backdrop:true, size:'s'});
+    this.addClickNavButton('#bDrawer', 'drawerUrl', url => {
+      this.LuigiClient.linkManager().openAsDrawer(url, { header: true, backdrop: true, size: 's' });
     });
 
     EcEvent.removeAllListeners();
-    EcEvent.register("alertBox",  this.showAlert.bind(this));
-    EcEvent.register("dialogUrl",  event => this.dialogUrl = event.detail);
-    EcEvent.register("splitUrl",  event => this.splitUrl = event.detail);
-    EcEvent.register("drawerUrl",  event => this.drawerUrl = event.detail);
-    EcEvent.register("navigationUrl",  event => this.navigationUrl = event.detail);
+    EcEvent.register('alertBox', this.showAlert.bind(this));
+    EcEvent.register('dialogUrl', event => (this.dialogUrl = event.detail));
+    EcEvent.register('splitUrl', event => (this.splitUrl = event.detail));
+    EcEvent.register('drawerUrl', event => (this.drawerUrl = event.detail));
+    EcEvent.register('navigationUrl', event => (this.navigationUrl = event.detail));
   }
 
-  addConfirmationModal(){
+  addConfirmationModal() {
     const button = this.shadowRoot.querySelector('#bConModal');
-    button.addEventListener('click', (event) => {
+    button.addEventListener('click', event => {
       this.LuigiClient.uxManager().showConfirmationModal({
-        header: "Confirmation",
-        body: "Are you sure you want to do this?",
-        buttonConfirm: "Yes",
-        buttonDismiss: "No"
+        header: 'Confirmation',
+        body: 'Are you sure you want to do this?',
+        buttonConfirm: 'Yes',
+        buttonDismiss: 'No'
       });
       event.stopPropagation();
     });
   }
 
-  addClickNavButton(selector, valueToCheck, clickFn){
+  addClickNavButton(selector, valueToCheck, clickFn) {
     const button = this.shadowRoot.querySelector(selector);
-    button.addEventListener('click', (event) => {
-      if (!this[valueToCheck] || this[valueToCheck].length === 0){
-        this.LuigiClient.uxManager().showAlert({
-          text: 'Please insert an ulr in the input element',
-          type: 'error'
-        });
-        return;
-      }
+    button.addEventListener(
+      'click',
+      event => {
+        if (!this[valueToCheck] || this[valueToCheck].length === 0) {
+          this.LuigiClient.uxManager().showAlert({
+            text: 'Please insert an ulr in the input element',
+            type: 'error'
+          });
+          return;
+        }
 
-      clickFn(this[valueToCheck]);
-      event.stopPropagation();
-    }, false);
+        clickFn(this[valueToCheck]);
+        event.stopPropagation();
+      },
+      false
+    );
   }
 
-  addClickButtonBusy(){
+  addClickButtonBusy() {
     this.bHideBusy = this.shadowRoot.querySelector('#bHideBusy');
     this.bShowBusy = this.shadowRoot.querySelector('#bShowBusy');
     this.bShowBusy.style.display = 'none';
-    this.bHideBusy.addEventListener('click', (event) => {
-      this.toggleBusy('busyIndicatorExample', false);
-      event.stopPropagation();
-    }, false);
-    this.bShowBusy.addEventListener('click', (event) => {
-      this.toggleBusy('busyIndicatorExample', true);
-      event.stopPropagation();
-    }, false);
+    this.bHideBusy.addEventListener(
+      'click',
+      event => {
+        this.toggleBusy('busyIndicatorExample', false);
+        event.stopPropagation();
+      },
+      false
+    );
+    this.bShowBusy.addEventListener(
+      'click',
+      event => {
+        this.toggleBusy('busyIndicatorExample', true);
+        event.stopPropagation();
+      },
+      false
+    );
   }
 
-  showAlert(event){
+  showAlert(event) {
     let alertType = event.detail;
     if (this.LuigiClient) {
       this.LuigiClient.uxManager().showAlert({
@@ -246,7 +247,7 @@ export default class luigiExampleWC extends HTMLElement {
     event.stopPropagation();
   }
 
-  toggleBusy(id, show){
+  toggleBusy(id, show) {
     EcEvent.fire(id, show);
     const showButtonStyle = show ? 'none' : 'block';
     const hideButtonStyle = show ? 'block' : 'none';
@@ -256,4 +257,3 @@ export default class luigiExampleWC extends HTMLElement {
     this.showBusy = show;
   }
 }
-

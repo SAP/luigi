@@ -1,0 +1,9 @@
+{
+  "integrationFolder": "e2e/0-luigimockengine",
+  "experimentalSourceRewriting": true,
+  "pluginsFile": false,
+  "chromeWebSecurity": false,
+  "viewportWidth": 1250,
+  "viewportHeight": 790,
+  "baseUrl": "http://localhost:8181/"
+}
