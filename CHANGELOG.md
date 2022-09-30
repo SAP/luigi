@@ -25,6 +25,26 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.25.0] (2022-09-30)
+
+#### :rocket: Added
+* [#2908](https://github.com/SAP/luigi/pull/2908) Ignore events from inactive iframes ([@hardl](https://github.com/hardl))
+* [#2893](https://github.com/SAP/luigi/pull/2893) Add getActiveFeatureToggles in Luigi WC ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2900](https://github.com/SAP/luigi/pull/2900) CRA Luigi Template ([@ndricimrr](https://github.com/ndricimrr))
+* [#2878](https://github.com/SAP/luigi/pull/2878) Implement tests by using luigi mock module ([@viktorsperling](https://github.com/viktorsperling))
+* [#2858](https://github.com/SAP/luigi/pull/2858) Add Viewgroup Background Option ([@ndricimrr](https://github.com/ndricimrr))
+* [#2873](https://github.com/SAP/luigi/pull/2873) Hide top navigation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2861](https://github.com/SAP/luigi/pull/2861) Introduce js-test-application for e2e tests ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2808](https://github.com/SAP/luigi/pull/2808) Remove javascript void from nav href ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :bug: Fixed
+* [#2838](https://github.com/SAP/luigi/pull/2838) Fix sessionStorage not working ([@hardl](https://github.com/hardl))
+* [#2850](https://github.com/SAP/luigi/pull/2850) Fix preload url routing ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2827](https://github.com/SAP/luigi/pull/2827) Fix mkdocs.yml file ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
+
+
 ## [v1.24.0] (2022-07-15)
 
 #### :rocket: Added
@@ -1422,3 +1442,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.23.0]: https://github.com/SAP/luigi/compare/v1.22.0...v1.23.0
 [v1.23.1]: https://github.com/SAP/luigi/compare/v1.23.0...v1.23.1
 [v1.24.0]: https://github.com/SAP/luigi/compare/v1.23.1...v1.24.0
+[v1.25.0]: https://github.com/SAP/luigi/compare/v1.24.0...v1.25.0
