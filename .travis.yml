@@ -90,6 +90,7 @@ jobs:
         # WORKAROUND - END
         # Make sure client is build first, required for client-support-angular
         - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
+        # Make sure testing-utilities is build first, required for client-support-angular
         - lerna run bundle --ignore docs --scope @luigi-project/testing-utilities || travis_terminate 1
         # Actual build
         - lerna run bundle --ignore docs || travis_terminate 1
