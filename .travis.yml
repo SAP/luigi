@@ -74,8 +74,10 @@ jobs:
         - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
         - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
+        # Link client-support-angular manually
         - mkdir -p $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/
         - rm -rf $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/*
+        - ln -s $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/testing-utilities
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/client
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
@@ -104,8 +106,8 @@ jobs:
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
     # ----- INTEGRATION WITH MOCKENGINE -----
-    - name: 'Run LuigiMockEngine tests'
-      if: NOT (commit_message = test-setup-scripts)
+    - stage: 'Run LuigiMockEngine tests'
+      if: NOT (commit_message = test-setup-scripts) AND NOT (commit_message = publish)
       script: 
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - ls $CYPRESS_CACHE_FOLDER
@@ -189,7 +191,7 @@ jobs:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
     
-      name: 'Publish CRA template to NPM'
+    - name: 'Publish CRA template to NPM'
       # run only when custom commit message given to Travis
       if: repo = SAP/luigi AND (type = api AND commit_message = publish-cra-luigi)
       script:
