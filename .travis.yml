@@ -123,7 +123,7 @@ jobs:
         - rm -rf ~/.npm/_cacache
         - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
 
-    # ----- NPM PUBLISH -----
+    # ----- Docu & Tests -----
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
@@ -188,6 +188,16 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+    
+      name: 'Publish CRA template to NPM'
+      # run only when custom commit message given to Travis
+      if: repo = SAP/luigi AND (type = api AND commit_message = publish-cra-luigi)
+      script:
+        - bash ./scripts/npmPublish.sh cra-release
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+    
 
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Test Setup Scripts'
