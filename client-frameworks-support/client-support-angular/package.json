@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
     "@luigi-project/client": "1.21.0",
-    "@luigi-project/testing-utilities": "1.24.1-dev.202209291745",
+    "@luigi-project/testing-utilities": "1.24.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
