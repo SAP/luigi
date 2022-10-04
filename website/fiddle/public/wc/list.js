@@ -23,7 +23,6 @@ template.innerHTML = `
     </editable-list>
 `;
 
-
 export default class ListWC extends HTMLElement {
   constructor() {
     super();
@@ -70,12 +69,16 @@ export default class ListWC extends HTMLElement {
         </style>
         <h3>${title}</h3>
         <ul class="item-list">
-          ${listItems.map(item => `
+          ${listItems
+            .map(
+              item => `
             <li class="item-list-element">
               <button class="editable-list-remove-item icon">&ominus;</button>
               ${item}
             </li>
-          `).join('')}
+          `
+            )
+            .join('')}
         </ul>
         <div class="item-list-element">
           <label >${addItemText}</label>
@@ -100,7 +103,7 @@ export default class ListWC extends HTMLElement {
     if (textInput.value) {
       const li = document.createElement('li');
       li.classList.add('item-list-element');
-      li.innerHTML = '<button class="editable-list-remove-item icon">&ominus;</button>'+this.escape(textInput.value);
+      li.innerHTML = '<button class="editable-list-remove-item icon">&ominus;</button>' + this.escape(textInput.value);
       let button = li.querySelector('button');
       this.itemList.appendChild(li);
       this.handleRemoveItemListeners([button]);
@@ -131,11 +134,9 @@ export default class ListWC extends HTMLElement {
     addElementButton.addEventListener('click', this.addListItem, false);
   }
 
-
   get title() {
     return this.$editable_list.getAttribute('title') || '';
   }
-
 
   get addItemText() {
     return this.$editable_list.getAttribute('add-item-text') || '';
@@ -162,5 +163,4 @@ export default class ListWC extends HTMLElement {
   removeListItem(e) {
     e.target.parentNode.remove();
   }
-
 }
