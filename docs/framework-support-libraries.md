@@ -44,7 +44,8 @@ imports: [
 These are the main features provided by the library:
 * [LuigiContextService](#LuigiContextService)
 * [LuigiAutoRoutingService](#LuigiAutoRoutingService)
-  * [Preload component](#preload-component-example) - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings).
+  * Preload component - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings).
+  * [Angular routing example](#angular-routing-example) 
   * [LuigiRouteStrategy](#LuigiRouteStrategy)
   * [AutoRouting for modals](#autorouting-for-modals)
 * [LuigiMockModule](#LuigiMockModule) - an Angular module that listens to Luigi Client calls and messages and sends a mocked response back. See also [LuigiMockUtil](https://docs.luigi-project.io/docs/framework-support-libraries/?section=luigi-testing-utilities). 
@@ -83,7 +84,7 @@ This service cannot be used directly, but it will provide useful features on how
 It can happen that in your micro frontend, user can navigate through different components/pages.
 With this feature, we provide an easy way of synchronizing Angular route with Luigi navigation. In the Angular route configuration, you can now add in data these attributes:
 
-#### Preload component example
+### Angular routing example
 
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}

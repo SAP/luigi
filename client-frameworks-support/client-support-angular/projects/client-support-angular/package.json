@@ -9,7 +9,8 @@
   "peerDependencies": {
     "@angular/common": "^11.0.0 || ^12.0.0 || ^13.0.0",
     "@angular/core": "^11.0.0 || ^12.0.0 || ^13.0.0",
-    "@luigi-project/client": "^1.18.1"
+    "@luigi-project/client": "^1.25.0",
+    "@luigi-project/testing-utilities": "^1.25.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
@@ -18,7 +19,8 @@
     "tag": "client-support-angular"
   },
   "devDependencies": {
-    "@luigi-project/client": "^1.5.0"
+    "@luigi-project/client": "^1.25.0",
+    "@luigi-project/testing-utilities": "^1.25.0"
   },
-  "version": "1.24.0"
+  "version": "1.25.0"
 }
