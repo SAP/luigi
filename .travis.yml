@@ -54,8 +54,6 @@ integration-testing: &integration-testing
     # chrome: beta
     chrome: stable
   before_install:
-    # - chromium-browser --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-    # - google-chrome-beta --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
     - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   before_cache:
     - rm -rf ~/.npm/_logs
@@ -76,8 +74,10 @@ jobs:
         - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
         - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
+        # Link client-support-angular manually
         - mkdir -p $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/
         - rm -rf $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/*
+        - ln -s $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/testing-utilities
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/client
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
@@ -90,6 +90,8 @@ jobs:
         # WORKAROUND - END
         # Make sure client is build first, required for client-support-angular
         - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
+        # Make sure testing-utilities is build first, required for client-support-angular
+        - lerna run bundle --ignore docs --scope @luigi-project/testing-utilities || travis_terminate 1
         # Actual build
         - lerna run bundle --ignore docs || travis_terminate 1
         - lerna run bundlesizeOnly --ignore docs || travis_terminate 1
@@ -105,7 +107,27 @@ jobs:
         - rm -rf ~/.npm/_cacache
         - rm -rf $TRAVIS_BUILD_DIR/core/examples
 
-    # ----- NPM PUBLISH -----
+    # ----- INTEGRATION WITH MOCKENGINE -----
+    - stage: 'Run LuigiMockEngine tests'
+      if: NOT (commit_message = test-setup-scripts) AND NOT (commit_message = publish)
+      script: 
+        - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
+        - ls $CYPRESS_CACHE_FOLDER
+        - npm i -g cypress
+        - npm i -g lerna@4.0.0
+        - npm i -g live-server
+        - bash ./test/mockengine.sh  
+      addons:
+        apt:
+        chrome: stable
+      before_install:
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+        - rm -rf ~/.cache/Cypress/cy/production/browsers #it is individual for each run anyway so caching it slows down the job
+
+    # ----- Docu & Tests -----
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
@@ -170,6 +192,16 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+    
+    - name: 'Publish CRA template to NPM'
+      # run only when custom commit message given to Travis
+      if: repo = SAP/luigi AND (type = api AND commit_message = publish-cra-luigi)
+      script:
+        - bash ./scripts/npmPublish.sh cra-release
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+    
 
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Test Setup Scripts'

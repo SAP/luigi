@@ -1,16 +1,16 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { LuigiMockEngine } from '@luigi-project/testing-utilities';
 
 // @dynamic
 @NgModule({
   providers: [
     {
       provide: APP_INITIALIZER,
-      useFactory: LuigiMockModule.initPostMessageHook,
+      useFactory: LuigiMockEngine.initPostMessageHook,
       multi: true
     }
   ]
 })
-
 /*
  * This class mocks Luigi Core related functionality.
  *
@@ -36,6 +36,11 @@ export class LuigiMockModule {
           return;
         }
 
+        // mock target origin
+        if ((window as any).LuigiClient) {
+          (window as any).LuigiClient.setTargetOrigin('*');
+        }
+
         (window as any).luigiMockEnvironment = {
           msgListener: function(e: any) {
             if (e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage')) {
@@ -56,7 +61,7 @@ export class LuigiMockModule {
               }
 
               // vizualise retrieved event data
-              LuigiMockModule.visualize(JSON.stringify(e.data));
+              LuigiMockEngine.visualize(JSON.stringify(e.data));
 
               // Check and run mocked callback if it exists
               const mockListener = (window as any).luigiMockEnvironment.mockListeners[e.data.msg];

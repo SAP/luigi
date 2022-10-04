@@ -1,0 +1,17 @@
+{
+  "name": "luigi-mock-module-test-mf",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "scripts": {
+    "test": "cypress open --env configFile=e2emockengine",
+    "e2e:run": "cypress run --env configFile=e2emockengine --browser chrome -c video=false",
+    "start": "live-server --port=8181 --entry-file=index.html  --mount=./node_modules:/node_modules"
+  },
+  "dependencies": {
+    "@luigi-project/client": "^1.1.0",
+    "@luigi-project/testing-utilities": "^1.1.0",
+    "cypress": "^10.6.0",
+    "fundamental-styles": "^0.10.0"
+  }
+}
