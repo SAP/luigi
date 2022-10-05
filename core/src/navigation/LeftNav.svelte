@@ -589,17 +589,18 @@
                           {/if}
                           <span class="fd-nested-list__title"
                             >{$getTranslation(node.label)}
-                            <StatusBadge {node} />
-                            {#if node.externalLink && node.externalLink.url}
-                              <i
-                                class="fd-nested-list__icon sap-icon sap-icon--action"
-                                role="presentation"
-                              />
-                            {/if}
+                            <StatusBadge {node} />                            
                             {#if node.badgeCounter}
                               <BadgeCounter {node} />
                             {/if}
-                          </span></a
+                          </span>
+                          {#if node.externalLink && node.externalLink.url}
+                          <i
+                            class="fd-nested-list__icon sap-icon sap-icon--action"
+                            role="presentation"
+                          />
+                          {/if}
+                          </a
                         >
                       </li>
                     {/if}
