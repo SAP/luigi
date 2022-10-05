@@ -600,8 +600,7 @@
                             role="presentation"
                           />
                           {/if}
-                          </a
-                        >
+                        </a>
                       </li>
                     {/if}
                   {/if}
