@@ -17,9 +17,7 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   //console.log(config) // see what all is in here!
-  let customConfigFile = getConfigurationFileByEnvName(
-    `${config.env.configFile}.json`
-  );
+  let customConfigFile = getConfigurationFileByEnvName(`${config.env.configFile}.json`);
   return customConfigFile;
 };
 

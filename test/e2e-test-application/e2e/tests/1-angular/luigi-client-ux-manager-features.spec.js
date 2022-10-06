@@ -145,7 +145,7 @@ describe('Luigi Client ux manager features', () => {
       it("shouldn't proceed when 'No' was pressed in modal", () => {
         cy.wrap($iframeBody)
           .find('[data-testid=toggle-dirty-state]')
-          .click();
+          .click({force: true});
 
         cy.goToProjectsPage();
 
@@ -163,7 +163,7 @@ describe('Luigi Client ux manager features', () => {
       it("should proceed when 'Yes' was pressed in modal", () => {
         cy.wrap($iframeBody)
           .find('[data-testid=toggle-dirty-state]')
-          .click();
+          .click({force: true});
 
         cy.goToProjectsPage();
 
