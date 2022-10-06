@@ -722,14 +722,16 @@
                                   $getTranslation(node.label)
                                 )}
                               >
-                                <span class="fd-nested-list__title"
-                                  >{$getTranslation(node.label)}</span
-                                >
+                                <span class="fd-nested-list__title">
+                                  {$getTranslation(node.label)}
+                                  {#if node.badgeCounter}
+                                    <BadgeCounter {node} />
+                                  {/if}
+                                  <StatusBadge {node} />
+                                </span>                                
+                                
                                 {#if node.externalLink && node.externalLink.url}
                                   <i class="sap-icon--action" />
-                                {/if}
-                                {#if node.badgeCounter}
-                                  <BadgeCounter {node} />
                                 {/if}
                               </a>
                             </li>
@@ -779,6 +781,7 @@
                                       <span class="fd-nested-list__title"
                                         >{$getTranslation(node.label)}</span
                                       >
+                                      <StatusBadge {node} />
                                       {#if node.externalLink && node.externalLink.url}
                                         <i class="sap-icon--action" />
                                       {/if}
