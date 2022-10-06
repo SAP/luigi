@@ -588,11 +588,11 @@
                             />
                           {/if}
                           <span class="fd-nested-list__title"
-                            >{$getTranslation(node.label)}
-                            <StatusBadge {node} />                            
+                            >{$getTranslation(node.label)}                     
                             {#if node.badgeCounter}
                               <BadgeCounter {node} />
                             {/if}
+                            <StatusBadge {node} />
                           </span>
                           {#if node.externalLink && node.externalLink.url}
                           <i
