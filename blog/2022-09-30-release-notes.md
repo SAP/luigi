@@ -12,7 +12,7 @@ You can read about the new features in Luigi v1.25.0 in the release notes below.
 
 #### Ignore events from inactive iframes
 
-With the changes made in Luigi v1.25, events will no longer be triggered when an iframe micro frontend is not active. For reference, see the [pull request](https://github.com/SAP/luigi/pull/2908).
+With the changes made in Luigi v1.25, you will have the configurable option to no longer trigger events when an iframe micro frontend is not active. For reference, see the [pull request](https://github.com/SAP/luigi/pull/2908).
 
 #### getActiveFeatureToggles in Luigi Web Components
 
