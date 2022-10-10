@@ -1294,8 +1294,8 @@ describe('Routing', function() {
         .withArgs('routing.skipRoutingForUrlPatterns')
         .returns(['foo_bar']);
       global.location = {
-          href: 'http://some.url.de?foo_bar'
-        };
+        href: 'http://some.url.de?foo_bar'
+      };
       const actual = Routing.shouldSkipRoutingForUrlPatterns();
       const expect = true;
 

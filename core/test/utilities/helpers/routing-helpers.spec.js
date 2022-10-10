@@ -353,7 +353,7 @@ describe('Routing-helpers', () => {
     const node = {
       context,
       externalLink: { url: 'https://someurl.com', sameWindow: false },
-      label: "External link"
+      label: 'External link'
     };
     it('get context from node', () => {
       assert.deepEqual(RoutingHelpers.getContext(node, undefined), context);
@@ -457,9 +457,9 @@ describe('Routing-helpers', () => {
       };
       sinon.stub(RoutingHelpers, 'getRouteLink');
       sinon
-      .stub(LuigiConfig, 'getConfigValue')
-      .withArgs('routing.useHashRouting')
-      .returns(false);
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.useHashRouting')
+        .returns(false);
     });
     afterEach(() => {
       sinon.restore();
@@ -472,7 +472,7 @@ describe('Routing-helpers', () => {
         pathSegment: 'something-else'
       };
       RoutingHelpers.getRouteLink.returns({ url });
-      expect(RoutingHelpers.calculateNodeHref(node , {})).to.equal('https://luigi-project.io');
+      expect(RoutingHelpers.calculateNodeHref(node, {})).to.equal('https://luigi-project.io');
     });
   });
   describe('getNodeHref', () => {
