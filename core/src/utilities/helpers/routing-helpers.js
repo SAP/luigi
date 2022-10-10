@@ -1,13 +1,7 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
-import {
-  AsyncHelpers,
-  EscapingHelpers,
-  EventListenerHelpers,
-  GenericHelpers,
-  IframeHelpers,
-} from './';
+import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers, IframeHelpers } from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
@@ -620,7 +614,8 @@ class RoutingHelpersClass {
     for (const [key, value] of Object.entries(params)) {
       const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
 
-      searchParams.set(paramKey, value);
+      console.log('Is used twice.');
+      searchParams.set(paramKey, encodeURIComponent(value));
       if (value === undefined) {
         searchParams.delete(paramKey);
       }
@@ -634,6 +629,7 @@ class RoutingHelpersClass {
     this.modifySearchParams(params, searchParams, paramPrefix);
     localhash = hashValue;
     if (searchParams.toString() !== '') {
+      console.log(searchParams.toString());
       localhash += `?${searchParams.toString()}`;
     }
     return localhash;
