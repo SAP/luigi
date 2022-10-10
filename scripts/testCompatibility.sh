@@ -182,8 +182,8 @@ checkoutLuigiToTestfolder() {
 
   cd $LUIGI_DIR_TESTING
   echoe "Checking out selected release tag $TAG"
-  git checkout tags/$TAG
-
+  #git checkout tags/$TAG
+  git checkout fix-compatibility-tests
   for FOLDER in "${APP_FOLDERS[@]}"; do
     echoe "Installing app $FOLDER"
     cd $LUIGI_DIR_TESTING/$FOLDER
