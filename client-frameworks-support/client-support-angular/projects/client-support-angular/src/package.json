@@ -6,7 +6,8 @@
   "peerDependencies": {
     "@angular/common": "^13.2.0",
     "@angular/core": "^13.2.0",
-    "@luigi-project/client": "^1.23.1"
+    "@luigi-project/client": "^1.25.0",
+    "@luigi-project/testing-utilities": "^1.25.0"
   },
   "repository": {
     "type": "git",

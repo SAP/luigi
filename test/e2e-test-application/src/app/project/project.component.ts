@@ -319,7 +319,12 @@ export class ProjectComponent implements OnInit, OnDestroy {
 
   public storage_clear() {
     const promiseStorage = storageManager().clear();
-    this.executeWithTimeout(promiseStorage, 100, result => 'success', result => 'Clear all the storage');
+    this.executeWithTimeout(
+      promiseStorage,
+      100,
+      result => 'success',
+      result => 'Clear all the storage'
+    );
   }
 
   public storage_has() {
