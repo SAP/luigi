@@ -54,26 +54,26 @@ source $BASE_DIR/shared/bashHelpers.sh
 
 declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
-  "/website/fiddle"
+  "/test/e2e-js-test-application"
   "/test/e2e-test-application"
 )
 
 # Used for setting up webserver and killing them
 declare -a APP_PORTS=(
   4200 # e2e-test-application
-  8080 # fiddle
+  4500 # e2e-js-test-application
   8090 # externalMf
 )
 
 declare -a APP_PUBLIC_FOLDERS=(
   "dist" # e2e-test-application
-  "public" # fiddle
+  "public" # e2e-js-test-application
   "externalMf" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
-  "/bundle.js" # fiddle
+  "/index.html" # fiddle
   "/customUserSettingsMf.html" # externalMf
 )
 
@@ -85,7 +85,8 @@ killWebServers() {
 
 promptForTag() {
   # PROMPT FOR TAG
-  git reset --hard HEAD
+  # tmp
+  #git reset --hard HEAD
   if [ "latest" = "$TAG" ]; then
     git config pull.ff only       # fast-forward only
     echo "Fetch with depth 500 and tags"
