@@ -8,9 +8,9 @@
     "build": "npm run dev"
   },
   "devDependencies": {
-    "@luigi-project/core": "^1.24.0",
-    "@luigi-project/client": "^1.24.0",
-    "@luigi-project/plugin-auth-oauth2": "^1.24.0",
+    "@luigi-project/core": "^1.25.1",
+    "@luigi-project/client": "^1.25.1",
+    "@luigi-project/plugin-auth-oauth2": "^1.25.1",
     "@sap-theming/theming-base-content": "~11.1.35",
     "fundamental-styles": "0.23.0",
     "live-server": "^1.2.2"
