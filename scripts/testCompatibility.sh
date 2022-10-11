@@ -55,7 +55,7 @@ source $BASE_DIR/shared/bashHelpers.sh
 declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
   "/test/e2e-js-test-application"
-  "/test/e2e-test-application"
+  "/test/e2e-test-application/externalMf"
 )
 
 # Used for setting up webserver and killing them
@@ -239,6 +239,12 @@ verifyAndStartWebserver() {
   for i in "${!APP_FOLDERS[@]}"; do
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
+    echoe "Here I'm $(pwd)"
+    if [ "${APP_FOLDERS[$i]}" == "/test/e2e-test-application/externalMf" ]; then
+      # required for starting externalMF
+      echoe "Stepping out"
+      cd ..
+    fi
     if [ "${APP_FOLDERS[$i]}" != "/test/e2e-js-test-application" ]; then
       runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
     else
