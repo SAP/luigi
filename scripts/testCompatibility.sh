@@ -86,7 +86,7 @@ killWebServers() {
 promptForTag() {
   # PROMPT FOR TAG
   # tmp
-  #git reset --hard HEAD
+  git reset --hard HEAD
   if [ "latest" = "$TAG" ]; then
     git config pull.ff only       # fast-forward only
     echo "Fetch with depth 500 and tags"
@@ -182,8 +182,8 @@ checkoutLuigiToTestfolder() {
 
   cd $LUIGI_DIR_TESTING
   echoe "Checking out selected release tag $TAG"
-  #git checkout tags/$TAG
-  git checkout fix-compatibility-tests
+  git checkout tags/$TAG
+  #git checkout fix-compatibility-tests
   for FOLDER in "${APP_FOLDERS[@]}"; do
     echoe "Installing app $FOLDER"
     cd $LUIGI_DIR_TESTING/$FOLDER
@@ -227,12 +227,10 @@ linkLuigi() {
   done
 }
 
-bundleApps() {
-  for FOLDER in "${APP_FOLDERS[@]}"; do
-    echoe "Bundling app $FOLDER"
-    cd $LUIGI_DIR_TESTING/$FOLDER
-    npm run build
-  done
+bundleApp() {
+  echoe "Bundling e2e test app"
+  cd $LUIGI_DIR_TESTING/test/e2e-test-application
+  npm run build
 }
 
 verifyAndStartWebserver() {
@@ -241,7 +239,11 @@ verifyAndStartWebserver() {
   for i in "${!APP_FOLDERS[@]}"; do
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
-    runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
+    if [ "${APP_FOLDERS[$i]}" != "/test/e2e-js-test-application" ]; then
+      runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
+    else
+      npm run dev &
+    fi
   done
 }
 
@@ -294,7 +296,7 @@ if [ "" == "$TESTONLY" ]; then
   ls -lah $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
   cd $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
   ls *
-  bundleApps
+  bundleApp
 else
   echoe "Running bunded example and e2e tests"
 fi
