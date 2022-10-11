@@ -241,7 +241,7 @@ verifyAndStartWebserver() {
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
     echoe "Here I'm $(pwd)"
     if [ "${APP_FOLDERS[$i]}" == "/test/e2e-test-application/externalMf" ]; then
-      # required for starting externalMF
+      # required for starting externalMF, otherwise webserver tries to start on /test/e2e-test-application/externalMf/externalMf
       echoe "Stepping out"
       cd ..
     fi
