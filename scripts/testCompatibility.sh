@@ -73,7 +73,7 @@ declare -a APP_PUBLIC_FOLDERS=(
 
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
-  "/index.html" # fiddle
+  "/index.html" # e2e-js-test-application
   "/customUserSettingsMf.html" # externalMf
 )
 
@@ -85,7 +85,6 @@ killWebServers() {
 
 promptForTag() {
   # PROMPT FOR TAG
-  # tmp
   git reset --hard HEAD
   if [ "latest" = "$TAG" ]; then
     git config pull.ff only       # fast-forward only
@@ -183,7 +182,6 @@ checkoutLuigiToTestfolder() {
   cd $LUIGI_DIR_TESTING
   echoe "Checking out selected release tag $TAG"
   git checkout tags/$TAG
-  #git checkout fix-compatibility-tests
   for FOLDER in "${APP_FOLDERS[@]}"; do
     echoe "Installing app $FOLDER"
     cd $LUIGI_DIR_TESTING/$FOLDER
