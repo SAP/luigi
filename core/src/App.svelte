@@ -1259,6 +1259,20 @@
       const isSpecialIframe =
         specialIframeMessageSource && specialIframeMessageSource.length > 0;
 
+      const skipInactiveConfig = LuigiConfig.getConfigValue('communication.skipEventsWhenInactive');
+
+      if(
+        skipInactiveConfig &&
+        skipInactiveConfig.length > 0 &&
+        !isSpecialIframe && 
+        iframe.contentWindow !== window && 
+        !GenericHelpers.isElementVisible(iframe) &&
+        skipInactiveConfig.includes(e.data.msg)
+        ) {
+        console.debug(`EVENT '${e.data.msg}' from inactive iframe -> SKIPPED`);
+        return;
+      }
+
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
           LuigiConfig.getConfigValue('communication.customMessagesListeners') ||
@@ -2500,6 +2514,7 @@
     display: none;
     width: 100%;
     height: 100%;
+    z-index: 0;
   }
 
   :global(.lui-webComponent) {
