@@ -22,18 +22,18 @@ describe('linkManager', function() {
       console.warn = sinon.spy();
     });
 
-    // it('should not open a drawer if path is absolute', () => {
-    //   lm.openAsDrawer('/');
+    it('should not open a drawer if path is absolute', () => {
+      lm.openAsDrawer('/');
 
-    //   sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
-    //   sinon.assert.calledOnce(console.warn);
-    // });
-    // it('should not open a modal if path is absolute', () => {
-    //   lm.openAsModal('/');
+      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.calledOnce(console.warn);
+    });
+    it('should not open a modal if path is absolute', () => {
+      lm.openAsModal('/');
 
-    //   sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
-    //   sinon.assert.calledOnce(console.warn);
-    // });
+      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.calledOnce(console.warn);
+    });
 
     it('should navigate if path starts with a "/" but is not an absolute path', () => {
       lm.navigate('/pr1');
@@ -41,13 +41,13 @@ describe('linkManager', function() {
       sinon.assert.calledOnce(lm.sendPostMessageToLuigiCore);
     });
 
-    // it('should not navigate if errorSkipNavigation is true', () => {
-    //   lm.options.errorSkipNavigation = true;
-    //   lm.navigate('http://google.co');
+    it('should not navigate if errorSkipNavigation is true', () => {
+      lm.options.errorSkipNavigation = true;
+      lm.navigate('http://google.co');
 
-    //   sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
-    //   sinon.assert.match(lm.options.errorSkipNavigation, false);
-    // });
+      sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
+      sinon.assert.match(lm.options.errorSkipNavigation, false);
+    });
 
     it('should call sendPostMessageToLuigiCore', () => {
       this.options = {

@@ -155,9 +155,7 @@ class Helpers {
       .replaceAll('&gt;', '>')
       .replaceAll('&quot;', '"')
       .replaceAll('&#39;', "'")
-      .replaceAll('&sol;', '/')
-      .replaceAll('%2b', '+')
-      .replaceAll('+', ' ');
+      .replaceAll('&sol;', '/');
   }
 }
 

@@ -614,7 +614,6 @@ class RoutingHelpersClass {
     for (const [key, value] of Object.entries(params)) {
       const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
 
-      console.log('Is used twice.');
       searchParams.set(paramKey, encodeURIComponent(value));
       if (value === undefined) {
         searchParams.delete(paramKey);
@@ -629,7 +628,6 @@ class RoutingHelpersClass {
     this.modifySearchParams(params, searchParams, paramPrefix);
     localhash = hashValue;
     if (searchParams.toString() !== '') {
-      console.log(searchParams.toString());
       localhash += `?${searchParams.toString()}`;
     }
     return localhash;
