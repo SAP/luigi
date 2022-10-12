@@ -120,7 +120,7 @@ describe('Luigi routing', function() {
         window.history.pushState,
         window.state,
         '',
-        'http://some.url.de/#/?test=tets&foo=%25bar%23foo%40bar%26foo'
+        'http://some.url.de/#/?test=tets&foo=%2525bar%2523foo%2540bar%2526foo'
       );
     });
     it('add search params to hash routing', () => {
