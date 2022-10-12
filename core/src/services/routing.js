@@ -657,10 +657,17 @@ class RoutingClass {
           url.hash = url.hash.slice(0, queryParamIndex);
         }
         url.hash = `${url.hash}${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
+        if (!url.hash.includes('historyState')) {
+          url.hash += `&historyState=${history.length}`;
+        }
       } else {
-        url.search = `?${RoutingHelpers.encodeParams(params)}`;
+        const search = new URLSearchParams(url.search);
+        if (!search.get('historyState')) {
+          url.search = `?${RoutingHelpers.encodeParams(params)}&historyState=${history.length}`;
+        }
       }
-      history.replaceState(window.state, '', url.href);
+
+      history.pushState(window.state, '', url.href);
     }
   }
 
@@ -669,6 +676,7 @@ class RoutingClass {
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    let historyState;
     if (hashRoutingActive) {
       let modalParamsObj = {};
 
@@ -684,15 +692,33 @@ class RoutingClass {
       } else if (url.hash.includes(`&${prevModalPath}`)) {
         url.hash = url.hash.replace(`&${prevModalPath}`, '');
       }
+      if (url.hash.includes('historyState')) {
+        historyState = params['historyState'];
+        url.hash = url.hash.replace(`&historyState=${historyState}`, '');
+      }
     } else {
       let searchParams = new URLSearchParams(url.search.slice(1));
       searchParams.delete(modalParamName);
       searchParams.delete(`${modalParamName}Params`);
+      historyState = searchParams.get('historyState');
+      searchParams.delete('historyState');
       let finalUrl = '';
       Array.from(searchParams.keys()).forEach(searchParamKey => {
         finalUrl += (finalUrl === '' ? '?' : '&') + searchParamKey + '=' + searchParams.get(searchParamKey);
       });
       url.search = finalUrl;
+    }
+
+    if (historyState) {
+      window.addEventListener(
+        'popstate',
+        e => {
+          history.pushState(window.state, '', url.href);
+          history.back();
+        },
+        { once: true }
+      );
+      history.go(historyState - history.length);
     }
     history.replaceState(window.state, '', url.href);
   }
