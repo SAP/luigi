@@ -605,7 +605,7 @@ runTimeErrorHandler: {
       }
     }
     ```
- - **since**: NEXTRELEASE
+ - **since**: 1.25.0
 
 ### tabNav
 - **type**: boolean
@@ -912,7 +912,7 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
       }
     }
   ```
-- **since**: NEXTRELEASE
+- **since**: 1.25.0
 
 ### items
 - **type**: array

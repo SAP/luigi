@@ -576,7 +576,9 @@ class RoutingClass {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink
     };
-    updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+    if (node) {
+      updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+    }
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
