@@ -131,7 +131,7 @@ jobs:
     - stage: 'Documentation & Tests'
       name: 'Compatibility tests'
       # run only when merging from release-v branch to master
-      if: (repo = SAP/luigi AND branch = master AND type = push) OR (type = api AND commit_message = compatibility_tests)
+      if: repo = SAP/luigi AND branch = master AND type = push
       script:
         - bash ./scripts/testCompatibility.sh --tag latest || travis_terminate 1
       before_cache:
