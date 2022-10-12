@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "live-server --port=4500 --mount='/node_modules':'./node_modules' ./public --no-browser",
-    "build": "npm run dev"
+    "dev": "live-server --port=4500 --mount='/node_modules':'./node_modules' ./public --no-browser"
   },
   "devDependencies": {
     "@luigi-project/core": "^1.25.1",
