@@ -39,7 +39,6 @@ describe('Routing', function() {
     }
     sinon.restore();
     NodeDataManagementStorage.deleteCache();
-    // sinon.reset();
   });
 
   describe('getNodePath()', () => {
@@ -271,7 +270,9 @@ describe('Routing', function() {
         ]);
     });
     it('returns hash path from default param', () => {
-      window.location.hash = '#/projects/pr3';
+      sinon.stub(window, 'location').value({
+        hash: '#/projects/pr3'
+      });
       const actual = Routing.getHashPath();
       const expected = 'projects/pr3';
       assert.equal(actual, expected);
@@ -320,7 +321,9 @@ describe('Routing', function() {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '/parent-node';
+      sinon.stub(window, 'location').value({
+        hash: '/parent-node'
+      });
       const route = Routing.buildFromRelativePath(nodeWithParent);
 
       // then
@@ -333,7 +336,9 @@ describe('Routing', function() {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '/parent-node/a/b';
+      sinon.stub(window, 'location').value({
+        hash: '/parent-node/a/b'
+      });
       const route = Routing.buildFromRelativePath(nodeWithLink);
 
       // then
@@ -346,7 +351,9 @@ describe('Routing', function() {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '/parent-node/different-node';
+      sinon.stub(window, 'location').value({
+        hash: '/parent-node/different-node'
+      });
       const route = Routing.buildFromRelativePath(nodeWithParent);
 
       // then
@@ -359,6 +366,10 @@ describe('Routing', function() {
     let config;
 
     beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
       sinon.stub(Iframe, 'setOkResponseHandler');
       const sampleLuigiConfig = {
         navigation: {
@@ -454,8 +465,7 @@ describe('Routing', function() {
               label: 'BBB',
               viewUrl: 'compound',
               intendToHaveEmptyViewUrl: true,
-              webcomponent: true,
-              component: true
+              webcomponent: true
             }
           ]
         },
@@ -851,27 +861,42 @@ describe('Routing', function() {
     });
 
     it('from intent based link with params', () => {
-      window.location.hash = '#?intent=Sales-settings?param1=luigi&param2=mario';
+      sinon.stub(window, 'location').value({
+        pathname: '/projects/pr2/settings',
+        hash: '#?intent=Sales-settings?param1=luigi&param2=mario'
+      });
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings?~param1=luigi&~param2=mario');
     });
 
     it('from intent based link without params', () => {
-      window.location.hash = '#?intent=Sales-settings';
+      sinon.stub(window, 'location').value({
+        pathname: '/projects/pr2/settings',
+        hash: '#?intent=Sales-settings'
+      });
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings');
     });
 
     it('from intent based link with case insensitive pattern', () => {
-      window.location.hash = '#?inTeNT=Sales-settings';
+      sinon.stub(window, 'location').value({
+        pathname: '/projects/pr2/settings',
+        hash: '#?inTeNT=Sales-settings'
+      });
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings');
     });
 
     it('from faulty intent based link', () => {
-      window.location.hash = '#?intent=Sales-sett-ings';
+      sinon.stub(window, 'location').value({
+        pathname: '/',
+        hash: '#?intent=Sales-sett-ings'
+      });
       assert.equal(Routing.getModifiedPathname(), '/');
     });
 
     it('from intent based link with illegal characters', () => {
-      window.location.hash = '#?intent=Sales-sett$ings';
+      sinon.stub(window, 'location').value({
+        pathname: '/',
+        hash: '#?intent=Sales-sett$ings'
+      });
       assert.equal(Routing.getModifiedPathname(), '/');
     });
   });
@@ -1080,10 +1105,10 @@ describe('Routing', function() {
       }
       // then
       sinon.assert.calledWith(
-        history.replaceState,
+        history.pushState,
         window.state,
         '',
-        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D&historyState=3'
       );
     });
 
@@ -1171,6 +1196,7 @@ describe('Routing', function() {
 
     beforeEach(() => {
       history.replaceState = sinon.spy();
+      history.pushState = sinon.spy();
       sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
       sinon.stub(RoutingHelpers, 'getHashQueryParamSeparator').returns('?');
       sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
@@ -1204,10 +1230,10 @@ describe('Routing', function() {
       }
       // then
       sinon.assert.calledWith(
-        history.replaceState,
+        history.pushState,
         window.state,
         '',
-        'http://some.url.de/#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
+        'http://some.url.de/#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D&historyState=3'
       );
     });
 
@@ -1294,8 +1320,8 @@ describe('Routing', function() {
         .withArgs('routing.skipRoutingForUrlPatterns')
         .returns(['foo_bar']);
       global.location = {
-          href: 'http://some.url.de?foo_bar'
-        };
+        href: 'http://some.url.de?foo_bar'
+      };
       const actual = Routing.shouldSkipRoutingForUrlPatterns();
       const expect = true;
 
