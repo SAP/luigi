@@ -2,10 +2,10 @@
  * Base class for Luigi web component micro frontends.
  */
 export class LuigiElement extends HTMLElement {
-  constructor() {
+  constructor(closed = true) {
     super();
     this._shadowRoot = this.attachShadow({
-      mode: 'closed',
+      mode: closed ? 'closed' : 'open',
       delegatesFocus: false
     });
     this.__initialized = false;
