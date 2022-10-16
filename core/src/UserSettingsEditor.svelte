@@ -214,6 +214,22 @@
     }
   }
 
+  function createLinkForStyle(name){
+    return `https://unpkg.com/@sap-theming/theming-base-content/content/Base/baseLib/${name}/css_variables.css`
+  }
+
+  export function addFiori() {
+    const link = document.createElement('link');
+    link.href = createLinkForStyle('sap_fiori_3');
+    link.rel = 'stylesheet';
+    link.id = 'sap_fiori_3_theme'
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
+  export function removeFiori(){
+    const link = document.getElementById('sap_fiori_3_theme');
+    link.parentNode.replaceChildren(link)
+  }
+
   /*to display a language on first load of the User Settings dialog*/
   getLabelForValue();
 </script>
@@ -388,19 +404,31 @@
                     data-testid="lui-us-label-switch_{key}"
                   >
                     <span class="fd-switch__control">
-                      <input
-                        class="fd-switch__input"
-                        type="checkbox"
-                        aria-labelledby="label1"
-                        data-testid="lui-us-checkbox-switch_{key}"
-                        disabled={schemaItem.isEditable === undefined ||
+                      {#if key === 'checkbox4'}
+                        <input
+                          class="fd-switch__input"
+                          type="checkbox"
+                          aria-labelledby="label1"
+                          data-testid="lui-us-checkbox-switch_{key}"
+                          on:change={(e) => {e.target.checked ? addFiori : removeFiori}}
+                          bind:checked={storedUserSettingData[userSettingGroup[0]][key]}
+                        />
+                      {/if}
+                      {#if key !== 'checkbox4'}
+                        <input
+                          class="fd-switch__input"
+                          type="checkbox"
+                          aria-labelledby="label1"
+                          data-testid="lui-us-checkbox-switch_{key}"
+                          disabled={schemaItem.isEditable === undefined ||
                         schemaItem.isEditable
                           ? false
                           : true}
-                        bind:checked={storedUserSettingData[
+                          bind:checked={storedUserSettingData[
                           userSettingGroup[0]
                         ][key]}
-                      />
+                        />
+                      {/if}
                       <div class="fd-switch__slider">
                         <div class="fd-switch__track">
                           <span class="fd-switch__handle" role="presentation" />

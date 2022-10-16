@@ -37,6 +37,12 @@ class UserSettings {
           label: 'Checkbox23',
           // style: 'checkbox',
           isEditable: false
+        },
+        checkbox4: {
+          type: 'boolean',
+          label: 'Fiori theme',
+          // style: 'checkbox',
+          isEditable: true
         }
       }
     },

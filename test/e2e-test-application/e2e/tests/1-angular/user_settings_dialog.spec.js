@@ -381,5 +381,34 @@ describe('Navigation', () => {
           .should('have.class', 'active');
       });
     });
+
+    it('Check Change Theme to fiori 3', () => {
+      //Click on User Account
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(0)
+        .click();
+
+      //Check User Account is selected
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(0)
+        .should('have.class', 'is-selected');
+
+      //Add fiori 3 theme
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox4"]')
+        .click();
+
+      //Checked fiori 3 theme
+      cy.get('#sap_fiori_3_theme').should('exist');
+
+      //Remove fiori 3 theme
+      cy.get('[data-testid="lui-us-checkbox-switch_checkbox4"]')
+        .click();
+
+      //Checked fiori 3 theme
+      cy.get('#sap_fiori_3_theme').not('exist');
+
+      //Close settings
+      closeSettings();
+    });
   });
 });
