@@ -670,7 +670,6 @@ class RoutingClass {
           url.search = `?${RoutingHelpers.encodeParams(params)}&historyState=${history.length - 1}`;
         }
       }
-
       history.pushState(window.state, '', url.href);
     }
   }

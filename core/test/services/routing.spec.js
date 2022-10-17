@@ -1108,7 +1108,7 @@ describe('Routing', function() {
         history.pushState,
         window.state,
         '',
-        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D&historyState=3'
+        'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D&historyState=2'
       );
     });
 
