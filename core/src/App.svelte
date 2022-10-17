@@ -942,7 +942,7 @@
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
-    if (showModalPathInUrl) {
+    if (showModalPathInUrl && mfModalList.length===1) {
       Routing.appendModalDataToUrl(nodepath, settings);
     }
   };
@@ -979,10 +979,12 @@
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
-        if (showModalPathInUrl) {
-          Routing.removeModalDataFromUrl();
-        }
         resetMicrofrontendModalData(index);
+        if (showModalPathInUrl) {
+          if(mfModalList.length===0){
+            Routing.removeModalDataFromUrl();
+          }
+        }
       });
     } else if (targetModal && targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(

@@ -641,6 +641,7 @@ class RoutingClass {
 
   appendModalDataToUrl(modalPath, modalParams) {
     // global setting for persistence in url .. default false
+
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
@@ -665,7 +666,8 @@ class RoutingClass {
       } else {
         const search = new URLSearchParams(url.search);
         if (!search.get('historyState')) {
-          url.search = `?${RoutingHelpers.encodeParams(params)}&historyState=${history.length}`;
+          history.pushState(window.state, '', url.href);
+          url.search = `?${RoutingHelpers.encodeParams(params)}&historyState=${history.length - 1}`;
         }
       }
 
