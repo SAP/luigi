@@ -783,7 +783,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.25.0
 
 #### pathExists
 

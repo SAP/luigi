@@ -12,3 +12,9 @@
     <span class="fd-object-status__text">{node.statusBadge.label}</span>
   </span>
 {/if}
+
+<style type="text/scss">
+  .fd-object-status {
+    word-break: keep-all;
+  }
+</style>

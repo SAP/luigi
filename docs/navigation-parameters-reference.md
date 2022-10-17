@@ -187,6 +187,7 @@ settings: {
 - **attributes**:
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
+  - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 
 
 ## Node parameters
@@ -604,7 +605,7 @@ runTimeErrorHandler: {
       }
     }
     ```
- - **since**: NEXTRELEASE
+ - **since**: 1.25.0
 
 ### tabNav
 - **type**: boolean
@@ -911,7 +912,7 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
       }
     }
   ```
-- **since**: NEXTRELEASE
+- **since**: 1.25.0
 
 ### items
 - **type**: array

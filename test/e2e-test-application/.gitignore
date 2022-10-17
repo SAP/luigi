@@ -33,6 +33,9 @@ npm-debug.log
 testem.log
 /typings
 
+# Angular
+.angular/cache/
+
 # e2e
 /e2e/screenshots
 /e2e/videos
