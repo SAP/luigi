@@ -4,8 +4,8 @@
   "license": "Apache-2.0",
   "private": false,
   "peerDependencies": {
-    "@angular/common": "^11.0.0",
-    "@angular/core": "^11.0.0",
+    "@angular/common": "^13.2.0",
+    "@angular/core": "^13.2.0",
     "@luigi-project/client": "^1.25.0",
     "@luigi-project/testing-utilities": "^1.25.0"
   },
@@ -17,10 +17,10 @@
     "tslib": "^2.0.0"
   },
   "main": "bundles/client-support-angular.umd.js",
-  "module": "fesm2015/client-support-angular.js",
-  "es2015": "fesm2015/client-support-angular.js",
-  "esm2015": "esm2015/client-support-angular.js",
-  "fesm2015": "fesm2015/client-support-angular.js",
+  "module": "fesm2017/client-support-angular.js",
+  "es2017": "fesm2017/client-support-angular.js",
+  "esm2017": "esm2017/client-support-angular.js",
+  "fesm2017": "fesm2017/client-support-angular.js",
   "typings": "client-support-angular.d.ts",
   "metadata": "client-support-angular.metadata.json",
   "sideEffects": false
