@@ -42,7 +42,6 @@
       }
     }
   },
-  "defaultProject": "client-support-angular",
   "cli": {
     "analytics": false
   }
