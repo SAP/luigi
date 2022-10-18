@@ -4,9 +4,10 @@
 export class LuigiElement extends HTMLElement {
   constructor() {
     super();
-    const isOpen = this.attributes.shadowDomOpen.value;
+    // default set to closed if attribute not defined
+    const mode = this.attributes.shadowDomMode;
     this._shadowRoot = this.attachShadow({
-      mode: isOpen ? 'open' : 'closed',
+      mode: mode ? mode : 'closed',
       delegatesFocus: false
     });
     this.__initialized = false;
