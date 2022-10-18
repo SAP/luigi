@@ -1183,6 +1183,12 @@
   };
 
   function init(node) {
+    //remove historyState 
+    let url = new URL(location.href);
+    if(url.href.includes('historyState')){
+      url = GenericHelpers.removeKeyValueFromURL(url, 'historyState');
+      window.history.replaceState({},'', url.href)
+    }
     ViewGroupPreloading.shouldPreload = true;
     ViewGroupPreloading.preload(true);
     ViewGroupPreloading.shouldPreload = false;
