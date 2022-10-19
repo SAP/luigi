@@ -4,8 +4,9 @@
 export class LuigiElement extends HTMLElement {
   constructor(options) {
     super();
+    const openShadow = options ? options.openShadow : false;
     this._shadowRoot = this.attachShadow({
-      mode: options?.openShadow ? 'open' : 'closed',
+      mode: openShadow ? 'open' : 'closed',
       delegatesFocus: false
     });
     this.__initialized = false;
