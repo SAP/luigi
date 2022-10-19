@@ -1,22 +1,10 @@
-# Sapper + copied node modules
 .DS_Store
-/node_modules/
-/src/node_modules/@sapper/
-/cypress/screenshots/
-/__sapper__/
-
-# Generated and copied
-extendedConfiguration.bundle.js
-luigi-core
-luigi-client
-docsearch.min.css
-public
-static/assets
-static/versions.json
-*coreStyles*
-navigation-generated.json
-sitemap.xml
-
-# Debug
-yarn-error.log
-debug*.log
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+.vercel
+.output
