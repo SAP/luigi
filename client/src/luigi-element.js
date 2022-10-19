@@ -2,7 +2,6 @@
  * Base class for Luigi web component micro frontends.
  */
 export class LuigiElement extends HTMLElement {
-
   constructor(options) {
     super();
     const mode = this.shadowMode;
