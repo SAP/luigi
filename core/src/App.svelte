@@ -395,7 +395,10 @@
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-      closeModal();
+      mfModalList.forEach((m, index) => {
+        // close modals
+        closeModal(index);
+      });
 
       // remove backdrop
       LuigiUX.removeBackdrop();
