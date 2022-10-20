@@ -981,13 +981,12 @@
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
-        console.log('index in close', index);
+        resetMicrofrontendModalData(index);
         if (showModalPathInUrl) {
           if(mfModalList.length===0){
             Routing.removeModalDataFromUrl();
           }
         }
-        resetMicrofrontendModalData(index);
       });
     } else if (targetModal && targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
