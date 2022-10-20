@@ -395,10 +395,9 @@
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-      mfModalList.forEach((m, index) => {
-        // close modals
-        closeModal(index);
-      });
+      for(let i = mfModalList.length; i--;){
+        closeModal(i);
+      }
 
       // remove backdrop
       LuigiUX.removeBackdrop();
@@ -982,12 +981,13 @@
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
-        resetMicrofrontendModalData(index);
+        console.log('index in close', index);
         if (showModalPathInUrl) {
           if(mfModalList.length===0){
             Routing.removeModalDataFromUrl();
           }
         }
+        resetMicrofrontendModalData(index);
       });
     } else if (targetModal && targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
