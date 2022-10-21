@@ -29,7 +29,7 @@ describe('JS-TEST-APP 2', () => {
           .openAsModal('/home/one');
       });
 
-      cy.expectPathToBe('/home?mymodal=' + encodeURIComponent('/home/one?~mp=one') + '&historyState=4');
+      cy.expectPathToBe('/home?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
     });
 
     it('Path routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
@@ -48,7 +48,7 @@ describe('JS-TEST-APP 2', () => {
 
       cy.expectPathToBe('/home');
       cy.location().should(location => {
-        expect(location.search).to.eq('?mymodal=' + encodeURIComponent('/home/one?~mp=one') + '&historyState=7');
+        expect(location.search).to.eq('?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
       });
     });
   });

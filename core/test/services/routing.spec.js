@@ -359,6 +359,10 @@ describe('Routing', function() {
     let config;
 
     beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
       sinon.stub(Iframe, 'setOkResponseHandler');
       const sampleLuigiConfig = {
         navigation: {
@@ -454,8 +458,7 @@ describe('Routing', function() {
               label: 'BBB',
               viewUrl: 'compound',
               intendToHaveEmptyViewUrl: true,
-              webcomponent: true,
-              component: true
+              webcomponent: true
             }
           ]
         },
@@ -1080,7 +1083,7 @@ describe('Routing', function() {
       }
       // then
       sinon.assert.calledWith(
-        history.replaceState,
+        history.pushState,
         window.state,
         '',
         'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
@@ -1204,7 +1207,7 @@ describe('Routing', function() {
       }
       // then
       sinon.assert.calledWith(
-        history.replaceState,
+        history.pushState,
         window.state,
         '',
         'http://some.url.de/#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
