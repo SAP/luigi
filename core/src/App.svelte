@@ -1418,7 +1418,7 @@
         const params = e.data.params;
         const { intent, newTab, modal, splitView, drawer, withoutSync } =
           params;
-        let isSpecial = newTab || modal || splitView || drawer || (intent && 9);
+        let isSpecial = newTab || modal || splitView || drawer;
 
         const resolveRemotePromise = () => {
           const remotePromise = GenericHelpers.getRemotePromise(
