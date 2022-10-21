@@ -62,7 +62,7 @@ For Luigi Client to process the message, add and remove message listeners as des
 When a micro frontend is not currently selected, you can configure Luigi so that any events coming from that micro frontend's iframe are ignored. To do so, use the `skipEventsWhenInactive` parameter. 
 
 ### skipEventsWhenInactive
-- **type**: boolean
+- **type**: string
 - **description**: prevents the triggering of events from inactive iframes.
 - **default**: 
 - **example**:
@@ -71,7 +71,7 @@ When a micro frontend is not currently selected, you can configure Luigi so that
 {
   ...
   communication: {
-    skipEventsWhenInactive: true
+    skipEventsWhenInactive: 
   }
   ...
 }
