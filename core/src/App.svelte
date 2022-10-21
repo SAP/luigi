@@ -929,7 +929,6 @@
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
-
     // insert modal into the modals list to be viewed on top of other modals
     const newModal = {
       mfModal : {
@@ -944,7 +943,8 @@
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
-    if (showModalPathInUrl && mfModalList.length===1) {
+
+    if (showModalPathInUrl) {
       Routing.appendModalDataToUrl(nodepath, settings);
     }
   };
@@ -981,12 +981,10 @@
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
-        resetMicrofrontendModalData(index);
         if (showModalPathInUrl) {
-          if(mfModalList.length===0){
-            Routing.removeModalDataFromUrl();
-          }
+          Routing.removeModalDataFromUrl();
         }
+        resetMicrofrontendModalData(index);
       });
     } else if (targetModal && targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
@@ -1185,12 +1183,6 @@
   };
 
   function init(node) {
-    //remove historyState 
-    let url = new URL(location.href);
-    if(url.href.includes('historyState')){
-      url = GenericHelpers.removeKeyValueFromURL(url, 'historyState');
-      window.history.replaceState({},'', url.href)
-    }
     ViewGroupPreloading.shouldPreload = true;
     ViewGroupPreloading.preload(true);
     ViewGroupPreloading.shouldPreload = false;

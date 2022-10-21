@@ -400,28 +400,6 @@ class GenericHelpersClass {
   isString(value) {
     return typeof value === 'string' || value instanceof String;
   }
-
-  removeKeyValueFromURL(urlObj, keyName) {
-    const url = urlObj;
-    const key = keyName;
-    const hashRouting = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
-    if (hashRouting) {
-      const queryParams = {};
-      let historyStateVal;
-      for (const [key, value] of new URLSearchParams(url.hash.split('?')[1])) {
-        queryParams[key] = value;
-      }
-      historyStateVal = queryParams[key];
-      urlObj.hash = url.hash.replace(`&historyState=${historyStateVal}`, '');
-    } else {
-      let search = new URLSearchParams(url.search);
-      if (search.get(key)) {
-        search.delete(key);
-        url.search = search.toString();
-      }
-    }
-    return url;
-  }
 }
 
 export const GenericHelpers = new GenericHelpersClass();

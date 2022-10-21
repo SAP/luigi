@@ -640,8 +640,10 @@ class RoutingClass {
   }
 
   appendModalDataToUrl(modalPath, modalParams) {
+    if (sessionStorage.getItem('historyState')) {
+      return;
+    }
     // global setting for persistence in url .. default false
-
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
@@ -660,15 +662,11 @@ class RoutingClass {
           url.hash = url.hash.slice(0, queryParamIndex);
         }
         url.hash = `${url.hash}${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
-        if (!url.hash.includes('historyState')) {
-          url.hash += `&historyState=${history.length}`;
-        }
       } else {
-        const search = new URLSearchParams(url.search);
-        if (!search.get('historyState')) {
-          history.pushState(window.state, '', url.href);
-          url.search = `?${RoutingHelpers.encodeParams(params)}&historyState=${history.length - 1}`;
-        }
+        url.search = `?${RoutingHelpers.encodeParams(params)}`;
+      }
+      if (!sessionStorage.getItem('historyState')) {
+        sessionStorage.setItem('historyState', history.length);
       }
       history.pushState(window.state, '', url.href);
     }
@@ -679,10 +677,9 @@ class RoutingClass {
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
-    let historyState;
+    const historyState = Number(sessionStorage.getItem('historyState'));
     if (hashRoutingActive) {
       let modalParamsObj = {};
-
       if (params[modalParamName]) {
         modalParamsObj[modalParamName] = params[modalParamName];
       }
@@ -695,35 +692,35 @@ class RoutingClass {
       } else if (url.hash.includes(`&${prevModalPath}`)) {
         url.hash = url.hash.replace(`&${prevModalPath}`, '');
       }
-      if (url.hash.includes('historyState')) {
-        historyState = params['historyState'];
-        url.hash = url.hash.replace(`&historyState=${historyState}`, '');
-      }
     } else {
       let searchParams = new URLSearchParams(url.search.slice(1));
       searchParams.delete(modalParamName);
       searchParams.delete(`${modalParamName}Params`);
-      historyState = searchParams.get('historyState');
-      searchParams.delete('historyState');
       let finalUrl = '';
       Array.from(searchParams.keys()).forEach(searchParamKey => {
         finalUrl += (finalUrl === '' ? '?' : '&') + searchParamKey + '=' + searchParams.get(searchParamKey);
       });
       url.search = finalUrl;
     }
-
     if (historyState) {
       window.addEventListener(
         'popstate',
         e => {
+          console.log('before pushstate in popstate', url.href);
           history.pushState(window.state, '', url.href);
-          history.back();
+          // history.back();
         },
         { once: true }
       );
-      history.go(historyState - history.length);
+      // historyState eq 2 you will go back to blank page
+      if (historyState > 2) {
+        history.go(historyState - history.length);
+      } else {
+        history.pushState(window.state, '', url.href);
+      }
     }
     history.replaceState(window.state, '', url.href);
+    sessionStorage.removeItem('historyState');
   }
 }
 
