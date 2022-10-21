@@ -456,7 +456,15 @@ class RoutingHelpersClass {
         if (!realPath) {
           return false;
         }
+        if (realPath.externalLink) {
+          console.log(realPath);
+          return {
+            ...realPath.externalLink,
+            external: true
+          }
+        }
         realPath = realPath.pathSegment;
+
         const params = Object.entries(intentObject.params);
         if (params && params.length > 0) {
           // resolve dynamic parameters in the path if any
