@@ -217,6 +217,8 @@
       preventContextUpdate,
     };
 
+    console.log('Navigate To:', path);
+
     path = GenericHelpers.addLeadingSlash(path);
     path = preserveQueryParams
       ? RoutingHelpers.composeSearchParamsToRoute(path)
@@ -930,13 +932,13 @@
 
     // insert modal into the modals list to be viewed on top of other modals
     const newModal = {
-      mfModal : {
+      mfModal: {
         displayed: true,
         nodepath,
-        settings
-      }
+        settings,
+      },
     };
-    mfModalList = [ ...mfModalList, newModal ];
+    mfModalList = [...mfModalList, newModal];
 
     // check if modalPath feature enable and set URL accordingly
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
@@ -975,15 +977,17 @@
     const targetModal = mfModalList[index];
 
     if (targetModal && targetModal.modalIframe) {
-      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
-        const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-          'routing.showModalPathInUrl'
-        );
-        if (showModalPathInUrl) {
-          Routing.removeModalDataFromUrl();
+      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
+        () => {
+          const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+            'routing.showModalPathInUrl'
+          );
+          if (showModalPathInUrl) {
+            Routing.removeModalDataFromUrl();
+          }
+          resetMicrofrontendModalData(index);
         }
-        resetMicrofrontendModalData(index);
-      });
+      );
     } else if (targetModal && targetModal.modalWC) {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
@@ -1145,7 +1149,9 @@
 
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
+      const virtualTreeNode = [...localNavPath]
+        .reverse()
+        .find((n) => n.virtualTree);
       if (!virtualTreeNode) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
@@ -1175,7 +1181,7 @@
       path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else {
       // retrieve path for getCurrentPath method when no options used
-        path = currentNodeViewUrl;
+      path = currentNodeViewUrl;
     }
     return path;
   };
@@ -1235,7 +1241,7 @@
 
     EventListenerHelpers.addEventListener('message', async (e) => {
       const iframe = IframeHelpers.getValidMessageSource(e);
-      const topMostModal = mfModalList[(mfModalList.length - 1)];
+      const topMostModal = mfModalList[mfModalList.length - 1];
       const modalIframe = topMostModal && topMostModal.modalIframe;
       const modalIframeData = topMostModal && topMostModal.modalIframeData;
 
@@ -1259,16 +1265,18 @@
       const isSpecialIframe =
         specialIframeMessageSource && specialIframeMessageSource.length > 0;
 
-      const skipInactiveConfig = LuigiConfig.getConfigValue('communication.skipEventsWhenInactive');
+      const skipInactiveConfig = LuigiConfig.getConfigValue(
+        'communication.skipEventsWhenInactive'
+      );
 
-      if(
+      if (
         skipInactiveConfig &&
         skipInactiveConfig.length > 0 &&
-        !isSpecialIframe && 
-        iframe.contentWindow !== window && 
+        !isSpecialIframe &&
+        iframe.contentWindow !== window &&
         !GenericHelpers.isElementVisible(iframe) &&
         skipInactiveConfig.includes(e.data.msg)
-        ) {
+      ) {
         console.debug(`EVENT '${e.data.msg}' from inactive iframe -> SKIPPED`);
         return;
       }
@@ -1410,7 +1418,7 @@
         const params = e.data.params;
         const { intent, newTab, modal, splitView, drawer, withoutSync } =
           params;
-        const isSpecial = newTab || modal || splitView || drawer;
+        let isSpecial = newTab || modal || splitView || drawer || (intent && 9);
 
         const resolveRemotePromise = () => {
           const remotePromise = GenericHelpers.getRemotePromise(
@@ -1442,6 +1450,9 @@
           params.link = params.link.split('?')[0];
         }
 
+        let path = buildPath(e.data.params, srcNode, srcPathParams);
+        isSpecial = isSpecial || (intent && path.externalLink);
+
         if (!isSpecial) {
           getUnsavedChangesModalPromise()
             .then(() => {
@@ -1467,9 +1478,16 @@
               rejectRemotePromise();
             });
         } else {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
-          path = GenericHelpers.addLeadingSlash(path);
+          if (intent && path.external) {
+            console.log('right before', path);
+            Routing.navigateToExternalLink({
+              url: path.path,
+              sameWindow: !path.openInNewTab,
+            });
+            return;
+          }
 
+          path = GenericHelpers.addLeadingSlash(path);
           if (newTab) {
             await openViewInNewTab(path);
             checkResolve();
@@ -1508,7 +1526,12 @@
 
       if ('luigi.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
-        if (IframeHelpers.isMessageSource(e, mfModalTopMostElement && mfModalTopMostElement.modalIframe)) {
+        if (
+          IframeHelpers.isMessageSource(
+            e,
+            mfModalTopMostElement && mfModalTopMostElement.modalIframe
+          )
+        ) {
           closeModal(mfModalList.length - 1);
           await sendContextToClient(config, {
             goBackContext:
@@ -1582,10 +1605,22 @@
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
         if (isSpecialIframe) {
-          const route = GenericHelpers.addLeadingSlash(buildPath(e.data.params, iframe.luigi.currentNode, iframe.luigi.pathParams));
-          Routing.updateModalDataInUrl(route, e.data.params.modal, e.data.params.history);
+          const route = GenericHelpers.addLeadingSlash(
+            buildPath(
+              e.data.params,
+              iframe.luigi.currentNode,
+              iframe.luigi.pathParams
+            )
+          );
+          Routing.updateModalDataInUrl(
+            route,
+            e.data.params.modal,
+            e.data.params.history
+          );
         } else {
-          console.warn('updateModalDataPath can only be called from modal, ignoring.');
+          console.warn(
+            'updateModalDataPath can only be called from modal, ignoring.'
+          );
         }
       }
 
@@ -1774,7 +1809,7 @@
   };
 
   export const hasBack = () => {
-    return (mfModalList.length > 0) || preservedViews.length !== 0;
+    return mfModalList.length > 0 || preservedViews.length !== 0;
   };
 
   onMount(() => {
@@ -1874,8 +1909,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
