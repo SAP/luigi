@@ -262,6 +262,5 @@ describe('JS-TEST-APP', () => {
         cy.expectPathToBe('blank');
       });
     });
-    describe('Path routing, history handling for multiple modal', () => {});
   });
 });
