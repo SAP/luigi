@@ -59,19 +59,21 @@ For Luigi Client to process the message, add and remove message listeners as des
 
 ## Ignore events from inactive iframes
 
-When a micro frontend is not currently selected, you can configure Luigi so that any events coming from that micro frontend's iframe are ignored. To do so, use the `skipEventsWhenInactive` parameter. 
+In the `communication:` section of the Luigi config, you can add the `skipEventsWhenInactive` parameter in order to ignore events normally sent from Luigi Client to Luigi Core when an iframe/micro frontend is not currently selected or active. 
+
+For example, if you ignore the `luigi.navigation.open` event, this will prevent the inactive iframe from opening. You can also ignore other events that are part of [Luigi Client's linkManager](https://github.com/SAP/luigi/blob/master/client/src/linkManager.js#L82) such as `luigi.navigation.ok`, or other events identified by the prefix `luigi.`. 
 
 ### skipEventsWhenInactive
-- **type**: string
-- **description**: prevents the triggering of events from inactive iframes.
-- **default**: 
+- **type**: array of strings
+- **description**: a list of strings specifying the names of events which you want to ignore. When specified, the events will be ignored when an iframe is inactive. 
+- **default**: undefined
 - **example**:
 
 ```javascript
 {
   ...
   communication: {
-    skipEventsWhenInactive: 
+    skipEventsWhenInactive: "luigi.navigation.open,luigi.navigation.ok"
   }
   ...
 }
