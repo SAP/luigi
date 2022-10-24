@@ -120,7 +120,7 @@ describe('Luigi routing', function() {
         window.history.pushState,
         window.state,
         '',
-        'http://some.url.de/#/?test=tets&foo=%2525bar%2523foo%2540bar%2526foo'
+        'http://some.url.de/#/?test=tets&foo=%25bar%23foo%40bar%26foo'
       );
     });
     it('add search params to hash routing', () => {
@@ -168,10 +168,15 @@ describe('Luigi routing', function() {
       RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
-    it('modifySearchParams with space and encoding', () => {
+    it.only('modifySearchParams with space', () => {
       const searchParams = new URLSearchParams('~mario=rocks');
       RoutingHelpers.modifySearchParams({ test: 'test abc' }, searchParams, '~');
-      assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=test%2520abc');
+      assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=test+abc');
+    });
+    it.only('modifySearchParams with a plus sign', () => {
+      const searchParams = new URLSearchParams('~mario=rocks');
+      RoutingHelpers.modifySearchParams({ test: 'test+abc' }, searchParams, '~');
+      assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=test%2Babc');
     });
   });
 

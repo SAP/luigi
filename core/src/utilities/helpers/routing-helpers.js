@@ -614,7 +614,7 @@ class RoutingHelpersClass {
     for (const [key, value] of Object.entries(params)) {
       const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
 
-      searchParams.set(paramKey, encodeURIComponent(value));
+      searchParams.set(paramKey, value);
       if (value === undefined) {
         searchParams.delete(paramKey);
       }

@@ -144,7 +144,7 @@ class Helpers {
 
   deSanitizeParamsMap(paramsMap) {
     return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
-      sanitizedMap[this.deSanitizeParam(paramPair[0])] = decodeURIComponent(this.deSanitizeParam(paramPair[1]));
+      sanitizedMap[this.deSanitizeParam(paramPair[0])] = this.deSanitizeParam(paramPair[1]);
       return sanitizedMap;
     }, {});
   }
