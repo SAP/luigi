@@ -1107,7 +1107,7 @@ describe('Routing', function() {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/settings?~luigi=mario');
+      sinon.assert.calledWithExactly(window.history.pushState, {}, '', 'http://some.url.de/settings?~luigi=mario');
     });
 
     it('should update path of the modal when changing template in the modal, save history', () => {
@@ -1232,7 +1232,7 @@ describe('Routing', function() {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/#/settings?~luigi=mario');
+      sinon.assert.calledWithExactly(window.history.pushState, {}, '', 'http://some.url.de/#/settings?~luigi=mario');
     });
   });
 

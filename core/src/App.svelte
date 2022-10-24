@@ -972,8 +972,9 @@
   /**
    * Closes the modal given the respective modal index. Index is used due to multiple modals functionality
    * @param index the index of the modal to be closed corresponding to the 'mfModalList' array
+   * @param closeBtnPressed flag if closeModal is triggered from close button of modal instead of route change or browser back button
    */
-  const closeModal = (index) => {
+  const closeModal = (index, closeBtnPressed) => {
     const targetModal = mfModalList[index];
 
     if (targetModal && targetModal.modalIframe) {
@@ -981,8 +982,9 @@
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
-        if (showModalPathInUrl) {
-          Routing.removeModalDataFromUrl();
+        //if only one modal is opened
+        if (showModalPathInUrl && mfModalList.length===1) {
+          Routing.removeModalDataFromUrl(closeBtnPressed);
         }
         resetMicrofrontendModalData(index);
       });
@@ -1513,7 +1515,7 @@
       if ('luigi.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
         if (IframeHelpers.isMessageSource(e, mfModalTopMostElement && mfModalTopMostElement.modalIframe)) {
-          closeModal(mfModalList.length - 1);
+          closeModal(mfModalList.length - 1, true);
           await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext),
@@ -1877,7 +1879,7 @@
         settings={modalItem.mfModal.settings}
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
-        on:close={() => closeModal(index)}
+        on:close={() => closeModal(index, true)}
         on:iframeCreated={event => modalIframeCreated(event, index)}
         on:wcCreated={event => modalWCCreated(event, index)}
         {disableBackdrop}

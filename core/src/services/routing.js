@@ -672,7 +672,7 @@ class RoutingClass {
     }
   }
 
-  removeModalDataFromUrl() {
+  removeModalDataFromUrl(closeBtnPressed) {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
@@ -702,24 +702,19 @@ class RoutingClass {
       });
       url.search = finalUrl;
     }
-    if (historyState) {
+    // only if close modal [X] is pressed
+    if (historyState && closeBtnPressed) {
       window.addEventListener(
         'popstate',
         e => {
-          console.log('before pushstate in popstate', url.href);
           history.pushState(window.state, '', url.href);
-          // history.back();
+          history.back();
         },
         { once: true }
       );
-      // historyState eq 2 you will go back to blank page
-      if (historyState > 2) {
-        history.go(historyState - history.length);
-      } else {
-        history.pushState(window.state, '', url.href);
-      }
+      history.go(historyState - history.length);
     }
-    history.replaceState(window.state, '', url.href);
+    history.pushState(window.state, '', url.href);
     sessionStorage.removeItem('historyState');
   }
 }
