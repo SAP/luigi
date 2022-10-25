@@ -37,7 +37,6 @@
       "meow": "8.1.2",
       "mixin-deep": ">=1.3.2",
       "prettier": "^1.15.3",
-      "prettier-plugin-svelte": "^2.8.0",
       "set-value": ">=2.0.1",
       "simple-git": "^3.3.0",
       "sirv-cli": "^0.4.4",
