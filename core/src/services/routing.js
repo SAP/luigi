@@ -641,7 +641,7 @@ class RoutingClass {
 
   appendModalDataToUrl(modalPath, modalParams) {
     const url = new URL(location.href);
-    //necessary to get to jump to the last history entry
+    //necessary to jump to the last history entry
     history.pushState(window.state, '', url.href);
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
