@@ -735,6 +735,27 @@ describe('Routing', function() {
       sinon.assert.calledOnce(Iframe.switchActiveIframe);
       sinon.assert.calledOnce(Routing.navigateWebComponent);
     });
+
+    it('should call navigateToExternalLink if intent external link defined', async () => {
+      // given
+      const path = {
+        external: true,
+        url: 'https://www.test.com',
+        openInNewTab: true
+      };
+      const expectedParam = {
+        url: 'https://www.test.com',
+        sameWindow: false
+      };
+
+      sinon.stub(Routing, 'navigateToExternalLink');
+
+      // when
+      await Routing.handleRouteChange(path);
+
+      // then
+      sinon.assert.calledWithExactly(Routing.navigateToExternalLink, expectedParam);
+    });
   });
 
   describe('handleRouteClick', () => {
@@ -1294,8 +1315,8 @@ describe('Routing', function() {
         .withArgs('routing.skipRoutingForUrlPatterns')
         .returns(['foo_bar']);
       global.location = {
-          href: 'http://some.url.de?foo_bar'
-        };
+        href: 'http://some.url.de?foo_bar'
+      };
       const actual = Routing.shouldSkipRoutingForUrlPatterns();
       const expect = true;
 
