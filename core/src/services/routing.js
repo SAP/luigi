@@ -125,7 +125,6 @@ class RoutingClass {
       const hash = url.replace('#/#', '#'); // handle default hash and intent specific hash
       const intentHash = RoutingHelpers.getIntentPath(hash.split('#')[1]);
       if (intentHash) {
-        console.log('Test, getHashPath', intentHash);
         return intentHash;
       }
     }
@@ -151,7 +150,6 @@ class RoutingClass {
   getCurrentPath() {
     if (/\?intent=/i.test(window.location.hash)) {
       const hash = window.location.hash.replace('#/#', '').replace('#', '');
-      console.log('getCurrentPath');
       const intentPath = RoutingHelpers.getIntentPath(hash);
       // if intent faulty or illegal then skip
       if (intentPath) {
@@ -325,8 +323,6 @@ class RoutingClass {
   async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
     // Handle intent navigation with new tab scenario.
     if (path.external) {
-      console.log('right before', path);
-      console.log('Finished!');
       this.navigateToExternalLink({
         url: path.url,
         sameWindow: !path.openInNewTab
