@@ -456,8 +456,8 @@ class RoutingHelpersClass {
         if (!realPath) {
           return false;
         }
+        // set 'external' boolean to make it easier to identify new tab links
         if (realPath.externalLink) {
-          console.log(realPath);
           return {
             ...realPath.externalLink,
             external: true

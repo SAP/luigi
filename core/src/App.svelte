@@ -1451,7 +1451,7 @@
         }
 
         let path = buildPath(e.data.params, srcNode, srcPathParams);
-        isSpecial = isSpecial || (intent && path.externalLink);
+        isSpecial = isSpecial || (intent && path.external);
 
         if (!isSpecial) {
           getUnsavedChangesModalPromise()
@@ -1478,10 +1478,10 @@
               rejectRemotePromise();
             });
         } else {
+          // navigate tp external link if external intent link detected
           if (intent && path.external) {
-            console.log('right before', path);
             Routing.navigateToExternalLink({
-              url: path.path,
+              url: path.url,
               sameWindow: !path.openInNewTab,
             });
             return;

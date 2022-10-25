@@ -137,6 +137,7 @@ class RoutingClass {
     // check for intent, if any
     if (window.location.hash && /\?intent=/i.test(window.location.hash)) {
       const hash = window.location.hash.replace('#/#', '').replace('#', '');
+      console.log('getModifiedPathname');
       const intentPath = RoutingHelpers.getIntentPath(hash);
       return intentPath ? intentPath : '/';
     }
@@ -151,6 +152,7 @@ class RoutingClass {
   getCurrentPath() {
     if (/\?intent=/i.test(window.location.hash)) {
       const hash = window.location.hash.replace('#/#', '').replace('#', '');
+      console.log('getCurrentPath')
       const intentPath = RoutingHelpers.getIntentPath(hash);
       // if intent faulty or illegal then skip
       if (intentPath) {
@@ -174,7 +176,7 @@ class RoutingClass {
    */
   setFeatureToggle(path) {
     const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
-    featureToggleProperty && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
+    featureToggleProperty && typeof path === 'string' && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
   }
 
   /**
@@ -322,6 +324,12 @@ class RoutingClass {
    * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
    */
   async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+    // Handle intent navigation with new tab scenario.
+    if (path.external) {
+      console.log('right before', path);
+      console.log('Finished!');
+      return;
+    }
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
 
