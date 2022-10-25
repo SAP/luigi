@@ -217,8 +217,6 @@
       preventContextUpdate,
     };
 
-    console.log('Navigate To:', path);
-
     path = GenericHelpers.addLeadingSlash(path);
     path = preserveQueryParams
       ? RoutingHelpers.composeSearchParamsToRoute(path)

@@ -13,7 +13,7 @@
     "e2e:run:electron": "cypress run",
     "buildConfig": "webpack --config webpack-generateConfig.config",
     "startExternalMf": "http-server --port 8090 ./externalMf",
-    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf\""
+    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200 --live-reload\" \"npm run startExternalMf\""
   },
   "dependencies": {
     "@angular/animations": "^14.2.4",

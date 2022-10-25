@@ -15,7 +15,7 @@ class Navigation {
     this.navigationPermissionChecker = navigationPermissionChecker;
     this.projectsNavProviderFn = projectsNavProviderFn;
   }
-
+  replaceIntentRoute = true;
   addNavHrefs = true;
   preloadViewGroups = true;
   viewGroupSettings = {
@@ -36,6 +36,11 @@ class Navigation {
       semanticObject: 'Component',
       action: 'settings',
       pathSegment: '/projects/:project/settings'
+    },
+    {
+      semanticObject: 'External',
+      action: 'view',
+      externalLink: { url: 'https://www.sap.com', openInNewTab: true }
     }
   ];
   nodeAccessibilityResolver = navigationPermissionChecker;

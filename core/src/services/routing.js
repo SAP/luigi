@@ -137,7 +137,6 @@ class RoutingClass {
     // check for intent, if any
     if (window.location.hash && /\?intent=/i.test(window.location.hash)) {
       const hash = window.location.hash.replace('#/#', '').replace('#', '');
-      console.log('getModifiedPathname');
       const intentPath = RoutingHelpers.getIntentPath(hash);
       return intentPath ? intentPath : '/';
     }
@@ -152,7 +151,7 @@ class RoutingClass {
   getCurrentPath() {
     if (/\?intent=/i.test(window.location.hash)) {
       const hash = window.location.hash.replace('#/#', '').replace('#', '');
-      console.log('getCurrentPath')
+      console.log('getCurrentPath');
       const intentPath = RoutingHelpers.getIntentPath(hash);
       // if intent faulty or illegal then skip
       if (intentPath) {
@@ -166,8 +165,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-        : GenericHelpers.trimLeadingSlash(window.location.pathname);
+      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+      : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   /**
@@ -209,7 +208,7 @@ class RoutingClass {
           this.handleRouteChange(path, component, iframeElement, config) &&
           history.replaceState(window.state, '', newUrl);
       },
-      () => { }
+      () => {}
     );
   }
 
@@ -328,6 +327,10 @@ class RoutingClass {
     if (path.external) {
       console.log('right before', path);
       console.log('Finished!');
+      this.navigateToExternalLink({
+        url: path.url,
+        sameWindow: !path.openInNewTab
+      });
       return;
     }
     this.setFeatureToggle(path);
@@ -413,10 +416,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-              viewUrl: previousCompData.viewUrl,
-              isolateView: previousCompData.isolateView,
-              viewGroup: previousCompData.viewGroup
-            }
+                viewUrl: previousCompData.viewUrl,
+                isolateView: previousCompData.isolateView,
+                viewGroup: previousCompData.viewGroup
+              }
             : {}
         })
       );
