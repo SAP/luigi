@@ -944,7 +944,8 @@
       'routing.showModalPathInUrl'
     );
 
-    if (showModalPathInUrl) {
+    // not allowd for multiple modals
+    if (showModalPathInUrl && mfModalList.length===1) {
       Routing.appendModalDataToUrl(nodepath, settings);
     }
   };

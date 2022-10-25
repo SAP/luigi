@@ -640,9 +640,9 @@ class RoutingClass {
   }
 
   appendModalDataToUrl(modalPath, modalParams) {
-    if (sessionStorage.getItem('historyState')) {
-      return;
-    }
+    const url = new URL(location.href);
+    //necessary to get to jump to the last history entry
+    history.pushState(window.state, '', url.href);
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
@@ -654,7 +654,6 @@ class RoutingClass {
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = new URL(location.href);
       const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
@@ -672,6 +671,10 @@ class RoutingClass {
     }
   }
 
+  /**
+   * Remove modal data from url
+   * @param closeBtnPressed flag if closeModal is triggered from close button of modal instead of route change or browser back button
+   */
   removeModalDataFromUrl(closeBtnPressed) {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
