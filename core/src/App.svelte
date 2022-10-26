@@ -944,7 +944,7 @@
       'routing.showModalPathInUrl'
     );
 
-    // not allowd for multiple modals
+    //  only show the modal path in the URL when the first modal is opened.
     if (showModalPathInUrl && mfModalList.length===1) {
       Routing.appendModalDataToUrl(nodepath, settings);
     }
