@@ -946,6 +946,7 @@
 
     //  only show the modal path in the URL when the first modal is opened.
     if (showModalPathInUrl && mfModalList.length===1) {
+      history.pushState(window.state, '', url.href);
       Routing.appendModalDataToUrl(nodepath, settings);
     }
   };
@@ -993,8 +994,9 @@
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
       );
-      if (showModalPathInUrl) {
-        Routing.removeModalDataFromUrl();
+      //only remove the modal path in URL when closing the first modal
+      if (showModalPathInUrl && mfModalList.length===1) {
+          Routing.removeModalDataFromUrl(closeBtnPressed);
       }
       resetMicrofrontendModalData(index);
     }
