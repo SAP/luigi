@@ -1186,7 +1186,7 @@
   };
 
   function init(node) {
-    //remove historyState if modal is closed by entering a new luigi route in url bar bar
+    // remove historyState if modal is closed by entering a new luigi route in url bar
     sessionStorage.removeItem('historyState');
     ViewGroupPreloading.shouldPreload = true;
     ViewGroupPreloading.preload(true);
