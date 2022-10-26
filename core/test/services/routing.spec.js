@@ -1071,13 +1071,13 @@ describe('Routing', function() {
         href: 'http://some.url.de/settings'
       };
       window.state = {};
-
+      const mockURL = new URL(global.location.href);
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       try {
-        Routing.appendModalDataToUrl(modalPath, modalParams);
+        Routing.appendModalDataToUrl(modalPath, modalParams, mockURL);
       } catch (error) {
         console.log('error', error);
       }
@@ -1195,13 +1195,14 @@ describe('Routing', function() {
         href: 'http://some.url.de/#/settings',
         hash: '#/settings'
       };
+      const mockURL = new URL(global.location.href);
       window.state = {};
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(true);
       try {
-        Routing.appendModalDataToUrl(modalPath, modalParams);
+        Routing.appendModalDataToUrl(modalPath, modalParams, mockURL);
       } catch (error) {
         console.log('error', error);
       }

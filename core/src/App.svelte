@@ -946,8 +946,9 @@
 
     //  only show the modal path in the URL when the first modal is opened.
     if (showModalPathInUrl && mfModalList.length===1) {
+      const url = new URL(location.href);
       history.pushState(window.state, '', url.href);
-      Routing.appendModalDataToUrl(nodepath, settings);
+      Routing.appendModalDataToUrl(nodepath, settings, url);
     }
   };
 

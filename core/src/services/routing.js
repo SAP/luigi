@@ -639,7 +639,13 @@ class RoutingClass {
     }
   }
 
-  appendModalDataToUrl(modalPath, modalParams) {
+  /**
+   * Append modal data to url
+   * @param {string} modalPath path of the view which is displayed in the modal
+   * @param {Object} modalParams query parameter
+   * @param {URL} urlObj URL object
+   */
+  appendModalDataToUrl(modalPath, modalParams, urlObj) {
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
@@ -651,7 +657,7 @@ class RoutingClass {
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = new URL(location.href);
+      const url = urlObj;
       const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
