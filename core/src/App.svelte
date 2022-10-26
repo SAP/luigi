@@ -975,31 +975,26 @@
   /**
    * Closes the modal given the respective modal index. Index is used due to multiple modals functionality
    * @param index the index of the modal to be closed corresponding to the 'mfModalList' array
-   * @param closeBtnPressed flag if closeModal is triggered from close button of modal instead of route change or browser back button
+   * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
    */
-  const closeModal = (index, closeBtnPressed) => {
-    const targetModal = mfModalList[index];
-
-    if (targetModal && targetModal.modalIframe) {
-      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
-        const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
+  const closeModal = (index, isClosedInternal) => {
+    const resetModalData = (index, isClosedInternal) => {
+      const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
-        // only remove the modal path in URL when closing the first modal
-        if (showModalPathInUrl && mfModalList.length===1) {
-          Routing.removeModalDataFromUrl(closeBtnPressed);
-        }
-        resetMicrofrontendModalData(index);
-      });
-    } else if (targetModal && targetModal.modalWC) {
-      const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-        'routing.showModalPathInUrl'
-      );
-      //only remove the modal path in URL when closing the first modal
+      // only remove the modal path in URL when closing the first modal
       if (showModalPathInUrl && mfModalList.length===1) {
-          Routing.removeModalDataFromUrl(closeBtnPressed);
+        Routing.removeModalDataFromUrl(isClosedInternal);
       }
       resetMicrofrontendModalData(index);
+    }
+    const targetModal = mfModalList[index];
+    if (targetModal && targetModal.modalIframe) {
+      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
+        resetModalData(index, isClosedInternal);
+      });
+    } else if (targetModal && targetModal.modalWC) {
+      resetModalData(index, isClosedInternal);
     }
   };
 

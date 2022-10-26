@@ -677,9 +677,9 @@ class RoutingClass {
 
   /**
    * Remove modal data from url
-   * @param closeBtnPressed flag if closeModal is triggered from close button of modal instead of route change or browser back button
+   * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
    */
-  removeModalDataFromUrl(closeBtnPressed) {
+  removeModalDataFromUrl(isClosedInternal) {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
@@ -710,7 +710,7 @@ class RoutingClass {
       url.search = finalUrl;
     }
     // only if close modal [X] is pressed
-    if (historyState && closeBtnPressed) {
+    if (historyState && isClosedInternal) {
       window.addEventListener(
         'popstate',
         e => {
