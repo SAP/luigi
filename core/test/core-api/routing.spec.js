@@ -168,12 +168,12 @@ describe('Luigi routing', function() {
       RoutingHelpers.modifySearchParams({ test: 'tets', luigi: 'rocks' }, searchParams, '~');
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
-    it.only('modifySearchParams with space', () => {
+    it('modifySearchParams with space', () => {
       const searchParams = new URLSearchParams('~mario=rocks');
       RoutingHelpers.modifySearchParams({ test: 'test abc' }, searchParams, '~');
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=test+abc');
     });
-    it.only('modifySearchParams with a plus sign', () => {
+    it('modifySearchParams with a plus sign', () => {
       const searchParams = new URLSearchParams('~mario=rocks');
       RoutingHelpers.modifySearchParams({ test: 'test+abc' }, searchParams, '~');
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=test%2Babc');

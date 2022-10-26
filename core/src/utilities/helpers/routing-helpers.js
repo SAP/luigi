@@ -48,7 +48,7 @@ class RoutingHelpersClass {
   parseParams(paramsString) {
     if (!paramsString) return {};
     const result = {};
-    const viewParamString = paramsString;
+    const viewParamString = paramsString.replace(/\+/g, ' ');
     const pairs = viewParamString ? viewParamString.split('&') : null;
     if (pairs) {
       pairs.forEach(pairString => {
