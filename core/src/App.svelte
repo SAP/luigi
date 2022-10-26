@@ -984,7 +984,7 @@
         const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
           'routing.showModalPathInUrl'
         );
-        //if only one modal is opened
+        // only remove the modal path in URL when closing the first modal
         if (showModalPathInUrl && mfModalList.length===1) {
           Routing.removeModalDataFromUrl(closeBtnPressed);
         }
