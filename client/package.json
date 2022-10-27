@@ -11,8 +11,8 @@
     "bundle-evergreen": "webpack --mode=production --display-error-details",
     "bundle-ie11": "webpack --mode=production --display-error-details --config webpack-ie11.config.js",
     "bundle-develop": "npm run bundle-develop-evergreen",
-    "bundle-develop-evergreen": "npm run bundle-evergreen -- --debug --output-pathinfo --watch",
-    "bundle-develop-ie11": "npm run bundle-ie11 -- --debug --output-pathinfo --watch",
+    "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
+    "bundle-develop-ie11": "npm run bundle-ie11 -- -d --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "bundlesizeOnly": "bundlesize",
     "test": "echo \"Error: no test specified\" && exit 1"
