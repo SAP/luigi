@@ -128,7 +128,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .click();
       cy.wrap($iframeBody)
         .find('[data-testid=toggle-dirty-state]')
-        .click({ force: true });
+        .click({force: true});
 
       cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--warning');
 
