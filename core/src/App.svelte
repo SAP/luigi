@@ -1476,7 +1476,7 @@
               rejectRemotePromise();
             });
         } else {
-          // navigate tp external link if external intent link detected
+          // navigate to external link if external intent link detected
           if (intent && path.external) {
             Routing.navigateToExternalLink({
               url: path.url,
