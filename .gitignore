@@ -21,6 +21,3 @@ plugin*.js
 core/dev-tools/latest_build.log
 core/dev-tools/simple-app
 /full_eslint_report.html
-
-# Angular
-test/e2e-test-application/.angular
