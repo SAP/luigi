@@ -77,7 +77,7 @@ For example, you can ignore any of these events (or others, as needed):
 {
   ...
   communication: {
-    skipEventsWhenInactive: "luigi.navigation.open"
+    skipEventsWhenInactive: ["luigi.navigation.open", "luigi.ux.alert.show"]
   }
   ...
 }
