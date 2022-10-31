@@ -5,7 +5,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear"
+    "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ || COPY public\\* test-app\\",
+    "start": "npm run copyBundle && sirv test-app --no-clear"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
