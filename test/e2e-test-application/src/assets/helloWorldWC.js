@@ -33,7 +33,12 @@ export default class extends HTMLElement {
         window.Luigi.featureToggles().setFeatureToggle('ft1');
 
         this.LuigiClient.uxManager().showAlert({
-          text: 'Active feature toggles: ' + this.LuigiClient.getActiveFeatureToggleList(),
+          text: 'Active feature toggles list: ' + this.LuigiClient.getActiveFeatureToggleList(),
+          type: 'info'
+        });
+
+        this.LuigiClient.uxManager().showAlert({
+          text: 'Active feature toggles: ' + this.LuigiClient.getActiveFeatureToggle(),
           type: 'info'
         });
       }

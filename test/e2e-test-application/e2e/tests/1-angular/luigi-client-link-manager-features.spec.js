@@ -130,6 +130,7 @@ describe('Luigi client linkManager', () => {
         const wcContent = root.querySelector('p').innerText;
         expect(wcContent).to.equal('Hello WebComponent!');
         root.querySelector('button').click();
+        cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles list: ft1');
         cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles: ft1');
       });
     });

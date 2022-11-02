@@ -42,7 +42,8 @@ class WebComponentSvcClass {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
       },
-      getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList()
+      getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
+      getActiveFeatureToggle: () => window.Luigi.featureToggles().getActiveFeatureToggleList()
     };
 
     if (wc.__postProcess) {
