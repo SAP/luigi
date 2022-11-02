@@ -117,6 +117,10 @@ if [ "$1" = "cra-release" ]; then
   echo "$PWD"
   checkRequiredFiles  "cra-template/template/public" "index.html" "luigi-config.js"
   publishPackage "cra-template" "cra-template"
+elif [ "$1" = "luigi-container-release" ]; then
+  echo "$PWD"
+  checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "package.json"
+  publishPackage "container" "container/public"
 else
   # Luigi Client & Core
   prepublishChecks

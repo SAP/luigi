@@ -201,6 +201,14 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+    - name: 'Publish Luigi Container to NPM'
+      # run only when custom commit message given to Travis
+      if: repo = SAP/luigi AND (type = api AND commit_message = publish-luigi-container)
+      script:
+        - bash ./scripts/npmPublish.sh luigi-container-release
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
     
 
     # ----- SETUP EXAMPLES TESTS -----
