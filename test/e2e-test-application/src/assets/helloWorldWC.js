@@ -38,7 +38,7 @@ export default class extends HTMLElement {
         });
 
         this.LuigiClient.uxManager().showAlert({
-          text: 'Active feature toggles: ' + this.LuigiClient.getActiveFeatureToggle(),
+          text: 'Active feature toggles: ' + this.LuigiClient.getActiveFeatureToggles(),
           type: 'info'
         });
       }

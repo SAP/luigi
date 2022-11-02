@@ -43,7 +43,7 @@ class WebComponentSvcClass {
         }
       },
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
-      getActiveFeatureToggle: () => window.Luigi.featureToggles().getActiveFeatureToggleList()
+      getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList()
     };
 
     if (wc.__postProcess) {
