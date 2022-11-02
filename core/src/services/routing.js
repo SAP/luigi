@@ -639,7 +639,13 @@ class RoutingClass {
     }
   }
 
-  appendModalDataToUrl(modalPath, modalParams) {
+  /**
+   * Append modal data to url
+   * @param {string} modalPath path of the view which is displayed in the modal
+   * @param {Object} modalParams query parameter
+   * @param {URL} urlObj URL object
+   */
+  appendModalDataToUrl(modalPath, modalParams, urlObj) {
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
@@ -651,7 +657,7 @@ class RoutingClass {
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = new URL(location.href);
+      const url = urlObj;
       const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
@@ -662,18 +668,25 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
-      history.replaceState(window.state, '', url.href);
+      if (!sessionStorage.getItem('historyState')) {
+        sessionStorage.setItem('historyState', history.length);
+      }
+      history.pushState(window.state, '', url.href);
     }
   }
 
-  removeModalDataFromUrl() {
+  /**
+   * Remove modal data from url
+   * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
+   */
+  removeModalDataFromUrl(isClosedInternal) {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    const historyState = Number(sessionStorage.getItem('historyState'));
     if (hashRoutingActive) {
       let modalParamsObj = {};
-
       if (params[modalParamName]) {
         modalParamsObj[modalParamName] = params[modalParamName];
       }
@@ -696,7 +709,20 @@ class RoutingClass {
       });
       url.search = finalUrl;
     }
-    history.replaceState(window.state, '', url.href);
+    // only if close modal [X] is pressed
+    if (historyState && isClosedInternal) {
+      window.addEventListener(
+        'popstate',
+        e => {
+          history.pushState(window.state, '', url.href);
+          history.back();
+        },
+        { once: true }
+      );
+      history.go(historyState - history.length);
+    }
+    history.pushState(window.state, '', url.href);
+    sessionStorage.removeItem('historyState');
   }
 }
 
