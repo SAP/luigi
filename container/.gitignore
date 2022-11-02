@@ -1,4 +1,6 @@
 /node_modules/
-/public/build/
-
+/public/bundle.js
+/public/bundle.js.map
+/test-app/bundle.js
+/test-app/bundle.js.map
 .DS_Store

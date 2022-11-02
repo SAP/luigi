@@ -1,9 +1,11 @@
 {
-  "name": "luigi-container-component",
+  "name": "luigi-container-component-private",
   "version": "1.0.0",
   "private": true,
+  "description": "luigi-container development version, only the public folder is being published to npm as a package",
   "scripts": {
     "build": "rollup -c",
+    "bundle": "npm run build",
     "dev": "rollup -c -w",
     "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ || COPY public\\* test-app\\",
     "start": "npm run copyBundle && sirv test-app --no-clear"
@@ -22,9 +24,7 @@
     "svelte-check": "^2.4.5",
     "svelte-preprocess": "^4.10.3",
     "typescript": "^4.5.5",
-    "tslib": "2.3.1"
-  },
-  "dependencies": {
+    "tslib": "2.3.1",
     "sirv-cli": "^2.0.0"
   }
 }
