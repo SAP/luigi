@@ -28,7 +28,7 @@ Web Components can provide a fast-loading alternative for non-complex micro fron
 In this page you wil find:
 -   [Navigation Configuration](#navigation-configuration) - how to configure web component in Luigi Core navigation
 -   [Write a Web Component](#write-a-web-component) - quick description of how to write a Web Component compatible with Luigi Framework
--   [Luigi Client for web component](#luigi-client-for-web-component) - javascript object injected in a Web Component to leverage Luigi Core features
+-   [Luigi Client for web components](#luigi-client-for-web-components) - javascript object injected in a Web Component to leverage Luigi Core features
 -   [Tip: how to inject HTML Template code in Web Component](#tip-how-to-inject-html-template-code-in-web-component) - recommendation for how to inject HTML in a Web Component
 
 ## Navigation Configuration
