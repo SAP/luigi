@@ -1,5 +1,5 @@
 {
-  "name": "@luigi-project/container",
+  "name": "@luigi-project/container-private",
   "version": "1.0.0",
   "private": true,
   "main": "public/bundle.js",
