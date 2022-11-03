@@ -395,7 +395,9 @@
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-      closeModal();
+      for(let i = mfModalList.length; i--;){
+        closeModal(i);
+      }
 
       // remove backdrop
       LuigiUX.removeBackdrop();
@@ -927,7 +929,6 @@
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
-
     // insert modal into the modals list to be viewed on top of other modals
     const newModal = {
       mfModal: {
@@ -942,8 +943,12 @@
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
-    if (showModalPathInUrl) {
-      Routing.appendModalDataToUrl(nodepath, settings);
+
+    //  only show the modal path in the URL when the first modal is opened.
+    if (showModalPathInUrl && mfModalList.length===1) {
+      const url = new URL(location.href);
+      history.pushState(window.state, '', url.href);
+      Routing.appendModalDataToUrl(nodepath, settings, url);
     }
   };
 
@@ -970,30 +975,26 @@
   /**
    * Closes the modal given the respective modal index. Index is used due to multiple modals functionality
    * @param index the index of the modal to be closed corresponding to the 'mfModalList' array
+   * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
    */
-  const closeModal = (index) => {
-    const targetModal = mfModalList[index];
-
-    if (targetModal && targetModal.modalIframe) {
-      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
-        () => {
-          const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-            'routing.showModalPathInUrl'
-          );
-          if (showModalPathInUrl) {
-            Routing.removeModalDataFromUrl();
-          }
-          resetMicrofrontendModalData(index);
-        }
-      );
-    } else if (targetModal && targetModal.modalWC) {
+  const closeModal = (index, isClosedInternal) => {
+    const resetModalData = (index, isClosedInternal) => {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-        'routing.showModalPathInUrl'
-      );
-      if (showModalPathInUrl) {
-        Routing.removeModalDataFromUrl();
+          'routing.showModalPathInUrl'
+        );
+      // only remove the modal path in URL when closing the first modal
+      if (showModalPathInUrl && mfModalList.length===1) {
+        Routing.removeModalDataFromUrl(isClosedInternal);
       }
       resetMicrofrontendModalData(index);
+    }
+    const targetModal = mfModalList[index];
+    if (targetModal && targetModal.modalIframe) {
+      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
+        resetModalData(index, isClosedInternal);
+      });
+    } else if (targetModal && targetModal.modalWC) {
+      resetModalData(index, isClosedInternal);
     }
   };
 
@@ -1185,6 +1186,8 @@
   };
 
   function init(node) {
+    // remove historyState if modal is closed by entering a new luigi route in url bar
+    sessionStorage.removeItem('historyState');
     ViewGroupPreloading.shouldPreload = true;
     ViewGroupPreloading.preload(true);
     ViewGroupPreloading.shouldPreload = false;
@@ -1524,13 +1527,10 @@
 
       if ('luigi.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
-        if (
-          IframeHelpers.isMessageSource(
-            e,
-            mfModalTopMostElement && mfModalTopMostElement.modalIframe
-          )
-        ) {
-          closeModal(mfModalList.length - 1);
+
+        if (IframeHelpers.isMessageSource(e, mfModalTopMostElement && mfModalTopMostElement.modalIframe)) {
+          closeModal(mfModalList.length - 1, true);
+
           await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext),
@@ -1906,9 +1906,9 @@
         settings={modalItem.mfModal.settings}
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
-        on:close={() => closeModal(index)}
-        on:iframeCreated={(event) => modalIframeCreated(event, index)}
-        on:wcCreated={(event) => modalWCCreated(event, index)}
+        on:close={() => closeModal(index, true)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}

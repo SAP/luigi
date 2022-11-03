@@ -91,6 +91,10 @@ export declare interface CoreSearchParams {
   [key: string]: string;
 }
 
+export declare interface RouteChangingOptions {
+  [key: string]: boolean;
+}
+
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
 }
@@ -358,6 +362,21 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
   withParams: (nodeParams: NodeParams) => this;
+
+  /**
+   * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+   * @memberof linkManager
+   * @param {Object} options navigation options
+   * @param {boolean} options.preventHistoryEntry By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+   * @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
+   * @returns {linkManager} link manager instance
+   * @since 1.25.0
+   * @example
+   * LuigiClient.linkManager().withOptions(
+   * { preventContextUpdate:true, preventHistoryEntry: true }
+   * ).navigate('/overview')
+   */
+  withOptions: (options: RouteChangingOptions) => this;
 
   /**
    * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
