@@ -3,7 +3,7 @@
     "description": "Javascript library enabling creation of microfrontends",
     "license": "Apache-2.0",
     "main": "bundle.js",
-    "types": "public/bundle.d.ts",
+    "types": "bundle.d.ts",
     "repository": {
         "type": "git",
         "url": "ssh://github.com/SAP/luigi.git"
