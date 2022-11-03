@@ -1,9 +1,9 @@
 {
     "name": "@luigi-project/container",
-    "private": true,
     "description": "Javascript library enabling creation of microfrontends",
     "license": "Apache-2.0",
     "main": "bundle.js",
+    "types": "public/bundle.d.ts",
     "repository": {
         "type": "git",
         "url": "ssh://github.com/SAP/luigi.git"
@@ -19,5 +19,5 @@
         "micro-frontends",
         "microfrontends"
     ],
-    "version": "0.0.2"
+    "version": "0.0.3"
 }
