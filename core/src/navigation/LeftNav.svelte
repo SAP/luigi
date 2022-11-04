@@ -587,7 +587,7 @@
                               role="presentation"
                             />
                           {/if}
-                          <span class="fd-nested-list__title"
+                          <span class="fd-nested-list__title badge-align-{node.statusBadge ? node.statusBadge.align : 'left'}"
                             >{$getTranslation(node.label)}
                             <StatusBadge {node} />
                           </span>
@@ -722,7 +722,7 @@
                                   $getTranslation(node.label)
                                 )}
                               >
-                                <span class="fd-nested-list__title">
+                                <span class="fd-nested-list__title badge-align-{node.statusBadge ? node.statusBadge.align : 'left'}">
                                   {$getTranslation(node.label)}                                  
                                   <StatusBadge {node} />
                                 </span>                                
@@ -778,7 +778,7 @@
                                         $getTranslation(node.label)
                                       )}
                                     >
-                                      <span class="fd-nested-list__title">
+                                      <span class="fd-nested-list__title badge-align-{node.statusBadge ? node.statusBadge.align : 'left'}">
                                         {$getTranslation(node.label)}                                        
                                         <StatusBadge {node} />
                                       </span>
@@ -883,7 +883,7 @@
                                   : ''}</span
                               >
                             {/if}
-                            <span class="fd-nested-list__title"
+                            <span class="fd-nested-list__title badge-align-{node.statusBadge ? node.statusBadge.align : 'left'}"
                               >{$getTranslation(node.label)}
                               {#if node.statusBadge}
                                 <StatusBadge {node} />
@@ -1181,6 +1181,13 @@
     display: inline-block;
     height: auto;
   }
+  .fd-nested-list .fd-nested-list__title.badge-align-right {
+    display: flex;
+    :global(.fd-object-status) {
+      margin-left: auto;
+    }
+  }
+  
   .fd-nested-list__content.has-child {
     .fd-nested-list__link {
       max-width: calc(100% - 2.5rem);
