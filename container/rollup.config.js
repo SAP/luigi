@@ -84,36 +84,36 @@ export default [
     watch: {
       clearScreen: false
     }
-  },
-  {
-    input: `src/main.js`,
-    plugins: [dts()],
-    output: {
-      file: `public/bundle.d.ts`,
-      format: 'es',
-      sourcemap: true
-    },
-    external: ['svelte', 'svelte/internal'],
-    plugins: [
-      svelte({
-        compilerOptions: {
-          customElement: true,
-          // enable run-time checks when not in production
-          dev: !production
-        },
-        preprocess: autoPreprocess({
-          sourceMap: true
-        })
-      }),
-      typescript({
-        sourceMap: true,
-        rootDir: './src/'
-      }),
-      resolve({
-        browser: true,
-        dedupe: ['svelte']
-      }),
-      commonjs()
-    ]
   }
+  // {
+  //   input: `src/main.js`,
+  //   plugins: [dts()],
+  //   output: {
+  //     file: `public/bundle.d.ts`,
+  //     format: 'es',
+  //     sourcemap: true
+  //   },
+  //   external: ['svelte', 'svelte/internal'],
+  //   plugins: [
+  //     svelte({
+  //       compilerOptions: {
+  //         customElement: true,
+  //         // enable run-time checks when not in production
+  //         dev: !production
+  //       },
+  //       preprocess: autoPreprocess({
+  //         sourceMap: true
+  //       })
+  //     }),
+  //     typescript({
+  //       sourceMap: true,
+  //       rootDir: './src/'
+  //     }),
+  //     resolve({
+  //       browser: true,
+  //       dedupe: ['svelte']
+  //     }),
+  //     commonjs()
+  //   ]
+  // }
 ];
