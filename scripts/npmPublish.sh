@@ -119,7 +119,7 @@ if [ "$1" = "cra-release" ]; then
   publishPackage "cra-template" "cra-template"
 elif [ "$1" = "luigi-container-release" ]; then
   echo "$PWD"
-  checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "bundle.d.ts" "bundle.d.ts.map" "package.json" "README.md"
+  checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
   publishPackage "container" "container/public"
 else
   # Luigi Client & Core

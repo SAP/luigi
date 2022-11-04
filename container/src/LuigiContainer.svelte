@@ -6,7 +6,11 @@
   export let label;
   export let webcomponent;
 
-  let iframeHandle: any;
+  let iframeHandle:
+    | {
+        iframe: HTMLIFrameElement;
+      }
+    | any = {};
   let mainComponent;
 
   import { onMount, onDestroy } from 'svelte';

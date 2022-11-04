@@ -10,8 +10,6 @@
     "public/*"
   ],
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "public/",
     "module": "es2020",
   },
 }
