@@ -1,7 +1,7 @@
 import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import typescript from 'rollup-plugin-typescript';
+import typescript from '@rollup/plugin-typescript';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import dts from 'rollup-plugin-dts';
@@ -51,8 +51,7 @@ export default [
         })
       }),
       typescript({
-        sourceMap: true,
-        rootDir: './src/'
+        sourceMap: true
       }),
       // we'll extract any component CSS out into
       // a separate file - better for performance
@@ -85,35 +84,4 @@ export default [
       clearScreen: false
     }
   }
-  // {
-  //   input: `src/main.js`,
-  //   plugins: [dts()],
-  //   output: {
-  //     file: `public/bundle.d.ts`,
-  //     format: 'es',
-  //     sourcemap: true
-  //   },
-  //   external: ['svelte', 'svelte/internal'],
-  //   plugins: [
-  //     svelte({
-  //       compilerOptions: {
-  //         customElement: true,
-  //         // enable run-time checks when not in production
-  //         dev: !production
-  //       },
-  //       preprocess: autoPreprocess({
-  //         sourceMap: true
-  //       })
-  //     }),
-  //     typescript({
-  //       sourceMap: true,
-  //       rootDir: './src/'
-  //     }),
-  //     resolve({
-  //       browser: true,
-  //       dedupe: ['svelte']
-  //     }),
-  //     commonjs()
-  //   ]
-  // }
 ];
