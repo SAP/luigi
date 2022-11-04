@@ -25,6 +25,12 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.25.1] (2022-10-04)
+#### :bug: Fixed
+* [#2838](https://github.com/SAP/luigi/pull/2915) Fix client-support-angular deps ([@hardl](https://github.com/hardl))
+
+
+
 ## [v1.25.0] (2022-09-30)
 
 #### :rocket: Added
@@ -1443,3 +1449,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.23.1]: https://github.com/SAP/luigi/compare/v1.23.0...v1.23.1
 [v1.24.0]: https://github.com/SAP/luigi/compare/v1.23.1...v1.24.0
 [v1.25.0]: https://github.com/SAP/luigi/compare/v1.24.0...v1.25.0
+[v1.25.1]: https://github.com/SAP/luigi/compare/v1.25.0...v1.25.1
