@@ -6,9 +6,7 @@
   export let label;
   export let webcomponent;
 
-  let iframeHandle: {
-    iframe: HTMLIFrameElement;
-  };
+  let iframeHandle: any;
   let mainComponent;
 
   import { onMount, onDestroy } from 'svelte';
@@ -55,7 +53,9 @@
   };
 
   const thisComponent = get_current_component();
+  console.log(thisComponent.iframeHandle);
   thisComponent.iframeHandle = iframeHandle;
+  console.log(thisComponent.iframeHandle);
   let deferInit = !!thisComponent.attributes['defer-init'];
 
   thisComponent.init = () => {
