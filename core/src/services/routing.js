@@ -173,7 +173,7 @@ class RoutingClass {
    */
   setFeatureToggle(path) {
     const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
-    featureToggleProperty && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
+    featureToggleProperty && typeof path === 'string' && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
   }
 
   /**
@@ -321,6 +321,14 @@ class RoutingClass {
    * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
    */
   async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+    // Handle intent navigation with new tab scenario.
+    if (path.external) {
+      this.navigateToExternalLink({
+        url: path.url,
+        sameWindow: !path.openInNewTab
+      });
+      return;
+    }
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
 
