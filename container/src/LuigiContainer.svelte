@@ -11,7 +11,7 @@
         iframe: HTMLIFrameElement;
       }
     | any = {};
-  let mainComponent;
+  let mainComponent: HTMLElement;
 
   import { onMount, onDestroy } from 'svelte';
   import { get_current_component } from 'svelte/internal';
@@ -25,14 +25,14 @@
       linkManager: () => {
         return {
           navigate: route => {
-            dispatchLuigiEvent('navigation-request', { link: route }, {});
+            dispatchLuigiEvent('navigation-request', { link: route });
           }
         };
       },
       uxManager: () => {
         return {
           showAlert: alertSettings => {
-            dispatchLuigiEvent('alert-request', alertSettings, {});
+            dispatchLuigiEvent('alert-request', alertSettings);
           },
           showConfirmationModal: async settings => {
             return new Promise((resolve, reject) => {
@@ -56,48 +56,48 @@
     };
   };
 
-  const thisComponent = get_current_component();
-  console.log(thisComponent.iframeHandle);
-  thisComponent.iframeHandle = iframeHandle;
-  console.log(thisComponent.iframeHandle);
-  let deferInit = !!thisComponent.attributes['defer-init'];
+  const thisComponent: any = get_current_component();
 
+  thisComponent.iframeHandle = iframeHandle;
+  let deferInit: boolean = !!thisComponent.attributes['defer-init'];
+  console.log('deferInit', deferInit);
   thisComponent.init = () => {
+    console.log('CALLED!!!', deferInit);
     deferInit = false;
   };
 
   containerService.registerContainer(thisComponent);
 
-  function dispatchLuigiEvent(msg, data, callback) {
+  function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
     containerService.dispatch(msg, thisComponent, data, callback);
   }
 
-  function isWebComponent() {
+  function isWebComponent(): boolean {
     return !!webcomponent;
   }
 
   onMount(async () => {
     const ctx = context ? JSON.parse(context) : undefined;
-    console.log(ctx);
+    console.log('test00', ctx);
+    console.log('test11', mainComponent, typeof mainComponent);
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
-      webcomponentService.renderWebComponent(
-        viewurl,
-        mainComponent,
-        ctx,
-        {},
-        {}
-      );
+      console.log('isWebComponent', true);
+      webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
     }
+    console.log('deferInit2', deferInit);
+    // deferInit = true;
   });
 
   onDestroy(async () => {});
+  console.log('deferInit 3', deferInit);
 </script>
 
 <main
   bind:this={mainComponent}
   class={isWebComponent() ? undefined : 'lui-isolated'}
 >
+  {deferInit}
   {#if !deferInit}
     {#if !isWebComponent()}
       <iframe bind:this={iframeHandle.iframe} src={viewurl} title={label} />

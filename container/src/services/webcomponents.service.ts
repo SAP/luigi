@@ -9,8 +9,16 @@ export class WebComponentService {
     this.containerService = new ContainerService();
   }
 
-  dynamicImport(viewUrl) {
-    return import(viewUrl);
+  dynamicImport(viewUrl: string) {
+    console.log('before actual import of:', viewUrl);
+    let a;
+    try {
+      a = import(viewUrl);
+      console.log('right after import', a);
+    } catch (error) {
+      console.log(error, 'not ale to import');
+    }
+    return a;
   }
 
   processViewUrl(viewUrl: string, data?: any): string {
@@ -20,7 +28,7 @@ export class WebComponentService {
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
    */
-  attachWC(wc_id, wcItemPlaceholder, wc_container, ctx, viewUrl, nodeId) {
+  attachWC(wc_id: string, wcItemPlaceholder: HTMLDivElement, wc_container, ctx, viewUrl: string, nodeId: string) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
@@ -33,7 +41,7 @@ export class WebComponentService {
     }
   }
 
-  createClientAPI(eventBusElement, nodeId, wc_id) {
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
       linkManager: () => {}, //window.Luigi.navigation,
       uxManager: () => {
@@ -55,7 +63,7 @@ export class WebComponentService {
     };
   }
 
-  initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId) {
+  initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string) {
     const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id);
 
     if (wc.__postProcess) {
@@ -74,7 +82,7 @@ export class WebComponentService {
    * returns a string that can be used as part of a tagname, only alphanumeric
    * characters and no whitespaces.
    */
-  generateWCId(viewUrl) {
+  generateWCId(viewUrl: string) {
     let charRep = '';
     for (let i = 0; i < viewUrl.length; i++) {
       charRep += viewUrl.charCodeAt(i).toString(16);
@@ -86,12 +94,14 @@ export class WebComponentService {
    * with the default export of the module or the first export extending HTMLElement if no default is
    * specified.
    * @returns a promise that gets resolved after successfull import */
-  registerWCFromUrl(viewUrl, wc_id) {
+  registerWCFromUrl(viewUrl: string, wc_id: string) {
     const i18nViewUrl = this.processViewUrl(viewUrl);
+    console.log('before dynamic import called');
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(i18nViewUrl)) {
         this.dynamicImport(i18nViewUrl)
           .then(module => {
+            console.log('imported module', module);
             try {
               if (!window.customElements.get(wc_id)) {
                 let cmpClazz = module.default;
@@ -157,7 +167,7 @@ export class WebComponentService {
    *
    * @param {*} url the url string to check
    */
-  checkWCUrl(url) {
+  checkWCUrl(url: string) {
     // if (url.indexOf('://') > 0 || url.trim().indexOf('//') === 0) {
     //   const ur = new URL(url);
     //   if (ur.host === window.location.host) {
@@ -185,7 +195,7 @@ export class WebComponentService {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, context, node, nodeId) {
+  renderWebComponent(viewUrl: string, wc_container: HTMLElement | any, context: any, node: any, nodeId?: string) {
     const i18nViewUrl = this.processViewUrl(viewUrl, { context });
     const wc_id =
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
@@ -194,18 +204,23 @@ export class WebComponentService {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
+      console.log('inside first if');
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
     } else {
       /** Custom import function, if defined */
+      console.log('inside second if');
       if ((window as any).luigiWCFn) {
+        console.log('inside second if 1');
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
+        console.log('inside second if 2');
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else {
+        console.log('inside second if 3');
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
@@ -219,7 +234,7 @@ export class WebComponentService {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer, ctx): Promise<HTMLElement> {
+  createCompoundContainerAsync(renderer: any, ctx: any): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
@@ -243,14 +258,16 @@ export class WebComponentService {
    * micro frontend.
    *
    * @param {*} navNode the navigation node defining the compound
-   * @param {*} wc_container the web component container dom element
+   * @param {HTMLElement} wc_container the web component container dom element
    * @param {*} context the luigi node context
    */
-  renderWebComponentCompound(navNode, wc_container, context) {
+  renderWebComponentCompound(navNode, wc_container: HTMLElement, context) {
     let renderer;
     if (navNode.webcomponent && navNode.viewUrl) {
+      console.log('renderWebComponentCompound - webcomponent node');
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = this.processViewUrl(navNode.viewUrl, { context });
+      console.log('test 001');
       renderer.createCompoundItemContainer = layoutConfig => {
         var cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {
@@ -259,13 +276,16 @@ export class WebComponentService {
         return cnt;
       };
     } else if (navNode.compound?.renderer) {
+      console.log('test 002');
       renderer = resolveRenderer(navNode.compound.renderer);
     }
+    console.log('test 003');
 
     renderer = renderer || new DefaultCompoundRenderer();
 
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, context).then((compoundCnt: HTMLElement) => {
+        console.log('test 004');
         const ebListeners = {};
         (compoundCnt as any).eventBus = {
           listeners: ebListeners,
@@ -288,20 +308,26 @@ export class WebComponentService {
             });
           }
         };
+        console.log('test 005');
         navNode.compound?.children.forEach((wc, index) => {
           const ctx = { ...context, ...wc.context };
+          console.log('test forEach', index, wc);
           const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
+
           compoundItemCnt.eventBus = (compoundCnt as any).eventBus;
           renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
           const nodeId = wc.id || 'gen_' + index;
+          console.log('before rednerWebComponent', index, wc, wc.viewUrl);
           this.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, wc, nodeId);
           registerEventListeners(ebListeners, wc, nodeId);
         });
+        console.log('test 006');
         wc_container.appendChild(compoundCnt);
-
+        console.log('test 007');
         // listener for nesting wc
         registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
+        console.log('test 008');
         resolve(compoundCnt);
       });
     });

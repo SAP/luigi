@@ -58,13 +58,19 @@
     const node = {
       compound: thisComponent.compoundConfig
     }; // TODO: fill with sth
+    console.log('inside 001');
     webcomponentService
       .renderWebComponentCompound(node, mainComponent, context)
       .then(compCnt => {
+        console.log('inside 0000');
         eventBusElement = compCnt;
       });
+
+    console.log('inside 002');
     initialized = true;
   };
+
+  console.log('inside ---1');
 
   containerService.registerContainer(thisComponent);
 
@@ -73,6 +79,7 @@
   }
 
   onMount(async () => {
+    console.log('onMount');
     const ctx = context ? JSON.parse(context) : undefined;
     console.log(ctx);
   });

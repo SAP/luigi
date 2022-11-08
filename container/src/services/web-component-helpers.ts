@@ -18,11 +18,11 @@ export class DefaultCompoundRenderer {
     return document.createElement('div');
   }
 
-  createCompoundItemContainer(layoutConfig?: any) {
+  createCompoundItemContainer(layoutConfig?: any): HTMLDivElement {
     return document.createElement('div');
   }
 
-  attachCompoundItem(compoundCnt, compoundItemCnt) {
+  attachCompoundItem(compoundCnt, compoundItemCnt): void {
     compoundCnt.appendChild(compoundItemCnt);
   }
 }
@@ -43,7 +43,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     }
   }
 
-  createCompoundContainer() {
+  createCompoundContainer(): HTMLDivElement {
     if (this.rendererObject.use.createCompoundContainer) {
       return this.rendererObject.use.createCompoundContainer(this.config, this.superRenderer);
     } else if (this.superRenderer) {
@@ -52,7 +52,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     return super.createCompoundContainer();
   }
 
-  createCompoundItemContainer(layoutConfig) {
+  createCompoundItemContainer(layoutConfig): HTMLDivElement {
     if (this.rendererObject.use.createCompoundItemContainer) {
       return this.rendererObject.use.createCompoundItemContainer(layoutConfig, this.config, this.superRenderer);
     } else if (this.superRenderer) {
@@ -61,7 +61,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     return super.createCompoundItemContainer(layoutConfig);
   }
 
-  attachCompoundItem(compoundCnt, compoundItemCnt) {
+  attachCompoundItem(compoundCnt, compoundItemCnt): void {
     if (this.rendererObject.use.attachCompoundItem) {
       this.rendererObject.use.attachCompoundItem(compoundCnt, compoundItemCnt, this.superRenderer);
     } else if (this.superRenderer) {
@@ -121,7 +121,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
     return compoundCnt;
   }
 
-  createCompoundItemContainer(layoutConfig) {
+  createCompoundItemContainer(layoutConfig): HTMLDivElement {
     const config = layoutConfig || {};
     const compoundItemCnt = document.createElement('div');
     compoundItemCnt.setAttribute('style', `grid-row: ${config.row || 'auto'}; grid-column: ${config.column || 'auto'}`);
@@ -159,7 +159,7 @@ export const resolveRenderer = rendererConfig => {
  * @param {*} nodeId the web component node id
  * @param {*} wcElement the web component element - optional
  */
-export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcElement?) => {
+export const registerEventListeners = (eventbusListeners, navNode, nodeId: string, wcElement?) => {
   if (navNode?.eventListeners) {
     navNode.eventListeners.forEach(el => {
       const evID = el.source + '.' + el.name;

@@ -254,7 +254,6 @@
     <div class="lui-wrapper" route="dashboard">
       <luigi-compound-container
         context='{"label": "Dashboard"}'
-        defer-init
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="team">
@@ -282,10 +281,8 @@
     </div>
 
     <script>
-      var layoutMFEDomain =
-        window._layoutMFEDomain || 'https://luigiwebcomponents.gitlab.io/layouts';
-      var utilMFEDomain =
-        window._utilMFEDomain || 'https://luigiwebcomponents.gitlab.io/util';
+      var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
+      var utilMFEDomain = 'https://luigiwebcomponents.gitlab.io/util';
 
       document.querySelector('luigi-compound-container').compoundConfig = {
         renderer: {
@@ -393,26 +390,26 @@
 
       //   document.querySelector('luigi-compound-container')?.init();
 
-      [
-        ...document.querySelectorAll('luigi-container'),
-        ...document.querySelectorAll('luigi-compound-container')
-      ].forEach(luigiContainer => {
-        luigiContainer.addEventListener('navigate', event => {
-          console.log(event.detail);
-          window.location.hash = event.detail.params.link;
-        });
-        luigiContainer.addEventListener('alert-request', event => {
-          console.log(event.detail);
-          alert(event.detail.text);
-        });
-        luigiContainer.addEventListener('confirmation-request', event => {
-          console.log(event.detail);
-          const val = confirm(event.detail.body);
-          event.luigiCallback(val);
-        });
+      // [
+      //   ...document.querySelectorAll('luigi-container'),
+      //   ...document.querySelectorAll('luigi-compound-container')
+      // ].forEach(luigiContainer => {
+      //   luigiContainer.addEventListener('navigate', event => {
+      //     console.log(event.detail);
+      //     window.location.hash = event.detail.params.link;
+      //   });
+      //   luigiContainer.addEventListener('alert-request', event => {
+      //     console.log(event.detail);
+      //     alert(event.detail.text);
+      //   });
+      //   luigiContainer.addEventListener('confirmation-request', event => {
+      //     console.log(event.detail);
+      //     const val = confirm(event.detail.body);
+      //     event.luigiCallback(val);
+      //   });
 
-        //...
-      });
+      //   //...
+      // });
     </script>
   </body>
 </html>

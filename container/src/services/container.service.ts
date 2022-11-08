@@ -61,7 +61,7 @@ export class ContainerService {
     return globalThis.__luigi_container_manager;
   }
 
-  registerContainer(container: HTMLElement) {
+  registerContainer(container: HTMLElement): void {
     this.getContainerManager().container.push(container);
   }
 }

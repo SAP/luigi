@@ -5,7 +5,7 @@ function activateRoute() {
     window.location.hash?.length > 0 && window.location.hash !== '#/'
       ? window.location.hash.substring(1)
       : defaultRoute;
-  console.log(route);
+  console.log('route:', route);
 
   // navigation state
   const navCnt = document.querySelector('[top-navigation]');
