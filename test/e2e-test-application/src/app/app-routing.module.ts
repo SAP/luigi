@@ -22,6 +22,9 @@ import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.c
 import { PreloadComponent } from './preload/preload.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
 import { ViewGroupComponent } from './project/view-group/view-group.component';
+import { Sample1Component } from './client-support-angular/sample1/sample1.component';
+import { Sample2Component } from './client-support-angular/sample2/sample2.component';
+import { Sample3Component } from './client-support-angular/sample3/sample3.component';
 
 const routes: Routes = [
   { path: 'preload', component: PreloadComponent },
@@ -53,7 +56,10 @@ const routes: Routes = [
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
   { path: 'internal/virtualTree', component: SettingsComponent },
-  { path: 'projects/:projectId/developers/internal/virtualTree', component: SettingsComponent },
+  {
+    path: 'projects/:projectId/developers/internal/virtualTree',
+    component: SettingsComponent
+  },
 
   { path: 'projects/:projectId/drawer', component: DrawerComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
@@ -124,11 +130,31 @@ const routes: Routes = [
   {
     path: 'view-group/:vg',
     component: ViewGroupComponent
+  },
+  {
+    path: 'luigi-client-support-preload',
+    component: Sample1Component,
+    data: { fromVirtualTreeRoot: true }
+  },
+  {
+    path: 'luigi-client-support-preload',
+    component: Sample2Component,
+    data: { luigiRoute: '/home/sample2' }
+  },
+  {
+    path: 'luigi-client-support-preload',
+    component: Sample3Component,
+    data: { reuse: true }
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true, relativeLinkResolution: 'legacy' })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      relativeLinkResolution: 'legacy'
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -31,6 +31,10 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
 import { ViewGroupComponent } from './project/view-group/view-group.component';
+import { LuigiAngularSupportModule } from '@luigi-project/client-support-angular';
+import { YourLuigiContextService } from './client-support-angular/your-luigi-context.service';
+import { RouteReuseStrategy } from '@angular/router';
+import { YourLuigiRouteStrategy } from './client-support-angular/your-luigi-route-strategy';
 
 @NgModule({
   declarations: [
@@ -61,10 +65,18 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
     NavSyncComponent,
     ViewGroupComponent
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, LuigiAngularSupportModule],
   providers: [
     LuigiContextService,
-    LuigiAutoNavigationService
+    LuigiAutoNavigationService,
+    {
+      provide: LuigiContextService,
+      useClass: YourLuigiContextService
+    },
+    {
+      provide: RouteReuseStrategy,
+      useClass: YourLuigiRouteStrategy
+    }
   ],
   bootstrap: [AppComponent]
 })

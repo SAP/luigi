@@ -31,6 +31,8 @@
     "@luigi-project/core": "1.24.0",
     "@luigi-project/plugin-auth-oauth2": "1.0.0",
     "@luigi-project/plugin-auth-oidc": "1.0.0",
+    "@luigi-project/client-support-angular": "1.25.1",
+    "@luigi-project/testing-utilities": "1.25.1",
     "@sap-theming/theming-base-content": "^11.1.41",
     "core-js": "^2.4.1",
     "fundamental-styles": "^0.17.0",
