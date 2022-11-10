@@ -983,7 +983,7 @@ Get the document title
 Luigi.ux().getDocumentTitle();
 ```
 
-Returns **any** a string, which is displayed in the tab.
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string, which is displayed in the tab.
 
 **Meta**
 

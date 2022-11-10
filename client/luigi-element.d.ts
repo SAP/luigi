@@ -63,41 +63,10 @@ declare interface NodeParams {
 
 declare interface UxManager {
   /**
-   * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
+   * Hides the app loading indicator.
    * @memberof uxManager
    */
-  addBackdrop: () => void;
-
-  /**
-   * Removes the backdrop.
-   * @memberof uxManager
-   */
-  removeBackdrop: () => void;
-
-  /**
-   * Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.enabled} setting.
-   * @memberof uxManager
-   */
-  showLoadingIndicator: () => void;
-
-  /**
-   * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.hideAutomatically: false} node configuration.
-   * @memberof uxManager
-   */
-  hideLoadingIndicator: () => void;
-
-  /**
-   * Closes the currently opened micro frontend modal.
-   * @memberof uxManager
-   */
-  closeCurrentModal: () => void;
-
-  /**
-   * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
-   * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
-   * @memberof uxManager
-   */
-  setDirtyStatus: (isDirty: boolean) => void;
+  hideAppLoadingIndicator: () => void;
 
   /**
    * Shows an alert.
@@ -161,18 +130,97 @@ declare interface UxManager {
   showConfirmationModal: (settings: ConfirmationModalSettings) => Promise<void>;
 
   /**
+   * Set the document title
+   * @memberof UX
+   * @param {string} documentTitle
+   * @since 1.4.0
+   * @example Luigi.ux().setDocumentTitle('Luigi');
+   */
+  setDocumentTitle: (documentTitle: string) => void;
+
+  /**
+   * Get the document title
+   * @memberof UX
+   * @since 1.4.0
+   * @returns a string, which is displayed in the tab.
+   * @example Luigi.ux().getDocumentTitle();
+   */
+  getDocumentTitle: () => string;
+
+  /**
+   * Set the collapsed state of the left side navigation
+   * @memberof UX
+   * @param {boolean} state
+   * @since 1.5.0
+   */
+  collapseLeftSideNav: (state: boolean) => void;
+
+  /**
+   * Open user settings dialog
+   * @memberof UX
+   * @since 1.7.1
+   */
+  openUserSettings: () => void;
+
+  /**
+   * Close user settings dialog
+   * @memberof UX
+   * @since 1.7.1
+   */
+  closeUserSettings: () => void;
+
+  //TODO ??? it's private
+  /**
+   * Removes the backdrop.
+   * @memberof uxManager
+   */
+  removeBackdrop: () => void;
+
+  //TODO remove
+  /**
+   * Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
+   * @memberof uxManager
+   */
+  // addBackdrop: () => void;
+
+  /**
+   * Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.enabled} setting.
+   * @memberof uxManager
+   */
+  //showLoadingIndicator: () => void;
+
+  /**
+   * Removes the loading indicator. Use it after calling {@link #showLoadingIndicator showLoadingIndicator()} or to hide the indicator when you use the {@link navigation-parameters-reference.md#node-parameters loadingIndicator.hideAutomatically: false} node configuration.
+   * @memberof uxManager
+   */
+  //hideLoadingIndicator: () => void;
+
+  /**
+   * Closes the currently opened micro frontend modal.
+   * @memberof uxManager
+   */
+  //closeCurrentModal: () => void;
+
+  /**
+   * This method informs the main application that there are unsaved changes in the current view in the iframe. For example, that can be a view with form fields which were edited but not submitted.
+   * @param {boolean} isDirty indicates if there are any unsaved changes on the current page or in the component
+   * @memberof uxManager
+   */
+  //setDirtyStatus: (isDirty: boolean) => void;
+
+  /**
    * Gets the current locale.
    * @returns {string} current locale
    * @memberof uxManager
    */
-  getCurrentLocale: () => string;
+  //getCurrentLocale: () => string;
 
   /**
    * Gets the current theme.
    * @returns {*} current themeObj
    * @memberof uxManager
    */
-  getCurrentTheme: () => any;
+  //getCurrentTheme: () => any;
 
   /**
    * Sets current locale to the specified one.
@@ -182,7 +230,7 @@ declare interface UxManager {
    * @param {string} locale locale to be set as the current locale
    * @memberof uxManager
    */
-  setCurrentLocale: (locale: string) => void;
+  //setCurrentLocale: (locale: string) => void;
 
   /**
    * Checks if the current micro frontend is displayed inside a split view
@@ -190,7 +238,7 @@ declare interface UxManager {
    * @memberof uxManager
    * @since 0.6.0
    */
-  isSplitView: () => boolean;
+  //isSplitView: () => boolean;
 
   /**
    * Checks if the current micro frontend is displayed inside a modal
@@ -198,18 +246,94 @@ declare interface UxManager {
    * @memberof uxManager
    * @since 0.6.0
    */
-  isModal: () => boolean;
+  //isModal: () => boolean;
 }
 
 declare interface LinkManager {
   /**
-   * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
-   * @memberof linkManager
-   * @returns {linkManager} link manager instance
+   * Refreshes top navigation badge counters by rendering the navigation again.
+   * @memberof LuigiNavigation
    * @example
-   * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
+   * Luigi.navigation().updateTopNavigation();
    */
-  fromClosestContext: () => this;
+  updateTopNavigation: () => void;
+
+  /**
+   * Navigates to the given path in the application. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
+   * @memberof LuigiNavigation
+   * @param {string} path path to be navigated to
+   * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
+   * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
+   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
+   * @param {Object} drawerSettings opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+   * @param {any} drawerSettings.header By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
+   * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+   * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
+   * @example
+   * Luigi.navigation().navigate('/overview')
+   * Luigi.navigation().navigate('users/groups/stakeholders')
+   * Luigi.navigation().navigate('/settings', null, true) // preserve view
+   */
+  navigate: (
+    path: string,
+    preserveView?: boolean,
+    modalSettings?: ModalSettings,
+    splitViewSettings?: SplitViewSettings,
+    drawerSettings?: DrawerSettings
+  ) => void;
+
+  /**
+   * Opens a view in a modal. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+   * @memberof LuigiNavigation
+   * @param {string} path navigation path
+   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
+   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
+   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @example
+   * Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   */
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+
+  /**
+   * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
+   * @memberof LuigiNavigation
+   * @param {string} path navigation path
+   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
+   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
+   * @param {number} [splitViewSettings.size=40] height of the split view in percent
+   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
+   * @returns {Object} an instance of the SplitView. It provides functions to control its behavior.
+   * @see {@link https://docs.luigi-project.io/docs/luigi-client-api?section=splitview|SplitView Client} for further documentation. These methods from the Client SplitView are also implemented for Luigi Core: `close`, `collapse`, `expand`, `isCollapsed`, `isExpanded`, `exists`
+   *
+   * @since 0.7.6
+   * @example
+   * LuigiClient.linkManager().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
+   */
+  openAsSplitView: (path: string, splitViewSettings?: SplitViewSettings) => SplitViewInstance;
+
+  /**
+   * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
+   * @memberof LuigiNavigation
+   * @param {string} path navigation path
+   * @param {Object} [drawerSettings] opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+   * @param {any} drawerSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view. The header could also be an object with a `title` attribute to specify an own title for the drawer component.
+   * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+   * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
+   * @since 1.6.0
+   * @example
+   * Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
+   * Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
+   */
+  openAsDrawer: (nodepath: string, drawerSettings?: DrawerSettings) => void;
 
   /**
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
@@ -222,18 +346,17 @@ declare interface LinkManager {
   fromContext: (navigationContext: string) => this;
 
   /**
-   * Enables navigating to sibling nodes without knowing the absolute path
+   * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
-   * @since 1.0.1
    * @example
-   * LuigiClient.linkManager().fromParent().navigate('/sibling')
+   * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
-  fromParent: () => this;
+  fromClosestContext: () => this;
 
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
-   * @memberof linkManager
+   * @memberof LuigiNavigation
    * @returns {linkManager} link manager instance
    * @since 1.0.1
    * @example
@@ -242,58 +365,17 @@ declare interface LinkManager {
   fromVirtualTreeRoot: () => this;
 
   /**
-   * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
+   * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof linkManager
-   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views
+   * @param {Object} nodeParams
+   * @returns {linkManager} link manager instance
    * @example
-   * LuigiClient.linkManager().goBack({ foo: 'bar' });
-   * LuigiClient.linkManager().goBack(true);
+   * LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
+   *
+   * // Can be chained with context setting functions such as:
+   * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
-  goBack: (goBackValue: any) => void;
-
-  /**
-   * Checks if there is one or more preserved views. You can use it to show a **back** button.
-   * @memberof linkManager
-   * @returns {boolean} indicating if there is a preserved view you can return to
-   */
-  hasBack: () => boolean;
-
-  /**
-   * Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
-   * @memberof linkManager
-   * @param {string} path path to be navigated to
-   * @param {string} sessionId current Luigi **sessionId**
-   * @param {boolean} preserveView preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the {@link #goBack goBack()} function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard {@link #navigate navigate()} function instead of {@link #goBack goBack()}
-   * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
-   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
-   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
-   * @param {number} [splitViewSettings.size=40] height of the split view in percent
-   * @param {boolean} [splitViewSettings.collapsed=false] creates split view but leaves it closed initially
-   * @example
-   * LuigiClient.linkManager().navigate('/overview')
-   * LuigiClient.linkManager().navigate('users/groups/stakeholders')
-   * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
-   * LuigiClient.linkManager().navigate('#?intent=Sales-order?id=13') // intent navigation
-   */
-  navigate: (path: string, sessionId?: string, preserveView?: boolean, modalSettings?: ModalSettings) => void;
-
-  /**
-   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
-   * parameters.
-   * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
-   * input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
-   * Consequently, the following calls shall have the exact same effect:
-   * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
-   * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
-   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
-   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`.
-   * @example
-   * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
-   * LuigiClient.linkManager().navigateToIntent('Sales-settings')
-   */
-  navigateToIntent: (semanticSlug: string, params?: Object) => void;
+  withParams: (nodeParams: NodeParams) => this;
 
   /** @lends linkManager */
   /**
@@ -313,17 +395,47 @@ declare interface LinkManager {
   pathExists: (path: string) => Promise<boolean>;
 
   /**
-   * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
-   * @memberof linkManager
-   * @param {Object} nodeParams
-   * @returns {linkManager} link manager instance
+   * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
+   * @memberof LuigiNavigation
+   * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views
    * @example
-   * LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
-   *
-   * // Can be chained with context setting functions such as:
-   * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+   * Luigi.navigation().goBack({ foo: 'bar' });
+   * Luigi.navigation().goBack(true);
    */
-  withParams: (nodeParams: NodeParams) => this;
+  goBack: (goBackValue: any) => this;
+
+  /**
+   * Checks if there is one or more preserved views. You can use it to show a **back** button.
+   * @memberof linkManager
+   * @returns {boolean} indicating if there is a preserved view you can return to
+   */
+  hasBack: () => boolean;
+
+  /**
+   * Enables navigating to sibling nodes without knowing the absolute path
+   * @memberof linkManager
+   * @returns {linkManager} link manager instance
+   * @since 1.0.1
+   * @example
+   * LuigiClient.linkManager().fromParent().navigate('/sibling')
+   */
+  //fromParent: () => this;
+
+  /**
+   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+   * parameters.
+   * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+   * input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+   * Consequently, the following calls shall have the exact same effect:
+   * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
+   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`.
+   * @example
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings')
+   */
+  //navigateToIntent: (semanticSlug: string, params?: Object) => void;
 
   /**
    * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
@@ -338,20 +450,7 @@ declare interface LinkManager {
    * { preventContextUpdate:true, preventHistoryEntry: true }
    * ).navigate('/overview')
    */
-  withOptions: (options: RouteChangingOptions) => this;
-
-  /**
-   * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
-   * @memberof linkManager
-   * @param {string} path navigation path
-   * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
-   * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
-   * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
-   * @example
-   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
-   */
-  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+  //withOptions: (options: RouteChangingOptions) => this;
 
   /**
    * Update current title and size of a modal.
@@ -362,38 +461,7 @@ declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
    */
-  updateModalSettings: (updatedModalSettings: Object) => void;
-
-  /**
-   * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
-   * @memberof linkManager
-   * @param {string} path navigation path
-   * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
-   * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
-   * @param {number} [splitViewSettings.size=40] height of the split view in percent
-   * @param {boolean} [splitViewSettings.collapsed=false] opens split view in collapsed state
-   * @returns {Object} instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
-   * @see {@link splitView} for further documentation about the returned instance
-   * @since 0.6.0
-   * @example
-   * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
-   */
-  openAsSplitView: (path: string, splitViewSettings?: SplitViewSettings) => SplitViewInstance;
-
-  /**
-   * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
-   * @memberof linkManager
-   * @param {string} path navigation path
-   * @param {Object} [drawerSettings] opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
-   * @param {any} drawerSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view. The header could also be an object with a `title` attribute to specify an own title for the drawer component.
-   * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
-   * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
-   * @since 1.6.0
-   * @example
-   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
-   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
-   */
-  openAsDrawer: (nodepath: string, drawerSettings?: DrawerSettings) => void;
+  //updateModalSettings: (updatedModalSettings: Object) => void;
 
   /**
    * Disables the navigation handling for a single navigation request
@@ -404,7 +472,7 @@ declare interface LinkManager {
    * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
-  withoutSync: () => this;
+  //withoutSync: () => this;
 
   /**
    * Updates path of the modalPathParam when internal navigation occurs
@@ -412,7 +480,7 @@ declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
    */
-  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry?: boolean) => void;
+  //updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry?: boolean) => void;
 
   /**
    * Enables navigating to a new tab.
@@ -420,7 +488,7 @@ declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
-  newTab: () => this;
+  //newTab: () => this;
 
   /**
    * Keeps the URL's query parameters for a navigation request.
@@ -430,7 +498,7 @@ declare interface LinkManager {
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
    */
-  preserveQueryParams: (preserve: boolean) => this;
+  //preserveQueryParams: (preserve: boolean) => this;
 
   /**
    * Gets the luigi route associated with the current micro frontend.
@@ -441,15 +509,25 @@ declare interface LinkManager {
    * LuigiClient.linkManager().fromContext('project').getCurrentRoute();
    * LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
    */
-  getCurrentRoute: () => Promise<string>;
+  //getCurrentRoute: () => Promise<string>;
 }
 
 export declare class LuigiElement extends HTMLElement {
-  protected render(ctx?: Object): string;
+  /**
+   *
+   * @param options if `true` shadowRoot mode is "open" otherwise shadowRoot mode is "closed".
+   */
+  constructor(options?: Options);
+  render(ctx?: Object): string;
   update(): void;
   onContextUpdate(ctx: Object): void;
+  afterInit(ctx: Object): void;
   LuigiClient: LuigiClient;
-  _shadowRoot: any;
+  querySelector(selector: string): any;
+}
+
+declare interface Options {
+  openShadow: boolean;
 }
 
 export declare const html: (strings: TemplateStringsArray, ...values: unknown[]) => string;
