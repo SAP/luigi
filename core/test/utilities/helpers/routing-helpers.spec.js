@@ -348,6 +348,30 @@ describe('Routing-helpers', () => {
     });
   });
 
+  describe('getContext', () => {
+    const context = { someValue: 'foo' };
+    const node = {
+      context,
+      externalLink: { url: 'https://someurl.com', sameWindow: false },
+      label: 'External link'
+    };
+    it('get context from node', () => {
+      assert.deepEqual(RoutingHelpers.getContext(node, undefined), context);
+      assert.deepEqual(RoutingHelpers.getContext(node, null), context);
+    });
+    it('get context directly', () => {
+      const ctx = { someValue: 'bar' };
+      assert.deepEqual(RoutingHelpers.getContext(node, ctx), ctx);
+    });
+    it('get context with parent node', () => {
+      const parentContext = { otherValue: 'parent' };
+      const nodeWithParent = { ...node, parent: { context: parentContext } };
+      const expect = { ...context, ...parentContext };
+      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, undefined), expect);
+      assert.deepEqual(RoutingHelpers.getContext(nodeWithParent, null), expect);
+    });
+  });
+
   describe('buildRoute', () => {
     const node = {
       pathSegment: 'one',
@@ -368,6 +392,10 @@ describe('Routing-helpers', () => {
   });
   describe('getRouteLink', () => {
     beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
       sinon.stub(LuigiConfig, 'getConfigBooleanValue');
       sinon.stub(Routing, 'buildFromRelativePath');
       sinon.stub(RoutingHelpers, 'buildRoute');
@@ -376,15 +404,14 @@ describe('Routing-helpers', () => {
     afterEach(() => {
       sinon.restore();
     });
-    it('externalLink', () => {
-      const expected = { url: 'https://luigi-project.io' };
-      const given = {
-        externalLink: expected,
-        link: 'something',
-        pathSegment: 'something-else'
+    it('external link with context templating', () => {
+      const node = {
+        externalLink: { url: 'https://luigi.io?foo={context.someValue}', sameWindow: true },
+        context: { someValue: 'bar' }
       };
-
-      assert.equal(RoutingHelpers.getRouteLink(given), expected);
+      const expected = 'https://luigi.io?foo=bar';
+      GenericHelpers.replaceVars.returns(expected);
+      assert.equal(RoutingHelpers.getRouteLink(node, {}), expected);
     });
     it('when it starts with /', () => {
       const expected = '/projects';
@@ -420,6 +447,32 @@ describe('Routing-helpers', () => {
       sinon.assert.notCalled(Routing.buildFromRelativePath);
       sinon.assert.calledWith(RoutingHelpers.buildRoute, given, '/' + given.pathSegment);
       sinon.assert.calledWith(GenericHelpers.replaceVars, expected, undefined, ':', false);
+    });
+  });
+  describe('calculateNodeHref', () => {
+    beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
+      sinon.stub(RoutingHelpers, 'getRouteLink');
+      sinon
+        .stub(LuigiConfig, 'getConfigValue')
+        .withArgs('routing.useHashRouting')
+        .returns(false);
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('get node href', () => {
+      const url = 'https://luigi-project.io';
+      const node = {
+        externalLink: { url },
+        link: 'something',
+        pathSegment: 'something-else'
+      };
+      RoutingHelpers.getRouteLink.returns({ url });
+      expect(RoutingHelpers.calculateNodeHref(node, {})).to.equal('https://luigi-project.io');
     });
   });
   describe('getNodeHref', () => {
@@ -494,6 +547,14 @@ describe('Routing-helpers', () => {
     it('should not fail on empty params', () => {
       mockParams = '';
       expect(RoutingHelpers.parseParams(mockParams)).to.deep.equal({});
+    });
+
+    it('return pairs of params with a space and a plus', () => {
+      mockParams = 'test=true+abc&foo=bar%2Babc';
+      assert.deepEqual(RoutingHelpers.parseParams(mockParams), {
+        test: 'true abc',
+        foo: 'bar+abc'
+      });
     });
   });
 

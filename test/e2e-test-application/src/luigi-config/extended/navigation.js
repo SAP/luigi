@@ -36,6 +36,11 @@ class Navigation {
       semanticObject: 'Component',
       action: 'settings',
       pathSegment: '/projects/:project/settings'
+    },
+    {
+      semanticObject: 'External',
+      action: 'view',
+      externalLink: { url: 'https://www.sap.com', openInNewTab: true }
     }
   ];
   nodeAccessibilityResolver = navigationPermissionChecker;
@@ -44,7 +49,10 @@ class Navigation {
       pathSegment: 'overview',
       label: 'Overview',
       viewUrl: '/sampleapp.html#/overview',
-      hideSideNav: true
+      hideSideNav: true,
+      statusBadge: {
+        label: 'OV'
+      }
     },
     {
       pathSegment: 'projects',
@@ -139,7 +147,11 @@ class Navigation {
       showLabel: true,
       hideSideNav: false,
       globalNav: true,
-      testId: 'icon-and-label'
+      testId: 'icon-and-label',
+      statusBadge: {
+        label: 'Git',
+        type: 'negative'
+      }
     },
     {
       globalNav: true,

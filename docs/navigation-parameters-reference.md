@@ -187,6 +187,7 @@ settings: {
 - **attributes**:
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
+  - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 
 
 ## Node parameters
@@ -586,6 +587,26 @@ runTimeErrorHandler: {
 - **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened. Note that this will be applied to its direct children.
 - **default**: `false`
 
+### statusBadge
+- **type**: object
+- **description**: Allows you to set a status badge for this node. The status badge is a small label next to the title of the node, based on the Fundamental Styles [object status](https://sap.github.io/fundamental-styles/?path=/docs/components-object-status--clickable-object-status).
+- **attributes**:
+  - **label**: string specifying the text displayed on the status badge.
+  - **type**: string. Allowed values are `negative`, `positive`, `critical`, `informative`, or `neutral`. The default is `neutral`.
+- **example**:
+    ```javascript
+    {
+      pathSegment: 'settings',
+      label: 'Settings',
+      viewUrl: '/sampleapp.html#/settings',
+      statusBadge: {
+        label: 'Settings',
+        type: 'positive'
+      }
+    }
+    ```
+ - **since**: 1.25.0
+
 ### tabNav
 - **type**: boolean
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
@@ -679,10 +700,6 @@ settings: {
 - **since**: 1.4.0
 
 
-
-
-
-
 ### webcomponent
 - **type**: boolean OR object
 - **description**: mark a node as web component either by setting this attribute to `true` or defining an object with the attributes described below. In the latter case, the `viewUrl` attribute of the node must point to the web component `.js` file.
@@ -692,7 +709,6 @@ settings: {
   - **selfRegistered**: if it is `true`, the web component bundle will be added via script tag.
   - **tagName**: tag name where web component is added to DOM.
 - **since**: 1.7.0
-
 
 
 
@@ -896,7 +912,7 @@ The app switcher is a dropdown list available in the top navigation bar. It allo
       }
     }
   ```
-- **since**: NEXTRELEASE
+- **since**: 1.25.0
 
 ### items
 - **type**: array

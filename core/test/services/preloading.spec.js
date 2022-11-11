@@ -273,5 +273,22 @@ describe('Iframe', () => {
 
       assert.equal(iframe.luigi.preloading, false);
     });
+
+    it('preloadIframeOnBackground()', () => {
+      const iframeContainer = {
+        appendChild: sinon.stub()
+      };
+      sinon.stub(IframeHelpers, 'createIframe').returns({
+        style: {
+          display: 'test'
+        },
+        luigi: {
+          preloading: false
+        }
+      });
+      ViewGroupPreloading.preloadIframeOnBackground({ preloadUrl: 'test' }, 'name', iframeContainer);
+      sinon.assert.calledOnce(IframeHelpers.createIframe);
+      sinon.assert.calledOnce(iframeContainer.appendChild);
+    });
   });
 });
