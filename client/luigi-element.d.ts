@@ -522,8 +522,8 @@ export declare class LuigiElement extends HTMLElement {
   update(): void;
   onContextUpdate(ctx: Object): void;
   afterInit(ctx: Object): void;
-  LuigiClient: LuigiClient;
   querySelector(selector: string): any;
+  LuigiClient: LuigiClient;
 }
 
 declare interface Options {
@@ -546,4 +546,5 @@ export interface LuigiClient {
   getCurrentLocale: () => string;
   linkManager: () => LinkManager;
   uxManager: () => UxManager;
+  publishEvent: (event: Event) => void;
 }
