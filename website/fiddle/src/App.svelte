@@ -1,9 +1,9 @@
 <script>
-  import * as luigiCorePkg from '../node_modules/@luigi-project/core/package.json';
+  import luigiCorePkgInfo from '../node_modules/@luigi-project/core/package.json';
   import defaultConfig from './defaultConfig.js';
   import { onMount } from 'svelte';
 
-  export let luigiVersion = luigiCorePkg.version;
+  export let luigiVersion = luigiCorePkgInfo.version;
 
   let defaultConfigString = defaultConfig;
   let configString = defaultConfigString;
@@ -268,13 +268,15 @@
           <a
             class="fd-link"
             href="https://www.sap.com/about/legal/privacy.html"
-            target="_blank">
+            target="_blank"
+            rel="noreferrer">
             Privacy Policy &nbsp&nbsp
           </a>
           <a
             class="fd-link"
             href="https://www.sap.com/about/legal/impressum.html"
-            target="_blank">
+            target="_blank"
+            rel="noreferrer">
             Legal
           </a>
         </span>
