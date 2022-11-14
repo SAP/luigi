@@ -155,6 +155,10 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
   - **semanticObject**(string): may represent a business entity such as a sales order or a product. It enables navigating to such entities in an abstract implementation-independent way. It can only only contain alphanumerical characters.
   - **action**(string): defines an operation, i.e.: `display`, `approve` or `edit`. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical characters but also the underscore character.
   - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the Luigi configuration.
+  - **externalLink**(object): used to resolve the intent to an external link. This parameter is optional. When used, the **pathSegment** parameter is ignored.
+    - **attributes**:
+      - **url**(string): url the intent gets resolved to
+      - **openInNewTab**(boolean): if set to true opens the specified url in a new tab, otherwise it opens it in the current tab
 
 ### nodeAccessibilityResolver
 - **type**: any

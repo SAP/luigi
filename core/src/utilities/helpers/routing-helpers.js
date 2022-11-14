@@ -431,10 +431,27 @@ class RoutingHelpersClass {
    *                     action: 'order',
    *                     pathSegment: '/projects/pr2/order'
    * }]
+   *
    * ```
    * the given intentLink is matched with the configuration's same semanticObject and action,
    * resulting in pathSegment `/projects/pr2/order` being returned. The parameter is also added in
    * this case resulting in: `/projects/pr2/order?~foo=bar`
+   *
+   * Or for external intent links: intentLink = `#?intent=External-external`
+   * and Luigi configuration:
+   * ```
+   * intentMapping: [{
+   *                     semanticObject: 'External',
+   *                     action: 'view',
+   *                     externalLink: { url: 'https://www.sap.com', openInNewTab: true }
+   * }]
+   * ```
+   * The resulting will be returned:
+   *          {
+   *             url: 'https://www.sap.com',
+   *             openInNewTab: true,
+   *             external: true
+   *          }
    * @param {string} intentLink  the intentLink represents the semantic intent defined by the user
    *                        i.e.: #?intent=semanticObject-action?param=value
    */
@@ -455,7 +472,7 @@ class RoutingHelpersClass {
           return {
             ...realPath.externalLink,
             external: true
-          }
+          };
         }
         realPath = realPath.pathSegment;
 
