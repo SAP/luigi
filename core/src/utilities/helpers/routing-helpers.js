@@ -446,12 +446,14 @@ class RoutingHelpersClass {
    *                     externalLink: { url: 'https://www.sap.com', openInNewTab: true }
    * }]
    * ```
-   * The resulting will be returned:
+   * The resulting will be returned from this function:
+   * ```
    *          {
    *             url: 'https://www.sap.com',
    *             openInNewTab: true,
    *             external: true
    *          }
+   * ```
    * @param {string} intentLink  the intentLink represents the semantic intent defined by the user
    *                        i.e.: #?intent=semanticObject-action?param=value
    */
