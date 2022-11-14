@@ -16,7 +16,6 @@
   },
   "scripts": {
     "start": "npm run dev",
-    "test": "NODE_OPTIONS=--stats-error-details webpack ",
     "build": "node patch.js && node build_patch_ui5.js && cross-env NODE_ENV=production webpack",
     "dev": "node patch.js && node build_patch_ui5.js && webpack serve  --static public"
   },
