@@ -157,8 +157,8 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
   - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the Luigi configuration.
   - **externalLink**(object): used to resolve the intent to an external link. This parameter is optional. When used, the **pathSegment** parameter is ignored.
     - **attributes**:
-      - **url**(string): url the intent gets resolved to
-      - **openInNewTab**(boolean): if set to true opens the specified url in a new tab, otherwise it opens it in the current tab
+      - **url**(string): URL the intent gets resolved to.
+      - **openInNewTab**(boolean): if set to `true`, opens the specified URL in a new tab. Otherwise, it opens it in the current tab.
 
 ### nodeAccessibilityResolver
 - **type**: any
