@@ -9,7 +9,7 @@ import {
   removeContextUpdateListener,
   storageManager
 } from '@luigi-project/client';
-import { IContextMessage, LuigiContextService } from '../services/luigi-context.service';
+import { IContextMessage, YourLuigiContextService } from '../client-support-angular/your-luigi-context.service';
 import { NgForm } from '@angular/forms';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { delay, timeout } from 'rxjs/operators';

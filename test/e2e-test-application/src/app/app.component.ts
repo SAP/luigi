@@ -6,7 +6,7 @@ import {
   sendCustomMessage,
   addInactiveListener
 } from '@luigi-project/client';
-import { LuigiContextService, ILuigiContextTypes } from './services/luigi-context.service';
+import { YourLuigiContextService, ILuigiContextTypes } from './client-support-angular/your-luigi-context.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,7 +16,7 @@ import { LuigiContextService, ILuigiContextTypes } from './services/luigi-contex
 export class AppComponent implements OnInit {
   public title = 'app';
 
-  constructor(private luigiService: LuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) {}
+  constructor(private luigiService: YourLuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) {}
 
   ngOnInit() {
     addInitListener(context => {
