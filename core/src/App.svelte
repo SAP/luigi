@@ -390,7 +390,6 @@
     RoutingHelpers.addRouteChangeListener((path, eventDetail) => {
       const { withoutSync, preventContextUpdate } = eventDetail || {};
       const pv = preservedViews;
-
       // TODO: check if bookmarkable modal is interferring here
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
