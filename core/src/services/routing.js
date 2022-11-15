@@ -188,24 +188,28 @@ class RoutingClass {
   }
 
   /**
-   * Fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   * Prevents the browsers default route change by bringing back previous route then
+   * fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   *
    * @param {string} path the path of the view to open
    * @param {Object} component current component data
    * @param {Object} iframeElement the dom element of active iframe
    * @param {Object} config the configuration of application
    */
-  showUnsavedChangesModal(path, component, iframeElement, config) {
-    const newUrl = window.location.href;
-    const oldUrl = component.get().unsavedChanges.persistUrl;
+  handleUnsavedChangesModal(path, component, iframeElement, config) {
+    const newUrl = window.location.href,
+      oldUrl = component.get().unsavedChanges.persistUrl;
 
-    //pretend the url hasn't been changed
+    // pretend the url hasn't been changed by browser default behaviour
     oldUrl && history.replaceState(window.state, '', oldUrl);
-    component.showUnsavedChangesModal().then(
-      () => {
+
+    component.getUnsavedChangesModalPromise().then(
+      a => {
         path &&
           this.handleRouteChange(path, component, iframeElement, config) &&
           history.replaceState(window.state, '', newUrl);
       },
+      // user clicks no, do nothing on promise rejected
       () => {}
     );
   }
@@ -335,7 +339,7 @@ class RoutingClass {
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
-        this.showUnsavedChangesModal(path, component, iframeElement, config);
+        this.handleUnsavedChangesModal(path, component, iframeElement, config);
         return;
       }
 
