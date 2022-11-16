@@ -1392,4 +1392,66 @@ describe('Routing', function() {
       sinon.assert.notCalled(Routing.handleBookmarkableModalPath);
     });
   });
+
+  describe('handleUnsavedChangesModal', () => {
+    let path, iframeElement, config, oldUrl, newUrl;
+
+    beforeEach(() => {
+      iframeElement = 'iframe';
+      config = 'config';
+      oldUrl = new URL('https://www.oldurl.com');
+      newUrl = new URL('https://www.newUrl.com');
+      window.state = {};
+      window.history.replaceState = sinon.spy();
+
+      component.get = () => {
+        return {
+          unsavedChanges: {
+            persistUrl: oldUrl
+          }
+        };
+      };
+      component.getUnsavedChangesModalPromise = () => {};
+      sinon.stub(component, 'getUnsavedChangesModalPromise').resolves();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('inner function resolved', async () => {
+      const path = 'valid';
+      sinon.stub(Routing, 'resolveUnsavedChanges');
+
+      await Routing.handleUnsavedChangesModal(path, component, iframeElement, config);
+
+      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', oldUrl);
+      sinon.assert.calledOnce(component.getUnsavedChangesModalPromise);
+      sinon.assert.calledOnce(Routing.resolveUnsavedChanges);
+    });
+
+    describe('resolveUnsavedChanges', () => {
+      beforeEach(() => {
+        sinon.stub(Routing, 'handleRouteChange');
+      });
+
+      afterEach(() => {
+        sinon.restore();
+      });
+
+      it('test with valid path', async () => {
+        path = 'valid';
+        Routing.resolveUnsavedChanges(path, component, iframeElement, config);
+        sinon.assert.calledOnce(window.history.replaceState);
+        sinon.assert.calledOnce(Routing.handleRouteChange);
+      });
+
+      it('test with invalid path', async () => {
+        path = '';
+        Routing.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+        sinon.assert.notCalled(window.history.replaceState);
+        sinon.assert.notCalled(Routing.handleRouteChange);
+      });
+    });
+  });
 });
