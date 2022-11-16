@@ -548,6 +548,14 @@ describe('Routing-helpers', () => {
       mockParams = '';
       expect(RoutingHelpers.parseParams(mockParams)).to.deep.equal({});
     });
+
+    it('return pairs of params with a space and a plus', () => {
+      mockParams = 'test=true+abc&foo=bar%2Babc';
+      assert.deepEqual(RoutingHelpers.parseParams(mockParams), {
+        test: 'true abc',
+        foo: 'bar+abc'
+      });
+    });
   });
 
   describe('findViewGroup', () => {

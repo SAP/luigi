@@ -48,7 +48,7 @@ class RoutingHelpersClass {
   parseParams(paramsString) {
     if (!paramsString) return {};
     const result = {};
-    const viewParamString = paramsString;
+    const viewParamString = paramsString.replace(/\+/g, ' ');
     const pairs = viewParamString ? viewParamString.split('&') : null;
     if (pairs) {
       pairs.forEach(pairString => {
@@ -450,7 +450,15 @@ class RoutingHelpersClass {
         if (!realPath) {
           return false;
         }
+        // set 'external' boolean to make it easier to identify new tab links
+        if (realPath.externalLink) {
+          return {
+            ...realPath.externalLink,
+            external: true
+          }
+        }
         realPath = realPath.pathSegment;
+
         const params = Object.entries(intentObject.params);
         if (params && params.length > 0) {
           // resolve dynamic parameters in the path if any
