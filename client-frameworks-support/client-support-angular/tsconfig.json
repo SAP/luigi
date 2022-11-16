@@ -13,9 +13,12 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2017",
     "module": "es2020",
-    "lib": ["es2018", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "paths": {
       "client-support-angular": [
         "dist/client-support-angular/client-support-angular",
@@ -28,6 +31,5 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
     "fullTemplateTypeCheck": true,
-    "enableIvy": false
   }
 }
