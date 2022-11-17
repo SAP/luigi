@@ -32,7 +32,7 @@
     "@babel/polyfill": "^7.2.3",
     "acorn": "^8.8.1",
     "babel-loader": "^8.0.5",
-    "bundlesize": "^0.18.1",
+    "bundlesize2": "^0.0.31",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.0.1",
     "diff": ">=3.5.0",
