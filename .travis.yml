@@ -1,7 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - 'v16.16.0'
+  - 16
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
@@ -62,7 +62,7 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
-      node_js: 16.16.0
+      node_js: 16
       if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
