@@ -62,7 +62,7 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
-      node_js: 16
+      node_js: 16.16.0
       if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
