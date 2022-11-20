@@ -3,6 +3,9 @@ node_modules
 /build
 /.svelte-kit
 /package
+/static
+!/static/global.css
+!/static/favicon-sap.ico
 .env
 .env.*
 !.env.example
