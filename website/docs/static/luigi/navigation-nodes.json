@@ -1,0 +1,142 @@
+[
+  {
+    "label": "Angular",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 1
+    }
+  },
+  {
+    "label": "Vue",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 2
+    }
+  },
+  {
+    "label": "React",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 3
+    }
+  },
+  {
+    "label": "Plain JavaScript",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 4
+    }
+  },
+  {
+    "label": "OpenUI5",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 5
+    }
+  },
+  {
+    "label": "Svelte",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 6
+    }
+  },
+  {
+    "label": "NextJS",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-next"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 7
+    }
+  }
+]

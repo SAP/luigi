@@ -3,8 +3,11 @@ node_modules
 /build
 /.svelte-kit
 /package
+/static
 !/static/global.css
 !/static/favicon-sap.ico
+!/static/images
+!/static/luigi
 .env
 .env.*
 !.env.example
