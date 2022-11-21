@@ -2,7 +2,7 @@
 1. Follow the contributing guidelines: https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md
 2. Test your changes and attach their results to the pull request.
 3. Update any relevant documentation.
-2. Sign the Contributor License Agreement.
+4. Sign the Contributor License Agreement.
 -->
 
 **Description**
