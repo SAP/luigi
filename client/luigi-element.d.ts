@@ -252,9 +252,9 @@ declare interface UxManager {
 declare interface LinkManager {
   /**
    * Refreshes top navigation badge counters by rendering the navigation again.
-   * @memberof LuigiNavigation
+   * @memberof linkManager
    * @example
-   * Luigi.navigation().updateTopNavigation();
+   * LuigiClient.linkManager().updateTopNavigation();
    */
   updateTopNavigation: () => void;
 
@@ -277,9 +277,9 @@ declare interface LinkManager {
    * @param {boolean} drawerSettings.backdrop By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
    * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
    * @example
-   * Luigi.navigation().navigate('/overview')
-   * Luigi.navigation().navigate('users/groups/stakeholders')
-   * Luigi.navigation().navigate('/settings', null, true) // preserve view
+   * LuigiClient.linkManager().navigate('/overview')
+   * LuigiClient.linkManager().navigate('users/groups/stakeholders')
+   * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    */
   navigate: (
     path: string,
@@ -291,7 +291,7 @@ declare interface LinkManager {
 
   /**
    * Opens a view in a modal. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
-   * @memberof LuigiNavigation
+   * @memberof linkManager
    * @param {string} path navigation path
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
@@ -299,13 +299,13 @@ declare interface LinkManager {
    * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @example
-   * Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
-   * @memberof LuigiNavigation
+   * @memberof linkManager
    * @param {string} path navigation path
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
@@ -322,7 +322,7 @@ declare interface LinkManager {
 
   /**
    * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
-   * @memberof LuigiNavigation
+   * @memberof linkManager
    * @param {string} path navigation path
    * @param {Object} [drawerSettings] opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
    * @param {any} drawerSettings.header By default, the header is visible. Title is node label and 'x' is displayed to close the drawer view. The header could also be an object with a `title` attribute to specify an own title for the drawer component.
@@ -330,8 +330,8 @@ declare interface LinkManager {
    * @param {('l'|'m'|'s'|'xs')} [drawerSettings.size="s"] size of the drawer
    * @since 1.6.0
    * @example
-   * Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
-   * Luigi.navigation().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
+   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
+   * LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
    */
   openAsDrawer: (nodepath: string, drawerSettings?: DrawerSettings) => void;
 
@@ -356,7 +356,7 @@ declare interface LinkManager {
 
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
-   * @memberof LuigiNavigation
+   * @memberof linkManager
    * @returns {linkManager} link manager instance
    * @since 1.0.1
    * @example
@@ -396,11 +396,11 @@ declare interface LinkManager {
 
   /**
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
-   * @memberof LuigiNavigation
+   * @memberof linkManager
    * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views
    * @example
-   * Luigi.navigation().goBack({ foo: 'bar' });
-   * Luigi.navigation().goBack(true);
+   * LuigiClient.linkManager().goBack({ foo: 'bar' });
+   * LuigiClient.linkManager().goBack(true);
    */
   goBack: (goBackValue: any) => this;
 
@@ -524,6 +524,8 @@ export declare class LuigiElement extends HTMLElement {
   afterInit(ctx: Object): void;
   querySelector(selector: string): any;
   LuigiClient: LuigiClient;
+
+  //TODO welche Funktionen soll am LuigiElement alles deklariert werden? z.B __postProcess auch?
 }
 
 declare interface Options {
