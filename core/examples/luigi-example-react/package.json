@@ -5,8 +5,6 @@
   "dependencies": {
     "@luigi-project/client": "^1.22.0",
     "@luigi-project/core": "^1.22.0",
-    "@sap-theming/theming-base-content": "^11.1.35",
-    "fundamental-styles": "^0.23.0",
     "@svgr/webpack": "^6.3.1",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
@@ -59,9 +57,9 @@
     "terser-webpack-plugin": "1.4.1",
     "ts-pnp": "1.1.4",
     "url-loader": "2.1.0",
-    "webpack": "4.41.0",
-    "webpack-dev-server": "3.11.3",
-    "webpack-manifest-plugin": "2.1.1",
+    "webpack": "5.75.0",
+    "webpack-dev-server": "4.11.1",
+    "webpack-manifest-plugin": "5.0.0",
     "workbox-webpack-plugin": "4.3.1"
   },
   "devDependencies": {
