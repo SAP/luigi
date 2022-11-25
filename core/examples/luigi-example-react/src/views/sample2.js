@@ -1,19 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class Sample1 extends Component {
-  render() {
-    return (
-      <div>
-        <section className="fd-section">
-          <div className="fd-section__header">
-            <h1 className="fd-section__title">Sample 2</h1>
-          </div>
-          <div className="fd-panel">
-            Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
-            commodo consequat.
-          </div>
-        </section>
-      </div>
-    );
-  }
+const Sample2 = () => {
+  return (
+    <div>
+      <h1>Sample 2</h1>
+      Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
+      commodo consequat.
+    </div>
+  );
 }
+
+export default Sample2;
