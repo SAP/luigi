@@ -1,4 +1,4 @@
-# Luigi React Example
+# Sample Luigi application written in ReactJS
 
 > :information_source: This is an **example app only** aimed to give an insight on the setup with Luigi Microfronteds all within a React App. Make sure to adjust the settings according to your development and production requirements.  
 
