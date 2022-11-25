@@ -54,6 +54,7 @@ echo '{
 # downloads
 mkdir -p src/luigi-config
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/logo.png > public/logo.png
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/sampleapp.html > public/sampleapp.html
 curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/luigi-config-file.js > src/luigi-config/luigi-config.es6.js
 
