@@ -1,8 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { HashRouter as Router } from 'react-router-dom';
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './views/home.js';
 import Sample1 from './views/sample1.js';
 import Sample2 from './views/sample2.js';
@@ -12,7 +10,7 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Router basename='sampleapp.html'>
+    <Router basename='microfrontend'>
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/sample1" element={<Sample1 />} />
