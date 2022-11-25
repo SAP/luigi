@@ -21,9 +21,9 @@ You are welcome to contribute with your pull requests. These steps explain the c
 
 > **NOTE:** You should always add [*unit tests*](https://github.com/SAP/luigi/tree/master/core/test) if you are adding code to our repository.
 
-If you've added code that is exposed as an API or configuration, additionally add e2e tests to [fiddle-navigation.spec.js](https://github.com/SAP/luigi/blob/master/test/e2e-test-application/e2e/tests/0-fiddle/fiddle-navigation.spec.js).
+ If you've added code that is exposed as an API or configuration, additionally add e2e tests to [js-test-app](https://github.com/SAP/luigi/tree/master/test/e2e-test-application/e2e/tests/0-js-test-app).
 
-To let tests run locally, run `cd website/fiddle && npm start` and `cd test/e2e-test-application && npm run e2e:open` and click on the *fiddle-navigation.spec.js*.
+To let tests run locally, run `cd test/e2e-js-test-application && npm run dev` and `cd test/e2e-test-application && npm run e2e:open` and click on the test in the *js-test-application* category.
 
 ## Issues
 We use GitHub issues to track bugs. Please ensure your description is

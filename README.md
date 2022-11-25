@@ -89,12 +89,15 @@ To ensure that existing features still work as expected after your changes, run 
 
 ### E2E tests
 
-To ensure that existing features still work as expected after your changes, run UI tests from the [Angular example application](/test/e2e-test-application). Before running the tests, start the sample application by using the `npm start` command in the application folder.
+To ensure that existing features still work as expected after your changes, you need to run UI tests from the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application). Before running the tests, you need to start our two test applications: 
 
-When the application is ready:
+1. Start the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) by using the `npm start` command in the application folder.
+2. Start the [js test application](https://github.com/SAP/luigi/tree/master/test/e2e-js-test-application) by using the `npm run dev` command in the application folder.
 
-- Run `npm run e2e:open` in the `test/e2e-test-application` folder to start tests in the interactive mode.
-- Run `npm run e2e:run` in the `test/e2e-test-application` folder to start tests in the headless browser.
+Once the applications are ready:
+
+- Run `npm run e2e:open` in the test/e2e-test-application folder to start tests in the interactive mode.
+- Run `npm run e2e:run` in the test/e2e-test-application folder to start tests in the headless browser.
 
 ### Backward compatibility tests
 
