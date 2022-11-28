@@ -22,6 +22,7 @@ module.exports = {
       ]
     })
   ],
+  // TODO: Remove optimization section altogether after https://github.com/SAP/luigi/issues/2965 resolved 
   optimization: {
     minimize: true,
     minimizer: [
