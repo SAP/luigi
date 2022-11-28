@@ -463,7 +463,7 @@
     }
   }
 
-  function setAltTextForCategoryButton(nodes, expandedCategories){
+  function setTitleForCategoryButton(nodes, expandedCategories){
     return isExpanded(nodes, expandedCategories)?nodes.metaInfo.titleCollapseButton:nodes.metaInfo.titleExpandButton;
   }
 </script>
@@ -676,7 +676,7 @@
                         aria-label="Expand categories"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
-                        title={setAltTextForCategoryButton(
+                        title={setTitleForCategoryButton(
                           nodes,
                           expandedCategories
                         )}
