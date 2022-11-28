@@ -91,8 +91,8 @@ To ensure that existing features still work as expected after your changes, run 
 
 To ensure that existing features still work as expected after your changes, you need to run UI tests from the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application). Before running the tests, you need to start our two test applications: 
 
-1. Start the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) by using the `npm start` command in the application folder.
-2. Start the [js test application](https://github.com/SAP/luigi/tree/master/test/e2e-js-test-application) by using the `npm run dev` command in the application folder.
+- Start the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) by using the `npm start` command in the application folder.
+- Start the [js test application](https://github.com/SAP/luigi/tree/master/test/e2e-js-test-application) by using the `npm run dev` command in the application folder.
 
 Once the applications are ready:
 
