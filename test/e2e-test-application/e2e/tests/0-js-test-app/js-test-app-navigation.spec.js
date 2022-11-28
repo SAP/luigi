@@ -117,6 +117,51 @@ describe('JS-TEST-APP', () => {
         cy.contains('.fd-shellbar').should('not.exist');
       });
     });
+    describe('Tooltext for category button', () => {
+      let newConfig;
+      beforeEach(() => {
+        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig.navigation.nodes[0].children[0].category = {
+          label: 'Test Category',
+          collapsible: true,
+          titleExpandButton: 'Expand test category',
+          titleCollapseButton: 'Collapse test category'
+        };
+        newConfig.tag = 'tooltip-test';
+      });
+      it('Tooltip for expand/collapse button', () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('#app[configversion="tooltip-test"]');
+        cy.get('.lui-collapsible-item').contains('Test Category');
+        cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Expand test category');
+        cy.get('.lui-collapsible-item')
+          .contains('Test Category')
+          .click();
+        cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Collapse test category');
+      });
+      it('Tooltip for expand button not defined', () => {
+        delete newConfig.navigation.nodes[0].children[0].category.titleExpandButton;
+        cy.visitTestApp('/', newConfig);
+        cy.get('#app[configversion="tooltip-test"]');
+        cy.get('.lui-collapsible-item').contains('Test Category');
+        cy.get('.lui-collapsible-item button').should('not.have.attr', 'title');
+        cy.get('.lui-collapsible-item')
+          .contains('Test Category')
+          .click();
+        cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Collapse test category');
+      });
+      it('Tooltip for collapse button not defined', () => {
+        delete newConfig.navigation.nodes[0].children[0].category.titleCollapseButton;
+        cy.visitTestApp('/', newConfig);
+        cy.get('#app[configversion="tooltip-test"]');
+        cy.get('.lui-collapsible-item').contains('Test Category');
+        cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Expand test category');
+        cy.get('.lui-collapsible-item')
+          .contains('Test Category')
+          .click();
+        cy.get('.lui-collapsible-item button').should('not.have.attr', 'title');
+      });
+    });
   });
   describe('ContextSwitcher', () => {
     let newConfig;

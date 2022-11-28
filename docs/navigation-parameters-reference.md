@@ -219,6 +219,8 @@ Node parameters are all the parameters that can be added to an individual naviga
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
   - **testId** is a string where you can define your own custom `testId` for  E2E tests. If nothing is specified, it is the node's label written as one word in lower case, for example`label`.
   - **id** if this property is defined all nodes with the same category `id` will be grouped.
+  - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
+  - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
 
 ### children
 - **type**: array | function
