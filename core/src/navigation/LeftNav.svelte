@@ -462,6 +462,10 @@
         : expandNavTooltip;
     }
   }
+
+  function setAltTextForCategoryButton(nodes, expandedCategories){
+    return isExpanded(nodes, expandedCategories)?nodes.metaInfo.titleCollapseButton:nodes.metaInfo.titleExpandButton;
+  }
 </script>
 
 <svelte:window
@@ -592,11 +596,11 @@
                             <StatusBadge {node} />
                           </span>
                           {#if node.externalLink && node.externalLink.url}
-                          <i
-                            class="fd-nested-list__icon sap-icon sap-icon--action"
-                            role="presentation"
-                          />
-                          {/if}                     
+                            <i
+                              class="fd-nested-list__icon sap-icon sap-icon--action"
+                              role="presentation"
+                            />
+                          {/if}
                           {#if node.badgeCounter}
                             <BadgeCounter {node} />
                           {/if}
@@ -672,6 +676,10 @@
                         aria-label="Expand categories"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
+                        title={setAltTextForCategoryButton(
+                          nodes,
+                          expandedCategories
+                        )}
                         on:click|preventDefault={() =>
                           setExpandedState(
                             nodes,
@@ -723,10 +731,10 @@
                                 )}
                               >
                                 <span class="fd-nested-list__title">
-                                  {$getTranslation(node.label)}                                  
+                                  {$getTranslation(node.label)}
                                   <StatusBadge {node} />
-                                </span>                                
-                                
+                                </span>
+
                                 {#if node.externalLink && node.externalLink.url}
                                   <i class="sap-icon--action" />
                                 {/if}
@@ -779,7 +787,7 @@
                                       )}
                                     >
                                       <span class="fd-nested-list__title">
-                                        {$getTranslation(node.label)}                                        
+                                        {$getTranslation(node.label)}
                                         <StatusBadge {node} />
                                       </span>
                                       {#if node.externalLink && node.externalLink.url}
