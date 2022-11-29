@@ -13,8 +13,11 @@ export class WebComponentService {
     console.log('before actual import of:', viewUrl);
     let a;
     try {
-      a = import(viewUrl);
-      console.log('right after import', a);
+      // @ts-ignore
+      // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to 
+      // resolve this import during bunlding process leading to module not found errors.
+      a = __luigi_dyn_import(viewUrl);
+      console.log('right after import123123123', a);
     } catch (error) {
       console.log(error, 'not ale to import');
     }
@@ -43,10 +46,10 @@ export class WebComponentService {
 
   createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
-      linkManager: () => {}, //window.Luigi.navigation,
+      linkManager: () => { }, //window.Luigi.navigation,
       uxManager: () => {
         return {
-          showAlert: alertSettings => {},
+          showAlert: alertSettings => { },
           showConfirmationModal: async settings => {
             return new Promise((resolve, reject) => {
               resolve(true);
@@ -54,7 +57,7 @@ export class WebComponentService {
           }
         };
       }, //window.Luigi.ux,
-      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
+      getCurrentLocale: () => { }, //() => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
         // if (eventBusElement.eventBus) {
         // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
@@ -118,6 +121,7 @@ export class WebComponentService {
               }
               resolve(1);
             } catch (e) {
+              console.error('big fail big', e)
               reject(e);
             }
           })
