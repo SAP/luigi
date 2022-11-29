@@ -30,6 +30,45 @@ function serve() {
   };
 }
 
+/**
+ * This function replaces the '__luigi_dyn_import' string with 'import' to avoid bundlers 
+ * resolving dynamic import statements as they shouldn't be resolved in this case
+ * 
+ * @param {string} bundleFileName the file name of the generated bundle js
+ */
+function replaceDynamicImport(bundleFilename) {
+  const bundleSourceMapFileName = bundleFilename + '.map';
+  const backupBundleFilename = bundleFilename + '.backup'
+  const backupSourceMapFilename = bundleSourceMapFileName + '.backup';
+
+  try {
+    // sed can't work on both Linux + MAC without generating 'backup' files
+    execSync(
+      `sed -i.backup 's/__luigi_dyn_import/import/g' ${bundleFilename} &&
+       sed -i.backup 's/__luigi_dyn_import/import/g' ${bundleSourceMapFileName}`
+    );
+  } catch (error) {
+    console.error('Failed to replace string', error)
+    if (error) { throw error };
+  }
+
+  try {
+    // delete generated backup files as they are not needed
+    execSync(
+      `rm ${backupBundleFilename} ${backupSourceMapFilename}`
+    );
+  } catch (error) {
+    console.error('Failed to delete backup generated files', error);
+    if (error) { throw error };
+  }
+
+  console.log(
+    '\x1b[33mRollup [' + new Date().toLocaleTimeString() + ']: ',
+    '\x1b[0m',
+    'Post-processing finished replacing __luigi_dyn_import --> import.'
+  );
+}
+
 export default [
   {
     input: 'src/main.js',
@@ -69,17 +108,7 @@ export default [
       commonjs(),
       {
         writeBundle(bundle) {
-          console.log('test', bundle.file);
-          const bundleFileName = bundle.file;
-          execSync(
-            `sed -i '' 's/__luigi_dyn_import/import/g' ${bundleFileName} &&
-            sed -i '' 's/__luigi_dyn_import/import/g' ${bundleFileName + '.map'}`
-          );
-          console.log(
-            '\x1b[33mRollup [' + new Date().toLocaleTimeString() + ']: ',
-            '\x1b[0m',
-            'Post-processing finished replacing __luigi_dyn_import --> import.'
-          );
+          replaceDynamicImport(bundle.file)
         }
       },
       // In dev mode, call `npm run start` once
