@@ -17,6 +17,12 @@
       let myUserSettings = {};
       window.LuigiClient.addInitListener((context, origin) => {
         renderData(context);
+
+        if (context && context.userSettingsData && context.userSettingsData.theme) {
+          document.querySelector(
+            '#currentTheme'
+          ).innerHTML = `Fiori3 ${context.userSettingsData.theme}`;
+        }
       });
 
       window.LuigiClient.addContextUpdateListener((context, origin) => {
@@ -41,6 +47,8 @@
           id: 'luigi.updateUserSettings',
           data: myUserSettings
         });
+
+        checkCurrentTheme();
       }
 
       function setYellowTheme(theme) {
@@ -48,19 +56,33 @@
           id: 'my-custom-message.update-user-settings',
           theme: 'yellow'
         });
+
+        checkCurrentTheme();
       }
+
+      function checkCurrentTheme() {
+        const context = window.LuigiClient.getContext();
+
+        if (context && context.userSettingsData && context.userSettingsData.theme) {
+          document.querySelector(
+            '#currentTheme'
+          ).innerHTML = `Fiori3 ${context.userSettingsData.theme}`;
+        }
+      }
+
+      checkCurrentTheme();
     </script>
     <div>
       <ul class="btnList">
         <li>
-          <button class="red" style="color:red" onclick="changeTheming('red')">
-            Red
+          <button class="light" style="color:#cccccc" onclick="changeTheming('light')">
+            Light
           </button>
         </li>
         <br /><br />
         <li>
-          <button class="green" style="color: green" onclick="changeTheming('green')">
-            Green
+          <button class="dark" style="color: #000000" onclick="changeTheming('dark')">
+            Dark
           </button>
         </li>
         <br /><br />
@@ -74,6 +96,7 @@
           </button>
         </li>
       </ul>
+      <p>Current Theme is <span id="currentTheme"></span></p>
     </div>
   </body>
 </html>

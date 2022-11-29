@@ -317,17 +317,17 @@ describe('Navigation', () => {
       cy.get('[data-testid="us-navigation-item"]')
         .eq(3)
         .click();
-      //Check if iframe is loaded and have a red button
+      //Check if iframe is loaded and have a light button
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody)
-          .contains('Red')
-          .should('have.class', 'red');
+          .contains('Light')
+          .should('have.class', 'light');
         cy.wrap($iframeBody)
-          .contains('Red')
+          .contains('Light')
           .should('not.have.class', 'active');
         cy.wrap($iframeBody)
-          .contains('Red')
+          .contains('Light')
           .click();
       });
       saveSettings();
@@ -336,11 +336,11 @@ describe('Navigation', () => {
       cy.get('[data-testid="us-navigation-item"]')
         .eq(3)
         .click();
-      //Check if iframe has a red button with a active class
+      //Check if iframe has a light button with a active class
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody)
-          .contains('Red')
+          .contains('Light')
           .should('have.class', 'active');
       });
     });
@@ -351,12 +351,12 @@ describe('Navigation', () => {
       cy.get('[data-testid="us-navigation-item"]')
         .eq(4)
         .click();
-      //check if iframe is rendered also there are no meta data set in config.
+      //check if iframe is rendelight also there are no meta data set in config.
       cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
         $iframeBody = result;
         cy.wrap($iframeBody)
-          .contains('Red')
-          .should('have.class', 'red');
+          .contains('Light')
+          .should('have.class', 'light');
       });
     });
 
@@ -379,6 +379,37 @@ describe('Navigation', () => {
         cy.wrap($iframeBody)
           .contains('Yellow')
           .should('have.class', 'active');
+      });
+    });
+
+    it('Check changing Fiori3 theme', () => {
+      let $iframeBody;
+      //click on custom
+      cy.get('[data-testid="us-navigation-item"]')
+        .eq(5)
+        .click();
+      //check if iframe is rendelight also there are no meta data set in config.
+      cy.getIframeBody({}, 0, '.iframeUserSettingsCtn').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
+          .contains('Light')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('#currentTheme')
+          .should($div => {
+            expect($div).to.have.text('Fiori3 light');
+          });
+
+        cy.wrap($iframeBody)
+          .contains('Dark')
+          .click();
+
+        cy.wrap($iframeBody)
+          .find('#currentTheme')
+          .should($div => {
+            expect($div).to.have.text('Fiori3 dark');
+          });
       });
     });
   });
