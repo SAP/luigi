@@ -1,7 +1,14 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
+const path = require('path');
+
 module.exports = {
+  output: {
+    path: path.resolve(__dirname, 'public'),
+  },
+  plugins: [
+
   plugins: [
     new CopyPlugin({
       patterns: [
