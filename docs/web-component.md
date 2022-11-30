@@ -28,7 +28,7 @@ Web Components can provide a fast-loading alternative for non-complex micro fron
 In this page you wil find:
 -   [Navigation Configuration](#navigation-configuration) - how to configure web component in Luigi Core navigation
 -   [Write a Web Component](#write-a-web-component) - quick description of how to write a Web Component compatible with Luigi Framework
--   [Luigi Client for web component](#luigi-client-for-web-component) - javascript object injected in a Web Component to leverage Luigi Core features
+-   [Luigi Client for web components](#luigi-client-for-web-components) - javascript object injected in a Web Component to leverage Luigi Core features
 -   [Tip: how to inject HTML Template code in Web Component](#tip-how-to-inject-html-template-code-in-web-component) - recommendation for how to inject HTML in a Web Component
 
 ## Navigation Configuration
@@ -38,7 +38,7 @@ If you want to declare a menu item to be open as Web Component, you need to spec
 Luigi.setConfig({
     navigation: {
    		// To enable CORS Web Component Loading: you need to add external domains where the Web Components are hosted;
-   		// in this example, we sepcify that we can load Web Components from everywhere
+   		// in this example, we specify that we can load Web Components from everywhere
 	    validWebcomponentUrls:['.*?'],
 	    nodes: [
 		...
@@ -55,7 +55,7 @@ Luigi.setConfig({
 })
 ```
 
-> **NOTE:** With Luigi version 1.21.0 we removed the experimental flag for webcomponents. 
+> **NOTE:** With Luigi version 1.21.0 we removed the experimental flag for web components. 
 
 ### Write a Web Component
 
