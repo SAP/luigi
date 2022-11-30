@@ -5,10 +5,8 @@ const path = require('path');
 
 module.exports = {
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'public')
   },
-  plugins: [
-
   plugins: [
     new CopyPlugin({
       patterns: [
@@ -29,7 +27,7 @@ module.exports = {
       ]
     })
   ],
-  // TODO: Remove optimization section altogether after https://github.com/SAP/luigi/issues/2965 resolved 
+  // TODO: Remove optimization section altogether after https://github.com/SAP/luigi/issues/2965 resolved
   optimization: {
     minimize: true,
     minimizer: [
