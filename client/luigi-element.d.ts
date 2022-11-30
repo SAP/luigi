@@ -1,3 +1,5 @@
+// Type definitions for Luigi Client web components
+
 export declare interface ConfirmationModalSettings {
   type?: string;
   header?: string;
@@ -331,12 +333,46 @@ export declare interface LinkManager {
 
 export declare class LuigiElement extends HTMLElement {
   constructor(options?: Options);
+  /**
+   * Override to return the html template string defining the web component view.
+   *
+   * @param {*} ctx The context object passed by luigi core
+   */
   render(ctx?: Object): string;
+  /**
+   * Override to execute logic after an attribute of this web component has changed.
+   */
   update(): void;
+  /**
+   * Override to execute logic when a new context object is set.
+   *
+   * @param {*} ctx The new context object passed by luigi core
+   */
   onContextUpdate(ctx: Object): void;
+  /**
+   * Override to execute logic after initialization of the web component, i.e.
+   * after internal rendering and all context data set.
+   *
+   * @param {*} ctx The context object passed by luigi core
+   */
   afterInit(ctx: Object): void;
+
+  /**
+   * Query selector operating on shadow root.
+   *
+   * @see ParentNode.querySelector
+   */
   querySelector(selector: string): any;
+
+  /**
+   * LuigiClient instance
+   */
   LuigiClient: LuigiClient;
+
+  /**
+   * Context object
+   * @returns {Object} context object
+   */
   get context(): Object;
 }
 
@@ -348,6 +384,13 @@ export declare interface Options {
   openShadow: boolean;
 }
 
+/**
+ * Html string processing according to luigi functionality.
+ * Also useful in combination with LitElement VS Code plugins.
+ *
+ * @param {String} literal The literal to process.
+ * @returns {String} Returns the processed literal.
+ */
 export declare const html: (strings: TemplateStringsArray, ...values: unknown[]) => string;
 
 export interface LuigiClient {
