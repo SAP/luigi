@@ -464,7 +464,7 @@
   }
 
   function setTitleForCategoryButton(nodes, expandedCategories){
-    return isExpanded(nodes, expandedCategories)?nodes.metaInfo.titleCollapseButton:nodes.metaInfo.titleExpandButton;
+    return isExpanded(nodes, expandedCategories) ? nodes.metaInfo.titleCollapseButton : nodes.metaInfo.titleExpandButton;
   }
 </script>
 
