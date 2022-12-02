@@ -1,0 +1,103 @@
+/*!
+ * 
+ *       Don't be afraid!
+ *       This file was generated automatically and you should not modify it.
+ *       The documentation (located in /docs) will tell you how to modify Luigi configuration with pleasure.
+ *
+ */
+
+/*! ModuleConcatenation bailout: Cannot concat with ./auth/src/helpers.js */
+
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/asyncToGenerator.js (<- Module is not an ECMAScript module) */
+
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/classCallCheck.js (<- Module is not an ECMAScript module) */
+
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/createClass.js (<- Module is not an ECMAScript module) */
+
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/regenerator/index.js (<- Module is not an ECMAScript module) */
+
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/oidc-client/lib/oidc-client.min.js (<- Module is not an ECMAScript module) */
+
+/*! ModuleConcatenation bailout: Module is an entry point */
+
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+
+/*! all exports used */
+
+/*! exports provided: Helpers */
+
+/*! exports provided: default */
+
+/*! exports used: Helpers */
+
+/*! exports used: InMemoryWebStorage, UserManager, WebStorageStateStore */
+
+/*! exports used: default */
+
+/*! no static exports found */
+
+/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/*!*****************************!*\
+    !*** ./auth/src/helpers.js ***!
+    \*****************************/
+
+/*!*****************************!*\
+  !*** ./auth/src/helpers.js ***!
+  \*****************************/
+
+/*!***************************************!*\
+      !*** ./auth/src/auth-oauth2/index.js ***!
+      \***************************************/
+
+/*!*************************************************!*\
+  !*** ./auth/src/auth-oidc/index.js + 1 modules ***!
+  \*************************************************/
+
+/*!*******************************************************!*\
+      !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
+      \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
+  \*******************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/oidc-client/lib/oidc-client.min.js ***!
+  \*********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+
+/*!************************************************************!*\
+    !*** ./node_modules/@babel/runtime/helpers/createClass.js ***!
+    \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/createClass.js ***!
+  \************************************************************/
+
+/*!***************************************************************!*\
+    !*** ./node_modules/@babel/runtime/helpers/classCallCheck.js ***!
+    \***************************************************************/
+
+/*!***************************************************************!*\
+    !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
+    \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/classCallCheck.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \***************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/asyncToGenerator.js ***!
+  \*****************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js ***!
+  \*********************************************************************************/

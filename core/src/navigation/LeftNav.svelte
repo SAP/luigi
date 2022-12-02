@@ -590,17 +590,17 @@
                           <span class="fd-nested-list__title"
                             >{$getTranslation(node.label)}
                             <StatusBadge {node} />
-                            {#if node.externalLink && node.externalLink.url}
-                              <i
-                                class="fd-nested-list__icon sap-icon sap-icon--action"
-                                role="presentation"
-                              />
-                            {/if}
-                            {#if node.badgeCounter}
-                              <BadgeCounter {node} />
-                            {/if}
-                          </span></a
-                        >
+                          </span>
+                          {#if node.externalLink && node.externalLink.url}
+                          <i
+                            class="fd-nested-list__icon sap-icon sap-icon--action"
+                            role="presentation"
+                          />
+                          {/if}                     
+                          {#if node.badgeCounter}
+                            <BadgeCounter {node} />
+                          {/if}
+                        </a>
                       </li>
                     {/if}
                   {/if}
@@ -722,9 +722,11 @@
                                   $getTranslation(node.label)
                                 )}
                               >
-                                <span class="fd-nested-list__title"
-                                  >{$getTranslation(node.label)}</span
-                                >
+                                <span class="fd-nested-list__title">
+                                  {$getTranslation(node.label)}                                  
+                                  <StatusBadge {node} />
+                                </span>                                
+                                
                                 {#if node.externalLink && node.externalLink.url}
                                   <i class="sap-icon--action" />
                                 {/if}
@@ -776,9 +778,10 @@
                                         $getTranslation(node.label)
                                       )}
                                     >
-                                      <span class="fd-nested-list__title"
-                                        >{$getTranslation(node.label)}</span
-                                      >
+                                      <span class="fd-nested-list__title">
+                                        {$getTranslation(node.label)}                                        
+                                        <StatusBadge {node} />
+                                      </span>
                                       {#if node.externalLink && node.externalLink.url}
                                         <i class="sap-icon--action" />
                                       {/if}

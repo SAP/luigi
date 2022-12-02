@@ -164,6 +164,16 @@ describe('Routing', function() {
             semanticObject: 'Sales',
             action: 'settings',
             pathSegment: '/projects/pr2/settings'
+          },
+          {
+            semanticObject: 'External',
+            action: 'view',
+            externalLink: { url: 'https://www.sap.com', openInNewTab: true }
+          },
+          {
+            semanticObject: 'External',
+            action: 'view2',
+            externalLink: { url: 'https://www.sap.com', openInNewTab: false }
           }
         ]);
     });
@@ -194,6 +204,26 @@ describe('Routing', function() {
       const actual = RoutingHelpers.getIntentPath('#?iNteNT=Sales-settings?param1=hello&param2=world');
       const expected = '/projects/pr2/settings?~param1=hello&~param2=world';
       assert.equal(actual, expected);
+    });
+
+    it('returns expected object for external intent links with openInNewTab true', () => {
+      const actual = RoutingHelpers.getIntentPath('#?intent=External-view');
+      const expected = {
+        url: 'https://www.sap.com',
+        openInNewTab: true,
+        external: true
+      };
+      assert.deepEqual(actual, expected);
+    });
+
+    it('returns expected object for external intent links with openInNewTab false', () => {
+      const actual = RoutingHelpers.getIntentPath('#?intent=External-view2');
+      const expected = {
+        url: 'https://www.sap.com',
+        openInNewTab: false,
+        external: true
+      };
+      assert.deepEqual(actual, expected);
     });
   });
 
@@ -359,6 +389,10 @@ describe('Routing', function() {
     let config;
 
     beforeEach(() => {
+      global['sessionStorage'] = {
+        getItem: sinon.stub(),
+        setItem: sinon.stub()
+      };
       sinon.stub(Iframe, 'setOkResponseHandler');
       const sampleLuigiConfig = {
         navigation: {
@@ -454,8 +488,7 @@ describe('Routing', function() {
               label: 'BBB',
               viewUrl: 'compound',
               intendToHaveEmptyViewUrl: true,
-              webcomponent: true,
-              component: true
+              webcomponent: true
             }
           ]
         },
@@ -734,6 +767,27 @@ describe('Routing', function() {
       assert.equal(element.classList.contains('lui-webComponent'), true);
       sinon.assert.calledOnce(Iframe.switchActiveIframe);
       sinon.assert.calledOnce(Routing.navigateWebComponent);
+    });
+
+    it('should call navigateToExternalLink if intent external link defined', async () => {
+      // given
+      const path = {
+        external: true,
+        url: 'https://www.test.com',
+        openInNewTab: true
+      };
+      const expectedParam = {
+        url: 'https://www.test.com',
+        sameWindow: false
+      };
+
+      sinon.stub(Routing, 'navigateToExternalLink');
+
+      // when
+      await Routing.handleRouteChange(path);
+
+      // then
+      sinon.assert.calledWithExactly(Routing.navigateToExternalLink, expectedParam);
     });
   });
 
@@ -1068,19 +1122,19 @@ describe('Routing', function() {
         href: 'http://some.url.de/settings'
       };
       window.state = {};
-
+      const mockURL = new URL(global.location.href);
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
       try {
-        Routing.appendModalDataToUrl(modalPath, modalParams);
+        Routing.appendModalDataToUrl(modalPath, modalParams, mockURL);
       } catch (error) {
         console.log('error', error);
       }
       // then
       sinon.assert.calledWith(
-        history.replaceState,
+        history.pushState,
         window.state,
         '',
         'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
@@ -1104,7 +1158,7 @@ describe('Routing', function() {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/settings?~luigi=mario');
+      sinon.assert.calledWithExactly(window.history.pushState, {}, '', 'http://some.url.de/settings?~luigi=mario');
     });
 
     it('should update path of the modal when changing template in the modal, save history', () => {
@@ -1192,19 +1246,20 @@ describe('Routing', function() {
         href: 'http://some.url.de/#/settings',
         hash: '#/settings'
       };
+      const mockURL = new URL(global.location.href);
       window.state = {};
       sinon
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(true);
       try {
-        Routing.appendModalDataToUrl(modalPath, modalParams);
+        Routing.appendModalDataToUrl(modalPath, modalParams, mockURL);
       } catch (error) {
         console.log('error', error);
       }
       // then
       sinon.assert.calledWith(
-        history.replaceState,
+        history.pushState,
         window.state,
         '',
         'http://some.url.de/#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
@@ -1229,7 +1284,7 @@ describe('Routing', function() {
       } catch (error) {
         console.log('error', error);
       }
-      sinon.assert.calledWithExactly(window.history.replaceState, {}, '', 'http://some.url.de/#/settings?~luigi=mario');
+      sinon.assert.calledWithExactly(window.history.pushState, {}, '', 'http://some.url.de/#/settings?~luigi=mario');
     });
   });
 
@@ -1294,8 +1349,8 @@ describe('Routing', function() {
         .withArgs('routing.skipRoutingForUrlPatterns')
         .returns(['foo_bar']);
       global.location = {
-          href: 'http://some.url.de?foo_bar'
-        };
+        href: 'http://some.url.de?foo_bar'
+      };
       const actual = Routing.shouldSkipRoutingForUrlPatterns();
       const expect = true;
 

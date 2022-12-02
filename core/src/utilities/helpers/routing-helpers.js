@@ -1,13 +1,7 @@
 // Helper methods for 'routing.js' file. They don't require any method from 'routing.js' but are required by them.
 // They are also rarely used directly from outside of 'routing.js'
 import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../core-api';
-import {
-  AsyncHelpers,
-  EscapingHelpers,
-  EventListenerHelpers,
-  GenericHelpers,
-  IframeHelpers,
-} from './';
+import { AsyncHelpers, EscapingHelpers, EventListenerHelpers, GenericHelpers, IframeHelpers } from './';
 import { Routing } from '../../services/routing';
 
 class RoutingHelpersClass {
@@ -54,7 +48,7 @@ class RoutingHelpersClass {
   parseParams(paramsString) {
     if (!paramsString) return {};
     const result = {};
-    const viewParamString = paramsString;
+    const viewParamString = paramsString.replace(/\+/g, ' ');
     const pairs = viewParamString ? viewParamString.split('&') : null;
     if (pairs) {
       pairs.forEach(pairString => {
@@ -437,10 +431,29 @@ class RoutingHelpersClass {
    *                     action: 'order',
    *                     pathSegment: '/projects/pr2/order'
    * }]
+   *
    * ```
    * the given intentLink is matched with the configuration's same semanticObject and action,
    * resulting in pathSegment `/projects/pr2/order` being returned. The parameter is also added in
    * this case resulting in: `/projects/pr2/order?~foo=bar`
+   *
+   * Or for external intent links: intentLink = `#?intent=External-external`
+   * and Luigi configuration:
+   * ```
+   * intentMapping: [{
+   *                     semanticObject: 'External',
+   *                     action: 'view',
+   *                     externalLink: { url: 'https://www.sap.com', openInNewTab: true }
+   * }]
+   * ```
+   * The resulting will be returned from this function:
+   * ```
+   *          {
+   *             url: 'https://www.sap.com',
+   *             openInNewTab: true,
+   *             external: true
+   *          }
+   * ```
    * @param {string} intentLink  the intentLink represents the semantic intent defined by the user
    *                        i.e.: #?intent=semanticObject-action?param=value
    */
@@ -456,7 +469,15 @@ class RoutingHelpersClass {
         if (!realPath) {
           return false;
         }
+        // set 'external' boolean to make it easier to identify new tab links
+        if (realPath.externalLink) {
+          return {
+            ...realPath.externalLink,
+            external: true
+          };
+        }
         realPath = realPath.pathSegment;
+
         const params = Object.entries(intentObject.params);
         if (params && params.length > 0) {
           // resolve dynamic parameters in the path if any

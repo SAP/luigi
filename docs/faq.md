@@ -108,6 +108,7 @@ There are a few options to do that at the moment:
 - Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi.
 - Turn off Luigi view components completely via the [hideNavigation](general-settings.md#hidenavigation) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
 - You can use this simple example with a completely customized shell as a starting point:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
