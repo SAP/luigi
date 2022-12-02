@@ -89,6 +89,23 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **description**: if set to `true`, proper href attributes are added to all navigation links. It is set to `false` by default.
 - **since**: v0.7.4
 
+### defaults.category
+- **type**: object
+- **description**: defines a default `title` for expand and collapse button on categries. It is possible to override the default to define a title on [category](navigation-parameters-reference.md#category) itself.
+- **attributes**:
+  - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
+  - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
+- **since**: NEXTRELEASE
+- **example**:
+```javascript
+config.navigation.defaults = {
+    category: {
+         titleExpandButton: 'Expand category',
+         titleCollapseButton: 'Collapse category',
+    }
+}
+```
+
 ### defaults.isolateView
 - **type**: boolean
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
