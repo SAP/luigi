@@ -1,5 +1,5 @@
 export class ContainerService {
-  constructor() {}
+  constructor() { }
 
   isVisible(component: HTMLElement) {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
@@ -13,7 +13,6 @@ export class ContainerService {
       }
     };
     targetCnt.dispatchEvent(ev);
-    console.log('Dispatch WC event:', msg, targetCnt, data);
   }
 
   getTargetContainer(event) {
@@ -34,7 +33,6 @@ export class ContainerService {
         messageListener: event => {
           const targetCnt = this.getTargetContainer(event);
           const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
-          console.log('Container event', event, targetCnt);
           if (target === event.source && event.data?.msg?.indexOf('luigi.') === 0) {
             const msg = event.data.msg;
 

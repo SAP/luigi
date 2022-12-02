@@ -22,12 +22,12 @@
       linkManager: () => {}, //window.Luigi.navigation,
       uxManager: () => {
         return {
-          showAlert: alertSettings => {
+          showAlert: (alertSettings) => {
             dispatchLuigiEvent('alert-request', alertSettings, {});
           },
-          showConfirmationModal: async settings => {
+          showConfirmationModal: async (settings) => {
             return new Promise((resolve, reject) => {
-              dispatchLuigiEvent('confirmation-request', settings, data => {
+              dispatchLuigiEvent('confirmation-request', settings, (data) => {
                 if (data) {
                   resolve(data);
                 } else {
@@ -35,16 +35,15 @@
                 }
               });
             });
-          }
+          },
         };
       }, //window.Luigi.ux,
       getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: ev => {
-        console.log('pub', ev);
+      publishEvent: (ev) => {
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
-      }
+      },
     };
   };
 
@@ -54,23 +53,17 @@
   thisComponent.init = () => {
     if (!thisComponent.compoundConfig || initialized) return;
     deferInit = false;
-    console.log('init compound');
     const node = {
-      compound: thisComponent.compoundConfig
+      compound: thisComponent.compoundConfig,
     }; // TODO: fill with sth
-    console.log('inside 001');
     webcomponentService
       .renderWebComponentCompound(node, mainComponent, context)
-      .then(compCnt => {
-        console.log('inside 0000');
+      .then((compCnt) => {
         eventBusElement = compCnt;
       });
 
-    console.log('inside 002');
     initialized = true;
   };
-
-  console.log('inside ---1');
 
   containerService.registerContainer(thisComponent);
 
@@ -79,9 +72,7 @@
   }
 
   onMount(async () => {
-    console.log('onMount');
     const ctx = context ? JSON.parse(context) : undefined;
-    console.log(ctx);
   });
 </script>
 

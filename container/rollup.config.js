@@ -31,8 +31,8 @@ function serve() {
 }
 
 /**
- * This function replaces the '__luigi_dyn_import' string with 'import' to avoid bundlers 
- * resolving dynamic import statements as they shouldn't be resolved in this case
+ * This function replaces the '__luigi_dyn_import(' string with 'import( /* webpackIgnore: true */'   '/*
+ * to avoid bundlers like webpack resolving dynamic import statements as they shouldn't be resolved in this case
  * 
  * @param {string} bundleFileName the file name of the generated bundle js
  */
@@ -44,7 +44,7 @@ function replaceDynamicImport(bundleFilename) {
   try {
     // sed can't work on both Linux + MAC without generating 'backup' files
     execSync(
-      `sed -i.backup 's/__luigi_dyn_import/import/g' ${bundleFilename} &&
+      `sed -i.backup 's/__luigi_dyn_import(/import\(\\/\* webpackIgnore: true \*\\/ /g' ${bundleFilename} &&
        sed -i.backup 's/__luigi_dyn_import/import/g' ${bundleSourceMapFileName}`
     );
   } catch (error) {

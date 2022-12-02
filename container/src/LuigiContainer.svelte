@@ -24,19 +24,19 @@
     return {
       linkManager: () => {
         return {
-          navigate: route => {
+          navigate: (route) => {
             dispatchLuigiEvent('navigation-request', { link: route });
-          }
+          },
         };
       },
       uxManager: () => {
         return {
-          showAlert: alertSettings => {
+          showAlert: (alertSettings) => {
             dispatchLuigiEvent('alert-request', alertSettings);
           },
-          showConfirmationModal: async settings => {
+          showConfirmationModal: async (settings) => {
             return new Promise((resolve, reject) => {
-              dispatchLuigiEvent('confirmation-request', settings, data => {
+              dispatchLuigiEvent('confirmation-request', settings, (data) => {
                 if (data) {
                   resolve(data);
                 } else {
@@ -44,15 +44,15 @@
                 }
               });
             });
-          }
+          },
         };
       }, //window.Luigi.ux,
       getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: ev => {
+      publishEvent: (ev) => {
         // if (eventBusElement.eventBus) {
         // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         // }
-      }
+      },
     };
   };
 
@@ -60,9 +60,8 @@
 
   thisComponent.iframeHandle = iframeHandle;
   let deferInit: boolean = !!thisComponent.attributes['defer-init'];
-  console.log('deferInit', deferInit);
+
   thisComponent.init = () => {
-    console.log('CALLED!!!', deferInit);
     deferInit = false;
   };
 
@@ -78,26 +77,20 @@
 
   onMount(async () => {
     const ctx = context ? JSON.parse(context) : undefined;
-    console.log('test00', ctx);
-    console.log('test11', mainComponent, typeof mainComponent);
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
-      console.log('isWebComponent', true);
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
     }
-    console.log('deferInit2', deferInit);
     // deferInit = true;
   });
 
   onDestroy(async () => {});
-  console.log('deferInit 3', deferInit);
 </script>
 
 <main
   bind:this={mainComponent}
   class={isWebComponent() ? undefined : 'lui-isolated'}
 >
-  {deferInit}
   {#if !deferInit}
     {#if !isWebComponent()}
       <iframe bind:this={iframeHandle.iframe} src={viewurl} title={label} />
