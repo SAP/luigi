@@ -91,7 +91,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 
 ### defaults.category
 - **type**: object
-- **description**: defines a default `title` for expand and collapse button on categries. It is possible to override the default to define a title on [category](navigation-parameters-reference.md#category) itself.
+- **description**: defines a default `title` for all expand and collapse buttons on categories. It is possible to override the default to define a title on an individual [category](navigation-parameters-reference.md#category) by itself.
 - **attributes**:
   - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
   - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
