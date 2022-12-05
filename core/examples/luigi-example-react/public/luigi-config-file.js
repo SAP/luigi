@@ -5,22 +5,19 @@ Luigi.setConfig({
         pathSegment: 'home',
         label: 'Home',
         icon: 'home',
-        viewUrl: '/sampleapp.html/#/microfrontend/home',
-        loadingIndicator: {
-          enabled: false
-        },
+        viewUrl: '/sampleapp.html#/home',
         children: [
           {
             pathSegment: 'sample1',
             label: 'First',
             icon: 'nutrition-activity',
-            viewUrl: '/sampleapp.html/#/microfrontend/sample1'
+            viewUrl: '/sampleapp.html#/sample1'
           },
           {
             pathSegment: 'sample2',
             label: 'Second',
             icon: 'paper-plane',
-            viewUrl: '/sampleapp.html/#/microfrontend/sample2'
+            viewUrl: '/sampleapp.html#/sample2'
           },
           {
             category: { label: 'Links', icon: 'cloud' },
