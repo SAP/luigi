@@ -237,6 +237,14 @@ export declare interface UxManager {
    * @since 0.6.0
    */
   isModal: () => boolean;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a drawer
+   * @returns {boolean} indicating if it is loaded inside a drawer
+   * @memberof uxManager
+   * @since NEXTRELEASE
+   */
+  isDrawer: () => boolean;
 }
 
 export declare interface LinkManager {

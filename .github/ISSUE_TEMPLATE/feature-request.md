@@ -5,7 +5,7 @@ about: Suggest an improvement to the project
 
 <!-- Thank you for your contribution. Before you submit the issue:
 1. Search open and closed issues for duplicates.
-2. Read the contributing guidelines.
+2. Read the contributing guidelines: https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md
 -->
 
 **Description**

@@ -1150,6 +1150,16 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 -   **since**: 0.6.0
 
+#### isDrawer
+
+Checks if the current micro frontend is displayed inside a drawer
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a drawer
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### getCurrentTheme
 
 Gets the current theme.
