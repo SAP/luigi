@@ -10,7 +10,7 @@ import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
-describe('Routing', function() {
+describe('Routing', function () {
   this.retries(1);
 
   let component;
@@ -684,7 +684,7 @@ describe('Routing', function() {
     it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
       //given
       const path = 'compound';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       console.warn = sinon.spy();
@@ -702,7 +702,7 @@ describe('Routing', function() {
     it('should navigate to rootPath if node can be reached directly', async () => {
       //given
       const path = 'compound2';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       component.viewUrl = path;
@@ -720,7 +720,7 @@ describe('Routing', function() {
     it('should handle nodeObject that is compound', async () => {
       //given
       const path = 'compound3';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       component.viewUrl = path;
@@ -746,7 +746,7 @@ describe('Routing', function() {
     it('should handle nodeObject that is webcomponent', async () => {
       //given
       const path = 'compound-webcomponent';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       component.viewUrl = path;
@@ -987,7 +987,7 @@ describe('Routing', function() {
 
   describe('showPageNotFoundError()', () => {
     let component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
     let pathToRedirect = '/go/here';
     let pathToRedirect2 = '/go/there';
@@ -1411,7 +1411,7 @@ describe('Routing', function() {
           }
         };
       };
-      component.getUnsavedChangesModalPromise = () => {};
+      component.getUnsavedChangesModalPromise = () => { };
       sinon.stub(component, 'getUnsavedChangesModalPromise').resolves();
     });
 
@@ -1425,7 +1425,7 @@ describe('Routing', function() {
 
       await Routing.handleUnsavedChangesModal(path, component, iframeElement, config);
 
-      sinon.assert.calledWithExactly(window.history.replaceState, window.state, '', oldUrl);
+      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', oldUrl);
       sinon.assert.calledOnce(component.getUnsavedChangesModalPromise);
       sinon.assert.calledOnce(Routing.resolveUnsavedChanges);
     });
