@@ -1,38 +1,30 @@
 # Sample Luigi application written in ReactJS
 
 ## Overview
+> :information_source: This is an **example app only** aimed to give an insight on the setup with Luigi micro frontends all within a React App. Make sure to adjust the settings according to your development and production requirements.  
 
-This is the ReactJS-based sample application which runs with Luigi framework.
+This is a minimalistic React-based app which serves **Luigi Core** on the default `index.html` and some simple React-based micro frontends through `sampleapp.html`.
+
+Since you would usually serve **Core** and **Client** micro frontends in different locations/environments, this example only serves as a playground and starting point to understand the setup. 
+
+Webpack is used to bundle this React app.  
+
+Webpack bundles the React logic and webpack dev server is used to serve the `index.html` file as main entry point.
+
+The built React bundle, however, is injected onto `sampleapp.html` instead, which will act as a locally built micro frontend. 
 
 
 ## Development
+1. Start the application: 
 
+    `npm run start`
 
-To run this application, follow these steps:
+## Build 
 
-1. Install dependencies.
-    ```bash
-    npm install
-    ```
+1. Build the application: 
 
-2. Start the example application.
-    ```bash
-    npm start
-    ```
-    
-3. Open it in your browser by going to [http://localhost:3000/](http://localhost:3000/).
+    `npm run build`
 
+2. Serve the application:
 
-### Build
-
-```
-npm run build
-```
-
-The build compiles and minimizes the source files for production usage.
-The build generates a `build` folder which you can serve using a web server.
-You can also test the production build locally using the command below: 
-
-```
-npm run serve
-```
+    `npm run serve`
