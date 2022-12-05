@@ -593,6 +593,7 @@ runTimeErrorHandler: {
 - **attributes**:
   - **label**: string specifying the text displayed on the status badge.
   - **type**: string. Allowed values are `negative`, `positive`, `critical`, `informative`, or `neutral`. The default is `neutral`.
+  - **align**: string. Defines the alignment of the status badge. Allowed values are `right` or `left`. The default is `left`.
 - **example**:
     ```javascript
     {
