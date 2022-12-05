@@ -464,7 +464,7 @@
   }
 
   function setTitleForCategoryButton(nodes, expandedCategories){
-    return isExpanded(nodes, expandedCategories) ? nodes.metaInfo.titleCollapseButton : nodes.metaInfo.titleExpandButton;
+    return isExpanded(nodes, expandedCategories) ? (nodes.metaInfo.titleCollapseButton ? $getTranslation(nodes.metaInfo.titleCollapseButton):undefined) : (nodes.metaInfo.titleExpandButton? $getTranslation(nodes.metaInfo.titleExpandButton):undefined);
   }
 </script>
 
@@ -676,8 +676,9 @@
                         aria-label="Expand categories"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
-                        title={$getTranslation(
-                          setTitleForCategoryButton(nodes, expandedCategories)
+                        title={setTitleForCategoryButton(
+                          nodes,
+                          expandedCategories
                         )}
                         on:click|preventDefault={() =>
                           setExpandedState(
