@@ -676,9 +676,8 @@
                         aria-label="Expand categories"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
-                        title={setTitleForCategoryButton(
-                          nodes,
-                          expandedCategories
+                        title={$getTranslation(
+                          setTitleForCategoryButton(nodes, expandedCategories)
                         )}
                         on:click|preventDefault={() =>
                           setExpandedState(
