@@ -25,6 +25,6 @@ The built React bundle, however, is injected onto `sampleapp.html` instead, whic
 
     `npm run build`
 
-2. Serve
+2. Serve the application:
 
     `npm run serve`
