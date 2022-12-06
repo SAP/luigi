@@ -114,6 +114,7 @@ class NavigationHelpersClass {
   }
 
   groupNodesBy(nodes, property, useVirtualGroups) {
+    const defaultTooltipForExpandCollapseCategories = LuigiConfig.getConfigValue('navigation.defaults.category');
     let result = {};
     let groupCounter = 0;
     let virtualGroupCounter = 0;
@@ -161,6 +162,14 @@ class NavigationHelpersClass {
       if (GenericHelpers.isObject(category) && arr.metaInfo._fromString) {
         delete arr.metaInfo._fromString;
         arr.metaInfo = { ...arr.metaInfo, ...category };
+      }
+      if (GenericHelpers.isObject(category) && defaultTooltipForExpandCollapseCategories) {
+        category.titleExpandButton
+          ? (arr.metaInfo.titleExpandButton = category.titleExpandButton)
+          : (arr.metaInfo.titleExpandButton = defaultTooltipForExpandCollapseCategories.titleExpandButton);
+        category.titleCollapseButton
+          ? (arr.metaInfo.titleCollapseButton = category.titleCollapseButton)
+          : (arr.metaInfo.titleCollapseButton = defaultTooltipForExpandCollapseCategories.titleCollapseButton);
       }
       if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
