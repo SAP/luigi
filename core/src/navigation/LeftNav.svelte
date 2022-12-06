@@ -442,9 +442,8 @@
    * @param node the corresponding node selected
    */
   function handleEnterPressed(event, node) {
-    if (event.keyCode === KEYCODE_ENTER) {
-      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
-        handleClick(node);
+    if(event.keyCode === KEYCODE_ENTER) {
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
     }
   }
 
@@ -552,14 +551,14 @@
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
-                          on:click={(event) => {
+                          on:click={event => {
                             NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                               event
                             ) && handleClick(node);
                           }}
                           tabindex="0"
                           on:keyup={!addNavHrefForAnchor
-                            ? (event) => handleEnterPressed(event, node)
+                            ? event => handleEnterPressed(event, node)
                             : undefined}
                           role={!addNavHrefForAnchor ? 'button' : undefined}
                           data-testid={getTestId(node)}
@@ -588,20 +587,16 @@
                               role="presentation"
                             />
                           {/if}
-                          <span
-                            class="fd-nested-list__title badge-align-{node.statusBadge &&
-                            node.statusBadge.align === 'right'
-                              ? 'right'
-                              : 'left'}"
+                          <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
                             >{$getTranslation(node.label)}
                             <StatusBadge {node} />
                           </span>
                           {#if node.externalLink && node.externalLink.url}
-                            <i
-                              class="fd-nested-list__icon sap-icon sap-icon--action"
-                              role="presentation"
-                            />
-                          {/if}
+                          <i
+                            class="fd-nested-list__icon sap-icon sap-icon--action"
+                            role="presentation"
+                          />
+                          {/if}                     
                           {#if node.badgeCounter}
                             <BadgeCounter {node} />
                           {/if}
@@ -610,7 +605,7 @@
                     {/if}
                   {/if}
                 {/each}
-              {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
+              {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
                   <li
@@ -634,7 +629,7 @@
                           : ''}"
                         tabindex={isExpanded ? '0' : '-1'}
                         on:keyup={!addNavHrefForAnchor
-                          ? (event) => handleEnterPressed(event, node)
+                          ? event => handleEnterPressed(event, node)
                           : undefined}
                         role={!addNavHrefForAnchor ? 'button' : undefined}
                         id="collapsible_listnode_{index}"
@@ -709,13 +704,13 @@
                                 selectedNode
                                   ? 'is-selected'
                                   : ''}"
-                                on:click={(event) => {
+                                on:click={event => {
                                   NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                                     event
                                   ) && handleClick(node);
                                 }}
                                 on:keyup={!addNavHrefForAnchor
-                                  ? (event) => handleEnterPressed(event, node)
+                                  ? event => handleEnterPressed(event, node)
                                   : undefined}
                                 role={!addNavHrefForAnchor
                                   ? 'button'
@@ -727,16 +722,11 @@
                                   $getTranslation(node.label)
                                 )}
                               >
-                                <span
-                                  class="fd-nested-list__title badge-align-{node.statusBadge &&
-                                  node.statusBadge.align === 'right'
-                                    ? 'right'
-                                    : 'left'}"
-                                >
-                                  {$getTranslation(node.label)}
+                                <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}">
+                                  {$getTranslation(node.label)}                                  
                                   <StatusBadge {node} />
-                                </span>
-
+                                </span>                                
+                                
                                 {#if node.externalLink && node.externalLink.url}
                                   <i class="sap-icon--action" />
                                 {/if}
@@ -770,13 +760,13 @@
                                         ? 'is-selected'
                                         : ''}"
                                       tabindex="0"
-                                      on:click={(event) => {
+                                      on:click={event => {
                                         NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                                           event
                                         ) && handleClick(node);
                                       }}
                                       on:keyup={!addNavHrefForAnchor
-                                        ? (event) =>
+                                        ? event =>
                                             handleEnterPressed(event, node)
                                         : undefined}
                                       role={!addNavHrefForAnchor
@@ -788,13 +778,8 @@
                                         $getTranslation(node.label)
                                       )}
                                     >
-                                      <span
-                                        class="fd-nested-list__title badge-align-{node.statusBadge &&
-                                        node.statusBadge.align === 'right'
-                                          ? 'right'
-                                          : 'left'}"
-                                      >
-                                        {$getTranslation(node.label)}
+                                      <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}">
+                                        {$getTranslation(node.label)}                                        
                                         <StatusBadge {node} />
                                       </span>
                                       {#if node.externalLink && node.externalLink.url}
@@ -860,13 +845,13 @@
                             class="fd-nested-list__link {node === selectedNode
                               ? 'is-selected'
                               : ''}"
-                            on:click={(event) => {
+                            on:click={event => {
                               NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                                 event
                               ) && handleClick(node);
                             }}
                             on:keyup={!addNavHrefForAnchor
-                              ? (event) => handleEnterPressed(event, node)
+                              ? event => handleEnterPressed(event, node)
                               : undefined}
                             role={!addNavHrefForAnchor ? 'button' : undefined}
                             data-testid={getTestId(node)}
@@ -898,11 +883,7 @@
                                   : ''}</span
                               >
                             {/if}
-                            <span
-                              class="fd-nested-list__title badge-align-{node.statusBadge &&
-                              node.statusBadge.align === 'right'
-                                ? 'right'
-                                : 'left'}"
+                            <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
                               >{$getTranslation(node.label)}
                               {#if node.statusBadge}
                                 <StatusBadge {node} />
@@ -1206,7 +1187,7 @@
       margin-left: auto;
     }
   }
-
+  
   .fd-nested-list__content.has-child {
     .fd-nested-list__link {
       max-width: calc(100% - 2.5rem);
