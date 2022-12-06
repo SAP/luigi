@@ -357,6 +357,10 @@
     width: 25%;
     z-index: 3;
     right: 0;
+    
+    .drawer {
+      height: 100%;
+    }
   }
 
   .drawer {
