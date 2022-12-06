@@ -241,8 +241,7 @@ export const projectDetailNavStructure = projectId => [
     testId: 'myTestId',
     statusBadge: {
       label: 'Project',
-      type: 'informative',
-
+      type: 'informative'
     }
   },
   {
