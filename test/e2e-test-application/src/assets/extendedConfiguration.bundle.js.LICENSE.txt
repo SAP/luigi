@@ -1,18 +1,4 @@
 /*!
-           * The buffer module from node.js, for the browser.
-           *
-           * @author   Feross Aboukhadijeh <http://feross.org>
-           * @license  MIT
-           */
-
-/*!
-          Copyright (c) 2011, Yahoo! Inc. All rights reserved.
-          Code licensed under the BSD License:
-          http://developer.yahoo.com/yui/license.html
-          version: 2.9.0
-          */
-
-/*!
  * 
  *       Don't be afraid!
  *       This file was generated automatically and you should not modify it.
@@ -20,24 +6,98 @@
  *
  */
 
-/*! (c) Stefan Thomas | https://github.com/bitcoinjs/bitcoinjs-lib
-           */
+/*! ModuleConcatenation bailout: Cannot concat with ./auth/src/helpers.js */
 
-/*! (c) Tom Wu | http://www-cs-students.stanford.edu/~tjw/jsbn/
-           */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/asyncToGenerator.js (<- Module is not an ECMAScript module) */
 
-/*! CryptoJS v3.1.2 core-fix.js
-           * code.google.com/p/crypto-js
-           * (c) 2009-2013 by Jeff Mott. All rights reserved.
-           * code.google.com/p/crypto-js/wiki/License
-           * THIS IS FIX of 'core.js' to fix Hmac issue.
-           * https://code.google.com/p/crypto-js/issues/detail?id=84
-           * https://crypto-js.googlecode.com/svn-history/r667/branches/3.x/src/core.js
-           */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/classCallCheck.js (<- Module is not an ECMAScript module) */
 
-/*! Mike Samuel (c) 2009 | code.google.com/p/json-sans-eval
-           */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/helpers/createClass.js (<- Module is not an ECMAScript module) */
 
-/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/@babel/runtime/regenerator/index.js (<- Module is not an ECMAScript module) */
+
+/*! ModuleConcatenation bailout: Cannot concat with ./node_modules/oidc-client/lib/oidc-client.min.js (<- Module is not an ECMAScript module) */
+
+/*! ModuleConcatenation bailout: Module is an entry point */
+
+/*! ModuleConcatenation bailout: Module is not an ECMAScript module */
+
+/*! all exports used */
+
+/*! exports provided: Helpers */
+
+/*! exports provided: default */
+
+/*! exports used: Helpers */
+
+/*! exports used: InMemoryWebStorage, UserManager, WebStorageStateStore */
+
+/*! exports used: default */
+
+/*! no static exports found */
 
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/*!*****************************!*\
+    !*** ./auth/src/helpers.js ***!
+    \*****************************/
+
+/*!*****************************!*\
+  !*** ./auth/src/helpers.js ***!
+  \*****************************/
+
+/*!***************************************!*\
+      !*** ./auth/src/auth-oauth2/index.js ***!
+      \***************************************/
+
+/*!*************************************************!*\
+  !*** ./auth/src/auth-oidc/index.js + 1 modules ***!
+  \*************************************************/
+
+/*!*******************************************************!*\
+      !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
+      \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
+  \*******************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/oidc-client/lib/oidc-client.min.js ***!
+  \*********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+
+/*!************************************************************!*\
+    !*** ./node_modules/@babel/runtime/helpers/createClass.js ***!
+    \************************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/createClass.js ***!
+  \************************************************************/
+
+/*!***************************************************************!*\
+    !*** ./node_modules/@babel/runtime/helpers/classCallCheck.js ***!
+    \***************************************************************/
+
+/*!***************************************************************!*\
+    !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
+    \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/classCallCheck.js ***!
+  \***************************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \***************************************************************/
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/asyncToGenerator.js ***!
+  \*****************************************************************/
+
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js ***!
+  \*********************************************************************************/
