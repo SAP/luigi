@@ -517,7 +517,7 @@ There are a few options to do that at the moment:
                 {
                   label: "Luigi Github Page",
                   externalLink: {
-                    url: "https://github.com/kyma-project/luigi",
+                    url: "https://github.com/SAP/luigi",
                   },
                 },
                 {
