@@ -254,7 +254,8 @@ export const projectDetailNavStructure = projectId => [
     testId: 'myTestId',
     statusBadge: {
       label: 'Settings',
-      type: 'positive'
+      type: 'positive',
+      align: 'right'
     }
   },
   {
