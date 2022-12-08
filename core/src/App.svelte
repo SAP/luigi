@@ -947,7 +947,7 @@
     //  only show the modal path in the URL when the first modal is opened.
     if (showModalPathInUrl && mfModalList.length===1) {
       const url = new URL(location.href);
-      history.pushState(window.state, '', url.href);
+      // history.pushState(window.state, '', url.href);
       Routing.appendModalDataToUrl(nodepath, settings, url);
     }
   };
@@ -1530,7 +1530,6 @@
 
         if (IframeHelpers.isMessageSource(e, mfModalTopMostElement && mfModalTopMostElement.modalIframe)) {
           closeModal(mfModalList.length - 1, true);
-
           await sendContextToClient(config, {
             goBackContext:
               e.data.goBackContext && JSON.parse(e.data.goBackContext),
