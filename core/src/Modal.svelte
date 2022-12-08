@@ -357,6 +357,10 @@
     width: 25%;
     z-index: 3;
     right: 0;
+    
+    .drawer {
+      height: 100%;
+    }
   }
 
   .drawer {
@@ -365,7 +369,6 @@
     overflow-y: auto;
     left: auto;
     right: 0;
-    height: 100%;
   }
 
   :global(.lui-breadcrumb) .drawer__backdrop {
