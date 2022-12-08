@@ -32,7 +32,7 @@ export declare interface SplitViewInstance {
   collapse: () => void;
   expand: () => void;
   setSize: (value: number) => void;
-  on: (key: SplitViewEvents, callback: () => void) => string; //
+  on: (key: SplitViewEvents, callback: () => void) => string;
   exists: () => boolean;
   getSize: () => number;
   isCollapsed: () => boolean;
@@ -391,7 +391,7 @@ export declare interface Options {
  * @param {String} literal The literal to process.
  * @returns {String} Returns the processed literal.
  */
-export declare const html: (strings: TemplateStringsArray, ...values: unknown[]) => string;
+export declare const html: (strings: TemplateStringsArray, ...keys: unknown[]) => string;
 
 export interface LuigiClient {
   /**
