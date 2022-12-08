@@ -53,7 +53,14 @@ export class linkManager extends LuigiCoreAPIBase {
     return remotePromise;
   }
 
-  openAsModal(path, modalSettings = {}) {
+  openAsModal(path, modalSettings = {}, closeCallback) {
+    if (closeCallback) {
+      const onClosePromise = GenericHelpers.createRemotePromise();
+      onClosePromise.then(value => {
+        closeCallback(value);
+      });
+      modalSettings.onClosePromiseId = onClosePromise.id;
+    }
     this.navigate(path, true, modalSettings);
   }
 

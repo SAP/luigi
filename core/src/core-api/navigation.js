@@ -58,8 +58,8 @@ class LuigiNavigationManager {
    * @example
    * Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal(path, modalSettings) {
-    return new linkManager().openAsModal(path, modalSettings);
+  openAsModal(path, modalSettings, closeCallback) {
+    return new linkManager().openAsModal(path, modalSettings, closeCallback);
   }
 
   /**
