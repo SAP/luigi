@@ -141,10 +141,10 @@ Luigi.setConfig({
             }],
             productSwitcher: {
                 items: [{
-                    icon: 'https://raw.githubusercontent.com/kyma-project/kyma/master/logo.png',
-                    label: 'Kyma on github',
+                    icon: 'https://raw.githubusercontent.com/SAP/luigi/master/website/landingpage/public/assets/img/logos/sap.svg',
+                    label: 'SAP homepage',
                     externalLink: {
-                      url: 'https://github.com/kyma-project',
+                      url: 'https://www.sap.com',
                       sameWindow: false
                     }
                 },{
