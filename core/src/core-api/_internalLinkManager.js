@@ -60,9 +60,11 @@ export class linkManager extends LuigiCoreAPIBase {
    * @param {Function} onCloseCallback callback function called upon closing the openened modal
    */
   openAsModal(path, modalSettings = {}, onCloseCallback) {
-    if (onCloseCallback) {
+    console.log('fumction', onCloseCallback)
+    if (GenericHelpers.isFunction(onCloseCallback)) {
       const onClosePromise = GenericHelpers.createRemotePromise();
       onClosePromise.then(value => {
+        console.log('inside then clause');
         onCloseCallback(value);
       });
       modalSettings.onClosePromiseId = onClosePromise.id;
