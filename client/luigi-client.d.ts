@@ -398,7 +398,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal: (nodepath: string, modalSettings?: ModalSettings, onCloseCallback: Function) => void;
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings, onCloseCallback?: Function) => void;
 
   /**
    * Update current title and size of a modal.
