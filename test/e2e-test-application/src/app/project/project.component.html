@@ -364,26 +364,6 @@
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" data-testid="open-modal-with-callback" (click)="
-                linkManager().openAsModal('/projects/pr2/settings', {
-                  title: 'Modal with callback function',
-                  size: 'm',
-                  (value)=> {
-                    alert('Callback called:', value)
-                  }
-                })
-              ">Open modal with callback</a>
-            <app-code-snippet data="linkManager()
-              .openAsModal('/projects/pr2/settings', {
-                title: 'Modal with callback function',
-                size: 'm',
-                (value)=> {
-                  alert('Callback called:', value)
-                }
-              })">
-            </app-code-snippet>
-          </li>
-          <li class="fd-list__item">
             <a href="javascript:void(0)" class="fd-link" data-testid="open-modal-to-settings-fullscreen" (click)="
                 linkManager().openAsModal('/projects/pr2/settings', {
                   title: 'microfrontend in a modal',

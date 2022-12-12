@@ -64,7 +64,7 @@ export class linkManager extends LuigiCoreAPIBase {
     if (GenericHelpers.isFunction(onCloseCallback)) {
       const onClosePromise = GenericHelpers.createRemotePromise();
       onClosePromise.then(value => {
-        console.log('inside then clause');
+        console.log('inside then clause', value);
         onCloseCallback(value);
       });
       modalSettings.onClosePromiseId = onClosePromise.id;
