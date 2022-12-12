@@ -133,7 +133,7 @@ describe('Navigation', () => {
       cy.get('[data-testid=modal-mf]').should('not.be.visible');
     });
 
-    it.only('Open modal with callback from core api', () => {
+    it('Open modal with callback from core api', () => {
       // projects page
       cy.get('.fd-shellbar')
         .contains('Projects')
