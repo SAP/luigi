@@ -345,8 +345,8 @@ class Navigation {
 
     /**
      * fallbackLabelResolver
-     * Resolve what do display in the context switcher (Label) in case the activated
-     * context (option) is not listed in available options (eg kyma-system namespace),
+     * Resolve what to display in the context switcher (Label) in case the activated
+     * context (option) is not listed in available options,
      * or if options have not been fetched yet
      */
     fallbackLabelResolver: id => id.replace(/\b\w/g, l => l.toUpperCase()),

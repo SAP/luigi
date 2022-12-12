@@ -395,7 +395,7 @@
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-      for(let i = mfModalList.length; i--;){
+      for (let i = mfModalList.length; i--; ) {
         closeModal(i);
       }
 
@@ -945,7 +945,7 @@
     );
 
     //  only show the modal path in the URL when the first modal is opened.
-    if (showModalPathInUrl && mfModalList.length===1) {
+    if (showModalPathInUrl && mfModalList.length === 1) {
       const url = new URL(location.href);
       history.pushState(window.state, '', url.href);
       Routing.appendModalDataToUrl(nodepath, settings, url);
@@ -980,19 +980,21 @@
   const closeModal = (index, isClosedInternal) => {
     const resetModalData = (index, isClosedInternal) => {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-          'routing.showModalPathInUrl'
-        );
+        'routing.showModalPathInUrl'
+      );
       // only remove the modal path in URL when closing the first modal
-      if (showModalPathInUrl && mfModalList.length===1) {
+      if (showModalPathInUrl && mfModalList.length === 1) {
         Routing.removeModalDataFromUrl(isClosedInternal);
       }
       resetMicrofrontendModalData(index);
-    }
+    };
     const targetModal = mfModalList[index];
     if (targetModal && targetModal.modalIframe) {
-      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(() => {
-        resetModalData(index, isClosedInternal);
-      });
+      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
+        () => {
+          resetModalData(index, isClosedInternal);
+        }
+      );
     } else if (targetModal && targetModal.modalWC) {
       resetModalData(index, isClosedInternal);
     }
@@ -1528,7 +1530,12 @@
       if ('luigi.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
 
-        if (IframeHelpers.isMessageSource(e, mfModalTopMostElement && mfModalTopMostElement.modalIframe)) {
+        if (
+          IframeHelpers.isMessageSource(
+            e,
+            mfModalTopMostElement && mfModalTopMostElement.modalIframe
+          )
+        ) {
           closeModal(mfModalList.length - 1, true);
 
           await sendContextToClient(config, {
@@ -1907,8 +1914,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
