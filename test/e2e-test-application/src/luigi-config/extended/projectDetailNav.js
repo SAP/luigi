@@ -226,7 +226,10 @@ export const projectDetailNavStructure = projectId => [
             buttonConfirm: 'Yes',
             buttonDismiss: 'No'
           };
-          return Luigi.showConfirmationModal(settings).then(() => true, () => false);
+          return Luigi.showConfirmationModal(settings).then(
+            () => true,
+            () => false
+          );
         }
       }
     ]
@@ -254,7 +257,8 @@ export const projectDetailNavStructure = projectId => [
     testId: 'myTestId',
     statusBadge: {
       label: 'Settings',
-      type: 'positive'
+      type: 'positive',
+      align: 'right'
     }
   },
   {

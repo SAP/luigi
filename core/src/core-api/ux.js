@@ -122,7 +122,7 @@ class LuigiUX {
    * Get the document title
    * @memberof UX
    * @since 1.4.0
-   * @returns a string, which is displayed in the tab.
+   * @returns {string} a string, which is displayed in the tab.
    * @example Luigi.ux().getDocumentTitle();
    */
   getDocumentTitle() {

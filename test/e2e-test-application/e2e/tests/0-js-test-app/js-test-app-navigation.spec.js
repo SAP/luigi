@@ -141,8 +141,9 @@ describe('JS-TEST-APP', () => {
       });
       it('Tooltip for expand button not defined', () => {
         delete newConfig.navigation.nodes[0].children[0].category.titleExpandButton;
+        newConfig.tag = 'tooltip-test-2';
         cy.visitTestApp('/', newConfig);
-        cy.get('#app[configversion="tooltip-test"]');
+        cy.get('#app[configversion="tooltip-test-2"]');
         cy.get('.lui-collapsible-item').contains('Test Category');
         cy.get('.lui-collapsible-item button').should('not.have.attr', 'title');
         cy.get('.lui-collapsible-item')
@@ -152,8 +153,9 @@ describe('JS-TEST-APP', () => {
       });
       it('Tooltip for collapse button not defined', () => {
         delete newConfig.navigation.nodes[0].children[0].category.titleCollapseButton;
+        newConfig.tag = 'tooltip-test-3';
         cy.visitTestApp('/', newConfig);
-        cy.get('#app[configversion="tooltip-test"]');
+        cy.get('#app[configversion="tooltip-test-3"]');
         cy.get('.lui-collapsible-item').contains('Test Category');
         cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Expand test category');
         cy.get('.lui-collapsible-item')
@@ -168,9 +170,10 @@ describe('JS-TEST-APP', () => {
             titleCollapseButton: 'Default collapse tooltip'
           }
         };
+        newConfig.tag = 'tooltip-test-4';
         delete newConfig.navigation.nodes[0].children[0].category.titleCollapseButton;
         cy.visitTestApp('/', newConfig);
-        cy.get('#app[configversion="tooltip-test"]');
+        cy.get('#app[configversion="tooltip-test-4"]');
         cy.get('.lui-collapsible-item').contains('Test Category');
         cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Expand test category');
         cy.get('.lui-collapsible-item')
