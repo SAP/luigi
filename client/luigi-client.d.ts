@@ -394,10 +394,11 @@ export declare interface LinkManager {
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {Function} onCloseCallback callback function called upon closing the openened modal
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings, onCloseCallback: Function) => void;
 
   /**
    * Update current title and size of a modal.
