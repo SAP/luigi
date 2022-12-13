@@ -57,7 +57,7 @@ export class linkManager extends LuigiCoreAPIBase {
    * This function navigates to a modal after adding the onClosePromise that handles the callback for when the modal is closed.
    * @param {string} path the navigation path to open in the modal
    * @param {Object} modalSettings settings to configure the modal's title, size, width and height
-   * @param {Function} onCloseCallback callback function called upon closing the openened modal
+   * @param {Function} onCloseCallback callback function called upon closing the opened modal
    */
   openAsModal(path, modalSettings = {}, onCloseCallback) {
     if (GenericHelpers.isFunction(onCloseCallback)) {
