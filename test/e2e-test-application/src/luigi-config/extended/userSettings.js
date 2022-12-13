@@ -94,7 +94,7 @@ class UserSettings {
         theme: {
           type: 'enum',
           label: 'theme',
-          options: ['light', 'dark']
+          options: ['red', 'green']
         }
       }
     },
@@ -109,6 +109,12 @@ class UserSettings {
       title: 'Custom 2',
       icon: 'private',
       viewUrl: 'http://localhost:8090/customUserSettingsMf.html'
+    },
+    customTheming: {
+      label: 'Custom Theming',
+      title: 'Custom Theming',
+      icon: 'private',
+      viewUrl: 'http://localhost:4500/examples/microfrontends/customUserTheming.html'
     }
   };
 }
