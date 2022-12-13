@@ -1913,8 +1913,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={(event) => modalIframeCreated(event, index)}
-        on:wcCreated={(event) => modalWCCreated(event, index)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}

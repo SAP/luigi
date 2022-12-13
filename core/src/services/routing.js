@@ -353,6 +353,10 @@ class RoutingClass {
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
 
+    if (window.Luigi.preventLoadingModalData) {
+      window.Luigi.preventLoadingModalData = false;
+      return;
+    }
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
@@ -674,7 +678,7 @@ class RoutingClass {
    * @param {Object} modalParams query parameter
    * @param {URL} urlObj URL object
    */
-  appendModalDataToUrl(modalPath, modalParams, urlObj) {
+  appendModalDataToUrl(modalPath, modalParams) {
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
@@ -685,7 +689,8 @@ class RoutingClass {
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = urlObj;
+      const url = new URL(location.href);
+      const urlHashWithoutModalData = url.hash;
       const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
@@ -696,14 +701,19 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
-
       if (history.state.modalHistoryLength) {
         history.state.modalHistoryLength += 1;
       }
-      if (!history.state.path) history.state.path = url.pathname;
+
+      if (!history.state.pathBeforeHistory) {
+        if (hashRoutingActive) {
+          history.state.pathBeforeHistory = urlHashWithoutModalData;
+        } else {
+          history.state.pathBeforeHistory = url.pathname;
+        }
+      }
       if (!history.state.modalHistoryLength) history.state.modalHistoryLength = 1;
       if (!history.state.historygap) history.state.historygap = history.length;
-
       history.pushState(history.state, '', url.href);
     }
   }
@@ -717,7 +727,6 @@ class RoutingClass {
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
-    const historyState = Number(sessionStorage.getItem('historyState'));
     if (hashRoutingActive) {
       let modalParamsObj = {};
       if (params[modalParamName]) {
@@ -744,38 +753,46 @@ class RoutingClass {
     }
     // only if close modal [X] is pressed
 
-    if (history.state.modalHistoryLength >= 0 && isClosedInternal) {
+    if (history.state && history.state.modalHistoryLength >= 0 && isClosedInternal) {
       const modalHistoryLength = history.state.modalHistoryLength;
       let isGab = history.state.gapNotEqal;
+      const path = history.state.pathBeforeHistory;
+      let isModalHistoryHigerAsHistoryLength = history.state.isModalHistoryHigerAsHistoryLength;
       window.addEventListener(
         'popstate',
         e => {
-          if (isGab) {
-            console.log('gapNotEqual', history.state.path);
-            history.replaceState({}, '', history.state.path);
+          if (isModalHistoryHigerAsHistoryLength) {
+            console.log('########isModalHistoryHigher');
+            //replace the url with saved path and get rid of modal data in url
+            history.replaceState({}, '', path);
+            //reset history.length
+            history.pushState({}, '', path);
+            //apply history back is working
+            history.back();
+          } else {
+            history.pushState({}, '', path);
+            history.back();
           }
-          console.log('pushState, url.href');
-          history.pushState({}, '', url.href);
-          history.back();
         },
         { once: true }
       );
 
       if (history.state.historygap === history.length - history.state.modalHistoryLength) {
-        console.log('equal gap');
         history.go(-history.state.modalHistoryLength);
       } else {
-        console.log('gap not equal');
-        isGab = true;
         if (history.state.modalHistoryLength > history.length) {
-          history.go(-(history.length - 1));
+          const historyMaxBack = history.length - 1;
+          isModalHistoryHigerAsHistoryLength = true;
+          history.go(-historyMaxBack);
+          window.Luigi.preventLoadingModalData = true;
         } else {
-          history.go(-history.state.modalHistoryLength);
+          const modalHistoryLength = history.state.modalHistoryLength;
+          history.go(-modalHistoryLength);
         }
       }
+    } else {
+      history.pushState({}, '', url.href);
     }
-    history.pushState(window.state, '', url.href);
-    delete history.luigi;
   }
 }
 
