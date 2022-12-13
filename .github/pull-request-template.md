@@ -1,8 +1,8 @@
 <!--   Thank you for your contribution. Before you submit the pull request:
-1. Follow contributing guidelines, templates, the recommended Git workflow, and any related documentation.
-2. Read and submit the required Contributor Licence Agreements (https://github.com/kyma-project/community/blob/master/CONTRIBUTING.md#agreements-and-licenses).
-3. Test your changes and attach their results to the pull request.
-4. Update the relevant documentation.
+1. Follow the contributing guidelines: https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md
+2. Test your changes and attach their results to the pull request.
+3. Update any relevant documentation.
+4. Sign the Contributor License Agreement.
 -->
 
 **Description**

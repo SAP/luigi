@@ -32,6 +32,10 @@ module.exports = {
         to: '.'
       },
       {
+        from: 'luigi-element.d.ts',
+        to: '.'
+      },
+      {
         from: 'src/luigi-element.js',
         to: '.'
       }

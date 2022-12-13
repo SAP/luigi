@@ -89,6 +89,23 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **description**: if set to `true`, proper href attributes are added to all navigation links. It is set to `false` by default.
 - **since**: v0.7.4
 
+### defaults.category
+- **type**: object
+- **description**: defines a default `title` for all expand and collapse buttons on categories. It is possible to override the default to define a title on an individual [category](navigation-parameters-reference.md#category) by itself.
+- **attributes**:
+  - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
+  - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
+- **since**: NEXTRELEASE
+- **example**:
+```javascript
+config.navigation.defaults = {
+    category: {
+         titleExpandButton: 'Expand category',
+         titleCollapseButton: 'Collapse category',
+    }
+}
+```
+
 ### defaults.isolateView
 - **type**: boolean
 - **description**: renders all views in new frames. This setting overrides the same-domain frame reuse.
@@ -155,6 +172,10 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
   - **semanticObject**(string): may represent a business entity such as a sales order or a product. It enables navigating to such entities in an abstract implementation-independent way. It can only only contain alphanumerical characters.
   - **action**(string): defines an operation, i.e.: `display`, `approve` or `edit`. The operation is intended to be performed on a **semanticObject** such as a sales order or a certain product. It can only contain alphanumerical characters but also the underscore character.
   - **pathSegment**(string): represents the target of the navigation. In order to use it as a target link, it has to be defined under navigation nodes in the Luigi configuration.
+  - **externalLink**(object): used to resolve the intent to an external link. This parameter is optional. When used, the **pathSegment** parameter is ignored.
+    - **attributes**:
+      - **url**(string): URL the intent gets resolved to.
+      - **openInNewTab**(boolean): if set to `true`, opens the specified URL in a new tab. Otherwise, it opens it in the current tab.
 
 ### nodeAccessibilityResolver
 - **type**: any
@@ -214,11 +235,13 @@ Node parameters are all the parameters that can be added to an individual naviga
 - **description**: defines a group of views separated with a headline and an icon. You should define at least one node in a group as an Object with **label** and **icon** attributes. For all other nodes, you can set **category** as a string with the `label` value.
 - **attributes**:
   - **label** is a string that represents the title of the category.
-  - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
+  - **icon** is the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI5](https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. In case you accidentally define different icons in a category group, only the first one is used.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **collapsible** if set to `true`, category items are hidden at first. To expand them, click the main category node.
   - **testId** is a string where you can define your own custom `testId` for  E2E tests. If nothing is specified, it is the node's label written as one word in lower case, for example`label`.
   - **id** if this property is defined all nodes with the same category `id` will be grouped.
+  - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
+  - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
 
 ### children
 - **type**: array | function
@@ -501,7 +524,7 @@ runTimeErrorHandler: {
 
 ### icon
 - **type**: string
-- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. To show the label next to the icon in the top navigation, add the `showLabel` attribute.
+- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI5](https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html) or a custom link (relative or absolute) to an image. It is recommended to use a square image. The icon is displayed next to the node label in the side navigation or instead of the label in the top navigation. To show the label next to the icon in the top navigation, add the `showLabel` attribute.
 
 ### intendToHaveEmptyViewUrl
 - **type**: boolean
@@ -593,6 +616,7 @@ runTimeErrorHandler: {
 - **attributes**:
   - **label**: string specifying the text displayed on the status badge.
   - **type**: string. Allowed values are `negative`, `positive`, `critical`, `informative`, or `neutral`. The default is `neutral`.
+  - **align**: string. Defines the alignment of the status badge. Allowed values are `right` or `left`. The default is `left`.
 - **example**:
     ```javascript
     {
@@ -757,7 +781,7 @@ The context switcher is a drop-down list available in the top navigation bar. It
 
 ### icon
 - **type**: string
-- **description**: is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html). It's displayed on smaller screens next to the default label or the selected context in a dropdown for the top navigation nodes. There is a default icon if nothing is set.
+- **description**: is the name of an icon from [OpenUI5](https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html). It's displayed on smaller screens next to the default label or the selected context in a dropdown for the top navigation nodes. There is a default icon if nothing is set.
 
 ### lazyloadOptions
 - **type**: boolean
@@ -795,7 +819,7 @@ The profile section is a configurable drop-down list available in the top naviga
 - **attributes**:
   - **label** defines the text for the link.
   - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
-  - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
+  - **icon** is the name of an icon from [OpenUI5](https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
   - **openNodeInModal** configures the settings of a view which opens in a modal. Details can be found here: [openNodeInModal](navigation-parameters-reference.md#openNodeInModal).
@@ -812,7 +836,7 @@ The profile section is a configurable drop-down list available in the top naviga
 - **attributes**:
   - **label** overrides the text for the logout item. The default value is `Sign Out`.
   - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
-  - **icon** overrides the icon for the logout item. The default value is the [SAP UI5 log icon](https://sapui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
+  - **icon** overrides the icon for the logout item. The default value is the [SAP UI5 log icon](https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html#/overview/SAP-icons/?tag=logout).
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **customLogoutFn** defines a function to implement your own logout functionality. Use this function only if no IDP is configured. If you define IDP with a corresponding [logout function](authorization-configuration.md), the **customLogoutFn** set for a profile is ignored.
 
@@ -838,7 +862,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
 
 ### icon
 - **type**: string
-- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image. The icon is displayed without label in the top navigation.
+- **description**: the name of an icon, without the `sap-icon--` prefix. Its source may be [OpenUI5](https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html) or a custom link (relative or absolute) to an image. The icon is displayed without label in the top navigation.
 
 ### items
 - **type**: array
@@ -847,7 +871,7 @@ The product switcher is a pop-up window available in the top navigation bar. It 
   - **label** defines the text for the link.
   - **subTitle** defines an additional text line for the link.
   - **testId** is a string where you can define your own custom `testId` for E2E tests. If nothing is specified, it is the node's label written as one word and lower case (e.g. `label`).
-  - **icon** is the name of an icon from the [OpenUI](https://openui5.hana.ondemand.com/1.40.10/iconExplorer.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
+  - **icon** is the name of an icon from the [OpenUI5](https://openui5.hana.ondemand.com/test-resources/sap/m/demokit/iconExplorer/webapp/index.html) or a custom link (relative or absolute) to an image displayed next to the label or instead of it.
   - **altText** adds the HTML `alt` attribute to an icon. Note that this property only applies to icons with a defined absolute or relative path.
   - **link** defines an absolute link to a **node**.
   - **selected** if set to true, the item is displayed in selected state, useful e.g. if the item refers to the current product.

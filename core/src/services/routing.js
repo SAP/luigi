@@ -188,26 +188,47 @@ class RoutingClass {
   }
 
   /**
-   * Fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   * Prevents the browsers default route change by bringing back previous route then
+   * fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   *
    * @param {string} path the path of the view to open
    * @param {Object} component current component data
    * @param {Object} iframeElement the dom element of active iframe
    * @param {Object} config the configuration of application
    */
-  showUnsavedChangesModal(path, component, iframeElement, config) {
-    const newUrl = window.location.href;
-    const oldUrl = component.get().unsavedChanges.persistUrl;
+  handleUnsavedChangesModal(path, component, iframeElement, config) {
+    const newUrl = window.location.href,
+      oldUrl = component.get().unsavedChanges.persistUrl;
 
-    //pretend the url hasn't been changed
-    oldUrl && history.replaceState(window.state, '', oldUrl);
-    component.showUnsavedChangesModal().then(
-      () => {
-        path &&
-          this.handleRouteChange(path, component, iframeElement, config) &&
-          history.replaceState(window.state, '', newUrl);
-      },
-      () => {}
-    );
+    // pretend the url hasn't been changed by browser default behaviour
+    oldUrl && history.pushState(window.state, '', oldUrl);
+
+    return component
+      .getUnsavedChangesModalPromise()
+      .then(
+        // resolve unsaved changes promise
+        () => {
+          this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+        },
+        // user clicks no, do nothing, reject promise
+        () => {}
+      )
+      .catch(() => {});
+  }
+
+  /**
+   * This function acts as a resolve callback in handleUnsavedChangesModal function
+   * Logic separated to enable better unit testing of the functionality
+   * @param {string} path the path to navigate to
+   * @param {Object} component the current component data
+   * @param {Object} iframeElement the dom element of active iframe
+   * @param {Object} config the configuration of application
+   */
+  resolveUnsavedChanges(path, component, iframeElement, config, newUrl) {
+    if (path) {
+      this.handleRouteChange(path, component, iframeElement, config);
+      history.replaceState(window.state, '', newUrl);
+    }
   }
 
   /**
@@ -335,7 +356,7 @@ class RoutingClass {
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
-        this.showUnsavedChangesModal(path, component, iframeElement, config);
+        await this.handleUnsavedChangesModal(path, component, iframeElement, config);
         return;
       }
 
