@@ -701,20 +701,18 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
-      if (history.state.modalHistoryLength) {
-        history.state.modalHistoryLength += 1;
-      }
 
-      if (!history.state.pathBeforeHistory) {
-        if (hashRoutingActive) {
-          history.state.pathBeforeHistory = urlHashWithoutModalData;
-        } else {
-          history.state.pathBeforeHistory = url.pathname;
-        }
+      let historyState = history.state;
+      if (historyState && historyState.modalHistoryLength) {
+        historyState.modalHistoryLength += 1;
+      } else {
+        historyState = {
+          modalHistoryLength: 1,
+          historygap: history.length,
+          pathBeforeHistory: hashRoutingActive ? urlHashWithoutModalData : url.pathname
+        };
       }
-      if (!history.state.modalHistoryLength) history.state.modalHistoryLength = 1;
-      if (!history.state.historygap) history.state.historygap = history.length;
-      history.pushState(history.state, '', url.href);
+      history.pushState(historyState, '', url.href);
     }
   }
 
