@@ -217,10 +217,11 @@ export declare interface LinkManager {
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {Function} onCloseCallback callback function called upon closing the openened modal
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings, onCloseCallback?: Function) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
