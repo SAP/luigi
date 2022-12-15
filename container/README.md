@@ -33,10 +33,8 @@ import '@luigi-project/container';
 
 ```
     <luigi-compound-container 
-        viewURL="https://www.example-microfronted.com" 
-        webcomponent="false" 
-        label="my label"
-        context='{"label": "Calendar"}'>
+        context='{"label": "Dashboard"}'
+        compoundConfig = { your config here }
     </luigi-compound-container>
 ```
 
