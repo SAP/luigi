@@ -15,26 +15,30 @@ npm install @luigi-project/container
 
 
 ```
-    import { LuigiContainer } from '@luigi-project/container';
+import '@luigi-project/container';
 ```
 
-3. Define your own component with a given tag name that you can use in your applicatoin:
+3. You can now use the Luigi container as follows anywhere in your application:
 
 ```
-customElements.define('my-luigi-container', LuigiContainer);
-```
-
-Having defined the tag, you can now use the Luigi container as follows anywhere in your application:
-
-```
-    <my-luigi-container 
+    <luigi-container 
         viewURL="https://www.example-microfronted.com" 
         webcomponent="false" 
         label="my label"
         context='{"label": "Calendar"}'>
-    </my-luigi-container>
+    </luigi-container>
 ```
 
+4. In a similar way you can use the Luigi compound container as follows:
+
+```
+    <luigi-compound-container 
+        viewURL="https://www.example-microfronted.com" 
+        webcomponent="false" 
+        label="my label"
+        context='{"label": "Calendar"}'>
+    </luigi-compound-container>
+```
 
 
 ## Development 

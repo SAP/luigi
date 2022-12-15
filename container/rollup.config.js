@@ -31,14 +31,15 @@ function serve() {
 }
 
 /**
- * This function replaces the '__luigi_dyn_import(' string with 'import( /* webpackIgnore: true */'   '/*
+ * This function replaces the '__luigi_dyn_import(' string with 'import( /* webpackIgnore: true */ ('   ');
+/*
  * to avoid bundlers like webpack resolving dynamic import statements as they shouldn't be resolved in this case
- * 
+ *
  * @param {string} bundleFileName the file name of the generated bundle js
  */
-function replaceDynamicImport(bundleFilename) {
+function replaceDynamicImportOnShell(bundleFilename) {
   const bundleSourceMapFileName = bundleFilename + '.map';
-  const backupBundleFilename = bundleFilename + '.backup'
+  const backupBundleFilename = bundleFilename + '.backup';
   const backupSourceMapFilename = bundleSourceMapFileName + '.backup';
 
   try {
@@ -48,18 +49,20 @@ function replaceDynamicImport(bundleFilename) {
        sed -i.backup 's/__luigi_dyn_import/import/g' ${bundleSourceMapFileName}`
     );
   } catch (error) {
-    console.error('Failed to replace string', error)
-    if (error) { throw error };
+    console.error('Failed to replace string', error);
+    if (error) {
+      throw error;
+    }
   }
 
   try {
     // delete generated backup files as they are not needed
-    execSync(
-      `rm ${backupBundleFilename} ${backupSourceMapFilename}`
-    );
+    execSync(`rm ${backupBundleFilename} ${backupSourceMapFilename}`);
   } catch (error) {
     console.error('Failed to delete backup generated files', error);
-    if (error) { throw error };
+    if (error) {
+      throw error;
+    }
   }
 
   console.log(
@@ -106,11 +109,12 @@ export default [
         dedupe: ['svelte']
       }),
       commonjs(),
-      {
-        writeBundle(bundle) {
-          replaceDynamicImport(bundle.file)
-        }
-      },
+      // TODO: Sed not compatible on Windows. using JS for the time being
+      // {
+      //   writeBundle(bundle) {
+      //     replaceDynamicImport(bundle.file)
+      //   }
+      // },
       // In dev mode, call `npm run start` once
       // the bundle has been generated
       !production && serve(),
@@ -121,7 +125,7 @@ export default [
 
       // If we're building for production (npm run build
       // instead of npm run dev), minify
-      production && terser(),
+      production && terser()
     ],
     watch: {
       clearScreen: false

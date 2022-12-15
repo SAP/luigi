@@ -12,7 +12,7 @@
     "public"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && node ./replace.js",
     "bundle": "npm run build",
     "dev": "rollup -c -w",
     "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ || COPY public\\* test-app\\",
