@@ -2,8 +2,6 @@
 # Luigi Container 
 
 ## Overview
-:information_source: This is an **experimental feature**.
-
 Luigi Container is a [web component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) that can be included in an arbitrary application, in order to render a Luigi micro frontend (iframe or web component based) without the need of being a Luigi Core application.
 
 ## Usage

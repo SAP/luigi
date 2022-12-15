@@ -1,10 +1,10 @@
 
-# Luigi Container (Experimental!)
+# Luigi Container 
 
-# Introduction
-Luigi Container is a component (web component) that can be included in an arbitrary application rendering a luigi micro frontend (iframe or web component based) without the need of being a luigi core application.
+## Overview
+Luigi Container is a [web component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) that can be included in an arbitrary application, in order to render a Luigi micro frontend (iframe or web component based) without the need of being a Luigi Core application.
 
-# Usage
+## Usage
 1. Install the container package: `@luigi-project/container` 
 
 ```
@@ -24,7 +24,7 @@ npm install @luigi-project/container
 customElements.define('my-luigi-container', LuigiContainer);
 ```
 
-Having defined the tag you can now use the Luigi container as follows anywhere in your application:
+Having defined the tag, you can now use the Luigi container as follows anywhere in your application:
 
 ```
     <my-luigi-container 
@@ -37,8 +37,9 @@ Having defined the tag you can now use the Luigi container as follows anywhere i
 
 
 
-# Development 
-### Build the bundle and start an example app
+## Development 
+
+Build the bundle and start an example app: 
 
 ```bash
 npm install
@@ -46,4 +47,4 @@ npm run build
 npm start
 ```
 
-Check [./public/index.html] for how it is used.
+Check `./test-app/index.html` for how it is used.
