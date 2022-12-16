@@ -436,6 +436,13 @@
     setBurgerTooltip();
   }
 
+  function handleEnterSemiCollapseBtn(event){
+    const code = event.code;
+    if (code === 'Enter' || code === 'Space') {
+      semiCollapsibleButtonClicked();
+    }
+  }
+  
   /**
    * Handles pressing the enter key when addNavHref is disabled
    * @param event the event of the anchor element currently focused on
@@ -464,6 +471,7 @@
   }
 
   function setTitleForCategoryButton(nodes, expandedCategories){
+    console.log('test');
     return isExpanded(nodes, expandedCategories) ? (nodes.metaInfo.titleCollapseButton ? $getTranslation(nodes.metaInfo.titleCollapseButton):undefined) : (nodes.metaInfo.titleExpandButton? $getTranslation(nodes.metaInfo.titleExpandButton):undefined);
   }
 </script>
@@ -591,7 +599,11 @@
                               role="presentation"
                             />
                           {/if}
-                          <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                          <span
+                            class="fd-nested-list__title badge-align-{node.statusBadge &&
+                            node.statusBadge.align === 'right'
+                              ? 'right'
+                              : 'left'}"
                             >{$getTranslation(node.label)}
                             <StatusBadge {node} />
                           </span>
@@ -730,7 +742,12 @@
                                   $getTranslation(node.label)
                                 )}
                               >
-                                <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}">
+                                <span
+                                  class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                  node.statusBadge.align === 'right'
+                                    ? 'right'
+                                    : 'left'}"
+                                >
                                   {$getTranslation(node.label)}
                                   <StatusBadge {node} />
                                 </span>
@@ -786,7 +803,12 @@
                                         $getTranslation(node.label)
                                       )}
                                     >
-                                      <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}">
+                                      <span
+                                        class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                        node.statusBadge.align === 'right'
+                                          ? 'right'
+                                          : 'left'}"
+                                      >
                                         {$getTranslation(node.label)}
                                         <StatusBadge {node} />
                                       </span>
@@ -891,7 +913,11 @@
                                   : ''}</span
                               >
                             {/if}
-                            <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                            <span
+                              class="fd-nested-list__title badge-align-{node.statusBadge &&
+                              node.statusBadge.align === 'right'
+                                ? 'right'
+                                : 'left'}"
                               >{$getTranslation(node.label)}
                               {#if node.statusBadge}
                                 <StatusBadge {node} />
@@ -930,6 +956,8 @@
                 ? 'sap-icon--open-command-field'
                 : 'sap-icon--close-command-field'}"
               on:click={() => semiCollapsibleButtonClicked(this)}
+              tabindex="0"
+              on:keydown={handleEnterSemiCollapseBtn}
               data-testid="semiCollapsibleButton"
               title={burgerTooltip}
             />
@@ -1195,7 +1223,7 @@
       margin-left: auto;
     }
   }
-  
+
   .fd-nested-list__content.has-child {
     .fd-nested-list__link {
       max-width: calc(100% - 2.5rem);
