@@ -65,10 +65,15 @@
     deferInit = false;
   };
 
-  thisComponent.sendCustomMessage = (msg) => {
+  thisComponent.sendCustomMessage = (id: string, data?: any) => {
     if (isWebComponent() && (mainComponent as any)._luigi_mfe_webcomponent) {
-      containerService.dispatch(msg.id, (mainComponent as any)._luigi_mfe_webcomponent, msg);
+      containerService.dispatch(id, (mainComponent as any)._luigi_mfe_webcomponent, data);
     } else {
+      const msg = {...data};
+      if (msg.id) {
+        console.warn('Property "id" is reserved and can not be used in custom message data');
+      }
+      msg.id = id;
       containerService.sendCustomMessageToIframe(iframeHandle, msg);
     }
   }

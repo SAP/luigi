@@ -55,6 +55,12 @@ export class ContainerService {
               case 'luigi.ux.alert.show':
                 this.dispatch('alert-request', targetCnt, event.data.params);
                 break;
+              case 'luigi.init.ok':
+                this.dispatch('initialized', targetCnt, event.data.params);
+                break;
+              case 'luigi.third-party-cookie':
+                // TODO: check if needed
+                break;
 
               default:
                 console.warn('Functionality not yet implemented: ', msg);

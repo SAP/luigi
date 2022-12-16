@@ -26,11 +26,10 @@
   <body>
     <div class="flexCnt">
       <div id="col1">
-        <ui5-button>Refresh Joke</ui5-button>
+        <ui5-button>Send random string</ui5-button>
         <luigi-container
           webcomponent="true"
-          viewUrl="https://team-phteven.gitlab.io/joke-of-the-day-wc/main.js"
-          context='{"apiUrl":"https://edenhauser.com/stupidb/?db=unijokes_db&random"}'
+          viewUrl="https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js"
         >
         </luigi-container>
       </div>
@@ -48,11 +47,16 @@
       const luigiCnt2 = document.querySelector('#col2 luigi-container');
 
       btn1.addEventListener('click', () => {
-        luigiCnt1.sendCustomMessage({ id: 'update', test: 'data' });
+        luigiCnt1.sendCustomMessage('update', 'data ' + new Date().getMilliseconds());
       });
 
       btn2.addEventListener('click', () => {
-        luigiCnt2.sendCustomMessage({ id: 'update', test: 'data' });
+        luigiCnt2.sendCustomMessage('update');
+      });
+
+      luigiCnt2.addEventListener('navigation-request', event => {
+        console.log(event.detail);
+        window.location = event.detail.link;
       });
     </script>
   </body>
