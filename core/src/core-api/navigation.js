@@ -6,7 +6,7 @@ class LuigiNavigationManager {
    * Use these functions for navigation-related features.
    * @name LuigiNavigation
    */
-  constructor() {}
+  constructor() { }
 
   /**
    * Refreshes top navigation badge counters by rendering the navigation again.
@@ -55,11 +55,12 @@ class LuigiNavigationManager {
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {Function} onCloseCallback callback function called upon closing the opened modal
    * @example
    * Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal(path, modalSettings) {
-    return new linkManager().openAsModal(path, modalSettings);
+  openAsModal(path, modalSettings, onCloseCallback) {
+    return new linkManager().openAsModal(path, modalSettings, onCloseCallback);
   }
 
   /**
