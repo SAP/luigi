@@ -65,6 +65,15 @@
     deferInit = false;
   };
 
+  thisComponent.sendCustomMessage = (msg) => {
+    console.log(isWebComponent(), thisComponent);
+    if (isWebComponent() && (mainComponent as any)._luigi_mfe_webcomponent) {
+      containerService.dispatch(msg.id, (mainComponent as any)._luigi_mfe_webcomponent, msg);
+    } else {
+      // TODO iframe
+    }
+  }
+
   containerService.registerContainer(thisComponent);
 
   function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {

@@ -72,6 +72,9 @@
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
+      LuigiClient.addCustomMessageListener('update', data => {
+        console.log('custom msg:', data);
+      });
 
       // fallback visibility if no initlistener called for 3 seconds
       setTimeout(function() {
