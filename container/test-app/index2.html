@@ -55,8 +55,9 @@
       });
 
       luigiCnt2.addEventListener('navigation-request', event => {
-        console.log(event.detail);
-        window.location = event.detail.link;
+        if (confirm('Do you want to leave this page?')) {
+          window.location = event.detail.link;
+        }
       });
     </script>
   </body>
