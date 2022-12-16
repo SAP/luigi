@@ -72,7 +72,7 @@
   }
 
   onMount(async () => {
-    const ctx = context ? JSON.parse(context) : undefined;
+    const ctx = context ? JSON.parse(context) : {};
   });
 </script>
 
