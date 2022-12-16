@@ -1,5 +1,5 @@
 export class ContainerService {
-  constructor() { }
+  constructor() {}
 
   isVisible(component: HTMLElement) {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
@@ -38,7 +38,7 @@ export class ContainerService {
 
             switch (msg) {
               case 'luigi.get-context':
-                target.postMessage({ msg: 'luigi.init', context: targetCnt.context, internal: {} }, '*');
+                target.postMessage({ msg: 'luigi.init', context: targetCnt.context || {}, internal: {} }, '*');
                 break;
               case 'luigi.navigation.open':
                 this.dispatch('navigation-request', targetCnt, event.data.params);

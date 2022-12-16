@@ -85,7 +85,7 @@
   }
 
   onMount(async () => {
-    const ctx = context ? JSON.parse(context) : undefined;
+    const ctx = context ? JSON.parse(context) : {};
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});

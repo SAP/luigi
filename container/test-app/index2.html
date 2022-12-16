@@ -1,58 +1,59 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta charset="utf-8">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
 
-		<title>Just a Button... and a micro frontend!</title>
+    <title>Just a Button... and a micro frontend!</title>
 
-		<script src="https://unpkg.com/@ui5/webcomponents/dist/Button?module" type="module"></script>
-		
-		<!-- <script src="https://unpkg.com/@luigi-project/container" type="module"></script> -->
-		<script src="./bundle.js" type="module"></script>
-		<style>
-			.flexCnt {
-				display: flex;
-			}
+    <script
+      src="https://unpkg.com/@ui5/webcomponents/dist/Button?module"
+      type="module"
+    ></script>
 
-			.flexCnt > div {
-				flex: 1;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="flexCnt">
-			<div>
-				<ui5-button id="1">Refresh Joke</ui5-button>
-				<luigi-container id="1"
-					webcomponent=true 
-					viewUrl="https://team-phteven.gitlab.io/joke-of-the-day-wc/main.js"
-					context='{"apiUrl":"https://edenhauser.com/stupidb/?db=unijokes_db&random"}'>
-				</luigi-container>
-			</div>
-			<div>
-				<ui5-button id="2">Refresh Joke</ui5-button>
-				<luigi-container id="2"
-					viewUrl="./microfrontend.html">
-				</luigi-container>
-			</div>
-		</div>
-				
+    <!-- <script src="https://unpkg.com/@luigi-project/container" type="module"></script> -->
+    <script src="./bundle.js" type="module"></script>
+    <style>
+      .flexCnt {
+        display: flex;
+      }
 
-		<script >
-			// Some glue code
-			const btn1 = document.querySelector('ui5-button#1');
-			const luigiCnt1 = document.querySelector('luigi-container#1');
-			const btn2 = document.querySelector('ui5-button#2');
-			const luigiCnt2 = document.querySelector('luigi-container#2');
+      .flexCnt > div {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flexCnt">
+      <div id="col1">
+        <ui5-button>Refresh Joke</ui5-button>
+        <luigi-container
+          webcomponent="true"
+          viewUrl="https://team-phteven.gitlab.io/joke-of-the-day-wc/main.js"
+          context='{"apiUrl":"https://edenhauser.com/stupidb/?db=unijokes_db&random"}'
+        >
+        </luigi-container>
+      </div>
+      <div id="col2">
+        <ui5-button>Send update</ui5-button>
+        <luigi-container viewUrl="./microfrontend.html"> </luigi-container>
+      </div>
+    </div>
 
-			btn1.addEventListener('click', () => {
-				luigiCnt1.sendCustomMessage({ id: 'update', test: 'data' });
-			});
+    <script>
+      // Some glue code
+      const btn1 = document.querySelector('#col1 ui5-button');
+      const luigiCnt1 = document.querySelector('#col1 luigi-container');
+      const btn2 = document.querySelector('#col2 ui5-button');
+      const luigiCnt2 = document.querySelector('#col2 luigi-container');
 
-			btn2.addEventListener('click', () => {
-				luigiCnt2.sendCustomMessage({ id: 'update', test: 'data' });
-			});
-		</script>
-	</body>
+      btn1.addEventListener('click', () => {
+        luigiCnt1.sendCustomMessage({ id: 'update', test: 'data' });
+      });
+
+      btn2.addEventListener('click', () => {
+        luigiCnt2.sendCustomMessage({ id: 'update', test: 'data' });
+      });
+    </script>
+  </body>
 </html>
