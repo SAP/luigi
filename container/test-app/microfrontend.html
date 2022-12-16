@@ -70,10 +70,11 @@
         }
         document.getElementById('textCnt').classList.add('visible');
       }
+
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
       LuigiClient.addCustomMessageListener('update', data => {
-        console.log('custom msg:', data);
+        document.getElementById('content').innerHTML = new Date().getMilliseconds();
       });
 
       // fallback visibility if no initlistener called for 3 seconds

@@ -5,6 +5,15 @@ export class ContainerService {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
   }
 
+  sendCustomMessageToIframe(iframeHandle: any, msg: any) {
+    if (iframeHandle.iframe.contentWindow) {
+      const iframeUrl = new URL(iframeHandle.iframe.src);
+      iframeHandle.iframe.contentWindow.postMessage({ msg: 'custom', data: msg }, iframeUrl.origin);
+    } else {
+      console.error('Message target could not be resolved');
+    }
+  }
+
   dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function): void {
     let ev = new CustomEvent(msg, { detail: data });
     (ev as any).luigiCallback = data => {
