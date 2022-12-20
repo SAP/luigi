@@ -122,6 +122,31 @@ describe('linkManager', function() {
 
       sinon.assert.calledOnce(lm.navigate);
     });
+
+    it('calls openAsModal with callback', () => {
+      const prom = new Promise(resolve => {
+        resolve();
+      });
+      prom.id = 1;
+
+      sinon.stub(GenericHelpers, 'isFunction').returns(true);
+      sinon.stub(GenericHelpers, 'createRemotePromise').returns(prom);
+
+      lm.openAsModal('path', { size: 1 }, () => {});
+
+      sinon.assert.calledOnce(GenericHelpers.isFunction);
+      sinon.assert.calledOnce(GenericHelpers.createRemotePromise);
+      sinon.assert.calledOnceWithExactly(lm.navigate, 'path', true, { size: 1, onClosePromiseId: 1 });
+    });
+
+    it('calls openAsModal with wrong callback', () => {
+      sinon.stub(GenericHelpers, 'isFunction').returns(false);
+
+      lm.openAsModal('path', { size: 1 }, 'not a function');
+
+      sinon.assert.calledOnce(GenericHelpers.isFunction);
+      sinon.assert.calledOnceWithExactly(lm.navigate, 'path', true, { size: 1 });
+    });
   });
 
   describe('openAsDrawer', () => {

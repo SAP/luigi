@@ -563,6 +563,7 @@ Opens a view in a modal. You can specify the modal's title and size. If you do n
     -   `modalSettings.size` **(`"fullscreen"` \| `"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
     -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
     -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+-   `onCloseCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** callback function called upon closing the opened modal
 
 ##### Examples
 
