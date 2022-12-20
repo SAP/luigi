@@ -690,8 +690,9 @@ class RoutingClass {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
       const url = new URL(location.href);
-      const urlHashWithoutModalData = url.hash;
       const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+      let historyState = history.state;
+      historyState = RoutingHelpers.handleHistoryState(historyState, hashRoutingActive, url);
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
         if (queryParamIndex !== -1) {
@@ -700,17 +701,6 @@ class RoutingClass {
         url.hash = `${url.hash}${queryParamSeparator}${RoutingHelpers.encodeParams(params)}`;
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
-      }
-
-      let historyState = history.state;
-      if (historyState && historyState.modalHistoryLength) {
-        historyState.modalHistoryLength += 1;
-      } else {
-        historyState = {
-          modalHistoryLength: 1,
-          historygap: history.length,
-          pathBeforeHistory: hashRoutingActive ? urlHashWithoutModalData : url.pathname
-        };
       }
       history.pushState(historyState, '', url.href);
     }
@@ -750,17 +740,14 @@ class RoutingClass {
       url.search = finalUrl;
     }
     // only if close modal [X] is pressed
-
     if (history.state && history.state.modalHistoryLength >= 0 && isClosedInternal) {
       const modalHistoryLength = history.state.modalHistoryLength;
-      let isGab = history.state.gapNotEqal;
       const path = history.state.pathBeforeHistory;
       let isModalHistoryHigerAsHistoryLength = history.state.isModalHistoryHigerAsHistoryLength;
       window.addEventListener(
         'popstate',
         e => {
           if (isModalHistoryHigerAsHistoryLength) {
-            console.log('########isModalHistoryHigher');
             //replace the url with saved path and get rid of modal data in url
             history.replaceState({}, '', path);
             //reset history.length
