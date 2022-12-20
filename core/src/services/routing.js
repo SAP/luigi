@@ -769,6 +769,8 @@ class RoutingClass {
           const historyMaxBack = history.length - 1;
           isModalHistoryHigerAsHistoryLength = true;
           history.go(-historyMaxBack);
+          //falg to prevent to run handleRouteChange when url has modalData in path
+          //otherwise modal will be opened again
           window.Luigi.preventLoadingModalData = true;
         } else {
           const modalHistoryLength = history.state.modalHistoryLength;
