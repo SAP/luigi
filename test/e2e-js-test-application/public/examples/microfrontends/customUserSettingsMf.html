@@ -77,6 +77,10 @@
           theme: 'yellow'
         });
       }
+
+      function goBackToModalMf() {
+        LuigiClient.linkManager().openAsModal('/home/modalMf');
+      }
     </script>
     <div>
       <ul class="btnList">
@@ -100,5 +104,6 @@
         <br /><br />
       </ul>
     </div>
+    <button onclick="goBackToModalMf()">go back to modalMf</button>
   </body>
 </html>
