@@ -143,7 +143,7 @@
 
   const sendContextToClient = async (config, goBackContext = {}) => {
     if (!config.iframe) {
-      console.info('iframe does not exist, not able to send context.');
+      console.debug('iframe does not exist, not able to send context.');
       return;
     }
 
@@ -975,8 +975,9 @@
    * Closes the modal given the respective modal index. Index is used due to multiple modals functionality
    * @param index the index of the modal to be closed corresponding to the 'mfModalList' array
    * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
+   * @param goBackContext the goBack context that is passed through when closing the modal
    */
-  const closeModal = (index, isClosedInternal) => {
+  const closeModal = (index, isClosedInternal, goBackContext) => {
     const resetModalData = (index, isClosedInternal) => {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
@@ -988,14 +989,19 @@
       resetMicrofrontendModalData(index);
     };
     const targetModal = mfModalList[index];
+    const rp = GenericHelpers.getRemotePromise(
+      targetModal.mfModal.settings.onClosePromiseId
+    );
     if (targetModal && targetModal.modalIframe) {
       getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
         () => {
           resetModalData(index, isClosedInternal);
+          rp && rp.doResolve(goBackContext);
         }
       );
     } else if (targetModal && targetModal.modalWC) {
       resetModalData(index, isClosedInternal);
+      rp && rp.doResolve(goBackContext);
     }
   };
 
@@ -1528,33 +1534,35 @@
 
       if ('luigi.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
-
+        const _goBackContext =
+          e.data.goBackContext && JSON.parse(e.data.goBackContext);
         if (
           IframeHelpers.isMessageSource(
             e,
             mfModalTopMostElement && mfModalTopMostElement.modalIframe
           )
         ) {
-          closeModal(mfModalList.length - 1, true);
-          await sendContextToClient(config, {
-            goBackContext:
-              e.data.goBackContext && JSON.parse(e.data.goBackContext),
-          });
+          closeModal(mfModalList.length - 1, true, _goBackContext);
+
+          config.iframe &&
+            (await sendContextToClient(config, {
+              goBackContext: _goBackContext,
+            }));
         } else if (IframeHelpers.isMessageSource(e, splitViewIframe)) {
           closeSplitView();
-          await sendContextToClient(config, {
-            goBackContext:
-              e.data.goBackContext && JSON.parse(e.data.goBackContext),
-          });
+          config.iframe &&
+            (await sendContextToClient(config, {
+              goBackContext: _goBackContext,
+            }));
         } else if (IframeHelpers.isMessageSource(e, drawerIframe)) {
           if (activeDrawer) {
             activeDrawer = !activeDrawer;
           }
           closeDrawer();
-          await sendContextToClient(config, {
-            goBackContext:
-              e.data.goBackContext && JSON.parse(e.data.goBackContext),
-          });
+          config.iframe &&
+            (await sendContextToClient(config, {
+              goBackContext: _goBackContext,
+            }));
         } else {
           // go back: context from the view
           if (preservedViews && preservedViews.length > 0) {
@@ -1566,8 +1574,7 @@
               config.iframe = Iframe.getActiveIframe(node);
               isNavigateBack = true;
               preservedViews = preservedViews;
-              goBackContext =
-                e.data.goBackContext && JSON.parse(e.data.goBackContext);
+              goBackContext = _goBackContext;
               // TODO: check if getNavigationPath or history pop to update hash / path
               handleNavigation(
                 { params: { link: previousActiveIframeData.path } },
@@ -1575,7 +1582,7 @@
               );
             });
           } else {
-            if (e.data.goBackContext) {
+            if (_goBackContext) {
               console.warn(
                 `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`
               );

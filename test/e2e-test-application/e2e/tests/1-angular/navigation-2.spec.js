@@ -133,6 +133,35 @@ describe('Navigation', () => {
       cy.get('[data-testid=modal-mf]').should('not.be.visible');
     });
 
+    it('Open modal with callback from core api', () => {
+      // projects page
+      cy.get('.fd-shellbar')
+        .contains('Projects')
+        .click();
+
+      //projects page
+      cy.get('.fd-app__sidebar')
+        .contains('Project Two')
+        .click();
+
+      //project two page
+      cy.expectPathToBe('/projects/pr2');
+
+      cy.get('.fd-app__sidebar')
+        .contains('Modal with Callback')
+        .click();
+
+      cy.get('[data-testid=modal-mf]').should('be.visible');
+
+      cy.get('[data-testid=modal-mf] [aria-label=close]').click();
+
+      cy.on('window:alert', str => {
+        expect(str).to.equal(`Callback called`);
+      });
+
+      cy.get('[data-testid=modal-mf]').should('not.be.visible');
+    });
+
     it('Nav sync - click sidenav', () => {
       // projects page
       cy.get('.fd-shellbar')
