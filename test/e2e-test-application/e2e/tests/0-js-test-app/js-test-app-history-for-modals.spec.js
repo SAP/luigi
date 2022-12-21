@@ -44,6 +44,22 @@ describe('JS-TEST-APP', () => {
     }
   };
 
+  const simulateMultipleWizardNavigation = () => {
+    let $iframeBody;
+    cy.getIframeBody({}, 0, '[modal-container-index=0]').then(result => {
+      $iframeBody = result;
+      cy.wrap($iframeBody)
+        .contains('open US')
+        .click();
+    });
+    cy.getIframeBody({}, 0, '[modal-container-index=0]').then(result => {
+      $iframeBody = result;
+      cy.wrap($iframeBody)
+        .contains('go back to modalMf')
+        .click();
+    });
+  };
+
   const expectedPathAfterForward = path => {
     cy.go('forward');
     cy.expectPathToBe(path);
@@ -107,7 +123,7 @@ describe('JS-TEST-APP', () => {
         clickingAroundInNavigation();
         openModal();
         closeModal();
-        expectedPathAfterBack('/home');
+        expectedPathAfterBack('/home/two');
         expectedPathAfterForward('/home');
       });
       it('Path routing, open modal, navigate through a wizard and close the modal via [x]', () => {
@@ -121,8 +137,7 @@ describe('JS-TEST-APP', () => {
         openModal();
         simulateWizardNavigation();
         closeModal();
-        expectedPathAfterForward('/home');
-        expectedPathAfterBack('/home');
+        expectedPathAfterBack('blank');
       });
       it('Path routing, open modal and close via browswer back', () => {
         cy.visitTestApp('/home', newConfig);
@@ -173,6 +188,44 @@ describe('JS-TEST-APP', () => {
         closeModal();
         cy.expectPathToBe('/home');
       });
+      it('Go back when history is 50 and modalHistoryLength > historygap', () => {
+        newConfig.navigation.nodes[0].children.push({
+          pathSegment: 'usersettings',
+          label: 'Usersettings MF',
+          viewUrl: '/examples/microfrontends/customUserSettingsMf.html'
+        });
+        cy.visitTestApp('/home', newConfig);
+        cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
+        for (let i = 0; i < 20; i++) {
+          clickingAroundInNavigation();
+        }
+        cy.window()
+          .its('history')
+          .and('have.property', 'length')
+          .should('eq', 50);
+        openModal();
+        cy.window()
+          .its('history')
+          .and('have.property', 'state')
+          .should('deep.include', {
+            modalHistoryLength: 1,
+            historygap: 50,
+            pathBeforeHistory: '/home'
+          });
+        for (let i = 0; i < 27; i++) {
+          simulateMultipleWizardNavigation();
+        }
+        cy.window()
+          .its('history')
+          .and('have.property', 'state')
+          .should('deep.include', {
+            modalHistoryLength: 55,
+            historygap: 50,
+            pathBeforeHistory: '/home'
+          });
+        closeModal();
+        cy.expectPathToBe('/home');
+      });
     });
     describe('Hash routing, history handling for a single modal', () => {
       let newConfig;
@@ -202,7 +255,7 @@ describe('JS-TEST-APP', () => {
         clickingAroundInNavigation();
         openModal(true);
         closeModal();
-        expectedPathAfterBack('/home');
+        expectedPathAfterBack('/home/two');
         expectedPathAfterForward('/home');
       });
       it('Hash routing, open modal, navigate through a wizard and close the modal via [x]', () => {
@@ -235,9 +288,9 @@ describe('JS-TEST-APP', () => {
         openModal(true);
         closeModal();
         cy.go('forward');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
         cy.go('back');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
       });
       it('Hash routing, open modal, navigate through a wizard and close the modal via browser back', () => {
         newConfig.navigation.nodes[0].children.push({
@@ -251,9 +304,9 @@ describe('JS-TEST-APP', () => {
         simulateWizardNavigation(true);
         closeModal();
         cy.go('forward');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
         cy.go('back');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
       });
     });
   });
