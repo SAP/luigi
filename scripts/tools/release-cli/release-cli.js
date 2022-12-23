@@ -36,9 +36,7 @@ const logStep = (s1, s2, s3) => {
 const base = path.resolve(__dirname, '..', '..', '..');
 const pkgJsonPaths = {
   core: path.resolve(base, 'core', 'public', 'package.json'),
-  coreIE11: path.resolve(base, 'core', 'public-ie11', 'package.json'),
   client: path.resolve(base, 'client', 'public', 'package.json'),
-  clientIE11: path.resolve(base, 'client', 'public-ie11', 'package.json'),
   authOAuth2: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oauth2', 'package.json'),
   authOIDC: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oidc', 'package.json'),
   client_support_angular: path.resolve(

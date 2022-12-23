@@ -185,7 +185,7 @@
 <div class="lui-breadcrumb-container" bind:this={breadcrumbContainer} />
 
 <style type="text/scss">
-  @import 'styles/variables';
+  @import 'src/styles/_variables.scss';
   .lui-breadcrumb-container {
     position: absolute;
     right: 0;

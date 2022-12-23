@@ -67,11 +67,11 @@ export class linkManager extends LuigiCoreAPIBase {
       });
       modalSettings.onClosePromiseId = onClosePromise.id;
     }
-    this.navigate(path, true, modalSettings);
+    return this.navigate(path, true, modalSettings);
   }
 
   openAsDrawer(path, drawerSettings = {}) {
-    this.navigate(path, true, undefined, undefined, drawerSettings);
+    return this.navigate(path, true, undefined, undefined, drawerSettings);
   }
 
   openAsSplitView(path, splitViewSettings = {}) {
