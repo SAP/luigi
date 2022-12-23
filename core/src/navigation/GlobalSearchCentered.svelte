@@ -48,7 +48,7 @@
       const resizeObserver = new ResizeObserver(entries => {
         GlobalSearchHelper.handleVisibilityGlobalSearch();
       });
-  
+
       resizeObserver.observe(globalSearchCtn);
     }
   });
@@ -397,7 +397,7 @@
 {/if}
 
 <style type="text/scss">
-  @import 'styles/variables';
+  @import 'src/styles/_variables.scss';
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {
     li[class*='luigi-search-result']:focus {

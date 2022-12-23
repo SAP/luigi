@@ -8,6 +8,6 @@ const Sample2 = () => {
       commodo consequat.
     </div>
   );
-}
+};
 
 export default Sample2;

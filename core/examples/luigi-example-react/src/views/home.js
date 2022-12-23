@@ -7,29 +7,27 @@ import {
 } from '@luigi-project/client';
 
 const Home = () => {
-  const [message, setMessage] = useState(
-    ''
-  );
-  const [initListener, setInitListener] = useState(
-    null
-  );
-  const [contextUpdateListener, setContextUpdateListener] = useState(
-    null
-  );
+  const [message, setMessage] = useState('');
+  const [initListener, setInitListener] = useState(null);
+  const [contextUpdateListener, setContextUpdateListener] = useState(null);
 
   useEffect(() => {
-    setInitListener(addInitListener(initialContext => {
-      setMessage('Luigi Client initialized.')
-    }));
+    setInitListener(
+      addInitListener(initialContext => {
+        setMessage('Luigi Client initialized.');
+      })
+    );
 
-    setContextUpdateListener(addContextUpdateListener(updatedContext => {
-      setMessage('Luigi Client updated.');
-    }));
+    setContextUpdateListener(
+      addContextUpdateListener(updatedContext => {
+        setMessage('Luigi Client updated.');
+      })
+    );
 
     return function cleanup() {
       removeContextUpdateListener(contextUpdateListener);
       removeInitListener(initListener);
-    }
+    };
   }, []);
 
   return (
@@ -38,6 +36,6 @@ const Home = () => {
       <div>{message}</div>
     </div>
   );
-}
+};
 
 export default Home;

@@ -2047,9 +2047,8 @@
 </div>
 
 <style type="text/scss">
-  @import 'styles/fonts';
-  @import 'styles/mixins';
-  @import 'styles/variables';
+  @import 'src/styles/_mixins.scss';
+  @import 'src/styles/_variables.scss';
 
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {
