@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+
+    <title>Just a Button... and a micro frontend!</title>
+
+    <script
+      src="https://unpkg.com/@ui5/webcomponents/dist/Button?module"
+      type="module"
+    ></script>
+
+    <!-- <script src="https://unpkg.com/@luigi-project/container" type="module"></script> -->
+    <script src="./bundle.js" type="module"></script>
+    <style>
+      .flexCnt {
+        display: flex;
+      }
+
+      .flexCnt > div {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flexCnt">
+      <div id="col1">
+        <ui5-button>Send random string</ui5-button>
+        <luigi-container
+          webcomponent="true"
+          viewUrl="https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js"
+        >
+        </luigi-container>
+      </div>
+      <div id="col2">
+        <ui5-button>Send update</ui5-button>
+        <luigi-container viewUrl="./microfrontend.html"> </luigi-container>
+      </div>
+    </div>
+
+    <script>
+      // Some glue code
+      const btn1 = document.querySelector('#col1 ui5-button');
+      const luigiCnt1 = document.querySelector('#col1 luigi-container');
+      const btn2 = document.querySelector('#col2 ui5-button');
+      const luigiCnt2 = document.querySelector('#col2 luigi-container');
+
+      btn1.addEventListener('click', () => {
+        luigiCnt1.sendCustomMessage('update', 'data ' + new Date().getMilliseconds());
+      });
+
+      btn2.addEventListener('click', () => {
+        luigiCnt2.sendCustomMessage('update');
+      });
+
+      luigiCnt2.addEventListener('navigation-request', event => {
+        if (confirm('Do you want to leave this page?')) {
+          window.location = event.detail.link;
+        }
+      });
+    </script>
+  </body>
+</html>

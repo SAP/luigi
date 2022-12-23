@@ -11,7 +11,7 @@ export class WebComponentService {
 
   dynamicImport(viewUrl: string) {
     // @ts-ignore
-    // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to 
+    // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to
     // resolve this import during bunlding process leading to module not found errors.
     return __luigi_dyn_import(viewUrl);
   }
@@ -33,15 +33,18 @@ export class WebComponentService {
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
 
       wc_container.replaceChild(wc, wcItemPlaceholder);
+      if (wc_container._luigi_node) {
+        wc_container._luigi_mfe_webcomponent = wc;
+      }
     }
   }
 
   createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
-      linkManager: () => { }, //window.Luigi.navigation,
+      linkManager: () => {}, //window.Luigi.navigation,
       uxManager: () => {
         return {
-          showAlert: alertSettings => { },
+          showAlert: alertSettings => {},
           showConfirmationModal: async settings => {
             return new Promise((resolve, reject) => {
               resolve(true);
@@ -49,7 +52,7 @@ export class WebComponentService {
           }
         };
       }, //window.Luigi.ux,
-      getCurrentLocale: () => { }, //() => window.Luigi.i18n().getCurrentLocale(),
+      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
         // if (eventBusElement.eventBus) {
         // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);

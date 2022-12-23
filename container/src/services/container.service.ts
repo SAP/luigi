@@ -1,8 +1,17 @@
 export class ContainerService {
-  constructor() { }
+  constructor() {}
 
   isVisible(component: HTMLElement) {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
+  }
+
+  sendCustomMessageToIframe(iframeHandle: any, msg: any) {
+    if (iframeHandle.iframe.contentWindow) {
+      const iframeUrl = new URL(iframeHandle.iframe.src);
+      iframeHandle.iframe.contentWindow.postMessage({ msg: 'custom', data: msg }, iframeUrl.origin);
+    } else {
+      console.error('Message target could not be resolved');
+    }
   }
 
   dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function): void {
@@ -38,13 +47,19 @@ export class ContainerService {
 
             switch (msg) {
               case 'luigi.get-context':
-                target.postMessage({ msg: 'luigi.init', context: targetCnt.context, internal: {} }, '*');
+                target.postMessage({ msg: 'luigi.init', context: targetCnt.context || {}, internal: {} }, '*');
                 break;
               case 'luigi.navigation.open':
                 this.dispatch('navigation-request', targetCnt, event.data.params);
                 break;
               case 'luigi.ux.alert.show':
                 this.dispatch('alert-request', targetCnt, event.data.params);
+                break;
+              case 'luigi.init.ok':
+                this.dispatch('initialized', targetCnt, event.data.params);
+                break;
+              case 'luigi.third-party-cookie':
+                // TODO: check if needed
                 break;
 
               default:
