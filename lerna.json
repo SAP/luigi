@@ -9,7 +9,9 @@
     "plugins/auth/public/auth-oidc",
     "client-frameworks-support/client-support-angular",
     "client-frameworks-support/testing-utilities/test",
-    "client-frameworks-support/testing-utilities"
+    "client-frameworks-support/testing-utilities",
+    "test/e2e-test-application",
+    "test/e2e-test-application/externalMf",
   ],
   "version": "0.0.0"
 }
