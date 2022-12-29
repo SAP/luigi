@@ -2,13 +2,9 @@ version: ~> 1.0 # enables build config validation beta feature: https://docs.tra
 language: node_js
 node_js:
   - 18
-dist: bionic
+dist: focal
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
-addons:
-  apt:
-    packages:
-    - libc6
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/client/public
