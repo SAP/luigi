@@ -4,6 +4,8 @@
     "scripts",
     "client",
     "client/public",
+    "core",
+    "core/public",
     "plugins",
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
