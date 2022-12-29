@@ -7,7 +7,7 @@
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "scripts": {
-    "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
+    "delete-bundle": "npm run bundle-evergreen && npm run bundle-ie11",
     "bundle-evergreen": "webpack --mode=production --display-error-details",
     "bundle-ie11": "webpack --mode=production --display-error-details --config webpack-ie11.config.js",
     "bundle-develop": "npm run bundle-develop-evergreen",
