@@ -1,8 +1,7 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - 'v14.15.5' # Optional node version for setup scripts
-  - 16
+  - 18
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
@@ -206,7 +205,7 @@ jobs:
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Test Setup Scripts'
       name: 'Test Angular setup script'
-      node_js: 16
+      node_js: 18
       if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
@@ -215,7 +214,7 @@ jobs:
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test Vue setup script'
-      node_js: 16
+      node_js: 18
       if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh | tee /dev/fd/2)
@@ -224,7 +223,7 @@ jobs:
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test React setup script'
-      node_js: 16
+      node_js: 18
       if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh | tee /dev/fd/2)
@@ -233,7 +232,7 @@ jobs:
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
 
     - name: 'Test UI5 setup script'
-      node_js: 16
+      node_js: 18
       if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh | tee /dev/fd/2)
@@ -242,7 +241,7 @@ jobs:
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
             
     - name: 'Test No-Framework setup script'
-      node_js: 16
+      node_js: 18
       if: type = api AND commit_message = test-setup-scripts
       script:
         - OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh | tee /dev/fd/2)
