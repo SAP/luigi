@@ -11,7 +11,9 @@
     "client-frameworks-support/testing-utilities/test",
     "client-frameworks-support/testing-utilities",
     "test/e2e-test-application",
-    "test/e2e-test-application/externalMf"
+    "test/e2e-test-application/externalMf",
+    "website/fiddle",
+    "test/e2e-js-test-application"
   ],
   "version": "0.0.0"
 }
