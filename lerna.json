@@ -11,7 +11,7 @@
     "client-frameworks-support/testing-utilities/test",
     "client-frameworks-support/testing-utilities",
     "test/e2e-test-application",
-    "test/e2e-test-application/externalMf",
+    "test/e2e-test-application/externalMf"
   ],
   "version": "0.0.0"
 }
