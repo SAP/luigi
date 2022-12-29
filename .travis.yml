@@ -64,6 +64,8 @@ jobs:
     - stage: 'Precache & Unit Tests'
       if: NOT (commit_message = test-setup-scripts)
       script:
+        - ldd --version
+        - echo 'look above'
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - npm i -g lerna
         - lerna bootstrap --ci --force-local --ignore docs || travis_terminate 1
