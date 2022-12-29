@@ -6,7 +6,8 @@
     "client/public",
     "plugins",
     "plugins/auth/public/auth-oauth2",
-    "plugins/auth/public/auth-oidc"
+    "plugins/auth/public/auth-oidc",
+    "client-frameworks-support/client-support-angular"
   ],
   "version": "0.0.0"
 }
