@@ -7,7 +7,9 @@
     "plugins",
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
-    "client-frameworks-support/client-support-angular"
+    "client-frameworks-support/client-support-angular",
+    "client-frameworks-support/testing-utilities/test",
+    "client-frameworks-support/testing-utilities"
   ],
   "version": "0.0.0"
 }
