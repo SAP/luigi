@@ -1,7 +1,9 @@
 {
   "lerna": "3.15.0",
   "packages": [
-    "client"
+    "scripts",
+    "client",
+    "client/public"
   ],
   "version": "0.0.0"
 }
