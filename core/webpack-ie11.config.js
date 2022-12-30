@@ -45,7 +45,7 @@ class PatchLuigiPlugin {
 }
 
 module.exports = {
-  devtool: 'false',
+  devtool: 'source-map',
   entry: {
     'luigi-ie11': luigifiles
   },
