@@ -84,16 +84,6 @@
       "path": "./public/luigi.css",
       "maxSize": "650 kB",
       "compression": "none"
-    },
-    {
-      "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "860 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./public-ie11/luigi-ie11.css",
-      "maxSize": "650 kB",
-      "compression": "none"
     }
   ],
   "nyc": {
