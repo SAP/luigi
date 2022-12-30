@@ -3,10 +3,11 @@ import { GenericHelpers } from '../../src/utilities/helpers';
 const sinon = require('sinon');
 
 import { linkManager } from '../../src/core-api/_internalLinkManager';
+import { assert } from 'chai';
 
 let lm;
 
-describe('linkManager', function () {
+describe('linkManager', function() {
   beforeEach(() => {
     lm = new linkManager();
   });
@@ -22,14 +23,16 @@ describe('linkManager', function () {
       console.warn = sinon.spy();
     });
 
-    it('should not open a drawer if path is absolute', () => {
-      lm.openAsDrawer('/');
-
+    it('should not open a drawer if path is absolute', async () => {
+      // lm.openAsDrawer('/')
+      lm.navigate('/', true, undefined, undefined, {}).catch(() => {});
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.calledOnce(console.warn);
     });
+
     it('should not open a modal if path is absolute', () => {
-      lm.openAsModal('/');
+      // lm.openAsModal('/')
+      lm.navigate('/', true, {}).catch(() => {});
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.calledOnce(console.warn);
@@ -43,14 +46,14 @@ describe('linkManager', function () {
 
     it('should not navigate if errorSkipNavigation is true', () => {
       lm.options.errorSkipNavigation = true;
-      lm.navigate('http://google.co');
+      lm.navigate('http://google.co').catch(e => {});
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.match(lm.options.errorSkipNavigation, false);
     });
 
     it('should call sendPostMessageToLuigiCore', () => {
-      this.options = {
+      const options = {
         preserveView: false,
         nodeParams: {},
         errorSkipNavigation: false,
@@ -66,7 +69,7 @@ describe('linkManager', function () {
       const relativePath = path[0] !== '/';
       const navigationOpenMsg = {
         msg: 'luigi.navigation.open',
-        params: Object.assign(this.options, {
+        params: Object.assign(options, {
           link: path,
           relative: relativePath,
           modal: modalSettings,
@@ -80,7 +83,7 @@ describe('linkManager', function () {
     });
 
     it('should call sendPostMessageToLuigiCore with Promise', () => {
-      this.options = {
+      const options = {
         preserveView: false,
         nodeParams: {},
         errorSkipNavigation: false,
@@ -97,7 +100,7 @@ describe('linkManager', function () {
       const relativePath = path[0] !== '/';
       const navigationOpenMsg = {
         msg: 'luigi.navigation.open',
-        params: Object.assign(this.options, {
+        params: Object.assign(options, {
           link: path,
           relative: relativePath,
           modal: modalSettings,
@@ -124,15 +127,15 @@ describe('linkManager', function () {
     });
 
     it('calls openAsModal with callback', () => {
-      const prom = new Promise((resolve) => {
-        resolve()
-      })
+      const prom = new Promise(resolve => {
+        resolve();
+      });
       prom.id = 1;
 
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
       sinon.stub(GenericHelpers, 'createRemotePromise').returns(prom);
 
-      lm.openAsModal('path', { size: 1 }, () => { });
+      lm.openAsModal('path', { size: 1 }, () => {});
 
       sinon.assert.calledOnce(GenericHelpers.isFunction);
       sinon.assert.calledOnce(GenericHelpers.createRemotePromise);
@@ -147,7 +150,6 @@ describe('linkManager', function () {
       sinon.assert.calledOnce(GenericHelpers.isFunction);
       sinon.assert.calledOnceWithExactly(lm.navigate, 'path', true, { size: 1 });
     });
-
   });
 
   describe('openAsDrawer', () => {
