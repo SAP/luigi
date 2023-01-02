@@ -26,12 +26,14 @@ describe('JS-TEST-APP', () => {
   const simulateMultipleWizardNavigation = () => {
     let $iframeBody;
     cy.getIframeBody({}, 0, '[modal-container-index=0]').then(result => {
+      cy.wait(200);
       $iframeBody = result;
       cy.wrap($iframeBody)
         .contains('open US')
         .click();
     });
     cy.getIframeBody({}, 0, '[modal-container-index=0]').then(result => {
+      cy.wait(200);
       $iframeBody = result;
       cy.wrap($iframeBody)
         .contains('go back to modalMf')
