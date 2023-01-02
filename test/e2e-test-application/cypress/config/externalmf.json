@@ -6,10 +6,6 @@
   "videosFolder": "e2e/videos",
   "screenshotsFolder": "e2e/screenshots",
   "chromeWebSecurity": true,
-  "execTimeout": 120000,
-  "taskTimeout": 120000,
-  "requestTimeout": 120000,
-  "defaultCommandTimeout": 120000,
   "viewportWidth": 1250,
   "viewportHeight": 790,
   "baseUrl": "http://localhost:4200/"

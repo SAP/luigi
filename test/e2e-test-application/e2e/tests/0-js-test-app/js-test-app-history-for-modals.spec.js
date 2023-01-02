@@ -188,6 +188,7 @@ describe('JS-TEST-APP', () => {
         closeModal();
         cy.expectPathToBe('/home');
       });
+      // TODO
       // it('Go back when history is 50 and modalHistoryLength > historygap', () => {
       //   newConfig.navigation.nodes[0].children.push({
       //     pathSegment: 'usersettings',
