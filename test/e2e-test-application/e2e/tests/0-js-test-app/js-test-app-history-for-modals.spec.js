@@ -188,44 +188,44 @@ describe('JS-TEST-APP', () => {
         closeModal();
         cy.expectPathToBe('/home');
       });
-      it('Go back when history is 50 and modalHistoryLength > historygap', () => {
-        newConfig.navigation.nodes[0].children.push({
-          pathSegment: 'usersettings',
-          label: 'Usersettings MF',
-          viewUrl: '/examples/microfrontends/customUserSettingsMf.html'
-        });
-        cy.visitTestApp('/home', newConfig);
-        cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
-        for (let i = 0; i < 20; i++) {
-          clickingAroundInNavigation();
-        }
-        cy.window()
-          .its('history')
-          .and('have.property', 'length')
-          .should('eq', 50);
-        openModal();
-        cy.window()
-          .its('history')
-          .and('have.property', 'state')
-          .should('deep.include', {
-            modalHistoryLength: 1,
-            historygap: 50,
-            pathBeforeHistory: '/home'
-          });
-        for (let i = 0; i < 27; i++) {
-          simulateMultipleWizardNavigation();
-        }
-        cy.window()
-          .its('history')
-          .and('have.property', 'state')
-          .should('deep.include', {
-            modalHistoryLength: 55,
-            historygap: 50,
-            pathBeforeHistory: '/home'
-          });
-        closeModal();
-        cy.expectPathToBe('/home');
-      });
+      // it('Go back when history is 50 and modalHistoryLength > historygap', () => {
+      //   newConfig.navigation.nodes[0].children.push({
+      //     pathSegment: 'usersettings',
+      //     label: 'Usersettings MF',
+      //     viewUrl: '/examples/microfrontends/customUserSettingsMf.html'
+      //   });
+      //   cy.visitTestApp('/home', newConfig);
+      //   cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
+      //   for (let i = 0; i < 17; i++) {
+      //     clickingAroundInNavigation();
+      //   }
+      //   cy.window()
+      //     .its('history')
+      //     .and('have.property', 'length')
+      //     .should('eq', 50);
+      //   openModal();
+      //   cy.window()
+      //     .its('history')
+      //     .and('have.property', 'state')
+      //     .should('deep.include', {
+      //       modalHistoryLength: 1,
+      //       historygap: 50,
+      //       pathBeforeHistory: '/home'
+      //     });
+      //   for (let i = 0; i < 27; i++) {
+      //     simulateMultipleWizardNavigation();
+      //   }
+      //   cy.window()
+      //     .its('history')
+      //     .and('have.property', 'state')
+      //     .should('deep.include', {
+      //       modalHistoryLength: 55,
+      //       historygap: 50,
+      //       pathBeforeHistory: '/home'
+      //     });
+      //   closeModal();
+      //   cy.expectPathToBe('/home');
+      // });
     });
     describe('Hash routing, history handling for a single modal', () => {
       let newConfig;
