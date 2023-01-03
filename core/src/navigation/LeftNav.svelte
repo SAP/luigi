@@ -434,7 +434,7 @@
     } 
   }
 
-  function semiCollapsibleButtonClicked(el) {
+  function semiCollapsibleButtonClicked() {
     isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
@@ -442,18 +442,23 @@
     setBurgerTooltip();
   }
 
-  function handleEnterSemiCollapseBtn(event){
+  function handleEnterSemiCollapseBtn(event, el){
     const code = event.code;
     if (code === 'Enter' || code === 'Space') {
-      semiCollapsibleButtonClicked();
-    }
+        // semiCollapsibleButtonClicked(el);
+        isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
+        if (document.getElementsByClassName('fd-tabs').length > 0) {
+          dispatch('resizeTabNav', {});
+        }
+        setBurgerTooltip();
+        }
   }
 
   function handleExpandCollapseCategories(event, nodes){
-    console.log('event', event);
-    if(event.code === 'Enter' || event || 'Space'){
-      handleIconClick(nodes, event.currentTarget)}
+    if(event.code === 'Enter' || event === 'Space'){
+      handleIconClick(nodes, event.currentTarget)
     }
+  }
   
   
   /**
@@ -645,11 +650,14 @@
                     )}
                     on:click|stopPropagation={() =>
                       handleIconClick(nodes, event.currentTarget)}
-                    on:keypress={event =>
-                      handleExpandCollapseCategories(event, nodes)}
-                    data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
-                    <div class="fd-nested-list__content has-child" tabindex="0">
+                    <div
+                      class="fd-nested-list__content has-child"
+                      tabindex="0"
+                      on:keypress={event =>
+                        handleExpandCollapseCategories(event, nodes)}
+                      data-testid={getTestIdForCat(nodes.metaInfo, key)}
+                    >
                       <a
                         title={resolveTooltipText(nodes, $getTranslation(key))}
                         class="fd-nested-list__link {isExpanded(
@@ -966,8 +974,8 @@
               class="lui-side-nav__footer--icon {isSemiCollapsed
                 ? 'sap-icon--open-command-field'
                 : 'sap-icon--close-command-field'}"
-              on:click={() => semiCollapsibleButtonClicked(this)}
-              on:keydown={handleEnterSemiCollapseBtn}
+              on:click={event => semiCollapsibleButtonClicked(event, this)}
+              on:keydown={event => handleEnterSemiCollapseBtn(event, this)}
               data-testid="semiCollapsibleButton"
               title={burgerTooltip}
               tabindex="0"

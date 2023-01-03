@@ -285,9 +285,13 @@ class IframeHelpersClass {
   disableA11yOfInactiveIframe(srcIframe) {
     const nodeList = document.querySelectorAll('*');
     [...nodeList].forEach(el => {
-      el.setAttribute('oldTab', el.getAttribute('tabindex'));
-      if (el !== srcIframe) {
-        el.setAttribute('tabindex', '-1');
+      if (el.hasAttribute('tabindex')) {
+        if (!el.getAttribute('oldTab')) {
+          el.setAttribute('oldTab', el.getAttribute('tabindex'));
+        }
+        if (el !== srcIframe) {
+          el.setAttribute('tabindex', '-1');
+        }
       }
     });
   }

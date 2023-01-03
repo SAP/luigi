@@ -57,10 +57,15 @@
             IframeHelpers.disableA11yOfInactiveIframe(srcIframe);
           }
           if ('luigi.remove-backdrop' === e.data.msg) {
+            const previousBackdropState = backdropActive;
             backdropActive = false;
             dispatch('stateChanged', { backdropActive: false });
             // enable backdrop background elements' accessbility
-            IframeHelpers.enableA11yOfInactiveIframe();
+            // enable it only if backdrop was active,
+            // otherwise all tabindex properties will be removed
+            if(previousBackdropState){
+              IframeHelpers.enableA11yOfInactiveIframe();
+            }
           }
         }
       });
