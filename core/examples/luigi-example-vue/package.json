@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.0.5",
-    "@vue/cli-service": "^4.5.13",
+    "@vue/cli-service": "^5.0.8",
     "copy-webpack-plugin": "5.1.2",
     "glob-parent": "^5.1.2",
     "lodash": ">=4.17.21",
