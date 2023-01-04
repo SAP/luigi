@@ -442,16 +442,11 @@
     setBurgerTooltip();
   }
 
-  function handleEnterSemiCollapseBtn(event, el){
+  function handleEnterSemiCollapseBtn(event){
     const code = event.code;
     if (code === 'Enter' || code === 'Space') {
-        // semiCollapsibleButtonClicked(el);
-        isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
-        if (document.getElementsByClassName('fd-tabs').length > 0) {
-          dispatch('resizeTabNav', {});
-        }
-        setBurgerTooltip();
-        }
+      semiCollapsibleButtonClicked();
+    }
   }
 
   function handleExpandCollapseCategories(event, nodes){
