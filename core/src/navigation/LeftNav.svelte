@@ -650,13 +650,13 @@
                     )}
                     on:click|stopPropagation={() =>
                       handleIconClick(nodes, event.currentTarget)}
+                    data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
                     <div
                       class="fd-nested-list__content has-child"
                       tabindex="0"
                       on:keypress={event =>
                         handleExpandCollapseCategories(event, nodes)}
-                      data-testid={getTestIdForCat(nodes.metaInfo, key)}
                     >
                       <a
                         title={resolveTooltipText(nodes, $getTranslation(key))}
