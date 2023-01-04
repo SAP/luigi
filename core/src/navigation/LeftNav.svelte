@@ -654,9 +654,9 @@
                   >
                     <div
                       class="fd-nested-list__content has-child"
-                      tabindex="0"
                       on:keypress={event =>
                         handleExpandCollapseCategories(event, nodes)}
+                      tabindex={isSemiCollapsed ? '0' : '-1'}
                     >
                       <a
                         title={resolveTooltipText(nodes, $getTranslation(key))}
@@ -666,6 +666,7 @@
                         )
                           ? 'is-expanded'
                           : ''}"
+                        tabindex={isSemiCollapsed ? '-1' : '0'}
                         role={!addNavHrefForAnchor ? 'button' : undefined}
                         id="collapsible_listnode_{index}"
                         aria-haspopup="true"
