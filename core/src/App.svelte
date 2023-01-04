@@ -1,3 +1,5 @@
+<svelte:options accessors={true} />
+
 <script type="text/javascript">
   import Alerts from './Alerts.svelte';
   import ConfirmationModal from './ConfirmationModal.svelte';
@@ -1900,6 +1902,7 @@
 </script>
 
 <svelte:window on:resize={onResize} />
+
 <div
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
@@ -1920,8 +1923,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={(event) => modalIframeCreated(event, index)}
-        on:wcCreated={(event) => modalWCCreated(event, index)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
@@ -2047,9 +2050,9 @@
 </div>
 
 <style type="text/scss">
-  @import 'styles/fonts';
-  @import 'styles/mixins';
-  @import 'styles/variables';
+  @import 'src/styles/_fonts';
+  @import 'src/styles/_mixins.scss';
+  @import 'src/styles/_variables.scss';
 
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {

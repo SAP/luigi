@@ -143,7 +143,7 @@ describe('Navigation', () => {
         cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
         cy.get('[data-testid="tabnav_horizontalnavigationexample"]').should('have.class', 'is-selected');
         cy.get('.fd-tabs').contains('User Management');
-        cy.get('.fd-tabs__item')
+        cy.get('.fd-tabs')
           .contains('Node with node activation hook')
           .should('not.visible');
         cy.get('.fd-tabs').contains('More');

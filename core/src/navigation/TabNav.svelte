@@ -391,8 +391,8 @@
 {/if}
 
 <style type="text/scss">
-  @import 'styles/mixins';
-  @import 'styles/variables';
+  @import 'src/styles/_mixins.scss';
+  @import 'src/styles/_variables.scss';
 
   .tabsContainer {
     width: 100%;
@@ -419,15 +419,7 @@
         }
       }
     }
-    :global(&.hide_element) {
-      display: none;
-    }
 
-    .fd-nested-list__item {
-      :global(&.hide_element) {
-        display: none;
-      }
-    }
     .fd-tabs__link {
       padding-right: 0;
 
@@ -437,6 +429,13 @@
         }
       }
     }
+  }
+
+  :global(.luigi-tabsMoreButton.hide_element) {
+    display: none;
+  }
+  :global(.luigi-tabsMoreButton .fd-nested-list__item.hide_element) {
+    display: none;
   }
 
   .fd-tabs {
@@ -455,10 +454,6 @@
     &__item {
       white-space: nowrap;
       display: inline-block;
-
-      :global(&.hide_element) {
-        display: none;
-      }
     }
 
     &__link {
@@ -473,5 +468,9 @@
         }
       }
     }
+  }
+
+  :global(.fd-tabs__item.hide_element) {
+    display: none !important;
   }
 </style>

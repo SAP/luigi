@@ -591,7 +591,11 @@
                               role="presentation"
                             />
                           {/if}
-                          <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                          <span
+                            class="fd-nested-list__title badge-align-{node.statusBadge &&
+                            node.statusBadge.align === 'right'
+                              ? 'right'
+                              : 'left'}"
                             >{$getTranslation(node.label)}
                             <StatusBadge {node} />
                           </span>
@@ -730,7 +734,12 @@
                                   $getTranslation(node.label)
                                 )}
                               >
-                                <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}">
+                                <span
+                                  class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                  node.statusBadge.align === 'right'
+                                    ? 'right'
+                                    : 'left'}"
+                                >
                                   {$getTranslation(node.label)}
                                   <StatusBadge {node} />
                                 </span>
@@ -786,7 +795,12 @@
                                         $getTranslation(node.label)
                                       )}
                                     >
-                                      <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}">
+                                      <span
+                                        class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                        node.statusBadge.align === 'right'
+                                          ? 'right'
+                                          : 'left'}"
+                                      >
                                         {$getTranslation(node.label)}
                                         <StatusBadge {node} />
                                       </span>
@@ -891,7 +905,11 @@
                                   : ''}</span
                               >
                             {/if}
-                            <span class="fd-nested-list__title badge-align-{node.statusBadge && node.statusBadge.align === 'right' ? 'right' : 'left'}"
+                            <span
+                              class="fd-nested-list__title badge-align-{node.statusBadge &&
+                              node.statusBadge.align === 'right'
+                                ? 'right'
+                                : 'left'}"
                               >{$getTranslation(node.label)}
                               {#if node.statusBadge}
                                 <StatusBadge {node} />
@@ -941,8 +959,8 @@
 </div>
 
 <style type="text/scss">
-  @import 'styles/mixins';
-  @import 'styles/variables';
+  @import 'src/styles/_mixins.scss';
+  @import 'src/styles/_variables.scss';
 
   :root {
     /* needed for IE11 support */
@@ -1195,7 +1213,7 @@
       margin-left: auto;
     }
   }
-  
+
   .fd-nested-list__content.has-child {
     .fd-nested-list__link {
       max-width: calc(100% - 2.5rem);
@@ -1243,6 +1261,12 @@
         height: 100%;
       }
     }
+  }
+
+  :global(.lui-flyout-sublist__title) {
+    padding: 11px 12px 12px;
+    text-transform: uppercase;
+    margin: 0;
   }
 
   :global(.lui-flyout-sublist) {
@@ -1332,12 +1356,6 @@
       position: relative;
       max-height: 190px;
       overflow-y: auto;
-    }
-
-    &__title {
-      padding: 11px 12px 12px;
-      text-transform: uppercase;
-      margin: 0;
     }
 
     &.has-bottom-position {
