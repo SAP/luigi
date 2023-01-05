@@ -1923,8 +1923,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
@@ -2050,9 +2050,9 @@
 </div>
 
 <style type="text/scss">
-  @import 'src/styles/_fonts';
-  @import 'src/styles/_mixins.scss';
-  @import 'src/styles/_variables.scss';
+  @import 'styles/fonts';
+  @import 'styles/mixins';
+  @import 'styles/variables';
 
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {
