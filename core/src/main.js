@@ -58,7 +58,6 @@ const configReadyCallback = () => {
           }
         });
 
-        console.log('App 123-->', app);
         Luigi.showAlert = settings => {
           return app.showAlert(settings);
         };

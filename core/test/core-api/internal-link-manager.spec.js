@@ -7,7 +7,7 @@ import { assert } from 'chai';
 
 let lm;
 
-describe('linkManager', function() {
+describe('linkManager', function () {
   beforeEach(() => {
     lm = new linkManager();
   });
@@ -24,15 +24,15 @@ describe('linkManager', function() {
     });
 
     it('should not open a drawer if path is absolute', async () => {
-      // lm.openAsDrawer('/')
-      lm.navigate('/', true, undefined, undefined, {}).catch(() => {});
+      // same as behavior from: lm.openAsDrawer('/') , as its easier to capture in test
+      lm.navigate('/', true, undefined, undefined, {}).catch(() => { });
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.calledOnce(console.warn);
     });
 
     it('should not open a modal if path is absolute', () => {
-      // lm.openAsModal('/')
-      lm.navigate('/', true, {}).catch(() => {});
+      // same as behavior from: lm.openAsModal('/') , as its easier to capture in test
+      lm.navigate('/', true, {}).catch(() => { });
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.calledOnce(console.warn);
@@ -46,7 +46,7 @@ describe('linkManager', function() {
 
     it('should not navigate if errorSkipNavigation is true', () => {
       lm.options.errorSkipNavigation = true;
-      lm.navigate('http://google.co').catch(e => {});
+      lm.navigate('http://google.co').catch(e => { });
 
       sinon.assert.notCalled(lm.sendPostMessageToLuigiCore);
       sinon.assert.match(lm.options.errorSkipNavigation, false);
@@ -135,7 +135,7 @@ describe('linkManager', function() {
       sinon.stub(GenericHelpers, 'isFunction').returns(true);
       sinon.stub(GenericHelpers, 'createRemotePromise').returns(prom);
 
-      lm.openAsModal('path', { size: 1 }, () => {});
+      lm.openAsModal('path', { size: 1 }, () => { });
 
       sinon.assert.calledOnce(GenericHelpers.isFunction);
       sinon.assert.calledOnce(GenericHelpers.createRemotePromise);
@@ -151,7 +151,6 @@ describe('linkManager', function() {
       sinon.assert.calledOnceWithExactly(lm.navigate, 'path', true, { size: 1 });
     });
   });
-
   describe('openAsDrawer', () => {
     beforeEach(() => {
       sinon.stub(lm, 'navigate');

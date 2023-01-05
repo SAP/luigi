@@ -1902,7 +1902,6 @@
 </script>
 
 <svelte:window on:resize={onResize} />
-
 <div
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav

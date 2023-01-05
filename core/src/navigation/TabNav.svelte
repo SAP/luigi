@@ -1,5 +1,10 @@
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext,
+  } from 'svelte';
   import { Navigation } from './services/navigation';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
@@ -28,11 +33,11 @@
       selectedNode,
       selectedNodeForTabNav,
       dropDownStates,
-      isMoreBtnExpanded
+      isMoreBtnExpanded,
     }),
-    set: obj => {
+    set: (obj) => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach(prop => {
+        Object.getOwnPropertyNames(obj).forEach((prop) => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -46,7 +51,7 @@
           }
         });
       }
-    }
+    },
   };
 
   const dispatch = createEventDispatcher();
@@ -68,7 +73,9 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
+    let tabsContainer = document.getElementsByClassName(
+      'luigi-tabsContainer'
+    )[0];
     let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
     let tabsContainerOffsetWidth;
@@ -81,7 +88,7 @@
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = [...tabsContainer.children];
-      tabs.forEach(element => {
+      tabs.forEach((element) => {
         style = element.currentStyle || window.getComputedStyle(element);
         margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
         totalTabsSize += element.offsetWidth + margin;
@@ -96,7 +103,9 @@
             .classList.remove('hide_element');
           hasMoreBtnElements = true;
         } else {
-          document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
+          document
+            .querySelector('li[uid="' + uid + '"]')
+            .classList.add('hide_element');
         }
       });
       !hasMoreBtnElements
@@ -106,17 +115,21 @@
   };
 
   const clearTapNav = () => {
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
+    let tabsContainer = document.getElementsByClassName(
+      'luigi-tabsContainer'
+    )[0];
     if (tabsContainer !== undefined) {
       const tabs = [...tabsContainer.children];
-      tabs.forEach(element => {
+      tabs.forEach((element) => {
         element.classList.remove('hide_element');
       });
     }
   };
 
   onMount(() => {
-    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    hideNavComponent = LuigiConfig.getConfigBooleanValue(
+      'settings.hideNavigation'
+    );
   });
 
   // [svelte-upgrade warning]
@@ -140,7 +153,9 @@
   }
 
   function isExpanded(nodes, expandedList) {
-    return expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0;
+    return (
+      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
+    );
   }
 
   function isSelectedCat(key, selectedNodeForTabNav) {
@@ -195,7 +210,7 @@
     class="fd-tabs fd-tabs--l"
     role="tablist"
     id="tabsContainer"
-    on:toggleDropdownState={event => toggleDropdownState(event.name)}
+    on:toggleDropdownState={(event) => toggleDropdownState(event.name)}
   >
     <div class="tabsContainerWrapper">
       <div class="tabsContainer luigi-tabsContainer">
@@ -230,7 +245,7 @@
             <span
               class="fd-tabs__item"
               uid="{index}-0"
-              on:click={event => event.stopPropagation()}
+              on:click={(event) => event.stopPropagation()}
               isSelected={isSelectedCat(key, selectedNodeForTabNav)}
             >
               <div class="fd-popover">
@@ -284,7 +299,7 @@
     </div>
 
     <div class="luigi-tabsMoreButton">
-      <span class="fd-tabs__item" on:click={event => event.stopPropagation()}>
+      <span class="fd-tabs__item" on:click={(event) => event.stopPropagation()}>
         <div class="fd-popover fd-popover--right">
           <a
             class="fd-tabs__link fd-popover__control has-child luigi__more"
@@ -391,8 +406,8 @@
 {/if}
 
 <style type="text/scss">
-  @import 'src/styles/_mixins.scss';
-  @import 'src/styles/_variables.scss';
+  @import 'styles/mixins';
+  @import 'styles/variables';
 
   .tabsContainer {
     width: 100%;
