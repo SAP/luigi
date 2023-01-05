@@ -1,7 +1,8 @@
-import Vue from 'vue';
+import * as Vue from 'vue'
 import Vuex from 'vuex';
 
-Vue.use(Vuex);
+const app = Vue.createApp({});
+app.use(Vuex);
 
 export default new Vuex.Store({
   state: {},

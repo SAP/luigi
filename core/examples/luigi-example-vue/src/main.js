@@ -1,13 +1,15 @@
-import Vue from 'vue';
+import * as Vue from 'vue'
 import App from './app.vue';
-import router from './router';
+import { router } from './router';
 import store from './store';
 
-Vue.config.productionTip = false;
+const app = Vue.createApp({});
+
+app.config.productionTip = false;
 
 import LuigiClient from '@luigi-project/client';
 
-Vue.mixin({
+app.mixin({
   created() {
     this.luigiClient = LuigiClient;
   }

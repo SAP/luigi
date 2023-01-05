@@ -1,7 +1,12 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  chainWebpack: config => config.resolve.symlinks(false),
+
+  chainWebpack: config => {
+
+    config.resolve.symlinks(false)
+  },
   pages: {
     sampleapp: {
       entry: 'src/main.js',
@@ -26,27 +31,27 @@ module.exports = {
       ]
     },
     plugins: [
-      new CopyWebpackPlugin(
-        [
+      new CopyWebpackPlugin({
+        patterns: [
           {
             context: 'public',
             to: 'index.html',
             from: 'index.html'
           },
           {
-            context: 'node_modules/@luigi-project/core',
+            from: 'node_modules/@luigi-project/core',
             to: './luigi-core',
-            from: {
-              glob: '**',
-              dot: true
-            }
           }
-        ],
-        {
-          ignore: ['.gitkeep', '**/.DS_Store', '**/Thumbs.db'],
-          debug: 'warning'
-        }
-      )
-    ]
+        ]
+      }),
+    ],
+    optimization: {
+      // todo: Remove after renaming luigi core map files
+      minimizer: [
+        new TerserPlugin({
+          exclude: /\.svelte\.map\.js$/
+        })
+      ]
+    },
   }
 };
