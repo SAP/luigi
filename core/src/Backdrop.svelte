@@ -63,7 +63,7 @@
             // enable backdrop background elements' accessbility
             // enable it only if backdrop was active,
             // otherwise all tabindex properties will be removed
-            if(previousBackdropState){
+            if(wasBackdropActive){
               IframeHelpers.enableA11yOfInactiveIframe();
             }
           }
@@ -76,6 +76,7 @@
   // beforeUpdate and afterUpdate handlers behave
   // differently to their v2 counterparts
   beforeUpdate(() => {
+    console.log('wasBackdropActive', wasBackdropActive);
     if (backdropActive !== wasBackdropActive) {
       wasBackdropActive = backdropActive;
       setBackdropClass();
