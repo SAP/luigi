@@ -76,7 +76,6 @@
   // beforeUpdate and afterUpdate handlers behave
   // differently to their v2 counterparts
   beforeUpdate(() => {
-    console.log('wasBackdropActive', wasBackdropActive);
     if (backdropActive !== wasBackdropActive) {
       wasBackdropActive = backdropActive;
       setBackdropClass();
