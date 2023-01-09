@@ -193,6 +193,18 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
+
+    - name: 'RC release'
+      if: (branch = main AND type = api AND commit_message = publish-rc)
+      script:
+        - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+        - cd $TRAVIS_BUILD_DIR/scripts && NIGHTLY=true npm run release
+        - cd $TRAVIS_BUILD_DIR/scripts && npm run publish:nightly
+        - echo "" > ~/.npmrc
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
     
     - name: 'Publish CRA template to NPM'
       # run only when custom commit message given to Travis

@@ -70,15 +70,19 @@ const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
 
 (async () => {
   logHeadline('Running nightly release.');
+  const forcedRelease = !!process.env.NIGHTLY_VERSION;
 
   /**
    * Checks if files have been changed since last git tag.
    * @returns changed, a list of packagePaths keys
    */
   const changed = Object.entries(packagePaths).filter(val => {
-    return FILES_CHANGED.split('\n').some(file => {
-      return file.indexOf(val[1].join('/')) !== -1;
-    });
+    return (
+      forcedRelease ||
+      FILES_CHANGED.split('\n').some(file => {
+        return file.indexOf(val[1].join('/')) !== -1;
+      })
+    );
   });
 
   if (changed.length === 0) {

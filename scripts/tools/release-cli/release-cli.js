@@ -143,18 +143,23 @@ function addToChangelog(versionText, changelog, lastline) {
 
   // NIGHTLY BUILD
   if (process.env.NIGHTLY === 'true') {
-    const padLeft = (str, inp) => {
-      return str.substring(0, str.length - inp.toString().length) + inp.toString();
-    };
-    const currentDatetime = new Date();
-    let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
-      '00',
-      currentDatetime.getMonth() + 1
-    )}${currentDatetime.getDate()}${padLeft('00', currentDatetime.getHours())}${padLeft(
-      '00',
-      currentDatetime.getMinutes()
-    )}`;
-    prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
+    if (process.env.NIGHTLY_VERSION) {
+      logHeadline('\nFound custom version in env: ' + process.env.NIGHTLY_VERSION);
+      prompts.inject([process.env.NIGHTLY_VERSION, false]);
+    } else {
+      const padLeft = (str, inp) => {
+        return str.substring(0, str.length - inp.toString().length) + inp.toString();
+      };
+      const currentDatetime = new Date();
+      let formattedDate = `${currentDatetime.getFullYear()}${padLeft(
+        '00',
+        currentDatetime.getMonth() + 1
+      )}${currentDatetime.getDate()}${padLeft('00', currentDatetime.getHours())}${padLeft(
+        '00',
+        currentDatetime.getMinutes()
+      )}`;
+      prompts.inject([nextVersion + '-dev.' + formattedDate, false]);
+    }
   }
 
   const questions = [
