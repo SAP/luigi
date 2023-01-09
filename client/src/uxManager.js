@@ -248,6 +248,16 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
+   * Checks if the current micro frontend is displayed inside a drawer
+   * @returns {boolean} indicating if it is loaded inside a drawer
+   * @memberof uxManager
+   * @since NEXTRELEASE
+   */
+  isDrawer() {
+    return lifecycleManager.currentContext?.internal?.drawer;
+  }
+
+  /**
    * Gets the current theme.
    * @returns {*} current themeObj
    * @memberof uxManager

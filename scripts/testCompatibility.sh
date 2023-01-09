@@ -54,26 +54,26 @@ source $BASE_DIR/shared/bashHelpers.sh
 
 declare -a APP_FOLDERS=(
   "/test/e2e-test-application"
-  "/website/fiddle"
-  "/test/e2e-test-application"
+  "/test/e2e-js-test-application"
+  "/test/e2e-test-application/externalMf"
 )
 
 # Used for setting up webserver and killing them
 declare -a APP_PORTS=(
   4200 # e2e-test-application
-  8080 # fiddle
+  4500 # e2e-js-test-application
   8090 # externalMf
 )
 
 declare -a APP_PUBLIC_FOLDERS=(
   "dist" # e2e-test-application
-  "public" # fiddle
+  "public" # e2e-js-test-application
   "externalMf" # externalMf
 )
 
 declare -a APP_PATH_CHECK=(
   "/luigi-core/luigi.js" # e2e-test-application
-  "/bundle.js" # fiddle
+  "/index.html" # e2e-js-test-application
   "/customUserSettingsMf.html" # externalMf
 )
 
@@ -182,7 +182,6 @@ checkoutLuigiToTestfolder() {
   cd $LUIGI_DIR_TESTING
   echoe "Checking out selected release tag $TAG"
   git checkout tags/$TAG
-
   for FOLDER in "${APP_FOLDERS[@]}"; do
     echoe "Installing app $FOLDER"
     cd $LUIGI_DIR_TESTING/$FOLDER
@@ -226,12 +225,10 @@ linkLuigi() {
   done
 }
 
-bundleApps() {
-  for FOLDER in "${APP_FOLDERS[@]}"; do
-    echoe "Bundling app $FOLDER"
-    cd $LUIGI_DIR_TESTING/$FOLDER
-    npm run build
-  done
+bundleApp() {
+  echoe "Bundling e2e test app"
+  cd $LUIGI_DIR_TESTING/test/e2e-test-application
+  npm run build
 }
 
 verifyAndStartWebserver() {
@@ -240,7 +237,16 @@ verifyAndStartWebserver() {
   for i in "${!APP_FOLDERS[@]}"; do
     echoe "Run app webserver on ${APP_PORTS[$i]}"
     cd $LUIGI_DIR_TESTING/${APP_FOLDERS[$i]}
-    runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
+    if [ "${APP_FOLDERS[$i]}" == "/test/e2e-test-application/externalMf" ]; then
+      # required for starting externalMF, otherwise webserver tries to start on /test/e2e-test-application/externalMf/externalMf
+      echoe "Stepping out"
+      cd ..
+    fi
+    if [ "${APP_FOLDERS[$i]}" != "/test/e2e-js-test-application" ]; then
+      runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}
+    else
+      npm run dev &
+    fi
   done
 }
 
@@ -293,7 +299,7 @@ if [ "" == "$TESTONLY" ]; then
   ls -lah $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
   cd $LUIGI_DIR_TESTING/test/e2e-test-application/node_modules/@luigi-project
   ls *
-  bundleApps
+  bundleApp
 else
   echoe "Running bunded example and e2e tests"
 fi

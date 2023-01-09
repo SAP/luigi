@@ -783,7 +783,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.25.0
 
 #### pathExists
 
@@ -1149,6 +1149,16 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 **Meta**
 
 -   **since**: 0.6.0
+
+#### isDrawer
+
+Checks if the current micro frontend is displayed inside a drawer
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a drawer
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 #### getCurrentTheme
 

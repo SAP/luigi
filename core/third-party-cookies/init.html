@@ -13,7 +13,7 @@
       luigiCookieKey = luigiCookie.split('=')[0];
       document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
     }
-    document.cookie = 'luigiCookie=true';
+    document.cookie = 'luigiCookie=true; SameSite=None; Secure';
     cookies = document.cookie;
     if (cookies) {
       luigiCookie = cookies

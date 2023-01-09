@@ -194,6 +194,19 @@ export const projectDetailNavStructure = projectId => [
     }
   },
   {
+    pathSegment: 'modal-with-callback',
+    label: 'Modal with Callback',
+    onNodeActivation: () => {
+      Luigi.navigation().openAsModal('/projects/pr2/settings', {
+        title: 'Modal with callback function',
+        size: 'm',
+      },
+        () => {
+          alert('Callback called');
+        })
+    }
+  },
+  {
     pathSegment: 'on-node-activation',
     label: 'Node with node activation hook',
     icon: 'activate',
@@ -254,7 +267,8 @@ export const projectDetailNavStructure = projectId => [
     testId: 'myTestId',
     statusBadge: {
       label: 'Settings',
-      type: 'positive'
+      type: 'positive',
+      align: 'right'
     }
   },
   {

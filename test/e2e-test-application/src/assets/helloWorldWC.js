@@ -29,6 +29,18 @@ export default class extends HTMLElement {
           text: 'Hello from uxManager in Web Component, Language:' + this.LuigiClient.getCurrentLocale(),
           type: 'info'
         });
+
+        window.Luigi.featureToggles().setFeatureToggle('ft1');
+
+        this.LuigiClient.uxManager().showAlert({
+          text: 'Active feature toggles list: ' + this.LuigiClient.getActiveFeatureToggleList(),
+          type: 'info'
+        });
+
+        this.LuigiClient.uxManager().showAlert({
+          text: 'Active feature toggles: ' + this.LuigiClient.getActiveFeatureToggles(),
+          type: 'info'
+        });
       }
     });
   }

@@ -163,8 +163,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   /**
@@ -173,7 +173,7 @@ class RoutingClass {
    */
   setFeatureToggle(path) {
     const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
-    featureToggleProperty && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
+    featureToggleProperty && typeof path === 'string' && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
   }
 
   /**
@@ -188,26 +188,48 @@ class RoutingClass {
   }
 
   /**
-   * Fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   * Prevents the browsers default route change by bringing back previous route then
+   * fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   *
    * @param {string} path the path of the view to open
    * @param {Object} component current component data
    * @param {Object} iframeElement the dom element of active iframe
    * @param {Object} config the configuration of application
    */
-  showUnsavedChangesModal(path, component, iframeElement, config) {
-    const newUrl = window.location.href;
-    const oldUrl = component.get().unsavedChanges.persistUrl;
+  handleUnsavedChangesModal(path, component, iframeElement, config) {
+    const newUrl = window.location.href,
+      oldUrl = component.get().unsavedChanges.persistUrl;
 
-    //pretend the url hasn't been changed
-    oldUrl && history.replaceState(window.state, '', oldUrl);
-    component.showUnsavedChangesModal().then(
-      () => {
-        path &&
-          this.handleRouteChange(path, component, iframeElement, config) &&
-          history.replaceState(window.state, '', newUrl);
-      },
-      () => {}
-    );
+    // pretend the url hasn't been changed by browser default behaviour
+    oldUrl && history.pushState(window.state, '', oldUrl);
+
+    return component
+      .getUnsavedChangesModalPromise()
+      .then(
+        // resolve unsaved changes promise
+        () => {
+          this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+        },
+        // user clicks no, do nothing, reject promise
+        () => {
+        }
+      )
+      .catch(() => { });
+  }
+
+  /**
+   * This function acts as a resolve callback in handleUnsavedChangesModal function
+   * Logic separated to enable better unit testing of the functionality
+   * @param {string} path the path to navigate to
+   * @param {Object} component the current component data
+   * @param {Object} iframeElement the dom element of active iframe
+   * @param {Object} config the configuration of application
+   */
+  resolveUnsavedChanges(path, component, iframeElement, config, newUrl) {
+    if (path) {
+      this.handleRouteChange(path, component, iframeElement, config);
+      history.replaceState(window.state, '', newUrl);
+    }
   }
 
   /**
@@ -321,13 +343,21 @@ class RoutingClass {
    * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
    */
   async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+    // Handle intent navigation with new tab scenario.
+    if (path.external) {
+      this.navigateToExternalLink({
+        url: path.url,
+        sameWindow: !path.openInNewTab
+      });
+      return;
+    }
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
 
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
-        this.showUnsavedChangesModal(path, component, iframeElement, config);
+        await this.handleUnsavedChangesModal(path, component, iframeElement, config);
         return;
       }
 
@@ -404,10 +434,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );
@@ -576,7 +606,9 @@ class RoutingClass {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink
     };
-    updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+    if (node) {
+      updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+    }
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
@@ -637,7 +669,13 @@ class RoutingClass {
     }
   }
 
-  appendModalDataToUrl(modalPath, modalParams) {
+  /**
+   * Append modal data to url
+   * @param {string} modalPath path of the view which is displayed in the modal
+   * @param {Object} modalParams query parameter
+   * @param {URL} urlObj URL object
+   */
+  appendModalDataToUrl(modalPath, modalParams, urlObj) {
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
@@ -649,7 +687,7 @@ class RoutingClass {
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = new URL(location.href);
+      const url = urlObj;
       const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
@@ -660,18 +698,25 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
-      history.replaceState(window.state, '', url.href);
+      if (!sessionStorage.getItem('historyState')) {
+        sessionStorage.setItem('historyState', history.length);
+      }
+      history.pushState(window.state, '', url.href);
     }
   }
 
-  removeModalDataFromUrl() {
+  /**
+   * Remove modal data from url
+   * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
+   */
+  removeModalDataFromUrl(isClosedInternal) {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    const historyState = Number(sessionStorage.getItem('historyState'));
     if (hashRoutingActive) {
       let modalParamsObj = {};
-
       if (params[modalParamName]) {
         modalParamsObj[modalParamName] = params[modalParamName];
       }
@@ -694,7 +739,20 @@ class RoutingClass {
       });
       url.search = finalUrl;
     }
-    history.replaceState(window.state, '', url.href);
+    // only if close modal [X] is pressed
+    if (historyState && isClosedInternal) {
+      window.addEventListener(
+        'popstate',
+        e => {
+          history.pushState(window.state, '', url.href);
+          history.back();
+        },
+        { once: true }
+      );
+      history.go(historyState - history.length);
+    }
+    history.pushState(window.state, '', url.href);
+    sessionStorage.removeItem('historyState');
   }
 }
 

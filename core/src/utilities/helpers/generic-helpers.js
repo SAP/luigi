@@ -357,13 +357,13 @@ class GenericHelpersClass {
 
   /**
    * Creates a remote promise.
-   * @returns {Promise} which returns true when the promise will be resolved and returns false if the promise will be rejected.
+   * @returns {Promise} which returns true or a value when the promise will be resolved and returns false if the promise will be rejected.
    */
   createRemotePromise() {
     let res, rej;
     const prom = new Promise(resolve => {
-      res = () => {
-        resolve(true);
+      res = value => {
+        resolve(value || true);
       };
       rej = () => {
         resolve(false);
@@ -381,9 +381,9 @@ class GenericHelpersClass {
     prom.id = luiRP.counter++;
     luiRP.promises[prom.id] = prom;
 
-    prom.doResolve = () => {
+    prom.doResolve = value => {
       delete luiRP.promises[prom.id];
-      res();
+      res(value);
     };
     prom.doReject = () => {
       delete luiRP.promises[prom.id];
