@@ -143,7 +143,7 @@ function addToChangelog(versionText, changelog, lastline) {
 
   // NIGHTLY BUILD
   if (process.env.NIGHTLY === 'true') {
-    if (process.env.NIGHTLY_VERSION) {
+    if (process.env.NIGHTLY_VERSION && process.env.NIGHTLY_VERSION.indexOf('-rc') > 0) {
       logHeadline('\nFound custom version in env: ' + process.env.NIGHTLY_VERSION);
       prompts.inject([process.env.NIGHTLY_VERSION, false]);
     } else {
