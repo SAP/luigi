@@ -428,7 +428,13 @@
       SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
   }
 
-  function semiCollapsibleButtonClicked(el) {
+  function closePopupMenuOnEsc(event){
+    if(event && event.code === 'Escape'){
+      closePopupMenu();
+    } 
+  }
+
+  function semiCollapsibleButtonClicked() {
     isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
@@ -436,6 +442,20 @@
     setBurgerTooltip();
   }
 
+  function handleEnterSemiCollapseBtn(event){
+    const code = event.code;
+    if (code === 'Enter' || code === 'Space') {
+      semiCollapsibleButtonClicked();
+    }
+  }
+
+  function handleExpandCollapseCategories(event, nodes){
+    if(event.code === 'Enter' || event === 'Space'){
+      handleIconClick(nodes, event.currentTarget)
+    }
+  }
+  
+  
   /**
    * Handles pressing the enter key when addNavHref is disabled
    * @param event the event of the anchor element currently focused on
@@ -479,6 +499,7 @@
   on:resize={onResize}
   on:click={closePopupMenu}
   on:blur={closePopupMenu}
+  on:keydown={closePopupMenuOnEsc}
 />
 <div
   class="fd-app__sidebar {hideNavComponent
@@ -633,7 +654,12 @@
                       handleIconClick(nodes, event.currentTarget)}
                     data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
-                    <div class="fd-nested-list__content has-child">
+                    <div
+                      class="fd-nested-list__content has-child"
+                      on:keypress={event =>
+                        handleExpandCollapseCategories(event, nodes)}
+                      tabindex={isSemiCollapsed ? '0' : '-1'}
+                    >
                       <a
                         title={resolveTooltipText(nodes, $getTranslation(key))}
                         class="fd-nested-list__link {isExpanded(
@@ -642,10 +668,7 @@
                         )
                           ? 'is-expanded'
                           : ''}"
-                        tabindex={isExpanded ? '0' : '-1'}
-                        on:keyup={!addNavHrefForAnchor
-                          ? (event) => handleEnterPressed(event, node)
-                          : undefined}
+                        tabindex={isSemiCollapsed ? '-1' : '0'}
                         role={!addNavHrefForAnchor ? 'button' : undefined}
                         id="collapsible_listnode_{index}"
                         aria-haspopup="true"
@@ -954,9 +977,11 @@
               class="lui-side-nav__footer--icon {isSemiCollapsed
                 ? 'sap-icon--open-command-field'
                 : 'sap-icon--close-command-field'}"
-              on:click={() => semiCollapsibleButtonClicked(this)}
+              on:click={event => semiCollapsibleButtonClicked(event, this)}
+              on:keydown={event => handleEnterSemiCollapseBtn(event, this)}
               data-testid="semiCollapsibleButton"
               title={burgerTooltip}
+              tabindex="0"
             />
           {/if}
         </span>
@@ -1374,5 +1399,12 @@
         }
       }
     }
+  }
+
+  .fd-nested-list__button:focus {
+    outline-offset: -0.1875rem;
+    outline-width: var(--sapContent_FocusWidth);
+    outline-color: var(--sapContent_FocusColor);
+    outline-style: var(--sapContent_FocusStyle);
   }
 </style>
