@@ -12,7 +12,7 @@
     "svelte": "^3.49.0",
     "svelte-loader": "2.13.3",
     "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^3.3.12",
     "concurrently": "^5.1.0",
     "local-web-server": "^3.0.7"
   },
