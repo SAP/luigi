@@ -64,7 +64,7 @@ module.exports = {
     path: __dirname + '/public',
     filename: '[name].js',
     chunkFilename: '[name].[id].js',
-    sourceMapFilename: '[name].svelte.map.js'
+    sourceMapFilename: '[name].svelte.map'
   },
   module: {
     rules: [commonRules.svelte, commonRules.css, commonRules.urls]

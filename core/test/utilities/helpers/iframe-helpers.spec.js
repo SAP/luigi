@@ -2,6 +2,8 @@ const chai = require('chai');
 const assert = chai.assert;
 const expect = chai.expect;
 const sinon = require('sinon');
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
 import { afterEach } from 'mocha';
 
 import { IframeHelpers, GenericHelpers } from '../../../src/utilities/helpers';
@@ -417,8 +419,12 @@ describe('Iframe-helpers', () => {
     };
 
     describe('disableA11YKeyboardExceptClassName', () => {
+      let globalRef = global;
       beforeEach(() => {
         global.document = getMockedDocument();
+      });
+      afterEach(() => {
+        global = globalRef;
       });
 
       it('saves old tabindex value properly', () => {
@@ -463,6 +469,89 @@ describe('Iframe-helpers', () => {
         assert.isNull(global.document.getElementsByClassName('childButton1')[0].getAttribute('tabindex'));
         assert.equal(global.document.getElementsByClassName('oldTabIndexInModal')[0].getAttribute('tabindex'), 1);
       });
+    });
+  });
+
+  describe('enable/disable a11y of inactive iframe', () => {
+    let globalDocRef = global.document;
+    beforeEach(() => {
+      const dom = new JSDOM(
+        `<!DOCTYPE html>
+               <head>
+                <title>Mocked DOM</title>
+               </head>
+               <body>
+                 <div class="divclass">
+                   <span class="spanclass">I am some text</span>
+                   <span tabindex="0" class="anotherspanclass">I am a text span with existing tabindex value</span>
+                   <div class="iframectnclass" tabindex="0">
+                   <iframe class="iframeclass"></iframe
+                   </div>
+                   <div class="anotherctnclass">
+                   <a class="aclass" tabindex="0"></a>
+                   <i class="iclass" tabindex="0"><i>
+                   <button class="buttonclass" tabindex="-1"></button>
+                   </div>
+                 </div>
+               </body>
+           </html>`,
+        { url: 'http://localhost' }
+      );
+
+      global.document = dom.window.document;
+    });
+
+    afterEach(() => {
+      global.document = globalDocRef;
+    });
+
+    const checkElementsInDisabledState = () => {
+      assert.equal(document.querySelector('.spanclass').getAttribute('oldtab'), 'null');
+      assert.equal(document.querySelector('.spanclass').getAttribute('tabindex'), '-1');
+      assert.equal(document.querySelector('.anotherspanclass').getAttribute('tabindex'), -1);
+      assert.equal(document.querySelector('.anotherspanclass').getAttribute('oldtab'), 0);
+      assert.equal(document.querySelector('.iframectnclass').getAttribute('tabindex'), -1);
+      assert.equal(document.querySelector('.iframectnclass').getAttribute('oldtab'), 0);
+      assert.equal(document.querySelector('.iframeclass').getAttribute('oldtab'), 'null');
+      assert.isNull(document.querySelector('.iframeclass').getAttribute('tabindex'));
+      assert.equal(document.querySelector('.buttonclass').getAttribute('oldtab'), -1);
+      assert.equal(document.querySelector('.buttonclass').getAttribute('tabindex'), -1);
+    };
+
+    const checkElementsInEnabledState = () => {
+      assert.isNull(document.querySelector('.spanclass').getAttribute('oldtab'));
+      assert.isNull(document.querySelector('.spanclass').getAttribute('tabindex'));
+      assert.equal(document.querySelector('.anotherspanclass').getAttribute('tabindex'), 0);
+      assert.isNull(document.querySelector('.anotherspanclass').getAttribute('oldtab'));
+      assert.equal(document.querySelector('.iframectnclass').getAttribute('tabindex'), 0);
+      assert.isNull(document.querySelector('.iframectnclass').getAttribute('oldtab'));
+      assert.isNull(document.querySelector('.iframeclass').getAttribute('oldtab'));
+      assert.isNull(document.querySelector('.iframeclass').getAttribute('tabindex'));
+      assert.equal(document.querySelector('.buttonclass').getAttribute('tabindex'), -1);
+      assert.isNull(document.querySelector('.buttonclass').getAttribute('oldtab'));
+    };
+
+    it('saves old tabindex value properly', () => {
+      console.log('dom ', document.querySelector('.divclass'));
+      let iframe = document.querySelector('.iframeclass');
+      IframeHelpers.disableA11yOfInactiveIframe(iframe);
+      checkElementsInDisabledState();
+
+      //test if oldtab and tabindex won't be overriden with new tabindex value -1 in a 2nd round
+      IframeHelpers.disableA11yOfInactiveIframe(iframe);
+      checkElementsInDisabledState();
+    });
+
+    it('enable a11y', () => {
+      let iframe = document.querySelector('.iframeclass');
+      IframeHelpers.disableA11yOfInactiveIframe(iframe);
+      checkElementsInDisabledState();
+
+      IframeHelpers.enableA11yOfInactiveIframe();
+      checkElementsInEnabledState();
+      //check if tabindex won't be overriden with new value
+      IframeHelpers.enableA11yOfInactiveIframe();
+      checkElementsInEnabledState();
     });
   });
 });
