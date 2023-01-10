@@ -42,10 +42,13 @@ export class ContainerService {
         messageListener: event => {
           const targetCnt = this.getTargetContainer(event);
           const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
-          if (target === event.source && event.data?.msg?.indexOf('luigi.') === 0) {
+          if (target === event.source && (event.data?.msg?.indexOf('luigi.') === 0 || event.data?.msg === 'custom')) {
             const msg = event.data.msg;
 
             switch (msg) {
+              case 'custom':
+                this.dispatch('custom-message', targetCnt, event.data.data);
+                break;
               case 'luigi.get-context':
                 target.postMessage({ msg: 'luigi.init', context: targetCnt.context || {}, internal: {} }, '*');
                 break;

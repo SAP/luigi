@@ -41,11 +41,15 @@
     <div id="textCnt">
       <h1 id="title">Multi purpose demo page</h1>
       <p id="content">Some content</p>
-      <button onclick="test()">test</button>
+      <button onclick="testNav()">test navigate</button>
+      <button onclick="testCustom()">test custom message</button>
     </div>
     <script>
-      function test() {
+      function testNav() {
         LuigiClient.linkManager().navigate('/');
+      }
+      function testCustom() {
+        LuigiClient.sendCustomMessage({ id: 'my.customMessage', bar: 'foo' });
       }
 
       function updateFn(context) {

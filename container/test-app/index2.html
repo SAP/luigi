@@ -59,6 +59,10 @@
           window.location = event.detail.link;
         }
       });
+
+      luigiCnt2.addEventListener('custom-message', event => {
+        alert('Custom message recieved: ' + JSON.stringify(event.detail));
+      });
     </script>
   </body>
 </html>
