@@ -12,17 +12,10 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <link
-          href="//unpkg.com/fundamental-styles@0.11.0/dist/fundamental-styles.css"
-          rel="stylesheet"
-        />
-      </Head>
-      <section className="fd-section">
-        <div className="fd-section__header">
-          <h1 className="fd-section__title">Welcome to Luigi with Next.js</h1>
-        </div>
-      </section>
+      <Head />
+      <div>
+        <h1>Welcome to Luigi with Next.js</h1>
+      </div>
     </>
   );
 }
