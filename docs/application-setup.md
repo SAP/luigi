@@ -101,7 +101,7 @@ or execute these commands manually to get the same result:
 ```bash
 ng new my-angular-app --routing && cd my-angular-app
 
-npm i -P @luigi-project/core @luigi-project/client fundamental-styles@0.11.0 @sap-theming/theming-base-content webpack@4.43.0 webpack-cli@3.3.12 @babel/core @babel/preset-env babel-loader 
+npm i -P @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content webpack@5.74.0 webpack-cli@4.10.0 
 sed 's/"scripts": {/"scripts": {\
 \   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/src\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 mkdir -p src/luigi-config

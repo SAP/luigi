@@ -10,7 +10,7 @@ import { Navigation } from '../../src/navigation/services/navigation';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { Iframe, ViewUrlDecorator } from '../../src/services';
 
-describe('Routing', function() {
+describe('Routing', function () {
   this.retries(1);
 
   let component;
@@ -684,7 +684,7 @@ describe('Routing', function() {
     it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
       //given
       const path = 'compound';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       console.warn = sinon.spy();
@@ -702,7 +702,7 @@ describe('Routing', function() {
     it('should navigate to rootPath if node can be reached directly', async () => {
       //given
       const path = 'compound2';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       component.viewUrl = path;
@@ -720,7 +720,7 @@ describe('Routing', function() {
     it('should handle nodeObject that is compound', async () => {
       //given
       const path = 'compound3';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       component.viewUrl = path;
@@ -746,7 +746,7 @@ describe('Routing', function() {
     it('should handle nodeObject that is webcomponent', async () => {
       //given
       const path = 'compound-webcomponent';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       //when
       component.viewUrl = path;
@@ -987,7 +987,7 @@ describe('Routing', function() {
 
   describe('showPageNotFoundError()', () => {
     let component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
     let pathToRedirect = '/go/here';
     let pathToRedirect2 = '/go/there';
@@ -1390,6 +1390,68 @@ describe('Routing', function() {
         .returns(false);
       Routing.shouldShowModalPathInUrl();
       sinon.assert.notCalled(Routing.handleBookmarkableModalPath);
+    });
+  });
+
+  describe('handleUnsavedChangesModal', () => {
+    let path, iframeElement, config, oldUrl, newUrl;
+
+    beforeEach(() => {
+      iframeElement = 'iframe';
+      config = 'config';
+      oldUrl = new URL('https://www.oldurl.com');
+      newUrl = new URL('https://www.newUrl.com');
+      window.state = {};
+      window.history.replaceState = sinon.spy();
+
+      component.get = () => {
+        return {
+          unsavedChanges: {
+            persistUrl: oldUrl
+          }
+        };
+      };
+      component.getUnsavedChangesModalPromise = () => { };
+      sinon.stub(component, 'getUnsavedChangesModalPromise').resolves();
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('inner function resolved', async () => {
+      const path = 'valid';
+      sinon.stub(Routing, 'resolveUnsavedChanges');
+
+      await Routing.handleUnsavedChangesModal(path, component, iframeElement, config);
+
+      sinon.assert.calledWithExactly(window.history.pushState, window.state, '', oldUrl);
+      sinon.assert.calledOnce(component.getUnsavedChangesModalPromise);
+      sinon.assert.calledOnce(Routing.resolveUnsavedChanges);
+    });
+
+    describe('resolveUnsavedChanges', () => {
+      beforeEach(() => {
+        sinon.stub(Routing, 'handleRouteChange');
+      });
+
+      afterEach(() => {
+        sinon.restore();
+      });
+
+      it('test with valid path', async () => {
+        path = 'valid';
+        Routing.resolveUnsavedChanges(path, component, iframeElement, config);
+        sinon.assert.calledOnce(window.history.replaceState);
+        sinon.assert.calledOnce(Routing.handleRouteChange);
+      });
+
+      it('test with invalid path', async () => {
+        path = '';
+        Routing.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+        sinon.assert.notCalled(window.history.replaceState);
+        sinon.assert.notCalled(Routing.handleRouteChange);
+      });
     });
   });
 });

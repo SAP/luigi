@@ -285,7 +285,9 @@ class IframeHelpersClass {
   disableA11yOfInactiveIframe(srcIframe) {
     const nodeList = document.querySelectorAll('*');
     [...nodeList].forEach(el => {
-      el.setAttribute('oldTab', el.getAttribute('tabindex'));
+      if (!el.getAttribute('oldTab')) {
+        el.setAttribute('oldTab', el.getAttribute('tabindex'));
+      }
       if (el !== srcIframe) {
         el.setAttribute('tabindex', '-1');
       }
@@ -294,13 +296,14 @@ class IframeHelpersClass {
 
   enableA11yOfInactiveIframe() {
     const nodeList = document.querySelectorAll('*');
-    [...nodeList].forEach(el => {
+    [...nodeList].forEach((el, index) => {
       const restoreVal = el.getAttribute('oldTab');
-      if (restoreVal) {
-        el.setAttribute('tabindex', restoreVal);
-        el.removeAttribute('oldTab');
-      } else {
+      if (el.getAttribute('oldTab') === 'null') {
         el.removeAttribute('tabindex');
+      }
+      el.removeAttribute('oldTab');
+      if (restoreVal && restoreVal !== 'null') {
+        el.setAttribute('tabindex', restoreVal);
       }
     });
   }
@@ -316,7 +319,7 @@ class IframeHelpersClass {
       const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
       const prevTabIndex = element.getAttribute('tabindex');
       // save tabIndex in case one already exists
-      if ((prevTabIndex || prevTabIndex === 0) && isNotAChildOfTargetElement) {
+      if ((prevTabIndex || prevTabIndex === 0) && isNotAChildOfTargetElement && !element.hasAttribute('oldtab')) {
         element.setAttribute('oldtab', prevTabIndex);
       }
       // set tabindex to negative only if the current element is not a descendant of element with class 'targetElementClassName'
@@ -333,11 +336,10 @@ class IframeHelpersClass {
     [...nodeList].forEach(element => {
       const restoreVal = element.getAttribute('oldtab');
       const isNotAChildOfTargetElement = !element.closest(targetElementClassName);
-      if (restoreVal) {
+      isNotAChildOfTargetElement ? element.removeAttribute('tabindex') : '';
+      if (restoreVal && restoreVal !== 'null') {
         element.setAttribute('tabindex', restoreVal);
         element.removeAttribute('oldtab');
-      } else {
-        isNotAChildOfTargetElement ? element.removeAttribute('tabindex') : '';
       }
     });
   }

@@ -1,4 +1,3 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const sass = require('node-sass');
 
 const mode = process.env.NODE_ENV || 'development';
@@ -40,14 +39,7 @@ module.exports = {
   },
   css: {
     test: /\.(sa|sc|c)ss$/,
-    use: [
-      /**
-       * MiniCssExtractPlugin doesn't support HMR.
-       * For developing, use 'style-loader' instead.
-       * */
-      prod ? MiniCssExtractPlugin.loader : 'style-loader',
-      'css-loader'
-    ]
+    use: ['style-loader', 'css-loader']
   },
   urls: {
     test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
