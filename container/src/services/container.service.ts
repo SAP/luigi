@@ -1,5 +1,5 @@
 export class ContainerService {
-  constructor() {}
+  constructor() { }
 
   isVisible(component: HTMLElement) {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
@@ -43,10 +43,13 @@ export class ContainerService {
           const targetCnt = this.getTargetContainer(event);
           const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
           if (target === event.source && (event.data?.msg?.indexOf('luigi.') === 0 || event.data?.msg === 'custom')) {
+            // messages emitted from microfrontends
             const msg = event.data.msg;
 
+            // dispatch an event depending on message
             switch (msg) {
               case 'custom':
+                console.log('Test', targetCnt, event)
                 this.dispatch('custom-message', targetCnt, event.data.data);
                 break;
               case 'luigi.get-context':
@@ -61,6 +64,31 @@ export class ContainerService {
               case 'luigi.init.ok':
                 this.dispatch('initialized', targetCnt, event.data.params);
                 break;
+              // what it is
+              case 'luigi.addSearchParams':
+                this.dispatch('add-search-params', targetCnt, event.data.params);
+                break;
+
+              // what it is
+              case 'luigi.addNodeParams':
+                this.dispatch('add-node-params', targetCnt, event.data.params);
+                break;
+
+              // what it is
+              case 'luigi.ux.confirmationModal.show':
+                this.dispatch('show-confirmation-modal', targetCnt, event.data.params);
+                break;
+
+              // what it is
+              case 'luigi.show-loading-indicator ':
+                this.dispatch('show-loading-indicator', targetCnt, event.data.params);
+                break;
+
+              // what it is
+              case 'luigi.hide-loading-indicator ':
+                this.dispatch('hide-loading-indicator', targetCnt, event.data.params);
+                break;
+
               case 'luigi.third-party-cookie':
                 // TODO: check if needed
                 break;
