@@ -12,22 +12,14 @@ export default function Sample2() {
 
   return (
     <>
-      <Head>
-        <link
-          href="//unpkg.com/fundamental-styles@0.11.0/dist/fundamental-styles.css"
-          rel="stylesheet"
-        />
-      </Head>
-      <section className="fd-section">
-        <div className="fd-section__header">
-          <h1 className="fd-section__title">Sample 2</h1>
-        </div>
-        <div className="fd-panel">
-          Luigi ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua.
-        </div>
-      </section>
+      <Head></Head>
+      <div>
+        <h1>Sample 2</h1>
+      </div>
+      <div>
+        Luigi ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+        dolore magna aliquyam erat, sed diam voluptua.
+      </div>
     </>
   );
 }
