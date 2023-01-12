@@ -743,7 +743,7 @@ class RoutingClass {
     if (history.state && history.state.modalHistoryLength >= 0 && isClosedInternal) {
       const modalHistoryLength = history.state.modalHistoryLength;
       const path = history.state.pathBeforeHistory;
-      let isModalHistoryHigherThanHistoryLength = history.state.isModalHistoryHigerAsHistoryLength;
+      let isModalHistoryHigherThanHistoryLength = false;
       window.addEventListener(
         'popstate',
         e => {
