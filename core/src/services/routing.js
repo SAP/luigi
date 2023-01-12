@@ -747,7 +747,7 @@ class RoutingClass {
       window.addEventListener(
         'popstate',
         e => {
-          if (isModalHistoryHigerAsHistoryLength) {
+          if (isModalHistoryHigherThanHistoryLength) {
             //replace the url with saved path and get rid of modal data in url
             history.replaceState({}, '', path);
             //reset history.length
