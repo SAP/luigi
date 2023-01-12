@@ -767,7 +767,7 @@ class RoutingClass {
       } else {
         if (history.state.modalHistoryLength > history.length) {
           const historyMaxBack = history.length - 1;
-          isModalHistoryHigerAsHistoryLength = true;
+          isModalHistoryHigherThanHistoryLength = true;
           history.go(-historyMaxBack);
           //flag to prevent to run handleRouteChange when url has modalData in path
           //otherwise modal will be opened again
