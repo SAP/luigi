@@ -64,19 +64,21 @@ export class ContainerService {
               case 'luigi.init.ok':
                 this.dispatch('initialized', targetCnt, event.data.params);
                 break;
+
+
               // what it is
               case 'luigi.addSearchParams':
-                this.dispatch('add-search-params', targetCnt, event.data.params);
+                this.dispatch('add-search-params-request', targetCnt, event.data.params);
                 break;
 
               // what it is
               case 'luigi.addNodeParams':
-                this.dispatch('add-node-params', targetCnt, event.data.params);
+                this.dispatch('add-node-params-request', targetCnt, event.data.params);
                 break;
 
               // what it is
               case 'luigi.ux.confirmationModal.show':
-                this.dispatch('show-confirmation-modal', targetCnt, event.data.params);
+                this.dispatch('show-confirmation-modal-request', targetCnt, event.data.params);
                 break;
 
               // what it is

@@ -1,90 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="utf-8" />
-    <link
-      href="https://fiddle.luigi-project.io/vendor/fundamental-styles/dist/fundamental-styles.css"
-      rel="stylesheet"
-    />
-    <!-- <link href="https://fiddle.luigi-project.io/styles/styles.css" rel="stylesheet" /> -->
-    <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
-    <style>
-      html,
-      body {
-        position: relative;
-      }
 
-      #imgCnt img {
-        width: 100%;
-      }
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+  <link href="https://fiddle.luigi-project.io/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet" />
+  <!-- <link href="https://fiddle.luigi-project.io/styles/styles.css" rel="stylesheet" /> -->
+  <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
+  <style>
+    html,
+    body {
+      position: relative;
+    }
 
-      #imgCnt {
-        text-align: center;
-      }
+    #imgCnt img {
+      width: 100%;
+    }
 
-      #textCnt {
-        padding: 30px;
-        text-align: center;
-        font-family: '72', sans-serif;
-        visibility: hidden;
-      }
+    #imgCnt {
+      text-align: center;
+    }
 
-      #textCnt.visible {
-        visibility: visible;
-      }
-    </style>
-  </head>
+    #textCnt {
+      padding: 30px;
+      text-align: center;
+      font-family: '72', sans-serif;
+      visibility: hidden;
+    }
 
-  <body style="-webkit-font-smoothing: antialiased; color: #515559;">
-    <div id="imgCnt"></div>
-    <div id="textCnt">
-      <h1 id="title">Multi purpose demo page</h1>
-      <p id="content">Some content</p>
-      <button onclick="testNav()">test navigate</button>
-      <button onclick="testCustom()">test custom message</button>
-    </div>
-    <script>
-      function testNav() {
-        LuigiClient.linkManager().navigate('/');
-      }
-      function testCustom() {
-        LuigiClient.sendCustomMessage({ id: 'my.customMessage', bar: 'foo' });
-      }
+    #textCnt.visible {
+      visibility: visible;
+    }
+  </style>
+</head>
 
-      function updateFn(context) {
-        if (context.title) {
-          document.getElementById('title').innerHTML = context.title;
-        }
-        if (context.content) {
-          document.getElementById('content').innerHTML = context.content;
-        }
-        if (context.imgUrl) {
-          var iwidth = !isNaN(context.imgWidth)
-            ? 'width: ' + context.imgWidth + 'px'
-            : '';
-          document.getElementById('imgCnt').innerHTML =
-            "<img src='" +
-            context.imgUrl +
-            "' style='" +
-            iwidth +
-            '; margin-top: ' +
-            (context.imgTopMargin ? '5' : '') +
-            "0px'>";
-        }
-        document.getElementById('textCnt').classList.add('visible');
+<body style="-webkit-font-smoothing: antialiased; color: #515559;">
+  <div id="imgCnt"></div>
+  <div id="textCnt">
+    <h1 id="title">Multi purpose demo page</h1>
+    <p id="content">Some content</p>
+    <button onclick="testNav()">test navigate</button>
+    <button onclick="testCustom()">test custom message</button>
+    <button onclick="testAddSearchParams()">Test add search params</button>
+    <button onclick="testAddNodeParams()">Test add node params</button>
+    <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
+  </div>
+  <script>
+    function testNav() {
+      LuigiClient.linkManager().navigate('/');
+    }
+    function testCustom() {
+      LuigiClient.sendCustomMessage({ id: 'my.customMessage', bar: 'foo' });
+    }
+
+    function testAddSearchParams() {
+      LuigiClient.addCoreSearchParams({ luigi: 'rocks' }, false);
+    }
+
+
+    function testAddNodeParams() {
+      LuigiClient.addNodeParams({ luigi: 'rocks' }, true);
+    }
+
+
+    function testShowConfirmationModal() {
+      const settings = {
+        type: "confirmation",
+        header: "Confirmation",
+        body: "Are you sure you want to do this?",
+        buttonConfirm: "Yes",
+        buttonDismiss: "No"
       }
+      LuigiClient
+        .uxManager()
+        .showConfirmationModal(settings);
+    }
 
-      LuigiClient.addInitListener(updateFn);
-      LuigiClient.addContextUpdateListener(updateFn);
-      LuigiClient.addCustomMessageListener('update', data => {
-        document.getElementById('content').innerHTML = new Date().getMilliseconds();
-      });
 
-      // fallback visibility if no initlistener called for 3 seconds
-      setTimeout(function() {
-        document.getElementById('textCnt').classList.add('visible');
-      }, 3000);
-    </script>
-  </body>
+    function updateFn(context) {
+      if (context.title) {
+        document.getElementById('title').innerHTML = context.title;
+      }
+      if (context.content) {
+        document.getElementById('content').innerHTML = context.content;
+      }
+      if (context.imgUrl) {
+        var iwidth = !isNaN(context.imgWidth)
+          ? 'width: ' + context.imgWidth + 'px'
+          : '';
+        document.getElementById('imgCnt').innerHTML =
+          "<img src='" +
+          context.imgUrl +
+          "' style='" +
+          iwidth +
+          '; margin-top: ' +
+          (context.imgTopMargin ? '5' : '') +
+          "0px'>";
+      }
+      document.getElementById('textCnt').classList.add('visible');
+    }
+
+    LuigiClient.addInitListener(updateFn);
+    LuigiClient.addContextUpdateListener(updateFn);
+    LuigiClient.addCustomMessageListener('update', data => {
+      document.getElementById('content').innerHTML = new Date().getMilliseconds();
+    });
+
+    // fallback visibility if no initlistener called for 3 seconds
+    setTimeout(function () {
+      document.getElementById('textCnt').classList.add('visible');
+    }, 3000);
+  </script>
+</body>
+
 </html>
