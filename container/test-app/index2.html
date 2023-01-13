@@ -62,17 +62,30 @@
 
 
     luigiCnt2.addEventListener('add-search-params-request', event => {
+      console.log(event.detail);
       alert('add-search-params-request message recieved: ' + JSON.stringify(event.detail));
     });
 
 
     luigiCnt2.addEventListener('add-node-params-request', event => {
+      console.log(event);
       alert('add-node-params-request message recieved: ' + JSON.stringify(event.detail));
     });
 
 
     luigiCnt2.addEventListener('show-confirmation-modal-request', event => {
+      console.log(event);
       alert('show-confirmation-modal message recieved: ' + JSON.stringify(event.detail));
+    });
+
+    luigiCnt2.addEventListener('show-loading-indicator-request', event => {
+      console.log(event);
+      alert('show-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    luigiCnt2.addEventListener('hide-loading-indicator-request', event => {
+      console.log(event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
     });
   </script>
 </body>

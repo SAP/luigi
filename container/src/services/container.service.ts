@@ -68,27 +68,27 @@ export class ContainerService {
 
               // what it is
               case 'luigi.addSearchParams':
-                this.dispatch('add-search-params-request', targetCnt, event.data.params);
+                this.dispatch('add-search-params-request', targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
 
               // what it is
               case 'luigi.addNodeParams':
-                this.dispatch('add-node-params-request', targetCnt, event.data.params);
+                this.dispatch('add-node-params-request', targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
 
               // what it is
               case 'luigi.ux.confirmationModal.show':
-                this.dispatch('show-confirmation-modal-request', targetCnt, event.data.params);
+                this.dispatch('show-confirmation-modal-request', targetCnt, event.data.data);
                 break;
 
               // what it is
-              case 'luigi.show-loading-indicator ':
-                this.dispatch('show-loading-indicator', targetCnt, event.data.params);
+              case 'luigi.show-loading-indicator':
+                this.dispatch('show-loading-indicator-request', targetCnt, event);
                 break;
 
               // what it is
-              case 'luigi.hide-loading-indicator ':
-                this.dispatch('hide-loading-indicator', targetCnt, event.data.params);
+              case 'luigi.hide-loading-indicator':
+                this.dispatch('hide-loading-indicator-request', targetCnt, event);
                 break;
 
               case 'luigi.third-party-cookie':

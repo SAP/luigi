@@ -44,6 +44,9 @@
     <button onclick="testAddSearchParams()">Test add search params</button>
     <button onclick="testAddNodeParams()">Test add node params</button>
     <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
+    <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
+    <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
+
   </div>
   <script>
     function testNav() {
@@ -54,12 +57,12 @@
     }
 
     function testAddSearchParams() {
-      LuigiClient.addCoreSearchParams({ luigi: 'rocks' }, false);
+      LuigiClient.addCoreSearchParams({ luigi: 'searchParams' }, false);
     }
 
 
     function testAddNodeParams() {
-      LuigiClient.addNodeParams({ luigi: 'rocks' }, true);
+      LuigiClient.addNodeParams({ luigi: 'Ndoeparams' }, true);
     }
 
 
@@ -74,6 +77,14 @@
       LuigiClient
         .uxManager()
         .showConfirmationModal(settings);
+    }
+
+    function testShowLoadingIndicator() {
+      LuigiClient.uxManager().showLoadingIndicator();
+    }
+
+    function testHideLoadingIndicator() {
+      LuigiClient.uxManager().hideLoadingIndicator();
     }
 
 
