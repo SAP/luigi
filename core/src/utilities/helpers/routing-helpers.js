@@ -665,10 +665,9 @@ class RoutingHelpersClass {
    * @param {Object} params url query parameter
    * @param {String} modalParamName modalPathParam value from Luigi routing settings
    * @param {String} hash
-   * @returns
+   * @returns {String} hash string
    */
   removeModalParamsFromHash(params, modalParamName, hash) {
-    debugger;
     let modalParamsObj = {};
     if (params[modalParamName]) {
       modalParamsObj[modalParamName] = params[modalParamName];
@@ -692,7 +691,7 @@ class RoutingHelpersClass {
    * @param {String} historyState.pathBeforeHistory path before modal will be opened. It's needed for calculating how much we have to go back in the browser history when the modal will be closed.
    * @param {boolean} hashRoutingActive true if hash routing is active, false if path routing is active
    * @param {URL} url url object to read hash value or pathname
-   * @returns
+   * @returns {Object} history state object
    */
   handleHistoryState(historyState, path) {
     if (historyState && historyState.modalHistoryLength) {
