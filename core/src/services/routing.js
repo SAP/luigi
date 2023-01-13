@@ -688,16 +688,18 @@ class RoutingClass {
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
     let historyState = history.state;
     let pathWithoutModalData;
-
+    let urlWithoutModalData;
     if (hashRoutingActive) {
       let [path, searchParams] = url.hash.split('?');
       pathWithoutModalData = path;
-      if (RoutingHelpers.getURLWithoutModalData(searchParams, modalParamName)) {
-        pathWithoutModalData += '?' + RoutingHelpers.getURLWithoutModalData(searchParams, modalParamName);
+      urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(searchParams, modalParamName);
+      if (urlWithoutModalData) {
+        pathWithoutModalData += '?' + urlWithoutModalData;
       }
     } else {
       pathWithoutModalData = url.pathname;
-      if (RoutingHelpers.getURLWithoutModalData(url.search, modalParamName)) {
+      urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(url.search, modalParamName);
+      if (urlWithoutModalData) {
         pathWithoutModalData += '?' + RoutingHelpers.getURLWithoutModalData(url.search, modalParamName);
       }
     }
@@ -720,13 +722,13 @@ class RoutingClass {
     } else {
       const cleanUrl = new URL(url);
       if (hashRoutingActive) {
-        let [path, searchParams] = cleanUrl.hash.split('?');
+        let path = cleanUrl.hash.split('?')[0];
         cleanUrl.hash = path;
-        if (RoutingHelpers.getURLWithoutModalData(searchParams, modalParamName)) {
-          cleanUrl.hash += '?' + RoutingHelpers.getURLWithoutModalData(searchParams, modalParamName);
+        if (urlWithoutModalData) {
+          cleanUrl.hash += '?' + urlWithoutModalData;
         }
       } else {
-        cleanUrl.search = RoutingHelpers.getURLWithoutModalData(cleanUrl.search, modalParamName);
+        cleanUrl.search = urlWithoutModalData;
       }
       history.replaceState({}, '', cleanUrl.href);
       history.pushState(historyState, '', url.href);
