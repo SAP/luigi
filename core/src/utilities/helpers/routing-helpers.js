@@ -661,26 +661,16 @@ class RoutingHelpersClass {
   }
 
   /**
-   *
-   * @param {Object} params url query parameter
-   * @param {String} modalParamName modalPathParam value from Luigi routing settings
-   * @param {String} hash
-   * @returns {String} hash string
+   * Get an url without modal data. It's necessary on page refresh or loading Luigi with modal data in a new tab
+   * @param {String} searchParamsString url search parameter as string
+   * @param {String} modalParamName  modalPathParam value defined in Luigi routing settings
+   * @returns {String} url search parameter as string without modal data
    */
-  removeModalParamsFromHash(params, modalParamName, hash) {
-    let modalParamsObj = {};
-    if (params[modalParamName]) {
-      modalParamsObj[modalParamName] = params[modalParamName];
-    }
-    if (params[`${modalParamName}Params`]) {
-      modalParamsObj[`${modalParamName}Params`] = params[`${modalParamName}Params`];
-    }
-    let prevModalPath = this.encodeParams(modalParamsObj);
-    if (hash.includes(`?${prevModalPath}`)) {
-      return hash.replace(`?${prevModalPath}`, '');
-    } else if (hash.includes(`&${prevModalPath}`)) {
-      return hash.replace(`&${prevModalPath}`, '');
-    }
+  getURLWithoutModalData(searchParamsString, modalParamName) {
+    let searchParams = new URLSearchParams(searchParamsString);
+    searchParams.delete(modalParamName);
+    searchParams.delete(`${modalParamName}Params`);
+    return searchParams.toString();
   }
 
   /**

@@ -210,6 +210,13 @@ describe('JS-TEST-APP', () => {
         expectedPathAfterForward('/home');
         expectedPathAfterBack('/home');
       });
+      it('Hash routing, visit luigi with modal data and search params', () => {
+        cy.visitTestApp('/home?~test=tets&modal=' + encodeURIComponent('/home/modalMf'), newConfig);
+        cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
+        closeModal();
+        expectedPathAfterForward('/home?%7Etest=tets');
+        expectedPathAfterBack('/home?%7Etest=tets');
+      });
       it('Hash routing, navigate few times and than open modal and close via [X]', () => {
         cy.visitTestApp('/home', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
