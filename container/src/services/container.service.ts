@@ -1,3 +1,6 @@
+import { MFEventID } from '../constants/communication';
+import { LuigiMessageID } from '../constants/internal-communication';
+
 export class ContainerService {
   constructor() { }
 
@@ -48,47 +51,47 @@ export class ContainerService {
 
             // dispatch an event depending on message
             switch (msg) {
-              case 'custom':
+              case LuigiMessageID.CUSTOM_MESSAGE:
                 console.log('Test', targetCnt, event)
-                this.dispatch('custom-message', targetCnt, event.data.data);
+                this.dispatch(MFEventID.CUSTOM_MESSAGE, targetCnt, event.data.data);
                 break;
-              case 'luigi.get-context':
-                target.postMessage({ msg: 'luigi.init', context: targetCnt.context || {}, internal: {} }, '*');
+              case LuigiMessageID.GET_CONTEXT:
+                target.postMessage({ msg: MFEventID.GET_CONTEXT, context: targetCnt.context || {}, internal: {} }, '*');
                 break;
-              case 'luigi.navigation.open':
-                this.dispatch('navigation-request', targetCnt, event.data.params);
+              case LuigiMessageID.NAVIGATION_REQUEST:
+                this.dispatch(MFEventID.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
-              case 'luigi.ux.alert.show':
-                this.dispatch('alert-request', targetCnt, event.data.params);
+              case LuigiMessageID.ALERT_REQUEST:
+                this.dispatch(MFEventID.ALERT_REQUEST, targetCnt, event.data.params);
                 break;
-              case 'luigi.init.ok':
-                this.dispatch('initialized', targetCnt, event.data.params);
+              case LuigiMessageID.INITIALIZED:
+                this.dispatch(MFEventID.INITIALIZED, targetCnt, event.data.params);
                 break;
 
-
-              // what it is
-              case 'luigi.addSearchParams':
-                this.dispatch('add-search-params-request', targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
-                break;
 
               // what it is
-              case 'luigi.addNodeParams':
-                this.dispatch('add-node-params-request', targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
+              case LuigiMessageID.ADD_SEARCH_PARAMS_REQUEST:
+                this.dispatch(MFEventID.ADD_SEARCH_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
 
               // what it is
-              case 'luigi.ux.confirmationModal.show':
-                this.dispatch('show-confirmation-modal-request', targetCnt, event.data.data);
+              case LuigiMessageID.ADD_NODE_PARAMS_REQUEST:
+                this.dispatch(MFEventID.ADD_NODE_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
 
               // what it is
-              case 'luigi.show-loading-indicator':
-                this.dispatch('show-loading-indicator-request', targetCnt, event);
+              case LuigiMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
+                this.dispatch(MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
                 break;
 
               // what it is
-              case 'luigi.hide-loading-indicator':
-                this.dispatch('hide-loading-indicator-request', targetCnt, event);
+              case LuigiMessageID.SHOW_LOADING_INDICATOR_REQUEST:
+                this.dispatch(MFEventID.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
+                break;
+
+              // what it is
+              case LuigiMessageID.HIDE_LOADING_INDICATOR_REQUEST:
+                this.dispatch(MFEventID.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
 
               case 'luigi.third-party-cookie':
