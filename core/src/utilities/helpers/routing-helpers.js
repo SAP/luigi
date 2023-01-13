@@ -661,6 +661,30 @@ class RoutingHelpersClass {
   }
 
   /**
+   *
+   * @param {Object} params url query parameter
+   * @param {String} modalParamName modalPathParam value from Luigi routing settings
+   * @param {String} hash
+   * @returns
+   */
+  removeModalParamsFromHash(params, modalParamName, hash) {
+    debugger;
+    let modalParamsObj = {};
+    if (params[modalParamName]) {
+      modalParamsObj[modalParamName] = params[modalParamName];
+    }
+    if (params[`${modalParamName}Params`]) {
+      modalParamsObj[`${modalParamName}Params`] = params[`${modalParamName}Params`];
+    }
+    let prevModalPath = this.encodeParams(modalParamsObj);
+    if (hash.includes(`?${prevModalPath}`)) {
+      return hash.replace(`?${prevModalPath}`, '');
+    } else if (hash.includes(`&${prevModalPath}`)) {
+      return hash.replace(`&${prevModalPath}`, '');
+    }
+  }
+
+  /**
    * Extending history state object for calculation how much history entries the browser have to go back when modal will be closed.
    * @param {Object} historyState history.state object.
    * @param {Number} historyState.modalHistoryLength will be increased when modals will be openend successively like e.g. stepping through a wizard.
@@ -670,14 +694,14 @@ class RoutingHelpersClass {
    * @param {URL} url url object to read hash value or pathname
    * @returns
    */
-  handleHistoryState(historyState, hashRoutingActive, url) {
+  handleHistoryState(historyState, path) {
     if (historyState && historyState.modalHistoryLength) {
       historyState.modalHistoryLength += 1;
     } else {
       historyState = {
         modalHistoryLength: 1,
         historygap: history.length,
-        pathBeforeHistory: hashRoutingActive ? url.hash : url.pathname
+        pathBeforeHistory: path
       };
     }
     return historyState;

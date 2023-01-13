@@ -684,15 +684,21 @@ class RoutingClass {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     const prevModalPath = params[modalParamName];
+    const url = new URL(location.href);
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    let historyState = history.state;
+    let pathWithoutModalData;
+    if (hashRoutingActive) {
+      pathWithoutModalData = RoutingHelpers.removeModalParamsFromHash(params, modalParamName, url.hash);
+    } else {
+      pathWithoutModalData = url.pathname;
+    }
+    historyState = RoutingHelpers.handleHistoryState(historyState, pathWithoutModalData);
     if (prevModalPath !== modalPath) {
       params[modalParamName] = modalPath;
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = new URL(location.href);
-      const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
-      let historyState = history.state;
-      historyState = RoutingHelpers.handleHistoryState(historyState, hashRoutingActive, url);
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
         if (queryParamIndex !== -1) {
@@ -702,6 +708,18 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
+      history.pushState(historyState, '', url.href);
+    } else {
+      const cleanUrl = new URL(url);
+      if (hashRoutingActive) {
+        cleanUrl.hash = RoutingHelpers.removeModalParamsFromHash(params, modalParamName, cleanUrl.hash);
+      } else {
+        let searchParams = new URLSearchParams(cleanUrl.search);
+        searchParams.delete(modalParamName);
+        searchParams.delete(`${modalParamName}Params`);
+        cleanUrl.search = searchParams.toString();
+      }
+      history.replaceState({}, '', cleanUrl.href);
       history.pushState(historyState, '', url.href);
     }
   }
@@ -739,7 +757,7 @@ class RoutingClass {
       });
       url.search = finalUrl;
     }
-    // only if close modal [X] is pressed
+    // only if close modal [X] is pressed or closed via api
     if (history.state && history.state.modalHistoryLength >= 0 && isClosedInternal) {
       const modalHistoryLength = history.state.modalHistoryLength;
       const path = history.state.pathBeforeHistory;
