@@ -2,7 +2,7 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/luigi)](https://api.reuse.software/info/github.com/SAP/luigi)
 # Luigi
 <p align="center">
- <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
+ <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" alt="Luigi logo" width="235">
 </p>
 
 ## Description
