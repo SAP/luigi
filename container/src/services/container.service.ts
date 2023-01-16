@@ -52,7 +52,6 @@ export class ContainerService {
             // dispatch an event depending on message
             switch (msg) {
               case LuigiMessageID.CUSTOM_MESSAGE:
-                console.log('Test', targetCnt, event)
                 this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, event.data.data);
                 break;
               case LuigiMessageID.GET_CONTEXT:
