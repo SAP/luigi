@@ -67,27 +67,21 @@ export class ContainerService {
               case LuigiMessageID.INITIALIZED:
                 this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
                 break;
-
               case LuigiMessageID.ADD_SEARCH_PARAMS_REQUEST:
                 this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
-
               case LuigiMessageID.ADD_NODE_PARAMS_REQUEST:
                 this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
-
               case LuigiMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
                 this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
                 break;
-
               case LuigiMessageID.SHOW_LOADING_INDICATOR_REQUEST:
                 this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
-
               case LuigiMessageID.HIDE_LOADING_INDICATOR_REQUEST:
                 this.dispatch(Events.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
-
               case 'luigi.third-party-cookie':
                 // TODO: check if needed
                 break;
