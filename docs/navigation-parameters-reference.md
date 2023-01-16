@@ -95,7 +95,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **attributes**:
   - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
   - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
-- **since**: NEXTRELEASE
+- **since**: 1.26.0
 - **example**:
 ```javascript
 config.navigation.defaults = {
