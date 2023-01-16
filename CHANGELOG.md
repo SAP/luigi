@@ -25,6 +25,32 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.26.0] (2023-01-16)
+
+#### :boom: Breaking Change
+* [#2735](https://github.com/SAP/luigi/pull/2735) Bump @angular/core from 6.1.10 to 11.0.5 in /test/e2e-test-application ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### :rocket: Added
+* [#3094](https://github.com/SAP/luigi/pull/3094) Enhance left nav a11y ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3049](https://github.com/SAP/luigi/pull/3049) Add callback to openAsModal for core api ([@hardl](https://github.com/hardl))
+* [#2963](https://github.com/SAP/luigi/pull/2963) LuigiClient type declaration for web components ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2955](https://github.com/SAP/luigi/pull/2955) Allow right alignment of statusBadge ([@hardl](https://github.com/hardl))
+* [#3013](https://github.com/SAP/luigi/pull/3013) Tooltip for categories expand collapse button ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2980](https://github.com/SAP/luigi/pull/2980) Add 'isDrawer' to luigi client api ([@ndricimrr](https://github.com/ndricimrr))
+* [#2941](https://github.com/SAP/luigi/pull/2941) Add external link option for IBN ([@ndricimrr](https://github.com/ndricimrr))
+* [#2932](https://github.com/SAP/luigi/pull/2932) Allow LuigiElement shadow mode configuration ([@ndricimrr](https://github.com/ndricimrr))
+* [#3072](https://github.com/SAP/luigi/pull/3072) History handling for modals ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#2984](https://github.com/SAP/luigi/pull/2984) Fix unsaved changes modal not closing after browser back  ([@ndricimrr](https://github.com/ndricimrr))
+* [#3039](https://github.com/SAP/luigi/pull/3039) Fix drawer overlap ([@hardl](https://github.com/hardl))
+* [#2953](https://github.com/SAP/luigi/pull/2953) Fix broken link ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#2901](https://github.com/SAP/luigi/pull/2901) Plus sign not decoded correctly when adding and then getting nodeParams ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2949](https://github.com/SAP/luigi/pull/2949) Add missing withOptions function typings ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
 ## [v1.25.1] (2022-10-04)
 #### :bug: Fixed
 * [#2838](https://github.com/SAP/luigi/pull/2915) Fix client-support-angular deps ([@hardl](https://github.com/hardl))
@@ -1450,3 +1476,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.24.0]: https://github.com/SAP/luigi/compare/v1.23.1...v1.24.0
 [v1.25.0]: https://github.com/SAP/luigi/compare/v1.24.0...v1.25.0
 [v1.25.1]: https://github.com/SAP/luigi/compare/v1.25.0...v1.25.1
+[v1.26.0]: https://github.com/SAP/luigi/compare/v1.25.1...v1.26.0

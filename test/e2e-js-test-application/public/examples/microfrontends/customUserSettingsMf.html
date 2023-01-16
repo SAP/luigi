@@ -6,8 +6,6 @@
       name="viewport"
       content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1"
     />
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' *; img-src https://*; child-src 'none';"> -->
-    <link rel="stylesheet" type="text/css" href="index.css" media="screen" />
     <style>
       .green {
         color: green;
@@ -77,6 +75,10 @@
           theme: 'yellow'
         });
       }
+
+      function goBackToModalMf() {
+        LuigiClient.linkManager().openAsModal('/home/modalMf');
+      }
     </script>
     <div>
       <ul class="btnList">
@@ -100,5 +102,6 @@
         <br /><br />
       </ul>
     </div>
+    <button id="backToModalMf" onclick="goBackToModalMf()">go back to modalMf</button>
   </body>
 </html>

@@ -659,6 +659,42 @@ class RoutingHelpersClass {
     }
     return localhash;
   }
+
+  /**
+   * Get an url without modal data. It's necessary on page refresh or loading Luigi with modal data in a new tab
+   * @param {String} searchParamsString url search parameter as string
+   * @param {String} modalParamName  modalPathParam value defined in Luigi routing settings
+   * @returns {String} url search parameter as string without modal data
+   */
+  getURLWithoutModalData(searchParamsString, modalParamName) {
+    let searchParams = new URLSearchParams(searchParamsString);
+    searchParams.delete(modalParamName);
+    searchParams.delete(`${modalParamName}Params`);
+    return searchParams.toString();
+  }
+
+  /**
+   * Extending history state object for calculation how much history entries the browser have to go back when modal will be closed.
+   * @param {Object} historyState history.state object.
+   * @param {Number} historyState.modalHistoryLength will be increased when modals will be openend successively like e.g. stepping through a wizard.
+   * @param {Number} historyState.historygap is the history.length at the time when the modal will be opened. It's needed for calculating how much we have to go back in the browser history when the modal will be closed.
+   * @param {String} historyState.pathBeforeHistory path before modal will be opened. It's needed for calculating how much we have to go back in the browser history when the modal will be closed.
+   * @param {boolean} hashRoutingActive true if hash routing is active, false if path routing is active
+   * @param {URL} url url object to read hash value or pathname
+   * @returns {Object} history state object
+   */
+  handleHistoryState(historyState, path) {
+    if (historyState && historyState.modalHistoryLength) {
+      historyState.modalHistoryLength += 1;
+    } else {
+      historyState = {
+        modalHistoryLength: 1,
+        historygap: history.length,
+        pathBeforeHistory: path
+      };
+    }
+    return historyState;
+  }
 }
 
 export const RoutingHelpers = new RoutingHelpersClass();

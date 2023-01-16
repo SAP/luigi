@@ -1158,7 +1158,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.26.0
 
 #### getCurrentTheme
 
