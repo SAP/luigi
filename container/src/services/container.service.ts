@@ -1,4 +1,4 @@
-import { MFEventID } from '../constants/communication';
+import { Events } from '../constants/communication';
 import { LuigiMessageID } from '../constants/internal-communication';
 
 export class ContainerService {
@@ -53,45 +53,45 @@ export class ContainerService {
             switch (msg) {
               case LuigiMessageID.CUSTOM_MESSAGE:
                 console.log('Test', targetCnt, event)
-                this.dispatch(MFEventID.CUSTOM_MESSAGE, targetCnt, event.data.data);
+                this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, event.data.data);
                 break;
               case LuigiMessageID.GET_CONTEXT:
-                target.postMessage({ msg: MFEventID.GET_CONTEXT, context: targetCnt.context || {}, internal: {} }, '*');
+                target.postMessage({ msg: Events.GET_CONTEXT, context: targetCnt.context || {}, internal: {} }, '*');
                 break;
               case LuigiMessageID.NAVIGATION_REQUEST:
-                this.dispatch(MFEventID.NAVIGATION_REQUEST, targetCnt, event.data.params);
+                this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
               case LuigiMessageID.ALERT_REQUEST:
-                this.dispatch(MFEventID.ALERT_REQUEST, targetCnt, event.data.params);
+                this.dispatch(Events.ALERT_REQUEST, targetCnt, event.data.params);
                 break;
               case LuigiMessageID.INITIALIZED:
-                this.dispatch(MFEventID.INITIALIZED, targetCnt, event.data.params);
+                this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
                 break;
 
 
               // what it is
               case LuigiMessageID.ADD_SEARCH_PARAMS_REQUEST:
-                this.dispatch(MFEventID.ADD_SEARCH_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
+                this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
 
               // what it is
               case LuigiMessageID.ADD_NODE_PARAMS_REQUEST:
-                this.dispatch(MFEventID.ADD_NODE_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
+                this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
 
               // what it is
               case LuigiMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
-                this.dispatch(MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
+                this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
                 break;
 
               // what it is
               case LuigiMessageID.SHOW_LOADING_INDICATOR_REQUEST:
-                this.dispatch(MFEventID.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
+                this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
 
               // what it is
               case LuigiMessageID.HIDE_LOADING_INDICATOR_REQUEST:
-                this.dispatch(MFEventID.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
+                this.dispatch(Events.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
 
               case 'luigi.third-party-cookie':
