@@ -39,4 +39,64 @@ export namespace LuigiMessageID {
      * A message emmitted from the Microfrontend when a request to hide the loading indicator is sent
      */
     export const HIDE_LOADING_INDICATOR_REQUEST = 'luigi.hide-loading-indicator';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to set the current locale is sent
+     */
+    export const SET_CURRENT_LOCALE_REQUEST = 'luigi.ux.set-current-locale';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to modify the local storage is sent
+     */
+    export const LOCAL_STORAGE_SET_REQUEST = 'storage';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to handle an error that happened during the runtime on the microfrontend is sent
+     */
+    export const RUNTIME_ERROR_HANDLING_REQUEST = 'luigi-runtime-error-handling';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to set the anchor of the URL is sent
+     */
+    export const SET_ANCHOR_LINK_REQUEST = 'luigi.setAnchor';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to set third party cookies is sent
+     */
+    export const SET_THIRD_PARTY_COOKIES_REQUEST = 'luigi.third-party-cookie';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to navigate back is sent
+     */
+    export const BACK_NAVIGATION_REQUEST = 'luigi.navigation.back';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to receive the current app route is sent
+     */
+    export const GET_CURRENT_ROUTE_REQUEST = 'luigi.navigation.currentRoute';
+
+    /**
+     * A message emmitted from the CORE ? MICROFRONTEND ?????????? when a request to report the issued token to client is sent
+     */
+    export const REPORT_TOKEN_ISSUED_REQUEST = 'luigi.auth.tokenIssued';
+
+    /**
+     * A message emmitted from the Microfrontend to report that the navigation is completed is sent
+     */
+    export const NAVIGATION_COMPLETED_REPORT = 'luigi.navigate.ok';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to update the modal path parameters is sent
+     */
+    export const UPDATE_MODAL_PATH_DATA_REQUEST = 'luigi.navigation.updateModalDataPath';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to check on the validity of a path is sent
+     */
+    export const CHECK_PATH_EXISTS_REQUEST = 'luigi.navigation.pathExists';
+
+    /**
+     * A message emmitted from the Microfrontend when a request to set the 'dirty status' (ex: avoid closing if usaved changes) is sent
+     */
+    export const SET_DIRTY_STATUS_REQUEST = 'luigi.set-page-dirty';
 }
