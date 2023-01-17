@@ -946,9 +946,7 @@
 
     //  only show the modal path in the URL when the first modal is opened.
     if (showModalPathInUrl && mfModalList.length === 1) {
-      const url = new URL(location.href);
-      history.pushState(window.state, '', url.href);
-      Routing.appendModalDataToUrl(nodepath, settings, url);
+      Routing.appendModalDataToUrl(nodepath, settings);
     }
   };
 
@@ -1920,8 +1918,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={(event) => modalIframeCreated(event, index)}
-        on:wcCreated={(event) => modalWCCreated(event, index)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}

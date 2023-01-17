@@ -16,9 +16,12 @@ const setLoggedIn = win => {
   win.localStorage.setItem(key, JSON.stringify(newLuigiAuth));
 };
 
-Cypress.Commands.add('vistTestAppPathRouting', (path = '/', config = defaultLuigiConfig) => {
-  cy.visit(`http://localhost:4500/`, {
+Cypress.Commands.add('vistTestAppPathRouting', (path = '', config = defaultLuigiConfig) => {
+  cy.visit(`http://localhost:4500${path}`, {
     onLoad: win => {
+      if (config.auth) {
+        config.auth.myOAuth2.idpProvider = win[config.auth.myOAuth2.idpProvider];
+      }
       win.Luigi.setConfig(config);
     }
   });

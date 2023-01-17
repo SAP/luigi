@@ -303,7 +303,7 @@ describe('Routing', function() {
         ]);
     });
     it('returns hash path from default param', () => {
-      window.location.hash = '#/projects/pr3';
+      sinon.stub(window, 'location').value({ hash: '#/projects/pr3' });
       const actual = Routing.getHashPath();
       const expected = 'projects/pr3';
       assert.equal(actual, expected);
@@ -352,7 +352,7 @@ describe('Routing', function() {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '/parent-node';
+      sinon.stub(window, 'location').value({ hash: '/parent-node' });
       const route = Routing.buildFromRelativePath(nodeWithParent);
 
       // then
@@ -365,7 +365,7 @@ describe('Routing', function() {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '/parent-node/a/b';
+      sinon.stub(window, 'location').value({ hash: '/parent-node/a/b' });
       const route = Routing.buildFromRelativePath(nodeWithLink);
 
       // then
@@ -378,7 +378,7 @@ describe('Routing', function() {
       LuigiConfig.getConfigValue.returns(true);
 
       // when
-      window.location.hash = '/parent-node/different-node';
+      sinon.stub(window, 'location').value({ hash: '/parent-node/different-node' });
       const route = Routing.buildFromRelativePath(nodeWithParent);
 
       // then
@@ -907,27 +907,27 @@ describe('Routing', function() {
     });
 
     it('from intent based link with params', () => {
-      window.location.hash = '#?intent=Sales-settings?param1=luigi&param2=mario';
+      sinon.stub(window, 'location').value({ hash: '#?intent=Sales-settings?param1=luigi&param2=mario' });
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings?~param1=luigi&~param2=mario');
     });
 
     it('from intent based link without params', () => {
-      window.location.hash = '#?intent=Sales-settings';
+      sinon.stub(window, 'location').value({ hash: '#?intent=Sales-settings' });
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings');
     });
 
     it('from intent based link with case insensitive pattern', () => {
-      window.location.hash = '#?inTeNT=Sales-settings';
+      sinon.stub(window, 'location').value({ hash: '#?inTeNT=Sales-settings' });
       assert.equal(Routing.getModifiedPathname(), '/projects/pr2/settings');
     });
 
     it('from faulty intent based link', () => {
-      window.location.hash = '#?intent=Sales-sett-ings';
+      sinon.stub(window, 'location').value({ hash: '#?intent=Sales-sett-ings' });
       assert.equal(Routing.getModifiedPathname(), '/');
     });
 
     it('from intent based link with illegal characters', () => {
-      window.location.hash = '#?intent=Sales-sett$ings';
+      sinon.stub(window, 'location').value({ hash: '#?intent=Sales-sett$ings' });
       assert.equal(Routing.getModifiedPathname(), '/');
     });
   });
@@ -1092,6 +1092,7 @@ describe('Routing', function() {
     });
   });
   describe('append and remove modal data from URL using path routing', () => {
+    const sb = sinon.createSandbox();
     let modalPath = encodeURIComponent('/project-modal');
     const modalParams = { hello: 'world' };
     const params = {
@@ -1132,15 +1133,22 @@ describe('Routing', function() {
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(false);
+      let historyState = {
+        modalHistoryLength: 1,
+        historygap: 1,
+        pathBeforeHistory: '/settings'
+      };
+
+      sinon.stub(RoutingHelpers, 'handleHistoryState').returns(historyState);
       try {
-        Routing.appendModalDataToUrl(modalPath, modalParams, mockURL);
+        Routing.appendModalDataToUrl(modalPath, modalParams);
       } catch (error) {
         console.log('error', error);
       }
       // then
       sinon.assert.calledWith(
         history.pushState,
-        window.state,
+        historyState,
         '',
         'http://some.url.de/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );
@@ -1237,6 +1245,7 @@ describe('Routing', function() {
     beforeEach(() => {
       locationSpy = jest.spyOn(window, 'location', 'get');
       history.replaceState = sinon.spy();
+      history.pushState = sinon.spy();
       sinon.stub(RoutingHelpers, 'getModalPathFromPath').returns(modalPath);
       sinon.stub(RoutingHelpers, 'getHashQueryParamSeparator').returns('?');
       sinon.stub(RoutingHelpers, 'getModalParamsFromPath').returns(modalParams);
@@ -1266,15 +1275,21 @@ describe('Routing', function() {
         .stub(LuigiConfig, 'getConfigBooleanValue')
         .withArgs('routing.useHashRouting')
         .returns(true);
+      let historyState = {
+        modalHistoryLength: 1,
+        historygap: 1,
+        pathBeforeHistory: '/settings'
+      };
+      sinon.stub(RoutingHelpers, 'handleHistoryState').returns(historyState);
       try {
-        Routing.appendModalDataToUrl(modalPath, modalParams, mockURL);
+        Routing.appendModalDataToUrl(modalPath, modalParams);
       } catch (error) {
         console.log('error', error);
       }
       // then
       sinon.assert.calledWith(
         history.pushState,
-        window.state,
+        historyState,
         '',
         'http://some.url.de/#/settings?~luigi=mario&mySpecialModal=%252Fproject-modal&mySpecialModalParams=%7B%22hello%22%3A%22world%22%7D'
       );

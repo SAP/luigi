@@ -353,6 +353,11 @@ class RoutingClass {
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
 
+    if (window.Luigi.preventLoadingModalData) {
+      window.Luigi.preventLoadingModalData = false;
+      return;
+    }
+
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
@@ -672,22 +677,38 @@ class RoutingClass {
    * Append modal data to url
    * @param {string} modalPath path of the view which is displayed in the modal
    * @param {Object} modalParams query parameter
-   * @param {URL} urlObj URL object
    */
-  appendModalDataToUrl(modalPath, modalParams, urlObj) {
+  appendModalDataToUrl(modalPath, modalParams) {
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
-
     const prevModalPath = params[modalParamName];
+    const url = new URL(location.href);
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    let historyState = history.state;
+    let pathWithoutModalData;
+    let urlWithoutModalData;
+    if (hashRoutingActive) {
+      let [path, searchParams] = url.hash.split('?');
+      pathWithoutModalData = path;
+      urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(searchParams, modalParamName);
+      if (urlWithoutModalData) {
+        pathWithoutModalData += '?' + urlWithoutModalData;
+      }
+    } else {
+      pathWithoutModalData = url.pathname;
+      urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(url.search, modalParamName);
+      if (urlWithoutModalData) {
+        pathWithoutModalData += '?' + RoutingHelpers.getURLWithoutModalData(url.search, modalParamName);
+      }
+    }
+    historyState = RoutingHelpers.handleHistoryState(historyState, pathWithoutModalData);
     if (prevModalPath !== modalPath) {
       params[modalParamName] = modalPath;
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = urlObj;
-      const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
         if (queryParamIndex !== -1) {
@@ -697,10 +718,20 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
-      if (!sessionStorage.getItem('historyState')) {
-        sessionStorage.setItem('historyState', history.length);
+      history.pushState(historyState, '', url.href);
+    } else {
+      const cleanUrl = new URL(url);
+      if (hashRoutingActive) {
+        let path = cleanUrl.hash.split('?')[0];
+        cleanUrl.hash = path;
+        if (urlWithoutModalData) {
+          cleanUrl.hash += '?' + urlWithoutModalData;
+        }
+      } else {
+        cleanUrl.search = urlWithoutModalData;
       }
-      history.pushState(window.state, '', url.href);
+      history.replaceState({}, '', cleanUrl.href);
+      history.pushState(historyState, '', url.href);
     }
   }
 
@@ -713,7 +744,6 @@ class RoutingClass {
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
-    const historyState = Number(sessionStorage.getItem('historyState'));
     if (hashRoutingActive) {
       let modalParamsObj = {};
       if (params[modalParamName]) {
@@ -738,20 +768,47 @@ class RoutingClass {
       });
       url.search = finalUrl;
     }
-    // only if close modal [X] is pressed
-    if (historyState && isClosedInternal) {
+    // only if close modal [X] is pressed or closed via api
+    if (history.state && history.state.modalHistoryLength >= 0 && isClosedInternal) {
+      const modalHistoryLength = history.state.modalHistoryLength;
+      const path = history.state.pathBeforeHistory;
+      let isModalHistoryHigherThanHistoryLength = false;
       window.addEventListener(
         'popstate',
         e => {
-          history.pushState(window.state, '', url.href);
-          history.back();
+          if (isModalHistoryHigherThanHistoryLength) {
+            //replace the url with saved path and get rid of modal data in url
+            history.replaceState({}, '', path);
+            //reset history.length
+            history.pushState({}, '', path);
+            //apply history back is working
+            history.back();
+          } else {
+            history.pushState({}, '', path);
+            history.back();
+          }
         },
         { once: true }
       );
-      history.go(historyState - history.length);
+
+      if (history.state.historygap === history.length - history.state.modalHistoryLength) {
+        history.go(-history.state.modalHistoryLength);
+      } else {
+        if (history.state.modalHistoryLength > history.length) {
+          const historyMaxBack = history.length - 1;
+          isModalHistoryHigherThanHistoryLength = true;
+          history.go(-historyMaxBack);
+          //flag to prevent to run handleRouteChange when url has modalData in path
+          //otherwise modal will be opened again
+          window.Luigi.preventLoadingModalData = true;
+        } else {
+          const modalHistoryLength = history.state.modalHistoryLength;
+          history.go(-modalHistoryLength);
+        }
+      }
+    } else {
+      history.pushState({}, '', url.href);
     }
-    history.pushState(window.state, '', url.href);
-    sessionStorage.removeItem('historyState');
   }
 }
 

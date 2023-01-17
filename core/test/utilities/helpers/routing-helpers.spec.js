@@ -987,4 +987,20 @@ describe('Routing-helpers', () => {
       assert.equal(searchParams.toString(), '%7Emario=rocks&%7Etest=tets&%7Eluigi=rocks');
     });
   });
+
+  describe('getURLWithoutModalData', () => {
+    const modalParamName = 'mymodal';
+    it('getURLWithoutModalData with additional search params', () => {
+      let searchParamsString =
+        '~test=tets&foo=bar&mymodal=%2Fsettings%2FhistoryMf&mymodalParams=%7B%22size%22%3A%22m%22%2C%22title%22%3A%22furz%22%7D';
+      let urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(searchParamsString, modalParamName);
+      assert.equal(urlWithoutModalData, '%7Etest=tets&foo=bar');
+    });
+    it('getURLWithoutModalData with additional search params', () => {
+      let searchParamsString =
+        'mymodal=%2Fsettings%2FhistoryMf&mymodalParams=%7B%22size%22%3A%22m%22%2C%22title%22%3A%22furz%22%7D';
+      let urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(searchParamsString, modalParamName);
+      assert.equal(urlWithoutModalData, '');
+    });
+  });
 });
