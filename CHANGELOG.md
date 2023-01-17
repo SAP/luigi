@@ -50,7 +50,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 
 
-
 ## [v1.25.1] (2022-10-04)
 #### :bug: Fixed
 * [#2838](https://github.com/SAP/luigi/pull/2915) Fix client-support-angular deps ([@hardl](https://github.com/hardl))
