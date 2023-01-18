@@ -95,7 +95,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **attributes**:
   - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
   - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
-- **since**: NEXTRELEASE
+- **since**: 1.26.0
 - **example**:
 ```javascript
 config.navigation.defaults = {
@@ -647,6 +647,22 @@ runTimeErrorHandler: {
 - **example**:
 ```javascript
 tooltipText: 'Useful links'
+```
+
+### userSettingsGroup
+- - **type**: string
+- **description**: sets the user settings group for this navigation node. It is the title of a predefined user settings group belonging to a `userSettingGroups` object. For more information, read the section on [user settings](user-settings.md).
+- **example**:
+```javascript
+{
+    category: { label: 'Settings', icon: 'action-settings' },
+    pathSegment: 'user_settings',
+    label: 'User Settings',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings',
+    userSettingsGroup: 'userAccount',
+    testId: 'myTestId',
+  }
 ```
 
 ### viewGroup

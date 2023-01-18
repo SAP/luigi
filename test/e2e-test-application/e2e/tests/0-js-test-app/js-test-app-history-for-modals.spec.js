@@ -89,25 +89,33 @@ describe('JS-TEST-APP', () => {
         newConfig.navigation.nodes[0].children.push({
           pathSegment: 'modalMf',
           label: 'Modal MF',
+          loadingIndicator: { enabled: false },
           viewUrl: '/examples/microfrontends/multipurpose.html',
           openNodeInModal: true
         });
       });
       it('Path routing, open modal and close via [X]', () => {
-        cy.visitTestApp('/home', newConfig);
+        cy.vistTestAppPathRouting('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         openModal();
         closeModal();
         expectedPathAfterForward('/home');
         expectedPathAfterBack('/home');
       });
+      it('Path routing, visit luigi with modal data', () => {
+        cy.vistTestAppPathRouting('?modal=' + encodeURIComponent('/home/modalMf'), newConfig);
+        cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
+        closeModal();
+        expectedPathAfterForward('/home');
+        expectedPathAfterBack('/home');
+      });
       it('Path routing, navigate few times and than open modal and close via [X]', () => {
-        cy.visitTestApp('/home', newConfig);
+        cy.vistTestAppPathRouting('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         clickingAroundInNavigation();
         openModal();
         closeModal();
-        expectedPathAfterBack('/home');
+        expectedPathAfterBack('/home/two');
         expectedPathAfterForward('/home');
       });
       it('Path routing, open modal, navigate through a wizard and close the modal via [x]', () => {
@@ -116,16 +124,15 @@ describe('JS-TEST-APP', () => {
           label: 'Usersettings MF',
           viewUrl: '/examples/microfrontends/customUserSettingsMf.html'
         });
-        cy.visitTestApp('/home', newConfig);
+        cy.vistTestAppPathRouting('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         openModal();
         simulateWizardNavigation();
         closeModal();
-        expectedPathAfterForward('/home');
-        expectedPathAfterBack('/home');
+        expectedPathAfterBack('blank');
       });
       it('Path routing, open modal and close via browswer back', () => {
-        cy.visitTestApp('/home', newConfig);
+        cy.vistTestAppPathRouting('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         openModal();
         cy.go('back');
@@ -138,7 +145,7 @@ describe('JS-TEST-APP', () => {
         cy.go('back');
       });
       it('Path routing, navigate few times and than open modal and close via browser back', () => {
-        cy.visitTestApp('/home', newConfig);
+        cy.vistTestAppPathRouting('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         clickingAroundInNavigation();
         openModal();
@@ -154,7 +161,7 @@ describe('JS-TEST-APP', () => {
           label: 'Usersettings MF',
           viewUrl: '/examples/microfrontends/customUserSettingsMf.html'
         });
-        cy.visitTestApp('/home', newConfig);
+        cy.vistTestAppPathRouting('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         openModal();
         simulateWizardNavigation();
@@ -165,7 +172,7 @@ describe('JS-TEST-APP', () => {
         cy.expectPathToBe('/home');
       });
       it('Path routing, open and close and open and close the modal', () => {
-        cy.visitTestApp('/home', newConfig);
+        cy.vistTestAppPathRouting('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         openModal();
         closeModal();
@@ -196,13 +203,27 @@ describe('JS-TEST-APP', () => {
         expectedPathAfterForward('/home');
         expectedPathAfterBack('/home');
       });
+      it('Hash routing, visit luigi with modal data', () => {
+        cy.visitTestApp('/home?modal=' + encodeURIComponent('/home/modalMf'), newConfig);
+        cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
+        closeModal();
+        expectedPathAfterForward('/home');
+        expectedPathAfterBack('/home');
+      });
+      it('Hash routing, visit luigi with modal data and search params', () => {
+        cy.visitTestApp('/home?~test=tets&modal=' + encodeURIComponent('/home/modalMf'), newConfig);
+        cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
+        closeModal();
+        expectedPathAfterForward('/home?%7Etest=tets');
+        expectedPathAfterBack('/home?%7Etest=tets');
+      });
       it('Hash routing, navigate few times and than open modal and close via [X]', () => {
         cy.visitTestApp('/home', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
         clickingAroundInNavigation();
         openModal(true);
         closeModal();
-        expectedPathAfterBack('/home');
+        expectedPathAfterBack('/home/two');
         expectedPathAfterForward('/home');
       });
       it('Hash routing, open modal, navigate through a wizard and close the modal via [x]', () => {
@@ -235,9 +256,9 @@ describe('JS-TEST-APP', () => {
         openModal(true);
         closeModal();
         cy.go('forward');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
         cy.go('back');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
       });
       it('Hash routing, open modal, navigate through a wizard and close the modal via browser back', () => {
         newConfig.navigation.nodes[0].children.push({
@@ -251,9 +272,9 @@ describe('JS-TEST-APP', () => {
         simulateWizardNavigation(true);
         closeModal();
         cy.go('forward');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
         cy.go('back');
-        cy.expectPathToBe('/');
+        cy.expectPathToBe('/home');
       });
     });
   });
