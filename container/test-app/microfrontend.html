@@ -46,6 +46,8 @@
     <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
     <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
     <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
+    <button onclick="testShowAlert()">test show alert</button>
+    <button onclick="testGetContext()">Get Context</button>
 
   </div>
   <script>
@@ -87,8 +89,20 @@
       LuigiClient.uxManager().hideLoadingIndicator();
     }
 
+    function testShowAlert() {
+      const settings = {
+        text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+        type: 'info'
+      };
+      LuigiClient.uxManager().showAlert(settings);
+    }
+
+    function testGetContext() {
+      console.log('getContext() called', LuigiClient.getContext());
+    }
 
     function updateFn(context) {
+      console.log('context updated', context)
       if (context.title) {
         document.getElementById('title').innerHTML = context.title;
       }

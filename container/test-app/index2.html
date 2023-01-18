@@ -62,6 +62,19 @@
       alert('Custom message recieved: ' + JSON.stringify(event.detail));
     });
 
+    luigiCnt2.addEventListener(Events.ALERT_REQUEST, event => {
+      alert('luigi.ux.alert.show message recieved: ' + JSON.stringify(event.detail));
+    });
+
+    luigiCnt2.addEventListener(Events.GET_CONTEXT_REQUEST, event => {
+      const dataToSend = {
+        someDataToSend: 'The year is 2023'
+      }
+      console.log('Data being sent from Core -> MF', dataToSend)
+      event.sendContextToMicrofrontend(dataToSend);
+    });
+
+    // luigiCnt2.sendContextToMicrofrontend();
 
     luigiCnt2.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, event => {
       console.log(event.detail);

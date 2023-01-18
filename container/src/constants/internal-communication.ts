@@ -8,6 +8,15 @@ export namespace LuigiMessageID {
      */
     export const GET_CONTEXT = 'luigi.get-context';
     /**
+     * A message sent to the microfrontend from parent with the context upon init 
+     */
+    export const SEND_CONTEXT = 'luigi.init';
+
+    /** 
+     * A message sent from the Microfrontend when the context data has been received properly
+     */
+    export const CONTEXT_RECEIVED = 'luigi.init.OK';
+    /**
      * A message emmitted from the Microfrontend when a navigation request is sent
      */
     export const NAVIGATION_REQUEST = 'luigi.navigation.open';
