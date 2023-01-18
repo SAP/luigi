@@ -310,7 +310,7 @@
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation={() => {}}>
     <button
-      class="fd-button fd-shellbar__button"
+      class="fd-button fd-button--transparent fd-shellbar__button"
       aria-haspopup="true"
       aria-expanded={!isSearchFieldVisible}
       on:click={toggleSearch}

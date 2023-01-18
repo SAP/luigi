@@ -295,7 +295,7 @@
             {#if displayClearSearchFieldBtn}
               <button
                 aria-label="button-decline"
-                class="fd-shellbar__button fd-button"
+                class="fd-shellbar__button fd-button fd-button--transparent"
                 on:click={clearSearchField}
               >
                 <i class="sap-icon--decline" />
@@ -303,7 +303,7 @@
             {/if}
             <button
               aria-label="button-search"
-              class="fd-shellbar__button fd-button"
+              class="fd-shellbar__button fd-button fd-button--transparent"
               on:click={searchBtnClicked}
             >
               <i class="sap-icon--search" />
@@ -367,7 +367,7 @@
   <div class="lui-global-search-btn">
     <div on:click|stopPropagation={() => {}}>
       <button
-        class="fd-button fd-shellbar__button"
+        class="fd-button fd-button--transparent fd-shellbar__button"
         aria-haspopup="true"
         aria-expanded={!isSearchFieldVisible}
         on:click={toggleSearch}
@@ -385,7 +385,7 @@
       : ''}"
   >
     <button
-      class="fd-button fd-shellbar__button"
+      class="fd-button fd-button--transparent fd-shellbar__button"
       aria-haspopup="true"
       aria-expanded={!isSearchFieldVisible}
       on:click|stopPropagation={() => toggleSearch()}
