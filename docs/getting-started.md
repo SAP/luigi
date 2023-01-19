@@ -43,7 +43,7 @@ Some benefits of a micro frontend architecture include:
 
 ### Main features
 
-<img src="https://github.com/SAP/luigi/blob/master/docs/assets/luigi-overview-diagram.jpg?raw=true" width="600"/>
+<img src="https://github.com/SAP/luigi/blob/master/docs/assets/luigi-overview-diagram.jpg?raw=true" alt="Graphic showing main Luigi components" width="600"/>
 
 Luigi consists of two main parts:
 
