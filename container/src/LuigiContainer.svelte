@@ -65,18 +65,37 @@
     deferInit = false;
   };
 
+  thisComponent.addAlertListener = (domManipulationFn, data) => {
+    thisComponent.addEventListener('show-alert-request', (event) => {
+      console.log('alert data, event', data, event);
+
+      const button = domManipulationFn();
+      console.log('return val', button);
+      button.addEventListener('click', () => {
+        console.log('Dismiss clicked inside');
+        // event.sendAnswerToMF(true/false)
+      });
+    });
+  };
+
   thisComponent.sendCustomMessage = (id: string, data?: any) => {
     if (isWebComponent() && (mainComponent as any)._luigi_mfe_webcomponent) {
-      containerService.dispatch(id, (mainComponent as any)._luigi_mfe_webcomponent, data);
+      containerService.dispatch(
+        id,
+        (mainComponent as any)._luigi_mfe_webcomponent,
+        data
+      );
     } else {
-      const msg = {...data};
+      const msg = { ...data };
       if (msg.id) {
-        console.warn('Property "id" is reserved and can not be used in custom message data');
+        console.warn(
+          'Property "id" is reserved and can not be used in custom message data'
+        );
       }
       msg.id = id;
       containerService.sendCustomMessageToIframe(iframeHandle, msg);
     }
-  }
+  };
 
   containerService.registerContainer(thisComponent);
 

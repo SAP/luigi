@@ -62,10 +62,37 @@
       alert('Custom message recieved: ' + JSON.stringify(event.detail));
     });
 
-    luigiCnt2.addEventListener(Events.ALERT_REQUEST, event => {
-      alert('luigi.ux.alert.show message recieved: ' + JSON.stringify(event.detail));
-    });
+    // luigiCnt2.addEventListener(Events.ALERT_REQUEST, event => {
+    //   console.log('luigi.ux.alert.show message recieved: ' + JSON.stringify(event.detail));
+    //   // some code to manipulate DOM to add some alert box at the top
+    //   // >>>>> Code here <<<<<
 
+    //   // tell the Client that alert was shown. 
+    //   event.alertShown();
+    // });
+
+    const showAnAlert = () => {
+      var popup = document.createElement("div");
+      var text = document.createTextNode("blah blah blah");
+      popup.appendChild(text);
+
+      var dismissButton = document.createElement('BUTTON');
+      var buttonText = document.createTextNode("Close Alert");
+      dismissButton.addEventListener('click', () => {
+        console.log('Dismiss clicked outside');
+      })
+      dismissButton.appendChild(buttonText);
+      popup.appendChild(dismissButton);
+
+      popup.style.visibility = "visible";
+      popup.id = "pop";
+      document.getElementsByTagName("body")[0].appendChild(popup);
+      return dismissButton;
+    }
+
+    luigiCnt2.addAlertListener(showAnAlert, { data: 'some stuff' });
+
+    // TODO: initial
     luigiCnt2.addEventListener(Events.GET_CONTEXT_REQUEST, event => {
       const dataToSend = {
         someDataToSend: 'The year is 2023'
@@ -74,10 +101,23 @@
       event.sendContextToMicrofrontend(dataToSend);
     });
 
+    // TODO: initial
+    // updateContext case
+    luigiCnt2.updateContext({ someData: '' });
+
+
+    // addEventListener(Events.GET_CONTEXT_REQUEST, event => {
+    //   const dataToSend = {
+    //     someDataToSend: 'The year is 2023'
+    //   }
+    //   console.log('Data being sent from Core -> MF', dataToSend)
+    //   event.sendContextToMicrofrontend(dataToSend);
+    // });
+
     // luigiCnt2.sendContextToMicrofrontend();
 
     luigiCnt2.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, event => {
-      console.log(event.detail);
+      console.log(event);
       alert('add-search-params-request message recieved: ' + JSON.stringify(event.detail));
     });
 
