@@ -60,10 +60,10 @@
   });
 
   function getCustomRenderer() {
-    isCustomSearchRenderer = GenericHelpers.isFunction(
+    isCustomSearchRenderer = search.searchProvider && GenericHelpers.isFunction(
       search.searchProvider.customSearchResultRenderer
     );
-    isCustomSearchResultItemRenderer = GenericHelpers.isFunction(
+    isCustomSearchResultItemRenderer = search.searchProvider && GenericHelpers.isFunction(
       search.searchProvider.customSearchResultItemRenderer
     );
   }
@@ -265,7 +265,7 @@
 >
   <div class="fd-popover">
     <div
-      class="fd-popover__control luigi-search"
+      class="fd-popover__control luigi-search fd-shellbar__group"
       on:click|stopPropagation={() => {}}
       aria-hidden={!isSearchFieldVisible}
       aria-haspopup="true"
@@ -276,7 +276,7 @@
         {#if search && search.disableInputHandlers}
           <input
             type="text"
-            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input__no-handlers"
           />
         {:else}
@@ -284,7 +284,7 @@
             type="text"
             on:keyup={event => onKeyUp(event)}
             class="fd-input
-        fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+        fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input"
             bind:this={inputElem}
             on:input={() => renderClearBtn()}
@@ -298,7 +298,7 @@
                 class="fd-shellbar__button fd-button fd-button--transparent"
                 on:click={clearSearchField}
               >
-                <i class="sap-icon--decline" />
+                <i class="sap-icon--decline lui-clear-search" />
               </button>
             {/if}
             <button
@@ -414,6 +414,7 @@
     .fd-button,
     .luigi-search__input {
       height: 2rem;
+      min-height: 2rem;
     }
 
     .fd-input-group__addon,
@@ -433,6 +434,11 @@
 
   .luigi-search__input:hover + .fd-input-group__addon--button {
     background-color: var(--sapShell_Hover_Background, #283848) !important;
+  }
+
+  .lui-clear-search {
+    top: -1px;
+    position: relative;
   }
 
   :global(.lui-global-search) {
