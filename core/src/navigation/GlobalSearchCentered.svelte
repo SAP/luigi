@@ -491,14 +491,14 @@
     display: inline-block;
   }
 
-  div.luigi-search-input-ctn:focus-within {
+  .lui-global-search-input .fd-shellbar__group div.luigi-search-input-ctn:focus-within {
     -webkit-box-shadow: none;
     box-shadow: none;
     outline-offset: -0.1875rem;
     outline-width: 0.0625rem;
     outline-width: var(--sapContent_FocusWidth, 0.0625rem);
     outline-color: #fff;
-    outline-color: var(--sapContent_ContrastFocusColor, #fff);
+    outline-color: var(--fdShellbar_Button_Outline_Color, #fff);
     outline-style: dotted;
     outline-style: var(--sapContent_FocusStyle, dotted);
   }

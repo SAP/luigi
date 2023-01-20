@@ -2297,6 +2297,7 @@
     padding: 0 0.625rem;
     text-decoration: none;
     max-width: var(--luigi__app-title--width);
+    overflow: visible;
   }
 
   :global(.lui-app-switch) {

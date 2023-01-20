@@ -820,6 +820,7 @@
 
   .fd-shellbar {
     height: $topNavHeight;
+    box-shadow: var(--sapContent_HeaderShadow);
   }
 
   .hideNavComponent {
