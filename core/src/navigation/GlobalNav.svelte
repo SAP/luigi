@@ -290,6 +290,12 @@
     /*disable default red/purple outline*/
     .fd-nested-list__item a {
       text-decoration: none;
+      display: block;
+      height: 100%;
+      &:focus {
+        outline: var(--sapContent_FocusWidth) var(--sapContent_FocusStyle) var(--fdShellbar_Button_Outline_Color);
+        outline-offset: var(--fdButton_Outline_Offset);
+      }
     }
   }
 </style>

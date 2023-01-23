@@ -242,7 +242,7 @@
           {#if addNavHrefForAnchor && selectedOption !== config.defaultLabel}
             <a
               href={selectedNodePath}
-              class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
+              class="fd-button fd-button--transparent fd-shellbar__button fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
               aria-expanded={dropDownStates.contextSwitcherPopover || false}
               aria-haspopup="true"
               title={selectedLabel ? selectedLabel : config.defaultLabel}
@@ -265,7 +265,7 @@
             </a>
           {:else}
             <button
-              class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
+              class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button fd-shellbar__button--menu lui-ctx-switch-menu"
               aria-expanded={dropDownStates.contextSwitcherPopover || false}
               aria-haspopup="true"
               title={selectedLabel ? selectedLabel : config.defaultLabel}
