@@ -303,7 +303,7 @@
             {/if}
             <button
               aria-label="button-search"
-              class="fd-shellbar__button fd-button fd-button--transparent"
+              class="fd-shellbar__button fd-button fd-button--transparent lui-search-btn"
               on:click={searchBtnClicked}
             >
               <i class="sap-icon--search" />
@@ -489,6 +489,10 @@
 
   .fd-input-group__addon--button {
     display: inline-block;
+  }
+
+  div.luigi-search-input-ctn .lui-search-btn {
+    border-radius: var(--fdShellbar_Input_Border_Radius);
   }
 
   .lui-global-search-input .fd-shellbar__group div.luigi-search-input-ctn:focus-within {
