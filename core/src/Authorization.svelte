@@ -374,7 +374,7 @@
   }
 
   /*Fix a long list popover body*/
-  .lui-user-menu-fiori {
+  .fd-user-menu__body.lui-user-menu-fiori {
     max-height: calc(100vh - 90px);
     overflow-y: auto;
     padding-left: 0.5rem;
