@@ -821,6 +821,10 @@
   .fd-shellbar {
     height: $topNavHeight;
     box-shadow: var(--sapContent_HeaderShadow);
+
+    .fd-avatar.is-focus:after,.fd-avatar:focus:after {
+      border-color:var(--fdShellbar_Button_Outline_Color);
+    }
   }
 
   .hideNavComponent {
