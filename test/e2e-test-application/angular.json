@@ -42,6 +42,11 @@
                 "glob": "luigi-client*.js",
                 "input": "node_modules/@luigi-project/client",
                 "output": "/luigi-client"
+              },
+              {
+                "glob": "**",
+                "input": "node_modules/@luigi-project/client-support-angular",
+                "output": "/client-support-angular"
               }
             ],
             "styles": [
