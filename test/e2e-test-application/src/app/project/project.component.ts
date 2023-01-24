@@ -1,18 +1,18 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { merge, Observable, Subscription, timer } from 'rxjs';
+import { Subscription } from 'rxjs';
 import {
   linkManager,
   uxManager,
   getClientPermissions,
-  addContextUpdateListener,
   removeContextUpdateListener,
   storageManager
 } from '@luigi-project/client';
-import { IContextMessage, LuigiContextService } from '../services/luigi-context.service';
+
+import { LuigiContextService } from '@luigi-project/client-support-angular';
 import { NgForm } from '@angular/forms';
 import { fromPromise } from 'rxjs/internal-compatibility';
-import { delay, timeout } from 'rxjs/operators';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-project',
@@ -45,7 +45,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public constructor(
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private luigiService: LuigiContextService
+    private luigiContextService: LuigiContextService
   ) {
     this.pathExists = {
       formValue: '/projects/pr2',
@@ -84,42 +84,23 @@ export class ProjectComponent implements OnInit, OnDestroy {
     linkManager().navigate(path);
   }
 
-  public ngOnInit() {
-    // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
-    // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
-    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
-      if (ctx.contextType === 'init' || ctx.contextType === 'update') {
-        this.projectId = ctx.context.currentProject;
-        this.preservedViewCallbackContext = ctx.context.goBackContext;
-        this.currentLocale = uxManager().getCurrentLocale();
-        this.canChangeLocale = getClientPermissions().changeCurrentLocale;
-        // Since Luigi runs outside of Zone.js, changes need
-        // to be updated manually
-        // Be sure to check for destroyed ChangeDetectorRef,
-        // else you get runtime Errors
-        if (!this.cdr['destroyed']) {
-          this.cdr.detectChanges();
-        }
-      }
-    });
-
-    this.activatedRoute.params.subscribe((params: Params) => {
-      this.projectId = params['projectId'];
-    });
-
-    // Decentralized approach, using LuigiClient listeners directly
-    //
-    this.cudListener = addContextUpdateListener(updatedContext => {
-      // this.projectId = updatedContext.currentProject;
-      // this.preservedViewCallbackContext = updatedContext.goBackContext;
+  public ngOnInit(): void {
+    this.luigiContextService.contextObservable().subscribe(async ctx => {
+      this.projectId = ctx.context.currentProject;
+      this.preservedViewCallbackContext = ctx.context.goBackContext;
       this.currentLocale = uxManager().getCurrentLocale();
       this.canChangeLocale = getClientPermissions().changeCurrentLocale;
-      console.log('context updated', this.currentLocale, updatedContext);
+      // Since Luigi runs outside of Zone.js, changes need
+      // to be updated manually
       // Be sure to check for destroyed ChangeDetectorRef,
       // else you get runtime Errors
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }
+    });
+
+    this.activatedRoute.params.subscribe((params: Params) => {
+      this.projectId = params['projectId'];
     });
   }
 

@@ -166,7 +166,11 @@ class Navigation {
       hideSideNav: true,
       viewGroup: 'tets'
     },
-
+    {
+      pathSegment: 'app-settings',
+      label: 'App Settings',
+      viewUrl: '/sampleapp.html#/application-settings'
+    },
     {
       category: { label: 'Misc', icon: 'badge' },
       label: 'Open Google in this tab',

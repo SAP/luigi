@@ -19,12 +19,13 @@ import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
 import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
-import { PreloadComponent } from './preload/preload.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
 import { ViewGroupComponent } from './project/view-group/view-group.component';
+import { LuigiPreloadComponent } from '@luigi-project/client-support-angular';
+import { ApplicationSettingsComponent } from './application-settings/application-settings.component';
 
 const routes: Routes = [
-  { path: 'preload', component: PreloadComponent },
+  { path: 'preload', component: LuigiPreloadComponent },
   { path: 'overview', component: OverviewComponent },
   { path: 'projects', component: ProjectComponent },
   { path: 'settings', component: SettingsComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'on-node-activation/:usecaseId', component: AnonymousComponent },
   { path: 'projects/:projectId', component: ProjectComponent },
   { path: 'projects/:projectId/users', component: UsersComponent },
+  { path: 'application-settings', component: ApplicationSettingsComponent },
   {
     path: 'projects/:projectId/users/usersoverview',
     component: UsersoverviewComponent

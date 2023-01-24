@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { PreloadComponent } from './preload/preload.component';
 import { ProjectComponent } from './project/project.component';
 import { UsersComponent } from './project/users/users.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,11 +30,12 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
 import { ViewGroupComponent } from './project/view-group/view-group.component';
+import { LuigiAngularSupportModule } from '@luigi-project/client-support-angular';
+import { ApplicationSettingsComponent } from './application-settings/application-settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PreloadComponent,
     ProjectComponent,
     UsersComponent,
     SettingsComponent,
@@ -59,9 +59,10 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
     AnonymousComponent,
     OnNodeActivationComponent,
     NavSyncComponent,
-    ViewGroupComponent
+    ViewGroupComponent,
+    ApplicationSettingsComponent
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, LuigiAngularSupportModule],
   providers: [LuigiContextService, LuigiAutoNavigationService],
   bootstrap: [AppComponent]
 })
