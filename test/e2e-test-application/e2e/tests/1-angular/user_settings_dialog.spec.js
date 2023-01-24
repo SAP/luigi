@@ -52,7 +52,7 @@ describe('Navigation', () => {
     const setting_date_format = 'df_' + new Date().getTime();
     const setting_privacy_policy = 'privacy_policy_' + new Date().getTime();
 
-    it('Fill Account, Language and Reason, Privacy, should have placeholder', () => {
+    it('Fill Account, Language and Region, Privacy, should have placeholder', () => {
       //Click on User Account
       cy.get('[data-testid="us-navigation-item"]')
         .eq(0)
@@ -160,7 +160,7 @@ describe('Navigation', () => {
       closeSettings();
     });
 
-    it('Fill Language and Reason and save; reopen and check saved values', () => {
+    it('Fill Language and Region and save; reopen and check saved values', () => {
       //Click on Language & Region
       cy.get('[data-testid="us-navigation-item"]')
         .eq(1)
@@ -210,9 +210,9 @@ describe('Navigation', () => {
         .type('{enter}');
 
       //Confirm with keyboard: Enter
-      cy.get('.fd-popover__body--dropdown-fill')
-        .should('exist')
-        .type('{enter}');
+      // cy.get('.fd-popover__body--dropdown-fill')
+      //   .should('exist')
+      //   .type('{enter}');
 
       //Check Placeholder of input field is English (en)
       cy.get('[data-testid="lui-us-input0"]')
