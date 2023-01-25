@@ -73,7 +73,7 @@ jobs:
         # Due to open bug at lerna, https://github.com/lerna/lerna/issues/2352
         # Link e2e-test-application manually:
         - rm -rf $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/*
-        - ln -s $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/dist $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client-support-angular
+        - ln -s $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/dist/client-support-angular $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client-support-angular
         - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/core
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client
         # Link client-support-angular manually
