@@ -220,6 +220,11 @@ describe('Navigation', () => {
         .type('{downArrow}')
         .type('{enter}');
 
+      //Confirm with keyboard: Enter
+      cy.get('.fd-popover__body--dropdown-fill')
+        .should('exist')
+        .type('{enter}');
+
       //Check Date Formant Input field and type a new format
       cy.get('[data-testid="lui-us-input1"]')
         .should('exist')
