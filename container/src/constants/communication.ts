@@ -78,11 +78,6 @@ export namespace Events {
     export const GET_CURRENT_ROUTE_REQUEST = 'get-current-route-request';
 
     /**
-     * A message emmitted from the CORE ? MICROFRONTEND ?????????? when a request to report the issued token to client is sent
-     */
-    export const REPORT_TOKEN_ISSUED_REQUEST = 'report-token-issued-request';
-
-    /**
      * A message emmitted from the Microfrontend to report that the navigation is completed is sent
      */
     export const NAVIGATION_COMPLETED_REPORT = 'report-navigation-completed-request';
