@@ -15,7 +15,7 @@ export namespace LuigiMessageID {
     /** 
      * A message sent from the Microfrontend when the context data has been received properly
      */
-    export const CONTEXT_RECEIVED = 'luigi.init.OK';
+    export const CONTEXT_RECEIVED = 'luigi.init.ok';
     /**
      * A message emmitted from the Microfrontend when a navigation request is sent
      */

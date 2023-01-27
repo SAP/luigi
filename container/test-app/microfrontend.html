@@ -46,14 +46,28 @@
     <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
     <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
     <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
-    <button onclick="testShowAlert()">test show alert</button>
-    <button onclick="testGetContext()">Get Context</button>
+    <!-- TODO: Re-add when finishing implementation -->
+    <!-- <button onclick="testShowAlert()">test show alert</button>
+    <button onclick="testGetContext()">Get Context</button> -->
+    <button onclick="testSetCurrentLocale()">test set current locale</button>
+    <button onclick="testSetLocalStorage()">test set local storage</button>
+    <button onclick="testRuntimeErrorRequest()">test runtime error handling request</button>
+    <button onclick="testSetAnchorLink()">test set anchor link </button>
+    <button onclick="testSetThirdPartyCookies()">test set third party cookies</button>
+    <button onclick="testBackNavigation()">test back navigation</button>
+    <button onclick="testGetCurrentRoute()">test get current route</button>
+    <button onclick="testNavigationFinished()">test navigate.ok </button>
+    <button onclick="testUpdateModalPath()">test update modal path</button>
+    <button onclick="testCheckPathExists()">test check path exists</button>
+    <button onclick="testSetDirtyStatus()">test set dirty status</button>
 
   </div>
   <script>
+    // List of onclick handlers for client calls
     function testNav() {
       LuigiClient.linkManager().navigate('/');
     }
+
     function testCustom() {
       LuigiClient.sendCustomMessage({ id: 'my.customMessage', bar: 'foo' });
     }
@@ -62,11 +76,9 @@
       LuigiClient.addCoreSearchParams({ luigi: 'searchParams' }, false);
     }
 
-
     function testAddNodeParams() {
       LuigiClient.addNodeParams({ luigi: 'Ndoeparams' }, true);
     }
-
 
     function testShowConfirmationModal() {
       const settings = {
@@ -89,17 +101,67 @@
       LuigiClient.uxManager().hideLoadingIndicator();
     }
 
-    function testShowAlert() {
-      const settings = {
-        text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
-        type: 'info'
-      };
-      LuigiClient.uxManager().showAlert(settings);
+    // function testShowAlert() {
+    //   const settings = {
+    //     text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+    //     type: 'info'
+    //   };
+    //   LuigiClient.uxManager().showAlert(settings);
+    // }
+
+    // function testGetContext() {
+    //   console.log('getContext() called', LuigiClient.getContext());
+    // }
+
+    function testSetCurrentLocale() {
+      LuigiClient.uxManager().setCurrentLocale();
     }
 
-    function testGetContext() {
-      console.log('getContext() called', LuigiClient.getContext());
+    function testSetLocalStorage() {
+      LuigiClient.storageManager().setItem('keyExample', 'valueExample');
     }
+
+    // this is ran only when client is initialized and an error has occurred
+    function testRuntimeErrorRequest() {
+      // since this scenario is not caused by a luigi client call, 
+      // here we intentionally cause an error that is then to be catched by the client internally. The latter then sends a message to core with runtime error message
+      const badCode = "const s;";
+      eval(badCode);
+    }
+
+    function testSetAnchorLink() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+    function testSetThirdPartyCookies() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+    function testBackNavigation() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+    function testGetCurrentRoute() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+    function testNavigationFinished() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+    function testUpdateModalPath() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+    function testCheckPathExists() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+    function testSetDirtyStatus() {
+      LuigiClient.uxManager().hideLoadingIndicator();
+    }
+
+
 
     function updateFn(context) {
       console.log('context updated', context)
@@ -124,7 +186,6 @@
       }
       document.getElementById('textCnt').classList.add('visible');
     }
-
     LuigiClient.addInitListener(updateFn);
     LuigiClient.addContextUpdateListener(updateFn);
     LuigiClient.addCustomMessageListener('update', data => {

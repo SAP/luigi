@@ -52,24 +52,26 @@
       luigiCnt2.sendCustomMessage('update');
     });
 
+    luigiCnt2.addEventListener(Events.CUSTOM_MESSAGE, event => {
+      alert('Custom message recieved: ' + JSON.stringify(event.detail));
+    });
+
     luigiCnt2.addEventListener(Events.NAVIGATION_REQUEST, event => {
       if (confirm('Do you want to leave this page?')) {
         window.location = event.detail.link;
       }
     });
 
-    luigiCnt2.addEventListener(Events.CUSTOM_MESSAGE, event => {
-      alert('Custom message recieved: ' + JSON.stringify(event.detail));
+
+    // TODO: initial
+    luigiCnt2.addEventListener(Events.GET_CONTEXT_REQUEST, event => {
+      const dataToSend = {
+        someDataToSend: 'The year is 2023'
+      }
+      console.log('Data being sent from Core -> MF', dataToSend)
+      event.sendContextToMicrofrontend(dataToSend);
     });
 
-    // luigiCnt2.addEventListener(Events.ALERT_REQUEST, event => {
-    //   console.log('luigi.ux.alert.show message recieved: ' + JSON.stringify(event.detail));
-    //   // some code to manipulate DOM to add some alert box at the top
-    //   // >>>>> Code here <<<<<
-
-    //   // tell the Client that alert was shown. 
-    //   event.alertShown();
-    // });
 
     const showAnAlert = () => {
       var popup = document.createElement("div");
@@ -90,20 +92,11 @@
       return dismissButton;
     }
 
-    luigiCnt2.addAlertListener(showAnAlert, { data: 'some stuff' });
 
-    // TODO: initial
-    luigiCnt2.addEventListener(Events.GET_CONTEXT_REQUEST, event => {
-      const dataToSend = {
-        someDataToSend: 'The year is 2023'
-      }
-      console.log('Data being sent from Core -> MF', dataToSend)
-      event.sendContextToMicrofrontend(dataToSend);
-    });
 
     // TODO: initial
     // updateContext case
-    luigiCnt2.updateContext({ someData: '' });
+    // luigiCnt2.updateContext({ someData: '' });
 
 
     // addEventListener(Events.GET_CONTEXT_REQUEST, event => {
@@ -115,33 +108,100 @@
     // });
 
     // luigiCnt2.sendContextToMicrofrontend();
-
+    // import ParamsEvent from luigi container
     luigiCnt2.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, event => {
-      console.log(event);
+      console.log('params:', Events.ADD_SEARCH_PARAMS_REQUEST, event);
       alert('add-search-params-request message recieved: ' + JSON.stringify(event.detail));
     });
 
 
     luigiCnt2.addEventListener(Events.ADD_NODE_PARAMS_REQUEST, event => {
-      console.log(event);
+      console.log(Events.ADD_NODE_PARAMS_REQUEST, event);
       alert('add-node-params-request message recieved: ' + JSON.stringify(event.detail));
     });
 
 
     luigiCnt2.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, event => {
-      console.log(event);
+      console.log(Events.SHOW_CONFIRMATION_MODAL_REQUEST, event);
       alert('show-confirmation-modal message recieved: ' + JSON.stringify(event.detail));
     });
 
     luigiCnt2.addEventListener(Events.SHOW_LOADING_INDICATOR_REQUEST, event => {
-      console.log(event);
+      console.log(Events.SHOW_LOADING_INDICATOR_REQUEST, event);
       alert('show-loading-indicator-request message recieved: ' + JSON.stringify(event));
     });
 
     luigiCnt2.addEventListener(Events.HIDE_LOADING_INDICATOR_REQUEST, event => {
-      console.log(event);
+      console.log(Events.HIDE_LOADING_INDICATOR_REQUEST, event);
       alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
     });
+
+    // SET_CURRENT_LOCALE_REQUEST
+    luigiCnt2.addEventListener(Events.SET_CURRENT_LOCALE_REQUEST, event => {
+      console.log(Events.SET_CURRENT_LOCALE_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // LOCAL_STORAGE_SET_REQUEST
+    luigiCnt2.addEventListener(Events.LOCAL_STORAGE_SET_REQUEST, event => {
+      console.log(Events.LOCAL_STORAGE_SET_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // RUNTIME_ERROR_HANDLING_REQUEST
+    luigiCnt2.addEventListener(Events.RUNTIME_ERROR_HANDLING_REQUEST, event => {
+      console.log(Events.RUNTIME_ERROR_HANDLING_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // SET_ANCHOR_LINK_REQUEST
+    luigiCnt2.addEventListener(Events.SET_ANCHOR_LINK_REQUEST, event => {
+      console.log(Events.SET_ANCHOR_LINK_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // SET_THIRD_PARTY_COOKIES_REQUEST
+    luigiCnt2.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event => {
+      console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // BACK_NAVIGATION_REQUEST
+    luigiCnt2.addEventListener(Events.BACK_NAVIGATION_REQUEST, event => {
+      console.log(Events.BACK_NAVIGATION_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // GET_CURRENT_ROUTE_REQUEST
+    luigiCnt2.addEventListener(Events.GET_CURRENT_ROUTE_REQUEST, event => {
+      console.log(Events.GET_CURRENT_ROUTE_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // NAVIGATION_COMPLETED_REPORT
+    luigiCnt2.addEventListener(Events.NAVIGATION_COMPLETED_REPORT, event => {
+      console.log(Events.NAVIGATION_COMPLETED_REPORT, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // UPDATE_MODAL_PATH_DATA_REQUEST
+    luigiCnt2.addEventListener(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event => {
+      console.log(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // CHECK_PATH_EXISTS_REQUEST
+    luigiCnt2.addEventListener(Events.CHECK_PATH_EXISTS_REQUEST, event => {
+      console.log(Events.CHECK_PATH_EXISTS_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
+    // SET_DIRTY_STATUS_REQUEST
+    luigiCnt2.addEventListener(Events.SET_DIRTY_STATUS_REQUEST, event => {
+      console.log(Events.SET_DIRTY_STATUS_REQUEST, event);
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+    });
+
   </script>
 </body>
 
