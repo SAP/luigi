@@ -395,6 +395,14 @@ class RoutingClass {
         } else if (cnode.tabNav === false) {
           tabNavInherited = false;
           break;
+        } else if (GenericHelpers.isObject(cnode.tabNav)) {
+          if (cnode.tabNav.hideTabAutomatically === true && cnode.children.length === 1) {
+            tabNavInherited = false;
+            break;
+          } else {
+            tabNavInherited = true;
+            break;
+          }
         }
         cnode = cnode.parent;
       }
