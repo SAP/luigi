@@ -17,5 +17,8 @@
     "website/fiddle",
     "test/e2e-js-test-application"
   ],
+  "nohoist": [
+    "@luigi-project/client-support-angular"
+  ],
   "version": "0.0.0"
 }
