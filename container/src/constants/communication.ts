@@ -40,8 +40,6 @@ export namespace Events {
      */
     export const HIDE_LOADING_INDICATOR_REQUEST = 'hide-loading-indicator-request';
 
-
-
     /**
      * A message emmitted from the Microfrontend when a request to set the current locale is sent
      */

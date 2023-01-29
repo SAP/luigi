@@ -55,7 +55,7 @@ export class ContainerService {
         messageListener: event => {
           const targetCnt = this.getTargetContainer(event);
           const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
-          if (target === event.source && (event.data?.msg?.indexOf('luigi.') === 0 || event.data?.msg === 'custom')) {
+          if (target === event.source) {
             // messages emitted from microfrontends
             const msg = event.data.msg;
 
@@ -64,18 +64,18 @@ export class ContainerService {
               case LuigiMessageID.CUSTOM_MESSAGE:
                 this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, event.data.data);
                 break;
-              // TODO : On next iteration
-              // case LuigiMessageID.GET_CONTEXT:
-              //   // target.postMessage({ msg: Events.GET_CONTEXT_REQUEST, context: targetCnt.context || {}, internal: {} }, '*');
-              //   this.dispatch(Events.GET_CONTEXT_REQUEST, targetCnt, event.data, (data: any) => {
-              //     console.log('Callback called: Received data from Core sending inside MF', data);
-              //     target.postMessage({ msg: LuigiMessageID.SEND_CONTEXT, context: data }, '*')
-              //   }, LuigiCoreApi.SEND_CONTEXT_TO_MICROFRONTEND);
-              //   break;
+              // TODO: Handle on next iteration
+              case LuigiMessageID.GET_CONTEXT:
+                // target.postMessage({ msg: Events.GET_CONTEXT_REQUEST, context: targetCnt.context || {}, internal: {} }, '*');
+                this.dispatch(Events.GET_CONTEXT_REQUEST, targetCnt, event.data, (data: any) => {
+                  console.log('Callback called: Received data from Core sending inside MF', data);
+                  target.postMessage({ msg: LuigiMessageID.SEND_CONTEXT, context: data }, '*')
+                }, LuigiCoreApi.SEND_CONTEXT_TO_MICROFRONTEND);
+                break;
               case LuigiMessageID.NAVIGATION_REQUEST:
                 this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
-              // TODO 1: handle ids on next iteration
+              // TODO 1: handle alerts with ids on next iteration
               case LuigiMessageID.ALERT_REQUEST:
                 this.dispatch(Events.ALERT_REQUEST, targetCnt, event.data.params);
                 break;
@@ -118,6 +118,7 @@ export class ContainerService {
               case LuigiMessageID.GET_CURRENT_ROUTE_REQUEST:
                 this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
                 break;
+              // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
               case LuigiMessageID.NAVIGATION_COMPLETED_REPORT:
                 this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
                 break;

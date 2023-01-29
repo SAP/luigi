@@ -53,7 +53,6 @@
     <button onclick="testSetLocalStorage()">test set local storage</button>
     <button onclick="testRuntimeErrorRequest()">test runtime error handling request</button>
     <button onclick="testSetAnchorLink()">test set anchor link </button>
-    <button onclick="testSetThirdPartyCookies()">test set third party cookies</button>
     <button onclick="testBackNavigation()">test back navigation</button>
     <button onclick="testGetCurrentRoute()">test get current route</button>
     <button onclick="testNavigationFinished()">test navigate.ok </button>
@@ -114,11 +113,11 @@
     // }
 
     function testSetCurrentLocale() {
-      LuigiClient.uxManager().setCurrentLocale();
+      LuigiClient.uxManager().setCurrentLocale('en');
     }
 
     function testSetLocalStorage() {
-      LuigiClient.storageManager().setItem('keyExample', 'valueExample');
+      LuigiClient.storageManager().setItem('keyExample', 'valueExample').then();;
     }
 
     // this is ran only when client is initialized and an error has occurred
@@ -130,35 +129,31 @@
     }
 
     function testSetAnchorLink() {
-      LuigiClient.uxManager().hideLoadingIndicator();
-    }
-
-    function testSetThirdPartyCookies() {
-      LuigiClient.uxManager().hideLoadingIndicator();
+      LuigiClient.setAnchor('luigi');
     }
 
     function testBackNavigation() {
-      LuigiClient.uxManager().hideLoadingIndicator();
+      LuigiClient.linkManager().goBack();
     }
 
     function testGetCurrentRoute() {
-      LuigiClient.uxManager().hideLoadingIndicator();
+      LuigiClient.linkManager().getCurrentRoute();
     }
 
     function testNavigationFinished() {
-      LuigiClient.uxManager().hideLoadingIndicator();
+      // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
     }
 
     function testUpdateModalPath() {
-      LuigiClient.uxManager().hideLoadingIndicator();
+      LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
     }
 
     function testCheckPathExists() {
-      LuigiClient.uxManager().hideLoadingIndicator();
+      LuigiClient.linkManager().pathExists('/projects/pr2')
     }
 
     function testSetDirtyStatus() {
-      LuigiClient.uxManager().hideLoadingIndicator();
+      LuigiClient.uxManager().setDirtyStatus(true);
     }
 
 

@@ -128,78 +128,78 @@
 
     luigiCnt2.addEventListener(Events.SHOW_LOADING_INDICATOR_REQUEST, event => {
       console.log(Events.SHOW_LOADING_INDICATOR_REQUEST, event);
-      alert('show-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert('show-loading-indicator-request message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     luigiCnt2.addEventListener(Events.HIDE_LOADING_INDICATOR_REQUEST, event => {
       console.log(Events.HIDE_LOADING_INDICATOR_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // SET_CURRENT_LOCALE_REQUEST
     luigiCnt2.addEventListener(Events.SET_CURRENT_LOCALE_REQUEST, event => {
       console.log(Events.SET_CURRENT_LOCALE_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.SET_CURRENT_LOCALE_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // LOCAL_STORAGE_SET_REQUEST
     luigiCnt2.addEventListener(Events.LOCAL_STORAGE_SET_REQUEST, event => {
       console.log(Events.LOCAL_STORAGE_SET_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.LOCAL_STORAGE_SET_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // RUNTIME_ERROR_HANDLING_REQUEST
     luigiCnt2.addEventListener(Events.RUNTIME_ERROR_HANDLING_REQUEST, event => {
       console.log(Events.RUNTIME_ERROR_HANDLING_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.RUNTIME_ERROR_HANDLING_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // SET_ANCHOR_LINK_REQUEST
     luigiCnt2.addEventListener(Events.SET_ANCHOR_LINK_REQUEST, event => {
       console.log(Events.SET_ANCHOR_LINK_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.SET_ANCHOR_LINK_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
-    // SET_THIRD_PARTY_COOKIES_REQUEST
+    // SET_THIRD_PARTY_COOKIES_REQUEST - called on microfrontend startup
     luigiCnt2.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event => {
       console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.SET_THIRD_PARTY_COOKIES_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data.data));
     });
 
     // BACK_NAVIGATION_REQUEST
     luigiCnt2.addEventListener(Events.BACK_NAVIGATION_REQUEST, event => {
       console.log(Events.BACK_NAVIGATION_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.BACK_NAVIGATION_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // GET_CURRENT_ROUTE_REQUEST
     luigiCnt2.addEventListener(Events.GET_CURRENT_ROUTE_REQUEST, event => {
       console.log(Events.GET_CURRENT_ROUTE_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.GET_CURRENT_ROUTE_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // NAVIGATION_COMPLETED_REPORT
     luigiCnt2.addEventListener(Events.NAVIGATION_COMPLETED_REPORT, event => {
       console.log(Events.NAVIGATION_COMPLETED_REPORT, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.NAVIGATION_COMPLETED_REPORT, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // UPDATE_MODAL_PATH_DATA_REQUEST
     luigiCnt2.addEventListener(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event => {
       console.log(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.UPDATE_MODAL_PATH_DATA_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // CHECK_PATH_EXISTS_REQUEST
     luigiCnt2.addEventListener(Events.CHECK_PATH_EXISTS_REQUEST, event => {
       console.log(Events.CHECK_PATH_EXISTS_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.CHECK_PATH_EXISTS_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
     // SET_DIRTY_STATUS_REQUEST
     luigiCnt2.addEventListener(Events.SET_DIRTY_STATUS_REQUEST, event => {
       console.log(Events.SET_DIRTY_STATUS_REQUEST, event);
-      alert('hide-loading-indicator-request message recieved: ' + JSON.stringify(event));
+      alert(Events.SET_DIRTY_STATUS_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
     });
 
   </script>
