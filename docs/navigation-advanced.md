@@ -425,7 +425,7 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 ### tabNav
 - **type**: boolean or Object
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
-When you have only one node in your tab nav you can specify an object instead of boolean with `{hideTabAutomatically:true}` and the tabNav will be hidden automaticlly.
+When you have only one child in the horizontal navigation bar you can specify an object instead of boolean with `{hideTabNavAutomatically:true}` and the horizontal navigation bar will be hidden automatically.
 
 
 ## Additional options

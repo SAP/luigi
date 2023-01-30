@@ -489,6 +489,18 @@ describe('Routing', function() {
               viewUrl: 'compound',
               intendToHaveEmptyViewUrl: true,
               webcomponent: true
+            },
+            {
+              pathSegment: 'tabNav',
+              label: 'Tab Nav',
+              tabNav: { hideTabNavAutomatically: true },
+              children: [
+                {
+                  pathSegment: 'child',
+                  label: 'Child',
+                  viewUrl: 'child.html'
+                }
+              ]
             }
           ]
         },
@@ -788,6 +800,21 @@ describe('Routing', function() {
 
       // then
       sinon.assert.calledWithExactly(Routing.navigateToExternalLink, expectedParam);
+    });
+
+    it('hide tabnav automatically', async () => {
+      // given
+      const path = '#/tabNav/child';
+      const expectedViewUrl = 'child.html';
+
+      // when
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(component.get().tabNav, false);
     });
   });
 

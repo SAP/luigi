@@ -352,19 +352,16 @@ class RoutingClass {
     }
     this.setFeatureToggle(path);
     if (this.shouldSkipRoutingForUrlPatterns()) return;
-
     if (window.Luigi.preventLoadingModalData) {
       window.Luigi.preventLoadingModalData = false;
       return;
     }
-
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
         await this.handleUnsavedChangesModal(path, component, iframeElement, config);
         return;
       }
-
       await this.shouldShowModalPathInUrl();
 
       const previousCompData = component.get();
@@ -372,10 +369,8 @@ class RoutingClass {
       const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
       const viewUrl = nodeObject.viewUrl || '';
-
       if (await this.handleViewUrlMisconfigured(nodeObject, viewUrl, previousCompData, pathUrlRaw, component)) return;
       if (await this.handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config)) return;
-
       const hideNav = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
       const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
       const nodeParams = RoutingHelpers.getNodeParams(params);
@@ -396,7 +391,7 @@ class RoutingClass {
           tabNavInherited = false;
           break;
         } else if (GenericHelpers.isObject(cnode.tabNav)) {
-          if (cnode.tabNav.hideTabAutomatically === true && cnode.children.length === 1) {
+          if (cnode.tabNav.hideTabNavAutomatically === true && cnode.children.length === 1) {
             tabNavInherited = false;
             break;
           } else {
