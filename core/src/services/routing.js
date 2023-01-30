@@ -391,12 +391,16 @@ class RoutingClass {
           tabNavInherited = false;
           break;
         } else if (GenericHelpers.isObject(cnode.tabNav)) {
-          if (cnode.tabNav.hideTabNavAutomatically === true && cnode.children.length === 1) {
-            tabNavInherited = false;
-            break;
+          if (cnode.tabNav.hideTabNavAutomatically !== undefined && cnode.children && cnode.children.length === 1) {
+            if (cnode.tabNav.hideTabNavAutomatically === true) {
+              tabNavInherited = false;
+              break;
+            } else {
+              tabNavInherited = true;
+              break;
+            }
           } else {
-            tabNavInherited = true;
-            break;
+            console.warn('tabNav:{hideTabNavAutomatically:true|false} is not configured correctly.');
           }
         }
         cnode = cnode.parent;

@@ -635,7 +635,7 @@ runTimeErrorHandler: {
 - **type**: boolean or Object
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
 - **since**: v0.7.0
-When you have only one child in the horizontal navigation bar you can specify an object instead of boolean with `{hideTabNavAutomatically:true}` and the horizontal navigation bar will be hidden automatically.
+In the case the node has only one child it's possible to configure if the horizontal navigation bar will be hidden automatically or not. To do so the `tabNav` property must be an object with the property `{hideTabNavAutomatically:true|false}`
 - **since**: NEXTRELEASE
 
 ### testId
