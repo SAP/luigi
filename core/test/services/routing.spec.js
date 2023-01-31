@@ -816,6 +816,28 @@ describe('Routing', function() {
       assert.equal(component.get().tabNav, false);
     });
 
+    it('hide tabnav automatically with more than one child', async () => {
+      // given
+      const path = '#/tabNav/child';
+      const expectedViewUrl = 'child.html';
+
+      const allNodes = currentLuigiConfig.navigation.nodes();
+      allNodes[5].children.push({
+        pathSegment: 'child2',
+        label: 'child 2',
+        viewUrl: 'child2.html'
+      });
+      currentLuigiConfig.navigation.nodes = () => allNodes;
+
+      const iframeMock = { src: null };
+      sinon.stub(document, 'createElement').callsFake(() => iframeMock);
+      await Routing.handleRouteChange(path, component, currentLuigiConfig.navigation.nodes()[0], config);
+
+      // then
+      assert.equal(component.get().viewUrl, expectedViewUrl);
+      assert.equal(component.get().tabNav, true);
+    });
+
     it('hide tabnav not automatically', async () => {
       // given
       const path = '#/tabNav/child';
