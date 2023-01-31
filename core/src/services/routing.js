@@ -391,7 +391,7 @@ class RoutingClass {
           tabNavInherited = false;
           break;
         } else if (GenericHelpers.isObject(cnode.tabNav)) {
-          if (cnode.tabNav.hideTabNavAutomatically !== undefined && cnode.children && cnode.children.length === 1) {
+          if ('hideTabNavAutomatically' in cnode.tabNav && cnode.children && cnode.children.length === 1) {
             if (cnode.tabNav.hideTabNavAutomatically === true) {
               tabNavInherited = false;
               break;
