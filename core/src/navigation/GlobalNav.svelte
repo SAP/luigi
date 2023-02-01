@@ -121,6 +121,7 @@
                       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                     }}
                     role="button"
+                    tabindex="0"
                   >
                     <div class="lui-fd-nested-list__content">
                       {#if node.icon}
