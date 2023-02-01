@@ -2069,6 +2069,7 @@
     margin: 0;
     line-height: 1.42857;
     overflow: hidden;
+    background-color: var(--sapBackgroundColor);
   }
 
   :global(.fioriScrollbars) {
