@@ -2325,6 +2325,13 @@
     text-decoration: none;
     max-width: var(--luigi__app-title--width);
     overflow: visible;
+
+    :global(span) {
+      display: inline-block;
+      max-width: inherit;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   :global(.lui-app-switch) {
