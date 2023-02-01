@@ -10,10 +10,13 @@ export class ContainerService {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
   }
 
-  sendCustomMessageToIframe(iframeHandle: any, msg: any) {
+  sendCustomMessageToIframe(iframeHandle: any, msg: any, msgName?: string) {
+    const messageName = msgName ? msgName : 'custom';
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
-      iframeHandle.iframe.contentWindow.postMessage({ msg: 'custom', data: msg }, iframeUrl.origin);
+      console.log('inside fn data', msg)
+      messageName === 'custom' ? iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin) :
+        iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin)
     } else {
       console.error('Message target could not be resolved');
     }

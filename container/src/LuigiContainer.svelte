@@ -84,6 +84,20 @@
     }
   };
 
+  thisComponent.updateContext = (context: any, internal?: any) => {
+    console.log('context', context, thisComponent);
+    context.internal = {};
+    console.log(context);
+    containerService.sendCustomMessageToIframe(
+      iframeHandle,
+      {
+        context: { myContext: 123 },
+        internal: {},
+      },
+      'luigi.navigate'
+    );
+  };
+
   containerService.registerContainer(thisComponent);
 
   function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
