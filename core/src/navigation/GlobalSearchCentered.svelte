@@ -380,7 +380,7 @@
 {/if}
 {#if isSearchFieldVisible}
   <div
-    class="lui-global-search-cancel-btn {isSearchFieldVisible
+    class="fd-shellbar__group lui-global-search-cancel-btn {isSearchFieldVisible
       ? 'lui-global-search-cancel-btn--active'
       : ''}"
   >
