@@ -118,6 +118,10 @@ class LuigiTheming {
           }
         });
       }
+
+      if (theming && theming.useFioriScrollbars === true) {
+        document.body.classList.add('fioriScrollbars');
+      }
     };
 
     StateHelpers.doOnStoreChange(

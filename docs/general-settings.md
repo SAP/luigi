@@ -236,6 +236,7 @@ For example, to allow 'fullscreen' for non-modal iframes:
     * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`.
     * **defaultTheme** (mandatory) the default theme used by the application.
     * **nodeViewURLDecorator** (optional) you can add an internal Luigi View URL decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
+    * **useFioriScrollbars** (optional) if set to `true`, Fiori theming variables are applied to all scrollbars in luigi core app.
 - **example**:
 ```javascript
 theming : {
