@@ -34,7 +34,7 @@
     "lodash.template": ">=4.5.0",
     "mini-css-extract-plugin": "^0.8.0",
     "mkdirp": "^1.0.3",
-    "mocha": "^7.1.1",
+    "mocha": "^10.2.0",
     "mock-local-storage": "^1.1.15",
     "node-sass": "^7.0.0",
     "nyc": "^15.0.0",
