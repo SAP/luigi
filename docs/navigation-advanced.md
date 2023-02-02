@@ -423,8 +423,25 @@ appSwitcher = {
 Tab-style navigation in Luigi can be displayed directly above the micro frontend area, providing you with additional menu options. When you put tab navigation nodes into a [category](navigation-configuration.md#category), they will be rendered in a drop-down. Add this parameter to your configuration to create tab navigation nodes:
 
 ### tabNav
-- **type**: boolean
+- **type**: boolean or Object
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+In the case the node has only one child, it's possible to configure if the horizontal navigation bar will be hidden automatically or not. To do so, the `tabNav` property must be an object with the property `{hideTabNavAutomatically:true|false}`.
+- **example**:
+```js
+// Without hiding tab nav automatically 
+ pathSegment: 'example', 
+ label: 'Example', 
+ tabNav: true,
+ children: [
+  ...
+                
+//With hiding tab nav automatically if node has only one child              
+  pathSegment: 'example',
+  label: 'Example',
+  tabNav: { hideTabNavAutomatically: true },
+  children: [
+  ...
+```
 
 
 ## Additional options
