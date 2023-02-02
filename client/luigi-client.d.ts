@@ -242,7 +242,7 @@ export declare interface UxManager {
    * Checks if the current micro frontend is displayed inside a drawer
    * @returns {boolean} indicating if it is loaded inside a drawer
    * @memberof uxManager
-   * @since NEXTRELEASE
+   * @since 1.26.0
    */
   isDrawer: () => boolean;
 }
