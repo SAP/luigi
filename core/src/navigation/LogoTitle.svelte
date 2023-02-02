@@ -196,7 +196,9 @@
         }}
         href="/"
       >
-        {$getTranslation(title)}
+        <span>
+          {$getTranslation(title)}
+        </span>
       </a>
     {:else}
       <span
@@ -204,7 +206,9 @@
         data-testid="luigi-topnav-title"
         on:click={() => goTo('/')}
       >
-        {$getTranslation(title)}
+        <span>
+          {$getTranslation(title)}
+        </span>
       </span>
     {/if}{:else}
     <div class="fd-popover">
@@ -225,7 +229,7 @@
               {#if item === selectedItem && hasValidLink(item, pathParams)}
                 <a
                   href={getRouteLink(item)}
-                  class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
+                  class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button fd-shellbar__button--menu lui-app-switch"
                   aria-haspopup="true"
                   aria-expanded={dropDownStates.appSwitcherPopover || false}
                   on:click|preventDefault={() =>
@@ -247,7 +251,7 @@
           {#if appSwitcherItems.length > 1 && !selectedItem}
             <a
               href="/"
-              class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
+              class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button fd-shellbar__button--menu lui-app-switch"
               aria-haspopup="true"
               aria-expanded={dropDownStates.appSwitcherPopover || false}
               on:click|preventDefault={() =>
@@ -264,7 +268,7 @@
           {/if}
         {:else}
           <button
-            class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button--menu lui-app-switch"
+            class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button fd-shellbar__button--menu lui-app-switch"
             aria-haspopup="true"
             aria-expanded={dropDownStates.appSwitcherPopover || false}
             on:click|stopPropagation={() =>
