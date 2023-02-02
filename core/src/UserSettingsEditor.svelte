@@ -463,4 +463,8 @@
   .fd-select__control.lui-anchor-node[aria-expanded='true']:focus {
     outline: none;
   }
+
+  .fd-segmented-button {
+    width: fit-content;
+  }
 </style>

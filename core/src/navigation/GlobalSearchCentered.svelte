@@ -365,7 +365,7 @@
 </div>
 {#if !isSearchFieldVisible}
   <div class="lui-global-search-btn">
-    <div on:click|stopPropagation={() => {}}>
+    <div class="fd-shellbar__group" on:click|stopPropagation={() => {}}>
       <button
         class="fd-button fd-button--transparent fd-shellbar__button"
         aria-haspopup="true"
@@ -380,7 +380,7 @@
 {/if}
 {#if isSearchFieldVisible}
   <div
-    class="lui-global-search-cancel-btn {isSearchFieldVisible
+    class="fd-shellbar__group lui-global-search-cancel-btn {isSearchFieldVisible
       ? 'lui-global-search-cancel-btn--active'
       : ''}"
   >

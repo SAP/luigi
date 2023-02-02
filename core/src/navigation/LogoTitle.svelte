@@ -196,7 +196,9 @@
         }}
         href="/"
       >
-        {$getTranslation(title)}
+        <span>
+          {$getTranslation(title)}
+        </span>
       </a>
     {:else}
       <span
@@ -204,7 +206,9 @@
         data-testid="luigi-topnav-title"
         on:click={() => goTo('/')}
       >
-        {$getTranslation(title)}
+        <span>
+          {$getTranslation(title)}
+        </span>
       </span>
     {/if}{:else}
     <div class="fd-popover">
