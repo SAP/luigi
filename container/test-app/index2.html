@@ -61,8 +61,6 @@
         window.location = event.detail.link;
       }
     });
-
-
     // TODO: initial
     luigiCnt2.addEventListener(Events.GET_CONTEXT_REQUEST, event => {
       const dataToSend = {
@@ -200,11 +198,9 @@
     luigiCnt2.addEventListener(Events.SET_DIRTY_STATUS_REQUEST, event => {
       console.log(Events.SET_DIRTY_STATUS_REQUEST, event);
       alert(Events.SET_DIRTY_STATUS_REQUEST, 'message recieved: ' + JSON.stringify(event.detail.data));
-
       luigiCnt2.updateContext({
         myNewContext: 'test'
       })
-
     });
 
   </script>

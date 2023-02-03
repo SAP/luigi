@@ -100,7 +100,9 @@ jobs:
         - head $TRAVIS_BUILD_DIR/client/public/package.json
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
+        # Check container files and package json version are correct
         - ls -lah $TRAVIS_BUILD_DIR/container/public
+        - cat $TRAVIS_BUILD_DIR/container/public/package.json
         - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1

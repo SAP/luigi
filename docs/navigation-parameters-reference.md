@@ -95,7 +95,7 @@ The navigation parameters allow you to configure **global** navigation settings 
 - **attributes**:
   - **titleExpandButton** adds the HTML `title` attribute with the defined value to the expand button.
   - **titleCollapseButton** adds the HTML `title` attribute with the defined value to the collapse button.
-- **since**: NEXTRELEASE
+- **since**: 1.26.0
 - **example**:
 ```javascript
 config.navigation.defaults = {
@@ -125,7 +125,7 @@ config.navigation.defaults = {
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **default**: the parameter **defaults.pageErrorHandler** is not specified by default, and you can overwrite it using the **pageErrorHandler** value on a single node level.
 - **attributes**:
-  - **timeout** amount of time after which redirection will take effect.
+  - **timeout** amount of time in milliseconds after which redirection will take effect.
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
@@ -592,7 +592,7 @@ runTimeErrorHandler: {
 - **type**: object
 - **description**: gives you the possibility to handle a situation in which Luigi Client doesn't respond. By default, it will redirect to the home page if nothing else is specified. **timeout** is required.
 - **attributes**:
-  - **timeout** amount of time after which redirection will take effect.
+  - **timeout** amount of time in milliseconds after which redirection will take effect. (For example, `timeout: 500`).
   - **viewUrl** specifies the location to redirect to on the micro frontend level (the main URL is not changed).
   - **redirectPath** specifies the location to redirect to on the Luigi level (the main URL is changed).
   - **errorFn** used to handle different scenarios other than redirection.
@@ -632,9 +632,27 @@ runTimeErrorHandler: {
  - **since**: 1.25.0
 
 ### tabNav
-- **type**: boolean
+- **type**: boolean or Object
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
 - **since**: v0.7.0
+In the case the node has only one child, it's possible to configure if the horizontal navigation bar will be hidden automatically or not. To do so, the `tabNav` property must be an object with the property `{hideTabNavAutomatically:true|false}`.
+- **example**:
+```js
+// Without hiding tab nav automatically 
+ pathSegment: 'example', 
+ label: 'Example', 
+ tabNav: true,
+ children: [
+  ...
+                
+//With hiding tab nav automatically if node has only one child               
+  pathSegment: 'example',
+  label: 'Example',
+  tabNav: { hideTabNavAutomatically: true },
+  children: [
+  ...
+```
+- **since**: NEXTRELEASE
 
 ### testId
 - **type**: string
@@ -647,6 +665,22 @@ runTimeErrorHandler: {
 - **example**:
 ```javascript
 tooltipText: 'Useful links'
+```
+
+### userSettingsGroup
+- - **type**: string
+- **description**: sets the user settings group for this navigation node. It is the title of a predefined user settings group belonging to a `userSettingGroups` object. For more information, read the section on [user settings](user-settings.md).
+- **example**:
+```javascript
+{
+    category: { label: 'Settings', icon: 'action-settings' },
+    pathSegment: 'user_settings',
+    label: 'User Settings',
+    viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
+    icon: 'settings',
+    userSettingsGroup: 'userAccount',
+    testId: 'myTestId',
+  }
 ```
 
 ### viewGroup

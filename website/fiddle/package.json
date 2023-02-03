@@ -20,15 +20,15 @@
     "dev": "node patch.js && node build_patch_ui5.js && webpack serve  --static public"
   },
   "dependencies": {
-    "@luigi-project/client": "1.25.1",
-    "@luigi-project/core": "1.25.1",
-    "@luigi-project/plugin-auth-oauth2": "1.25.1",
-    "@luigi-project/plugin-auth-oidc": "1.25.1",
+    "@luigi-project/client": "1.26.0",
+    "@luigi-project/core": "1.26.0",
+    "@luigi-project/plugin-auth-oauth2": "1.26.0",
+    "@luigi-project/plugin-auth-oidc": "1.26.0",
     "@sap-theming/theming-base-content": "~11.1.35",
-    "@ui5/webcomponents": "1.8.0",
-    "@ui5/webcomponents-fiori": "1.9.0",
-    "ace-builds": "1.13.0",
-    "fs-extra": "^10.1.0",
+    "@ui5/webcomponents": "1.9.3",
+    "@ui5/webcomponents-fiori": "1.9.3",
+    "ace-builds": "1.14.0",
+    "fs-extra": "^11.1.0",
     "fundamental-styles": "0.23.0"
   }
 }
