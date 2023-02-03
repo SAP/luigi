@@ -58,6 +58,7 @@
 
   const thisComponent: any = get_current_component();
 
+  console.log('this component', thisComponent.viewurl);
   thisComponent.iframeHandle = iframeHandle;
   let deferInit: boolean = !!thisComponent.attributes['defer-init'];
 
@@ -84,14 +85,17 @@
     }
   };
 
-  thisComponent.updateContext = (context: any, internal?: any) => {
-    console.log('context', context, thisComponent);
-    context.internal = {};
-    console.log(context);
+  thisComponent.updateContext = (contextObj: any, internal?: any) => {
+    console.log(
+      'inside updateContext context, thisComponent',
+      contextObj,
+      thisComponent
+    );
+    console.log(contextObj);
     containerService.sendCustomMessageToIframe(
       iframeHandle,
       {
-        context: { myContext: 123 },
+        context: contextObj,
         internal: {},
       },
       'luigi.navigate'
