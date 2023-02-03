@@ -224,6 +224,7 @@
     {#if userSettingGroup[1].settings}
       <div class="fd-page__content">
         <div class="fd-container fd-form-layout-grid-container">
+          <button id="justatest">This is just a test button</button>
           {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], index}
             <div class="fd-row">
               <div class="fd-col fd-col--4">
@@ -282,7 +283,7 @@
                             class="fd-select__control lui-anchor-node"
                             data-testid="lui-us-language-dropdown"
                             id="fd-form-input-{index}"
-                            on:keydown={(event) =>
+                            on:keydown={event =>
                               handleKeyListDropdown(
                                 event,
                                 key,
@@ -331,7 +332,7 @@
                                 data-testid="lui-us-option{index}_{optionIndex}"
                                 on:click={() =>
                                   updateComboBox(key, option, optionIndex)}
-                                on:keydown={(event) =>
+                                on:keydown={event =>
                                   keyPressDropdownNode(event)}
                                 tabindex="0"
                               >
