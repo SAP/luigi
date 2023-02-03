@@ -224,7 +224,6 @@
     {#if userSettingGroup[1].settings}
       <div class="fd-page__content">
         <div class="fd-container fd-form-layout-grid-container">
-          <button id="justatest">This is just a test button</button>
           {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], index}
             <div class="fd-row">
               <div class="fd-col fd-col--4">

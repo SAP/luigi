@@ -65,7 +65,6 @@ describe('Navigation', () => {
 
       //Check Name Input exist
       cy.get('[data-testid="lui-us-input0"]').should('exist');
-      cy.get('#justatest').should('exist');
 
       //Check Name Input has placeholder
       cy.get('[data-testid="lui-us-input0"]')
