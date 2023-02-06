@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set +e # exit on errors
+set +e # don't exit on errors
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 source $BASE_DIR/../scripts/shared/bashHelpers.sh
@@ -28,9 +28,7 @@ echo ""
 echo "Angular App"
 cd $NG_EXAMPLE
 killWebserver 4200
-echo "DIST: `ls -l dist`"
 runWebserver 4200 dist /luigi-core/luigi.js
-echo "Angular App3"
 WS_NG_PID=$PID
 
 echo ""
