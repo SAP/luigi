@@ -28,7 +28,6 @@ runWebserver() {
   local PORT=$1
   local FOLDER=$2
   local TESTPATH=$3
-echoe " webserver"
   PATH="$PATH:$LUIGI_BASE_DIR/node_modules/.bin"
   WS=`command -v sirv`
   if [ ! -x $WS ] || [ "$WS" == "" ] ; then
