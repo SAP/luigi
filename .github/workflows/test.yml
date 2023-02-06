@@ -38,6 +38,7 @@ jobs:
         with:
           path: ./
           key: buildcache
+      - run: export CYPRESS_CACHE_FOLDER=./cypress-binary-cache
       - run: npm i -g lerna
       - run: lerna bootstrap --ci --force-local --ignore docs
       #- run: lerna run bundle --ignore docs --scope luigi-client-private
