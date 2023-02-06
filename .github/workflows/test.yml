@@ -2,8 +2,37 @@ on:
   push:
     branches:
       - 'main'
+      - 'main-gh_actions'
+
+env:
+  CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+
 jobs:
+  clear_cache:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - run: |
+          gh extension install actions/gh-actions-cache
+          
+          REPO=${{ github.repository }}
+          BRANCH=${{ github.ref_name }}
+
+          echo "Fetching list of cache key"
+          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
+
+          ## Setting this to not fail the workflow while deleting cache keys. 
+          set +e
+          echo "Deleting caches..."
+          for cacheKey in $cacheKeysForPR
+          do
+              gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+          done
+          echo "Done"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   unit:
+    needs: clear_cache
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,8 +41,10 @@ jobs:
           node-version: '16'
       - uses: actions/cache@v3
         with:
-          path: ./
-          key: build-cache
+          path: |
+            ./
+            ~/cypress-binary-cache
+          key: buildcache
       - run: npm i -g lerna
       - run: lerna bootstrap --ci --force-local --ignore docs
       - run: lerna run bundle --ignore docs --scope luigi-client-private
@@ -28,7 +59,11 @@ jobs:
     steps:
       - uses: actions/cache@v3
         with:
-          path: ./
-          key: build-cache
+          path: |
+            ./
+            ~/cypress-binary-cache
+          key: buildcache
+      - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: bash ./test/e2e.sh
+      #- run: ls -l ~/cypress-binary-cache
