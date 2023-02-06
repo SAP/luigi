@@ -72,7 +72,7 @@ killWebserver() {
     # Fallback
     # the [] is a workaround to prevent ps showing up itself
     # https://unix.stackexchange.com/questions/74185/how-can-i-prevent-grep-from-showing-up-in-ps-results
-    SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
+    #SPAPID=$(eval "ps -A -ww | grep '[p]ort $PORT' | tr -s ' ' |  cut -d ' ' -f 1")
     echoe "Cleanup: 2"
   fi
   echoe "Cleanup: 3"

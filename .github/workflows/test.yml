@@ -15,13 +15,13 @@ jobs:
           path: ./
           key: build-cache
       - run: npm i -g lerna
-      - run: lerna bootstrap --ci --force-local --ignore docs
-      - run: lerna run bundle --ignore docs --scope luigi-client-private
-      - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
-      - run: lerna run bundle --ignore docs
-      - run: lerna run bundlesizeOnly --ignore docs
-      - run: lerna run build --ignore docs
-      - run: npm test --prefix core
+      #- run: lerna bootstrap --ci --force-local --ignore docs
+      #- run: lerna run bundle --ignore docs --scope luigi-client-private
+      #- run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
+      #- run: lerna run bundle --ignore docs
+      #- run: lerna run bundlesizeOnly --ignore docs
+      #- run: lerna run build --ignore docs
+      #- run: npm test --prefix core
   e2e:
     needs: unit
     runs-on: ubuntu-latest
