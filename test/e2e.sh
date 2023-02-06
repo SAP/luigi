@@ -27,7 +27,8 @@ fi
 echo ""
 echo "Angular App"
 cd $NG_EXAMPLE
-#killWebserver 4200
+echo "Current dir: `pwd`"
+killWebserver 4200
 echo "Angular App2"
 runWebserver 4200 dist /luigi-core/luigi.js
 echo "Angular App3"
