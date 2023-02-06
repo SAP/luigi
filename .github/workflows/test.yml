@@ -48,9 +48,9 @@ jobs:
       - run: lerna bootstrap --ci --force-local --ignore docs
       #- run: lerna run bundle --ignore docs --scope luigi-client-private
       #- run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
-      - run: lerna run bundle --ignore docs
+      ##- run: lerna run bundle --ignore docs
       #- run: lerna run bundlesizeOnly --ignore docs
-      - run: lerna run build --ignore docs
+      ##- run: lerna run build --ignore docs
       #- run: npm test --prefix core
   e2e:
     needs: unit
@@ -65,4 +65,4 @@ jobs:
       #- run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       #- run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       #- run: bash ./test/e2e.sh
-      - run: ls -l /home/runner/luigi/luigi/cypress-binary-cache
+      - run: ls -l ~/cypress-binary-cache
