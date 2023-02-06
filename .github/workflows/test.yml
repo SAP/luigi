@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - 'main'
+      - 'main-gh_actions'
 jobs:
   unit:
     runs-on: ubuntu-latest
