@@ -66,7 +66,7 @@ runWebserver() {
 killWebserver() {
   PORT=$1
   echoe "Cleanup: Stopping webserver on port $PORT"
-  SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
+  #SPAPID=`lsof -i :${PORT} | tail -n 1 | tr -s ' ' | cut -d ' ' -f 2`
   echoe "Cleanup: 1"
   if [ "$SPAPID" == "" ]; then
     # Fallback
