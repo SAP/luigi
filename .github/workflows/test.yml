@@ -4,7 +4,7 @@ on:
       - 'main-gh_actions'
 
 env:
-  CYPRESS_CACHE_FOLDER: ${{ env.GITHUB_WORKSPACE }}/cypress-binary-cache
+  CYPRESS_CACHE_FOLDER: /home/runner/luigi/cypress-binary-cache
 
 jobs:
   clear_cache:
