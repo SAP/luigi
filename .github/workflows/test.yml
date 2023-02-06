@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
+      - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: 'gh api --method DELETE -H "Accept: application/vnd.github+json" /repos/SAP/luigi/actions/caches/buildcache'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
