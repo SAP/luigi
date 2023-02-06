@@ -24,8 +24,7 @@ jobs:
       - run: npm test --prefix core
   e2e:
     needs: unit
-    runs-on: 
-      group: ubuntu-runners
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/cache@v3
         with:
