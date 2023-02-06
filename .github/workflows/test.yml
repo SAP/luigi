@@ -38,10 +38,10 @@ jobs:
         with:
           path: ./
           key: buildcache
-      - run: export CYPRESS_CACHE_FOLDER=./cypress-binary-cache
-      - run: npm i -g cypress
       - run: npm i -g lerna
       - run: lerna bootstrap --ci --force-local --ignore docs
+        env:
+          CYPRESS_CACHE_FOLDER: ./cypress-binary-cache
       #- run: lerna run bundle --ignore docs --scope luigi-client-private
       #- run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
       - run: lerna run bundle --ignore docs
@@ -58,6 +58,6 @@ jobs:
           key: buildcache
       #- run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       #- run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
-      - run: export CYPRESS_CACHE_FOLDER=./cypress-binary-cache
-      - run: ls $CYPRESS_CACHE_FOLDER
       - run: bash ./test/e2e.sh
+        env:
+          CYPRESS_CACHE_FOLDER: ./cypress-binary-cache
