@@ -10,6 +10,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - uses: actions/cache@v3
+        with:
+          path: ./
+          key: build-cache
       - run: npm i -g lerna
       - run: lerna bootstrap --ci --force-local --ignore docs
       - run: lerna run bundle --ignore docs --scope luigi-client-private
@@ -23,8 +27,9 @@ jobs:
     runs-on: 
       group: ubuntu-runners
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/cache@v3
         with:
-          node-version: '16'
-      - run: echo TBD
+          path: ./
+          key: build-cache
+      - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
+      - run: bash ./test/e2e.sh
