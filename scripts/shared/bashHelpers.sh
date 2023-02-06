@@ -79,7 +79,7 @@ killWebserver() {
 
   if [ ! -z "$SPAPID" ]; then
     echoe "Cleanup: Killing process $SPAPID"
-    kill -9 $SPAPID
+    #kill -9 $SPAPID
     echoe "Cleanup: webserver stopped"
   else
     echoe "Cleanup: webserver not running"
