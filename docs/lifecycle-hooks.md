@@ -35,5 +35,7 @@ You can use any of the Luigi lifecycle hooks by adding additional setup to the r
 
 ### luigiAfterInit()
 
-This method will be called after [Luigi.setConfig({})](luigi-core-api.md#setconfig) is executed.
+This method will be called after [Luigi.setConfig({})](luigi-core-api.md#setconfig) is executed. 
+
+Keep in mind that `luigiAfterInit`is only triggered after the first `setConfig` instance. If you need it to be fired again, you can use [Luigi.reset()](luigi-core-api.md#reset) to trigger a new Luigi re-initialization.
 
