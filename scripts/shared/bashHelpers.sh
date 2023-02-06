@@ -39,7 +39,7 @@ echoe " webserver"
   echo ""
   echo "Starting webserver on port $PORT"
 
-  sirv start $FOLDER --single --cors --port $PORT --quiet &
+  sirv $FOLDER --single --cors --port $PORT --quiet &
   PID=$!
 
   echo "Webserver running with PID $PID"
