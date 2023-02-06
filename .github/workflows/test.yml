@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - run: 'gh api --method DELETE -H "Accept: application/vnd.github+json" /repos/SAP/luigi/actions/caches/build-cache'
+      - run: 'gh api --method DELETE -H "Accept: application/vnd.github+json" /repos/SAP/luigi/actions/caches/buildcache'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   unit:
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ./
-          key: build-cache
+          key: buildcache
       - run: npm i -g lerna
       #- run: lerna bootstrap --ci --force-local --ignore docs
       #- run: lerna run bundle --ignore docs --scope luigi-client-private
@@ -37,6 +37,6 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ./
-          key: build-cache
+          key: buildcache
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: bash ./test/e2e.sh
