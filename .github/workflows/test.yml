@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
-      - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: |
           gh extension install actions/gh-actions-cache
           
@@ -55,5 +54,6 @@ jobs:
         with:
           path: ./
           key: buildcache
+      - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: bash ./test/e2e.sh
