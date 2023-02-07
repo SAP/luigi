@@ -45,7 +45,7 @@
     const luigiCnt2 = document.querySelector('#col2 luigi-container');
 
     btn1.addEventListener('click', () => {
-      luigiCnt1.sendCustomMessage('update', 'data ' + new Date().getMilliseconds());
+      luigiCnt1.sendCustomMessage('update', { data: new Date().getMilliseconds(), id: 123 });
     });
 
     btn2.addEventListener('click', () => {
@@ -62,13 +62,13 @@
       }
     });
     // TODO: initial
-    luigiCnt2.addEventListener(Events.GET_CONTEXT_REQUEST, event => {
-      const dataToSend = {
-        someDataToSend: 'The year is 2023'
-      }
-      console.log('Data being sent from Core -> MF', dataToSend)
-      event.sendContextToMicrofrontend(dataToSend);
-    });
+    // luigiCnt2.addEventListener(Events.GET_CONTEXT_REQUEST, event => {
+    //   const dataToSend = {
+    //     someDataToSend: 'The year is 2023'
+    //   }
+    //   console.log('Data being sent from Core -> MF', dataToSend)
+    //   event.sendContextToMicrofrontend(dataToSend);
+    // });
 
 
     const showAnAlert = () => {

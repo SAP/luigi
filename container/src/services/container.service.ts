@@ -1,5 +1,5 @@
 import { Events } from '../constants/communication';
-import { LuigiMessageID } from '../constants/internal-communication';
+import { LuigiInternalMessageID } from '../constants/internal-communication';
 import { GenericHelperFunctions } from '../utilities/helpers';
 import { LuigiCoreApi } from '../constants/core-api';
 
@@ -10,11 +10,16 @@ export class ContainerService {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
   }
 
+  /**
+   * Sends a message to the iframe either with the custom keyword or any other message name
+   * @param iframeHandle the iframe to send the message to 
+   * @param msg the message to be sent
+   * @param msgName the optional message name
+   */
   sendCustomMessageToIframe(iframeHandle: any, msg: any, msgName?: string) {
     const messageName = msgName ? msgName : 'custom';
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
-      console.log('inside fn data', msg)
       messageName === 'custom' ? iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin) :
         iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin)
     } else {
@@ -64,74 +69,70 @@ export class ContainerService {
 
             // dispatch an event depending on message
             switch (msg) {
-              case LuigiMessageID.CUSTOM_MESSAGE:
+              case LuigiInternalMessageID.CUSTOM_MESSAGE:
                 this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, event.data.data);
                 break;
-              // TODO: Handle on next iteration
-              case LuigiMessageID.GET_CONTEXT:
-                // target.postMessage({ msg: Events.GET_CONTEXT_REQUEST, context: targetCnt.context || {}, internal: {} }, '*');
-                this.dispatch(Events.GET_CONTEXT_REQUEST, targetCnt, event.data, (data: any) => {
-                  console.log('Callback called: Received data from Core sending inside MF', data);
-                  target.postMessage({ msg: LuigiMessageID.SEND_CONTEXT, context: data }, '*')
-                }, LuigiCoreApi.SEND_CONTEXT_TO_MICROFRONTEND);
+              case LuigiInternalMessageID.GET_CONTEXT:
+                // Automatically send 
+                target.postMessage({ msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE, context: targetCnt.context || {}, internal: {} }, '*');
                 break;
-              case LuigiMessageID.NAVIGATION_REQUEST:
+              case LuigiInternalMessageID.NAVIGATION_REQUEST:
                 this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
               // TODO 1: handle alerts with ids on next iteration
-              case LuigiMessageID.ALERT_REQUEST:
+              case LuigiInternalMessageID.ALERT_REQUEST:
                 this.dispatch(Events.ALERT_REQUEST, targetCnt, event.data.params);
                 break;
-              case LuigiMessageID.INITIALIZED:
+              case LuigiInternalMessageID.INITIALIZED:
                 this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
                 break;
-              case LuigiMessageID.ADD_SEARCH_PARAMS_REQUEST:
+              case LuigiInternalMessageID.ADD_SEARCH_PARAMS_REQUEST:
                 this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
-              case LuigiMessageID.ADD_NODE_PARAMS_REQUEST:
+              case LuigiInternalMessageID.ADD_NODE_PARAMS_REQUEST:
                 this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
                 break;
-              case LuigiMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
+              case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
                 this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
                 break;
-              case LuigiMessageID.SHOW_LOADING_INDICATOR_REQUEST:
+              case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
                 this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.HIDE_LOADING_INDICATOR_REQUEST:
+              case LuigiInternalMessageID.HIDE_LOADING_INDICATOR_REQUEST:
                 this.dispatch(Events.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.SET_CURRENT_LOCALE_REQUEST:
+              case LuigiInternalMessageID.SET_CURRENT_LOCALE_REQUEST:
                 this.dispatch(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.LOCAL_STORAGE_SET_REQUEST:
+              case LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST:
                 this.dispatch(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.RUNTIME_ERROR_HANDLING_REQUEST:
+              case LuigiInternalMessageID.RUNTIME_ERROR_HANDLING_REQUEST:
                 this.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.SET_ANCHOR_LINK_REQUEST:
+              case LuigiInternalMessageID.SET_ANCHOR_LINK_REQUEST:
                 this.dispatch(Events.SET_ANCHOR_LINK_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.SET_THIRD_PARTY_COOKIES_REQUEST:
+              case LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST:
                 this.dispatch(Events.SET_THIRD_PARTY_COOKIES_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.BACK_NAVIGATION_REQUEST:
+              case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
                 this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.GET_CURRENT_ROUTE_REQUEST:
+              case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
                 this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
                 break;
               // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
-              case LuigiMessageID.NAVIGATION_COMPLETED_REPORT:
+              case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
                 this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
                 break;
-              case LuigiMessageID.UPDATE_MODAL_PATH_DATA_REQUEST:
+              case LuigiInternalMessageID.UPDATE_MODAL_PATH_DATA_REQUEST:
                 this.dispatch(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.CHECK_PATH_EXISTS_REQUEST:
+              case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
                 this.dispatch(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event);
                 break;
-              case LuigiMessageID.SET_DIRTY_STATUS_REQUEST:
+              case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
                 this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
                 break;
               case 'luigi.third-party-cookie':
@@ -153,3 +154,5 @@ export class ContainerService {
     this.getContainerManager().container.push(container);
   }
 }
+
+export const containerService = new ContainerService();
