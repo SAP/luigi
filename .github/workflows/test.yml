@@ -74,6 +74,7 @@ jobs:
 
   whitesource:
     runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
     env:
       WHITESOURCE_APIKEY: ${{ secrets.WHITESOURCE_APIKEY }}
       WHITESOURCE_BASEURL: ${{ secrets.WHITESOURCE_BASEURL }}
