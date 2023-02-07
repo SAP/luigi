@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+      - 'main'
+      - 'main-gh_actions'
+jobs:
+  angular:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      -run: |
+        OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
+        RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
+        echo "$RES"
+        if [ $RES == 1 ]; then exit 0; else exit 1; fi
+  # vue:
+
+  # react:
+
+  # ui5:
+
+  # vanilla:
