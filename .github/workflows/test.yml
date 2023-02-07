@@ -9,6 +9,7 @@ env:
 
 jobs:
   clear_cache:
+    name: Clear Caches
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -33,6 +34,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   unit:
+    name: Precache and Unit Tests
     needs: clear_cache
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +57,25 @@ jobs:
       - run: lerna run build --ignore docs
       - run: npm test --prefix core
 
+  compatibility:
+    name: Compatibility Tests
+    runs-on: ubuntu-latest
+    needs: unit
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'    
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ./
+            ~/cypress-binary-cache
+          key: buildcache   
+      - run: bash ./scripts/testCompatibility.sh --tag latest
+
   e2e:
+    name: Integration Tests 1
     needs: unit
     runs-on: ubuntu-latest
     steps:
@@ -73,6 +93,7 @@ jobs:
       - run: bash ./test/e2e.sh
 
   whitesource:
+    name: Mend(Whitesource) Scan
     runs-on: ubuntu-latest
     if: github.ref_name == 'main'
     env:
@@ -97,6 +118,7 @@ jobs:
       - run: bash ./scripts/whiteSource.sh
 
   docu_check:
+    name: Check Documentation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
