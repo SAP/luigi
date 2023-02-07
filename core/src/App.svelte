@@ -2326,7 +2326,7 @@
     overflow: visible;
 
     :global(span) {
-      display: inline-block;
+      display: block;
       max-width: inherit;
       overflow: hidden;
       text-overflow: ellipsis;
