@@ -73,7 +73,6 @@ jobs:
       - run: bash ./test/e2e.sh
 
   whitesource:
-    needs: unit
     runs-on: ubuntu-latest
     env:
       WHITESOURCE_APIKEY: ${{ secrets.WHITESOURCE_APIKEY }}
