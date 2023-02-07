@@ -68,14 +68,12 @@ jobs:
           node-version: '14'    
       - uses: actions/cache@v3
         with:
-          path: |
-            ./
-            ~/cypress-binary-cache
+          path: ~/cypress-binary-cache
           key: buildcache   
       - run: bash ./scripts/testCompatibility.sh --tag latest
 
   e2e:
-    name: Integration Tests 1
+    name: Integration Tests
     needs: unit
     runs-on: ubuntu-latest
     steps:
