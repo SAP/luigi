@@ -165,7 +165,7 @@ checkoutLuigiToTestfolder() {
   # check if lfolder exists, else only walk into it
   if [ ! -d $LUIGI_DIR_TESTING ]; then
     echoe "Creating test folder"
-    if [ "$USER" == "travis" ]; then
+    if [ "$USER" == "travis" ] || [ "$CI" == "true" ]; then
       # travis
       gh repo clone https://github.com/SAP/luigi.git $LUIGI_DIR_TESTING
     else
