@@ -20,7 +20,7 @@ export default class LuigiContainer extends HTMLElement {
   webcomponent: boolean;
 
   /**
-   * Update the context of the microfrontend
+   * Updates the context of the microfrontend
    * @param contextObj The context object to be updated
    * @param internal internal microfrotend data
    */
