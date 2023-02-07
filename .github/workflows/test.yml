@@ -84,7 +84,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: sudo apt-get install python2
+      - run: sudo apt-get install python2 libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm --prefix ./client ci ./client
       - run: npm --prefix ./core ci ./core
       - run: npm --prefix ./website/landingpage/dev install ./website/landingpage/dev
