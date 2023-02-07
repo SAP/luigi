@@ -59,7 +59,6 @@
 
   const thisComponent: any = get_current_component();
 
-  console.log('this component', thisComponent.viewurl);
   thisComponent.iframeHandle = iframeHandle;
   let deferInit: boolean = !!thisComponent.attributes['defer-init'];
 

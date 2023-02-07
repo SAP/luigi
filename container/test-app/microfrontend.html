@@ -47,8 +47,9 @@
     <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
     <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
     <!-- TODO: Re-add when finishing implementation -->
-    <!-- <button onclick="testShowAlert()">test show alert</button>
-    <button onclick="testGetContext()">Get Context</button> -->
+    <!-- <button onclick="testShowAlert()">test show alert</button> -->
+    <button onclick="testGetContext()">Get Context</button>
+
     <button onclick="testSetCurrentLocale()">test set current locale</button>
     <button onclick="testSetLocalStorage()">test set local storage</button>
     <button onclick="testRuntimeErrorRequest()">test runtime error handling request</button>
@@ -108,9 +109,9 @@
     //   LuigiClient.uxManager().showAlert(settings);
     // }
 
-    // function testGetContext() {
-    //   console.log('getContext() called', LuigiClient.getContext());
-    // }
+    function testGetContext() {
+      alert('LuigiClient.getContext()() called' + JSON.stringify(LuigiClient.getContext()));
+    }
 
     function testSetCurrentLocale() {
       LuigiClient.uxManager().setCurrentLocale('en');

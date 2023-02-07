@@ -26,11 +26,13 @@
   <div class="flexCnt">
     <div id="col1">
       <ui5-button>Send random string</ui5-button>
+
       <luigi-container webcomponent="true" viewUrl="https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js">
       </luigi-container>
     </div>
     <div id="col2">
       <ui5-button>Send update</ui5-button>
+      <button>Update context</button>
       <luigi-container viewUrl="./microfrontend.html"> </luigi-container>
     </div>
   </div>
@@ -43,13 +45,18 @@
     const luigiCnt1 = document.querySelector('#col1 luigi-container');
     const btn2 = document.querySelector('#col2 ui5-button');
     const luigiCnt2 = document.querySelector('#col2 luigi-container');
+    const updateContextButton = document.querySelector('#col2 button');
 
     btn1.addEventListener('click', () => {
-      luigiCnt1.sendCustomMessage('update', { data: new Date().getMilliseconds(), id: 123 });
+      luigiCnt1.sendCustomMessage('update', 'data ' + new Date().getMilliseconds());
     });
 
     btn2.addEventListener('click', () => {
       luigiCnt2.sendCustomMessage('update');
+    });
+
+    updateContextButton.addEventListener('click', () => {
+      luigiCnt2.updateContext({ myContext: 'some context data' });
     });
 
     luigiCnt2.addEventListener(Events.CUSTOM_MESSAGE, event => {

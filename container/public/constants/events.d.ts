@@ -94,7 +94,4 @@ export namespace Events {
      * A message emmitted from the Microfrontend when a request to set the 'dirty status' (ex: avoid closing if usaved changes) is sent
      */
     export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
-
-
-    // TODO: ignore auth 
 }

@@ -73,7 +73,7 @@ export class ContainerService {
                 this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, event.data.data);
                 break;
               case LuigiInternalMessageID.GET_CONTEXT:
-                // Automatically send 
+                // Automatically send a luigi.init message to complete the initial handshake with the microfrontend
                 target.postMessage({ msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE, context: targetCnt.context || {}, internal: {} }, '*');
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
