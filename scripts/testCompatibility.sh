@@ -167,7 +167,7 @@ checkoutLuigiToTestfolder() {
     echoe "Creating test folder"
     if [ "$USER" == "travis" ]; then
       # travis
-      git clone https://github.com/SAP/luigi.git $LUIGI_DIR_TESTING
+      gh repo clone https://github.com/SAP/luigi.git $LUIGI_DIR_TESTING
     else
       # osx localhost
       git clone git@github.com:SAP/luigi.git $LUIGI_DIR_TESTING
