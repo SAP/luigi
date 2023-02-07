@@ -95,3 +95,14 @@ jobs:
       - run: npm --prefix ./website/landingpage/dev install ./website/landingpage/dev
       - run: npm --prefix ./website/fiddle install ./website/fiddle
       - run: bash ./scripts/whiteSource.sh
+
+  docu_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'       
+      - run: cd ./scripts && npm ci
+      - run: bash ./scripts/docuCheck.sh
+      
