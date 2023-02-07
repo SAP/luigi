@@ -74,6 +74,24 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+  mock_engine:
+    name: Mock Engine Tests
+    runs-on: ubuntu-latest
+    #needs: unit
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'    
+      # - uses: actions/cache@v3
+      #   with:
+      #     path: ~/cypress-binary-cache
+      #     key: buildcache   
+      - run: npm i -g cypress
+      - run: npm i -g lerna@4.0.0
+      - run: npm i -g live-server
+      - run: bash ./test/mockengine.sh
+
   e2e:
     name: Integration Tests
     needs: unit
