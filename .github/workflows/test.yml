@@ -31,6 +31,7 @@ jobs:
           echo "Done"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   unit:
     needs: clear_cache
     runs-on: ubuntu-latest
@@ -53,10 +54,14 @@ jobs:
       - run: lerna run bundlesizeOnly --ignore docs
       - run: lerna run build --ignore docs
       - run: npm test --prefix core
+
   e2e:
     needs: unit
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
       - uses: actions/cache@v3
         with:
           path: |
@@ -66,4 +71,27 @@ jobs:
       - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: bash ./test/e2e.sh
-      #- run: ls -l ~/cypress-binary-cache
+
+  whitesource:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    env:
+      WHITESOURCE_APIKEY: ${{ secrets.WHITESOURCE_APIKEY }}
+      WHITESOURCE_BASEURL: ${{ secrets.WHITESOURCE_BASEURL }}
+      WHITESOURCE_PRODUCT_TOKEN: ${{ secrets.WHITESOURCE_PRODUCT_TOKEN }}
+      WHITESOURCE_USER_TOKEN: ${{ secrets.WHITESOURCE_USER_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - uses: actions/cache@v3
+        with:
+          path: .cache
+          key: whitesource_cache          
+      - run: sudo apt-get install build-essential python2 libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run: npm --prefix ./client ci ./client
+      - run: npm --prefix ./core ci ./core
+      - run: npm --prefix ./website/landingpage/dev install ./website/landingpage/dev
+      - run: npm --prefix ./website/fiddle install ./website/fiddle
+      - run: bash ./scripts/whiteSource.sh
