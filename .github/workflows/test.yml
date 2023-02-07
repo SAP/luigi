@@ -71,6 +71,8 @@ jobs:
           path: ~/cypress-binary-cache
           key: buildcache   
       - run: bash ./scripts/testCompatibility.sh --tag latest
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   e2e:
     name: Integration Tests
