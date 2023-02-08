@@ -1,8 +1,6 @@
-on:
-  push:
-    branches:
-      - 'main'
-      - 'main-gh_actions'
+on:   
+  schedule:
+    - cron: "0 6 * * 1"
 
 jobs:
   angular:
