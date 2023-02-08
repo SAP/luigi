@@ -1,5 +1,5 @@
 on: workflow_dispatch
-
+name: Publish Create React App (CRA) template
 jobs:
   publish:
     runs-on: ubuntu-latest

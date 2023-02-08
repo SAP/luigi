@@ -5,7 +5,7 @@ on:
         type: string
         required: true
         description: e.g. 2.0.0-rc1
-        
+name: Publish RC Release   
 env:
   NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
   NIGHTLY_VERSION: ${{ inputs.NIGHTLY_VERSION }}
