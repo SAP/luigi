@@ -25,7 +25,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ./luigi/luigi
+            ./
             ~/cypress-binary-cache
           key: buildcache
       - run: npm test --prefix core
