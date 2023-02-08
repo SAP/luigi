@@ -28,10 +28,11 @@ jobs:
           path: |
             ./
             ~/cypress-binary-cache
-          key: buildcache  
+          key: compat_buildcache  
       - run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
+          git fetch --all
           git --version
       - run: bash ./scripts/testCompatibility.sh --tag latest
         env:
