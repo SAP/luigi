@@ -1,0 +1,39 @@
+on:
+  push:
+    branches:
+      - 'main'
+      - 'main-gh_actions'
+
+env:
+  CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  prepare: 
+    uses: ./.github/workflows/prepare.yml
+    with: 
+      buildcache_key: compat_buildcache
+    secrets: inherit
+
+  compatibility:
+    name: Compatibility Tests
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'    
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/tmp_build
+            ~/cypress-binary-cache
+          key: compat_buildcache  
+      - run: cp -r ~/tmp_build/* .
+      # - run: npm i -g lerna
+      # - run: lerna bootstrap --ci --force-local --ignore docs
+      # - run: lerna run bundle --ignore docs --scope luigi-client-private
+      # - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
+      #- run: lerna run bundle --ignore docs
+      - run: bash ./scripts/testCompatibility.sh --tag latest

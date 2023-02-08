@@ -8,54 +8,118 @@ env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
 
 jobs:
-  clear_cache:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - run: |
-          gh extension install actions/gh-actions-cache
-          
-          REPO=${{ github.repository }}
-          BRANCH=${{ github.ref_name }}
-
-          echo "Fetching list of cache key"
-          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
-
-          ## Setting this to not fail the workflow while deleting cache keys. 
-          set +e
-          echo "Deleting caches..."
-          for cacheKey in $cacheKeysForPR
-          do
-              gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
-          done
-          echo "Done"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  prepare: 
+    uses: ./.github/workflows/prepare.yml
+    secrets: inherit
+    with:
+      buildcache_key: buildcache
 
   unit:
-    needs: clear_cache
+    name: Unit Tests
+    needs: prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
       - uses: actions/cache@v3
         with:
           path: |
-            ./
+            ~/tmp_build
             ~/cypress-binary-cache
           key: buildcache
-      - run: npm i -g lerna
-      - run: lerna bootstrap --ci --force-local --ignore docs
-      - run: lerna run bundle --ignore docs --scope luigi-client-private
-      - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
-      - run: lerna run bundle --ignore docs
-      - run: lerna run bundlesizeOnly --ignore docs
-      - run: lerna run build --ignore docs
+      - run: cp -r ~/tmp_build/* .
       - run: npm test --prefix core
 
+  # clear_cache:
+  #   name: Clear Caches
+  #   runs-on: ubuntu-latest
+  #   continue-on-error: true
+  #   steps:
+  #     - run: |
+  #         gh extension install actions/gh-actions-cache
+          
+  #         REPO=${{ github.repository }}
+  #         BRANCH=${{ github.ref_name }}
+
+  #         echo "Fetching list of cache key"
+  #         cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
+
+  #         ## Setting this to not fail the workflow while deleting cache keys. 
+  #         set +e
+  #         echo "Deleting caches..."
+  #         for cacheKey in $cacheKeysForPR
+  #         do
+  #             gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+  #         done
+  #         echo "Done"
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # unit:
+  #   name: Precache and Unit Tests
+  #   needs: clear_cache
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '16'
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           ./luigi/luigi
+  #           ~/cypress-binary-cache
+  #         key: buildcache
+  #     - run: npm i -g lerna
+  #     - run: lerna bootstrap --ci --force-local --ignore docs
+  #     - run: lerna run bundle --ignore docs --scope luigi-client-private
+  #     - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
+  #     - run: lerna run bundle --ignore docs
+  #     - run: lerna run bundlesizeOnly --ignore docs
+  #     - run: lerna run build --ignore docs
+  #     - run: npm test --prefix core
+
+  # compatibility:
+  #   name: Compatibility Tests
+  #   runs-on: ubuntu-latest
+  #   needs: unit
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '14'    
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: ~/cypress-binary-cache
+  #         key: buildcache   
+  #     - run: bash ./scripts/testCompatibility.sh --tag latest
+  #       env:
+  #         GH_TOKEN: ${{ github.token }}
+
+  mock_engine:
+    name: Mock Engine Tests
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'    
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/tmp_build
+            ~/cypress-binary-cache
+          key: buildcache
+      - run: cp -r ~/tmp_build/* . 
+      - run: npm i -g cypress
+      - run: npm i -g lerna@4.0.0
+      - run: npm i -g live-server
+      - run: bash ./test/mockengine.sh
+
   e2e:
+    name: Integration Tests
     needs: unit
     runs-on: ubuntu-latest
     steps:
@@ -65,14 +129,16 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ./
+            ~/tmp_build
             ~/cypress-binary-cache
           key: buildcache
+      - run: cp -r ~/tmp_build/* .
       - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: bash ./test/e2e.sh
 
   whitesource:
+    name: Mend(Whitesource) Scan
     runs-on: ubuntu-latest
     if: github.ref_name == 'main'
     env:
@@ -95,3 +161,15 @@ jobs:
       - run: npm --prefix ./website/landingpage/dev install ./website/landingpage/dev
       - run: npm --prefix ./website/fiddle install ./website/fiddle
       - run: bash ./scripts/whiteSource.sh
+
+  docu_check:
+    name: Check Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'       
+      - run: cd ./scripts && npm ci
+      - run: bash ./scripts/docuCheck.sh
+      
