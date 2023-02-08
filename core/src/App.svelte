@@ -2146,7 +2146,6 @@
       var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
         var(--luigi__horizontal-nav--height)
     );
-    border: 1px solid red;
   }
   .iframeContainer,
   .spinnerContainer {
