@@ -1,9 +1,7 @@
-on:
-  push:
-    branches:
-      - 'main'
-      - 'main-gh_actions'
-
+on:   
+  schedule:
+    - cron: "0 6 * * 1"
+name: Test Setup Scripts
 jobs:
   angular:
     runs-on: ubuntu-latest
