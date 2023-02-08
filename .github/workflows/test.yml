@@ -25,9 +25,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/work
+            ~/tmp_build
             ~/cypress-binary-cache
           key: buildcache
+      - run: cp -r ~/tmp_build/* .
       - run: npm test --prefix core
 
   # clear_cache:
@@ -108,9 +109,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/work
+            ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache   
+          key: buildcache
+      - run: cp -r ~/tmp_build/* . 
       - run: npm i -g cypress
       - run: npm i -g lerna@4.0.0
       - run: npm i -g live-server
@@ -127,9 +129,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ./luigi/luigi
+            ~/tmp_build
             ~/cypress-binary-cache
           key: buildcache
+      - run: cp -r ~/tmp_build/* .
       - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: bash ./test/e2e.sh
