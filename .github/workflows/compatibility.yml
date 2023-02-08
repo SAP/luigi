@@ -9,21 +9,21 @@ env:
   GH_TOKEN: ${{ github.token }}
 
 jobs:
-  prepare: 
-    uses: ./.github/workflows/prepare.yml
-    with: 
-      buildcache_key: compat_buildcache
-    secrets: inherit
+  # prepare: 
+  #   uses: ./.github/workflows/prepare.yml
+  #   with: 
+  #     buildcache_key: compat_buildcache
+  #   secrets: inherit
 
   compatibility:
     name: Compatibility Tests
-    needs: prepare
+    #needs: prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'    
+          node-version: '16'    
       # - uses: actions/cache@v3
       #   with:
       #     path: |
