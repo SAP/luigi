@@ -18,7 +18,7 @@ As of v2.0, Luigi will no longer be able to support the Internet Explorer 11 bro
 
 #### Updating to Angular 14 and 15 
 
-Luigi v2.0 will no longer be able to support Angular versions 13 or below. The [Luigi Angular support library](https://github.com/SAP/luigi/tree/master/client-frameworks-support/client-support-angular/projects/client-support-angular) can now be used with Angular 14 or 15 instead. You can read about how to update your Angular version [here](https://angular.io/guide/updating). 
+Luigi v2.0 will no longer be able to support Angular versions 13 or below. The [Luigi Angular support library](https://docs.luigi-project.io/docs/framework-support-libraries) can now be used with Angular 14 or 15 instead. You can read about how to update your Angular version [here](https://angular.io/guide/updating). 
 
 #### Renaming GitHub branch to `main`
 
@@ -32,5 +32,5 @@ git branch -u upstream/main main
 
 #### Bugfixes
 
-For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/master/CHANGELOG.md).
+For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/main/CHANGELOG.md).
 
