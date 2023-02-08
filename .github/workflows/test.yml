@@ -9,7 +9,7 @@ env:
 
 jobs:
   prepare: 
-    uses: ./prepare.yml
+    uses: ./.github/workflows/prepare.yml
     secrets: inherit
 
   unit:
@@ -27,7 +27,7 @@ jobs:
             ~/cypress-binary-cache
           key: buildcache
       - run: npm test --prefix core
-      
+
   # clear_cache:
   #   name: Clear Caches
   #   runs-on: ubuntu-latest
