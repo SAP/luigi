@@ -6,6 +6,7 @@ on:
 
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+  GH_TOKEN: ${{ github.token }}
 
 jobs:
   # prepare: 
@@ -35,5 +36,3 @@ jobs:
           git fetch --all
           git --version
       - run: bash ./scripts/testCompatibility.sh --tag latest
-        env:
-          GH_TOKEN: ${{ github.token }}
