@@ -165,11 +165,13 @@ checkoutLuigiToTestfolder() {
   # check if lfolder exists, else only walk into it
   if [ ! -d $LUIGI_DIR_TESTING ]; then
     echoe "Creating test folder"
-    if [ "$USER" == "travis" ] || [ "$CI" == "true" ]; then
-      # travis
+    if [ "$CI" == "true" ]; then
+      # gh actions
+      echoe "Clone using gh cli"
       gh repo clone https://github.com/SAP/luigi.git $LUIGI_DIR_TESTING
     else
       # osx localhost
+      echoe "Clone using ssh"
       git clone git@github.com:SAP/luigi.git $LUIGI_DIR_TESTING
     fi
   fi
