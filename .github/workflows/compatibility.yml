@@ -34,5 +34,5 @@ jobs:
       # - run: lerna bootstrap --ci --force-local --ignore docs
       # - run: lerna run bundle --ignore docs --scope luigi-client-private
       # - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
-      # - run: lerna run bundle --ignore docs
+      - run: lerna run bundle --ignore docs
       - run: bash ./scripts/testCompatibility.sh --tag latest
