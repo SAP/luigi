@@ -8,15 +8,15 @@ env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
 
 jobs:
-  prepare: 
-    uses: ./.github/workflows/prepare.yml
-    with: 
-      buildcache_key: compat_buildcache
-    secrets: inherit
+  # prepare: 
+  #   uses: ./.github/workflows/prepare.yml
+  #   with: 
+  #     buildcache_key: compat_buildcache
+  #   secrets: inherit
 
   compatibility:
     name: Compatibility Tests
-    needs: prepare
+    #needs: prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,6 +32,7 @@ jobs:
       - run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
+          git --version
       - run: bash ./scripts/testCompatibility.sh --tag latest
         env:
           GH_TOKEN: ${{ github.token }}
