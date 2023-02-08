@@ -11,6 +11,8 @@ jobs:
   prepare: 
     uses: ./.github/workflows/prepare.yml
     secrets: inherit
+    with:
+      buildcache_key: buildcache
 
   unit:
     name: Unit Tests

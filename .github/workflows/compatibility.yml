@@ -10,6 +10,8 @@ env:
 jobs:
   prepare: 
     uses: ./.github/workflows/prepare.yml
+    with: 
+      buildcache_key: compat_buildcache
     secrets: inherit
 
   compatibility:
