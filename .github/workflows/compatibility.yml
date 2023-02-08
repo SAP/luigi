@@ -30,8 +30,8 @@ jobs:
             ~/cypress-binary-cache
           key: compat_buildcache  
       - run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git fetch --all
           git --version
       - run: bash ./scripts/testCompatibility.sh --tag latest
