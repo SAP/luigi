@@ -29,6 +29,9 @@ jobs:
             ./
             ~/cypress-binary-cache
           key: buildcache  
+      - run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
       - run: bash ./scripts/testCompatibility.sh --tag latest
         env:
           GH_TOKEN: ${{ github.token }}
