@@ -34,6 +34,7 @@ jobs:
           key: buildcache-rc
       - run: cp -r ~/tmp_build/* .
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+      - run: cat ~/.npmrc
       - run: cd ./scripts && npm ci
       - run: cd ./scripts && NIGHTLY=true npm run release
       - run: cd ./scripts && npm run publish:nightly
