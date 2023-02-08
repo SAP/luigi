@@ -1,5 +1,5 @@
 on: workflow_call
-
+name: Common
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
 
@@ -30,7 +30,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   precache:
-    name: Precache
+    name: Build and Cache
     needs: clear_cache
     runs-on: ubuntu-latest
     steps:

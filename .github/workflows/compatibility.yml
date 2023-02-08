@@ -1,0 +1,30 @@
+on:
+  push:
+    branches:
+      - 'main'
+      - 'main-gh_actions'
+
+env:
+  CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+
+jobs:
+  prepare: 
+    uses: ./.github/workflows/prepare.yml
+    secrets: inherit
+
+  compatibility:
+    name: Compatibility Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'    
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ./
+            ~/cypress-binary-cache
+          key: buildcache  
+      - run: bash ./scripts/testCompatibility.sh --tag latest
+        env:
+          GH_TOKEN: ${{ github.token }}
