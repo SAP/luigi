@@ -30,10 +30,9 @@ jobs:
       #       ./
       #       ~/cypress-binary-cache
       #     key: compat_buildcache  
-      - run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git fetch --all
-          git --version
-          git status
+      - run: npm i -g lerna
+      - run: lerna bootstrap --ci --force-local --ignore docs
+      - run: lerna run bundle --ignore docs --scope luigi-client-private
+      - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
+      - run: lerna run bundle --ignore docs
       - run: bash ./scripts/testCompatibility.sh --tag latest
