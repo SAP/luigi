@@ -27,7 +27,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/work
+            ~/
             ~/cypress-binary-cache
           key: compat_buildcache  
       # - run: npm i -g lerna

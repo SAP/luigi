@@ -48,8 +48,8 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/work/*
-            !~/work/.git
+            ~/
+            !~/.*
             ~/cypress-binary-cache
           key: ${{ inputs.buildcache_key }}
       - run: npm i -g lerna
