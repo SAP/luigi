@@ -48,7 +48,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ./
+            ./luigi/luigi
             ~/cypress-binary-cache
           key: ${{ inputs.buildcache_key }}
       - run: npm i -g lerna
