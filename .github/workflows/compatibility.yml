@@ -35,4 +35,5 @@ jobs:
           git config user.email github-actions@github.com
           #git fetch --all
           git --version
+          git status
       - run: bash ./scripts/testCompatibility.sh --tag latest
