@@ -33,7 +33,7 @@ jobs:
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          #git fetch --all
+          git fetch --all
           git --version
           git status
       - run: bash ./scripts/testCompatibility.sh --tag latest
