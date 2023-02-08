@@ -8,37 +8,15 @@ env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
 
 jobs:
-  clear_cache:
-    name: Clear Caches
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - run: |
-          gh extension install actions/gh-actions-cache
-          
-          REPO=${{ github.repository }}
-          BRANCH=${{ github.ref_name }}
-
-          echo "Fetching list of cache key"
-          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
-
-          ## Setting this to not fail the workflow while deleting cache keys. 
-          set +e
-          echo "Deleting caches..."
-          for cacheKey in $cacheKeysForPR
-          do
-              gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
-          done
-          echo "Done"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  prepare: 
+    uses: ./prepare.yml
+    secrets: inherit
 
   unit:
-    name: Precache and Unit Tests
-    needs: clear_cache
+    name: Unit Tests
+    needs: prepare
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
@@ -48,14 +26,56 @@ jobs:
             ./
             ~/cypress-binary-cache
           key: buildcache
-      - run: npm i -g lerna
-      - run: lerna bootstrap --ci --force-local --ignore docs
-      - run: lerna run bundle --ignore docs --scope luigi-client-private
-      - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
-      - run: lerna run bundle --ignore docs
-      - run: lerna run bundlesizeOnly --ignore docs
-      - run: lerna run build --ignore docs
       - run: npm test --prefix core
+      
+  # clear_cache:
+  #   name: Clear Caches
+  #   runs-on: ubuntu-latest
+  #   continue-on-error: true
+  #   steps:
+  #     - run: |
+  #         gh extension install actions/gh-actions-cache
+          
+  #         REPO=${{ github.repository }}
+  #         BRANCH=${{ github.ref_name }}
+
+  #         echo "Fetching list of cache key"
+  #         cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
+
+  #         ## Setting this to not fail the workflow while deleting cache keys. 
+  #         set +e
+  #         echo "Deleting caches..."
+  #         for cacheKey in $cacheKeysForPR
+  #         do
+  #             gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+  #         done
+  #         echo "Done"
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # unit:
+  #   name: Precache and Unit Tests
+  #   needs: clear_cache
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '16'
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: |
+  #           ./
+  #           ~/cypress-binary-cache
+  #         key: buildcache
+  #     - run: npm i -g lerna
+  #     - run: lerna bootstrap --ci --force-local --ignore docs
+  #     - run: lerna run bundle --ignore docs --scope luigi-client-private
+  #     - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
+  #     - run: lerna run bundle --ignore docs
+  #     - run: lerna run bundlesizeOnly --ignore docs
+  #     - run: lerna run build --ignore docs
+  #     - run: npm test --prefix core
 
   compatibility:
     name: Compatibility Tests
