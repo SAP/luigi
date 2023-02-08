@@ -24,12 +24,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'    
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ./
-            ~/cypress-binary-cache
-          key: compat_buildcache  
+      # - uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       ./
+      #       ~/cypress-binary-cache
+      #     key: compat_buildcache  
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
