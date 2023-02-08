@@ -9,27 +9,27 @@ env:
   GH_TOKEN: ${{ github.token }}
 
 jobs:
-  # prepare: 
-  #   uses: ./.github/workflows/prepare.yml
-  #   with: 
-  #     buildcache_key: compat_buildcache
-  #   secrets: inherit
+  prepare: 
+    uses: ./.github/workflows/prepare.yml
+    with: 
+      buildcache_key: compat_buildcache
+    secrets: inherit
 
   compatibility:
     name: Compatibility Tests
-    #needs: prepare
+    needs: prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '14'    
-      # - uses: actions/cache@v3
-      #   with:
-      #     path: |
-      #       ./
-      #       ~/cypress-binary-cache
-      #     key: compat_buildcache  
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ./
+            ~/cypress-binary-cache
+          key: compat_buildcache  
       - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
