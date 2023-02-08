@@ -48,8 +48,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/
-            !~/.*
+            ~/tmp_build
             ~/cypress-binary-cache
           key: ${{ inputs.buildcache_key }}
       - run: npm i -g lerna
@@ -59,3 +58,6 @@ jobs:
       - run: lerna run bundle --ignore docs
       - run: lerna run bundlesizeOnly --ignore docs
       - run: lerna run build --ignore docs
+      - run: pwd
+      - run: cp . ~/tmp_build
+      - run: ls -l ~/tmp_build

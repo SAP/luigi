@@ -1,0 +1,17 @@
+on: workflow_dispatch
+env:
+  NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+      - run: cd ./scripts && npm ci
+      - run: cd ./scripts && NIGHTLY=true npm run release
+      - run: cd ./scripts && npm run publish:nightly
+      - run: echo "" > ~/.npmrc
