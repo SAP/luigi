@@ -54,6 +54,7 @@ describe('Navigation', () => {
 
     it('Fill Account, Language and Region, Privacy, should have placeholder', () => {
       //Click on User Account
+      cy.get('#justatest').should('exist');
       cy.get('[data-testid="us-navigation-item"]')
         .eq(0)
         .click();
