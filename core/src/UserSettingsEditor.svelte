@@ -222,7 +222,6 @@
 <div class="lui-usersettings-content">
   {#if userSettingGroup && userSettingGroup[0] && userSettingGroup[1]}
     {#if userSettingGroup[1].settings}
-      <button id="justatest">Just a test</button>
       <div class="fd-page__content">
         <div class="fd-container fd-form-layout-grid-container">
           {#each Object.entries(userSettingGroup[1].settings) as [key, schemaItem], index}
