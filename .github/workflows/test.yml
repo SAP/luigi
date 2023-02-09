@@ -6,7 +6,7 @@ on:
   pull_request:
     branches:
       - 'main'
-name: Testing
+name: Build & Test
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
 
