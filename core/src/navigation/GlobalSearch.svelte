@@ -240,7 +240,7 @@
         {#if search && search.disableInputHandlers}
           <input
             type="text"
-            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input__no-handlers"
             autofocus
           />
@@ -248,7 +248,7 @@
           <input
             type="text"
             on:keyup={event => onKeyUp(event)}
-            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input"
             autofocus
             bind:this={inputElem}
@@ -310,7 +310,7 @@
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
   <div on:click|stopPropagation={() => {}}>
     <button
-      class="fd-button fd-shellbar__button"
+      class="fd-button fd-button--transparent fd-shellbar__button"
       aria-haspopup="true"
       aria-expanded={!isSearchFieldVisible}
       on:click={toggleSearch}

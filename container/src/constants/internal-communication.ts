@@ -11,6 +11,7 @@ export namespace LuigiInternalMessageID {
      * A message sent to the microfrontend from parent with the context upon init 
      */
     export const SEND_CONTEXT_HANDSHAKE = 'luigi.init';
+    
     /** 
      * A message sent from the Microfrontend when the context data has been received properly
      */
