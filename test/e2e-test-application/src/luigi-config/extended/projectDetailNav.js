@@ -239,10 +239,7 @@ export const projectDetailNavStructure = projectId => [
             buttonConfirm: 'Yes',
             buttonDismiss: 'No'
           };
-          return Luigi.showConfirmationModal(settings).then(
-            () => true,
-            () => false
-          );
+          return Luigi.showConfirmationModal(settings).then(() => true, () => false);
         }
       }
     ]
