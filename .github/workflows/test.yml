@@ -3,6 +3,9 @@ on:
     branches:
       - 'main'
       - 'main-gh_actions'
+  pull_request:
+    branches:
+      - 'main'
 name: Testing
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
