@@ -208,6 +208,7 @@
     __this.set(leftNavData);
     previousPathData = pathData;
     window.LEFTNAVDATA = leftNavData.children;
+    console.log('RC2.0.0.8');
   };
 
   onMount(() => {
@@ -987,7 +988,6 @@
   @import 'src/styles/_mixins.scss';
   @import 'src/styles/_variables.scss';
 
-
   :root {
     /* needed for IE11 support */
     --fd-color-neutral-2: #eeeeef;
@@ -1383,7 +1383,6 @@
       max-height: 190px;
       overflow-y: auto;
     }
-
 
     &.has-bottom-position {
       .lui-flyout-sublist__wrapper {

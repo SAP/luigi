@@ -91,6 +91,7 @@ class LifecycleManager extends LuigiClientBase {
       helpers.setLuigiCoreDomain(e.origin);
       this.luigiInitialized = true;
       this._notifyInit(e.origin);
+      console.log('RC2.0.0.8');
       helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
     });
 

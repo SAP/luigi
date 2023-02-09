@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   constructor(private luigiService: LuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) {}
 
   ngOnInit() {
+    console.log('RC2.0.0.8');
     addInitListener(context => {
       this.onLuigiContext('init', context);
       this.luigiAutoNav.init();

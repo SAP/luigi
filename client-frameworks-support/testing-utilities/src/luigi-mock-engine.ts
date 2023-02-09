@@ -31,6 +31,7 @@ export class LuigiMockEngine {
 
         (window as any).luigiMockEnvironment = {
           msgListener: function(e: any) {
+            console.log('RC2.0.0.8');
             if (e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage')) {
               console.debug('Luigi msg', e.data);
 

@@ -43,7 +43,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
    */
   doSubscription(event: NavigationEnd): void {
     let current: ActivatedRouteSnapshot | null = LuigiActivatedRouteSnapshotHelper.getCurrent();
-
+    console.log('RC2.0.0.8');
     if (!current) {
       current = this.router.routerState.root.snapshot;
       while (current?.children?.length > 0) {

@@ -11,6 +11,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     addInitListener(() => {
+      console.log('RC2.0.0.8');
       console.log('Luigi Client initialized.');
     });
   }
