@@ -57,7 +57,7 @@ jobs:
 
   e2e:
     name: Integration Tests
-    needs: unit
+    needs: prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v3
