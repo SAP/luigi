@@ -2069,7 +2069,34 @@
     margin: 0;
     line-height: 1.42857;
     overflow: hidden;
+    background-color: var(--sapBackgroundColor);
   }
+
+  :global(.fioriScrollbars) {
+    scrollbar-color: var(--sapScrollBar_FaceColor) var(--sapScrollBar_TrackColor);
+    & :global(::-webkit-scrollbar:horizontal) {
+        height: var(--sapScrollBar_Dimension);
+    }
+    & :global(::-webkit-scrollbar:vertical) {
+        width: var(--sapScrollBar_Dimension);
+    }
+    & :global(::-webkit-scrollbar) {
+        background-color: var(--sapScrollBar_TrackColor);
+    }
+    & :global(::-webkit-scrollbar-thumb) {
+        background-color: var(--sapScrollBar_FaceColor);
+    }
+    & :global(::-webkit-scrollbar-thumb:hover) {
+        background-color: var(--sapScrollBar_Hover_FaceColor);
+    }
+    & :global(::-webkit-scrollbar-corner) {
+        background-color: var(--sapScrollBar_TrackColor);
+    }
+    & :global(::-webkit-scrollbar-thumb) {
+        border-radius: var(--sapElement_BorderCornerRadius);
+    }
+  }
+
   :global(*) {
     box-sizing: inherit;
   }
@@ -2297,6 +2324,14 @@
     padding: 0 0.625rem;
     text-decoration: none;
     max-width: var(--luigi__app-title--width);
+    overflow: visible;
+
+    :global(span) {
+      display: block;
+      max-width: inherit;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   :global(.lui-app-switch) {

@@ -101,7 +101,7 @@
         <div class="fd-popover fd-popover--right">
           <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
             <button
-              class="fd-button fd-button--transparent fd-product-switch__control"
+              class="fd-button fd-button--transparent fd-shellbar__button fd-product-switch__control"
               aria-expanded={dropDownStates.productSwitcherPopover || false}
               aria-haspopup="true"
               on:click|stopPropagation={toggleDropdownState}

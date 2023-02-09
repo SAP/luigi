@@ -60,10 +60,10 @@
   });
 
   function getCustomRenderer() {
-    isCustomSearchRenderer = GenericHelpers.isFunction(
+    isCustomSearchRenderer = search.searchProvider && GenericHelpers.isFunction(
       search.searchProvider.customSearchResultRenderer
     );
-    isCustomSearchResultItemRenderer = GenericHelpers.isFunction(
+    isCustomSearchResultItemRenderer = search.searchProvider && GenericHelpers.isFunction(
       search.searchProvider.customSearchResultItemRenderer
     );
   }
@@ -265,7 +265,7 @@
 >
   <div class="fd-popover">
     <div
-      class="fd-popover__control luigi-search"
+      class="fd-popover__control luigi-search fd-shellbar__group"
       on:click|stopPropagation={() => {}}
       aria-hidden={!isSearchFieldVisible}
       aria-haspopup="true"
@@ -276,7 +276,7 @@
         {#if search && search.disableInputHandlers}
           <input
             type="text"
-            class="fd-input fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input__no-handlers"
           />
         {:else}
@@ -284,7 +284,7 @@
             type="text"
             on:keyup={event => onKeyUp(event)}
             class="fd-input
-        fd-input-group__input fd-shellbar__input-group__input luigi-search__input"
+        fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input"
             bind:this={inputElem}
             on:input={() => renderClearBtn()}
@@ -295,15 +295,15 @@
             {#if displayClearSearchFieldBtn}
               <button
                 aria-label="button-decline"
-                class="fd-shellbar__button fd-button"
+                class="fd-shellbar__button fd-button fd-button--transparent"
                 on:click={clearSearchField}
               >
-                <i class="sap-icon--decline" />
+                <i class="sap-icon--decline lui-clear-search" />
               </button>
             {/if}
             <button
               aria-label="button-search"
-              class="fd-shellbar__button fd-button"
+              class="fd-shellbar__button fd-button fd-button--transparent lui-search-btn"
               on:click={searchBtnClicked}
             >
               <i class="sap-icon--search" />
@@ -365,9 +365,9 @@
 </div>
 {#if !isSearchFieldVisible}
   <div class="lui-global-search-btn">
-    <div on:click|stopPropagation={() => {}}>
+    <div class="fd-shellbar__group" on:click|stopPropagation={() => {}}>
       <button
-        class="fd-button fd-shellbar__button"
+        class="fd-button fd-button--transparent fd-shellbar__button"
         aria-haspopup="true"
         aria-expanded={!isSearchFieldVisible}
         on:click={toggleSearch}
@@ -380,12 +380,12 @@
 {/if}
 {#if isSearchFieldVisible}
   <div
-    class="lui-global-search-cancel-btn {isSearchFieldVisible
+    class="fd-shellbar__group lui-global-search-cancel-btn {isSearchFieldVisible
       ? 'lui-global-search-cancel-btn--active'
       : ''}"
   >
     <button
-      class="fd-button fd-shellbar__button"
+      class="fd-button fd-button--transparent fd-shellbar__button"
       aria-haspopup="true"
       aria-expanded={!isSearchFieldVisible}
       on:click|stopPropagation={() => toggleSearch()}
@@ -414,6 +414,7 @@
     .fd-button,
     .luigi-search__input {
       height: 2rem;
+      min-height: 2rem;
     }
 
     .fd-input-group__addon,
@@ -433,6 +434,11 @@
 
   .luigi-search__input:hover + .fd-input-group__addon--button {
     background-color: var(--sapShell_Hover_Background, #283848) !important;
+  }
+
+  .lui-clear-search {
+    top: -1px;
+    position: relative;
   }
 
   :global(.lui-global-search) {
@@ -485,14 +491,18 @@
     display: inline-block;
   }
 
-  div.luigi-search-input-ctn:focus-within {
+  div.luigi-search-input-ctn .lui-search-btn {
+    border-radius: var(--fdShellbar_Input_Border_Radius);
+  }
+
+  .lui-global-search-input .fd-shellbar__group div.luigi-search-input-ctn:focus-within {
     -webkit-box-shadow: none;
     box-shadow: none;
     outline-offset: -0.1875rem;
     outline-width: 0.0625rem;
     outline-width: var(--sapContent_FocusWidth, 0.0625rem);
     outline-color: #fff;
-    outline-color: var(--sapContent_ContrastFocusColor, #fff);
+    outline-color: var(--fdShellbar_Button_Outline_Color, #fff);
     outline-style: dotted;
     outline-style: var(--sapContent_FocusStyle, dotted);
   }
