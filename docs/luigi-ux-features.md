@@ -62,12 +62,6 @@ You can quickly adjust the Luigi application to improve user experience on mobil
   --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
 }
 ```
-* It should have the same value as the height of the horizontal navigation. This variable is used to calculate the `top` value of the main iframe container when `tabNav` and `breadcrumbs` are configured. The default value is `--luigi__horizontal-nav--height: 2.75rem`.
-```html
-:root{
-  --luigi__horizontal-nav--height: yourCustomHorizontalNavHight
-}
-```
 
 * Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes. 
 
