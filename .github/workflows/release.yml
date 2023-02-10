@@ -34,4 +34,5 @@ jobs:
             ~/cypress-binary-cache
           key: buildcache-release
       - run: cp -r ~/tmp_build/* .
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
       - run: bash ./scripts/npmPublish.sh
