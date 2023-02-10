@@ -124,14 +124,7 @@ elif [ "$1" = "luigi-container-release" ]; then
   checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
   publishPackage "container" "container/public"
 else
-  # Luigi Client & Core
   prepublishChecks
-  checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
-  publishPackage "core" "core/public"
-
-  checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
-  publishPackage "client" "client/public"
-
   # Luigi OAuth Plugin
   if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
     checkRequiredFiles "plugins/auth/public/auth-oauth2" "plugin.js" "README.md"
@@ -155,6 +148,13 @@ else
     checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
     publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
   fi
+  
+  # Luigi Client & Core
+  checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
+  publishPackage "core" "core/public"
+
+  checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
+  publishPackage "client" "client/public"
 fi
 
 
