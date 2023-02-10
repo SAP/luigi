@@ -2,6 +2,11 @@ on:
   push:
     tags:
       - 'v**'
+  workflow_dispatch:
+    inputs:
+      buildAllPackages:
+        type: boolean
+        required: false
 name: Release   
 env:
   NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
