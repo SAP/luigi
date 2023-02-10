@@ -28,7 +28,9 @@ function prepublishChecks {
   CLIENT_VERSION=$(node -p "require('./package.json').version")
   cd $BASE_DIR/../core/public
   CORE_VERSION=$(node -p "require('./package.json').version")
-
+  
+  echoe "Core Version: $CORE_VERSION, Client Version: $CLIENT_VERSION, Base Dir: $BASE_DIR"
+  
   if [ "$CORE_VERSION" != "$CLIENT_VERSION" ]; then
     echoe "Version mismatch between Client and Core."
     exit 1
