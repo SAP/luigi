@@ -1,5 +1,6 @@
 <script>
   import { NavigationHelpers } from '../utilities/helpers';
+  import StatusBadge from './StatusBadge.svelte';
   import { LuigiI18N } from '../core-api';
 
   export let node;
@@ -31,5 +32,8 @@
 {/if}
 <!-- end node.icon -->
 {#if !node.icon || node.showLabel}
-  <span>{getNodeLabel(node)}</span>
+  <span
+    >{getNodeLabel(node)}
+    <StatusBadge {node} />
+  </span>
 {/if}

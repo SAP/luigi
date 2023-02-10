@@ -1,13 +1,13 @@
 <!-- meta
 {
   "node": {
-    "label": "API Reference",
+    "label": "Luigi Client API",
     "category": {
-      "label": "Luigi Client",
+      "label": "API Reference",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 3,
+      "categoryPosition": 6,
       "position": 1
     }
   }
@@ -608,6 +608,7 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
     -   `modalSettings.size` **(`"fullscreen"` \| `"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
     -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
     -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
 
 ##### Examples
 
@@ -782,7 +783,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 1.25.0
 
 #### pathExists
 
@@ -1148,6 +1149,16 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 **Meta**
 
 -   **since**: 0.6.0
+
+#### isDrawer
+
+Checks if the current micro frontend is displayed inside a drawer
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a drawer
+
+**Meta**
+
+-   **since**: 1.26.0
 
 #### getCurrentTheme
 

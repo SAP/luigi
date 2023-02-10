@@ -7,7 +7,7 @@
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 4,
+      "categoryPosition": 5,
       "position": 2
     }
   }
@@ -39,4 +39,3 @@ If a navigation node has configured a property called [runTimeErrorHandler](navi
   <body></body>
 </html>
 ```
-

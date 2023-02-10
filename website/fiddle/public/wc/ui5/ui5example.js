@@ -2,15 +2,6 @@ import 'https://sap.github.io/ui5-webcomponents/assets/js/ui5-webcomponents/bund
 
 const template = document.createElement('template');
 template.innerHTML = `
-<!DOCTYPE html>
-   <html lang="EN">
-   <head>
-      <meta charset="utf-8">
-      <title>Editable List | Web Components</title>
-      <style>  
-      </style>
-   </head>
-   <body>
         <ui5-wizard id="wiz">
             <ui5-wizard-step icon="product" title-text="Product type" selected ui5-wizard-step="" slot="default-1">
                 <div style="display: flex; min-height: 200px; flex-direction: column;">
@@ -132,8 +123,6 @@ template.innerHTML = `
               </div>
               <ui5-button id="finalize" design="Emphasized" ui5-button="">Finalize</ui5-button>
             </ui5-wizard-step>
-    </body>
-  </html>
 `;
 export default class Ui5exampleWC extends HTMLElement {
   constructor() {

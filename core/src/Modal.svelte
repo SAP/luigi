@@ -20,6 +20,9 @@
   export let settings;
   export let isDataPrepared = false;
   export let nodepath;
+  export let modalIndex;
+  export let disableBackdrop;
+
   const dispatch = createEventDispatcher();
   let nodeObject;
   let pathData;
@@ -29,6 +32,7 @@
   let showLoadingIndicator = true;
   let isDrawer = false;
   let isModal = true;
+  let modalElementClassSelector;
 
   const prepareNodeData = async (path) => {
     const pathUrlRaw =
@@ -38,6 +42,7 @@
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
     isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
+    modalElementClassSelector = isDrawer ? '._drawer' : `[modal-container-index="${modalIndex}"]`;
     if (isDrawer) {
       isModal = false;
       if (settings.header === undefined) {
@@ -80,14 +85,15 @@
         } else {
           await setModalSize();
         }
+       
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
-          document.querySelector('.iframeModalCtn'),
+          document.querySelector(modalElementClassSelector),
           pathData.context,
           nodeObject
         );
         dispatch('wcCreated', {
-          modalWC: document.querySelector('.iframeModalCtn'),
+          modalWC: document.querySelector(modalElementClassSelector),
           modalWCData: { ...pathData, nodeParams },
         });
         wcCreated = true;
@@ -113,7 +119,7 @@
 
   const setModalSize = async () => {
     let height, width;
-    const elem = document.querySelector('.lui-modal-mf');
+    const elem = document.querySelector('.lui-modal-index-' + modalIndex);
     const { size, width: settingsWidth, height: settingsHeight } = settings;
     const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
 
@@ -165,8 +171,7 @@
       'modal',
       componentData
     );
-
-    const iframeCtn = document.querySelector('.iframeModalCtn');
+    const iframeCtn = document.querySelector(modalElementClassSelector);
     iframeCtn.appendChild(iframe);
     return iframe;
   };
@@ -238,22 +243,11 @@
     }
   };
 
-  const backdropStateChanged = (event) => {
-    if (
-      event &&
-      event.detail &&
-      event.detail.backdropActive &&
-      event.detail.drawer
-    ) {
-      //renderBackdrop = false;
-    }
-  };
-
   onMount(() => {
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
-      ? IframeHelpers.disableA11YKeyboardExceptClassName('.fd-dialog')
+      ? IframeHelpers.disableA11YKeyboardExceptClassName('.lui-modal-index-' + modalIndex)
       : '';
     window.focus();
   });
@@ -262,7 +256,7 @@
     EventListenerHelpers.removeEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
-      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-dialog')
+      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.lui-modal-index-' + modalIndex)
       : '';
   });
 
@@ -287,7 +281,7 @@
       ? settings.backdrop
         ? 'drawer drawer-dialog__content drawer__backdrop'
         : 'drawer drawer-dialog__content'
-      : 'lui-modal-mf'}"
+      : 'lui-modal-mf lui-modal-index-' + modalIndex}"
     data-testid={isModal ? 'modal-mf' : 'drawer-mf'}
     role="dialog"
     aria-modal="true"
@@ -295,7 +289,7 @@
   >
     {#if isModal || (isDrawer && settings.header)}
       <div class="fd-dialog__header fd-bar fd-bar--header">
-        <Backdrop on:stateChanged={backdropStateChanged} />
+        <Backdrop disable={disableBackdrop} />
         <div class="fd-bar__left">
           <div class="fd-bar__element">
             {#if settings.title}
@@ -322,7 +316,10 @@
       {#if isDrawer}
         <slot />
       {/if}
-      <div class="iframeModalCtn {isDrawer ? '_drawer' : '_modal'}" />
+      <div
+        class="iframeModalCtn {isDrawer ? '_drawer' : '_modal'} "
+        modal-container-index={!isDrawer ? modalIndex : undefined}
+      />
     </div>
     {#if showLoadingIndicator}
       <div
@@ -360,6 +357,10 @@
     width: 25%;
     z-index: 3;
     right: 0;
+    
+    .drawer {
+      height: 100%;
+    }
   }
 
   .drawer {
@@ -368,7 +369,6 @@
     overflow-y: auto;
     left: auto;
     right: 0;
-    height: 100%;
   }
 
   :global(.lui-breadcrumb) .drawer__backdrop {

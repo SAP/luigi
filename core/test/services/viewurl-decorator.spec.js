@@ -1,19 +1,12 @@
-const chai = require('chai');
-const assert = chai.assert;
-const sinon = require('sinon');
 import { afterEach } from 'mocha';
 
 import { ViewUrlDecorator } from '../../src/services';
 import { GenericHelpers } from '../../src/utilities/helpers';
+const chai = require('chai');
+const assert = chai.assert;
+const sinon = require('sinon');
 
 describe('ViewUrlDecorator', () => {
-  let component;
-  let preloadingAllowed;
-  let clock;
-  let container;
-  let iframes;
-  let viewGroupSettings;
-
   beforeEach(() => {
     ViewUrlDecorator.decorators = [];
     sinon.stub(GenericHelpers);
@@ -64,9 +57,27 @@ describe('ViewUrlDecorator', () => {
     ];
 
     const result = ViewUrlDecorator.applyDecorators('http://luigi-project.io');
+    assert.equal(result, 'http://luigi-project.io/?viewUrlAAA=one&viewUrlBBB=two');
+  });
+
+  it('applyDecorators decoding', () => {
+    ViewUrlDecorator.decorators = [
+      {
+        uid: 'aaa',
+        type: 'queryString',
+        key: 'viewUrlAAA',
+        valueFn: () => 'one'
+      }
+    ];
+
     assert.equal(
-      result,
-      'http://luigi-project.io/?viewUrlAAA=one&viewUrlBBB=two'
+      ViewUrlDecorator.applyDecorators('http://luigi-project.io?someURL=http://some.url/foo/bar'),
+      'http://luigi-project.io/?someURL=http%3A%2F%2Fsome.url%2Ffoo%2Fbar&viewUrlAAA=one'
+    );
+
+    assert.equal(
+      ViewUrlDecorator.applyDecorators('http://luigi-project.io?someURL=http://some.url/foo/bar', true),
+      'http://luigi-project.io/?someURL=http://some.url/foo/bar&viewUrlAAA=one'
     );
   });
 });

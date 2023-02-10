@@ -2,7 +2,7 @@
 	export let segment;
 </script>
 
-<style type="text/scss">
+<style type="text/scss" global>
 
 	@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Quicksand:500&display=swap');
 
@@ -15,11 +15,11 @@
 
 	$side-nav-width: 320px;
 
-	:global(body *) {
+	body * {
 		box-sizing: border-box;
 	}
 
-	:global(body) {
+	body {
 		background-color: white;
 		margin: 0;
 		padding: 0;

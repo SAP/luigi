@@ -4,7 +4,7 @@
 kind: Component
 metadata:
   displayName: Luigi Documentation
-  description: Contains documentation for Luigi core and client libraries
+  description: Contains documentation for Luigi Core and Client libraries
   labels:
     language: markdown
   tags:

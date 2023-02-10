@@ -121,6 +121,7 @@
                       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                     }}
                     role="button"
+                    tabindex="0"
                   >
                     <div class="lui-fd-nested-list__content">
                       {#if node.icon}
@@ -290,6 +291,12 @@
     /*disable default red/purple outline*/
     .fd-nested-list__item a {
       text-decoration: none;
+      display: block;
+      height: 100%;
+      &:focus {
+        outline: var(--sapContent_FocusWidth) var(--sapContent_FocusStyle) var(--fdShellbar_Button_Outline_Color);
+        outline-offset: var(--fdButton_Outline_Offset);
+      }
     }
   }
 </style>

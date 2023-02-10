@@ -10,7 +10,7 @@
     "@babel/polyfill": "^7.6.0",
     "@babel/preset-env": "^7.6.2",
     "@babel/register": "^7.6.2",
-    "@sap-theming/theming-base-content": "11.1.35",
+    "@sap-theming/theming-base-content": "11.1.48",
     "@webcomponents/webcomponentsjs": "^2.3.0",
     "acorn": "^6.4.1",
     "axios": ">=0.21.2",
@@ -24,8 +24,8 @@
     "esm": "^3.2.25",
     "file-loader": "^2.0.0",
     "fs-extra": "9.0.0",
-    "fundamental-styles": "0.23.0",
-    "glob-parent": ">=5.1.2",
+    "fundamental-styles": "0.26.5",
+    "glob-parent": ">=6.0.1",
     "jsdom": "15.0.0",
     "jsdom-global": "3.0.2",
     "json-schema": ">=0.4.0",
@@ -52,7 +52,7 @@
     "svelte-loader": "2.13.6",
     "svelte-transitions": "^1.2.0",
     "tar": ">=5.0.10",
-    "terser": "^4.4.0",
+    "terser": "^4.8.1",
     "ts-node": "^10.0.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.42.1",
@@ -82,17 +82,17 @@
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "650 kB",
+      "maxSize": "800 kB",
       "compression": "none"
     },
     {
       "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "850 kB",
+      "maxSize": "860 kB",
       "compression": "none"
     },
     {
       "path": "./public-ie11/luigi-ie11.css",
-      "maxSize": "650 kB",
+      "maxSize": "800 kB",
       "compression": "none"
     }
   ],

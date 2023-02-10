@@ -187,6 +187,23 @@ export const projectDetailNavStructure = projectId => [
       header: 'Test',
       backdrop: true,
       size: 'l'
+    },
+    statusBadge: {
+      label: 'Drawer',
+      type: 'negative'
+    }
+  },
+  {
+    pathSegment: 'modal-with-callback',
+    label: 'Modal with Callback',
+    onNodeActivation: () => {
+      Luigi.navigation().openAsModal('/projects/pr2/settings', {
+        title: 'Modal with callback function',
+        size: 'm',
+      },
+        () => {
+          alert('Callback called');
+        })
     }
   },
   {
@@ -234,7 +251,11 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     userSettingsGroup: 'language',
-    testId: 'myTestId'
+    testId: 'myTestId',
+    statusBadge: {
+      label: 'Project',
+      type: 'informative'
+    }
   },
   {
     category: { label: 'Settings', icon: 'action-settings' },
@@ -243,7 +264,12 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/sampleapp.html#/projects/' + projectId + '/settings',
     icon: 'settings',
     userSettingsGroup: 'userAccount',
-    testId: 'myTestId'
+    testId: 'myTestId',
+    statusBadge: {
+      label: 'Settings',
+      type: 'positive',
+      align: 'right'
+    }
   },
   {
     category: { label: 'Settings', icon: 'action-settings' },
@@ -304,7 +330,11 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true,
     openNodeInModal: true,
-    tooltipText: 'Webcomponent tooltipText'
+    tooltipText: 'Webcomponent tooltipText',
+    statusBadge: {
+      label: '',
+      type: 'critical'
+    }
   },
   {
     pathSegment: 'webcomponent2',
@@ -472,6 +502,18 @@ export const projectDetailNavStructure = projectId => [
     category: 'Super useful Github links',
     externalLink: {
       url: 'http://sap.com/{i18n.currentLocale}',
+      sameWindow: true
+    },
+    icon: 'globe'
+  },
+  {
+    label: 'Context Value Replacement - External link',
+    category: 'Super useful Github links',
+    context: {
+      someValue: 'bar'
+    },
+    externalLink: {
+      url: 'http://sap.com/{i18n.currentLocale}?foo={context.someValue}',
       sameWindow: true
     },
     icon: 'globe'

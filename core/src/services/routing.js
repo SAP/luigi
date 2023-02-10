@@ -167,121 +167,210 @@ class RoutingClass {
       : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
-  async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+  /**
+   * Set feature toggole. If `queryStringParam` is provided at config file.
+   * @param {string} path used for retrieving and appending the path parameters
+   */
+  setFeatureToggle(path) {
     const featureToggleProperty = LuigiConfig.getConfigValue('settings.featureToggles.queryStringParam');
-    if (featureToggleProperty) {
-      RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
-    }
+    featureToggleProperty && typeof path === 'string' && RoutingHelpers.setFeatureToggles(featureToggleProperty, path);
+  }
 
+  /**
+   * If the current route matches any of the defined patterns, it will be skipped.
+   * @returns {boolean} true if the current route matches any of the patterns, false otherwise
+   */
+  shouldSkipRoutingForUrlPatterns() {
     const defaultPattern = [/access_token=/, /id_token=/];
     const patterns = LuigiConfig.getConfigValue('routing.skipRoutingForUrlPatterns') || defaultPattern;
-    const hasSkipMatches = patterns.filter(p => window.location.href.match(p)).length !== 0;
-    if (hasSkipMatches) {
-      return;
+
+    return patterns.filter(p => location.href.match(p)).length !== 0;
+  }
+
+  /**
+   * Prevents the browsers default route change by bringing back previous route then
+   * fires an 'Unsaved Changes' modal followed by a subsequent route change handling afterwards
+   *
+   * @param {string} path the path of the view to open
+   * @param {Object} component current component data
+   * @param {Object} iframeElement the dom element of active iframe
+   * @param {Object} config the configuration of application
+   */
+  handleUnsavedChangesModal(path, component, iframeElement, config) {
+    const newUrl = window.location.href,
+      oldUrl = component.get().unsavedChanges.persistUrl;
+
+    // pretend the url hasn't been changed by browser default behaviour
+    oldUrl && history.pushState(window.state, '', oldUrl);
+
+    return component
+      .getUnsavedChangesModalPromise()
+      .then(
+        // resolve unsaved changes promise
+        () => {
+          this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+        },
+        // user clicks no, do nothing, reject promise
+        () => {}
+      )
+      .catch(() => {});
+  }
+
+  /**
+   * This function acts as a resolve callback in handleUnsavedChangesModal function
+   * Logic separated to enable better unit testing of the functionality
+   * @param {string} path the path to navigate to
+   * @param {Object} component the current component data
+   * @param {Object} iframeElement the dom element of active iframe
+   * @param {Object} config the configuration of application
+   */
+  resolveUnsavedChanges(path, component, iframeElement, config, newUrl) {
+    if (path) {
+      this.handleRouteChange(path, component, iframeElement, config);
+      history.replaceState(window.state, '', newUrl);
+    }
+  }
+
+  /**
+   * If `showModalPathInUrl` is provided, bookmarkable modal path will be triggered.
+   */
+  async shouldShowModalPathInUrl() {
+    if (LuigiConfig.getConfigValue('routing.showModalPathInUrl')) {
+      await this.handleBookmarkableModalPath();
+    }
+  }
+
+  /**
+   * Handles viewUrl misconfiguration scenario
+   * @param {Object} nodeObject active node data
+   * @param {string} viewUrl the url of the current mf view
+   * @param {Object} previousCompData previous component data
+   * @param {string} pathUrlRaw path url without hash
+   * @param {Object} component current component data
+   */
+  async handleViewUrlMisconfigured(nodeObject, viewUrl, previousCompData, pathUrlRaw, component) {
+    const { children, intendToHaveEmptyViewUrl, compound } = nodeObject;
+    const hasChildrenNode = (children && Array.isArray(children) && children.length > 0) || children || false;
+
+    if (!compound && viewUrl.trim() === '' && !hasChildrenNode && !intendToHaveEmptyViewUrl) {
+      console.warn(
+        "The intended target route can't be accessed since it has neither a viewUrl nor children. This is most likely a misconfiguration."
+      );
+
+      // redirect to root when this empty viewUrl node cannot be reached directly
+      if (
+        !(
+          previousCompData &&
+          (previousCompData.viewUrl || (previousCompData.currentNode && previousCompData.currentNode.compound))
+        )
+      ) {
+        const rootPathData = await Navigation.getNavigationPath(
+          LuigiConfig.getConfigValueAsync('navigation.nodes'),
+          '/'
+        );
+        const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
+        this.showPageNotFoundError(component, rootPath, pathUrlRaw);
+        this.navigateTo(rootPath);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Deal with page not found scenario.
+   * @param {Object} nodeObject the data of node
+   * @param {string} viewUrl the url of the current mf view
+   * @param {Object} pathData the information of current path
+   * @param {string} path the path of the view to open
+   * @param {Object} component current component data
+   * @param {Object} pathUrlRaw path url without hash
+   * @param {Object} config the configuration of application
+   */
+  async handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config) {
+    if (!viewUrl && !nodeObject.compound) {
+      const defaultChildNode = await RoutingHelpers.getDefaultChildNode(pathData, async (node, ctx) => {
+        return await Navigation.getChildren(node, ctx);
+      });
+
+      if (pathData.isExistingRoute) {
+        //normal navigation can be performed
+        const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
+        this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, {
+          keepBrowserHistory: false
+        });
+        // reset comp data
+        component.set({ navigationPath: [] });
+      } else {
+        if (defaultChildNode && pathData.navigationPath.length > 1) {
+          //last path segment was invalid but a default node could be in its place
+          this.showPageNotFoundError(
+            component,
+            GenericHelpers.trimTrailingSlash(pathData.matchedPath) + '/' + defaultChildNode,
+            pathUrlRaw,
+            true
+          );
+          return true;
+        }
+
+        //ERROR  404
+        //the path is unrecognized at all and cannot be fitted to any known one
+        const rootPathData = await Navigation.getNavigationPath(
+          LuigiConfig.getConfigValueAsync('navigation.nodes'),
+          '/'
+        );
+        const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
+        this.showPageNotFoundError(component, rootPath, pathUrlRaw, false, config);
+      }
+      return true;
     }
 
+    if (!pathData.isExistingRoute) {
+      this.showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Deal with route changing scenario.
+   * @param {string} path the path of the view to open
+   * @param {Object} component the settings/functions of component (need refactoring)
+   * @param {Object} iframeElement dom element of iframe
+   * @param {Object} config the configuration of application
+   * @param {boolean} withoutSync disables the navigation handling for a single navigation request.
+   * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
+   */
+  async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+    // Handle intent navigation with new tab scenario.
+    if (path.external) {
+      this.navigateToExternalLink({
+        url: path.url,
+        sameWindow: !path.openInNewTab
+      });
+      return;
+    }
+    this.setFeatureToggle(path);
+    if (this.shouldSkipRoutingForUrlPatterns()) return;
+    if (window.Luigi.preventLoadingModalData) {
+      window.Luigi.preventLoadingModalData = false;
+      return;
+    }
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
       if (component.shouldShowUnsavedChangesModal()) {
-        const newUrl = window.location.href;
-        const oldUrl = component.get().unsavedChanges.persistUrl;
-
-        //pretend the url hasn't been changed
-        oldUrl && history.replaceState(window.state, '', oldUrl);
-
-        component.showUnsavedChangesModal().then(
-          () => {
-            path &&
-              this.handleRouteChange(path, component, iframeElement, config) &&
-              history.replaceState(window.state, '', newUrl);
-          },
-          () => {}
-        );
+        await this.handleUnsavedChangesModal(path, component, iframeElement, config);
         return;
       }
-
-      const isShowModalPathInUrl = LuigiConfig.getConfigValue('routing.showModalPathInUrl');
-      if (isShowModalPathInUrl) {
-        await this.handleBookmarkableModalPath();
-      }
+      await this.shouldShowModalPathInUrl();
 
       const previousCompData = component.get();
       this.checkInvalidateCache(previousCompData, path);
       const pathUrlRaw = path && path.length ? GenericHelpers.getPathWithoutHash(path) : '';
       const { nodeObject, pathData } = await Navigation.extractDataFromPath(path);
       const viewUrl = nodeObject.viewUrl || '';
-      const hasChildrenNode =
-        (nodeObject.children && Array.isArray(nodeObject.children) && nodeObject.children.length > 0) ||
-        nodeObject.children ||
-        false;
-      const intendToHaveEmptyViewUrl =
-        (nodeObject.intendToHaveEmptyViewUrl && nodeObject.intendToHaveEmptyViewUrl === true) || false;
-
-      if (!nodeObject.compound && viewUrl.trim() === '' && !hasChildrenNode && !intendToHaveEmptyViewUrl) {
-        console.warn(
-          "The intended target route can't be accessed since it has neither a viewUrl nor children. This is most likely a misconfiguration."
-        );
-
-        // redirect to root when this empty viewUrl node be reached directly
-        if (
-          !(
-            previousCompData &&
-            (previousCompData.viewUrl || (previousCompData.currentNode && previousCompData.currentNode.compound))
-          )
-        ) {
-          const rootPathData = await Navigation.getNavigationPath(
-            LuigiConfig.getConfigValueAsync('navigation.nodes'),
-            '/'
-          );
-          const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw);
-          this.navigateTo(rootPath);
-        }
-
-        return;
-      }
-
-      if (!viewUrl && !nodeObject.compound) {
-        const defaultChildNode = await RoutingHelpers.getDefaultChildNode(pathData, async (node, ctx) => {
-          return await Navigation.getChildren(node, ctx);
-        });
-
-        if (pathData.isExistingRoute) {
-          //normal navigation can be performed
-          const trimmedPathUrl = GenericHelpers.getTrimmedUrl(path);
-          this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, {
-            keepBrowserHistory: false
-          });
-          // reset comp data
-          component.set({ navigationPath: [] });
-        } else {
-          if (defaultChildNode && pathData.navigationPath.length > 1) {
-            //last path segment was invalid but a default node could be in its place
-            this.showPageNotFoundError(
-              component,
-              GenericHelpers.trimTrailingSlash(pathData.matchedPath) + '/' + defaultChildNode,
-              pathUrlRaw,
-              true
-            );
-            return;
-          }
-          //ERROR  404
-          //the path is unrecognized at all and cannot be fitted to any known one
-          const rootPathData = await Navigation.getNavigationPath(
-            LuigiConfig.getConfigValueAsync('navigation.nodes'),
-            '/'
-          );
-          const rootPath = await RoutingHelpers.getDefaultChildNode(rootPathData);
-          this.showPageNotFoundError(component, rootPath, pathUrlRaw, false, config);
-        }
-        return;
-      }
-
-      if (!pathData.isExistingRoute) {
-        this.showPageNotFoundError(component, pathData.matchedPath, pathUrlRaw, true);
-        return;
-      }
-
+      if (await this.handleViewUrlMisconfigured(nodeObject, viewUrl, previousCompData, pathUrlRaw, component)) return;
+      if (await this.handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config)) return;
       const hideNav = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
       const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
       const nodeParams = RoutingHelpers.getNodeParams(params);
@@ -301,6 +390,18 @@ class RoutingClass {
         } else if (cnode.tabNav === false) {
           tabNavInherited = false;
           break;
+        } else if (GenericHelpers.isObject(cnode.tabNav)) {
+          if ('hideTabNavAutomatically' in cnode.tabNav && cnode.children) {
+            if (cnode.tabNav.hideTabNavAutomatically === true && cnode.children.length === 1) {
+              tabNavInherited = false;
+              break;
+            } else {
+              tabNavInherited = true;
+              break;
+            }
+          } else {
+            console.warn('tabNav:{hideTabNavAutomatically:true|false} is not configured correctly.');
+          }
         }
         cnode = cnode.parent;
       }
@@ -365,16 +466,16 @@ class RoutingClass {
       }
 
       if (nodeObject.compound) {
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponentCompound(component, nodeObject);
       } else if (nodeObject.webcomponent) {
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
         if (iContainer) {
           iContainer.classList.add('lui-webComponent');
         }
-        Iframe.switchActiveIframe(iframeElement, undefined, false);
         this.navigateWebComponent(component, nodeObject);
       } else {
         if (iContainer) {
@@ -461,7 +562,7 @@ class RoutingClass {
   handleRouteClick(node, component) {
     const route = RoutingHelpers.getRouteLink(node, component.get().pathParams);
     if (node.externalLink && node.externalLink.url) {
-      this.navigateToExternalLink(route);
+      this.navigateToExternalLink(route, node, component.get().pathParams);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
       this.navigateTo(route);
@@ -511,12 +612,14 @@ class RoutingClass {
     }
   }
 
-  navigateToExternalLink(externalLink) {
-    externalLink.url = RoutingHelpers.getI18nViewUrl(externalLink.url);
+  navigateToExternalLink(externalLink, node, pathParams) {
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
       ...externalLink
     };
+    if (node) {
+      updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+    }
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
@@ -577,20 +680,42 @@ class RoutingClass {
     }
   }
 
+  /**
+   * Append modal data to url
+   * @param {string} modalPath path of the view which is displayed in the modal
+   * @param {Object} modalParams query parameter
+   */
   appendModalDataToUrl(modalPath, modalParams) {
     // global setting for persistence in url .. default false
     let queryParamSeparator = RoutingHelpers.getHashQueryParamSeparator();
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
-
     const prevModalPath = params[modalParamName];
+    const url = new URL(location.href);
+    const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
+    let historyState = history.state;
+    let pathWithoutModalData;
+    let urlWithoutModalData;
+    if (hashRoutingActive) {
+      let [path, searchParams] = url.hash.split('?');
+      pathWithoutModalData = path;
+      urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(searchParams, modalParamName);
+      if (urlWithoutModalData) {
+        pathWithoutModalData += '?' + urlWithoutModalData;
+      }
+    } else {
+      pathWithoutModalData = url.pathname;
+      urlWithoutModalData = RoutingHelpers.getURLWithoutModalData(url.search, modalParamName);
+      if (urlWithoutModalData) {
+        pathWithoutModalData += '?' + RoutingHelpers.getURLWithoutModalData(url.search, modalParamName);
+      }
+    }
+    historyState = RoutingHelpers.handleHistoryState(historyState, pathWithoutModalData);
     if (prevModalPath !== modalPath) {
       params[modalParamName] = modalPath;
       if (modalParams && Object.keys(modalParams).length) {
         params[`${modalParamName}Params`] = JSON.stringify(modalParams);
       }
-      const url = new URL(location.href);
-      const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
       if (hashRoutingActive) {
         const queryParamIndex = location.hash.indexOf(queryParamSeparator);
         if (queryParamIndex !== -1) {
@@ -600,18 +725,34 @@ class RoutingClass {
       } else {
         url.search = `?${RoutingHelpers.encodeParams(params)}`;
       }
-      history.replaceState(window.state, '', url.href);
+      history.pushState(historyState, '', url.href);
+    } else {
+      const cleanUrl = new URL(url);
+      if (hashRoutingActive) {
+        let path = cleanUrl.hash.split('?')[0];
+        cleanUrl.hash = path;
+        if (urlWithoutModalData) {
+          cleanUrl.hash += '?' + urlWithoutModalData;
+        }
+      } else {
+        cleanUrl.search = urlWithoutModalData;
+      }
+      history.replaceState({}, '', cleanUrl.href);
+      history.pushState(historyState, '', url.href);
     }
   }
 
-  removeModalDataFromUrl() {
+  /**
+   * Remove modal data from url
+   * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
+   */
+  removeModalDataFromUrl(isClosedInternal) {
     const params = RoutingHelpers.getQueryParams();
     const modalParamName = RoutingHelpers.getModalViewParamName();
     let url = new URL(location.href);
     const hashRoutingActive = LuigiConfig.getConfigBooleanValue('routing.useHashRouting');
     if (hashRoutingActive) {
       let modalParamsObj = {};
-
       if (params[modalParamName]) {
         modalParamsObj[modalParamName] = params[modalParamName];
       }
@@ -634,7 +775,47 @@ class RoutingClass {
       });
       url.search = finalUrl;
     }
-    history.replaceState(window.state, '', url.href);
+    // only if close modal [X] is pressed or closed via api
+    if (history.state && history.state.modalHistoryLength >= 0 && isClosedInternal) {
+      const modalHistoryLength = history.state.modalHistoryLength;
+      const path = history.state.pathBeforeHistory;
+      let isModalHistoryHigherThanHistoryLength = false;
+      window.addEventListener(
+        'popstate',
+        e => {
+          if (isModalHistoryHigherThanHistoryLength) {
+            //replace the url with saved path and get rid of modal data in url
+            history.replaceState({}, '', path);
+            //reset history.length
+            history.pushState({}, '', path);
+            //apply history back is working
+            history.back();
+          } else {
+            history.pushState({}, '', path);
+            history.back();
+          }
+        },
+        { once: true }
+      );
+
+      if (history.state.historygap === history.length - history.state.modalHistoryLength) {
+        history.go(-history.state.modalHistoryLength);
+      } else {
+        if (history.state.modalHistoryLength > history.length) {
+          const historyMaxBack = history.length - 1;
+          isModalHistoryHigherThanHistoryLength = true;
+          history.go(-historyMaxBack);
+          //flag to prevent to run handleRouteChange when url has modalData in path
+          //otherwise modal will be opened again
+          window.Luigi.preventLoadingModalData = true;
+        } else {
+          const modalHistoryLength = history.state.modalHistoryLength;
+          history.go(-modalHistoryLength);
+        }
+      }
+    } else {
+      history.pushState({}, '', url.href);
+    }
   }
 }
 

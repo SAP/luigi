@@ -3,8 +3,7 @@
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
-    "module": "commonjs",
-    "target": "es5",
+    "target": "es2020",
     "types": ["jasmine", "node"]
   },
   "files": ["polyfills.ts"],

@@ -48,7 +48,7 @@ class RoutingHelpersClass {
   parseParams(paramsString) {
     if (!paramsString) return {};
     const result = {};
-    const viewParamString = paramsString;
+    const viewParamString = paramsString.replace(/\+/g, ' ');
     const pairs = viewParamString ? viewParamString.split('&') : null;
     if (pairs) {
       pairs.forEach(pairString => {
@@ -213,10 +213,30 @@ class RoutingHelpersClass {
       : this.buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
   }
 
+  /**
+    * Get context from node
+    @param {Object} node node information
+    @param {Object} ctx context object
+    @returns {Object} context object. e.g. { someValue: 'foo' }
+  */
+  getContext(node, ctx) {
+    if (ctx === undefined || ctx === null) {
+      return this.getContext(node, node.context || {});
+    }
+
+    return node.parent ? { ...this.getContext(node.parent), ...ctx } : ctx;
+  }
+
   getRouteLink(node, pathParams, relativePathPrefix) {
     const pp = relativePathPrefix || '';
     if (node.externalLink && node.externalLink.url) {
-      return node.externalLink;
+      const url = node.externalLink.url;
+      const data = {
+        context: RoutingHelpers.substituteDynamicParamsInObject(this.getContext(node), pathParams),
+        pathParams,
+        nodeParams: {}
+      };
+      return this.substituteViewUrl(url, data);
       // externalLinkUrl property is provided so there's no need to trigger routing mechanizm
     } else if (node.link) {
       const link = node.link.startsWith('/') ? node.link : Routing.buildFromRelativePath(node);
@@ -227,16 +247,20 @@ class RoutingHelpersClass {
     return pp + GenericHelpers.replaceVars(route, pathParams, ':', false);
   }
 
+  calculateNodeHref(node, pathParams) {
+    const link = RoutingHelpers.getRouteLink(
+      node,
+      pathParams,
+      LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
+    );
+    return this.getI18nViewUrl(link.url) || link;
+  }
+
   getNodeHref(node, pathParams) {
     if (LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs')) {
-      const link = RoutingHelpers.getRouteLink(
-        node,
-        pathParams,
-        LuigiConfig.getConfigValue('routing.useHashRouting') ? '#' : ''
-      );
-      return this.getI18nViewUrl(link.url) || link;
+      return this.calculateNodeHref(node, pathParams);
     }
-    return 'javascript:void(0)';
+    return undefined;
   }
 
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
@@ -324,7 +348,7 @@ class RoutingHelpersClass {
     viewUrl = GenericHelpers.replaceVars(viewUrl, componentData.nodeParams, nodeParamsVarPrefix);
     viewUrl = this.getI18nViewUrl(viewUrl);
 
-    if (viewUrl.includes(searchQuery)) {
+    if (viewUrl && viewUrl.includes(searchQuery)) {
       const viewUrlSearchParam = viewUrl.split('?')[1];
       if (viewUrlSearchParam) {
         const key = viewUrlSearchParam.split('=')[0];
@@ -407,10 +431,29 @@ class RoutingHelpersClass {
    *                     action: 'order',
    *                     pathSegment: '/projects/pr2/order'
    * }]
+   *
    * ```
    * the given intentLink is matched with the configuration's same semanticObject and action,
    * resulting in pathSegment `/projects/pr2/order` being returned. The parameter is also added in
    * this case resulting in: `/projects/pr2/order?~foo=bar`
+   *
+   * Or for external intent links: intentLink = `#?intent=External-external`
+   * and Luigi configuration:
+   * ```
+   * intentMapping: [{
+   *                     semanticObject: 'External',
+   *                     action: 'view',
+   *                     externalLink: { url: 'https://www.sap.com', openInNewTab: true }
+   * }]
+   * ```
+   * The resulting will be returned from this function:
+   * ```
+   *          {
+   *             url: 'https://www.sap.com',
+   *             openInNewTab: true,
+   *             external: true
+   *          }
+   * ```
    * @param {string} intentLink  the intentLink represents the semantic intent defined by the user
    *                        i.e.: #?intent=semanticObject-action?param=value
    */
@@ -426,7 +469,15 @@ class RoutingHelpersClass {
         if (!realPath) {
           return false;
         }
+        // set 'external' boolean to make it easier to identify new tab links
+        if (realPath.externalLink) {
+          return {
+            ...realPath.externalLink,
+            external: true
+          };
+        }
         realPath = realPath.pathSegment;
+
         const params = Object.entries(intentObject.params);
         if (params && params.length > 0) {
           // resolve dynamic parameters in the path if any
@@ -607,6 +658,42 @@ class RoutingHelpersClass {
       localhash += `?${searchParams.toString()}`;
     }
     return localhash;
+  }
+
+  /**
+   * Get an url without modal data. It's necessary on page refresh or loading Luigi with modal data in a new tab
+   * @param {String} searchParamsString url search parameter as string
+   * @param {String} modalParamName  modalPathParam value defined in Luigi routing settings
+   * @returns {String} url search parameter as string without modal data
+   */
+  getURLWithoutModalData(searchParamsString, modalParamName) {
+    let searchParams = new URLSearchParams(searchParamsString);
+    searchParams.delete(modalParamName);
+    searchParams.delete(`${modalParamName}Params`);
+    return searchParams.toString();
+  }
+
+  /**
+   * Extending history state object for calculation how much history entries the browser have to go back when modal will be closed.
+   * @param {Object} historyState history.state object.
+   * @param {Number} historyState.modalHistoryLength will be increased when modals will be openend successively like e.g. stepping through a wizard.
+   * @param {Number} historyState.historygap is the history.length at the time when the modal will be opened. It's needed for calculating how much we have to go back in the browser history when the modal will be closed.
+   * @param {String} historyState.pathBeforeHistory path before modal will be opened. It's needed for calculating how much we have to go back in the browser history when the modal will be closed.
+   * @param {boolean} hashRoutingActive true if hash routing is active, false if path routing is active
+   * @param {URL} url url object to read hash value or pathname
+   * @returns {Object} history state object
+   */
+  handleHistoryState(historyState, path) {
+    if (historyState && historyState.modalHistoryLength) {
+      historyState.modalHistoryLength += 1;
+    } else {
+      historyState = {
+        modalHistoryLength: 1,
+        historygap: history.length,
+        pathBeforeHistory: path
+      };
+    }
+    return historyState;
   }
 }
 

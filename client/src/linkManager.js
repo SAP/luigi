@@ -161,6 +161,7 @@ export class linkManager extends LuigiClientBase {
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
    * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
@@ -315,7 +316,7 @@ export class linkManager extends LuigiClientBase {
    * @param {boolean} options.preventHistoryEntry By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
    * @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
    * @returns {linkManager} link manager instance
-   * @since NEXTRELEASE
+   * @since 1.25.0
    * @example
    * LuigiClient.linkManager().withOptions(
    * { preventContextUpdate:true, preventHistoryEntry: true }

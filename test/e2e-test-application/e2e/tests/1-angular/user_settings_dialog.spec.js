@@ -209,11 +209,6 @@ describe('Navigation', () => {
         .type('{upArrow}')
         .type('{enter}');
 
-      //Confirm with keyboard: Enter
-      cy.get('.fd-popover__body--dropdown-fill')
-        .should('exist')
-        .type('{enter}');
-
       //Check Placeholder of input field is English (en)
       cy.get('[data-testid="lui-us-input0"]')
         .should('exist')

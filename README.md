@@ -2,7 +2,7 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/luigi)](https://api.reuse.software/info/github.com/SAP/luigi)
 # Luigi
 <p align="center">
- <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" width="235">
+ <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" alt="Luigi logo" width="235">
 </p>
 
 ## Description
@@ -11,7 +11,7 @@
 
 Luigi consists of Luigi Core application and Luigi Client libraries. They establish secure communication between the core application and the micro frontend using postMessage API.
 
-Read the [Getting started guide](docs/getting-started.md) to learn more about micro frontends and the structure of Luigi.
+Read the [Getting started guide](https://docs.luigi-project.io/docs/getting-started) to learn more about micro frontends and the structure of Luigi.
 
 ## Requirements
 
@@ -19,7 +19,7 @@ Luigi can run on any operating system and there are no specific requirements for
 
 ## Download and installation
 
-Follow the instructions in [this](docs/application-setup.md) document to install Luigi Core. Read [this](client/README.md) document to install the Luigi Client.
+Follow the instructions in [this](https://docs.luigi-project.io/docs/application-setup) document to install Luigi Core. Read [this](https://docs.luigi-project.io/docs/luigi-client-setup) document to install the Luigi Client.
 
 
 ## Usage
@@ -32,7 +32,7 @@ Go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site to see Luigi in a
 
 ### Documentation
 
-For details, see [Luigi documentation](docs/README.md).
+For details, see [Luigi documentation](https://docs.luigi-project.io).
 
 ## Browser support
 
@@ -89,12 +89,15 @@ To ensure that existing features still work as expected after your changes, run 
 
 ### E2E tests
 
-To ensure that existing features still work as expected after your changes, run UI tests from the [Angular example application](/test/e2e-test-application). Before running the tests, start the sample application by using the `npm start` command in the application folder.
+To ensure that existing features still work as expected after your changes, you need to run UI tests from the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application). Before running the tests, you need to start our two test applications: 
 
-When the application is ready:
+- Start the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) by using the `npm start` command in the application folder.
+- Start the [js test application](https://github.com/SAP/luigi/tree/master/test/e2e-js-test-application) by using the `npm run dev` command in the application folder.
 
-- Run `npm run e2e:open` in the `test/e2e-test-application` folder to start tests in the interactive mode.
-- Run `npm run e2e:run` in the `test/e2e-test-application` folder to start tests in the headless browser.
+Once the applications are ready:
+
+- Run `npm run e2e:open` in the test/e2e-test-application folder to start tests in the interactive mode.
+- Run `npm run e2e:run` in the test/e2e-test-application folder to start tests in the headless browser.
 
 ### Backward compatibility tests
 
@@ -108,12 +111,12 @@ Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command
 
 ## How to obtain support
 
-If you have further questions about Luigi, you can contact us on our [Slack channel](https://slack.luigi-project.io/). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
+If you have further questions about Luigi, you can check the [GitHub Discussions page](https://github.com/SAP/luigi/discussions) or contact us on our [Slack channel](https://slack.luigi-project.io/). If you find a specific problem or bug, you can also open a [GitHub issue](https://github.com/SAP/luigi/issues/new/choose) on our repository. Please describe the problem and the steps to reproduce it in your issue.
 
 ## Contributing
 
-Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file in this repository for instrcutions on how to contribute to Luigi.
+Please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file in this repository for instructions on how to contribute to Luigi.
 
 ## Licensing
 
-Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available via the [REUSE tool](https://api.reuse.software/info/github.com/SAP/Luigi).
+Please see our [LICENSE](LICENSE) for copyright and license information. Detailed information including third-party components and their licensing/copyright information is available via the [REUSE tool](https://api.reuse.software/info/github.com/SAP/Luigi). 

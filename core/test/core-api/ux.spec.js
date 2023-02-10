@@ -52,10 +52,15 @@ describe('Core API - UX', function() {
 
       // then
       sinon.assert.calledWithExactly(mockIndicatorElem.classList.add, 'hidden');
-      sinon.assert.calledWithExactly(
-        mockIndicatorElem.parentNode.removeChild,
-        mockIndicatorElem
-      );
+      sinon.assert.calledWithExactly(mockIndicatorElem.parentNode.removeChild, mockIndicatorElem);
+    });
+  });
+
+  describe('removeBackdrop', () => {
+    it('post message sent properly', () => {
+      window.top.postMessage = sinon.spy();
+      LuigiUX.removeBackdrop();
+      sinon.assert.calledWithExactly(window.top.postMessage, { msg: 'luigi.remove-backdrop' }, '*');
     });
   });
 });

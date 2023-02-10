@@ -1,5 +1,10 @@
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext,
+  } from 'svelte';
   import { Navigation } from './services/navigation';
   import { Routing } from '../services/routing';
   import {
@@ -8,11 +13,13 @@
     GenericHelpers,
     RoutingHelpers,
     StateHelpers,
-    EventListenerHelpers
+    EventListenerHelpers,
   } from '../utilities/helpers';
-  import { LuigiConfig, LuigiElements, LuigiI18N, LuigiNavigation } from '../core-api';
+  import { LuigiConfig, LuigiElements, LuigiNavigation } from '../core-api';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
   import BadgeCounter from './BadgeCounter.svelte';
+  import StatusBadge from './StatusBadge.svelte';
+  import { KEYCODE_ENTER } from '../utilities/keycode';
 
   //TODO refactor
   const __this = {
@@ -29,11 +36,11 @@
       selectedCategory,
       expandedCategories,
       hasCategoriesWithIcon,
-      navParentNode
+      navParentNode,
     }),
-    set: async obj => {
+    set: async (obj) => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach(async prop => {
+        Object.getOwnPropertyNames(obj).forEach(async (prop) => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -78,7 +85,7 @@
                   context
                 );
                 if (res instanceof Promise) {
-                  res.then(headerData => {
+                  res.then((headerData) => {
                     navHeader = headerData;
                   });
                 } else {
@@ -87,7 +94,7 @@
               } else if ('auto' === resolvedNavHeader) {
                 navHeader = {
                   label: parentNode.label,
-                  icon: parentNode.icon
+                  icon: parentNode.icon,
                 };
               } else if (
                 resolvedNavHeader &&
@@ -97,8 +104,9 @@
                 if (resolvedNavHeaderNode.titleResolver.prerenderFallback) {
                   navHeader = {
                     ...resolvedNavHeader,
-                    label: resolvedNavHeaderNode.titleResolver.fallbackTitle || '',
-                    icon: resolvedNavHeaderNode.titleResolver.fallbackIcon
+                    label:
+                      resolvedNavHeaderNode.titleResolver.fallbackTitle || '',
+                    icon: resolvedNavHeaderNode.titleResolver.fallbackIcon,
                   };
                 } else {
                   navHeader = resolvedNavHeader;
@@ -109,7 +117,7 @@
                   resolvedNavHeaderNode
                 );
 
-                Navigation.extractDataFromPath(route).then(data => {
+                Navigation.extractDataFromPath(route).then((data) => {
                   const ctx = RoutingHelpers.substituteDynamicParamsInObject(
                     Object.assign(
                       {},
@@ -118,23 +126,29 @@
                     ),
                     data.pathData.pathParams
                   );
-                  NavigationHelpers.fetchNodeTitleData(resolvedNavHeaderNode, ctx)
-                    .then(headerData => {
+                  NavigationHelpers.fetchNodeTitleData(
+                    resolvedNavHeaderNode,
+                    ctx
+                  )
+                    .then((headerData) => {
                       navHeader = { ...resolvedNavHeader, ...headerData };
                     })
-                    .catch(error => {
+                    .catch((error) => {
                       console.error(
                         'Error while retrieving title, fallback to node label'
                       );
                       navHeader = {
                         ...resolvedNavHeader,
                         label: parentNode.label,
-                        icon: parentNode.icon
+                        icon: parentNode.icon,
                       };
                     });
                 });
               } else {
-                navHeader = await processHeader(resolvedNavHeader, resolvedNavHeaderNode);
+                navHeader = await processHeader(
+                  resolvedNavHeader,
+                  resolvedNavHeaderNode
+                );
               }
             }
           }
@@ -153,7 +167,7 @@
           );
         }
       }
-    }
+    },
   };
 
   const dispatch = createEventDispatcher();
@@ -180,6 +194,7 @@
   let sideNavCompactMode;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
+  let addNavHrefForAnchor = false;
 
   const setLeftNavData = async () => {
     const componentData = __this.get();
@@ -197,9 +212,15 @@
 
   onMount(() => {
     semiCollapsibleButton =
-      LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
-    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-    sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
+      LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
+      'semiCollapsible';
+    addNavHrefForAnchor = LuigiConfig.getConfigValue('navigation.addNavHrefs');
+    hideNavComponent = LuigiConfig.getConfigBooleanValue(
+      'settings.hideNavigation'
+    );
+    sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
+      'settings.sideNavCompactMode'
+    );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
 
     StateHelpers.doOnStoreChange(
@@ -213,11 +234,11 @@
     let stateArr = SemiCollapsibleNavigation.initial();
     isSemiCollapsed = stateArr.isSemiCollapsed;
     semiCollapsible = stateArr.semiCollapsible;
-    SemiCollapsibleNavigation.onValueChanged(stateArr => {
+    SemiCollapsibleNavigation.onValueChanged((stateArr) => {
       isSemiCollapsed = stateArr.isSemiCollapsed;
     });
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', (e) => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
         setLeftNavData();
       }
@@ -228,9 +249,12 @@
     if (!previousPathData || previousPathData != pathData) {
       setLeftNavData();
     }
-    sideNavCompactMode = LuigiConfig.getConfigBooleanValue('settings.sideNavCompactMode');
+    sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
+      'settings.sideNavCompactMode'
+    );
     semiCollapsibleButton =
-      LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
+      LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
+      'semiCollapsible';
   });
 
   export let sortedChildrenEntries;
@@ -251,7 +275,9 @@
   }
 
   function isExpanded(nodes, expandedList) {
-    return expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0;
+    return (
+      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
+    );
   }
 
   function getTestId(node) {
@@ -274,7 +300,10 @@
     const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
     const data = await Navigation.extractDataFromPath(route);
     const dynParams = data.pathData.pathParams;
-    const nhead = RoutingHelpers.substituteDynamicParamsInObject(header, dynParams);
+    const nhead = RoutingHelpers.substituteDynamicParamsInObject(
+      header,
+      dynParams
+    );
     return nhead;
   }
 
@@ -297,7 +326,8 @@
         selectedCat = nodeOrNodes.metaInfo.label;
       } else {
         selectedCat =
-          (nodeOrNodes.category && nodeOrNodes.category.label) || nodeOrNodes.category;
+          (nodeOrNodes.category && nodeOrNodes.category.label) ||
+          nodeOrNodes.category;
       }
 
       if (!sideBar.classList.contains('isBlocked')) {
@@ -306,7 +336,8 @@
 
       // only close if same clicked
       if (selectedCat === selectedCategory) {
-        selectedCategory = SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
+        selectedCategory =
+          SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
         return;
       }
 
@@ -328,7 +359,8 @@
       containerHeight = window.innerHeight;
     }
     setTimeout(() => {
-      const flyoutSublist = parent.getElementsByClassName('lui-flyout-sublist')[0];
+      const flyoutSublist =
+        parent.getElementsByClassName('lui-flyout-sublist')[0];
       const topScroll = el.closest('.lui-fd-side-nav-wrapper').scrollTop;
       const topPosition = parentTopPosition + shellbarHeight - topScroll;
       const bottomPosition =
@@ -392,10 +424,17 @@
   }
 
   export function closePopupMenu() {
-    selectedCategory = SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
+    selectedCategory =
+      SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
   }
 
-  function semiCollapsibleButtonClicked(el) {
+  function closePopupMenuOnEsc(event){
+    if(event && event.code === 'Escape'){
+      closePopupMenu();
+    } 
+  }
+
+  function semiCollapsibleButtonClicked() {
     isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
     if (document.getElementsByClassName('fd-tabs').length > 0) {
       dispatch('resizeTabNav', {});
@@ -403,20 +442,49 @@
     setBurgerTooltip();
   }
 
+  function handleEnterSemiCollapseBtn(event){
+    const code = event.code;
+    if (code === 'Enter' || code === 'Space') {
+      semiCollapsibleButtonClicked();
+    }
+  }
+
+  function handleExpandCollapseCategories(event, nodes){
+    if(event.code === 'Enter' || event === 'Space'){
+      handleIconClick(nodes, event.currentTarget)
+    }
+  }
+  
+  
+  /**
+   * Handles pressing the enter key when addNavHref is disabled
+   * @param event the event of the anchor element currently focused on
+   * @param node the corresponding node selected
+   */
+  function handleEnterPressed(event, node) {
+    if(event.keyCode === KEYCODE_ENTER) {
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+    }
+  }
+
   function setBurgerTooltip() {
     if (!NavigationHelpers.getBurgerTooltipConfig()) {
       return;
     }
-    const [
-      collapseNavTooltip,
-      expandNavTooltip
-    ] = NavigationHelpers.getBurgerTooltipConfig();
-    const hasSemiCollapsible = document.body.classList.contains('lui-semiCollapsible');
+    const [collapseNavTooltip, expandNavTooltip] =
+      NavigationHelpers.getBurgerTooltipConfig();
+    const hasSemiCollapsible = document.body.classList.contains(
+      'lui-semiCollapsible'
+    );
     if (collapseNavTooltip && expandNavTooltip && hasSemiCollapsible) {
       burgerTooltip = document.body.classList.contains('semiCollapsed')
         ? collapseNavTooltip
         : expandNavTooltip;
     }
+  }
+
+  function setTitleForCategoryButton(nodes, expandedCategories){
+    return isExpanded(nodes, expandedCategories) ? (nodes.metaInfo.titleCollapseButton ? $getTranslation(nodes.metaInfo.titleCollapseButton):undefined) : (nodes.metaInfo.titleExpandButton? $getTranslation(nodes.metaInfo.titleExpandButton):undefined);
   }
 </script>
 
@@ -424,6 +492,7 @@
   on:resize={onResize}
   on:click={closePopupMenu}
   on:blur={closePopupMenu}
+  on:keydown={closePopupMenuOnEsc}
 />
 <div
   class="fd-app__sidebar {hideNavComponent
@@ -507,9 +576,16 @@
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
-                          on:click={(event) => {
-                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                          on:click={event => {
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                              event
+                            ) && handleClick(node);
                           }}
+                          tabindex="0"
+                          on:keyup={!addNavHrefForAnchor
+                            ? event => handleEnterPressed(event, node)
+                            : undefined}
+                          role={!addNavHrefForAnchor ? 'button' : undefined}
                           data-testid={getTestId(node)}
                         >
                           {#if node.icon}
@@ -536,9 +612,14 @@
                               role="presentation"
                             />
                           {/if}
-                          <span class="fd-nested-list__title"
-                            >{$getTranslation(node.label)}</span
-                          >
+                          <span
+                            class="fd-nested-list__title badge-align-{node.statusBadge &&
+                            node.statusBadge.align === 'right'
+                              ? 'right'
+                              : 'left'}"
+                            >{$getTranslation(node.label)}
+                            <StatusBadge {node} />
+                          </span>
                           {#if node.externalLink && node.externalLink.url}
                             <i
                               class="fd-nested-list__icon sap-icon sap-icon--action"
@@ -553,7 +634,7 @@
                     {/if}
                   {/if}
                 {/each}
-              {:else if nodes.filter(node => (!node.hideFromNav && node.label)).length > 0}
+              {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
                   <li
@@ -566,9 +647,13 @@
                       handleIconClick(nodes, event.currentTarget)}
                     data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
-                    <div class="fd-nested-list__content has-child">
+                    <div
+                      class="fd-nested-list__content has-child"
+                      on:keypress={event =>
+                        handleExpandCollapseCategories(event, nodes)}
+                      tabindex={isSemiCollapsed ? '0' : '-1'}
+                    >
                       <a
-                        href="javascript:void(null)"
                         title={resolveTooltipText(nodes, $getTranslation(key))}
                         class="fd-nested-list__link {isExpanded(
                           nodes,
@@ -576,7 +661,8 @@
                         )
                           ? 'is-expanded'
                           : ''}"
-                        tabindex="-1"
+                        tabindex={isSemiCollapsed ? '-1' : '0'}
+                        role={!addNavHrefForAnchor ? 'button' : undefined}
                         id="collapsible_listnode_{index}"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
@@ -617,6 +703,10 @@
                         aria-label="Expand categories"
                         aria-haspopup="true"
                         aria-expanded={isExpanded(nodes, expandedCategories)}
+                        title={setTitleForCategoryButton(
+                          nodes,
+                          expandedCategories
+                        )}
                         on:click|preventDefault={() =>
                           setExpandedState(
                             nodes,
@@ -649,18 +739,34 @@
                                 selectedNode
                                   ? 'is-selected'
                                   : ''}"
-                                on:click={(event) => {
-                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                on:click={event => {
+                                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                    event
+                                  ) && handleClick(node);
                                 }}
+                                on:keyup={!addNavHrefForAnchor
+                                  ? event => handleEnterPressed(event, node)
+                                  : undefined}
+                                role={!addNavHrefForAnchor
+                                  ? 'button'
+                                  : undefined}
+                                tabindex="0"
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
                                   $getTranslation(node.label)
                                 )}
                               >
-                                <span class="fd-nested-list__title"
-                                  >{$getTranslation(node.label)}</span
+                                <span
+                                  class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                  node.statusBadge.align === 'right'
+                                    ? 'right'
+                                    : 'left'}"
                                 >
+                                  {$getTranslation(node.label)}
+                                  <StatusBadge {node} />
+                                </span>
+
                                 {#if node.externalLink && node.externalLink.url}
                                   <i class="sap-icon--action" />
                                 {/if}
@@ -693,18 +799,34 @@
                                       selectedNode
                                         ? 'is-selected'
                                         : ''}"
-                                      on:click={(event) => {
-                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                                      tabindex="0"
+                                      on:click={event => {
+                                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                          event
+                                        ) && handleClick(node);
                                       }}
+                                      on:keyup={!addNavHrefForAnchor
+                                        ? event =>
+                                            handleEnterPressed(event, node)
+                                        : undefined}
+                                      role={!addNavHrefForAnchor
+                                        ? 'button'
+                                        : undefined}
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
                                         $getTranslation(node.label)
                                       )}
                                     >
-                                      <span class="fd-nested-list__title"
-                                        >{$getTranslation(node.label)}</span
+                                      <span
+                                        class="fd-nested-list__title badge-align-{node.statusBadge &&
+                                        node.statusBadge.align === 'right'
+                                          ? 'right'
+                                          : 'left'}"
                                       >
+                                        {$getTranslation(node.label)}
+                                        <StatusBadge {node} />
+                                      </span>
                                       {#if node.externalLink && node.externalLink.url}
                                         <i class="sap-icon--action" />
                                       {/if}
@@ -764,12 +886,19 @@
                         >
                           <a
                             href={getRouteLink(node)}
+                            tabindex="0"
                             class="fd-nested-list__link {node === selectedNode
                               ? 'is-selected'
                               : ''}"
-                            on:click={(event) => {
-                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
+                            on:click={event => {
+                              NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                                event
+                              ) && handleClick(node);
                             }}
+                            on:keyup={!addNavHrefForAnchor
+                              ? event => handleEnterPressed(event, node)
+                              : undefined}
+                            role={!addNavHrefForAnchor ? 'button' : undefined}
                             data-testid={getTestId(node)}
                           >
                             {#if node.icon}
@@ -799,9 +928,17 @@
                                   : ''}</span
                               >
                             {/if}
-                            <span class="fd-nested-list__title"
-                              >{$getTranslation(node.label)}</span
-                            >
+                            <span
+                              class="fd-nested-list__title badge-align-{node.statusBadge &&
+                              node.statusBadge.align === 'right'
+                                ? 'right'
+                                : 'left'}"
+                              >{$getTranslation(node.label)}
+                              {#if node.statusBadge}
+                                <StatusBadge {node} />
+                              {/if}
+                            </span>
+
                             {#if node.externalLink && node.externalLink.url}
                               <i class="sap-icon--action" />
                             {/if}
@@ -833,9 +970,11 @@
               class="lui-side-nav__footer--icon {isSemiCollapsed
                 ? 'sap-icon--open-command-field'
                 : 'sap-icon--close-command-field'}"
-              on:click={() => semiCollapsibleButtonClicked(this)}
+              on:click={event => semiCollapsibleButtonClicked(event, this)}
+              on:keydown={event => handleEnterSemiCollapseBtn(event, this)}
               data-testid="semiCollapsibleButton"
               title={burgerTooltip}
+              tabindex="0"
             />
           {/if}
         </span>
@@ -1093,6 +1232,13 @@
     display: inline-block;
     height: auto;
   }
+  .fd-nested-list .fd-nested-list__title.badge-align-right {
+    display: flex;
+    :global(.fd-object-status) {
+      margin-left: auto;
+    }
+  }
+
   .fd-nested-list__content.has-child {
     .fd-nested-list__link {
       max-width: calc(100% - 2.5rem);
@@ -1246,5 +1392,12 @@
         }
       }
     }
+  }
+
+  .fd-nested-list__button:focus {
+    outline-offset: -0.1875rem;
+    outline-width: var(--sapContent_FocusWidth);
+    outline-color: var(--sapContent_FocusColor);
+    outline-style: var(--sapContent_FocusStyle);
   }
 </style>

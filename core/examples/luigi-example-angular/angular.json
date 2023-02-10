@@ -111,28 +111,15 @@
               "src/index.html",
               {
                 "glob": "**",
-                "input": "node_modules/@kyma-project/luigi-core",
+                "input": "node_modules/@luigi-project/core",
                 "output": "/luigi-core"
               }
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
             ]
           }
         }
       }
     }
   },
-  "defaultProject": "luigisample",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

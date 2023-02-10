@@ -237,6 +237,18 @@ describe('Navigation', () => {
         .should('have.class', 'is-selected');
     });
 
+    it('Check if status badge is rendered', () => {
+      cy.visit('/projects/pr2/');
+      cy.get('a[data-testid="myTestId"] .fd-object-status--informative').should('exist');
+      cy.get('a[data-testid="myTestId"] .fd-object-status__text').should('contain', 'Project');
+    });
+
+    it('Check if status badge on User Settings is rendered right aligned', () => {
+      cy.visit('/projects/pr2/');
+      cy.get('a[data-testid="myTestId"] .badge-align-right').should('exist');
+      cy.get('a[data-testid="myTestId"] .badge-align-right').should('contain', 'User Settings');
+    });
+
     it('Check if active node reloads page', () => {
       cy.visit('/projects/pr1/developers');
       cy.getIframeBody().then($iframeBody => {
@@ -278,6 +290,8 @@ describe('Navigation', () => {
     it('Icon with label label in TopNav', () => {
       cy.get('[data-testid="icon-and-label"]>.fd-top-nav__icon').should('exist');
       cy.get('[data-testid="icon-and-label"]').should('contain', 'Git');
+      cy.get('[data-testid="icon-and-label"] .fd-object-status--negative').should('exist');
+      cy.get('a[data-testid="icon-and-label"] .fd-object-status__text').should('contain', 'Git');
     });
 
     it('Icon with label in LeftNav', () => {

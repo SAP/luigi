@@ -1,6 +1,7 @@
 import { APP_LOADING_INDICATOR } from './../utilities/constants';
 import { GenericHelpers } from '../utilities/helpers';
 import { get, writable } from 'svelte/store';
+import { linkManager } from './_internalLinkManager';
 import { SemiCollapsibleNavigation } from './../navigation/services/semi-collapsed-navigation';
 /**
  * Functions to use Luigi Core UX features.
@@ -121,7 +122,7 @@ class LuigiUX {
    * Get the document title
    * @memberof UX
    * @since 1.4.0
-   * @returns a string, which is displayed in the tab.
+   * @returns {string} a string, which is displayed in the tab.
    * @example Luigi.ux().getDocumentTitle();
    */
   getDocumentTitle() {
@@ -155,6 +156,15 @@ class LuigiUX {
    */
   closeUserSettings() /* istanbul ignore next */ {
     Luigi.closeUserSettings();
+  }
+
+  /**
+   * Removes backdrop. Function only used internally
+   * @memberof UX
+   * @private
+   */
+  removeBackdrop() {
+    new linkManager().sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
 }
 

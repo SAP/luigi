@@ -39,10 +39,10 @@ runWebserver 8090
 WS_EXT_PID=$PID
 
 echo ""
-echo "Fiddle App"
-cd $BASE_DIR/../website/fiddle
-killWebserver 8080
-runWebserver 8080 public /bundle.js
+echo "Js Test App"
+cd "$BASE_DIR/e2e-js-test-application"
+killWebserver 4500
+npm run dev &
 WS_FID_PID=$PID
 
 cd $NG_EXAMPLE

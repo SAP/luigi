@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="../../../node_modules/fundamental-styles/dist/fundamental-styles.css"
+      rel="stylesheet"
+    />
+    <link href="../../styles/styles.css" rel="stylesheet" />
+    <script src="/node_modules/@luigi-project/client/luigi-client.js"></script>
+    <style>
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section>
+      <button data-testid="lui-add-search-params" onclick="addSearchParams()">
+        add search params
+      </button>
+      <button data-testid="lui-delete-search-params" onclick="deleteSearchParam()">
+        delete search params
+      </button>
+      <button data-testid="lui-get-search-params" onclick="getSearchParam()">
+        get search params
+      </button>
+      <button data-testid="lui-add-node-params" onclick="addNodeParams()">
+        add node params
+      </button>
+      <button data-testid="lui-delete-node-params" onclick="deleteNodeParam()">
+        delete node params
+      </button>
+      <div>current search params: <span id="currentSearchParams"></span></div>
+    </section>
+    <script>
+      function addSearchParams() {
+        LuigiClient.addCoreSearchParams({ q: 'test', luigi: 'rocks', tets: 'tets' });
+      }
+      function deleteSearchParam() {
+        LuigiClient.addCoreSearchParams({ q: undefined });
+      }
+      function addNodeParams() {
+        LuigiClient.addNodeParams({ q: 'test', luigi: 'rocks' });
+      }
+      function deleteNodeParam() {
+        LuigiClient.addNodeParams({ q: undefined, luigi: 'rocks' });
+      }
+      function getSearchParam() {
+        const params = LuigiClient.getCoreSearchParams();
+        document.getElementById('currentSearchParams').innerHTML = JSON.stringify(params);
+      }
+    </script>
+  </body>
+</html>

@@ -145,7 +145,7 @@ describe('Luigi Client ux manager features', () => {
       it("shouldn't proceed when 'No' was pressed in modal", () => {
         cy.wrap($iframeBody)
           .find('[data-testid=toggle-dirty-state]')
-          .click();
+          .click({force: true});
 
         cy.goToProjectsPage();
 
@@ -163,7 +163,7 @@ describe('Luigi Client ux manager features', () => {
       it("should proceed when 'Yes' was pressed in modal", () => {
         cy.wrap($iframeBody)
           .find('[data-testid=toggle-dirty-state]')
-          .click();
+          .click({force: true});
 
         cy.goToProjectsPage();
 
@@ -259,6 +259,29 @@ describe('Luigi Client ux manager features', () => {
         $iframeBody = result;
         cy.wrap($iframeBody).should('contain', 'LuigiClient linkManager methods');
       });
+    });
+  });
+
+  describe('removeBackdrop', () => {
+    it('backdrop removed after navigating away', () => {
+      cy.goToUxManagerMethods($iframeBody);
+
+      cy.wrap($iframeBody)
+        .find('a[data-testid="add-backdrop-from-mfe"]')
+        .click();
+
+      // check if backdrop exists
+      cy.get('.lui-backdrop').should('exist');
+
+      // navigate away
+      cy.wrap($iframeBody)
+        .find('a[data-testid="navigate-to-project-2"]')
+        .click();
+
+      cy.expectPathToBe('/projects/pr2');
+
+      // check that backdrop is removed
+      cy.get('.lui-backdrop').should('not.exist');
     });
   });
 });

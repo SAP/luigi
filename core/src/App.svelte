@@ -35,9 +35,9 @@
     LuigiConfig,
     LuigiElements,
     LuigiGlobalSearch,
-    LuigiFeatureToggles,
     LuigiTheming,
     LuigiRouting,
+    LuigiUX,
   } from './core-api';
   import { Navigation } from './navigation/services/navigation';
   import { Routing } from './services/routing';
@@ -61,10 +61,6 @@
   let splitViewValues;
 
   /// MFs
-  let modalIframe;
-  let modalIframeData;
-  let modalWC;
-  let modalWCData;
   let modal;
   let activeDrawer = false;
   let disableBackdrop;
@@ -147,7 +143,7 @@
 
   const sendContextToClient = async (config, goBackContext = {}) => {
     if (!config.iframe) {
-      console.info('iframe does not exist, not able to send context.');
+      console.debug('iframe does not exist, not able to send context.');
       return;
     }
 
@@ -399,7 +395,12 @@
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-      closeModal();
+      for (let i = mfModalList.length; i--; ) {
+        closeModal(i);
+      }
+
+      // remove backdrop
+      LuigiUX.removeBackdrop();
 
       closeSplitView();
 
@@ -716,6 +717,8 @@
   let hideSideNav;
   let noAnimation;
   let previousWindowWidth;
+  let configTag;
+  let isHeaderDisabled;
 
   const closeLeftNav = () => {
     document.body.classList.remove('lui-leftNavToggle');
@@ -897,63 +900,107 @@
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
 
   //// MICRO-FRONTEND MODAL
+  // list containing the opened modals
+  let mfModalList = [];
 
-  let mfModal = {};
-
-  const resetMicrofrontendModalData = () => {
-    mfModal.displayed = false;
-    mfModal.nodepath = undefined;
-    mfModal.settings = {};
-    modalIframe = undefined;
+  /**
+   * Resets the mf modal data given the index and updates the 'mfModalList'. If no index given, resets the whole list instead
+   * @param index {number|undefined}  the index of the modal to reset
+   */
+  const resetMicrofrontendModalData = (index) => {
+    if (typeof index === 'undefined') {
+      // reset all modal list
+      mfModalList = [];
+      return;
+    }
+    // remove the item with specified index from the list
+    mfModalList = mfModalList.filter((item, i) => index !== i);
   };
 
   resetMicrofrontendModalData();
 
+  /**
+   * Opens the (iframe/wc) view in a modal given in the nodepath
+   * @param nodepath {string} the path of the view to open
+   * @param settings {Object} the respective modal settings
+   */
   const openViewInModal = async (nodepath, settings) => {
+    // check if navigation to this path is allowed or not
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
     }
-    mfModal.displayed = true;
-    mfModal.nodepath = nodepath;
-    mfModal.settings = settings;
+    // insert modal into the modals list to be viewed on top of other modals
+    const newModal = {
+      mfModal: {
+        displayed: true,
+        nodepath,
+        settings,
+      },
+    };
+    mfModalList = [...mfModalList, newModal];
 
+    // check if modalPath feature enable and set URL accordingly
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
       'routing.showModalPathInUrl'
     );
-    if (showModalPathInUrl) {
+
+    //  only show the modal path in the URL when the first modal is opened.
+    if (showModalPathInUrl && mfModalList.length === 1) {
       Routing.appendModalDataToUrl(nodepath, settings);
     }
   };
 
-  const modalIframeCreated = (event) => {
-    modalIframe = event.detail.modalIframe;
-    modalIframeData = event.detail.modalIframeData;
+  /**
+   * Event handler called when the iframe of the modal is created inside Modal component
+   * @param event {Object} event data of the instantiated Modal component instance
+   * @param index {number} the index of the modal to be instantiated
+   */
+  const modalIframeCreated = (event, index) => {
+    mfModalList[index].modalIframe = event.detail.modalIframe;
+    mfModalList[index].modalIframeData = event.detail.modalIframeData;
   };
 
-  const modalWCCreated = (event) => {
-    modalWC = event.detail.modalWC;
-    modalWCData = event.detail.modalWCData;
+  /**
+   * Event handler called when the web component of the modal is created inside Modal component
+   * @param event {Object} event data of the instantiated Modal component instance
+   * @param index {number} the index of the modal to be instantiated
+   */
+  const modalWCCreated = (event, index) => {
+    mfModalList[index].modalWC = event.detail.modalWC;
+    mfModalList[index].modalWCData = event.detail.modalWCData;
   };
 
-  const closeModal = (event) => {
-    if (modalIframe) {
-      getUnsavedChangesModalPromise(modalIframe.contentWindow).then(() => {
-        const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-          'routing.showModalPathInUrl'
-        );
-        if (showModalPathInUrl) {
-          Routing.removeModalDataFromUrl();
-        }
-        resetMicrofrontendModalData();
-      });
-    } else if (modalWC) {
+  /**
+   * Closes the modal given the respective modal index. Index is used due to multiple modals functionality
+   * @param index the index of the modal to be closed corresponding to the 'mfModalList' array
+   * @param isClosedInternal flag if the modal is closed via close button or internal back navigation instead of changing browser URL manually or browser back button
+   * @param goBackContext the goBack context that is passed through when closing the modal
+   */
+  const closeModal = (index, isClosedInternal, goBackContext) => {
+    const resetModalData = (index, isClosedInternal) => {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
         'routing.showModalPathInUrl'
       );
-      if (showModalPathInUrl) {
-        Routing.removeModalDataFromUrl();
+      // only remove the modal path in URL when closing the first modal
+      if (showModalPathInUrl && mfModalList.length === 1) {
+        Routing.removeModalDataFromUrl(isClosedInternal);
       }
-      resetMicrofrontendModalData();
+      resetMicrofrontendModalData(index);
+    };
+    const targetModal = mfModalList[index];
+    const rp = GenericHelpers.getRemotePromise(
+      targetModal.mfModal.settings.onClosePromiseId
+    );
+    if (targetModal && targetModal.modalIframe) {
+      getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
+        () => {
+          resetModalData(index, isClosedInternal);
+          rp && rp.doResolve(goBackContext);
+        }
+      );
+    } else if (targetModal && targetModal.modalWC) {
+      resetModalData(index, isClosedInternal);
+      rp && rp.doResolve(goBackContext);
     }
   };
 
@@ -1044,10 +1091,7 @@
             resetMicrofrontendDrawerData();
           });
         }
-        IframeHelpers.getCurrentMicrofrontendIframe().setAttribute(
-          'style',
-          null
-        );
+        IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
       } catch (e) {
         console.log(e);
       }
@@ -1091,7 +1135,7 @@
   /**
    * Builds the current path based on the navigation params received
    * @param params {Object} navigation options
-   * @returns {string} the path built 
+   * @returns {string} the path built
    */
   const buildPathForGetCurrentRoute = (params) => {
     let localNavPath = navigationPath;
@@ -1107,10 +1151,12 @@
 
     let path = params.link;
     let currentNodeViewUrl = getSubPath(currentNode, pathParams);
-  
+
     if (params.fromVirtualTreeRoot) {
       // from a parent node specified with virtualTree: true
-      const virtualTreeNode = [...localNavPath].reverse().find((n) => n.virtualTree);
+      const virtualTreeNode = [...localNavPath]
+        .reverse()
+        .find((n) => n.virtualTree);
       if (!virtualTreeNode) {
         console.error(
           'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
@@ -1140,12 +1186,18 @@
       path = currentNodeViewUrl.split(navContextNodeViewUrl).join('');
     } else {
       // retrieve path for getCurrentPath method when no options used
-        path = currentNodeViewUrl;
+      path = currentNodeViewUrl;
     }
     return path;
   };
 
   function init(node) {
+    // remove historyState if modal is closed by entering a new luigi route in url bar
+    sessionStorage.removeItem('historyState');
+    ViewGroupPreloading.shouldPreload = true;
+    ViewGroupPreloading.preload(true);
+    ViewGroupPreloading.shouldPreload = false;
+
     const isolateAllViews = LuigiConfig.getConfigValue(
       'navigation.defaults.isolateView'
     );
@@ -1196,6 +1248,10 @@
 
     EventListenerHelpers.addEventListener('message', async (e) => {
       const iframe = IframeHelpers.getValidMessageSource(e);
+      const topMostModal = mfModalList[mfModalList.length - 1];
+      const modalIframe = topMostModal && topMostModal.modalIframe;
+      const modalIframeData = topMostModal && topMostModal.modalIframeData;
+
       const specialIframeProps = {
         modalIframe,
         modalIframeData,
@@ -1215,6 +1271,22 @@
         IframeHelpers.getSpecialIframeMessageSource(e, specialIframeProps);
       const isSpecialIframe =
         specialIframeMessageSource && specialIframeMessageSource.length > 0;
+
+      const skipInactiveConfig = LuigiConfig.getConfigValue(
+        'communication.skipEventsWhenInactive'
+      );
+
+      if (
+        skipInactiveConfig &&
+        skipInactiveConfig.length > 0 &&
+        !isSpecialIframe &&
+        iframe.contentWindow !== window &&
+        !GenericHelpers.isElementVisible(iframe) &&
+        skipInactiveConfig.includes(e.data.msg)
+      ) {
+        console.debug(`EVENT '${e.data.msg}' from inactive iframe -> SKIPPED`);
+        return;
+      }
 
       if ('custom' === e.data.msg) {
         const customMessagesListeners =
@@ -1302,7 +1374,6 @@
           if (loadingIndicatorAutoHideEnabled) {
             showLoadingIndicator = false;
           }
-
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
           // set empty context to an existing but inactive iframe; this is a valid use case (view group pre-loading)
@@ -1354,7 +1425,7 @@
         const params = e.data.params;
         const { intent, newTab, modal, splitView, drawer, withoutSync } =
           params;
-        const isSpecial = newTab || modal || splitView || drawer;
+        let isSpecial = newTab || modal || splitView || drawer;
 
         const resolveRemotePromise = () => {
           const remotePromise = GenericHelpers.getRemotePromise(
@@ -1386,6 +1457,9 @@
           params.link = params.link.split('?')[0];
         }
 
+        let path = buildPath(e.data.params, srcNode, srcPathParams);
+        isSpecial = isSpecial || (intent && path.external);
+
         if (!isSpecial) {
           getUnsavedChangesModalPromise()
             .then(() => {
@@ -1397,7 +1471,12 @@
                 .catch(() => {
                   rejectRemotePromise();
                 });
-              closeModal();
+              // close all modals to allow navigation to the non-special view
+              mfModalList.forEach((m, index) => {
+                // close modals
+                closeModal(index);
+              });
+
               closeSplitView();
               closeDrawer();
               isNavigationSyncEnabled = true;
@@ -1406,9 +1485,16 @@
               rejectRemotePromise();
             });
         } else {
-          let path = buildPath(e.data.params, srcNode, srcPathParams);
-          path = GenericHelpers.addLeadingSlash(path);
+          // navigate to external link if external intent link detected
+          if (intent && path.external) {
+            Routing.navigateToExternalLink({
+              url: path.url,
+              sameWindow: !path.openInNewTab,
+            });
+            return;
+          }
 
+          path = GenericHelpers.addLeadingSlash(path);
           if (newTab) {
             await openViewInNewTab(path);
             checkResolve();
@@ -1430,7 +1516,7 @@
           contentNode = node;
 
           if (modal !== undefined) {
-            resetMicrofrontendModalData();
+            !modal.keepPrevious && resetMicrofrontendModalData();
             await openViewInModal(path, modal === true ? {} : modal);
             checkResolve();
           } else if (splitView !== undefined) {
@@ -1446,27 +1532,36 @@
       }
 
       if ('luigi.navigation.back' === e.data.msg) {
-        if (IframeHelpers.isMessageSource(e, modalIframe)) {
-          closeModal();
-          await sendContextToClient(config, {
-            goBackContext:
-              e.data.goBackContext && JSON.parse(e.data.goBackContext),
-          });
+        const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
+        const _goBackContext =
+          e.data.goBackContext && JSON.parse(e.data.goBackContext);
+        if (
+          IframeHelpers.isMessageSource(
+            e,
+            mfModalTopMostElement && mfModalTopMostElement.modalIframe
+          )
+        ) {
+          closeModal(mfModalList.length - 1, true, _goBackContext);
+
+          config.iframe &&
+            (await sendContextToClient(config, {
+              goBackContext: _goBackContext,
+            }));
         } else if (IframeHelpers.isMessageSource(e, splitViewIframe)) {
           closeSplitView();
-          await sendContextToClient(config, {
-            goBackContext:
-              e.data.goBackContext && JSON.parse(e.data.goBackContext),
-          });
+          config.iframe &&
+            (await sendContextToClient(config, {
+              goBackContext: _goBackContext,
+            }));
         } else if (IframeHelpers.isMessageSource(e, drawerIframe)) {
           if (activeDrawer) {
             activeDrawer = !activeDrawer;
           }
           closeDrawer();
-          await sendContextToClient(config, {
-            goBackContext:
-              e.data.goBackContext && JSON.parse(e.data.goBackContext),
-          });
+          config.iframe &&
+            (await sendContextToClient(config, {
+              goBackContext: _goBackContext,
+            }));
         } else {
           // go back: context from the view
           if (preservedViews && preservedViews.length > 0) {
@@ -1478,8 +1573,7 @@
               config.iframe = Iframe.getActiveIframe(node);
               isNavigateBack = true;
               preservedViews = preservedViews;
-              goBackContext =
-                e.data.goBackContext && JSON.parse(e.data.goBackContext);
+              goBackContext = _goBackContext;
               // TODO: check if getNavigationPath or history pop to update hash / path
               handleNavigation(
                 { params: { link: previousActiveIframeData.path } },
@@ -1487,7 +1581,7 @@
               );
             });
           } else {
-            if (e.data.goBackContext) {
+            if (_goBackContext) {
               console.warn(
                 `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`
               );
@@ -1520,10 +1614,22 @@
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
         if (isSpecialIframe) {
-          const route = GenericHelpers.addLeadingSlash(buildPath(e.data.params, iframe.luigi.currentNode, iframe.luigi.pathParams));
-          Routing.updateModalDataInUrl(route, e.data.params.modal, e.data.params.history);
+          const route = GenericHelpers.addLeadingSlash(
+            buildPath(
+              e.data.params,
+              iframe.luigi.currentNode,
+              iframe.luigi.pathParams
+            )
+          );
+          Routing.updateModalDataInUrl(
+            route,
+            e.data.params.modal,
+            e.data.params.history
+          );
         } else {
-          console.warn('updateModalDataPath can only be called from modal, ignoring.');
+          console.warn(
+            'updateModalDataPath can only be called from modal, ignoring.'
+          );
         }
       }
 
@@ -1712,7 +1818,7 @@
   };
 
   export const hasBack = () => {
-    return (mfModal && mfModal.displayed) || preservedViews.length !== 0;
+    return mfModalList.length > 0 || preservedViews.length !== 0;
   };
 
   onMount(() => {
@@ -1786,6 +1892,8 @@
     breadcrumbsEnabled =
       GenericHelpers.requestExperimentalFeature('breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
+    configTag = LuigiConfig.getConfigValue('tag');
+    isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
   });
 </script>
 
@@ -1794,20 +1902,28 @@
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
     ? 'no-side-nav'
-    : ''} {noAnimation ? 'no-animation' : ''}"
+    : ''} {isHeaderDisabled ? 'no-top-nav' : ''} {noAnimation
+    ? 'no-animation'
+    : ''}"
+  configversion={configTag}
 >
   {#if alerts && alerts.length}
     <Alerts alertQueue={alerts} on:alertDismiss={handleAlertDismissExternal} />
   {/if}
-  {#if mfModal.displayed}
-    <Modal
-      settings={mfModal.settings}
-      nodepath={mfModal.nodepath}
-      on:close={closeModal}
-      on:iframeCreated={modalIframeCreated}
-      on:wcCreated={modalWCCreated}
-    />
-  {/if}
+
+  {#each mfModalList as modalItem, index}
+    {#if modalItem.mfModal.displayed}
+      <Modal
+        settings={modalItem.mfModal.settings}
+        nodepath={modalItem.mfModal.nodepath}
+        modalIndex={index}
+        on:close={() => closeModal(index, true)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
+        {disableBackdrop}
+      />
+    {/if}
+  {/each}
   {#if mfDrawer.displayed && mfDrawer.settings.isDrawer}
     <Modal
       settings={mfDrawer.settings}
@@ -1877,22 +1993,24 @@
       </div>
     </div>
   {/if}
-  <TopNav
-    pathData={navigationPath}
-    {pathParams}
-    on:handleClick={handleNavClick}
-    on:resizeTabNav={onResizeTabNav}
-    on:toggleSearch={toggleSearch}
-    on:closeSearchResult={closeSearchResult}
-    on:handleSearchNavigation={handleSearchNavigation}
-    bind:isSearchFieldVisible
-    bind:displaySearchResult
-    bind:displayCustomSearchResult
-    bind:searchResult
-    bind:inputElem
-    bind:luigiCustomSearchRenderer__slot
-    {burgerTooltip}
-  />
+  {#if !isHeaderDisabled}
+    <TopNav
+      pathData={navigationPath}
+      {pathParams}
+      on:handleClick={handleNavClick}
+      on:resizeTabNav={onResizeTabNav}
+      on:toggleSearch={toggleSearch}
+      on:closeSearchResult={closeSearchResult}
+      on:handleSearchNavigation={handleSearchNavigation}
+      bind:isSearchFieldVisible
+      bind:displaySearchResult
+      bind:displayCustomSearchResult
+      bind:searchResult
+      bind:inputElem
+      bind:luigiCustomSearchRenderer__slot
+      {burgerTooltip}
+    />
+  {/if}
   {#if !hideNav}
     <GlobalNav
       pathData={navigationPath}
@@ -1938,6 +2056,7 @@
     --luigi__multi-app-dropdown--width: 60vw;
     --luigi__breadcrumb--height: 2.75rem;
     --luigi__shellbar--height: 2.75rem;
+    --luigi__horizontal-nav--height: 2.75rem;
   }
 
   :global(html) {
@@ -1951,7 +2070,35 @@
     margin: 0;
     line-height: 1.42857;
     overflow: hidden;
+    background-color: var(--sapBackgroundColor);
   }
+
+  :global(.fioriScrollbars) {
+    scrollbar-color: var(--sapScrollBar_FaceColor)
+      var(--sapScrollBar_TrackColor);
+    & :global(::-webkit-scrollbar:horizontal) {
+      height: var(--sapScrollBar_Dimension);
+    }
+    & :global(::-webkit-scrollbar:vertical) {
+      width: var(--sapScrollBar_Dimension);
+    }
+    & :global(::-webkit-scrollbar) {
+      background-color: var(--sapScrollBar_TrackColor);
+    }
+    & :global(::-webkit-scrollbar-thumb) {
+      background-color: var(--sapScrollBar_FaceColor);
+    }
+    & :global(::-webkit-scrollbar-thumb:hover) {
+      background-color: var(--sapScrollBar_Hover_FaceColor);
+    }
+    & :global(::-webkit-scrollbar-corner) {
+      background-color: var(--sapScrollBar_TrackColor);
+    }
+    & :global(::-webkit-scrollbar-thumb) {
+      border-radius: var(--sapElement_BorderCornerRadius);
+    }
+  }
+
   :global(*) {
     box-sizing: inherit;
   }
@@ -1989,6 +2136,17 @@
     top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
+  :global(.lui-breadcrumb #tabsContainer) {
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height)
+    );
+  }
+  :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
+        var(--luigi__horizontal-nav--height)
+    );
+  }
   .iframeContainer,
   .spinnerContainer {
     position: absolute;
@@ -2028,14 +2186,10 @@
     height: 100%;
   }
 
-  :global(.lui-breadcrumb) .iframeContainerTabNav {
-    top: calc(
-      #{$topNavHeight} + #{$topNavHeightTab} + var(--luigi__breadcrumb--height)
-    );
-  }
-
   .iframeContainerTabNav {
-    top: calc(#{$topNavHeight} + #{$topNavHeightTab});
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__horizontal-nav--height)
+    );
   }
 
   .iframeContainer:focus {
@@ -2078,6 +2232,10 @@
     :global(.fd-app__sidebar) {
       display: none;
     }
+  }
+
+  .no-top-nav {
+    --luigi__shellbar--height: 0px;
   }
 
   :global(body.lui-simpleSlideInNav) {
@@ -2175,6 +2333,14 @@
     padding: 0 0.625rem;
     text-decoration: none;
     max-width: var(--luigi__app-title--width);
+    overflow: visible;
+
+    :global(span) {
+      display: block;
+      max-width: inherit;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   :global(.lui-app-switch) {
@@ -2436,6 +2602,7 @@
     display: none;
     width: 100%;
     height: 100%;
+    z-index: 0;
   }
 
   :global(.lui-webComponent) {

@@ -1,0 +1,36 @@
+# Page tree
+docs_dir: .
+nav:
+  - Basics:
+    - Getting Started: getting-started.md
+    - Architecture: luigi-architecture.md
+    - FAQ: faq.md
+    - Versions: versions.md
+  - Luigi Core: 
+    - Quick setup: application-setup.md
+    - General settings: general-settings.md 
+    - UI features: luigi-ux-features.md 
+    - Lifecycle hooks: lifecycle-hooks.md 
+    - Internationalization: i18n.md 
+    - Web Component: web-component.md 
+  - Navigation: 
+    - Basic navigation: navigation-configuration.md
+    - Advanced navigation: navigation-advanced.md
+    - Global search: global-search.md
+    - User settings: user-settings.md
+    - Navigation parameters reference: navigation-parameters-reference.md
+  - Authorization: 
+    - Authorization configuration: authorization-configuration.md
+    - Authorization events: authorization-events.md
+  - Luigi Client: 
+    - Luigi Client Installation: luigi-client-setup.md
+    - Framework support libraries: framework-support-libraries.md
+    - Advanced configuration options: advanced-options-luigi-client.md
+  - API Reference: 
+    - Luigi Core API: luigi-core-api.md
+    - Luigi Client API: luigi-client-api.md
+  - Advanced: 
+    - Advanced scenarios: advanced-scenarios.md
+    - Core/Client Communication: communication.md
+  - Examples:
+    - Navigation configuration example: navigation-configuration-example.md

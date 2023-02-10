@@ -25,10 +25,11 @@ class ViewUrlDecoratorSvc {
     this.decorators = this.decorators.filter(d => d.uid !== decorator.uid).concat(decorator);
   }
 
-  applyDecorators(url) {
+  applyDecorators(url, decode) {
     if (!url) {
       return url;
     }
+
     const urlObj = new URL(GenericHelpers.prependOrigin(url));
     // apply query params
     const queryParamDecorators = this.decorators.filter(d => d.type === 'queryString');
@@ -39,6 +40,9 @@ class ViewUrlDecoratorSvc {
       }
       const value = decorator.valueFn();
       urlObj.searchParams.append(decorator.key, value);
+    }
+    if (decode) {
+      urlObj.search = decodeURIComponent(urlObj.search);
     }
     return urlObj.href;
   }

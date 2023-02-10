@@ -89,7 +89,7 @@ class UserSettings {
       label: 'Theming',
       title: 'Theming',
       icon: 'private',
-      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html',
+      viewUrl: 'http://localhost:4500/examples/microfrontends/customUserSettingsMf.html',
       settings: {
         theme: {
           type: 'enum',
@@ -102,7 +102,7 @@ class UserSettings {
       label: 'Custom',
       title: 'Custom',
       icon: 'private',
-      viewUrl: 'http://localhost:8080/examples/microfrontends/customUserSettingsMf.html'
+      viewUrl: 'http://localhost:4500/examples/microfrontends/customUserSettingsMf.html'
     },
     custom2: {
       label: 'Custom 2',

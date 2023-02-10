@@ -8,7 +8,7 @@
     },
     "metaData": {
       "categoryPosition": 2,
-      "position": 6
+      "position": 1
     }
   }
 }
@@ -161,6 +161,22 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
   },
 ```
 
+### header.responsiveShellbarPaddings
+- **type**: boolean
+- **description**: based on the browser window size, a responsive padding will be applied to the Shellbar Component when set to `true`.
+- **default**: by default, the parameter is set to `false`, meaning that padding for the Shellbar Component will stay the same as inherited from the `.fd-shellbar` class.
+- **example**:
+```
+ header: {  object / function / Promise
+   responsiveShellbarPaddings: true
+  },
+```
+
+### header.disabled
+- **type**: boolean
+- **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top navigation is hidden and only the left-side navigation is visible.
+- **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
+
 ### responsiveNavigation
 - **description**: allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons.
 You can set the following values:
@@ -220,6 +236,7 @@ For example, to allow 'fullscreen' for non-modal iframes:
     * **themes** (mandatory) is an array of available themes, for example `themes: ['light', 'dark']`.
     * **defaultTheme** (mandatory) the default theme used by the application.
     * **nodeViewURLDecorator** (optional) you can add an internal Luigi View URL decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
+    * **useFioriScrollbars** (optional) if set to `true`, Fiori theming variables are applied to all scrollbars in luigi core app.
 - **example**:
 ```javascript
 theming : {
@@ -256,7 +273,6 @@ Luigi.setConfig({
   }
 })
 ```
-
 
 ## Third-party cookies support check
 

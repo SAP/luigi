@@ -25,6 +25,77 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v1.26.0] (2023-01-16)
+
+#### :boom: Breaking Change
+* [#2735](https://github.com/SAP/luigi/pull/2735) Bump @angular/core from 6.1.10 to 11.0.5 in /test/e2e-test-application ([@dependabot[bot]](https://github.com/apps/dependabot))
+
+#### :rocket: Added
+* [#3094](https://github.com/SAP/luigi/pull/3094) Enhance left nav a11y ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3049](https://github.com/SAP/luigi/pull/3049) Add callback to openAsModal for core api ([@hardl](https://github.com/hardl))
+* [#2963](https://github.com/SAP/luigi/pull/2963) LuigiClient type declaration for web components ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2955](https://github.com/SAP/luigi/pull/2955) Allow right alignment of statusBadge ([@hardl](https://github.com/hardl))
+* [#3013](https://github.com/SAP/luigi/pull/3013) Tooltip for categories expand collapse button ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2980](https://github.com/SAP/luigi/pull/2980) Add 'isDrawer' to luigi client api ([@ndricimrr](https://github.com/ndricimrr))
+* [#2941](https://github.com/SAP/luigi/pull/2941) Add external link option for IBN ([@ndricimrr](https://github.com/ndricimrr))
+* [#2932](https://github.com/SAP/luigi/pull/2932) Allow LuigiElement shadow mode configuration ([@ndricimrr](https://github.com/ndricimrr))
+* [#3072](https://github.com/SAP/luigi/pull/3072) History handling for modals ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#2984](https://github.com/SAP/luigi/pull/2984) Fix unsaved changes modal not closing after browser back  ([@ndricimrr](https://github.com/ndricimrr))
+* [#3039](https://github.com/SAP/luigi/pull/3039) Fix drawer overlap ([@hardl](https://github.com/hardl))
+* [#2953](https://github.com/SAP/luigi/pull/2953) Fix broken link ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+* [#2901](https://github.com/SAP/luigi/pull/2901) Plus sign not decoded correctly when adding and then getting nodeParams ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2949](https://github.com/SAP/luigi/pull/2949) Add missing withOptions function typings ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
+## [v1.25.1] (2022-10-04)
+#### :bug: Fixed
+* [#2838](https://github.com/SAP/luigi/pull/2915) Fix client-support-angular deps ([@hardl](https://github.com/hardl))
+
+
+
+## [v1.25.0] (2022-09-30)
+
+#### :rocket: Added
+* [#2908](https://github.com/SAP/luigi/pull/2908) Ignore events from inactive iframes ([@hardl](https://github.com/hardl))
+* [#2893](https://github.com/SAP/luigi/pull/2893) Add getActiveFeatureToggles in Luigi WC ([@wdoberschuetz](https://github.com/wdoberschuetz))
+* [#2900](https://github.com/SAP/luigi/pull/2900) CRA Luigi Template ([@ndricimrr](https://github.com/ndricimrr))
+* [#2878](https://github.com/SAP/luigi/pull/2878) Implement tests by using luigi mock module ([@viktorsperling](https://github.com/viktorsperling))
+* [#2858](https://github.com/SAP/luigi/pull/2858) Add Viewgroup Background Option ([@ndricimrr](https://github.com/ndricimrr))
+* [#2873](https://github.com/SAP/luigi/pull/2873) Hide top navigation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2861](https://github.com/SAP/luigi/pull/2861) Introduce js-test-application for e2e tests ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2808](https://github.com/SAP/luigi/pull/2808) Remove javascript void from nav href ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :bug: Fixed
+* [#2838](https://github.com/SAP/luigi/pull/2838) Fix sessionStorage not working ([@hardl](https://github.com/hardl))
+* [#2850](https://github.com/SAP/luigi/pull/2850) Fix preload url routing ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2827](https://github.com/SAP/luigi/pull/2827) Fix mkdocs.yml file ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
+
+
+## [v1.24.0] (2022-07-15)
+
+#### :rocket: Added
+* [#2803](https://github.com/SAP/luigi/pull/2803) Add decode mfe src url search params option ([@hardl](https://github.com/hardl))
+* [#2674](https://github.com/SAP/luigi/pull/2674) Custom item renderer for app switcher ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#2770](https://github.com/SAP/luigi/pull/2770) Responsive padding for the Shellbar Component ([@UlianaMunich](https://github.com/UlianaMunich))
+* [#2765](https://github.com/SAP/luigi/pull/2785) Multiple modal dialogs ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :bug: Fixed
+* [#2807](https://github.com/SAP/luigi/pull/2807) Remove backdrop on node change ([@ndricimrr](https://github.com/ndricimrr))
+* [#2792](https://github.com/SAP/luigi/pull/2792) Fix patchy product switch grid icon ([@hardl](https://github.com/hardl))
+* [#2783](https://github.com/SAP/luigi/pull/2783) Fixed viewgroup inheritance ([@hardl](https://github.com/hardl))
+* [#2765](https://github.com/SAP/luigi/pull/2765) Refactor buildpath for getcurrentpath ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
+
+
 ## [v1.23.1] (2022-06-20)
 
 #### :rocket: Added
@@ -32,7 +103,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 #### :bug: Fixed
 * [#2756](https://github.com/SAP/luigi/pull/2756) Fix getCurrentPath collision with buildPath ([@hardl](https://github.com/hardl))
-
 
 
 
@@ -1403,3 +1473,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.22.0]: https://github.com/SAP/luigi/compare/v1.21.0...v1.22.0
 [v1.23.0]: https://github.com/SAP/luigi/compare/v1.22.0...v1.23.0
 [v1.23.1]: https://github.com/SAP/luigi/compare/v1.23.0...v1.23.1
+[v1.24.0]: https://github.com/SAP/luigi/compare/v1.23.1...v1.24.0
+[v1.25.0]: https://github.com/SAP/luigi/compare/v1.24.0...v1.25.0
+[v1.25.1]: https://github.com/SAP/luigi/compare/v1.25.0...v1.25.1
+[v1.26.0]: https://github.com/SAP/luigi/compare/v1.25.1...v1.26.0

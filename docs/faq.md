@@ -51,6 +51,10 @@ No, Luigi itself does not deliver any micro frontends. It is a framework that he
 
 No, Luigi can be used independently of SAP for a variety of purposes. You can find one example in [this article](https://medium.com/swlh/luigi-micro-fronteds-orchestrator-8c0eca710151) which describes how to create a small hobby project using Luigi.
 
+### What is the difference between Luigi and SAPUI5/OpenUI5?
+
+You can find a detailed response to this question [here](https://github.com/SAP/luigi/discussions/2809#discussioncomment-3137780).
+
 ### Where can I download Luigi?
 
 The Luigi project can be found on [GitHub](https://github.com/SAP/luigi). Depending on the UI framework you use, there are different setups for Luigi. You can find more information here: [application setup](application-setup.md).
@@ -104,6 +108,7 @@ There are a few options to do that at the moment:
 - Manually overwrite the styles where needed. The documentation page you are on right now can be used as an example, as it was developed with Luigi.
 - Turn off Luigi view components completely via the [hideNavigation](general-settings.md#hidenavigation) parameter in the `settings:` section of your Luigi configuration. Then you can implement your own view components for header and navigation and use the [Luigi Core API](luigi-core-api.md) to set them up with Luigi.
 - You can use this simple example with a completely customized shell as a starting point:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -512,7 +517,7 @@ There are a few options to do that at the moment:
                 {
                   label: "Luigi Github Page",
                   externalLink: {
-                    url: "https://github.com/kyma-project/luigi",
+                    url: "https://github.com/SAP/luigi",
                   },
                 },
                 {

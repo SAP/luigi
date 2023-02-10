@@ -56,86 +56,9 @@ describe('Navigation', () => {
         config.navigation.defaults = {
           sideNavAccordionMode: true
         };
-        win.Luigi.configChanged('settings.navigation');
-        // All is closed
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-
-        cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-
-        // First one is open only
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
-
-        // Second one is open only
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
-
-        cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
-
-        // All is closed
-        cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-        cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-      });
-    });
-  });
-
-  describe('Collapsible Categories / Accordion', () => {
-    it('It should have multiple categories collapsed', () => {
-      cy.visit('/projects/pr2/collapsibles');
-
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
-
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
-
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
-
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-    });
-
-    it('It should have a local side nav accordion mode', () => {
-      cy.visit('/projects/pr2/sidenavaccordionmode');
-
-      // All is closed
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-
-      cy.get('li[data-testid="superusefulgithublinks"] a[title="Super useful Github links"]').click();
-
-      // First one is open only
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('be.visible');
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
-
-      // Second one is open only
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('be.visible');
-
-      cy.get('li[data-testid="usermanagement"] a[title="User Management"]').click();
-
-      // All is closed
-      cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
-      cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
-    });
-
-    it('It should have a global side nav accordion mode', () => {
-      cy.visit('/projects/pr2/collapsibles');
-      cy.window().then(win => {
-        const config = win.Luigi.getConfig();
-        config.navigation.defaults = {
-          sideNavAccordionMode: true
-        };
-        win.Luigi.configChanged('settings.navigation');
+        config.tag = 'accordion';
+        win.Luigi.configChanged();
+        cy.get('#app[configversion="accordion"]');
         // All is closed
         cy.get('li[data-testid="superusefulgithublinks"]>ul.fd-nested-list').should('not.be.visible');
         cy.get('li[data-testid="usermanagement"]>ul.fd-nested-list').should('not.be.visible');
@@ -349,6 +272,19 @@ describe('Navigation', () => {
           cy.get('[data-testid="luigi-topnav-profile-icon"]').should('not.exist');
         });
       });
+    });
+  });
+
+  describe('External Link', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+    });
+
+    it('with context templating', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.get('[data-testid="superusefulgithublinks"]').click();
+      cy.get('a[data-testid="contextvaluereplacement-externallink"]')
+        .should("have.attr", "href", "http://sap.com/en?foo=bar");
     });
   });
 });

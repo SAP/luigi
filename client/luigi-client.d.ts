@@ -91,6 +91,10 @@ export declare interface CoreSearchParams {
   [key: string]: string;
 }
 
+export declare interface RouteChangingOptions {
+  [key: string]: boolean;
+}
+
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
 }
@@ -178,7 +182,7 @@ export declare interface UxManager {
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    * @example
-   * import LuigiClient from '@kyma-project/luigi-client';
+   * import LuigiClient from '@luigi-project/client';
    * const settings = {
    *  header: "Confirmation",
    *  body: "Are you sure you want to do this?",
@@ -233,6 +237,14 @@ export declare interface UxManager {
    * @since 0.6.0
    */
   isModal: () => boolean;
+
+  /**
+   * Checks if the current micro frontend is displayed inside a drawer
+   * @returns {boolean} indicating if it is loaded inside a drawer
+   * @memberof uxManager
+   * @since 1.26.0
+   */
+  isDrawer: () => boolean;
 }
 
 export declare interface LinkManager {
@@ -360,12 +372,28 @@ export declare interface LinkManager {
   withParams: (nodeParams: NodeParams) => this;
 
   /**
+   * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
+   * @memberof linkManager
+   * @param {Object} options navigation options
+   * @param {boolean} options.preventHistoryEntry By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+   * @param {boolean} options.preventContextUpdate By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
+   * @returns {linkManager} link manager instance
+   * @since 1.25.0
+   * @example
+   * LuigiClient.linkManager().withOptions(
+   * { preventContextUpdate:true, preventHistoryEntry: true }
+   * ).navigate('/overview')
+   */
+  withOptions: (options: RouteChangingOptions) => this;
+
+  /**
    * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager
    * @param {string} path navigation path
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */

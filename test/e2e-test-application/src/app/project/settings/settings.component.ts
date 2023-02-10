@@ -30,7 +30,7 @@ export class SettingsComponent implements OnInit {
   callbackValue = 'default value';
   lcSubscription: Subscription;
   preservedViewCallbackContext: any;
-  private testFeatureToggleActive = false;
+  testFeatureToggleActive = false;
   currentRouteVirtual: string;
   currentRoute: string;
 
@@ -108,5 +108,18 @@ export class SettingsComponent implements OnInit {
       .then(route => {
         this.currentRoute = route;
       });
+  }
+
+  navigateAndShowAlert() {
+    linkManager().navigate('/settings', null, true);
+
+    const type: any = 'info';
+    setTimeout(() => {
+      const settings = {
+        text: 'Information alert sent from an inactive iFrame',
+        type
+      };
+      uxManager().showAlert(settings);
+    }, 2000);
   }
 }

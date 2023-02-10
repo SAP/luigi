@@ -311,13 +311,13 @@
   <div
     class="fd-shellbar {responsiveShellbarPadding
       ? 'fd-shellbar--responsive-paddings'
-      : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''} "
+      : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''}"
     tabindex="0"
   >
     <div class="fd-shellbar__group fd-shellbar__group--product">
       {#if responsiveNavSetting === 'simple' || responsiveNavSetting === 'simpleMobileOnly' || responsiveNavSetting === 'Fiori3'}
         <button
-          class="fd-shellbar__button fd-button lui-burger"
+          class="fd-shellbar__button fd-button fd-button--transparent lui-burger"
           on:click={burgerClickHandler}
           tabindex="0"
           title={burgerTooltip}
@@ -391,7 +391,7 @@
                     >
                       <button
                         title={resolveTooltipText(node, getNodeLabel(node))}
-                        class="fd-shellbar__button fd-button {node ===
+                        class="fd-shellbar__button fd-button fd-button--transparent {node ===
                         selectedNode
                           ? 'is-selected'
                           : ''}"
@@ -430,7 +430,7 @@
                   {#if addNavHrefForAnchor}
                     <a
                       href={getRouteLink(node)}
-                      class="fd-shellbar__button fd-button {node ===
+                      class="fd-shellbar__button fd-button fd-button--transparent {node ===
                       selectedNode
                         ? 'is-selected'
                         : ''}"
@@ -450,7 +450,7 @@
                   {:else}
                     <button
                       title={resolveTooltipText(node, getNodeLabel(node))}
-                      class="fd-shellbar__button fd-button {node ===
+                      class="fd-shellbar__button fd-button fd-button--transparent {node ===
                       selectedNode
                         ? 'is-selected'
                         : ''}"
@@ -492,7 +492,7 @@
                     role="button"
                   >
                     <button
-                      class="fd-shellbar__button fd-button"
+                      class="fd-shellbar__button fd-button fd-button--transparent"
                       aria-controls="overflowPopover"
                       aria-expanded={dropDownStates.overflowPopover || false}
                       aria-haspopup="true"
@@ -747,7 +747,7 @@
                       : ''}
                   >
                     <button
-                      class="fd-button fd-shellbar__button"
+                      class="fd-button fd-button--transparent fd-shellbar__button"
                       aria-expanded={dropDownStates.profilePopover || false}
                       aria-haspopup="true"
                       aria-controls="profilePopover"
@@ -820,6 +820,11 @@
 
   .fd-shellbar {
     height: $topNavHeight;
+    box-shadow: var(--sapContent_HeaderShadow);
+
+    .fd-avatar.is-focus:after,.fd-avatar:focus:after {
+      border-color:var(--fdShellbar_Button_Outline_Color);
+    }
   }
 
   .hideNavComponent {

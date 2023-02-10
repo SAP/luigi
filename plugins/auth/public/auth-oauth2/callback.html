@@ -5,24 +5,8 @@
     <script type="text/javascript">
       const tokenLifetimeDays = 7;
 
-      /**
-       * get query parameter from url
-       * defaults to use location.href
-       * examples:
-       * // query string: ?foo=lorem&bar=&baz
-       * var foo = getParameterByName('foo'); // "lorem"
-       * var bar = getParameterByName('bar'); // "" (present with empty value)
-       * var baz = getParameterByName('baz'); // "" (present with no value)
-       * var qux = getParameterByName('qux'); // null (absent)
-       */
-      const getParameterByName = (name, url) => {
-        if (!url) url = encodeURIComponent(window.location.href);
-        name = name.replace(/[\[\]]/g, '\\$&');
-        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      const getParameterByName = name => {
+        return new URLSearchParams(location.search).get(name);
       };
 
       const setAuthData = data => {
@@ -57,8 +41,7 @@
         if (!isNaN(expiresIn) && expiresIn > 0) {
           const nsToMsMultiplier = 1000;
           expirationDate =
-            Number(new Date()) +
-            nsToMsMultiplier * (expiresIn - tokenLifetimeDays);
+            Number(new Date()) + nsToMsMultiplier * (expiresIn - tokenLifetimeDays);
         }
         return expirationDate;
       };
@@ -99,9 +82,9 @@
 
           setAuthData(data);
 
-          const decodedState = atob(
-            decodeURIComponent(hashParams['state'])
-          ).split('_luigiNonce=');
+          const decodedState = atob(decodeURIComponent(hashParams['state'])).split(
+            '_luigiNonce='
+          );
           const appState = decodeURI(decodedState[0] || '');
           const nonce = decodedState[1];
 

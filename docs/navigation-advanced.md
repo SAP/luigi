@@ -3,12 +3,12 @@
   "node": {
     "label": "Advanced navigation",
     "category": {
-      "label": "Luigi Core",
+      "label": "Navigation",
       "collapsible": true
     },
     "metaData": {
-      "categoryPosition": 2,
-      "position": 2
+      "categoryPosition": 3,
+      "position": 1
     }
   }
 }
@@ -115,7 +115,7 @@ Further options related to view groups can be configured using the parameters li
 - **description**: contains key-object pairs, where the key is the view group name as specified in the node properties, and the object contains key-value pairs. In each key-value pair, the key is the feature name and the value is the actual setting. The following options are supported:
 - **attributes**:
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It may not be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** property is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
-
+  - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 ### preloadViewGroups
 - **type**: boolean
 - **description**: allows deactivating the default preloading of view group iframes.
@@ -423,8 +423,25 @@ appSwitcher = {
 Tab-style navigation in Luigi can be displayed directly above the micro frontend area, providing you with additional menu options. When you put tab navigation nodes into a [category](navigation-configuration.md#category), they will be rendered in a drop-down. Add this parameter to your configuration to create tab navigation nodes:
 
 ### tabNav
-- **type**: boolean
+- **type**: boolean or Object
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
+In the case the node has only one child, it's possible to configure if the horizontal navigation bar will be hidden automatically or not. To do so, the `tabNav` property must be an object with the property `{hideTabNavAutomatically:true|false}`.
+- **example**:
+```js
+// Without hiding tab nav automatically 
+ pathSegment: 'example', 
+ label: 'Example', 
+ tabNav: true,
+ children: [
+  ...
+                
+//With hiding tab nav automatically if node has only one child              
+  pathSegment: 'example',
+  label: 'Example',
+  tabNav: { hideTabNavAutomatically: true },
+  children: [
+  ...
+```
 
 
 ## Additional options
