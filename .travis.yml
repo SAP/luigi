@@ -20,6 +20,7 @@ cache:
     - $TRAVIS_BUILD_DIR/cypress-binary-cache
     - $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular
     - $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist
+    - $TRAVIS_BUILD_DIR/container/public
     - $HOME/.cache/Cypress
     - $HOME/.cache/whitesource
 notifications:
@@ -99,6 +100,9 @@ jobs:
         - head $TRAVIS_BUILD_DIR/client/public/package.json
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project
         - ls -lah $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/
+        # Check container files and package json version are correct
+        - ls -lah $TRAVIS_BUILD_DIR/container/public
+        - cat $TRAVIS_BUILD_DIR/container/public/package.json
         - echo "check if luigi-client.d.ts exists" && cat $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/client/luigi-client.d.ts | grep -C 3 "withoutSync" || travis_terminate 1
         - lerna run build --ignore docs || travis_terminate 1
         - npm test --prefix core || travis_terminate 1
@@ -198,6 +202,15 @@ jobs:
       if: repo = SAP/luigi AND (type = api AND commit_message = publish-cra-luigi)
       script:
         - bash ./scripts/npmPublish.sh cra-release
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+    - name: 'Publish Luigi Container to NPM'
+      # run only when custom commit message given to Travis
+      if: repo = SAP/luigi AND (type = api AND commit_message = publish-luigi-container)
+      script:
+        - ls ./container/public 
+        - bash ./scripts/npmPublish.sh luigi-container-release
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
