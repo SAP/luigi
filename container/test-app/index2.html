@@ -113,6 +113,12 @@
 
     // luigiCnt2.sendContextToMicrofrontend();
     // import ParamsEvent from luigi container
+
+    luigiCnt2.addEventListener(Events.ALERT_REQUEST, event => {
+      console.log('params:', Events.ALERT_REQUEST, event);
+      alert('show-alert-request message recieved: ' + JSON.stringify(event.detail));
+    });
+
     luigiCnt2.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, event => {
       console.log('params:', Events.ADD_SEARCH_PARAMS_REQUEST, event);
       alert('add-search-params-request message recieved: ' + JSON.stringify(event.detail));
