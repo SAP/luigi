@@ -2055,6 +2055,7 @@
     --luigi__multi-app-dropdown--width: 60vw;
     --luigi__breadcrumb--height: 2.75rem;
     --luigi__shellbar--height: 2.75rem;
+    --luigi__horizontal-nav--height: 2.75rem;
   }
 
   :global(html) {
@@ -2072,27 +2073,28 @@
   }
 
   :global(.fioriScrollbars) {
-    scrollbar-color: var(--sapScrollBar_FaceColor) var(--sapScrollBar_TrackColor);
+    scrollbar-color: var(--sapScrollBar_FaceColor)
+      var(--sapScrollBar_TrackColor);
     & :global(::-webkit-scrollbar:horizontal) {
-        height: var(--sapScrollBar_Dimension);
+      height: var(--sapScrollBar_Dimension);
     }
     & :global(::-webkit-scrollbar:vertical) {
-        width: var(--sapScrollBar_Dimension);
+      width: var(--sapScrollBar_Dimension);
     }
     & :global(::-webkit-scrollbar) {
-        background-color: var(--sapScrollBar_TrackColor);
+      background-color: var(--sapScrollBar_TrackColor);
     }
     & :global(::-webkit-scrollbar-thumb) {
-        background-color: var(--sapScrollBar_FaceColor);
+      background-color: var(--sapScrollBar_FaceColor);
     }
     & :global(::-webkit-scrollbar-thumb:hover) {
-        background-color: var(--sapScrollBar_Hover_FaceColor);
+      background-color: var(--sapScrollBar_Hover_FaceColor);
     }
     & :global(::-webkit-scrollbar-corner) {
-        background-color: var(--sapScrollBar_TrackColor);
+      background-color: var(--sapScrollBar_TrackColor);
     }
     & :global(::-webkit-scrollbar-thumb) {
-        border-radius: var(--sapElement_BorderCornerRadius);
+      border-radius: var(--sapElement_BorderCornerRadius);
     }
   }
 
@@ -2133,6 +2135,17 @@
     top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
+  :global(.lui-breadcrumb #tabsContainer) {
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height)
+    );
+  }
+  :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
+        var(--luigi__horizontal-nav--height)
+    );
+  }
   .iframeContainer,
   .spinnerContainer {
     position: absolute;
@@ -2172,14 +2185,10 @@
     height: 100%;
   }
 
-  :global(.lui-breadcrumb) .iframeContainerTabNav {
-    top: calc(
-      #{$topNavHeight} + #{$topNavHeightTab} + var(--luigi__breadcrumb--height)
-    );
-  }
-
   .iframeContainerTabNav {
-    top: calc(#{$topNavHeight} + #{$topNavHeightTab});
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__horizontal-nav--height)
+    );
   }
 
   .iframeContainer:focus {
