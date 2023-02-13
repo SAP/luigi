@@ -40,9 +40,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 ## [v1.26.0] (2023-01-16)
 
-#### :boom: Breaking Change
-* [#2735](https://github.com/SAP/luigi/pull/2735) Bump @angular/core from 6.1.10 to 11.0.5 in /test/e2e-test-application ([@dependabot[bot]](https://github.com/apps/dependabot))
-
 #### :rocket: Added
 * [#3094](https://github.com/SAP/luigi/pull/3094) Enhance left nav a11y ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#3049](https://github.com/SAP/luigi/pull/3049) Add callback to openAsModal for core api ([@hardl](https://github.com/hardl))
