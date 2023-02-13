@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - 'main'
+name: Whitesource Scan
+jobs:
+  whitesource:
+    name: Mend(Whitesource) Scan
+    runs-on: ubuntu-latest
+    env:
+      WHITESOURCE_APIKEY: ${{ secrets.WHITESOURCE_APIKEY }}
+      WHITESOURCE_BASEURL: ${{ secrets.WHITESOURCE_BASEURL }}
+      WHITESOURCE_PRODUCT_TOKEN: ${{ secrets.WHITESOURCE_PRODUCT_TOKEN }}
+      WHITESOURCE_USER_TOKEN: ${{ secrets.WHITESOURCE_USER_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - uses: actions/cache@v3
+        with:
+          path: ./.cache
+          key: whitesource_cache          
+      - run: sudo apt-get install build-essential python2 libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+      - run: npm --prefix ./client ci ./client
+      - run: npm --prefix ./core ci ./core
+      - run: npm --prefix ./website/landingpage/dev install ./website/landingpage/dev
+      - run: npm --prefix ./website/fiddle install ./website/fiddle
+      - run: bash ./scripts/whiteSource.sh

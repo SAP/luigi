@@ -652,7 +652,7 @@ In the case the node has only one child, it's possible to configure if the horiz
   children: [
   ...
 ```
-- **since**: NEXTRELEASE
+- **since**: 2.0.0
 
 ### testId
 - **type**: string

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/SAP/luigi.svg?branch=master)](https://travis-ci.org/SAP/luigi)
+[![Build Status](https://github.com/SAP/luigi/actions/workflows/test.yml/badge.svg)](https://github.com/SAP/luigi/actions/workflows/test.yml)
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/luigi)](https://api.reuse.software/info/github.com/SAP/luigi)
 # Luigi
 <p align="center">

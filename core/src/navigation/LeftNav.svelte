@@ -984,8 +984,9 @@
 </div>
 
 <style type="text/scss">
-  @import 'styles/mixins';
-  @import 'styles/variables';
+  @import 'src/styles/_mixins.scss';
+  @import 'src/styles/_variables.scss';
+
 
   :root {
     /* needed for IE11 support */
@@ -1288,6 +1289,12 @@
     }
   }
 
+  :global(.lui-flyout-sublist__title) {
+    padding: 11px 12px 12px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
   :global(.lui-flyout-sublist) {
     position: fixed;
     left: 48px;
@@ -1377,11 +1384,6 @@
       overflow-y: auto;
     }
 
-    &__title {
-      padding: 11px 12px 12px;
-      text-transform: uppercase;
-      margin: 0;
-    }
 
     &.has-bottom-position {
       .lui-flyout-sublist__wrapper {

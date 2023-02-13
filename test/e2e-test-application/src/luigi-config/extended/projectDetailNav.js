@@ -197,13 +197,16 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'modal-with-callback',
     label: 'Modal with Callback',
     onNodeActivation: () => {
-      Luigi.navigation().openAsModal('/projects/pr2/settings', {
-        title: 'Modal with callback function',
-        size: 'm',
-      },
+      Luigi.navigation().openAsModal(
+        '/projects/pr2/settings',
+        {
+          title: 'Modal with callback function',
+          size: 'm'
+        },
         () => {
           alert('Callback called');
-        })
+        }
+      );
     }
   },
   {
@@ -239,7 +242,10 @@ export const projectDetailNavStructure = projectId => [
             buttonConfirm: 'Yes',
             buttonDismiss: 'No'
           };
-          return Luigi.showConfirmationModal(settings).then(() => true, () => false);
+          return Luigi.showConfirmationModal(settings).then(
+            () => true,
+            () => false
+          );
         }
       }
     ]
