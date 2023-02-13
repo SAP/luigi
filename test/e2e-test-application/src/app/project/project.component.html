@@ -19,15 +19,25 @@
         </p>
       </div>
       <div class="fd-list__item">
-        <a href="javascript:void(0)" class="fd-link" data-testid="add-backdrop-from-mfe"
-          (click)="uxManager().addBackdrop()">
-          Add backdrop only</a>
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          data-testid="add-backdrop-from-mfe"
+          (click)="uxManager().addBackdrop()"
+        >
+          Add backdrop only</a
+        >
         <app-code-snippet data="uxManager().addBackdrop()"> </app-code-snippet>
       </div>
       <div class="fd-list__item">
-        <a href="javascript:void(0)" class="fd-link" data-testid="navigate-to-project-2"
-          (click)="linkManager().navigate('/projects/pr2')">
-          Navigate away to project 2</a>
+        <a
+          href="javascript:void(0)"
+          class="fd-link"
+          data-testid="navigate-to-project-2"
+          (click)="linkManager().navigate('/projects/pr2')"
+        >
+          Navigate away to project 2</a
+        >
         <app-code-snippet data="linkManager().navigate('/projects/pr2')">
         </app-code-snippet>
       </div>
@@ -41,17 +51,28 @@
         </div>
       </div>
       <div class="fd-layout-panel__body">
-        <button class="fd-button" data-testid="show-luigi-confirmation-modal" (click)="showConfirmationModal()">
+        <button
+          class="fd-button"
+          data-testid="show-luigi-confirmation-modal"
+          (click)="showConfirmationModal()"
+        >
           Show Luigi confirmation modal
         </button>
         <p>
-          <app-code-snippet data="uxManager().showConfirmationModal(content)"></app-code-snippet>
+          <app-code-snippet
+            data="uxManager().showConfirmationModal(content)"
+          ></app-code-snippet>
         </p>
-        <p class="fd-has-font-style-italic" data-testid="luigi-confirmation-modal-result" ngClass="{{
+        <p
+          class="fd-has-font-style-italic"
+          data-testid="luigi-confirmation-modal-result"
+          ngClass="{{
             confirmationModalResult === 'confirmed'
               ? 'fd-has-color-status-1'
               : 'fd-has-color-status-2'
-          }}" *ngIf="confirmationModalResult">
+          }}"
+          *ngIf="confirmationModalResult"
+        >
           Luigi confirmation modal has been {{ confirmationModalResult }}
         </p>
       </div>
@@ -66,11 +87,17 @@
         </div>
       </div>
       <div class="fd-layout-panel__body">
-        <button class="fd-button" data-testid="show-luigi-warning-modal" (click)="showWarningModal()">
+        <button
+          class="fd-button"
+          data-testid="show-luigi-warning-modal"
+          (click)="showWarningModal()"
+        >
           Show Luigi confirmation modal with warning type
         </button>
         <p>
-          <app-code-snippet data="uxManager().showConfirmationModal(content)"></app-code-snippet>
+          <app-code-snippet
+            data="uxManager().showConfirmationModal(content)"
+          ></app-code-snippet>
         </p>
       </div>
     </div>
@@ -86,32 +113,56 @@
           <div class="fd-form__set luigi__margin-bottom--small">
             <div class="fd-form-item">
               <label class="fd-form-label" for="select-1">Type:</label>
-              <select [ngModel]="alertTypes[0]" class="fd-form-select luigi__inner-padding" id="select-1" name="type"
-                data-testid="luigi-alert-type">
+              <select
+                [ngModel]="alertTypes[0]"
+                class="fd-form-select luigi__inner-padding"
+                id="select-1"
+                name="type"
+                data-testid="luigi-alert-type"
+              >
                 <option [value]="type" *ngFor="let type of alertTypes">
                   {{ type }}
                 </option>
               </select>
             </div>
             <div class="fd-form-item">
-              <input [ngModel]="true" type="checkbox" name="links" class="fd-checkbox" id="checkbox-1"
-                data-testid="luigi-alert-links" />
+              <input
+                [ngModel]="true"
+                type="checkbox"
+                name="links"
+                class="fd-checkbox"
+                id="checkbox-1"
+                data-testid="luigi-alert-links"
+              />
               <label class="fd-checkbox__label" for="checkbox-1">
                 <span class="fd-checkbox__text">Links</span>
               </label>
             </div>
             <div class="fd-form-item">
-              <input [ngModel]="true" type="checkbox" name="text" class="fd-checkbox" id="checkbox-2"
-                data-testid="luigi-alert-text" />
+              <input
+                [ngModel]="true"
+                type="checkbox"
+                name="text"
+                class="fd-checkbox"
+                id="checkbox-2"
+                data-testid="luigi-alert-text"
+              />
               <label class="fd-checkbox__label" for="checkbox-2">
-                <span class="fd-checkbox__text">With text (if alert has no text it is not displayed)</span>
+                <span class="fd-checkbox__text"
+                  >With text (if alert has no text it is not displayed)</span
+                >
               </label>
             </div>
             <div class="fd-form-item">
               <label class="fd-form-label" for="input-1">Close after (ms): </label>
-              <input [ngModel]="" class="fd-input" type="text" name="closeAfter"
+              <input
+                [ngModel]=""
+                class="fd-input"
+                type="text"
+                name="closeAfter"
                 placeholder="Leave it empty to never close this Alert automatically"
-                data-testid="luigi-alert-close-after" />
+                data-testid="luigi-alert-close-after"
+              />
             </div>
           </div>
         </form>
@@ -121,12 +172,18 @@
         <p>
           <app-code-snippet data="uxManager().showAlert(settings)"></app-code-snippet>
         </p>
-        <p *ngIf="alertDismissed" class="fd-has-font-style-italic fd-has-color-status-1"
-          data-testid="luigi-alert-result">
+        <p
+          *ngIf="alertDismissed"
+          class="fd-has-font-style-italic fd-has-color-status-1"
+          data-testid="luigi-alert-result"
+        >
           Luigi alert has been dismissed
         </p>
-        <p *ngIf="alertDismissKey" class="fd-has-font-style-italic fd-has-color-status-1"
-          data-testid="luigi-dismissKey-result">
+        <p
+          *ngIf="alertDismissKey"
+          class="fd-has-font-style-italic fd-has-color-status-1"
+          data-testid="luigi-dismissKey-result"
+        >
           Luigi alert dismissKey has been returned
         </p>
       </div>
@@ -150,16 +207,29 @@
         <form #luigiLocalizationForm="ngForm" class="fd-col--3">
           <div class="fd-form-item">
             <label class="fd-form-label" for="locale">Locale:</label>
-            <input [ngModel]="" class="fd-input" type="text" name="locale" placeholder=""
-              data-testid="luigi-input-locale" [disabled]="!canChangeLocale" />
+            <input
+              [ngModel]=""
+              class="fd-input"
+              type="text"
+              name="locale"
+              placeholder=""
+              data-testid="luigi-input-locale"
+              [disabled]="!canChangeLocale"
+            />
           </div>
         </form>
-        <button class="fd-button" data-testid="set-current-locale" (click)="setCurrentLocale()"
-          [disabled]="!canChangeLocale">
+        <button
+          class="fd-button"
+          data-testid="set-current-locale"
+          (click)="setCurrentLocale()"
+          [disabled]="!canChangeLocale"
+        >
           Set Current Locale
         </button>
         <p>
-          <app-code-snippet data="uxManager().setCurrentLocale(locale)"></app-code-snippet>
+          <app-code-snippet
+            data="uxManager().setCurrentLocale(locale)"
+          ></app-code-snippet>
         </p>
       </div>
     </div>
@@ -176,11 +246,20 @@
         <div class="fd-form-item">
           <label class="fd-switch fd-switch--compact" for="ImBw4551">
             <span class="fd-switch__control">
-              <input type="checkbox" class="fd-switch__input" [(ngModel)]="isDirty" (change)="sendDirtyEvent()"
-                id="ImBw4551" />
+              <input
+                type="checkbox"
+                class="fd-switch__input"
+                [(ngModel)]="isDirty"
+                (change)="sendDirtyEvent()"
+                id="ImBw4551"
+              />
               <div class="fd-switch__slider">
                 <div class="fd-switch__track">
-                  <span class="fd-switch__handle" role="presentation" data-testid="toggle-dirty-state"></span>
+                  <span
+                    class="fd-switch__handle"
+                    role="presentation"
+                    data-testid="toggle-dirty-state"
+                  ></span>
                 </div>
               </div>
             </span>
@@ -193,7 +272,10 @@
         <span *ngIf="isDirty" class="fd-switch__text">
           <strong>There are unsaved changes</strong> &nbsp;&ndash; a confirmation modal
           will appear when you navigate
-          <a title="Navigate to /projects/pr2 as an example" (click)="linkManager().navigate('/projects/pr2')">
+          <a
+            title="Navigate to /projects/pr2 as an example"
+            (click)="linkManager().navigate('/projects/pr2')"
+          >
             somewhere else
           </a>
         </span>
@@ -201,7 +283,10 @@
     </div>
   </div>
 
-  <div class="link-manager" *ngIf="projectId && projectId !== 'pr1' && projectId.indexOf('pr') === 0">
+  <div
+    class="link-manager"
+    *ngIf="projectId && projectId !== 'pr1' && projectId.indexOf('pr') === 0"
+  >
     <div class="fd-section__header">
       <h3 class="fd-section__title">LuigiClient linkManager methods</h3>
     </div>
@@ -226,270 +311,430 @@
       <div class="fd-layout-panel__body">
         <ul class="fd-list">
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="linkManager().navigate('/overview')">absolute: to
-              overview</a>
-            <app-code-snippet data="linkManager().navigate('/overview')"></app-code-snippet>
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="linkManager().navigate('/overview')"
+              >absolute: to overview</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('/overview')"
+            ></app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link"
-              (click)="linkManager().navigate('users/groups/stakeholders')">relative: to stakeholders</a>
-            <app-code-snippet data="linkManager().navigate('users/groups/stakeholders')"></app-code-snippet>
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="linkManager().navigate('users/groups/stakeholders')"
+              >relative: to stakeholders</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('users/groups/stakeholders')"
+            ></app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromClosestContext()
                   .navigate('/users/groups/stakeholders')
-              ">
-              closest parent: to stakeholders</a>
-            <app-code-snippet data="linkManager().fromClosestContext().navigate('/users/groups/stakeholders')">
+              "
+            >
+              closest parent: to stakeholders</a
+            >
+            <app-code-snippet
+              data="linkManager().fromClosestContext().navigate('/users/groups/stakeholders')"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromParent()
                   .navigate('/pr1')
-              ">
-              from parent: to sibling</a>
+              "
+            >
+              from parent: to sibling</a
+            >
             <app-code-snippet data="linkManager().fromParent().navigate('/pr1')">
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromContext('project')
                   .navigate('/settings')
-              ">
-              parent by name: project to settings</a>
-            <app-code-snippet data="linkManager().fromContext('project').navigate('/settings')"></app-code-snippet>
+              "
+            >
+              parent by name: project to settings</a
+            >
+            <app-code-snippet
+              data="linkManager().fromContext('project').navigate('/settings')"
+            ></app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromClosestContext()
                   .withParams({ foo: 'bar' })
                   .navigate('settings')
-              ">
-              project to settings with params (foo=bar)</a>
-            <app-code-snippet data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')">
+              "
+            >
+              project to settings with params (foo=bar)</a
+            >
+            <app-code-snippet
+              data="linkManager().fromClosestContext().withParams({foo: 'bar'}).navigate('settings')"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromContext('NONEXISTING')
                   .navigate('/settings')
-              ">
-              parent by name: with nonexisting context</a>
+              "
+            >
+              parent by name: with nonexisting context</a
+            >
             (look at the console)
-            <app-code-snippet data="linkManager().fromContext('NONEXISTING').navigate('/settings')"></app-code-snippet>
+            <app-code-snippet
+              data="linkManager().fromContext('NONEXISTING').navigate('/settings')"
+            ></app-code-snippet>
           </li>
           <li class="fd-list__item">
             <a href="javascript:void(0)" class="fd-link" (click)="navigateAndShowAlert()">
-              with preserved view: project to global settings and back</a>
-            <app-code-snippet data="linkManager().navigate('/settings', null, true)"></app-code-snippet>
+              with preserved view: project to global settings and back</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('/settings', null, true)"
+            ></app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="navigatePreservedViewGoBack()">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="navigatePreservedViewGoBack()"
+            >
               with preserved view: to dynamic node and go back
             </a>
-            <app-code-snippet data="linkManager().navigate('/projects/pr1/users/groups/test1/settings', null, true);">
+            <app-code-snippet
+              data="linkManager().navigate('/projects/pr1/users/groups/test1/settings', null, true);"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .withParams({ test: true })
                   .navigate('/settings', null, true)
-              ">
+              "
+            >
               extended preserved view example with params: project to global settings and
-              back</a>
-            <app-code-snippet data="linkManager().withParams({test: true}).navigate('/settings', null, true)">
+              back</a
+            >
+            <app-code-snippet
+              data="linkManager().withParams({test: true}).navigate('/settings', null, true)"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .withParams({ test: true })
                   .openAsModal('/settings', {
                     title: 'Preserved View',
                     size: 'm'
                   })
-              ">
+              "
+            >
               extended preserved view example with params rendered in a modal: project to
-              global settings and back</a>
+              global settings and back</a
+            >
             <app-code-snippet
-              data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})">
+              data="linkManager().withParams({test: true}).openAsModal('/settings', {title:'PreservedView', size:'m'})"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="linkManager().openAsDrawer('/projects/pr2/drawer')">
-              Open drawer with default settings</a>
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="linkManager().openAsDrawer('/projects/pr2/drawer')"
+            >
+              Open drawer with default settings</a
+            >
             <app-code-snippet data="linkManager().openAsDrawer('/projects/pr1/drawer');">
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().openAsDrawer('/projects/pr1/drawer', {
                   header: false,
                   size: 'xs',
                   backdrop: true
                 })
-              ">
-              Open view in drawer component with and w/o backdrap and header</a>
+              "
+            >
+              Open view in drawer component with and w/o backdrap and header</a
+            >
             <app-code-snippet
-              data="linkManager().openAsDrawer('/projects/pr1/drawer', {header: false, size:'xs', backdrop: true});">
+              data="linkManager().openAsDrawer('/projects/pr1/drawer', {header: false, size:'xs', backdrop: true});"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link"
-              (click)="linkManager().openAsDrawer('/projects/pr2/drawer', { overlap: false })">
-              Open drawer with no overlap</a>
-            <app-code-snippet data="linkManager().openAsDrawer('/projects/pr1/drawer', { overlap: false });">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="linkManager().openAsDrawer('/projects/pr2/drawer', { overlap: false })"
+            >
+              Open drawer with no overlap</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsDrawer('/projects/pr1/drawer', { overlap: false });"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().openAsModal('/projects/pr2/webcomponent', {
                   title: 'Webcomponent in a modal',
                   size: 'm'
                 })
-              ">Open webcomponent in a modal</a>
-            <app-code-snippet data="linkManager()
+              "
+              >Open webcomponent in a modal</a
+            >
+            <app-code-snippet
+              data="linkManager()
               .openAsModal('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a modal',
                 size: 'm'
-              })">
+              })"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" data-testid="open-modal-to-settings-fullscreen" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-to-settings-fullscreen"
+              (click)="
                 linkManager().openAsModal('/projects/pr2/settings', {
                   title: 'microfrontend in a modal',
                   size: 'fullscreen',
                   keepPrevious: true
                 })
-              ">Open a modal fullscreen</a>
-            <app-code-snippet data="linkManager().openAsModal('/projects/pr2/settings', {
+              "
+              >Open a modal fullscreen</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
                 title: 'microfrontend in a modal',
                 size: 'fullscreen',
                 keepPrevious: true
-              })">
+              })"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" data-testid="open-modal-to-settings-medium" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-to-settings-medium"
+              (click)="
                 linkManager().openAsModal('/projects/pr2/settings', {
                   title: 'microfrontend in a modal',
                   size: 'm',
                   keepPrevious: true
                 })
-              ">Open a modal medium</a>
-            <app-code-snippet data="linkManager().openAsModal('/projects/pr2/settings', {
+              "
+              >Open a modal medium</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/settings', {
                 title: 'microfrontend in a modal',
                 size: 'm',
                 keepPrevious: true
-              })">
+              })"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                   title: 'Webcomponent in a split view',
                   size: '25'
                 })
-              ">Open webcomponent in splitView</a>
-            <app-code-snippet data="linkManager().openAsSplitView('/projects/pr2/webcomponent', {
+              "
+              >Open webcomponent in splitView</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsSplitView('/projects/pr2/webcomponent', {
                 title: 'Webcomponent in a split view',
                 size: '25'
-              })">
+              })"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
             <a href="javascript:void(0)" class="fd-link" (click)="openSplitView()">
-              open view in split view with params</a>
+              open view in split view with params</a
+            >
             <app-code-snippet
-              data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', size:25})">
+              data="linkManager().withParams({test: true}).openAsSplitView('/settings', {title:'Logs', size:25})"
+            >
             </app-code-snippet>
             <div data-testid="split-view-controls">
               Control Split View:
 
-              <button [disabled]="!splitViewHandle || !splitViewHandle.isCollapsed()" (click)="splitViewHandle.expand()"
-                class="fd-button">
+              <button
+                [disabled]="!splitViewHandle || !splitViewHandle.isCollapsed()"
+                (click)="splitViewHandle.expand()"
+                class="fd-button"
+              >
                 expand
               </button>
-              <button [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
-                (click)="splitViewHandle.collapse()" class="fd-button">
+              <button
+                [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
+                (click)="splitViewHandle.collapse()"
+                class="fd-button"
+              >
                 collapse
               </button>
-              <button [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
-                (click)="splitViewHandle.setSize(15)" class="fd-button">
+              <button
+                [disabled]="!splitViewHandle || !splitViewHandle.isExpanded()"
+                (click)="splitViewHandle.setSize(15)"
+                class="fd-button"
+              >
                 setSize(15)
               </button>
-              <button [disabled]="!splitViewHandle || !splitViewHandle.exists()" (click)="splitViewHandle.close()"
-                class="fd-button">
+              <button
+                [disabled]="!splitViewHandle || !splitViewHandle.exists()"
+                (click)="splitViewHandle.close()"
+                class="fd-button"
+              >
                 close
               </button>
             </div>
           </li>
           <li class="fd-list__item">
             <a href="javascript:void(0)" class="fd-link" (click)="linkManager().goBack()">
-              go back: single iframe, standard history back</a>
+              go back: single iframe, standard history back</a
+            >
             <app-code-snippet data="linkManager().goBack()"> </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().navigate(
                   '/#?intent=Sales-settings?param1=abc&param2=bcd'
                 )
-              ">
-              navigate to settings with intent with parameters</a>
-            <app-code-snippet data="linkManager().navigate('/#?intent=Sales-settings?param1=abc&param2=bcd')">
+              "
+            >
+              navigate to settings with intent with parameters</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('/#?intent=Sales-settings?param1=abc&param2=bcd')"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().navigateToIntent(
                   'Component-settings', {project: 'pr1', param2: '22'}
                 )
-              ">
+              "
+            >
               navigate to settings of project 1 with alternative intent method:
               navigateToIntent
             </a>
             <app-code-snippet
-              data="linkManager().navigateToIntent('Component-settings', {project: 'pr1', param2: '22'})">
+              data="linkManager().navigateToIntent('Component-settings', {project: 'pr1', param2: '22'})"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .fromClosestContext()
                   .withParams({ foo: 'bar' })
                   .newTab()
                   .navigate('settings')
-              ">
-              navigate to new tab, using closest context and params</a>
+              "
+            >
+              navigate to new tab, using closest context and params</a
+            >
             <app-code-snippet
-              data="linkManager().fromClosestContext().withParams({ foo: 'bar' }).newTab().navigate('settings')">
+              data="linkManager().fromClosestContext().withParams({ foo: 'bar' }).newTab().navigate('settings')"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .addNodeParams({luigi:'rocks'}, false)
-              ">
-              add node params</a>
+              "
+            >
+              add node params</a
+            >
             <app-code-snippet data="linkManager().addNodeParams({luigi:'rocks'}, false)">
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" data-testid="open-modal-virtual-tree" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-virtual-tree"
+              (click)="
                 linkManager()
                   .openAsModal('/projects/pr2/developers/internal/virtualTree')
-              ">
-              open modal virtual-tree</a>
-            <app-code-snippet data="linkManager().openAsModal('/projects/pr2/developers/internal/virtualTree')">
+              "
+            >
+              open modal virtual-tree</a
+            >
+            <app-code-snippet
+              data="linkManager().openAsModal('/projects/pr2/developers/internal/virtualTree')"
+            >
             </app-code-snippet>
           </li>
         </ul>
@@ -504,12 +749,18 @@
       </div>
       <div class="fd-layout-panel__body">
         <p>
-          <app-code-snippet data="linkManager().pathExists('{{ pathExists.formValue }}')"></app-code-snippet>
+          <app-code-snippet
+            data="linkManager().pathExists('{{ pathExists.formValue }}')"
+          ></app-code-snippet>
         </p>
         <div class="fd-container fd-container--fluid">
           <div class="fd-col fd-col--4">
-            <input type="text" class="fd-input fd-has-margin-none" [(ngModel)]="pathExists.formValue"
-              (input)="resetPathExistsResult()" />
+            <input
+              type="text"
+              class="fd-input fd-has-margin-none"
+              [(ngModel)]="pathExists.formValue"
+              (input)="resetPathExistsResult()"
+            />
           </div>
           <div class="fd-col fd-col--8 luigi__input-button--margin">
             <button class="fd-button" (click)="checkIfPathExists()">
@@ -539,19 +790,31 @@
       <div class="fd-layout-panel__body">
         <ul class="fd-list">
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager().navigate(
                   '/projects/pr2/miscellaneous2/maskopatol'
                 )
-              ">Partly wrong link
+              "
+              >Partly wrong link
             </a>
-            <app-code-snippet data="linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')">
+            <app-code-snippet
+              data="linkManager().navigate('/projects/pr2/miscellaneous2/maskopatol')"
+            >
             </app-code-snippet>
           </li>
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link"
-              (click)="linkManager().navigate('/maskopatol/has/a/child')">Totally wrong link</a>
-            <app-code-snippet data="linkManager().navigate('/maskopatol/has/a/child')"></app-code-snippet>
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="linkManager().navigate('/maskopatol/has/a/child')"
+              >Totally wrong link</a
+            >
+            <app-code-snippet
+              data="linkManager().navigate('/maskopatol/has/a/child')"
+            ></app-code-snippet>
           </li>
         </ul>
       </div>
@@ -568,31 +831,48 @@
       <div class="fd-layout-panel__body">
         <ul class="fd-list">
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .withoutSync()
                   .navigate('/projects/pr2/virtual-tree')
-              " data-testid="navigate-withoutSync-virtual-tree">Go to /projects/pr2/virtual-tree using withoutSync()
+              "
+              data-testid="navigate-withoutSync-virtual-tree"
+              >Go to /projects/pr2/virtual-tree using withoutSync()
             </a>
-            <app-code-snippet data="linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')">
+            <app-code-snippet
+              data="linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')"
+            >
             </app-code-snippet>
           </li>
 
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link navigate-withoutSync-settings" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
                 linkManager()
                   .withoutSync()
                   .navigate('/projects/pr2/settings')
-              " data-testid="navigate-withoutSync-settings">Go to /projects/pr2/settings using withoutSync()
+              "
+              data-testid="navigate-withoutSync-settings"
+              >Go to /projects/pr2/settings using withoutSync()
             </a>
-            <app-code-snippet data="linkManager().withoutSync().navigate('/projects/pr2/settings')">
+            <app-code-snippet
+              data="linkManager().withoutSync().navigate('/projects/pr2/settings')"
+            >
             </app-code-snippet>
           </li>
 
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link navigate-withSync-virtual-tree"
-              (click)="navigateWithSync('/projects/pr2/virtual-tree')" data-testid="navigate-withSync-virtual-tree">Go
-              to /projects/pr2/virtual-tree NOT using withoutSync()
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withSync-virtual-tree"
+              (click)="navigateWithSync('/projects/pr2/virtual-tree')"
+              data-testid="navigate-withSync-virtual-tree"
+              >Go to /projects/pr2/virtual-tree NOT using withoutSync()
             </a>
             <app-code-snippet data="linkManager().navigate('/projects/pr2/virtual-tree')">
             </app-code-snippet>
@@ -612,40 +892,57 @@
       <div class="fd-layout-panel__body">
         <ul class="fd-list">
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              (click)="
                 linkManager()
                   .withOptions({preventContextUpdate:true})
                   .navigate('/projects')
-              " data-testid="navigate-withOptions-no-context">Go to /projects using withOptions() which makes no
-              context update.
+              "
+              data-testid="navigate-withOptions-no-context"
+              >Go to /projects using withOptions() which makes no context update.
             </a>
-            <app-code-snippet data="linkManager().withOptions({preventContextUpdate:true}).navigate('/projects')">
+            <app-code-snippet
+              data="linkManager().withOptions({preventContextUpdate:true}).navigate('/projects')"
+            >
             </app-code-snippet>
           </li>
 
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link navigate-withoutSync-settings" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
                 linkManager()
                   .withOptions({preventHistoryEntry: true})
                   .navigate('/overview')
-              " data-testid="navigate-withOptions-no-history">Go to /overview using withOptions() which makes no
-              browser history be kept
+              "
+              data-testid="navigate-withOptions-no-history"
+              >Go to /overview using withOptions() which makes no browser history be kept
             </a>
-            <app-code-snippet data="linkManager().withOptions({preventHistoryEntry: true}).navigate('/overview')">
+            <app-code-snippet
+              data="linkManager().withOptions({preventHistoryEntry: true}).navigate('/overview')"
+            >
             </app-code-snippet>
           </li>
 
           <li class="fd-list__item">
-            <a href="javascript:void(0)" class="fd-link navigate-withoutSync-settings" (click)="
+            <a
+              href="javascript:void(0)"
+              class="fd-link navigate-withoutSync-settings"
+              (click)="
                 linkManager()
                   .withOptions({preventHistoryEntry: true, preventContextUpdate:true})
                   .navigate('/overview')
-              " data-testid="navigate-withOptions-no-history-context">Go to /overview using withOptions() which makes
-              no browser history be kept
+              "
+              data-testid="navigate-withOptions-no-history-context"
+              >Go to /overview using withOptions() which makes no browser history be kept
               and no context updated.
             </a>
             <app-code-snippet
-              data="linkManager().withOptions({preventHistoryEntry: true, preventContextUpdate:true}).navigate('/overview')">
+              data="linkManager().withOptions({preventHistoryEntry: true, preventContextUpdate:true}).navigate('/overview')"
+            >
             </app-code-snippet>
           </li>
         </ul>
@@ -683,7 +980,9 @@
           </label>
 
           <p class="luigi__margin-bottom--small">
-            <app-code-snippet data="storageManager().setItem(key, value)()"></app-code-snippet>
+            <app-code-snippet
+              data="storageManager().setItem(key, value)()"
+            ></app-code-snippet>
           </p>
 
           <label class="fd-form-label" data-testid="luigi-current-locale">
@@ -742,19 +1041,35 @@
 
           <div class="fd-container fd-container--fluid">
             <div class="fd-col fd-col--2">
-              <input type="text" class="fd-input fd-has-margin-none" placeholder="Key" [(ngModel)]="storageDemoKey" />
+              <input
+                type="text"
+                class="fd-input fd-has-margin-none"
+                placeholder="Key"
+                [(ngModel)]="storageDemoKey"
+              />
             </div>
             <div class="fd-col fd-col--2">
-              <input type="text" class="fd-input fd-has-margin-none" placeholder="Value"
-                [(ngModel)]="storageDemoValue" />
+              <input
+                type="text"
+                class="fd-input fd-has-margin-none"
+                placeholder="Value"
+                [(ngModel)]="storageDemoValue"
+              />
             </div>
           </div>
 
-          <label class="fd-col fd-col--12 fd-form-label" data-testid="luigi-current-locale">
+          <label
+            class="fd-col fd-col--12 fd-form-label"
+            data-testid="luigi-current-locale"
+          >
             Async methods
           </label>
 
-          <div class="fd-container fd-container--fluid" style="padding-top: 5px;" *ngIf="!storageDemoOperation">
+          <div
+            class="fd-container fd-container--fluid"
+            style="padding-top: 5px;"
+            *ngIf="!storageDemoOperation"
+          >
             <div class="fd-col fd-col--2">
               <button class="fd-button w100per" (click)="storage_setItem()">
                 setItem
@@ -795,4 +1110,8 @@
   </div>
 </section>
 
-<app-modal *ngIf="projectId === 'pr1'" [modalActive]="modalActive" (modalClosed)="toggleModal()"></app-modal>
+<app-modal
+  *ngIf="projectId === 'pr1'"
+  [modalActive]="modalActive"
+  (modalClosed)="toggleModal()"
+></app-modal>

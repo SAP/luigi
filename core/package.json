@@ -3,76 +3,43 @@
   "private": true,
   "description": "luigi-core development version, only the public folder is being published to npm as a package",
   "devDependencies": {
-    "@babel/cli": "^7.6.4",
-    "@babel/core": "^7.6.2",
-    "@babel/node": "^7.6.2",
-    "@babel/plugin-transform-runtime": "^7.6.2",
-    "@babel/polyfill": "^7.6.0",
-    "@babel/preset-env": "^7.6.2",
-    "@babel/register": "^7.6.2",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
     "@sap-theming/theming-base-content": "11.1.48",
-    "@webcomponents/webcomponentsjs": "^2.3.0",
-    "acorn": "^6.4.1",
-    "axios": ">=0.21.2",
-    "babel-loader": "^8.0.4",
-    "bundlesize": "^0.17.0",
+    "@sveltejs/vite-plugin-svelte": "^1.0.1",
+    "bundlesize2": "^0.0.31",
     "chai": "^4.3.6",
-    "clean-webpack-plugin": "^1.0.0",
-    "copy-webpack-plugin": "^5.1.1",
-    "core-js": "^3.2.1",
-    "css-loader": "^3.0.0",
-    "esm": "^3.2.25",
-    "file-loader": "^2.0.0",
-    "fs-extra": "9.0.0",
     "fundamental-styles": "0.26.5",
-    "glob-parent": ">=6.0.1",
-    "jsdom": "15.0.0",
-    "jsdom-global": "3.0.2",
-    "json-schema": ">=0.4.0",
-    "live-server": "^1.2.1",
-    "lodash": ">=4.17.21",
-    "lodash.template": ">=4.5.0",
-    "mini-css-extract-plugin": "^0.8.0",
-    "mkdirp": "^1.0.3",
-    "mocha": "^7.1.1",
-    "mock-local-storage": "^1.1.15",
-    "node-sass": "^7.0.0",
-    "nyc": "^15.0.0",
-    "oidc-client": "^1.5.2",
-    "postcss": "^8.2.10",
-    "postcss-loader": "^3.0.0",
-    "postcss-preset-env": "^6.6.0",
-    "regenerator-runtime": "^0.13.3",
-    "replace": "^1.2.0",
-    "serialize-javascript": ">=3.1.0",
-    "sinon": "^7.3.2",
-    "source-map-loader": "^0.2.3",
-    "style-loader": "^0.23.1",
-    "svelte": "^3.12.1",
-    "svelte-loader": "2.13.6",
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3",
+    "jsdom": "^20.0.0",
+    "jsdom-global": "^3.0.2",
+    "live-server": "^1.2.2",
+    "lodash": "^4.17.21",
+    "lodash.template": "^4.5.0",
+    "mock-local-storage": "^1.1.23",
+    "node-fetch": "2.6.7",
+    "sass": "^1.54.0",
+    "sinon": "^14.0.0",
+    "svelte": "^3.49.0",
+    "svelte-preprocess": "^4.10.7",
     "svelte-transitions": "^1.2.0",
-    "tar": ">=5.0.10",
-    "terser": "^4.8.1",
-    "ts-node": "^10.0.0",
-    "url-loader": "^1.0.1",
-    "webpack": "^4.42.1",
-    "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.9"
+    "typescript": "^4.9.4",
+    "vite": "^3.0.3"
+  },
+  "overrides": {
+    "bundlesize2": {
+      "node-fetch": "2.6.7"
+    }
   },
   "scripts": {
-    "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
-    "bundle-evergreen": "webpack --mode=production --display-error-details",
-    "bundle-ie11": "webpack --mode=production --display-error-details --config webpack-ie11.config.js",
-    "bundle-develop": "npm run bundle-develop-evergreen",
-    "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
-    "bundle-develop-ie11": "MINIFY=false webpack --display-error-details --config webpack-ie11.config.js --debug --devtool cheap-source-map --output-pathinfo --watch",
-    "test": "babel-node ./node_modules/nyc/bin/nyc.js mocha -- --require esm --recursive test",
-    "test:debug": "npm run test -- --inspect-brk ./test/services/routing.spec.js --watch",
-    "test:watch": "npm run test -- --watch",
-    "bundlesize": "npm run bundle && bundlesize",
+    "test": "jest",
+    "bundlesize": "npm run build && bundlesize",
     "bundlesizeOnly": "bundlesize",
-    "helper:webpack-analyze": "ANALYZE=true npm run bundle-evergreen",
-    "simpledev": "node ./dev-tools/simpledev.js"
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "bundle": "npm run build",
+    "simpledev": "node ./dev-tools/simpledev-vite.mjs"
   },
   "bundlesize": [
     {
@@ -84,60 +51,8 @@
       "path": "./public/luigi.css",
       "maxSize": "800 kB",
       "compression": "none"
-    },
-    {
-      "path": "./public-ie11/luigi-ie11.js",
-      "maxSize": "860 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./public-ie11/luigi-ie11.css",
-      "maxSize": "800 kB",
-      "compression": "none"
     }
   ],
-  "nyc": {
-    "check-coverage": true,
-    "lines": 55,
-    "statements": 55,
-    "functions": 54,
-    "branches": 55,
-    "watermarks": {
-      "lines": [
-        55,
-        70
-      ],
-      "functions": [
-        55,
-        60
-      ],
-      "branches": [
-        55,
-        65
-      ],
-      "statements": [
-        55,
-        70
-      ]
-    },
-    "include": [
-      "src/**/*.js"
-    ],
-    "exclude": [
-      "**/*.spec.js"
-    ],
-    "require": [
-      "@babel/register",
-      "jsdom-global/register"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "html"
-    ],
-    "cache": true,
-    "all": true
-  },
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"

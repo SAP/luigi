@@ -8,6 +8,6 @@ const Sample1 = () => {
       dolore magna aliquyam erat, sed diam voluptua.
     </div>
   );
-}
+};
 
 export default Sample1;

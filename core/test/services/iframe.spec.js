@@ -148,9 +148,9 @@ describe('Iframe', () => {
       sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
         return viewGroupSettings;
       });
-      afterEach(() => {
-        sinon.restore();
-      });
+    });
+    afterEach(() => {
+      sinon.restore();
     });
     it('return viewgroup from viewgroup settings', () => {
       assert.deepEqual(Iframe.getViewGroupSettings('ananas'), {

@@ -155,9 +155,9 @@ describe('Navigation', () => {
 
       cy.get('[data-testid=modal-mf] [aria-label=close]').click();
 
-      cy.on('window:alert', (str) => {
-        expect(str).to.equal(`Callback called`)
-      })
+      cy.on('window:alert', str => {
+        expect(str).to.equal(`Callback called`);
+      });
 
       cy.get('[data-testid=modal-mf]').should('not.be.visible');
     });

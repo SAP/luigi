@@ -30,7 +30,7 @@
     closeDropDown: () => {
       toggleDropdownState('appSwitcherPopover');
     }
-  } 
+  }
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -352,7 +352,7 @@
   {/if}{/if}
 
 <style type="text/scss">
-  @import 'styles/variables';
+  @import 'src/styles/_variables.scss';
 
   // Force height because of base64 img src
   .lui-customlogo img {
