@@ -11,7 +11,7 @@ export namespace LuigiInternalMessageID {
      * A message sent to the microfrontend from parent with the context upon init 
      */
     export const SEND_CONTEXT_HANDSHAKE = 'luigi.init';
-    
+
     /** 
      * A message sent from the Microfrontend when the context data has been received properly
      */
@@ -24,6 +24,10 @@ export namespace LuigiInternalMessageID {
      * A message emmitted from the Microfrontend when a request to show an alert is sent
      */
     export const ALERT_REQUEST = 'luigi.ux.alert.show';
+    /**
+     * A message sent to the microfrontend to notify closing of a particular alert
+     */
+    export const ALERT_CLOSED = 'luigi.ux.alert.hide';
     /**
      * A message emmitted from the Microfrontend when it is first initialized
      */

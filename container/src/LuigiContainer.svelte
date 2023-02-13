@@ -80,6 +80,10 @@
     ContainerAPI.updateContext(contextObj, internal, iframeHandle);
   };
 
+  thisComponent.closeAlert = (id: any, dismissKey: any) => {
+    ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+  };
+
   containerService.registerContainer(thisComponent);
 
   function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {

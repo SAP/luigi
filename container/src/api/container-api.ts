@@ -50,6 +50,16 @@ export class ContainerAPIFunctions {
             containerService.sendCustomMessageToIframe(iframeHandle, msg);
         }
     }
+
+    /**
+     * 
+     * @param id 
+     * @param dismissKey 
+     * @param iframeHandle 
+     */
+    closeAlert(id: any, dismissKey: any, iframeHandle: any) {
+        containerService.sendCustomMessageToIframe(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
+    }
 }
 
 export const ContainerAPI = new ContainerAPIFunctions();

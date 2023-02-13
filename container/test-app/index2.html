@@ -7,7 +7,6 @@
 
   <title>Just a Button... and a micro frontend!</title>
 
-  <script src="https://unpkg.com/@ui5/webcomponents/dist/Button?module" type="module"></script>
 
   <!-- <script src="https://unpkg.com/@luigi-project/container" type="module"></script> -->
   <script src="./bundle.js" type="module"></script>
@@ -25,13 +24,13 @@
 <body>
   <div class="flexCnt">
     <div id="col1">
-      <ui5-button>Send random string</ui5-button>
+      <button>Send random string</button>
       <luigi-container webcomponent="true" viewUrl="https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js">
       </luigi-container>
     </div>
     <div id="col2">
-      <ui5-button>Send update</ui5-button>
-      <button>Update context</button>
+      <button>Send update</button>
+      <button id="updateContext">Update context</button>
       <luigi-container viewUrl="./microfrontend.html"> </luigi-container>
     </div>
   </div>
@@ -39,12 +38,13 @@
   <script type="module">
     import Events from './bundle.js'
 
+    var alertSettings;
     // Some glue code
-    const btn1 = document.querySelector('#col1 ui5-button');
+    const btn1 = document.querySelector('#col1 button');
     const luigiCnt1 = document.querySelector('#col1 luigi-container');
-    const btn2 = document.querySelector('#col2 ui5-button');
+    const btn2 = document.querySelector('#col2 button');
     const luigiCnt2 = document.querySelector('#col2 luigi-container');
-    const updateContextButton = document.querySelector('#col2 button');
+    const updateContextButton = document.querySelector('#col2 #updateContext');
 
     btn1.addEventListener('click', () => {
       luigiCnt1.sendCustomMessage('update', 'data ' + new Date().getMilliseconds());
@@ -77,7 +77,7 @@
     // });
 
 
-    const showAnAlert = () => {
+    const showAnAlert = (alertSettings) => {
       var popup = document.createElement("div");
       var text = document.createTextNode("blah blah blah");
       popup.appendChild(text);
@@ -85,7 +85,8 @@
       var dismissButton = document.createElement('BUTTON');
       var buttonText = document.createTextNode("Close Alert");
       dismissButton.addEventListener('click', () => {
-        console.log('Dismiss clicked outside');
+        console.log('Dismiss clicked outside.Closing alert now');
+        luigiCnt2.closeAlert(alertSettings.settings.id);
       })
       dismissButton.appendChild(buttonText);
       popup.appendChild(dismissButton);
@@ -117,6 +118,9 @@
     luigiCnt2.addEventListener(Events.ALERT_REQUEST, event => {
       console.log('params:', Events.ALERT_REQUEST, event);
       alert('show-alert-request message recieved: ' + JSON.stringify(event.detail));
+      console.log(event.detail.data.data);
+      alertSettings = event.detail.data.data;
+      showAnAlert(alertSettings);
     });
 
     luigiCnt2.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, event => {
