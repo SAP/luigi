@@ -30,8 +30,6 @@ yarn-error.log*
 /public*/*.woff
 /public*/*.woff2
 /public*/*.ttf
-/public/package.json
-/public/README.md
 
 # maps
 *.map
