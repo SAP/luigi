@@ -25,6 +25,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.0.1] (2023-02-14)
+
+#### :bug: Fixed
+* [#3180](https://github.com/SAP/luigi/pull/3180) fix multi alert promise ([@hardl](https://github.com/hardl))
+* [#3179](https://github.com/SAP/luigi/pull/3179) fix backdrop overlay ([@hardl](https://github.com/hardl))
+
+
+
+
 ## [v2.0.0] (2023-02-10)
 
 #### :rocket: Added
@@ -1488,3 +1497,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.25.1]: https://github.com/SAP/luigi/compare/v1.25.0...v1.25.1
 [v1.26.0]: https://github.com/SAP/luigi/compare/v1.25.1...v1.26.0
 [v2.0.0]: https://github.com/SAP/luigi/compare/v1.25.1...v2.0.0
+[v2.0.1]: https://github.com/SAP/luigi/compare/v2.0.0...v2.0.1
