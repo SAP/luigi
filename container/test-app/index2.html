@@ -79,14 +79,15 @@
 
     const showAnAlert = (alertSettings) => {
       var popup = document.createElement("div");
-      var text = document.createTextNode("blah blah blah");
+      var text = document.createTextNode(alertSettings.settings.text);
       popup.appendChild(text);
 
       var dismissButton = document.createElement('BUTTON');
       var buttonText = document.createTextNode("Close Alert");
       dismissButton.addEventListener('click', () => {
-        console.log('Dismiss clicked outside.Closing alert now');
+        console.log('Dismiss clicked core side. Sending close message to mf of id =', alertSettings.settings.id);
         luigiCnt2.closeAlert(alertSettings.settings.id);
+        popup.style.display = "none";
       })
       dismissButton.appendChild(buttonText);
       popup.appendChild(dismissButton);
