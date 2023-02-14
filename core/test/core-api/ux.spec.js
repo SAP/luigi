@@ -1,13 +1,11 @@
-const chai = require('chai');
-const assert = chai.assert;
-const expect = chai.expect;
-const sinon = require('sinon');
-import { afterEach } from 'mocha';
-
 import { LuigiUX } from '../../src/core-api';
 
+const chai = require('chai');
+const expect = chai.expect;
+const sinon = require('sinon');
+
 describe('Core API - UX', function() {
-  this.retries(2);
+  jest.retryTimes(2);
   let clock;
 
   const buildMockElement = () => {

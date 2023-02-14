@@ -25,6 +25,17 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.0.0] (2023-02-10)
+
+#### :rocket: Added
+* [#3136](https://github.com/SAP/luigi/pull/3136) Hide tab nav automatically ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3152](https://github.com/SAP/luigi/pull/3152) Css-fix: tabNav + breadcrumb ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3153](https://github.com/SAP/luigi/pull/3153) fix app title position css ([@hardl](https://github.com/hardl))
+
+
+
 ## [v1.26.0] (2023-01-16)
 
 #### :boom: Breaking Change
@@ -47,7 +58,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2953](https://github.com/SAP/luigi/pull/2953) Fix broken link ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
 * [#2901](https://github.com/SAP/luigi/pull/2901) Plus sign not decoded correctly when adding and then getting nodeParams ([@wdoberschuetz](https://github.com/wdoberschuetz))
 * [#2949](https://github.com/SAP/luigi/pull/2949) Add missing withOptions function typings ([@ndricimrr](https://github.com/ndricimrr))
-
 
 
 
@@ -1477,3 +1487,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.25.0]: https://github.com/SAP/luigi/compare/v1.24.0...v1.25.0
 [v1.25.1]: https://github.com/SAP/luigi/compare/v1.25.0...v1.25.1
 [v1.26.0]: https://github.com/SAP/luigi/compare/v1.25.1...v1.26.0
+[v2.0.0]: https://github.com/SAP/luigi/compare/v1.25.1...v2.0.0

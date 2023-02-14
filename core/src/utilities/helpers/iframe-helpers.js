@@ -285,6 +285,7 @@ class IframeHelpersClass {
   disableA11yOfInactiveIframe(srcIframe) {
     const nodeList = document.querySelectorAll('*');
     [...nodeList].forEach(el => {
+      console.log('el', el);
       if (!el.getAttribute('oldTab')) {
         el.setAttribute('oldTab', el.getAttribute('tabindex'));
       }
@@ -296,7 +297,7 @@ class IframeHelpersClass {
 
   enableA11yOfInactiveIframe() {
     const nodeList = document.querySelectorAll('*');
-    [...nodeList].forEach((el, index) => {
+    [...nodeList].forEach(el => {
       const restoreVal = el.getAttribute('oldTab');
       if (el.getAttribute('oldTab') === 'null') {
         el.removeAttribute('tabindex');

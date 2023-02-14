@@ -28,7 +28,9 @@ function prepublishChecks {
   CLIENT_VERSION=$(node -p "require('./package.json').version")
   cd $BASE_DIR/../core/public
   CORE_VERSION=$(node -p "require('./package.json').version")
-
+  
+  echoe "Core Version: $CORE_VERSION, Client Version: $CLIENT_VERSION, Base Dir: $BASE_DIR"
+  
   if [ "$CORE_VERSION" != "$CLIENT_VERSION" ]; then
     echoe "Version mismatch between Client and Core."
     exit 1
@@ -122,29 +124,16 @@ elif [ "$1" = "luigi-container-release" ]; then
   checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
   publishPackage "container" "container/public"
 else
-  # Luigi Client & Core
   prepublishChecks
-  checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
-  publishPackage "core" "core/public"
-
-  checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
-  publishPackage "client" "client/public"
-
-  checkRequiredFiles "core/public-ie11" "luigi-ie11.js" "luigi-ie11.css" "README.md"
-  publishPackage "core" "core/public-ie11"
-
-  checkRequiredFiles "client/public-ie11" "luigi-client-ie11.d.ts" "luigi-client-ie11.js" "README.md"
-  publishPackage "client" "client/public-ie11"
-
   # Luigi OAuth Plugin
   if ( prepublishCheck "plugins/auth/public/auth-oauth2" ); then
-    checkRequiredFiles "plugins/auth/public/auth-oauth2" "plugin.js" "plugin-ie11.js" "README.md"
+    checkRequiredFiles "plugins/auth/public/auth-oauth2" "plugin.js" "README.md"
     publishPackage "plugins" "plugins/auth/public/auth-oauth2"
   fi
 
   # Luigi Oidc Plugin
   if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
-    checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "plugin-ie11.js" "README.md"
+    checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "README.md"
     publishPackage "plugins" "plugins/auth/public/auth-oidc"
   fi
 
@@ -159,6 +148,13 @@ else
     checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
     publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
   fi
+  
+  # Luigi Client & Core
+  checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
+  publishPackage "core" "core/public"
+
+  checkRequiredFiles "client/public" "luigi-client.d.ts" "luigi-client.js" "README.md"
+  publishPackage "client" "client/public"
 fi
 
 

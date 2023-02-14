@@ -741,15 +741,21 @@ describe('Navigation-helpers', () => {
     });
   });
   describe('load and store expanded categories', () => {
+    let localStorageSpy;
     beforeEach(() => {
-      global['localStorage'] = {
+      const storageMock = {
         getItem: sinon.stub(),
         setItem: sinon.stub()
       };
+      localStorageSpy = jest.spyOn(global, 'localStorage', 'get');
+      localStorageSpy.mockImplementation(() => {
+        return storageMock;
+      });
     });
     afterEach(() => {
       sinon.restore();
       sinon.reset();
+      localStorageSpy.mockRestore();
     });
     it('load expanded category', () => {
       localStorage.getItem.returns('["home:cat"]');

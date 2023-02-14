@@ -6,7 +6,7 @@ class LuigiNavigationManager {
    * Use these functions for navigation-related features.
    * @name LuigiNavigation
    */
-  constructor() { }
+  constructor() {}
 
   /**
    * Refreshes top navigation badge counters by rendering the navigation again.

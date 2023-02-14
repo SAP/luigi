@@ -1,8 +1,8 @@
 version: ~> 1.0 # enables build config validation beta feature: https://docs.travis-ci.com/user/build-config-validation
 language: node_js
 node_js:
-  - 'v14.15.5' # Optional node version for setup scripts
-  - 16
+  - 16 # Optional node version for setup scripts
+  - 'v14.15.5' # Default node version for CI testing
 dist: xenial
 stage: Setup node environment
 script: echo "npm test temporarily disabled"
@@ -64,6 +64,7 @@ integration-testing: &integration-testing
 jobs:
   include:
     - stage: 'Precache & Unit Tests'
+      node_js: 16
       if: NOT (commit_message = test-setup-scripts)
       script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
@@ -187,6 +188,18 @@ jobs:
 
     - name: 'Nightly release'
       if: (branch = master AND type = cron) OR (type = api AND commit_message = publish)
+      script:
+        - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+        - cd $TRAVIS_BUILD_DIR/scripts && npm ci
+        - cd $TRAVIS_BUILD_DIR/scripts && NIGHTLY=true npm run release
+        - cd $TRAVIS_BUILD_DIR/scripts && npm run publish:nightly
+        - echo "" > ~/.npmrc
+      before_cache:
+        - rm -rf ~/.npm/_logs
+        - rm -rf ~/.npm/_cacache
+
+    - name: 'RC release'
+      if: (branch = main AND type = api AND commit_message = publish-rc)
       script:
         - echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
         - cd $TRAVIS_BUILD_DIR/scripts && npm ci
