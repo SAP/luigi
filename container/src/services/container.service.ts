@@ -20,6 +20,7 @@ export class ContainerService {
     const messageName = msgName ? msgName : 'custom';
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
+      console.log('sending custom message', msg, msgName);
       messageName === 'custom' ? iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin) :
         iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin)
     } else {
