@@ -6,7 +6,8 @@
   <meta charset="utf-8" />
   <link href="https://fiddle.luigi-project.io/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet" />
   <!-- <link href="https://fiddle.luigi-project.io/styles/styles.css" rel="stylesheet" /> -->
-  <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
+  <script src="/luigi-client.js"></script>
+  <!-- <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script> -->
   <style>
     html,
     body {
@@ -60,6 +61,7 @@
     <button onclick="testUpdateModalPath()">test update modal path</button>
     <button onclick="testCheckPathExists()">test check path exists</button>
     <button onclick="testSetDirtyStatus()">test set dirty status</button>
+    <button onclick="testShowAlert()">test show alert</button>
 
   </div>
   <script>
@@ -156,6 +158,30 @@
     function testSetDirtyStatus() {
       LuigiClient.uxManager().setDirtyStatus(true);
     }
+
+    function testShowAlert() {
+      let dt = new Date();
+      let time = dt.getMilliseconds() + "";
+      time = time.substr(time.length - 3);
+      const settings = {
+        text: "This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}" + time,
+        type: 'info',
+        links: {
+          goToHome: { text: 'homepage', url: '/overview' },
+          goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+          relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+          neverShowItAgain: { text: 'Don\'t show this again', dismissKey: 'neverShowItAgain' }
+        },
+        closeAfter: 300000
+      }
+      LuigiClient
+        .uxManager()
+        .showAlert(settings)
+        .then((param) => {
+          console.log('Callback called on microfrontend', param);
+        });
+    }
+
 
 
 
