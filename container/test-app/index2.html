@@ -86,7 +86,7 @@
       var buttonText = document.createTextNode("Close Alert");
       dismissButton.addEventListener('click', () => {
         console.log('Dismiss clicked core side. Sending close message to mf of id =', alertSettings.settings.id);
-        luigiCnt2.closeAlert(alertSettings.settings.id);
+        luigiCnt2.closeAlert(alertSettings.settings.id, "neverShowItAgain");
         popup.style.display = "none";
       })
       dismissButton.appendChild(buttonText);
@@ -97,24 +97,6 @@
       document.getElementsByTagName("body")[0].appendChild(popup);
       return dismissButton;
     }
-
-
-
-    // TODO: initial
-    // updateContext case
-    // luigiCnt2.updateContext({ someData: '' });
-
-
-    // addEventListener(Events.GET_CONTEXT_REQUEST, event => {
-    //   const dataToSend = {
-    //     someDataToSend: 'The year is 2023'
-    //   }
-    //   console.log('Data being sent from Core -> MF', dataToSend)
-    //   event.sendContextToMicrofrontend(dataToSend);
-    // });
-
-    // luigiCnt2.sendContextToMicrofrontend();
-    // import ParamsEvent from luigi container
 
     luigiCnt2.addEventListener(Events.ALERT_REQUEST, event => {
       console.log('params:', Events.ALERT_REQUEST, event);
