@@ -288,7 +288,7 @@
     aria-labelledby="dialog-title-1"
   >
     {#if isModal || (isDrawer && settings.header)}
-      <div class="fd-dialog__header fd-bar fd-bar--header">
+      <div class="lui-modal-header fd-dialog__header fd-bar fd-bar--header">
         <Backdrop disable={disableBackdrop} />
         <div class="fd-bar__left">
           <div class="fd-bar__element">
@@ -444,5 +444,9 @@
       padding-top: 0;
       padding-bottom: 0;
     }
+  }
+
+  .lui-modal-header {
+    position: relative;
   }
 </style>

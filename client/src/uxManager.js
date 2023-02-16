@@ -159,13 +159,16 @@ class UxManager extends LuigiClientBase {
    *  });
    */
   showAlert(settings) {
-    helpers.addEventListener('luigi.ux.alert.hide', (e, listenerId) => {
-      this.hideAlert(e.data);
-      helpers.removeEventListener(listenerId);
-    });
-
     //generate random ID
     settings.id = helpers.getRandomId();
+
+    helpers.addEventListener('luigi.ux.alert.hide', (e, listenerId) => {
+      if (e.data.id === settings.id) {
+        this.hideAlert(e.data);
+        helpers.removeEventListener(listenerId);
+      }
+    });
+
     if (settings?.closeAfter < 100) {
       console.warn(`Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`);
       settings.closeAfter = undefined;
