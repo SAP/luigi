@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: 18 '18'
+          node-version: '18'
       - uses: actions/cache@v3
         with:
           path: |
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18 '18'    
+          node-version: '18'    
       - uses: actions/cache@v3
         with:
           path: |
@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: 18 '18'
+          node-version: '18'
       - uses: actions/cache@v3
         with:
           path: |
@@ -81,7 +81,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 18 '18'       
+          node-version: '18'       
       - run: cd ./scripts && npm ci
       - run: bash ./scripts/docuCheck.sh
       
