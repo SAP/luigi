@@ -32,6 +32,13 @@ runWebserver 4200 dist /luigi-core/luigi.js
 WS_NG_PID=$PID
 
 echo ""
+echo "Js Test App"
+cd "$BASE_DIR/e2e-js-test-application"
+killWebserver 4500
+npm run dev &
+WS_FID_PID=$PID
+
+echo ""
 echo "External Micro frontend"
 cd "$BASE_DIR/e2e-test-application/externalMf"
 killWebserver 8090
@@ -59,4 +66,5 @@ fi
 RV=$?
 kill $WS_NG_PID
 kill $WS_EXT_PID
+kill $WS_FID_PID
 exit $RV
