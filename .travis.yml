@@ -33,7 +33,7 @@ integration-testing: &integration-testing
     - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
     - ls $CYPRESS_CACHE_FOLDER
     - npm install --prefix $TRAVIS_BUILD_DIR/test/e2e-test-application @babel/plugin-proposal-class-properties
-    - bash ./test/e2e.sh
+    - bash ./test/e2e-angular.sh
   addons:
     apt:
       packages:

@@ -1,6 +1,6 @@
 {
   "fixturesFolder": "e2e/fixtures",
-  "integrationFolder": "e2e/tests",
+  "integrationFolder": "e2e/tests/0-js-test-app",
   "pluginsFile": false,
   "supportFile": "e2e/support/index.js",
   "videosFolder": "e2e/videos",
@@ -8,5 +8,5 @@
   "chromeWebSecurity": false,
   "viewportWidth": 1250,
   "viewportHeight": 790,
-  "baseUrl": "http://localhost:4200/"
+  "baseUrl": "http://localhost:4500/"
 }
