@@ -15,10 +15,11 @@
 
   import { onMount, onDestroy } from 'svelte';
   import { get_current_component } from 'svelte/internal';
-  import { ContainerService } from './services/container.service';
+  import { containerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
+  import { LuigiInternalMessageID } from './constants/internal-communication';
+  import { ContainerAPI } from './api/container-api';
 
-  const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
   webcomponentService.createClientAPI = (eventBusElement, nodeId, wc_id) => {
     return {
@@ -66,22 +67,17 @@
   };
 
   thisComponent.sendCustomMessage = (id: string, data?: any) => {
-    if (isWebComponent() && (mainComponent as any)._luigi_mfe_webcomponent) {
-      containerService.dispatch(
-        id,
-        (mainComponent as any)._luigi_mfe_webcomponent,
-        data
-      );
-    } else {
-      const msg = { ...data };
-      if (msg.id) {
-        console.warn(
-          'Property "id" is reserved and can not be used in custom message data'
-        );
-      }
-      msg.id = id;
-      containerService.sendCustomMessageToIframe(iframeHandle, msg);
-    }
+    ContainerAPI.sendCustomMessage(
+      id,
+      mainComponent,
+      isWebComponent(),
+      iframeHandle,
+      data
+    );
+  };
+
+  thisComponent.updateContext = (contextObj: any, internal?: any) => {
+    ContainerAPI.updateContext(contextObj, internal, iframeHandle);
   };
 
   containerService.registerContainer(thisComponent);
