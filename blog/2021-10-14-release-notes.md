@@ -29,5 +29,5 @@ With our newest release, you can use the [getCurrentLocale](https://docs.luigi-p
 
 #### Bugfixes
 
-For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/master/CHANGELOG.md).
+For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/main/CHANGELOG.md).
 

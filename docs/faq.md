@@ -704,6 +704,6 @@ One way would be to bind the Luigi app root to a specific [dom element](https://
 
 ### Where can I find the source code for Luigi Fiddle?
 
-Luigi is an open-source project. You can find the source code on our [GitHub repository](https://github.com/SAP/luigi/tree/master/website/fiddle).
+Luigi is an open-source project. You can find the source code on our [GitHub repository](https://github.com/SAP/luigi/tree/main/website/fiddle).
 
 <!-- accordion:end -->
