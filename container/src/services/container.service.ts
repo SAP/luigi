@@ -81,7 +81,7 @@ export class ContainerService {
                 break;
               // TODO 1: handle alerts with ids on next iteration
               case LuigiInternalMessageID.ALERT_REQUEST:
-                this.dispatch(Events.ALERT_REQUEST, targetCnt, event.data.params);
+                this.dispatch(Events.ALERT_REQUEST, targetCnt, event);
                 break;
               case LuigiInternalMessageID.INITIALIZED:
                 this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
