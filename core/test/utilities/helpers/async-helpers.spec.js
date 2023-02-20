@@ -19,39 +19,6 @@ describe('Async-helpers', () => {
     clock.restore();
   });
 
-  describe('waitForKeyExistency', () => {
-    it('returns true if key exists immediately', done => {
-      AsyncHelpers.waitForKeyExistency(obj, 'client').then(result => {
-        assert.equal(result, true);
-        done();
-      });
-      clock.tick(1000);
-    });
-    it('returns true if key exists after some time', done => {
-      obj.client = undefined;
-      AsyncHelpers.waitForKeyExistency(obj, 'client').then(result => {
-        assert.equal(result, true);
-        done();
-      });
-      setTimeout(() => {
-        obj.client = 'yes';
-      }, 500);
-      clock.tick(1000);
-    });
-    it('returns message if key does not exist after timeout', done => {
-      AsyncHelpers.waitForKeyExistency(obj, 'client2')
-        .then(result => {})
-        .catch(e => {
-          assert.equal(
-            e,
-            'client2 did not appear in object within 20 seconds.'
-          );
-          done();
-        });
-      clock.tick(21000);
-    });
-  });
-
   describe('wrapAsPromise', () => {
     it('returns a wrapped promise', async () => {
       const value = 'my value';
@@ -69,11 +36,7 @@ describe('Async-helpers', () => {
         return three;
       };
       const thirdParam = 'hello';
-      const prom = AsyncHelpers.applyFunctionPromisified(plainFunc, [
-        undefined,
-        undefined,
-        thirdParam
-      ]);
+      const prom = AsyncHelpers.applyFunctionPromisified(plainFunc, [undefined, undefined, thirdParam]);
 
       assert.isTrue(GenericHelpers.isPromise(prom), 'is a promise');
       assert.equal(await prom, thirdParam, 'value is equal');
@@ -86,11 +49,7 @@ describe('Async-helpers', () => {
         });
       };
       const thirdParam = 'hello';
-      const prom = AsyncHelpers.applyFunctionPromisified(promiseFunc, [
-        undefined,
-        undefined,
-        thirdParam
-      ]);
+      const prom = AsyncHelpers.applyFunctionPromisified(promiseFunc, [undefined, undefined, thirdParam]);
 
       assert.isTrue(GenericHelpers.isPromise(prom), 'is a promise');
       assert.equal(await prom, thirdParam, 'value is equal');

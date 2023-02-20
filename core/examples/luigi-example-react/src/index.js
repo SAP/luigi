@@ -10,7 +10,7 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Router basename='microfrontend'>
+    <Router basename="microfrontend">
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/sample1" element={<Sample1 />} />

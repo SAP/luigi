@@ -1,0 +1,38 @@
+on: 
+  push:
+    tags:
+      - 'v**'
+  workflow_dispatch:
+    inputs:
+      buildAllPackages:
+        type: boolean
+        required: false
+name: Release   
+env:
+  NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
+
+jobs:
+  prepare: 
+    uses: ./.github/workflows/prepare.yml
+    secrets: inherit
+    with:
+      buildcache_key: buildcache-release
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: github.repository == 'SAP/luigi'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/tmp_build
+            ~/cypress-binary-cache
+          key: buildcache-release
+      - run: cp -r ~/tmp_build/* .
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+      - run: bash ./scripts/npmPublish.sh

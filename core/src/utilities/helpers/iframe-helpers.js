@@ -296,7 +296,7 @@ class IframeHelpersClass {
 
   enableA11yOfInactiveIframe() {
     const nodeList = document.querySelectorAll('*');
-    [...nodeList].forEach((el, index) => {
+    [...nodeList].forEach(el => {
       const restoreVal = el.getAttribute('oldTab');
       if (el.getAttribute('oldTab') === 'null') {
         el.removeAttribute('tabindex');

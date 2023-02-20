@@ -57,10 +57,10 @@ export const ContextSwitcherHelpers = {
 
     return Boolean(
       parentNodePath &&
-      currentPathNormalized &&
-      typeof currentPathNormalized === 'string' &&
-      currentPathNormalized.startsWith(parentNodePathNormalized) &&
-      currentPathNormalized !== parentNodePathNormalized
+        currentPathNormalized &&
+        typeof currentPathNormalized === 'string' &&
+        currentPathNormalized.startsWith(parentNodePathNormalized) &&
+        currentPathNormalized !== parentNodePathNormalized
     );
   },
 

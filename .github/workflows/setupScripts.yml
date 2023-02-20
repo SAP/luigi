@@ -1,0 +1,69 @@
+on:   
+  schedule:
+    - cron: "0 6 * * 1"
+name: Test Setup Scripts
+jobs:
+  angular:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: |
+          OUT=$(bash ./test/setuptests.sh @angular/cli 4200 http://localhost:4200/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 4200" <<< "$OUT")
+          echo "$RES"
+          if [ $RES == 1 ]; then exit 0; else exit 1; fi
+
+  vue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: |
+          OUT=$(bash ./test/setuptests.sh @vue/cli 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+          echo "$RES"
+          if [ $RES == 1 ]; then exit 0; else exit 1; fi
+
+  react:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: |
+          OUT=$(bash ./test/setuptests.sh 'react-cli react' 3000 http://localhost:3000/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 3000" <<< "$OUT")
+          echo "$RES"
+          if [ $RES == 1 ]; then exit 0; else exit 1; fi
+
+  ui5:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: |
+          OUT=$(bash ./test/setuptests.sh @ui5/cli 8080 http://localhost:8080/index.html#/home https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+          echo "$RES"
+          if [ $RES == 1 ]; then exit 0; else exit 1; fi
+
+  vanilla:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: |
+          OUT=$(bash ./test/setuptests.sh ' ' 8080 http://localhost:8080/ https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh | tee /dev/fd/2)
+          RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
+          echo "$RES"
+          if [ $RES == 1 ]; then exit 0; else exit 1; fi

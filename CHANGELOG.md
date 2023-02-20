@@ -25,10 +25,29 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
-## [v1.26.0] (2023-01-16)
+## [v2.0.1] (2023-02-14)
+
+#### :bug: Fixed
+* [#3180](https://github.com/SAP/luigi/pull/3180) fix multi alert promise ([@hardl](https://github.com/hardl))
+* [#3179](https://github.com/SAP/luigi/pull/3179) fix backdrop overlay ([@hardl](https://github.com/hardl))
+
+
+
+## [v2.0.0] (2023-02-10)
 
 #### :boom: Breaking Change
-* [#2735](https://github.com/SAP/luigi/pull/2735) Bump @angular/core from 6.1.10 to 11.0.5 in /test/e2e-test-application ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#3078](https://github.com/SAP/luigi/pull/3078) Update angular support library to angular v14 ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :rocket: Added
+* [#3136](https://github.com/SAP/luigi/pull/3136) Hide tab nav automatically ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3126](https://github.com/SAP/luigi/pull/3126) Update Fundamental styles to v0.26.5 ([@hardl](https://github.com/hardl))
+
+#### :bug: Fixed
+* [#3152](https://github.com/SAP/luigi/pull/3152) Css-fix: tabNav + breadcrumb ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+## [v1.26.0] (2023-01-16)
 
 #### :rocket: Added
 * [#3094](https://github.com/SAP/luigi/pull/3094) Enhance left nav a11y ([@JohannesDoberer](https://github.com/JohannesDoberer))
@@ -47,7 +66,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#2953](https://github.com/SAP/luigi/pull/2953) Fix broken link ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
 * [#2901](https://github.com/SAP/luigi/pull/2901) Plus sign not decoded correctly when adding and then getting nodeParams ([@wdoberschuetz](https://github.com/wdoberschuetz))
 * [#2949](https://github.com/SAP/luigi/pull/2949) Add missing withOptions function typings ([@ndricimrr](https://github.com/ndricimrr))
-
 
 
 
@@ -1477,3 +1495,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.25.0]: https://github.com/SAP/luigi/compare/v1.24.0...v1.25.0
 [v1.25.1]: https://github.com/SAP/luigi/compare/v1.25.0...v1.25.1
 [v1.26.0]: https://github.com/SAP/luigi/compare/v1.25.1...v1.26.0
+[v2.0.0]: https://github.com/SAP/luigi/compare/v1.25.1...v2.0.0
+[v2.0.1]: https://github.com/SAP/luigi/compare/v2.0.0...v2.0.1
