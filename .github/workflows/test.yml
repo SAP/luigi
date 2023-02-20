@@ -32,7 +32,7 @@ jobs:
             ~/cypress-binary-cache
           key: buildcache
       - run: cp -r ~/tmp_build/* .
-      - run: npm test --prefix core
+      - run: npm test --prefix core || exit 1
 
   mock_engine:
     name: Mock Engine Tests
@@ -53,7 +53,7 @@ jobs:
       - run: npm i -g cypress
       - run: npm i -g lerna@4.0.0
       - run: npm i -g live-server
-      - run: bash ./test/mockengine.sh
+      - run: bash ./test/mockengine.sh || exit 1
 
   e2e:
     name: Integration Tests
@@ -73,8 +73,8 @@ jobs:
       - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
       - run: ls test 
-      - run: bash ./test/e2e-js.sh
-      - run: bash ./test/e2e-angular.sh
+      - run: bash ./test/e2e-js.sh || exit 1
+      - run: bash ./test/e2e-angular.sh || exit 1
 
   docu_check:
     name: Check Documentation
