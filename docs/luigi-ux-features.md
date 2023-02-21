@@ -89,7 +89,7 @@ Define a custom width for the App Title on desktop and mobile simultaneously by 
 
 #### Horizontal navigation/tabNav height
 
-* If you are using [tabNav](navigation-parameters-reference.md#tabnav), especially in combination with other elements such as splitView, you may want to adjust the tabNav height. To do so, use the `--luigi__horizontal-nav--height` variable to define the height of the horizontal navigation/tabNav. The default value is 2.75rem.
+* If you are using [tabNav](navigation-parameters-reference.md#tabnav), especially in combination with other elements such as splitView, you may want to adjust the tabNav height. To do so, use the `--luigi__horizontal-nav--height` variable. The default value is 2.75rem.
 
 ```html
 :root{
