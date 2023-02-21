@@ -29,7 +29,7 @@ echo "Angular App"
 cd $NG_EXAMPLE
 killWebserver 4200
 runWebserver 4200 dist /luigi-core/luigi.js
-WS_NG_PID=$!
+WS_NG_PID=$PID
 
 
 echo ""
@@ -37,7 +37,7 @@ echo "External Micro frontend"
 cd "$BASE_DIR/e2e-test-application/externalMf"
 killWebserver 8090
 runWebserver 8090
-WS_EXT_PID=$!
+WS_EXT_PID=$PID
 
 set -e # exit on errors
 
