@@ -46,9 +46,8 @@
     <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
     <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
     <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
-    <!-- TODO: Re-add when finishing implementation -->
-    <!-- <button onclick="testShowAlert()">test show alert</button>
-    <button onclick="testGetContext()">Get Context</button> -->
+    <button onclick="testGetContext()">Get Context</button>
+
     <button onclick="testSetCurrentLocale()">test set current locale</button>
     <button onclick="testSetLocalStorage()">test set local storage</button>
     <button onclick="testRuntimeErrorRequest()">test runtime error handling request</button>
@@ -59,6 +58,7 @@
     <button onclick="testUpdateModalPath()">test update modal path</button>
     <button onclick="testCheckPathExists()">test check path exists</button>
     <button onclick="testSetDirtyStatus()">test set dirty status</button>
+    <button onclick="testShowAlert()">test show alert</button>
 
   </div>
   <script>
@@ -108,9 +108,9 @@
     //   LuigiClient.uxManager().showAlert(settings);
     // }
 
-    // function testGetContext() {
-    //   console.log('getContext() called', LuigiClient.getContext());
-    // }
+    function testGetContext() {
+      alert('LuigiClient.getContext()() called' + JSON.stringify(LuigiClient.getContext()));
+    }
 
     function testSetCurrentLocale() {
       LuigiClient.uxManager().setCurrentLocale('en');
@@ -155,6 +155,30 @@
     function testSetDirtyStatus() {
       LuigiClient.uxManager().setDirtyStatus(true);
     }
+
+    function testShowAlert() {
+      let dt = new Date();
+      let time = dt.getMilliseconds() + "";
+      time = time.substr(time.length - 3);
+      const settings = {
+        text: "This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}" + time,
+        type: 'info',
+        links: {
+          goToHome: { text: 'homepage', url: '/overview' },
+          goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+          relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+          neverShowItAgain: { text: 'Don\'t show this again', dismissKey: 'neverShowItAgain' }
+        },
+        closeAfter: 300000
+      }
+      LuigiClient
+        .uxManager()
+        .showAlert(settings)
+        .then((param) => {
+          console.log('Callback called on microfrontend', param);
+        });
+    }
+
 
 
 
