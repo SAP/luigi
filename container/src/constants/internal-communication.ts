@@ -1,4 +1,4 @@
-export namespace LuigiMessageID {
+export namespace LuigiInternalMessageID {
     /**
      * A message emmitted from the Microfrontend when a custom message is sent
      */
@@ -10,7 +10,7 @@ export namespace LuigiMessageID {
     /**
      * A message sent to the microfrontend from parent with the context upon init 
      */
-    export const SEND_CONTEXT = 'luigi.init';
+    export const SEND_CONTEXT_HANDSHAKE = 'luigi.init';
 
     /** 
      * A message sent from the Microfrontend when the context data has been received properly
@@ -24,6 +24,10 @@ export namespace LuigiMessageID {
      * A message emmitted from the Microfrontend when a request to show an alert is sent
      */
     export const ALERT_REQUEST = 'luigi.ux.alert.show';
+    /**
+     * A message sent to the microfrontend to notify closing of a particular alert
+     */
+    export const ALERT_CLOSED = 'luigi.ux.alert.hide';
     /**
      * A message emmitted from the Microfrontend when it is first initialized
      */
@@ -85,9 +89,9 @@ export namespace LuigiMessageID {
     export const GET_CURRENT_ROUTE_REQUEST = 'luigi.navigation.currentRoute';
 
     /**
-     * A message emmitted from the CORE ? MICROFRONTEND ?????????? when a request to report the issued token to client is sent
+     * A message sent to the Microfrontend with the payload being the context being sent
      */
-    export const REPORT_TOKEN_ISSUED_REQUEST = 'luigi.auth.tokenIssued';
+    export const SEND_CONTEXT_OBJECT = 'luigi.navigate';
 
     /**
      * A message emmitted from the Microfrontend to report that the navigation is completed is sent

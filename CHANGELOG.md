@@ -33,22 +33,21 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 
 
 
-
 ## [v2.0.0] (2023-02-10)
+
+#### :boom: Breaking Change
+* [#3078](https://github.com/SAP/luigi/pull/3078) Update angular support library to angular v14 ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 #### :rocket: Added
 * [#3136](https://github.com/SAP/luigi/pull/3136) Hide tab nav automatically ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3126](https://github.com/SAP/luigi/pull/3126) Update Fundamental styles to v0.26.5 ([@hardl](https://github.com/hardl))
 
 #### :bug: Fixed
 * [#3152](https://github.com/SAP/luigi/pull/3152) Css-fix: tabNav + breadcrumb ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#3153](https://github.com/SAP/luigi/pull/3153) fix app title position css ([@hardl](https://github.com/hardl))
 
 
 
 ## [v1.26.0] (2023-01-16)
-
-#### :boom: Breaking Change
-* [#2735](https://github.com/SAP/luigi/pull/2735) Bump @angular/core from 6.1.10 to 11.0.5 in /test/e2e-test-application ([@dependabot[bot]](https://github.com/apps/dependabot))
 
 #### :rocket: Added
 * [#3094](https://github.com/SAP/luigi/pull/3094) Enhance left nav a11y ([@JohannesDoberer](https://github.com/JohannesDoberer))
