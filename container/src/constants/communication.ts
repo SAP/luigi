@@ -16,6 +16,10 @@ export namespace Events {
      */
     export const ALERT_REQUEST = 'show-alert-request';
     /**
+     * A message emmitted from the Microfrontend when a request to show an alert is sent
+     */
+    export const ALERT_CLOSED = 'close-alert-request';
+    /**
      * A message emmitted from the Microfrontend when it is first initialized
      */
     export const INITIALIZED = 'initialized';

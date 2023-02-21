@@ -25,4 +25,11 @@ export default class LuigiContainer extends HTMLElement {
    * @param internal internal microfrotend data
    */
   updateContext(contextObj: any, internal?: any): Function;
+
+  /**
+   * Notifies the microfrontend that the opened alert has been closed
+   * @param id the id of the opened alert
+   * @param dismissKey the key specifying which dismiss link was clicked on the alert message 
+   */
+  closeAlert(id: any, dismissKey: any): Function;
 }
