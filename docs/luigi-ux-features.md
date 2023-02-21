@@ -19,6 +19,7 @@ meta -->
 
 - [Rendering of Luigi application in the DOM](#rendering-of-luigi-application-in-the-dom)
 - [Responsive application setup](#responsive-application-setup)
+- [Custom CSS variables](#custom-css-variables)
 - [App loading indicator](#app-loading-indicator)
 - [Collapsed left side navigation](#collapsed-left-side-navigation)
 
@@ -47,14 +48,28 @@ You can quickly adjust the Luigi application to improve user experience on mobil
 
 * Define and apply [**profileType**](general-settings.md#profiletype) **'simple'**  or **'Fiori3'** to change the Profile Menu layout and design.
 
-* Define a custom width for the left side navigation. To do so, simply add the code below to the top of your `index.html`. The default width is 15rem.
+* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes. 
+
+## Custom CSS variables
+
+The CSS variables listed below allow you to adjust Luigi elements individually and define their width/height.
+
+<!-- add-attribute:class:success -->
+>**NOTE:** Customizing Luigi is not limited to these variables and can be also achieved with your own CSS code. You can find a small example [here](faq.md#ui-questions) under the question "How can I style Luigi differently?"
+
+#### Left-side navigation width 
+
+Define a custom width for the left side navigation by adding the code below to the top of your `index.html`. The default width is 15rem.
 
 ```html
 :root{
   --luigi__left-sidenav--width: yourCustomWidth;
 }
 ```
-* Define a custom width for the App Title on desktop and mobile simultaneously. To do so, simply add the code below to the top of your `index.html`. The default width is `--luigi__app-title--width: 60vw;` and `--luigi__multi-app-dropdown--width: 50vw;`
+
+#### App title width 
+
+Define a custom width for the App Title on desktop and mobile simultaneously by adding the code below to the top of your `index.html`. The default width is `--luigi__app-title--width: 60vw;` and `--luigi__multi-app-dropdown--width: 50vw;`
 
 ```html
 :root{
@@ -62,15 +77,24 @@ You can quickly adjust the Luigi application to improve user experience on mobil
   --luigi__multi-app-dropdown--width: yourCustomMultiAppDropdownWidth;
 }
 ```
-
-* Set the [**header.responsiveShellbarPaddings**](general-settings.md#headerresponsiveshellbarpaddings) parameter to `true` to make the Shellbar responsive for different screen sizes. 
+#### Top navigation height
 
 * Define a custom height for the top navigation/Shellbar by providing a single CSS variable. To do so, simply add the code below to the top of your `index.html`. The default height is `--luigi__shellbar--height: 2.75rem`:
 
 ```html
     :root {
-      --luigi__shellbar--height: yourCustomShellbarwidth;
+      --luigi__shellbar--height: yourCustomShellbarHeight;
     }
+```
+
+#### Horizontal navigation/tabNav height
+
+* If you are using [tabNav](navigation-parameters-reference.md#tabnav), especially in combination with other elements such as splitView, you may want to adjust the tabNav height. To do so, use the `--luigi__horizontal-nav--height` variable to define the height of the horizontal navigation/tabNav. The default value is 2.75rem.
+
+```html
+:root{
+  --luigi__horizontal-nav--height: yourCustomHorizontalNavHight
+}
 ```
 
 ## App loading indicator
@@ -106,10 +130,10 @@ To keep the loading indicator until the first micro frontend is usable, follow t
 ```
 2. To remove the loading indicator, call [Luigi.ux().hideAppLoadingIndicator()](./luigi-core-api.md#hideAppLoadingIndicator) in Luigi Core once your initial micro frontend has finished loading. You can, for example, use the [custom messages](./communication.md#custom-messages) feature to allow the Luigi Client micro frontend to communicate with the Core when this function should be executed.
 
-## Collapsed left side navigation
+## Collapsed left-side navigation
 
-If you use **responsiveNavigation = 'semiCollapsible'**  or **'Fiori3'** mode in your settings, you can adjust collapsed state of the left side navigation by using the **collapseLeftSideNav** function.
+If you use [responsiveNavigation](general-settings.md#responsivenavigation) with **'semiCollapsible'** or **'Fiori3'** mode in your settings, you can adjust the collapsed state of the left-side navigation by using the **collapseLeftSideNav** function.
 
-* To close the left side navigation, execute **Luigi.ux().collapseLeftSideNav(true)** in Luigi Core once your initial micro frontend has finished loading. It will set the collapsed state to `true` in **Local Storage**. Which closes the left side navgation, by showing only icons.
+* To close the left-side navigation, execute **Luigi.ux().collapseLeftSideNav(true)** in Luigi Core once your initial micro frontend has finished loading. It will set the collapsed state to `true` in **Local Storage**, which closes the left side navigation by showing only icons.
 
-* Set the value to `false` if you want to open left side navigation.
+* Set the value to `false` if you want to open left-side navigation.
