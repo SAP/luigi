@@ -64,5 +64,4 @@ RV=$?
 
 kill $WS_NG_PID
 kill $WS_EXT_PID
-kill $WS_FID_PID
 exit $RV
