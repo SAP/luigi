@@ -29,21 +29,21 @@ echo "Angular App"
 cd $NG_EXAMPLE
 killWebserver 4200
 runWebserver 4200 dist /luigi-core/luigi.js
-WS_NG_PID=$PID
+WS_NG_PID=$!
 
 echo ""
 echo "Js Test App"
 cd "$BASE_DIR/e2e-js-test-application"
 killWebserver 4500
 npm run dev &
-WS_FID_PID=$PID
+WS_FID_PID=$!
 
 echo ""
 echo "External Micro frontend"
 cd "$BASE_DIR/e2e-test-application/externalMf"
 killWebserver 8090
 runWebserver 8090
-WS_EXT_PID=$PID
+WS_EXT_PID=$!
 
 cd $NG_EXAMPLE
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
