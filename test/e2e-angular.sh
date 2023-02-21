@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e # exit on errors
+set +e # don't exit on errors
 BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
 
 source $BASE_DIR/../scripts/shared/bashHelpers.sh
@@ -44,6 +44,8 @@ cd "$BASE_DIR/e2e-test-application/externalMf"
 killWebserver 8090
 runWebserver 8090
 WS_EXT_PID=$PID
+
+set -e # exit on errors
 
 cd $NG_EXAMPLE
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
