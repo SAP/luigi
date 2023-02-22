@@ -45,7 +45,7 @@ describe('Navigation', () => {
           collapsed: false
         });
         setTimeout(() => {
-          cy.get('#splitViewContainer').should('not.be.visible');
+          cy.get('#splitViewContainer').should('not.exist');
           cy.expect(handle.exists()).to.be.true;
         }, 0);
         cy.expectPathToBe('/overview');
@@ -84,7 +84,7 @@ describe('Navigation', () => {
           handle.close();
           setTimeout(() => {
             cy.expect(handle.exists()).to.be.false;
-            cy.get('#splitViewContainer').should('not.be.visible');
+            cy.get('#splitViewContainer').should('not.exist');
             done();
           }, 50);
         }, 50);
@@ -136,7 +136,7 @@ describe('Navigation', () => {
             .contains('Projects')
             .click();
           cy.expectPathToBe('/projects');
-          cy.get('#splitViewContainer').should('not.be.visible');
+          cy.get('#splitViewContainer').should('not.exist');
         }, 0);
       });
     });

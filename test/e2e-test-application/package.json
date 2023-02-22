@@ -8,6 +8,7 @@
     "lint": "ng lint",
     "e2e:open": "cypress open --env configFile=e2e-angular-app",
     "e2e:open:external": "cypress open --env configFile=externalmf",
+    "e2e:open:js": "cypress open --env configFile=e2e-js-app",
     "e2e:run:angular": "cypress run --env configFile=e2e-angular-app --browser chrome -c video=false",
     "e2e:run:js": "cypress run --env configFile=e2e-js-app --browser chrome -c video=false",
     "e2e:run:external": "cypress run --env configFile=externalmf --browser chrome -c video=false",

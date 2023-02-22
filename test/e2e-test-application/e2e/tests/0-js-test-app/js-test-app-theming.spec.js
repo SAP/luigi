@@ -115,7 +115,7 @@ describe('JS-TEST-APP 2', () => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
       cy.reload().wait(1000);
-      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.have.class', 'fd-side-nav--condensed');
+      cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.exist');
     });
   });
 
@@ -261,7 +261,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="lui-us-option0_0"]').should('not.be.visible');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
-      cy.get('.lui-usersettings-dialog').should('not.be.visible');
+      cy.get('.lui-usersettings-dialog').should('not.exist');
     });
     it('Check if external mf is loaded in custom user settings editor', () => {
       cy.visitTestApp('/', newConfig);
@@ -359,7 +359,7 @@ describe('JS-TEST-APP 2', () => {
     context('Desktop', () => {
       it('Search on large viewport', () => {
         cy.get('.lui-global-search-btn').should('not.be.visible');
-        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.exist');
         cy.get('.lui-global-search-input').should('be.visible');
       });
     });
@@ -367,19 +367,19 @@ describe('JS-TEST-APP 2', () => {
       it('Search on smaller viewport', () => {
         cy.viewport('iphone-6');
         cy.get('.lui-global-search-btn').should('be.visible');
-        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.exist');
         cy.get('.lui-global-search-input').should('not.be.visible');
 
         cy.get('.lui-global-search-btn').click();
 
-        cy.get('.lui-global-search-btn').should('not.be.visible');
+        cy.get('.lui-global-search-btn').should('not.exist');
         cy.get('.lui-global-search-cancel-btn').should('be.visible');
         cy.get('.lui-global-search-input').should('be.visible');
 
         cy.get('.lui-global-search-cancel-btn').click();
 
         cy.get('.lui-global-search-btn').should('be.visible');
-        cy.get('.lui-global-search-cancel-btn').should('not.be.visible');
+        cy.get('.lui-global-search-cancel-btn').should('not.exist');
         cy.get('.lui-global-search-input').should('not.be.visible');
       });
     });
