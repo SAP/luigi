@@ -2185,7 +2185,7 @@
     height: 100%;
   }
 
-  .iframeContainerTabNav {
+  :global(.iframeContainer.iframeContainerTabNav) {
     top: calc(
       var(--luigi__shellbar--height) + var(--luigi__horizontal-nav--height)
     );

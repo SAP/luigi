@@ -18,7 +18,7 @@ meta -->
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/kEzTZ2U9KMM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/master/core/examples). 
+This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/main/core/examples). 
 
 Luigi can be added to any application using these steps:
 * Adding Luigi's `npm` packages to your project dependencies.
@@ -41,7 +41,7 @@ In this example, all these steps are achieved through a single **installer** scr
 1. Use the following installer to create a directory for your application, install Luigi, make assets available, and start your local server:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/no-framework.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/no-framework.sh)
 ```
 or execute these commands manually to get the same result:
 <!-- accordion:start -->
@@ -62,9 +62,9 @@ mkdir -p public/assets
 mkdir -p src/luigi-config
 
 # download assets
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
 
 
 cp -r node_modules/\@luigi-project/core public/luigi-core
@@ -93,7 +93,7 @@ npm run start
 2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/angular.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/angular.sh)
 ```
 or execute these commands manually to get the same result:
 <!-- accordion:start -->
@@ -110,9 +110,9 @@ mkdir -p src/luigi-config
 mv src/index.html src/angular.html
 
 # download assets
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > src/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > src/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
 
 # string replacements in some files
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json
@@ -139,7 +139,7 @@ npm run start
 1. Use the installer to create a directory for your application, install Luigi, make assets available, and start your local server:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/openui5.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/openui5.sh)
 ```
 or execute these commands manually to get the same result:
 
@@ -150,7 +150,7 @@ mkdir my-ui5-app && cd my-ui5-app
 echo "Creating folders and downloading example assets"
 mkdir -p ./webapp/home ./webapp/libs ./webapp/sample1 ./webapp/sample2 ./webapp/i18n
 
-export UI5EX_REPO_URL="https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-openui5"
+export UI5EX_REPO_URL="https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-openui5"
 
 curl --silent $UI5EX_REPO_URL/webapp/sample2/Sample2.view.xml > ./webapp/sample2/Sample2.view.xml
 curl --silent $UI5EX_REPO_URL/webapp/sample2/sample2.html > ./webapp/sample2/sample2.html
@@ -200,7 +200,7 @@ npm install -g @vue/cli
 
 2. Use the installer to create your application, install Luigi, make assets available, and serve your application:
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/vue.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/vue.sh)
 ```
 or execute these commands manually to get the same result:
 
@@ -211,7 +211,7 @@ or execute these commands manually to get the same result:
 vue create -d my-vue-app && cd my-vue-app
 
 # install dependencies
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/package.json > package.json
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/package.json > package.json
 npm i
 # as soon as new package.json under vue example released this line can be removed
 npm i webpack-cli@4.2.0 node-sass@4.14.1
@@ -293,18 +293,18 @@ echo '{
 mkdir -p src/luigi-config
 
 # fetch assets from vue example
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/app.vue > src/app.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/main.js > src/main.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/sampleapp.html > public/sampleapp.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/app.vue > src/app.vue
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/main.js > src/main.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
 
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/router.js > src/router.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/store.js > src/store.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/router.js > src/router.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/store.js > src/store.js
 
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/home.vue > src/views/home.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/home.vue > src/views/home.vue
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
 
 # generic assets
 
@@ -319,7 +319,7 @@ npm run serve
 
 1. Use the installer to create your application, install Luigi, make assets available, and serve your application:
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/react.sh)
+bash <(curl -s https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/react.sh)
 ```
 or execute these commands manually to get the same result:
 
@@ -372,20 +372,20 @@ echo '{
 
 # downloads
 mkdir -p src/luigi-config
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/sampleapp.html > public/sampleapp.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/public/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/public/sampleapp.html > public/sampleapp.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/public/luigi-config.js > src/luigi-config/luigi-config.es6.js
 
 
 # add index.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/index.js > src/index.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/index.css > src/index.css
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/src/index.js > src/index.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/src/index.css > src/index.css
 
 # add views
 mkdir src/views
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/home.js > src/views/home.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample1.js > src/views/sample1.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/core/examples/luigi-example-react/src/views/sample2.js > src/views/sample2.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/src/views/home.js > src/views/home.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/src/views/sample1.js > src/views/sample1.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-react/src/views/sample2.js > src/views/sample2.js
 
 npm i
 npm run buildConfig
