@@ -1,8 +1,7 @@
 describe('Login Flow', () => {
   beforeEach(() => {
-    cy.visit('/', {
-      onBeforeLoad: () => cy.clearLocalStorage()
-    });
+    cy.visit('/');
+    cy.clearLocalStorage();
   });
 
   it('User name in profile dropdown', () => {
