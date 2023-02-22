@@ -13,7 +13,7 @@ export class DevelopersComponent implements OnInit, OnDestroy {
 
   updateVisitors() {
     let visitors = window['visitors'] || 0;
-    window['visitors'] = ++visitors;
+    window['visitors'] = visitors + 1;
     return visitors;
   }
 
@@ -28,5 +28,6 @@ export class DevelopersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     removeInitListener(this.initListener);
+    // window['visitors'] = 0;
   }
 }
