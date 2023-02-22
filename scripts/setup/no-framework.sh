@@ -27,9 +27,9 @@ mkdir -p public/assets
 mkdir -p src/luigi-config
 
 # download assets
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
 
 
 cp -r node_modules/\@luigi-project/core public/luigi-core
