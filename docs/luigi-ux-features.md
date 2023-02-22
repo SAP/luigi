@@ -59,7 +59,7 @@ The CSS variables listed below allow you to adjust Luigi elements individually a
 
 #### Left-side navigation width 
 
-Define a custom width for the left side navigation by adding the code below to the top of your `index.html`. The default width is 15rem.
+Define a custom width for the left side navigation by adding the `--luigi__left-sidenav--width:` variable to the top of your `index.html`. The default width is 15rem.
 
 ```html
 :root{
@@ -79,7 +79,7 @@ Define a custom width for the App Title on desktop and mobile simultaneously by 
 ```
 #### Top navigation height
 
-* Define a custom height for the top navigation/Shellbar by providing a single CSS variable. To do so, simply add the code below to the top of your `index.html`. The default height is `--luigi__shellbar--height: 2.75rem`:
+Define a custom height for the top navigation/Shellbar by adding the `--luigi__shellbar--height:` variable to the top of your `index.html`. The default height is 2.75rem.
 
 ```html
     :root {
@@ -89,7 +89,7 @@ Define a custom width for the App Title on desktop and mobile simultaneously by 
 
 #### Horizontal navigation/tabNav height
 
-* If you are using [tabNav](navigation-parameters-reference.md#tabnav), especially in combination with other elements such as splitView, you may want to adjust the tabNav height. To do so, use the `--luigi__horizontal-nav--height` variable. The default value is 2.75rem.
+If you are using [tabNav](navigation-parameters-reference.md#tabnav), especially in combination with other elements such as splitView, you may want to adjust the tabNav height. To do so, use the `--luigi__horizontal-nav--height` variable. The default value is 2.75rem.
 
 ```html
 :root{
