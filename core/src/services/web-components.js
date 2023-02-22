@@ -120,7 +120,10 @@ class WebComponentSvcClass {
       /** Append reg function to luigi object if not present */
       if (!window.Luigi._registerWebcomponent) {
         window.Luigi._registerWebcomponent = (srcString, el) => {
-          window.customElements.define(this.generateWCId(srcString), el);
+          const wcId = this.generateWCId(srcString);
+          if (!window.customElements.get(wcId)) {
+            window.customElements.define(wcId, el);
+          }
         };
       }
 

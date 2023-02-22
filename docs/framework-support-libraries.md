@@ -20,7 +20,7 @@ On this page, you can find more information about Luigi Client support libraries
 
 ## Angular support Library
 
-The [ClientSupportAngular](https://github.com/SAP/luigi/tree/master/client-frameworks-support/client-support-angular/projects/client-support-angular) library provides several features to run your Angular application inside the Luigi micro frontend framework.
+The [ClientSupportAngular](https://github.com/SAP/luigi/tree/main/client-frameworks-support/client-support-angular/projects/client-support-angular) library provides several features to run your Angular application inside the Luigi micro frontend framework.
 
 
 ### How to use the library
