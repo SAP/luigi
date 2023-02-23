@@ -7,12 +7,10 @@
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "scripts": {
-    "bundle": "npm run bundle-evergreen && npm run bundle-ie11",
-    "bundle-evergreen": "webpack --mode=production --display-error-details",
-    "bundle-ie11": "webpack --mode=production --display-error-details --config webpack-ie11.config.js",
+    "bundle": "npm run bundle-evergreen",
+    "bundle-evergreen": "webpack --mode=production",
     "bundle-develop": "npm run bundle-develop-evergreen",
     "bundle-develop-evergreen": "npm run bundle-evergreen -- -d --watch",
-    "bundle-develop-ie11": "npm run bundle-ie11 -- -d --watch",
     "bundlesize": "npm run bundle && bundlesize",
     "bundlesizeOnly": "bundlesize",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,11 +18,6 @@
   "bundlesize": [
     {
       "path": "./auth/public/auth-oauth2/plugin.js",
-      "maxSize": "75 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./auth/public/auth-oauth2/plugin-ie11.js",
       "maxSize": "75 kB",
       "compression": "none"
     }
@@ -40,7 +33,7 @@
     "babel-loader": "^8.0.5",
     "bundlesize2": "^0.0.31",
     "browserslist": ">=4.16.5",
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.0.1",
     "diff": ">=3.5.0",
     "lodash": ">=4.17.13",
@@ -52,8 +45,8 @@
     "serialize-javascript": ">=3.1.0",
     "set-value": ">=2.0.1",
     "ssri": ">=6.0.2",
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {}
 }
