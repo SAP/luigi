@@ -2,7 +2,7 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/luigi)](https://api.reuse.software/info/github.com/SAP/luigi)
 # Luigi
 <p align="center">
- <img src="https://raw.githubusercontent.com/sap/luigi/master/logo.png" alt="Luigi logo" width="235">
+ <img src="https://raw.githubusercontent.com/sap/luigi/main/logo.png" alt="Luigi logo" width="235">
 </p>
 
 ## Description
@@ -89,10 +89,10 @@ To ensure that existing features still work as expected after your changes, run 
 
 ### E2E tests
 
-To ensure that existing features still work as expected after your changes, you need to run UI tests from the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application). Before running the tests, you need to start our two test applications: 
+To ensure that existing features still work as expected after your changes, you need to run UI tests from the [Angular example application](https://github.com/SAP/luigi/tree/main/test/e2e-test-application). Before running the tests, you need to start our two test applications: 
 
-- Start the [Angular example application](https://github.com/SAP/luigi/tree/master/test/e2e-test-application) by using the `npm start` command in the application folder.
-- Start the [js test application](https://github.com/SAP/luigi/tree/master/test/e2e-js-test-application) by using the `npm run dev` command in the application folder.
+- Start the [Angular example application](https://github.com/SAP/luigi/tree/main/test/e2e-test-application) by using the `npm start` command in the application folder.
+- Start the [js test application](https://github.com/SAP/luigi/tree/main/test/e2e-js-test-application) by using the `npm run dev` command in the application folder.
 
 Once the applications are ready:
 

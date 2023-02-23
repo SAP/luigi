@@ -22,9 +22,9 @@ mkdir -p src/luigi-config
 mv src/index.html src/angular.html
 
 # download assets
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/index.html > src/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/master/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > src/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
+curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > src/assets/basicMicroFrontend.html
 
 # string replacements in some files
 sed 's#"src/index.html"#"src/angular.html"#g' angular.json > tmp.json && mv tmp.json angular.json

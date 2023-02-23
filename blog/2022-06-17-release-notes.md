@@ -22,9 +22,9 @@ We added a new `getCurrentRoute` function which belongs to the [LinkManager](htt
 This release brings improvements to the language dropdown within the user settings dialog. For example, it is now possible to navigate through the list of languages using the `up` and `down` arrow keys, while `Enter` selects the item.  You can find more information [here](https://github.com/SAP/luigi/issues/2565).
 
 #### Updated Luigi version in Core examples
-The [Luigi Core examples](https://github.com/SAP/luigi/tree/master/core/examples) were updated to the latest version of Luigi. The examples are now using Fundamental Styles v0.23.0, which you can learn more about [here](https://luigi-project.io/blog/2022-05-20-release-notes#update-to-fundamental-styles-v0230).
+The [Luigi Core examples](https://github.com/SAP/luigi/tree/main/core/examples) were updated to the latest version of Luigi. The examples are now using Fundamental Styles v0.23.0, which you can learn more about [here](https://luigi-project.io/blog/2022-05-20-release-notes#update-to-fundamental-styles-v0230).
 
 #### Bugfixes
 
-For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/master/CHANGELOG.md).
+For a full list of bugfixes in this release, see our [changelog](https://github.com/SAP/luigi/blob/main/CHANGELOG.md).
 
