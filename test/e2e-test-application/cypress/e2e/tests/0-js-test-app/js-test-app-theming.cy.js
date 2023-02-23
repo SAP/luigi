@@ -111,6 +111,7 @@ describe('JS-TEST-APP 2', () => {
     });
 
     it('should execute Core API function collapseLeftSideNav() and open the nav', () => {
+      cy.visitTestApp('/', newConfig);
       cy.window().then(win => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
@@ -125,6 +126,7 @@ describe('JS-TEST-APP 2', () => {
     beforeEach(() => {
       newConfig = cloneDeep(defaultLuigiConfig);
       newConfig.settings.responsiveNavigation = 'Fiori3';
+      cy.visitTestApp('/', newConfig);
       cy.window().then(win => {
         win.Luigi.configChanged('settings');
       });
