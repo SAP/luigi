@@ -12,6 +12,6 @@
     "@luigi-project/client": "^2.0.0",
     "@luigi-project/testing-utilities": "^2.0.0",
     "cypress": "^10.6.0",
-    "fundamental-styles": "^0.10.0"
+    "fundamental-styles": "^0.26.5"
   }
 }

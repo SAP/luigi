@@ -31,6 +31,7 @@ killWebserver 4200
 runWebserver 4200 dist /luigi-core/luigi.js
 WS_NG_PID=$PID
 
+
 echo ""
 echo "External Micro frontend"
 cd "$BASE_DIR/e2e-test-application/externalMf"
@@ -38,21 +39,16 @@ killWebserver 8090
 runWebserver 8090
 WS_EXT_PID=$PID
 
-echo ""
-echo "Js Test App"
-cd "$BASE_DIR/e2e-js-test-application"
-killWebserver 4500
-npm run dev &
-WS_FID_PID=$PID
+set -e # exit on errors
 
 cd $NG_EXAMPLE
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
-  npm run e2e:run -- --record --parallel --key 4bf20f87-8352-47d5-aefa-1e684fab69cf
+  npm run e2e:run:angular -- --record --parallel --key 4bf20f87-8352-47d5-aefa-1e684fab69cf
 else
   echo "Running tests without parallelization"
-  npm run e2e:run
+  npm run e2e:run:angular
 fi
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
@@ -64,7 +60,8 @@ else
   npm run e2e:run:external
 fi
 RV=$?
+
+
 kill $WS_NG_PID
-kill $WS_FID_PID
 kill $WS_EXT_PID
 exit $RV
