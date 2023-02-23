@@ -23,11 +23,11 @@ export default function luigiLinkParser(options) {
   };
 
   function modify(node, prop) {
-    const githubMaster = 'https://github.com/SAP/luigi/blob/master/';
+    const githubMain = 'https://github.com/SAP/luigi/blob/main/';
     if (has(node, prop)) {
       var parsed = url.parse(node.properties[prop]);
       if (
-        (parsed.href.startsWith(githubMaster + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md')) ||
+        (parsed.href.startsWith(githubMain + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md')) ||
         (parsed.pathname && parsed.pathname.endsWith('.md') && !parsed.protocol)
       ) {
         // internal link
@@ -35,7 +35,7 @@ export default function luigiLinkParser(options) {
         node.properties['onclick'] = 'navigateInternal(event, this)';
         node.properties['data-linktype'] = 'internal';
 
-        let newHref = parsed.href.replace(githubMaster + 'docs/', '').replace('.md', '');
+        let newHref = parsed.href.replace(githubMain + 'docs/', '').replace('.md', '');
 
         // clean ./ from beginning of the link
         if (newHref.startsWith('./')) {
@@ -61,15 +61,15 @@ export default function luigiLinkParser(options) {
         // remove leading slash
         newHref = newHref.substr(1);
 
-        node.properties['href'] = githubMaster + newHref;
+        node.properties['href'] = githubMain + newHref;
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
-      } else if (parsed.protocol && (!parsed.pathname.endsWith('.md') || parsed.href.startsWith(githubMaster))) {
+      } else if (parsed.protocol && (!parsed.pathname.endsWith('.md') || parsed.href.startsWith(githubMain))) {
         // external link
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
       } else {
-        console.log('<--------- UNMATCHED HREF FOUND, THIS RESULTS IN BROKEN LINK! FIX BEFORE COMMITING ----------->');
+        console.log('<--------- UNMATCHED HREF FOUND, THIS RESULTS IN BROKEN LINK! FIX BEFORE COMMITTING ----------->');
         console.log('href', parsed.href);
         console.log(parsed);
         console.log('<--------- Warning saved to debug.log -------->');
