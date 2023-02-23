@@ -89,7 +89,7 @@ Define a custom height for the top navigation/Shellbar by adding the `--luigi__s
 
 #### Horizontal navigation/tabNav height
 
-If you are using [tabNav](navigation-parameters-reference.md#tabnav), especially in combination with other elements such as splitView, you may want to adjust the tabNav height. To do so, use the `--luigi__horizontal-nav--height` variable. The default value is 2.75rem.
+You can define a custom height for the horizontal navigation/[tabNav](navigation-parameters-reference.md#tabnav) by using the `--luigi__horizontal-nav--height` variable. The default value is 2.75rem.
 
 ```html
 :root{
