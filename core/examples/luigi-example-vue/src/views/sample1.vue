@@ -1,21 +1,27 @@
 <template>
+  <h1>Welcome to Sample 1 Page</h1>
   <div>
-    <section class="fd-section">
-      <div class="fd-section__header">
-        <h1 class="fd-section__title">Sample 1</h1>
-      </div>
-      <div class="fd-panel">
-        Luigi ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-      </div>
-    </section>
+    {{ message }}
   </div>
 </template>
 
 <script>
-  export default {
-    name: "sample1"
-  }
-</script>
+import LuigiClient from "@luigi-project/client";
 
-<style scoped>
-</style>
+export default {
+  name: "home",
+  data: () => ({
+    message: "",
+  }),
+
+  created() {
+    this.luigiClient = LuigiClient;
+    this.luigiClient.addInitListener((initialContext) => {
+      this.message = "Luigi Client initialized.";
+    });
+    this.luigiClient.addContextUpdateListener((updatedContext) => {
+      this.message = "Luigi Client updated.";
+    });
+  },
+};
+</script>
