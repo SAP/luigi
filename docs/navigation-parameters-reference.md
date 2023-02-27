@@ -605,6 +605,19 @@ runTimeErrorHandler: {
   - A static **pathSegment** of value `settings` results in `example.com/settings`.
   - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
 
+### showBreadcrumbs
+- - **type**: boolean
+- **description**: shows a breadcrumbs header for the node, displaying links leading to the current node under the top navigation.
+- **default**: by default, it is set to `false`.
+- - **example**:
+```javascript
+navigation: {
+  nodes: [{
+    pathSegment: 'home',
+    showBreadcrumbs: true, 
+...
+```
+
 ### sideNavAccordionMode
 - **type**: boolean
 - **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened. Note that this will be applied to its direct children.
