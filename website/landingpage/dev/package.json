@@ -24,7 +24,6 @@
     "babel-loader": "^8.1.0",
     "browser-sync": "^2.28.1",
     "frontmatter": "0.0.3",
-    "glob-parent": "^6.0.2",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^3.3.1",
@@ -32,8 +31,7 @@
     "gulp-concat": "^2.5.2",
     "gulp-extname": "^0.2.0",
     "gulp-if": "^2.0.0",
-    "gulp-imagemin": "^6.2.0",
-    "gulp-load-plugins": "^1.1.0",
+    "gulp-load-plugins": "^2.0.8",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.4",
@@ -62,5 +60,13 @@
     "url": "https://github.com/zurb/foundation-sites/issues",
     "email": "foundation@zurb.com"
   },
-  "private": true
+  "private": true,
+  "overrides": {
+    "chokidar": "3.5.1",
+    "glob-parent": "^6.0.0",
+    "panini": {
+      "marked": "^4.0.10",
+      "highlight.js": "^11.0.0"
+    }
+  }
 }
