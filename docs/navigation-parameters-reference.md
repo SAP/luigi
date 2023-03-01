@@ -607,8 +607,7 @@ runTimeErrorHandler: {
 
 ### showBreadcrumbs
 - - **type**: boolean
-- **description**: shows a breadcrumbs header for the node, displaying links leading to the current node under the top navigation.
-- **default**: by default, it is set to `false`.
+- **description**: shows a breadcrumbs header for the node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
 - - **example**:
 ```javascript
 navigation: {
