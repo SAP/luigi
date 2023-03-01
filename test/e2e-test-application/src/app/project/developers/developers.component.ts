@@ -11,15 +11,11 @@ export class DevelopersComponent implements OnInit, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  updateVisitors() {
-    let visitors = window['visitors'] || 0;
-    window['visitors'] = ++visitors;
-    return visitors;
-  }
-
   ngOnInit() {
     this.initListener = addInitListener((context, origin) => {
-      this.visitors = this.updateVisitors();
+      let tempVisitors = window['visitors'] || 0;
+      window['visitors'] = tempVisitors + 1;
+      this.visitors = window['visitors'];
       if (!this.cdr['destroyed']) {
         this.cdr.detectChanges();
       }

@@ -105,7 +105,7 @@ describe('Navigation', () => {
         .click();
 
       cy.get('.no-side-nav').should('exist');
-      cy.get('.fd-app__sidebar').should('not.be.visible');
+      cy.get('.fd-app__sidebar').should('not.exist');
     });
 
     it('Open navigation node in a modal', () => {
@@ -130,7 +130,7 @@ describe('Navigation', () => {
 
       cy.get('[data-testid=modal-mf] [aria-label=close]').click();
 
-      cy.get('[data-testid=modal-mf]').should('not.be.visible');
+      cy.get('[data-testid=modal-mf]').should('not.exist');
     });
 
     it('Open modal with callback from core api', () => {
@@ -159,7 +159,7 @@ describe('Navigation', () => {
         expect(str).to.equal(`Callback called`);
       });
 
-      cy.get('[data-testid=modal-mf]').should('not.be.visible');
+      cy.get('[data-testid=modal-mf]').should('not.exist');
     });
 
     it('Nav sync - click sidenav', () => {
