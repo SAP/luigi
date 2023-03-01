@@ -221,7 +221,7 @@ describe('Navigation', () => {
           cy.get('[data-testid="luigi-topnav-profile-btn"]')
             .should('exist')
             .click();
-          cy.get('.lui-user-menu-fiori').should('not.be.visible');
+          cy.get('.lui-user-menu-fiori').should('not.exist');
           cy.get('.lui-profile-simple-menu').should('be.visible');
         });
       });
@@ -236,7 +236,7 @@ describe('Navigation', () => {
           cy.get('[data-testid="luigi-topnav-profile-btn"]')
             .should('exist')
             .click();
-          cy.get('.lui-user-menu-fiori').should('not.be.visible');
+          cy.get('.lui-user-menu-fiori').should('not.exist');
           cy.get('.lui-profile-simple-menu').should('be.visible');
         });
       });
@@ -252,7 +252,7 @@ describe('Navigation', () => {
           cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('be.visible');
-          cy.get('.lui-profile-simple-menu').should('not.be.visible');
+          cy.get('.lui-profile-simple-menu').should('not.exist');
         });
       });
 

@@ -68,5 +68,8 @@
       "marked": "^4.0.10",
       "highlight.js": "^11.0.0"
     }
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

@@ -47,7 +47,7 @@ npm install -g $CLI cypress@5.3.0 tar@latest
 echo "{}" > cypress.json
 mkdir cypress
 mkdir cypress/integration
-cp ../luigi/test/e2e-test-application/e2e/test3/0-setuptests/setup-test.spec.js ./cypress/integration/setup-test.spec.js
+cp ../luigi/test/e2e-test-application/cypress/e2e/test3/0-setuptests/setup-test.cy.js ./cypress/integration/setup-test.spec.js
 
 #Run acutal test
 (set -e && waitForWebServer $PORT $TESTURL) & (
