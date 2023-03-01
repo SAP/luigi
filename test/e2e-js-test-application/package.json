@@ -13,5 +13,8 @@
     "@sap-theming/theming-base-content": "~11.1.35",
     "fundamental-styles": "0.23.0",
     "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
