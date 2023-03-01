@@ -443,6 +443,51 @@ In the case the node has only one child, it's possible to configure if the horiz
   ...
 ```
 
+## Breadcrumbs
+
+Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. First, you need to create your own custom code implementing breadcrumbs, then enable them on the node level using Luigi's [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs) parameter. In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this pattern and return the variable `breadcrumbs`: 
+
+```js
+var breadcrumbsConfig = {
+      clearBeforeRender: true,
+      renderer: (el, items, clickHandler) => {
+       // custom code defining how breadcrumbs should look like
+       // let breadcrumbs = ...
+       return breadcrumbs
+      }
+}
+```
+
+Here is an example of a simple `breadcrumbsConfig`:
+
+```js
+var breadcrumbsConfig = {
+      clearBeforeRender: true,
+      renderer: (el, items, clickHandler) => {
+        el.classList.add('myBreadcrumb');
+        let breadcrumbs = document.createElement('ol');
+        breadcrumbs.setAttribute('style', 'top: 0;position: absolute;left: 0;');
+        items.forEach((item, index) => {
+          if (item.label) {
+            let itemCmp = document.createElement('li');
+            itemCmp.setAttribute('style', 'display:inline; margin: 0 10px;');
+            itemCmp.setAttribute('data-testid', `breadcrumb_${item.label}_index${index}`);
+            itemCmp.innerHTML = item.label;
+            itemCmp._item = item;
+            breadcrumbs.appendChild(itemCmp);
+          }
+        });
+        breadcrumbs.addEventListener('click', event => {
+          console.log('event detail', event);
+          event.preventDefault();
+          clickHandler(event.detail.item._item);
+        });
+        el.appendChild(breadcrumbs);
+        return breadcrumbs;
+      }
+    };
+```
+
 
 ## Additional options
 
