@@ -38,7 +38,7 @@ describe('Modal Microfrontend', () => {
 
       cy.wrap($iframeBody)
         .get('[data-testid=modal-mf]')
-        .should('not.be.visible');
+        .should('not.exist');
     });
 
     it('can be closed by the Luigi client', () => {
@@ -58,7 +58,7 @@ describe('Modal Microfrontend', () => {
 
         cy.wrap($iframeBody)
           .get('[data-testid=modal-mf]')
-          .should('not.be.visible');
+          .should('not.exist');
       });
     });
 

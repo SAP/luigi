@@ -135,9 +135,8 @@ describe('Navigation', () => {
       });
       it('Horizontal Navigation on mobile', () => {
         cy.get('[data-testid="mobile-menu"]').click();
-        cy.get('.fd-popover__body').within(() => {
-          cy.get('[data-testid="projects_projects-mobile"]').click();
-        });
+        cy.get('[data-testid="projects_projects-mobile"]').click();
+
         cy.get('.lui-burger').click();
         cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
         cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
@@ -167,10 +166,10 @@ describe('Navigation', () => {
             .should('be.visible');
           cy.get('.fd-tabs__item')
             .contains('Node with node activation hook')
-            .should('not.visible');
+            .should('not.be.visible');
           cy.get('.fd-tabs__item')
             .contains('Settings')
-            .should('not.visible');
+            .should('not.be.visible');
         });
         cy.viewport(900, 750);
         cy.get('.luigi-tabsContainer').within(() => {
@@ -197,15 +196,12 @@ describe('Navigation', () => {
           config.settings.responsiveNavigation = 'semiCollapsible';
           win.Luigi.configChanged('settings');
           cy.get('[data-testid="mobile-menu"]').click();
-
-          cy.get('.fd-popover__body').within(() => {
-            cy.get('[data-testid="projects_projects-mobile"]').click();
-          });
+          cy.get('[data-testid="projects_projects-mobile"]').click();
           cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
           cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous 2')
-            .should('not.visible');
+            .should('not.exist');
           cy.get('[data-testid="semiCollapsibleButton"]').click();
           cy.wait(1000);
           cy.get('.fd-tabs__item')
@@ -234,7 +230,7 @@ describe('Navigation', () => {
         cy.viewport('iphone-6');
       });
       it('GlobalSearch Mobile', () => {
-        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('not.be.visible');
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('not.exist');
         cy.get('[data-testid=mobile-menu]').click();
         cy.get('[data-testid=luigi-search-btn-mobile]').click();
         cy.get('.luigi-search-shell__mobile .luigi-search__input').should('be.visible');
@@ -242,7 +238,7 @@ describe('Navigation', () => {
 
         cy.get('[data-testid=mobile-menu]').click();
         cy.get('[data-testid=luigi-search-btn-mobile]').click();
-        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('not.be.visible');
+        cy.get('.luigi-search-shell__mobile .luigi-search__input').should('not.exist');
 
         cy.get('[data-testid=mobile-menu]').click();
         cy.get('[data-testid=luigi-search-btn-mobile]').click();
@@ -260,8 +256,8 @@ describe('Navigation', () => {
           config.settings.experimental = { globalNav: true };
           win.Luigi.configChanged();
 
-          cy.get('.lui-global-nav-visible').should('not.be.visible');
-          cy.get('.lui-globalnav .fd-side-nav').should('not.be.visible');
+          cy.get('.lui-global-nav-visible').should('not.exist');
+          cy.get('.lui-globalnav .fd-side-nav').should('not.exist');
         });
       });
 
@@ -272,8 +268,8 @@ describe('Navigation', () => {
           config.settings.experimental = { globalNav: false };
           win.Luigi.configChanged();
 
-          cy.get('.lui-global-nav-visible').should('not.be.visible');
-          cy.get('.lui-globalnav .fd-side-nav').should('not.be.visible');
+          cy.get('.lui-global-nav-visible').should('not.exist');
+          cy.get('.lui-globalnav .fd-side-nav').should('not.exist');
         });
       });
 

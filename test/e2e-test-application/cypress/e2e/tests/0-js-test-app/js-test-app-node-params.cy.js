@@ -143,6 +143,7 @@ describe('JS-TEST-APP 3', () => {
 
   describe('Custom text in the footer', () => {
     it('checks if the text in footer exist, defined by settings', () => {
+      cy.vistTestAppPathRouting('');
       cy.window().then(win => {
         //define Footer text as part of the global config
         const config = win.Luigi.getConfig();
@@ -155,6 +156,7 @@ describe('JS-TEST-APP 3', () => {
     });
 
     it('checks if getNavFooterContainer() working', () => {
+      cy.vistTestAppPathRouting('');
       cy.window().then(win => {
         //define Footer text as part of the global config
         const config = win.Luigi.getConfig();
@@ -164,10 +166,8 @@ describe('JS-TEST-APP 3', () => {
         //Checks if the DOM element required by getNavFooterContainer() exist
         cy.get('[data-testid="lui-side-nav__footer"]').should('exist');
 
-        const FooterContainer = win.Luigi.elements().getNavFooterContainer();
-
         //Checks if Luigi.elements().getNavFooterContainer() reads the appropriate DOM element.
-        cy.get(FooterContainer).contains('Luigi Footer');
+        cy.get('[data-testid="lui-side-nav__footer"]').contains('Luigi Footer');
       });
     });
   });

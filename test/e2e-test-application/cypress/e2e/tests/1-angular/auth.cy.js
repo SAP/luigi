@@ -1,8 +1,7 @@
 describe('Authorization', () => {
   beforeEach(() => {
-    cy.visit('/', {
-      onBeforeLoad: () => cy.clearLocalStorage()
-    });
+    cy.visit('/');
+    cy.clearLocalStorage();
   });
 
   describe('Auth logout', () => {
