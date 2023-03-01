@@ -1,8 +1,4 @@
-import {
-  UserManager,
-  WebStorageStateStore,
-  InMemoryWebStorage
-} from 'oidc-client';
+import { UserManager, WebStorageStateStore, InMemoryWebStorage } from 'oidc-client';
 import { Helpers } from '../helpers';
 import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
 export default class openIdConnect {
@@ -17,8 +13,7 @@ export default class openIdConnect {
       accessTokenExpiringNotificationTime: 60,
       thirdPartyCookiesScriptLocation: '',
       logoutUrl: window.location.origin + '/logout.html',
-      silent_redirect_uri:
-        window.location.origin + '/assets/auth-oidc/silent-callback.html'
+      silent_redirect_uri: window.location.origin + '/assets/auth-oidc/silent-callback.html'
     };
 
     const mergedSettings = Helpers.deepMerge(defaultSettings, settings);
@@ -30,9 +25,7 @@ export default class openIdConnect {
 
     // set storage type
     const storageType = Luigi.getConfigValue('auth.storage');
-    const isValidStore = ['none', 'sessionStorage', 'localStorage'].includes(
-      storageType
-    );
+    const isValidStore = ['none', 'sessionStorage', 'localStorage'].includes(storageType);
     if (isValidStore && storageType == 'none') {
       mergedSettings.userStore = new WebStorageStateStore({
         store: new InMemoryWebStorage()
@@ -52,10 +45,7 @@ export default class openIdConnect {
 
     this.client.events.addUserLoaded(async payload => {
       let profile = payload.profile;
-      if (
-        payload.profile &&
-        Luigi.getConfigValue('auth.openIdConnect.profileStorageInterceptorFn')
-      ) {
+      if (payload.profile && Luigi.getConfigValue('auth.openIdConnect.profileStorageInterceptorFn')) {
         profile = await Luigi.executeConfigFnAsync(
           'auth.openIdConnect.profileStorageInterceptorFn',
           true,
@@ -73,8 +63,7 @@ export default class openIdConnect {
 
       if (!data.accessToken && data.idToken) {
         try {
-          data.idTokenExpirationDate =
-            JSON.parse(atob(data.idToken.split('.')[1])).exp * 1000;
+          data.idTokenExpirationDate = JSON.parse(atob(data.idToken.split('.')[1])).exp * 1000;
           data.accessTokenExpirationDate = data.idTokenExpirationDate;
         } catch (e) {
           console.error(e);
@@ -83,22 +72,16 @@ export default class openIdConnect {
 
       Luigi.auth().store.setAuthData(data);
 
-      window.postMessage(
-        { msg: 'luigi.auth.tokenIssued', authData: data },
-        window.location.origin
-      );
+      window.postMessage({ msg: 'luigi.auth.tokenIssued', authData: data }, window.location.origin);
     });
 
-    return Promise.all([
-      this._processLoginResponse(),
-      this._processLogoutResponse()
-    ]).then(() => {
+    return Promise.all([this._processLoginResponse(), this._processLogoutResponse()]).then(() => {
       return this;
     });
   }
 
   login() {
-    return this.client.signinRedirect(this.settings).catch(err => {
+    return this.client.signinRedirect({ state: window.location.href }).catch(err => {
       console.error('[OIDC] login() Error', err);
       return err;
     });
@@ -157,17 +140,9 @@ export default class openIdConnect {
           break;
         default:
           console.error('[OIDC] addSilentRenewError Error', e);
-          redirectUrl =
-            this.settings.logoutUrl +
-            '?error=tokenExpired&errorDescription=' +
-            e.message;
+          redirectUrl = this.settings.logoutUrl + '?error=tokenExpired&errorDescription=' + e.message;
       }
-      Luigi.auth().handleAuthEvent(
-        'onAuthError',
-        this.settings,
-        e,
-        redirectUrl
-      );
+      Luigi.auth().handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
     });
   }
 
@@ -210,8 +185,7 @@ export default class openIdConnect {
         }
       } else {
         // check id_token, else defaulting to access token
-        toCheck =
-          responseType.indexOf('id_token') > -1 ? 'id_token' : 'access_token';
+        toCheck = responseType.indexOf('id_token') > -1 ? 'id_token' : 'access_token';
         if (!responseMode) {
           fromWhere = 'hash';
         } else {
@@ -238,17 +212,15 @@ export default class openIdConnect {
           // else persistence might fail.
           setTimeout(() => {
             if (authenticatedUser.state) {
-              history.pushState(
-                '',
-                document.title,
-                decodeURIComponent(authenticatedUser.state)
-              );
+              history.pushState('', document.title, decodeURIComponent(authenticatedUser.state));
             } else {
-              history.pushState(
-                '',
-                document.title,
-                window.location.pathname + window.location.search
-              );
+              let url;
+              if (fromWhere === 'search') {
+                url = window.location.pathname + window.location.hash;
+              } else {
+                url = window.location.pathname + window.location.search;
+              }
+              history.pushState('', document.title, url);
             }
             resolve(true);
           }, 50);
@@ -269,20 +241,15 @@ export default class openIdConnect {
   async tryToSignIn() {
     try {
       // If the user was just redirected here from the sign in page, sign them in.
-      await this.client.signinRedirectCallback();
-      console.debug(
-        '[OIDC] User was redirected via the sign-in page. Now signed in.'
-      );
+      console.debug('[OIDC] User was redirected via the sign-in page. Now signed in.');
+      return await this.client.signinRedirectCallback();
     } catch (error) {
-      console.debug(
-        "[OIDC] Error. Sign-in redirect callback doesn't work. Let's try a silent sign-in.",
-        error
-      );
+      console.debug("[OIDC] Error. Sign-in redirect callback doesn't work. Let's try a silent sign-in.", error);
       // Barring that, if the user chose to have the Identity Server remember their
       // credentials and permission decisions, we may be able to silently sign them
       // back in via a background iframe.
-      await this.client.signinSilent();
       console.debug('[OIDC] Silent sign-in completed.');
+      return await this.client.signinSilent();
     }
   }
 }
