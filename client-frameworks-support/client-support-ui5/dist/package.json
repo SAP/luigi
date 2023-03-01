@@ -1,0 +1,17 @@
+{
+    "name": "@luigi-project/client-support-ui5",
+    "description": "Javascript library supporting consumers of the Luigi framework",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "ssh://github.com/SAP/luigi.git"
+    },
+    "peerDependencies": {
+        "@luigi-project/client": "^2.0.0"
+    },
+    "main": "vsiuol-support-lib.js",
+    "publishConfig": {
+        "registry": "http://localhost:4873"
+    },
+    "version": "0.0.4"
+}
