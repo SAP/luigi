@@ -57,5 +57,8 @@
     "unified": "^8.3.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.12"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

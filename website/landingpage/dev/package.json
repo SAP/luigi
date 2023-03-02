@@ -64,5 +64,8 @@
     "url": "https://github.com/zurb/foundation-sites/issues",
     "email": "foundation@zurb.com"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "private": true
 }
