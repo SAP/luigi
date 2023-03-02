@@ -1,9 +1,5 @@
 <script context="module">
-	export function preload({ params, query }) {
-		return this.fetch(`docs.json`).then(r => r.json()).then(docs => {
-			return { docs };
-		});
-	}
+
 	
 </script>
 

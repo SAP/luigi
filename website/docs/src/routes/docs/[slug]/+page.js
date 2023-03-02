@@ -1,4 +1,4 @@
-import { getParsedDocs } from './_parser';
+import { getParsedDocs } from '../_parser';
 
 const lookup = new Map();
 getParsedDocs().then(raw => {
@@ -29,4 +29,11 @@ export function get(req, res, next) {
 			message: `Not found`
 		}));
 	}
+}
+
+/** @type {import('./$types').PageLoad} */
+export function load() {
+	return fetch(`docs.json`).then(r => r.json()).then(docs => {
+		return { docs };
+	});
 }
