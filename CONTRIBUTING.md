@@ -21,7 +21,7 @@ You are welcome to contribute with your pull requests. These steps explain the c
 
 > **NOTE:** You should always add [*unit tests*](https://github.com/SAP/luigi/tree/main/core/test) if you are adding code to our repository.
 
- If you've added code that is exposed as an API or configuration, additionally add e2e tests to [js-test-app](https://github.com/SAP/luigi/tree/main/test/e2e-test-application/e2e/tests/0-js-test-app).
+ If you've added code that is exposed as an API or configuration, additionally add e2e tests to [js-test-app](https://github.com/SAP/luigi/tree/main/test/e2e-test-application/cypress/e2e/tests/0-js-test-app).
 
 To let tests run locally, run `cd test/e2e-js-test-application && npm run dev` and `cd test/e2e-test-application && npm run e2e:open` and click on the test in the *js-test-application* category.
 
