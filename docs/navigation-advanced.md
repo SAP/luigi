@@ -26,6 +26,7 @@ This document shows you how to configure the following Luigi features:
 * [Product switcher](#product-switcher) 
 * [App switcher](#app-switcher) 
 * [Tab navigation](#tab-navigation)
+* [Breadcrumbs](#breadcrumbs)
 * [Additional options](#additional-options)
 
 ## View groups
@@ -445,7 +446,9 @@ In the case the node has only one child, it's possible to configure if the horiz
 
 ## Breadcrumbs
 
-Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. First, you need to create your own custom code implementing breadcrumbs, then enable them on the node level using Luigi's [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs) parameter. In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this pattern and return the variable `breadcrumbs`: 
+
+
+Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. First, you need to create your own custom code implementing breadcrumbs, then enable them on the node level using Luigi's [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs) parameter. In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this general pattern and return the variable `breadcrumbs`: 
 
 ```js
 var breadcrumbsConfig = {
@@ -458,7 +461,10 @@ var breadcrumbsConfig = {
 }
 ```
 
-Here is an example of a simple `breadcrumbsConfig`:
+<!-- accordion:start -->
+Below is an example of a simple `breadcrumbsConfig`:
+
+### Click to expand
 
 ```js
 var breadcrumbsConfig = {
@@ -488,6 +494,54 @@ var breadcrumbsConfig = {
     };
 ```
 
+Below is another example which uses UI5 breadcrumbs: 
+
+### Click to expand
+
+```js
+config.navigation.breadcrumbs = {
+            autoHide: true,
+            omitRoot: false,
+            pendingItemLabel: '...',
+            renderer: (el, items, clickHandler) => {
+              el.classList.add('dxp-breadcrumb');
+              const ui5breadcrumbs =
+                el.querySelector('ui5-breadcrumbs') ||
+                document.createElement('ui5-breadcrumbs');
+              ui5breadcrumbs.innerHTML = '';
+              items.forEach((item, index) => {
+                const label: string = item.label;
+                
+                if (label && !label.startsWith(':virtualSegment_')) {
+                  const itemCmp = document.createElement(
+                    'ui5-breadcrumbs-item',
+                  );
+                  itemCmp.setAttribute('href', item.route);
+                  itemCmp.innerHTML = label;
+                  (itemCmp as any)._item = item;
+                  ui5breadcrumbs.appendChild(itemCmp);
+                }
+              });
+              ui5breadcrumbs.addEventListener('item-click', (event: any) => {
+                if (
+                  !(
+                    event.detail.ctrlKey ||
+                    event.detail.altKey ||
+                    event.detail.shiftKey ||
+                    event.detail.metaKey
+                  )
+                ) {
+                  event.preventDefault();
+                  clickHandler(event.detail.item._item);
+                }
+              });
+              el.appendChild(ui5breadcrumbs);
+
+              return ui5breadcrumbs;
+            },
+          };
+```
+<!-- accordion:end -->
 
 ## Additional options
 
