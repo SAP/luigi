@@ -5,16 +5,14 @@ import yargs from 'yargs';
 import browser from 'browser-sync';
 import gulp from 'gulp';
 import panini from 'panini';
-import rimraf from 'rimraf';
-import sherpa from 'style-sherpa';
 import yaml from 'js-yaml';
 import fs from 'fs';
 import webpackStream from 'webpack-stream';
 import webpack2 from 'webpack';
 import named from 'vinyl-named';
-import uncss from 'uncss';
 import autoprefixer from 'autoprefixer';
 import { processBlogFiles } from './src/services/blogprocessor';
+const sassFunction = require('gulp-sass')(require('sass'));
 
 // Load all Gulp plugins into one variable
 const $ = plugins();
@@ -34,7 +32,7 @@ function loadConfig() {
 // Sass must be run later so UnCSS can search for used classes in the others assets.
 gulp.task(
   'build',
-  gulp.series(gulp.parallel(buildBlogFiles, pages, javascript, images, copy), sass)
+  gulp.series(gulp.parallel(buildBlogFiles, pages, javascript, copy), sass)
 );
 
 // Build the site, run the server, and watch for file changes
@@ -80,7 +78,7 @@ function resetPages(done) {
 function sass() {
   const postCssPlugins = [
     // Autoprefixer
-    autoprefixer({ browsers: COMPATIBILITY })
+    autoprefixer()
 
     // UnCSS - Uncomment to remove unused styles in production
     // PRODUCTION && uncss.postcssPlugin(UNCSS_OPTIONS),
@@ -90,9 +88,12 @@ function sass() {
     .src('src/assets/scss/app.scss')
     .pipe($.sourcemaps.init())
     .pipe(
-      $.sass({
+      sassFunction({
         includePaths: PATHS.sass
-      }).on('error', $.sass.logError)
+      }).on('error', function (err) {
+        console.log(err.message + ' on line ' + err.lineNumber + ' in file : ' + err.fileName);
+      })
+
     )
     .pipe($.postcss(postCssPlugins))
     .pipe($.if(PRODUCTION, $.cleanCss({ compatibility: 'ie9' })))
@@ -142,24 +143,25 @@ function javascript() {
 
 // Copy images to the "dist" folder
 // In production, the images are compressed
-function images() {
-  return gulp
-    .src('src/assets/img/**/*')
-    .pipe(
-      $.if(PRODUCTION, $.imagemin([$.imagemin.jpegtran({ progressive: true })]))
-    )
-    .pipe(gulp.dest(PATHS.dist + '/assets/img'));
-}
+// Removed ==> Console logs: gulp-imagemin: Minified 0 images, so this function is obsolete
+// function images() {
+//   return gulp
+//     .src('src/assets/img/**/*')
+//     .pipe(
+//       $.if(PRODUCTION, $.imagemin([$.imagemin.jpegtran({ progressive: true })]))
+//     )
+//     .pipe(gulp.dest(PATHS.dist + '/assets/img'));
+// }
 
 // Start a server with BrowserSync to preview the site in
 function server(done) {
   browser.init(
     {
       server: {
-          baseDir: PATHS.dist,
-          serveStaticOptions: {
-              extensions: ['html']
-          }
+        baseDir: PATHS.dist,
+        serveStaticOptions: {
+          extensions: ['html']
+        }
       },
       port: PORT
     },
@@ -191,7 +193,7 @@ function watch() {
     .watch([
       'src/pages/**/*.html',
       '!src/pages/blog/20*.html' // skip processed blog entries
-      ])
+    ])
     .on('all', gulp.series(pages, browser.reload));
   gulp
     .watch('src/{layouts,partials}/**/*.html')
@@ -206,7 +208,4 @@ function watch() {
   gulp
     .watch('src/assets/js/**/*.js')
     .on('all', gulp.series(javascript, browser.reload));
-  gulp
-    .watch('src/assets/img/**/*')
-    .on('all', gulp.series(images, browser.reload));
 }
