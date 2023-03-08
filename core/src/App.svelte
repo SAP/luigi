@@ -130,6 +130,7 @@
         ? userSettingGroups[userSettingsGroupName]
         : null,
       anchor: LuigiRouting.getAnchor(),
+      cssVariables: await LuigiTheming.getCSSVariables()
     });
 
     IframeHelpers.specialIframeTypes

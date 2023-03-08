@@ -93,6 +93,25 @@ class LuigiTheming {
     return !!LuigiConfig.getConfigValue('settings.theming');
   }
 
+  async getCSSVariables() {
+    if (!window.Luigi.__cssVars) {
+      const varFile = LuigiConfig.getConfigValue('settings.theming.variables.file');
+      if (varFile) {
+        const resp = await fetch(varFile);
+        window.Luigi.__cssVars = (await resp.json()).root;
+        Object.keys(window.Luigi.__cssVars).forEach(key => {
+          const livePropVal = getComputedStyle(document.documentElement).getPropertyValue('--' + key);
+          if (livePropVal) {
+            window.Luigi.__cssVars[key] = livePropVal;
+          }
+        });
+      } else {
+        window.Luigi.__cssVars = {}; // TODO: maybe allow also inline
+      }
+    }
+    return window.Luigi.__cssVars;
+  }
+
   /**
    * Initialize Theming Core API
    * @memberof Theming
