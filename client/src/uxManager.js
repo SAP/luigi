@@ -279,7 +279,7 @@ class UxManager extends LuigiClientBase {
       let cssString = ':root {\n';
       Object.keys(vars).forEach(key => {
         const val = vars[key];
-        cssString += '--' + key + ':' + val + ';\n';
+        cssString += (key.startsWith('--') ? '' : '--') + key + ':' + val + ';\n';
       });
       cssString += '}';
       const themeStyle = document.createElement('style');

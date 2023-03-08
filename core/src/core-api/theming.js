@@ -37,6 +37,8 @@ class LuigiTheming {
    */
   setCurrentTheme(id) {
     this.currentTheme = id;
+    // clear cache
+    window.Luigi.__cssVars = undefined;
   }
 
   /**
@@ -104,6 +106,11 @@ class LuigiTheming {
           if (livePropVal) {
             window.Luigi.__cssVars[key] = livePropVal;
           }
+        });
+      } else if (LuigiConfig.getConfigValue('settings.theming.variables') === 'fiori' && window.__luigiThemeVars) {
+        window.Luigi.__cssVars = {};
+        window.__luigiThemeVars.forEach(key => {
+          window.Luigi.__cssVars[key] = getComputedStyle(document.documentElement).getPropertyValue(key);
         });
       } else {
         window.Luigi.__cssVars = {}; // TODO: maybe allow also inline
