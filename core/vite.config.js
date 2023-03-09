@@ -22,7 +22,7 @@ const luigiPlugin = () => {
       const ast = csstree.parse(cssFile.source);
       csstree.walk(ast, node => {
         if (node.type === 'Declaration' && node.property.startsWith('--')) {
-          cssVarArray.push(node.property);
+          cssVarArray.push(node.property.substring(2));
         }
       });
       fs.writeFileSync('./public/luigi_theme_vars.js', 'window.__luigiThemeVars=' + JSON.stringify(cssVarArray) + ';');

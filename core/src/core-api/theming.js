@@ -110,7 +110,7 @@ class LuigiTheming {
       } else if (LuigiConfig.getConfigValue('settings.theming.variables') === 'fiori' && window.__luigiThemeVars) {
         window.Luigi.__cssVars = {};
         window.__luigiThemeVars.forEach(key => {
-          window.Luigi.__cssVars[key] = getComputedStyle(document.documentElement).getPropertyValue(key);
+          window.Luigi.__cssVars[key] = getComputedStyle(document.documentElement).getPropertyValue('--' + key);
         });
       } else {
         window.Luigi.__cssVars = {}; // TODO: maybe allow also inline
