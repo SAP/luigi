@@ -3,7 +3,7 @@
 /node_modules/
 /src/node_modules/@sapper/
 /cypress/screenshots/
-/__sapper__/
+/.svelte-kit/
 
 # Generated and copied
 extendedConfiguration.bundle.js
