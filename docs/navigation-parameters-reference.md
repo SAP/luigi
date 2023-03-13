@@ -607,13 +607,13 @@ runTimeErrorHandler: {
 
 ### showBreadcrumbs
 - - **type**: boolean
-- **description**: shows a breadcrumbs header for the node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
+- **description**: if breadcrumbs configuration is set, the breadcrumbs show for all nodes by default. This property allows disabling the breadcrumb for one particular node by setting it to `false` for that node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
 - - **example**:
 ```javascript
 navigation: {
   nodes: [{
     pathSegment: 'home',
-    showBreadcrumbs: true, 
+    showBreadcrumbs: false, 
 ...
 ```
 

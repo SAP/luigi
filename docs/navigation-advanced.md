@@ -448,17 +448,27 @@ In the case the node has only one child, it's possible to configure if the horiz
 
 
 
-Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. First, you need to create your own custom code implementing breadcrumbs, then enable them on the node level using Luigi's [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs) parameter. In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this general pattern and return the variable `breadcrumbs`: 
+Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. You need to create your own custom code implementing breadcrumbs. Once the breadcrumbs config is set it is enabled by default for all nodes. If you wish to disable it for a particular node you need to set [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs): false for that node.  
+
+. In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this general pattern and return the variable `breadcrumbs`: 
 
 ```js
-var breadcrumbsConfig = {
-      clearBeforeRender: true,
-      renderer: (el, items, clickHandler) => {
-       // custom code defining how breadcrumbs should look like
-       // let breadcrumbs = ...
-       return breadcrumbs
+ navigation.breadcrumbs = {
+            pendingItemLabel: "not loaded yet", // string used as fallback if node label is not yet resolved
+            omitRoot: false,  // if set to true, the root node in breadcrumb hierarchy is omitted 
+            clearBeforeRender: true, // if set to true, the containerElement will be cleared first, before being rendered. If set to false, handling of the clear before render needs to be handled by your side 
+            autoHide: true, // hide breadcrumbs when navigating to root node
+            renderer: (containerElement, nodeItems, clickHandler)  => {
+                  // containerElement - refers to HTML element that contains the breadcrumb structure to which you can append your own customised elements
+                  // nodeItems : [{
+                       label: label of node,
+                       node: navigation node,
+                       route: node route,
+                       pending: indicates whether node label resolving state is pending or not
+                  }]
+                  // clickHandler(node) , can be called per node, to navigate to that node
+            }
       }
-}
 ```
 
 <!-- accordion:start -->
@@ -467,7 +477,7 @@ Below is an example of a simple `breadcrumbsConfig`:
 ### Click to expand
 
 ```js
-var breadcrumbsConfig = {
+navigation.breadcrumbs = {
       clearBeforeRender: true,
       renderer: (el, items, clickHandler) => {
         el.classList.add('myBreadcrumb');
@@ -510,19 +520,19 @@ config.navigation.breadcrumbs = {
                 document.createElement('ui5-breadcrumbs');
               ui5breadcrumbs.innerHTML = '';
               items.forEach((item, index) => {
-                const label: string = item.label;
+                const label = item.label;
                 
                 if (label && !label.startsWith(':virtualSegment_')) {
                   const itemCmp = document.createElement(
-                    'ui5-breadcrumbs-item',
+                    'ui5-breadcrumbs-item'
                   );
                   itemCmp.setAttribute('href', item.route);
                   itemCmp.innerHTML = label;
-                  (itemCmp as any)._item = item;
+                  itemCmp._item = item;
                   ui5breadcrumbs.appendChild(itemCmp);
                 }
               });
-              ui5breadcrumbs.addEventListener('item-click', (event: any) => {
+              ui5breadcrumbs.addEventListener('item-click', (event) => {
                 if (
                   !(
                     event.detail.ctrlKey ||
