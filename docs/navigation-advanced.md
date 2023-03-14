@@ -448,9 +448,9 @@ In the case the node has only one child, it's possible to configure if the horiz
 
 
 
-Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. You need to create your own custom code implementing breadcrumbs. Once the breadcrumbs config is set it is enabled by default for all nodes. If you wish to disable it for a particular node you need to set [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs): false for that node.  
+Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. You need to create your own custom code implementing breadcrumbs. Once the breadcrumbs config is set, it is enabled by default for all nodes. If you wish to disable it for a particular node, you need to set [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs) to false for that node.  
 
-. In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this general pattern and return the variable `breadcrumbs`: 
+In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this general pattern and return the variable `breadcrumbs`: 
 
 ```js
  navigation.breadcrumbs = {

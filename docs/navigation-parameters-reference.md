@@ -607,7 +607,7 @@ runTimeErrorHandler: {
 
 ### showBreadcrumbs
 - - **type**: boolean
-- **description**: if breadcrumbs configuration is set, the breadcrumbs show for all nodes by default. This property allows disabling the breadcrumb for one particular node by setting it to `false` for that node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
+- **description**: if a breadcrumbs configuration is set, the breadcrumbs will show for all nodes by default. This property allows you to disable breadcrumbs for any particular node by setting it to `false` for that node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
 - - **example**:
 ```javascript
 navigation: {
