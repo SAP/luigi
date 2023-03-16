@@ -58,6 +58,21 @@ class WebComponentSvcClass {
     }
   }
 
+  /**
+   * Updates the context object
+   * @param {Object} nodeObject
+   */
+  updateWC(nodeObject) {
+    const { viewUrl, context } = nodeObject;
+    const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
+    const wc_id =
+      nodeObject.webcomponent && nodeObject.webcomponent.tagName
+        ? nodeObject.webcomponent.tagName
+        : this.generateWCId(i18nViewUrl);
+    const wc = document.querySelector(wc_id);
+    wc.context = nodeObject.context;
+  }
+
   /** Generates a unique web component id (tagname) based on the viewUrl
    * returns a string that can be used as part of a tagname, only alphanumeric
    * characters and no whitespaces.
