@@ -4,7 +4,7 @@ import {
   registerEventListeners
 } from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
-import { RoutingHelpers } from '../utilities/helpers';
+import { RoutingHelpers, NavigationHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
@@ -56,21 +56,6 @@ class WebComponentSvcClass {
       wc.context = ctx;
       wc.LuigiClient = clientAPI;
     }
-  }
-
-  /**
-   * Updates the context object
-   * @param {Object} nodeObject
-   */
-  updateWC(nodeObject) {
-    const { viewUrl, context } = nodeObject;
-    const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
-    const wc_id =
-      nodeObject.webcomponent && nodeObject.webcomponent.tagName
-        ? nodeObject.webcomponent.tagName
-        : this.generateWCId(i18nViewUrl);
-    const wc = document.querySelector(wc_id);
-    wc.context = nodeObject.context;
   }
 
   /** Generates a unique web component id (tagname) based on the viewUrl
@@ -254,6 +239,7 @@ class WebComponentSvcClass {
    */
   renderWebComponentCompound(navNode, wc_container, context) {
     let renderer;
+    wc_container._luigi_node = navNode;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, { context });

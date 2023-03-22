@@ -464,7 +464,6 @@ class RoutingClass {
           }
         }
       }
-
       if (nodeObject.compound) {
         Iframe.switchActiveIframe(iframeElement, undefined, false);
         if (iContainer) {
@@ -472,15 +471,11 @@ class RoutingClass {
         }
         this.navigateWebComponentCompound(component, nodeObject);
       } else if (nodeObject.webcomponent) {
-        if (previousCompData.viewUrl !== nodeObject.viewUrl) {
-          Iframe.switchActiveIframe(iframeElement, undefined, false);
-          if (iContainer) {
-            iContainer.classList.add('lui-webComponent');
-          }
-          this.navigateWebComponent(component, nodeObject);
-        } else {
-          WebComponentService.updateWC(nodeObject);
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
+        if (iContainer) {
+          iContainer.classList.add('lui-webComponent');
         }
+        this.navigateWebComponent(component, nodeObject);
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
@@ -627,7 +622,25 @@ class RoutingClass {
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
+  getGeneratedWCId(navNode) {
+    const { viewUrl, context } = navNode;
+    if (viewUrl) {
+      const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
+      return navNode.webcomponent && navNode.webcomponent.tagName
+        ? navNode.webcomponent.tagName
+        : WebComponentService.generateWCId(i18nViewUrl);
+    }
+  }
+
   navigateWebComponent(component, navNode) {
+    let wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
+    const wc_id = this.getGeneratedWCId(navNode);
+    if (navNode === wc_containerNode) {
+      const wc = document.querySelector(wc_id);
+      wc.context = navNode.context;
+      return;
+    }
+
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
@@ -636,11 +649,15 @@ class RoutingClass {
   }
 
   navigateWebComponentCompound(component, navNode) {
+    const wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
+    if (wc_containerNode === navNode && navNode.webcomponent && navNode.viewUrl) {
+      return;
+    }
+    const { compound } = navNode;
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
     const componentData = component.get();
-    const { compound } = navNode;
     if (compound && compound.children) {
       compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }
