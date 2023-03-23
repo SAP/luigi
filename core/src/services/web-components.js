@@ -4,7 +4,7 @@ import {
   registerEventListeners
 } from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
-import { RoutingHelpers, NavigationHelpers } from '../utilities/helpers';
+import { RoutingHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
