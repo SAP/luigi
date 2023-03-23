@@ -635,6 +635,7 @@ class RoutingClass {
   navigateWebComponent(component, navNode) {
     let wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
     const wc_id = this.getGeneratedWCId(navNode);
+    // if true, do only a context update and not rerender the wc
     if (navNode === wc_containerNode) {
       const wc = document.querySelector(wc_id);
       wc.context = navNode.context;
@@ -650,6 +651,7 @@ class RoutingClass {
 
   navigateWebComponentCompound(component, navNode) {
     const wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
+    // if true, prevent rerendering of wc
     if (wc_containerNode === navNode && navNode.webcomponent && navNode.viewUrl) {
       return;
     }

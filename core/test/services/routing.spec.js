@@ -1582,4 +1582,68 @@ describe('Routing', function() {
       });
     });
   });
+
+  describe('navigateWebComponent', () => {
+    const sb = sinon.createSandbox();
+    const component = { get: () => {} };
+    const wc_id = 'wc-id';
+    const node = {
+      pathSegement: 'luigiwc',
+      label: 'Luigi WC',
+      viewUrl: '/luigiwc.js',
+      context: { luigi: 'rocks' }
+    };
+    const wc = { _luigi_node: node, context: {} };
+    afterEach(() => {
+      sb.restore();
+    });
+
+    it('navigateWebComponent only context update', () => {
+      const documentstub = sb.stub(document, 'querySelector');
+      sinon.stub(Routing, 'removeLastChildFromWCContainer');
+      documentstub.withArgs(wc_id).returns(wc);
+      documentstub
+        .callThrough()
+        .withArgs('.wcContainer')
+        .callsFake(() => {
+          return {
+            _luigi_node: node
+          };
+        });
+      sb.stub(Routing, 'getGeneratedWCId').callsFake(() => {
+        return 'wc-id';
+      });
+
+      //context update
+      node.context = { luigi: 'rocks 2x' };
+      Routing.navigateWebComponent(component, node);
+      assert.deepEqual(wc.context, { luigi: 'rocks 2x' });
+      sinon.assert.notCalled(Routing.removeLastChildFromWCContainer);
+    });
+
+    it('navigateWebComponent rerender', () => {
+      const documentstub = sb.stub(document, 'querySelector');
+      sinon.stub(Routing, 'removeLastChildFromWCContainer');
+      documentstub
+        .callThrough()
+        .withArgs('.wcContainer')
+        .callsFake(() => {
+          return {
+            _luigi_node: node
+          };
+        });
+      sb.stub(Routing, 'getGeneratedWCId').callsFake(() => {
+        return 'wc-id';
+      });
+
+      let node2 = {
+        pathSegement: 'luigiwc',
+        label: 'Luigi WC',
+        viewUrl: '/luigiwc.js',
+        context: { luigi: 'rocks' }
+      };
+      Routing.navigateWebComponent(component, node2);
+      sinon.assert.called(Routing.removeLastChildFromWCContainer);
+    });
+  });
 });
