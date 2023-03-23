@@ -103,7 +103,7 @@ To show a loading indicator before Luigi Core or your first micro frontend is re
 
 ```html
 <div luigi-app-loading-indicator>
-	<div class="fd-busy-indicator fd-busy-indicator--l" aria-hidden="false" aria-label="Loading">
+	<div class="fd-busy-indicator fd-busy-indicator--m" aria-hidden="false" aria-label="Loading">
 		<div class="fd-busy-indicator__circle"></div>
 		<div class="fd-busy-indicator__circle"></div>
 		<div class="fd-busy-indicator__circle"></div>
