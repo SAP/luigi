@@ -90,7 +90,7 @@
   let navigationPath;
   let contentNode;
   let preservedViews = [];
-  export let unsavedChanges = {
+  let unsavedChanges = {
     isDirty: false,
     persistUrl: null,
   };
