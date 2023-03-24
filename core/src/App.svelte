@@ -90,7 +90,7 @@
   let navigationPath;
   let contentNode;
   let preservedViews = [];
-  let unsavedChanges = {
+  export let unsavedChanges = {
     isDirty: false,
     persistUrl: null,
   };
@@ -895,6 +895,10 @@
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
       buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm'),
     });
+  };
+
+  export const getDirtyStatus = () => {
+    return unsavedChanges.dirtySet ? unsavedChanges.dirtySet.size > 0 : unsavedChanges.isDirty;
   };
 
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
