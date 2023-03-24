@@ -166,6 +166,16 @@ class LuigiUX {
   removeBackdrop() {
     new linkManager().sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
+
+  /**
+   * Returns the dirty status, which is set by the client. Default the dirty status is `false`.
+   * @memberof UX
+   * @returns {boolean}
+   * @since NEXTRELEASE
+   */
+  getDirtyStatus() {
+    return Luigi.getDirtyStatus();
+  }
 }
 
 export const ux = new LuigiUX();
