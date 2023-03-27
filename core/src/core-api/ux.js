@@ -168,7 +168,7 @@ class LuigiUX {
   }
 
   /**
-   * Returns the dirty status, which is set by the client. Default the dirty status is `false`.
+   * Returns the dirty status, which is set by the Client via [setDirtyStatus](luigi-client-api.md#setdirtystatus). By default, the dirty status is `false`.
    * @memberof UX
    * @returns {boolean}
    * @since NEXTRELEASE
