@@ -59,6 +59,6 @@
     "webpack-cli": "^3.3.12"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=14"
   }
 }
