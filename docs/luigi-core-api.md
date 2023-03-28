@@ -1020,7 +1020,7 @@ Close user settings dialog
 
 #### getDirtyStatus
 
-Returns the dirty status, which is set by the client. Default the dirty status is `false`.
+Returns the dirty status, which is set by the Client via [setDirtyStatus](luigi-client-api.md#setdirtystatus). By default, the dirty status is `false`.
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
