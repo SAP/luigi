@@ -245,28 +245,33 @@
     return paths.includes(removeQueryParams(routePath));
   };
 
+  const clearDirtyState = (source) => {
+    if (unsavedChanges && unsavedChanges.dirtySet) {
+      if (source) {
+        unsavedChanges.dirtySet.delete(source);
+      } else {
+        unsavedChanges.dirtySet.clear();
+      }
+    }
+  };
+
   const getUnsavedChangesModalPromise = (source) => {
     return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
-            if (unsavedChanges && unsavedChanges.dirtySet) {
-              if (source) {
-                unsavedChanges.dirtySet.delete(source);
-              } else {
-                unsavedChanges.dirtySet.clear();
-              }
-            }
+            clearDirtyState();
             resolve();
           },
           () => {
+            clearDirtyState();
             reject();
           }
         );
       } else {
         resolve();
       }
-    });
+    }).catch(() => {});
   };
 
   //TODO refactor
@@ -1918,8 +1923,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}

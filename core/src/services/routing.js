@@ -163,8 +163,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   /**
@@ -202,7 +202,6 @@ class RoutingClass {
 
     // pretend the url hasn't been changed by browser default behaviour
     oldUrl && history.pushState(window.state, '', oldUrl);
-
     return component
       .getUnsavedChangesModalPromise()
       .then(
@@ -211,9 +210,8 @@ class RoutingClass {
           this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
         },
         // user clicks no, do nothing, reject promise
-        () => {}
+        () => { }
       )
-      .catch(() => {});
   }
 
   /**
@@ -445,10 +443,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );
