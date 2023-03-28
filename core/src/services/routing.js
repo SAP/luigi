@@ -622,6 +622,12 @@ class RoutingClass {
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
+  /**
+   * This function returns a generated unique web component id (tagname) based on the viewUrl provided as string.
+   * If a `tagName` is specified in the web component configuration object at the node, the function will return that `tagName`.
+   * @param {Object} navNode
+   * @returns specified tagName or a unique web component id as string
+   */
   getGeneratedWCId(navNode) {
     const { viewUrl, context } = navNode;
     if (viewUrl) {
