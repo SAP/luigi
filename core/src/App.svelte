@@ -1992,14 +1992,14 @@
       aria-label="Loading"
     >
       <div
-        class="fd-busy-indicator--m"
+        class="fd-busy-indicator fd-busy-indicator--m"
         aria-hidden="false"
         aria-label="Loading"
         data-testid="luigi-loading-spinner"
       >
-        <div class="fd-busy-indicator--circle-0" />
-        <div class="fd-busy-indicator--circle-1" />
-        <div class="fd-busy-indicator--circle-2" />
+        <div class="fd-busy-indicator__circle" />
+        <div class="fd-busy-indicator__circle" />
+        <div class="fd-busy-indicator__circle" />
       </div>
     </div>
   {/if}
