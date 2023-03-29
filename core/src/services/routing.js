@@ -356,6 +356,7 @@ class RoutingClass {
     }
     try {
       // just used for browser changes, like browser url manual change or browser back/forward button click
+      console.log('test nav')
       if (component.shouldShowUnsavedChangesModal()) {
         await this.handleUnsavedChangesModal(path, component, iframeElement, config);
         return;

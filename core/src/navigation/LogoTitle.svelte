@@ -1,8 +1,17 @@
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import {
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext,
+  } from 'svelte';
   import * as Header from './services/header';
   import { Routing } from '../services/routing';
-  import { NavigationHelpers, RoutingHelpers, GenericHelpers } from '../utilities/helpers';
+  import {
+    NavigationHelpers,
+    RoutingHelpers,
+    GenericHelpers,
+  } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -23,14 +32,16 @@
   export let addNavHrefForAnchor;
   let customItemRenderer__slotContainer;
   let previousPathData;
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
   const appSwitcherApiObj = {
     closeDropDown: () => {
       toggleDropdownState('appSwitcherPopover');
-    }
-  }
+    },
+  };
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -49,12 +60,12 @@
           showMainAppEntry,
           hasApps,
           hasLogo,
-          logo
+          logo,
         };
       },
-      set: obj => {
+      set: (obj) => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach(prop => {
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
             if (prop === 'pathData') {
               pathData = obj.pathData;
             } else if (prop === 'appSwitcherItems') {
@@ -85,7 +96,7 @@
           });
         }
       },
-      store
+      store,
     };
   };
 
@@ -100,9 +111,9 @@
     }
   });
 
-  function renderCustomList(item, slot, index){
-    setTimeout(()=>{
-      if(slot){
+  function renderCustomList(item, slot, index) {
+    setTimeout(() => {
+      if (slot) {
         itemRenderer(item, slot.children[index], appSwitcherApiObj);
       }
     });
@@ -110,12 +121,20 @@
   }
 
   export function goTo(path) {
-    getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateTo(RoutingHelpers.applyPathParams(path, pathParams));
-    });
+    console.log('test 1');
+    getUnsavedChangesModalPromise().then(
+      () => {
+        Routing.navigateTo(RoutingHelpers.applyPathParams(path, pathParams));
+        console.log('test 01');
+      },
+      () => {
+        console.log('test 02');
+      }
+    );
   }
 
   export function goToRoot() {
+    console.log('test 2');
     getUnsavedChangesModalPromise().then(() => {
       Routing.navigateTo('/');
     });
@@ -138,8 +157,14 @@
 
   function hasValidLink(item, pathParams) {
     if (item.link) {
-      const concreteLink = RoutingHelpers.applyPathParams(item.link, pathParams);
-      if (concreteLink.indexOf(':') !== 0 && concreteLink.indexOf('/:') === -1) {
+      const concreteLink = RoutingHelpers.applyPathParams(
+        item.link,
+        pathParams
+      );
+      if (
+        concreteLink.indexOf(':') !== 0 &&
+        concreteLink.indexOf('/:') === -1
+      ) {
         return true;
       }
     }
@@ -157,7 +182,7 @@
       ? 'fd-shellbar__logo--image-replaced'
       : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
-    on:click={event => {
+    on:click={(event) => {
       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
         goTo('/');
     }}
@@ -190,7 +215,7 @@
       <a
         class="fd-shellbar__title lui-shellbar-single-app-title"
         data-testid="luigi-topnav-title"
-        on:click={event => {
+        on:click={(event) => {
           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
             goTo('/');
         }}
@@ -324,7 +349,7 @@
                     <a
                       role="button"
                       class="fd-menu__link"
-                      on:click={event => {
+                      on:click={(event) => {
                         NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
                           event
                         ) && goTo(item.link);

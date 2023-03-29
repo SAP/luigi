@@ -258,6 +258,8 @@
   const getUnsavedChangesModalPromise = (source) => {
     return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
+        const promise = confirmationModal.promise;
+        console.log('unsaved test 01', promise);
         showUnsavedChangesModal().then(
           () => {
             clearDirtyState();
@@ -269,9 +271,12 @@
           }
         );
       } else {
-        resolve();
+        reject();
       }
-    }).catch(() => {});
+    }).catch((e) => {
+      console.log(e, 'catch');
+      // reject();
+    });
   };
 
   //TODO refactor
