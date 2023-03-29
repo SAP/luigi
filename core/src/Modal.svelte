@@ -42,7 +42,9 @@
     const dataFromPath = await Navigation.extractDataFromPath(path);
     nodeObject = dataFromPath.nodeObject;
     isDrawer = settings.isDrawer || typeof nodeObject.drawer === 'object';
-    modalElementClassSelector = isDrawer ? '._drawer' : `[modal-container-index="${modalIndex}"]`;
+    modalElementClassSelector = isDrawer
+      ? '._drawer'
+      : `[modal-container-index="${modalIndex}"]`;
     if (isDrawer) {
       isModal = false;
       if (settings.header === undefined) {
@@ -247,7 +249,9 @@
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
-      ? IframeHelpers.disableA11YKeyboardExceptClassName('.lui-modal-index-' + modalIndex)
+      ? IframeHelpers.disableA11YKeyboardExceptClassName(
+          '.lui-modal-index-' + modalIndex
+        )
       : '';
     window.focus();
   });
@@ -256,7 +260,9 @@
     EventListenerHelpers.removeEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
-      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.lui-modal-index-' + modalIndex)
+      ? IframeHelpers.enableA11YKeyboardBackdropExceptClassName(
+          '.lui-modal-index-' + modalIndex
+        )
       : '';
   });
 
@@ -330,14 +336,14 @@
         aria-label="Loading"
       >
         <div
-          class="fd-busy-indicator--m"
+          class="fd-busy-indicator fd-busy-indicator--m"
           aria-hidden="false"
           aria-label="Loading"
           data-testid="luigi-loading-spinner"
         >
-          <div class="fd-busy-indicator--circle-0" />
-          <div class="fd-busy-indicator--circle-1" />
-          <div class="fd-busy-indicator--circle-2" />
+          <div class="fd-busy-indicator__circle" />
+          <div class="fd-busy-indicator__circle" />
+          <div class="fd-busy-indicator__circle" />
         </div>
       </div>
     {/if}
@@ -357,7 +363,7 @@
     width: 25%;
     z-index: 3;
     right: 0;
-    
+
     .drawer {
       height: 100%;
     }
