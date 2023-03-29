@@ -73,7 +73,7 @@ const fileToExclude = (file, stat) => {
  * @returns {Promise<*>}: promise wiht list of files.
  */
 const getChangedFiles = async () => {
-  const committedGitFiles = await gitChangedFiles();
+  const committedGitFiles = await gitChangedFiles({ baseBranch: 'main' });
   return committedGitFiles.unCommittedFiles.filter(file => fs.existsSync(file) && !file.endsWith('package-lock.json'));
 };
 
