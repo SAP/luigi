@@ -73,7 +73,7 @@
             {:else}
               <a
                 href={getRouteLink(node)}
-                on:click={(event) => {
+                on:click={event => {
                   NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
                 }}
                 class="fd-menu__link {label === selectedLabel
@@ -100,7 +100,7 @@
           >
             <a
               href={getRouteLink(node)}
-              on:click={(event) => {
+              on:click={event => {
                 NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
               }}
               class="fd-menu__link"
