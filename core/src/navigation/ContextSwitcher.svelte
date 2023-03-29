@@ -1,5 +1,10 @@
 <script>
-  import { createEventDispatcher, onMount, getContext, beforeUpdate } from 'svelte';
+  import {
+    createEventDispatcher,
+    onMount,
+    getContext,
+    beforeUpdate,
+  } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
   import ContextSwitcherNav from './ContextSwitcherNav.svelte';
   import { LuigiConfig } from '../core-api';
@@ -10,7 +15,7 @@
     StateHelpers,
     NavigationHelpers,
     GenericHelpers,
-    EventListenerHelpers
+    EventListenerHelpers,
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -36,12 +41,15 @@
   export let contextSwitcherToggle = false;
   export let defaultLabel;
   let preserveSubPathOnSwitch;
-  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
+  let getUnsavedChangesModalPromise = getContext(
+    'getUnsavedChangesModalPromise'
+  );
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let prevContextSwitcherToggle = false;
   let selectedNodePath;
   let addNavHrefForAnchor;
+  let isContextSwitcherDropdownShown;
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
@@ -69,7 +77,8 @@
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {
-          alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
+          alwaysShowDropdown =
+            contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
           actions = await LuigiConfig.getConfigValueAsync(
             'navigation.contextSwitcher.actions'
           );
@@ -81,7 +90,9 @@
 
           // options are loaded lazy by default
           if (!contextSwitcherConfig.lazyloadOptions) {
+            console.log('rendering', options);
             await fetchOptions();
+            console.log('rendering after', options);
           }
           if (
             ContextSwitcherHelpers.isContextSwitcherDetailsView(
@@ -96,9 +107,9 @@
       ['navigation.contextSwitcher']
     );
 
-    RoutingHelpers.addRouteChangeListener(path => setSelectedContext(path));
+    RoutingHelpers.addRouteChangeListener((path) => setSelectedContext(path));
 
-    EventListenerHelpers.addEventListener('message', e => {
+    EventListenerHelpers.addEventListener('message', (e) => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
       if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
         options = null;
@@ -114,6 +125,8 @@
       prevContextSwitcherToggle = contextSwitcherToggle;
       fetchOptions();
     }
+    isContextSwitcherDropdownShown =
+      dropDownStates.contextSwitcherPopover || false;
   });
 
   function getNodeName(label, config, id) {
@@ -212,7 +225,10 @@
     getUnsavedChangesModalPromise().then(() => {
       if (preserveSubPathOnSwitch && selectedOption) {
         Routing.navigateTo(
-          ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption)
+          ContextSwitcherHelpers.getNodePathFromCurrentPath(
+            option,
+            selectedOption
+          )
         );
       } else {
         Routing.navigateTo(option.link);
@@ -227,6 +243,7 @@
     dispatch('toggleDropdownState');
     const ddStates = dropDownStates || {};
     const isOpened = JSON.parse(ddStates['contextSwitcherPopover']);
+    console.log(ddStates['contextSwitcherPopover']);
     if (isOpened) {
       fetchOptions();
     }
@@ -303,6 +320,7 @@
             {getTestId}
             {getTranslation}
             {isMobile}
+            {isContextSwitcherDropdownShown}
             on:onActionClick={onActionClick}
             on:goToOption={goToOption}
           />
@@ -347,6 +365,7 @@
             {getTestId}
             {getTranslation}
             {isMobile}
+            {isContextSwitcherDropdownShown}
             on:onActionClick={onActionClick}
             on:goToOption={goToOption}
           />
