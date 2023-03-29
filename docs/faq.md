@@ -136,7 +136,7 @@ There are a few options to do that at the moment:
        */
       function init() {
         // react on route changes
-        window.onhashchange = updateNav; // there will be an abstraction on luigi side in the future, independend from routing strategy
+        window.onhashchange = updateNav; // there will be an abstraction on luigi side in the future, independent from routing strategy
 
         // building up static root nodes in header
         window.linkEl = document.querySelector(".links");
@@ -593,13 +593,17 @@ To hide the top navigation, you can use custom CSS, for example:
 
 ### Can I have more than 2 levels in the Luigi side navigation?/Can navigation nodes have grandchildren?
 
-Curerntly, it is not possible for Luigi navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.luigi-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
+Currently, it is not possible for Luigi navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.luigi-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
 
 <!-- accordion:end -->
 
 ## Navigation and routing questions
 
 <!-- accordion:start -->
+
+### How can I preserve my micro frontend's routing when using Luigi?
+
+You can use [Luigi Client](luigi-client-setup.md) in your micro frontend to achieve this without having to change your micro frontend's internal routing strategy. You can find more information about it [here](microfrontend-routing.md).
 
 ### What is the proper way for Luigi Core to react to navigation from Luigi Client?
 
