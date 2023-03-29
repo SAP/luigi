@@ -20,6 +20,7 @@
   import BadgeCounter from './BadgeCounter.svelte';
   import StatusBadge from './StatusBadge.svelte';
   import { KEYCODE_ENTER } from '../utilities/keycode';
+  import { Iframe } from '../services/iframe';
 
   //TODO refactor
   const __this = {
@@ -195,6 +196,20 @@
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let addNavHrefForAnchor = false;
+
+  const getNodeLabel = (node) => {
+    let label = $getTranslation(node.label);
+    
+    const vg = RoutingHelpers.findViewGroup(node);
+
+    if (vg) {
+      const vgSettings = Iframe.getViewGroupSettings(vg) || {};
+      let cdata = {...(vgSettings.customData || {}), ...(vgSettings._liveCustomData || {})};
+      label = GenericHelpers.replaceVars(label, cdata, 'viewGroupData.');
+    }
+
+    return label;
+  }
 
   const setLeftNavData = async () => {
     const componentData = __this.get();
@@ -571,7 +586,7 @@
                           href={getRouteLink(node)}
                           title={resolveTooltipText(
                             node,
-                            $getTranslation(node.label)
+                            getNodeLabel(node)
                           )}
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
@@ -617,7 +632,7 @@
                             node.statusBadge.align === 'right'
                               ? 'right'
                               : 'left'}"
-                            >{$getTranslation(node.label)}
+                            >{getNodeLabel(node)}
                             <StatusBadge {node} />
                           </span>
                           {#if node.externalLink && node.externalLink.url}
@@ -754,7 +769,7 @@
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
-                                  $getTranslation(node.label)
+                                  getNodeLabel(node)
                                 )}
                               >
                                 <span
@@ -763,7 +778,7 @@
                                     ? 'right'
                                     : 'left'}"
                                 >
-                                  {$getTranslation(node.label)}
+                                  {getNodeLabel(node)}
                                   <StatusBadge {node} />
                                 </span>
 
@@ -815,7 +830,7 @@
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
-                                        $getTranslation(node.label)
+                                        getNodeLabel(node)
                                       )}
                                     >
                                       <span
@@ -824,7 +839,7 @@
                                           ? 'right'
                                           : 'left'}"
                                       >
-                                        {$getTranslation(node.label)}
+                                        {getNodeLabel(node)}
                                         <StatusBadge {node} />
                                       </span>
                                       {#if node.externalLink && node.externalLink.url}
@@ -880,7 +895,7 @@
                           class="fd-nested-list__item"
                           title={resolveTooltipText(
                             node,
-                            $getTranslation(node.label)
+                            getNodeLabel(node)
                           )}
                           aria-labelledby="category_list_level1_{index}"
                         >
@@ -933,7 +948,7 @@
                               node.statusBadge.align === 'right'
                                 ? 'right'
                                 : 'left'}"
-                              >{$getTranslation(node.label)}
+                              >{getNodeLabel(node)}
                               {#if node.statusBadge}
                                 <StatusBadge {node} />
                               {/if}

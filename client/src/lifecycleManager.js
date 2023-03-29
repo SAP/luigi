@@ -559,5 +559,12 @@ class LifecycleManager extends LuigiClientBase {
       anchor
     });
   }
+
+  setViewGroupData(data) {
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.setVGData',
+      data
+    });
+  }
 }
 export const lifecycleManager = new LifecycleManager();
