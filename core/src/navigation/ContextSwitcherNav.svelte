@@ -2,7 +2,6 @@
   import { createEventDispatcher } from 'svelte';
   import { NavigationHelpers } from '../utilities/helpers';
 
-
   export let actions = [];
   export let config = {};
   export let customOptionsRenderer;
@@ -49,10 +48,15 @@
   <ul class="fd-menu__list" id="context_menu_middle">
     {#if options && options.length === 0}
       <li class="lui-contextswitcher-indicator">
-        <div class="fd-busy-indicator" aria-hidden="false" aria-label="Loading">
-          <div class="fd-busy-indicator--circle-0" />
-          <div class="fd-busy-indicator--circle-1" />
-          <div class="fd-busy-indicator--circle-2" />
+        <div
+          class="fd-busy-indicator fd-busy-indicator--m"
+          aria-hidden="false"
+          aria-label="Loading"
+          data-testid="luigi-loading-spinner"
+        >
+          <div class="fd-busy-indicator__circle" />
+          <div class="fd-busy-indicator__circle" />
+          <div class="fd-busy-indicator__circle" />
         </div>
       </li>
     {/if}
@@ -119,16 +123,18 @@
   }
 
   .fd-menu__list {
-     &--bottom {
-        border-top: var(--sapList_BorderWidth, 0.0625rem) solid var(--sapList_BorderColor, #e4e4e4);
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-     }
-     &--top {
-        border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid var(--sapList_BorderColor, #e4e4e4);
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-     }
+    &--bottom {
+      border-top: var(--sapList_BorderWidth, 0.0625rem) solid
+        var(--sapList_BorderColor, #e4e4e4);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+    &--top {
+      border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
+        var(--sapList_BorderColor, #e4e4e4);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
   }
 
   :global(.lui-contextswitcher-indicator) {
