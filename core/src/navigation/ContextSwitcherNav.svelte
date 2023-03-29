@@ -13,6 +13,7 @@
   export let getRouteLink;
   export let getTestId;
   export let getTranslation;
+  export let isContextSwitcherDropdownShown;
   const dispatch = createEventDispatcher();
   export function onActionClick(node) {
     dispatch('onActionClick', { node });
@@ -46,7 +47,7 @@
     </ul>
   {/if}
   <ul class="fd-menu__list" id="context_menu_middle">
-    {#if options && options.length === 0}
+    {#if options && options.length === 0 && isContextSwitcherDropdownShown}
       <li class="lui-contextswitcher-indicator">
         <div
           class="fd-busy-indicator fd-busy-indicator--m"
