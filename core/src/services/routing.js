@@ -658,7 +658,11 @@ class RoutingClass {
   navigateWebComponentCompound(component, navNode) {
     const wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
     // if true, prevent rerendering of wc
-    if (wc_containerNode === navNode && navNode.webcomponent && navNode.viewUrl) {
+    if (
+      wc_containerNode === navNode &&
+      (!navNode.webcomponent || navNode.webcomponent) &&
+      (!navNode.viewUrl || navNode.viewUrl)
+    ) {
       return;
     }
     const { compound } = navNode;
