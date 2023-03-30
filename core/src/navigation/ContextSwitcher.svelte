@@ -90,9 +90,7 @@
 
           // options are loaded lazy by default
           if (!contextSwitcherConfig.lazyloadOptions) {
-            console.log('rendering', options);
             await fetchOptions();
-            console.log('rendering after', options);
           }
           if (
             ContextSwitcherHelpers.isContextSwitcherDetailsView(
@@ -243,7 +241,6 @@
     dispatch('toggleDropdownState');
     const ddStates = dropDownStates || {};
     const isOpened = JSON.parse(ddStates['contextSwitcherPopover']);
-    console.log(ddStates['contextSwitcherPopover']);
     if (isOpened) {
       fetchOptions();
     }
