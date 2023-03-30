@@ -36,7 +36,7 @@ while read LINE; do
     cleanFiles "${LINE}"
 done <<HERE
 $BASE_DIR/../../core/test
-$BASE_DIR/../../test/e2e-test-application/e2e
+$BASE_DIR/../../test/e2e-test-application/cypress/e2e
 $BASE_DIR/../../test/e2e-test-application/src/app
 HERE
 
