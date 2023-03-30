@@ -897,6 +897,10 @@
     });
   };
 
+  export const getDirtyStatus = () => {
+    return unsavedChanges.dirtySet ? unsavedChanges.dirtySet.size > 0 : unsavedChanges.isDirty;
+  };
+
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
 
   //// MICRO-FRONTEND MODAL
