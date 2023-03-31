@@ -1026,7 +1026,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.1.0
 
 ## Luigi.globalSearch()
 
