@@ -16,13 +16,13 @@ meta -->
 
 # Micro frontend routing
 
-Luigi routing can be divided in two main parts: higher-level routing inside the main app (Luigi Core), and routing within the micro frontend (Luigi Client).
+Luigi routing can be divided in two main parts: higher-level routing of the main app (Luigi Core), and routing within the micro frontend (Luigi Client).
 
 This document shows how you can handle the second way of routing while preserving the existing router of your micro frontend. The exact way this is achieved depends on the type of routing you use, but you should follow some general steps:
 
-1. Enable [virtualTree](navigation-parameters-reference.md#virtualtree) in your Luigi configuration file.
-2. Add [Luigi Client](luigi-client-setup.md) to your micro frontend.
-3. Use the methods provided by Luigi Client's [linkManager](luigi-client-api.md#linkmanager) to update the Luigi Core URL.
+1. Enable [virtualTree](navigation-parameters-reference.md#virtualtree) in your Luigi configuration file for the node of your Microfrontend.
+2. Import [Luigi Client](luigi-client-setup.md) to your micro frontend.
+3. Use the methods provided by Luigi Client's [linkManager](luigi-client-api.md#linkmanager) to update the main app's URL and maintain navigation history.
 
 Below, you can find some simple examples on how to keep routing in sync for different frontend technologies such as [Angular](#angular-routing), [SvelteKit](#sveltekit-routing), and [React](#react-routing).
 
