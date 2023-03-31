@@ -1893,8 +1893,7 @@
   });
 
   beforeUpdate(() => {
-    breadcrumbsEnabled =
-      GenericHelpers.requestExperimentalFeature('breadcrumbs');
+    breadcrumbsEnabled = LuigiConfig.getConfigValue('navigation.breadcrumbs')
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
