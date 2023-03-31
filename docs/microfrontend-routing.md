@@ -20,7 +20,7 @@ Luigi routing can be divided in two main parts: higher-level routing of the main
 
 This document shows how you can handle the second way of routing while preserving the existing router of your micro frontend. The exact way this is achieved depends on the type of routing you use, but you should follow some general steps:
 
-1. Enable [virtualTree](navigation-parameters-reference.md#virtualtree) in your Luigi configuration file for the node of your Microfrontend.
+1. Enable [virtualTree](navigation-parameters-reference.md#virtualtree) in your Luigi configuration file for the node of your micro frontend.
 2. Import [Luigi Client](luigi-client-setup.md) to your micro frontend.
 3. Use the methods provided by Luigi Client's [linkManager](luigi-client-api.md#linkmanager) to update the main app's URL and maintain navigation history.
 

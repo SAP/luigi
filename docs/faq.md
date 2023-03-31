@@ -603,7 +603,7 @@ Currently, it is not possible for Luigi navigation nodes to have more than one l
 
 ### How can I preserve my micro frontend's routing when using Luigi?
 
-You can use [Luigi Client API](luigi-client-setup.md) in your micro frontend to achieve this without having to change your micro frontend's internal routing strategy. In addition you can tell Luigi to not interfere with the microfrontends internal routing by using the virtualTree option on the microfrontends node. You can find more information about it [here](microfrontend-routing.md).
+You can use [Luigi Client API](luigi-client-setup.md) in your micro frontend to achieve this without having to change your micro frontend's internal routing strategy. In addition you can tell Luigi to not interfere with the micro frontend's internal routing by using the `virtualTree` option on the micro frontend's node. You can find more information about it [here](microfrontend-routing.md).
 
 ### What is the proper way for Luigi Core to react to navigation from Luigi Client?
 
