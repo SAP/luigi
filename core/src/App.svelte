@@ -897,6 +897,10 @@
     });
   };
 
+  export const getDirtyStatus = () => {
+    return unsavedChanges.dirtySet ? unsavedChanges.dirtySet.size > 0 : unsavedChanges.isDirty;
+  };
+
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
 
   //// MICRO-FRONTEND MODAL
@@ -1900,8 +1904,7 @@
   });
 
   beforeUpdate(() => {
-    breadcrumbsEnabled =
-      GenericHelpers.requestExperimentalFeature('breadcrumbs');
+    breadcrumbsEnabled = LuigiConfig.getConfigValue('navigation.breadcrumbs')
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
