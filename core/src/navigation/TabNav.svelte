@@ -1,8 +1,10 @@
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext, onDestroy } from 'svelte';
   import { Navigation } from './services/navigation';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
+  
+  import TabHeader from './TabHeader.svelte'; 
 
   export let children;
   export let pathData;
@@ -17,6 +19,7 @@
   export let resizeTabNavToggle;
   let previousResizeTabNavToggle;
   let getTranslation = getContext('getTranslation');
+  let resizeObserver;
 
   //TODO refactor
   const __this = {
@@ -60,7 +63,7 @@
     if (!tabNavData) {
       return;
     }
-    __this.set({ ...tabNavData });
+    __this.set({ ...tabNavData });  
     previousPathData = pathData;
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
     setTimeout(calcTabsContainer);
@@ -117,6 +120,23 @@
 
   onMount(() => {
     hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        console.log(entry);
+        //entry.
+        document.documentElement.style.setProperty('--luigi__horizontal-nav--live-height', entry.contentRect.height + 'px');
+      }
+    });
+    setTimeout(() => {
+      resizeObserver.observe(document.querySelector('#tabsContainer.lui-tabs'));
+    });
+  });
+
+  onDestroy(() => {
+    if(resizeObserver) {
+      resizeObserver.disconnect();
+    }
+    document.documentElement.style.setProperty('--luigi__horizontal-nav--live-height', '0');
   });
 
   // [svelte-upgrade warning]
@@ -191,10 +211,12 @@
   on:resize={onResize}
 />
 {#if children && pathData.length > 1}
+<div class="lui-tabs" id="tabsContainer">
+  <TabHeader node={selectedNode.parent}></TabHeader>
+
   <nav
     class="fd-tabs fd-tabs--l"
     role="tablist"
-    id="tabsContainer"
     on:toggleDropdownState={event => toggleDropdownState(event.name)}
   >
     <div class="tabsContainerWrapper">
@@ -388,6 +410,7 @@
       </span>
     </div>
   </nav>
+</div>
 {/if}
 
 <style type="text/scss">
@@ -437,39 +460,45 @@
     display: none;
   }
 
-  .fd-tabs {
-    flex-wrap: nowrap;
-    align-items: stretch;
-    @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
-    border: none;
-    position: absolute;
-    right: 0;
-    left: var(--luigi__left-sidenav--width);
+  .lui-tabs {
+      right: 0;
+      left: var(--luigi__left-sidenav--width);
+      border: none;
+      position: absolute;
+      
+      @media (max-width: 599px) {
+        left: 0;
+      }
 
-    @media (max-width: 599px) {
+     .fd-tabs {
+      flex-wrap: nowrap;
+      align-items: stretch;
+      @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
+      border: none;
+      right: 0;
       left: 0;
-    }
 
-    &__item {
-      white-space: nowrap;
-      display: inline-block;
-    }
+      &__item {
+        white-space: nowrap;
+        display: inline-block;
+      }
 
-    &__link {
-      &.has-child {
-        .label {
-          padding-right: 17px;
-        }
-        .luigi-icon--dropdown {
-          position: absolute;
-          top: 0.4em;
-          right: 14px;
+      &__link {
+        &.has-child {
+          .label {
+            padding-right: 17px;
+          }
+          .luigi-icon--dropdown {
+            position: absolute;
+            top: 0.4em;
+            right: 14px;
+          }
         }
       }
     }
   }
 
-  :global(.fd-tabs__item.hide_element) {
+  :global(.lui-tabs .fd-tabs__item.fd-tabs__item.hide_element) {
     display: none;
   }
 </style>

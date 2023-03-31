@@ -288,7 +288,7 @@ class RoutingClass {
    * @param {Object} config the configuration of application
    */
   async handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config) {
-    if (!viewUrl && !nodeObject.compound) {
+    if ((!viewUrl && !nodeObject.compound) || (nodeObject.tabNav && nodeObject.tabNav.showAsTabHeader)) {
       const defaultChildNode = await RoutingHelpers.getDefaultChildNode(pathData, async (node, ctx) => {
         return await Navigation.getChildren(node, ctx);
       });
