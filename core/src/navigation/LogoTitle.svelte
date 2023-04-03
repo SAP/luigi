@@ -121,23 +121,22 @@
   }
 
   export function goTo(path) {
-    console.log('test 1');
     getUnsavedChangesModalPromise().then(
       () => {
         Routing.navigateTo(RoutingHelpers.applyPathParams(path, pathParams));
-        console.log('test 01');
       },
-      () => {
-        console.log('test 02');
-      }
+      () => {}
     );
   }
 
   export function goToRoot() {
     console.log('test 2');
-    getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateTo('/');
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        Routing.navigateTo('/');
+      },
+      () => {}
+    );
   }
 
   export function handleClick(node) {
