@@ -897,6 +897,10 @@
     });
   };
 
+  export const getDirtyStatus = () => {
+    return unsavedChanges.dirtySet ? unsavedChanges.dirtySet.size > 0 : unsavedChanges.isDirty;
+  };
+
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
 
   //// MICRO-FRONTEND MODAL
@@ -1889,8 +1893,7 @@
   });
 
   beforeUpdate(() => {
-    breadcrumbsEnabled =
-      GenericHelpers.requestExperimentalFeature('breadcrumbs');
+    breadcrumbsEnabled = LuigiConfig.getConfigValue('navigation.breadcrumbs')
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
@@ -1982,14 +1985,14 @@
       aria-label="Loading"
     >
       <div
-        class="fd-busy-indicator--m"
+        class="fd-busy-indicator fd-busy-indicator--m"
         aria-hidden="false"
         aria-label="Loading"
         data-testid="luigi-loading-spinner"
       >
-        <div class="fd-busy-indicator--circle-0" />
-        <div class="fd-busy-indicator--circle-1" />
-        <div class="fd-busy-indicator--circle-2" />
+        <div class="fd-busy-indicator__circle" />
+        <div class="fd-busy-indicator__circle" />
+        <div class="fd-busy-indicator__circle" />
       </div>
     </div>
   {/if}
