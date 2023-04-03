@@ -504,7 +504,7 @@ navigation.breadcrumbs = {
     };
 ```
 
-Below is another example which uses UI5 breadcrumbs: 
+Below is another example which uses UI5 Web Components breadcrumbs: 
 
 ### Click to expand
 
