@@ -239,6 +239,7 @@ class WebComponentSvcClass {
    */
   renderWebComponentCompound(navNode, wc_container, context) {
     let renderer;
+    wc_container._luigi_node = navNode;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, { context });
