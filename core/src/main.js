@@ -121,6 +121,10 @@ const configReadyCallback = () => {
           app.closeUserSettings();
         };
 
+        Luigi.getDirtyStatus = () => {
+          return app.getDirtyStatus();
+        };
+
         resolve();
       });
     });
