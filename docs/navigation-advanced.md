@@ -471,8 +471,9 @@ In your custom code, you can choose any look and style for the breadcrumbs as we
       }
 ```
 
-<!-- accordion:start -->
 Below is an example of a simple `breadcrumbsConfig`:
+
+<!-- accordion:start -->
 
 ### Click to expand
 
@@ -503,8 +504,11 @@ navigation.breadcrumbs = {
       }
     };
 ```
+<!-- accordion:end -->
 
 Below is another example which uses UI5 Web Components breadcrumbs: 
+
+<!-- accordion:start -->
 
 ### Click to expand
 
