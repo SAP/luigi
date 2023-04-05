@@ -242,7 +242,7 @@ Luigi.setConfig({
       },
 ```
 
-2. Inside your React app's `App.js` file, use Luigi's [linkManager](luigi-client-api.md#linkmanager) methods to make Luigi aware of the internal URL changes. Use [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) to set routing to the parent route in the `virtualTree`, and [withoutSync](luigi-client-api.md#withoutsync) to disable Luigi Core handling of the URL. Finally, navigate to the correct path using Luigi Client's [navigate](luigi-client-api.md#navigate) method.
+2. Inside your React app's `App.js` file, use Luigi's [linkManager](luigi-client-api.md#linkmanager) methods to make Luigi aware of the internal URL changes.  This can be done in React by calling a LuigiClient navigation function inside your route change listener. As the route of your microfrontend changes, the LuigiClient navigation call will append it to the main apps route so that it is kept in the browser's session navigation history, allowing you to move back and forth while navigating internally. Use [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) to set routing to the parent route in the `virtualTree`, and [withoutSync](luigi-client-api.md#withoutsync) to disable Luigi Core handling of the URL. Finally, navigate to the correct path using Luigi Client's [navigate](luigi-client-api.md#navigate) method. 
 
 ```js
   let location = useLocation();
