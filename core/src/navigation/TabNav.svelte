@@ -118,25 +118,39 @@
     }
   };
 
-  onMount(() => {
-    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+  /**
+   * This function attaches on Svelte's ResizeObserver to detect the height of the component so that the 'top' distance property
+   * is changed according to the variable horizontal tabnav web component height. 
+   */
+  const handleHorizontalNavHeightChange = () => {
     resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        console.log(entry);
-        //entry.
         document.documentElement.style.setProperty('--luigi__horizontal-nav--live-height', entry.contentRect.height + 'px');
       }
     });
     setTimeout(() => {
       resizeObserver.observe(document.querySelector('#tabsContainer.lui-tabs'));
     });
-  });
+  }
 
-  onDestroy(() => {
+  /**
+   * This function resets ResizeObserver's affected property to 0 and it is used to reset the state upon destroying of the TabNav component.
+   */
+  const resetResizeObserver = () => {
     if(resizeObserver) {
       resizeObserver.disconnect();
     }
     document.documentElement.style.setProperty('--luigi__horizontal-nav--live-height', '0');
+  }
+
+
+  onMount(() => {
+    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    handleHorizontalNavHeightChange();
+  });
+
+  onDestroy(() => {
+    resetResizeObserver();
   });
 
   // [svelte-upgrade warning]
@@ -211,206 +225,209 @@
   on:resize={onResize}
 />
 {#if children && pathData.length > 1}
-<div class="lui-tabs" id="tabsContainer">
-  <TabHeader node={selectedNode.parent}></TabHeader>
+  <div class="lui-tabs" id="tabsContainer">
+    <TabHeader node={selectedNode.parent} />
 
-  <nav
-    class="fd-tabs fd-tabs--l"
-    role="tablist"
-    on:toggleDropdownState={event => toggleDropdownState(event.name)}
-  >
-    <div class="tabsContainerWrapper">
-      <div class="tabsContainer luigi-tabsContainer">
-        {#each Object.entries(children) as [key, nodes], index}
-          {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-            {#each nodes as node, index2}
-              {#if !node.hideFromNav}
-                {#if node.label}
-                  <span
-                    class="fd-tabs__item {node === selectedNodeForTabNav
-                      ? 'is-selected'
-                      : ''}"
-                    uid="{index}-{index2}"
-                    isSelected={node === selectedNodeForTabNav}
-                  >
-                    <a
-                      class="fd-tabs__link"
-                      href={getRouteLink(node)}
-                      role="tab"
-                      aria-selected={node === selectedNodeForTabNav}
-                      on:click|preventDefault={() => handleClick(node)}
+    <nav
+      class="fd-tabs fd-tabs--l"
+      role="tablist"
+      on:toggleDropdownState={event => toggleDropdownState(event.name)}
+    >
+      <div class="tabsContainerWrapper">
+        <div class="tabsContainer luigi-tabsContainer">
+          {#each Object.entries(children) as [key, nodes], index}
+            {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+              {#each nodes as node, index2}
+                {#if !node.hideFromNav}
+                  {#if node.label}
+                    <span
+                      class="fd-tabs__item {node === selectedNodeForTabNav
+                        ? 'is-selected'
+                        : ''}"
+                      uid="{index}-{index2}"
+                      isSelected={node === selectedNodeForTabNav}
                     >
-                      <span class="fd-tabs__tag"
-                        >{$getTranslation(node.label)}</span
-                      >
-                    </a>
-                  </span>
-                {/if}
-              {/if}
-            {/each}
-          {:else}
-            <span
-              class="fd-tabs__item"
-              uid="{index}-0"
-              on:click={event => event.stopPropagation()}
-              isSelected={isSelectedCat(key, selectedNodeForTabNav)}
-            >
-              <div class="fd-popover">
-                <div class="fd-popover__control">
-                  <a
-                    class="fd-tabs__link has-child"
-                    aria-expanded="false"
-                    role="tab"
-                    on:click|preventDefault={() => toggleDropdownState(key)}
-                    aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
-                  >
-                    <span class="label fd-tabs__tag"
-                      >{$getTranslation(key)}</span
-                    >
-                    <span class="sap-icon--dropdown luigi-icon--dropdown" />
-                  </a>
-                </div>
-                <div
-                  class="fd-popover__body fd-popover__body--no-arrow"
-                  aria-hidden={!dropDownStates[key]}
-                >
-                  <nav class="fd-menu">
-                    <ul class="fd-menu__list fd-menu__list--no-shadow">
-                      {#each nodes as node}
-                        {#if !node.hideFromNav}
-                          {#if node.label}
-                            <li class="fd-menu__item">
-                              <a
-                                href={getRouteLink(node)}
-                                class="fd-menu__link"
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
-                                aria-selected={node === selectedNodeForTabNav}
-                              >
-                                <span class="fd-menu__title"
-                                  >{$getTranslation(node.label)}</span
-                                >
-                              </a>
-                            </li>
-                          {/if}
-                        {/if}
-                      {/each}
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </span>
-          {/if}
-        {/each}
-      </div>
-    </div>
-
-    <div class="luigi-tabsMoreButton">
-      <span class="fd-tabs__item" on:click={event => event.stopPropagation()}>
-        <div class="fd-popover fd-popover--right">
-          <a
-            class="fd-tabs__link fd-popover__control has-child luigi__more"
-            aria-expanded="false"
-            role="tab"
-            on:click|preventDefault={toggleMoreBtn}
-          >
-            <span class="label fd-tabs__tag">More</span>
-            <span class="sap-icon--dropdown luigi-icon--dropdown" />
-          </a>
-          <div
-            class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
-            aria-hidden={!isMoreBtnExpanded}
-          >
-            <ul
-              class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
-            >
-              {#each Object.entries(children) as [key, nodes], index}
-                {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-                  {#each nodes as node, index2}
-                    <li class="fd-nested-list__item" uid="{index}-{index2}">
                       <a
+                        class="fd-tabs__link"
                         href={getRouteLink(node)}
-                        class="fd-nested-list__link"
-                        on:click|preventDefault={() => handleClick(node)}
+                        role="tab"
                         aria-selected={node === selectedNodeForTabNav}
+                        on:click|preventDefault={() => handleClick(node)}
                       >
-                        <span class="fd-nested-list__title"
+                        <span class="fd-tabs__tag"
                           >{$getTranslation(node.label)}</span
                         >
                       </a>
-                    </li>
-                  {/each}
-                {:else}
-                  <li class="fd-nested-list__item" uid="{index}-0">
-                    <div class="fd-nested-list__content has-child" tabindex="0">
-                      <a
-                        href="javascript:void(null)"
-                        tabindex="-1"
-                        class="fd-nested-list__link"
-                        id="tabnav_list_level1_{index}"
-                        aria-haspopup="true"
-                        aria-expanded={dropDownStates[key + index]}
-                        aria-selected={isSelectedCat(
-                          key,
-                          selectedNodeForTabNav
-                        )}
-                        on:click|preventDefault={() =>
-                          toggleDropdownState(key + index)}
-                      >
-                        <span class="fd-nested-list__title"
-                          >{$getTranslation(key)}</span
-                        >
-                      </a>
-                      <button
-                        class="fd-button fd-nested-list__button"
-                        href="#"
-                        tabindex="-1"
-                        aria-label="Expand submenu"
-                        aria-haspopup="true"
-                        aria-expanded={dropDownStates[key + index]}
-                        on:click|preventDefault={() =>
-                          toggleDropdownState(key + index)}
-                      >
-                        <i
-                          class={dropDownStates[key + index]
-                            ? 'sap-icon--navigation-down-arrow'
-                            : 'sap-icon--navigation-right-arrow'}
-                          role="presentation"
-                        />
-                      </button>
-                    </div>
-                    <ul
-                      class="fd-nested-list level-2"
-                      aria-hidden={!dropDownStates[key + index]}
-                    >
-                      {#each nodes as node}
-                        <li
-                          class="fd-nested-list__item"
-                          aria-labelledby="tabnav_list_level1_{index}"
-                        >
-                          <a
-                            class="fd-nested-list__link"
-                            href={getRouteLink(node)}
-                            on:click|preventDefault={() => handleClick(node)}
-                            aria-selected={node === selectedNodeForTabNav}
-                          >
-                            <span class="fd-nested-list__title"
-                              >{$getTranslation(node.label)}</span
-                            >
-                          </a>
-                        </li>
-                      {/each}
-                    </ul>
-                  </li>
+                    </span>
+                  {/if}
                 {/if}
               {/each}
-            </ul>
-          </div>
+            {:else}
+              <span
+                class="fd-tabs__item"
+                uid="{index}-0"
+                on:click={event => event.stopPropagation()}
+                isSelected={isSelectedCat(key, selectedNodeForTabNav)}
+              >
+                <div class="fd-popover">
+                  <div class="fd-popover__control">
+                    <a
+                      class="fd-tabs__link has-child"
+                      aria-expanded="false"
+                      role="tab"
+                      on:click|preventDefault={() => toggleDropdownState(key)}
+                      aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+                    >
+                      <span class="label fd-tabs__tag"
+                        >{$getTranslation(key)}</span
+                      >
+                      <span class="sap-icon--dropdown luigi-icon--dropdown" />
+                    </a>
+                  </div>
+                  <div
+                    class="fd-popover__body fd-popover__body--no-arrow"
+                    aria-hidden={!dropDownStates[key]}
+                  >
+                    <nav class="fd-menu">
+                      <ul class="fd-menu__list fd-menu__list--no-shadow">
+                        {#each nodes as node}
+                          {#if !node.hideFromNav}
+                            {#if node.label}
+                              <li class="fd-menu__item">
+                                <a
+                                  href={getRouteLink(node)}
+                                  class="fd-menu__link"
+                                  on:click|preventDefault={() =>
+                                    handleClick(node)}
+                                  aria-selected={node === selectedNodeForTabNav}
+                                >
+                                  <span class="fd-menu__title"
+                                    >{$getTranslation(node.label)}</span
+                                  >
+                                </a>
+                              </li>
+                            {/if}
+                          {/if}
+                        {/each}
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+              </span>
+            {/if}
+          {/each}
         </div>
-      </span>
-    </div>
-  </nav>
-</div>
+      </div>
+
+      <div class="luigi-tabsMoreButton">
+        <span class="fd-tabs__item" on:click={event => event.stopPropagation()}>
+          <div class="fd-popover fd-popover--right">
+            <a
+              class="fd-tabs__link fd-popover__control has-child luigi__more"
+              aria-expanded="false"
+              role="tab"
+              on:click|preventDefault={toggleMoreBtn}
+            >
+              <span class="label fd-tabs__tag">More</span>
+              <span class="sap-icon--dropdown luigi-icon--dropdown" />
+            </a>
+            <div
+              class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
+              aria-hidden={!isMoreBtnExpanded}
+            >
+              <ul
+                class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
+              >
+                {#each Object.entries(children) as [key, nodes], index}
+                  {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+                    {#each nodes as node, index2}
+                      <li class="fd-nested-list__item" uid="{index}-{index2}">
+                        <a
+                          href={getRouteLink(node)}
+                          class="fd-nested-list__link"
+                          on:click|preventDefault={() => handleClick(node)}
+                          aria-selected={node === selectedNodeForTabNav}
+                        >
+                          <span class="fd-nested-list__title"
+                            >{$getTranslation(node.label)}</span
+                          >
+                        </a>
+                      </li>
+                    {/each}
+                  {:else}
+                    <li class="fd-nested-list__item" uid="{index}-0">
+                      <div
+                        class="fd-nested-list__content has-child"
+                        tabindex="0"
+                      >
+                        <a
+                          href="javascript:void(null)"
+                          tabindex="-1"
+                          class="fd-nested-list__link"
+                          id="tabnav_list_level1_{index}"
+                          aria-haspopup="true"
+                          aria-expanded={dropDownStates[key + index]}
+                          aria-selected={isSelectedCat(
+                            key,
+                            selectedNodeForTabNav
+                          )}
+                          on:click|preventDefault={() =>
+                            toggleDropdownState(key + index)}
+                        >
+                          <span class="fd-nested-list__title"
+                            >{$getTranslation(key)}</span
+                          >
+                        </a>
+                        <button
+                          class="fd-button fd-nested-list__button"
+                          href="#"
+                          tabindex="-1"
+                          aria-label="Expand submenu"
+                          aria-haspopup="true"
+                          aria-expanded={dropDownStates[key + index]}
+                          on:click|preventDefault={() =>
+                            toggleDropdownState(key + index)}
+                        >
+                          <i
+                            class={dropDownStates[key + index]
+                              ? 'sap-icon--navigation-down-arrow'
+                              : 'sap-icon--navigation-right-arrow'}
+                            role="presentation"
+                          />
+                        </button>
+                      </div>
+                      <ul
+                        class="fd-nested-list level-2"
+                        aria-hidden={!dropDownStates[key + index]}
+                      >
+                        {#each nodes as node}
+                          <li
+                            class="fd-nested-list__item"
+                            aria-labelledby="tabnav_list_level1_{index}"
+                          >
+                            <a
+                              class="fd-nested-list__link"
+                              href={getRouteLink(node)}
+                              on:click|preventDefault={() => handleClick(node)}
+                              aria-selected={node === selectedNodeForTabNav}
+                            >
+                              <span class="fd-nested-list__title"
+                                >{$getTranslation(node.label)}</span
+                              >
+                            </a>
+                          </li>
+                        {/each}
+                      </ul>
+                    </li>
+                  {/if}
+                {/each}
+              </ul>
+            </div>
+          </div>
+        </span>
+      </div>
+    </nav>
+  </div>
 {/if}
 
 <style type="text/scss">
@@ -461,16 +478,16 @@
   }
 
   .lui-tabs {
-      right: 0;
-      left: var(--luigi__left-sidenav--width);
-      border: none;
-      position: absolute;
-      
-      @media (max-width: 599px) {
-        left: 0;
-      }
+    right: 0;
+    left: var(--luigi__left-sidenav--width);
+    border: none;
+    position: absolute;
 
-     .fd-tabs {
+    @media (max-width: 599px) {
+      left: 0;
+    }
+
+    .fd-tabs {
       flex-wrap: nowrap;
       align-items: stretch;
       @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));

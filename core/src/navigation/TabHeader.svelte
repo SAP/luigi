@@ -1,11 +1,10 @@
 <script>
   import { onMount } from 'svelte';
-  
   import { WebComponentService } from '../services/web-components';
 
   export let node;
 
-
+  // define get and setters 
   const __this = {
     get: () => ({
       node
@@ -22,15 +21,17 @@
   };
 
   onMount(() => {
-    console.log(node);
-    setTimeout(() => {
+    // render webcomponent based on pased node object 
+    if (node.webcomponent) {
       WebComponentService.renderWebComponent(node.viewUrl, document.querySelector('.lui-tab-header'), node.context, node);
-    });
+    } else { 
+      console.warn('Horizontal navigation custom header microfrontend requires a webcomponent type node.')
+    }
   });
 
 
 </script>
 
 {#if node}
-  <div class="lui-tab-header"></div>
+  <div class="lui-tab-header" />
 {/if}
