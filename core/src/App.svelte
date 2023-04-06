@@ -898,7 +898,9 @@
   };
 
   export const getDirtyStatus = () => {
-    return unsavedChanges.dirtySet ? unsavedChanges.dirtySet.size > 0 : unsavedChanges.isDirty;
+    return unsavedChanges.dirtySet
+      ? unsavedChanges.dirtySet.size > 0
+      : unsavedChanges.isDirty;
   };
 
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
@@ -1893,7 +1895,7 @@
   });
 
   beforeUpdate(() => {
-    breadcrumbsEnabled = LuigiConfig.getConfigValue('navigation.breadcrumbs')
+    breadcrumbsEnabled = LuigiConfig.getConfigValue('navigation.breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
@@ -1921,8 +1923,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
