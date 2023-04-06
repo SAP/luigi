@@ -1123,9 +1123,10 @@ describe('Routing', function() {
       const externalLink = { url: 'http://localhost', sameWindow: true };
       const node = { context: { someValue: 'bar' }, externalLink };
       const pathParams = { otherParam: 'foo' };
+      const url = 'test';
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink, node, pathParams);
+      Routing.navigateToExternalLink(url, node, pathParams);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
       sinon.assert.calledOnce(window.focus);
