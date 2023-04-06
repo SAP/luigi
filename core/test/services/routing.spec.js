@@ -1140,6 +1140,16 @@ describe('Routing', function() {
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
       sinon.assert.calledOnce(window.focus);
     });
+
+    it('open external link in same tab  - one param only object', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: false };
+      sinon.stub(window, 'focus');
+      sinon.stub(window, 'open').returns(window);
+      Routing.navigateToExternalLink(externalLink);
+      sinon.assert.calledOnce(window.open);
+      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
+      sinon.assert.calledOnce(window.focus);
+    });
   });
 
   describe('showPageNotFoundError()', () => {
