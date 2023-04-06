@@ -614,8 +614,11 @@ class RoutingClass {
   navigateToExternalLink(externalLink, node, pathParams) {
     const updatedExternalLink = {
       ...NAVIGATION_DEFAULTS.externalLink,
-      ...externalLink
+      ...(node.externalLink || {})
     };
+    if (externalLink) {
+      updatedExternalLink.url = externalLink;
+    }
     if (node) {
       updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
     }
