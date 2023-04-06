@@ -47,7 +47,7 @@
     "tar": "^6.1.13",
     "trim-newlines": "^4.0.2",
     "vinyl-named": "^1.1.0",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.0",
     "webpack-stream": "^7.0.0",
     "ws": ">=6.2.2",
     "yargs": "^17.7.1"
