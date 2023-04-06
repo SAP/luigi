@@ -10,7 +10,7 @@
     "style-loader": "^3.3.1",
     "svelte": "^3.55.0",
     "svelte-loader": "3.1.4",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.0",
     "webpack-cli": "^5.0.1",
     "concurrently": "^7.6.0",
     "local-web-server": "^5.2.1"
