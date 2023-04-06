@@ -464,7 +464,6 @@ class RoutingClass {
           }
         }
       }
-
       if (nodeObject.compound) {
         Iframe.switchActiveIframe(iframeElement, undefined, false);
         if (iContainer) {
@@ -623,7 +622,32 @@ class RoutingClass {
     window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
+  /**
+   * This function returns a generated unique web component id (tagname) based on the viewUrl provided as string.
+   * If a `tagName` is specified in the web component configuration object at the node, the function will return that `tagName`.
+   * @param {Object} navNode
+   * @returns specified tagName or a unique web component id as string
+   */
+  getGeneratedWCId(navNode) {
+    const { viewUrl, context } = navNode;
+    if (viewUrl) {
+      const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
+      return navNode.webcomponent && navNode.webcomponent.tagName
+        ? navNode.webcomponent.tagName
+        : WebComponentService.generateWCId(i18nViewUrl);
+    }
+  }
+
   navigateWebComponent(component, navNode) {
+    let wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
+    const wc_id = this.getGeneratedWCId(navNode);
+    // if true, do only a context update and not rerender the wc
+    if (navNode === wc_containerNode) {
+      const wc = document.querySelector(wc_id);
+      wc.context = navNode.context;
+      return;
+    }
+
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
@@ -632,11 +656,20 @@ class RoutingClass {
   }
 
   navigateWebComponentCompound(component, navNode) {
+    const wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
+    // if true, prevent rerendering of wc
+    if (
+      wc_containerNode === navNode &&
+      (!navNode.webcomponent || navNode.webcomponent) &&
+      (!navNode.viewUrl || navNode.viewUrl)
+    ) {
+      return;
+    }
+    const { compound } = navNode;
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
     const componentData = component.get();
-    const { compound } = navNode;
     if (compound && compound.children) {
       compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }

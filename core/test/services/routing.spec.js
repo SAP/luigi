@@ -386,6 +386,75 @@ describe('Routing', function() {
     });
   });
 
+  describe('navigateWebComponent', () => {
+    let c = {};
+    const wc_id = 'wc-id';
+    let node = {};
+    let wc = {};
+
+    afterEach(() => {
+      sinon.restore();
+    });
+    beforeEach(() => {
+      node = {
+        pathSegement: 'luigiwc',
+        label: 'Luigi WC',
+        viewUrl: '/luigiwc.js',
+        context: { luigi: 'rocks' }
+      };
+      wc = { _luigi_node: node, context: {} };
+      c = { get: () => {} };
+    });
+
+    it('navigateWebComponent only context update', () => {
+      const documentstub = sinon.stub(document, 'querySelector');
+      sinon.stub(Routing, 'removeLastChildFromWCContainer');
+      documentstub.withArgs(wc_id).returns(wc);
+      documentstub
+        .callThrough()
+        .withArgs('.wcContainer')
+        .callsFake(() => {
+          return {
+            _luigi_node: node
+          };
+        });
+      sinon.stub(Routing, 'getGeneratedWCId').callsFake(() => {
+        return 'wc-id';
+      });
+
+      //context update
+      node.context = { luigi: 'rocks 2x' };
+      Routing.navigateWebComponent(c, node);
+      assert.deepEqual(wc.context, { luigi: 'rocks 2x' });
+      sinon.assert.notCalled(Routing.removeLastChildFromWCContainer);
+    });
+
+    it('navigateWebComponent rerender', () => {
+      const documentstub = sinon.stub(document, 'querySelector');
+      sinon.stub(Routing, 'removeLastChildFromWCContainer');
+      documentstub
+        .callThrough()
+        .withArgs('.wcContainer')
+        .callsFake(() => {
+          return {
+            _luigi_node: node
+          };
+        });
+      sinon.stub(Routing, 'getGeneratedWCId').callsFake(() => {
+        return 'wc-id';
+      });
+
+      let node2 = {
+        pathSegement: 'luigiwc',
+        label: 'Luigi WC',
+        viewUrl: '/luigiwc.js',
+        context: { luigi: 'rocks' }
+      };
+      Routing.navigateWebComponent(component, node2);
+      sinon.assert.called(Routing.removeLastChildFromWCContainer);
+    });
+  });
+
   describe('handleRouteChange', () => {
     let currentLuigiConfig = {};
     let config;
@@ -520,6 +589,10 @@ describe('Routing', function() {
       };
       sinon.stub(Routing, 'navigateTo');
       sinon.stub(GenericHelpers, 'isElementVisible').callsFake(element => element);
+    });
+
+    afterEach(() => {
+      sinon.restore();
     });
 
     it('should set component data with hash path', async () => {
