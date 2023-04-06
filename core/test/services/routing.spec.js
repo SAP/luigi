@@ -1119,7 +1119,7 @@ describe('Routing', function() {
         setItem: sinon.stub()
       };
     });
-    it('open external link in same tab', () => {
+    it('open external link in same tab - full params', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
       const node = { context: { someValue: 'bar' }, externalLink };
       const pathParams = { otherParam: 'foo' };
@@ -1131,15 +1131,13 @@ describe('Routing', function() {
       sinon.assert.calledOnce(window.focus);
     });
 
-    it('open external link in new tab', () => {
-      const externalLink = { url: 'http://localhost', sameWindow: false };
-      const node = { context: { someValue: 'bar' }, externalLink };
-      const pathParams = { otherParam: 'foo' };
+    it('open external link in same tab  - one param only object', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: true };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink, node, pathParams);
+      Routing.navigateToExternalLink(externalLink);
       sinon.assert.calledOnce(window.open);
-      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
+      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
       sinon.assert.calledOnce(window.focus);
     });
   });
