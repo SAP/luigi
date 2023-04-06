@@ -130,7 +130,6 @@
   }
 
   export function goToRoot() {
-    console.log('test 2');
     getUnsavedChangesModalPromise().then(
       () => {
         Routing.navigateTo('/');
