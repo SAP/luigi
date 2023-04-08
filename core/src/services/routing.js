@@ -83,18 +83,13 @@ class RoutingClass {
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
     // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
     // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
-    let event;
-    if (GenericHelpers.isIE()) {
-      event = new Event('popstate', { bubbles: true, cancelable: true });
-    } else {
-      const eventDetail = {
-        detail: {
-          preventContextUpdate,
-          withoutSync: !navSync
-        }
-      };
-      event = new CustomEvent('popstate', eventDetail);
-    }
+    const eventDetail = {
+      detail: {
+        preventContextUpdate,
+        withoutSync: !navSync
+      }
+    };
+    const event = new CustomEvent('popstate', eventDetail);
 
     window.dispatchEvent(event);
   }
