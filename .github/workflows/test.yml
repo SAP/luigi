@@ -76,6 +76,7 @@ jobs:
       - run: bash ./test/e2e-angular.sh || exit 1
 
   cleanup: 
+    needs: e2e
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
     with:
