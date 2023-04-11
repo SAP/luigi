@@ -608,14 +608,16 @@ class RoutingClass {
   }
 
   navigateToExternalLink(externalLink, node, pathParams) {
-    const updatedExternalLink = {
-      ...NAVIGATION_DEFAULTS.externalLink,
-      ...externalLink
-    };
     if (node) {
+      const updatedExternalLink = {
+        ...NAVIGATION_DEFAULTS.externalLink,
+        ...(node?.externalLink || {})
+      };
       updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+      window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
+    } else if (GenericHelpers.isObject(externalLink)) {
+      window.open(externalLink.url, externalLink.sameWindow ? '_self' : '_blank').focus();
     }
-    window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
   /**
