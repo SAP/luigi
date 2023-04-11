@@ -86,7 +86,7 @@ jobs:
       - run: cd ./scripts && npm ci
       - run: bash ./scripts/docuCheck.sh
 
-  prepare: 
+  cleanup: 
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
     with:
