@@ -75,6 +75,13 @@ jobs:
       - run: bash ./test/e2e-js.sh || exit 1
       - run: bash ./test/e2e-angular.sh || exit 1
 
+  cleanup: 
+    uses: ./.github/workflows/cleanup.yml
+    secrets: inherit
+    with:
+      buildcache_key: buildcache
+        
+
   docu_check:
     name: Check Documentation
     runs-on: ubuntu-latest
@@ -85,10 +92,3 @@ jobs:
           node-version: '18'       
       - run: cd ./scripts && npm ci
       - run: bash ./scripts/docuCheck.sh
-
-  cleanup: 
-    uses: ./.github/workflows/cleanup.yml
-    secrets: inherit
-    with:
-      buildcache_key: buildcache
-        
