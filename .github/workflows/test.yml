@@ -85,4 +85,10 @@ jobs:
           node-version: '18'       
       - run: cd ./scripts && npm ci
       - run: bash ./scripts/docuCheck.sh
-      
+
+  prepare: 
+    uses: ./.github/workflows/cleanup.yml
+    secrets: inherit
+    with:
+      buildcache_key: buildcache
+        
