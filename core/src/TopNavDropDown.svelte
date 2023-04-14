@@ -66,7 +66,7 @@
       } else {
         Routing.handleRouteClick(node, getComponentWrapper());
       }
-    });
+    }, () => {});
     closeSubNav();
   }
 
@@ -121,7 +121,7 @@
           >
             <a
               href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
-              on:click={(event) => {
+              on:click={event => {
                 NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
               }}
               class="fd-menu__link"
