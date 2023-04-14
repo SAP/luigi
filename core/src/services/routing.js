@@ -202,18 +202,14 @@ class RoutingClass {
 
     // pretend the url hasn't been changed by browser default behaviour
     oldUrl && history.pushState(window.state, '', oldUrl);
-
-    return component
-      .getUnsavedChangesModalPromise()
-      .then(
-        // resolve unsaved changes promise
-        () => {
-          this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
-        },
-        // user clicks no, do nothing, reject promise
-        () => {}
-      )
-      .catch(() => {});
+    return component.getUnsavedChangesModalPromise().then(
+      // resolve unsaved changes promise
+      () => {
+        this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+      },
+      // user clicks no, do nothing, reject promise
+      () => {}
+    );
   }
 
   /**

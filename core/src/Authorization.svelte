@@ -154,7 +154,7 @@
       } else {
         Routing.navigateToLink(item);
       }
-    });
+    }, () => {});
     dispatch('toggleDropdownState');
   }
 
@@ -169,7 +169,7 @@
       } else {
         console.error('No IDP provider or profile.customLogoutFn is defined.');
       }
-    });
+    }, () => {});
   }
 
   export function onUserSettingsClick() {
@@ -246,7 +246,7 @@
               tabindex="0"
               class="fd-list__link"
               data-testid="luigi-topnav-profile-item"
-              on:click={(event) => {
+              on:click={event => {
                 NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
               }}
               href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
@@ -277,7 +277,7 @@
             role="listitem"
             class="fd-list__item fd-list__item--link lui-anchor-node"
             on:click|preventDefault={onUserSettingsClick}
-            on:keyup={(event) => handleKeyUp(event)}
+            on:keyup={event => handleKeyUp(event)}
           >
             <a
               tabindex="0"
