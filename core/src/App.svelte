@@ -2192,13 +2192,20 @@
 
   :global(.iframeContainer.iframeContainerTabNav) {
     top: calc(
-      var(--luigi__shellbar--height) + var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+      var(--luigi__shellbar--height) +
+        var(
+          --luigi__horizontal-nav--live-height,
+          var(--luigi__horizontal-nav--height)
+        )
     );
   }
 
   :global(.no-top-nav .iframeContainer.iframeContainerTabNav) {
     top: calc(
-      var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+      var(
+        --luigi__horizontal-nav--live-height,
+        var(--luigi__horizontal-nav--height)
+      )
     );
   }
 
