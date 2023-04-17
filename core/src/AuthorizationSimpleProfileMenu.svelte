@@ -153,7 +153,7 @@
       } else {
         Routing.navigateToLink(item);
       }
-    });
+    }, () => {});
     dispatch('toggleDropdownState');
   }
 
@@ -168,7 +168,7 @@
       } else {
         console.error('No IDP provider or profile.customLogoutFn is defined.');
       }
-    });
+    }, () => {});
   }
 
   export function onUserSettingsClick() {
@@ -214,7 +214,7 @@
             class="fd-menu__link"
             data-testid="luigi-topnav-profile-item"
             href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
-            on:click={(event) => {
+            on:click={event => {
               NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
             }}
           >
@@ -242,7 +242,7 @@
           tabindex="-1"
           class="fd-menu__item lui-anchor-node"
           on:click|preventDefault={onUserSettingsClick}
-          on:keyup={(event) => handleKeyUp(event)}
+          on:keyup={event => handleKeyUp(event)}
           data-testid={getTestId(profileNav.settings)}
         >
           <a
@@ -352,7 +352,7 @@
     overflow-y: auto;
   }
 
-  .lui-profile-simple-menu .lui-logout-btn{
+  .lui-profile-simple-menu .lui-logout-btn {
     text-align: left;
   }
 

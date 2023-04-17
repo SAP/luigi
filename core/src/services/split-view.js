@@ -217,18 +217,21 @@ class SplitViewSvcClass {
         .getUnsavedChangesModalPromise(
           comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
-        .then(() => {
-          if (comp.get().mfSplitView) {
-            comp.get().mfSplitView.displayed = false;
-            comp.get().mfSplitView.collapsed = false;
-            comp.set({ mfSplitView: comp.get().mfSplitView });
-          }
-          comp.dispatch('statusChanged', {
-            displayed: false
-          });
-          IframeHelpers.getIframeContainer().style.marginBottom = '';
-          SplitViewSvc.sendMessageToClients('close.ok');
-        });
+        .then(
+          () => {
+            if (comp.get().mfSplitView) {
+              comp.get().mfSplitView.displayed = false;
+              comp.get().mfSplitView.collapsed = false;
+              comp.set({ mfSplitView: comp.get().mfSplitView });
+            }
+            comp.dispatch('statusChanged', {
+              displayed: false
+            });
+            IframeHelpers.getIframeContainer().style.marginBottom = '';
+            SplitViewSvc.sendMessageToClients('close.ok');
+          },
+          () => {}
+        );
     } else if (comp.get().mfSplitView.displayed) {
       comp.get().mfSplitView.displayed = false;
       comp.set({ mfSplitView: comp.get().mfSplitView });
@@ -261,20 +264,23 @@ class SplitViewSvcClass {
         .getUnsavedChangesModalPromise(
           comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
-        .then(() => {
-          this.sendMessageToClients('internal', {
-            exists: true,
-            size: this.splitViewValues.percent,
-            collapsed: true
-          });
-          this.sendMessageToClients('collapse.ok');
-          comp.dispatch('statusChanged', {
-            displayed: true,
-            collapsed: true
-          });
-          this.getContainer().style.top = '';
-          IframeHelpers.getIframeContainer().style.marginBottom = '';
-        });
+        .then(
+          () => {
+            this.sendMessageToClients('internal', {
+              exists: true,
+              size: this.splitViewValues.percent,
+              collapsed: true
+            });
+            this.sendMessageToClients('collapse.ok');
+            comp.dispatch('statusChanged', {
+              displayed: true,
+              collapsed: true
+            });
+            this.getContainer().style.top = '';
+            IframeHelpers.getIframeContainer().style.marginBottom = '';
+          },
+          () => {}
+        );
     }
   }
 
