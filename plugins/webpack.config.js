@@ -33,6 +33,9 @@ const config = {
         }
       }
     ]
+  },
+  stats: {
+    errorDetails: true
   }
 };
 

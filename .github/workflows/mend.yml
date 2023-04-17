@@ -16,10 +16,10 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '18'
       - uses: actions/cache@v3
         with:
-          path: ./.cache
+          path: ~/.cache
           key: whitesource_cache          
       - run: sudo apt-get install build-essential python2 libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm --prefix ./client ci ./client

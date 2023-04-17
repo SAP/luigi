@@ -105,7 +105,11 @@ try {
 //   }
 // );
 
-build();
+build({
+  build: {
+   watch: {}
+ }
+ });
 
 var params = {
   port: 4100,

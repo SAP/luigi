@@ -30,5 +30,8 @@
     "ace-builds": "1.14.0",
     "fs-extra": "^11.1.0",
     "fundamental-styles": "0.23.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

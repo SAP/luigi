@@ -13,11 +13,9 @@
   "publishConfig": {
     "tag": "testing-utilities"
   },
-  "dependencies": {
-    "typescript": "^4.3.2"
-  },
   "devDependencies": {
-    "ncp": "^2.0.0"
+    "ncp": "^2.0.0",
+    "typescript": "4.8.2"
   },
   "repository": {
     "type": "git",
@@ -31,5 +29,8 @@
     "microfrontends",
     "testing"
   ],
-  "version": "2.0.1"
+  "version": "2.1.0",
+  "engines": {
+    "node": ">=18"
+  }
 }

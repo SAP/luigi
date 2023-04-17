@@ -56,5 +56,8 @@
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
