@@ -7,11 +7,10 @@
         "url": "ssh://github.com/SAP/luigi.git"
     },
     "peerDependencies": {
-        "@luigi-project/client": "^2.0.0"
+        "@luigi-project/client": "^2.0.1"
     },
-    "main": "vsiuol-support-lib.js",
     "publishConfig": {
-        "registry": "http://localhost:4873"
+        "tag": "client-support-ui5"
     },
-    "version": "0.0.4"
+    "version": "0.0.1"
 }

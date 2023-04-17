@@ -1,24 +1,51 @@
 sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-client'], function(JSONModel, LuigiClient) {
   const model = new JSONModel();
-
   LuigiClient.addInitListener(ctx => {
-    console.log('ctx init', ctx);
     model.setData(ctx);
   });
 
   LuigiClient.addContextUpdateListener(ctx => {
-    console.log('ctx update', ctx);
     model.setData(ctx);
   });
 
   return {
     connectTo: function(oComponent) {
       const routingConfig = oComponent.getManifestEntry('sap.ui5').routing;
-      oComponent.setModel(model, '$luigi');
+      oComponent.setModel(model, '$luigiCtx');
+
+      // Create preload view
+      sap.ui.define('luigi/DummyView', ['sap/ui/core/mvc/View', 'sap/ui/core/Control'], function(View) {
+        const DummyView = View.extend('luigi.DummyView', {
+          getControllerName: function() {},
+          createContent: function() {
+            return new sap.ui.core.HTML({ content: '<div></div>' });
+          }
+        });
+        return DummyView;
+      });
+
+      const oRouter = oComponent.getRouter();
+      oRouter.getTargets().addTarget('Preload', {
+        id: 'Preload',
+        name: 'module:luigi/DummyView',
+        type: 'View',
+        viewType: 'JS',
+        viewPath: '',
+        path: '',
+        level: 1
+      });
+      oRouter.addRoute({
+        pattern: '__preload__',
+        name: 'Preload',
+        target: 'Preload'
+      });
+
       oComponent.getRouter().attachRouteMatched(oEvent => {
         const currentRoute = oEvent.getParameter('name');
         const args = oEvent.getParameter('arguments');
         let currentRouteObj = {};
+
+        //find current route in manifest
         routingConfig.routes.every(routeObj => {
           if (routeObj.name === currentRoute) {
             currentRouteObj = routeObj;
@@ -28,12 +55,10 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
           return true;
         });
 
-        if (currentRouteObj) {
+        if (currentRouteObj && Object.keys(currentRouteObj).length > 0) {
           let lm = LuigiClient.linkManager().withoutSync();
           const ux = LuigiClient.uxManager();
           let route = currentRoute;
-          // TODO Is this check neccessary?
-          // if (currentRouteObj.target === currentRoute || (Array.isArray(currentRouteObj.target) && currentRouteObj.target.pop() === currentRoute)) {
           if (currentRouteObj.data) {
             if (currentRouteObj.data.luigiRoute) {
               route = currentRouteObj.data.luigiRoute;
@@ -42,10 +67,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
                 for (const [key, value] of Object.entries(currentRouteObj.arguments)) {
                   route = route.replace(`:${key}`, value);
                 }
-                // if (currentRouteObj.arguments['?query'] !== undefined) {
-                //     let searchParams = new URLSearchParams(currentRouteObj.arguments['?query']);
-                //     route += `?${searchParams.toString()}`;
-                // }
               }
               if (currentRouteObj.data.fromContext) {
                 if (currentRouteObj.data.fromContext === true) {
@@ -56,7 +77,6 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
               }
             } else {
               if (currentRouteObj.data.fromVirtualTreeRoot) {
-                console.log(oEvent);
                 let url = location.hash.split('#/')[1];
                 const truncate = currentRouteObj.data.fromVirtualTreeRoot.truncate;
                 if (truncate) {
@@ -78,10 +98,8 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
               lm.updateModalPathInternalNavigation(route, {}, currentRouteObj.data.addHistoryEntry);
             }
           } else if (route) {
-            route === 'main' ? (route = '') : route;
             lm.navigate(route);
           }
-          // }
         }
       });
     }

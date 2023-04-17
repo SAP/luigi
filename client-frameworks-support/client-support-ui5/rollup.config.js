@@ -1,3 +1,4 @@
+import copy from 'rollup-plugin-copy';
 export default {
   input: 'src/ui5-support-lib.js',
   output: {
@@ -5,5 +6,10 @@ export default {
     format: 'es',
     compact: true,
     sourcemap: 'inline'
-  }
+  },
+  plugins: [
+    copy({
+      targets: [{ src: 'src/README.md', dest: 'dist' }]
+    })
+  ]
 };
