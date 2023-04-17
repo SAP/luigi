@@ -143,6 +143,12 @@ else
     publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
   fi
 
+  # Luigi Client Support UI5
+  if ( prepublishCheck "client-frameworks-support/client-support-ui5/dist"); then
+    checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "ui5-support-lib.js" "README.md"
+    publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
+  fi
+
   # Luigi Testing Utilities
   if ( prepublishCheck "client-frameworks-support/testing-utilities/dist"); then
     checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
