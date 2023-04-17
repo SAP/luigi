@@ -4,8 +4,7 @@ export default {
   output: {
     file: 'dist/ui5-support-lib.js',
     format: 'es',
-    compact: true,
-    sourcemap: 'inline'
+    compact: true
   },
   plugins: [
     copy({

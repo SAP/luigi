@@ -67,7 +67,7 @@ const installPaths = {
   plugins: path.resolve(base, 'plugins'),
   client_support_angular: path.resolve(base, 'client-frameworks-support', 'client-support-angular'),
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities'),
-  client_support_angular: path.resolve(base, 'client-frameworks-support', 'client-support-ui5')
+  client_support_ui5: path.resolve(base, 'client-frameworks-support', 'client-support-ui5')
 };
 
 /**
