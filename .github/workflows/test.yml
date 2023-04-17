@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'main-gh_actions'
   pull_request:
     branches:
       - 'main'
@@ -24,7 +23,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
       - uses: actions/cache@v3
         with:
           path: |
@@ -32,7 +31,7 @@ jobs:
             ~/cypress-binary-cache
           key: buildcache
       - run: cp -r ~/tmp_build/* .
-      - run: npm test --prefix core
+      - run: npm test --prefix core || exit 1
 
   mock_engine:
     name: Mock Engine Tests
@@ -42,7 +41,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'    
+          node-version: '18'    
       - uses: actions/cache@v3
         with:
           path: |
@@ -53,7 +52,7 @@ jobs:
       - run: npm i -g cypress
       - run: npm i -g lerna@4.0.0
       - run: npm i -g live-server
-      - run: bash ./test/mockengine.sh
+      - run: bash ./test/mockengine.sh || exit 1
 
   e2e:
     name: Integration Tests
@@ -62,7 +61,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
       - uses: actions/cache@v3
         with:
           path: |
@@ -72,7 +71,9 @@ jobs:
       - run: cp -r ~/tmp_build/* .
       - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
-      - run: bash ./test/e2e.sh
+      - run: ls test 
+      - run: bash ./test/e2e-js.sh || exit 1
+      - run: bash ./test/e2e-angular.sh || exit 1
 
   docu_check:
     name: Check Documentation
@@ -81,7 +82,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'       
+          node-version: '18'       
       - run: cd ./scripts && npm ci
       - run: bash ./scripts/docuCheck.sh
       
