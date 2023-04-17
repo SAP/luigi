@@ -56,9 +56,10 @@ const pkgJsonPaths = {
     'client-support-angular',
     'package.json'
   ),
+  client_support_ui5: path.resolve(base, 'client-frameworks-support', 'client-support-ui5', 'dist', 'package.json'),
+  client_support_ui5_src: path.resolve(base, 'client-frameworks-support', 'client-support-ui5', 'package.json'),
   testing_utilities: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'dist', 'package.json'),
-  testing_utilities_src: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'package.json'),
-  client_support_ui5: path.resolve(base, 'client-frameworks-support', 'client-support-ui5', 'dist', 'package.json')
+  testing_utilities_src: path.resolve(base, 'client-frameworks-support', 'testing-utilities', 'package.json')
 };
 
 const installPaths = {
