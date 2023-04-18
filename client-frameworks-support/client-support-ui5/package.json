@@ -27,5 +27,13 @@
     "micro-frontends",
     "microfrontends",
     "testing"
-  ]
+  ],
+  "description": "Javascript library supporting consumers of the Luigi framework",
+  "license": "Apache-2.0",
+  "peerDependencies": {
+    "@luigi-project/client": "^2.0.1"
+  },
+  "publishConfig": {
+    "tag": "client-support-ui5"
+  }
 }
