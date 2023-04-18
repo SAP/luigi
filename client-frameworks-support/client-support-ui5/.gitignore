@@ -1,5 +1,3 @@
 node_modules
 dist
 vulsCount.txt
-
-dist/ui5-support-lib.js
