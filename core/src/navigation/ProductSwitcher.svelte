@@ -39,7 +39,7 @@
   export function onActionClick(productSwitcherItem) {
     getUnsavedChangesModalPromise().then(() => {
       Routing.navigateToLink(productSwitcherItem);
-    });
+    }, () => {});
     toggleDropdownState();
   }
 
@@ -108,15 +108,15 @@
               title={config.label}
               data-testid={getTestId(config)}
             >
-                {#if hasOpenUIicon(config)}
-                  <!-- default: sap-icon--grid -->
-                  <i class="sap-icon {getSapIconStr(config.icon)}" />
-                {:else}
-                  <img
-                    src={config.icon}
-                    alt={config.altText ? config.altText : ''}
-                  />
-                {/if}
+              {#if hasOpenUIicon(config)}
+                <!-- default: sap-icon--grid -->
+                <i class="sap-icon {getSapIconStr(config.icon)}" />
+              {:else}
+                <img
+                  src={config.icon}
+                  alt={config.altText ? config.altText : ''}
+                />
+              {/if}
             </button>
           </div>
           <div
@@ -138,8 +138,10 @@
                       {#if addNavHrefForAnchor}
                         <a
                           href={getRouteLink(productSwitcherItem)}
-                          on:click={(event) => {
-                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+                          on:click={event => {
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
+                              event
+                            );
                           }}
                           class="fd-menu__link"
                         >

@@ -386,6 +386,75 @@ describe('Routing', function() {
     });
   });
 
+  describe('navigateWebComponent', () => {
+    let c = {};
+    const wc_id = 'wc-id';
+    let node = {};
+    let wc = {};
+
+    afterEach(() => {
+      sinon.restore();
+    });
+    beforeEach(() => {
+      node = {
+        pathSegement: 'luigiwc',
+        label: 'Luigi WC',
+        viewUrl: '/luigiwc.js',
+        context: { luigi: 'rocks' }
+      };
+      wc = { _luigi_node: node, context: {} };
+      c = { get: () => {} };
+    });
+
+    it('navigateWebComponent only context update', () => {
+      const documentstub = sinon.stub(document, 'querySelector');
+      sinon.stub(Routing, 'removeLastChildFromWCContainer');
+      documentstub.withArgs(wc_id).returns(wc);
+      documentstub
+        .callThrough()
+        .withArgs('.wcContainer')
+        .callsFake(() => {
+          return {
+            _luigi_node: node
+          };
+        });
+      sinon.stub(Routing, 'getGeneratedWCId').callsFake(() => {
+        return 'wc-id';
+      });
+
+      //context update
+      node.context = { luigi: 'rocks 2x' };
+      Routing.navigateWebComponent(c, node);
+      assert.deepEqual(wc.context, { luigi: 'rocks 2x' });
+      sinon.assert.notCalled(Routing.removeLastChildFromWCContainer);
+    });
+
+    it('navigateWebComponent rerender', () => {
+      const documentstub = sinon.stub(document, 'querySelector');
+      sinon.stub(Routing, 'removeLastChildFromWCContainer');
+      documentstub
+        .callThrough()
+        .withArgs('.wcContainer')
+        .callsFake(() => {
+          return {
+            _luigi_node: node
+          };
+        });
+      sinon.stub(Routing, 'getGeneratedWCId').callsFake(() => {
+        return 'wc-id';
+      });
+
+      let node2 = {
+        pathSegement: 'luigiwc',
+        label: 'Luigi WC',
+        viewUrl: '/luigiwc.js',
+        context: { luigi: 'rocks' }
+      };
+      Routing.navigateWebComponent(component, node2);
+      sinon.assert.called(Routing.removeLastChildFromWCContainer);
+    });
+  });
+
   describe('handleRouteChange', () => {
     let currentLuigiConfig = {};
     let config;
@@ -520,6 +589,10 @@ describe('Routing', function() {
       };
       sinon.stub(Routing, 'navigateTo');
       sinon.stub(GenericHelpers, 'isElementVisible').callsFake(element => element);
+    });
+
+    afterEach(() => {
+      sinon.restore();
     });
 
     it('should set component data with hash path', async () => {
@@ -1046,25 +1119,34 @@ describe('Routing', function() {
         setItem: sinon.stub()
       };
     });
-    it('open external link in same tab', () => {
+    it('open external link in same tab - full params', () => {
       const externalLink = { url: 'http://localhost', sameWindow: true };
       const node = { context: { someValue: 'bar' }, externalLink };
       const pathParams = { otherParam: 'foo' };
+      const url = 'test';
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink, node, pathParams);
+      Routing.navigateToExternalLink(url, node, pathParams);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
       sinon.assert.calledOnce(window.focus);
     });
 
-    it('open external link in new tab', () => {
-      const externalLink = { url: 'http://localhost', sameWindow: false };
-      const node = { context: { someValue: 'bar' }, externalLink };
-      const pathParams = { otherParam: 'foo' };
+    it('open external link in same tab  - one param only object', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: true };
       sinon.stub(window, 'focus');
       sinon.stub(window, 'open').returns(window);
-      Routing.navigateToExternalLink(externalLink, node, pathParams);
+      Routing.navigateToExternalLink(externalLink);
+      sinon.assert.calledOnce(window.open);
+      sinon.assert.calledWithExactly(window.open, 'http://localhost', '_self');
+      sinon.assert.calledOnce(window.focus);
+    });
+
+    it('open external link in same tab  - one param only object', () => {
+      const externalLink = { url: 'http://localhost', sameWindow: false };
+      sinon.stub(window, 'focus');
+      sinon.stub(window, 'open').returns(window);
+      Routing.navigateToExternalLink(externalLink);
       sinon.assert.calledOnce(window.open);
       sinon.assert.calledWithExactly(window.open, 'http://localhost', '_blank');
       sinon.assert.calledOnce(window.focus);
