@@ -512,7 +512,7 @@ class NavigationHelpersClass {
 
   /**
    * Replace the node label with the live custom data from the view group settings.
-   * @param {*} node
+   * @param {Object} node
    * @returns node label
    */
   getNodeLabel(node) {

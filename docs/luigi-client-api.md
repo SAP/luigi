@@ -427,7 +427,7 @@ This function allows you to change node lables within the same view group, e.g. 
 
 ##### Parameters
 
--   `data` **any** 
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 ##### Examples
 
