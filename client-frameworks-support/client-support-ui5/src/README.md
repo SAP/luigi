@@ -107,7 +107,7 @@ If data `"data": {"luigiRoute": "/app1/products"}` is defined on a route, Luigi 
 ```javascript
     luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
 ```
-with `data: { fromVirtualTreeRoot: true }`, Luigi Client API can be used in this way:
+with `data: { fromVirtualTreeRoot: true }`, Luigi Client API will be called in this way:
 ```javascript
     luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
 ```
