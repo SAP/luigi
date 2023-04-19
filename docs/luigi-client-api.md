@@ -421,6 +421,24 @@ LuigiClient.setAnchor('luigi');
 
 -   **since**: 1.21.0
 
+#### setViewGroupData
+
+This function allows you to change node lables within the same view group, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+
+##### Parameters
+
+-   `data` **any** 
+
+##### Examples
+
+```javascript
+LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 ### Lifecycle~initListenerCallback
 
 Callback of the addInitListener
