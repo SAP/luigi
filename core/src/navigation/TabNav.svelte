@@ -338,7 +338,7 @@
                           toggleDropdownState(key + index)}
                       >
                         <span class="fd-nested-list__title"
-                          >{getNodeLabel(node)}</span
+                          >{$getTranslation(key)}</span
                         >
                       </a>
                       <button
