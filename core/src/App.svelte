@@ -1789,7 +1789,6 @@
         if (vg) {
           const vgSettings = Iframe.getViewGroupSettings(vg);
           vgSettings._liveCustomData = vgData.data;
-          //console.log('Received viewgroup data:', vgData, vgSettings);
           LuigiConfig.configChanged('navigation.nodes');
         }
       }

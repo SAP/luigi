@@ -20,8 +20,7 @@
   import BadgeCounter from './BadgeCounter.svelte';
   import StatusBadge from './StatusBadge.svelte';
   import { KEYCODE_ENTER } from '../utilities/keycode';
-  import { Iframe } from '../services/iframe';
-
+  
   //TODO refactor
   const __this = {
     get: () => ({
@@ -198,17 +197,7 @@
   let addNavHrefForAnchor = false;
 
   const getNodeLabel = (node) => {
-    let label = $getTranslation(node.label);
-    
-    const vg = RoutingHelpers.findViewGroup(node);
-
-    if (vg) {
-      const vgSettings = Iframe.getViewGroupSettings(vg) || {};
-      let cdata = {...(vgSettings.customData || {}), ...(vgSettings._liveCustomData || {})};
-      label = GenericHelpers.replaceVars(label, cdata, 'viewGroupData.');
-    }
-
-    return label;
+    return NavigationHelpers.getNodeLabel(node);
   }
 
   const setLeftNavData = async () => {
@@ -584,10 +573,7 @@
                       <li class="fd-nested-list__item">
                         <a
                           href={getRouteLink(node)}
-                          title={resolveTooltipText(
-                            node,
-                            getNodeLabel(node)
-                          )}
+                          title={resolveTooltipText(node, getNodeLabel(node))}
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
@@ -893,10 +879,7 @@
                       {#if node.label}
                         <li
                           class="fd-nested-list__item"
-                          title={resolveTooltipText(
-                            node,
-                            getNodeLabel(node)
-                          )}
+                          title={resolveTooltipText(node, getNodeLabel(node))}
                           aria-labelledby="category_list_level1_{index}"
                         >
                           <a
@@ -1001,7 +984,6 @@
 <style type="text/scss">
   @import 'src/styles/_mixins.scss';
   @import 'src/styles/_variables.scss';
-
 
   :root {
     /* needed for IE11 support */
@@ -1398,7 +1380,6 @@
       max-height: 190px;
       overflow-y: auto;
     }
-
 
     &.has-bottom-position {
       .lui-flyout-sublist__wrapper {

@@ -4,6 +4,7 @@ import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
 import { reject, get } from 'lodash';
+import { Iframe } from '../../services/iframe';
 
 class NavigationHelpersClass {
   constructor() {
@@ -507,6 +508,24 @@ class NavigationHelpersClass {
       event.stopPropagation();
       return false;
     }
+  }
+
+  /**
+   * Replace the node label with the live custom data from the view group settings.
+   * @param {*} node
+   * @returns node label
+   */
+  getNodeLabel(node) {
+    let label = LuigiI18N.getTranslation(node.label);
+    const vg = RoutingHelpers.findViewGroup(node);
+
+    if (vg) {
+      const vgSettings = Iframe.getViewGroupSettings(vg) || {};
+      let cdata = { ...(vgSettings.customData || {}), ...(vgSettings._liveCustomData || {}) };
+      label = GenericHelpers.replaceVars(label, cdata, 'viewGroupData.');
+    }
+
+    return label;
   }
 }
 

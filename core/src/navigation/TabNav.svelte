@@ -51,6 +51,10 @@
 
   const dispatch = createEventDispatcher();
 
+  function getNodeLabel(node) {
+    return NavigationHelpers.getNodeLabel(node);
+  }
+
   const setTabNavData = async () => {
     const componentData = __this.get();
     const tabNavData = await Navigation.getTabNavData(
@@ -218,9 +222,7 @@
                       aria-selected={node === selectedNodeForTabNav}
                       on:click|preventDefault={() => handleClick(node)}
                     >
-                      <span class="fd-tabs__tag"
-                        >{$getTranslation(node.label)}</span
-                      >
+                      <span class="fd-tabs__tag">{getNodeLabel(node)}</span>
                     </a>
                   </span>
                 {/if}
@@ -266,7 +268,7 @@
                                 aria-selected={node === selectedNodeForTabNav}
                               >
                                 <span class="fd-menu__title"
-                                  >{$getTranslation(node.label)}</span
+                                  >{getNodeLabel(node)}</span
                                 >
                               </a>
                             </li>
@@ -313,7 +315,7 @@
                         aria-selected={node === selectedNodeForTabNav}
                       >
                         <span class="fd-nested-list__title"
-                          >{$getTranslation(node.label)}</span
+                          >{getNodeLabel(node)}</span
                         >
                       </a>
                     </li>
@@ -336,7 +338,7 @@
                           toggleDropdownState(key + index)}
                       >
                         <span class="fd-nested-list__title"
-                          >{$getTranslation(key)}</span
+                          >{getNodeLabel(node)}</span
                         >
                       </a>
                       <button
@@ -373,7 +375,7 @@
                             aria-selected={node === selectedNodeForTabNav}
                           >
                             <span class="fd-nested-list__title"
-                              >{$getTranslation(node.label)}</span
+                              >{getNodeLabel(node)}</span
                             >
                           </a>
                         </li>
