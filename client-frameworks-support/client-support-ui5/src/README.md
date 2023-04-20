@@ -24,7 +24,7 @@ npm install @luigi-project/client-support-ui5
 sap.ui.define([
 	"sap/ui/core/UIComponent",
     ....
-	"luigiclient/lib/LuigiClient",
+	"@luigi-project/client-support-ui5/ui5-support-lib",
 ], function (UIComponent,...., Ui5SupportLib) {
     return UIComponent.extend("com.sap.luigiclient.Component", {
 		....
