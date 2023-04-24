@@ -28,9 +28,9 @@ Below, you can find some simple examples on how to keep routing in sync for diff
 
 <!-- accordion:start -->
 
-## Angular routing
+### Angular routing
 
-### Overview
+#### Overview
 
 If your use case involves Angular routing, it is recommended that you use the [Luigi Client Angular support library](framework-support-libraries.md#angular-support-library). The library contains routing features providing an easier way to synchronize applications. If you want to find out how this process works under the hood, you can read the example below. 
 
@@ -38,7 +38,7 @@ This example shows you how to keep an existing routing strategy and use an exist
 
 If you are running Luigi Core v0.7.7+, you can use [fromClosestContext](luigi-client-api.md#fromclosestcontext) instead of `fromVirtualTreeRoot`, which requires a [navigationContext](luigi-client-api.md#navigationcontext) at the `virtualTree` node configuration.
 
-### Steps
+#### Steps
 
 1. Configure the Luigi navigation node:
 
@@ -105,19 +105,19 @@ export class LuigiAutoNavigationService implements OnDestroy {
 ```
 
 
-### Result
+#### Result
 
 Other than the added service, which you can also implement as a `RouteGuard` or similar, the micro frontend is unchanged and uses `[routerLink='']` or other functionality to navigate.
 
 
 
-## SvelteKit routing
+### SvelteKit routing
 
-### Overview
+#### Overview
 
 This example shows the steps to use Luigi with routing based on SvelteKit. It is also meant to show how to keep Luigi Core in sync with a Svelte micro frontend.
 
-### Steps 
+#### Steps 
 
 1. Create a SvelteKit app by following the steps [here](https://kit.svelte.dev/docs/introduction#getting-started).
 
@@ -221,13 +221,13 @@ Luigi.setConfig({
 5. If you don't want to specify each subsequent navigation node in your application, you can use Luigi's [virtualTree](navigation-parameters-reference.md#virtualtree) feature.
 
 
-## React routing
+### React routing
 
-### Overview
+#### Overview
 
 This example provides general instructions on how to implement routing with React. The specifics might depend on which version of React you are using. 
 
-### Steps 
+#### Steps 
 
 1. In your Luigi configuration file, set [virtualTree](navigation-parameters-reference.md#virtualtree) to `true` for the node where you want to use React routing. This allows navigation to any of the node children's paths without the need for specifying them on the Luigi Core level.
 
