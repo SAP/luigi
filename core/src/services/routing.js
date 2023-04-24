@@ -83,18 +83,13 @@ class RoutingClass {
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
     // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
     // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
-    let event;
-    if (GenericHelpers.isIE()) {
-      event = new Event('popstate', { bubbles: true, cancelable: true });
-    } else {
-      const eventDetail = {
-        detail: {
-          preventContextUpdate,
-          withoutSync: !navSync
-        }
-      };
-      event = new CustomEvent('popstate', eventDetail);
-    }
+    const eventDetail = {
+      detail: {
+        preventContextUpdate,
+        withoutSync: !navSync
+      }
+    };
+    const event = new CustomEvent('popstate', eventDetail);
 
     window.dispatchEvent(event);
   }
@@ -202,18 +197,14 @@ class RoutingClass {
 
     // pretend the url hasn't been changed by browser default behaviour
     oldUrl && history.pushState(window.state, '', oldUrl);
-
-    return component
-      .getUnsavedChangesModalPromise()
-      .then(
-        // resolve unsaved changes promise
-        () => {
-          this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
-        },
-        // user clicks no, do nothing, reject promise
-        () => {}
-      )
-      .catch(() => {});
+    return component.getUnsavedChangesModalPromise().then(
+      // resolve unsaved changes promise
+      () => {
+        this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+      },
+      // user clicks no, do nothing, reject promise
+      () => {}
+    );
   }
 
   /**
@@ -612,14 +603,16 @@ class RoutingClass {
   }
 
   navigateToExternalLink(externalLink, node, pathParams) {
-    const updatedExternalLink = {
-      ...NAVIGATION_DEFAULTS.externalLink,
-      ...externalLink
-    };
     if (node) {
+      const updatedExternalLink = {
+        ...NAVIGATION_DEFAULTS.externalLink,
+        ...(node?.externalLink || {})
+      };
       updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+      window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
+    } else if (GenericHelpers.isObject(externalLink)) {
+      window.open(externalLink.url, externalLink.sameWindow ? '_self' : '_blank').focus();
     }
-    window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
   }
 
   /**

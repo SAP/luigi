@@ -212,29 +212,35 @@
   }
 
   export function goToPath(path) {
-    getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateTo(path);
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        Routing.navigateTo(path);
+      },
+      () => {}
+    );
   }
 
   export function goToOption(event) {
     let option = event.detail.option;
     let selectedOption = event.detail.selectedOption;
-    getUnsavedChangesModalPromise().then(() => {
-      if (preserveSubPathOnSwitch && selectedOption) {
-        Routing.navigateTo(
-          ContextSwitcherHelpers.getNodePathFromCurrentPath(
-            option,
-            selectedOption
-          )
-        );
-      } else {
-        Routing.navigateTo(option.link);
-      }
-      if (isMobile) {
-        dispatch('toggleDropdownState');
-      }
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        if (preserveSubPathOnSwitch && selectedOption) {
+          Routing.navigateTo(
+            ContextSwitcherHelpers.getNodePathFromCurrentPath(
+              option,
+              selectedOption
+            )
+          );
+        } else {
+          Routing.navigateTo(option.link);
+        }
+        if (isMobile) {
+          dispatch('toggleDropdownState');
+        }
+      },
+      () => {}
+    );
   }
 
   export function toggleDropdownState() {

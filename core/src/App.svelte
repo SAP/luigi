@@ -245,18 +245,26 @@
     return paths.includes(removeQueryParams(routePath));
   };
 
+  /**
+   * Clears the dirty state when dirty state promise resolves and dirty state is not needed anymore
+   * @param source used for drawers/modals/split view wc and iframe when source is needed to differentiate which mf is affected
+   */
+  const clearDirtyState = (source) => {
+    if (unsavedChanges && unsavedChanges.dirtySet) {
+      if (source) {
+        unsavedChanges.dirtySet.delete(source);
+      } else {
+        unsavedChanges.dirtySet.clear();
+      }
+    }
+  };
+
   const getUnsavedChangesModalPromise = (source) => {
     return new Promise((resolve, reject) => {
       if (shouldShowUnsavedChangesModal(source)) {
         showUnsavedChangesModal().then(
           () => {
-            if (unsavedChanges && unsavedChanges.dirtySet) {
-              if (source) {
-                unsavedChanges.dirtySet.delete(source);
-              } else {
-                unsavedChanges.dirtySet.clear();
-              }
-            }
+            clearDirtyState();
             resolve();
           },
           () => {
@@ -502,23 +510,26 @@
 
   const handleNavClick = (event) => {
     const node = event.detail.node;
-    getUnsavedChangesModalPromise().then(() => {
-      closeLeftNav();
-      if (node.openNodeInModal) {
-        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        openViewInModal(
-          route,
-          node.openNodeInModal === true ? {} : node.openNodeInModal
-        );
-      } else if (node.drawer) {
-        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        node.drawer.isDrawer = true;
-        openViewInDrawer(route, node.drawer);
-      } else {
-        getComponentWrapper().set({ isNavigationSyncEnabled: true });
-        Routing.handleRouteClick(node, getComponentWrapper());
-      }
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        closeLeftNav();
+        if (node.openNodeInModal) {
+          const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+          openViewInModal(
+            route,
+            node.openNodeInModal === true ? {} : node.openNodeInModal
+          );
+        } else if (node.drawer) {
+          const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+          node.drawer.isDrawer = true;
+          openViewInDrawer(route, node.drawer);
+        } else {
+          getComponentWrapper().set({ isNavigationSyncEnabled: true });
+          Routing.handleRouteClick(node, getComponentWrapper());
+        }
+      },
+      () => {}
+    );
   };
 
   const onResizeTabNav = () => {
@@ -898,7 +909,9 @@
   };
 
   export const getDirtyStatus = () => {
-    return unsavedChanges.dirtySet ? unsavedChanges.dirtySet.size > 0 : unsavedChanges.isDirty;
+    return unsavedChanges.dirtySet
+      ? unsavedChanges.dirtySet.size > 0
+      : unsavedChanges.isDirty;
   };
 
   setContext('getUnsavedChangesModalPromise', getUnsavedChangesModalPromise);
@@ -1000,7 +1013,8 @@
         () => {
           resetModalData(index, isClosedInternal);
           rp && rp.doResolve(goBackContext);
-        }
+        },
+        () => {}
       );
     } else if (targetModal && targetModal.modalWC) {
       resetModalData(index, isClosedInternal);
@@ -1087,13 +1101,19 @@
     ) {
       try {
         if (drawerIframe) {
-          getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(() => {
-            resetMicrofrontendDrawerData();
-          });
+          getUnsavedChangesModalPromise(drawerIframe.contentWindow).then(
+            () => {
+              resetMicrofrontendDrawerData();
+            },
+            () => {}
+          );
         } else if (drawerWC) {
-          getUnsavedChangesModalPromise().then(() => {
-            resetMicrofrontendDrawerData();
-          });
+          getUnsavedChangesModalPromise().then(
+            () => {
+              resetMicrofrontendDrawerData();
+            },
+            () => {}
+          );
         }
         IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
       } catch (e) {
@@ -1569,21 +1589,24 @@
         } else {
           // go back: context from the view
           if (preservedViews && preservedViews.length > 0) {
-            getUnsavedChangesModalPromise().then(() => {
-              // remove current active iframe and data
-              Iframe.setActiveIframeToPrevious(node);
-              const previousActiveIframeData = preservedViews.pop();
-              // set new active iframe and preservedViews
-              config.iframe = Iframe.getActiveIframe(node);
-              isNavigateBack = true;
-              preservedViews = preservedViews;
-              goBackContext = _goBackContext;
-              // TODO: check if getNavigationPath or history pop to update hash / path
-              handleNavigation(
-                { params: { link: previousActiveIframeData.path } },
-                config
-              );
-            });
+            getUnsavedChangesModalPromise().then(
+              () => {
+                // remove current active iframe and data
+                Iframe.setActiveIframeToPrevious(node);
+                const previousActiveIframeData = preservedViews.pop();
+                // set new active iframe and preservedViews
+                config.iframe = Iframe.getActiveIframe(node);
+                isNavigateBack = true;
+                preservedViews = preservedViews;
+                goBackContext = _goBackContext;
+                // TODO: check if getNavigationPath or history pop to update hash / path
+                handleNavigation(
+                  { params: { link: previousActiveIframeData.path } },
+                  config
+                );
+              },
+              () => {}
+            );
           } else {
             if (_goBackContext) {
               console.warn(
@@ -1893,7 +1916,7 @@
   });
 
   beforeUpdate(() => {
-    breadcrumbsEnabled = LuigiConfig.getConfigValue('navigation.breadcrumbs')
+    breadcrumbsEnabled = LuigiConfig.getConfigValue('navigation.breadcrumbs');
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     configTag = LuigiConfig.getConfigValue('tag');
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
@@ -1921,8 +1944,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
