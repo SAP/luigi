@@ -32,7 +32,7 @@ Below, you can find some simple examples on how to keep routing in sync for diff
 
 ### Overview
 
-If your use case involves Angular routing, it is recommended that you use the [Angular Client Support Library](framework-support-libraries.md#angular-support-library). The library contains routing features providing an easier way to synchronize applications. If you want to find out how this process works under the hood, you can read the example below. 
+If your use case involves Angular routing, it is recommended that you use the [Luigi Client Angular support library](framework-support-libraries.md#angular-support-library). The library contains routing features providing an easier way to synchronize applications. If you want to find out how this process works under the hood, you can read the example below. 
 
 This example shows you how to keep an existing routing strategy and use an existing micro frontend as drop-in without the need to refactor everything to [`LuigiClient.linkManager()`](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager). To update the Luigi Core URL when routing internally with the micro frontend router, without updating the URL on the Luigi Client side, use the `linkManager()` [withoutSync](luigi-client-api.md#withoutsync) and [fromVirtualTreeRoot](luigi-client-api.md#fromvirtualtreeroot) methods.
 
