@@ -1,5 +1,5 @@
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext, onDestroy } from 'svelte';
+  import { afterUpdate, beforeUpdate, createEventDispatcher, onMount, getContext, onDestroy } from 'svelte';
   import { Navigation } from './services/navigation';
   import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
@@ -140,7 +140,7 @@
     if(resizeObserver) {
       resizeObserver.disconnect();
     }
-    document.documentElement.style.setProperty('--luigi__horizontal-nav--live-height', '0');
+    document.documentElement.style.removeProperty('--luigi__horizontal-nav--live-height');
   }
 
 
@@ -166,6 +166,17 @@
     ) {
       previousResizeTabNavToggle = resizeTabNavToggle;
       setTabNavData();
+    }
+  });
+
+  afterUpdate(() => {
+    resetResizeObserver();
+    if (!resizeObserver) {
+      handleHorizontalNavHeightChange();
+    } else {
+      setTimeout(() => {
+        resizeObserver.observe(document.querySelector('#tabsContainer.lui-tabs'));
+      });
     }
   });
 
