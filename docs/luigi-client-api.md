@@ -423,11 +423,11 @@ LuigiClient.setAnchor('luigi');
 
 #### setViewGroupData
 
-This function allows you to change node lables within the same view group, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+This function allows you to change node labels within the same [view group](navigation-advanced.md#view-groups), e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
 
 ##### Parameters
 
--   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a data object containing the view group name and desired label
 
 ##### Examples
 

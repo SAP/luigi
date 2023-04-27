@@ -561,9 +561,9 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * This function allows you to change node lables within the same view group, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+   * This function allows you to change node labels within the same {@link navigation-advanced.md#view-groups view group}, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
    * @since NEXTRELEASE
-   * @param {Object} data
+   * @param {Object} data a data object containing the view group name and desired label
    * @memberof Lifecycle
    * @example LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
    */
