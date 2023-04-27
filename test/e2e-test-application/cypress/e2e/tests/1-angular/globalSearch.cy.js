@@ -73,7 +73,7 @@ describe('Global Search', () => {
       cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
         .should('be.visible')
         .children()
-        .should('have.length', 6);
+        .should('have.length', 8);
     });
 
     it('Click on Projects result', () => {

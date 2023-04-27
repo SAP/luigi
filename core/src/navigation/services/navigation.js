@@ -349,7 +349,7 @@ class NavigationClass {
           if (node.keepSelectedForChildren === false) {
             // explicitly set to false
             childToKeepFound = true;
-          } else if (node.keepSelectedForChildren || node.tabNav) {
+          } else if (node.keepSelectedForChildren || (node.tabNav && !RoutingHelpers.isDynamicNode(node))) {
             childToKeepFound = true;
             res = [];
           }
