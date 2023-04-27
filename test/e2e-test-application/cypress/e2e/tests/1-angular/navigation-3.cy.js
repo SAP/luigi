@@ -127,12 +127,24 @@ describe('Navigation', () => {
           .click();
         cy.expectPathToBe('/projects/tabNav/dps1');
       });
+
+      it('open horizontal tab nav header microfrontend', () => {
+        cy.get('[data-testid="tabnavheader_tabnavheader"]').click();
+        cy.get('.lui-tab-header>')
+          .shadow()
+          .find('p')
+          .contains('Hello World from a TabNav Header microfrontend!');
+        cy.getIframeBody().then(result => {
+          cy.wrap(result).contains('Global Settings');
+        });
+      });
     });
 
     context('Mobile', () => {
       beforeEach(() => {
         cy.viewport('iphone-6');
       });
+
       it('Horizontal Navigation on mobile', () => {
         cy.get('[data-testid="mobile-menu"]').click();
         cy.get('[data-testid="projects_projects-mobile"]').click();
@@ -207,6 +219,18 @@ describe('Navigation', () => {
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous2')
             .should('be.visible');
+        });
+      });
+
+      it('open horizontal tab nav header microfrontend', () => {
+        cy.get('[data-testid="mobile-menu"]').click();
+        cy.get('[data-testid="tabnavheader_tabnavheader-mobile"]').click();
+        cy.get('.lui-tab-header>')
+          .shadow()
+          .find('p')
+          .contains('Hello World from a TabNav Header microfrontend!');
+        cy.getIframeBody().then(result => {
+          cy.wrap(result).contains('Global Settings');
         });
       });
     });
