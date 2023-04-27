@@ -23,10 +23,10 @@
   "keywords": [
     "luigi",
     "UI",
+    "UI5",
     "extensibility",
     "micro-frontends",
-    "microfrontends",
-    "testing"
+    "microfrontends"
   ],
   "description": "Javascript library supporting consumers of the Luigi framework",
   "license": "Apache-2.0",
