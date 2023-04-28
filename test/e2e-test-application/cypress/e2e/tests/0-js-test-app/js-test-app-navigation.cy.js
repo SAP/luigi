@@ -182,6 +182,80 @@ describe('JS-TEST-APP', () => {
         cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Default collapse tooltip');
       });
     });
+    describe('Viewgroup live settings', () => {
+      let newConfig;
+      let $iframeBody;
+      const additionalChildren = [
+        {
+          pathSegment: 'mfe1',
+          label: 'MFE 1 {viewGroupData.foo}',
+          icon: 'home',
+          viewUrl: 'mfe.html#1',
+          viewGroup: 'vg1'
+        },
+        {
+          pathSegment: 'mfe2',
+          label: 'MFE 2 {viewGroupData.foo}',
+          icon: 'home',
+          viewUrl: 'mfe.html#2',
+          viewGroup: 'vg2'
+        },
+        {
+          pathSegment: 'mfe3',
+          label: 'MFE 3 {viewGroupData.bar}',
+          icon: 'home',
+          viewUrl: 'mfe.html#3',
+          viewGroup: 'vg2'
+        }
+      ];
+      beforeEach(() => {
+        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig.tag = 'viewgroup-live-settings';
+        newConfig.navigation['viewGroupSettings'] = {
+          vg1: {},
+          vg2: {}
+        };
+      });
+
+      it('viewgroup live settings on single node', () => {
+        console.log('newConfig.navigation.nodes[0]', newConfig.navigation.nodes[0]);
+        newConfig.navigation.nodes[0].children.push(
+          {
+            pathSegment: 'mfe1',
+            label: 'MFE 1 {viewGroupData.foo}',
+            icon: 'home',
+            viewUrl: '/examples/microfrontends/multipurpose.html',
+            viewGroup: 'vg1'
+          },
+          {
+            pathSegment: 'mfe2',
+            label: 'MFE 2 {viewGroupData.foo}',
+            icon: 'home',
+            viewUrl: 'mfe.html#2',
+            viewGroup: 'vg2'
+          },
+          {
+            pathSegment: 'mfe3',
+            label: 'MFE 3 {viewGroupData.bar}',
+            icon: 'home',
+            viewUrl: 'mfe.html#3',
+            viewGroup: 'vg2'
+          }
+        );
+        cy.visitTestApp('/home/mfe1', newConfig);
+        cy.get('#app[configversion="viewgroup-live-settings"]');
+        cy.get('.fd-app__sidebar').should('not.contain', 'MFE 1 Luigi rocks');
+        cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+          $iframeBody = result;
+          cy.wrap($iframeBody)
+            .find('#vgDataUpdate')
+            .contains('Set view group data')
+            .click();
+        });
+
+        cy.get('.fd-app__sidebar').contains('MFE 1 Luigi rocks');
+      });
+    });
   });
   describe('ContextSwitcher', () => {
     let newConfig;

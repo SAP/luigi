@@ -1805,6 +1805,16 @@
         const { anchor } = e.data;
         LuigiRouting.setAnchor(anchor);
       }
+
+      if ('luigi.setVGData' === e.data.msg) {
+        const vgData = e.data;
+        const vg = RoutingHelpers.findViewGroup(iframe.luigi.currentNode);
+        if (vg) {
+          const vgSettings = Iframe.getViewGroupSettings(vg);
+          vgSettings._liveCustomData = vgData.data;
+          LuigiConfig.configChanged('navigation.nodes');
+        }
+      }
     });
 
     // listeners are not automatically removed — cancel
