@@ -241,8 +241,9 @@
 />
 {#if children && pathData.length > 1}
   <div class="lui-tabs" id="tabsContainer">
-    <TabHeader node={selectedNode.parent} />
-
+    {#if selectedNode.parent && selectedNode.parent.tabNav && selectedNode.parent.tabNav.showAsTabHeader}
+      <TabHeader node={selectedNode.parent} />
+    {/if}
     <nav
       class="fd-tabs fd-tabs--l"
       role="tablist"
