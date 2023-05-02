@@ -645,9 +645,11 @@ navigation: {
 
 ### tabNav
 - **type**: boolean or Object
-- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
-- **since**: v0.7.0
-In the case the node has only one child, it's possible to configure if the horizontal navigation bar will be hidden automatically or not. To do so, the `tabNav` property must be an object with the property `{hideTabNavAutomatically:true|false}`.
+- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes, you will get a drop-down menu in the horizontal navigation. Set to `true` to show the horizontal navigation, or use the extra attributes for more customization. (**since**: v0.7.0)
+- **attributes**:
+  - **hideTabNavAutomatically**: boolean. In the case the node has only one child, it's possible to configure whether the horizontal navigation bar will be hidden automatically or not. Set this attribute to `true` to hide the horizontal navigation bar and `false` otherwise. ( **since**: v2.0.0 )
+  - **showAsTabHeader**: boolean. If this attribute is set on the node, it will be considered as a horizontal navigation header micro frontend. The node should be [webcomponent-based](web-component.md) and it should have nested children to show on the horizontal navigation bar. (**since**: NEXTRELEASE )
+
 - **example**:
 ```js
 // Without hiding tab nav automatically 
@@ -657,14 +659,22 @@ In the case the node has only one child, it's possible to configure if the horiz
  children: [
   ...
                 
-//With hiding tab nav automatically if node has only one child               
+// With hiding tab nav automatically if node has only one child               
   pathSegment: 'example',
   label: 'Example',
   tabNav: { hideTabNavAutomatically: true },
   children: [
   ...
+
+  // showing horizontal navigation header micro frontend       
+  pathSegment: 'header',
+  label: 'Header Micro frontend',
+  viewUrl: '/tabHeader.js'
+  webcomponent: true,
+  tabNav: { showAsTabHeader : true },
+  children: [
+  ...
 ```
-- **since**: 2.0.0
 
 ### testId
 - **type**: string

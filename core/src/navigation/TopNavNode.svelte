@@ -1,10 +1,9 @@
 <script>
   import { NavigationHelpers } from '../utilities/helpers';
   import StatusBadge from './StatusBadge.svelte';
-  import { LuigiI18N } from '../core-api';
-
+  
   export let node;
-
+  
   function hasOpenUIicon(node) {
     return NavigationHelpers.isOpenUIiconName(node.icon);
   }
@@ -14,7 +13,7 @@
   }
 
   function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
+    return NavigationHelpers.getNodeLabel(node);
   }
 </script>
 
