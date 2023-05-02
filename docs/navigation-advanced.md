@@ -428,7 +428,7 @@ Tab-style navigation in Luigi can be displayed directly above the micro frontend
 - **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes, you will get a drop-down menu in the horizontal navigation. Set to `true` to show the horizontal navigation, or use the extra attributes for more customization. (**since**: v0.7.0)
 - **attributes**:
   - **hideTabNavAutomatically**: boolean. In the case the node has only one child, it's possible to configure whether the horizontal navigation bar will be hidden automatically or not. Set this attribute to `true` to hide the horizontal navigation bar and `false` otherwise. ( **since**: v2.0.0 )
-  - **showAsTabHeader**: boolean. If this attribute is set on the node, it will be considered as a horizontal navigation header micro frontend. The node should be [webcomponent-based](web-component.md) and it should have nested children to show on the horizontal navigation bar. (**since**: NEXTRELEASE )
+  - **showAsTabHeader**: boolean. If this attribute is set on the node, it will be considered as a horizontal navigation header micro frontend. The node should be [webcomponent-based](web-component.md) and it should have nested children to show on the horizontal navigation bar. (**since**: 2.2.0 )
 
 - **example**:
 ```js
