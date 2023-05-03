@@ -92,7 +92,7 @@
               },
             };
             handleNavigation(data);
-          });
+          }, () => {});
         } else if (link.dismissKey) {
           dispatch('alertDismiss', {
             id: alertId,

@@ -101,6 +101,10 @@ class LuigiClient {
   setAnchor(value) {
     return lifecycleManager.setAnchor(value);
   }
+  setViewGroupData(value) {
+    return lifecycleManager.setViewGroupData(value);
+  }
+
 
   /**
    * @private

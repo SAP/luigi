@@ -66,6 +66,29 @@ class Navigation {
     },
 
     {
+      pathSegment: 'tabnavheader',
+      label: 'Tab Nav Header',
+      viewUrl: '/assets/tabHeader.js',
+      icon: 'home',
+      webcomponent: true,
+      tabNav: {
+        showAsTabHeader: true
+      },
+      children: [
+        {
+          pathSegment: 'header1',
+          label: 'Header 1',
+          viewUrl: '/sampleapp.html#/settings'
+        },
+        {
+          pathSegment: 'header2',
+          label: 'Header 2',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {}
+      ]
+    },
+    {
       pathSegment: 'view-groups',
       label: 'View Groups',
       children: [

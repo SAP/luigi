@@ -25,6 +25,36 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.2.0] (2023-05-02)
+
+#### :rocket: Added
+* [#3243](https://github.com/SAP/luigi/pull/3243) Viewgroup live settings ([@hardl](https://github.com/hardl))
+* [#3253](https://github.com/SAP/luigi/pull/3253) tabnav header micro frontend ([@hardl](https://github.com/hardl))
+* [#3226](https://github.com/SAP/luigi/pull/3226) Prevent rerendering of webcomponent ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3240](https://github.com/SAP/luigi/pull/3240) Remove breadcrumbs from experimental flag([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3241](https://github.com/SAP/luigi/pull/3241) Fix confirmation modal on reject result ([@ndricimrr](https://github.com/ndricimrr))
+* [#3258](https://github.com/SAP/luigi/pull/3258) Fix external link same window ([@hardl](https://github.com/hardl))
+* [#3257](https://github.com/SAP/luigi/pull/3257) Accordion element not showing correctly in breadcrumb docu ([@alexandra-simeonova](https://github.com/alexandra-simeonova))
+
+
+
+
+## [v2.1.0] (2023-03-30)
+
+#### :rocket: Added
+* [#3236](https://github.com/SAP/luigi/pull/3236) Get dirty status via core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3247](https://github.com/SAP/luigi/pull/3247) Fix context switcher loading indicator redundant render ([@ndricimrr](https://github.com/ndricimrr))
+* [#3209](https://github.com/SAP/luigi/pull/3209) pkce fix ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3182](https://github.com/SAP/luigi/pull/3182) Css-fix: wrong top value for iframeContainer when tabnav enabled ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
 ## [v2.0.1] (2023-02-14)
 
 #### :bug: Fixed
@@ -1497,3 +1527,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v1.26.0]: https://github.com/SAP/luigi/compare/v1.25.1...v1.26.0
 [v2.0.0]: https://github.com/SAP/luigi/compare/v1.25.1...v2.0.0
 [v2.0.1]: https://github.com/SAP/luigi/compare/v2.0.0...v2.0.1
+[v2.1.0]: https://github.com/SAP/luigi/compare/v2.0.1...v2.1.0
+[v2.2.0]: https://github.com/SAP/luigi/compare/v2.1.0...v2.2.0

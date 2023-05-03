@@ -4,9 +4,10 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiAuth, LuigiConfig, LuigiFeatureToggles } from '../../../src/core-api';
+import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { Navigation } from '../../../src/navigation/services/navigation';
+import { Iframe } from '../../../src/services/iframe';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
@@ -834,6 +835,32 @@ describe('Navigation-helpers', () => {
       assert.equal(NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event), true);
       sinon.assert.calledOnce(event.preventDefault);
       sinon.assert.notCalled(event.stopPropagation);
+    });
+  });
+
+  describe('getNodeLabel', () => {
+    let node = {
+      pathSegment: 'mynode',
+      label: 'myNode {viewGroupData.foo}',
+      viewUrl: 'test.html',
+      viewGroup: 'vg1'
+    };
+    beforeEach(() => {
+      sinon.stub(LuigiI18N, 'getTranslation').returns('myNode {viewGroupData.foo}');
+      sinon.stub(Iframe, 'getViewGroupSettings').returns({ _liveCustomData: { foo: 'Luigi rocks!' } });
+    });
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+    it('get correct node label', () => {
+      assert.notEqual(NavigationHelpers.getNodeLabel(node), 'myNode {viewGroupData.foo}');
+      assert.equal(NavigationHelpers.getNodeLabel(node), 'myNode Luigi rocks!');
+    });
+    it('getNodeLabel w/o vg', () => {
+      delete node.viewGroup;
+      assert.notEqual(NavigationHelpers.getNodeLabel(node), 'myNode Luigi rocks!');
+      assert.equal(NavigationHelpers.getNodeLabel(node), 'myNode {viewGroupData.foo}');
     });
   });
 });
