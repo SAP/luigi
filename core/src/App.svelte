@@ -1640,6 +1640,10 @@
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
+        if(!LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')){
+          console.warn('"showModalPathInUrl" will be ignored. Property is not defined or not set to `true`.');
+          return;
+        }
         if (isSpecialIframe) {
           const route = GenericHelpers.addLeadingSlash(
             buildPath(
@@ -1954,8 +1958,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={(event) => modalIframeCreated(event, index)}
-        on:wcCreated={(event) => modalWCCreated(event, index)}
+        on:iframeCreated={event => modalIframeCreated(event, index)}
+        on:wcCreated={event => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
