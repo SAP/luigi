@@ -162,8 +162,8 @@
     return NavigationHelpers.isOpenUIiconName(node.icon);
   }
 
-  function getNodeLabel(node) {
-    return LuigiI18N.getTranslation(node.label);
+  const getNodeLabel = (node) => {
+    return NavigationHelpers.getNodeLabel(node);
   }
 
   function getTestId(node) {
@@ -822,8 +822,9 @@
     height: $topNavHeight;
     box-shadow: var(--sapContent_HeaderShadow);
 
-    .fd-avatar.is-focus:after,.fd-avatar:focus:after {
-      border-color:var(--fdShellbar_Button_Outline_Color);
+    .fd-avatar.is-focus:after,
+    .fd-avatar:focus:after {
+      border-color: var(--fdShellbar_Button_Outline_Color);
     }
   }
 

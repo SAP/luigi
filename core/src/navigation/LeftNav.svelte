@@ -20,7 +20,7 @@
   import BadgeCounter from './BadgeCounter.svelte';
   import StatusBadge from './StatusBadge.svelte';
   import { KEYCODE_ENTER } from '../utilities/keycode';
-
+  
   //TODO refactor
   const __this = {
     get: () => ({
@@ -195,6 +195,10 @@
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let addNavHrefForAnchor = false;
+
+  const getNodeLabel = (node) => {
+    return NavigationHelpers.getNodeLabel(node);
+  }
 
   const setLeftNavData = async () => {
     const componentData = __this.get();
@@ -569,10 +573,7 @@
                       <li class="fd-nested-list__item">
                         <a
                           href={getRouteLink(node)}
-                          title={resolveTooltipText(
-                            node,
-                            $getTranslation(node.label)
-                          )}
+                          title={resolveTooltipText(node, getNodeLabel(node))}
                           class="fd-nested-list__link {node === selectedNode
                             ? 'is-selected'
                             : ''}"
@@ -617,7 +618,7 @@
                             node.statusBadge.align === 'right'
                               ? 'right'
                               : 'left'}"
-                            >{$getTranslation(node.label)}
+                            >{getNodeLabel(node)}
                             <StatusBadge {node} />
                           </span>
                           {#if node.externalLink && node.externalLink.url}
@@ -754,7 +755,7 @@
                                 data-testid={getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
-                                  $getTranslation(node.label)
+                                  getNodeLabel(node)
                                 )}
                               >
                                 <span
@@ -763,7 +764,7 @@
                                     ? 'right'
                                     : 'left'}"
                                 >
-                                  {$getTranslation(node.label)}
+                                  {getNodeLabel(node)}
                                   <StatusBadge {node} />
                                 </span>
 
@@ -815,7 +816,7 @@
                                       data-testid={getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
-                                        $getTranslation(node.label)
+                                        getNodeLabel(node)
                                       )}
                                     >
                                       <span
@@ -824,7 +825,7 @@
                                           ? 'right'
                                           : 'left'}"
                                       >
-                                        {$getTranslation(node.label)}
+                                        {getNodeLabel(node)}
                                         <StatusBadge {node} />
                                       </span>
                                       {#if node.externalLink && node.externalLink.url}
@@ -878,10 +879,7 @@
                       {#if node.label}
                         <li
                           class="fd-nested-list__item"
-                          title={resolveTooltipText(
-                            node,
-                            $getTranslation(node.label)
-                          )}
+                          title={resolveTooltipText(node, getNodeLabel(node))}
                           aria-labelledby="category_list_level1_{index}"
                         >
                           <a
@@ -933,7 +931,7 @@
                               node.statusBadge.align === 'right'
                                 ? 'right'
                                 : 'left'}"
-                              >{$getTranslation(node.label)}
+                              >{getNodeLabel(node)}
                               {#if node.statusBadge}
                                 <StatusBadge {node} />
                               {/if}
@@ -986,7 +984,6 @@
 <style type="text/scss">
   @import 'src/styles/_mixins.scss';
   @import 'src/styles/_variables.scss';
-
 
   :root {
     /* needed for IE11 support */
@@ -1383,7 +1380,6 @@
       max-height: 190px;
       overflow-y: auto;
     }
-
 
     &.has-bottom-position {
       .lui-flyout-sublist__wrapper {

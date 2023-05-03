@@ -45,6 +45,7 @@
       <button id="anothermfBtn" class="goToAnotherMf" onclick="goToAnotherMf()">
         open US
       </button>
+      <button id="vgDataUpdate" onclick="vgDataUpdate()">Set view group data</button>
     </div>
 
     <script>
@@ -93,6 +94,12 @@
             "0px'>";
         }
         document.getElementById('textCnt').classList.add('visible');
+      }
+      function vgDataUpdate() {
+        LuigiClient.setViewGroupData({
+          foo: 'Luigi rocks',
+          bar: '(' + Math.round(Math.random() * 100) + ')'
+        });
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
