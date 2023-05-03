@@ -1641,7 +1641,6 @@
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
         if(!LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')){
-          console.warn('Updating path of the modal ignored. Property "showModalPathInUrl" is not defined or not set to `true`.');
           return;
         }
         if (isSpecialIframe) {
