@@ -437,7 +437,7 @@ LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.2.0
 
 ### Lifecycle~initListenerCallback
 
