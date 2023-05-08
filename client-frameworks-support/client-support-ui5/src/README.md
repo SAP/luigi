@@ -8,18 +8,20 @@ The Luigi Client UI5 Support Library offers a set [features](#features) which ma
 ```javascript
 npm install @luigi-project/client-support-ui5
 ```
+
+2. Use [ui5 tooling](https://sap.github.io/ui5-tooling/stable/) to consume the ui5-support-lib in your ui5 application.
 ​
-2. Once the library is imported and saved in your UI5 application, you need to add `ComponentSupport` to the `index.html` as well as to allow the `data-sap-ui-frameOptions`.
+3. Once the library is imported and saved in your UI5 application, you need to add `ComponentSupport` to the `index.html` as well as to allow the `data-sap-ui-frameOptions`.
 ```javascript
 <script id="sap-ui-bootstrap" src="resources/sap-ui-core.js" data-sap-ui-resourceroots='{
-				"com.sap.luigiclient": "./"
+				"luigi.ui5-demoapp": "./"
 			}' data-sap-ui-oninit="module:sap/ui/core/ComponentSupport" data-sap-ui-compatVersion="edge"
 		data-sap-ui-async="true" data-sap-ui-frameOptions="allow" data-sap-ui-theme="sap_horizon"
 		data-sap-ui-xx-waitForTheme="true" data-sap-ui-xx-supportedLanguages="en,de">
 		</script>
 ```
 
-3. In the last step you need to register the library in your `Component.js` file:
+4. In the last step you need to register the library in your `Component.js` file:
 ```javascript
 sap.ui.define([
 	"sap/ui/core/UIComponent",
@@ -32,11 +34,18 @@ sap.ui.define([
 			.....			
 			// connect client-support-ui5 lib to the application
 			Ui5SupportLib.connectTo(this);
+            
+            this.LuigiClient = Ui5SupportLib.LuigiClient;
 ​
 			this.getRouter().initialize();
 		},
 ```
-
+In addition, the LuigiClient API is available through the ui5 support lib. LuigiClient can be used in a controller like 
+```javascript
+this.getOwnerComponent().LuigiClient.uxManager().showAlert(settings).then(() => {
+          // Logic to execute when the alert is dismissed
+        });
+```
 ​
 ## Features
 ​
@@ -141,4 +150,4 @@ For example:
 ### Preload
 ​
 If you are using [view groups](https://docs.luigi-project.io/docs/navigation-advanced/?section=viewgroupsettings) in your Luigi configuration, this library provides a view which you can use as a Luigi `preloadUrl` attribute in your configuration.
-The route to this view is `https://your.domain.name/__preload__`
+The route to this view is `https://your.domain.name/__luigi_preload_view__`

@@ -8,10 +8,7 @@ export default {
   },
   plugins: [
     copy({
-      targets: [
-        { src: 'src/README.md', dest: 'dist' },
-        { src: 'package.json', dest: 'dist' }
-      ]
+      targets: [{ src: 'src/README.md', dest: 'dist' }]
     })
   ]
 };

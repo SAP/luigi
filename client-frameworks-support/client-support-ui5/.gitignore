@@ -2,4 +2,5 @@ node_modules
 
 vulsCount.txt
 
-dist
+dist/README.md
+dist/ui5-support-lib.js

@@ -9,13 +9,17 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
   });
 
   return {
+    LuigiClient,
     connectTo: function(oComponent) {
       const routingConfig = oComponent.getManifestEntry('sap.ui5').routing;
       oComponent.setModel(model, '$luigiCtx');
 
       // Create preload view
-      sap.ui.define('luigi/PreloadView', ['sap/ui/core/mvc/View', 'sap/ui/core/HTML'], function(View, HTML) {
-        const PreloadView = View.extend('luigi.PreloadView', {
+      sap.ui.define('luigi-ui5-support-lib/LuigiPreloadView', ['sap/ui/core/mvc/View', 'sap/ui/core/HTML'], function(
+        View,
+        HTML
+      ) {
+        const PreloadView = View.extend('luigi-ui5-support-lib.LuigiPreloadView', {
           getControllerName: function() {},
           createContent: function() {
             return new HTML({ content: '<div></div>' });
@@ -25,9 +29,9 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
       });
 
       const oRouter = oComponent.getRouter();
-      oRouter.getTargets().addTarget('Preload', {
-        id: 'Preload',
-        name: 'module:luigi/PreloadView',
+      oRouter.getTargets().addTarget('LuigiPreloadView', {
+        id: 'LuigiPreloadView',
+        name: 'module:luigi-ui5-support-lib/LuigiPreloadView',
         type: 'View',
         viewType: 'JS',
         viewPath: '',
@@ -35,9 +39,9 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
         level: 1
       });
       oRouter.addRoute({
-        pattern: '__preload__',
-        name: 'Preload',
-        target: 'Preload'
+        pattern: '__luigi_preload_view__',
+        name: 'LuigiPreloadView',
+        target: 'LuigiPreloadView'
       });
 
       oComponent.getRouter().attachRouteMatched(oEvent => {
