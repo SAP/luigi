@@ -14,20 +14,20 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
       oComponent.setModel(model, '$luigiCtx');
 
       // Create preload view
-      sap.ui.define('luigi/DummyView', ['sap/ui/core/mvc/View', 'sap/ui/core/Control'], function(View) {
-        const DummyView = View.extend('luigi.DummyView', {
+      sap.ui.define('luigi/PreloadView', ['sap/ui/core/mvc/View', 'sap/ui/core/HTML'], function(View, HTML) {
+        const PreloadView = View.extend('luigi.PreloadView', {
           getControllerName: function() {},
           createContent: function() {
-            return new sap.ui.core.HTML({ content: '<div></div>' });
+            return new HTML({ content: '<div></div>' });
           }
         });
-        return DummyView;
+        return PreloadView;
       });
 
       const oRouter = oComponent.getRouter();
       oRouter.getTargets().addTarget('Preload', {
         id: 'Preload',
-        name: 'module:luigi/DummyView',
+        name: 'module:luigi/PreloadView',
         type: 'View',
         viewType: 'JS',
         viewPath: '',
@@ -59,39 +59,34 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
           let lm = LuigiClient.linkManager().withoutSync();
           const ux = LuigiClient.uxManager();
           let route = currentRoute;
-          if (currentRouteObj.data) {
-            if (currentRouteObj.data.luigiRoute) {
-              route = currentRouteObj.data.luigiRoute;
-
-              if (currentRouteObj.arguments) {
-                for (const [key, value] of Object.entries(currentRouteObj.arguments)) {
-                  route = route.replace(`:${key}`, value);
-                }
-              }
-              if (currentRouteObj.data.fromContext) {
-                if (currentRouteObj.data.fromContext === true) {
-                  lm = lm.fromClosestContext();
-                } else {
-                  lm = lm.fromContext(currentRouteObj.data.fromContext);
-                }
-              }
-            } else {
-              if (currentRouteObj.data.fromVirtualTreeRoot) {
-                let url = location.hash.split('#/')[1];
-                const truncate = currentRouteObj.data.fromVirtualTreeRoot.truncate;
-                if (truncate) {
-                  if (truncate.indexOf('*') === 0) {
-                    const index = url.indexOf(truncate.substr(1));
-                    url = url.substr(index + truncate.length - 1);
-                  } else if (url.indexOf(truncate) === 0) {
-                    url = url.substr(truncate.length);
-                  }
-                }
-                route = url;
-                console.debug('Calling fromVirtualTreeRoot for url ==> ' + route);
-                lm = lm.fromVirtualTreeRoot();
+          if (currentRouteObj.data && currentRouteObj.data.luigiRoute) {
+            route = currentRouteObj.data.luigiRoute;
+            if (currentRouteObj.arguments) {
+              for (const [key, value] of Object.entries(currentRouteObj.arguments)) {
+                route = route.replace(`:${key}`, value);
               }
             }
+            if (currentRouteObj.data.fromContext) {
+              if (currentRouteObj.data.fromContext === true) {
+                lm = lm.fromClosestContext();
+              } else {
+                lm = lm.fromContext(currentRouteObj.data.fromContext);
+              }
+            }
+          } else if (currentRouteObj.data && currentRouteObj.data.fromVirtualTreeRoot) {
+            let url = location.hash.split('#/')[1];
+            const truncate = currentRouteObj.data.fromVirtualTreeRoot.truncate;
+            if (truncate) {
+              if (truncate.indexOf('*') === 0) {
+                const index = url.indexOf(truncate.substr(1));
+                url = url.substr(index + truncate.length - 1);
+              } else if (url.indexOf(truncate) === 0) {
+                url = url.substr(truncate.length);
+              }
+            }
+            route = url;
+            console.debug('Calling fromVirtualTreeRoot for url ==> ' + route);
+            lm = lm.fromVirtualTreeRoot();
           }
           if (ux.isModal()) {
             if (currentRouteObj.data.updateModalDataPath) {
