@@ -177,6 +177,7 @@
   export let footerText;
   export let semiCollapsible;
   export let semiCollapsibleButton;
+  export let semiCollapsibleButtonStyle;
   export let pathData;
   export let pathParams;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
@@ -218,6 +219,8 @@
     semiCollapsibleButton =
       LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
       'semiCollapsible';
+    semiCollapsibleButtonStyle = 
+      LuigiConfig.getConfigValue('settings.semiCollapsibleButtonStyle');
     addNavHrefForAnchor = LuigiConfig.getConfigValue('navigation.addNavHrefs');
     hideNavComponent = LuigiConfig.getConfigBooleanValue(
       'settings.hideNavigation'
@@ -964,6 +967,22 @@
             >{footerText ? footerText : ''}</span
           >
           {#if semiCollapsibleButton}
+            {#if semiCollapsibleButtonStyle == 'button'}
+              <button
+                    on:click={event => semiCollapsibleButtonClicked(event, this)}
+                    data-testid="semiCollapsibleButton"
+                    title={burgerTooltip}
+                    tabindex="0"
+                    class="fd-button fd-button--transparent lui-semi-btn"
+                  >
+                  <i
+                    class="lui-side-nav__footer--icon {isSemiCollapsed
+                      ? 'sap-icon--open-command-field'
+                      : 'sap-icon--close-command-field'}"                  
+                  >
+                </i>
+              </button>
+            {:else}
             <i
               class="lui-side-nav__footer--icon {isSemiCollapsed
                 ? 'sap-icon--open-command-field'
@@ -974,6 +993,7 @@
               title={burgerTooltip}
               tabindex="0"
             />
+            {/if}
           {/if}
         </span>
       </div>
@@ -1211,6 +1231,13 @@
     &--icon {
       cursor: pointer;
       padding: $footerPaddingVertical 15px;
+    }
+
+    .lui-semi-btn {
+      width: $leftNavWidthCollapsed;
+    }
+    .lui-semi-btn &--icon {
+      padding: 0;
     }
   }
 
