@@ -1235,7 +1235,9 @@
 
     .lui-semi-btn {
       margin: var(--sapContent_FocusWidth);
+      color: var(--sapContent_IconColor);
     }
+    
     .lui-semi-btn &--icon {
       padding: 0;
     }
