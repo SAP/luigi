@@ -50,9 +50,6 @@
         const srcIframe = IframeHelpers.getValidMessageSource(e);
         if (!srcIframe) return;
         if (disable !== true) {
-          if(area === 'main' && document.getElementsByClassName('lui-backdrop') > 0){
-            document.getElementsByClassName('lui-backdrop').style.zIndex="0";
-          }
           if ('luigi.add-backdrop' === e.data.msg) {
             backdropActive = isValidForArea(e);
             dispatch('stateChanged', { backdropActive: true });
@@ -86,7 +83,10 @@
   });
 </script>
 
-<div class={backdropClass} aria-hidden="false">
+<div
+  class="{backdropClass} {area === 'main' ? 'zIndexZero' : ''}"
+  aria-hidden="false"
+>
   <slot />
 </div>
 
@@ -99,5 +99,9 @@
     bottom: 0;
     right: 0;
     z-index: 2;
+  }
+
+  .lui-backdrop.zIndexZero {
+    z-index: 0;
   }
 </style>
