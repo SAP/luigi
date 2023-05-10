@@ -1234,7 +1234,7 @@
     }
 
     .lui-semi-btn {
-      width: $leftNavWidthCollapsed;
+      margin: var(--sapContent_FocusWidth);
     }
     .lui-semi-btn &--icon {
       padding: 0;
