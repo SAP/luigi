@@ -43,8 +43,8 @@ imports: [
 
 These are the features provided by the library:
 * [LuigiContextService](#LuigiContextService) - allows you to observe context changes in Luigi.
+* [Preload component](#preload-component) - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings). 
 * [LuigiAutoRoutingService](#LuigiAutoRoutingService) - enables the synchronization of Angular routes with Luigi. It contains the following elements: 
-  * [Preload component](#preload-component) - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings). 
   * [LuigiRouteStrategy](#LuigiRouteStrategy) - Luigi's implementation of an Angular [RouteReuseStrategy](https://angular.io/api/router/RouteReuseStrategy).
   * [AutoRouting for modals](#autorouting-for-modals) - synchronizes Angular modals with Luigi.
 * [LuigiMockModule](#LuigiMockModule) - an Angular module that listens to Luigi Client calls and messages and sends a mocked response back. See also [LuigiMockUtil](luigi-testing-utilities.md). 
@@ -78,13 +78,7 @@ providers: [
 ]
  ```
 
-### LuigiAutoRoutingService
-
-This service cannot be used directly, but it provides useful features on how to synchronize your Angular application with Luigi navigation. 
-
-For example, when the user navigates through different pages within a micro frontend, you can use this feature to update Luigi accordingly. (You can also find more information about this process in the [micro frontend routing](microfrontend-routing.md) document.)
-
-#### Preload component
+### Preload component
 
 In your Angular route configuration, you can add in any of the following preload components:
 
@@ -117,6 +111,11 @@ For `data: { luigiRoute: '/home/sample2', fromContext: 'localContext' }`, this L
   luigiClient.linkManager().fromContext('localContext').withoutSync().navigate(data.luigiRoute);
  ```
 
+### LuigiAutoRoutingService
+
+This service cannot be used directly, but it provides useful features on how to synchronize your Angular application with Luigi navigation. 
+
+For example, when the user navigates through different pages within a micro frontend, you can use this feature to update Luigi accordingly. (You can also find more information about this process in the [micro frontend routing](microfrontend-routing.md) document.)
 
 #### LuigiRouteStrategy
 
