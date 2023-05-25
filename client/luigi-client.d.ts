@@ -738,6 +738,16 @@ export function setAnchor(anchor: String): void;
 export type setAnchor = (anchor: String) => void;
 
 /**
+ * Allows you to change node labels within the same {@link navigation-advanced.md#view-groups view group}, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+ * @param {Object} value a data object containing the view group name and desired label
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
+ */
+export function setViewGroupData(value: Object): void;
+export type setViewGroupData = (value: Object) => void;
+
+/**
  * Read search query parameters which are sent from Luigi core
  * @memberof Lifecycle
  * @returns core search query parameters
