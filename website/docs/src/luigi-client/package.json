@@ -1,0 +1,51 @@
+{
+  "_from": "@luigi-project/client@2.2.0",
+  "_id": "@luigi-project/client@2.2.0",
+  "_inBundle": false,
+  "_integrity": "sha512-iuVXwb7XdsL4O4wc9RcYhpaw1nL6cukXCNgPnHKeJc0IBN96u56ymgO1/x4jZ3TcaBlGkWTT+9/Fcd9U9Y6lOA==",
+  "_location": "/@luigi-project/client",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@luigi-project/client@2.2.0",
+    "name": "@luigi-project/client",
+    "escapedName": "@luigi-project%2fclient",
+    "scope": "@luigi-project",
+    "rawSpec": "2.2.0",
+    "saveSpec": null,
+    "fetchSpec": "2.2.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@luigi-project/client/-/client-2.2.0.tgz",
+  "_shasum": "5baa6664570dbf3dccd28ff70230f1be96ba27a9",
+  "_spec": "@luigi-project/client@2.2.0",
+  "_where": "/Users/I529989/Documents/SAP/32-luigi/website/docs",
+  "bugs": {
+    "url": "https://github.com/SAP/luigi/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Javascript library supporting consumers of the Luigi framework",
+  "homepage": "https://github.com/SAP/luigi#readme",
+  "keywords": [
+    "luigi",
+    "UI",
+    "extensibility",
+    "micro-frontends",
+    "microfrontends"
+  ],
+  "license": "Apache-2.0",
+  "main": "luigi-client.js",
+  "name": "@luigi-project/client",
+  "publishConfig": {
+    "tag": "luigi-client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/SAP/luigi.git"
+  },
+  "version": "2.2.0"
+}

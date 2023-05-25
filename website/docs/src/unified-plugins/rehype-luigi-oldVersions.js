@@ -1,40 +1,42 @@
-import visit from 'unist-util-visit';
-import h from 'hastscript';
-import versions from '../../static/versions.json';
-
+import { visit } from 'unist-util-visit';
+import { h } from 'hastscript';
+// import versions from '../../public/versions.json' assert { type: "json" };
+import * as fs from 'fs';
+var versions = JSON.parse(fs.readFileSync('../../public/versions.json').toString());
 export default function oldVersion() {
   return function transformer(tree) {
     visit(tree, ['comment'], function(node, index, parent) {
       if (node.type === 'comment' && node.value.trim() === 'oldVersionsDropdown') {
-        const wrapper = h('div.custom-select');
-        const oldVerDropdown = h('select.oldverdrop');
-        oldVerDropdown.properties.onchange =
+        var wrapper = h('div.custom-select');
+        var oldVerDropdown_1 = h('select.oldverdrop');
+        oldVerDropdown_1.properties.onchange =
           "window.open('https://github.com/SAP/luigi/blob/' + event.target.value + '/docs/README.md', '_blank'); event.target.value=0;";
-        wrapper.children.push(oldVerDropdown);
+        wrapper.children.push(oldVerDropdown_1);
         parent.children.splice(index + 1, 0, wrapper);
-        const tagLinks = [];
-        const minors = {};
-        versions.forEach(tag => {
+        var tagLinks_1 = [];
+        var minors_1 = {};
+        versions.forEach(function(tag) {
           if (tag.name.indexOf('v') === 0 && tag.name.indexOf('-') < 0) {
-            const vInfo = tag.name.split('.');
+            var vInfo = tag.name.split('.');
             if (vInfo && vInfo.length === 3) {
-              const minor = vInfo[0] + '.' + vInfo[1];
-              if (!minors[minor]) {
-                minors[minor] = tag;
-                tagLinks.push(tag);
+              var minor = vInfo[0] + '.' + vInfo[1];
+              if (!minors_1[minor]) {
+                minors_1[minor] = tag;
+                tagLinks_1.push(tag);
               }
             }
           }
         });
-        const chooseOption = h('option', 'Choose a version');
+        var chooseOption = h('option', 'Choose a version');
         chooseOption.properties.value = '0';
         chooseOption.properties.style = 'display:none;';
-        oldVerDropdown.children.push(chooseOption);
-        tagLinks.slice(1).forEach(tag => {
-          const tagOption = h('option', tag.name);
-          oldVerDropdown.children.push(tagOption);
+        oldVerDropdown_1.children.push(chooseOption);
+        tagLinks_1.slice(1).forEach(function(tag) {
+          var tagOption = h('option', tag.name);
+          oldVerDropdown_1.children.push(tagOption);
         });
       }
     });
   };
 }
+//# sourceMappingURL=rehype-luigi-oldVersions.js.map

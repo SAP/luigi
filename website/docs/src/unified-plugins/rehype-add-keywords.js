@@ -1,6 +1,5 @@
-import visit from 'unist-util-visit';
-import h from 'hastscript';
-
+import { visit } from 'unist-util-visit';
+import { h } from 'hastscript';
 /**
  * This unified plugin function adds keyword labels
  * example markdown comment: <!-- keywords: key1, key2-->
@@ -11,31 +10,34 @@ import h from 'hastscript';
  */
 export default function addKeyWords() {
   return function transformer(tree) {
-    visit(tree, ['element', 'comment'], function (node) {
+    visit(tree, ['element', 'comment'], function(node) {
       processComment(node);
     });
-  }
-
+  };
   function processComment(node) {
     if (node.type === 'comment') {
       if (node.value.trim().startsWith('keywords')) {
-        const parts = node.value.trim().split(':');
+        var parts = node.value.trim().split(':');
         // retrieve the list of words from the comment
-        const words = parts[1].split(',').map( word => {
-            return word.trim()
+        var words = parts[1].split(',').map(function(word) {
+          return word.trim();
         });
         // check if no keywords added
         // When the string is empty, split returns an array containing one empty string
         if (words[0] != '') {
-            // create a div containing multiple labels
-            const newNodeData = h('div.keyword-container',
-                words.map( word => {
-                    return h('label.keyword', { onclick: 'searchTag(event, "'+ word+'")', style: 'cursor:pointer;'}, [ word ] )
-                })
-            );
-            Object.assign(node, newNodeData);
+          // create a div containing multiple labels
+          var newNodeData = h(
+            'div.keyword-container',
+            words.map(function(word) {
+              return h('label.keyword', { onclick: 'searchTag(event, "' + word + '")', style: 'cursor:pointer;' }, [
+                word
+              ]);
+            })
+          );
+          Object.assign(node, newNodeData);
         }
       }
     }
   }
 }
+//# sourceMappingURL=rehype-add-keywords.js.map

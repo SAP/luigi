@@ -1,30 +1,34 @@
-import has from 'hast-util-has-property';
+import { hasProperty } from 'hast-util-has-property';
 import url from 'url';
-import visit from 'unist-util-visit';
-import { writeFileSync, appendFileSync } from 'fs';
-import { prependForExport } from './plugin-helpers';
-
-let log = () => {};
+import { visit } from 'unist-util-visit';
+import { writeFile, appendFileSync } from 'fs';
+import { prependForExport } from './plugin-helpers.js';
+var log = function(text) {
+  if (text === void 0) {
+    text = '';
+  }
+};
 if (process.env.NODE_ENV === 'debug') {
-  const debugFile = __dirname + '/debug.log';
-  writeFileSync(debugFile, '');
-  log = (text = '') => {
-    appendFileSync(debugFile, text);
-  };
+  var debugFile_1 = __dirname + '/debug.log';
+  writeFile(debugFile_1, '', function() {
+    log = function(text) {
+      if (text === void 0) {
+        text = '';
+      }
+      appendFileSync(debugFile_1, text);
+    };
+  });
 }
-
 export default function luigiLinkParser(options) {
   var settings = options || {};
-
   return function transformer(tree) {
     visit(tree, 'element', function(node) {
       modify(node, 'href');
     });
   };
-
   function modify(node, prop) {
-    const githubMain = 'https://github.com/SAP/luigi/blob/main/';
-    if (has(node, prop)) {
+    var githubMain = 'https://github.com/SAP/luigi/blob/main/';
+    if (hasProperty(node, prop)) {
       var parsed = url.parse(node.properties[prop]);
       if (
         (parsed.href.startsWith(githubMain + 'docs') && parsed.pathname && parsed.pathname.endsWith('.md')) ||
@@ -34,14 +38,11 @@ export default function luigiLinkParser(options) {
         // sample links: https://..., file.md, should not start with /file.md or ../file.md
         node.properties['onclick'] = 'navigateInternal(event, this)';
         node.properties['data-linktype'] = 'internal';
-
-        let newHref = parsed.href.replace(githubMain + 'docs/', '').replace('.md', '');
-
+        var newHref = parsed.href.replace(githubMain + 'docs/', '').replace('.md', '');
         // clean ./ from beginning of the link
         if (newHref.startsWith('./')) {
           newHref = newHref.substr(2);
         }
-
         node.properties['href'] = prependForExport() + '/docs/' + newHref;
       } else if (parsed.hash && !parsed.pathname && !parsed.hostname) {
         // current page anchor link
@@ -53,18 +54,20 @@ export default function luigiLinkParser(options) {
         (parsed.pathname.startsWith('../') || parsed.pathname.startsWith('/'))
       ) {
         // internal absolute link, probably to some raw file
-        let newHref = parsed.href;
+        var newHref = parsed.href;
         // remove .. if its leading
         if (newHref.startsWith('../')) {
           newHref = newHref.substr(2);
         }
         // remove leading slash
         newHref = newHref.substr(1);
-
         node.properties['href'] = githubMain + newHref;
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
-      } else if (parsed.protocol && (!parsed.pathname.endsWith('.md') || parsed.href.startsWith(githubMain))) {
+      } else if (
+        parsed.protocol &&
+        ((parsed.pathname && !parsed.pathname.endsWith('.md')) || parsed.href.startsWith(githubMain))
+      ) {
         // external link
         node.properties['rel'] = 'external';
         node.properties['target'] = '_blank';
@@ -81,3 +84,4 @@ export default function luigiLinkParser(options) {
     }
   }
 }
+//# sourceMappingURL=rehype-luigi-linkparser.js.map
