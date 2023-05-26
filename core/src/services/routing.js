@@ -7,6 +7,7 @@ import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
 import { WebComponentService } from './web-components';
+import { isEqual } from 'lodash';
 
 class RoutingClass {
   getNodePath(node, params) {
@@ -654,24 +655,22 @@ class RoutingClass {
   }
 
   navigateWebComponentCompound(component, navNode) {
-    const wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
-    // if true, prevent rerendering of wc
-    if (
-      wc_containerNode === navNode &&
-      (!navNode.webcomponent || navNode.webcomponent) &&
-      (!navNode.viewUrl || navNode.viewUrl)
-    ) {
-      return;
-    }
-    const { compound } = navNode;
-    const wc_container = this.removeLastChildFromWCContainer();
+    const wc_container = document.querySelector('.wcContainer');
     if (!wc_container) return;
 
     const componentData = component.get();
+
+    if (wc_container._luigi_node === navNode && isEqual(wc_container._luigi_pathParams, componentData.pathParams)) {
+      return;
+    }
+    const { compound } = navNode;
+    this.removeLastChildFromWCContainer();
+
     if (compound && compound.children) {
       compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }
     WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    wc_container._luigi_pathParams = componentData.pathParams;
   }
 
   removeLastChildFromWCContainer() {
