@@ -25,6 +25,17 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.2.1] (2023-05-26)
+
+#### :bug: Fixed
+* [#3296](https://github.com/SAP/luigi/pull/3296) Fix tabnav header flickering issue ([@hardl](https://github.com/hardl))
+* [#3297](https://github.com/SAP/luigi/pull/3297) Fix WC Compound Rerendering issue ([@hardl](https://github.com/hardl))
+* [#3283](https://github.com/SAP/luigi/pull/3283) CSP improvements ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3276](https://github.com/SAP/luigi/pull/3276) Fix showModalPathInUrl is undefined ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.2.0] (2023-05-02)
 
 #### :rocket: Added
@@ -1529,3 +1540,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.0.1]: https://github.com/SAP/luigi/compare/v2.0.0...v2.0.1
 [v2.1.0]: https://github.com/SAP/luigi/compare/v2.0.1...v2.1.0
 [v2.2.0]: https://github.com/SAP/luigi/compare/v2.1.0...v2.2.0
+[v2.2.1]: https://github.com/SAP/luigi/compare/v2.2.0...v2.2.1
