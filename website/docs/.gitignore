@@ -10,3 +10,5 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 /public/luigi-core
+/static/core
+/static/luigi-client
