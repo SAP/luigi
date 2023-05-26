@@ -33,6 +33,8 @@ class WebComponentSvcClass {
   }
 
   initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId) {
+    wc.setAttribute('class', 'luigi-webcomponent');
+
     const clientAPI = {
       linkManager: window.Luigi.navigation,
       uxManager: window.Luigi.ux,
