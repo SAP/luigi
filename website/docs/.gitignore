@@ -12,3 +12,5 @@ vite.config.ts.timestamp-*
 /public/luigi-core
 /static/core
 /static/luigi-client
+/src/core
+/src/luigi-client
