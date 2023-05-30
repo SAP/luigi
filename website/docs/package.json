@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
+		"start": "npm run serve-core && npm run preview",
 		"dev": "vite dev --port 4001",
 		"build": "vite build",
 		"preview": "vite preview --port 4001",
@@ -13,6 +14,7 @@
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check .",
 		"format": "prettier --plugin-search-dir . --write .",
+		"pre-bundle": "npm run compilecorescss && npm run bundleLuigiConfig",
 		"compilecorescss": "sass ./src/luigi-config/styles/index.scss ./public/coreStyles.css",
 		"bundleLuigiConfig": "esbuild src/luigi-config/extended/main.js  --bundle --minify  --outfile=./public/luigi-config.bundle.js"
 	},
