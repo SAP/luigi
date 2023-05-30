@@ -30,28 +30,6 @@ export default function luigiNavigationBuilder(data = {}) {
 
     // write to navigationFile
     writeFileSync(generatedNavigationFilePath, JSON.stringify(navItemsSorted, null, 2));
-
-    // readFile(staticNavigationFilePath, (err, staticNavigation) => {
-    //   // initially write static navigation items to file
-    //   writeFile(generatedNavigationFilePath, String(staticNavigation), () => {
-
-    //     readFile(generatedNavigationFilePath, 'utf8', (err, items) => {
-    //       const navItems = JSON.parse(items);
-    //       visit(tree, ['json'], function (node) {
-    //         const navData = Object.assign({}, data, parseFrontmatter(node.value));
-    //         navItems.push(generateNavItem(navData));
-    //         node.value = ''; // clear, to not produce html output
-    //       });
-
-    //       // sort by metaData.categoryPosition AND metaData.position
-    //       const navItemsSorted = orderBy(navItems, ['metaData.categoryPosition', 'metaData.position']);
-
-    //       // write to navigationFile
-    //       writeFile(generatedNavigationFilePath, JSON.stringify(navItemsSorted, null, 2), () => { });
-    //     })
-
-    //   });
-    // });
   };
 }
 
