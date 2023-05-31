@@ -2,7 +2,12 @@ import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
 // import versions from '../../public/versions.json' assert { type: "json" };
 import * as fs from 'fs';
-const versions = JSON.parse(fs.readFileSync('../../public/versions.json').toString());
+
+import path from 'path';
+const __dirname = path.resolve();
+const versionsFilePath = __dirname + '/public/versions.json';
+
+const versions = JSON.parse(fs.readFileSync(versionsFilePath).toString());
 
 export default function oldVersion() {
   return function transformer(tree) {

@@ -6,7 +6,7 @@ import orderBy from 'lodash.orderby';
 import path from 'path';
 const __dirname = path.resolve();
 
-const staticLuigiFolder = __dirname + '/../../public/';
+const staticLuigiFolder = __dirname + '/public/';
 console.log('staticLuigiFolder:', staticLuigiFolder);
 
 const staticNavigationFilePath = staticLuigiFolder + 'navigation-nodes.json';

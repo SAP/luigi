@@ -1,8 +1,11 @@
-import { MarkdownSvc } from '../../services/markdown.service.js';
+import { MarkdownSvc } from '../services/markdown.service.js';
 import { readdirSync, readFileSync } from 'fs';
 import path from 'path';
 
 let parsedDocs;
+const __dirname = path.resolve();
+const rootPath = __dirname + '/../../';
+
 export function getParsedDocs() {
   if (parsedDocs) {
     return Promise.resolve(JSON.stringify(parsedDocs));
@@ -15,9 +18,9 @@ export function getParsedDocs() {
 
 function setParsedDocs() {
   const dirs = [
-    './../../../../docs',
-    './../../../../plugins/auth/public/auth-oauth2',
-    './../../../../plugins/auth/public/auth-oidc'
+    rootPath + 'docs',
+    rootPath + 'plugins/auth/public/auth-oauth2',
+    rootPath + 'plugins/auth/public/auth-oidc'
   ];
   // const dirs = ['docs',
   //   'plugins/auth/public/auth-oauth2',

@@ -14,9 +14,11 @@
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"pre-bundle": "npm run compilecorescss && npm run bundleLuigiConfig",
+		"fetchversions": "curl -H \"Accept: application/vnd.github.v3+json\" https://api.github.com/repos/SAP/luigi/tags?per_page=100 > static/public/versions.json",
+		"pre-bundle": "npm run compilecorescss && npm run bundleLuigiConfig && npm run fetchversions && npm run buildMarkdownDocu",
 		"compilecorescss": "sass --no-source-map ./src/luigi-config/styles/index.scss ./public/coreStyles.css",
-		"bundleLuigiConfig": "esbuild src/luigi-config/extended/main.js  --bundle --minify  --outfile=./public/luigi-config.bundle.js"
+		"bundleLuigiConfig": "esbuild src/luigi-config/extended/main.js  --bundle --minify  --outfile=./public/luigi-config.bundle.js",
+		"buildMarkdownDocu": "node src/markdown-conversion/plugins/buildDocsContent.js"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
