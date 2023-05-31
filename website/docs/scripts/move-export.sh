@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -e # exit on errors
-BASE_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+B_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+BASE_DIR=$B_DIR/../
 
 Color_Off='\033[0m'       # Text Reset
 BIBlue='\033[1;34m'      # Light Blue, bold
 
-PUBLIC_DIR=$BASE_DIR/../public
+PUBLIC_DIR=$BASE_DIR/public
+STATIC_DIR=$BASE_DIR/static
 
 if [ -d $PUBLIC_DIR ]; then
  rm -rf $PUBLIC_DIR
@@ -17,15 +19,28 @@ mkdir -p $PUBLIC_DIR
 LUIGI_CORE=$PUBLIC_DIR/luigi-core
 LUIGI_CLIENT=$PUBLIC_DIR/luigi-client
 
-NODE_MODULES_CORE=$BASE_DIR/../node_modules/@luigi-project/core
-NODE_MODULES_CLIENT=$BASE_DIR/../node_modules/@luigi-project/client
+NODE_MODULES_CORE=$BASE_DIR/node_modules/@luigi-project/core
+NODE_MODULES_CLIENT=$BASE_DIR/node_modules/@luigi-project/client
+NODE_MODULES_DOCSEARCH=$BASE_DIR/node_modules/docsearch.js/dist/cdn/docsearch.min.css
+DOCS_IMG_ASSETS=$BASE_DIR/../../docs/assets
+SITEMAP_FILE=$BASE_DIR/sitemap.xml
+ROBOTSTXT_FILE=$BASE_DIR/robots.txt
+
+
 
 mkdir -p $LUIGI_CORE
 mkdir -p $LUIGI_CLIENT
+mkdir -p $STATIC_DIR/assets
 
 # copy luigi client and luigi core to public folder or wherever needed, to avoid using extra dependencies on vite side
 cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT
 cp $NODE_MODULES_CORE/* $LUIGI_CORE
+cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
+cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
+cp $SITEMAP_FILE $PUBLIC_DIR
+cp $ROBOTSTXT_FILE $PUBLIC_DIR
+cp $STATIC_DIR/public/* $PUBLIC_DIR
+
 
 
 # mkdir -p $PUBLIC_CLIENT_DIR

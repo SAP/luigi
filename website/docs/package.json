@@ -15,7 +15,7 @@
 		"lint": "prettier --plugin-search-dir . --check .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"pre-bundle": "npm run compilecorescss && npm run bundleLuigiConfig",
-		"compilecorescss": "sass ./src/luigi-config/styles/index.scss ./public/coreStyles.css",
+		"compilecorescss": "sass --no-source-map ./src/luigi-config/styles/index.scss ./public/coreStyles.css",
 		"bundleLuigiConfig": "esbuild src/luigi-config/extended/main.js  --bundle --minify  --outfile=./public/luigi-config.bundle.js"
 	},
 	"devDependencies": {
@@ -27,6 +27,7 @@
 		"@types/lodash.orderby": "^4.6.7",
 		"algoliasearch": "^4.17.0",
 		"cpy-cli": "^4.2.0",
+		"docsearch.js": "^2.6.3",
 		"hastscript": "^7.2.0",
 		"hogan.js": "^3.0.2",
 		"prettier": "^2.8.0",
