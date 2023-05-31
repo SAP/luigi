@@ -252,7 +252,14 @@ class GenericHelpersClass {
   }
 
   getContentAreaHeight /* istanbul ignore next */() {
-    return this.getInnerHeight() - LuigiElements.getShellbar().clientHeight;
+    const contentAreaHeight = this.getInnerHeight() - this.getShellbarHeight();
+    return contentAreaHeight;
+  }
+
+  getShellbarHeight() {
+    const shellBar = LuigiElements.getShellbar() || {};
+    const shellBarHeight = shellBar.clientHeight || 0;
+    return shellBarHeight;
   }
 
   computePxFromPercent(fullPixels, requestedPercent) {
@@ -285,8 +292,7 @@ class GenericHelpersClass {
   }
 
   /**
-   * Returns a new Object with the same object,
-   * without the keys that were given.
+   * Returns a new Object with the same object,   * without the keys that were given.
    * References still stay.
    * Allows wildcard ending keys
    *
