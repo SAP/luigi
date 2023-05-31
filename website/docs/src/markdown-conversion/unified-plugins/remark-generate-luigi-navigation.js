@@ -16,7 +16,7 @@ const staticNavigation = readFileSync(staticNavigationFilePath);
 writeFileSync(generatedNavigationFilePath, String(staticNavigation));
 
 export default function luigiNavigationBuilder(data = {}) {
-  return function transformer(tree: any) {
+  return function transformer(tree) {
     const navItems = JSON.parse(String(readFileSync(generatedNavigationFilePath)));
 
     visit(tree, ['json'], function(node) {
@@ -33,7 +33,7 @@ export default function luigiNavigationBuilder(data = {}) {
   };
 }
 
-function generateNavItem(d: any) {
+function generateNavItem(d) {
   if (!d.node || !d.node.label) {
     console.warn('WARNING: possible invalid frontmatter data', d);
   }
@@ -48,7 +48,7 @@ function generateNavItem(d: any) {
   return navItem;
 }
 
-function IsJsonString(str: string) {
+function IsJsonString(str) {
   try {
     JSON.parse(str);
   } catch (e) {
@@ -57,7 +57,7 @@ function IsJsonString(str: string) {
   return true;
 }
 
-function parseFrontmatter(str: string) {
+function parseFrontmatter(str) {
   if (!IsJsonString(str)) {
     console.error('ERROR, invalid json', str);
   }

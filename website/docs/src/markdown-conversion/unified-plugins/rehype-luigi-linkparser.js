@@ -14,16 +14,16 @@ if (process.env.NODE_ENV === 'debug') {
   });
 }
 
-export default function luigiLinkParser(options: any) {
+export default function luigiLinkParser(options) {
   var settings = options || {};
 
-  return function transformer(tree: any) {
+  return function transformer(tree) {
     visit(tree, 'element', function(node) {
       modify(node, 'href');
     });
   };
 
-  function modify(node: any, prop: any) {
+  function modify(node, prop) {
     const githubMain = 'https://github.com/SAP/luigi/blob/main/';
     if (hasProperty(node, prop)) {
       var parsed = url.parse(node.properties[prop]);

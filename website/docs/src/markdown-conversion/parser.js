@@ -1,4 +1,4 @@
-import { MarkdownSvc } from '../services/markdown.service.js';
+import { MarkdownSvc } from '../../services/markdown.service.js';
 import { readdirSync, readFileSync } from 'fs';
 import path from 'path';
 
