@@ -84,9 +84,8 @@
 </script>
 
 <div
-  class={backdropClass}
+  class="{backdropClass} {area === 'main' ? 'zIndexZero' : ''}"
   aria-hidden="false"
-  style={area === 'main' ? 'z-index: 0;' : ''}
 >
   <slot />
 </div>
@@ -100,5 +99,9 @@
     bottom: 0;
     right: 0;
     z-index: 2;
+  }
+
+  .lui-backdrop.zIndexZero {
+    z-index: 0;
   }
 </style>

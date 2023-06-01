@@ -240,15 +240,9 @@
 
   function closest(element, selector, max) {
     if (element && max > 0) {
-      if (GenericHelpers.isIE()) {
-        return element.msMatchesSelector(selector)
-          ? element
-          : closest(element.parentNode, selector, max - 1);
-      } else {
-        return element.matches(selector)
-          ? element
-          : closest(element.parentNode, selector, max - 1);
-      }
+      return element.matches(selector)
+        ? element
+        : closest(element.parentNode, selector, max - 1);
     } else {
       return undefined;
     }

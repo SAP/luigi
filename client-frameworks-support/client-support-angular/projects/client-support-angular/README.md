@@ -1,9 +1,10 @@
 # ClientSupportAngular
 
-This library provides several features to run your Angular application inside the Luigi micro frontend framework.  
+This library provides several features which make it easier to run your Angular application inside the Luigi micro frontend framework.
 If you want to know more about Luigi, please have a look at the [Luigi homepage](https://luigi-project.io/).
 
 ## How to use the library
+
 1. Import the library in the `package.json`:
 ```javascript
 npm install @luigi-project/client-support-angular -s
@@ -19,27 +20,35 @@ imports: [
 ```
 
 ## Features
-These are the main features provided by the library:
-* [LuigiContextService](#LuigiContextService)
-* [LuigiAutoRoutingService](#LuigiAutoRoutingService) 
+
+These are the features provided by the library:
+* [LuigiContextService](#LuigiContextService) - allows you to observe context changes in Luigi.
+* [Preload component](#preload-component) - an empty Angular component that can be used to build a preload route. See also [preloadUrl](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=viewgroupsettings). 
+* [LuigiAutoRoutingService](#LuigiAutoRoutingService) - enables the synchronization of Angular routes with Luigi. It contains the following elements: 
+  * [LuigiRouteStrategy](#LuigiRouteStrategy) - Luigi's implementation of an Angular [RouteReuseStrategy](https://angular.io/api/router/RouteReuseStrategy).
+  * [AutoRouting for modals](#autorouting-for-modals) - synchronizes Angular modals with Luigi.
+* [LuigiMockModule](#LuigiMockModule) - an Angular module that listens to Luigi Client calls and messages and sends a mocked response back. See also [LuigiMockUtil](https://docs.luigi-project.io/docs/luigi-testing-utilities). 
+
 
 ### LuigiContextService
+
 You can inject this service inside your Angular items in order to:
-* Get the current (latest) Context that we received from Luigi Core
-* Provide an Observable<Context> where through subscribing, you can get any Context change     
-    
-**LuigiContextService** is an abstract class. Its implementation is in the **LuigiContextServiceImpl** class.  
+* Get the current (latest) [context](https://docs.luigi-project.io/docs/navigation-advanced?section=contexts) that we received from Luigi Core
+* Provide an `Observable<Context>` where through subscribing, you can get any context change
+
+**LuigiContextService** is an abstract class. Its implementation is in the **LuigiContextServiceImpl** class.
 If you need to change or extend the implementation, you can easily create a new class extending **LuigiContextServiceImpl**:
 
-In this class, we added the possibility to "reuse" a component and not initialize it every time you load it (it could be useful to keep component state.)  
+In this class, we added the possibility to "reuse" a component and not initialize it every time you load it (as it could be useful to keep component state.)
 
 ```javascript
 export class YourContextService extends  LuigiContextServiceImpl {
-    ....    
+    ....
 }
 
 ```
 Inside your module, redefine the provider:
+
  ```javascript
 providers: [
     {
@@ -48,30 +57,50 @@ providers: [
     }
 ]
  ```
-    
+
 ### LuigiAutoRoutingService
-This service cannot be used directly, but it will provide useful features on how to synchronize your angular application with Luigi navigation.  
-It can happen that in your microfrontend, user can navigate through different components/pages.  
-With this feature we provide an easy way of synchronizing angular route with Luigi navigation; in angular route configuration, you can now add in data these attributes:
+
+This service cannot be used directly, but it provides useful features on how to synchronize your Angular application with Luigi navigation. 
+
+For example, when the user navigates through different pages within a micro frontend, you can use this feature to update Luigi accordingly. (You can also find more information about this process in the [micro frontend routing](https://docs.luigi-project.io/docs/microfrontend-routing) document.)
+
+### Preload component
+
+In your Angular route configuration, you can add in any of the following preload components:
 
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2' }}
+{path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: true}}
+{path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: 'localContext'}}
  ```
 
-with `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, we will call Luigi Client:
+Under the hood, these components make use of Luigi's [linkManager](https://docs.luigi-project.io/docs/luigi-client-api?section=linkmanager) in the following way: 
+
+For `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, this Luigi Client API method is called:
  ```javascript
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
  ```
-with `data: { luigiRoute: '/home/sample2' }`, uses luigiClient API in this way:
+
+For `data: { luigiRoute: '/home/sample2' }`, this Luigi Client API method is called:
  ```javascript
   luigiClient.linkManager().withoutSync().navigate(data.luigiRoute);
  ```
-More information about linkManager can be found [here](https://docs.luigi-project.io/docs/luigi-client-api/?section=linkmanager).
+
+For `data: { luigiRoute: '/home/sample2', fromContext: true }`, this Luigi Client API method is called:
+ ```javascript
+  luigiClient.linkManager().fromClosestContext().withoutSync().navigate(data.luigiRoute);
+ ```
+
+For `data: { luigiRoute: '/home/sample2', fromContext: 'localContext' }`, this Luigi Client API method is called:
+ ```javascript
+  luigiClient.linkManager().fromContext('localContext').withoutSync().navigate(data.luigiRoute);
+ ```
 
 
-## LuigiRouteStrategy
-To use **LuigiAutoRoutingService**, this library defines a new **RouteReuseStrategy** named **LuigiRouteStrategy**.  
+### LuigiRouteStrategy
+
+To use **LuigiAutoRoutingService**, this library defines a new **RouteReuseStrategy** named **LuigiRouteStrategy**.
 If you need to define your own **RouteReuseStrategy**, you can extend **LuigiRouteStrategy** by overriding it in this way:
 
  ```javascript
@@ -92,22 +121,6 @@ and define the provider:
  }
  ```
 
-We also provide an example of how to extend **LuigiRouteStrategy** in class **LuigiReuseRouteStrategy**.  
-In this class, we added the possibility to "reuse" a component and not initialize it every time you load it (it could be useful to keep component state.)  
-
-**LuigiReuseRouteStrategy** can be configured in the following way:
- ```javascript
-{path: 'luigi-client-support-preload',component: Sample1Component,data: { reuse: true }}
- ```
-
-If you want to use **LuigiReuseRouteStrategy** (it is not enabled by default), you need to configure in your application:
- ```javascript
- {
-      provide: RouteReuseStrategy,
-      useClass: LuigiReuseRouteStrategy
- }
- ```
-
 ### AutoRouting for modals
 
 Similarly to other components, modals which have a [modalPathParam](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=modalpathparam) can trigger a change in the URL when navigation occurs. In the Angular router of your Luigi app, you can enable auto-routing for modals using these parameters: 
@@ -122,3 +135,28 @@ For example:
     data: { updateModalDataPath: true, addHistoryEntry: true }
   }
 ```
+
+### LuigiMockModule
+
+In the normal Luigi workflow, messages coming from Luigi Client to Luigi Core are processed on the Core and a proper response is sent back. However, in many systems where testing of micro frontends standalone is a necessity, the absence of Luigi Core to send back needed responses to Client micro frontends becomes a case of high coupling. To remove this coupling, we introduce **LuigiMockModule** for **Angular** applications. This module is attached to the start of your application where it intercepts all the Client calls and sends a mocked Core response back. This enables users to test their micro frontends standalone without depending on the Core. 
+To use **LuigiMockModule**, simply add it to the list of imports of your applications entry point. A good practice is to include it in the main testing module of your application as given in the example below:
+
+ ```javascript
+import {LuigiMockModule} from '@luigi-project/client-support-angular';
+
+/**
+ * This module is used to run the application for e2e tests.
+ */
+@NgModule({
+  imports: [
+    AppModule,
+    LuigiMockModule,
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppTestingModule {}
+
+ ```
+
+To make mocking of Luigi Core easier, you can use a range of utility functions and assertions. Our lightweight [Luigi Testing Utilities](https://docs.luigi-project.io/docs/luigi-testing-utilities) library provides the necessary basic utility functions needed for your application. 
+

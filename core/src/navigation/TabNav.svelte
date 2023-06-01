@@ -144,7 +144,6 @@
     if(resizeObserver) {
       resizeObserver.disconnect();
     }
-    document.documentElement.style.removeProperty('--luigi__horizontal-nav--live-height');
   }
 
 
@@ -155,6 +154,7 @@
 
   onDestroy(() => {
     resetResizeObserver();
+    document.documentElement.style.removeProperty('--luigi__horizontal-nav--live-height');
   });
 
   // [svelte-upgrade warning]
