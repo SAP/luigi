@@ -973,7 +973,7 @@
                     data-testid="semiCollapsibleButton"
                     title={burgerTooltip}
                     tabindex="0"
-                    class="fd-button fd-button--transparent lui-semi-btn"
+                    class="fd-button fd-button--transparent fd-button--cozy lui-semi-btn"
                   >
                   <i
                     class="lui-side-nav__footer--icon {isSemiCollapsed
@@ -1236,10 +1236,14 @@
     .lui-semi-btn {
       margin: var(--sapContent_FocusWidth);
       color: var(--sapContent_IconColor);
+      width: calc($leftNavWidthCollapsed - 2 * ( var(--fdButton_Outline_Offset) + var(--sapContent_FocusWidth)));
     }
     
     .lui-semi-btn &--icon {
       padding: 0;
+    }
+    .lui-semi-btn:focus:after {
+      border: none;
     }
   }
 
