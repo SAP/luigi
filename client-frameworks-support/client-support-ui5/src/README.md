@@ -4,14 +4,16 @@ The Luigi Client UI5 Support Library offers a set [features](#features) which ma
 ​
 ## How to use the library
 
-As a first step you need to add `ComponentSupport` to the `index.html` as well as to allow the `data-sap-ui-frameOptions`.
+1. Include the following in your `index.html` file in order to add `ComponentSupport` and allow `data-sap-ui-frameOptions`:
 ```javascript
 <script id="sap-ui-bootstrap" src="resources/sap-ui-core.js" data-sap-ui-resourceroots='{
 				"luigi.ui5-demoapp": "./"
 			}' data-sap-ui-oninit="module:sap/ui/core/ComponentSupport" data-sap-ui-compatVersion="edge"
 		data-sap-ui-async="true" data-sap-ui-frameOptions="allow" data-sap-ui-theme="sap_horizon"
 		data-sap-ui-xx-waitForTheme="true" data-sap-ui-xx-supportedLanguages="en,de">
-		</script>
+</script>
+
+2. Install the library either by using [npm](#installing-via-npm) (this option requires [UI5 Tooling](https://sap.github.io/ui5-tooling/stable/)), or [manually](#installing-manually).
 ```
 ### Installing via npm
 ​
