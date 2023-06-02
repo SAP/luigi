@@ -625,7 +625,7 @@ Yes, currently this is possible via [splitView](https://docs.luigi-project.io/do
 
 ### Can I place a micro frontend within another micro frontend?
 
-Yes, Luigi's [Web Component](https://docs.luigi-project.io/docs/web-component) feature allows you to create [compound micro frontends](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=webcomponent).
+Yes, you can use [Web Components](https://docs.luigi-project.io/docs/web-component) in Luigi in order to achieve that. After creating a web component, you first need to enable in on the node level using the [webcomponent](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=webcomponent) Luigi parameter. Then, you can use the [compound](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) feature to define a custom layout or configure nested web components.
 
 ### How can I implement a custom home page or login page for Luigi?
 
