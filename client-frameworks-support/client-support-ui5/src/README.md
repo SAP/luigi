@@ -45,9 +45,9 @@ sap.ui.define([
 			this.getRouter().initialize();
 		},
 ```
-### Installing the lib manually
+### Installing manually
 
-1. Create a `lib` folder under the `webapp` directory and put the `luigi-client.js` and `ui5-support-lib.js` into it.
+1. Create a `lib` folder under the `webapp` directory and put the [luigi-client.js](https://www.npmjs.com/package/@luigi-project/client?activeTab=code) and [ui5-support-lib.js](https://www.npmjs.com/package/@luigi-project/client-support-ui5?activeTab=code) into it.
 
 2. Use the [shim mechanism](https://openui5.hana.ondemand.com/#/api/sap.ui.loader/methods/sap.ui.loader.config) to make Luigi Client available in your UI5 application using `sap.ui.loader.config` (the Luigi Client UI5 Support Library consumes Luigi Client via the name `@luigi-project/client/luigi-client`): 
 
