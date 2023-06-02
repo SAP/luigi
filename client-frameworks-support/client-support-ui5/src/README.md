@@ -22,7 +22,7 @@ The Luigi Client UI5 Support Library offers a set [features](#features) which ma
 npm install @luigi-project/client-support-ui5
 ```
 
-2. If your project is not set up for use with the [UI5 Tooling](https://sap.github.io/ui5-tooling/stable/) yet, you need to install it. It is required to consume the ui5-support-lib.
+2. If your project is not set up for use with the [UI5 Tooling](https://sap.github.io/ui5-tooling/stable/) yet, you need to install it. It is required to consume the Luigi Client UI5 Support Library.
 ​
 3. In the last step you need to register the library in your `Component.js` file.
 
