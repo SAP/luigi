@@ -187,10 +187,10 @@ You can set the following values:
 - **default**: if you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node.
 
 ### semiCollapsibleButtonStyle
-- **description**: allows customizing the rendering of the expand/collapse control in the left side navigation, if **responsiveNavigation** is set to **semiCollapsible**.
+- **description**: allows you to customize the rendering of the expand/collapse control in the left side navigation, if [responsiveNavigation](https://docs.luigi-project.io/docs/general-settings/?section=responsivenavigation) is set to **semiCollapsible**.
 You can set the following values:
   * `button` renders a **button** tag.
-- **default**: if you don't specify any value for  **semiCollapsibleButtonStyle**, the control is rendered as a **i** tag.
+- **default**: if you don't specify any value for  **semiCollapsibleButtonStyle**, the control is rendered as an **i** tag.
 
 ### profileType
 - **description**: allows applying different layouts of Profile Menu in the shellbar once a user is authorized.
