@@ -2,16 +2,9 @@
 ​
 The Luigi Client UI5 Support Library offers a set [features](#features) which make it easier to use the [Luigi micro frontend framework](https://luigi-project.io/) with UI5 applications. 
 ​
-## How to use the library 
-​
-1. Import the library in your `package.json` file:
-```javascript
-npm install @luigi-project/client-support-ui5
-```
+## How to use the library
 
-2. Use [ui5 tooling](https://sap.github.io/ui5-tooling/stable/) to consume the ui5-support-lib in your ui5 application.
-​
-3. Once the library is imported and saved in your UI5 application, you need to add `ComponentSupport` to the `index.html` as well as to allow the `data-sap-ui-frameOptions`.
+As a first step you need to add `ComponentSupport` to the `index.html` as well as to allow the `data-sap-ui-frameOptions`.
 ```javascript
 <script id="sap-ui-bootstrap" src="resources/sap-ui-core.js" data-sap-ui-resourceroots='{
 				"luigi.ui5-demoapp": "./"
@@ -20,8 +13,18 @@ npm install @luigi-project/client-support-ui5
 		data-sap-ui-xx-waitForTheme="true" data-sap-ui-xx-supportedLanguages="en,de">
 		</script>
 ```
+### Installing via npm
+​
+1. Import the library in your `package.json` file:
+```javascript
+npm install @luigi-project/client-support-ui5
+```
 
-4. In the last step you need to register the library in your `Component.js` file:
+2. If your project is not set up for use with the [UI5 Tooling](https://sap.github.io/ui5-tooling/stable/) yet, you need to install it. It is required to consume the ui5-support-lib.
+​
+3. In the last step you need to register the library in your `Component.js` file.
+
+Using UI5 tooling:
 ```javascript
 sap.ui.define([
 	"sap/ui/core/UIComponent",
@@ -40,9 +43,51 @@ sap.ui.define([
 			this.getRouter().initialize();
 		},
 ```
-In addition, the LuigiClient API is available through the ui5 support lib. LuigiClient can be used in a controller like 
+### Installing the lib manually
+
+1. Create a `lib` folder under the `webapp` directory and put the `luigi-client.js` and `ui5-support-lib.js` into it.
+
+2. Use the [shim mechanism](https://openui5.hana.ondemand.com/#/api/sap.ui.loader/methods/sap.ui.loader.config) to make the luigi client available in your ui5 application (especially the ui5-support-lib consumes the luigi-client via the name `@luigi-project/client/luigi-client`) using the `sap.ui.loader.config`. 
+
 ```javascript
-this.getOwnerComponent().LuigiClient.uxManager().showAlert(settings).then(() => {
+sap.ui.loader.config({
+	// provide dependency and export metadata for non-UI5 modules
+	paths: {
+		"@luigi-project/client/luigi-client": "lib/luigi-client/luigi-client"
+	},
+    shim:{
+        "@luigi-project/client/luigi-client": {
+            amd: false,
+            exports: 'LuigiClient'
+        }
+    }
+});
+sap.ui.define([
+	"sap/ui/core/UIComponent",
+	...
+	"./lib/LuigiUI5SupportLib"
+], function (UIComponent, ..., LuigiUI5SupportLib) {
+	"use strict";
+    return UIComponent.extend("com.sap.luigiclient.Component", {
+		....
+		init: function () {
+			.....			
+			// connect client-support-ui5 lib to the application
+			Ui5SupportLib.connectTo(this);
+            
+            this.LuigiClient = Ui5SupportLib.LuigiClient;
+​
+			this.getRouter().initialize();
+		},
+```
+
+
+In addition, the LuigiClient API is available through the ui5 support lib. LuigiClient can be used in a controller like:
+```javascript
+const alertSettings = {
+    ....
+}
+this.getOwnerComponent().LuigiClient.uxManager().showAlert(alertSettings).then(() => {
           // Logic to execute when the alert is dismissed
         });
 ```
