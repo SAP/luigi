@@ -56,7 +56,7 @@ sap.ui.define([
 sap.ui.loader.config({
 	// provide dependency and export metadata for non-UI5 modules
 	paths: {
-		"@luigi-project/client/luigi-client": "lib/luigi-client/luigi-client"
+		"@luigi-project/client/luigi-client": "lib/luigi-client"
 	},
     shim:{
         "@luigi-project/client/luigi-client": {
