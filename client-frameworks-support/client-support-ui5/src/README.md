@@ -12,9 +12,10 @@ The Luigi Client UI5 Support Library offers a set [features](#features) which ma
 		data-sap-ui-async="true" data-sap-ui-frameOptions="allow" data-sap-ui-theme="sap_horizon"
 		data-sap-ui-xx-waitForTheme="true" data-sap-ui-xx-supportedLanguages="en,de">
 </script>
+```
 
 2. Install the library either by using [npm](#installing-via-npm) (this option requires [UI5 Tooling](https://sap.github.io/ui5-tooling/stable/)), or [manually](#installing-manually).
-```
+
 ### Installing via npm
 ​
 1. Import the library in your `package.json` file:
