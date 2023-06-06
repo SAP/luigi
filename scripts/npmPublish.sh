@@ -124,9 +124,9 @@ elif [ "$1" = "luigi-container-release" ]; then
   checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
   publishPackage "container" "container/public"
 elif [ "$1" = "luigi-client-support-ui5-release" ]; then
-  echo "PWD"
+  echo "$PWD"
   checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "package.json" "README.md" "ui5-support-lib.js"
-  publishPackage "client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
+  publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
 else
   prepublishChecks
   # Luigi OAuth Plugin
