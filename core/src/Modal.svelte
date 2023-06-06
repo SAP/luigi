@@ -5,6 +5,7 @@
     createEventDispatcher,
     onMount,
     onDestroy,
+    getContext
   } from 'svelte';
   import { fade } from 'svelte/transition';
   import { Navigation } from './navigation/services/navigation';
@@ -13,6 +14,8 @@
     GenericHelpers,
     IframeHelpers,
     RoutingHelpers,
+    NavigationHelpers,
+    StateHelpers
   } from './utilities/helpers';
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
@@ -33,6 +36,11 @@
   let isDrawer = false;
   let isModal = true;
   let modalElementClassSelector;
+  let store = getContext('store');
+
+  const getNodeLabel = (node) => {
+    return NavigationHelpers.getNodeLabel(node);
+  }
 
   const prepareNodeData = async (path) => {
     const pathUrlRaw =
@@ -45,11 +53,15 @@
     modalElementClassSelector = isDrawer
       ? '._drawer'
       : `[modal-container-index="${modalIndex}"]`;
+
+    settings._liveLabel = false;
+
     if (isDrawer) {
       isModal = false;
       if (settings.header === undefined) {
         settings.header = true;
-        settings.title = nodeObject.label;
+        settings.title = getNodeLabel(nodeObject);
+        settings._liveLabel = true;
       } else if (settings.header && settings.header.title) {
         settings.title = settings.header.title;
       }
@@ -65,7 +77,8 @@
       }
     } else {
       if (!settings.title) {
-        settings.title = nodeObject.label;
+        settings.title = getNodeLabel(nodeObject);
+        settings._liveLabel = true;
       }
     }
     pathData = dataFromPath.pathData;
@@ -246,6 +259,15 @@
   };
 
   onMount(() => {
+    StateHelpers.doOnStoreChange(
+      store,
+      () => {
+        if (settings._liveLabel && nodeObject) {
+          settings.title = getNodeLabel(nodeObject);
+        }
+      },
+      ['navigation.viewgroupdata']
+    );
     EventListenerHelpers.addEventListener('message', onMessage);
     // only disable accessibility for all cases other than a drawer without backdrop
     !(settings.isDrawer && !settings.backdrop)
