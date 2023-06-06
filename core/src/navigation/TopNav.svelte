@@ -135,6 +135,14 @@
       ['navigation']
     );
 
+    StateHelpers.doOnStoreChange(
+      store,
+      () => {
+        setTopNavData();
+      },
+      ['navigation.viewgroupdata']
+    );
+
     EventListenerHelpers.addEventListener('message', (e) => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
         setTopNavData();
