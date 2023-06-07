@@ -235,6 +235,14 @@
       ['settings.footer']
     );
 
+    StateHelpers.doOnStoreChange(
+      store,
+      () => {
+        setLeftNavData();
+      },
+      ['navigation.viewgroupdata']
+    );
+
     let stateArr = SemiCollapsibleNavigation.initial();
     isSemiCollapsed = stateArr.isSemiCollapsed;
     semiCollapsible = stateArr.semiCollapsible;

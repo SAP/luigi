@@ -1,7 +1,7 @@
 <script>
   import { afterUpdate, beforeUpdate, createEventDispatcher, onMount, getContext, onDestroy } from 'svelte';
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
   
   import TabHeader from './TabHeader.svelte'; 
@@ -19,6 +19,7 @@
   export let resizeTabNavToggle;
   let previousResizeTabNavToggle;
   let getTranslation = getContext('getTranslation');
+  let store = getContext('store');
   let resizeObserver;
 
   //TODO refactor
@@ -150,6 +151,13 @@
   onMount(() => {
     hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
     handleHorizontalNavHeightChange();
+    StateHelpers.doOnStoreChange(
+      store,
+      () => {
+        setTabNavData();
+      },
+      ['navigation.viewgroupdata']
+    );
   });
 
   onDestroy(() => {
