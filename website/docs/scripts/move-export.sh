@@ -18,6 +18,7 @@ mkdir -p $PUBLIC_DIR
 
 LUIGI_CORE=$PUBLIC_DIR/luigi-core
 LUIGI_CLIENT=$PUBLIC_DIR/luigi-client
+SRC=$BASE_DIR/src
 
 NODE_MODULES_CORE=$BASE_DIR/node_modules/@luigi-project/core
 NODE_MODULES_CLIENT=$BASE_DIR/node_modules/@luigi-project/client
@@ -33,6 +34,7 @@ ROBOTSTXT_FILE=$BASE_DIR/robots.txt
 mkdir -p $LUIGI_CORE
 mkdir -p $LUIGI_CLIENT
 mkdir -p $STATIC_DIR/assets
+mkdir -p $SRC/assets
 
 # copy luigi client and luigi core to public folder or wherever needed, to avoid using extra dependencies on vite side
 cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT
@@ -41,8 +43,11 @@ cp $NODE_MODULES_CORE/* $LUIGI_CORE
 # copy docsearch css to public dir - not valid anymore.
 # cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
 
-# copy docu image assets to assets folder
+# copy docu image assets to assets folder for production use
 cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
+
+# copy docu image assets to assets folder for development use
+cp $DOCS_IMG_ASSETS/* $SRC/assets
 
 # cp $SITEMAP_FILE $PUBLIC_DIR
 cp $ROBOTSTXT_FILE $PUBLIC_DIR
