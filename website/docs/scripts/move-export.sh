@@ -23,7 +23,7 @@ NODE_MODULES_CORE=$BASE_DIR/node_modules/@luigi-project/core
 NODE_MODULES_CLIENT=$BASE_DIR/node_modules/@luigi-project/client
 NODE_MODULES_DOCSEARCH=$BASE_DIR/node_modules/docsearch.js/dist/cdn/docsearch.min.css
 DOCS_IMG_ASSETS=$BASE_DIR/../../docs/assets
-SITEMAP_FILE=$BASE_DIR/sitemap.xml
+# SITEMAP_FILE=$BASE_DIR/sitemap.xml
 ROBOTSTXT_FILE=$BASE_DIR/robots.txt
 
 
@@ -37,11 +37,12 @@ cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT
 cp $NODE_MODULES_CORE/* $LUIGI_CORE
 cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
 cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
-cp $SITEMAP_FILE $PUBLIC_DIR
+# cp $SITEMAP_FILE $PUBLIC_DIR
 cp $ROBOTSTXT_FILE $PUBLIC_DIR
 cp $STATIC_DIR/public/* $PUBLIC_DIR
 
-
+# copy redirects file for netlify
+cp $BASE_DIR/src/_redirects $PUBLIC_DIR/
 
 # mkdir -p $PUBLIC_CLIENT_DIR
 
@@ -57,8 +58,7 @@ cp $STATIC_DIR/public/* $PUBLIC_DIR
 # copy generated-json afterwards, since static files are only copied once by sapper in the beginning
 # cp $BASE_DIR/../static/luigi/navigation-generated.json $LUIGI_PUBLIC_DIR/ 
 
-# copy redirects file for netlify
-# cp $LUIGI_PUBLIC_DIR/../src/_redirects $LUIGI_PUBLIC_DIR/
+
 
 echo ""
 echo "Documentation files were exported to respective folders"

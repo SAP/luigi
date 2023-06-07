@@ -24,7 +24,7 @@ getParsedDocs().then(raw => {
   }
   sitemapString = sitemapString + footer;
 
-  fs.writeFile('sitemap.xml', sitemapString, function(err, data) {
+  fs.writeFile('public/sitemap.xml', sitemapString, function(err, data) {
     if (err) {
       return console.log(err);
     }
