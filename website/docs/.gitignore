@@ -16,4 +16,6 @@ vite.config.ts.timestamp-*
 /src/core
 /src/luigi-client
 /src/assets
+/src/images
+/src/data/docs.json
 sitemap.xml

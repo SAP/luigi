@@ -20,12 +20,15 @@ LUIGI_CORE=$PUBLIC_DIR/luigi-core
 LUIGI_CLIENT=$PUBLIC_DIR/luigi-client
 SRC=$BASE_DIR/src
 
+
 NODE_MODULES_CORE=$BASE_DIR/node_modules/@luigi-project/core
 NODE_MODULES_CLIENT=$BASE_DIR/node_modules/@luigi-project/client
 
 # docsearch.js is deprecated and has security issues. Need to use the docsearch.min.css standalone instead
 # NODE_MODULES_DOCSEARCH=$BASE_DIR/node_modules/docsearch.js/dist/cdn/docsearch.min.css
 DOCS_IMG_ASSETS=$BASE_DIR/../../docs/assets
+
+
 # SITEMAP_FILE=$BASE_DIR/sitemap.xml
 ROBOTSTXT_FILE=$BASE_DIR/robots.txt
 
@@ -35,6 +38,7 @@ mkdir -p $LUIGI_CORE
 mkdir -p $LUIGI_CLIENT
 mkdir -p $STATIC_DIR/assets
 mkdir -p $SRC/assets
+mkdir -p $SRC/images
 
 # copy luigi client and luigi core to public folder or wherever needed, to avoid using extra dependencies on vite side
 cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT
@@ -48,6 +52,9 @@ cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
 
 # copy docu image assets to assets folder for development use
 cp $DOCS_IMG_ASSETS/* $SRC/assets
+
+# copy docu image assets to images folder for development use
+cp $STATIC_DIR/images/* $SRC/images
 
 # cp $SITEMAP_FILE $PUBLIC_DIR
 cp $ROBOTSTXT_FILE $PUBLIC_DIR

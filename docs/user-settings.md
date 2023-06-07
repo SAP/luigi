@@ -31,7 +31,7 @@ This document explains how to configure a User Settings dialog in the top naviga
 
 ## Overview
 
-![User settings dialog](assets/usersettingsdialog.png)
+![User settings dialog](/assets/usersettingsdialog.png)
 
 Luigi allows you to display a user settings dialog and to manage user data, through defining a user settings schema. The schema is defined in a `userSettingGroups` object.
 
@@ -39,7 +39,7 @@ Luigi allows you to display a user settings dialog and to manage user data, thro
 
 **NOTE:** The user settings dialog can not be opened from the profile menu if the profile section in the top navigation bar is not configured. For more information see the [profile configuration](navigation-advanced.md#profile).
 
-![User settings in profile menu](assets/usersettings-in-profile.png)
+![User settings in profile menu](/assets/usersettings-in-profile.png)
 
 ## Example
 
