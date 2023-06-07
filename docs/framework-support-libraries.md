@@ -21,7 +21,6 @@ On this page, you can find more information about Luigi Client support libraries
 - [Angular Support Library](#angular-support-library)
   - [How to use the library](#how-to-use-the-library)
   - [Features](#features)
-
 - [UI5 Support Library](#ui5-support-library)
   - [How to use the library](#how-to-use-the-library-1)
   - [Features](#features-1)
@@ -190,7 +189,7 @@ To make mocking of Luigi Core easier, you can use a range of utility functions a
 
 ## UI5 Support Library
 ​
-The [Luigi Client UI5 Support Library](https://github.com/SAP/luigi/tree/main/client-frameworks-support/client-support-ui5) offers a set [features](#features) which make it easier to use the Luigi micro frontend framework with UI5 applications. 
+The [Luigi Client UI5 Support Library](https://github.com/SAP/luigi/tree/main/client-frameworks-support/client-support-ui5) offers a set [features](#features) which make it easier to use the Luigi micro frontend framework with UI5 applications.  
 ​
 ### How to use the library
 
