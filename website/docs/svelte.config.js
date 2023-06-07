@@ -1,5 +1,6 @@
 import { vitePreprocess } from '@sveltejs/kit/vite';
-import adapter from '@sveltejs/adapter-netlify';
+// import adapter from '@sveltejs/adapter-netlify';
+import adapter from '@sveltejs/adapter-static';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -15,13 +16,54 @@ const config = {
     adapter: adapter({
       // if true, will create a Netlify Edge Function rather
       // than using standard Node-based functions
-      edge: false,
+      // edge: false,
       // port: 4001,
       // if true, will split your app into multiple functions
       // instead of creating a single one for the entire app.
       // if `edge` is true, this option cannot be used
-      split: false
-    })
+      // split: false,
+      // pages: 'build',
+      // assets: 'build',
+      // // fallback: 'app.html',
+      // precompress: false,
+      // strict: true
+    }),
+    prerender: {
+      crawl: true,
+      entries: [
+        '/docs/docs',
+        '/docs/advanced-options-luigi-client',
+        '/docs/advanced-scenarios',
+        '/docs/application-setup',
+        '/docs/authorization-configuration',
+        '/docs/authorization-events',
+        '/docs/communication',
+        '/docs/content-guidelines',
+        '/docs/faq',
+        '/docs/framework-support-libraries',
+        '/docs/general-settings',
+        '/docs/getting-started',
+        '/docs/global-search',
+        '/docs/i18n',
+        '/docs/lifecycle-hooks',
+        '/docs/luigi-architecture',
+        '/docs/luigi-client-api',
+        '/docs/luigi-client-setup',
+        '/docs/luigi-core-api',
+        '/docs/luigi-testing-utilities',
+        '/docs/luigi-ux-features',
+        '/docs/microfrontend-routing',
+        '/docs/navigation-advanced',
+        '/docs/navigation-configuration-example',
+        '/docs/navigation-configuration',
+        '/docs/navigation-parameters-reference',
+        '/docs/user-settings',
+        '/docs/versions',
+        '/docs/web-component',
+        '/docs/auth-oauth2',
+        '/docs/auth-oidc'
+      ]
+    }
   },
   build: {
     outDir: 'public'
