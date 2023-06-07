@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "npm run serve-core && npm run preview",
-		"dev": "npm run serve-core && vite dev --port 4001",
+		"start": "npm run serve-core & npm run preview",
+		"dev": "npm run serve-core & vite dev --port 4001",
 		"build": "npm run pre-build && vite build",
 		"preview": "vite preview --port 4001",
 		"test": "playwright test",
@@ -14,14 +14,15 @@
 		"test:unit": "vitest",
 		"lint": "prettier --plugin-search-dir . --check .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"fetchversions": "curl -H \"Accept: application/vnd.github.v3+json\" https://api.github.com/repos/SAP/luigi/tags?per_page=100 > static/public/versions.json",
-		"pre-build": "npm run compilecorescss && npm run bundleLuigiConfig && npm run fetchversions && ./scripts/move-export.sh && npm run generateSitemap   && npm run buildMarkdownDocu ",
+		"fetchversions": "curl -H \"Accept: application/vnd.github.v3+json\" https://api.github.com/repos/SAP/luigi/tags?per_page=100 > ./public/versions.json",
+		"pre-build": "./scripts/move-export.sh && npm run fetchversions && npm run compilecorescss && npm run bundleLuigiConfig && npm run generateSitemap   && npm run buildMarkdownDocu ",
 		"compilecorescss": "sass --no-source-map ./src/luigi-config/styles/index.scss ./public/coreStyles.css",
 		"bundleLuigiConfig": "esbuild src/luigi-config/extended/main.js  --bundle --minify  --outfile=./public/luigi-config.bundle.js",
 		"buildMarkdownDocu": "node src/markdown-conversion/plugins/buildDocsContent.js",
 		"generateSitemap": "node ./scripts/generate-docu-sitemap.js"
 	},
 	"devDependencies": {
+		"@docsearch/js": "^3.4.0",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-netlify": "^2.0.6",
@@ -30,7 +31,6 @@
 		"@types/lodash.orderby": "^4.6.7",
 		"algoliasearch": "^4.17.0",
 		"cpy-cli": "^4.2.0",
-		"docsearch.js": "^2.6.3",
 		"hastscript": "^7.2.0",
 		"hogan.js": "^3.0.2",
 		"prettier": "^2.8.0",
@@ -45,7 +45,7 @@
 		"svelte-preprocess": "^5.0.3",
 		"tslib": "^2.4.1",
 		"typescript": "^4.9.5",
-		"vite": "^4.0.0",
+		"vite": "^4.1.5",
 		"vitest": "^0.25.3"
 	},
 	"type": "module",
@@ -63,5 +63,8 @@
 		"remark-rehype": "^10.1.0",
 		"unified": "^10.1.2",
 		"unist-util-visit": "^4.1.2"
+	},
+	"engines": {
+		"node": ">=18"
 	}
 }

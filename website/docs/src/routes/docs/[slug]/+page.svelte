@@ -5,9 +5,3 @@
 
 {@html data.content}
 
-<style>
-	.invisible {
-		height: 0;
-		overflow: hidden;
-	}
-</style>

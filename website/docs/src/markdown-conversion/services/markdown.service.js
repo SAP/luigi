@@ -47,7 +47,6 @@ class MarkdownService {
             console.error(err || file);
             return reject();
           }
-          // console.log("END!!!!!!!", file.contents);
           resolve(file);
         });
     });

@@ -1,3 +1,4 @@
+<!-- This script is custom made to import the client-js scripts into the svelte project and inject LuigiClient onMount since otherwise Vite will try to bundle LuigiClient it and fail -->
 <script>
 	import '../styles/app.scss';
 	import { browser } from '$app/environment';
@@ -14,12 +15,11 @@
 			'./../../../client-js/helpers.js'
 		];
 
-		const importPromises = scriptsToImport.map((script) => import(script));
+		/* @vite-ignore */
+		const importPromises = scriptsToImport.map((script) => import(/* @vite-ignore */script));
 
-		console.log('promise out');
 		Promise.all(importPromises)
 			.then((modules) => {
-				console.log('TEST MODULES', modules, modules[0]);
 				// Use the imported modules here
 				new modules[0].Accordion().init();
 				new modules[1].CopyCodeHandler().init();
@@ -29,11 +29,8 @@
 				new modules[5].OuterFrameHandler().init();
 			})
 			.catch((error) => {
-				console.log('promise eror', error);
-
-				// Handle any import errors
+				console.log('Error promise importing client-js scripts: ', error);
 			});
-		console.log('promise after');
 	};
 
 	onMount(() => {
@@ -41,10 +38,6 @@
 			import('@luigi-project/client')
 				.then((LuigiClient) => {
 					// Use the imported module here
-					// For example: module.someFunction();
-					console.log(LuigiClient.default);
-
-					console.log(LuigiClient.default.addInitListener);
 					importScripts(LuigiClient.default);
 				})
 				.catch((error) => {

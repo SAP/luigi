@@ -21,7 +21,9 @@ LUIGI_CLIENT=$PUBLIC_DIR/luigi-client
 
 NODE_MODULES_CORE=$BASE_DIR/node_modules/@luigi-project/core
 NODE_MODULES_CLIENT=$BASE_DIR/node_modules/@luigi-project/client
-NODE_MODULES_DOCSEARCH=$BASE_DIR/node_modules/docsearch.js/dist/cdn/docsearch.min.css
+
+# docsearch.js is deprecated and has security issues. Need to use the docsearch.min.css standalone instead
+# NODE_MODULES_DOCSEARCH=$BASE_DIR/node_modules/docsearch.js/dist/cdn/docsearch.min.css
 DOCS_IMG_ASSETS=$BASE_DIR/../../docs/assets
 # SITEMAP_FILE=$BASE_DIR/sitemap.xml
 ROBOTSTXT_FILE=$BASE_DIR/robots.txt
@@ -35,11 +37,17 @@ mkdir -p $STATIC_DIR/assets
 # copy luigi client and luigi core to public folder or wherever needed, to avoid using extra dependencies on vite side
 cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT
 cp $NODE_MODULES_CORE/* $LUIGI_CORE
-cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
+
+# copy docsearch css to public dir - not valid anymore.
+# cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
+
+# copy docu image assets to assets folder
 cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
+
 # cp $SITEMAP_FILE $PUBLIC_DIR
 cp $ROBOTSTXT_FILE $PUBLIC_DIR
-cp $STATIC_DIR/public/* $PUBLIC_DIR
+
+cp -R $STATIC_DIR/public/* $PUBLIC_DIR
 
 # copy redirects file for netlify
 cp $BASE_DIR/src/_redirects $PUBLIC_DIR/
