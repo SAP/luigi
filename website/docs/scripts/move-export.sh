@@ -61,8 +61,8 @@ cp $STATIC_DIR/public/* $PUBLIC_DIR
 # cp $LUIGI_PUBLIC_DIR/../src/_redirects $LUIGI_PUBLIC_DIR/
 
 echo ""
-echo "Documentation was exported to $PUBLIC_DIR"
+echo "Documentation files were exported to respective folders"
 
-echo ""
-echo -e "Type ${BIBlue}npm run export:serve${Color_Off} to run Luigi with the docu micro-frontend."
-echo ""
+# echo ""
+# echo -e "Type ${BIBlue}npm run export:serve${Color_Off} to run Luigi with the docu micro-frontend."
+# echo ""

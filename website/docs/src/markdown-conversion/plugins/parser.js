@@ -22,9 +22,6 @@ function setParsedDocs() {
     rootPath + 'plugins/auth/public/auth-oauth2',
     rootPath + 'plugins/auth/public/auth-oidc'
   ];
-  // const dirs = ['docs',
-  //   'plugins/auth/public/auth-oauth2',
-  //   'plugins/auth/public/auth-oidc'];
   const parsingArr = [];
   dirs.forEach(dir => {
     readdirSync(dir)
