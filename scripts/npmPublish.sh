@@ -123,6 +123,10 @@ elif [ "$1" = "luigi-container-release" ]; then
   echo "$PWD"
   checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
   publishPackage "container" "container/public"
+elif [ "$1" = "luigi-client-support-ui5-release" ]; then
+  echo "$PWD"
+  checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "package.json" "README.md" "ui5-support-lib.js"
+  publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
 else
   prepublishChecks
   # Luigi OAuth Plugin
@@ -141,6 +145,12 @@ else
   if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
     checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"
     publishPackage "client-frameworks-support/client-support-angular" "client-frameworks-support/client-support-angular/dist/client-support-angular"
+  fi
+
+  # Luigi Client Support UI5
+  if ( prepublishCheck "client-frameworks-support/client-support-ui5/dist"); then
+    checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "ui5-support-lib.js" "README.md"
+    publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
   fi
 
   # Luigi Testing Utilities
