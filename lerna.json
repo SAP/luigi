@@ -12,6 +12,7 @@
     "plugins/auth/public/auth-oauth2",
     "plugins/auth/public/auth-oidc",
     "client-frameworks-support/client-support-angular",
+    "client-frameworks-support/client-support-ui5",
     "client-frameworks-support/testing-utilities/test",
     "client-frameworks-support/testing-utilities",
     "test/e2e-test-application",
