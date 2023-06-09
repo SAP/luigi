@@ -52,7 +52,7 @@ jobs:
             ~/cypress-binary-cache
           key: ${{ inputs.buildcache_key }}
       - run: ls test
-      - run: npm i -g lerna
+      - run: npm i -g lerna@4.0.0
       - run: lerna bootstrap --ci --force-local --ignore docs
       - run: lerna run bundle --ignore docs --scope luigi-client-private
       - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
