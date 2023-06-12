@@ -1,0 +1,32 @@
+on: workflow_dispatch
+name: Publish Luigi Client Support UI5 Release   
+env:
+  NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
+
+jobs:
+  prepare: 
+    uses: ./.github/workflows/prepare.yml
+    secrets: inherit
+    with:
+      buildcache_key: buildcache-luigi-client-support-ui5-release
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: github.repository == 'SAP/luigi'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/tmp_build
+            ~/cypress-binary-cache
+          key: buildcache-luigi-client-support-ui5-release
+      - run: cp -r ~/tmp_build/* .
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+      - run: ls ./client-frameworks-support/client-support-ui5/dist
+      - run: bash ./scripts/npmPublish.sh luigi-client-support-ui5-release
+      - run: echo "" > ~/.npmrc

@@ -1,0 +1,29 @@
+{
+  "name": "@luigi-project/client-support-ui5",
+  "version": "0.42.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "module": "ui5-support-lib.js",
+  "type": "module",
+  "dependencies": {
+    "@luigi-project/client": "^2.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://github.com/SAP/luigi.git"
+  },
+  "keywords": [
+    "luigi",
+    "UI",
+    "UI5",
+    "extensibility",
+    "micro-frontends",
+    "microfrontends"
+  ],
+  "description": "Javascript library supporting consumers of the Luigi framework",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "tag": "client-support-ui5"
+  }
+}
