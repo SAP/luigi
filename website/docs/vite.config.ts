@@ -8,6 +8,9 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,ts}']
   },
   build: {
-    chunkSizeWarningLimit: 900000
+    chunkSizeWarningLimit: 900000,
+    rollupOptions: {
+      external: ['src/data/docs']
+    }
   }
 });
