@@ -46,4 +46,4 @@ export function load({ params }) {
 //   // return listOfSlugs;
 // }
 
-// export const prerender = true;
+export const prerender = true;

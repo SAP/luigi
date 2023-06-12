@@ -26,8 +26,10 @@ const config = {
       // assets: 'build',
       // // fallback: 'app.html',
       // precompress: false,
-      // strict: true
+      strict: false
     }),
+    // prerender:{default:true},
+
     prerender: {
       crawl: true,
       entries: [
@@ -62,7 +64,12 @@ const config = {
         '/docs/web-component',
         '/docs/auth-oauth2',
         '/docs/auth-oidc'
-      ]
+      ],
+      handleMissingId: route => {
+        // Custom logic or fallback when `id` is missing
+        console.log(`---------Missing id for route: ${JSON.stringify(route)}`);
+        return { status: 200 };
+      }
     }
   },
   build: {
