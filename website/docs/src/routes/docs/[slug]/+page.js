@@ -5,7 +5,7 @@ import { error } from '@sveltejs/kit';
 
 // import pre-bundled docs.json to avoid bundling again on runtime
 
-import docsJSON from '/src/data/docs.json';
+import * as docsJSON from '/src/data/docs';
 const docsArray = Array.from(docsJSON);
 
 /** @type {import('./$types').PageLoad} */

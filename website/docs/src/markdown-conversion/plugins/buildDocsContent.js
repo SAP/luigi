@@ -5,7 +5,7 @@ import { getParsedDocs } from './parser.js';
 getParsedDocs().then(function(a) {
   var __dirname = path.resolve();
   var dataFolder = __dirname + '/src/data';
-  var docsFilePath = dataFolder + '/docs.json';
+  var docsFilePath = dataFolder + '/docs';
   writeFileSync(docsFilePath, JSON.stringify(a));
 });
-console.log('Generating docs.json');
+console.log('Generating docs file to save to');
