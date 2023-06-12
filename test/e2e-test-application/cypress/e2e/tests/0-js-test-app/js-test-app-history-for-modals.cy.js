@@ -46,7 +46,7 @@ describe('JS-TEST-APP', () => {
 
   const expectedPathAfterForward = path => {
     cy.go('forward');
-    cy.expectPathToBe(path);
+    cy.expectPathToBe(path, 100);
     cy.location().should(location => {
       expect(location.search).to.eq('');
     });
@@ -54,7 +54,7 @@ describe('JS-TEST-APP', () => {
 
   const expectedPathAfterBack = path => {
     cy.go('back');
-    cy.expectPathToBe(path);
+    cy.expectPathToBe(path, 100);
     cy.location().should(location => {
       expect(location.search).to.eq('');
     });
@@ -151,9 +151,9 @@ describe('JS-TEST-APP', () => {
         openModal();
         closeModal();
         cy.go('forward');
-        cy.expectPathToBe('/home');
+        cy.expectPathToBe('/home', 100);
         cy.go('back');
-        cy.expectPathToBe('/home');
+        cy.expectPathToBe('/home', 100);
       });
       it('Path routing, open modal, navigate through a wizard and close the modal via browser back', () => {
         newConfig.navigation.nodes[0].children.push({
