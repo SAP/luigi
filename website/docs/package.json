@@ -6,7 +6,7 @@
 		"start": "npm run serve-core & npm run preview",
 		"dev1": "vite dev --port 4001",
 		"dev": "npm run serve-core & vite dev --port 4001",
-		"build": "npm run pre-build && vite build && npm run copy-docs-html",
+		"build": "vite build",
 		"build1": "vite build",
 		"preview": "vite preview --port 4001",
 		"test": "playwright test",
