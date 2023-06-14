@@ -1184,6 +1184,36 @@ Gets the current theme.
 
 Returns **any** current themeObj
 
+#### getCSSVariables
+
+Get the css variables from Luigi core with key and value.
+
+##### Examples
+
+```javascript
+LuigiClient.uxManager().getCSSVariables();
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** css variables with its key and values.
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
+#### applyCSS
+
+Adds the css variables from Luigi Core in a style tag to the document head section.
+
+##### Examples
+
+```javascript
+LuigiClient.uxManager().applyCSS();
+```
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 ### storageManager
 
 StorageManager allows you to use browser local storage of key/values. Every storage operation is sent to be managed by Luigi Core.
