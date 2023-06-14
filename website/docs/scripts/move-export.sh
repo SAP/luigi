@@ -68,7 +68,7 @@ cp $BASE_DIR/src/_redirects $PUBLIC_DIR/
 
 
 #copy sveltekit static pages to public folder
-cp $SVELTE_BUILD/docs/* $PUBLIC_DIR/docs
+# cp $SVELTE_BUILD/docs/* $PUBLIC_DIR/docs
 
 # mkdir -p $PUBLIC_CLIENT_DIR
 
