@@ -67,7 +67,7 @@ const config = {
       ],
       handleMissingId: route => {
         // Custom logic or fallback when `id` is missing
-        console.log(`---------Missing id for route: ${JSON.stringify(route)}`);
+        // console.log(`---------Missing id for route: ${JSON.stringify(route)}`);
         return { status: 200 };
       }
     }
