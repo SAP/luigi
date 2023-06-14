@@ -3,4 +3,4 @@
   publish = "public"
 
 [build.environment]
-  CI = "false"
+  CI = false
