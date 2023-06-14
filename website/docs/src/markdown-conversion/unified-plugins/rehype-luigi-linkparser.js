@@ -2,7 +2,7 @@ import { hasProperty } from 'hast-util-has-property';
 import url from 'url';
 import { visit } from 'unist-util-visit';
 import { writeFile, appendFileSync } from 'fs';
-import { prependForExport } from './plugin-helpers.js';
+import { prependForExport } from './helpers.js';
 
 let log = (text = '') => {};
 if (process.env.NODE_ENV === 'debug') {

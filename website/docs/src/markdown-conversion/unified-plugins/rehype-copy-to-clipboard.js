@@ -1,6 +1,6 @@
 import { h } from 'hastscript';
 import { visit } from 'unist-util-visit';
-import { prependForExport } from './plugin-helpers.js';
+import { prependForExport } from './helpers.js';
 
 export default function addCopyToClipboard() {
   return function transformer(tree) {
