@@ -40,7 +40,6 @@ const packagePaths = {
   oauth2: ['plugins', 'auth', 'src', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'src', 'auth-oidc'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular'],
-  client_support_ui5: ['client-frameworks-support', 'client-support-ui5'],
   testing_utilities: ['client-frameworks-support', 'testing-utilities']
 };
 const publishPaths = {
@@ -49,7 +48,6 @@ const publishPaths = {
   oauth2: ['plugins', 'auth', 'public', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'public', 'auth-oidc'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular', 'dist', 'client-support-angular'],
-  client_support_ui5: ['client-frameworks-support', 'client-support-ui5', 'dist'],
   testing_utilities: ['client-frameworks-support', 'testing-utilities', 'dist']
 };
 
