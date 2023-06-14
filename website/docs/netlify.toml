@@ -2,5 +2,5 @@
   CI = "false"
 
 [build]
-  command = "npm run build"
-  publish = "public"
+  command = "npm run pre-build && npm run build"
+  publish = "build"
