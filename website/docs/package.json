@@ -8,7 +8,6 @@
 		"dev": "npm run serve-core & vite dev --port 4001",
 		"build": "echo 0",
 		"build0": "npm run pre-build && vite build && npm run copy-docs-html",
-		"build1": "vite build",
 		"preview": "vite preview --port 4001",
 		"test": "playwright test",
 		"serve-core": "sirv public --single --port 4000",
