@@ -9,7 +9,7 @@ node_modules
 !.env.example
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-/public
+# /public
 /static/core
 /static/assets
 /static/luigi-client
