@@ -8,4 +8,4 @@ getParsedDocs().then(function(a) {
   var docsFilePath = dataFolder + '/docs.json';
   writeFileSync(docsFilePath, JSON.stringify(a));
 });
-console.log('Generating docs file to save to');
+console.log('Generating docs file to save to ');
