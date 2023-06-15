@@ -28,8 +28,6 @@ const config = {
       // precompress: false,
       strict: false
     }),
-    // prerender:{default:true},
-
     prerender: {
       crawl: true,
       entries: [
