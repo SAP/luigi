@@ -298,7 +298,8 @@ class GenericHelpersClass {
   }
 
   /**
-   * Returns a new Object with the same object,   * without the keys that were given.
+   * Returns a new Object with the same object,   
+   * without the keys that were given.
    * References still stay.
    * Allows wildcard ending keys
    *
