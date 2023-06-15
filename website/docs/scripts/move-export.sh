@@ -41,6 +41,7 @@ mkdir -p $STATIC_DIR/assets
 mkdir -p $SRC/assets
 mkdir -p $SRC/images
 mkdir -p $PUBLIC_DIR/docs
+mkdir -p $PUBLIC_DIR/docu-microfrontend
 
 # copy luigi client and luigi core to public folder or wherever needed, to avoid using extra dependencies on vite side
 cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT

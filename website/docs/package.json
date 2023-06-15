@@ -17,7 +17,7 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"fetchversions": "curl -H \"Accept: application/vnd.github.v3+json\" https://api.github.com/repos/SAP/luigi/tags?per_page=100 > ./public/versions.json",
 		"pre-build": "./scripts/move-export.sh && npm run fetchversions && npm run compilecorescss && npm run bundleLuigiConfig && npm run generateSitemap && npm run buildMarkdownDocu",
-		"copy-docs-html": "cp -R build/docs/* public/docs",
+		"copy-docs-html": "cp -R build/* public/docu-microfrontend",
 		"test1": "echo 'done'",
 		"compilecorescss": "sass --no-source-map ./src/luigi-config/styles/index.scss ./public/coreStyles.css",
 		"bundleLuigiConfig": "esbuild src/luigi-config/extended/main.js  --bundle --minify  --outfile=./public/luigi-config.bundle.js",
