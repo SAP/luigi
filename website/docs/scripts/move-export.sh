@@ -9,11 +9,11 @@ BIBlue='\033[1;34m'      # Light Blue, bold
 PUBLIC_DIR=$BASE_DIR/public
 STATIC_DIR=$BASE_DIR/static
 
-if [ -d $PUBLIC_DIR ]; then
- rm -rf $PUBLIC_DIR
-fi
+# if [ -d $PUBLIC_DIR ]; then
+#  rm -rf $PUBLIC_DIR
+# fi
 
-mkdir -p $PUBLIC_DIR
+# mkdir -p $PUBLIC_DIR
 
 
 LUIGI_CORE=$PUBLIC_DIR/luigi-core
