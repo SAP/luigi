@@ -256,6 +256,12 @@ class GenericHelpersClass {
     return contentAreaHeight;
   }
 
+  /**
+   * Returns the height of the shellbar component.
+   * This is important for calculating the height of available area
+   * for displaying content. If the shellbar component is not present, returns 0.
+   * @returns {number} height of the shellbar component
+   */
   getShellbarHeight() {
     const shellBar = LuigiElements.getShellbar() || {};
     const shellBarHeight = shellBar.clientHeight || 0;
