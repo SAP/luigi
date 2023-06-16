@@ -9,13 +9,6 @@ BIBlue='\033[1;34m'      # Light Blue, bold
 PUBLIC_DIR=$BASE_DIR/public
 STATIC_DIR=$BASE_DIR/static
 
-# if [ -d $PUBLIC_DIR ]; then
-#  rm -rf $PUBLIC_DIR
-# fi
-
-# mkdir -p $PUBLIC_DIR
-
-
 LUIGI_CORE=$PUBLIC_DIR/luigi-core
 LUIGI_CLIENT=$PUBLIC_DIR/luigi-client
 SRC=$BASE_DIR/src
@@ -32,8 +25,6 @@ DOCS_IMG_ASSETS=$BASE_DIR/../../docs/assets
 
 # SITEMAP_FILE=$BASE_DIR/sitemap.xml
 ROBOTSTXT_FILE=$BASE_DIR/robots.txt
-
-
 
 mkdir -p $LUIGI_CORE
 mkdir -p $LUIGI_CLIENT
@@ -67,29 +58,5 @@ cp -R $STATIC_DIR/public/* $PUBLIC_DIR
 # copy redirects file for netlify
 cp $BASE_DIR/src/_redirects $PUBLIC_DIR/
 
-
-#copy sveltekit static pages to public folder
-# cp $SVELTE_BUILD/docs/* $PUBLIC_DIR/docs
-
-# mkdir -p $PUBLIC_CLIENT_DIR
-
-
-
-# mkdir -p $LUIGI_PUBLIC_DIR // already created
-
-# mv $EXPORT_DIR/luigi/* $LUIGI_PUBLIC_DIR
-
-# mkdir -p $LUIGI_PUBLIC_DIR/docu-microfrontend
-# mv $EXPORT_DIR/* $LUIGI_PUBLIC_DIR/docu-microfrontend
-
-# copy generated-json afterwards, since static files are only copied once by sapper in the beginning
-# cp $BASE_DIR/../static/luigi/navigation-generated.json $LUIGI_PUBLIC_DIR/ 
-
-
-
 echo ""
 echo "Documentation files were exported to respective folders"
-
-# echo ""
-# echo -e "Type ${BIBlue}npm run export:serve${Color_Off} to run Luigi with the docu micro-frontend."
-# echo ""
