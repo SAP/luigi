@@ -12,7 +12,6 @@ getParsedDocs().then(raw => {
 
   sitemapString = header;
   for (var i = 0; i < docs.length; i++) {
-    // console.log(docs[i]);
     sitemapString =
       sitemapString +
       '\xa0\xa0<url>\n' +

@@ -1,5 +1,3 @@
-// import * as LuigiClient from '../luigi-client/luigi-client.js';
-
 export class InternalLinksHandler {
   init(LuigiClient) {
     if (!window) {

@@ -1,8 +1,3 @@
-// import * as LuigiClient from '../luigi-client/luigi-client.js';
-// import LuigiClient from '@luigi-project/client';
-
-// console.log(LuigiClient, ',,,,,,,,,,,')
-
 export class ScrollAnchorsHandler {
   init(LuigiClient) {
     // scroll if navigate param found
