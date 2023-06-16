@@ -25,7 +25,6 @@ function setParsedDocs() {
   const parsingArr = [];
   dirs.forEach(dir => {
     readdirSync(dir)
-      // .filter(name => name !== 'README.md')
       .filter(name => name.endsWith('.md'))
       .forEach(name => {
         const mdContent = readFileSync(dir + '/' + name);
@@ -37,7 +36,6 @@ function setParsedDocs() {
               resolve({
                 name,
                 shortName,
-                // file,
                 contents
               });
             });

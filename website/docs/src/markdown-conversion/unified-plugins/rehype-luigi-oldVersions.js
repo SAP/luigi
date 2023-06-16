@@ -1,6 +1,5 @@
 import { visit } from 'unist-util-visit';
 import { h } from 'hastscript';
-// import versions from '../../public/versions.json' assert { type: "json" };
 import * as fs from 'fs';
 
 import path from 'path';
