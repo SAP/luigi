@@ -19,13 +19,9 @@ function setParsedDocs() {
     './../../../../plugins/auth/public/auth-oauth2',
     './../../../../plugins/auth/public/auth-oidc'
   ];
-  // const dirs = ['docs',
-  //   'plugins/auth/public/auth-oauth2',
-  //   'plugins/auth/public/auth-oidc'];
   const parsingArr = [];
   dirs.forEach(dir => {
     readdirSync(dir)
-      // .filter(name => name !== 'README.md')
       .filter(name => name.endsWith('.md'))
       .forEach(name => {
         const mdContent = readFileSync(dir + '/' + name);

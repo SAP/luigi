@@ -8,19 +8,11 @@ import { error } from '@sveltejs/kit';
 // import docsJSON from '/src/data/docs.json';
 import docsJSON from '$lib/data/docs.json';
 
-// console.log(docsJSON)
 const docsArray = Array.from(docsJSON);
 
 /** @type {import('./$types').PageLoad} */
 // @ts-ignore
 export function load({ params }) {
-  // const listOfSlugs = docsArray.map(item => {
-  //   return {
-  //     slug: item.shortName
-  //   }
-  // });
-  // console.log(listOfSlugs)
-  // serve docu by slug matching with shortName
   const thisMfDocu = docsArray.find(item => item.shortName === params.slug);
   if (thisMfDocu) {
     return {
