@@ -281,7 +281,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * Adds the css variables from Luigi Core in a style tag to the document head section.
+   * Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
    * @memberof uxManager
    * @since NEXTRELEASE
    * @example LuigiClient.uxManager().applyCSS();
