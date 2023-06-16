@@ -1275,8 +1275,8 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getCSSVariables
 
-Returns css variables with key value from Luigi if `@luigi-project/core/luigi_theme-vars.js` is included in the `index.html` and `settings.theming.variables==='fiori'` is defined in the settings section.
-It's also possible to define an own variables file and can be declared in `settings.theming.variables.file` in the settings section.
+Returns CSS variables with key value from Luigi if `@luigi-project/core/luigi_theme-vars.js` is included in the `index.html` and `settings.theming.variables==='fiori'` is defined in the [settings](general-settings.md) section.
+It's also possible to define your own variables file which can be declared in `settings.theming.variables.file` in the [settings](general-settings.md) section.
 
 ##### Examples
 
@@ -1284,7 +1284,7 @@ It's also possible to define an own variables file and can be declared in `setti
 Luigi.theming().getCSSVariables();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** css variables with its value.
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** CSS variables with their value.
 
 **Meta**
 

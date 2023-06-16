@@ -1186,7 +1186,7 @@ Returns **any** current themeObj
 
 #### getCSSVariables
 
-Get the css variables from Luigi core with key and value.
+Gets the CSS variables from Luigi Core with their key and value.
 
 ##### Examples
 
@@ -1194,7 +1194,7 @@ Get the css variables from Luigi core with key and value.
 LuigiClient.uxManager().getCSSVariables();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** css variables with its key and values.
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** CSS variables with their key and value.
 
 **Meta**
 
@@ -1202,7 +1202,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### applyCSS
 
-Adds the css variables from Luigi Core in a style tag to the document head section.
+Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
 
 ##### Examples
 
