@@ -96,8 +96,8 @@ class LuigiTheming {
   }
 
   /**
-   * Returns css variables with key value from Luigi if `@luigi-project/core/luigi_theme-vars.js` is included in the `index.html` and `settings.theming.variables==='fiori'` is defined in the settings section.
-   * It's also possible to define an own variables file and can be declared in `settings.theming.variables.file` in the settings section.
+   * Returns CSS variables with key value from Luigi if `@luigi-project/core/luigi_theme-vars.js` is included in the `index.html` and `settings.theming.variables==='fiori'` is defined in the {@link general-settings.md settings} section.
+   * It's also possible to define your own variables file which can be declared in `settings.theming.variables.file` in the {@link general-settings.md settings} section.
    * @memberof Theming
    * @returns {Object} css variables with its value.
    * @since NEXTRELEASE
