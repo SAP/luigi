@@ -384,8 +384,26 @@ class NavigationClass {
       });
       updatedCompData.selectedNode = selectedNode || lastElement;
       updatedCompData.children = groupedChildren;
+      const isExpandCategoriesByNavigation = await LuigiConfig.getConfigValueAsync(
+        'settings.expandCategoryByNavigation'
+      );
+      if (isExpandCategoriesByNavigation) {
+        this.expandCategoriesByNavigationFn(updatedCompData.children, updatedCompData.selectedNode);
+      }
     }
     return updatedCompData;
+  }
+
+  expandCategoriesByNavigationFn(sortedChildrenEntries, selectedNode) {
+    if (sortedChildrenEntries) {
+      for (const [key, categoryChildren] of Object.entries(sortedChildrenEntries)) {
+        categoryChildren.forEach(node => {
+          if (node === selectedNode && node.category) {
+            NavigationHelpers.storeExpandedState(categoryChildren.metaInfo.categoryUid, true);
+          }
+        });
+      }
+    }
   }
 
   /**

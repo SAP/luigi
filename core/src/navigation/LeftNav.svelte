@@ -267,27 +267,9 @@
     sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
       'settings.sideNavCompactMode'
     );
+    expandedCategories = NavigationHelpers.loadExpandedCategories();
     semiCollapsibleButton = LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
-    if(LuigiConfig.getConfigValue('settings.expandCategoryByNavigation')){
-      expandCategoriesByNavigation();
-    }
   });
-
-  function expandCategoriesByNavigation(){
-    if(sortedChildrenEntries){
-      sortedChildrenEntries.forEach((nodes)=>{
-        nodes.forEach((categoryNodes)=>{
-          if(Array.isArray(categoryNodes) && categoryNodes.length>0){
-            categoryNodes.forEach(node=>{
-              if(node===selectedNode && node.category){
-                setExpandedState(categoryNodes, true);
-              }
-            });  
-          }
-        });
-    });
-    }
-  }
 
   export let sortedChildrenEntries;
   $: {
@@ -444,7 +426,6 @@
   }
 
   export function setExpandedState(nodes, value) {
-    console.log('setExpandedState');
     if (SemiCollapsibleNavigation.getCollapsed()) {
       return;
     }
