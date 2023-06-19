@@ -243,7 +243,7 @@ For example, to allow 'fullscreen' for non-modal iframes:
     * **defaultTheme** (mandatory) the default theme used by the application.
     * **nodeViewURLDecorator** (optional) you can add an internal Luigi View URL decorator (an example is below). This object adds a query parameter where you can add a current theme used by the application when micro-frontends are loaded.
     * **useFioriScrollbars** (optional) if set to `true`, Fiori theming variables are applied to all scrollbars in luigi core app.
-    * **variables** (optional) can either be a string set to `fiori` to get all CSS variables from the `fiori` theme, or an object with a property called `file` where you can declare your own CSS variables. The json file starts with a `root` key. In addition when you use your own css variables file you can also implement a exception handling by implementing the function `settings.theming.variables.errorHandling` which gets the error object as argument.
+    * **variables** (optional) can either be a string set to `fiori` to get all CSS variables from the `fiori` theme, or an object with a property called `file` where you can declare your own CSS variables. The variables should be defined in a JSON file which starts with a `root` key. In addition, when you use your own CSS variables file, you can implement exception handling by using the function `settings.theming.variables.errorHandling` which gets the error object as argument.
 - **example**:
 ```javascript
 theming : {
