@@ -114,6 +114,10 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 <!-- add-attribute:class:warning -->
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
 
+### expandCategoryByNavigation
+- **type**: boolean
+- **description** expands the category if one of the children is active.
+
 
 ### hideNavigation
 - **type**: boolean

@@ -267,10 +267,27 @@
     sideNavCompactMode = LuigiConfig.getConfigBooleanValue(
       'settings.sideNavCompactMode'
     );
-    semiCollapsibleButton =
-      LuigiConfig.getConfigValue('settings.responsiveNavigation') ===
-      'semiCollapsible';
+    semiCollapsibleButton = LuigiConfig.getConfigValue('settings.responsiveNavigation') === 'semiCollapsible';
+    if(LuigiConfig.getConfigValue('settings.expandCategoryByNavigation')){
+      expandCategoriesByNavigation();
+    }
   });
+
+  function expandCategoriesByNavigation(){
+    if(sortedChildrenEntries){
+      sortedChildrenEntries.forEach((nodes)=>{
+        nodes.forEach((categoryNodes)=>{
+          if(Array.isArray(categoryNodes) && categoryNodes.length>0){
+            categoryNodes.forEach(node=>{
+              if(node===selectedNode && node.category){
+                setExpandedState(categoryNodes, true);
+              }
+            });  
+          }
+        });
+    });
+    }
+  }
 
   export let sortedChildrenEntries;
   $: {
@@ -427,6 +444,7 @@
   }
 
   export function setExpandedState(nodes, value) {
+    console.log('setExpandedState');
     if (SemiCollapsibleNavigation.getCollapsed()) {
       return;
     }
@@ -977,30 +995,29 @@
           {#if semiCollapsibleButton}
             {#if semiCollapsibleButtonStyle == 'button'}
               <button
-                    on:click={event => semiCollapsibleButtonClicked(event, this)}
-                    data-testid="semiCollapsibleButton"
-                    title={burgerTooltip}
-                    tabindex="0"
-                    class="fd-button fd-button--transparent fd-button--cozy lui-semi-btn"
-                  >
-                  <i
-                    class="lui-side-nav__footer--icon {isSemiCollapsed
-                      ? 'sap-icon--open-command-field'
-                      : 'sap-icon--close-command-field'}"                  
-                  >
-                </i>
+                on:click={event => semiCollapsibleButtonClicked(event, this)}
+                data-testid="semiCollapsibleButton"
+                title={burgerTooltip}
+                tabindex="0"
+                class="fd-button fd-button--transparent fd-button--cozy lui-semi-btn"
+              >
+                <i
+                  class="lui-side-nav__footer--icon {isSemiCollapsed
+                    ? 'sap-icon--open-command-field'
+                    : 'sap-icon--close-command-field'}"
+                />
               </button>
             {:else}
-            <i
-              class="lui-side-nav__footer--icon {isSemiCollapsed
-                ? 'sap-icon--open-command-field'
-                : 'sap-icon--close-command-field'}"
-              on:click={event => semiCollapsibleButtonClicked(event, this)}
-              on:keydown={event => handleEnterSemiCollapseBtn(event, this)}
-              data-testid="semiCollapsibleButton"
-              title={burgerTooltip}
-              tabindex="0"
-            />
+              <i
+                class="lui-side-nav__footer--icon {isSemiCollapsed
+                  ? 'sap-icon--open-command-field'
+                  : 'sap-icon--close-command-field'}"
+                on:click={event => semiCollapsibleButtonClicked(event, this)}
+                on:keydown={event => handleEnterSemiCollapseBtn(event, this)}
+                data-testid="semiCollapsibleButton"
+                title={burgerTooltip}
+                tabindex="0"
+              />
             {/if}
           {/if}
         </span>
@@ -1244,9 +1261,12 @@
     .lui-semi-btn {
       margin: var(--sapContent_FocusWidth);
       color: var(--sapContent_IconColor);
-      width: calc($leftNavWidthCollapsed - 2 * ( var(--fdButton_Outline_Offset) + var(--sapContent_FocusWidth)));
+      width: calc(
+        $leftNavWidthCollapsed - 2 *
+          (var(--fdButton_Outline_Offset) + var(--sapContent_FocusWidth))
+      );
     }
-    
+
     .lui-semi-btn &--icon {
       padding: 0;
     }
