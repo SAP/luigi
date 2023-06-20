@@ -384,9 +384,7 @@ class NavigationClass {
       });
       updatedCompData.selectedNode = selectedNode || lastElement;
       updatedCompData.children = groupedChildren;
-      const isExpandCategoriesByNavigation = await LuigiConfig.getConfigValueAsync(
-        'settings.expandCategoryByNavigation'
-      );
+      const isExpandCategoriesByNavigation = LuigiConfig.getConfigValue('settings.expandCategoryByNavigation');
       if (isExpandCategoriesByNavigation) {
         this.expandCategoriesByNavigationFn(updatedCompData.children, updatedCompData.selectedNode);
       }
