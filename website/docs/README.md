@@ -1,31 +1,23 @@
-# create-svelte
+Luigi documentation, deployed via netlify and accessible at https://docs.luigi-project.io
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
-## Creating a project
+## Development
 
-If you're seeing this, you've probably already done this step. Congrats!
+1. Install dependencies. 
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+    `npm install`
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+2. Build Project.
 
-## Developing
+    `npm run build`
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+3. Run Project
 
-```bash
-npm run dev
+    `npm run dev`
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Visit [localhost:4000](http://localhost:4000) to visit site
 
-## Building
+## Building for Production
 
 To create a production version of your app:
 
@@ -35,13 +27,4 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-
-## Collected info
-Netlify integration - https://docs.netlify.com/integrations/frameworks/sveltekit/
-
-TODO: Check _redirect file needed
-
-Static folder needs to have core and client folders for dev mode. Might need different approach for production
-
-On vite build -> whatever is already on /static folder gets directly moved to /build folder
+> To deploy the app only the npm run build command is needed. The files are transferred to the public folder from where the Netlify build will serve them on production 
