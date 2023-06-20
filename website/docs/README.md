@@ -11,7 +11,7 @@ Luigi documentation, deployed via netlify and accessible at https://docs.luigi-p
 
     `npm run build`
 
-3. Run Project
+3. Run Project: This command will serve Luigi Core on Port 4000 and the Client Microfrontends on Port 4001 on separate servers in parallel. The ports are cleared right before starting the servers to make sure they are not occupied when running docu on these ports locally: 
 
     `npm run dev`
 

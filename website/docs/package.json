@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "npm run serve-core & npm run preview",
-		"dev": "npm run serve-core & vite dev --port 4001",
+		"dev": "kill -9 $(lsof -ti:4000,4001) && npm run serve-core & vite dev --port 4001",
 		"build": "npm run pre-build && vite build && npm run copy-docs-html",
 		"preview": "vite preview --port 4001",
 		"test": "playwright test",
