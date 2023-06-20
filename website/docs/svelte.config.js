@@ -14,18 +14,6 @@ const config = {
     // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     // Netlify adapter: See https://kit.svelte.dev/docs/adapter-netlify
     adapter: adapter({
-      // if true, will create a Netlify Edge Function rather
-      // than using standard Node-based functions
-      // edge: false,
-      // port: 4001,
-      // if true, will split your app into multiple functions
-      // instead of creating a single one for the entire app.
-      // if `edge` is true, this option cannot be used
-      // split: false,
-      // pages: 'build',
-      // assets: 'build',
-      // // fallback: 'app.html',
-      // precompress: false,
       strict: false
     }),
     prerender: {
@@ -64,9 +52,6 @@ const config = {
         '/docs/auth-oidc'
       ],
       handleMissingId: route => {
-        // Custom logic or fallback when `id` is missing
-
-        // console.log(`---------Missing id for route: ${JSON.stringify(route)}`);
         return { status: 200 };
       }
     }

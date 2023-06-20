@@ -1,11 +1,5 @@
 // @ts-nocheck
-import { error } from '@sveltejs/kit';
-
-// export const prerender = true
-
 // import pre-bundled docs.json to avoid bundling again on runtime
-
-// import docsJSON from '/src/data/docs.json';
 import docsJSON from '$lib/data/docs.json';
 
 const docsArray = Array.from(docsJSON);
