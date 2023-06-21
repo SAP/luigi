@@ -40,26 +40,36 @@ mkdir -p $PUBLIC_DIR/docu-microfrontend/images
 cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT
 cp $NODE_MODULES_CORE/* $LUIGI_CORE
 
+ls $LUIGI_CLIENT
+ls $LUIGI_CORE
+echo "Client and Core copied from node_modules"
+
 # copy docsearch css to public dir - not valid anymore.
 # cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
 
 # copy docu image assets to assets folder for development use
 cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
+ls $STATIC_DIR/assets
+echo "Docu image assets copied from root repository /docs folder"
+
 
 # copy docu image assets to assets folder for production use
 cp $DOCS_IMG_ASSETS/* $PUBLIC_DIR/docu-microfrontend/assets
 cp $STATIC_DIR/images/* $PUBLIC_DIR/docu-microfrontend/images
+ls $PUBLIC_DIR/docu-microfrontend/assets
+ls $PUBLIC_DIR/docu-microfrontend/images
+echo "Docu image assets copied from root repository /docs folder and local /static folder into /public/docu-microfrontend for production"
 
-# copy docu image assets to images folder for development use
-
-
-# cp $SITEMAP_FILE $PUBLIC_DIR
+# copy robots text file and other files to public folder for production use
 cp $ROBOTSTXT_FILE $PUBLIC_DIR
-
 cp -R $STATIC_DIR/public/* $PUBLIC_DIR
 
 # copy redirects file for netlify
 cp $BASE_DIR/src/_redirects $PUBLIC_DIR/
+ls $PUBLIC_DIR
+echo "Miscellaneous docu production assets into /public folder for production use"
 
-echo ""
+
+echo "----------------------------------------------------------------"
 echo "Documentation files were exported to respective folders"
+echo "----------------------------------------------------------------"
