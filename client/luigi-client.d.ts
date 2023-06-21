@@ -245,6 +245,23 @@ export declare interface UxManager {
    * @since 1.26.0
    */
   isDrawer: () => boolean;
+
+  /**
+   * Gets the CSS variables from Luigi Core with their key and value.
+   * @returns {Object} CSS variables with their key and value.
+   * @memberof uxManager
+   * @since NEXTRELEASE
+   * @example LuigiClient.uxManager().getCSSVariables();
+   */
+  getCSSVariables: () => Object;
+
+  /**
+   * Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
+   * @memberof uxManager
+   * @since NEXTRELEASE
+   * @example LuigiClient.uxManager().applyCSS();
+   */
+  applyCSS: () => void;
 }
 
 export declare interface LinkManager {

@@ -277,7 +277,7 @@ class UxManager extends LuigiClientBase {
    * @example LuigiClient.uxManager().getCSSVariables();
    */
   getCSSVariables() {
-    return lifecycleManager.currentContext?.internal?.cssVariables;
+    return lifecycleManager.currentContext?.internal?.cssVariables || {};
   }
 
   /**
@@ -287,6 +287,9 @@ class UxManager extends LuigiClientBase {
    * @example LuigiClient.uxManager().applyCSS();
    */
   applyCSS() {
+    document.querySelectorAll('head style[luigi-injected]').forEach(luigiInjectedStyleTag => {
+      luigiInjectedStyleTag.remove();
+    });
     const vars = lifecycleManager.currentContext?.internal?.cssVariables;
     if (vars) {
       let cssString = ':root {\n';
