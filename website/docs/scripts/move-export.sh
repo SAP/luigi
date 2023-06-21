@@ -42,23 +42,25 @@ cp $NODE_MODULES_CORE/* $LUIGI_CORE
 
 ls $LUIGI_CLIENT
 ls $LUIGI_CORE
-echo "Client and Core copied from node_modules"
-
-# copy docsearch css to public dir - not valid anymore.
-# cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
+echo "DONE: Client and Core copied from node_modules"
+echo "----------------------------------------------------------------"
+echo ""
 
 # copy docu image assets to assets folder for development use
 cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
 ls $STATIC_DIR/assets
-echo "Docu image assets copied from root repository /docs folder"
-
+echo "DONE: Docu image assets copied from root repository /docs folder"
+echo "----------------------------------------------------------------"
+echo ""
 
 # copy docu image assets to assets folder for production use
 cp $DOCS_IMG_ASSETS/* $PUBLIC_DIR/docu-microfrontend/assets
 cp $STATIC_DIR/images/* $PUBLIC_DIR/docu-microfrontend/images
 ls $PUBLIC_DIR/docu-microfrontend/assets
 ls $PUBLIC_DIR/docu-microfrontend/images
-echo "Docu image assets copied from root repository /docs folder and local /static folder into /public/docu-microfrontend for production"
+echo "DONE: Docu image assets copied from root repository /docs folder and local /static folder into /public/docu-microfrontend for production"
+echo "----------------------------------------------------------------"
+echo ""
 
 # copy robots text file and other files to public folder for production use
 cp $ROBOTSTXT_FILE $PUBLIC_DIR
@@ -67,9 +69,11 @@ cp -R $STATIC_DIR/public/* $PUBLIC_DIR
 # copy redirects file for netlify
 cp $BASE_DIR/src/_redirects $PUBLIC_DIR/
 ls $PUBLIC_DIR
-echo "Miscellaneous docu production assets into /public folder for production use"
+echo "DONE: Miscellaneous docu production assets into /public folder for production use"
+echo "----------------------------------------------------------------"
+echo ""
 
 
 echo "----------------------------------------------------------------"
-echo "Documentation files were exported to respective folders"
+echo "DONE: Documentation files were exported to respective folders"
 echo "----------------------------------------------------------------"
