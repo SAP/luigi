@@ -33,6 +33,8 @@ mkdir -p $SRC/assets
 mkdir -p $SRC/images
 mkdir -p $PUBLIC_DIR/docs
 mkdir -p $PUBLIC_DIR/docu-microfrontend
+mkdir -p $PUBLIC_DIR/docu-microfrontend/assets
+mkdir -p $PUBLIC_DIR/docu-microfrontend/images
 
 # copy luigi client and luigi core to public folder or wherever needed, to avoid using extra dependencies on vite side
 cp $NODE_MODULES_CLIENT/* $LUIGI_CLIENT
@@ -41,14 +43,15 @@ cp $NODE_MODULES_CORE/* $LUIGI_CORE
 # copy docsearch css to public dir - not valid anymore.
 # cp $NODE_MODULES_DOCSEARCH $PUBLIC_DIR
 
-# copy docu image assets to assets folder for production use
+# copy docu image assets to assets folder for development use
 cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
 
-# copy docu image assets to assets folder for development use
-cp $DOCS_IMG_ASSETS/* $SRC/assets
+# copy docu image assets to assets folder for production use
+cp $DOCS_IMG_ASSETS/* $PUBLIC_DIR/docu-microfrontend/assets
+cp $STATIC_DIR/images/* $PUBLIC_DIR/docu-microfrontend/images
 
 # copy docu image assets to images folder for development use
-cp $STATIC_DIR/images/* $SRC/images
+
 
 # cp $SITEMAP_FILE $PUBLIC_DIR
 cp $ROBOTSTXT_FILE $PUBLIC_DIR
