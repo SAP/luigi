@@ -59,9 +59,9 @@ echo "-"
 cp $DOCS_IMG_ASSETS/* $PUBLIC_DIR/assets
 cp $STATIC_DIR/images/* $PUBLIC_DIR/images
 echo "----------------------------------------------------------------"
-ls $PUBLIC_DIR/docu-microfrontend/assets
-ls $PUBLIC_DIR/docu-microfrontend/images
-echo "DONE: Docu image assets copied from root repository /docs folder and local /static folder into /public/docu-microfrontend for production"
+ls $PUBLIC_DIR/assets
+ls $PUBLIC_DIR/images
+echo "DONE: Docu image assets copied from root repository /docs folder and local /static folder into /public/assets and /public/images for production"
 echo "----------------------------------------------------------------"
 echo "-"
 
