@@ -168,7 +168,7 @@ class SplitViewSvcClass {
   calculateAndSetSplitViewValues(percentBottom, values) {
     const newBottom =
       parseInt(GenericHelpers.computePxFromPercent(values.rightContentHeight, 100 - percentBottom)) +
-      LuigiElements.getShellbar().clientHeight;
+      GenericHelpers.getShellbarHeight();
 
     this.splitViewValues = this.enforceTresholds(newBottom, values.innerHeight - newBottom, values);
   }
