@@ -396,7 +396,7 @@ class NavigationClass {
     if (sortedChildrenEntries) {
       for (const [key, categoryChildren] of Object.entries(sortedChildrenEntries)) {
         categoryChildren.forEach(node => {
-          if (node === selectedNode && node.category) {
+          if (node === selectedNode && categoryChildren.metaInfo && categoryChildren.metaInfo.collapsible) {
             NavigationHelpers.storeExpandedState(categoryChildren.metaInfo.categoryUid, true);
           }
         });
