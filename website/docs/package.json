@@ -7,6 +7,7 @@
 		"client": "vite dev --port 4001",
 		"clear-ports": "kill -9 $(lsof -ti:4000,4001)",
 		"build": "npm run pre-build && vite build && npm run copy-docs-html",
+		"vite-build": "vite build",
 		"preview": "vite preview --port 4001",
 		"test": "playwright test",
 		"serve-core": "sirv public --single --port 4000",

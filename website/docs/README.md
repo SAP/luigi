@@ -27,4 +27,4 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-> To deploy the app only the npm run build command is needed. The files are transferred to the public folder from where the Netlify build will serve them on production 
+> To deploy the app only the `npm run build` command is needed. The files are transferred to the public folder from where the Netlify build will serve them on production 

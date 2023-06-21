@@ -17,41 +17,10 @@ const config = {
       strict: false
     }),
     prerender: {
-      crawl: true,
-      entries: [
-        '/docs/docs',
-        '/docs/advanced-options-luigi-client',
-        '/docs/advanced-scenarios',
-        '/docs/application-setup',
-        '/docs/authorization-configuration',
-        '/docs/authorization-events',
-        '/docs/communication',
-        '/docs/content-guidelines',
-        '/docs/faq',
-        '/docs/framework-support-libraries',
-        '/docs/general-settings',
-        '/docs/getting-started',
-        '/docs/global-search',
-        '/docs/i18n',
-        '/docs/lifecycle-hooks',
-        '/docs/luigi-architecture',
-        '/docs/luigi-client-api',
-        '/docs/luigi-client-setup',
-        '/docs/luigi-core-api',
-        '/docs/luigi-testing-utilities',
-        '/docs/luigi-ux-features',
-        '/docs/microfrontend-routing',
-        '/docs/navigation-advanced',
-        '/docs/navigation-configuration-example',
-        '/docs/navigation-configuration',
-        '/docs/navigation-parameters-reference',
-        '/docs/user-settings',
-        '/docs/versions',
-        '/docs/web-component',
-        '/docs/auth-oauth2',
-        '/docs/auth-oidc'
-      ],
       handleMissingId: route => {
+        // SvelteKit vite build phase attempts to crawl the site by looking at links/ids between pages. Since we don't have guaranteed links between all pages,
+        // it produces an error that some links were not found. This is not relevant in our case since the site is exported to production with HTMLs produced of the docs.json file,
+        // which is in itself always in sync with the local root /docs folder that contains the .md files
         return { status: 200 };
       }
     }

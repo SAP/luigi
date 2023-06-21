@@ -17,22 +17,18 @@ export function load({ params }) {
 }
 
 /**
- * Custom functions used to prerender all pages in the slugs for static serving the site in Netlify
+ * Custom functions used to prerender all pages in the slugs for static serving the site in Netlify.
+ * This is helpful in automatically building newly added docu pages.
  * @returns list of all possible slugs
  */
-// export function entries() {
-//   const listOfSlugs = docsArray.map(item => {
-//     return {
-//       slug: item.shortName
-//     }
-//   });
-//   console.log(101, listOfSlugs);
-
-//   console.log('ANother one')
-//   return [
-//     { slug: 'docs' }
-//   ]
-//   // return listOfSlugs;
-// }
+export function entries() {
+  const listOfSlugs = docsArray.map(item => {
+    return {
+      slug: item.shortName
+    };
+  });
+  console.info('List of Slugs dynamically loaded for production export', listOfSlugs);
+  return listOfSlugs;
+}
 
 export const prerender = true;
