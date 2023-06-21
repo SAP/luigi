@@ -19,7 +19,7 @@ Visit [localhost:4000](http://localhost:4000) to visit site where Core app is ho
 
 ## Building for Production
 
-To create a production version of your app:
+To create a production version of the docu app:
 
 ```bash
 npm run build
