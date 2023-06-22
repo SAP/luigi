@@ -1011,21 +1011,26 @@ describe('Navigation', function() {
           }
         ]
       };
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('expandCategoriesByNavigationFn will be called', () => {
       sortedChildren.test['metaInfo'] = {
         categoryUid: 'simple:test',
         collapsible: true,
         label: 'test',
         order: 0
       };
-    });
-    afterEach(() => {
-      sinon.restore();
-    });
-    it('expandCategoriesByNavigationFn', () => {
       Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[1]);
       sinon.assert.called(NavigationHelpers.storeExpandedState);
     });
-    it('expandCategoriesByNavigationFn', () => {
+    it('expandCategoriesByNavigationFn not called', () => {
+      sortedChildren.test['metaInfo'] = {
+        label: '___2',
+        _fromString: true,
+        order: 2
+      };
       Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[2]);
       sinon.assert.notCalled(NavigationHelpers.storeExpandedState);
     });
