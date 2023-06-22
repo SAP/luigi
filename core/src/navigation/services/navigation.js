@@ -392,6 +392,11 @@ class NavigationClass {
     return updatedCompData;
   }
 
+  /**
+   * Checks if selectedNode has a category and if yes the categoryUid in metaInfo will be written to the browsers localstorage.
+   * @param {*} sortedChildrenEntries are sorted left nav node data
+   * @param {*} selectedNode
+   */
   expandCategoriesByNavigationFn(sortedChildrenEntries, selectedNode) {
     if (sortedChildrenEntries) {
       for (const [key, categoryChildren] of Object.entries(sortedChildrenEntries)) {
