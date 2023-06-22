@@ -162,9 +162,7 @@ describe('SplitViewSvc', () => {
       };
 
       const shellbarHeight = 30;
-      LuigiElements.getShellbar.returns({
-        clientHeight: shellbarHeight
-      });
+      GenericHelpers.getShellbarHeight.returns(shellbarHeight);
 
       GenericHelpers.computePxFromPercent.onFirstCall().returns(400); // 40% of 1000px
 
