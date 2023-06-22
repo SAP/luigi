@@ -23,6 +23,9 @@ const config = {
         // which is in itself always in sync with the local root /docs folder that contains the .md files
         return { status: 200 };
       }
+    },
+    serviceWorker: {
+      register: false
     }
   },
   build: {

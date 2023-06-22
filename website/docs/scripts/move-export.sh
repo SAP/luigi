@@ -49,6 +49,7 @@ echo "-"
 
 # copy docu image assets to assets folder for development use
 cp $DOCS_IMG_ASSETS/* $STATIC_DIR/assets
+cp $STATIC_DIR/images/* $SRC/images
 echo "----------------------------------------------------------------"
 ls $STATIC_DIR/assets
 echo "DONE: Docu image assets copied from root repository /docs folder"
