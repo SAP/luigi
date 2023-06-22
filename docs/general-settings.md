@@ -116,7 +116,7 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 
 ### expandCategoryByNavigation
 - **type**: boolean
-- **description** expands the category if one of the children is active.
+- **description** if you have a [category](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=category) set to `collapsible`, you can set this parameter to `true` in order to expand the category when navigating to one of its children.
 
 
 ### hideNavigation
