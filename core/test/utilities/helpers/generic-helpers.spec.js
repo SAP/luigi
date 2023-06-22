@@ -2,6 +2,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 import { LuigiConfig } from '../../../src/core-api';
+import { LuigiElements } from '../../../src/core-api';
 import { GenericHelpers } from '../../../src/utilities/helpers';
 
 describe('Generic-helpers', () => {
@@ -186,6 +187,34 @@ describe('Generic-helpers', () => {
     it('experimental feature NOT configured and no console warn', () => {
       assert.equal(GenericHelpers.requestExperimentalFeature('tets', false), false);
       sinon.assert.neverCalledWith(console.warn);
+    });
+  });
+
+  describe('get shellbar height', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiElements, 'getShellbar');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('shellbar is present', () => {
+      const shellbarHeight = 30;
+      LuigiElements.getShellbar.returns({
+        clientHeight: shellbarHeight
+      });
+      assert.equal(GenericHelpers.getShellbarHeight(), shellbarHeight);
+    });
+
+    it('shellbar is not present', () => {
+      LuigiElements.getShellbar.returns(undefined);
+      assert.equal(GenericHelpers.getShellbarHeight(), 0);
+    });
+
+    it('shellbar is present, no clientHeight', () => {
+      LuigiElements.getShellbar.returns({});
+      assert.equal(GenericHelpers.getShellbarHeight(), 0);
     });
   });
 });
