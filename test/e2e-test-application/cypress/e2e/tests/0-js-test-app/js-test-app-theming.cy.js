@@ -585,4 +585,41 @@ describe('JS-TEST-APP 2', () => {
       );
     });
   });
+  describe('Transfer theme vars to client', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig.tag = 'transferThemeVars';
+      newConfig.settings.theming = {
+        defaultTheme: 'light',
+        variables: 'fiori'
+      };
+    });
+    it('Tranfer var and override it', () => {
+      cy.visitTestApp('/home/one', newConfig);
+      cy.get('#app[configversion="transferThemeVars"]');
+
+      cy.getIframeBody().then($body => {
+        cy.wrap($body)
+          .contains('ApplyCSS')
+          .should('have.css', 'color')
+          .and('eq', 'rgb(0, 0, 0)');
+        cy.wrap($body)
+          .contains('ApplyCSS')
+          .should('have.css', 'color')
+          .and('not.equal', 'rgb(255, 0, 0)');
+        cy.wrap($body)
+          .contains('ApplyCSS')
+          .click();
+        cy.wrap($body)
+          .contains('ApplyCSS')
+          .should('have.css', 'color')
+          .and('not.equal', 'rgb(0, 0, 0)');
+        cy.wrap($body)
+          .contains('ApplyCSS')
+          .should('have.css', 'color')
+          .and('eq', 'rgb(255, 0, 0)');
+      });
+    });
+  });
 });
