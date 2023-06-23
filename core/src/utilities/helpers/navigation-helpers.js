@@ -276,6 +276,11 @@ class NavigationHelpersClass {
         badgeCountsToSumUp.push(badgeCount);
       }
     }
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].isCat) {
+        children[i].visibleChildren = (await Navigation.getChildren(children[i])) || [];
+      }
+    }
     const tnd = {
       children,
       selectedNode,

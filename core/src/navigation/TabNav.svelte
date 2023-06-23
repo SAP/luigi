@@ -284,7 +284,7 @@
                   {/if}
                 {/if}
               {/each}
-            {:else}
+            {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
               <span
                 class="fd-tabs__item"
                 uid="{index}-0"
