@@ -21,11 +21,10 @@
 @font-face {
   font-family: 'icon-font';
   src: url('/fonts/icon-font/icon-font.eot');
-  src: url('/fonts/icon-font/icon-font.eot?#iefix')
-  format('embedded-opentype'),
-  url('/fonts/icon-font/icon-font.woff') format('woff'),
-  url('/fonts/icon-font/icon-font.ttf') format('truetype'),
-  url('/fonts/icon-font/icon-font.svg#icon-font') format('svg');
+  src: url('/fonts/icon-font/icon-font.eot?#iefix') format('embedded-opentype'),
+    url('/fonts/icon-font/icon-font.woff') format('woff'),
+    url('/fonts/icon-font/icon-font.ttf') format('truetype'),
+    url('/fonts/icon-font/icon-font.svg#icon-font') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -59,15 +58,19 @@
 .icon-github-icon:before {
   content: "\61";
 }
+
 .icon-twitter-icon:before {
   content: "\62";
 }
+
 .icon-slack-icon:before {
   content: "\63";
 }
+
 .icon-burger-menu:before {
   content: "\64";
 }
+
 .icon-burger-menu-close:before {
   content: "\65";
 }
@@ -95,6 +98,12 @@ $side-nav-width-mobile: 260px;
   --sapList_Active_Background: #F0F0F0;
 }
 
+.fd-menu {
+  @media screen and (max-width: 599px) {
+    width: 100%;
+  }
+}
+
 .luigi-documentation {
 
   * {
@@ -120,7 +129,7 @@ $side-nav-width-mobile: 260px;
 
     @media screen and (min-width: 1024px) {
       height: $height-shellbar;
-      padding: 4px 32px;
+      padding: 4px 32px !important;
     }
   }
 
@@ -130,6 +139,7 @@ $side-nav-width-mobile: 260px;
         padding-bottom: 0;
         margin-bottom: 0;
         height: auto;
+
         &.sap-icon--overflow {
           @include custom-icon;
 
@@ -182,24 +192,28 @@ $side-nav-width-mobile: 260px;
           }
 
           .fd-menu__link {
+
             &.is-hover,
             &:hover {
               background-color: transparent;
-              .fd-menu__title{
+
+              .fd-menu__title {
                 color: $primary-color;
               }
             }
+
             &.is-selected,
             &[aria-selected=true] {
               background-color: transparent;
               border-bottom: none;
-              .fd-menu__title{
+
+              .fd-menu__title {
                 color: $primary-color;
                 background-color: none;
               }
             }
 
-            .fd-menu__title{
+            .fd-menu__title {
               color: #fff;
               font-weight: 600;
             }
@@ -208,7 +222,7 @@ $side-nav-width-mobile: 260px;
 
         .fd-top-nav__icon,
         .y-full-width-list__icon {
-          min-width: 24px;
+          min-width: 34px;
           min-height: 24px;
         }
 
@@ -225,7 +239,7 @@ $side-nav-width-mobile: 260px;
   }
 
   .fd-shellbar {
-    .fd-search-input  {
+    .fd-search-input {
 
       a {
         text-decoration: none;
@@ -260,17 +274,27 @@ $side-nav-width-mobile: 260px;
           color: white;
           font-size: 18px;
           color: #fff;
-          padding-bottom: 36px;
+          padding-bottom: 37px;
           // margin-bottom: -41px;
           border-bottom: 4px solid transparent;
           transition: all .2s ease;
         }
+
       }
+
+      i {
+        line-height: 0;
+        margin-top: -1.3rem;
+      }
+
 
       .fd-top-nav__icon {
         &:before {
           margin-top: 0 !important;
         }
+
+        line-height: 0;
+        margin-top: -3rem;
       }
 
       &:hover,
@@ -393,9 +417,11 @@ $side-nav-width-mobile: 260px;
   .sap-icon--twitter::before {
     content: "\62";
   }
+
   .sap-icon--slack::before {
     content: "\63";
   }
+
   .sap-icon--github::before {
     content: "\61";
   }
@@ -406,11 +432,12 @@ $side-nav-width-mobile: 260px;
 
   .fd-nested-list__item {
     padding: 7px 0;
+
     &:last-child {
       border-bottom: none;
     }
   }
-  
+
   .fd-nested-list__group-header,
   .fd-nested-list__item {
     background: none;
@@ -439,8 +466,9 @@ $side-nav-width-mobile: 260px;
 
     &:active {
       background-color: transparent;
+
       .fd-nested-list__title {
-        color: var(--sapList_TextColor,#32363a);
+        color: var(--sapList_TextColor, #32363a);
       }
     }
 
@@ -463,6 +491,7 @@ $side-nav-width-mobile: 260px;
     }
 
   }
+
   //disable the dotted line on deep-click
   .fd-side-nav .fd-nested-list__link {
     &:focus {
@@ -500,6 +529,7 @@ $side-nav-width-mobile: 260px;
   .fd-side-nav__group {
     margin-bottom: 10px;
   }
+
   @media screen and (max-width: 599px) {
     .lui-burger {
       width: 50px;
@@ -541,6 +571,7 @@ $side-nav-width-mobile: 260px;
     }
 
     &.lui-simpleSlideInNav.lui-leftNavToggle {
+
       .fd-app__sidebar,
       .fd-side-nav {
         width: $side-nav-width-mobile;
@@ -548,9 +579,10 @@ $side-nav-width-mobile: 260px;
     }
 
     &.lui-simpleSlideInNav.lui-leftNavToggle {
+
       .fd-app__sidebar,
       .fd-side-nav,
-      .lui-side-nav__footer{
+      .lui-side-nav__footer {
         display: flex;
       }
     }
@@ -559,7 +591,7 @@ $side-nav-width-mobile: 260px;
       left: -$side-nav-width-mobile;
     }*/
 
-    .lui-side-nav__footer{
+    .lui-side-nav__footer {
       display: none;
     }
 

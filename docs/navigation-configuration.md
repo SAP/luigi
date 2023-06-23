@@ -35,7 +35,7 @@ There are three main elements to Luigi:
 3. Main content window which renders the micro frontend.
 
 
-![Navigation layout](assets/navigation-structure.jpg)
+![Navigation layout](/assets/navigation-structure.jpg)
 
 
 ## First steps

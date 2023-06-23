@@ -79,6 +79,13 @@ Below is a list of the parameters you can use in the `settings:` Luigi configura
 
 ## General parameters
 
+### allowRules
+- **type**: array
+- **description**: an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
+
+### appLoadingIndicator.hideAutomatically
+- **description**: allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+
 ### backdropDisabled
 - **type**: boolean
 - **description**: prevents the backdrop layer from covering the top and left navigation when showing modal windows.
@@ -94,6 +101,23 @@ burgerTooltip = {
     navExpanded: 'Collapse navigation',
     navCollapsed: 'Expand navigation'
   };
+```
+
+### customAlertHandler
+- **type**: function
+- **description**: with this function, Luigi alerts will be disabled and you can implement your own alerts. This function gets `settings` and `openFromClient` as parameters. It must either return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which gets resolved when the alert is dismissed, or `false` if the default Luigi alert should be shown.
+- **example**:
+```javascript
+Luigi.setConfig({
+  ...,
+  settings: {
+    customAlertHandler: ()=>{
+     return new Promise((resolve, reject) => {
+       //custom alert implementation
+     });
+    }
+  }
+})
 ```
 
 ### customSandboxRules
@@ -115,20 +139,11 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 > **NOTE:** You can translate Luigi internal messages by providing translation for [these keys](../core/src/utilities/defaultLuigiTranslationTable.js).
 
 
-### hideNavigation
-- **type**: boolean
-- **description**: disables Luigi's default out-of-the-box navigation when set to `true`. This means that top, side, and tab navigation is no longer visible and you can implement your own navigation UI.
-- **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
+### featureToggles.queryStringParam
+- **description**: allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality.
 
-### header.logo
-- **type**: icon
-- **description**: defines the top left navigation logo. It has a fixed height of 28px.
-- **example**: 
-```
- header: {  object / function / Promise
-    logo: 'path/to/image.png'
-  },
-```
+### getNavFooterContainer
+- **description**: in addition to **sideNavFooterText** a client can insert custom HTML under the footer section.
 
 ### header.altText
 - **type**: string
@@ -141,15 +156,11 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
   },
 ```
 
-### header.title
-- **type**: string
-- **description**: defines the top left navigation title.
-- **example**: 
-```
- header: {  object / function / Promise
-    title: 'Luigi Demo'
-  },
-```
+### header.disabled
+- **type**: boolean
+- **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top navigation is hidden and only the left-side navigation is visible.
+- **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
+
 
 ### header.favicon
 - **type**: icon
@@ -158,6 +169,16 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 ```
  header: {  object / function / Promise
     favicon: 'path/to/favicon.ico'
+  },
+```
+
+### header.logo
+- **type**: icon
+- **description**: defines the top left navigation logo. It has a fixed height of 28px.
+- **example**: 
+```
+ header: {  object / function / Promise
+    logo: 'path/to/image.png'
   },
 ```
 
@@ -172,42 +193,20 @@ Take a look at our [i18n](i18n.md) section for an implementation suggestion.
   },
 ```
 
-### header.disabled
+### header.title
+- **type**: string
+- **description**: defines the top left navigation title.
+- **example**: 
+```
+ header: {  object / function / Promise
+    title: 'Luigi Demo'
+  },
+```
+
+### hideNavigation
 - **type**: boolean
-- **description**: disables Luigi's default out-of-the-box top navigation when set to `true`. This means that top navigation is hidden and only the left-side navigation is visible.
+- **description**: disables Luigi's default out-of-the-box navigation when set to `true`. This means that top, side, and tab navigation is no longer visible and you can implement your own navigation UI.
 - **default**: by default, the parameter is set to `false`, which means the navigation is enabled.
-
-### responsiveNavigation
-- **description**: allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons.
-You can set the following values:
-  * `simple` displays the button on the left side of the top navigation regardless of the browser window´s size.
-  * `simpleMobileOnly` displays the button on the left side of the top navigation when the browser window is narrower than `600px`.
-  * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.
-  * `Fiori3` displays the button on the left side of the top navigation. Once you click the button, the navigation shows up or collapses.
-- **default**: if you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node.
-
-### semiCollapsibleButtonStyle
-- **description**: allows you to customize the rendering of the expand/collapse control in the left side navigation, if [responsiveNavigation](https://docs.luigi-project.io/docs/general-settings/?section=responsivenavigation) is set to **semiCollapsible**.
-You can set the following values:
-  * `button` renders a **button** tag.
-- **default**: if you don't specify any value for  **semiCollapsibleButtonStyle**, the control is rendered as an **i** tag.
-
-### profileType
-- **description**: allows applying different layouts of Profile Menu in the shellbar once a user is authorized.
-You can set the following values:
-  * `simple` displays basic profile menu list of entities.
-  * `Fiori3` displays renewed profile menu layout according to the Fiori 3 styleguides. It contains the avatar of a user, if applicable, and additional description. **since**: v1.14.0
-- **default**: if you don't specify any value for **profileType**, the `simple` layout will be used as a default one.
-
-### sideNavFooterText
-- **description**: is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
-
-### getNavFooterContainer
-- **description**: in addition to **sideNavFooterText** a client can insert custom HTML under the footer section.
-
-### sideNavCompactMode
-- **description**: reduces the dimensions of the side navigation and allows you to display more information.
-
 
 ### iframeCreationInterceptor
 - **type**: function
@@ -227,15 +226,34 @@ For example, to allow 'fullscreen' for non-modal iframes:
   }
 }
 ```
-### allowRules
-- **type**: array
-- **description**: an array of rules for the content in the iframe, managed by the HTML **allow** attribute. You can use one or more rules by adding them to the array, for example `allowRules: ['microphone', 'camera']`. Be aware that this mechanism requires the browser to support [Feature Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy).
 
-### appLoadingIndicator.hideAutomatically
-- **description**: allows you to disable automatic hiding of the app loading indicator, which is enabled by default in case the app loading indicator is being used. Take a look at the [App loading indicator](luigi-ux-features.md#app-loading-indicator) section on how to use this feature.
+### profileType
+- **description**: allows applying different layouts of Profile Menu in the shellbar once a user is authorized.
+You can set the following values:
+  * `simple` displays basic profile menu list of entities.
+  * `Fiori3` displays renewed profile menu layout according to the Fiori 3 styleguides. It contains the avatar of a user, if applicable, and additional description. **since**: v1.14.0
+- **default**: if you don't specify any value for **profileType**, the `simple` layout will be used as a default one.
 
-### featureToggles.queryStringParam
-- **description**: allows you to set the query parameter name for the feature toggles. This parameter is then used when setting feature toggles via appending to the URL like `?ft=name`. You will need this value set before using the feature toggle functionality.
+### responsiveNavigation
+- **description**: allows customizing the navigation display settings. For example, you can define a button which shows or completely hides the left navigation, or a button which collapses the navigation to only show the icons.
+You can set the following values:
+  * `simple` displays the button on the left side of the top navigation regardless of the browser window´s size.
+  * `simpleMobileOnly` displays the button on the left side of the top navigation when the browser window is narrower than `600px`.
+  * `semiCollapsible` displays the arrow button at the bottom of the left side navigation. Once you click the button, the navigation shows up or collapses.
+  * `Fiori3` displays the button on the left side of the top navigation. Once you click the button, the navigation shows up or collapses.
+- **default**: if you don't specify any value for  **responsiveNavigation**, the buttons remain hidden. The same applies when you enable **hideSideNav** for the currently active navigation node.
+
+### semiCollapsibleButtonStyle
+- **description**: allows you to customize the rendering of the expand/collapse control in the left side navigation, if [responsiveNavigation](https://docs.luigi-project.io/docs/general-settings/?section=responsivenavigation) is set to **semiCollapsible**.
+You can set the following values:
+  * `button` renders a **button** tag.
+- **default**: if you don't specify any value for  **semiCollapsibleButtonStyle**, the control is rendered as an **i** tag.
+
+### sideNavCompactMode
+- **description**: reduces the dimensions of the side navigation and allows you to display more information.
+
+### sideNavFooterText
+- **description**: is a string displayed in a sticky footer inside the side navigation. It is a good place to display the version of your application.
 
 ### theming
 - **description**: a configuration element that allows you to specify a list of themes that are available on the website. The children elements are:
@@ -262,23 +280,6 @@ theming : {
        }
      }
   }
-```
-
-### customAlertHandler
-- **type**: function
-- **description**: with this function, Luigi alerts will be disabled and you can implement your own alerts. This function gets `settings` and `openFromClient` as parameters. It must either return a [promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which gets resolved when the alert is dismissed, or `false` if the default Luigi alert should be shown.
-- **example**:
-```javascript
-Luigi.setConfig({
-  ...,
-  settings: {
-    customAlertHandler: ()=>{
-     return new Promise((resolve, reject) => {
-       //custom alert implementation
-     });
-    }
-  }
-})
 ```
 
 ## Third-party cookies support check

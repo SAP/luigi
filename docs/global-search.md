@@ -15,7 +15,7 @@
 meta -->
 # Global search
 
-![Global Search](assets/globalsearch.jpg)
+![Global Search](/assets/globalsearch.jpg)
 
 The global search element can be used to trigger a search. In your configuration, you can implement a custom search provider and some action events like [onEnter](navigation-parameters-reference.md#searchProvider), [onEscape](navigation-parameters-reference.md#searchProvider), [onInput](navigation-parameters-reference.md#searchProvider) and [onSearchResultItemSelected](navigation-parameters-reference.md#searchProvider).
 By default, the search result will be rendered in a popup.
