@@ -302,7 +302,7 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 
 ## Profile
 
-![Profile](assets/profile.jpg)
+![Profile](/assets/profile.jpg)
 
 The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
 
@@ -323,7 +323,7 @@ profile: {
 
 ## Context switcher
 
-![Context switcher](assets/context-switcher.jpg)
+![Context switcher](/assets/context-switcher.jpg)
 
 The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
@@ -357,7 +357,7 @@ contextSwitcher: {
 
 ## Product switcher
 
-![Product switcher](assets/product-switcher.jpg)
+![Product switcher](/assets/product-switcher.jpg)
 
 The product switcher is window in top the navigation which allows you to switch between navigation elements displayed there. To add it to your application, include the **productSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
 
@@ -389,7 +389,7 @@ productSwitcher: {
 
 ## App switcher
 
-![App switcher](assets/app-switcher.jpg)
+![App switcher](/assets/app-switcher.jpg)
 
 The app switcher is a dropdown at the top of the navigation which allows you to switch between applications. To use it, you need to:
 1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
@@ -419,7 +419,7 @@ appSwitcher = {
 
 ## Tab navigation
 
-![Tab navigation](assets/tabnav.jpg)
+![Tab navigation](/assets/tabnav.jpg)
 
 Tab-style navigation in Luigi can be displayed directly above the micro frontend area, providing you with additional menu options. When you put tab navigation nodes into a [category](navigation-configuration.md#category), they will be rendered in a drop-down. Add this parameter to your configuration to create tab navigation nodes:
 
