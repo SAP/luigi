@@ -268,5 +268,41 @@ class UxManager extends LuigiClientBase {
   getCurrentTheme() {
     return lifecycleManager.currentContext?.internal?.currentTheme;
   }
+
+  /**
+   * Gets the CSS variables from Luigi Core with their key and value.
+   * @returns {Object} CSS variables with their key and value.
+   * @memberof uxManager
+   * @since NEXTRELEASE
+   * @example LuigiClient.uxManager().getCSSVariables();
+   */
+  getCSSVariables() {
+    return lifecycleManager.currentContext?.internal?.cssVariables || {};
+  }
+
+  /**
+   * Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
+   * @memberof uxManager
+   * @since NEXTRELEASE
+   * @example LuigiClient.uxManager().applyCSS();
+   */
+  applyCSS() {
+    document.querySelectorAll('head style[luigi-injected]').forEach(luigiInjectedStyleTag => {
+      luigiInjectedStyleTag.remove();
+    });
+    const vars = lifecycleManager.currentContext?.internal?.cssVariables;
+    if (vars) {
+      let cssString = ':root {\n';
+      Object.keys(vars).forEach(key => {
+        const val = vars[key];
+        cssString += (key.startsWith('--') ? '' : '--') + key + ':' + val + ';\n';
+      });
+      cssString += '}';
+      const themeStyle = document.createElement('style');
+      themeStyle.setAttribute('luigi-injected', true);
+      themeStyle.innerHTML = cssString;
+      document.head.appendChild(themeStyle);
+    }
+  }
 }
 export const uxManager = new UxManager();

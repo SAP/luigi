@@ -37,6 +37,8 @@ class LuigiTheming {
    */
   setCurrentTheme(id) {
     this.currentTheme = id;
+    // clear cache
+    window.Luigi.__cssVars = undefined;
   }
 
   /**
@@ -91,6 +93,48 @@ class LuigiTheming {
    */
   isThemingAvailable() /* istanbul ignore next */ {
     return !!LuigiConfig.getConfigValue('settings.theming');
+  }
+
+  /**
+   * Returns CSS variables with key value from Luigi if `@luigi-project/core/luigi_theme-vars.js` is included in the `index.html` and `settings.theming.variables==='fiori'` is defined in the {@link general-settings.md settings} section.
+   * It's also possible to define your own variables file which can be declared in `settings.theming.variables.file` in the {@link general-settings.md settings} section.
+   * The variables should be defined in a JSON file which starts with a `root` key.
+   * When you configure you own file, you can also implement exception handling by using the function `settings.theming.variables.errorHandling` which gets the error object as argument.
+   * @memberof Theming
+   * @returns {Object} CSS variables with their value.
+   * @since NEXTRELEASE
+   * @example Luigi.theming().getCSSVariables();
+   */
+  async getCSSVariables() {
+    if (!window.Luigi.__cssVars) {
+      const varFile = LuigiConfig.getConfigValue('settings.theming.variables.file');
+      if (varFile) {
+        try {
+          const resp = await fetch(varFile);
+          window.Luigi.__cssVars = (await resp.json()).root;
+          Object.keys(window.Luigi.__cssVars).forEach(key => {
+            const livePropVal = getComputedStyle(document.documentElement).getPropertyValue('--' + key);
+            if (livePropVal) {
+              window.Luigi.__cssVars[key] = livePropVal;
+            }
+          });
+        } catch (error) {
+          if (GenericHelpers.isFunction(LuigiConfig.getConfigValue('settings.theming.variables.errorHandling'))) {
+            LuigiConfig.getConfigValue('settings.theming.variables.errorHandling')(error);
+          } else {
+            console.error('CSS variables file error: ', error);
+          }
+        }
+      } else if (LuigiConfig.getConfigValue('settings.theming.variables') === 'fiori' && window.__luigiThemeVars) {
+        window.Luigi.__cssVars = {};
+        window.__luigiThemeVars.forEach(key => {
+          window.Luigi.__cssVars[key] = getComputedStyle(document.documentElement).getPropertyValue('--' + key);
+        });
+      } else {
+        window.Luigi.__cssVars = {}; // TODO: maybe allow also inline
+      }
+    }
+    return window.Luigi.__cssVars;
   }
 
   /**
