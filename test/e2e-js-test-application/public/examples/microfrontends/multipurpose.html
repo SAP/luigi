@@ -33,10 +33,14 @@
       #textCnt.visible {
         visibility: visible;
       }
+
+      .transferVars {
+        color: var(--sapTextColor);
+      }
     </style>
   </head>
 
-  <body style="-webkit-font-smoothing: antialiased; color: #515559;">
+  <body style="-webkit-font-smoothing: antialiased;">
     <div id="routeCnt"></div>
     <div id="imgCnt"></div>
     <div id="textCnt">
@@ -46,6 +50,7 @@
         open US
       </button>
       <button id="vgDataUpdate" onclick="vgDataUpdate()">Set view group data</button>
+      <button class="transferVars" onclick="applyCSS()">ApplyCSS</button>
     </div>
 
     <script>
@@ -108,6 +113,10 @@
       setTimeout(function() {
         document.getElementById('textCnt').classList.add('visible');
       }, 3000);
+
+      function applyCSS() {
+        LuigiClient.uxManager().applyCSS();
+      }
     </script>
   </body>
 </html>
