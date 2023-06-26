@@ -153,19 +153,7 @@
             }
           }
         });
-
-        let sideNavAccordionModeOverride =
-          (selectedNode && selectedNode.sideNavAccordionMode) ||
-          (selectedNode &&
-            selectedNode.parent &&
-            selectedNode.parent.sideNavAccordionMode);
-        if (typeof sideNavAccordionModeOverride !== 'undefined') {
-          sideNavAccordionMode = sideNavAccordionModeOverride;
-        } else {
-          sideNavAccordionMode = LuigiConfig.getConfigBooleanValue(
-            'navigation.defaults.sideNavAccordionMode'
-          );
-        }
+        sideNavAccordionMode = NavigationHelpers.getSideNavAccordionMode(selectedNode);
       }
     },
   };

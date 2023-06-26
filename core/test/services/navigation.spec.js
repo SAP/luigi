@@ -1022,7 +1022,7 @@ describe('Navigation', function() {
         label: 'test',
         order: 0
       };
-      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[1]);
+      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[1], false);
       sinon.assert.called(NavigationHelpers.storeExpandedState);
     });
     it('expandCategoriesByNavigationFn not called', () => {
@@ -1031,7 +1031,7 @@ describe('Navigation', function() {
         _fromString: true,
         order: 2
       };
-      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[2]);
+      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[2], false);
       sinon.assert.notCalled(NavigationHelpers.storeExpandedState);
     });
   });
