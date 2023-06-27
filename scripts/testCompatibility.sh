@@ -306,10 +306,8 @@ else
   echoe "Running bunded example and e2e tests"
 fi
 
-echoe "0101 - verifyAndStartWebserver()"
 verifyAndStartWebserver
 
-echoe "0101 - startE2eTestrunner()"
 startE2eTestrunner
 
 echoe "Compatibility tests finished successfully"
