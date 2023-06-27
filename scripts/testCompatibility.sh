@@ -307,7 +307,6 @@ else
 fi
 
 verifyAndStartWebserver
-
 startE2eTestrunner
 
 echoe "Compatibility tests finished successfully"
