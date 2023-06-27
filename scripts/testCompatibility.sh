@@ -306,7 +306,10 @@ else
   echoe "Running bunded example and e2e tests"
 fi
 
+echoe "Running verifyAndStartWebserver:"
 verifyAndStartWebserver
+
+echoe "Running startE2eTestrunner:"
 startE2eTestrunner
 
 echoe "Compatibility tests finished successfully"
