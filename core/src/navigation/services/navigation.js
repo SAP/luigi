@@ -384,8 +384,34 @@ class NavigationClass {
       });
       updatedCompData.selectedNode = selectedNode || lastElement;
       updatedCompData.children = groupedChildren;
+      const isExpandCategoriesByNavigation = LuigiConfig.getConfigValue('settings.expandCategoryByNavigation');
+      if (isExpandCategoriesByNavigation) {
+        this.expandCategoriesByNavigationFn(
+          updatedCompData.children,
+          updatedCompData.selectedNode,
+          NavigationHelpers.getSideNavAccordionMode(updatedCompData.selectedNode)
+        );
+      }
     }
     return updatedCompData;
+  }
+
+  /**
+   * Checks if selectedNode has a category and if yes the categoryUid in metaInfo will be written to the browsers localstorage.
+   * @param {*} sortedChildrenEntries are sorted left nav node data
+   * @param {*} selectedNode
+   * @param {boolean} sideNavAccordionMode
+   */
+  expandCategoriesByNavigationFn(sortedChildrenEntries, selectedNode, sideNavAccordionMode) {
+    if (sortedChildrenEntries) {
+      for (const [key, categoryChildren] of Object.entries(sortedChildrenEntries)) {
+        categoryChildren.forEach(node => {
+          if (node === selectedNode && categoryChildren.metaInfo && categoryChildren.metaInfo.collapsible) {
+            NavigationHelpers.storeExpandedState(categoryChildren.metaInfo.categoryUid, true, sideNavAccordionMode);
+          }
+        });
+      }
+    }
   }
 
   /**

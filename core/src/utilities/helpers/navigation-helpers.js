@@ -300,6 +300,22 @@ class NavigationHelpersClass {
     return tnd;
   }
 
+  /**
+   * Returns if sideNavAccordionMode is true or false
+   * @param {*} selectedNode
+   * @returns if sideNavAccordionMode is true or false
+   */
+  getSideNavAccordionMode(selectedNode) {
+    let sideNavAccordionModeOverride =
+      (selectedNode && selectedNode.sideNavAccordionMode) ||
+      (selectedNode && selectedNode.parent && selectedNode.parent.sideNavAccordionMode);
+    if (typeof sideNavAccordionModeOverride !== 'undefined') {
+      return sideNavAccordionModeOverride;
+    } else {
+      return LuigiConfig.getConfigBooleanValue('navigation.defaults.sideNavAccordionMode');
+    }
+  }
+
   loadExpandedCategories() {
     let expandedList = [];
     const expString = localStorage.getItem(this.EXP_CAT_KEY);
