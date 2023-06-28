@@ -114,33 +114,35 @@
     <ul class="fd-menu__list fd-menu__list--top fd-menu__list--no-shadow">
       {#if children}
         {#each children as node}
-          <li
-            class="fd-menu__item"
-            on:click={() => onActionClick(node)}
-            data-testid={getTestId(node)}
-          >
-            <a
-              href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
-              on:click={event => {
-                NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
-              }}
-              class="fd-menu__link"
+          {#if node.label}
+            <li
+              class="fd-menu__item"
+              on:click={() => onActionClick(node)}
+              data-testid={getTestId(node)}
             >
-              <span class="fd-top-nav__icon">
-                {#if node.icon && hasOpenUIicon(node)}
-                  <i class="sap-icon {getSapIconStr(node.icon)}" />
-                {:else}
-                  <img
-                    class="sap-icon"
-                    src={node.icon}
-                    alt={node.altText ? node.altText : ''}
-                  />
-                {/if}
-                <BadgeCounter {node} />
-              </span>
-              <span class="fd-menu__title">{getNodeLabel(node)}</span>
-            </a>
-          </li>
+              <a
+                href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
+                on:click={event => {
+                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+                }}
+                class="fd-menu__link"
+              >
+                <span class="fd-top-nav__icon">
+                  {#if node.icon && hasOpenUIicon(node)}
+                    <i class="sap-icon {getSapIconStr(node.icon)}" />
+                  {:else}
+                    <img
+                      class="sap-icon"
+                      src={node.icon}
+                      alt={node.altText ? node.altText : ''}
+                    />
+                  {/if}
+                  <BadgeCounter {node} />
+                </span>
+                <span class="fd-menu__title">{getNodeLabel(node)}</span>
+              </a>
+            </li>
+          {/if}
         {/each}
       {/if}
     </ul>
