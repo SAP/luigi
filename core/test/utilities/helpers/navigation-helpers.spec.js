@@ -863,4 +863,42 @@ describe('Navigation-helpers', () => {
       assert.equal(NavigationHelpers.getNodeLabel(node), 'myNode {viewGroupData.foo}');
     });
   });
+
+  describe('getSideNavAccordionMode', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigBooleanValue').returns(true);
+    });
+    afterEach(() => {
+      sinon.restore();
+      sinon.reset();
+    });
+    it('sideNavAccordionMode defined on selectedNode', () => {
+      let selectedNode = {
+        pathSegement: 'mf1',
+        sideNavAccordionMode: true
+      };
+      let sideNavAccordionMode = NavigationHelpers.getSideNavAccordionMode(selectedNode);
+      sinon.assert.notCalled(LuigiConfig.getConfigBooleanValue);
+      assert.equal(sideNavAccordionMode, true);
+    });
+    it('sideNavAccordionMode defined on parent', () => {
+      let selectedNode = {
+        pathSegement: 'mf1',
+        parent: {
+          sideNavAccordionMode: true
+        }
+      };
+      let sideNavAccordionMode = NavigationHelpers.getSideNavAccordionMode(selectedNode);
+      sinon.assert.notCalled(LuigiConfig.getConfigBooleanValue);
+      assert.equal(sideNavAccordionMode, true);
+    });
+    it('sideNavAccordionMode defined by default', () => {
+      let selectedNode = {
+        pathSegement: 'mf1'
+      };
+      let sideNavAccordionMode = NavigationHelpers.getSideNavAccordionMode(selectedNode);
+      sinon.assert.calledOnceWithExactly(LuigiConfig.getConfigBooleanValue, 'navigation.defaults.sideNavAccordionMode');
+      assert.equal(sideNavAccordionMode, true);
+    });
+  });
 });
