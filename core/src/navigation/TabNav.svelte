@@ -284,7 +284,7 @@
                   {/if}
                 {/if}
               {/each}
-            {:else}
+            {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
               <span
                 class="fd-tabs__item"
                 uid="{index}-0"
@@ -423,21 +423,24 @@
                         aria-hidden={!dropDownStates[key + index]}
                       >
                         {#each nodes as node}
-                          <li
-                            class="fd-nested-list__item"
-                            aria-labelledby="tabnav_list_level1_{index}"
-                          >
-                            <a
-                              class="fd-nested-list__link"
-                              href={getRouteLink(node)}
-                              on:click|preventDefault={() => handleClick(node)}
-                              aria-selected={node === selectedNodeForTabNav}
+                          {#if node.label}
+                            <li
+                              class="fd-nested-list__item"
+                              aria-labelledby="tabnav_list_level1_{index}"
                             >
-                              <span class="fd-nested-list__title"
-                                >{getNodeLabel(node)}</span
+                              <a
+                                class="fd-nested-list__link"
+                                href={getRouteLink(node)}
+                                on:click|preventDefault={() =>
+                                  handleClick(node)}
+                                aria-selected={node === selectedNodeForTabNav}
                               >
-                            </a>
-                          </li>
+                                <span class="fd-nested-list__title"
+                                  >{getNodeLabel(node)}</span
+                                >
+                              </a>
+                            </li>
+                          {/if}
                         {/each}
                       </ul>
                     </li>

@@ -730,6 +730,7 @@ describe('Navigation-helpers', () => {
       assert.equal(tnd.children[1].label, 'Projects');
       assert.equal(tnd.children[2].label, 'test');
       assert.equal(tnd.children[2].isCat, true);
+      assert.equal(tnd.children[2].visibleChildren[0].pathSegment, 'user_management');
     });
   });
   describe('prepare for test id if no testId is configured', () => {
