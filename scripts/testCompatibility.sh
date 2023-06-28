@@ -256,7 +256,7 @@ startE2eTestrunner() {
   echoe "Starting e2e test headless"
   cd $LUIGI_DIR_TESTING/${APP_FOLDERS[0]}
 
-  npm run e2e:run
+  npm run e2e:run:angular
 
   # Check and kill webservers again
   killWebServers
@@ -306,7 +306,10 @@ else
   echoe "Running bunded example and e2e tests"
 fi
 
+echoe "Running verifyAndStartWebserver:"
 verifyAndStartWebserver
+
+echoe "Running startE2eTestrunner:"
 startE2eTestrunner
 
 echoe "Compatibility tests finished successfully"
