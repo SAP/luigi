@@ -139,7 +139,7 @@
     const elem = document.querySelector('.lui-modal-index-' + modalIndex);
     const { size, width: settingsWidth, height: settingsHeight } = settings;
     const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
-
+    elem.classList.remove('lui-modal-fullscreen');
     if (
       settingsWidth &&
       settingsWidth.match(regex) &&
@@ -149,7 +149,6 @@
       height = settingsHeight;
       width = settingsWidth;
     } else {
-      elem.classList.remove('lui-modal-fullscreen');
       switch (size) {
         case 'fullscreen':
           height = '100vh';
