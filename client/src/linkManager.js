@@ -170,8 +170,8 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * Update current title and size of a modal. If `routing.showModalPathInUrl` is set to true, the URL will be updated with the modal settingds data.
-   * In addition you can specify if a new history entry wil lbe created with the updated URL.
+   * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
+   * In addition, you can specify if a new history entry will be created with the updated URL.
    * @memberof linkManager
    * @param {Object} updatedModalSettings possibility to update the active modal.
    * @param {Object} updatedModalSettings.title update the `title` of the active modal.

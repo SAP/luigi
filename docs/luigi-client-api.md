@@ -636,8 +636,8 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
 
 #### updateModalSettings
 
-Update current title and size of a modal. If `routing.showModalPathInUrl` is set to true, the URL will be updated with the modal settingds data.
-In addition you can specify if a new history entry wil lbe created with the updated URL.
+Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
+In addition, you can specify if a new history entry will be created with the updated URL.
 
 ##### Parameters
 
