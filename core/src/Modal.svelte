@@ -37,6 +37,7 @@
   let isModal = true;
   let modalElementClassSelector;
   let store = getContext('store');
+  let transistionStatus;
 
   const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
@@ -114,18 +115,20 @@
         wcCreated = true;
       } else {
         showLoadingIndicator = nodeObject.loadingIndicator
-          ? nodeObject.loadingIndicator.enabled
-          : true;
+        ? nodeObject.loadingIndicator.enabled
+        : true;
         const iframe = await createIframeModal(nodeObject.viewUrl, {
           context: pathData.context,
           pathParams: pathData.pathParams,
           nodeParams,
         });
+        if(transistionStatus==='end'){
         dispatch('iframeCreated', {
           modalIframe: iframe,
           modalIframeData: { ...pathData, nodeParams },
         });
-        iframeCreated = true;
+          iframeCreated = true;
+        }
       }
     } else {
       await prepareNodeData(path);
@@ -353,6 +356,7 @@
       <div
         in:fade={{ delay: 250, duration: 250 }}
         out:fade={{ duration: 250 }}
+        on:introend={() => (transistionStatus = 'end')}
         class="fd-page spinnerContainer"
         aria-hidden="false"
         aria-label="Loading"
