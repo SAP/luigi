@@ -1,5 +1,5 @@
 import { Navigation } from '../../src/navigation/services/navigation';
-import { RoutingHelpers, GenericHelpers } from '../../src/utilities/helpers';
+import { RoutingHelpers, GenericHelpers, NavigationHelpers } from '../../src/utilities/helpers';
 import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 import { LuigiConfig } from '../../src/core-api';
 const chai = require('chai');
@@ -983,6 +983,56 @@ describe('Navigation', function() {
       Navigation.buildVirtualTree(mockNode, mockNodeNames, pathParams);
 
       assert.deepEqual(expected, mockNode);
+    });
+  });
+
+  describe('expandCategoriesByNavigationFn', () => {
+    let sortedChildren;
+    beforeEach(() => {
+      sinon.stub(NavigationHelpers, 'storeExpandedState');
+      sortedChildren = {
+        test: [
+          {
+            category: { label: 'test', collapsible: true },
+            label: 'mf1',
+            pathSegment: 'mf1',
+            viewUrl: '/microfrontend.html'
+          },
+          {
+            category: 'test',
+            label: 'mf2',
+            pathSegment: 'mf2',
+            viewUrl: '/microfrontend.html'
+          },
+          {
+            label: 'mf3',
+            pathSegment: 'mf3',
+            viewUrl: '/microfrontend.html'
+          }
+        ]
+      };
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('expandCategoriesByNavigationFn will be called', () => {
+      sortedChildren.test['metaInfo'] = {
+        categoryUid: 'simple:test',
+        collapsible: true,
+        label: 'test',
+        order: 0
+      };
+      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[1], false);
+      sinon.assert.called(NavigationHelpers.storeExpandedState);
+    });
+    it('expandCategoriesByNavigationFn not called', () => {
+      sortedChildren.test['metaInfo'] = {
+        label: '___2',
+        _fromString: true,
+        order: 2
+      };
+      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[2], false);
+      sinon.assert.notCalled(NavigationHelpers.storeExpandedState);
     });
   });
 });

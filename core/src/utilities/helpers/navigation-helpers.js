@@ -276,6 +276,11 @@ class NavigationHelpersClass {
         badgeCountsToSumUp.push(badgeCount);
       }
     }
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].isCat) {
+        children[i].visibleChildren = (await Navigation.getChildren(children[i])) || [];
+      }
+    }
     const tnd = {
       children,
       selectedNode,
@@ -293,6 +298,22 @@ class NavigationHelpersClass {
       };
     }
     return tnd;
+  }
+
+  /**
+   * Returns if sideNavAccordionMode is true or false
+   * @param {*} selectedNode
+   * @returns if sideNavAccordionMode is true or false
+   */
+  getSideNavAccordionMode(selectedNode) {
+    let sideNavAccordionModeOverride =
+      (selectedNode && selectedNode.sideNavAccordionMode) ||
+      (selectedNode && selectedNode.parent && selectedNode.parent.sideNavAccordionMode);
+    if (typeof sideNavAccordionModeOverride !== 'undefined') {
+      return sideNavAccordionModeOverride;
+    } else {
+      return LuigiConfig.getConfigBooleanValue('navigation.defaults.sideNavAccordionMode');
+    }
   }
 
   loadExpandedCategories() {
