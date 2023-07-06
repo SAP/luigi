@@ -25,11 +25,14 @@ echoe() {
 # returns/exposes $PID
 #
 runWebserver() {
+  echoe "runWebserver: before start"
   local PORT=$1
   local FOLDER=$2
   local TESTPATH=$3
   PATH="$PATH:$LUIGI_BASE_DIR/node_modules/.bin"
   WS=`command -v sirv`
+  echoe "runWebserver: before if"
+
   if [ ! -x $WS ] || [ "$WS" == "" ] ; then
     echoe "Installing webserver"
     npm i -g sirv-cli
