@@ -37,7 +37,6 @@
   let isModal = true;
   let modalElementClassSelector;
   let store = getContext('store');
-  let transistionStatus;
 
   const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
@@ -117,18 +116,17 @@
         showLoadingIndicator = nodeObject.loadingIndicator
         ? nodeObject.loadingIndicator.enabled
         : true;
+        
         const iframe = await createIframeModal(nodeObject.viewUrl, {
           context: pathData.context,
           pathParams: pathData.pathParams,
           nodeParams,
         });
-        if(transistionStatus==='end'){
         dispatch('iframeCreated', {
           modalIframe: iframe,
           modalIframeData: { ...pathData, nodeParams },
         });
-          iframeCreated = true;
-        }
+        iframeCreated = true;
       }
     } else {
       await prepareNodeData(path);
@@ -239,7 +237,7 @@
         !nodeObject.loadingIndicator ||
         nodeObject.loadingIndicator.hideAutomatically !== false;
       if (loadingIndicatorAutoHideEnabled) {
-        showLoadingIndicator = false;
+        fadeOutLoadingIndicator();
       }
     }
 
@@ -298,6 +296,16 @@
       dispatch('close');
     }
   }
+
+  function fadeOutLoadingIndicator() {
+    const spinnerContainer = document.querySelector('.spinnerContainer');
+    if (spinnerContainer && spinnerContainer.classList.contains("fade-in-out")) {
+      spinnerContainer.classList.remove("fade-in-out");
+      setTimeout(function() {
+        showLoadingIndicator = false;
+      },250);
+    }
+  }
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -354,10 +362,7 @@
     </div>
     {#if showLoadingIndicator}
       <div
-        in:fade={{ delay: 250, duration: 250 }}
-        out:fade={{ duration: 250 }}
-        on:introend={() => (transistionStatus = 'end')}
-        class="fd-page spinnerContainer"
+        class="fd-page spinnerContainer fade-in-out"
         aria-hidden="false"
         aria-label="Loading"
       >
@@ -447,6 +452,8 @@
     display: flex;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: opacity 0.25s;
   }
 
   .drawer-dialog__content {
@@ -480,5 +487,9 @@
 
   .lui-modal-header {
     position: relative;
+  }
+
+  .fade-in-out {
+    opacity: 1;
   }
 </style>
