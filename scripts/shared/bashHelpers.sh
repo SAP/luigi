@@ -35,17 +35,10 @@ runWebserver() {
   echoe "runWebserver: before start 2"
 
   # WS=`command -v sirv`
-  echoe "runWebserver: before if"
-
-
   echoe "Installing webserver"
   npm i -g sirv-cli
 
 
-  # if [ ! -x $WS ] || [ "$WS" == "" ] ; then
-  #   echoe "Installing webserver"
-  #   npm i -g sirv-cli
-  # fi
 
   echo ""
   echo "Starting webserver on port $PORT"
