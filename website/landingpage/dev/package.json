@@ -12,7 +12,7 @@
   "dependencies": {
     "feed": "^4.2.2",
     "foundation-sites": "^6.7.5",
-    "jquery": "^3.6.3",
+    "jquery": "^3.7.0",
     "motion-ui": "^2.0.4",
     "what-input": "^5.2.12"
   },
