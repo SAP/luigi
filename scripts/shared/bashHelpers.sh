@@ -31,10 +31,10 @@ runWebserver() {
   local TESTPATH=$3
   echoe "runWebserver: before start 1"
   PATH="$PATH:$LUIGI_BASE_DIR/node_modules/.bin"
-  
+
   echoe "runWebserver: before start 2"
 
-  WS=`command -v sirv`
+  # WS=`command -v sirv`
   echoe "runWebserver: before if"
 
 
