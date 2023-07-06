@@ -2,6 +2,9 @@ on:
   push:
     branches:
       - 'main'
+  pull_request:
+    branches:
+      - 'main'
 name: Backwards Compatibility Check
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
