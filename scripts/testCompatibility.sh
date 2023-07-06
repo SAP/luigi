@@ -245,10 +245,8 @@ verifyAndStartWebserver() {
       cd ..
     fi
     if [ "${APP_FOLDERS[$i]}" != "/test/e2e-js-test-application" ]; then
-      echoe "Running: runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]}"
       runWebserver ${APP_PORTS[$i]} ${APP_PUBLIC_FOLDERS[$i]} ${APP_PATH_CHECK[$i]} --verbose
     else
-      echoe "Running: npm run dev &"
       npm run dev &
     fi
   done
