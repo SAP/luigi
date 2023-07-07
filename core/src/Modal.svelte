@@ -31,7 +31,8 @@
   let nodeParams;
   let iframeCreated = false;
   let wcCreated = false;
-  let showLoadingIndicator = true;
+  let showLoadingIndicator = false;
+  let contextRequested = false;
   let isDrawer = false;
   let isModal = true;
   let modalElementClassSelector;
@@ -231,6 +232,7 @@
     }
 
     if ('luigi.get-context' === e.data.msg) {
+      contextRequested=true;
       const loadingIndicatorAutoHideEnabled =
         !nodeObject ||
         !nodeObject.loadingIndicator ||
@@ -276,6 +278,11 @@
         )
       : '';
     window.focus();
+    setTimeout(()=>{
+      if(!contextRequested){
+        showLoadingIndicator=true;
+      }
+    },250);
   });
 
   onDestroy(() => {
