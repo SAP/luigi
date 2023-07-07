@@ -19,6 +19,8 @@
   } from './utilities/helpers';
   import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
+  import { Routing } from './services';
+  import { LuigiConfig } from './core-api';
 
   export let settings;
   export let isDataPrepared = false;
@@ -137,7 +139,7 @@
     const elem = document.querySelector('.lui-modal-index-' + modalIndex);
     const { size, width: settingsWidth, height: settingsHeight } = settings;
     const regex = /^.?[0-9]{1,3}(%|px|rem|em|vh|vw)$/;
-
+    elem.classList.remove('lui-modal-fullscreen');
     if (
       settingsWidth &&
       settingsWidth.match(regex) &&
@@ -254,6 +256,9 @@
       if (e.data.updatedModalSettings.size) {
         settings.size = e.data.updatedModalSettings.size;
         await setModalSize();
+      }
+      if(LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')){
+        Routing.updateModalDataInUrl(nodepath, {'title':settings.title, 'size':settings.size}, e.data.addHistoryEntry);   
       }
     }
   };
