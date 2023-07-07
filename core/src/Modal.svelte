@@ -234,7 +234,7 @@
     }
 
     if ('luigi.get-context' === e.data.msg) {
-      contextRequested=true;
+      contextRequested = true;
       const loadingIndicatorAutoHideEnabled =
         !nodeObject ||
         !nodeObject.loadingIndicator ||
@@ -283,11 +283,11 @@
         )
       : '';
     window.focus();
-    setTimeout(()=>{
+    setTimeout(() => {
       if(!contextRequested){
-        showLoadingIndicator=true;
+        showLoadingIndicator = true;
       }
-    },250);
+    }, 250);
   });
 
   onDestroy(() => {
@@ -308,13 +308,18 @@
     }
   }
 
+  /**
+   * This function will be called if the context the LuigiClient requests the context.
+   * That means spinner can fade out in order to display the mf.
+   * After 250 ms the spinner will be removed from DOM.
+   */
   function fadeOutLoadingIndicator() {
     const spinnerContainer = document.querySelector('.spinnerContainer');
     if (spinnerContainer && spinnerContainer.classList.contains("fade-in-out")) {
       spinnerContainer.classList.remove("fade-in-out");
-      setTimeout(function() {
+      setTimeout(() => {
         showLoadingIndicator = false;
-      },250);
+      }, 250);
     }
   }
 </script>
