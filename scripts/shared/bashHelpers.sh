@@ -29,11 +29,11 @@ runWebserver() {
   local FOLDER=$2
   local TESTPATH=$3
   PATH="$PATH:$LUIGI_BASE_DIR/node_modules/.bin"
-  WS=`command -v sirv`
-  if [ ! -x $WS ] || [ "$WS" == "" ] ; then
-    echoe "Installing webserver"
-    npm i -g sirv-cli
-  fi
+
+  echoe "Installing webserver"
+  npm i -g sirv-cli
+
+
 
   echo ""
   echo "Starting webserver on port $PORT"
