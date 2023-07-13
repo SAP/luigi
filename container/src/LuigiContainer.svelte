@@ -5,6 +5,7 @@
   export let context;
   export let label;
   export let webcomponent;
+  export let locale;
 
   let iframeHandle:
     | {
@@ -51,6 +52,7 @@
 
   containerService.registerContainer(thisComponent);
   webcomponentService.thisComponent = thisComponent;
+  webcomponentService.locale = locale;
 
   function isWebComponent(): boolean {
     return !!webcomponent;

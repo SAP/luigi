@@ -4,6 +4,7 @@ import { AbstractWebComponentService } from './abstract-web-components.service';
 /** Methods for dealing with web components based micro frontend handling */
 export class ContainerWebComponentService extends AbstractWebComponentService {
   thisComponent: any;
+  locale: any;
 
   dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
     this.containerService.dispatch(msg, this.thisComponent, data, callback);
@@ -36,7 +37,9 @@ export class ContainerWebComponentService extends AbstractWebComponentService {
           }
         };
       }, //window.Luigi.ux,
-      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
+      getCurrentLocale: () => {
+        return this.locale;
+      }, //() => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
         // if (eventBusElement.eventBus) {
         // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
