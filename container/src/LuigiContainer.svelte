@@ -16,46 +16,11 @@
   import { onMount, onDestroy } from 'svelte';
   import { get_current_component } from 'svelte/internal';
   import { containerService } from './services/container.service';
-  import { WebComponentService } from './services/webcomponents.service';
+  import { ContainerWebComponentService } from './services/web-component-service/container-web-components.service';
   import { LuigiInternalMessageID } from './constants/internal-communication';
   import { ContainerAPI } from './api/container-api';
 
-  const webcomponentService = new WebComponentService();
-  webcomponentService.createClientAPI = (eventBusElement, nodeId, wc_id) => {
-    return {
-      linkManager: () => {
-        return {
-          navigate: (route) => {
-            dispatchLuigiEvent('navigation-request', { link: route });
-          },
-        };
-      },
-      uxManager: () => {
-        return {
-          showAlert: (alertSettings) => {
-            dispatchLuigiEvent('alert-request', alertSettings);
-          },
-          showConfirmationModal: async (settings) => {
-            return new Promise((resolve, reject) => {
-              dispatchLuigiEvent('confirmation-request', settings, (data) => {
-                if (data) {
-                  resolve(data);
-                } else {
-                  reject();
-                }
-              });
-            });
-          },
-        };
-      }, //window.Luigi.ux,
-      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: (ev) => {
-        // if (eventBusElement.eventBus) {
-        // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
-        // }
-      },
-    };
-  };
+  const webcomponentService = new ContainerWebComponentService();
 
   const thisComponent: any = get_current_component();
 
@@ -85,10 +50,7 @@
   };
 
   containerService.registerContainer(thisComponent);
-
-  function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
-    containerService.dispatch(msg, thisComponent, data, callback);
-  }
+  webcomponentService.thisComponent = thisComponent;
 
   function isWebComponent(): boolean {
     return !!webcomponent;
