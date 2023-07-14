@@ -7,7 +7,6 @@
     onDestroy,
     getContext
   } from 'svelte';
-  import { fade } from 'svelte/transition';
   import { Navigation } from './navigation/services/navigation';
   import {
     EventListenerHelpers,
@@ -34,7 +33,8 @@
   let nodeParams;
   let iframeCreated = false;
   let wcCreated = false;
-  let showLoadingIndicator = true;
+  let showLoadingIndicator = false;
+  let contextRequested = false;
   let isDrawer = false;
   let isModal = true;
   let modalElementClassSelector;
@@ -116,8 +116,9 @@
         wcCreated = true;
       } else {
         showLoadingIndicator = nodeObject.loadingIndicator
-          ? nodeObject.loadingIndicator.enabled
-          : true;
+        ? nodeObject.loadingIndicator.enabled
+        : true;
+        
         const iframe = await createIframeModal(nodeObject.viewUrl, {
           context: pathData.context,
           pathParams: pathData.pathParams,
@@ -233,12 +234,13 @@
     }
 
     if ('luigi.get-context' === e.data.msg) {
+      contextRequested = true;
       const loadingIndicatorAutoHideEnabled =
         !nodeObject ||
         !nodeObject.loadingIndicator ||
         nodeObject.loadingIndicator.hideAutomatically !== false;
       if (loadingIndicatorAutoHideEnabled) {
-        showLoadingIndicator = false;
+        fadeOutLoadingIndicator();
       }
     }
 
@@ -281,6 +283,12 @@
         )
       : '';
     window.focus();
+    // activate loadingindicator if onMount function takes longer than expected
+    setTimeout(() => {
+      if(!contextRequested){
+        showLoadingIndicator = true;
+      }
+    }, 250);
   });
 
   onDestroy(() => {
@@ -298,6 +306,21 @@
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
       dispatch('close');
+    }
+  }
+
+  /**
+   * This function will be called if the LuigiClient requested the context.
+   * That means spinner can fade out in order to display the mf.
+   * After 250 ms the spinner will be removed from DOM.
+   */
+  function fadeOutLoadingIndicator() {
+    const spinnerContainer = document.querySelector('.spinnerContainer');
+    if (spinnerContainer && spinnerContainer.classList.contains("fade-in-out")) {
+      spinnerContainer.classList.remove("fade-in-out");
+      setTimeout(() => {
+        showLoadingIndicator = false;
+      }, 250);
     }
   }
 </script>
@@ -356,9 +379,7 @@
     </div>
     {#if showLoadingIndicator}
       <div
-        in:fade={{ delay: 250, duration: 250 }}
-        out:fade={{ duration: 250 }}
-        class="fd-page spinnerContainer"
+        class="fd-page spinnerContainer fade-in-out"
         aria-hidden="false"
         aria-label="Loading"
       >
@@ -448,6 +469,8 @@
     display: flex;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: opacity 0.25s;
   }
 
   .drawer-dialog__content {
@@ -481,5 +504,9 @@
 
   .lui-modal-header {
     position: relative;
+  }
+
+  .fade-in-out {
+    opacity: 1;
   }
 </style>
