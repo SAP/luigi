@@ -17,11 +17,11 @@
   import { onMount, onDestroy } from 'svelte';
   import { get_current_component } from 'svelte/internal';
   import { containerService } from './services/container.service';
-  import { ContainerWebComponentService } from './services/web-component-service/container-web-components.service';
+  import { ContainerWCService } from './services/web-component-service/container-web-components.service';
   import { LuigiInternalMessageID } from './constants/internal-communication';
   import { ContainerAPI } from './api/container-api';
 
-  const webcomponentService = new ContainerWebComponentService();
+  const webcomponentService = new ContainerWCService();
 
   const thisComponent: any = get_current_component();
 

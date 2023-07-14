@@ -1,9 +1,9 @@
 import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from '../web-component-helpers';
 import { ContainerService } from '../container.service';
-import { AbstractWebComponentService } from './abstract-web-components.service';
+import { AbstractWCService } from './abstract-web-components.service';
 
 /** Methods for dealing with web components based micro frontend handling */
-export class CompoundWebComponentService extends AbstractWebComponentService {
+export class CompoundContainerWCService extends AbstractWCService {
   thisComponent: any;
 
   dispatchLuigiEvent(msg, data, callback) {
@@ -12,7 +12,7 @@ export class CompoundWebComponentService extends AbstractWebComponentService {
 
   createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
-      linkManager: () => {}, //window.Luigi.navigation,
+      linkManager: () => { }, //window.Luigi.navigation,
       uxManager: () => {
         return {
           showAlert: alertSettings => {
@@ -31,7 +31,7 @@ export class CompoundWebComponentService extends AbstractWebComponentService {
           }
         };
       }, //window.Luigi.ux,
-      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
+      getCurrentLocale: () => { }, //() => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);

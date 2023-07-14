@@ -2,7 +2,7 @@ import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from
 import { ContainerService } from '../container.service';
 
 /** Methods for dealing with web components based micro frontend handling */
-export abstract class AbstractWebComponentService {
+export abstract class AbstractWCService {
   containerService: ContainerService;
 
   constructor() {

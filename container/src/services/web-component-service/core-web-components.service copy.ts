@@ -1,9 +1,9 @@
 import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from './../web-component-helpers';
 import { ContainerService } from './../container.service';
-import { AbstractWebComponentService } from './abstract-web-components.service';
+import { AbstractWCService } from './abstract-web-components.service';
 
 /** Methods for dealing with web components based micro frontend handling */
-export class CoreWebComponentService extends AbstractWebComponentService {
+export class CoreWCService extends AbstractWCService {
   createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
       linkManager: () => {}, //window.Luigi.navigation,

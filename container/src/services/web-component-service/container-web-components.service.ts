@@ -1,8 +1,8 @@
 import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from '../web-component-helpers';
-import { AbstractWebComponentService } from './abstract-web-components.service';
+import { AbstractWCService } from './abstract-web-components.service';
 
 /** Methods for dealing with web components based micro frontend handling */
-export class ContainerWebComponentService extends AbstractWebComponentService {
+export class ContainerWCService extends AbstractWCService {
   thisComponent: any;
   locale: any;
 
