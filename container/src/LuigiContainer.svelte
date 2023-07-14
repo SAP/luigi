@@ -5,6 +5,8 @@
   export let context;
   export let label;
   export let webcomponent;
+  export let initialize_mfe;
+  export let mfe_initialized_ready;
 
   let iframeHandle:
     | {
@@ -19,25 +21,26 @@
   import { WebComponentService } from './services/webcomponents.service';
   import { LuigiInternalMessageID } from './constants/internal-communication';
   import { ContainerAPI } from './api/container-api';
+  import { Events } from './constants/communication';
 
   const webcomponentService = new WebComponentService();
   webcomponentService.createClientAPI = (eventBusElement, nodeId, wc_id) => {
     return {
       linkManager: () => {
         return {
-          navigate: (route) => {
+          navigate: route => {
             dispatchLuigiEvent('navigation-request', { link: route });
-          },
+          }
         };
       },
       uxManager: () => {
         return {
-          showAlert: (alertSettings) => {
+          showAlert: alertSettings => {
             dispatchLuigiEvent('alert-request', alertSettings);
           },
-          showConfirmationModal: async (settings) => {
+          showConfirmationModal: async settings => {
             return new Promise((resolve, reject) => {
-              dispatchLuigiEvent('confirmation-request', settings, (data) => {
+              dispatchLuigiEvent('confirmation-request', settings, data => {
                 if (data) {
                   resolve(data);
                 } else {
@@ -45,15 +48,18 @@
                 }
               });
             });
-          },
+          }
         };
       }, //window.Luigi.ux,
       getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: (ev) => {
+      publishEvent: ev => {
         // if (eventBusElement.eventBus) {
         // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         // }
       },
+      luigiClientInit: () => {
+        dispatchLuigiEvent(Events.INITIALIZED, {});
+      }
     };
   };
 
@@ -99,6 +105,22 @@
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
+    }
+    if (initialize_mfe === 'true') {
+      mfe_initialized_ready = true;
+      setTimeout(() => {
+        dispatchLuigiEvent(Events.INITIALIZED, {});
+      });
+    } else if (isWebComponent()) {
+      mainComponent.addEventListener('wc_ready', () => {
+        if (
+          !(mainComponent as any)._luigi_mfe_webcomponent
+            ?.deferLuigiClientWCInit
+        ) {
+          mfe_initialized_ready = true;
+          dispatchLuigiEvent(Events.INITIALIZED, {});
+        }
+      });
     }
     // deferInit = true;
   });

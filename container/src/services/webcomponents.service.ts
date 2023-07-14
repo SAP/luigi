@@ -36,6 +36,7 @@ export class WebComponentService {
       if (wc_container._luigi_node) {
         wc_container._luigi_mfe_webcomponent = wc;
       }
+      wc_container.dispatchEvent(new Event('wc_ready'));
     }
   }
 
@@ -57,7 +58,8 @@ export class WebComponentService {
         // if (eventBusElement.eventBus) {
         // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         // }
-      }
+      },
+      luigiClientInit: () => {}
     };
   }
 
