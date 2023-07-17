@@ -5,7 +5,7 @@
   export let context;
   export let label;
   export let webcomponent;
-  export let initialize_mfe;
+  export let can_mfe_initialized;
   export let mfe_initialized_ready;
 
   let iframeHandle:
@@ -100,13 +100,17 @@
     return !!webcomponent;
   }
 
+  function canMfeInitialized(): boolean {
+    return !!can_mfe_initialized;
+  }
+
   onMount(async () => {
     const ctx = context ? JSON.parse(context) : {};
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
     }
-    if (initialize_mfe === 'true') {
+    if (canMfeInitialized()) {
       mfe_initialized_ready = true;
       setTimeout(() => {
         dispatchLuigiEvent(Events.INITIALIZED, {});
