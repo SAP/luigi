@@ -240,7 +240,7 @@
         !nodeObject.loadingIndicator ||
         nodeObject.loadingIndicator.hideAutomatically !== false;
       if (loadingIndicatorAutoHideEnabled) {
-        fadeOutLoadingIndicator();
+        showLoadingIndicator = GenericHelpers.fadeOutLoadingIndicator();
       }
     }
 

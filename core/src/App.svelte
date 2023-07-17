@@ -17,7 +17,6 @@
     setContext,
     createEventDispatcher,
   } from 'svelte';
-  import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import {
     EventListenerHelpers,
@@ -102,6 +101,8 @@
   let searchProvider;
   let internalUserSettingsObject = {};
   let burgerTooltip;
+  let breadcrumbsEnabled;
+  let contextRequested = false;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -109,7 +110,6 @@
   export let displayCustomSearchResult = true;
   export let searchResult;
   export let storedUserSettings;
-  let breadcrumbsEnabled;
 
   const prepareInternalData = async (config) => {
     const iframeConf = config.iframe.luigi;
@@ -1366,6 +1366,7 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+        contextRequested = true;
         iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
@@ -1397,7 +1398,7 @@
             !currentNode.loadingIndicator ||
             currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
-            showLoadingIndicator = false;
+            showLoadingIndicator = GenericHelpers.fadeOutLoadingIndicator();
           }
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
@@ -1923,6 +1924,11 @@
         };
       });
     }
+    setTimeout(() => {
+      if(!contextRequested){
+        showLoadingIndicator = true;
+      }
+    }, 250);
   });
 
   afterUpdate(() => {
@@ -2015,9 +2021,7 @@
   </Backdrop>
   {#if showLoadingIndicator}
     <div
-      in:fade={{ delay: 250, duration: 250 }}
-      out:fade={{ duration: 250 }}
-      class="fd-page spinnerContainer"
+      class="fd-page spinnerContainer fade-in-out"
       aria-hidden="false"
       aria-label="Loading"
     >
@@ -2197,6 +2201,15 @@
     min-width: auto;
     min-height: auto;
     display: block;
+  }
+
+  .spinnerContainer {
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .fade-in-out {
+    opacity: 1;
   }
 
   .iframeContainer {
