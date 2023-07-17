@@ -13,9 +13,9 @@
   import { onMount } from 'svelte';
   import { get_current_component } from 'svelte/internal';
   import { ContainerService } from './services/container.service';
-  import { CompoundContainerWCService } from './services/web-component-service/compound-container-wc.service';
+  import { WebComponentService } from './services/web-components.service';
   const containerService = new ContainerService();
-  const webcomponentService = new CompoundContainerWCService();
+  const webcomponentService = new WebComponentService();
 
   const thisComponent = get_current_component();
   let deferInit = !!thisComponent.attributes['defer-init'];

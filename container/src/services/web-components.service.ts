@@ -1,9 +1,10 @@
-import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from '../web-component-helpers';
-import { ContainerService } from '../container.service';
+import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from './web-component-helpers';
+import { ContainerService } from './container.service';
 
 /** Methods for dealing with web components based micro frontend handling */
-export abstract class AbstractWCService {
+export class WebComponentService {
   containerService: ContainerService;
+  thisComponent: any;
 
   constructor() {
     this.containerService = new ContainerService();
@@ -39,7 +40,47 @@ export abstract class AbstractWCService {
     }
   }
 
-  abstract createClientAPI(eventBusElement, nodeId: string, wc_id: string): Object;
+  dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
+    this.containerService.dispatch(msg, this.thisComponent, data, callback);
+  }
+
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
+    return {
+      linkManager: () => {
+        return {
+          navigate: route => {
+            this.dispatchLuigiEvent('navigation-request', { link: route });
+          }
+        };
+      },
+      uxManager: () => {
+        return {
+          showAlert: alertSettings => {
+            this.dispatchLuigiEvent('alert-request', alertSettings);
+          },
+          showConfirmationModal: async settings => {
+            return new Promise((resolve, reject) => {
+              this.dispatchLuigiEvent('confirmation-request', settings, data => {
+                if (data) {
+                  resolve(data);
+                } else {
+                  reject();
+                }
+              });
+            });
+          }
+        };
+      }, //window.Luigi.ux,
+      getCurrentLocale: () => {
+        return this.thisComponent.locale; // TODO : check
+      }, //() => window.Luigi.i18n().getCurrentLocale(),
+      publishEvent: ev => {
+        if (eventBusElement && eventBusElement.eventBus) {
+          eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
+        }
+      }
+    };
+  }
 
   initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string) {
     const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id);
