@@ -55,6 +55,12 @@
   containerService.registerContainer(thisComponent);
   webcomponentService.thisComponent = thisComponent;
 
+  console.log(
+    'ThisComponent===>',
+    thisComponent,
+    thisComponent.getAttribute('context')
+  );
+
   function isWebComponent(): boolean {
     return !!webcomponent;
   }

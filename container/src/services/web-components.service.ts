@@ -1,5 +1,6 @@
 import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from './web-component-helpers';
 import { ContainerService } from './container.service';
+import { Events } from '../constants/communication';
 
 /** Methods for dealing with web components based micro frontend handling */
 export class WebComponentService {
@@ -49,18 +50,18 @@ export class WebComponentService {
       linkManager: () => {
         return {
           navigate: route => {
-            this.dispatchLuigiEvent('navigation-request', { link: route });
+            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route });
           }
         };
       },
       uxManager: () => {
         return {
           showAlert: alertSettings => {
-            this.dispatchLuigiEvent('alert-request', alertSettings);
+            this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
           },
           showConfirmationModal: async settings => {
             return new Promise((resolve, reject) => {
-              this.dispatchLuigiEvent('confirmation-request', settings, data => {
+              this.dispatchLuigiEvent(Events.SHOW_CONFIRMATION_MODAL_REQUEST, settings, data => {
                 if (data) {
                   resolve(data);
                 } else {
@@ -68,12 +69,18 @@ export class WebComponentService {
                 }
               });
             });
+          },
+          getCurrentTheme: () => {
+            return this.thisComponent.getAttribute('theme');
           }
         };
-      }, //window.Luigi.ux,
+      },
       getCurrentLocale: () => {
-        return this.thisComponent.locale; // TODO : check
-      }, //() => window.Luigi.i18n().getCurrentLocale(),
+        return this.thisComponent.getAttribute('locale');
+      },
+      getActiveFeatureToggles: () => {
+        return this.thisComponent.getAttribute('activeFeatureToggleList');
+      },
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
