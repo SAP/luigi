@@ -4,6 +4,10 @@
   // export let viewurl;
   export let context;
   // export let label;
+  export let locale;
+  export let theme;
+  export let activeFeatureToggleList;
+
   let compoundConfig;
 
   let initialized = false;

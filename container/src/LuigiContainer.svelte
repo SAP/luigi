@@ -6,6 +6,8 @@
   export let label;
   export let webcomponent;
   export let locale;
+  export let theme;
+  export let activeFeatureToggleList;
 
   let iframeHandle:
     | {
