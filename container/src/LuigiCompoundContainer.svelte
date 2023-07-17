@@ -17,7 +17,7 @@
   import { onMount } from 'svelte';
   import { get_current_component } from 'svelte/internal';
   import { ContainerService } from './services/container.service';
-  import { WebComponentService } from './services/web-components.service';
+  import { WebComponentService } from './services/webcomponents.service';
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
 

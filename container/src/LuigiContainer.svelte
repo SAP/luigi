@@ -19,7 +19,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { get_current_component } from 'svelte/internal';
   import { containerService } from './services/container.service';
-  import { WebComponentService } from './services/web-components.service';
+  import { WebComponentService } from './services/webcomponents.service';
   import { LuigiInternalMessageID } from './constants/internal-communication';
   import { ContainerAPI } from './api/container-api';
 
