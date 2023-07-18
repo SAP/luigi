@@ -20,6 +20,16 @@ export default class LuigiContainer extends HTMLElement {
   webcomponent: boolean;
 
   /**
+   * If set to `true` a microfrontend will be immediately initialized. LuigiContainer sends an event `initialized` to the microfrontend.
+   */
+  can_mfe_initialized: boolean;
+
+  /**
+   * Will be set to `true` if `can_mfe_initialized` is set to `true` otherwise it will be `true` if the mfe webcomponent is attached to the container.
+   */
+  mfe_initialized_ready: boolean;
+
+  /**
    * Updates the context of the microfrontend
    * @param contextObj The context object to be updated
    * @param internal internal microfrotend data
@@ -29,7 +39,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * Notifies the microfrontend that the opened alert has been closed
    * @param id the id of the opened alert
-   * @param dismissKey the key specifying which dismiss link was clicked on the alert message 
+   * @param dismissKey the key specifying which dismiss link was clicked on the alert message
    */
   closeAlert(id: any, dismissKey: any): Function;
 }

@@ -5,8 +5,10 @@
   export let context;
   export let label;
   export let webcomponent;
-  export let can_mfe_initialized; // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
-  export let mfe_initialized_ready; // will be set to true if `can_mfe_initialized` is set to `true` otherwise it will be `true` if webcomponent is attatch to the container.
+  // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
+  export let can_mfe_initialized;
+  // will be set to true if `can_mfe_initialized` is set to `true` otherwise it will be `true` if webcomponent is attached to the container.
+  export let mfe_initialized_ready;
 
   let iframeHandle:
     | {
