@@ -1,3 +1,6 @@
+/**
+ * This class is used to test LuigiClient webcomponent based functionality
+ */
 export default class extends HTMLElement {
   constructor() {
     super();
