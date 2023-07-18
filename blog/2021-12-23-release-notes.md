@@ -13,7 +13,7 @@ You can read about the new features in Luigi v1.20.0 in the release notes below.
 #### New SAP icon styles support
 
 In addition to basic SAP icons, Luigi now supports the use of different SAP Icon suites like TNT and businessSuiteInAppSymbols.
-In order to use these icons, it is recommended to add `@font-face` from the [Fundamental Styles](https://sap.github.io/fundamental-styles/?path=/docs/introduction-overview--page#project-configuration) project configuration to your **custom styles**. You can find more information [here](https://github.com/SAP/luigi/pull/2432).
+In order to use these icons, it is recommended to add `@font-face` from the [Fundamental Styles](https://sap.github.io/fundamental-styles/?path=/docs/docs-introduction--docs) project configuration to your **custom styles**. You can find more information [here](https://github.com/SAP/luigi/pull/2432).
 
 #### Global search improvements
 

@@ -530,7 +530,7 @@ There are a few options to do that at the moment:
                   label: "Fundamental Icons",
                   externalLink: {
                     url:
-                      "https://sap.github.io/fundamental-styles/components/icon.html",
+                      "https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-icons-sap-icons--docs",
                   },
                 },
               ],
