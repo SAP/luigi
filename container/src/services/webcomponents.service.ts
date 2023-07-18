@@ -29,7 +29,7 @@ export class WebComponentService {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
-        wc.setAttribute('nodeIdnodeIdnodeId', nodeId);
+        wc.setAttribute('nodeId', nodeId);
       }
 
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
