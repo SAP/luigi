@@ -29,7 +29,7 @@ export class WebComponentService {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
-        wc.setAttribute('nodeId', nodeId);
+        wc.setAttribute('nodeIdnodeIdnodeId', nodeId);
       }
 
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
@@ -41,10 +41,25 @@ export class WebComponentService {
     }
   }
 
+  /**
+   * Function that uses the current instance of the containerService to dispatch a Luigi event to the current instance of the container
+   * that is 'thisComponent'
+   * @param msg the message to be delivered
+   * @param data the data to be sent
+   * @param callback the callback function to be called
+   */
   dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
     this.containerService.dispatch(msg, this.thisComponent, data, callback);
   }
 
+  /**
+   * This function is used to create the LuigiClient API for the webcomponent based microfrontend.
+   * As the function expands with more functionality it might be moved to a separate class.
+   * @param eventBusElement the event bus to be used for cross webcomponent communication, i.e.: for compound microfrontends container scenario
+   * @param nodeId refers to an attribute of the webcomponent to identify from the rest
+   * @param wc_id a tagname that is used when creating the webcomponent element
+   * @returns an object with the LuigiClient API
+   */
   createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
       linkManager: () => {

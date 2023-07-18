@@ -20,6 +20,21 @@ export default class LuigiContainer extends HTMLElement {
   webcomponent: boolean;
 
   /**
+   * The theme to be passed to the microfrontend
+   */
+  locale: string;
+
+  /**
+   * The theme to be passed to the microfrontend
+   */
+  theme: string;
+
+  /**
+   * The list of active feature toggles to be passed to the microfrontend
+   */
+  activeFeatureToggleList: string[];
+
+  /**
    * Updates the context of the microfrontend
    * @param contextObj The context object to be updated
    * @param internal internal microfrotend data
@@ -29,7 +44,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * Notifies the microfrontend that the opened alert has been closed
    * @param id the id of the opened alert
-   * @param dismissKey the key specifying which dismiss link was clicked on the alert message 
+   * @param dismissKey the key specifying which dismiss link was clicked on the alert message
    */
   closeAlert(id: any, dismissKey: any): Function;
 }
