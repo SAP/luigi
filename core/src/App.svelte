@@ -1398,7 +1398,11 @@
             !currentNode.loadingIndicator ||
             currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
-            fadeOutLoadingIndicator();
+            if(GenericHelpers.canFadeOutLoadingIndicator()){
+              setTimeout(()=>{
+                showLoadingIndicator = false;
+              }, 250);
+            };
           }
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
@@ -1863,21 +1867,6 @@
     return mfModalList.length > 0 || preservedViews.length !== 0;
   };
 
-  /**
-   * This function will be called if the LuigiClient requested the context.
-   * That means spinner can fade out in order to display the mf.
-   * After 250 ms the spinner will be removed from DOM.
-   */
-   function fadeOutLoadingIndicator() {
-    const spinnerContainer = document.querySelector('.spinnerContainer');
-    if (spinnerContainer && spinnerContainer.classList.contains('fade-in-out')) {
-      spinnerContainer.classList.remove('fade-in-out');
-      setTimeout(() => {
-        showLoadingIndicator = false;
-      }, 250);
-    }
-  }
-
   onMount(() => {
     LuigiTheming._init();
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
@@ -2216,6 +2205,11 @@
     min-width: auto;
     min-height: auto;
     display: block;
+  }
+
+  .spinnerContainer {
+    opacity: 0;
+    transition: opacity 0.25s;
   }
 
   .fade-in-out {

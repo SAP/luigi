@@ -240,7 +240,11 @@
         !nodeObject.loadingIndicator ||
         nodeObject.loadingIndicator.hideAutomatically !== false;
       if (loadingIndicatorAutoHideEnabled) {
-        fadeOutLoadingIndicator();
+        if(GenericHelpers.canFadeOutLoadingIndicator()){
+          setTimeout(()=>{
+            showLoadingIndicator = false;
+          }, 250);
+        };
       }
     }
 
@@ -264,21 +268,6 @@
       }
     }
   };
-
-  /**
-   * This function will be called if the LuigiClient requested the context.
-   * That means spinner can fade out in order to display the mf.
-   * After 250 ms the spinner will be removed from DOM.
-   */
-   function fadeOutLoadingIndicator() {
-    const spinnerContainer = document.querySelector('.spinnerContainer');
-    if (spinnerContainer && spinnerContainer.classList.contains('fade-in-out')) {
-      spinnerContainer.classList.remove('fade-in-out');
-      setTimeout(() => {
-        showLoadingIndicator = false;
-      }, 250);
-    }
-  }
 
   onMount(() => {
     StateHelpers.doOnStoreChange(
