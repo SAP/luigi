@@ -290,7 +290,7 @@
     </div>
     <div class="lui-wrapper" route="test">
       <luigi-container
-        viewURL="http://localhost:5555/test.js"
+        viewURL="http://localhost:8080/test.js"
         webcomponent="true"
         id="readyTest"
         can_mfe_initialized="true"
@@ -424,15 +424,6 @@
         });
       } else {
         console.log('mfe already ready');
-      }
-
-      let readyTest2 = document.getElementById('iframeReadyTest');
-      if (!readyTest2.mfe_initialized_ready) {
-        readyTest2.addEventListener(MFEventID.INITIALIZED, () => {
-          console.log('iframe is ready now!');
-        });
-      } else {
-        console.log('iframe already ready');
       }
     </script>
   </body>
