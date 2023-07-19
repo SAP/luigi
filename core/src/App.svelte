@@ -1398,7 +1398,7 @@
             !currentNode.loadingIndicator ||
             currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
-            showLoadingIndicator = GenericHelpers.fadeOutLoadingIndicator();
+            fadeOutLoadingIndicator();
           }
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
@@ -1863,6 +1863,21 @@
     return mfModalList.length > 0 || preservedViews.length !== 0;
   };
 
+  /**
+   * This function will be called if the LuigiClient requested the context.
+   * That means spinner can fade out in order to display the mf.
+   * After 250 ms the spinner will be removed from DOM.
+   */
+   function fadeOutLoadingIndicator() {
+    const spinnerContainer = document.querySelector('.spinnerContainer');
+    if (spinnerContainer && spinnerContainer.classList.contains('fade-in-out')) {
+      spinnerContainer.classList.remove('fade-in-out');
+      setTimeout(() => {
+        showLoadingIndicator = false;
+      }, 250);
+    }
+  }
+
   onMount(() => {
     LuigiTheming._init();
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
@@ -2203,11 +2218,6 @@
     display: block;
   }
 
-  .spinnerContainer {
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-
   .fade-in-out {
     opacity: 1;
   }
@@ -2313,14 +2323,14 @@
     :global(.splitViewContainer),
     :global(#splitViewDragger),
     :global(#splitViewDraggerBackdrop) {
-      @include transition(left 0.1s linear);
+      @include transition(left 0.1s linear, $spinnerOpacity);
     }
   }
 
   :global(.lui-semiCollapsible) {
     .iframeContainer,
     .spinnerContainer {
-      @include transition(left 0.1s linear);
+      @include transition(left 0.1s linear, $spinnerOpacity);
     }
     :global(.splitViewContainer),
     :global(#splitViewDragger),
