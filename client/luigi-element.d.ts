@@ -383,6 +383,11 @@ export declare interface Options {
    *if `true` shadowRoot mode is "open" otherwise shadowRoot mode is "closed".
    */
   openShadow: boolean;
+
+  /**
+   * if `true` LuigiClient initialization will be defered, until `LuigiClient.luigiClientInit()` will be called.
+   */
+  deferLuigiClientWCInit: boolean;
 }
 
 /**
