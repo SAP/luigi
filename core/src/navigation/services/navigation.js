@@ -440,7 +440,7 @@ class NavigationClass {
       let selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
         selectedNode.tabNav ? selectedNode : selectedNode.parent,
-        componentData.context
+        current.pathData?._context
       );
       const groupedChildren = this.getGroupedChildren(children, current).children;
       updatedCompData.selectedNode = selectedNode;
