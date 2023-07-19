@@ -20,17 +20,17 @@ export default class LuigiContainer extends HTMLElement {
   webcomponent: boolean;
 
   /**
-   * The theme to be passed to the microfrontend
+   * The theme to be passed to the webcomponent based microfrontend
    */
   locale: string;
 
   /**
-   * The theme to be passed to the microfrontend
+   * The theme to be passed to the webcomponent based microfrontend
    */
   theme: string;
 
   /**
-   * The list of active feature toggles to be passed to the microfrontend
+   * The list of active feature toggles to be passed to the webcomponent based microfrontend
    */
   activeFeatureToggleList: string[];
 
