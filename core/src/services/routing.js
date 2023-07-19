@@ -476,6 +476,7 @@ class RoutingClass {
       } else {
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
+          this.removeLastChildFromWCContainer();
         }
 
         if (!preventContextUpdate) {
@@ -679,6 +680,7 @@ class RoutingClass {
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
     }
+    wc_container._luigi_node = undefined;
     return wc_container;
   }
 
