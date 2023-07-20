@@ -12,7 +12,7 @@ Luigi v1.14.0 includes an update to a new version of Fundamental Library Styles,
 
 #### Update Fundamental Library Styles to v0.18
 
-In this release, we updated the version of Fundamental Styles from v0.17 to v0.18. There is a new layout for User Menu from Fiori 3. You can find more details on the [Fundamental Styles page](https://sap.github.io/fundamental-styles/?path=/docs/components-user-menu--shellbar).
+In this release, we updated the version of Fundamental Styles from v0.17 to v0.18. There is a new layout for User Menu from Fiori 3. You can find more details on the [Fundamental Styles page](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-user-menu--docs).
 
 #### Extend Luigi Emulator functionality
 

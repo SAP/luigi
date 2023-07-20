@@ -14,7 +14,7 @@ Luigi v1.13.0 includes updates of Fundamental Library Styles, new options in the
 
 > **NOTE:** The Fundamental Library Styles changes will only affect you if you have customized Fundamentals CSS in your application.
 
-With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles was included. It led to having breaking changes in the Luigi Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accessibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/components-dialog--default-dialog) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/components-shellbar--primary).
+With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles was included. It led to having breaking changes in the Luigi Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accessibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-dialog--docs) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-counter--docs).
 
 #### Extend options of enum type in user settings
 
