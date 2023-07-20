@@ -624,7 +624,7 @@ navigation: {
 
 ### statusBadge
 - **type**: object
-- **description**: Allows you to set a status badge for this node. The status badge is a small label next to the title of the node, based on the Fundamental Styles [object status](https://sap.github.io/fundamental-styles/?path=/docs/components-object-status--clickable-object-status).
+- **description**: Allows you to set a status badge for this node. The status badge is a small label next to the title of the node, based on the Fundamental Styles [object status](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-object-status--docs).
 - **attributes**:
   - **label**: string specifying the text displayed on the status badge.
   - **type**: string. Allowed values are `negative`, `positive`, `critical`, `informative`, or `neutral`. The default is `neutral`.
