@@ -1,9 +1,11 @@
 import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from './web-component-helpers';
 import { ContainerService } from './container.service';
+import { Events } from '../constants/communication';
 
 /** Methods for dealing with web components based micro frontend handling */
 export class WebComponentService {
   containerService: ContainerService;
+  thisComponent: any;
 
   constructor() {
     this.containerService = new ContainerService();
@@ -117,10 +119,17 @@ export class WebComponentService {
               reject(e);
             }
           })
-          .catch(err => reject(err));
+          .catch(err => {
+            // dispatch an error event to be handled core side
+            this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, err);
+            reject(err);
+          });
       } else {
-        console.warn(`View URL '${i18nViewUrl}' not allowed to be included`);
-        reject(`View URL '${i18nViewUrl}' not allowed`);
+        const message = `View URL '${i18nViewUrl}' not allowed to be included`;
+        console.warn(message);
+        // dispatch an error event to be handled core side
+        this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, message);
+        reject(message);
       }
     });
   }
@@ -200,18 +209,22 @@ export class WebComponentService {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
+      console.log('test 0');
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
     } else {
       /** Custom import function, if defined */
       if ((window as any).luigiWCFn) {
+        console.log('test 1');
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
+        console.log('test 2');
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else {
+        console.log('test 3');
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
@@ -235,8 +248,10 @@ export class WebComponentService {
             this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
             resolve(wc);
           });
-        } catch (e) {
-          reject(e);
+        } catch (error) {
+          // dispatch an error event to be handled core side
+          this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
+          reject(error);
         }
       } else {
         resolve(renderer.createCompoundContainer());

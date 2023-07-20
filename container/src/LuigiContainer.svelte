@@ -25,19 +25,19 @@
     return {
       linkManager: () => {
         return {
-          navigate: (route) => {
+          navigate: route => {
             dispatchLuigiEvent('navigation-request', { link: route });
-          },
+          }
         };
       },
       uxManager: () => {
         return {
-          showAlert: (alertSettings) => {
+          showAlert: alertSettings => {
             dispatchLuigiEvent('alert-request', alertSettings);
           },
-          showConfirmationModal: async (settings) => {
+          showConfirmationModal: async settings => {
             return new Promise((resolve, reject) => {
-              dispatchLuigiEvent('confirmation-request', settings, (data) => {
+              dispatchLuigiEvent('confirmation-request', settings, data => {
                 if (data) {
                   resolve(data);
                 } else {
@@ -45,15 +45,15 @@
                 }
               });
             });
-          },
+          }
         };
       }, //window.Luigi.ux,
       getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: (ev) => {
+      publishEvent: ev => {
         // if (eventBusElement.eventBus) {
         // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         // }
-      },
+      }
     };
   };
 
@@ -85,6 +85,8 @@
   };
 
   containerService.registerContainer(thisComponent);
+
+  webcomponentService.thisComponent = thisComponent;
 
   function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
     containerService.dispatch(msg, thisComponent, data, callback);
