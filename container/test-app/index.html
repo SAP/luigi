@@ -125,6 +125,11 @@
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Test</a
                 >
+                <a
+                  href="#test2"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Test2</a
+                >
               </div>
             </div>
           </div>
@@ -270,8 +275,6 @@
       <luigi-container
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
         context='{"title": "Team", "content":""}'
-        id="iframeReadyTest"
-        initializeMfeDirectly="true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="projects">
@@ -286,6 +289,8 @@
         viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/main.js"
         webcomponent="true"
         context='{"label": "Calendar"}'
+        id="calendar"
+        initialize_mfe_directly="true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="test">
@@ -293,7 +298,14 @@
         viewURL="http://localhost:8080/test.js"
         webcomponent="true"
         id="readyTest"
-        initializeMfeDirectly="true"
+        initialize_mfe_directly="true"
+      ></luigi-container>
+    </div>
+    <div class="lui-wrapper" route="test2">
+      <luigi-container
+        viewURL="http://localhost:8080/test2.js"
+        webcomponent="true"
+        id="readyTest2"
       ></luigi-container>
     </div>
 
@@ -418,12 +430,28 @@
         //...
       });
       let readyTest = document.getElementById('readyTest');
-      if (!readyTest.isMfeInitialized) {
+      if (!readyTest.is_mfe_initialized) {
         readyTest.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('mfe is ready now!');
         });
       } else {
-        console.log('mfe already ready');
+        console.log('mfe immediately ready');
+      }
+      let readyTest2 = document.getElementById('readyTest2');
+      if (!readyTest2.is_mfe_initialized) {
+        readyTest2.addEventListener(MFEventID.INITIALIZED, () => {
+          console.log('mfe is ready now! 2');
+        });
+      } else {
+        console.log('mfe immediately ready 2');
+      }
+      let readyTest3 = document.getElementById('calendar');
+      if (!readyTest3.is_mfe_initialized) {
+        readyTest3.addEventListener(MFEventID.INITIALIZED, () => {
+          console.log('calendar is ready now! 3');
+        });
+      } else {
+        console.log('calendar immediately ready 3');
       }
     </script>
   </body>
