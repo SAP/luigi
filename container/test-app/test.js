@@ -1,4 +1,4 @@
-import { LuigiElement } from 'https://unpkg.com/@luigi-project/client@2.2.2-dev.202307191937/luigi-element.js';
+import { LuigiElement } from './luigi-element.js';
 export default class extends LuigiElement {
   constructor() {
     super({ openShadow: 'open', deferLuigiClientWCInit: true });
