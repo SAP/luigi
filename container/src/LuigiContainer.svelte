@@ -6,9 +6,9 @@
   export let label;
   export let webcomponent;
   // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
-  export let can_mfe_initialized;
-  // will be set to true if `can_mfe_initialized` is set to `true` otherwise it will be `true` if webcomponent is attached to the container.
-  export let mfe_initialized_ready;
+  export let initializeMfeDirectly;
+  // once the microfrontend is initialized, this value is set to `true`.
+  export let isMfeInitialized;
 
   let iframeHandle:
     | {
@@ -103,7 +103,7 @@
   }
 
   function canMfeInitialized(): boolean {
-    return !!can_mfe_initialized;
+    return !!initializeMfeDirectly;
   }
 
   onMount(async () => {
@@ -113,7 +113,7 @@
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
     }
     if (canMfeInitialized()) {
-      mfe_initialized_ready = true;
+      isMfeInitialized = true;
       setTimeout(() => {
         dispatchLuigiEvent(Events.INITIALIZED, {});
       });
@@ -123,7 +123,7 @@
           !(mainComponent as any)._luigi_mfe_webcomponent
             ?.deferLuigiClientWCInit
         ) {
-          mfe_initialized_ready = true;
+          isMfeInitialized = true;
           dispatchLuigiEvent(Events.INITIALIZED, {});
         }
       });

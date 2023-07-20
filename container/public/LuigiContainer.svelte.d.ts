@@ -22,12 +22,12 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * If set to `true` a microfrontend will be immediately initialized. LuigiContainer sends an event `initialized` to the microfrontend.
    */
-  can_mfe_initialized: boolean;
+  initializeMfeDirectly: boolean;
 
   /**
-   * Will be set to `true` if `can_mfe_initialized` is set to `true` otherwise it will be `true` if the mfe webcomponent is attached to the container.
+   * Once the microfrontend is initialized, this value is set to `true`.
    */
-  mfe_initialized_ready: boolean;
+  isMfeInitialized: boolean;
 
   /**
    * Updates the context of the microfrontend

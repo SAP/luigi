@@ -271,7 +271,7 @@
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
         context='{"title": "Team", "content":""}'
         id="iframeReadyTest"
-        can_mfe_initialized="true"
+        initializeMfeDirectly="true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="projects">
@@ -293,7 +293,7 @@
         viewURL="http://localhost:8080/test.js"
         webcomponent="true"
         id="readyTest"
-        can_mfe_initialized="true"
+        initializeMfeDirectly="true"
       ></luigi-container>
     </div>
 
@@ -418,7 +418,7 @@
         //...
       });
       let readyTest = document.getElementById('readyTest');
-      if (!readyTest.mfe_initialized_ready) {
+      if (!readyTest.isMfeInitialized) {
         readyTest.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('mfe is ready now!');
         });
