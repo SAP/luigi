@@ -6,7 +6,7 @@
   // export let label;
   export let locale;
   export let theme;
-  export let activeFeatureToggleList;
+  export let active-feature-toggle-list;
 
   let compoundConfig;
 

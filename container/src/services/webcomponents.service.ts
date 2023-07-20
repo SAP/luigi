@@ -95,7 +95,8 @@ export class WebComponentService {
         return this.thisComponent.getAttribute('locale');
       },
       getActiveFeatureToggles: () => {
-        return this.thisComponent.getAttribute('activeFeatureToggleList');
+        return this.thisComponent.getAttribute('active-feature-toggle-list');
+
       },
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
