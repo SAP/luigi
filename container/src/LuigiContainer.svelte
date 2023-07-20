@@ -7,7 +7,7 @@
   export let webcomponent;
   export let locale;
   export let theme;
-  export let active-feature-toggle-list;
+  export let active_feature_toggle_list;
 
   let iframeHandle:
     | {

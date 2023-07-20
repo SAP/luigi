@@ -32,7 +32,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of active feature toggles to be passed to the webcomponent based microfrontend
    */
-  active-feature-toggle-list: string[];
+  active_feature_toggle_list: string[];
 
   /**
    * Updates the context of the microfrontend
