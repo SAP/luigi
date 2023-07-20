@@ -111,7 +111,7 @@ export declare interface UxManager {
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    * @example
-   * import LuigiClient from '@kyma-project/luigi-client';
+   * import LuigiClient from '@luigi-project/client';
    * const settings = {
    *  header: "Confirmation",
    *  body: "Are you sure you want to do this?",
