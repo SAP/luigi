@@ -115,8 +115,10 @@ export class WebComponentService {
                 window.customElements.define(wc_id, cmpClazz);
               }
               resolve(1);
-            } catch (e) {
-              reject(e);
+            } catch (err) {
+              // dispatch an error event to be handled core side
+              this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, err);
+              reject(err);
             }
           })
           .catch(err => {
@@ -209,22 +211,18 @@ export class WebComponentService {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
-      console.log('test 0');
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
     } else {
       /** Custom import function, if defined */
       if ((window as any).luigiWCFn) {
-        console.log('test 1');
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
-        console.log('test 2');
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else {
-        console.log('test 3');
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
