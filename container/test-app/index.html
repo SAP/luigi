@@ -269,73 +269,57 @@
     <div class="lui-wrapper" route="dashboard">
       <luigi-compound-container
         context='{"label": "Dashboard"}'
+        id="compoundTest"
+        viewURL="http://localhost:8080/nested.js"
       ></luigi-compound-container>
     </div>
-    <div class="lui-wrapper" route="team">
-      <luigi-container
-        viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
-        context='{"title": "Team", "content":""}'
-      ></luigi-container>
-    </div>
-    <div class="lui-wrapper" route="projects">
-      <luigi-container
-        viewURL="./microfrontend.html"
-        context='{"title": "Projects", "content":" "}'
-      >
-      </luigi-container>
-    </div>
-    <div class="lui-wrapper" route="calendar">
-      <luigi-container
-        viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/main.js"
-        webcomponent="true"
-        context='{"label": "Calendar"}'
-        id="calendar"
-        initialize_mfe_directly="true"
-      ></luigi-container>
-    </div>
-    <div class="lui-wrapper" route="test">
-      <luigi-container
-        viewURL="http://localhost:8080/test.js"
-        webcomponent="true"
-        id="readyTest"
-        initialize_mfe_directly="true"
-      ></luigi-container>
-    </div>
-    <div class="lui-wrapper" route="test2">
-      <luigi-container
-        viewURL="http://localhost:8080/test2.js"
-        webcomponent="true"
-        id="readyTest2"
-      ></luigi-container>
-    </div>
+    <!-- <div class="lui-wrapper" route="team">
+    <luigi-container viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
+      context='{"title": "Team", "content":""}'></luigi-container>
+  </div>
+  <div class="lui-wrapper" route="projects">
+    <luigi-container viewURL="./microfrontend.html" context='{"title": "Projects", "content":" "}'>
+    </luigi-container>
+  </div>
+  <div class="lui-wrapper" route="calendar">
+    <luigi-container viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/main.js" webcomponent="true"
+      context='{"label": "Calendar"}' id="calendar" initialize_mfe_directly="true"></luigi-container>
+  </div> -->
+    <!-- <div class="lui-wrapper" route="test">
+    <luigi-container viewURL="http://localhost:8080/test.js" webcomponent="true" id="readyTest"
+      initialize_mfe_directly="true"></luigi-container>
+  </div>-->
+    <!-- <div class="lui-wrapper" route="test2">
+    <luigi-container viewURL="http://localhost:8080/test2.js" webcomponent="true" id="readyTest2"></luigi-container>
+  </div> -->
 
     <script type="module">
       var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
       var utilMFEDomain = 'https://luigiwebcomponents.gitlab.io/util';
       import MFEventID from './bundle.js';
       document.querySelector('luigi-compound-container').compoundConfig = {
-        renderer: {
-          use: 'grid',
-          config: {
-            columns: '1fr 1fr 1fr 2fr',
-            /*rows: '150px',*/
-            /*gap: '30px',*/
-            layouts: [
-              {
-                minWidth: 0,
-                maxWidth: 600,
-                columns: '1fr',
-                gap: 0
-              },
-              {
-                minWidth: 600,
-                maxWidth: 1024,
-                columns: '1fr 1fr',
-                gap: '30px'
-              }
-            ]
-          }
-        },
+        // renderer: {
+        //   use: 'grid',
+        //   config: {
+        //     columns: '1fr 1fr 1fr 2fr',
+        //     /*rows: '150px',*/
+        //     /*gap: '30px',*/
+        //     layouts: [
+        //       {
+        //         minWidth: 0,
+        //         maxWidth: 600,
+        //         columns: '1fr',
+        //         gap: 0
+        //       },
+        //       {
+        //         minWidth: 600,
+        //         maxWidth: 1024,
+        //         columns: '1fr 1fr',
+        //         gap: '30px'
+        //       }
+        //     ]
+        //   }
+        // },
         children: [
           {
             viewUrl: layoutMFEDomain + '/panelHeader.js',
@@ -429,29 +413,38 @@
 
         //...
       });
-      let readyTest = document.getElementById('readyTest');
-      if (!readyTest.is_mfe_initialized) {
-        readyTest.addEventListener(MFEventID.INITIALIZED, () => {
-          console.log('mfe is ready now!');
+      // let readyTest = document.getElementById('readyTest');
+      // if (!readyTest.is_mfe_initialized) {
+      //   readyTest.addEventListener(MFEventID.INITIALIZED, () => {
+      //     console.log('mfe is ready now!');
+      //   });
+      // } else {
+      //   console.log('mfe immediately ready');
+      // }
+      // let readyTest2 = document.getElementById('readyTest2');
+      // if (!readyTest2.is_mfe_initialized) {
+      //   readyTest2.addEventListener(MFEventID.INITIALIZED, () => {
+      //     console.log('mfe is ready now! 2');
+      //   });
+      // } else {
+      //   console.log('mfe immediately ready 2');
+      // }
+      // let readyTest3 = document.getElementById('calendar');
+      // if (!readyTest3.is_mfe_initialized) {
+      //   readyTest3.addEventListener(MFEventID.INITIALIZED, () => {
+      //     console.log('calendar is ready now! 3');
+      //   });
+      // } else {
+      //   console.log('calendar immediately ready 3');
+      // }
+      let compoundTest = document.getElementById('compoundTest');
+      console.log('compoundTest.is_mfe_initialized', compoundTest.is_mfe_initialized);
+      if (!compoundTest.is_mfe_initialized) {
+        compoundTest.addEventListener(MFEventID.INITIALIZED, () => {
+          console.log('compoundTest is ready now!');
         });
       } else {
-        console.log('mfe immediately ready');
-      }
-      let readyTest2 = document.getElementById('readyTest2');
-      if (!readyTest2.is_mfe_initialized) {
-        readyTest2.addEventListener(MFEventID.INITIALIZED, () => {
-          console.log('mfe is ready now! 2');
-        });
-      } else {
-        console.log('mfe immediately ready 2');
-      }
-      let readyTest3 = document.getElementById('calendar');
-      if (!readyTest3.is_mfe_initialized) {
-        readyTest3.addEventListener(MFEventID.INITIALIZED, () => {
-          console.log('calendar is ready now! 3');
-        });
-      } else {
-        console.log('calendar immediately ready 3');
+        console.log('compoundTest immediately ready');
       }
     </script>
   </body>
