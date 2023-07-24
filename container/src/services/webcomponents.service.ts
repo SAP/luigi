@@ -12,10 +12,20 @@ export class WebComponentService {
   }
 
   dynamicImport(viewUrl: string) {
-    // @ts-ignore
-    // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to
-    // resolve this import during bunlding process leading to module not found errors.
-    return __luigi_dyn_import(viewUrl);
+    let value;
+    console.warn('Fetch error before');
+    try {
+      // @ts-ignore
+      // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to
+      // resolve this import during bunlding process leading to module not found errors.
+      value = __luigi_dyn_import(viewUrl);
+      return value;
+    } catch (error) {
+      // dispatch an error event to be handled core side
+      this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
+      console.warn('Fetch error', error);
+      return value;
+    }
   }
 
   processViewUrl(viewUrl: string, data?: any): string {
@@ -98,34 +108,39 @@ export class WebComponentService {
     const i18nViewUrl = this.processViewUrl(viewUrl);
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(i18nViewUrl)) {
-        this.dynamicImport(i18nViewUrl)
-          .then(module => {
-            try {
-              if (!window.customElements.get(wc_id)) {
-                let cmpClazz = module.default;
-                if (!HTMLElement.isPrototypeOf(cmpClazz)) {
-                  let props = Object.keys(module);
-                  for (let i = 0; i < props.length; i++) {
-                    cmpClazz = module[props[i]];
-                    if (HTMLElement.isPrototypeOf(cmpClazz)) {
-                      break;
+        try {
+          this.dynamicImport(i18nViewUrl)
+            .then(module => {
+              try {
+                if (!window.customElements.get(wc_id)) {
+                  let cmpClazz = module.default;
+                  if (!HTMLElement.isPrototypeOf(cmpClazz)) {
+                    let props = Object.keys(module);
+                    for (let i = 0; i < props.length; i++) {
+                      cmpClazz = module[props[i]];
+                      if (HTMLElement.isPrototypeOf(cmpClazz)) {
+                        break;
+                      }
                     }
                   }
+                  window.customElements.define(wc_id, cmpClazz);
                 }
-                window.customElements.define(wc_id, cmpClazz);
+                resolve(1);
+              } catch (err) {
+                // dispatch an error event to be handled core side
+                this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, err);
+                reject(err);
               }
-              resolve(1);
-            } catch (err) {
+            })
+            .catch(err => {
               // dispatch an error event to be handled core side
+              console.warn('Error', err);
               this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, err);
               reject(err);
-            }
-          })
-          .catch(err => {
-            // dispatch an error event to be handled core side
-            this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, err);
-            reject(err);
-          });
+            });
+        } catch (error) {
+          console.warn('Found error', error);
+        }
       } else {
         const message = `View URL '${i18nViewUrl}' not allowed to be included`;
         console.warn(message);
