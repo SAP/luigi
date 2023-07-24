@@ -53,11 +53,13 @@ export class WebComponentService {
   }
 
   /**
-   * This function is used to create the Luigi Client API for the webcomponent-based microfrontend.
+   * This function is used to create the Luigi Client API for the web-component-based micro frontend.
+
    * As the function expands with more functionality, it might be moved to a separate class.
-   * @param eventBusElement the event bus to be used for cross webcomponent communication, i.e.: for compound microfrontends container scenario
-   * @param nodeId refers to an attribute of the webcomponent to be identified from the rest
-   * @param wc_id a tagname that is used when creating the webcomponent element
+   * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
+   * @param nodeId refers to an attribute of the web component to be identified from the rest
+   * @param wc_id a tagname that is used when creating the web component element
+
    * @returns an object with the Luigi Client API
 
    */
