@@ -5,6 +5,9 @@
   export let context;
   export let label;
   export let webcomponent;
+  export let locale;
+  export let theme;
+  export let active_feature_toggle_list;
 
   let iframeHandle:
     | {
@@ -21,41 +24,6 @@
   import { ContainerAPI } from './api/container-api';
 
   const webcomponentService = new WebComponentService();
-  webcomponentService.createClientAPI = (eventBusElement, nodeId, wc_id) => {
-    return {
-      linkManager: () => {
-        return {
-          navigate: (route) => {
-            dispatchLuigiEvent('navigation-request', { link: route });
-          },
-        };
-      },
-      uxManager: () => {
-        return {
-          showAlert: (alertSettings) => {
-            dispatchLuigiEvent('alert-request', alertSettings);
-          },
-          showConfirmationModal: async (settings) => {
-            return new Promise((resolve, reject) => {
-              dispatchLuigiEvent('confirmation-request', settings, (data) => {
-                if (data) {
-                  resolve(data);
-                } else {
-                  reject();
-                }
-              });
-            });
-          },
-        };
-      }, //window.Luigi.ux,
-      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: (ev) => {
-        // if (eventBusElement.eventBus) {
-        // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
-        // }
-      },
-    };
-  };
 
   const thisComponent: any = get_current_component();
 
@@ -85,10 +53,7 @@
   };
 
   containerService.registerContainer(thisComponent);
-
-  function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
-    containerService.dispatch(msg, thisComponent, data, callback);
-  }
+  webcomponentService.thisComponent = thisComponent;
 
   function isWebComponent(): boolean {
     return !!webcomponent;
