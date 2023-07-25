@@ -3,11 +3,9 @@
 <script lang="ts">
   export let viewurl;
   export let context;
-  // export let label;
   // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
-  export let initialize_mfe_directly;
-  // once the microfrontend is initialized, this value is set to `true`.
-  export let is_mfe_initialized;
+  export let initimmediate;
+  // export let label;
   let compoundConfig;
 
   let initialized = false;
@@ -59,7 +57,7 @@
   let deferInit = !!thisComponent.attributes['defer-init'];
 
   function canMfeInitialized(): boolean {
-    return !!initialize_mfe_directly;
+    return !!initimmediate;
   }
 
   thisComponent.init = () => {
@@ -67,6 +65,7 @@
       console.log('return from init');
       return;
     }
+    const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {
       compound: thisComponent.compoundConfig,
@@ -74,24 +73,18 @@
       webcomponent: true
     }; // TODO: fill with sth
     webcomponentService
-      .renderWebComponentCompound(node, mainComponent, context)
+      .renderWebComponentCompound(node, mainComponent, ctx)
       .then(compCnt => {
         eventBusElement = compCnt;
-        console.log(
-          'tagName',
-          customElements.get((compCnt as HTMLElement).tagName)
-        );
-        console.log('compCnt', (compCnt as HTMLElement).tagName);
         if (canMfeInitialized()) {
-          is_mfe_initialized = true;
+          thisComponent.isMfeInitialized = true;
           setTimeout(() => {
             dispatchLuigiEvent(Events.INITIALIZED, {});
           });
-        } else if ((compCnt as HTMLElement).tagName) {
-          console.log('ELSE');
+        } else if ((eventBusElement as HTMLElement).tagName.indexOf('-') >= 0) {
           eventBusElement.addEventListener('wc_ready', () => {
             if (!(eventBusElement as any).deferLuigiClientWCInit) {
-              is_mfe_initialized = true;
+              thisComponent.isMfeInitialized = true;
               dispatchLuigiEvent(Events.INITIALIZED, {});
             }
           });
@@ -106,9 +99,7 @@
     containerService.dispatch(msg, thisComponent, data, callback);
   }
 
-  onMount(async () => {
-    const ctx = context ? JSON.parse(context) : {};
-  });
+  onMount(async () => {});
 </script>
 
 <main bind:this={mainComponent} />

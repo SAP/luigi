@@ -1,7 +1,7 @@
 import { LuigiElement } from './luigi-element.js';
 export default class extends LuigiElement {
   constructor() {
-    super({ openShadow: 'open', deferLuigiClientWCInit: true });
+    super({ openShadow: 'open', deferLuigiClientWCInit: false });
 
     const template = document.createElement('template');
 
@@ -17,15 +17,14 @@ export default class extends LuigiElement {
     // this.$paragraph = this._shadowRoot.querySelector('p');
   }
 
-  set context(ctx) {
-    // this.$paragraph.innerHTML = 'TEST';
-  }
+  // set context(ctx) {
+  //     this.$paragraph.innerHTML = ctx.label
+  // }
 
   connectedCallback() {
-    console.log('connectedCallback');
-    setTimeout(() => {
-      this.LuigiClient.luigiClientInit();
-      console.log('LuigiClient initialized for LuigiElement WC');
-    }, 10000);
+    // setTimeout(() => {
+    //     this.LuigiClient.luigiClientInit();
+    //     console.log('LuigiClient initialized for LuigiElement WC');
+    // }, 8000);
   }
 }
