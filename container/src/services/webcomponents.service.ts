@@ -31,7 +31,6 @@ export class WebComponentService {
       }
 
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
-
       wc_container.replaceChild(wc, wcItemPlaceholder);
       if (wc_container._luigi_node) {
         wc_container._luigi_mfe_webcomponent = wc;
@@ -271,7 +270,6 @@ export class WebComponentService {
     }
 
     renderer = renderer || new DefaultCompoundRenderer();
-
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, context).then((compoundCnt: HTMLElement) => {
         const ebListeners = {};

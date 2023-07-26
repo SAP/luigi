@@ -6,7 +6,7 @@
   export let label;
   export let webcomponent;
   // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
-  export let initimmediate;
+  export let instantInit;
 
   let iframeHandle:
     | {
@@ -101,7 +101,7 @@
   }
 
   function canMfeInitialized(): boolean {
-    return !!initimmediate;
+    return !!instantInit;
   }
 
   onMount(async () => {

@@ -4,7 +4,7 @@
   export let viewurl;
   export let context;
   // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
-  export let initimmediate;
+  export let instantInit;
   // export let label;
   let compoundConfig;
 
@@ -57,12 +57,11 @@
   let deferInit = !!thisComponent.attributes['defer-init'];
 
   function canMfeInitialized(): boolean {
-    return !!initimmediate;
+    return !!instantInit;
   }
 
   thisComponent.init = () => {
     if (!thisComponent.compoundConfig || initialized) {
-      console.log('return from init');
       return;
     }
     const ctx = context ? JSON.parse(context) : {};
@@ -81,13 +80,12 @@
           setTimeout(() => {
             dispatchLuigiEvent(Events.INITIALIZED, {});
           });
-        } else if ((eventBusElement as HTMLElement).tagName.indexOf('-') >= 0) {
-          eventBusElement.addEventListener('wc_ready', () => {
-            if (!(eventBusElement as any).deferLuigiClientWCInit) {
-              thisComponent.isMfeInitialized = true;
-              dispatchLuigiEvent(Events.INITIALIZED, {});
-            }
-          });
+        } else if (
+          (eventBusElement as any).LuigiClient &&
+          !(eventBusElement as any).deferLuigiClientWCInit
+        ) {
+          thisComponent.isMfeInitialized = true;
+          dispatchLuigiEvent(Events.INITIALIZED, {});
         }
       });
     initialized = true;

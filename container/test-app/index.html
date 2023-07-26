@@ -102,7 +102,11 @@
                   class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Dashboard</a
                 >
-
+                <a
+                  href="#dashboard2"
+                  class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Dashboard2</a
+                >
                 <a
                   href="#team"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -240,6 +244,13 @@
           >
 
           <a
+            href="#dashboard2"
+            class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+            aria-current="page"
+            >Dashboard2</a
+          >
+
+          <a
             href="#team"
             class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >Team</a
@@ -268,12 +279,19 @@
     <!-- LUIGI Micro Frontends -->
     <div class="lui-wrapper" route="dashboard">
       <luigi-compound-container
-        context='{"label": "Dashboard", "title":"test"}'
-        id="compoundTest"
-        viewURL="http://localhost:8080/nested.js"
+        id="dashboard"
+        context='{"label": "Dashboard"}'
       ></luigi-compound-container>
     </div>
-    <!-- https://luigiwebcomponents.gitlab.io/nested.js initimmediate="true"-->
+    <div class="lui-wrapper" route="dashboard2">
+      <luigi-compound-container
+        id="dashboard2"
+        context='{"label": "Dashboard2", "title":"Dashboard2"}'
+        viewURL="./nested.js"
+        instantInit="true"
+      ></luigi-compound-container>
+    </div>
+    <!-- https://luigiwebcomponents.gitlab.io/nested.js instantInit="true"-->
     <div class="lui-wrapper" route="team">
       <luigi-container
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
@@ -293,7 +311,7 @@
         webcomponent="true"
         context='{"label": "Calendar"}'
         id="calendar"
-        initimmediate="true"
+        instantInit="true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="test">
@@ -315,29 +333,29 @@
       var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
       var utilMFEDomain = 'https://luigiwebcomponents.gitlab.io/util';
       import MFEventID from './bundle.js';
-      document.querySelector('luigi-compound-container').compoundConfig = {
-        // renderer: {
-        //   use: 'grid',
-        //   config: {
-        //     columns: '1fr 1fr 1fr 2fr',
-        //     /*rows: '150px',*/
-        //     /*gap: '30px',*/
-        //     layouts: [
-        //       {
-        //         minWidth: 0,
-        //         maxWidth: 600,
-        //         columns: '1fr',
-        //         gap: 0
-        //       },
-        //       {
-        //         minWidth: 600,
-        //         maxWidth: 1024,
-        //         columns: '1fr 1fr',
-        //         gap: '30px'
-        //       }
-        //     ]
-        //   }
-        // },
+      document.getElementById('dashboard').compoundConfig = {
+        renderer: {
+          use: 'grid',
+          config: {
+            columns: '1fr 1fr 1fr 2fr',
+            /*rows: '150px',*/
+            /*gap: '30px',*/
+            layouts: [
+              {
+                minWidth: 0,
+                maxWidth: 600,
+                columns: '1fr',
+                gap: 0
+              },
+              {
+                minWidth: 600,
+                maxWidth: 1024,
+                columns: '1fr 1fr',
+                gap: '30px'
+              }
+            ]
+          }
+        },
         children: [
           {
             viewUrl: layoutMFEDomain + '/panelHeader.js',
@@ -406,6 +424,49 @@
         ]
       };
 
+      document.getElementById('dashboard2').compoundConfig = {
+        children: [
+          {
+            viewUrl: layoutMFEDomain + '/panelHeader.js',
+            context: {
+              title: 'My Awesome Grid',
+              description: 'Really awesome'
+            },
+            layoutConfig: {
+              slot: 'header'
+            },
+            eventListeners: [
+              {
+                source: 'input1',
+                name: 'sendInput',
+                action: 'update',
+                dataConverter: data => {
+                  return 'new text: ' + data;
+                }
+              }
+            ]
+          },
+          {
+            viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
+            context: {
+              label: 'Another web component'
+            },
+            layoutConfig: {
+              slot: 'content'
+            }
+          },
+          {
+            viewUrl: layoutMFEDomain + '/panelFooter.js',
+            context: {
+              footer: 'This is the end of awesomeness'
+            },
+            layoutConfig: {
+              slot: 'footer'
+            }
+          }
+        ]
+      };
+
       [
         ...document.querySelectorAll('luigi-container'),
         ...document.querySelectorAll('luigi-compound-container')
@@ -455,14 +516,11 @@
       } else {
         console.log('calendar immediately ready 3');
       }
-      let compoundTest = document.getElementById('compoundTest');
-      console.log('compoundTest.isMfeInitialized', compoundTest.isMfeInitialized);
-      if (!compoundTest.isMfeInitialized) {
-        compoundTest.addEventListener(MFEventID.INITIALIZED, () => {
+      let dashboard2 = document.getElementById('dashboard2');
+      if (!dashboard2.isMfeInitialized) {
+        dashboard2.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('compoundTest is ready now!');
         });
-      } else {
-        console.log('compoundTest immediately ready');
       }
     </script>
   </body>
