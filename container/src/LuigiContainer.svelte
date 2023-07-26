@@ -7,6 +7,9 @@
   export let webcomponent;
   // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
   export let instantInit;
+  export let locale;
+  export let theme;
+  export let active_feature_toggle_list;
 
   let iframeHandle:
     | {
@@ -24,44 +27,6 @@
   import { Events } from './constants/communication';
 
   const webcomponentService = new WebComponentService();
-  webcomponentService.createClientAPI = (eventBusElement, nodeId, wc_id) => {
-    return {
-      linkManager: () => {
-        return {
-          navigate: route => {
-            dispatchLuigiEvent('navigation-request', { link: route });
-          }
-        };
-      },
-      uxManager: () => {
-        return {
-          showAlert: alertSettings => {
-            dispatchLuigiEvent('alert-request', alertSettings);
-          },
-          showConfirmationModal: async settings => {
-            return new Promise((resolve, reject) => {
-              dispatchLuigiEvent('confirmation-request', settings, data => {
-                if (data) {
-                  resolve(data);
-                } else {
-                  reject();
-                }
-              });
-            });
-          }
-        };
-      }, //window.Luigi.ux,
-      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
-      publishEvent: ev => {
-        // if (eventBusElement.eventBus) {
-        // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
-        // }
-      },
-      luigiClientInit: () => {
-        dispatchLuigiEvent(Events.INITIALIZED, {});
-      }
-    };
-  };
 
   const thisComponent: any = get_current_component();
 
@@ -91,10 +56,7 @@
   };
 
   containerService.registerContainer(thisComponent);
-
-  function dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
-    containerService.dispatch(msg, thisComponent, data, callback);
-  }
+  webcomponentService.thisComponent = thisComponent;
 
   function isWebComponent(): boolean {
     return !!webcomponent;
@@ -113,7 +75,7 @@
     if (canMfeInitialized()) {
       thisComponent.isMfeInitialized = true;
       setTimeout(() => {
-        dispatchLuigiEvent(Events.INITIALIZED, {});
+        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
       });
     } else if (isWebComponent()) {
       mainComponent.addEventListener('wc_ready', () => {
@@ -122,7 +84,7 @@
             ?.deferLuigiClientWCInit
         ) {
           thisComponent.isMfeInitialized = true;
-          dispatchLuigiEvent(Events.INITIALIZED, {});
+          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         }
       });
     }

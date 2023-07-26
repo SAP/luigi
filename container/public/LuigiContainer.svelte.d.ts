@@ -25,6 +25,21 @@ export default class LuigiContainer extends HTMLElement {
   instantInit: boolean;
 
   /**
+   * The locale to be passed to the web-component-based micro frontend
+   */
+  locale: string;
+
+  /**
+   * The theme to be passed to the  web-component-based micro frontend
+   */
+  theme: string;
+
+  /**
+   * The list of active feature toggles to be passed to the web-component-based micro frontend
+   */
+  active_feature_toggle_list: string[];
+
+  /**
    * Updates the context of the microfrontend
    * @param contextObj The context object to be updated
    * @param internal internal microfrotend data
