@@ -12,20 +12,10 @@ export class WebComponentService {
   }
 
   dynamicImport(viewUrl: string) {
-    let value;
-    console.warn('Fetch error before');
-    try {
-      // @ts-ignore
-      // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to
-      // resolve this import during bunlding process leading to module not found errors.
-      value = __luigi_dyn_import(viewUrl);
-      return value;
-    } catch (error) {
-      // dispatch an error event to be handled core side
-      this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
-      console.warn('Fetch error', error);
-      return value;
-    }
+    // @ts-ignore
+    // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to
+    // resolve this import during bunlding process leading to module not found errors.
+    return __luigi_dyn_import(viewUrl);
   }
 
   processViewUrl(viewUrl: string, data?: any): string {
@@ -152,44 +142,32 @@ export class WebComponentService {
     const i18nViewUrl = this.processViewUrl(viewUrl);
     return new Promise((resolve, reject) => {
       if (this.checkWCUrl(i18nViewUrl)) {
-        try {
-          this.dynamicImport(i18nViewUrl)
-            .then(module => {
-              try {
-                if (!window.customElements.get(wc_id)) {
-                  let cmpClazz = module.default;
-                  if (!HTMLElement.isPrototypeOf(cmpClazz)) {
-                    let props = Object.keys(module);
-                    for (let i = 0; i < props.length; i++) {
-                      cmpClazz = module[props[i]];
-                      if (HTMLElement.isPrototypeOf(cmpClazz)) {
-                        break;
-                      }
+        this.dynamicImport(i18nViewUrl)
+          .then(module => {
+            try {
+              if (!window.customElements.get(wc_id)) {
+                let cmpClazz = module.default;
+                if (!HTMLElement.isPrototypeOf(cmpClazz)) {
+                  let props = Object.keys(module);
+                  for (let i = 0; i < props.length; i++) {
+                    cmpClazz = module[props[i]];
+                    if (HTMLElement.isPrototypeOf(cmpClazz)) {
+                      break;
                     }
                   }
-                  window.customElements.define(wc_id, cmpClazz);
                 }
-                resolve(1);
-              } catch (err) {
-                // dispatch an error event to be handled core side
-                this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, err);
-                reject(err);
+                window.customElements.define(wc_id, cmpClazz);
               }
-            })
-            .catch(err => {
-              // dispatch an error event to be handled core side
-              console.warn('Error', err);
-              this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, err);
+              resolve(1);
+            } catch (err) {
               reject(err);
-            });
-        } catch (error) {
-          console.warn('Found error', error);
-        }
+            }
+          })
+          .catch(err => {
+            reject(err);
+          });
       } else {
-        const message = `View URL '${i18nViewUrl}' not allowed to be included`;
-        console.warn(message);
-        // dispatch an error event to be handled core side
-        this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, message);
+        const message = `Error: View URL '${i18nViewUrl}' not allowed to be included`;
         reject(message);
       }
     });
@@ -255,6 +233,9 @@ export class WebComponentService {
     //   return false;
     // }
     // relative URL is okay
+    // if (url === 'test.js') {
+    //   return false;
+    // }
     return true;
   }
 
@@ -282,9 +263,15 @@ export class WebComponentService {
           this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
         });
       } else {
-        this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
-        });
+        this.registerWCFromUrl(i18nViewUrl, wc_id)
+          .then(() => {
+            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
+          })
+          .catch(error => {
+            console.warn('ERROR =>', error);
+            // dispatch an error event to be handled core side
+            this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
+          });
       }
     }
   }
@@ -297,17 +284,25 @@ export class WebComponentService {
    */
   createCompoundContainerAsync(renderer: any, ctx: any): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
+      // remove after review
+      // if (1) {
+      //   reject({ test: 'error' });
+      // }
       if (renderer.viewUrl) {
         try {
           const wc_id = this.generateWCId(renderer.viewUrl);
-          this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
-            const wc = document.createElement(wc_id);
-            this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
-            resolve(wc);
-          });
+          this.registerWCFromUrl(renderer.viewUrl, wc_id)
+            .then(() => {
+              const wc = document.createElement(wc_id);
+              this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+              resolve(wc);
+            })
+            .catch(error => {
+              console.warn('Error: ', error);
+              // dispatch an error event to be handled core side
+              this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
+            });
         } catch (error) {
-          // dispatch an error event to be handled core side
-          this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
           reject(error);
         }
       } else {
@@ -343,45 +338,51 @@ export class WebComponentService {
     renderer = renderer || new DefaultCompoundRenderer();
 
     return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer, context).then((compoundCnt: HTMLElement) => {
-        const ebListeners = {};
-        (compoundCnt as any).eventBus = {
-          listeners: ebListeners,
-          onPublishEvent: (event, srcNodeId, wcId) => {
-            const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
-            listeners.push(...(ebListeners['*.' + event.type] || []));
+      this.createCompoundContainerAsync(renderer, context)
+        .then((compoundCnt: HTMLElement) => {
+          const ebListeners = {};
+          (compoundCnt as any).eventBus = {
+            listeners: ebListeners,
+            onPublishEvent: (event, srcNodeId, wcId) => {
+              const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
+              listeners.push(...(ebListeners['*.' + event.type] || []));
 
-            listeners.forEach(listenerInfo => {
-              const target =
-                listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
-              if (target) {
-                target.dispatchEvent(
-                  new CustomEvent(listenerInfo.action, {
-                    detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
-                  })
-                );
-              } else {
-                console.debug('Could not find event target', listenerInfo);
-              }
-            });
-          }
-        };
-        navNode.compound?.children.forEach((wc, index) => {
-          const ctx = { ...context, ...wc.context };
-          const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
+              listeners.forEach(listenerInfo => {
+                const target =
+                  listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+                if (target) {
+                  target.dispatchEvent(
+                    new CustomEvent(listenerInfo.action, {
+                      detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
+                    })
+                  );
+                } else {
+                  console.debug('Could not find event target', listenerInfo);
+                }
+              });
+            }
+          };
+          navNode.compound?.children.forEach((wc, index) => {
+            const ctx = { ...context, ...wc.context };
+            const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
 
-          compoundItemCnt.eventBus = (compoundCnt as any).eventBus;
-          renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
+            compoundItemCnt.eventBus = (compoundCnt as any).eventBus;
+            renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
-          const nodeId = wc.id || 'gen_' + index;
-          this.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, wc, nodeId);
-          registerEventListeners(ebListeners, wc, nodeId);
+            const nodeId = wc.id || 'gen_' + index;
+            this.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, wc, nodeId);
+            registerEventListeners(ebListeners, wc, nodeId);
+          });
+          wc_container.appendChild(compoundCnt);
+          // listener for nesting wc
+          registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
+          resolve(compoundCnt);
+        })
+        .catch(error => {
+          // dispatch an error event to be handled core sid
+          console.warn('Error: ', error);
+          this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
         });
-        wc_container.appendChild(compoundCnt);
-        // listener for nesting wc
-        registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
-        resolve(compoundCnt);
-      });
     });
   }
 }
