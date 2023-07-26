@@ -4,7 +4,7 @@ import { GenericHelperFunctions } from '../utilities/helpers';
 import { LuigiCoreApi } from '../constants/core-api';
 
 export class ContainerService {
-  constructor() { }
+  constructor() {}
 
   isVisible(component: HTMLElement) {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
@@ -12,7 +12,7 @@ export class ContainerService {
 
   /**
    * Sends a message to the iframe either with the custom keyword or any other message name
-   * @param iframeHandle the iframe to send the message to 
+   * @param iframeHandle the iframe to send the message to
    * @param msg the message to be sent
    * @param msgName the optional message name
    */
@@ -20,20 +20,21 @@ export class ContainerService {
     const messageName = msgName ? msgName : 'custom';
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
-      messageName === 'custom' ? iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin) :
-        iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin)
+      messageName === 'custom'
+        ? iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, data: msg }, iframeUrl.origin)
+        : iframeHandle.iframe.contentWindow.postMessage({ msg: messageName, ...msg }, iframeUrl.origin);
     } else {
       console.error('Message target could not be resolved');
     }
   }
 
   /**
-   * 
-   * @param {string} msg the event message 
+   * Dispatch an event to the given target container
+   * @param {string} msg the event message
    * @param {HTMLElement} targetCnt the targeted HTML element onto which the event is dispatched
    * @param {any} data custom data added to the event to be dispatched
-   * @param {Function} callback 
-   * @param {string} callbackName 
+   * @param {Function} callback
+   * @param {string} callbackName
    */
   dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
     let customEvent = new CustomEvent(msg, { detail: data });
@@ -74,7 +75,14 @@ export class ContainerService {
                 break;
               case LuigiInternalMessageID.GET_CONTEXT:
                 // Automatically send a luigi.init message to complete the initial handshake with the microfrontend
-                target.postMessage({ msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE, context: targetCnt.context || {}, internal: {} }, '*');
+                target.postMessage(
+                  {
+                    msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
+                    context: targetCnt.context || {},
+                    internal: {}
+                  },
+                  '*'
+                );
                 break;
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
                 this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
@@ -87,10 +95,16 @@ export class ContainerService {
                 this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
                 break;
               case LuigiInternalMessageID.ADD_SEARCH_PARAMS_REQUEST:
-                this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
+                this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, {
+                  data: event.data.data,
+                  keepBrowserHistory: event.data.keepBrowserHistory
+                });
                 break;
               case LuigiInternalMessageID.ADD_NODE_PARAMS_REQUEST:
-                this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, { data: event.data.data, keepBrowserHistory: event.data.keepBrowserHistory });
+                this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, {
+                  data: event.data.data,
+                  keepBrowserHistory: event.data.keepBrowserHistory
+                });
                 break;
               case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
                 this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
