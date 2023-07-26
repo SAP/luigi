@@ -14,6 +14,7 @@
   import { get_current_component } from 'svelte/internal';
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
+  import { Events } from './constants/communication';
 
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
@@ -40,9 +41,13 @@
       }, //window.Luigi.ux,
       getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: (ev) => {
+        
+        // console.log('pub', ev, nodeId, wc_id);
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
+        
+        dispatchLuigiEvent(Events.CUSTOM_MESSAGE, { name: ev.type, data: ev.detail, nodeId, wc_id }, {});
       },
     };
   };
