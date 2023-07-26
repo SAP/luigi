@@ -300,7 +300,6 @@
         id="dashboard2"
         context='{"label": "Dashboard2", "title":"Dashboard2"}'
         viewURL="./nested.js"
-        instantInit="true"
       ></luigi-compound-container>
     </div>
     <!-- https://luigiwebcomponents.gitlab.io/nested.js instantInit="true"-->
@@ -523,7 +522,7 @@
         console.log('mfe immediately ready');
       }
       let readyTest2 = document.getElementById('readyTest2');
-      if (!readyTest2.is_mfe_initialized) {
+      if (!readyTest2.isMfeInitialized) {
         readyTest2.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('mfe is ready now! 2');
         });
@@ -531,7 +530,7 @@
         console.log('mfe immediately ready 2');
       }
       let readyTest3 = document.getElementById('calendar');
-      if (!readyTest3.is_mfe_initialized) {
+      if (!readyTest3.isMfeInitialized) {
         readyTest3.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('calendar is ready now! 3');
         });

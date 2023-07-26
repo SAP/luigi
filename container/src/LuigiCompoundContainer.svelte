@@ -4,7 +4,7 @@
   export let viewurl;
   export let context;
   // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
-  export let instantInit;
+  export let instantinit;
   // export let label;
   export let locale;
   export let theme;
@@ -29,7 +29,7 @@
   let deferInit = !!thisComponent.attributes['defer-init'];
 
   function canMfeInitialized(): boolean {
-    return !!instantInit;
+    return !!instantinit;
   }
 
   thisComponent.init = () => {
