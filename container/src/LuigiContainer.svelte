@@ -53,7 +53,6 @@
   };
 
   containerService.registerContainer(thisComponent);
-
   webcomponentService.thisComponent = thisComponent;
 
   function isWebComponent(): boolean {
