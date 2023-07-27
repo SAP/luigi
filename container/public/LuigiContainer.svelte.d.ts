@@ -20,11 +20,6 @@ export default class LuigiContainer extends HTMLElement {
   webcomponent: boolean;
 
   /**
-   * If set to `true`, a micro frontend will be immediately initialized. LuigiContainer sends an event `initialized` to the micro frontend.
-   */
-  instantInit: boolean;
-
-  /**
    * The locale to be passed to the web-component-based micro frontend
    */
   locale: string;

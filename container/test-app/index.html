@@ -300,9 +300,10 @@
         id="dashboard2"
         context='{"label": "Dashboard2", "title":"Dashboard2"}'
         viewURL="./nested.js"
+        skipInitCheck="true"
       ></luigi-compound-container>
     </div>
-    <!-- https://luigiwebcomponents.gitlab.io/nested.js instantInit="true"-->
+    <!-- https://luigiwebcomponents.gitlab.io/nested.js skipInitCheck="true"-->
     <div class="lui-wrapper" route="team">
       <luigi-container
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
@@ -322,7 +323,7 @@
         webcomponent="true"
         context='{"label": "Calendar"}'
         id="calendar"
-        instantInit="true"
+        skipInitCheck="true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="test">

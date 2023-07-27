@@ -6,7 +6,7 @@
   export let label;
   export let webcomponent;
   // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialized` to mfe. Mfe is immediately ready.
-  export let instantinit;
+  export let skipinitcheck;
   export let locale;
   export let theme;
   export let active_feature_toggle_list;
@@ -63,7 +63,7 @@
   }
 
   function canMfeInitialized(): boolean {
-    return !!instantinit;
+    return !!skipinitcheck;
   }
 
   onMount(async () => {
