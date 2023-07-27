@@ -4,7 +4,7 @@ export default class extends LuigiElement {
     super({ openShadow: 'open', deferLuigiClientWCInit: false });
   }
   render() {
-    this._shadowRoot.innerHTML = `<div>Das ist ein TESt</div`;
+    this._shadowRoot.innerHTML = `<div>This WC has <b>deferLuigiClientWCInit</b> set to <b>false</b></div`;
   }
 
   connectedCallback() {}
