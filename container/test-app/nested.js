@@ -15,10 +15,6 @@ export default class extends LuigiElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
-  set context(ctx) {
-    console.log('ctx', ctx);
-  }
-
   connectedCallback() {
     setTimeout(() => {
       this.LuigiClient.luigiClientInit();

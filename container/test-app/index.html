@@ -297,10 +297,9 @@
     </div>
     <div class="lui-wrapper" route="dashboard2">
       <luigi-compound-container
-        id="dashboard2"
+        id="nested-wc-compound-container"
         context='{"label": "Dashboard2", "title":"Dashboard2"}'
         viewURL="./nested.js"
-        skipInitCheck="true"
       ></luigi-compound-container>
     </div>
     <!-- https://luigiwebcomponents.gitlab.io/nested.js skipInitCheck="true"-->
@@ -330,14 +329,15 @@
       <luigi-container
         viewURL="http://localhost:8080/test.js"
         webcomponent="true"
-        id="readyTest"
+        id="test-defer-init-false"
+        skipInitCheck="true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="test2">
       <luigi-container
         viewURL="http://localhost:8080/test2.js"
         webcomponent="true"
-        id="readyTest2"
+        id="test-defer-init-true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="hello-world-wc">
@@ -446,7 +446,7 @@
         ]
       };
 
-      document.getElementById('dashboard2').compoundConfig = {
+      document.getElementById('nested-wc-compound-container').compoundConfig = {
         children: [
           {
             viewUrl: layoutMFEDomain + '/panelHeader.js',
@@ -514,33 +514,27 @@
 
         //...
       });
-      let readyTest = document.getElementById('readyTest');
-      if (!readyTest.isMfeInitialized) {
-        readyTest.addEventListener(MFEventID.INITIALIZED, () => {
+      let testDeferInitFalse = document.getElementById('test-defer-init-false');
+      if (!testDeferInitFalse.isMfeInitialized) {
+        testDeferInitFalse.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('mfe is ready now!');
         });
       } else {
         console.log('mfe immediately ready');
       }
-      let readyTest2 = document.getElementById('readyTest2');
-      if (!readyTest2.isMfeInitialized) {
-        readyTest2.addEventListener(MFEventID.INITIALIZED, () => {
+      let testDeferInitTrue = document.getElementById('test-defer-init-true');
+      if (!testDeferInitTrue.isMfeInitialized) {
+        testDeferInitTrue.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('mfe is ready now! 2');
         });
       } else {
         console.log('mfe immediately ready 2');
       }
-      let readyTest3 = document.getElementById('calendar');
-      if (!readyTest3.isMfeInitialized) {
-        readyTest3.addEventListener(MFEventID.INITIALIZED, () => {
-          console.log('calendar is ready now! 3');
-        });
-      } else {
-        console.log('calendar immediately ready 3');
-      }
-      let dashboard2 = document.getElementById('dashboard2');
-      if (!dashboard2.isMfeInitialized) {
-        dashboard2.addEventListener(MFEventID.INITIALIZED, () => {
+      let skipInitCheckCompoundCtn = document.getElementById(
+        'nested-wc-compound-container'
+      );
+      if (!skipInitCheckCompoundCtn.isMfeInitialized) {
+        skipInitCheckCompoundCtn.addEventListener(MFEventID.INITIALIZED, () => {
           console.log('compoundTest is ready now!');
         });
       }
