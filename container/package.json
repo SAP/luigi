@@ -18,7 +18,8 @@
     "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ || COPY public\\* test-app\\",
     "serve": "npm run build && npm run copyBundle && sirv -D test-app --no-clear",
     "bundle:watch": "chokidar \"src/**/*.*\" -c \"npm run build && npm run copyBundle\"",
-    "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\""
+    "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
+    "cypress": "cypress run"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
