@@ -5,7 +5,7 @@
   export let context;
   export let label;
   export let webcomponent;
-  // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialzed` to mfe. Mfe is immediately ready.
+  // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialized` to mfe. Mfe is immediately ready.
   export let instantinit;
   export let locale;
   export let theme;
