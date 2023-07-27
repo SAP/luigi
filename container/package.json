@@ -27,6 +27,7 @@
     "@tsconfig/svelte": "^3.0.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^7.6.0",
+    "cypress": "^12.17.2",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
