@@ -315,7 +315,7 @@
    * After 250 ms the spinner will be removed from DOM.
    */
   function fadeOutLoadingIndicator() {
-    const spinnerContainer = document.querySelector(`${isModal?'.lui-modal-mf':'.drawer'} .spinnerContainer`);
+    const spinnerContainer = document.querySelector(`${isModal ? '.lui-modal-mf' : '.drawer'} .spinnerContainer`);
     if (spinnerContainer && spinnerContainer.classList.contains("fade-out")) {
       spinnerContainer.classList.remove("fade-out");
       setTimeout(() => {
