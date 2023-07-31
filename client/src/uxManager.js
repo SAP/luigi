@@ -273,7 +273,7 @@ class UxManager extends LuigiClientBase {
    * Gets the CSS variables from Luigi Core with their key and value.
    * @returns {Object} CSS variables with their key and value.
    * @memberof uxManager
-   * @since NEXTRELEASE
+   * @since 2.3.0
    * @example LuigiClient.uxManager().getCSSVariables();
    */
   getCSSVariables() {
@@ -283,7 +283,7 @@ class UxManager extends LuigiClientBase {
   /**
    * Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
    * @memberof uxManager
-   * @since NEXTRELEASE
+   * @since 2.3.0
    * @example LuigiClient.uxManager().applyCSS();
    */
   applyCSS() {

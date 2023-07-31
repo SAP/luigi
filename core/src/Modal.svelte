@@ -285,7 +285,7 @@
     window.focus();
     // activate loadingindicator if onMount function takes longer than expected
     setTimeout(() => {
-      if(!contextRequested){
+      if(!contextRequested && !nodeObject.webcomponent){
         showLoadingIndicator = true;
       }
     }, 250);
@@ -315,9 +315,9 @@
    * After 250 ms the spinner will be removed from DOM.
    */
   function fadeOutLoadingIndicator() {
-    const spinnerContainer = document.querySelector('.spinnerContainer');
-    if (spinnerContainer && spinnerContainer.classList.contains("fade-in-out")) {
-      spinnerContainer.classList.remove("fade-in-out");
+    const spinnerContainer = document.querySelector(`${isModal ? '.lui-modal-mf' : '.drawer'} .spinnerContainer`);
+    if (spinnerContainer && spinnerContainer.classList.contains("fade-out")) {
+      spinnerContainer.classList.remove("fade-out");
       setTimeout(() => {
         showLoadingIndicator = false;
       }, 250);
@@ -379,7 +379,7 @@
     </div>
     {#if showLoadingIndicator}
       <div
-        class="fd-page spinnerContainer fade-in-out"
+        class="fd-page spinnerContainer fade-out"
         aria-hidden="false"
         aria-label="Loading"
       >
@@ -506,7 +506,7 @@
     position: relative;
   }
 
-  .fade-in-out {
+  .fade-out {
     opacity: 1;
   }
 </style>
