@@ -1,8 +1,10 @@
 <svelte:options tag={null} accessors={true} />
 
 <script lang="ts">
-  // export let viewurl;
+  export let viewurl;
   export let context;
+  // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialized` to mfe. Mfe is immediately ready.
+  export let skipinitcheck;
   // export let label;
   export let locale;
   export let theme;
@@ -10,7 +12,7 @@
 
   let compoundConfig;
 
-  let initialized = false;
+  let initProcessed = false;
   let mainComponent;
   let eventBusElement;
 
@@ -18,6 +20,8 @@
   import { get_current_component } from 'svelte/internal';
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
+  import { Events } from './constants/communication';
+
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
 
@@ -25,26 +29,40 @@
   let deferInit = !!thisComponent.attributes['defer-init'];
 
   thisComponent.init = () => {
-    if (!thisComponent.compoundConfig || initialized) return;
+    if (!thisComponent.compoundConfig || initProcessed) {
+      return;
+    }
+    const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {
-      compound: thisComponent.compoundConfig
+      compound: thisComponent.compoundConfig,
+      viewUrl: viewurl ? viewurl : undefined,
+      webcomponent: true
     }; // TODO: fill with sth
     webcomponentService
-      .renderWebComponentCompound(node, mainComponent, context)
+      .renderWebComponentCompound(node, mainComponent, ctx)
       .then(compCnt => {
         eventBusElement = compCnt;
+        if (skipinitcheck === 'true' || !node.viewUrl) {
+          thisComponent.initialized = true;
+          setTimeout(() => {
+            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+          });
+        } else if (
+          (eventBusElement as any).LuigiClient &&
+          !(eventBusElement as any).deferLuigiClientWCInit
+        ) {
+          thisComponent.initialized = true;
+          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+        }
       });
-
-    initialized = true;
+    initProcessed = true;
   };
 
   containerService.registerContainer(thisComponent);
   webcomponentService.thisComponent = thisComponent;
 
-  onMount(async () => {
-    const ctx = context ? JSON.parse(context) : {};
-  });
+  onMount(async () => {});
 </script>
 
 <main bind:this={mainComponent} />
