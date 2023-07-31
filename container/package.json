@@ -19,7 +19,8 @@
     "serve": "npm run build && npm run copyBundle && sirv -D test-app --no-clear",
     "bundle:watch": "chokidar \"src/**/*.*\" -c \"npm run build && npm run copyBundle\"",
     "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
-    "cypress": "cypress run"
+    "cypress-headless": "cypress run",
+    "cypress-browser": "cypress open --e2e --browser chrome"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
