@@ -240,11 +240,7 @@
         !nodeObject.loadingIndicator ||
         nodeObject.loadingIndicator.hideAutomatically !== false;
       if (loadingIndicatorAutoHideEnabled) {
-        if(GenericHelpers.canFadeOutLoadingIndicator()){
-          setTimeout(()=>{
-            showLoadingIndicator = false;
-          }, 250);
-        };
+       fadeOutLoadingIndicator();
       }
     }
 
@@ -289,7 +285,7 @@
     window.focus();
     // activate loadingindicator if onMount function takes longer than expected
     setTimeout(() => {
-      if(!contextRequested){
+      if(!contextRequested && !nodeObject.webcomponent){
         showLoadingIndicator = true;
       }
     }, 250);
@@ -310,6 +306,26 @@
   export function handleKeydown(event) {
     if (event.keyCode === KEYCODE_ESC) {
       dispatch('close');
+    }
+  }
+
+  /**
+   * This function will be called if the LuigiClient requested the context.
+   * That means spinner can fade out in order to display the mf.
+   * After 250 ms the spinner will be removed from DOM.
+   */
+  function fadeOutLoadingIndicator() {
+    let spinnerContainer;
+    if(isModal){
+      spinnerContainer = document.querySelector(`.lui-modal-mf.lui-modal-index-${modalIndex} .spinnerContainer`);
+    }else{
+      spinnerContainer = document.querySelector(`.drawer .spinnerContainer`);
+    }
+    if (spinnerContainer && spinnerContainer.classList.contains("fade-out")) {
+      spinnerContainer.classList.remove("fade-out");
+      setTimeout(() => {
+        showLoadingIndicator = false;
+      }, 250);
     }
   }
 </script>
@@ -368,7 +384,7 @@
     </div>
     {#if showLoadingIndicator}
       <div
-        class="fd-page spinnerContainer fade-in-out"
+        class="fd-page spinnerContainer fade-out"
         aria-hidden="false"
         aria-label="Loading"
       >
@@ -495,7 +511,7 @@
     position: relative;
   }
 
-  .fade-in-out {
+  .fade-out {
     opacity: 1;
   }
 </style>

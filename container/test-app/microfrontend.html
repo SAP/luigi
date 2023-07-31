@@ -1,221 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <title></title>
-  <meta charset="utf-8" />
-  <link href="https://fiddle.luigi-project.io/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet" />
-  <!-- <link href="https://fiddle.luigi-project.io/styles/styles.css" rel="stylesheet" /> -->
-  <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
-  <style>
-    html,
-    body {
-      position: relative;
-    }
-
-    #imgCnt img {
-      width: 100%;
-    }
-
-    #imgCnt {
-      text-align: center;
-    }
-
-    #textCnt {
-      padding: 30px;
-      text-align: center;
-      font-family: '72', sans-serif;
-      visibility: hidden;
-    }
-
-    #textCnt.visible {
-      visibility: visible;
-    }
-  </style>
-</head>
-
-<body style="-webkit-font-smoothing: antialiased; color: #515559;">
-  <div id="imgCnt"></div>
-  <div id="textCnt">
-    <h1 id="title">Multi purpose demo page</h1>
-    <p id="content">Some content</p>
-    <button onclick="testNav()">test navigate</button>
-    <button onclick="testCustom()">test custom message</button>
-    <button onclick="testAddSearchParams()">Test add search params</button>
-    <button onclick="testAddNodeParams()">Test add node params</button>
-    <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
-    <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
-    <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
-    <button onclick="testGetContext()">Get Context</button>
-
-    <button onclick="testSetCurrentLocale()">test set current locale</button>
-    <button onclick="testSetLocalStorage()">test set local storage</button>
-    <button onclick="testRuntimeErrorRequest()">test runtime error handling request</button>
-    <button onclick="testSetAnchorLink()">test set anchor link </button>
-    <button onclick="testBackNavigation()">test back navigation</button>
-    <button onclick="testGetCurrentRoute()">test get current route</button>
-    <button onclick="testNavigationFinished()">test navigate.ok </button>
-    <button onclick="testUpdateModalPath()">test update modal path</button>
-    <button onclick="testCheckPathExists()">test check path exists</button>
-    <button onclick="testSetDirtyStatus()">test set dirty status</button>
-    <button onclick="testShowAlert()">test show alert</button>
-
-  </div>
-  <script>
-    // List of onclick handlers for client calls
-    function testNav() {
-      LuigiClient.linkManager().navigate('/');
-    }
-
-    function testCustom() {
-      LuigiClient.sendCustomMessage({ id: 'my.customMessage', bar: 'foo' });
-    }
-
-    function testAddSearchParams() {
-      LuigiClient.addCoreSearchParams({ luigi: 'searchParams' }, false);
-    }
-
-    function testAddNodeParams() {
-      LuigiClient.addNodeParams({ luigi: 'Ndoeparams' }, true);
-    }
-
-    function testShowConfirmationModal() {
-      const settings = {
-        type: "confirmation",
-        header: "Confirmation",
-        body: "Are you sure you want to do this?",
-        buttonConfirm: "Yes",
-        buttonDismiss: "No"
+  <head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link
+      href="https://fiddle.luigi-project.io/vendor/fundamental-styles/dist/fundamental-styles.css"
+      rel="stylesheet"
+    />
+    <!-- <link href="https://fiddle.luigi-project.io/styles/styles.css" rel="stylesheet" /> -->
+    <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
+    <style>
+      html,
+      body {
+        position: relative;
       }
-      LuigiClient
-        .uxManager()
-        .showConfirmationModal(settings);
-    }
 
-    function testShowLoadingIndicator() {
-      LuigiClient.uxManager().showLoadingIndicator();
-    }
-
-    function testHideLoadingIndicator() {
-      LuigiClient.uxManager().hideLoadingIndicator();
-    }
-
-    // function testShowAlert() {
-    //   const settings = {
-    //     text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
-    //     type: 'info'
-    //   };
-    //   LuigiClient.uxManager().showAlert(settings);
-    // }
-
-    function testGetContext() {
-      alert('LuigiClient.getContext()() called' + JSON.stringify(LuigiClient.getContext()));
-    }
-
-    function testSetCurrentLocale() {
-      LuigiClient.uxManager().setCurrentLocale('en');
-    }
-
-    function testSetLocalStorage() {
-      LuigiClient.storageManager().setItem('keyExample', 'valueExample').then();;
-    }
-
-    // this is ran only when client is initialized and an error has occurred
-    function testRuntimeErrorRequest() {
-      // since this scenario is not caused by a luigi client call, 
-      // here we intentionally cause an error that is then to be catched by the client internally. The latter then sends a message to core with runtime error message
-      const badCode = "const s;";
-      eval(badCode);
-    }
-
-    function testSetAnchorLink() {
-      LuigiClient.setAnchor('luigi');
-    }
-
-    function testBackNavigation() {
-      LuigiClient.linkManager().goBack();
-    }
-
-    function testGetCurrentRoute() {
-      LuigiClient.linkManager().getCurrentRoute();
-    }
-
-    function testNavigationFinished() {
-      // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
-    }
-
-    function testUpdateModalPath() {
-      LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
-    }
-
-    function testCheckPathExists() {
-      LuigiClient.linkManager().pathExists('/projects/pr2')
-    }
-
-    function testSetDirtyStatus() {
-      LuigiClient.uxManager().setDirtyStatus(true);
-    }
-
-    function testShowAlert() {
-      let dt = new Date();
-      let time = dt.getMilliseconds() + "";
-      time = time.substr(time.length - 3);
-      const settings = {
-        text: "This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}" + time,
-        type: 'info',
-        links: {
-          goToHome: { text: 'homepage', url: '/overview' },
-          goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-          relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
-          neverShowItAgain: { text: 'Don\'t show this again', dismissKey: 'neverShowItAgain' }
-        },
-        closeAfter: 300000
+      #imgCnt img {
+        width: 100%;
       }
-      LuigiClient
-        .uxManager()
-        .showAlert(settings)
-        .then((param) => {
-          console.log('Callback called on microfrontend', param);
-        });
-    }
 
-
-
-
-    function updateFn(context) {
-      console.log('context updated', context)
-      if (context.title) {
-        document.getElementById('title').innerHTML = context.title;
+      #imgCnt {
+        text-align: center;
       }
-      if (context.content) {
-        document.getElementById('content').innerHTML = context.content;
-      }
-      if (context.imgUrl) {
-        var iwidth = !isNaN(context.imgWidth)
-          ? 'width: ' + context.imgWidth + 'px'
-          : '';
-        document.getElementById('imgCnt').innerHTML =
-          "<img src='" +
-          context.imgUrl +
-          "' style='" +
-          iwidth +
-          '; margin-top: ' +
-          (context.imgTopMargin ? '5' : '') +
-          "0px'>";
-      }
-      document.getElementById('textCnt').classList.add('visible');
-    }
-    LuigiClient.addInitListener(updateFn);
-    LuigiClient.addContextUpdateListener(updateFn);
-    LuigiClient.addCustomMessageListener('update', data => {
-      document.getElementById('content').innerHTML = new Date().getMilliseconds();
-    });
 
-    // fallback visibility if no initlistener called for 3 seconds
-    setTimeout(function () {
-      document.getElementById('textCnt').classList.add('visible');
-    }, 3000);
-  </script>
-</body>
+      #textCnt {
+        padding: 30px;
+        text-align: center;
+        font-family: '72', sans-serif;
+        visibility: hidden;
+      }
 
+      #textCnt.visible {
+        visibility: visible;
+      }
+    </style>
+  </head>
+
+  <body style="-webkit-font-smoothing: antialiased; color: #515559;">
+    <div id="imgCnt"></div>
+    <div id="textCnt">
+      <h1 id="title">Multi purpose demo page</h1>
+      <p id="content">Some content</p>
+      <button onclick="testNav()">test navigate</button>
+      <button onclick="testCustom()">test custom message</button>
+      <button onclick="testAddSearchParams()">Test add search params</button>
+      <button onclick="testAddNodeParams()">Test add node params</button>
+      <button onclick="testShowConfirmationModal()">test show confirmation modal</button>
+      <button onclick="testShowLoadingIndicator()">test show loading indicator</button>
+      <button onclick="testHideLoadingIndicator()">test hide loading indicator</button>
+      <button onclick="testGetContext()">Get Context</button>
+
+      <button onclick="testSetCurrentLocale()">test set current locale</button>
+      <button onclick="testSetLocalStorage()">test set local storage</button>
+      <button onclick="testRuntimeErrorRequest()">
+        test runtime error handling request
+      </button>
+      <button onclick="testSetAnchorLink()">test set anchor link</button>
+      <button onclick="testBackNavigation()">test back navigation</button>
+      <button onclick="testGetCurrentRoute()">test get current route</button>
+      <button onclick="testNavigationFinished()">test navigate.ok</button>
+      <button onclick="testUpdateModalPath()">test update modal path</button>
+      <button onclick="testCheckPathExists()">test check path exists</button>
+      <button onclick="testSetDirtyStatus()">test set dirty status</button>
+      <button onclick="testShowAlert()">test show alert</button>
+    </div>
+    <script>
+      // List of onclick handlers for client calls
+      function testNav() {
+        LuigiClient.linkManager().navigate('/');
+      }
+
+      function testCustom() {
+        LuigiClient.sendCustomMessage({ id: 'my.customMessage', bar: 'foo' });
+      }
+
+      function testAddSearchParams() {
+        LuigiClient.addCoreSearchParams({ luigi: 'searchParams' }, false);
+      }
+
+      function testAddNodeParams() {
+        LuigiClient.addNodeParams({ luigi: 'Ndoeparams' }, true);
+      }
+
+      function testShowConfirmationModal() {
+        const settings = {
+          type: 'confirmation',
+          header: 'Confirmation',
+          body: 'Are you sure you want to do this?',
+          buttonConfirm: 'Yes',
+          buttonDismiss: 'No'
+        };
+        LuigiClient.uxManager().showConfirmationModal(settings);
+      }
+
+      function testShowLoadingIndicator() {
+        LuigiClient.uxManager().showLoadingIndicator();
+      }
+
+      function testHideLoadingIndicator() {
+        LuigiClient.uxManager().hideLoadingIndicator();
+      }
+
+      function testGetContext() {
+        alert(
+          'LuigiClient.getContext()() called' + JSON.stringify(LuigiClient.getContext())
+        );
+      }
+
+      function testSetCurrentLocale() {
+        LuigiClient.uxManager().setCurrentLocale('en');
+      }
+
+      function testSetLocalStorage() {
+        LuigiClient.storageManager()
+          .setItem('keyExample', 'valueExample')
+          .then();
+      }
+
+      // this is ran only when client is initialized and an error has occurred
+      function testRuntimeErrorRequest() {
+        // since this scenario is not caused by a luigi client call,
+        // here we intentionally cause an error that is then to be catched by the client internally. The latter then sends a message to core with runtime error message
+        const badCode = 'const s;';
+        eval(badCode);
+      }
+
+      function testSetAnchorLink() {
+        LuigiClient.setAnchor('luigi');
+      }
+
+      function testBackNavigation() {
+        LuigiClient.linkManager().goBack();
+      }
+
+      function testGetCurrentRoute() {
+        LuigiClient.linkManager().getCurrentRoute();
+      }
+
+      function testNavigationFinished() {
+        // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
+      }
+
+      function testUpdateModalPath() {
+        LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend');
+      }
+
+      function testCheckPathExists() {
+        LuigiClient.linkManager().pathExists('/projects/pr2');
+      }
+
+      function testSetDirtyStatus() {
+        LuigiClient.uxManager().setDirtyStatus(true);
+      }
+
+      function testShowAlert() {
+        let dt = new Date();
+        let time = dt.getMilliseconds() + '';
+        time = time.substr(time.length - 3);
+        const settings = {
+          text:
+            'This is an alert message {goToHome} with a {relativePath}. You can go to {goToOtherProject}. {neverShowItAgain}' +
+            time,
+          type: 'info',
+          links: {
+            goToHome: { text: 'homepage', url: '/overview' },
+            goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+            relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+            neverShowItAgain: {
+              text: "Don't show this again",
+              dismissKey: 'neverShowItAgain'
+            }
+          },
+          closeAfter: 300000
+        };
+        LuigiClient.uxManager()
+          .showAlert(settings)
+          .then(param => {
+            console.log('Callback called on microfrontend', param);
+          });
+      }
+
+      function updateFn(context) {
+        console.log('context updated', context);
+        if (context.title) {
+          document.getElementById('title').innerHTML = context.title;
+        }
+        if (context.content) {
+          document.getElementById('content').innerHTML = context.content;
+        }
+        if (context.imgUrl) {
+          var iwidth = !isNaN(context.imgWidth)
+            ? 'width: ' + context.imgWidth + 'px'
+            : '';
+          document.getElementById('imgCnt').innerHTML =
+            "<img src='" +
+            context.imgUrl +
+            "' style='" +
+            iwidth +
+            '; margin-top: ' +
+            (context.imgTopMargin ? '5' : '') +
+            "0px'>";
+        }
+        document.getElementById('textCnt').classList.add('visible');
+      }
+      LuigiClient.addInitListener(updateFn);
+      LuigiClient.addContextUpdateListener(updateFn);
+      LuigiClient.addCustomMessageListener('update', data => {
+        document.getElementById('content').innerHTML = new Date().getMilliseconds();
+      });
+
+      // fallback visibility if no initlistener called for 3 seconds
+      setTimeout(function() {
+        document.getElementById('textCnt').classList.add('visible');
+      }, 3000);
+    </script>
+  </body>
 </html>

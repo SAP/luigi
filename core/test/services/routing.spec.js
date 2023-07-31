@@ -391,6 +391,7 @@ describe('Routing', function() {
     const wc_id = 'wc-id';
     let node = {};
     let wc = {};
+    let componentCtx = {};
 
     afterEach(() => {
       sinon.restore();
@@ -403,7 +404,11 @@ describe('Routing', function() {
         context: { luigi: 'rocks' }
       };
       wc = { _luigi_node: node, context: {} };
-      c = { get: () => {} };
+      c = {
+        get: () => {
+          return { context: componentCtx };
+        }
+      };
     });
 
     it('navigateWebComponent only context update', () => {
@@ -423,7 +428,7 @@ describe('Routing', function() {
       });
 
       //context update
-      node.context = { luigi: 'rocks 2x' };
+      componentCtx = { luigi: 'rocks 2x' };
       Routing.navigateWebComponent(c, node);
       assert.deepEqual(wc.context, { luigi: 'rocks 2x' });
       sinon.assert.notCalled(Routing.removeLastChildFromWCContainer);
