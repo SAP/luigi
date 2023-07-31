@@ -14,7 +14,7 @@ You are welcome to contribute with your pull requests. These steps explain the c
 3. [Add tests](#testing) for your code, especially if you are updating the Luigi Core and Client API.
 4. If you've changed APIs, update the documentation. You can find more details on how to do that [here](docs/content-guidelines.md/#API-documentation).
 5. If you are adding documentation, follow the [content guidelines](docs/content-guidelines.md).
-6. Make sure the tests pass. Our [pipeline](https://travis-ci.com/SAP/luigi) is running the unit and e2e tests for your PR and will indicate any issues.
+6. Make sure the tests pass. Our [pipeline](https://github.com/SAP/luigi/actions) is running the unit and e2e tests for your PR and will indicate any issues.
 7. Sign the Developer Certificate of Origin (DCO).
 
 ## Testing

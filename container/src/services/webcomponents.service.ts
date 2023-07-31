@@ -1,9 +1,11 @@
 import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from './web-component-helpers';
 import { ContainerService } from './container.service';
+import { Events } from '../constants/communication';
 
 /** Methods for dealing with web components based micro frontend handling */
 export class WebComponentService {
   containerService: ContainerService;
+  thisComponent: any;
 
   constructor() {
     this.containerService = new ContainerService();
@@ -39,24 +41,68 @@ export class WebComponentService {
     }
   }
 
+  /**
+   * Function that uses the current instance of the containerService to dispatch a Luigi event to the current instance of the container
+   * that is 'thisComponent'
+   * @param msg the message to be delivered
+   * @param data the data to be sent
+   * @param callback the callback function to be called
+   */
+  dispatchLuigiEvent(msg: string, data: any, callback?: Function) {
+    this.containerService.dispatch(msg, this.thisComponent, data, callback);
+  }
+
+  /**
+   * This function is used to create the Luigi Client API for the web-component-based micro frontend.
+
+   * As the function expands with more functionality, it might be moved to a separate class.
+   * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
+   * @param nodeId refers to an attribute of the web component to be identified from the rest
+   * @param wc_id a tagname that is used when creating the web component element
+
+   * @returns an object with the Luigi Client API
+
+   */
   createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
-      linkManager: () => {}, //window.Luigi.navigation,
-      uxManager: () => {
+      linkManager: () => {
         return {
-          showAlert: alertSettings => {},
-          showConfirmationModal: async settings => {
-            return new Promise((resolve, reject) => {
-              resolve(true);
-            });
+          navigate: route => {
+            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route });
           }
         };
-      }, //window.Luigi.ux,
-      getCurrentLocale: () => {}, //() => window.Luigi.i18n().getCurrentLocale(),
+      },
+      uxManager: () => {
+        return {
+          showAlert: alertSettings => {
+            this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
+          },
+          showConfirmationModal: async settings => {
+            return new Promise((resolve, reject) => {
+              this.dispatchLuigiEvent(Events.SHOW_CONFIRMATION_MODAL_REQUEST, settings, data => {
+                if (data) {
+                  resolve(data);
+                } else {
+                  reject();
+                }
+              });
+            });
+          },
+          getCurrentTheme: () => {
+            return this.thisComponent.getAttribute('theme');
+          }
+        };
+      },
+      getCurrentLocale: () => {
+        return this.thisComponent.getAttribute('locale');
+      },
+      getActiveFeatureToggles: () => {
+        return this.thisComponent.getAttribute('active_feature_toggle_list');
+      },
       publishEvent: ev => {
-        // if (eventBusElement.eventBus) {
-        // eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
-        // }
+        if (eventBusElement && eventBusElement.eventBus) {
+          eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
+        }
       }
     };
   }

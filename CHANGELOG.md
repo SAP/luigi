@@ -25,6 +25,27 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.3.0] (2023-07-28)
+
+#### :rocket: Added
+* [#3339](https://github.com/SAP/luigi/pull/3339) Write updated modal settings to url ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3326](https://github.com/SAP/luigi/pull/3326) Expand category by navigation ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3234](https://github.com/SAP/luigi/pull/3234) Transfer theme vars ([@hardl](https://github.com/hardl))
+* [#3285](https://github.com/SAP/luigi/pull/3285) Semicollapsible with button ([@hardl](https://github.com/hardl))
+* [#3294](https://github.com/SAP/luigi/pull/3294) Removed internet explorer logic ([@somabagyinszky7](https://github.com/somabagyinszky7))
+
+#### :bug: Fixed
+* [#3366](https://github.com/SAP/luigi/pull/3366) Fix incomplete context for tabheader mfe ([@hardl](https://github.com/hardl))
+* [#3358](https://github.com/SAP/luigi/pull/3358) Remove wc node when navigate away ([@hardl](https://github.com/hardl))
+* [#3357](https://github.com/SAP/luigi/pull/3357) Tabnav: no context passed to accessibilityResolver ([@hardl](https://github.com/hardl))
+* [#3340](https://github.com/SAP/luigi/pull/3340) Bug-fix: close modal loadingIndicator enabled ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3333](https://github.com/SAP/luigi/pull/3333) Bug-fix: No rendering of categories without children ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3301](https://github.com/SAP/luigi/pull/3301) Added helper method for calculating shellbar height ([@somabagyinszky7](https://github.com/somabagyinszky7))
+* [#3302](https://github.com/SAP/luigi/pull/3302) Changed configChanged scope for vgdata ([@hardl](https://github.com/hardl))
+
+
+
+
 ## [v2.2.1] (2023-05-26)
 
 #### :bug: Fixed
@@ -629,7 +650,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 - [#1477](https://github.com/SAP/luigi/pull/1477) ContextSwitcher fix selected state ([@maxmarkus](https://github.com/maxmarkus))
 - [#1441](https://github.com/SAP/luigi/pull/1441) Navigation with and without params on the same node ([@ndricimrr](https://github.com/ndricimrr))
 
-> With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
+> With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-deprecated-components-side-navigation--docs).
 
 ## [v1.2.4](2020-07-02)
 
@@ -1541,3 +1562,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.1.0]: https://github.com/SAP/luigi/compare/v2.0.1...v2.1.0
 [v2.2.0]: https://github.com/SAP/luigi/compare/v2.1.0...v2.2.0
 [v2.2.1]: https://github.com/SAP/luigi/compare/v2.2.0...v2.2.1
+[v2.3.0]: https://github.com/SAP/luigi/compare/v2.2.1...v2.3.0

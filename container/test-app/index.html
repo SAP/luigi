@@ -120,6 +120,11 @@
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Calendar</a
                 >
+                <a
+                  href="#hello-world-wc"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Simple Web Component</a
+                >
               </div>
             </div>
           </div>
@@ -246,6 +251,11 @@
             class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >Calendar</a
           >
+          <a
+            href="#hello-world-wc"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Simple Web Component</a
+          >
         </div>
       </div>
     </nav>
@@ -274,6 +284,16 @@
         viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/main.js"
         webcomponent="true"
         context='{"label": "Calendar"}'
+      ></luigi-container>
+    </div>
+    <div class="lui-wrapper" route="hello-world-wc">
+      <luigi-container
+        viewURL="./helloWorldWC.js"
+        webcomponent="true"
+        context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
+        locale="en"
+        theme="sap_fiori_3"
+        active_feature_toggle_list="['ft1','ft2']"
       ></luigi-container>
     </div>
 
