@@ -6,11 +6,15 @@ describe('Iframe Container Test', () => {
     cy.get('[data-test-id="iframe-based-container-test"]')
       .shadow()
       .get('iframe')
-      .then((iframe) => {
-        const $body = iframe.contents().find('body')
+      .then(iframe => {
+        const $body = iframe.contents().find('body');
         cy.wrap($body)
           .contains('test navigate')
-          .click()
-      })
+          .click();
+
+        cy.location().should(loc => {
+          expect(loc.href).to.eq('http://localhost:8080/#/');
+        });
+      });
   });
 });
