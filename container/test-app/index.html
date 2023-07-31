@@ -419,6 +419,10 @@
             event.luigiCallback(val);
           }
         );
+        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+          console.log('Custom Event', event);
+          alert(event.detail.name);
+        });
 
         //...
       });

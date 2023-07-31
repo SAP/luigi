@@ -63,7 +63,7 @@ export class WebComponentService {
    * @returns an object with the Luigi Client API
 
    */
-  createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement) {
     return {
       linkManager: () => {
         return {
@@ -104,13 +104,19 @@ export class WebComponentService {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
 
-        this.dispatchLuigiEvent(Events.CUSTOM_MESSAGE, { name: ev.type, data: ev.detail, nodeId, wc_id });
+        this.dispatchLuigiEvent(Events.CUSTOM_MESSAGE, {
+          name: ev.type,
+          data: ev.detail,
+          nodeId,
+          wc_id,
+          src: component
+        });
       }
     };
   }
 
   initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string) {
-    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id);
+    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc);
 
     if (wc.__postProcess) {
       const url =
