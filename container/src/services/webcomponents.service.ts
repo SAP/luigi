@@ -103,6 +103,8 @@ export class WebComponentService {
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
+
+        this.dispatchLuigiEvent(Events.CUSTOM_MESSAGE, { name: ev.type, data: ev.detail, nodeId, wc_id });
       }
     };
   }
