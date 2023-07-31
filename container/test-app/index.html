@@ -104,6 +104,12 @@
                 >
 
                 <a
+                  href="#dashboard2"
+                  class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Dashboard2</a
+                >
+
+                <a
                   href="#team"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Team</a
@@ -119,6 +125,16 @@
                   href="#calendar"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Calendar</a
+                >
+                <a
+                  href="#test"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Test</a
+                >
+                <a
+                  href="#test2"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Test2</a
                 >
                 <a
                   href="#hello-world-wc"
@@ -235,6 +251,13 @@
           >
 
           <a
+            href="#dashboard2"
+            class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+            aria-current="page"
+            >Dashboard2</a
+          >
+
+          <a
             href="#team"
             class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >Team</a
@@ -252,6 +275,11 @@
             >Calendar</a
           >
           <a
+            href="#test"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Test</a
+          >
+          <a
             href="#hello-world-wc"
             class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >Simple Web Component</a
@@ -263,9 +291,20 @@
     <!-- LUIGI Micro Frontends -->
     <div class="lui-wrapper" route="dashboard">
       <luigi-compound-container
+        id="dashboard"
         context='{"label": "Dashboard"}'
       ></luigi-compound-container>
     </div>
+    <div class="lui-wrapper" route="dashboard2">
+      <luigi-compound-container
+        id="nested-wc-compound-container"
+        context='{"label": "Dashboard2", "title":"Dashboard2"}'
+        skipInitCheck="false"
+        viewUrl="http://localhost:8080/nested.js"
+      ></luigi-compound-container>
+    </div>
+    <!-- viewUrl="http://localhost:8080/nested.js" -->
+    <!-- https://luigiwebcomponents.gitlab.io/nested.js skipInitCheck="true"-->
     <div class="lui-wrapper" route="team">
       <luigi-container
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
@@ -284,6 +323,22 @@
         viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/main.js"
         webcomponent="true"
         context='{"label": "Calendar"}'
+        id="calendar"
+      ></luigi-container>
+    </div>
+    <div class="lui-wrapper" route="test">
+      <luigi-container
+        viewURL="http://localhost:8080/test.js"
+        webcomponent="true"
+        id="test-defer-init-false"
+        skipInitCheck="true"
+      ></luigi-container>
+    </div>
+    <div class="lui-wrapper" route="test2">
+      <luigi-container
+        viewURL="http://localhost:8080/test2.js"
+        webcomponent="true"
+        id="test-defer-init-true"
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="hello-world-wc">
@@ -301,7 +356,7 @@
       var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
       var utilMFEDomain = 'https://luigiwebcomponents.gitlab.io/util';
       import MFEventID from './bundle.js';
-      document.querySelector('luigi-compound-container').compoundConfig = {
+      document.getElementById('dashboard').compoundConfig = {
         renderer: {
           use: 'grid',
           config: {
@@ -392,6 +447,49 @@
         ]
       };
 
+      document.getElementById('nested-wc-compound-container').compoundConfig = {
+        children: [
+          {
+            viewUrl: layoutMFEDomain + '/panelHeader.js',
+            context: {
+              title: 'My Awesome Grid',
+              description: 'Really awesome'
+            },
+            layoutConfig: {
+              slot: 'header'
+            },
+            eventListeners: [
+              {
+                source: 'input1',
+                name: 'sendInput',
+                action: 'update',
+                dataConverter: data => {
+                  return 'new text: ' + data;
+                }
+              }
+            ]
+          },
+          {
+            viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
+            context: {
+              label: 'Another web component'
+            },
+            layoutConfig: {
+              slot: 'content'
+            }
+          },
+          {
+            viewUrl: layoutMFEDomain + '/panelFooter.js',
+            context: {
+              footer: 'This is the end of awesomeness'
+            },
+            layoutConfig: {
+              slot: 'footer'
+            }
+          }
+        ]
+      };
+
       [
         ...document.querySelectorAll('luigi-container'),
         ...document.querySelectorAll('luigi-compound-container')
@@ -417,6 +515,30 @@
 
         //...
       });
+      let testDeferInitFalse = document.getElementById('test-defer-init-false');
+      if (!testDeferInitFalse.initialized) {
+        testDeferInitFalse.addEventListener(MFEventID.INITIALIZED, () => {
+          console.log('mfe is ready now!');
+        });
+      } else {
+        console.log('mfe immediately ready');
+      }
+      let testDeferInitTrue = document.getElementById('test-defer-init-true');
+      if (!testDeferInitTrue.initialized) {
+        testDeferInitTrue.addEventListener(MFEventID.INITIALIZED, () => {
+          console.log('mfe is ready now! 2');
+        });
+      } else {
+        console.log('mfe immediately ready 2');
+      }
+      let skipInitCheckCompoundCtn = document.getElementById(
+        'nested-wc-compound-container'
+      );
+      if (!skipInitCheckCompoundCtn.initialized) {
+        skipInitCheckCompoundCtn.addEventListener(MFEventID.INITIALIZED, () => {
+          console.log('compoundTest is ready now!');
+        });
+      }
     </script>
   </body>
 </html>

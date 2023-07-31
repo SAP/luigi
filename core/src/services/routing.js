@@ -502,6 +502,11 @@ class RoutingClass {
         }
       }
 
+      const tabHeaderCnt = document.querySelector('.lui-tab-header');
+      if (tabHeaderCnt) {
+        tabHeaderCnt.dispatchEvent(new Event('lui_ctx_update'));
+      }
+
       Navigation.onNodeChange(previousCompData.currentNode, currentNode);
     } catch (err) {
       console.info('Could not handle route change', err);
@@ -641,17 +646,18 @@ class RoutingClass {
   navigateWebComponent(component, navNode) {
     let wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
     const wc_id = this.getGeneratedWCId(navNode);
+
+    const componentData = component.get();
     // if true, do only a context update and not rerender the wc
     if (navNode === wc_containerNode) {
       const wc = document.querySelector(wc_id);
-      wc.context = navNode.context;
+      wc.context = componentData.context;
       return;
     }
 
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
-    const componentData = component.get();
     WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
   }
 
