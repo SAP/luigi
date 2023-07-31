@@ -12,7 +12,7 @@
 
   let compoundConfig;
 
-  let initialized = false;
+  let initProcessed = false;
   let mainComponent;
   let eventBusElement;
 
@@ -28,12 +28,8 @@
   const thisComponent = get_current_component();
   let deferInit = !!thisComponent.attributes['defer-init'];
 
-  function canMfeInitialized(): boolean {
-    return !!skipinitcheck;
-  }
-
   thisComponent.init = () => {
-    if (!thisComponent.compoundConfig || initialized) {
+    if (!thisComponent.compoundConfig || initProcessed) {
       return;
     }
     const ctx = context ? JSON.parse(context) : {};
@@ -47,8 +43,8 @@
       .renderWebComponentCompound(node, mainComponent, ctx)
       .then(compCnt => {
         eventBusElement = compCnt;
-        if (canMfeInitialized()) {
-          thisComponent.isMfeInitialized = true;
+        if (skipinitcheck === 'true' || !node.viewUrl) {
+          thisComponent.initialized = true;
           setTimeout(() => {
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           });
@@ -56,11 +52,11 @@
           (eventBusElement as any).LuigiClient &&
           !(eventBusElement as any).deferLuigiClientWCInit
         ) {
-          thisComponent.isMfeInitialized = true;
+          thisComponent.initialized = true;
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         }
       });
-    initialized = true;
+    initProcessed = true;
   };
 
   containerService.registerContainer(thisComponent);

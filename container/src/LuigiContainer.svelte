@@ -62,18 +62,14 @@
     return !!webcomponent;
   }
 
-  function canMfeInitialized(): boolean {
-    return !!skipinitcheck;
-  }
-
   onMount(async () => {
     const ctx = context ? JSON.parse(context) : {};
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
     }
-    if (canMfeInitialized()) {
-      thisComponent.isMfeInitialized = true;
+    if (skipinitcheck === 'true') {
+      thisComponent.initialized = true;
       setTimeout(() => {
         webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
       });
@@ -83,7 +79,7 @@
           !(mainComponent as any)._luigi_mfe_webcomponent
             ?.deferLuigiClientWCInit
         ) {
-          thisComponent.isMfeInitialized = true;
+          thisComponent.initialized = true;
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         }
       });
