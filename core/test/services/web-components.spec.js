@@ -91,6 +91,7 @@ describe('WebComponentService', function() {
 
       const myEl = Object.create(MyLuigiElement.prototype, {});
       sb.stub(myEl, '__postProcess').callsFake(() => {});
+      sb.stub(myEl, 'setAttribute').callsFake(() => {});
       sb.stub(document, 'createElement')
         .callThrough()
         .withArgs('my-wc')
@@ -104,6 +105,7 @@ describe('WebComponentService', function() {
       WebComponentService.attachWC(wc_id, itemPlaceholder, container, ctx, 'http://localhost:8080/');
 
       assert(myEl.__postProcess.calledOnce, '__postProcess should be called');
+      expect(myEl.setAttribute.calledWith('lui_web_component', true)).to.equal(true);
     });
   });
 

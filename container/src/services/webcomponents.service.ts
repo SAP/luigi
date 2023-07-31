@@ -33,11 +33,11 @@ export class WebComponentService {
       }
 
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
-
       wc_container.replaceChild(wc, wcItemPlaceholder);
       if (wc_container._luigi_node) {
         wc_container._luigi_mfe_webcomponent = wc;
       }
+      wc_container.dispatchEvent(new Event('wc_ready'));
     }
   }
 
@@ -54,14 +54,11 @@ export class WebComponentService {
 
   /**
    * This function is used to create the Luigi Client API for the web-component-based micro frontend.
-
    * As the function expands with more functionality, it might be moved to a separate class.
    * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
    * @param nodeId refers to an attribute of the web component to be identified from the rest
    * @param wc_id a tagname that is used when creating the web component element
-
    * @returns an object with the Luigi Client API
-
    */
   createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
     return {
@@ -103,6 +100,9 @@ export class WebComponentService {
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
+      },
+      luigiClientInit: () => {
+        this.dispatchLuigiEvent(Events.INITIALIZED, {});
       }
     };
   }
@@ -315,7 +315,6 @@ export class WebComponentService {
     }
 
     renderer = renderer || new DefaultCompoundRenderer();
-
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, context).then((compoundCnt: HTMLElement) => {
         const ebListeners = {};
