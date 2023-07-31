@@ -25,6 +25,7 @@ class WebComponentSvcClass {
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
+      wc.setAttribute('lui_web_component', true);
 
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
 

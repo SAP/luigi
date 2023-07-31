@@ -1290,7 +1290,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.3.0
 
 ## Luigi.featureToggles()
 
