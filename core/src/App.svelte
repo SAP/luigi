@@ -1398,11 +1398,7 @@
             !currentNode.loadingIndicator ||
             currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
-            if(GenericHelpers.canFadeOutLoadingIndicator()){
-              setTimeout(()=>{
-                showLoadingIndicator = false;
-              }, 250);
-            };
+              fadeOutAppLoadingIndicator();
           }
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
@@ -1847,6 +1843,21 @@
     }
   };
 
+  /**
+   * This function will be called if the LuigiClient requested the context.
+   * That means spinner can fade out in order to display the mf.
+   * After 250 ms the spinner will be removed from DOM.
+   */
+  function fadeOutAppLoadingIndicator(){
+    const spinnerContainer = document.querySelector('.spinnerContainer.appSpinner');
+    if (spinnerContainer && spinnerContainer.classList.contains('fade-out')) {
+      spinnerContainer.classList.remove('fade-out');
+      setTimeout(()=>{
+        showLoadingIndicator = false;
+      }, 250)
+    }
+  }
+
   export const pathExists = async (path) => {
     const data = {
       link: path,
@@ -2025,7 +2036,7 @@
   </Backdrop>
   {#if showLoadingIndicator}
     <div
-      class="fd-page spinnerContainer fade-in-out"
+      class="fd-page spinnerContainer appSpinner fade-out"
       aria-hidden="false"
       aria-label="Loading"
     >
@@ -2212,7 +2223,7 @@
     transition: opacity 0.25s;
   }
 
-  .fade-in-out {
+  .fade-out {
     opacity: 1;
   }
 
