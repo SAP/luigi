@@ -9,7 +9,7 @@ declare -a FOLDERS=("client"
                     "core"
                     "website/landingpage/dev"
                     "website/fiddle"
-                    "plugins",
+                    "plugins"
                     "container"
                    )
 
