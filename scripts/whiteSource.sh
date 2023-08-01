@@ -14,6 +14,7 @@ declare -a FOLDERS=("client"
                     "client-frameworks-support/client-support-ui5"                  
                     "client-frameworks-support/client-support-angular"
                     "client-frameworks-support/testing-utilities"
+                    "cra-template"
                    )
 
 # Project tokens for corresponding folders
@@ -26,6 +27,7 @@ declare -a PROJECT_TOKENS=("a63fd5aaaa2343199327aac6d3e2b5346e930927d66441bf9211
                            "e24f24fa43fc4a47974d2691f39012e04cbd76efa77d4d0db0b3c82c42f0ee58"
                            "314e91b6c0864db09077ab4af1c802ffce5af09c2c314065bb8868f8b0393ce1"
                            "ba242462d46e4d98870ae5d00b95ec3c4782cf2647da44868be0fc3a0803caca"
+                           "051175da8d05416188b9d0dc92fa511bec7a7e3f4b3742e0a1336dba7bbb1a29"
                           )
 
 CACHED_WHITESOURCE_UA=~/.cache/whitesource/wss-unified-agent.jar
