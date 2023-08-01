@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - 'extend-whitesource-scan'
+      - 'main'
 name: Whitesource Scan
 jobs:
   whitesource:
