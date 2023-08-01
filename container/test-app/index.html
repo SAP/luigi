@@ -141,6 +141,11 @@
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Simple Web Component</a
                 >
+                <a
+                  href="#error-handling"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Err</a
+                >
               </div>
             </div>
           </div>
@@ -350,6 +355,19 @@
         theme="sap_fiori_3"
         active_feature_toggle_list="['ft1','ft2']"
       ></luigi-container>
+    </div>
+    <div class="lui-wrapper" route="error-test">
+      <luigi-container
+        viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/mainasdad.js"
+        webcomponent="true"
+        context='{"label": "Error Handler"}'
+      ></luigi-container>
+      <luigi-container
+        viewURL="test.js"
+        webcomponent="true"
+        context='{"label": "Error Handler WC 2"}'
+      >
+      </luigi-container>
     </div>
 
     <script type="module">
