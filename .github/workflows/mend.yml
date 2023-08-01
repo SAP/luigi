@@ -26,4 +26,10 @@ jobs:
       - run: npm --prefix ./core ci ./core
       - run: npm --prefix ./website/landingpage/dev install ./website/landingpage/dev
       - run: npm --prefix ./website/fiddle install ./website/fiddle
+      - run: npm --prefix ./plugins install ./plugins
+      - run: npm --prefix ./container install ./container
+      - run: npm --prefix ./client-frameworks-support/client-support-ui5 install ./client-frameworks-support/client-support-ui5
+      - run: npm --prefix ./client-frameworks-support/client-support-angular install ./client-frameworks-support/client-support-angular
+      - run: npm --prefix ./client-frameworks-support/testing-utilities install ./client-frameworks-support/testing-utilities
+      - run: npm --prefix ./cra-template install ./cra-template
       - run: bash ./scripts/whiteSource.sh
