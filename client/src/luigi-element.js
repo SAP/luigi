@@ -10,6 +10,7 @@ export class LuigiElement extends HTMLElement {
       delegatesFocus: false
     });
     this.__initialized = false;
+    this.deferLuigiClientWCInit = options ? options.deferLuigiClientWCInit : false;
   }
 
   /**
