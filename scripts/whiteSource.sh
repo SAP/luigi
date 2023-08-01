@@ -11,9 +11,9 @@ declare -a FOLDERS=("client"
                     "website/fiddle"
                     "plugins"
                     "container"
-                    "client-framework-support/client-support-ui5"
-                    "client-framework-support/client-support-angular"
-                    "client-framework-support/testing-utilities"
+                    "client-frameworks-support/client-support-ui5"                  
+                    "client-frameworks-support/client-support-angular"
+                    "client-frameworks-support/testing-utilities"
                    )
 
 # Project tokens for corresponding folders
