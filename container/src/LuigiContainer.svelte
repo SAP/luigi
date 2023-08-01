@@ -5,6 +5,8 @@
   export let context;
   export let label;
   export let webcomponent;
+  // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialized` to mfe. Mfe is immediately ready.
+  export let skipinitcheck;
   export let locale;
   export let theme;
   export let active_feature_toggle_list;
@@ -22,6 +24,7 @@
   import { WebComponentService } from './services/webcomponents.service';
   import { LuigiInternalMessageID } from './constants/internal-communication';
   import { ContainerAPI } from './api/container-api';
+  import { Events } from './constants/communication';
 
   const webcomponentService = new WebComponentService();
 
@@ -64,6 +67,22 @@
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
+    }
+    if (skipinitcheck === 'true') {
+      thisComponent.initialized = true;
+      setTimeout(() => {
+        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+      });
+    } else if (isWebComponent()) {
+      mainComponent.addEventListener('wc_ready', () => {
+        if (
+          !(mainComponent as any)._luigi_mfe_webcomponent
+            ?.deferLuigiClientWCInit
+        ) {
+          thisComponent.initialized = true;
+          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+        }
+      });
     }
     // deferInit = true;
   });
