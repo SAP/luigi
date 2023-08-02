@@ -31,5 +31,5 @@ jobs:
       - run: npm --prefix ./client-frameworks-support/client-support-ui5 ci ./client-frameworks-support/client-support-ui5
       - run: npm --prefix ./client-frameworks-support/client-support-angular ci ./client-frameworks-support/client-support-angular
       - run: npm --prefix ./client-frameworks-support/testing-utilities ci ./client-frameworks-support/testing-utilities
-      - run: npm --prefix ./cra-template ci ./cra-template
+      - run: npm --prefix ./cra-template install ./cra-template
       - run: bash ./scripts/whiteSource.sh
