@@ -64,7 +64,7 @@ export class ContainerService {
         messageListener: event => {
           const targetCnt = this.getTargetContainer(event);
           const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
-          if (target === event.source) {
+          if (target && target === event.source) {
             // messages emitted from microfrontends
             const msg = event.data.msg;
 

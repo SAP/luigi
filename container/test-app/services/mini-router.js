@@ -38,9 +38,11 @@ function activateRoute() {
     el.style.display = 'none';
   });
   const activeOutlet = document.querySelector(`[route=${route}]`);
-  activeOutlet.style.display = 'unset';
-  activeOutlet.querySelector('luigi-container')?.init();
-  activeOutlet.querySelector('luigi-compound-container')?.init();
+  if (activeOutlet) {
+    activeOutlet.style.display = 'unset';
+    activeOutlet.querySelector('luigi-container')?.init();
+    activeOutlet.querySelector('luigi-compound-container')?.init();
+  }
 }
 
 window.onclick = () => {

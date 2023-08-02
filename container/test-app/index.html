@@ -141,6 +141,11 @@
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Simple Web Component</a
                 >
+                <a
+                  href="#error-handling"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Err</a
+                >
               </div>
             </div>
           </div>
@@ -313,6 +318,7 @@
     </div>
     <div class="lui-wrapper" route="projects">
       <luigi-container
+        data-test-id="iframe-based-container-test"
         viewURL="./microfrontend.html"
         context='{"title": "Projects", "content":" "}'
       >
@@ -343,6 +349,7 @@
     </div>
     <div class="lui-wrapper" route="hello-world-wc">
       <luigi-container
+        data-test-id="luigi-client-api-test-01"
         viewURL="./helloWorldWC.js"
         webcomponent="true"
         context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
@@ -350,6 +357,19 @@
         theme="sap_fiori_3"
         active_feature_toggle_list="['ft1','ft2']"
       ></luigi-container>
+    </div>
+    <div class="lui-wrapper" route="error-test">
+      <luigi-container
+        viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/mainasdad.js"
+        webcomponent="true"
+        context='{"label": "Error Handler"}'
+      ></luigi-container>
+      <luigi-container
+        viewURL="test.js"
+        webcomponent="true"
+        context='{"label": "Error Handler WC 2"}'
+      >
+      </luigi-container>
     </div>
 
     <script type="module">
@@ -523,6 +543,13 @@
             alert(event.detail.id);
           }
         });
+
+        luigiContainer.addEventListener(
+          MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
+          event => {
+            console.log(event.detail);
+          }
+        );
 
         //...
       });
