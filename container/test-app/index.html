@@ -318,6 +318,7 @@
     </div>
     <div class="lui-wrapper" route="projects">
       <luigi-container
+        data-test-id="iframe-based-container-test"
         viewURL="./microfrontend.html"
         context='{"title": "Projects", "content":" "}'
       >
@@ -348,6 +349,7 @@
     </div>
     <div class="lui-wrapper" route="hello-world-wc">
       <luigi-container
+        data-test-id="luigi-client-api-test-01"
         viewURL="./helloWorldWC.js"
         webcomponent="true"
         context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'

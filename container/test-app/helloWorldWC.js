@@ -29,17 +29,17 @@ export default class extends HTMLElement {
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.uxManager().showAlert({
-          text: 'Hello from uxManager in Web Component, Language:' + this.LuigiClient.getCurrentLocale(),
+          text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
           type: 'info'
         });
 
         this.LuigiClient.uxManager().showAlert({
-          text: 'Active feature toggles list: ' + this.LuigiClient.getActiveFeatureToggles(),
+          text: 'LuigiClient.getActiveFeatureToggles()=' + this.LuigiClient.getActiveFeatureToggles(),
           type: 'info'
         });
 
         this.LuigiClient.uxManager().showAlert({
-          text: 'Active feature toggles: ' + this.LuigiClient.uxManager().getCurrentTheme(),
+          text: 'LuigiClient.uxManager().getCurrentTheme()=' + this.LuigiClient.uxManager().getCurrentTheme(),
           type: 'info'
         });
       }
