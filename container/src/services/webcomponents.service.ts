@@ -100,13 +100,16 @@ export class WebComponentService {
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
-        this.dispatchLuigiEvent(Events.CUSTOM_MESSAGE, {
-          name: ev.type,
-          data: ev.detail,
-          nodeId,
-          wc_id,
-          src: component
-        });
+        const payload = {
+          id: ev.type,
+          _metaData: {
+            nodeId,
+            wc_id,
+            src: component
+          },
+          data: ev.detail
+        };
+        this.dispatchLuigiEvent(Events.CUSTOM_MESSAGE, payload);
       },
       luigiClientInit: () => {
         this.dispatchLuigiEvent(Events.INITIALIZED, {});

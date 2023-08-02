@@ -71,7 +71,14 @@ export class ContainerService {
             // dispatch an event depending on message
             switch (msg) {
               case LuigiInternalMessageID.CUSTOM_MESSAGE:
-                this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, event.data.data);
+                const evData = event.data.data;
+                const id = evData.id;
+                delete evData.id;
+                this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, {
+                  id: id,
+                  _metaData: {},
+                  data: evData
+                });
                 break;
               case LuigiInternalMessageID.GET_CONTEXT:
                 // Automatically send a luigi.init message to complete the initial handshake with the microfrontend

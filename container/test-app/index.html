@@ -519,7 +519,9 @@
         );
         luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
           console.log('Custom Event', event);
-          alert(event.detail.name);
+          if (event.detail.id !== 'timer') {
+            alert(event.detail.id);
+          }
         });
 
         //...
