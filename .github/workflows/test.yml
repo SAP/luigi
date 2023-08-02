@@ -54,6 +54,25 @@ jobs:
       - run: npm i -g live-server
       - run: bash ./test/mockengine.sh || exit 1
 
+  container_tests:
+    name: Container E2E Tests
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'    
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/tmp_build
+            ~/cypress-binary-cache
+          key: buildcache
+      - run: cp -r ~/tmp_build/* . 
+      - run: bash ./container/run-container-e2e.sh || exit 1
+
+
   e2e:
     name: Integration Tests
     needs: prepare
@@ -76,7 +95,7 @@ jobs:
       - run: bash ./test/e2e-angular.sh || exit 1
 
   cleanup: 
-    needs: e2e
+    needs: [e2e, container_tests, mock_engine, unit]
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
     with:
