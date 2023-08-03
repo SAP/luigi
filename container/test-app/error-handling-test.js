@@ -5,7 +5,7 @@ export default class extends HTMLElement {
   constructor() {
     super();
     const template = document.createElement('template');
-    template.innerHTML = `<section><p>Hello World!</p></section>`;
+    template.innerHTML = `<section><p>Hello World - Error Handling!</p></section>`;
 
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button>Click me!</button>';
@@ -29,17 +29,17 @@ export default class extends HTMLElement {
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
+          text: 'Hello from uxManager in Web Component, Language:' + this.LuigiClient.getCurrentLocale(),
           type: 'info'
         });
 
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.getActiveFeatureToggles()=' + this.LuigiClient.getActiveFeatureToggles(),
+          text: 'Active feature toggles list: ' + this.LuigiClient.getActiveFeatureToggles(),
           type: 'info'
         });
 
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.uxManager().getCurrentTheme()=' + this.LuigiClient.uxManager().getCurrentTheme(),
+          text: 'Active feature toggles: ' + this.LuigiClient.uxManager().getCurrentTheme(),
           type: 'info'
         });
       }
