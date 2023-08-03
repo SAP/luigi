@@ -118,7 +118,7 @@ describe('JS-TEST-APP', () => {
         expectedPathAfterBack('/home/two');
         expectedPathAfterForward('/home');
       });
-      it('Path routing, open modal, navigate through a wizard and close the modal via [x]', () => {
+      it('Path routing, open modal, navigate through a wizard and close the modal via [X]', () => {
         newConfig.navigation.nodes[0].children.push({
           pathSegment: 'usersettings',
           label: 'Usersettings MF',
