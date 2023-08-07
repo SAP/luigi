@@ -6,4 +6,5 @@
 /test-app/bundle.js
 /test-app/bundle.js.map
 /test-app/luigi-element.js
+/coverage
 .DS_Store
