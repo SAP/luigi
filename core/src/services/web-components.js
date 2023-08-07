@@ -33,7 +33,7 @@ class WebComponentSvcClass {
   }
 
   initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId) {
-    const ctx = extendedContext.ctx;
+    const ctx = extendedContext.context;
     const clientAPI = {
       linkManager: window.Luigi.navigation,
       uxManager: window.Luigi.ux,
@@ -49,7 +49,9 @@ class WebComponentSvcClass {
         window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
       },
       getNodeParams: shouldDesanitise => {
-        //TODO check shouldDesanitise
+        if (shouldDesanitise) {
+          return RoutingHelpers.sanitizeParamsMap(extendedContext.nodeParams);
+        }
         return extendedContext.nodeParams;
       },
       setAnchor: anchor => {
