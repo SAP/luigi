@@ -19,7 +19,9 @@
     "copyLuigiElement": "cp ../client/src/luigi-element.js test-app",
     "serve": "npm run build && npm run copyLuigiElement && npm run copyBundle && sirv -D test-app --no-clear",
     "bundle:watch": "chokidar \"src/**/*.*\" -c \"npm run build && npm run copyBundle\"",
-    "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\""
+    "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
+    "cypress-headless": "cypress run",
+    "cypress-browser": "cypress open --e2e --browser chrome"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
@@ -28,6 +30,7 @@
     "@tsconfig/svelte": "^3.0.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^7.6.0",
+    "cypress": "^12.17.2",
     "rollup": "^2.3.4",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
