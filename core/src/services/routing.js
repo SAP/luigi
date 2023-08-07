@@ -658,7 +658,7 @@ class RoutingClass {
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
-    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
+    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData, navNode);
   }
 
   navigateWebComponentCompound(component, navNode) {

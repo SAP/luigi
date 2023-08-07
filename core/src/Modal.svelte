@@ -106,7 +106,7 @@
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),
-          pathData.context,
+          {context: pathData.context},
           nodeObject
         );
         dispatch('wcCreated', {
