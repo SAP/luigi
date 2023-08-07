@@ -250,7 +250,8 @@ class WebComponentSvcClass {
    * @param {*} wc_container the web component container dom element
    * @param {*} context the luigi node context
    */
-  renderWebComponentCompound(navNode, wc_container, context) {
+  renderWebComponentCompound(navNode, wc_container, extendedContext) {
+    const context = extendedContext.context;
     let renderer;
     wc_container._luigi_node = navNode;
     if (navNode.webcomponent && navNode.viewUrl) {

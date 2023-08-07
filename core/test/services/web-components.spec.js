@@ -416,7 +416,7 @@ describe('WebComponentService', function() {
   describe('check renderWebComponentCompound', function() {
     const sb = sinon.createSandbox();
 
-    const context = { key: 'value', mario: 'luigi' };
+    const extendedContext = { context: { key: 'value', mario: 'luigi' } };
 
     const eventEmitter = 'emitterId';
     const eventName = 'emitterId';
@@ -484,7 +484,7 @@ describe('WebComponentService', function() {
       sb.spy(WebComponentService, 'renderWebComponent');
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
-      WebComponentService.renderWebComponentCompound(navNode, wc_container, context)
+      WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
         .then(compoundCnt => {
           expect(wc_container.children.length).to.equal(1);
 
@@ -523,7 +523,7 @@ describe('WebComponentService', function() {
 
       sb.stub(WebComponentService, 'registerWCFromUrl').resolves();
 
-      WebComponentService.renderWebComponentCompound(node, wc_container, context).then(
+      WebComponentService.renderWebComponentCompound(node, wc_container, extendedContext).then(
         compoundCnt => {
           expect(WebComponentService.registerWCFromUrl.callCount).to.equal(3);
 

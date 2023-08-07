@@ -676,7 +676,7 @@ class RoutingClass {
     if (compound && compound.children) {
       compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }
-    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData);
     wc_container._luigi_pathParams = componentData.pathParams;
   }
 
