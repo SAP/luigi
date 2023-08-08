@@ -44,7 +44,10 @@ class WebComponentSvcClass {
         }
       },
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
-      getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList()
+      getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
+      getPathParams: () => {},
+      getCoreSearchParams: () => {},
+      getClientPermissions: () => {}
     };
 
     if (wc.__postProcess) {
