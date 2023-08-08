@@ -34,6 +34,7 @@ class WebComponentSvcClass {
   }
 
   initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId) {
+    console.log('context', ctx);
     const clientAPI = {
       linkManager: window.Luigi.navigation,
       uxManager: window.Luigi.ux,
@@ -46,7 +47,9 @@ class WebComponentSvcClass {
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getPathParams: () => {},
-      getCoreSearchParams: () => {},
+      getCoreSearchParams: () => {
+        window.Luigi.routing().getSearchParams();
+      },
       getClientPermissions: () => {}
     };
 
