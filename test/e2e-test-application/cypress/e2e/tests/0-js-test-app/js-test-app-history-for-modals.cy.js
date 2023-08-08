@@ -94,7 +94,7 @@ describe('JS-TEST-APP', () => {
           openNodeInModal: true
         });
       });
-      it('Path routing, open modal and close via [X]', () => {
+      it('Path routing, open modal and close via [x]', () => {
         cy.vistTestAppPathRouting('', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         openModal();
