@@ -652,7 +652,9 @@ class RoutingClass {
     if (navNode === wc_containerNode) {
       const wc = document.querySelector(wc_id);
       wc.context = componentData.context;
-      wc.extendedContext.nodeParams = componentData.nodeParams;
+      if (wc.extendedContext) {
+        wc.extendedContext.nodeParams = componentData.nodeParams;
+      }
       return;
     }
 
