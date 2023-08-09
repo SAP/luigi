@@ -1,7 +1,8 @@
 import {
   DefaultCompoundRenderer,
   resolveRenderer,
-  registerEventListeners
+  registerEventListeners,
+  deSanitizeParamsMap
 } from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
 import { RoutingHelpers } from '../utilities/helpers';
@@ -19,21 +20,22 @@ class WebComponentSvcClass {
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
    */
-  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, restrictedClientAPI) {
+  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isCompoundChild) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
       wc.setAttribute('lui_web_component', true);
-      this.initWC(wc, wc_id, wc_container, viewUrl, extendedContext, nodeId, restrictedClientAPI);
+      this.initWC(wc, wc_id, wc_container, viewUrl, extendedContext, nodeId, isCompoundChild);
 
       wc_container.replaceChild(wc, wcItemPlaceholder);
     }
   }
 
-  initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, restrictedClientAPI) {
+  initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, isCompoundChild) {
     const ctx = extendedContext.context;
+    wc.extendedContext = extendedContext;
     const clientAPI = {
       linkManager: window.Luigi.navigation,
       uxManager: window.Luigi.ux,
@@ -46,20 +48,22 @@ class WebComponentSvcClass {
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       addNodeParams: (params, keepBrowserHistory) => {
-        if (!restrictedClientAPI) {
+        if (!isCompoundChild) {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
         }
       },
       getNodeParams: shouldDesanitise => {
-        if (!restrictedClientAPI) {
-          if (shouldDesanitise) {
-            return RoutingHelpers.sanitizeParamsMap(extendedContext.nodeParams);
-          }
-          return extendedContext.nodeParams;
+        if (isCompoundChild) {
+          return {};
         }
+        const result = wc.extendedContext?.nodeParams ? wc.extendedContext.nodeParams : {};
+        if (shouldDesanitise) {
+          return deSanitizeParamsMap(result);
+        }
+        return wc.extendedContext.nodeParams;
       },
       setAnchor: anchor => {
-        if (!restrictedClientAPI) {
+        if (!isCompoundChild) {
           window.Luigi.routing().setAnchor(anchor);
         }
       }
@@ -73,6 +77,7 @@ class WebComponentSvcClass {
       wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);
     } else {
       wc.context = ctx;
+      wc.nodeParams = extendedContext.nodeParams;
       wc.LuigiClient = clientAPI;
     }
   }
@@ -195,7 +200,7 @@ class WebComponentSvcClass {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, restrictedClientAPI) {
+  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isCompoundChild) {
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id =
@@ -204,44 +209,20 @@ class WebComponentSvcClass {
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, restrictedClientAPI);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
     } else {
       /** Custom import function, if defined */
       if (window.luigiWCFn) {
         window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(
-            wc_id,
-            wcItemPlaceholder,
-            wc_container,
-            extendedContext,
-            i18nViewUrl,
-            nodeId,
-            restrictedClientAPI
-          );
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(
-            wc_id,
-            wcItemPlaceholder,
-            wc_container,
-            extendedContext,
-            i18nViewUrl,
-            nodeId,
-            restrictedClientAPI
-          );
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
-          this.attachWC(
-            wc_id,
-            wcItemPlaceholder,
-            wc_container,
-            extendedContext,
-            i18nViewUrl,
-            nodeId,
-            restrictedClientAPI
-          );
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
         });
       }
     }
@@ -331,8 +312,7 @@ class WebComponentSvcClass {
           renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
           const nodeId = wc.id || 'gen_' + index;
-          const restrictedClientAPI = true; //oder compoundItemCnt.restrictedClientAPI
-          this.renderWebComponent(wc.viewUrl, compoundItemCnt, { context: ctx }, wc, nodeId, restrictedClientAPI);
+          this.renderWebComponent(wc.viewUrl, compoundItemCnt, { context: ctx }, wc, nodeId, true);
           registerEventListeners(ebListeners, wc, nodeId);
         });
         wc_container.appendChild(compoundCnt);

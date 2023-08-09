@@ -25,14 +25,22 @@ export class WebComponentService {
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
    */
-  attachWC(wc_id: string, wcItemPlaceholder: HTMLDivElement, wc_container, ctx, viewUrl: string, nodeId: string) {
+  attachWC(
+    wc_id: string,
+    wcItemPlaceholder: HTMLDivElement,
+    wc_container,
+    ctx,
+    viewUrl: string,
+    nodeId: string,
+    isCompoundChild?: boolean
+  ) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
 
-      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId);
+      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId, isCompoundChild);
       wc_container.replaceChild(wc, wcItemPlaceholder);
       if (wc_container._luigi_node) {
         wc_container._luigi_mfe_webcomponent = wc;
@@ -60,7 +68,7 @@ export class WebComponentService {
    * @param wc_id a tagname that is used when creating the web component element
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(eventBusElement, nodeId: string, wc_id: string) {
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string, isCompoundChild?: boolean) {
     return {
       linkManager: () => {
         return {
@@ -103,12 +111,39 @@ export class WebComponentService {
       },
       luigiClientInit: () => {
         this.dispatchLuigiEvent(Events.INITIALIZED, {});
+      },
+      addNodeParams: (params, keepBrowserHistory) => {
+        if (isCompoundChild) {
+          return;
+        }
+        this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
+      },
+      getNodeParams: shouldDesanitise => {
+        if (isCompoundChild) {
+          return {};
+        }
+        //helper Funktion desanitize
+        return this.thisComponent.getAttribute('node_params') || {};
+      },
+      setAnchor: anchor => {
+        if (isCompoundChild) {
+          return;
+        }
+        this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
       }
     };
   }
 
-  initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string) {
-    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id);
+  initWC(
+    wc: HTMLElement | any,
+    wc_id,
+    eventBusElement,
+    viewUrl: string,
+    ctx,
+    nodeId: string,
+    isCompoundChild?: boolean
+  ) {
+    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, isCompoundChild);
 
     if (wc.__postProcess) {
       const url =
@@ -242,7 +277,14 @@ export class WebComponentService {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl: string, wc_container: HTMLElement | any, context: any, node: any, nodeId?: any) {
+  renderWebComponent(
+    viewUrl: string,
+    wc_container: HTMLElement | any,
+    context: any,
+    node: any,
+    nodeId?: any,
+    isCompoundChild?: boolean
+  ) {
     const i18nViewUrl = this.processViewUrl(viewUrl, { context });
     const wc_id =
       node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
@@ -251,21 +293,21 @@ export class WebComponentService {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
     } else {
       /** Custom import function, if defined */
       if ((window as any).luigiWCFn) {
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id)
           .then(() => {
-            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId);
+            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
           })
           .catch(error => {
             console.warn('ERROR =>', error);
@@ -369,7 +411,7 @@ export class WebComponentService {
             renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
             const nodeId = wc.id || 'gen_' + index;
-            this.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, wc, nodeId);
+            this.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, wc, nodeId, true);
             registerEventListeners(ebListeners, wc, nodeId);
           });
           wc_container.appendChild(compoundCnt);

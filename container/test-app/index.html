@@ -539,6 +539,32 @@
             console.log(event.detail);
           }
         );
+        luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, event => {
+          console.log(event.detail.params);
+          const params = event.detail.params;
+          const url = new URL(location);
+          let hash = url.hash;
+          //TODO
+          let paramPrefix = '~';
+          let localhash = hash;
+          const [hashValue, givenQueryParamsString] = localhash.split('?');
+          const searchParams = new URLSearchParams(givenQueryParamsString);
+          for (const [key, value] of Object.entries(params)) {
+            const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
+            searchParams.set(paramKey, value);
+            if (value === undefined) {
+              searchParams.delete(paramKey);
+            }
+          }
+          localhash = hashValue;
+          if (searchParams.toString() !== '') {
+            localhash += `?${searchParams.toString()}`;
+          }
+          url.hash = localhash;
+          event.detail.keepBrowserHistory
+            ? window.history.pushState({}, '', url)
+            : window.history.replaceState({}, '', url);
+        });
 
         //...
       });
