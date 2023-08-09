@@ -356,13 +356,14 @@
         locale="en"
         theme="sap_fiori_3"
         active_feature_toggle_list="['ft1','ft2']"
+        node_params='{"Luigi":"rocks from attribute"}'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="error-test">
       <luigi-container
         viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/mainasdad.js"
         webcomponent="true"
-        context='{"label": "Error Handler"}'
+        context=' {"label": "Error Handler" }'
       ></luigi-container>
       <luigi-container
         viewURL="test.js"
@@ -564,6 +565,9 @@
           event.detail.keepBrowserHistory
             ? window.history.pushState({}, '', url)
             : window.history.replaceState({}, '', url);
+          document
+            .querySelector('[data-test-id="luigi-client-api-test-01"]')
+            .setAttribute('node_params', `${JSON.stringify(params)}`);
         });
 
         //...

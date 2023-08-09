@@ -1,4 +1,9 @@
-import { DefaultCompoundRenderer, resolveRenderer, registerEventListeners } from './web-component-helpers';
+import {
+  DefaultCompoundRenderer,
+  resolveRenderer,
+  registerEventListeners,
+  deSanitizeParamsMap
+} from './web-component-helpers';
 import { ContainerService } from './container.service';
 import { Events } from '../constants/communication';
 
@@ -123,6 +128,10 @@ export class WebComponentService {
           return {};
         }
         //helper Funktion desanitize
+        // const result = wc.extendedContext?.nodeParams ? wc.extendedContext.nodeParams : {};
+        // if (shouldDesanitise) {
+        //   return deSanitizeParamsMap(result);
+        // }
         return this.thisComponent.getAttribute('node_params') || {};
       },
       setAnchor: anchor => {
