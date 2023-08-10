@@ -12,7 +12,7 @@
     "public"
   ],
   "scripts": {
-    "build": "rollup -c && node ./replace.js",
+    "build": "rollup -c",
     "test": "jest",
     "bundle": "npm run build",
     "dev": "rollup -c -w",

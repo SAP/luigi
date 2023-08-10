@@ -5,7 +5,6 @@ import typescript from '@rollup/plugin-typescript';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
-const execSync = require('child_process').execSync;
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -28,48 +27,6 @@ function serve() {
       process.on('exit', toExit);
     }
   };
-}
-
-/**
- * This function replaces the '__luigi_dyn_import(' string with 'import( /* webpackIgnore: true */ ('   ');
-/*
- * to avoid bundlers like webpack resolving dynamic import statements as they shouldn't be resolved in this case
- *
- * @param {string} bundleFileName the file name of the generated bundle js
- */
-function replaceDynamicImportOnShell(bundleFilename) {
-  const bundleSourceMapFileName = bundleFilename + '.map';
-  const backupBundleFilename = bundleFilename + '.backup';
-  const backupSourceMapFilename = bundleSourceMapFileName + '.backup';
-
-  try {
-    // sed can't work on both Linux + MAC without generating 'backup' files
-    execSync(
-      `sed -i.backup 's/__luigi_dyn_import(/import\(\\/\* webpackIgnore: true \*\\/ /g' ${bundleFilename} &&
-       sed -i.backup 's/__luigi_dyn_import/import/g' ${bundleSourceMapFileName}`
-    );
-  } catch (error) {
-    console.error('Failed to replace string', error);
-    if (error) {
-      throw error;
-    }
-  }
-
-  try {
-    // delete generated backup files as they are not needed
-    execSync(`rm ${backupBundleFilename} ${backupSourceMapFilename}`);
-  } catch (error) {
-    console.error('Failed to delete backup generated files', error);
-    if (error) {
-      throw error;
-    }
-  }
-
-  console.log(
-    '\x1b[33mRollup [' + new Date().toLocaleTimeString() + ']: ',
-    '\x1b[0m',
-    'Post-processing finished replacing __luigi_dyn_import --> import.'
-  );
 }
 
 export default [
