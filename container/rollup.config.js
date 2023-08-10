@@ -95,6 +95,41 @@ export default [
       typescript({
         sourceMap: true
       }),
+      (() => {
+        return {
+          name: 'dynamic-import-wp-ignore',
+          resolveDynamicImport(specifier, importer) {
+            const moduleInfo = this.getModuleInfo(importer);
+            let index;
+            for (index = specifier.start; index >= 0; index--) {
+              if (moduleInfo.code.charAt(index) === '(') {
+                break;
+              }
+            }
+            if (
+              moduleInfo.code
+                .substr(index, specifier.end - index)
+                .replace(/\s+/g, '')
+                .includes('webpackIgnore:true')
+            ) {
+              return (
+                '/* keepDynamicImport: true */' +
+                moduleInfo.code.substr(specifier.start, specifier.end - specifier.start)
+              );
+            }
+            return null;
+          },
+          renderDynamicImport({ customResolution }) {
+            if (customResolution.indexOf('/* keepDynamicImport: true */') >= 0) {
+              return {
+                left: 'import(',
+                right: ')'
+              };
+            }
+            return null;
+          }
+        };
+      })(),
       // we'll extract any component CSS out into
       // a separate file - better for performance
       // css({ output: 'bundle.css' }),
@@ -125,7 +160,12 @@ export default [
 
       // If we're building for production (npm run build
       // instead of npm run dev), minify
-      production && terser()
+      production &&
+        terser({
+          format: {
+            comments: '/.*webpackIgnore.*/'
+          }
+        })
     ],
     watch: {
       clearScreen: false

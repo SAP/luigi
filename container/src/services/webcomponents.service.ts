@@ -12,10 +12,7 @@ export class WebComponentService {
   }
 
   dynamicImport(viewUrl: string) {
-    // @ts-ignore
-    // '__luigi_dyn_import' is replaced with 'import' after bundling since the bundle will try to
-    // resolve this import during bunlding process leading to module not found errors.
-    return __luigi_dyn_import(viewUrl);
+    return import(/* webpackIgnore: true */ viewUrl);
   }
 
   processViewUrl(viewUrl: string, data?: any): string {
