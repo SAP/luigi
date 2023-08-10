@@ -12,7 +12,8 @@ export class WebComponentService {
   }
 
   dynamicImport(viewUrl: string) {
-    return import(/* webpackIgnore: true */ viewUrl);
+    // Object.freeze() used as potential marker for bundlers other than webpack
+    return Object.freeze(import(/* webpackIgnore: true */ viewUrl));
   }
 
   processViewUrl(viewUrl: string, data?: any): string {
