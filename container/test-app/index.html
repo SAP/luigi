@@ -298,6 +298,7 @@
       <luigi-compound-container
         id="dashboard"
         context='{"label": "Dashboard"}'
+        node_params='{"Luigi":"rocks"}'
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="dashboard2">
@@ -306,6 +307,7 @@
         context='{"label": "Dashboard2", "title":"Dashboard2"}'
         skipInitCheck="false"
         viewUrl="http://localhost:8080/nested.js"
+        node_params='{"Das ist ein":"compound tets"}'
       ></luigi-compound-container>
     </div>
     <!-- viewUrl="http://localhost:8080/nested.js" -->
@@ -334,7 +336,7 @@
     </div>
     <div class="lui-wrapper" route="test">
       <luigi-container
-        viewURL="http://localhost:8080/test.js"
+        viewURL="/test.js"
         webcomponent="true"
         id="test-defer-init-false"
         skipInitCheck="true"
@@ -356,7 +358,7 @@
         locale="en"
         theme="sap_fiori_3"
         active_feature_toggle_list="['ft1','ft2']"
-        node_params='{"Luigi":"rocks from attribute"}'
+        node_params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="error-test">
@@ -366,7 +368,7 @@
         context=' {"label": "Error Handler" }'
       ></luigi-container>
       <luigi-container
-        viewURL="test.js"
+        viewURL="/test.js"
         webcomponent="true"
         context='{"label": "Error Handler WC 2"}'
       >
@@ -424,7 +426,7 @@
           },
           {
             id: 'input1',
-            viewUrl: utilMFEDomain + '/input.js',
+            viewUrl: '/helloWorldWC.js',
             context: {
               title: 'Some input',
               instant: true
@@ -543,31 +545,32 @@
         luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, event => {
           console.log(event.detail.params);
           const params = event.detail.params;
-          const url = new URL(location);
-          let hash = url.hash;
-          //TODO
-          let paramPrefix = '~';
-          let localhash = hash;
-          const [hashValue, givenQueryParamsString] = localhash.split('?');
-          const searchParams = new URLSearchParams(givenQueryParamsString);
-          for (const [key, value] of Object.entries(params)) {
-            const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
-            searchParams.set(paramKey, value);
-            if (value === undefined) {
-              searchParams.delete(paramKey);
-            }
-          }
-          localhash = hashValue;
-          if (searchParams.toString() !== '') {
-            localhash += `?${searchParams.toString()}`;
-          }
-          url.hash = localhash;
-          event.detail.keepBrowserHistory
-            ? window.history.pushState({}, '', url)
-            : window.history.replaceState({}, '', url);
-          document
-            .querySelector('[data-test-id="luigi-client-api-test-01"]')
-            .setAttribute('node_params', `${JSON.stringify(params)}`);
+          console.log('params', params);
+          // const url = new URL(location);
+          // let hash = url.hash;
+          // //TODO URLSearchParams does sanitization..
+          // let paramPrefix = '~';
+          // let localhash = hash;
+          // const [hashValue, givenQueryParamsString] = localhash.split('?');
+          // const searchParams = new URLSearchParams(givenQueryParamsString);
+          // for (const [key, value] of Object.entries(params)) {
+          //   const paramKey = paramPrefix ? `${paramPrefix}${key}` : key;
+          //   searchParams.set(paramKey, value);
+          //   if (value === undefined) {
+          //     searchParams.delete(paramKey);
+          //   }
+          // }
+          // localhash = hashValue;
+          // if (searchParams.toString() !== '') {
+          //   localhash += `?${searchParams.toString()}`;
+          // }
+          // url.hash = localhash;
+          // event.detail.keepBrowserHistory
+          //   ? window.history.pushState({}, '', url)
+          //   : window.history.replaceState({}, '', url);
+          // document
+          //   .querySelector('[data-test-id="luigi-client-api-test-01"]')
+          //   .setAttribute('node_params', `${JSON.stringify(params)}`);
         });
 
         //...

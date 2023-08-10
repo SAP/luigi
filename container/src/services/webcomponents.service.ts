@@ -127,12 +127,12 @@ export class WebComponentService {
         if (isCompoundChild) {
           return {};
         }
-        //helper Funktion desanitize
-        // const result = wc.extendedContext?.nodeParams ? wc.extendedContext.nodeParams : {};
-        // if (shouldDesanitise) {
-        //   return deSanitizeParamsMap(result);
-        // }
-        return this.thisComponent.getAttribute('node_params') || {};
+        let result = this.thisComponent.getAttribute('node_params') || {};
+        result = JSON.parse(result);
+        if (shouldDesanitise) {
+          return deSanitizeParamsMap(result);
+        }
+        return result;
       },
       setAnchor: anchor => {
         if (isCompoundChild) {
@@ -172,8 +172,9 @@ export class WebComponentService {
    */
   generateWCId(viewUrl: string) {
     let charRep = '';
-    for (let i = 0; i < viewUrl.length; i++) {
-      charRep += viewUrl.charCodeAt(i).toString(16);
+    let normalizedViewUrl = new URL(viewUrl, location.href).href;
+    for (let i = 0; i < normalizedViewUrl.length; i++) {
+      charRep += normalizedViewUrl.charCodeAt(i).toString(16);
     }
     return 'luigi-wc-' + charRep;
   }

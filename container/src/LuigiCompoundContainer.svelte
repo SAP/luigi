@@ -9,6 +9,7 @@
   export let locale;
   export let theme;
   export let active_feature_toggle_list;
+  export let node_params;
 
   let compoundConfig;
 

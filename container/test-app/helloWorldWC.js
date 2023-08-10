@@ -62,8 +62,9 @@ export default class extends HTMLElement {
     this.$button3 = this._shadowRoot.querySelector('#getNodeParams');
     this.$button3.addEventListener('click', () => {
       if (this.LuigiClient) {
+        let nodeParams = this.LuigiClient.getNodeParams(false);
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.getNodeParams()=' + this.LuigiClient.getNodeParams(),
+          text: 'LuigiClient.getNodeParams()=' + JSON.stringify(nodeParams),
           type: 'info'
         });
       }

@@ -1,3 +1,6 @@
+export declare interface NodeParams {
+  [key: string]: string;
+}
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
@@ -33,6 +36,11 @@ export default class LuigiContainer extends HTMLElement {
    * The list of active feature toggles to be passed to the web-component-based micro frontend
    */
   active_feature_toggle_list: string[];
+
+  /**
+   * The parameters to be passed to the web-component-based micro frontend. Will not passed to the compound children.
+   */
+  node_params: NodeParams;
 
   /**
    * Updates the context of the microfrontend

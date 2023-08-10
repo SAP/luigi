@@ -174,6 +174,12 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcEle
     });
   }
 };
+
+/**
+ * Desanitization of an object
+ * @param {Object} paramsMap
+ * @returns
+ */
 export const deSanitizeParamsMap = paramsMap => {
   return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
     sanitizedMap[this.deSanitizeParam(paramPair[0])] = this.deSanitizeParam(paramPair[1]);

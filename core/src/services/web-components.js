@@ -88,8 +88,9 @@ class WebComponentSvcClass {
    */
   generateWCId(viewUrl) {
     let charRep = '';
-    for (let i = 0; i < viewUrl.length; i++) {
-      charRep += viewUrl.charCodeAt(i).toString(16);
+    let normalizedViewUrl = new URL(viewUrl, location.href).href;
+    for (let i = 0; i < normalizedViewUrl.length; i++) {
+      charRep += normalizedViewUrl.charCodeAt(i).toString(16);
     }
     return 'luigi-wc-' + charRep;
   }
