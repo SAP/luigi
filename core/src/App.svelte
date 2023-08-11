@@ -17,7 +17,6 @@
     setContext,
     createEventDispatcher,
   } from 'svelte';
-  import { fade } from 'svelte/transition';
   import { CSS_BREAKPOINTS } from './utilities/constants';
   import {
     EventListenerHelpers,
@@ -102,6 +101,9 @@
   let searchProvider;
   let internalUserSettingsObject = {};
   let burgerTooltip;
+  let breadcrumbsEnabled;
+  let contextRequested = false;
+  let loadingIndicatorTimeout;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -109,7 +111,6 @@
   export let displayCustomSearchResult = true;
   export let searchResult;
   export let storedUserSettings;
-  let breadcrumbsEnabled;
 
   const prepareInternalData = async (config) => {
     const iframeConf = config.iframe.luigi;
@@ -356,7 +357,14 @@
             } else if (prop == 'splitViewWC') {
               splitViewWC = obj.splitViewWC;
             } else if (prop === 'showLoadingIndicator') {
-              showLoadingIndicator = obj.showLoadingIndicator;
+              if(obj.showLoadingIndicator===true){
+                loadingIndicatorTimeout = setTimeout(()=>{
+                  showLoadingIndicator = true;
+                },250);
+              }else{
+                showLoadingIndicator = false;
+                clearTimeout(loadingIndicatorTimeout);
+              }
             } else if (prop === 'tabNav') {
               tabNav = obj.tabNav;
             } else if (prop === 'isNavigateBack') {
@@ -1366,6 +1374,7 @@
       }
 
       if ('luigi.get-context' === e.data.msg) {
+        contextRequested = true;
         iframe.luigi.clientVersion = e.data.clientVersion; // undefined for v0.x clients
         iframe.luigi.initOk = false; // get-context indication. used for handshake verification
 
@@ -1397,7 +1406,7 @@
             !currentNode.loadingIndicator ||
             currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
-            showLoadingIndicator = false;
+              fadeOutAppLoadingIndicator();
           }
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
@@ -1435,6 +1444,7 @@
       }
 
       if ('luigi.hide-loading-indicator' === e.data.msg) {
+        clearTimeout(loadingIndicatorTimeout);
         showLoadingIndicator = false;
       }
 
@@ -1842,6 +1852,24 @@
     }
   };
 
+  /**
+   * This function will be called if the LuigiClient requested the context.
+   * That means spinner can fade out in order to display the mf.
+   * After 250 ms the spinner will be removed from DOM.
+   */
+  function fadeOutAppLoadingIndicator(){
+    const spinnerContainer = document.querySelector('.spinnerContainer.appSpinner');
+    if (spinnerContainer && spinnerContainer.classList.contains('fade-out')) {
+      spinnerContainer.classList.remove('fade-out');
+      setTimeout(()=>{
+        clearTimeout(loadingIndicatorTimeout);
+        showLoadingIndicator = false;
+      }, 250);
+    }else{
+      clearTimeout(loadingIndicatorTimeout);
+    }
+  }
+
   export const pathExists = async (path) => {
     const data = {
       link: path,
@@ -2015,9 +2043,7 @@
   </Backdrop>
   {#if showLoadingIndicator}
     <div
-      in:fade={{ delay: 250, duration: 250 }}
-      out:fade={{ duration: 250 }}
-      class="fd-page spinnerContainer"
+      class="fd-page spinnerContainer appSpinner fade-out"
       aria-hidden="false"
       aria-label="Loading"
     >
@@ -2199,6 +2225,15 @@
     display: block;
   }
 
+  .spinnerContainer {
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .fade-out {
+    opacity: 1;
+  }
+
   .iframeContainer {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
@@ -2300,14 +2335,14 @@
     :global(.splitViewContainer),
     :global(#splitViewDragger),
     :global(#splitViewDraggerBackdrop) {
-      @include transition(left 0.1s linear);
+      @include transition(left 0.1s linear, $spinnerOpacity);
     }
   }
 
   :global(.lui-semiCollapsible) {
     .iframeContainer,
     .spinnerContainer {
-      @include transition(left 0.1s linear);
+      @include transition(left 0.1s linear, $spinnerOpacity);
     }
     :global(.splitViewContainer),
     :global(#splitViewDragger),
