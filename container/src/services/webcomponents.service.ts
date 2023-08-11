@@ -13,7 +13,7 @@ export class WebComponentService {
 
   dynamicImport(viewUrl: string) {
     // Object.freeze() used as potential marker for bundlers other than webpack
-    return Object.freeze(import(/* webpackIgnore: true */ viewUrl));
+    return ['runtimeImport', import(/* webpackIgnore: true */ viewUrl)][1];
   }
 
   processViewUrl(viewUrl: string, data?: any): string {

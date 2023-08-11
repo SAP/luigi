@@ -50,7 +50,7 @@ export default [
         })
       }),
       typescript({
-        sourceMap: true
+        sourceMap: false
       }),
       (() => {
         return {
