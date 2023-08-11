@@ -103,6 +103,7 @@
   let burgerTooltip;
   let breadcrumbsEnabled;
   let contextRequested = false;
+  let loadingIndicatorTimeout;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -356,7 +357,14 @@
             } else if (prop == 'splitViewWC') {
               splitViewWC = obj.splitViewWC;
             } else if (prop === 'showLoadingIndicator') {
-              showLoadingIndicator = obj.showLoadingIndicator;
+              if(obj.showLoadingIndicator===true){
+                loadingIndicatorTimeout = setTimeout(()=>{
+                  showLoadingIndicator = true;
+                },250);
+              }else{
+                showLoadingIndicator = false;
+                clearTimeout(loadingIndicatorTimeout);
+              }
             } else if (prop === 'tabNav') {
               tabNav = obj.tabNav;
             } else if (prop === 'isNavigateBack') {
@@ -1436,6 +1444,7 @@
       }
 
       if ('luigi.hide-loading-indicator' === e.data.msg) {
+        clearTimeout(loadingIndicatorTimeout);
         showLoadingIndicator = false;
       }
 
@@ -1853,8 +1862,11 @@
     if (spinnerContainer && spinnerContainer.classList.contains('fade-out')) {
       spinnerContainer.classList.remove('fade-out');
       setTimeout(()=>{
+        clearTimeout(loadingIndicatorTimeout);
         showLoadingIndicator = false;
-      }, 250)
+      }, 250);
+    }else{
+      clearTimeout(loadingIndicatorTimeout);
     }
   }
 
@@ -1939,11 +1951,6 @@
         };
       });
     }
-    setTimeout(() => {
-      if(!contextRequested){
-        showLoadingIndicator = true;
-      }
-    }, 250);
   });
 
   afterUpdate(() => {

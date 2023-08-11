@@ -115,10 +115,7 @@
         });
         wcCreated = true;
       } else {
-        showLoadingIndicator = nodeObject.loadingIndicator
-        ? nodeObject.loadingIndicator.enabled
-        : true;
-        
+       
         const iframe = await createIframeModal(nodeObject.viewUrl, {
           context: pathData.context,
           pathParams: pathData.pathParams,
@@ -285,7 +282,7 @@
     window.focus();
     // activate loadingindicator if onMount function takes longer than expected
     setTimeout(() => {
-      if(!contextRequested && !nodeObject.webcomponent){
+      if(!contextRequested && !nodeObject.webcomponent && nodeObject.loadingIndicator?.enabled!==false){
         showLoadingIndicator = true;
       }
     }, 250);
