@@ -223,7 +223,6 @@ export declare interface LinkManager {
    * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
    * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button.
    * @param {Function} onCloseCallback callback function called upon closing the opened modal
-   * @param {Function} onCloseCallback callback function called upon closing the openened modal
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
