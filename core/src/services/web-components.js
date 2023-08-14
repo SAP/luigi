@@ -62,7 +62,7 @@ class WebComponentSvcClass {
         return wc.extendedContext.nodeParams;
       },
       setAnchor: anchor => {
-        if (specialWCProps.isCompoundChild) return;
+        if (specialWCProps?.isCompoundChild) return;
         window.Luigi.routing().setAnchor(anchor);
       }
     };
