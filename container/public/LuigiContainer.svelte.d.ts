@@ -38,7 +38,7 @@ export default class LuigiContainer extends HTMLElement {
   active_feature_toggle_list: string[];
 
   /**
-   * The parameters to be passed to the web-component-based micro frontend. Will not passed to the compound children.
+   * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    */
   node_params: NodeParams;
 
