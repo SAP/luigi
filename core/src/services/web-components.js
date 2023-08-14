@@ -20,20 +20,20 @@ class WebComponentSvcClass {
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
    */
-  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isCompoundChild) {
+  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, specialWCProps) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
       wc.setAttribute('lui_web_component', true);
-      this.initWC(wc, wc_id, wc_container, viewUrl, extendedContext, nodeId, isCompoundChild);
+      this.initWC(wc, wc_id, wc_container, viewUrl, extendedContext, nodeId, specialWCProps);
 
       wc_container.replaceChild(wc, wcItemPlaceholder);
     }
   }
 
-  initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, isCompoundChild) {
+  initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, specialWCProps) {
     const ctx = extendedContext.context;
     wc.extendedContext = extendedContext;
     const clientAPI = {
@@ -48,12 +48,11 @@ class WebComponentSvcClass {
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       addNodeParams: (params, keepBrowserHistory) => {
-        if (!isCompoundChild) {
-          window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
-        }
+        if (specialWCProps?.isCompoundChild || specialWCProps?.isSpecialWC) return;
+        window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
       },
       getNodeParams: shouldDesanitise => {
-        if (isCompoundChild) {
+        if (specialWCProps?.isCompoundChild || specialWCProps?.isSpecialWC) {
           return {};
         }
         const result = wc.extendedContext?.nodeParams ? wc.extendedContext.nodeParams : {};
@@ -63,9 +62,8 @@ class WebComponentSvcClass {
         return wc.extendedContext.nodeParams;
       },
       setAnchor: anchor => {
-        if (!isCompoundChild) {
-          window.Luigi.routing().setAnchor(anchor);
-        }
+        if (specialWCProps.isCompoundChild) return;
+        window.Luigi.routing().setAnchor(anchor);
       }
     };
 
@@ -201,7 +199,7 @@ class WebComponentSvcClass {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isCompoundChild) {
+  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, specialWCProps) {
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id =
@@ -210,20 +208,20 @@ class WebComponentSvcClass {
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, specialWCProps);
     } else {
       /** Custom import function, if defined */
       if (window.luigiWCFn) {
         window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, specialWCProps);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, specialWCProps);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isCompoundChild);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, specialWCProps);
         });
       }
     }
@@ -313,7 +311,7 @@ class WebComponentSvcClass {
           renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
           const nodeId = wc.id || 'gen_' + index;
-          this.renderWebComponent(wc.viewUrl, compoundItemCnt, { context: ctx }, wc, nodeId, true);
+          this.renderWebComponent(wc.viewUrl, compoundItemCnt, { context: ctx }, wc, nodeId, { isCompoundChild: true });
           registerEventListeners(ebListeners, wc, nodeId);
         });
         wc_container.appendChild(compoundCnt);
