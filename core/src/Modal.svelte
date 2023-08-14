@@ -108,7 +108,7 @@
           document.querySelector(modalElementClassSelector),
           {context: pathData.context},
           nodeObject,
-          undefined, {isSpecialWC: true}
+          undefined, true
         );
         dispatch('wcCreated', {
           modalWC: document.querySelector(modalElementClassSelector),

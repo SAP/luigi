@@ -37,7 +37,7 @@ export class WebComponentService {
     ctx,
     viewUrl: string,
     nodeId: string,
-    isCompoundChild?: boolean
+    isSpecialMf?: boolean
   ) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
@@ -45,7 +45,7 @@ export class WebComponentService {
         wc.setAttribute('nodeId', nodeId);
       }
 
-      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId, isCompoundChild);
+      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId, isSpecialMf);
       wc_container.replaceChild(wc, wcItemPlaceholder);
       if (wc_container._luigi_node) {
         wc_container._luigi_mfe_webcomponent = wc;
@@ -73,7 +73,7 @@ export class WebComponentService {
    * @param wc_id a tagname that is used when creating the web component element
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(eventBusElement, nodeId: string, wc_id: string, isCompoundChild?: boolean) {
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string, isSpecialMf?: boolean) {
     return {
       linkManager: () => {
         return {
@@ -118,13 +118,13 @@ export class WebComponentService {
         this.dispatchLuigiEvent(Events.INITIALIZED, {});
       },
       addNodeParams: (params, keepBrowserHistory) => {
-        if (isCompoundChild) {
+        if (isSpecialMf) {
           return;
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
       getNodeParams: shouldDesanitise => {
-        if (isCompoundChild) {
+        if (isSpecialMf) {
           return {};
         }
         let result = this.thisComponent.getAttribute('node_params') || {};
@@ -135,7 +135,7 @@ export class WebComponentService {
         return result;
       },
       setAnchor: anchor => {
-        if (isCompoundChild) {
+        if (isSpecialMf) {
           return;
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
@@ -143,16 +143,8 @@ export class WebComponentService {
     };
   }
 
-  initWC(
-    wc: HTMLElement | any,
-    wc_id,
-    eventBusElement,
-    viewUrl: string,
-    ctx,
-    nodeId: string,
-    isCompoundChild?: boolean
-  ) {
-    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, isCompoundChild);
+  initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string, isSpecialMf?: boolean) {
+    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, isSpecialMf);
 
     if (wc.__postProcess) {
       const url =
@@ -293,7 +285,7 @@ export class WebComponentService {
     context: any,
     node: any,
     nodeId?: any,
-    isCompoundChild?: boolean
+    isSpecialMf?: boolean
   ) {
     const i18nViewUrl = this.processViewUrl(viewUrl, { context });
     const wc_id =
@@ -303,21 +295,21 @@ export class WebComponentService {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
     } else {
       /** Custom import function, if defined */
       if ((window as any).luigiWCFn) {
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id)
           .then(() => {
-            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
+            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
           })
           .catch(error => {
             console.warn('ERROR =>', error);

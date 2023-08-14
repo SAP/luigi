@@ -87,7 +87,7 @@ class SplitViewSvcClass {
         { context: pathData.context },
         lastNode,
         undefined,
-        { isSpecialWC: true }
+        true
       );
       const wcInfo = {
         splitViewWC: document.querySelector('.iframeSplitViewCnt'),
