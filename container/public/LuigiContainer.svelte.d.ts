@@ -17,22 +17,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * Predicate that sets whether the microfrontend is to be rendered in a web component or not
    */
-  webcomponent: boolean;
-
-  /**
-   * The locale to be passed to the web-component-based micro frontend
-   */
-  locale: string;
-
-  /**
-   * The theme to be passed to the  web-component-based micro frontend
-   */
-  theme: string;
-
-  /**
-   * The list of active feature toggles to be passed to the web-component-based micro frontend
-   */
-  active_feature_toggle_list: string[];
+  webcomponent: boolean | string;
 
   /**
    * Updates the context of the microfrontend

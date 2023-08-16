@@ -3,12 +3,6 @@
 <script lang="ts">
   export let viewurl;
   export let context;
-  // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialized` to mfe. Mfe is immediately ready.
-  export let skipinitcheck;
-  // export let label;
-  export let locale;
-  export let theme;
-  export let active_feature_toggle_list;
 
   let compoundConfig;
 
@@ -43,7 +37,7 @@
       .renderWebComponentCompound(node, mainComponent, ctx)
       .then(compCnt => {
         eventBusElement = compCnt;
-        if (skipinitcheck === 'true' || !node.viewUrl) {
+        if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
           thisComponent.initialized = true;
           setTimeout(() => {
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});

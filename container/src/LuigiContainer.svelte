@@ -5,11 +5,6 @@
   export let context;
   export let label;
   export let webcomponent;
-  // if `true` at LuigiContainer tag, LuigiContainer sends an event `initialized` to mfe. Mfe is immediately ready.
-  export let skipinitcheck;
-  export let locale;
-  export let theme;
-  export let active_feature_toggle_list;
 
   let iframeHandle:
     | {
@@ -59,7 +54,7 @@
   webcomponentService.thisComponent = thisComponent;
 
   function isWebComponent(): boolean {
-    return !!webcomponent;
+    return thisComponent.hasAttribute('webcomponent') || webcomponent;
   }
 
   onMount(async () => {
@@ -68,7 +63,7 @@
       mainComponent.innerHTML = '';
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
     }
-    if (skipinitcheck === 'true') {
+    if (thisComponent.hasAttribute('skip-init-check')) {
       thisComponent.initialized = true;
       setTimeout(() => {
         webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
