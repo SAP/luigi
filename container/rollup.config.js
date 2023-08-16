@@ -5,7 +5,6 @@ import typescript from '@rollup/plugin-typescript';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
-const execSync = require('child_process').execSync;
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -30,48 +29,6 @@ function serve() {
   };
 }
 
-/**
- * This function replaces the '__luigi_dyn_import(' string with 'import( /* webpackIgnore: true */ ('   ');
-/*
- * to avoid bundlers like webpack resolving dynamic import statements as they shouldn't be resolved in this case
- *
- * @param {string} bundleFileName the file name of the generated bundle js
- */
-function replaceDynamicImportOnShell(bundleFilename) {
-  const bundleSourceMapFileName = bundleFilename + '.map';
-  const backupBundleFilename = bundleFilename + '.backup';
-  const backupSourceMapFilename = bundleSourceMapFileName + '.backup';
-
-  try {
-    // sed can't work on both Linux + MAC without generating 'backup' files
-    execSync(
-      `sed -i.backup 's/__luigi_dyn_import(/import\(\\/\* webpackIgnore: true \*\\/ /g' ${bundleFilename} &&
-       sed -i.backup 's/__luigi_dyn_import/import/g' ${bundleSourceMapFileName}`
-    );
-  } catch (error) {
-    console.error('Failed to replace string', error);
-    if (error) {
-      throw error;
-    }
-  }
-
-  try {
-    // delete generated backup files as they are not needed
-    execSync(`rm ${backupBundleFilename} ${backupSourceMapFilename}`);
-  } catch (error) {
-    console.error('Failed to delete backup generated files', error);
-    if (error) {
-      throw error;
-    }
-  }
-
-  console.log(
-    '\x1b[33mRollup [' + new Date().toLocaleTimeString() + ']: ',
-    '\x1b[0m',
-    'Post-processing finished replacing __luigi_dyn_import --> import.'
-  );
-}
-
 export default [
   {
     input: 'src/main.js',
@@ -93,8 +50,43 @@ export default [
         })
       }),
       typescript({
-        sourceMap: true
+        sourceMap: false
       }),
+      (() => {
+        return {
+          name: 'dynamic-import-wp-ignore',
+          resolveDynamicImport(specifier, importer) {
+            const moduleInfo = this.getModuleInfo(importer);
+            let index;
+            for (index = specifier.start; index >= 0; index--) {
+              if (moduleInfo.code.charAt(index) === '(') {
+                break;
+              }
+            }
+            if (
+              moduleInfo.code
+                .substr(index, specifier.end - index)
+                .replace(/\s+/g, '')
+                .includes('webpackIgnore:true')
+            ) {
+              return (
+                '/* keepDynamicImport: true */' +
+                moduleInfo.code.substr(specifier.start, specifier.end - specifier.start)
+              );
+            }
+            return null;
+          },
+          renderDynamicImport({ customResolution }) {
+            if (customResolution.indexOf('/* keepDynamicImport: true */') >= 0) {
+              return {
+                left: 'import(',
+                right: ')'
+              };
+            }
+            return null;
+          }
+        };
+      })(),
       // we'll extract any component CSS out into
       // a separate file - better for performance
       // css({ output: 'bundle.css' }),
@@ -125,7 +117,12 @@ export default [
 
       // If we're building for production (npm run build
       // instead of npm run dev), minify
-      production && terser()
+      production &&
+        terser({
+          format: {
+            comments: '/.*webpackIgnore.*/'
+          }
+        })
     ],
     watch: {
       clearScreen: false
