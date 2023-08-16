@@ -546,6 +546,9 @@
           const params = event.detail.params;
           console.log('params', params);
         });
+        luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
+          console.log('anhor', event.detail);
+        });
 
         //...
       });

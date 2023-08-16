@@ -16,6 +16,9 @@ export default class extends HTMLElement {
     const getNodeParamsBtn = document.createElement('template');
     getNodeParamsBtn.innerHTML = '<button id="getNodeParams">get node params</button>';
 
+    const setAnchorBtn = document.createElement('template');
+    setAnchorBtn.innerHTML = '<button id="setAnchor">setAnchor</button>';
+
     const empty = document.createElement('template');
     empty.innerHTML = `<section><p>Test!</p><br/><br/></section>`;
 
@@ -27,6 +30,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
 
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -67,6 +71,12 @@ export default class extends HTMLElement {
           text: 'LuigiClient.getNodeParams()=' + JSON.stringify(nodeParams),
           type: 'info'
         });
+      }
+    });
+    this.$setAnchorBtn = this._shadowRoot.querySelector('#setAnchor');
+    this.$setAnchorBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.setAnchor('#myAnchor');
       }
     });
   }
