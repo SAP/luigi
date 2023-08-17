@@ -1,10 +1,33 @@
-<svelte:options tag={null} />
+<svelte:options customElement={{
+  tag: null,
+  props: {
+    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+    deferInit: { type: 'Boolean', attribute: 'defer-init' },
+    context: { type: 'String', reflect: false, attribute: 'context' },
+    label: { type: 'String', reflect: false, attribute: 'label' },
+    webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },    
+    locale: { type: 'String', reflect: false, attribute: 'locale' },
+    theme: { type: 'String', reflect: false, attribute: 'theme' },
+    activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
+  }
+}} />
+
 
 <script lang="ts">
-  export let viewurl;
-  export let context;
-  export let label;
-  export let webcomponent;
+  import { onMount, onDestroy } from 'svelte';
+  import { containerService } from './services/container.service';
+  import { WebComponentService } from './services/webcomponents.service';
+  import { ContainerAPI } from './api/container-api';
+  import { Events } from './constants/communication';
+
+  export let viewurl: string;
+  export let context: string;
+  export let label: string;
+  export let webcomponent: string;
+  export let deferInit: boolean;  
+  export let locale: string;
+  export let theme: string;
+  export let activeFeatureToggleList: string[];
 
   let iframeHandle:
     | {
@@ -13,73 +36,72 @@
     | any = {};
   let mainComponent: HTMLElement;
 
-  import { onMount, onDestroy } from 'svelte';
-  import { get_current_component } from 'svelte/internal';
-  import { containerService } from './services/container.service';
-  import { WebComponentService } from './services/webcomponents.service';
-  import { LuigiInternalMessageID } from './constants/internal-communication';
-  import { ContainerAPI } from './api/container-api';
-  import { Events } from './constants/communication';
+  let initialized = false;
 
   const webcomponentService = new WebComponentService();
 
-  const thisComponent: any = get_current_component();
-
-  thisComponent.iframeHandle = iframeHandle;
-  let deferInit: boolean = !!thisComponent.attributes['defer-init'];
-
-  thisComponent.init = () => {
-    deferInit = false;
-  };
-
-  thisComponent.sendCustomMessage = (id: string, data?: any) => {
-    ContainerAPI.sendCustomMessage(
-      id,
-      mainComponent,
-      isWebComponent(),
-      iframeHandle,
-      data
-    );
-  };
-
-  thisComponent.updateContext = (contextObj: any, internal?: any) => {
-    ContainerAPI.updateContext(contextObj, internal, iframeHandle);
-  };
-
-  thisComponent.closeAlert = (id: any, dismissKey: any) => {
-    ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
-  };
-
-  containerService.registerContainer(thisComponent);
-  webcomponentService.thisComponent = thisComponent;
-
-  function isWebComponent(): boolean {
-    return thisComponent.hasAttribute('webcomponent') || webcomponent;
+  // Only needed for get rid of "unused export property" svelte compiler warnings
+  export const unwarn = () => {
+    return locale && theme && activeFeatureToggleList;
   }
 
-  onMount(async () => {
-    const ctx = context ? JSON.parse(context) : {};
-    if (isWebComponent()) {
-      mainComponent.innerHTML = '';
-      webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
-    }
-    if (thisComponent.hasAttribute('skip-init-check')) {
-      thisComponent.initialized = true;
-      setTimeout(() => {
-        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-      });
-    } else if (isWebComponent()) {
-      mainComponent.addEventListener('wc_ready', () => {
-        if (
-          !(mainComponent as any)._luigi_mfe_webcomponent
-            ?.deferLuigiClientWCInit
-        ) {
-          thisComponent.initialized = true;
+  const initialize = (thisComponent: any) => {    
+    if (!initialized) {
+      thisComponent.sendCustomMessage = (id: string, data?: any) => {
+        ContainerAPI.sendCustomMessage(
+          id,
+          mainComponent,
+          !!webcomponent,
+          iframeHandle,
+          data
+        );
+      };
+
+      thisComponent.updateContext = (contextObj: any, internal?: any) => {
+        ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+      };
+
+      thisComponent.closeAlert = (id: any, dismissKey: any) => {
+        ContainerAPI.closeAlert(id, dismissKey, iframeHandle);
+      };
+
+      containerService.registerContainer(thisComponent);
+      webcomponentService.thisComponent = thisComponent;
+
+      const ctx = context ? JSON.parse(context) : {};
+      if (webcomponent) {
+        mainComponent.innerHTML = '';
+        webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
+      }
+      if (thisComponent.hasAttribute('skip-init-check')) {
+        thisComponent.initialized = true;
+        setTimeout(() => {
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-        }
-      });
+        });
+      } else if (webcomponent) {
+        mainComponent.addEventListener('wc_ready', () => {
+          if (
+            !(mainComponent as any)._luigi_mfe_webcomponent
+              ?.deferLuigiClientWCInit
+          ) {
+            thisComponent.initialized = true;
+            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+          }
+        });
+      }
+      initialized = true;
     }
-    // deferInit = true;
+  };
+
+  onMount(async () => {
+    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
+    thisComponent.iframeHandle = iframeHandle;
+    thisComponent.init = () => {
+      initialize(thisComponent);
+    };
+    if (!deferInit) {
+      initialize(thisComponent);
+    }
   });
 
   onDestroy(async () => {});
@@ -87,10 +109,10 @@
 
 <main
   bind:this={mainComponent}
-  class={isWebComponent() ? undefined : 'lui-isolated'}
+  class={webcomponent ? undefined : 'lui-isolated'}
 >
   {#if !deferInit}
-    {#if !isWebComponent()}
+    {#if !webcomponent}
       <iframe bind:this={iframeHandle.iframe} src={viewurl} title={label} />
     {/if}
   {/if}

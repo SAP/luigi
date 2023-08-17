@@ -1,42 +1,47 @@
-<svelte:options tag={null} accessors={true} />
+<svelte:options customElement={{
+  tag: null,
+  props: {
+    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+    deferInit: { type: 'Boolean', attribute: 'defer-init' },
+    context: { type: 'String', reflect: false, attribute: 'context' },
+    compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
+  }
+}} />
 
-<script lang="ts">
-  export let viewurl;
-  export let context;
-
-  let compoundConfig;
-
-  let initProcessed = false;
-  let mainComponent;
-  let eventBusElement;
-
+<script lang="ts">  
   import { onMount } from 'svelte';
-  import { get_current_component } from 'svelte/internal';
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
   import { Events } from './constants/communication';
 
+  export let viewurl: string;
+  export let context: string;
+  export let deferInit: boolean;  
+  export let compoundConfig: any;
+
+  let initProcessed = false;
+  let mainComponent: HTMLElement;
+  let eventBusElement: HTMLElement;
+
+  
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
 
-  const thisComponent = get_current_component();
-  let deferInit = !!thisComponent.attributes['defer-init'];
-
-  thisComponent.init = () => {
-    if (!thisComponent.compoundConfig || initProcessed) {
+  const initialize = (thisComponent: any) => {    
+    if (!compoundConfig || initProcessed) {
       return;
     }
     const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {
-      compound: thisComponent.compoundConfig,
+      compound: compoundConfig,
       viewUrl: viewurl ? viewurl : undefined,
       webcomponent: true
     }; // TODO: fill with sth
     webcomponentService
       .renderWebComponentCompound(node, mainComponent, ctx)
       .then(compCnt => {
-        eventBusElement = compCnt;
+        eventBusElement = compCnt as HTMLElement;
         if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
           thisComponent.initialized = true;
           setTimeout(() => {
@@ -51,12 +56,21 @@
         }
       });
     initProcessed = true;
-  };
+  }
 
-  containerService.registerContainer(thisComponent);
-  webcomponentService.thisComponent = thisComponent;
+  onMount(async () => {
+    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
 
-  onMount(async () => {});
+    thisComponent.init = () => {
+      initialize(thisComponent);
+    };
+    if (!deferInit) {
+      initialize(thisComponent);
+    }
+
+    containerService.registerContainer(thisComponent);
+    webcomponentService.thisComponent = thisComponent;
+  });
 </script>
 
 <main bind:this={mainComponent} />
