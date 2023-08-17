@@ -19,7 +19,7 @@
   export let deferInit: boolean;  
   export let compoundConfig: any;
 
-  let initProcessed = false;
+  let containerInitialized = false;
   let mainComponent: HTMLElement;
   let eventBusElement: HTMLElement;
 
@@ -28,7 +28,7 @@
   const webcomponentService = new WebComponentService();
 
   const initialize = (thisComponent: any) => {    
-    if (!compoundConfig || initProcessed) {
+    if (!compoundConfig || containerInitialized) {
       return;
     }
     const ctx = context ? JSON.parse(context) : {};
@@ -55,7 +55,7 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         }
       });
-    initProcessed = true;
+    containerInitialized = true;
   }
 
   onMount(async () => {

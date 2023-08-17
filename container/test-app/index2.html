@@ -242,6 +242,9 @@
           'message recieved: ' + JSON.stringify(event.detail.data)
         );
       });
+
+      let lc = document.createElement('luigi-container');
+      lc.sendCustomMessage('d');
     </script>
   </body>
 </html>

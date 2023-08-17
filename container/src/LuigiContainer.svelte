@@ -9,7 +9,22 @@
     locale: { type: 'String', reflect: false, attribute: 'locale' },
     theme: { type: 'String', reflect: false, attribute: 'theme' },
     activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
-  }
+    skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' }
+  },
+  extend: (customElementConstructor) => {
+      let notInitFn = (name) => {
+          return () => console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
+      }
+      return class extends customElementConstructor {
+        sendCustomMessage = notInitFn('sendCustomMessage');
+        updateContext = notInitFn('updateContext');
+        closeAlert = notInitFn('closeAlert');
+
+        constructor() {
+          super();
+        }
+      };
+    }
 }} />
 
 
@@ -28,6 +43,7 @@
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
+  export let skipInitCheck: boolean;
 
   let iframeHandle:
     | {
@@ -36,7 +52,7 @@
     | any = {};
   let mainComponent: HTMLElement;
 
-  let initialized = false;
+  let containerInitialized = false;
 
   const webcomponentService = new WebComponentService();
 
@@ -46,7 +62,7 @@
   }
 
   const initialize = (thisComponent: any) => {    
-    if (!initialized) {
+    if (!containerInitialized) {
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
         ContainerAPI.sendCustomMessage(
           id,
@@ -73,7 +89,7 @@
         mainComponent.innerHTML = '';
         webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
       }
-      if (thisComponent.hasAttribute('skip-init-check')) {
+      if (skipInitCheck) {
         thisComponent.initialized = true;
         setTimeout(() => {
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
@@ -89,7 +105,7 @@
           }
         });
       }
-      initialized = true;
+      containerInitialized = true;
     }
   };
 
