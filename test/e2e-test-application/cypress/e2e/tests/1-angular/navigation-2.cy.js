@@ -162,6 +162,21 @@ describe('Navigation', () => {
       cy.get('[data-testid=modal-mf]').should('not.exist');
     });
 
+    it.only('Define a data-testid for close button on modal', () => {
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsModal('/projects/pr1/developers', { closebtn_data_testid: 'MyCustomTestId' });
+      });
+      cy.get('[data-testid=MyCustomTestId]')
+        .should('be.visible')
+        .click();
+      cy.window().then(win => {
+        win.Luigi.navigation().openAsModal('/projects/pr1/developers');
+      });
+      cy.get('[data-testid=lui-modal-index-0]')
+        .should('be.visible')
+        .click();
+    });
+
     it('Nav sync - click sidenav', () => {
       // projects page
       cy.get('.fd-shellbar')
