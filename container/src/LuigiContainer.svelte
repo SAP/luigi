@@ -66,6 +66,7 @@
     const ctx = context ? JSON.parse(context) : {};
     if (isWebComponent()) {
       mainComponent.innerHTML = '';
+      mainComponent.classList.remove('lui-isolated');
       webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
     }
     if (skipinitcheck === 'true') {
