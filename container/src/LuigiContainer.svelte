@@ -129,7 +129,7 @@
   bind:this={mainComponent}
   class={webcomponent ? undefined : 'lui-isolated'}
 >
-  {#if !deferInit}
+  {#if containerInitialized}
     {#if !webcomponent}
       <iframe bind:this={iframeHandle.iframe} src={viewurl} title={label} />
     {/if}
