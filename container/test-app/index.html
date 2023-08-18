@@ -379,7 +379,12 @@
       var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
       var utilMFEDomain = 'https://luigiwebcomponents.gitlab.io/util';
       import MFEventID from './bundle.js';
-      document.getElementById('dashboard').compoundConfig = {
+
+      const lcc = document.getElementById('dashboard');
+      lcc.addEventListener(MFEventID.CUSTOM_MESSAGE, e => {
+        console.log('Publish Event', e.detail);
+      });
+      lcc.compoundConfig = {
         renderer: {
           use: 'grid',
           config: {
@@ -535,6 +540,12 @@
             event.luigiCallback(val);
           }
         );
+        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+          console.log('Custom Event', event);
+          if (event.detail.id !== 'timer') {
+            alert(event.detail.id);
+          }
+        });
 
         luigiContainer.addEventListener(
           MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
