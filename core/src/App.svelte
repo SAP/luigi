@@ -1588,7 +1588,7 @@
                pathParams: topMostModalData.pathParams,
                context: topMostModalData.context,
                iframe: topMostModal.modalIframe
-              });
+            });
           } 
           modalConfig.iframe &&
             (await sendContextToClient(modalConfig, {
