@@ -106,8 +106,9 @@
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),
-          pathData.context,
-          nodeObject
+          {context: pathData.context},
+          nodeObject,
+          undefined, true
         );
         dispatch('wcCreated', {
           modalWC: document.querySelector(modalElementClassSelector),
