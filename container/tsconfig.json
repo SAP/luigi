@@ -10,7 +10,4 @@
     "__sapper__/*",
     "public/*"
   ],
-  "compilerOptions": {
-    "module": "ESNext",
-  },
 }
