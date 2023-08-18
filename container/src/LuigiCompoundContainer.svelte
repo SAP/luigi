@@ -5,6 +5,7 @@
     deferInit: { type: 'Boolean', attribute: 'defer-init' },
     context: { type: 'String', reflect: false, attribute: 'context' },
     compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
+    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
   }
 }} />
 
@@ -18,7 +19,7 @@
   export let context: string;
   export let deferInit: boolean;  
   export let compoundConfig: any;
-  export let node_params;
+  export let nodeParams: any;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -27,6 +28,11 @@
   
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
+
+  // Only needed for get rid of "unused export property" svelte compiler warnings
+  export const unwarn = () => {
+    return nodeParams;
+  }
 
   const initialize = (thisComponent: any) => {    
     if (!compoundConfig || containerInitialized) {

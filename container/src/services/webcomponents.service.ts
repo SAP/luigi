@@ -135,7 +135,7 @@ export class WebComponentService {
         if (isSpecialMf) {
           return {};
         }
-        let result = this.thisComponent.getAttribute('node_params') || {};
+        let result = this.thisComponent.getAttribute('node-params') || {};
         result = JSON.parse(result);
         if (shouldDesanitise) {
           return deSanitizeParamsMap(result);

@@ -9,7 +9,8 @@
     locale: { type: 'String', reflect: false, attribute: 'locale' },
     theme: { type: 'String', reflect: false, attribute: 'theme' },
     activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
-    skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' }
+    skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
+    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
   },
   extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -44,7 +45,7 @@
   export let theme: string;
   export let activeFeatureToggleList: string[];
   export let skipInitCheck: boolean;
-  export let node_params;
+  export let nodeParams: any;
 
   let iframeHandle:
     | {
@@ -59,7 +60,7 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return locale && theme && activeFeatureToggleList;
+    return locale && theme && activeFeatureToggleList && nodeParams;
   }
 
   const initialize = (thisComponent: any) => {    
