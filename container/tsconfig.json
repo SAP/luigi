@@ -12,6 +12,5 @@
   ],
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "Node",
   },
 }
