@@ -84,8 +84,10 @@ class SplitViewSvcClass {
       WebComponentService.renderWebComponent(
         lastNode.viewUrl,
         document.querySelector('.iframeSplitViewCnt'),
-        pathData.context,
-        lastNode
+        { context: pathData.context },
+        lastNode,
+        undefined,
+        true
       );
       const wcInfo = {
         splitViewWC: document.querySelector('.iframeSplitViewCnt'),

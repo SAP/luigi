@@ -44,6 +44,7 @@
   export let theme: string;
   export let activeFeatureToggleList: string[];
   export let skipInitCheck: boolean;
+  export let node_params;
 
   let iframeHandle:
     | {

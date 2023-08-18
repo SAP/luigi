@@ -18,6 +18,7 @@
   export let context: string;
   export let deferInit: boolean;  
   export let compoundConfig: any;
+  export let node_params;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
