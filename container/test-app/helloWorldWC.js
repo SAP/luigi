@@ -10,6 +10,9 @@ export default class extends HTMLElement {
     const templateBtn = document.createElement('template');
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
+    const templateBtn2 = document.createElement('template');
+    templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
+
     const addNodeParamsBtn = document.createElement('template');
     addNodeParamsBtn.innerHTML = '<button id="addNodeParams">add node params</button>';
 
@@ -28,6 +31,7 @@ export default class extends HTMLElement {
     });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(templateBtn2.content.cloneNode(true));
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
@@ -54,6 +58,11 @@ export default class extends HTMLElement {
           text: 'LuigiClient.uxManager().getCurrentTheme()=' + this.LuigiClient.uxManager().getCurrentTheme(),
           type: 'info'
         });
+      }
+    });
+    this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
       }
     });
 

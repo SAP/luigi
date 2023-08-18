@@ -71,7 +71,7 @@ export class WebComponentService {
    * @param wc_id a tagname that is used when creating the web component element
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(eventBusElement, nodeId: string, wc_id: string, isSpecialMf?: boolean) {
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isSpecialMf?: boolean) {
     return {
       linkManager: () => {
         return {
@@ -111,6 +111,16 @@ export class WebComponentService {
         if (eventBusElement && eventBusElement.eventBus) {
           eventBusElement.eventBus.onPublishEvent(ev, nodeId, wc_id);
         }
+        const payload = {
+          id: ev.type,
+          _metaData: {
+            nodeId,
+            wc_id,
+            src: component
+          },
+          data: ev.detail
+        };
+        this.dispatchLuigiEvent(Events.CUSTOM_MESSAGE, payload);
       },
       luigiClientInit: () => {
         this.dispatchLuigiEvent(Events.INITIALIZED, {});
@@ -142,7 +152,7 @@ export class WebComponentService {
   }
 
   initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string, isSpecialMf?: boolean) {
-    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, isSpecialMf);
+    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc, isSpecialMf);
 
     if (wc.__postProcess) {
       const url =
