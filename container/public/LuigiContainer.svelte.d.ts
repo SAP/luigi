@@ -40,7 +40,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    */
-  node_params: NodeParams;
+  nodeParams: NodeParams;
 
   /**
    * Updates the context of the microfrontend
