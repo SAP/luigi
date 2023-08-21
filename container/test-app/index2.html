@@ -27,6 +27,7 @@
         <luigi-container
           webcomponent="true"
           viewUrl="https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js"
+          active-feature-toggle-list='["ft1"]'
         >
         </luigi-container>
       </div>
@@ -241,6 +242,9 @@
           'message recieved: ' + JSON.stringify(event.detail.data)
         );
       });
+
+      let lc = document.createElement('luigi-container');
+      lc.sendCustomMessage('d');
     </script>
   </body>
 </html>

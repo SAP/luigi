@@ -12,6 +12,7 @@ killWebserver 8080
 npm run start &
 WS_FID_PID=$!
 
+sleep 10
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"

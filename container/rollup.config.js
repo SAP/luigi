@@ -7,6 +7,9 @@ import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
 
 const production = !process.env.ROLLUP_WATCH;
+if (production) {
+  console.log('Production BUILD');
+}
 
 function serve() {
   let server;
@@ -34,7 +37,6 @@ export default [
     input: 'src/main.js',
     output: {
       sourcemap: true,
-      format: 'es',
       name: 'app',
       file: 'public/bundle.js'
     },
@@ -50,7 +52,8 @@ export default [
         })
       }),
       typescript({
-        sourceMap: false
+        sourceMap: true,
+        inlineSources: true
       }),
       (() => {
         return {
@@ -101,12 +104,6 @@ export default [
         dedupe: ['svelte']
       }),
       commonjs(),
-      // TODO: Sed not compatible on Windows. using JS for the time being
-      // {
-      //   writeBundle(bundle) {
-      //     replaceDynamicImport(bundle.file)
-      //   }
-      // },
       // In dev mode, call `npm run start` once
       // the bundle has been generated
       !production && serve(),
