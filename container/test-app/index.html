@@ -298,20 +298,19 @@
       <luigi-compound-container
         id="dashboard"
         context='{"label": "Dashboard"}'
-        node_params='{"Luigi":"rocks"}'
+        node-params='{"Luigi":"rocks"}'
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="dashboard2">
       <luigi-compound-container
         id="nested-wc-compound-container"
         context='{"label": "Dashboard2", "title":"Dashboard2"}'
-        skipInitCheck="false"
         viewUrl="http://localhost:8080/nested.js"
-        node_params='{"Das ist ein":"compound tets"}'
+        node-params='{"Das ist ein":"compound tets"}'
       ></luigi-compound-container>
     </div>
     <!-- viewUrl="http://localhost:8080/nested.js" -->
-    <!-- https://luigiwebcomponents.gitlab.io/nested.js skipInitCheck="true"-->
+    <!-- https://luigiwebcomponents.gitlab.io/nested.js skip-init-check="true"-->
     <div class="lui-wrapper" route="team">
       <luigi-container
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
@@ -339,7 +338,7 @@
         viewURL="/test.js"
         webcomponent="true"
         id="test-defer-init-false"
-        skipInitCheck="true"
+        skip-init-check
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="test2">
@@ -357,8 +356,8 @@
         context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
         locale="en"
         theme="sap_fiori_3"
-        active_feature_toggle_list="['ft1','ft2']"
-        node_params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
+        active-feature-toggle-list='["ft1","ft2"]'
+        node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="error-test">
