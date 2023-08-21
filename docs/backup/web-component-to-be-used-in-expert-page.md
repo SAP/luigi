@@ -699,10 +699,10 @@ import EcEvent from "./wcEvent.js";
 
       container.innerHTML = `
         <div style="text-align: center" id="${id}">
-          <div class="fd-busy-indicator--m" aria-hidden="false" aria-label="Loading">
-            <div class="fd-busy-indicator--circle-0"></div>
-            <div class="fd-busy-indicator--circle-1"></div>
-            <div class="fd-busy-indicator--circle-2"></div>
+          <div class="fd-busy-indicator fd-busy-indicator--m" aria-hidden="false" aria-label="Loading">
+            <div class="fd-busy-indicator__circle"></div>
+            <div class="fd-busy-indicator__circle"></div>
+            <div class="fd-busy-indicator__circle"></div>
           </div><br /><br />
         </div>     
       `;

@@ -106,8 +106,9 @@
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),
-          pathData.context,
-          nodeObject
+          {context: pathData.context},
+          nodeObject,
+          undefined, true
         );
         dispatch('wcCreated', {
           modalWC: document.querySelector(modalElementClassSelector),
@@ -115,10 +116,7 @@
         });
         wcCreated = true;
       } else {
-        showLoadingIndicator = nodeObject.loadingIndicator
-        ? nodeObject.loadingIndicator.enabled
-        : true;
-        
+       
         const iframe = await createIframeModal(nodeObject.viewUrl, {
           context: pathData.context,
           pathParams: pathData.pathParams,
@@ -240,7 +238,7 @@
         !nodeObject.loadingIndicator ||
         nodeObject.loadingIndicator.hideAutomatically !== false;
       if (loadingIndicatorAutoHideEnabled) {
-        fadeOutLoadingIndicator();
+       fadeOutLoadingIndicator();
       }
     }
 
@@ -285,7 +283,7 @@
     window.focus();
     // activate loadingindicator if onMount function takes longer than expected
     setTimeout(() => {
-      if(!contextRequested && !nodeObject.webcomponent){
+      if(!contextRequested && !nodeObject.webcomponent && nodeObject.loadingIndicator?.enabled!==false){
         showLoadingIndicator = true;
       }
     }, 250);
@@ -315,7 +313,12 @@
    * After 250 ms the spinner will be removed from DOM.
    */
   function fadeOutLoadingIndicator() {
-    const spinnerContainer = document.querySelector(`${isModal ? '.lui-modal-mf' : '.drawer'} .spinnerContainer`);
+    let spinnerContainer;
+    if(isModal){
+      spinnerContainer = document.querySelector(`.lui-modal-mf.lui-modal-index-${modalIndex} .spinnerContainer`);
+    }else{
+      spinnerContainer = document.querySelector(`.drawer .spinnerContainer`);
+    }
     if (spinnerContainer && spinnerContainer.classList.contains("fade-out")) {
       spinnerContainer.classList.remove("fade-out");
       setTimeout(() => {
@@ -361,6 +364,9 @@
               class="fd-button fd-button--transparent fd-button--compact"
               on:click={() => dispatch('close', { activeDrawer: false })}
               aria-label="close"
+              data-testid={settings.closebtn_data_testid && isModal
+                ? settings.closebtn_data_testid
+                : 'lui-modal-index-' + modalIndex}
             >
               <i class="sap-icon sap-icon--decline" />
             </button>
