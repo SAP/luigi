@@ -20,7 +20,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * Predicate that sets whether the microfrontend is to be rendered in a web component or not
    */
-  webcomponent: boolean;
+  webcomponent: string;
 
   /**
    * The locale to be passed to the web-component-based micro frontend
@@ -35,12 +35,12 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of active feature toggles to be passed to the web-component-based micro frontend
    */
-  active_feature_toggle_list: string[];
+  activeFeatureToggleList: string[];
 
   /**
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    */
-  node_params: NodeParams;
+  nodeParams: NodeParams;
 
   /**
    * Updates the context of the microfrontend
@@ -55,4 +55,9 @@ export default class LuigiContainer extends HTMLElement {
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message
    */
   closeAlert(id: any, dismissKey: any): Function;
+
+  /**
+   * Manually triggers the micro frontend rendering process when using defer-init attribute
+   */
+  init(): Function;
 }

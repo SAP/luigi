@@ -105,7 +105,7 @@ export class WebComponentService {
         return this.thisComponent.getAttribute('locale');
       },
       getActiveFeatureToggles: () => {
-        return this.thisComponent.getAttribute('active_feature_toggle_list');
+        return this.thisComponent.getAttribute('active-feature-toggle-list');
       },
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
@@ -135,7 +135,7 @@ export class WebComponentService {
         if (isSpecialMf) {
           return {};
         }
-        let result = this.thisComponent.getAttribute('node_params') || {};
+        let result = this.thisComponent.getAttribute('node-params') || {};
         result = JSON.parse(result);
         if (shouldDesanitise) {
           return deSanitizeParamsMap(result);
