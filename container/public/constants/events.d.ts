@@ -83,7 +83,7 @@ export namespace Events {
     /**
      * A message emmitted from the Microfrontend when a request to update the modal path parameters is sent
      */
-    export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-requesst';
+    export const UPDATE_MODAL_PATH_DATA_REQUEST = 'update-modal-path-data-request';
 
     /**
      * A message emmitted from the Microfrontend when a request to check on the validity of a path is sent
