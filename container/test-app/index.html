@@ -298,18 +298,19 @@
       <luigi-compound-container
         id="dashboard"
         context='{"label": "Dashboard"}'
+        node-params='{"Luigi":"rocks"}'
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="dashboard2">
       <luigi-compound-container
         id="nested-wc-compound-container"
         context='{"label": "Dashboard2", "title":"Dashboard2"}'
-        skipInitCheck="false"
         viewUrl="http://localhost:8080/nested.js"
+        node-params='{"Das ist ein":"compound tets"}'
       ></luigi-compound-container>
     </div>
     <!-- viewUrl="http://localhost:8080/nested.js" -->
-    <!-- https://luigiwebcomponents.gitlab.io/nested.js skipInitCheck="true"-->
+    <!-- https://luigiwebcomponents.gitlab.io/nested.js skip-init-check="true"-->
     <div class="lui-wrapper" route="team">
       <luigi-container
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
@@ -334,10 +335,10 @@
     </div>
     <div class="lui-wrapper" route="test">
       <luigi-container
-        viewURL="http://localhost:8080/test.js"
+        viewURL="/test.js"
         webcomponent="true"
         id="test-defer-init-false"
-        skipInitCheck="true"
+        skip-init-check
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="test2">
@@ -355,17 +356,18 @@
         context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
         locale="en"
         theme="sap_fiori_3"
-        active_feature_toggle_list="['ft1','ft2']"
+        active-feature-toggle-list='["ft1","ft2"]'
+        node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="error-test">
       <luigi-container
         viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/mainasdad.js"
         webcomponent="true"
-        context='{"label": "Error Handler"}'
+        context=' {"label": "Error Handler" }'
       ></luigi-container>
       <luigi-container
-        viewURL="test.js"
+        viewURL="/test.js"
         webcomponent="true"
         context='{"label": "Error Handler WC 2"}'
       >
@@ -376,7 +378,12 @@
       var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
       var utilMFEDomain = 'https://luigiwebcomponents.gitlab.io/util';
       import MFEventID from './bundle.js';
-      document.getElementById('dashboard').compoundConfig = {
+
+      const lcc = document.getElementById('dashboard');
+      lcc.addEventListener(MFEventID.CUSTOM_MESSAGE, e => {
+        console.log('Publish Event', e.detail);
+      });
+      lcc.compoundConfig = {
         renderer: {
           use: 'grid',
           config: {
@@ -423,7 +430,7 @@
           },
           {
             id: 'input1',
-            viewUrl: utilMFEDomain + '/input.js',
+            viewUrl: '/helloWorldWC.js',
             context: {
               title: 'Some input',
               instant: true
@@ -532,6 +539,12 @@
             event.luigiCallback(val);
           }
         );
+        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+          console.log('Custom Event', event);
+          if (event.detail.id !== 'timer') {
+            alert(event.detail.id);
+          }
+        });
 
         luigiContainer.addEventListener(
           MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
@@ -539,6 +552,13 @@
             console.log(event.detail);
           }
         );
+        luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, event => {
+          const params = event.detail.params;
+          console.log('params', params);
+        });
+        luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
+          console.log('anhor', event.detail);
+        });
 
         //...
       });

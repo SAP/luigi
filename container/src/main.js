@@ -6,9 +6,9 @@ export { default as LuigiCompoundContainer } from './LuigiCompoundContainer.svel
 export default Events;
 
 if (!customElements.get('luigi-container')) {
-  customElements.define('luigi-container', LuigiContainer);
+  customElements.define('luigi-container', LuigiContainer.element);
 }
 
 if (!customElements.get('luigi-compound-container')) {
-  customElements.define('luigi-compound-container', LuigiCompoundContainer);
+  customElements.define('luigi-compound-container', LuigiCompoundContainer.element);
 }

@@ -16,6 +16,7 @@ lerna-debug.log
 # temporary files and folders
 tmp-*
 container/cypress/videos
+container/cypress/screenshots
 
 # WhiteSource
 whitesource.config.json

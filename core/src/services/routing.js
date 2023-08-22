@@ -652,13 +652,16 @@ class RoutingClass {
     if (navNode === wc_containerNode) {
       const wc = document.querySelector(wc_id);
       wc.context = componentData.context;
+      if (wc.extendedContext) {
+        wc.extendedContext.nodeParams = componentData.nodeParams;
+      }
       return;
     }
 
     const wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
-    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
+    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData, navNode);
   }
 
   navigateWebComponentCompound(component, navNode) {
@@ -676,7 +679,7 @@ class RoutingClass {
     if (compound && compound.children) {
       compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }
-    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData);
     wc_container._luigi_pathParams = componentData.pathParams;
   }
 
