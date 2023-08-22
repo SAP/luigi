@@ -33,7 +33,6 @@ class WebComponentSvcClass {
     }
   }
 
-
   initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, isSpecialMf) {
     const ctx = extendedContext.context;
     wc.extendedContext = extendedContext;
@@ -52,7 +51,7 @@ class WebComponentSvcClass {
       getCoreSearchParams: () => {
         window.Luigi.routing().getSearchParams();
       },
-      getClientPermissions: () => {}
+      getClientPermissions: () => {},
       addNodeParams: (params, keepBrowserHistory) => {
         if (!isSpecialMf) {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
