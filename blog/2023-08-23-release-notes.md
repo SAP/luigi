@@ -24,7 +24,7 @@ We added an onLoad functionality to web component micro frontends. An event `wc_
 
 #### data-testid attribute for the modal close button 
 
-In this release, we added to possibility configure a `data-testid` attribute for the close button of a modal. The attribute can be configured via the `modalSettings` in [openAsModal](https://docs.luigi-project.io/docs/luigi-core-api/?section=openasmodal). For more information, see the [pull request](https://github.com/SAP/luigi/pull/3394). 
+In this release, we added the possibility to configure a `data-testid` attribute for the close button of a modal. The attribute can be specified via the `modalSettings` in [openAsModal](https://docs.luigi-project.io/docs/luigi-core-api/?section=openasmodal). For more information, see the [pull request](https://github.com/SAP/luigi/pull/3394). 
 
 #### Removed onunload listener 
 
