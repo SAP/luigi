@@ -1583,8 +1583,7 @@
           if (mfModalPreviousElement && mfModalPreviousElement.modalIframeData && mfModalPreviousElement.modalIframe){
             const topMostModal = mfModalPreviousElement;
             const topMostModalData = topMostModal.modalIframeData;
-            modalConfig = Object.assign({}, { 
-               nodeParams: topMostModalData.nodeParams,
+            modalConfig = Object.assign({}, {
                pathParams: topMostModalData.pathParams,
                context: topMostModalData.context,
                iframe: topMostModal.modalIframe
