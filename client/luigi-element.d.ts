@@ -448,4 +448,13 @@ export interface LuigiClient {
    * @returns {Object} containing the search params
    */
   getCoreSearchParams: () => Object;
+  /**
+   * Returns the dynamic path parameters of the active URL.
+   * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
+   * All path parameters in the current navigation path (as defined by the active URL) are returned.
+   * <!-- add-attribute:class:warning -->
+   * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
+   * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
+   */
+  getPathParams: () => Object;
 }
