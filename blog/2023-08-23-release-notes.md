@@ -28,6 +28,5 @@ In this release, we added to possibility configure a `data-testid` attribute for
 
 #### Removed onunload listener 
 
-Due to [deprecation](https://developer.chrome.com/blog/deprecating-unload/) of the `unload` event, we removed the `onunload` listener from Luigi. This should have no effect on the end user. 
-
+Due to [deprecation](https://developer.chrome.com/blog/deprecating-unload/) of the `unload` event, we removed the `onunload` listener from Luigi. 
 
