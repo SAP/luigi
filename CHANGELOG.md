@@ -32,7 +32,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#3404](https://github.com/SAP/luigi/pull/3404) Remove onunload listener ([@JohannesDoberer](https://github.com/JohannesDoberer))
 * [#3395](https://github.com/SAP/luigi/pull/3395) Added modalSettings.keepPrevious ([@itsajay1029](https://github.com/itsajay1029))
 * [#3394](https://github.com/SAP/luigi/pull/3394) Add data-testid attr to the close button for modal ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#3352](https://github.com/SAP/luigi/pull/3352) onLoad functionality for mfe ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3352](https://github.com/SAP/luigi/pull/3352) onLoad functionality for wc mfe ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 
 
