@@ -457,4 +457,9 @@ export interface LuigiClient {
    * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
    */
   getPathParams: () => Object;
+  /**
+   * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
+   * @returns {Object} client permissions as specified in the navigation node
+   */
+  getClientPermissions(): () => Object;
 }
