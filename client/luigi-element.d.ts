@@ -443,4 +443,9 @@ export interface LuigiClient {
    * @memberof LuigiClient
    */
   setAnchor: (anchor: string) => void;
+  /**
+   * Retrieves the search params from the active URL
+   * @returns {Object} containing the search params
+   */
+  getCoreSearchParams: () => Object;
 }
