@@ -37,6 +37,9 @@
   export let deferInit: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
+  export let searchParams: any;
+  export let pathParams: any;
+  export let clientPermissions: any;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -47,7 +50,7 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return nodeParams;
+    return nodeParams && searchParams && pathParams && clientPermissions;
   };
 
   const initialize = (thisComponent: any) => {

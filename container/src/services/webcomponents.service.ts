@@ -147,6 +147,21 @@ export class WebComponentService {
           return;
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
+      },
+      getCoreSearchParams: () => {
+        let result = this.thisComponent.getAttribute('search-params') || {};
+        result = JSON.parse(result);
+        return result;
+      },
+      getPathParams: () => {
+        let result = this.thisComponent.getAttribute('path-params') || {};
+        result = JSON.parse(result);
+        return result;
+      },
+      getClientPermissions: () => {
+        let result = this.thisComponent.getAttribute('client-permissions') || {};
+        result = JSON.parse(result);
+        return result;
       }
     };
   }

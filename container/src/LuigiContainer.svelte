@@ -74,6 +74,9 @@
   export let activeFeatureToggleList: string[];
   export let skipInitCheck: boolean;
   export let nodeParams: any;
+  export let searchParams: any;
+  export let pathParams: any;
+  export let clientPermissions: any;
 
   let iframeHandle:
     | {
@@ -88,7 +91,15 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return locale && theme && activeFeatureToggleList && nodeParams;
+    return (
+      locale &&
+      theme &&
+      activeFeatureToggleList &&
+      nodeParams &&
+      searchParams &&
+      pathParams &&
+      clientPermissions
+    );
   };
 
   const initialize = (thisComponent: any) => {
