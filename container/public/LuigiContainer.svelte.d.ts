@@ -43,6 +43,21 @@ export default class LuigiContainer extends HTMLElement {
   nodeParams: NodeParams;
 
   /**
+   * The search parameters to be passed to the web-component-based micro frontend.
+   */
+  searchParams: any;
+
+  /**
+   * The path parameters to be passed to the web-component-based micro frontend.
+   */
+  pathParams: any;
+
+  /**
+   * The clientPermissions to be passed to the web-component-based micro frontend.
+   */
+  clientPermissions: any;
+
+  /**
    * Updates the context of the microfrontend
    * @param contextObj The context object to be updated
    * @param internal internal microfrotend data

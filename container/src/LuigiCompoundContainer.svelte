@@ -1,15 +1,32 @@
-<svelte:options customElement={{
-  tag: null,
-  props: {
-    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-    deferInit: { type: 'Boolean', attribute: 'defer-init' },
-    context: { type: 'String', reflect: false, attribute: 'context' },
-    compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
-    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
-  }
-}} />
+<svelte:options
+  customElement={{
+    tag: null,
+    props: {
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      compoundConfig: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'compound-config'
+      },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      searchParams: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'search-params'
+      },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'client-permissions'
+      }
+    }
+  }}
+/>
 
-<script lang="ts">  
+<script lang="ts">
   import { onMount } from 'svelte';
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
@@ -17,7 +34,7 @@
 
   export let viewurl: string;
   export let context: string;
-  export let deferInit: boolean;  
+  export let deferInit: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
 
@@ -25,16 +42,15 @@
   let mainComponent: HTMLElement;
   let eventBusElement: HTMLElement;
 
-  
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return nodeParams;
-  }
+  };
 
-  const initialize = (thisComponent: any) => {    
+  const initialize = (thisComponent: any) => {
     if (!compoundConfig || containerInitialized) {
       return;
     }
@@ -63,7 +79,7 @@
         }
       });
     containerInitialized = true;
-  }
+  };
 
   onMount(async () => {
     const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
