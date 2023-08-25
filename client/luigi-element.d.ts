@@ -446,6 +446,7 @@ export interface LuigiClient {
   /**
    * Retrieves the search params from the active URL
    * @returns {Object} containing the search params
+   * @memberof LuigiClient
    */
   getCoreSearchParams: () => Object;
   /**
@@ -455,11 +456,13 @@ export interface LuigiClient {
    * <!-- add-attribute:class:warning -->
    * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
    * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
+   * @memberof LuigiClient
    */
   getPathParams: () => Object;
   /**
    * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
    * @returns {Object} client permissions as specified in the navigation node
+   * @memberof LuigiClient
    */
   getClientPermissions(): () => Object;
 }
