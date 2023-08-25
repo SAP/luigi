@@ -1,6 +1,14 @@
 export declare interface NodeParams {
   [key: string]: string;
 }
+
+export declare interface ClientPermissions {
+  clientPermissions: {
+    changeCurrentLocale: string;
+    urlParameters: Object;
+  };
+}
+
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
@@ -55,7 +63,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The clientPermissions to be passed to the web-component-based micro frontend.
    */
-  clientPermissions: any;
+  clientPermissions: ClientPermissions;
 
   /**
    * Updates the context of the microfrontend
