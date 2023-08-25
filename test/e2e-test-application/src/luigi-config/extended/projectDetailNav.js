@@ -345,7 +345,10 @@ export const projectDetailNavStructure = projectId => [
       title: 'Hello WebComponent!'
     },
     viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
-    webcomponent: true
+    webcomponent: true,
+    clientPermissions: {
+      changeCurrentLocale: true
+    }
   },
   {
     pathSegment: 'misc2-isolated',

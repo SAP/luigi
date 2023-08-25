@@ -47,7 +47,10 @@ class WebComponentSvcClass {
       },
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
-      getPathParams: () => wc.extendedContext.pathParams,
+      getPathParams: () => {
+        console.log(wc, wc.extendedContext);
+        return wc.extendedContext.pathParams;
+      },
       getCoreSearchParams: () => window.Luigi.routing().getSearchParams(),
       getClientPermissions: () => extendedContext.currentNode.clientPermissions,
       addNodeParams: (params, keepBrowserHistory) => {
