@@ -645,22 +645,18 @@ class RoutingClass {
     }
   }
 
-  navigateWebComponent(component, navNode, extendedContext) {
+  navigateWebComponent(component, navNode) {
     let wc_container = document.querySelector('.wcContainer');
     let wc_containerNode = wc_container._luigi_node;
     const wc_id = this.getGeneratedWCId(navNode);
 
     const componentData = component.get();
-    if (navNode.userSettingsGroup) {
-      componentData.userSettings = extendedContext.userSettings;
-    }
     // if true, do only a context update and not rerender the wc
     if (navNode === wc_containerNode && !wc.configChangedRequest) {
       const wc = document.querySelector(wc_id);
       wc.context = componentData.context;
       if (wc.extendedContext) {
         wc.extendedContext.nodeParams = componentData.nodeParams;
-        wc.extendedContext.userSettings = componentData.userSettings;
       }
       return;
     }
