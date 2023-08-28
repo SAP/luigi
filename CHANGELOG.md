@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.4.0] (2023-08-23)
+
+#### :rocket: Added
+* [#3389](https://github.com/SAP/luigi/pull/3389) addNodeParams, getNodeParams and setAnchor for wc luigiClient ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3404](https://github.com/SAP/luigi/pull/3404) Remove onunload listener ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3395](https://github.com/SAP/luigi/pull/3395) Added modalSettings.keepPrevious ([@itsajay1029](https://github.com/itsajay1029))
+* [#3394](https://github.com/SAP/luigi/pull/3394) Add data-testid attr to the close button for modal ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3352](https://github.com/SAP/luigi/pull/3352) onLoad functionality for wc mfe ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
 ## [v2.3.0] (2023-07-28)
 
 #### :rocket: Added
@@ -1563,3 +1576,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.2.0]: https://github.com/SAP/luigi/compare/v2.1.0...v2.2.0
 [v2.2.1]: https://github.com/SAP/luigi/compare/v2.2.0...v2.2.1
 [v2.3.0]: https://github.com/SAP/luigi/compare/v2.2.1...v2.3.0
+[v2.4.0]: https://github.com/SAP/luigi/compare/v2.3.0...v2.4.0
