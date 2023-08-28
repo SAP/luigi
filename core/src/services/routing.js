@@ -474,6 +474,8 @@ class RoutingClass {
         }
         this.navigateWebComponent(component, nodeObject);
       } else {
+        const wc_container = document.querySelector('.wcContainer');
+        wc_container.configChangedRequest = false;
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
           this.removeLastChildFromWCContainer();
@@ -643,22 +645,27 @@ class RoutingClass {
     }
   }
 
-  navigateWebComponent(component, navNode) {
-    let wc_containerNode = document.querySelector('.wcContainer')._luigi_node;
+  navigateWebComponent(component, navNode, extendedContext) {
+    let wc_container = document.querySelector('.wcContainer');
+    let wc_containerNode = wc_container._luigi_node;
     const wc_id = this.getGeneratedWCId(navNode);
 
     const componentData = component.get();
+    if (navNode.userSettingsGroup) {
+      componentData.userSettings = extendedContext.userSettings;
+    }
     // if true, do only a context update and not rerender the wc
-    if (navNode === wc_containerNode) {
+    if (navNode === wc_containerNode && !wc.configChangedRequest) {
       const wc = document.querySelector(wc_id);
       wc.context = componentData.context;
       if (wc.extendedContext) {
         wc.extendedContext.nodeParams = componentData.nodeParams;
+        wc.extendedContext.userSettings = componentData.userSettings;
       }
       return;
     }
-
-    const wc_container = this.removeLastChildFromWCContainer();
+    wc_container.configChangedRequest = false;
+    wc_container = this.removeLastChildFromWCContainer();
     if (!wc_container) return;
 
     WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData, navNode);
@@ -670,9 +677,14 @@ class RoutingClass {
 
     const componentData = component.get();
 
-    if (wc_container._luigi_node === navNode && isEqual(wc_container._luigi_pathParams, componentData.pathParams)) {
+    if (
+      wc_container._luigi_node === navNode &&
+      isEqual(wc_container._luigi_pathParams, componentData.pathParams) &&
+      !wc_container.configChangedRequest
+    ) {
       return;
     }
+    wc_container.configChangedRequest = false;
     const { compound } = navNode;
     this.removeLastChildFromWCContainer();
 
