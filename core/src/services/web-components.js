@@ -51,7 +51,10 @@ class WebComponentSvcClass {
         return wc.extendedContext.pathParams;
       },
       getCoreSearchParams: () => window.Luigi.routing().getSearchParams(),
-      getClientPermissions: () => extendedContext.currentNode.clientPermissions,
+      getClientPermissions: () => {
+        console.log(wc.extendedContext, extendedContext);
+        return extendedContext.clientPermissions;
+      },
       addNodeParams: (params, keepBrowserHistory) => {
         if (!isSpecialMf) {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
@@ -207,6 +210,7 @@ class WebComponentSvcClass {
    * If the web component is not defined yet, it gets imported.
    */
   renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
+    const extendedContexts = { ...extendedContext, ...node };
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id =
@@ -215,20 +219,20 @@ class WebComponentSvcClass {
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContexts, i18nViewUrl, nodeId, isSpecialMf);
     } else {
       /** Custom import function, if defined */
       if (window.luigiWCFn) {
         window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContexts, i18nViewUrl, nodeId, isSpecialMf);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContexts, i18nViewUrl, nodeId, isSpecialMf);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContexts, i18nViewUrl, nodeId, isSpecialMf);
         });
       }
     }

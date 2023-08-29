@@ -332,6 +332,9 @@ export const projectDetailNavStructure = projectId => [
     statusBadge: {
       label: '',
       type: 'critical'
+    },
+    clientPermissions: {
+      changeCurrentLocale: false
     }
   },
   {
