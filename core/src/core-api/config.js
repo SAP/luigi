@@ -306,6 +306,31 @@ class LuigiConfig {
 
     clearTitleResolverCache(this.getConfig().navigation.nodes);
   }
+
+  /**
+   * Set the global context object and triggers the corresponding update.
+   * @memberof Configuration
+   * @param {Object} ctx The context object to set
+   * @param {boolean} preventUpdate If true, no view update is triggered.
+   * @since NEXTRELEASE
+   */
+  setGlobalContext(ctx, preventUpdate) {
+    if (this.config && this.config.navigation) {
+      this.config.navigation.globalContext = ctx;
+      if (!preventUpdate) {
+        this.configChanged('navigation');
+      }
+    }
+  }
+
+  /**
+   * Get the global context object.
+   * @memberof Configuration
+   * @since NEXTRELEASE
+   */
+  getGlobalContext() {
+    return this.config?.navigation?.globalContext || {};
+  }
 }
 
 export const config = new LuigiConfig();
