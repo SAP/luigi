@@ -1570,6 +1570,7 @@
 
       if ('luigi.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
+        const mfModalPreviousElement = mfModalList.length > 1 && mfModalList[mfModalList.length - 2];
         const _goBackContext =
           e.data.goBackContext && JSON.parse(e.data.goBackContext);
         if (
@@ -1579,9 +1580,19 @@
           )
         ) {
           closeModal(mfModalList.length - 1, true, _goBackContext);
-
-          config.iframe &&
-            (await sendContextToClient(config, {
+          let modalConfig = config;
+          // special case if going back with multiple modals, context should go back to previous modal, not main iframe
+          if (mfModalPreviousElement && mfModalPreviousElement.modalIframeData && mfModalPreviousElement.modalIframe){
+            const topMostModal = mfModalPreviousElement;
+            const topMostModalData = topMostModal.modalIframeData;
+            modalConfig =  {
+               pathParams: topMostModalData.pathParams,
+               context: topMostModalData.context,
+               iframe: topMostModal.modalIframe
+            };
+          } 
+          modalConfig.iframe &&
+            (await sendContextToClient(modalConfig, {
               goBackContext: _goBackContext,
             }));
         } else if (IframeHelpers.isMessageSource(e, splitViewIframe)) {
