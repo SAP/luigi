@@ -475,7 +475,7 @@ class RoutingClass {
         this.navigateWebComponent(component, nodeObject);
       } else {
         const wc_container = document.querySelector('.wcContainer');
-        wc_container.configChangedRequest = false;
+        if (wc_container) wc_container.configChangedRequest = false;
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
           this.removeLastChildFromWCContainer();

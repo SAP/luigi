@@ -311,7 +311,7 @@
       },
       set: (obj) => {
         const wc_container = document.querySelector('.wcContainer');
-        wc_container.configChangedRequest = true;
+        if(wc_container)wc_container.configChangedRequest = true;
         if (obj) {
           noAnimation = false;
           Object.getOwnPropertyNames(obj).forEach((prop) => {
