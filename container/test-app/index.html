@@ -299,6 +299,9 @@
         id="dashboard"
         context='{"label": "Dashboard"}'
         node-params='{"Luigi":"rocks"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="dashboard2">
@@ -413,7 +416,7 @@
           {
             viewUrl: layoutMFEDomain + '/panelHeader.js',
             context: {
-              title: 'My Awesome Grid',
+              title: 'My Awesome Grid 000',
               description: 'Really awesome'
             },
             layoutConfig: {
