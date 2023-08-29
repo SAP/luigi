@@ -443,8 +443,8 @@
                               >
                                 <span class="fd-nested-list__title"
                                   >{getNodeLabel(node)}
-                                  <StatusBadge {node} /></span
-                                >
+                                  <StatusBadge {node} />
+                                </span>
                               </a>
                             </li>
                           {/if}
@@ -488,6 +488,10 @@
           .fd-nested-list__content {
             border-bottom: none;
           }
+        }
+        .fd-nested-list__title {
+          display: inline-block;
+          height: auto;
         }
       }
     }
