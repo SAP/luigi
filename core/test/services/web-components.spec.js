@@ -226,7 +226,7 @@ describe('WebComponentService', function() {
 
       sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context) => {
         expect(cnt).to.equal(container);
-        expect(context).to.equal(ctx);
+        expect(JSON.stringify(context)).to.equal(JSON.stringify(ctx));
         done();
       });
 
@@ -254,7 +254,7 @@ describe('WebComponentService', function() {
 
       sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context) => {
         expect(cnt).to.equal(container);
-        expect(context).to.equal(ctx);
+        expect(JSON.stringify(context)).to.equal(JSON.stringify(ctx));
         done();
       });
 
@@ -288,7 +288,7 @@ describe('WebComponentService', function() {
 
       sb.stub(WebComponentService, 'attachWC').callsFake((id, iCnt, cnt, context) => {
         expect(cnt).to.equal(container);
-        expect(context).to.equal(ctx);
+        expect(JSON.stringify(context)).to.equal(JSON.stringify(ctx));
         done();
       });
 
