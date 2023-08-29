@@ -652,7 +652,7 @@ class RoutingClass {
 
     const componentData = component.get();
     // if true, do only a context update and not rerender the wc
-    if (navNode === wc_containerNode && !wc.configChangedRequest) {
+    if (navNode === wc_containerNode && !wc_container.configChangedRequest) {
       const wc = document.querySelector(wc_id);
       wc.context = componentData.context;
       if (wc.extendedContext) {
