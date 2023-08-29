@@ -130,6 +130,44 @@ describe('Navigation', function() {
         'Nav path expected to have a variable from activated node "a1" in the context'
       );
     });
+    it('should have globalContext inherited', async () => {
+      window.Luigi._store = {
+        fire: () => {}
+      };
+      LuigiConfig.config = {
+        navigation: {
+          globalContext: {
+            staticGlobalVar: true
+          }
+        }
+      };
+      let navPath = await Navigation.getNavigationPath(sampleNavPromise, 'aaa/a1');
+      assert.propertyVal(
+        navPath.context,
+        'varA',
+        'tets',
+        'Nav path expected to have a variable from activated node "aaa" in the context'
+      );
+      assert.propertyVal(
+        navPath.context,
+        'varA1',
+        'maskopatol',
+        'Nav path expected to have a variable from activated node "a1" in the context'
+      );
+      assert.equal(navPath.context.staticGlobalVar, true, 'staticGlobalVar expected to be true');
+      assert.equal(navPath.context.globalVar, undefined, 'globalVar expected to be undefined');
+      assert.equal(
+        LuigiConfig.getGlobalContext().staticGlobalVar,
+        true,
+        'globalContext expected to be initialized correctly'
+      );
+
+      // set global ctx
+      LuigiConfig.setGlobalContext({ globalVar: 'Rocky 1860' });
+      navPath = await Navigation.getNavigationPath(sampleNavPromise, 'aaa/a1');
+      assert.equal(navPath.context.staticGlobalVar, undefined, 'staticGlobalVar expected to be undefined');
+      assert.equal(navPath.context.globalVar, 'Rocky 1860', 'globalVar expected to be set');
+    });
     it('should load lazy-loaded children nodes only on activation', async () => {
       const navPath = await Navigation.getNavigationPath(sampleNavPromise, 'bbb');
       assert.equal(navPath.navigationPath.length, 2, '2 nodes active : root node + "bbb" node');
