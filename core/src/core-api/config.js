@@ -311,7 +311,7 @@ class LuigiConfig {
    * Set the global context object and triggers the corresponding update.
    * @memberof Configuration
    * @param {Object} ctx The context object to set
-   * @param {boolean} preventUpdate If true, no view update is triggered.
+   * @param {boolean} preventUpdate If true, no view update is triggered. Default is false.
    * @since NEXTRELEASE
    */
   setGlobalContext(ctx, preventUpdate) {
