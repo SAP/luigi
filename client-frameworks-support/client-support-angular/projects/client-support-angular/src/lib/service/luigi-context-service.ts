@@ -11,7 +11,7 @@ export abstract class LuigiContextService {
   /**
    * Get latest set context object (empty Object, if not set yet)
    */
-  abstract getContext(): Context | {};
+  abstract getContext(): Context;
 
   /**
    * Get a promise that resolves when context is set.
@@ -26,5 +26,5 @@ export enum ILuigiContextTypes {
 
 export interface IContextMessage {
   contextType: ILuigiContextTypes; // will be init or update
-  context: Context | {};
+  context: Context;
 }
