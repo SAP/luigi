@@ -9,7 +9,7 @@ export abstract class LuigiContextService {
   abstract contextObservable(): Observable<IContextMessage>;
 
   /**
-   * Get latest set context object (empty Object, if not set yet)
+   * Get latest set context object
    */
   abstract getContext(): Context;
 
