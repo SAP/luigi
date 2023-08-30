@@ -104,21 +104,21 @@ export default class extends HTMLElement {
     this.$coreSearchParamsBtn = this._shadowRoot.querySelector('#coreSearchParams');
     this.$coreSearchParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        alert(this.LuigiClient.getCoreSearchParams());
+        alert(JSON.stringify(this.LuigiClient.getCoreSearchParams()));
       }
     });
 
     this.$getPathParamsBtn = this._shadowRoot.querySelector('#getPathParams');
     this.$getPathParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        alert(this.LuigiClient.getPathParams());
+        alert(JSON.stringify(this.LuigiClient.getPathParams()));
       }
     });
 
     this.$getClientPermissionsBtn = this._shadowRoot.querySelector('#getClientPermissions');
     this.$getClientPermissionsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        alert(this.LuigiClient.getClientPermissions());
+        alert(JSON.stringify(this.LuigiClient.getClientPermissions()));
       }
     });
   }

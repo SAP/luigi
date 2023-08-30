@@ -21,6 +21,7 @@ describe('Web Container Test', () => {
 
   it('getCoreSearchParams', () => {
     const stub = cy.stub();
+
     cy.on('window:alert', stub);
 
     cy.get('[data-test-id="luigi-client-api-test-01"]')
@@ -32,7 +33,7 @@ describe('Web Container Test', () => {
       });
   });
 
-  it('getClientPermissions', () => {
+  it('getPathParams', () => {
     const stub = cy.stub();
     cy.on('window:alert', stub);
 
@@ -53,7 +54,7 @@ describe('Web Container Test', () => {
       .contains('getClientPermissions')
       .click()
       .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('{"permission": "testPermission"}');
+        expect(stub.getCall(0)).to.be.calledWith('{"permission":"testPermission"}');
       });
   });
 });
