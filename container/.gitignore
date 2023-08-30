@@ -6,5 +6,8 @@
 /test-app/bundle.js
 /test-app/bundle.js.map
 /test-app/luigi-element.js
+
+/public/**/*.ts
+
 /coverage
 .DS_Store
