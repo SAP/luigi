@@ -334,7 +334,7 @@ class WebComponentSvcClass {
    * @returns a promise that gets resolved with the stored user settings for a specific user settings group.
    */
   getUserSettingsForWc(wc) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (wc.userSettingsGroup) {
         const userSettingsGroupName = wc.userSettingsGroup;
         LuigiConfig.readUserSettings().then(storedUserSettingsData => {
@@ -344,8 +344,6 @@ class WebComponentSvcClass {
           let userSettings = hasUserSettings ? storedUserSettingsData[userSettingsGroupName] : null;
           resolve(userSettings);
         });
-      } else {
-        reject('No userSettingsGroup on node object defined.');
       }
     });
   }
