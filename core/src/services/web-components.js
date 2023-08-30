@@ -47,14 +47,9 @@ class WebComponentSvcClass {
       },
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
-      getPathParams: () => {
-        return wc.extendedContext.pathParams;
-      },
+      getPathParams: () => (wc.extendedContext?.pathParams ? wc.extendedContext.pathParams : {}),
       getCoreSearchParams: () => window.Luigi.routing().getSearchParams(),
-      getClientPermissions: () => {
-        console.log(wc.extendedContext, extendedContext);
-        return extendedContext.clientPermissions;
-      },
+      getClientPermissions: () => (extendedContext?.clientPermissions ? extendedContext.clientPermissions : {}),
       addNodeParams: (params, keepBrowserHistory) => {
         if (!isSpecialMf) {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
