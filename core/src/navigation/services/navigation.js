@@ -40,12 +40,9 @@ class NavigationClass {
         NodeDataManagementStorage.setRootNode(rootNode);
       }
       const nodeNamesInCurrentPath = activePath.split('/');
-      const navObj = await this.buildNode(
-        nodeNamesInCurrentPath,
-        [rootNode],
-        rootNode.children,
-        rootNode.context || {}
-      );
+      const globalContext = LuigiConfig.getConfigValue('navigation.globalContext');
+      const rootContext = { ...(globalContext || {}), ...(rootNode.context || {}) };
+      const navObj = await this.buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, rootContext);
       const navPathSegments = navObj.navigationPath.filter(x => x.pathSegment).map(x => x.pathSegment);
       navObj.isExistingRoute = !activePath || nodeNamesInCurrentPath.length === navPathSegments.length;
       const pathSegments = activePath.split('/');
