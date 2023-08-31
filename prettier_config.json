@@ -6,7 +6,7 @@
       "singleQuote": true,
       "printWidth": 120
    },
-   "ts": {
+   "ts_disabled": {
       "parser": "typescript",
       "trailingComma": "none",
       "tabWidth": 2,

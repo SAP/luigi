@@ -3,7 +3,7 @@ import { LuigiInternalMessageID } from '../constants/internal-communication';
 import { GenericHelperFunctions } from '../utilities/helpers';
 
 export class ContainerService {
-  isVisible(component: HTMLElement) {
+  isVisible (component: HTMLElement) {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
   }
 
@@ -13,7 +13,7 @@ export class ContainerService {
    * @param msg the message to be sent
    * @param msgName the optional message name
    */
-  sendCustomMessageToIframe(iframeHandle: any, msg: any, msgName?: string) {
+  sendCustomMessageToIframe (iframeHandle: any, msg: any, msgName?: string) {
     const messageName = msgName || 'custom';
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
@@ -33,7 +33,7 @@ export class ContainerService {
    * @param {Function} callback
    * @param {string} callbackName
    */
-  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
+  dispatch (msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
     const customEvent = new CustomEvent(msg, { detail: data });
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
       (customEvent as any)[callbackName] = data => {
@@ -43,7 +43,7 @@ export class ContainerService {
     targetCnt.dispatchEvent(customEvent);
   }
 
-  getTargetContainer(event) {
+  getTargetContainer (event) {
     let cnt;
     globalThis.__luigi_container_manager.container.forEach(element => {
       if (element.iframeHandle?.iframe && element.iframeHandle.iframe.contentWindow === event.source) {
@@ -54,7 +54,7 @@ export class ContainerService {
     return cnt;
   }
 
-  getContainerManager() {
+  getContainerManager () {
     if (!globalThis.__luigi_container_manager) {
       globalThis.__luigi_container_manager = {
         container: [],
@@ -170,7 +170,7 @@ export class ContainerService {
     return globalThis.__luigi_container_manager;
   }
 
-  registerContainer(container: HTMLElement): void {
+  registerContainer (container: HTMLElement): void {
     this.getContainerManager().container.push(container);
   }
 }

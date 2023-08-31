@@ -5,7 +5,7 @@ export class DefaultCompoundRenderer {
   rendererObject: any;
   config: any;
 
-  constructor(rendererObj?: any) {
+  constructor (rendererObj?: any) {
     if (rendererObj) {
       this.rendererObject = rendererObj;
       this.config = rendererObj.config || {};
@@ -14,15 +14,15 @@ export class DefaultCompoundRenderer {
     }
   }
 
-  createCompoundContainer() {
+  createCompoundContainer () {
     return document.createElement('div');
   }
 
-  createCompoundItemContainer(layoutConfig?: any): HTMLDivElement {
+  createCompoundItemContainer (layoutConfig?: any): HTMLDivElement {
     return document.createElement('div');
   }
 
-  attachCompoundItem(compoundCnt, compoundItemCnt): void {
+  attachCompoundItem (compoundCnt, compoundItemCnt): void {
     compoundCnt.appendChild(compoundItemCnt);
   }
 }
@@ -33,7 +33,7 @@ export class DefaultCompoundRenderer {
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
   superRenderer: DefaultCompoundRenderer;
 
-  constructor(rendererObj) {
+  constructor (rendererObj) {
     super(rendererObj || { use: {} });
     if (rendererObj && rendererObj.use && rendererObj.use.extends) {
       this.superRenderer = resolveRenderer({
@@ -43,7 +43,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     }
   }
 
-  createCompoundContainer(): HTMLDivElement {
+  createCompoundContainer (): HTMLDivElement {
     if (this.rendererObject.use.createCompoundContainer) {
       return this.rendererObject.use.createCompoundContainer(this.config, this.superRenderer);
     } else if (this.superRenderer) {
@@ -52,7 +52,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     return super.createCompoundContainer();
   }
 
-  createCompoundItemContainer(layoutConfig): HTMLDivElement {
+  createCompoundItemContainer (layoutConfig): HTMLDivElement {
     if (this.rendererObject.use.createCompoundItemContainer) {
       return this.rendererObject.use.createCompoundItemContainer(layoutConfig, this.config, this.superRenderer);
     } else if (this.superRenderer) {
@@ -61,7 +61,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
     return super.createCompoundItemContainer(layoutConfig);
   }
 
-  attachCompoundItem(compoundCnt, compoundItemCnt): void {
+  attachCompoundItem (compoundCnt, compoundItemCnt): void {
     if (this.rendererObject.use.attachCompoundItem) {
       this.rendererObject.use.attachCompoundItem(compoundCnt, compoundItemCnt, this.superRenderer);
     } else if (this.superRenderer) {
@@ -76,7 +76,7 @@ export class CustomCompoundRenderer extends DefaultCompoundRenderer {
  * Compound Renderer for a css grid compound view.
  */
 export class GridCompoundRenderer extends DefaultCompoundRenderer {
-  createCompoundContainer() {
+  createCompoundContainer () {
     const containerClass = '__lui_compound_' + new Date().getTime();
     const compoundCnt = document.createElement('div');
     compoundCnt.classList.add(containerClass);
@@ -121,7 +121,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
     return compoundCnt;
   }
 
-  createCompoundItemContainer(layoutConfig): HTMLDivElement {
+  createCompoundItemContainer (layoutConfig): HTMLDivElement {
     const config = layoutConfig || {};
     const compoundItemCnt = document.createElement('div');
     compoundItemCnt.setAttribute('style', `grid-row: ${config.row || 'auto'}; grid-column: ${config.column || 'auto'}`);
@@ -192,7 +192,7 @@ export const deSanitizeParamsMap = paramsMap => {
   }, {});
 };
 
-function deSanitizeParam(param: any) {
+function deSanitizeParam (param: any) {
   const desani = (String as any)(param)
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>')

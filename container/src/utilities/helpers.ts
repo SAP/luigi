@@ -7,7 +7,7 @@ export class GenericHelpersClass {
    * @param {any} functionToCheck function to check
    * @returns {boolean}
    */
-  isFunction(functionToCheck: any): boolean {
+  isFunction (functionToCheck: any): boolean {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
   }
 }
