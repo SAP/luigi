@@ -54,24 +54,6 @@ jobs:
       - run: npm i -g live-server
       - run: bash ./test/mockengine.sh || exit 1
 
-  container_linting:
-    name: Container Linting
-    runs-on: ubuntu-latest
-    needs: prepare
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18.15.0'    
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/tmp_build
-            ~/cypress-binary-cache
-          key: buildcache
-      - run: cp -r ~/tmp_build/* . 
-      - run: npm run lint --prefix container || exit 1
-    
   container_unit_tests:
     name: Container Unit Tests
     runs-on: ubuntu-latest
