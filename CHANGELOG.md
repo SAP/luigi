@@ -25,6 +25,19 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.5.0] (2023-08-31)
+
+#### :rocket: Added
+* [#3405](https://github.com/SAP/luigi/pull/3405) Return empty object for getContext ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3416](https://github.com/SAP/luigi/pull/3416) Global context ([@hardl](https://github.com/hardl))
+
+#### :bug: Fixed
+* [#3409](https://github.com/SAP/luigi/pull/3409) Statusbadge for horizontal nav ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3406](https://github.com/SAP/luigi/pull/3406) Fix go back context multiple modals ([@ndricimrr](https://github.com/ndricimrr))
+
+
+
+
 ## [v2.4.0] (2023-08-23)
 
 #### :rocket: Added
@@ -1577,3 +1590,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.2.1]: https://github.com/SAP/luigi/compare/v2.2.0...v2.2.1
 [v2.3.0]: https://github.com/SAP/luigi/compare/v2.2.1...v2.3.0
 [v2.4.0]: https://github.com/SAP/luigi/compare/v2.3.0...v2.4.0
+[v2.5.0]: https://github.com/SAP/luigi/compare/v2.4.0...v2.5.0

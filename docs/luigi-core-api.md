@@ -254,7 +254,7 @@ Set the global context object and triggers the corresponding update.
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.5.0
 
 #### getGlobalContext
 
@@ -262,7 +262,7 @@ Get the global context object.
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.5.0
 
 ## Luigi.elements()
 
