@@ -31,7 +31,7 @@ export class DefaultCompoundRenderer {
  * Compound Renderer for custom rendering as defined in luigi config.
  */
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
-  superRenderer: DefaultCompoundRenderer | CustomCompoundRenderer | GridCompoundRenderer;
+  superRenderer: DefaultCompoundRenderer;
 
   constructor(rendererObj) {
     super(rendererObj || { use: {} });
@@ -106,7 +106,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
       });
     }
 
-    compoundCnt.innerHTML = /*html*/ `
+    compoundCnt.innerHTML = /* html */ `
         <style scoped>
           .${containerClass} {
             display: grid;
@@ -193,7 +193,7 @@ export const deSanitizeParamsMap = paramsMap => {
 };
 
 function deSanitizeParam(param: any) {
-  let desani = (String as any)(param)
+  const desani = (String as any)(param)
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>')
     .replaceAll('&quot;', '"')

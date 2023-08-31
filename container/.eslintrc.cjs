@@ -18,6 +18,7 @@ module.exports = {
     rules: {
         // override/add rules settings here, such as:
         // 'svelte/rule-name': 'error'
+        'camelcase': 'off'
     },
     overrides: [
         {

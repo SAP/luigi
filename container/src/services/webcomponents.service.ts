@@ -1,3 +1,4 @@
+/* eslint no-prototype-builtins: 0 */
 import {
   DefaultCompoundRenderer,
   resolveRenderer,
@@ -91,7 +92,7 @@ export class WebComponentService {
                 if (data) {
                   resolve(data);
                 } else {
-                  reject();
+                  reject(new Error('No data'));
                 }
               });
             });
@@ -172,7 +173,7 @@ export class WebComponentService {
    */
   generateWCId(viewUrl: string) {
     let charRep = '';
-    let normalizedViewUrl = new URL(viewUrl, location.href).href;
+    const normalizedViewUrl = new URL(viewUrl, location.href).href;
     for (let i = 0; i < normalizedViewUrl.length; i++) {
       charRep += normalizedViewUrl.charCodeAt(i).toString(16);
     }
@@ -193,7 +194,7 @@ export class WebComponentService {
               if (!window.customElements.get(wc_id)) {
                 let cmpClazz = module.default;
                 if (!HTMLElement.isPrototypeOf(cmpClazz)) {
-                  let props = Object.keys(module);
+                  const props = Object.keys(module);
                   for (let i = 0; i < props.length; i++) {
                     cmpClazz = module[props[i]];
                     if (HTMLElement.isPrototypeOf(cmpClazz)) {
@@ -235,7 +236,7 @@ export class WebComponentService {
         };
       }
 
-      let scriptTag = document.createElement('script');
+      const scriptTag = document.createElement('script');
       scriptTag.setAttribute('src', viewUrl);
       if (node.webcomponent.type === 'module') {
         scriptTag.setAttribute('type', 'module');
@@ -377,7 +378,7 @@ export class WebComponentService {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = this.processViewUrl(navNode.viewUrl, { context });
       renderer.createCompoundItemContainer = layoutConfig => {
-        var cnt = document.createElement('div');
+        const cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {
           cnt.setAttribute('slot', layoutConfig.slot);
         }

@@ -5,7 +5,7 @@
     deferInit: { type: 'Boolean', attribute: 'defer-init' },
     context: { type: 'String', reflect: false, attribute: 'context' },
     label: { type: 'String', reflect: false, attribute: 'label' },
-    webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },    
+    webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
     locale: { type: 'String', reflect: false, attribute: 'locale' },
     theme: { type: 'String', reflect: false, attribute: 'theme' },
     activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
@@ -13,21 +13,16 @@
     nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
   },
   extend: (customElementConstructor) => {
-      let notInitFn = (name) => {
+      const notInitFn = (name) => {
           return () => console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
-      }
+      };
       return class extends customElementConstructor {
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
-
-        constructor() {
-          super();
-        }
       };
     }
 }} />
-
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
@@ -40,14 +35,14 @@
   export let context: string;
   export let label: string;
   export let webcomponent: string;
-  export let deferInit: boolean;  
+  export let deferInit: boolean;
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
   export let skipInitCheck: boolean;
   export let nodeParams: any;
 
-  let iframeHandle:
+  const iframeHandle:
     | {
         iframe: HTMLIFrameElement;
       }
@@ -61,9 +56,9 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return locale && theme && activeFeatureToggleList && nodeParams;
-  }
+  };
 
-  const initialize = (thisComponent: any) => {    
+  const initialize = (thisComponent: any) => {
     if (!containerInitialized) {
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
         ContainerAPI.sendCustomMessage(
