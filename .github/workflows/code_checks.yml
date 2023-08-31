@@ -20,5 +20,5 @@ jobs:
           node-version: '18.15.0' 
       - name: Install and lint
         working-directory: ./container
-        run: cd container && npm i && npm run lint || exit 1
+        run: npm i && npm run lint || exit 1
     
