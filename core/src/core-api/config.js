@@ -312,7 +312,7 @@ class LuigiConfig {
    * @memberof Configuration
    * @param {Object} ctx The context object to set
    * @param {boolean} preventUpdate If true, no view update is triggered. Default is false.
-   * @since NEXTRELEASE
+   * @since 2.5.0
    */
   setGlobalContext(ctx, preventUpdate) {
     if (this.config && this.config.navigation) {
@@ -326,7 +326,7 @@ class LuigiConfig {
   /**
    * Get the global context object.
    * @memberof Configuration
-   * @since NEXTRELEASE
+   * @since 2.5.0
    */
   getGlobalContext() {
     return this.config?.navigation?.globalContext || {};
