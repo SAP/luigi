@@ -3,7 +3,6 @@ const prettier = require('prettier');
 const prettierConfig = require('./prettier_config.json');
 const codeQualityConfig = require('./package.json').codeQuality || {};
 const path = require('path');
-const { exec } = require('child_process');
 
 const fs = require('fs');
 const { ESLint } = require('eslint');
@@ -109,12 +108,13 @@ const groupFilesByExtension = files => {
 const prettifyFile = (file, config) => {
   try {
     const text = fs.readFileSync(file).toString();
-    const pretty = prettier.format(text, config);
-    if (text === pretty) {
+    if (prettier.check(text, config)) {
       return;
     }
+
     console.log('Running prettier on the file: ' + file);
-    fs.writeFileSync(file, pretty);
+    fs.writeFileSync(file, prettier.format(text, config));
+    return true;
   } catch (error) {
     console.log('Error in running prettier the file ' + file + ': \n' + error);
   }
@@ -125,6 +125,7 @@ const prettifyFile = (file, config) => {
  * @param filesByExtension: we pass a Map json object where the key is the extension, value is an Array with absolute file paths
  */
 const prettifyFiles = filesByExtension => {
+  let filesChanged = 0;
   if (!codeQualityConfig.usePrettier) {
     return; // no need to use pretty;
   }
@@ -137,8 +138,13 @@ const prettifyFiles = filesByExtension => {
       );
       return;
     }
-    files.forEach(file => prettifyFile(file, config));
+    files.forEach(file => {
+      if (prettifyFile(file, config)) {
+        filesChanged++;
+      }
+    });
   });
+  return filesChanged;
 };
 
 /**
@@ -187,7 +193,7 @@ const preCommitPrettier = async filesByExtension => {
     filesByExtension = groupFilesByExtension(files);
   }
 
-  prettifyFiles(filesByExtension);
+  return prettifyFiles(filesByExtension);
 };
 
 /**
@@ -223,15 +229,24 @@ const preCommitEslint = async filesByExtension => {
  */
 const preCommit = async () => {
   const files = await getChangedFiles();
+  let shouldFail = false;
   if (!files) {
     console.log("Couldn't find any file that hand been changed");
     return;
   }
+
   console.log('File to be analyzed before commit:\n' + files.join('\n'));
   const filesByExtension = groupFilesByExtension(files);
   if (codeQualityConfig.usePrettier) {
     console.log('\x1b[33m%s\x1b[0m', 'Running Prettier in pre-commit');
-    await preCommitPrettier(filesByExtension);
+    const nrModifiedFiles = await preCommitPrettier(filesByExtension);
+    shouldFail = nrModifiedFiles > 0;
+    if (shouldFail) {
+      console.log(
+        '\x1b[31m%s\x1b[0m',
+        `Prettier has modified ${nrModifiedFiles} file(s). Commit will be cancelled. Stage changes and run again.`
+      );
+    }
   } else {
     console.log('Prettier is disabled. Skipping...');
   }
@@ -242,14 +257,7 @@ const preCommit = async () => {
   } else {
     console.log('ESlint is disabled. Skipping...');
   }
-
-  console.log('Adding any possible changes to the commit');
-  exec('git add -A', (err, stdout, stderr) => {
-    // handle err, stdout & stderr
-    if (err) {
-      console.log('Error with `git add`', error.message);
-    }
-  });
+  return shouldFail;
 };
 
 /**
