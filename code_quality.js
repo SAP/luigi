@@ -3,7 +3,7 @@ const prettier = require('prettier');
 const prettierConfig = require('./prettier_config.json');
 const codeQualityConfig = require('./package.json').codeQuality || {};
 const path = require('path');
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
 
 const fs = require('fs');
 const { ESLint } = require('eslint');
@@ -227,6 +227,13 @@ const preCommit = async () => {
     console.log("Couldn't find any file that hand been changed");
     return;
   }
+  try {
+    execSync('git stash -k -u');
+  } catch (e) {
+    console.log('Error when trying to stash', e);
+    return;
+  }
+
   console.log('File to be analyzed before commit:\n' + files.join('\n'));
   const filesByExtension = groupFilesByExtension(files);
   if (codeQualityConfig.usePrettier) {
@@ -244,12 +251,18 @@ const preCommit = async () => {
   }
 
   console.log('Adding any possible changes to the commit');
-  exec('git add -A', (err, stdout, stderr) => {
-    // handle err, stdout & stderr
-    if (err) {
-      console.log('Error with `git add`', error.message);
-    }
-  });
+  try {
+    execSync('git add -A');
+  } catch (e) {
+    console.log('Error with `git add`', e.message);
+    return;
+  }
+
+  try {
+    execSync('git stash pop');
+  } catch (e) {
+    console.log('Error when trying to pop stash', e);
+  }
 };
 
 /**
