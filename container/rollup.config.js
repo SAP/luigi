@@ -5,6 +5,7 @@ import typescript from '@rollup/plugin-typescript';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import autoPreprocess from 'svelte-preprocess';
+import copy from 'rollup-plugin-copy';
 
 const production = !process.env.ROLLUP_WATCH;
 if (production) {
@@ -54,6 +55,10 @@ export default [
       typescript({
         sourceMap: true,
         inlineSources: true
+      }),
+      copy({
+        targets: [{ src: 'typings/**/*', dest: 'public' }],
+        flatten: false
       }),
       (() => {
         return {

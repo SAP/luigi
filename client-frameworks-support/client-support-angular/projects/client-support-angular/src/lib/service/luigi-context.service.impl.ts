@@ -25,10 +25,10 @@ export class LuigiContextServiceImpl implements LuigiContextService {
   }
 
   /**
-   * Get latest context object retrieved from luigi core application or none, if not yet set.
+   * Get latest context object retrieved from luigi core application or empty object, if not yet set.
    */
   public getContext(): Context {
-    return this.currentContext && this.currentContext.context;
+    return (this.currentContext && this.currentContext.context) || {};
   }
 
   /**
