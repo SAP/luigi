@@ -4,6 +4,9 @@ on:
       - '**'
     paths:
       - 'container/**'
+  pull_request: 
+    branches: 
+      - 'main'
 name: Code Analysis
 
 jobs:
