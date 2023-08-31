@@ -18,5 +18,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.15.0' 
-      - run: cd container && npm i && npm run lint || exit 1
+      - name: Install and lint
+        working-directory: ./container
+        run: cd container && npm i && npm run lint || exit 1
     
