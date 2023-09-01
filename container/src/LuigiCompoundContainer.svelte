@@ -9,7 +9,7 @@
   }
 }} />
 
-<script lang="ts">  
+<script lang="ts">
   import { onMount } from 'svelte';
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
@@ -17,7 +17,7 @@
 
   export let viewurl: string;
   export let context: string;
-  export let deferInit: boolean;  
+  export let deferInit: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
 
@@ -25,16 +25,15 @@
   let mainComponent: HTMLElement;
   let eventBusElement: HTMLElement;
 
-  
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return nodeParams;
-  }
+  };
 
-  const initialize = (thisComponent: any) => {    
+  const initialize = (thisComponent: any) => {
     if (!compoundConfig || containerInitialized) {
       return;
     }
@@ -42,7 +41,7 @@
     deferInit = false;
     const node = {
       compound: compoundConfig,
-      viewUrl: viewurl ? viewurl : undefined,
+      viewUrl: viewurl,
       webcomponent: true
     }; // TODO: fill with sth
     webcomponentService
@@ -63,7 +62,7 @@
         }
       });
     containerInitialized = true;
-  }
+  };
 
   onMount(async () => {
     const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
