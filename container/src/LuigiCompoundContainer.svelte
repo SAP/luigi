@@ -53,7 +53,7 @@
     deferInit = false;
     const node = {
       compound: compoundConfig,
-      viewUrl: viewurl ? viewurl : undefined,
+      viewUrl: viewurl,
       webcomponent: true
     }; // TODO: fill with sth
     webcomponentService

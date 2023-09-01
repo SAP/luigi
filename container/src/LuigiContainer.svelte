@@ -42,10 +42,6 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
-
-        constructor() {
-          super();
-        }
       };
     }
   }}
@@ -70,7 +66,7 @@
   export let nodeParams: any;
   export let userSettings: any;
 
-  let iframeHandle:
+  const iframeHandle:
     | {
         iframe: HTMLIFrameElement;
       }

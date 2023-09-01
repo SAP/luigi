@@ -1,4 +1,5 @@
 module.exports = {
+    root: true,
     parser: '@typescript-eslint/parser',
     extends: [
         'eslint:recommended',
@@ -18,6 +19,8 @@ module.exports = {
     rules: {
         // override/add rules settings here, such as:
         // 'svelte/rule-name': 'error'
+        'camelcase': 'off',
+        'no-unused-vars': 'off'
     },
     overrides: [
         {
@@ -41,5 +44,8 @@ module.exports = {
         '*.map',
         '*.json',
         '.*.*'
-    ]
+    ],
+    globals: {
+        globalThis: false
+    }
 }
