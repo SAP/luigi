@@ -3,6 +3,7 @@
   import { Navigation } from './services/navigation';
   import { NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
+  import StatusBadge from './StatusBadge.svelte';
   
   import TabHeader from './TabHeader.svelte'; 
 
@@ -278,7 +279,10 @@
                         aria-selected={node === selectedNodeForTabNav}
                         on:click|preventDefault={() => handleClick(node)}
                       >
-                        <span class="fd-tabs__tag">{getNodeLabel(node)}</span>
+                        <span class="fd-tabs__tag"
+                          >{getNodeLabel(node)}
+                          <StatusBadge {node} /></span
+                        >
                       </a>
                     </span>
                   {/if}
@@ -324,7 +328,8 @@
                                   aria-selected={node === selectedNodeForTabNav}
                                 >
                                   <span class="fd-menu__title"
-                                    >{getNodeLabel(node)}</span
+                                    >{getNodeLabel(node)}
+                                    <StatusBadge {node} /></span
                                   >
                                 </a>
                               </li>
@@ -371,7 +376,8 @@
                           aria-selected={node === selectedNodeForTabNav}
                         >
                           <span class="fd-nested-list__title"
-                            >{getNodeLabel(node)}</span
+                            >{getNodeLabel(node)}
+                            <StatusBadge {node} /></span
                           >
                         </a>
                       </li>
@@ -436,8 +442,9 @@
                                 aria-selected={node === selectedNodeForTabNav}
                               >
                                 <span class="fd-nested-list__title"
-                                  >{getNodeLabel(node)}</span
-                                >
+                                  >{getNodeLabel(node)}
+                                  <StatusBadge {node} />
+                                </span>
                               </a>
                             </li>
                           {/if}
@@ -481,6 +488,10 @@
           .fd-nested-list__content {
             border-bottom: none;
           }
+        }
+        .fd-nested-list__title {
+          display: inline-block;
+          height: auto;
         }
       }
     }
