@@ -36,7 +36,7 @@ export class LuigiContextServiceImpl implements LuigiContextService {
    */
   public getContextAsync(): Promise<Context> {
     return new Promise<Context>((resolve, reject) => {
-      if (this.isObject(this.getContext()) && Object.keys(this.getContext()).length === 0) {
+      if (this.isObject(this.getContext()) && Object.keys(this.getContext()).length > 0) {
         resolve(this.getContext());
       } else {
         this.contextObservable()
