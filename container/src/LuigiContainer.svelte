@@ -23,21 +23,10 @@
         reflect: false,
         attribute: 'skip-init-check'
       },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      searchParams: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'search-params'
-      },
-      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'client-permissions'
-      }
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
     },
     extend: customElementConstructor => {
-      let notInitFn = name => {
+      const notInitFn = name => {
         return () =>
           console.warn(
             name +
@@ -48,10 +37,6 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
-
-        constructor() {
-          super();
-        }
       };
     }
   }}
@@ -69,6 +54,7 @@
   export let label: string;
   export let webcomponent: string;
   export let deferInit: boolean;
+  export let deferInit: boolean;
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
@@ -78,7 +64,7 @@
   export let pathParams: any;
   export let clientPermissions: any;
 
-  let iframeHandle:
+  const iframeHandle:
     | {
         iframe: HTMLIFrameElement;
       }
@@ -91,15 +77,7 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return (
-      locale &&
-      theme &&
-      activeFeatureToggleList &&
-      nodeParams &&
-      searchParams &&
-      pathParams &&
-      clientPermissions
-    );
+    return locale && theme && activeFeatureToggleList && nodeParams;
   };
 
   const initialize = (thisComponent: any) => {

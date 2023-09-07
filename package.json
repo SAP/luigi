@@ -59,13 +59,11 @@
    },
    "husky": {
       "hooks": {
-         "pre-commit": "npm run code-quality && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh &&  ./scripts/hooks/prevent-illegal-characters.sh"
+         "pre-commit": "npm run lint --prefix=container && npm run code-quality && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh &&  ./scripts/hooks/prevent-illegal-characters.sh"
       }
    },
    "codeQuality": {
-      "usePrettier": true,
-      "useEslint": false,
-      "eslintStopCommit": true
+      "usePrettier": true
    },
    "engines": {
       "node": ">=18"

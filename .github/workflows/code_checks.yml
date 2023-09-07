@@ -1,0 +1,24 @@
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'container/**'
+  pull_request: 
+    branches: 
+      - 'main'
+name: Code Analysis
+
+jobs:
+  container_linting:
+    name: Container Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0' 
+      - name: Install and lint
+        working-directory: ./container
+        run: npm i && npm run lint || exit 1
+    
