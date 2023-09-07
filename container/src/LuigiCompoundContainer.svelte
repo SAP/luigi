@@ -5,28 +5,15 @@
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
       context: { type: 'String', reflect: false, attribute: 'context' },
-      compoundConfig: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'compound-config'
-      },
+      compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      searchParams: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'search-params'
-      },
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'client-permissions'
-      }
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }
     }
   }}
 />
 
-<script lang="ts">
 <script lang="ts">
   import { onMount } from 'svelte';
   import { ContainerService } from './services/container.service';
@@ -35,7 +22,6 @@
 
   export let viewurl: string;
   export let context: string;
-  export let deferInit: boolean;
   export let deferInit: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
@@ -47,46 +33,45 @@
   let mainComponent: HTMLElement;
   let eventBusElement: HTMLElement;
 
-
   const containerService = new ContainerService();
   const webcomponentService = new WebComponentService();
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return nodeParams && searchParams && pathParams && clientPermissions;
-  };;
+  };
 
   const initialize = (thisComponent: any) => {
-  const initialize = (thisComponent: any) => {
-    if (!compoundConfig || containerInitialized) {
-      return;
-    }
-    const ctx = context ? JSON.parse(context) : {};
-    deferInit = false;
-    const node = {
-      compound: compoundConfig,
-      viewUrl: viewurl,
-      webcomponent: true
-    }; // TODO: fill with sth
-    webcomponentService
-      .renderWebComponentCompound(node, mainComponent, ctx)
-      .then(compCnt => {
-        eventBusElement = compCnt as HTMLElement;
-        if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
-          thisComponent.initialized = true;
-          setTimeout(() => {
+    const initialize = (thisComponent: any) => {
+      if (!compoundConfig || containerInitialized) {
+        return;
+      }
+      const ctx = context ? JSON.parse(context) : {};
+      deferInit = false;
+      const node = {
+        compound: compoundConfig,
+        viewUrl: viewurl,
+        webcomponent: true
+      }; // TODO: fill with sth
+      webcomponentService
+        .renderWebComponentCompound(node, mainComponent, ctx)
+        .then(compCnt => {
+          eventBusElement = compCnt as HTMLElement;
+          if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
+            thisComponent.initialized = true;
+            setTimeout(() => {
+              webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+            });
+          } else if (
+            (eventBusElement as any).LuigiClient &&
+            !(eventBusElement as any).deferLuigiClientWCInit
+          ) {
+            thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-          });
-        } else if (
-          (eventBusElement as any).LuigiClient &&
-          !(eventBusElement as any).deferLuigiClientWCInit
-        ) {
-          thisComponent.initialized = true;
-          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-        }
-      });
-    containerInitialized = true;
-  };
+          }
+        });
+      containerInitialized = true;
+    };
   };
 
   onMount(async () => {

@@ -6,23 +6,11 @@
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
       context: { type: 'String', reflect: false, attribute: 'context' },
       label: { type: 'String', reflect: false, attribute: 'label' },
-      webcomponent: {
-        type: 'String',
-        reflect: false,
-        attribute: 'webcomponent'
-      },
+      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent'},
       locale: { type: 'String', reflect: false, attribute: 'locale' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
-      activeFeatureToggleList: {
-        type: 'Array',
-        reflect: false,
-        attribute: 'active-feature-toggle-list'
-      },
-      skipInitCheck: {
-        type: 'Boolean',
-        reflect: false,
-        attribute: 'skip-init-check'
-      },
+      activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
+      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
     },
     extend: customElementConstructor => {
