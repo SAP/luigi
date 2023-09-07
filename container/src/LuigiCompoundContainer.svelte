@@ -40,36 +40,34 @@
   };
 
   const initialize = (thisComponent: any) => {
-    const initialize = (thisComponent: any) => {
-      if (!compoundConfig || containerInitialized) {
-        return;
-      }
-      const ctx = context ? JSON.parse(context) : {};
-      deferInit = false;
-      const node = {
-        compound: compoundConfig,
-        viewUrl: viewurl,
-        webcomponent: true
-      }; // TODO: fill with sth
-      webcomponentService
-        .renderWebComponentCompound(node, mainComponent, ctx)
-        .then(compCnt => {
-          eventBusElement = compCnt as HTMLElement;
-          if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
-            thisComponent.initialized = true;
-            setTimeout(() => {
-              webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-            });
-          } else if (
-            (eventBusElement as any).LuigiClient &&
-            !(eventBusElement as any).deferLuigiClientWCInit
-          ) {
-            thisComponent.initialized = true;
+    if (!compoundConfig || containerInitialized) {
+      return;
+    }
+    const ctx = context ? JSON.parse(context) : {};
+    deferInit = false;
+    const node = {
+      compound: compoundConfig,
+      viewUrl: viewurl,
+      webcomponent: true
+    }; // TODO: fill with sth
+    webcomponentService
+      .renderWebComponentCompound(node, mainComponent, ctx)
+      .then(compCnt => {
+        eventBusElement = compCnt as HTMLElement;
+        if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
+          thisComponent.initialized = true;
+          setTimeout(() => {
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-          }
-        });
-      containerInitialized = true;
-    };
+          });
+        } else if (
+          (eventBusElement as any).LuigiClient &&
+          !(eventBusElement as any).deferLuigiClientWCInit
+        ) {
+          thisComponent.initialized = true;
+          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+        }
+      });
+    containerInitialized = true;
   };
 
   onMount(async () => {
