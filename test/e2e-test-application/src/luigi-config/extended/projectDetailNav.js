@@ -350,7 +350,12 @@ export const projectDetailNavStructure = projectId => [
     viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
     webcomponent: true,
     clientPermissions: {
-      changeCurrentLocale: true
+      changeCurrentLocale: true,
+      urlParameters: {
+        testParam: {
+          read: true
+        }
+      }
     }
   },
   {

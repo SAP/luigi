@@ -52,7 +52,7 @@ describe('Luigi client lifecycle manager features', () => {
   it('getCoreSearchParams', () => {
     const stub = cy.stub();
     cy.on('window:alert', stub);
-    cy.visitLoggedIn('/projects/pr1/webcomponent2?test=searchParam1');
+    cy.visitLoggedIn('/projects/pr1/webcomponent2?testParam=searchParam1');
     cy.expectPathToBe('/projects/pr1/webcomponent2');
 
     cy.get(
@@ -62,7 +62,7 @@ describe('Luigi client lifecycle manager features', () => {
       .contains('getCoreSearchParams')
       .click()
       .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('{"test":"searchParam1"}');
+        expect(stub.getCall(0)).to.be.calledWith('{"testParam":"searchParam1"}');
       });
   });
 
@@ -79,7 +79,7 @@ describe('Luigi client lifecycle manager features', () => {
       .contains('getClientPermissions')
       .click()
       .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('{"changeCurrentLocale":true}');
+        expect(stub.getCall(0)).to.be.calledWith('{"changeCurrentLocale":true,"urlParameters":{"testParam":{"read":true}}}');
       });
   });
 });
