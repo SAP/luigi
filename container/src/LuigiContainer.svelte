@@ -1,34 +1,32 @@
-<svelte:options
-  customElement={{
-    tag: null,
-    props: {
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-      deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      context: { type: 'String', reflect: false, attribute: 'context' },
-      label: { type: 'String', reflect: false, attribute: 'label' },
-      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent'},
-      locale: { type: 'String', reflect: false, attribute: 'locale' },
-      theme: { type: 'String', reflect: false, attribute: 'theme' },
-      activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
-      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
-    },
-    extend: customElementConstructor => {
-      const notInitFn = name => {
-        return () =>
-          console.warn(
-            name +
-              " can't be called on luigi-container before its micro frontend is attached to the DOM."
-          );
-      };
-      return class extends customElementConstructor {
-        sendCustomMessage = notInitFn('sendCustomMessage');
-        updateContext = notInitFn('updateContext');
-        closeAlert = notInitFn('closeAlert');
-      };
-    }
-  }}
-/>
+<svelte:options customElement={{
+  tag: null,
+  props: {
+    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+    deferInit: { type: 'Boolean', attribute: 'defer-init' },
+    context: { type: 'String', reflect: false, attribute: 'context' },
+    label: { type: 'String', reflect: false, attribute: 'label' },
+    webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent'},
+    locale: { type: 'String', reflect: false, attribute: 'locale' },
+    theme: { type: 'String', reflect: false, attribute: 'theme' },
+    activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
+    skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
+    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
+  },
+  extend: customElementConstructor => {
+    const notInitFn = name => {
+      return () =>
+        console.warn(
+          name +
+            " can't be called on luigi-container before its micro frontend is attached to the DOM."
+        );
+    };
+    return class extends customElementConstructor {
+      sendCustomMessage = notInitFn('sendCustomMessage');
+      updateContext = notInitFn('updateContext');
+      closeAlert = notInitFn('closeAlert');
+    };
+  }
+}} />
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';

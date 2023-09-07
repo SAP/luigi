@@ -1,18 +1,16 @@
-<svelte:options
-  customElement={{
-    tag: null,
-    props: {
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-      deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      context: { type: 'String', reflect: false, attribute: 'context' },
-      compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
-      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }
-    }
-  }}
-/>
+<svelte:options customElement={{
+  tag: null,
+  props: {
+    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+    deferInit: { type: 'Boolean', attribute: 'defer-init' },
+    context: { type: 'String', reflect: false, attribute: 'context' },
+    compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
+    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+    searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+    pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+    clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }
+  }
+}} />
 
 <script lang="ts">
   import { onMount } from 'svelte';
