@@ -12,13 +12,9 @@
     skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
     nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
   },
-  extend: customElementConstructor => {
-    const notInitFn = name => {
-      return () =>
-        console.warn(
-          name +
-            " can't be called on luigi-container before its micro frontend is attached to the DOM."
-        );
+  extend: (customElementConstructor) => {
+    const notInitFn = (name) => {
+      return () => console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
     };
     return class extends customElementConstructor {
       sendCustomMessage = notInitFn('sendCustomMessage');
@@ -39,7 +35,6 @@
   export let context: string;
   export let label: string;
   export let webcomponent: string;
-  export let deferInit: boolean;
   export let deferInit: boolean;
   export let locale: string;
   export let theme: string;
@@ -63,7 +58,7 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return locale && theme && activeFeatureToggleList && nodeParams;
+    return locale && theme && activeFeatureToggleList && nodeParams && searchParams && pathParams && clientPermissions;
   };
 
   const initialize = (thisComponent: any) => {
