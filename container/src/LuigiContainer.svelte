@@ -13,14 +13,14 @@
     nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
   },
   extend: (customElementConstructor) => {
-    const notInitFn = (name) => {
-      return () => console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
-    };
-    return class extends customElementConstructor {
-      sendCustomMessage = notInitFn('sendCustomMessage');
-      updateContext = notInitFn('updateContext');
-      closeAlert = notInitFn('closeAlert');
-    };
+      const notInitFn = (name) => {
+        return () => console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
+      };
+      return class extends customElementConstructor {
+        sendCustomMessage = notInitFn('sendCustomMessage');
+        updateContext = notInitFn('updateContext');
+        closeAlert = notInitFn('closeAlert');
+      };
   }
 }} />
 
