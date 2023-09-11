@@ -79,7 +79,9 @@ describe('Luigi client lifecycle manager features', () => {
       .contains('getClientPermissions')
       .click()
       .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('{"changeCurrentLocale":true,"urlParameters":{"testParam":{"read":true}}}');
+        expect(stub.getCall(0)).to.be.calledWith(
+          '{"changeCurrentLocale":true,"urlParameters":{"testParam":{"read":true}}}'
+        );
       });
   });
 });
