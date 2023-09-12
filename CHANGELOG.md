@@ -25,6 +25,13 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.5.1] (2023-09-05)
+
+#### :bug: Fixed
+* [#3429](https://github.com/SAP/luigi/pull/3429) Fix getContextAsync in client lib for angular ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
 ## [v2.5.0] (2023-08-31)
 
 #### :rocket: Added
@@ -1591,3 +1598,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.3.0]: https://github.com/SAP/luigi/compare/v2.2.1...v2.3.0
 [v2.4.0]: https://github.com/SAP/luigi/compare/v2.3.0...v2.4.0
 [v2.5.0]: https://github.com/SAP/luigi/compare/v2.4.0...v2.5.0
+[v2.5.1]: https://github.com/SAP/luigi/compare/v2.5.0...v2.5.1
