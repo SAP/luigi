@@ -63,14 +63,14 @@ describe('WebComponentService', function() {
     });
 
     it('check dom injection abort if container not attached', () => {
-      WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
+      WebComponentService.attachWC('div', undefined, itemPlaceholder, container, extendedContext);
 
       expect(container.children.length).to.equal(0);
     });
 
     it('check dom injection', () => {
       container.appendChild(itemPlaceholder);
-      WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
+      WebComponentService.attachWC('div', undefined, itemPlaceholder, container, extendedContext);
 
       const expectedCmp = container.children[0];
       expect(expectedCmp.context).to.equal(extendedContext.context);
@@ -102,7 +102,7 @@ describe('WebComponentService', function() {
       sb.stub(window, 'location').value({ origin: 'http://localhost' });
 
       container.appendChild(itemPlaceholder);
-      WebComponentService.attachWC(wc_id, itemPlaceholder, container, extendedContext, 'http://localhost:8080/');
+      WebComponentService.attachWC(wc_id, undefined, itemPlaceholder, container, extendedContext, 'http://localhost:8080/');
 
       assert(myEl.__postProcess.calledOnce, '__postProcess should be called');
       expect(myEl.setAttribute.calledWith('lui_web_component', true)).to.equal(true);
