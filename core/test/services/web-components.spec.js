@@ -102,7 +102,14 @@ describe('WebComponentService', function() {
       sb.stub(window, 'location').value({ origin: 'http://localhost' });
 
       container.appendChild(itemPlaceholder);
-      WebComponentService.attachWC(wc_id, undefined, itemPlaceholder, container, extendedContext, 'http://localhost:8080/');
+      WebComponentService.attachWC(
+        wc_id,
+        undefined,
+        itemPlaceholder,
+        container,
+        extendedContext,
+        'http://localhost:8080/'
+      );
 
       assert(myEl.__postProcess.calledOnce, '__postProcess should be called');
       expect(myEl.setAttribute.calledWith('lui_web_component', true)).to.equal(true);
