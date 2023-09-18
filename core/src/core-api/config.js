@@ -222,7 +222,7 @@ class LuigiConfig {
 
   /**
    * Reads the user settings object.
-   * You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
+   * You can choose a custom storage to read the user settings by implementing the `userSettings.readUserSettings` function in the settings section of the Luigi configuration.
    * By default, the user settings will be read from the **localStorage**
    * @memberof Configuration
    * @returns {promise} a promise when a custom `readUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. It resolves a stored user settings object. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.

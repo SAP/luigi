@@ -36,7 +36,7 @@ export class LuigiContextServiceImpl implements LuigiContextService {
    */
   public getContextAsync(): Promise<Context> {
     return new Promise<Context>((resolve, reject) => {
-      if (this.getContext()) {
+      if (this.isObject(this.getContext()) && Object.keys(this.getContext()).length > 0) {
         resolve(this.getContext());
       } else {
         this.contextObservable()
@@ -46,6 +46,15 @@ export class LuigiContextServiceImpl implements LuigiContextService {
           });
       }
     });
+  }
+
+  /**
+   * Checks if input is an object.
+   * @param objectToCheck mixed
+   * @returns {boolean}
+   */
+  private isObject(objectToCheck: any) {
+    return !!(objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck));
   }
 
   /**
