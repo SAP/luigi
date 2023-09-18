@@ -222,7 +222,7 @@ class LuigiConfig {
 
   /**
    * Reads the user settings object.
-   * You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
+   * You can choose a custom storage to read the user settings by implementing the `userSettings.readUserSettings` function in the settings section of the Luigi configuration.
    * By default, the user settings will be read from the **localStorage**
    * @memberof Configuration
    * @returns {promise} a promise when a custom `readUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. It resolves a stored user settings object. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
@@ -305,6 +305,31 @@ class LuigiConfig {
     };
 
     clearTitleResolverCache(this.getConfig().navigation.nodes);
+  }
+
+  /**
+   * Set the global context object and triggers the corresponding update.
+   * @memberof Configuration
+   * @param {Object} ctx The context object to set
+   * @param {boolean} preventUpdate If true, no view update is triggered. Default is false.
+   * @since 2.5.0
+   */
+  setGlobalContext(ctx, preventUpdate) {
+    if (this.config && this.config.navigation) {
+      this.config.navigation.globalContext = ctx;
+      if (!preventUpdate) {
+        this.configChanged('navigation');
+      }
+    }
+  }
+
+  /**
+   * Get the global context object.
+   * @memberof Configuration
+   * @since 2.5.0
+   */
+  getGlobalContext() {
+    return this.config?.navigation?.globalContext || {};
   }
 }
 

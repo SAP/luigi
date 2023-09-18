@@ -210,6 +210,10 @@ settings: {
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
   - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
 
+### globalContext
+- **type**: object
+- **description**: contains key-object pairs which are inherited from all node contexts.
+
 
 ## Node parameters
 Node parameters are all the parameters that can be added to an individual navigation node in the `nodes:` section of the Luigi configuration file.

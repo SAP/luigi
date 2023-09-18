@@ -177,7 +177,7 @@ Luigi.unload()
 #### readUserSettings
 
 Reads the user settings object.
-You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
+You can choose a custom storage to read the user settings by implementing the `userSettings.readUserSettings` function in the settings section of the Luigi configuration.
 By default, the user settings will be read from the **localStorage**
 
 ##### Examples
@@ -242,6 +242,27 @@ Luigi.clearNavigationCache();
 **Meta**
 
 -   **since**: 1.19.0
+
+#### setGlobalContext
+
+Set the global context object and triggers the corresponding update.
+
+##### Parameters
+
+-   `ctx` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context object to set
+-   `preventUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** If true, no view update is triggered. Default is false.
+
+**Meta**
+
+-   **since**: 2.5.0
+
+#### getGlobalContext
+
+Get the global context object.
+
+**Meta**
+
+-   **since**: 2.5.0
 
 ## Luigi.elements()
 
