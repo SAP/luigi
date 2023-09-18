@@ -329,7 +329,8 @@ class WebComponentSvcClass {
   }
 
   /**
-   * Get stored user settings for a specific user settings group
+   * Gets the stored user settings for a specific user settings group
+
    * @param {Object} wc node object definition
    * @returns a promise that gets resolved with the stored user settings for a specific user settings group.
    */
