@@ -1,13 +1,24 @@
-<svelte:options customElement={{
-  tag: null,
-  props: {
-    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-    deferInit: { type: 'Boolean', attribute: 'defer-init' },
-    context: { type: 'String', reflect: false, attribute: 'context' },
-    compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
-    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
-  }
-}} />
+<svelte:options
+  customElement={{
+    tag: null,
+    props: {
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      compoundConfig: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'compound-config'
+      },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      userSettings: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'user-settings'
+      }
+    }
+  }}
+/>
 
 <script lang="ts">
   import { onMount } from 'svelte';
@@ -20,6 +31,7 @@
   export let deferInit: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
+  export let userSettings: any;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -30,7 +42,7 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return nodeParams;
+    return nodeParams && userSettings;
   };
 
   const initialize = (thisComponent: any) => {
