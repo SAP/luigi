@@ -549,4 +549,37 @@ describe('WebComponentService', function() {
       );
     });
   });
+
+  describe('Get user settings for wc', () => {
+    const sb = sinon.createSandbox();
+    afterEach(() => {
+      sb.restore();
+    });
+    it('get user settings for user settings group', () => {
+      const wc = {
+        viewUrl: '/test.js',
+        label: 'tets',
+        userSettingsGroup: 'language'
+      };
+      const storedUserSettingsData = {
+        account: { name: 'luigi', email: 'luigi@tets.com' },
+        language: { language: 'de', time: '12h', date: '' }
+      };
+      sb.stub(LuigiConfig, 'readUserSettings').resolves(storedUserSettingsData);
+      WebComponentService.getUserSettingsForWc(wc).then(userSettings => {
+        expect(userSettings).to.deep.equal({ language: 'de', time: '12h', date: '' });
+      });
+    });
+    it('get user settings, no user settings stored', () => {
+      const wc = {
+        viewUrl: '/test.js',
+        label: 'tets',
+        userSettingsGroup: 'language'
+      };
+      sb.stub(LuigiConfig, 'readUserSettings').resolves();
+      WebComponentService.getUserSettingsForWc(wc).then(userSettings => {
+        expect(userSettings).equal(null);
+      });
+    });
+  });
 });

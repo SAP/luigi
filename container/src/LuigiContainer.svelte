@@ -1,20 +1,42 @@
-<svelte:options customElement={{
-  tag: null,
-  props: {
-    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-    deferInit: { type: 'Boolean', attribute: 'defer-init' },
-    context: { type: 'String', reflect: false, attribute: 'context' },
-    label: { type: 'String', reflect: false, attribute: 'label' },
-    webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
-    locale: { type: 'String', reflect: false, attribute: 'locale' },
-    theme: { type: 'String', reflect: false, attribute: 'theme' },
-    activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
-    skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
-    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }
-  },
-  extend: (customElementConstructor) => {
-      const notInitFn = (name) => {
-          return () => console.warn(name + ' can\'t be called on luigi-container before its micro frontend is attached to the DOM.');
+<svelte:options
+  customElement={{
+    tag: null,
+    props: {
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      label: { type: 'String', reflect: false, attribute: 'label' },
+      webcomponent: {
+        type: 'String',
+        reflect: false,
+        attribute: 'webcomponent'
+      },
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
+      theme: { type: 'String', reflect: false, attribute: 'theme' },
+      activeFeatureToggleList: {
+        type: 'Array',
+        reflect: false,
+        attribute: 'active-feature-toggle-list'
+      },
+      skipInitCheck: {
+        type: 'Boolean',
+        reflect: false,
+        attribute: 'skip-init-check'
+      },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      userSettings: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'user-settings'
+      }
+    },
+    extend: customElementConstructor => {
+      let notInitFn = name => {
+        return () =>
+          console.warn(
+            name +
+              " can't be called on luigi-container before its micro frontend is attached to the DOM."
+          );
       };
       return class extends customElementConstructor {
         sendCustomMessage = notInitFn('sendCustomMessage');
@@ -22,7 +44,8 @@
         closeAlert = notInitFn('closeAlert');
       };
     }
-}} />
+  }}
+/>
 
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
@@ -41,6 +64,7 @@
   export let activeFeatureToggleList: string[];
   export let skipInitCheck: boolean;
   export let nodeParams: any;
+  export let userSettings: any;
 
   const iframeHandle:
     | {
@@ -55,7 +79,9 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return locale && theme && activeFeatureToggleList && nodeParams;
+    return (
+      locale && theme && activeFeatureToggleList && nodeParams && userSettings
+    );
   };
 
   const initialize = (thisComponent: any) => {

@@ -155,6 +155,9 @@ export class WebComponentService {
           return;
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
+      },
+      getUserSettings: () => {
+        return JSON.parse(this.thisComponent.getAttribute('user-settings')) || {};
       }
     };
   }

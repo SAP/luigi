@@ -9,7 +9,7 @@ import { RoutingHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() {}
+  constructor() { }
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -73,6 +73,9 @@ class WebComponentSvcClass {
         if (!isSpecialMf) {
           window.Luigi.routing().setAnchor(anchor);
         }
+      },
+      getUserSettings: async () => {
+        return await this.getUserSettingsForWc(eventBusElement._luigi_node);
       }
     };
 
@@ -366,6 +369,29 @@ class WebComponentSvcClass {
         registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
         resolve(compoundCnt);
       });
+    });
+  }
+
+  /**
+   * Gets the stored user settings for a specific user settings group
+
+   * @param {Object} wc node object definition
+   * @returns a promise that gets resolved with the stored user settings for a specific user settings group.
+   */
+  getUserSettingsForWc(wc) {
+    return new Promise((resolve, reject) => {
+      if (wc.userSettingsGroup) {
+        const userSettingsGroupName = wc.userSettingsGroup;
+        LuigiConfig.readUserSettings().then(storedUserSettingsData => {
+          const hasUserSettings =
+            userSettingsGroupName && typeof storedUserSettingsData === 'object' && storedUserSettingsData !== null;
+
+          const userSettings = hasUserSettings ? storedUserSettingsData[userSettingsGroupName] : null;
+          resolve(userSettings);
+        });
+      } else {
+        reject(null);
+      }
     });
   }
 }
