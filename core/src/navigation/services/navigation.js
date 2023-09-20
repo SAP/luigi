@@ -368,7 +368,7 @@ class NavigationClass {
         pathDataTruncatedChildren.pop();
         lastElement = [...pathDataTruncatedChildren].pop();
       }
-      const children = await this.getChildren(lastElement, componentData.context);
+      const children = await this.getChildren(lastElement, componentData.pathData?._context);
       const groupedChildrenData = this.getGroupedChildren(children, current);
       updatedCompData.navParent = groupedChildrenData.parent || lastElement;
       updatedCompData.context = current.pathData._context;
