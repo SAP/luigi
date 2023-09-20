@@ -296,9 +296,11 @@
     <!-- LUIGI Micro Frontends -->
     <div class="lui-wrapper" route="dashboard">
       <luigi-compound-container
+        data-test-id="luigi-client-api-test-compound-01"
         id="dashboard"
         context='{"label": "Dashboard"}'
         node-params='{"Luigi":"rocks"}'
+        user-settings='{"language":"it", "date":""}'
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="dashboard2">
@@ -358,6 +360,7 @@
         theme="sap_fiori_3"
         active-feature-toggle-list='["ft1","ft2"]'
         node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
+        user-settings='{"language": "de", "date":""}'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="error-test">
