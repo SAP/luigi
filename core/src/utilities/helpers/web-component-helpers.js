@@ -182,12 +182,12 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcEle
  */
 export const deSanitizeParamsMap = paramsMap => {
   return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
-    sanitizedMap[this.deSanitizeParam(paramPair[0])] = this.deSanitizeParam(paramPair[1]);
+    sanitizedMap[deSanitizeParam(paramPair[0])] = deSanitizeParam(paramPair[1]);
     return sanitizedMap;
   }, {});
 };
 
-deSanitizeParam = (param = '') => {
+const deSanitizeParam = (param = '') => {
   return String(param)
     .replaceAll('&lt;', '<')
     .replaceAll('&gt;', '>')
