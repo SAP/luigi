@@ -258,7 +258,7 @@
         await setModalSize();
       }
       if(LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')){
-        Routing.updateModalDataInUrl(nodepath, {'title':settings.title, 'size':settings.size}, e.data.addHistoryEntry);   
+        Routing.updateModalDataInUrl(RoutingHelpers.getModalPathFromPath(), {'title':settings.title, 'size':settings.size}, e.data.addHistoryEntry);   
       }
     }
   };
