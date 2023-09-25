@@ -62,7 +62,7 @@ You can use the Luigi compound container as follows:
 
 ## Example
 
-1. You can find a Luigi Container example on [GitHub](https://github.com/SAP/luigi/tree/main/container). First, first clone the Luigi repository if you haven't already done so:
+1. You can find a Luigi Container example on [GitHub](https://github.com/SAP/luigi/tree/main/container). First, clone the Luigi repository if you haven't already done so:
 
 ```bash
 git clone git@github.com:SAP/luigi.git
