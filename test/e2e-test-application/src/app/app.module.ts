@@ -23,7 +23,6 @@ import { ChildNode1Component } from './project/default-child/dps1/child-node-1.c
 import { ChildNode2Component } from './project/default-child/dps2/child-node-2.component';
 import { OverviewComponent } from './overview/overview.component';
 import { RestrictedComponent } from './restricted/restricted.component';
-import { LuigiContextService } from './services/luigi-context.service';
 import { GroupSettingsComponent } from './project/users/groups/group-details/group-settings/group-settings.component';
 import { DynamicComponent } from './project/dynamic/dynamic.component';
 import { HideSideNavComponent } from './project/hide-side-nav/hide-side-nav.component';
@@ -31,6 +30,7 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
 import { ViewGroupComponent } from './project/view-group/view-group.component';
+import { LuigiAngularSupportModule } from '@luigi-project/client-support-angular';
 
 @NgModule({
   declarations: [
@@ -61,8 +61,8 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
     NavSyncComponent,
     ViewGroupComponent
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [LuigiContextService, LuigiAutoNavigationService],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, LuigiAngularSupportModule],
+  providers: [LuigiAutoNavigationService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

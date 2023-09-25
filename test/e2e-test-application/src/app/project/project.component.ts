@@ -9,7 +9,7 @@ import {
   removeContextUpdateListener,
   storageManager
 } from '@luigi-project/client';
-import { IContextMessage, LuigiContextService } from '../services/luigi-context.service';
+import { LuigiContextService } from '@luigi-project/client-support-angular';
 import { NgForm } from '@angular/forms';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { delay, timeout } from 'rxjs/operators';
@@ -87,8 +87,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
-    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
-      if (ctx.contextType === 'init' || ctx.contextType === 'update') {
+    this.lcSubscription = this.luigiService.contextObservable().subscribe((ctx) => {
+      if (ctx.contextType === 0 || ctx.contextType === 1) {
         this.projectId = ctx.context.currentProject;
         this.preservedViewCallbackContext = ctx.context.goBackContext;
         this.currentLocale = uxManager().getCurrentLocale();
