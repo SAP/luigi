@@ -25,6 +25,30 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.6.1] (2023-09-22)
+
+#### :bug: Fixed
+* [#3444](https://github.com/SAP/luigi/pull/3444) Fix path in updateModalSettings ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3443](https://github.com/SAP/luigi/pull/3443) Fix runtime error for wc ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
+## [v2.6.0] (2023-09-20)
+
+#### :rocket: Added
+* [#3414](https://github.com/SAP/luigi/pull/3414) Add getUserSettings for webcomponents ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3438](https://github.com/SAP/luigi/pull/3438) Fix wrong context in leftnav after update ([@hardl](https://github.com/hardl))
+
+
+
+
+
+
 ## [v2.5.1] (2023-09-05)
 
 #### :bug: Fixed
@@ -1599,3 +1623,5 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.4.0]: https://github.com/SAP/luigi/compare/v2.3.0...v2.4.0
 [v2.5.0]: https://github.com/SAP/luigi/compare/v2.4.0...v2.5.0
 [v2.5.1]: https://github.com/SAP/luigi/compare/v2.5.0...v2.5.1
+[v2.6.0]: https://github.com/SAP/luigi/compare/v2.5.1...v2.6.0
+[v2.6.1]: https://github.com/SAP/luigi/compare/v2.6.0...v2.6.1
