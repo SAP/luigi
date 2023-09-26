@@ -310,8 +310,6 @@
         };
       },
       set: (obj) => {
-        const wc_container = document.querySelector('.wcContainer');
-        if (wc_container) wc_container.configChangedRequest = true;
         if (obj) {
           noAnimation = false;
           Object.getOwnPropertyNames(obj).forEach((prop) => {
@@ -393,6 +391,9 @@
     StateHelpers.doOnStoreChange(
       store,
       () => {
+        const wc_container = document.querySelector('.wcContainer');
+        if (wc_container) wc_container.configChangedRequest = true;
+        
         NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
         Routing.handleRouteChange(
