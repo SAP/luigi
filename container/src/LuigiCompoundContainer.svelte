@@ -1,16 +1,27 @@
-<svelte:options customElement={{
-  tag: null,
-  props: {
-    viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-    deferInit: { type: 'Boolean', attribute: 'defer-init' },
-    context: { type: 'String', reflect: false, attribute: 'context' },
-    compoundConfig: { type: 'Object', reflect: false, attribute: 'compound-config' },
-    nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-    searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
-    pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-    clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }
-  }
-}} />
+<svelte:options
+  customElement={{
+    tag: null,
+    props: {
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      compoundConfig: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'compound-config'
+      },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      userSettings: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'user-settings'
+      },
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }
+    }
+  }}
+/>
 
 <script lang="ts">
   import { onMount } from 'svelte';
@@ -26,6 +37,8 @@
   export let searchParams: any;
   export let pathParams: any;
   export let clientPermissions: any;
+  export let userSettings: any;
+
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -36,7 +49,7 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return nodeParams && searchParams && pathParams && clientPermissions;
+    return nodeParams && searchParams && pathParams && clientPermissions && userSettings;
   };
 
   const initialize = (thisComponent: any) => {

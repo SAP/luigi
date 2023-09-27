@@ -34,6 +34,9 @@ export default class extends HTMLElement {
     const empty = document.createElement('template');
     empty.innerHTML = `<section><p>Test!</p><br/><br/></section>`;
 
+    const getUserSettingsBtn = document.createElement('template');
+    getUserSettingsBtn.innerHTML = '<button id="getUserSettings">getUserSettings</button>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -47,6 +50,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
 
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -119,6 +123,15 @@ export default class extends HTMLElement {
     this.$getClientPermissionsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         alert(JSON.stringify(this.LuigiClient.getClientPermissions()));
+        
+    this.$getUserSettingsBtn = this._shadowRoot.querySelector('#getUserSettings');
+    this.$getUserSettingsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        let userSettings = this.LuigiClient.getUserSettings();
+        this.LuigiClient.uxManager().showAlert({
+          text: 'LuigiClient.getUserSettings()=' + JSON.stringify(userSettings),
+          type: 'info'
+        });
       }
     });
   }

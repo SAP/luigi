@@ -1,3 +1,6 @@
+export declare interface UserSettings {
+  [key: string]: number | string | boolean;
+}
 export default class LuigiCompoundContainer extends HTMLElement {
   compoundConfig: any;
 
@@ -20,4 +23,9 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * The clientPermissions to be passed to the web-component-based micro frontend.
    */
   clientPermissions: any;
+
+  /**
+   * The user settings to be passed to the web-component-based micro frontend
+   */
+  userSettings: UserSettings;
 }

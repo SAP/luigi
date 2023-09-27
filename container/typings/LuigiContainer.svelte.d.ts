@@ -2,6 +2,10 @@ export declare interface NodeParams {
   [key: string]: string;
 }
 
+export declare interface UserSettings {
+  [key: string]: number | string | boolean;
+}
+
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
@@ -76,4 +80,9 @@ export default class LuigiContainer extends HTMLElement {
    * Manually triggers the micro frontend rendering process when using defer-init attribute
    */
   init(): Function;
+
+  /**
+   * The user settings to be passed to the web-component-based micro frontend
+   */
+  userSettings: UserSettings;
 }

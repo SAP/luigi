@@ -296,12 +296,14 @@
     <!-- LUIGI Micro Frontends -->
     <div class="lui-wrapper" route="dashboard">
       <luigi-compound-container
+        data-test-id="luigi-client-api-test-compound-01"
         id="dashboard"
         context='{"label": "Dashboard"}'
         node-params='{"Luigi":"rocks"}'
         search-params='{"test":"searchParam1"}'
         path-params='{"path":"param"}'
         client-permissions='{"permission": "testPermission"}'
+        user-settings='{"language":"it", "date":""}'
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="dashboard2">
@@ -364,6 +366,7 @@
         search-params='{"test":"searchParam1"}'
         path-params='{"path":"param"}'
         client-permissions='{"permission": "testPermission"}'
+        user-settings='{"language": "de", "date":""}'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="error-test">

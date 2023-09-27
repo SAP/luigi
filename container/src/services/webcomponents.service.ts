@@ -163,6 +163,9 @@ export class WebComponentService {
         let result = this.thisComponent.getAttribute('client-permissions') || {};
         result = JSON.parse(result);
         return result;
+      },
+      getUserSettings: () => {
+        return JSON.parse(this.thisComponent.getAttribute('user-settings')) || {};
       }
     };
   }
