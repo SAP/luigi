@@ -123,6 +123,8 @@ export default class extends HTMLElement {
     this.$getClientPermissionsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         alert(JSON.stringify(this.LuigiClient.getClientPermissions()));
+      }
+    });
         
     this.$getUserSettingsBtn = this._shadowRoot.querySelector('#getUserSettings');
     this.$getUserSettingsBtn.addEventListener('click', () => {
