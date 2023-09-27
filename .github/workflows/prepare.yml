@@ -56,7 +56,7 @@ jobs:
       - run: lerna bootstrap --ci --force-local --ignore docs
       - run: lerna run bundle --ignore docs --scope luigi-client-private
       - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
-      - run: lerna run build --ignore docs --scope @luigi-project/client-support-angular
+      - run: lerna run bundle --ignore docs --scope @luigi-project/client-support-angular
       - run: lerna run bundle --ignore docs
       - run: lerna run bundlesizeOnly --ignore docs
       - run: lerna run build --ignore docs
