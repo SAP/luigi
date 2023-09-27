@@ -4,7 +4,6 @@ import {
   sendCustomMessage,
   addInactiveListener
 } from '@luigi-project/client';
-// import { LuigiContextService, ILuigiContextTypes } from './services/luigi-context.service'; 
 import { LuigiContextService } from '@luigi-project/client-support-angular';
 @Component({
   selector: 'app-root',
