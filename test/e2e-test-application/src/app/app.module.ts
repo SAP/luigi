@@ -1,7 +1,9 @@
-import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LuigiAngularSupportModule } from '@luigi-project/client-support-angular';
+
+import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
 
 import { AppComponent } from './app.component';
 import { PreloadComponent } from './preload/preload.component';
@@ -30,7 +32,6 @@ import { AnonymousComponent } from './anonymous/anonymous.component';
 import { OnNodeActivationComponent } from './onNodeActivation/onNodeActivation.component';
 import { NavSyncComponent } from './nav-sync/nav-sync.component';
 import { ViewGroupComponent } from './project/view-group/view-group.component';
-import { LuigiAngularSupportModule } from '@luigi-project/client-support-angular';
 
 @NgModule({
   declarations: [
