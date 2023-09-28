@@ -54,9 +54,7 @@ class WebComponentSvcClass {
       getPathParams: () => (wc.extendedContext?.pathParams ? wc.extendedContext.pathParams : {}),
       getCoreSearchParams: () => {
         const node = {
-          clientPermissions: !wc.extendedContext.currentNode
-            ? wc.extendedContext.clientPermissions
-            : wc.extendedContext.currentNode.clientPermissions
+          clientPermissions: wc.extendedContext.clientPermissions
         };
         return RoutingHelpers.prepareSearchParamsForClient(node);
       },
