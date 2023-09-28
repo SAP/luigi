@@ -51,14 +51,14 @@ class WebComponentSvcClass {
       },
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
-      getPathParams: () => (wc.extendedContext?.pathParams ? wc.extendedContext.pathParams : {}),
+      getPathParams: () => wc.extendedContext?.pathParams ? wc.extendedContext.pathParams : {},
       getCoreSearchParams: () => {
         const node = {
           clientPermissions: wc.extendedContext.clientPermissions
         };
         return RoutingHelpers.prepareSearchParamsForClient(node);
       },
-      getClientPermissions: () => (wc.extendedContext?.clientPermissions ? wc.extendedContext.clientPermissions : {}),
+      getClientPermissions: () => wc.extendedContext?.clientPermissions ? wc.extendedContext.clientPermissions : {},
       addNodeParams: (params, keepBrowserHistory) => {
         if (!isSpecialMf) {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);

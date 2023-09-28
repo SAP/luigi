@@ -23,9 +23,9 @@ describe('Web Container Test', () => {
 
     it('getCoreSearchParams', () => {
       const stub = cy.stub();
-  
+
       cy.on('window:alert', stub);
-  
+
       cy.get('[data-test-id="luigi-client-api-test-01"]')
         .shadow()
         .contains('getCoreSearchParams')
@@ -34,11 +34,11 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('{"test":"searchParam1"}');
         });
     });
-  
+
     it('getPathParams', () => {
       const stub = cy.stub();
       cy.on('window:alert', stub);
-  
+
       cy.get('[data-test-id="luigi-client-api-test-01"]')
         .shadow()
         .contains('getPathParams')
@@ -47,7 +47,7 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('{"path":"param"}');
         });
     });
-  
+
     it('getClientPermissions', () => {
       const stub = cy.stub();
       cy.on('window:alert', stub);
