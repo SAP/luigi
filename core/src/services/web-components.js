@@ -9,7 +9,7 @@ import { RoutingHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() { }
+  constructor() {}
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -51,14 +51,14 @@ class WebComponentSvcClass {
       },
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
-      getPathParams: () => wc.extendedContext?.pathParams ? wc.extendedContext.pathParams : {},
+      getPathParams: () => (wc.extendedContext?.pathParams ? wc.extendedContext.pathParams : {}),
       getCoreSearchParams: () => {
         const node = {
           clientPermissions: wc.extendedContext.clientPermissions
         };
         return RoutingHelpers.prepareSearchParamsForClient(node);
       },
-      getClientPermissions: () => wc.extendedContext?.clientPermissions ? wc.extendedContext.clientPermissions : {},
+      getClientPermissions: () => (wc.extendedContext?.clientPermissions ? wc.extendedContext.clientPermissions : {}),
       addNodeParams: (params, keepBrowserHistory) => {
         if (!isSpecialMf) {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
@@ -217,7 +217,6 @@ class WebComponentSvcClass {
    * If the web component is not defined yet, it gets imported.
    */
   renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
-    // const extendedContexts = { ...extendedContext, ...node };
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id =
