@@ -39,7 +39,6 @@
   export let clientPermissions: any;
   export let userSettings: any;
 
-
   let containerInitialized = false;
   let mainComponent: HTMLElement;
   let eventBusElement: HTMLElement;
