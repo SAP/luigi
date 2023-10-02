@@ -140,7 +140,14 @@ class NavigationClass {
     return node;
   }
 
-  async buildNode(nodeNamesInCurrentPath, nodesInCurrentPath, childrenOfCurrentNode, context, pathParams = {}, skipRootNodeEmptyPathSegmentReplacement) {
+  async buildNode(
+    nodeNamesInCurrentPath,
+    nodesInCurrentPath,
+    childrenOfCurrentNode,
+    context,
+    pathParams = {},
+    skipRootNodeEmptyPathSegmentReplacement
+  ) {
     if (!context.parentNavigationContexts) {
       context.parentNavigationContexts = [];
     }
@@ -150,14 +157,14 @@ class NavigationClass {
         if (nodesInCurrentPath[0].children[i].pathSegment === nodeNamesInCurrentPath[0]) {
           foundEmptyPathSegment = false;
           break;
-        };
-        if (nodesInCurrentPath[0].children[i].pathSegment === "") {
+        }
+        if (nodesInCurrentPath[0].children[i].pathSegment === '') {
           foundEmptyPathSegment = true;
         }
       }
 
       if (foundEmptyPathSegment) {
-        nodeNamesInCurrentPath.unshift("");
+        nodeNamesInCurrentPath.unshift('');
       }
     }
     let result = {
@@ -185,7 +192,14 @@ class NavigationClass {
           // STANDARD PROCEDURE
           let children = await this.getChildren(node, newContext);
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
-          result = this.buildNode(newNodeNamesInCurrentPath, nodesInCurrentPath, children, newContext, pathParams, true);
+          result = this.buildNode(
+            newNodeNamesInCurrentPath,
+            nodesInCurrentPath,
+            children,
+            newContext,
+            pathParams,
+            true
+          );
         } catch (err) {
           console.error('Error getting nodes children', err);
         }
