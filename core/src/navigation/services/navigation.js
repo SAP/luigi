@@ -43,7 +43,7 @@ class NavigationClass {
       const globalContext = LuigiConfig.getConfigValue('navigation.globalContext');
       const rootContext = { ...(globalContext || {}), ...(rootNode.context || {}) };
       const navObj = await this.buildNode(nodeNamesInCurrentPath, [rootNode], rootNode.children, rootContext);
-      const navPathSegments = navObj.navigationPath.filter(x => x.pathSegment).map(x => x.pathSegment);
+      const navPathSegments = navObj.navigationPath.filter(x => x.pathSegment !== undefined).map(x => x.pathSegment);
       navObj.isExistingRoute = !activePath || nodeNamesInCurrentPath.length === navPathSegments.length;
       const pathSegments = activePath.split('/');
       navObj.matchedPath = pathSegments
@@ -140,9 +140,25 @@ class NavigationClass {
     return node;
   }
 
-  async buildNode(nodeNamesInCurrentPath, nodesInCurrentPath, childrenOfCurrentNode, context, pathParams = {}) {
+  async buildNode(nodeNamesInCurrentPath, nodesInCurrentPath, childrenOfCurrentNode, context, pathParams = {}, skipRootNodeEmptyPathSegmentReplacement) {
     if (!context.parentNavigationContexts) {
       context.parentNavigationContexts = [];
+    }
+    if (!skipRootNodeEmptyPathSegmentReplacement) {
+      let foundEmptyPathSegment = false;
+      for (let i = 0; i < nodesInCurrentPath[0].children.length; i++) {
+        if (nodesInCurrentPath[0].children[i].pathSegment === nodeNamesInCurrentPath[0]) {
+          foundEmptyPathSegment = false;
+          break;
+        };
+        if (nodesInCurrentPath[0].children[i].pathSegment === "") {
+          foundEmptyPathSegment = true;
+        }
+      }
+
+      if (foundEmptyPathSegment) {
+        nodeNamesInCurrentPath.unshift("");
+      }
     }
     let result = {
       navigationPath: nodesInCurrentPath,
@@ -169,7 +185,7 @@ class NavigationClass {
           // STANDARD PROCEDURE
           let children = await this.getChildren(node, newContext);
           const newNodeNamesInCurrentPath = nodeNamesInCurrentPath.slice(1);
-          result = this.buildNode(newNodeNamesInCurrentPath, nodesInCurrentPath, children, newContext, pathParams);
+          result = this.buildNode(newNodeNamesInCurrentPath, nodesInCurrentPath, children, newContext, pathParams, true);
         } catch (err) {
           console.error('Error getting nodes children', err);
         }
