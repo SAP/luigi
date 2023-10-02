@@ -103,10 +103,12 @@
           await setModalSize();
         }
 
+        console.log('nodeObject', nodeObject, pathData)
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),
-          { context: pathData.context, ...(nodeObject.clientPermissions && {clientPermissions: nodeObject.clientPermissions}) },
+          { context: pathData.context, ...(nodeObject.clientPermissions && {clientPermissions: nodeObject.clientPermissions}),
+          ...(pathData.pathParams && {pathParams: pathData.pathParams}) },
           nodeObject,
           undefined, true
         );

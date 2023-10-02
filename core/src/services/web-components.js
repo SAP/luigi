@@ -217,6 +217,7 @@ class WebComponentSvcClass {
    * If the web component is not defined yet, it gets imported.
    */
   renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
+    console.log('renderWebComponent', extendedContext, node)
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id =
