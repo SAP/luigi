@@ -25,6 +25,14 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.6.2] (2023-09-26)
+
+#### :bug: Fixed
+* [#3450](https://github.com/SAP/luigi/pull/3450) detect configChangedRequest only on config changed ([@hardl](https://github.com/hardl))
+
+
+
+
 ## [v2.6.1] (2023-09-22)
 
 #### :bug: Fixed
@@ -1625,3 +1633,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.5.1]: https://github.com/SAP/luigi/compare/v2.5.0...v2.5.1
 [v2.6.0]: https://github.com/SAP/luigi/compare/v2.5.1...v2.6.0
 [v2.6.1]: https://github.com/SAP/luigi/compare/v2.6.0...v2.6.1
+[v2.6.2]: https://github.com/SAP/luigi/compare/v2.6.1...v2.6.2
