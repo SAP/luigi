@@ -210,7 +210,7 @@ class RoutingHelpersClass {
   buildRoute(node, path, params) {
     return !node.parent
       ? path + (params ? '?' + params : '')
-      : this.buildRoute(node.parent, `/${node.parent.pathSegment}${path}`, params);
+      : this.buildRoute(node.parent, `${node.parent.pathSegment === '' ? `${path}` : `/${node.parent.pathSegment}${path}`}`, params);
   }
 
   /**

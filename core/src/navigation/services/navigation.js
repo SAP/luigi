@@ -110,7 +110,7 @@ class NavigationClass {
   bindChildToParent(child, node) {
     // Checking for pathSegment to exclude virtual root node
     // node.pathSegment check is also required for virtual nodes like categories
-    if (node && node.pathSegment) {
+    if (node && node.pathSegment !== undefined) {
       child.parent = node;
     }
     return child;
