@@ -389,6 +389,19 @@ describe('Routing-helpers', () => {
       const params = 'sort=desc&filter=false';
       assert.equal(RoutingHelpers.buildRoute(node, '/' + node.pathSegment, params), '/home/projects/one?' + params);
     });
+    it('with empty String pathSegment in parent node', () => {
+      node.parent.parent = '';
+      assert.equal(RoutingHelpers.buildRoute(node, '/' + node.pathSegment), '/projects/one');
+    });
+    it('with empty String pathSegment in parent node 2', () => {
+      const node2 = {
+        pathSegment: 'childTest',
+        parent: {
+          pathSegment: ''
+        }
+      }
+      assert.equal(RoutingHelpers.buildRoute(node2, '/' + node2.pathSegment), '/childTest');
+    });
   });
   describe('getRouteLink', () => {
     beforeEach(() => {
@@ -884,7 +897,7 @@ describe('Routing-helpers', () => {
 
   describe('handlePageNotFoundAndRetrieveRedirectPath', () => {
     const component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
 
     beforeEach(() => {

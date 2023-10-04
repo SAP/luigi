@@ -7,9 +7,9 @@ const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
 
-const sampleNavPromise = new Promise(function(resolve) {
+const sampleNavPromise = new Promise(function (resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
       resolve([
         {
           pathSegment: 'b1',
@@ -53,13 +53,13 @@ const sampleNavPromise = new Promise(function(resolve) {
   ]);
 });
 
-describe('Navigation', function() {
+describe('Navigation', function () {
   jest.retryTimes(2);
 
   beforeAll(() => {
     function mockStorage() {
       return {
-        getItem: function(key) {
+        getItem: function (key) {
           return JSON.stringify({
             accessTokenExpirationDate: Number(new Date()) + 1
           });
@@ -85,7 +85,7 @@ describe('Navigation', function() {
     sinon.reset();
   });
 
-  describe('getNavigationPath', function() {
+  describe('getNavigationPath', function () {
     it('should not fail for undefined arguments', () => {
       Navigation.getNavigationPath(undefined, undefined);
     });
@@ -132,7 +132,7 @@ describe('Navigation', function() {
     });
     it('should have globalContext inherited', async () => {
       window.Luigi._store = {
-        fire: () => {}
+        fire: () => { }
       };
       LuigiConfig.config = {
         navigation: {
@@ -289,6 +289,15 @@ describe('Navigation', function() {
     it('should return parent.pathSegment of first child', () => {
       const result = Navigation.bindChildToParent({}, node);
       assert.equal(result.parent.pathSegment, 'category1');
+    });
+    it('should return child with parent property which has empty pathSegment', () => {
+      const nodeWithEmptyPathSegement = {
+        pathSegment: '',
+        children: [{ name: 'subCategory1' }, { name: 'subCategory2' }]
+      }
+      const child = { name: 'subCategory1', pathSegment: 'subCategory1' }
+      const result = Navigation.bindChildToParent(child, nodeWithEmptyPathSegement);
+      assert.deepEqual(result.parent, nodeWithEmptyPathSegement)
     });
   });
 
