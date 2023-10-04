@@ -103,7 +103,6 @@
           await setModalSize();
         }
 
-        console.log('nodeObject', nodeObject, pathData)
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),

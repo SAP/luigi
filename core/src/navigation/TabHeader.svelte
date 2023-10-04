@@ -21,7 +21,6 @@
       // render webcomponent based on passed node object only if it is a webcomponent and showAsTabHeader is set to true
       if (node.webcomponent && node.tabNav.showAsTabHeader) {        
         const tabHeaderCnt = document.querySelector('.lui-tab-header');
-        console.log('tabHeader', node)
         WebComponentService.renderWebComponent(node.viewUrl, tabHeaderCnt, { context: await getCurrentContext(), 
           ...(node.clientPermissions && {clientPermissions: node.clientPermissions}) }, node);
         tabHeaderCnt.addEventListener('lui_ctx_update', async () => {
