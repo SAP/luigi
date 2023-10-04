@@ -399,7 +399,7 @@ describe('Routing-helpers', () => {
         parent: {
           pathSegment: ''
         }
-      }
+      };
       assert.equal(RoutingHelpers.buildRoute(node2, '/' + node2.pathSegment), '/childTest');
     });
   });
@@ -897,7 +897,7 @@ describe('Routing-helpers', () => {
 
   describe('handlePageNotFoundAndRetrieveRedirectPath', () => {
     const component = {
-      showAlert: () => { }
+      showAlert: () => {}
     };
 
     beforeEach(() => {

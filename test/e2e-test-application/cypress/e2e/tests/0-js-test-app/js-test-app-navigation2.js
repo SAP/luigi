@@ -29,9 +29,13 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-empty-pathSegement-in-main-node"]');
 
-        cy.get('.fd-app__sidebar').contains('Section one').click();
+        cy.get('.fd-app__sidebar')
+          .contains('Section one')
+          .click();
         cy.expectPathToBe('/one');
-        cy.get('.fd-app__sidebar').contains('Section two').click();
+        cy.get('.fd-app__sidebar')
+          .contains('Section two')
+          .click();
         cy.expectPathToBe('/two');
       });
       it('empty path segment tabNav enabled, hide nodes left and top nav', () => {
@@ -42,9 +46,13 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-empty-pathSegement-in-main-node"]');
         cy.get('.fd-app__sidebar').should('not.exist');
-        cy.get('.lui-tabs').contains('Section one').click();
+        cy.get('.lui-tabs')
+          .contains('Section one')
+          .click();
         cy.expectPathToBe('/one');
-        cy.get('.lui-tabs').contains('Section two').click();
+        cy.get('.lui-tabs')
+          .contains('Section two')
+          .click();
         cy.expectPathToBe('/two');
       });
     });
@@ -69,9 +77,13 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-empty-pathSegement-in-main-node"]');
 
-        cy.get('.fd-app__sidebar').contains('Section one').click();
+        cy.get('.fd-app__sidebar')
+          .contains('Section one')
+          .click();
         cy.expectPathToBe('/one');
-        cy.get('.fd-app__sidebar').contains('Section two').click();
+        cy.get('.fd-app__sidebar')
+          .contains('Section two')
+          .click();
         cy.expectPathToBe('/two');
       });
       it('empty path segment tabNav enabled, hide nodes left and top nav', () => {
@@ -82,9 +94,13 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-empty-pathSegement-in-main-node"]');
         cy.get('.fd-app__sidebar').should('not.exist');
-        cy.get('.lui-tabs').contains('Section one').click();
+        cy.get('.lui-tabs')
+          .contains('Section one')
+          .click();
         cy.expectPathToBe('/one');
-        cy.get('.lui-tabs').contains('Section two').click();
+        cy.get('.lui-tabs')
+          .contains('Section two')
+          .click();
         cy.expectPathToBe('/two');
       });
     });
