@@ -23,6 +23,15 @@ class GenericHelpersClass {
   }
 
   /**
+   * Checks if input is an async function.
+   * @param functionToCheck mixed
+   * @returns {boolean}
+   */
+  isAsyncFunction(functionToCheck) {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object AsyncFunction]';
+  }
+
+  /**
    * Checks if input is a promise.
    * @param promiseToCheck mixed
    * @returns {boolean}

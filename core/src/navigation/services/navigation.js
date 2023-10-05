@@ -454,7 +454,12 @@ class NavigationClass {
   }
 
   async shouldPreventNavigation(node) {
-    if (node && GenericHelpers.isFunction(node.onNodeActivation) && (await node.onNodeActivation(node)) === false) {
+    if (
+      node &&
+      (GenericHelpers.isFunction(node.onNodeActivation) ||
+        GenericHelpers.isAsyncFunction(node.onNodeActivation)) &&
+      (await node.onNodeActivation(node)) === false
+    ) {
       return true;
     }
     return false;
