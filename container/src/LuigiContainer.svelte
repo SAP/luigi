@@ -28,7 +28,8 @@
         type: 'Object',
         reflect: false,
         attribute: 'user-settings'
-      }
+      },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' }
     },
     extend: customElementConstructor => {
       let notInitFn = name => {
@@ -65,6 +66,7 @@
   export let skipInitCheck: boolean;
   export let nodeParams: any;
   export let userSettings: any;
+  export let anchor: string;
 
   const iframeHandle:
     | {
@@ -80,7 +82,12 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
-      locale && theme && activeFeatureToggleList && nodeParams && userSettings
+      locale &&
+      theme &&
+      activeFeatureToggleList &&
+      nodeParams &&
+      userSettings &&
+      anchor
     );
   };
 

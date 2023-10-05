@@ -15,7 +15,8 @@
         type: 'Object',
         reflect: false,
         attribute: 'user-settings'
-      }
+      },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' }
     }
   }}
 />
@@ -32,6 +33,7 @@
   export let compoundConfig: any;
   export let nodeParams: any;
   export let userSettings: any;
+  export let anchor: string;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -42,7 +44,7 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return nodeParams && userSettings;
+    return nodeParams && userSettings && anchor;
   };
 
   const initialize = (thisComponent: any) => {
