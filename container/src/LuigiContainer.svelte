@@ -28,7 +28,10 @@
         type: 'Object',
         reflect: false,
         attribute: 'user-settings'
-      }
+      },
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }
     },
     extend: customElementConstructor => {
       let notInitFn = name => {
