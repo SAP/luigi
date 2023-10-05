@@ -25,6 +25,16 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.6.3] (2023-10-05)
+
+#### :rocket: Added
+* [#3448](https://github.com/SAP/luigi/pull/3448) Update peer dependencies to angular v16 for client-support-angular library ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
 ## [v2.6.2] (2023-09-26)
 
 #### :bug: Fixed
@@ -1634,3 +1644,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.6.0]: https://github.com/SAP/luigi/compare/v2.5.1...v2.6.0
 [v2.6.1]: https://github.com/SAP/luigi/compare/v2.6.0...v2.6.1
 [v2.6.2]: https://github.com/SAP/luigi/compare/v2.6.1...v2.6.2
+[v2.6.3]: https://github.com/SAP/luigi/compare/v2.6.2...v2.6.3
