@@ -25,10 +25,9 @@
     
     document.querySelector('.lui-tab-header').innerHTML = '';
     setTimeout(async ()=>{
-      const nodeData = await getCurrentNodeData();
-
       // render webcomponent based on passed node object only if it is a webcomponent and showAsTabHeader is set to true
-      if (node.webcomponent && node.tabNav.showAsTabHeader) {        
+      if (node.webcomponent && node.tabNav.showAsTabHeader) {   
+        const nodeData = await getCurrentNodeData();     
         const tabHeaderCnt = document.querySelector('.lui-tab-header');
         WebComponentService.renderWebComponent(node.viewUrl, tabHeaderCnt, nodeData , node);
         tabHeaderCnt.addEventListener('lui_ctx_update', async () => {
