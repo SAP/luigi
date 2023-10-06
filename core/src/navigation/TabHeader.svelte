@@ -7,26 +7,34 @@
 
   export let node;
 
-
-  async function getCurrentContext() {
+  /**
+   * Retrieves the current node data by mapping it accordingly with the corresponding path
+   * Data returned consists in the current context, pathParams, clientPermissions, etc.
+   */
+  async function getCurrentNodeData() {
     const route = RoutingHelpers.mapPathToNode(Routing.getCurrentPath(), node);
     const data = await Navigation.extractDataFromPath(route);
-    return data?.pathData?.context || node.context;
+    return {
+              context: data?.pathData?.context || node.context,
+              pathParams: data.pathData?.pathParams || {},
+              clientPermissions: data.nodeObject.clientPermissions || {}
+    };
   }
 
   onMount(() => {
     
     document.querySelector('.lui-tab-header').innerHTML = '';
     setTimeout(async ()=>{
+      const nodeData = await getCurrentNodeData();
+
       // render webcomponent based on passed node object only if it is a webcomponent and showAsTabHeader is set to true
       if (node.webcomponent && node.tabNav.showAsTabHeader) {        
         const tabHeaderCnt = document.querySelector('.lui-tab-header');
-        WebComponentService.renderWebComponent(node.viewUrl, tabHeaderCnt, { context: await getCurrentContext(), 
-          ...(node.clientPermissions && {clientPermissions: node.clientPermissions}) }, node);
+        WebComponentService.renderWebComponent(node.viewUrl, tabHeaderCnt, nodeData , node);
         tabHeaderCnt.addEventListener('lui_ctx_update', async () => {
           const wc = document.querySelector('.lui-tab-header [lui_web_component]');
           if (wc) {
-            wc.context = await getCurrentContext();
+            wc.context = nodeData.context;
           }
         });
       } else { 

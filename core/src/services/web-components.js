@@ -36,6 +36,7 @@ class WebComponentSvcClass {
   initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, isSpecialMf) {
     const ctx = extendedContext.context;
     wc.extendedContext = extendedContext;
+    
     // handle difference modal vs main mf
     if (wc.extendedContext.currentNode) {
       wc.extendedContext.clientPermissions = wc.extendedContext.currentNode.clientPermissions;
