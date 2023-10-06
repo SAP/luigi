@@ -1056,7 +1056,7 @@
   }
 
   .fd-app__sidebar {
-    position: fixed;
+    position: absolute;
     top: $topNavHeight;
     left: 0;
     bottom: 0;
