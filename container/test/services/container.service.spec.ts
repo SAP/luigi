@@ -38,4 +38,35 @@ describe('Container Service', () => {
     expect(dispatchedEvent.type).toEqual(Events.CUSTOM_MESSAGE);
     expect(dispatchedEvent.detail).toEqual({ id: 'custMsgId', _metaData: {}, data: { foo: 'bar' } });
   });
+
+  it('test get context', () => {
+    const cm = service.getContainerManager();
+    let dispatchedEvent;
+    const cw = {};
+    jest.spyOn(service, 'getTargetContainer').mockImplementation(() => {
+      return {
+        iframeHandle: {
+          iframe: {
+            contentWindow: cw
+          }
+        },
+        dispatchEvent: customEvent => {
+          dispatchedEvent = customEvent;
+        }
+      };
+    });
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.GET_CONTEXT,
+        data: {
+          id: 'custMsgId',
+          foo: 'bar'
+        }
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.GET_CONTEXT_REQUEST);
+    expect(dispatchedEvent.detail).toEqual({ id: 'custMsgId', _metaData: {}, data: { foo: 'bar' } });
+  });
 });
