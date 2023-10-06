@@ -1,4 +1,4 @@
-import { LuigiContextService } from '@luigi-project/client-support-angular';
+import { LuigiContextService, IContextMessage } from '@luigi-project/client-support-angular';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import {
@@ -66,7 +66,7 @@ export class SettingsComponent implements OnInit {
 
     // We suggest to use a centralized approach of LuigiClient.addContextUpdateListener
     // Take a look at ngOnInit in this component and app.component.ts where we set the listeners.
-    this.lcSubscription = this.luigiService.contextObservable().subscribe((ctx) => {
+    this.lcSubscription = this.luigiService.contextObservable().subscribe((ctx: IContextMessage) => {
       if (ctx.contextType === 0 || ctx.contextType === 1) {
         this.preservedViewCallbackContext = ctx.context.goBackContext;
         this.nodeParams = Object.keys(getNodeParams()).length > 0 ? getNodeParams() : null;

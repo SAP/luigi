@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { getPathParams, getNodeParams, linkManager, PathParams, NodeParams } from '@luigi-project/client';
-import { LuigiContextService } from '@luigi-project/client-support-angular';
+import { LuigiContextService, IContextMessage } from '@luigi-project/client-support-angular';
 import { toTitleCase } from '../../services/helpers';
 
 @Component({
@@ -30,7 +30,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.lcSubscription.add(
-      this.luigiService.contextObservable().subscribe((ctx) => {
+      this.luigiService.contextObservable().subscribe((ctx: IContextMessage) => {
         if (!ctx.context) {
           console.warn(
             `To use this component properly, node configuration requires context.label to be defined.
