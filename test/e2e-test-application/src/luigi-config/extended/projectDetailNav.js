@@ -332,6 +332,9 @@ export const projectDetailNavStructure = projectId => [
     statusBadge: {
       label: '',
       type: 'critical'
+    },
+    clientPermissions: {
+      changeCurrentLocale: false
     }
   },
   {
@@ -345,7 +348,15 @@ export const projectDetailNavStructure = projectId => [
       title: 'Hello WebComponent!'
     },
     viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
-    webcomponent: true
+    webcomponent: true,
+    clientPermissions: {
+      changeCurrentLocale: true,
+      urlParameters: {
+        testParam: {
+          read: true
+        }
+      }
+    }
   },
   {
     pathSegment: 'misc2-isolated',
