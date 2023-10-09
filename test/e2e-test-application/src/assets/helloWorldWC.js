@@ -18,6 +18,15 @@ export default class extends HTMLElement {
     const addNodeParamsBtn = document.createElement('template');
     addNodeParamsBtn.innerHTML = `<button id="addNodeParams">addNodeParams</button>`;
 
+    const getCoreSearchParamsBtn = document.createElement('template');
+    getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
+
+    const getPathParamsBtn = document.createElement('template');
+    getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
+
+    const getClientPermissionsBtn = document.createElement('template');
+    getClientPermissionsBtn.innerHTML = '<button id="getClientPermissions">getClientPermissions</button>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -27,6 +36,9 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
 
     for (let index = 0; index < 20; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -67,6 +79,27 @@ export default class extends HTMLElement {
     this.$button4 = this._shadowRoot.querySelector('#addNodeParams');
     this.$button4.addEventListener('click', () => {
       this.LuigiClient.addNodeParams({ Luigi: 'rocks' });
+    });
+
+    this.$coreSearchParamsBtn = this._shadowRoot.querySelector('#coreSearchParams');
+    this.$coreSearchParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getCoreSearchParams()));
+      }
+    });
+
+    this.$getPathParamsBtn = this._shadowRoot.querySelector('#getPathParams');
+    this.$getPathParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getPathParams()));
+      }
+    });
+
+    this.$getClientPermissionsBtn = this._shadowRoot.querySelector('#getClientPermissions');
+    this.$getClientPermissionsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getClientPermissions()));
+      }
     });
   }
 
