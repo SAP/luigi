@@ -300,6 +300,9 @@
         id="dashboard"
         context='{"label": "Dashboard"}'
         node-params='{"Luigi":"rocks"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
         user-settings='{"language":"it", "date":""}'
         anchor="testAnchorCompound"
       ></luigi-compound-container>
@@ -361,6 +364,9 @@
         theme="sap_fiori_3"
         active-feature-toggle-list='["ft1","ft2"]'
         node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
         user-settings='{"language": "de", "date":""}'
         anchor="testanchor"
       ></luigi-container>
@@ -415,7 +421,7 @@
           {
             viewUrl: layoutMFEDomain + '/panelHeader.js',
             context: {
-              title: 'My Awesome Grid',
+              title: 'My Awesome Grid 000',
               description: 'Really awesome'
             },
             layoutConfig: {

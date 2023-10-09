@@ -29,7 +29,18 @@
         reflect: false,
         attribute: 'user-settings'
       },
-      anchor: { type: 'String', reflect: false, attribute: 'anchor' }
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      searchParams: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'search-params'
+      },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'client-permissions'
+      }
     },
     extend: customElementConstructor => {
       let notInitFn = name => {
@@ -65,6 +76,10 @@
   export let activeFeatureToggleList: string[];
   export let skipInitCheck: boolean;
   export let nodeParams: any;
+  export let searchParams: any;
+  export let pathParams: any;
+  export let clientPermissions: any;
+
   export let userSettings: any;
   export let anchor: string;
 
@@ -86,6 +101,9 @@
       theme &&
       activeFeatureToggleList &&
       nodeParams &&
+      searchParams &&
+      pathParams &&
+      clientPermissions &&
       userSettings &&
       anchor
     );

@@ -152,6 +152,21 @@ export class WebComponentService {
       getAnchor: () => {
         return this.thisComponent.getAttribute('anchor') || '';
       },
+      getCoreSearchParams: () => {
+        let result = this.thisComponent.getAttribute('search-params') || {};
+        result = JSON.parse(result);
+        return result;
+      },
+      getPathParams: () => {
+        let result = this.thisComponent.getAttribute('path-params') || {};
+        result = JSON.parse(result);
+        return result;
+      },
+      getClientPermissions: () => {
+        let result = this.thisComponent.getAttribute('client-permissions') || {};
+        result = JSON.parse(result);
+        return result;
+      },
       getUserSettings: () => {
         return JSON.parse(this.thisComponent.getAttribute('user-settings')) || {};
       }
