@@ -1056,7 +1056,7 @@
   }
 
   .fd-app__sidebar {
-    position: absolute;
+    position: fixed;
     top: $topNavHeight;
     left: 0;
     bottom: 0;
@@ -1198,7 +1198,6 @@
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
     background-color: transparent;
     @include transition(width 0.1s linear);
   }
