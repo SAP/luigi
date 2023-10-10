@@ -158,7 +158,7 @@
           list.item(chosenElementIndex).classList.add('is-focus');
         }
       }
-      if (event.keyCode === KEYCODE_ENTER) {
+      if (event.keyCode === KEYCODE_ENTER || event.keyCode===KEYCODE_SPACE ) {
         updateComboBox(
           key,
           schemaItem.options[chosenElementIndex],
@@ -276,7 +276,7 @@
                             class="fd-select__control lui-anchor-node"
                             data-testid="lui-us-language-dropdown"
                             id="fd-form-input-{index}"
-                            on:keydown={(event) =>
+                            on:keydown={event =>
                               handleKeyListDropdown(
                                 event,
                                 key,
@@ -325,7 +325,7 @@
                                 data-testid="lui-us-option{index}_{optionIndex}"
                                 on:click={() =>
                                   updateComboBox(key, option, optionIndex)}
-                                on:keydown={(event) =>
+                                on:keydown={event =>
                                   keyPressDropdownNode(event)}
                                 tabindex="0"
                               >
