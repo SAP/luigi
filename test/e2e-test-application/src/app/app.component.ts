@@ -1,12 +1,10 @@
 import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import {
-  addInitListener,
-  addContextUpdateListener,
   sendCustomMessage,
   addInactiveListener
 } from '@luigi-project/client';
-import { LuigiContextService, ILuigiContextTypes } from './services/luigi-context.service';
+import { LuigiContextService } from '@luigi-project/client-support-angular';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,27 +14,20 @@ import { LuigiContextService, ILuigiContextTypes } from './services/luigi-contex
 export class AppComponent implements OnInit {
   public title = 'app';
 
-  constructor(private luigiService: LuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) {}
+  constructor(private luigiService: LuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) { }
 
   ngOnInit() {
-    addInitListener(context => {
-      this.onLuigiContext('init', context);
-      this.luigiAutoNav.init();
+    this.luigiService.contextObservable().subscribe((ctxObj) => {
+      if (ctxObj.contextType === 0) {
+        this.luigiAutoNav.init();
+        sendCustomMessage({ id: 'my-micro-frontend-is-ready' });
+      }
     });
-    addContextUpdateListener(context => {
-      this.onLuigiContext('update', context);
-      console.log('Context changed:', context);
-    });
+
 
     addInactiveListener(() => {
       console.debug('inactiveListener: micro frontend is now in the background');
     });
   }
 
-  private onLuigiContext(contextType: ILuigiContextTypes, context: any): void {
-    this.luigiService.setContext({ contextType, context });
-    if (contextType === 'init') {
-      sendCustomMessage({ id: 'my-micro-frontend-is-ready' });
-    }
-  }
 }

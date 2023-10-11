@@ -1198,7 +1198,6 @@
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
     background-color: transparent;
     @include transition(width 0.1s linear);
   }
