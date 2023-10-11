@@ -168,6 +168,7 @@ export const projectDetailNavStructure = projectId => [
       count: () => Math.floor(Math.random() * 100)
     },
     context: {
+      test: 'test',
       label: 'VirtualTree - add segments to the url',
       links: false
     },
