@@ -52,7 +52,7 @@
   }
 
   function setExpandedState(self, value) {
-    const indicatorBtn = self.querySelector('.lui-activate-language-dropdown');
+    const indicatorBtn = self.querySelector('.lui-activate-dropdown');
     const optionsPopover = self.parentNode.querySelector('.fd-popover__body');
     const optionsSelectControl = self.parentNode.querySelector(
       '.fd-select__control'
@@ -274,7 +274,7 @@
                             aria-haspopup="listbox"
                             aria-label="Language"
                             class="fd-select__control lui-anchor-node"
-                            data-testid="lui-us-language-dropdown"
+                            data-testid="lui-us-{schemaItem.type}-{index}"
                             id="fd-form-input-{index}"
                             on:keydown={event =>
                               handleKeyListDropdown(
@@ -297,7 +297,7 @@
                               )}
                             </span>
                             <span
-                              class="fd-button fd-button--transparent fd-select__button lui-activate-language-dropdown"
+                              class="fd-button fd-button--transparent fd-select__button lui-activate-dropdown"
                             >
                               <i class="sap-icon--slim-arrow-down" />
                             </span>
