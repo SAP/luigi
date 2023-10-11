@@ -106,7 +106,7 @@ describe('JS-TEST-APP 4', () => {
         .type('{enter}');
       cy.tab();
       cy.tab();
-      cy.get('[data-testid="lui-us-enum-0"]').click(); //workaround; Does not work with 'enter' or 'space'
+      cy.get('[data-testid="lui-us-enum-0"]').click(); //workaround; Does not work with 'enter' or 'space' 
       cy.get('[data-testid="lui-us-enum-0"]')
         .type('{downArrow}')
         .type('{downArrow}')
