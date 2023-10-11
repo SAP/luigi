@@ -192,9 +192,9 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 ```js
 navigation: {
   nodes:[{
-      pathSegment: 'home',
-      label: 'Home',
-      viewUrl: 'home.html',
+      pathSegment: 'root',
+      label: 'Root node',
+      viewUrl: 'root.html',
       children: [
         {
           pathSegment: 'sample1',
