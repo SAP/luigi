@@ -61,7 +61,7 @@ Luigi.setConfig({
                     loadingIndicator: {
                         enabled: false
                     },
-                    viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
+                    viewUrl: 'https://sdk.openui5.org/test-resources/sap/m/demokit/cart/webapp/index.html'
                 },{ 
                     pathSegment: 'wc1', 
                     label: 'WC Editable List', 
