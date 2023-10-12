@@ -186,13 +186,15 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 - **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration.
 
 ### nodes
-- **type**: array
-- **description**: You can define navigation nodes in the `nodes:` array. First-level nodes are also referred to as "root nodes". Second-level notes can be defined inside a `children:` array below the root node. 
+- **type**: array | Object
+- **description**: You can define navigation nodes in the `nodes:` array. The first-level node is also called a "root node". Second-level notes can be defined inside a `children:` array below the root node. 
+
+Instead of an array, the `nodes:` attribute can also be defined as a single node object which then serves as the root node. The root node should not have a [pathSegment](#pathsegment) defined, because it is accessible through the empty path. If you define a `pathSegment` anyway, you should see a warning about this in the console. 
+
 - **example**: 
 ```js
 navigation: {
   nodes:[{
-      pathSegment: 'root',
       label: 'Root node',
       viewUrl: 'root.html',
       children: [
