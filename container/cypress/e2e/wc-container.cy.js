@@ -72,6 +72,19 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getUserSettings()={"language":"de","date":""}');
         });
     });
+
+    it('LuigiClient API getAnchor for LuigiContainer', () => {
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+
+      cy.get('[data-test-id="luigi-client-api-test-01"]')
+        .shadow()
+        .contains('getAnchor')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testanchor"');
+        });
+    });
   });
 
   describe('LuigiClient API LuigiCompoundContainer', () => {
@@ -90,6 +103,17 @@ describe('Web Container Test', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getUserSettings()={"language":"it","date":""}');
+        });
+    });
+    it('LuigiClient API getAnchor for LuigiCompoundContainer', () => {
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+      cy.get('[data-test-id="luigi-client-api-test-compound-01"]')
+        .shadow()
+        .contains('getAnchor')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testAnchorCompound"');
         });
     });
   });
