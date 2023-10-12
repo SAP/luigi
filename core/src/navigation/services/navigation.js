@@ -344,13 +344,17 @@ class NavigationClass {
       .reverse()
       .forEach(node => {
         if (!childToKeepFound || node.tabNav) {
-          if (node.tabNav === false) { // explicitly set to false
+          if (node.tabNav === false) {
+            // explicitly set to false
             tabNavUnset = true;
           }
           if (node.keepSelectedForChildren === false) {
             // explicitly set to false
             childToKeepFound = true;
-          } else if (node.keepSelectedForChildren || (node.tabNav && !tabNavUnset && !RoutingHelpers.isDynamicNode(node))) {
+          } else if (
+            node.keepSelectedForChildren ||
+            (node.tabNav && !tabNavUnset && !RoutingHelpers.isDynamicNode(node))
+          ) {
             childToKeepFound = true;
             res = [];
           }
@@ -363,8 +367,11 @@ class NavigationClass {
 
   async getLeftNavData(current, componentData) {
     const updatedCompData = {};
-    if (current.pathData && current.pathData.length > 0 &&
-        (current.pathData[0].topNav === false || current.pathData.length > 1)) {
+    if (
+      current.pathData &&
+      current.pathData.length > 0 &&
+      (current.pathData[0].topNav === false || current.pathData.length > 1)
+    ) {
       const pathDataTruncatedChildren = this.getTruncatedChildren(componentData.pathData);
       let lastElement = [...pathDataTruncatedChildren].pop();
       let selectedNode;
@@ -433,8 +440,11 @@ class NavigationClass {
 
   async getTabNavData(current, componentData) {
     const updatedCompData = {};
-    if (current.pathData && current.pathData.length > 0 &&
-      (current.pathData[0].topNav === false || current.pathData.length > 1)) {
+    if (
+      current.pathData &&
+      current.pathData.length > 0 &&
+      (current.pathData[0].topNav === false || current.pathData.length > 1)
+    ) {
       const pathDataTruncatedChildren = this.getTruncatedChildrenForTabNav(componentData.pathData);
       const selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
