@@ -16,9 +16,18 @@
         reflect: false,
         attribute: 'user-settings'
       },
-      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      searchParams: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'search-params'
+      },
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }
+      clientPermissions: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'client-permissions'
+      }
     }
   }}
 />
@@ -38,6 +47,7 @@
   export let pathParams: any;
   export let clientPermissions: any;
   export let userSettings: any;
+  export let anchor: string;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -48,7 +58,14 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return nodeParams && searchParams && pathParams && clientPermissions && userSettings;
+    return (
+      nodeParams &&
+      searchParams &&
+      pathParams &&
+      clientPermissions &&
+      userSettings &&
+      anchor
+    );
   };
 
   const initialize = (thisComponent: any) => {
