@@ -52,7 +52,7 @@ describe('Navigation', () => {
     const setting_date_format = 'df_' + new Date().getTime();
     const setting_privacy_policy = 'privacy_policy_' + new Date().getTime();
 
-    it.only('Fill Account, Language and Region, Privacy, should have placeholder', () => {
+    it('Fill Account, Language and Region, Privacy, should have placeholder', () => {
       //Click on User Account
       cy.get('[data-testid="us-navigation-item"]')
         .eq(0)
