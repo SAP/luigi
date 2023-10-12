@@ -30,7 +30,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   userSettings: UserSettings;
 
   /**
-   * The ancor value to be passed to the web-component-based micro frontend.
+   * The anchor value to be passed to the web-component-based micro frontend.
    */
   anchor: string;
 }
