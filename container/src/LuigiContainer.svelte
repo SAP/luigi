@@ -134,8 +134,18 @@
 
       const ctx = context ? JSON.parse(context) : {};
       if (webcomponent) {
+        let webcomponentProperty = {};
+        if (
+          webcomponent !== 'true' &&
+          webcomponent.startsWith('{') &&
+          webcomponent.endsWith('}')
+        ) {
+          webcomponentProperty = JSON.parse(webcomponent);
+        }
         mainComponent.innerHTML = '';
-        webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
+        webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {
+          webcomponent: webcomponentProperty
+        });
       }
       if (skipInitCheck) {
         thisComponent.initialized = true;

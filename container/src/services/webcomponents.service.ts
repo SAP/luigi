@@ -256,7 +256,18 @@ export class WebComponentService {
           window.customElements.define(this.generateWCId(srcString), el);
         };
       }
-
+      // @ts-ignore
+      if (!window.Luigi) {
+        // @ts-ignore
+        window.Luigi = {};
+        // @ts-ignore
+        if (!window.Luigi._registerWebcomponent) {
+          // @ts-ignore
+          window.Luigi._registerWebcomponent = (src, element) => {
+            this.containerService.getContainerManager()._registerWebcomponent(src, element);
+          }
+        }
+      }
       const scriptTag = document.createElement('script');
       scriptTag.setAttribute('src', viewUrl);
       if (node.webcomponent.type === 'module') {
