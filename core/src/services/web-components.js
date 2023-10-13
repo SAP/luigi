@@ -99,6 +99,11 @@ class WebComponentSvcClass {
       wc.nodeParams = extendedContext.nodeParams;
       wc.LuigiClient = clientAPI;
     }
+
+    const wcCreationInterceptor = LuigiConfig.getConfigValue('settings.webcomponentCreationInterceptor');
+    if (GenericHelpers.isFunction(wcCreationInterceptor)) {
+      wcCreationInterceptor(wc, extendedContext.currentNode, extendedContext, nodeId, isSpecialMf);
+    }
   }
 
   /** Generates a unique web component id (tagname) based on the viewUrl
