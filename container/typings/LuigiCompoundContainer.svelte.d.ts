@@ -1,6 +1,13 @@
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
 }
+
+export declare interface WebComponentSettings {
+  id?: any;
+  type?: string;
+  selfRegistered?: boolean;
+  tagName?: string;
+}
 export default class LuigiCompoundContainer extends HTMLElement {
   compoundConfig: any;
 
@@ -33,4 +40,14 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * The anchor value to be passed to the web-component-based micro frontend.
    */
   anchor: string;
+
+  /**
+   * The following properties can be set for the webcomponent object. By default the webcomponent is set to true.
+   * @param {Object} [WebComponentSettings]
+   * @param {any} WebComponentSettings.id: unique id of the web component
+   * @param {string} WebComponentSettings.type: string, like module.
+   * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
+   * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
+   */
+  webcomponent: boolean | WebComponentSettings;
 }
