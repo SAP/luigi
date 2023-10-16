@@ -4,15 +4,15 @@ import { ContainerService } from '../../src/services/container.service';
 
 describe('Container Service', () => {
   let service: ContainerService;
-  beforeEach(() => {
-    service = new ContainerService();
-  });
+  let gtcSpy;
+  let cw = {};
+  let cm ;
+  let dispatchedEvent;
+  service = new ContainerService();
+  cm = service.getContainerManager();    
 
-  it('test custom message', () => {
-    const cm = service.getContainerManager();
-    let dispatchedEvent;
-    const cw = {};
-    jest.spyOn(service, 'getTargetContainer').mockImplementation(() => {
+  beforeEach(() => {
+    gtcSpy = jest.spyOn(service, 'getTargetContainer').mockImplementation(() => {
       return {
         iframeHandle: {
           iframe: {
@@ -24,6 +24,29 @@ describe('Container Service', () => {
         }
       };
     });
+  });
+
+  afterEach(()=>{
+    gtcSpy.mockRestore();
+  });
+
+  it('test alert request', () => {    
+    const event = {
+
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.ALERT_REQUEST,
+        data: {
+          id: 'navRequest',
+        }
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.ALERT_REQUEST);
+    expect(dispatchedEvent.detail).toEqual({data: {data: {id: "navRequest"}, msg: "luigi.ux.alert.show"}, source: {}});
+   });
+
+  it('test custom message', () => {    
     const event = {
       source: cw,
       data: {
@@ -37,36 +60,31 @@ describe('Container Service', () => {
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.CUSTOM_MESSAGE);
     expect(dispatchedEvent.detail).toEqual({ id: 'custMsgId', _metaData: {}, data: { foo: 'bar' } });
+    gtcSpy.mockRestore();
   });
 
-  it('test get context', () => {
-    const cm = service.getContainerManager();
-    let dispatchedEvent;
-    const cw = {};
-    jest.spyOn(service, 'getTargetContainer').mockImplementation(() => {
-      return {
-        iframeHandle: {
-          iframe: {
-            contentWindow: cw
-          }
-        },
-        dispatchEvent: customEvent => {
-          dispatchedEvent = customEvent;
-        }
-      };
-    });
+  it('test initialized request', () => {
     const event = {
       source: cw,
       data: {
-        msg: LuigiInternalMessageID.GET_CONTEXT,
-        data: {
-          id: 'custMsgId',
-          foo: 'bar'
-        }
+        msg: LuigiInternalMessageID.INITIALIZED,
+        params: 'init'
       }
     };
     cm.messageListener(event);
-    expect(dispatchedEvent.type).toEqual(Events.GET_CONTEXT_REQUEST);
-    expect(dispatchedEvent.detail).toEqual({ id: 'custMsgId', _metaData: {}, data: { foo: 'bar' } });
+    expect(dispatchedEvent.type).toEqual(Events.INITIALIZED);
+    expect(dispatchedEvent.detail).toEqual('init');
+  });
+
+  it('test confirmationModal show request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST,
+        params: 'modal-show'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.SHOW_CONFIRMATION_MODAL_REQUEST);
   });
 });
