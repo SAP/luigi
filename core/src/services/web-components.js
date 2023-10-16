@@ -80,6 +80,9 @@ class WebComponentSvcClass {
           window.Luigi.routing().setAnchor(anchor);
         }
       },
+      getAnchor: () => {
+        return window.Luigi.routing().getAnchor();
+      },
       getUserSettings: async () => {
         return await this.getUserSettingsForWc(eventBusElement._luigi_node);
       }

@@ -185,6 +185,48 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 - **type**: function
 - **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration.
 
+### nodes
+- **type**: array | object
+- **description**: You can define navigation nodes using the `nodes:` attribute. First-level nodes are also referred to as "root nodes". Second-level nodes can be defined inside a [children](#children) array below the root node. 
+
+In addition to an array, `nodes:` can also be defined as a single node object which then serves as the root node. 
+In this case, the root node should not have a [pathSegment](#pathsegment) defined, because it is accessible through the empty path. If you define a `pathSegment` anyway, you should see a warning about this in the console. 
+
+- **example**: 
+```js
+// Nodes array 
+navigation: {
+  nodes:[{
+      pathSegment: 'home'
+      label: 'Root node',
+      viewUrl: 'home.html',
+      children: [
+        {
+          pathSegment: 'sample1',
+          label: 'Sample',
+          viewUrl: 'sample1.html'
+        }
+      ]
+  }]
+}
+
+// Root node as an object
+navigation: {
+  nodes:{
+      label: 'Root node',
+      viewUrl: 'home.html',
+      children: [
+        {
+          pathSegment: 'sample1',
+          label: 'Sample',
+          viewUrl: 'sample1.html'
+        }
+      ]
+  }
+}
+...
+```
+
 ### preloadViewGroups
 - **type**: boolean
 - **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
@@ -276,7 +318,7 @@ navigation: {
             loadingIndicator: {
                 enabled: false
             },
-            viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
+            viewUrl: 'https://sdk.openui5.org/test-resources/sap/m/demokit/cart/webapp/index.html'
         }]
     ...
 ```
