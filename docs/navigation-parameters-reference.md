@@ -735,6 +735,44 @@ navigation: {
 tooltipText: 'Useful links'
 ```
 
+### topNav
+- **type**: boolean
+- **description** children of the root node will not be rendered in the top navigation if the value is set to `false`, default is `true`. Instead the children will be rendered in the left navigation (default) or in the horizontal navigation (tabNav) if it is configured on the node. This feature does only work, if the `nodes` property is an object instead of an array. In that case the rootNode will not be reflected in the url.
+- **example**:
+```javascript
+navigation: {
+  nodes: {
+    pathSegment: "",
+    hideFromNav: true,
+    tabNav: true,
+    topNav: false,
+    hideSideNav: true,
+    viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+    context: {
+        title: 'root'
+    },
+    children: [{
+        pathSegment: "SampleApp1",
+        label: "SampleApp1",
+        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+        context: {
+            title: 'Sample app 1',
+            content: 'Sample app 1'
+        }
+    }, {
+        pathSegment: "SampleApp2",
+        label: "SampleApp2",
+        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+        context: {
+            title: 'Sample app 2',
+            content: 'Sample app 2'
+        }
+    }]
+  }
+}
+```
+- **since**: NEXTRELEASE
+
 ### userSettingsGroup
 - - **type**: string
 - **description**: sets the user settings group for this navigation node. It is the title of a predefined user settings group belonging to a `userSettingGroups` object. For more information, read the section on [user settings](user-settings.md).
