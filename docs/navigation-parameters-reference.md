@@ -187,9 +187,9 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 
 ### nodes
 - **type**: array | object
-- **description**: You can define navigation nodes using the `nodes:` attribute. First-level node are also referred to as "root nodes". Second-level notes can be defined inside a [children](#children) array below the root node. 
+- **description**: You can define navigation nodes using the `nodes:` attribute. First-level nodes are also referred to as "root nodes". Second-level nodes can be defined inside a [children](#children) array below the root node. 
 
-Instead of an array, `nodes:` can also be defined as a single node object which then serves as the root node. 
+In addition to an array, `nodes:` can also be defined as a single node object which then serves as the root node. 
 In this case, the root node should not have a [pathSegment](#pathsegment) defined, because it is accessible through the empty path. If you define a `pathSegment` anyway, you should see a warning about this in the console. 
 
 - **example**: 
