@@ -135,12 +135,15 @@
       const ctx = context ? JSON.parse(context) : {};
       if (webcomponent) {
         let webcomponentProperty = {};
-        if (
-          webcomponent !== 'true' &&
-          webcomponent.startsWith('{') &&
-          webcomponent.endsWith('}')
-        ) {
-          webcomponentProperty = JSON.parse(webcomponent);
+        if (webcomponent !== 'true') {
+          try {
+            webcomponentProperty = JSON.parse(webcomponent);
+          } catch (e) {
+            console.error(
+              'Webcomponent attribute has not a valid JSON structure.',
+              e
+            );
+          }
         }
         mainComponent.innerHTML = '';
         webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {
