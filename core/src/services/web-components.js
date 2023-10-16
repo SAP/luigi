@@ -4,12 +4,13 @@ import {
   registerEventListeners,
   deSanitizeParamsMap
 } from '../utilities/helpers/web-component-helpers';
+import { GenericHelpers } from '../utilities/helpers';
 import { LuigiConfig } from '../core-api';
 import { RoutingHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() {}
+  constructor() { }
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
