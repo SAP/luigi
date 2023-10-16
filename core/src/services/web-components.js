@@ -10,7 +10,7 @@ import { RoutingHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() { }
+  constructor() {}
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
