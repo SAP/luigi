@@ -87,4 +87,18 @@ describe('Container Service', () => {
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.SHOW_CONFIRMATION_MODAL_REQUEST);
   });
+
+  it('test confirmationModal show request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST,
+        params: 'loading-indicator-show'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.SHOW_LOADING_INDICATOR_REQUEST);
+  });
+
+
 });
