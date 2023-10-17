@@ -88,7 +88,7 @@ describe('Container Service', () => {
     expect(dispatchedEvent.type).toEqual(Events.SHOW_CONFIRMATION_MODAL_REQUEST);
   });
 
-  it('test confirmationModal show request', () => {
+  it('test loading indicator show request', () => {
     const event = {
       source: cw,
       data: {
