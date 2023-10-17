@@ -737,7 +737,8 @@ tooltipText: 'Useful links'
 
 ### topNav
 - **type**: boolean
-- **description** children of the root node will not be rendered in the top navigation if the value is set to `false`, default is `true`. Instead the children will be rendered in the left navigation (default) or in the horizontal navigation (tabNav) if it is configured on the node. This feature does only work, if the `nodes` property is an object instead of an array. In that case the rootNode will not be reflected in the url.
+- **description** children of the root node will not be rendered in the top navigation if this value is set to `false`. Instead, the children will be rendered in the left navigation (default) or in the horizontal navigation ([tabNav](#tabNav)) if this is configured on the node. This feature only works if the [nodes](#nodes) property is an object instead of an array. In that case, the root node will not be reflected in the URL.
+- **default**: The default is `true`, meaning that children of the root node show in the top navigation.
 - **example**:
 ```javascript
 navigation: {
