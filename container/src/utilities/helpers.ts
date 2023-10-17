@@ -14,9 +14,10 @@ export class GenericHelpersClass {
   /**
    * Checks weather webcomponent is an attribute or property. In case of attribute it returns the parsed value.
    * @param webcomponent 
-   * @returns returns the correct webcomponent value.
+   * @returns returns the parsed webcomponent value.
    */
   checkWebcomponentValue(webcomponent: any): object | boolean {
+    console.log('test');
     if (typeof webcomponent === 'string') {
       return JSON.parse(webcomponent);
     } else if (typeof webcomponent === 'boolean' || typeof webcomponent === 'object') {
