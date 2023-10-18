@@ -100,5 +100,52 @@ describe('Container Service', () => {
     expect(dispatchedEvent.type).toEqual(Events.SHOW_LOADING_INDICATOR_REQUEST);
   });
 
+  it('test loading indicator hide request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.HIDE_LOADING_INDICATOR_REQUEST,
+        params: 'loading-indicator-hide'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.HIDE_LOADING_INDICATOR_REQUEST);
+  });
+
+  it('test set locale request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.SET_CURRENT_LOCALE_REQUEST,
+        params: 'set-locale'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.SET_CURRENT_LOCALE_REQUEST);
+  });
+
+  it('test set local storage request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST,
+        params: 'set-local-storage'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.LOCAL_STORAGE_SET_REQUEST);
+  });
+
+  it('test runtime error handling request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.RUNTIME_ERROR_HANDLING_REQUEST,
+        params: 'set-runtime-error-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.RUNTIME_ERROR_HANDLING_REQUEST);
+  });
 
 });
