@@ -774,7 +774,7 @@ navigation: {
   }
 }
 ```
-- **since**: NEXTRELEASE
+- **since**: 2.7.0
 
 ### userSettingsGroup
 - - **type**: string

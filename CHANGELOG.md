@@ -25,6 +25,22 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.7.0] (2023-10-18)
+
+#### :rocket: Added
+* [#3471](https://github.com/SAP/luigi/pull/3471) Add webcomponentCreationInterceptor ([@hardl](https://github.com/hardl))
+* [#3470](https://github.com/SAP/luigi/pull/3470) Disable topnav option ([@hardl](https://github.com/hardl))
+* [#3458](https://github.com/SAP/luigi/pull/3458) Add getAnchor for wc ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3390](https://github.com/SAP/luigi/pull/3390) Add getPathParams, getCoreSearchParams, getClientPermissions ([@ndricimrr](https://github.com/ndricimrr))
+
+#### :bug: Fixed
+* [#3464](https://github.com/SAP/luigi/pull/3464) A11y improvements in user settings dialog ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3460](https://github.com/SAP/luigi/pull/3460) Condensed sidenav rendering issue on ios safari ([@hardl](https://github.com/hardl))
+* [#3457](https://github.com/SAP/luigi/pull/3457) onNodeActivation async ([@hardl](https://github.com/hardl))
+
+
+
+
 ## [v2.6.3] (2023-10-05)
 
 #### :rocket: Added
@@ -1645,3 +1661,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.6.1]: https://github.com/SAP/luigi/compare/v2.6.0...v2.6.1
 [v2.6.2]: https://github.com/SAP/luigi/compare/v2.6.1...v2.6.2
 [v2.6.3]: https://github.com/SAP/luigi/compare/v2.6.2...v2.6.3
+[v2.7.0]: https://github.com/SAP/luigi/compare/v2.6.3...v2.7.0
