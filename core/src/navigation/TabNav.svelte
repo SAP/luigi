@@ -135,7 +135,10 @@
       }
     });
     setTimeout(() => {
-      resizeObserver.observe(document.querySelector('#tabsContainer.lui-tabs'));
+      const luiTabs = document.querySelector('#tabsContainer.lui-tabs');
+      if (luiTabs) {
+        resizeObserver.observe(luiTabs);
+      }
     });
   }
 
@@ -188,7 +191,10 @@
       handleHorizontalNavHeightChange();
     } else {
       setTimeout(() => {
-        resizeObserver.observe(document.querySelector('#tabsContainer.lui-tabs'));
+        const luiTabs = document.querySelector('#tabsContainer.lui-tabs');
+        if (luiTabs) {
+          resizeObserver.observe(luiTabs);
+        }
       });
     }
   });
@@ -248,7 +254,8 @@
   on:blur={closeAllDropdowns}
   on:resize={onResize}
 />
-{#if children && pathData.length > 1}
+{#if children && pathData.length > 0 &&
+  (pathData[0].topNav === false || pathData.length > 1)}
   <div class="lui-tabs" id="tabsContainer">
     {#if selectedNode.parent && selectedNode.parent.tabNav && selectedNode.parent.tabNav.showAsTabHeader}
       <TabHeader node={selectedNode.parent} />
