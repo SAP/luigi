@@ -42,7 +42,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   anchor: string;
 
   /**
-   * The following properties can be set for the webcomponent object. By default the webcomponent is set to true.
+   * The following properties can be set for the web component object. By default, the web component is set to true.
    * @param {Object} [WebComponentSettings]
    * @param {any} WebComponentSettings.id: unique id of the web component
    * @param {string} WebComponentSettings.type: string, like module.
