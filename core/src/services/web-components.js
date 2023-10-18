@@ -5,7 +5,7 @@ import {
   deSanitizeParamsMap
 } from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
-import { RoutingHelpers } from '../utilities/helpers';
+import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
@@ -99,6 +99,11 @@ class WebComponentSvcClass {
       wc.nodeParams = extendedContext.nodeParams;
       wc.LuigiClient = clientAPI;
     }
+
+    const wcCreationInterceptor = LuigiConfig.getConfigValue('settings.webcomponentCreationInterceptor');
+    if (GenericHelpers.isFunction(wcCreationInterceptor)) {
+      wcCreationInterceptor(wc, extendedContext.currentNode, extendedContext, nodeId, isSpecialMf);
+    }
   }
 
   /** Generates a unique web component id (tagname) based on the viewUrl
@@ -107,7 +112,7 @@ class WebComponentSvcClass {
    */
   generateWCId(viewUrl) {
     let charRep = '';
-    let normalizedViewUrl = new URL(viewUrl, location.href).href;
+    let normalizedViewUrl = new URL(viewUrl, encodeURI(location.href)).href;
     for (let i = 0; i < normalizedViewUrl.length; i++) {
       charRep += normalizedViewUrl.charCodeAt(i).toString(16);
     }
