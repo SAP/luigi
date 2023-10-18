@@ -112,7 +112,7 @@ class WebComponentSvcClass {
    */
   generateWCId(viewUrl) {
     let charRep = '';
-    let normalizedViewUrl = new URL(viewUrl, location.href).href;
+    let normalizedViewUrl = new URL(viewUrl, encodeURI(location.href)).href;
     for (let i = 0; i < normalizedViewUrl.length; i++) {
       charRep += normalizedViewUrl.charCodeAt(i).toString(16);
     }

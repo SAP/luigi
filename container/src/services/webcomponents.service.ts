@@ -194,7 +194,7 @@ export class WebComponentService {
    */
   generateWCId(viewUrl: string) {
     let charRep = '';
-    const normalizedViewUrl = new URL(viewUrl, location.href).href;
+    const normalizedViewUrl = new URL(viewUrl, encodeURI(location.href)).href;
     for (let i = 0; i < normalizedViewUrl.length; i++) {
       charRep += normalizedViewUrl.charCodeAt(i).toString(16);
     }
