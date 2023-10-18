@@ -148,4 +148,112 @@ describe('Container Service', () => {
     expect(dispatchedEvent.type).toEqual(Events.RUNTIME_ERROR_HANDLING_REQUEST);
   });
 
+  it('test anchor link request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.SET_ANCHOR_LINK_REQUEST,
+        params: 'set-anchor-link-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.SET_ANCHOR_LINK_REQUEST);
+  });
+
+  it('test third party cookies request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST,
+        params: 'set-thirdparty-cookies-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.SET_THIRD_PARTY_COOKIES_REQUEST);
+  });
+
+  it('test back navigation request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.BACK_NAVIGATION_REQUEST,
+        params: 'back-navigation-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.BACK_NAVIGATION_REQUEST);
+  });
+
+  it('test getCurrentRoute request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST,
+        params: 'get-currentroute-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
+  });
+
+  it('test getCurrentRoute request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST,
+        params: 'get-currentroute-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.GET_CURRENT_ROUTE_REQUEST);
+  });
+
+  it('test navigation completed request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT,
+        params: 'nav-completed-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.NAVIGATION_COMPLETED_REPORT);
+  });
+
+  it('test update modalPath data request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.UPDATE_MODAL_PATH_DATA_REQUEST,
+        params: 'update-modalpathdata-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.UPDATE_MODAL_PATH_DATA_REQUEST);
+  });
+
+  it('test check pathExists request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST,
+        params: 'update-check-pathexists-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.CHECK_PATH_EXISTS_REQUEST);
+  });
+
+  it('test set dirty status request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST,
+        params: 'set-dirtystatus-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.SET_DIRTY_STATUS_REQUEST);
+  });
+
 });
