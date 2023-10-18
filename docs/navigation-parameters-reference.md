@@ -752,22 +752,24 @@ navigation: {
     context: {
         title: 'root'
     },
-    children: [{
-        pathSegment: "SampleApp1",
-        label: "SampleApp1",
-        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
-        context: {
-            title: 'Sample app 1',
-            content: 'Sample app 1'
-        }
-    }, {
-        pathSegment: "SampleApp2",
-        label: "SampleApp2",
-        viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
-        context: {
-            title: 'Sample app 2',
-            content: 'Sample app 2'
-        }
+    children: [
+    {
+      pathSegment: "SampleApp1",
+      label: "SampleApp1",
+      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+      context: {
+          title: 'Sample app 1',
+          content: 'Sample app 1'
+      }
+    },
+    {
+      pathSegment: "SampleApp2",
+      label: "SampleApp2",
+      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+      context: {
+          title: 'Sample app 2',
+          content: 'Sample app 2'
+      }
     }]
   }
 }
