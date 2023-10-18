@@ -12,7 +12,7 @@ export class GenericHelpersClass {
   }
 
   /**
-   * Checks weather webcomponent is an attribute or property. In case of attribute it returns the parsed value.
+   * Checks whether web component is an attribute or property. In case of attribute, it returns the parsed value.
    * @param webcomponent 
    * @returns returns the parsed webcomponent value.
    */
