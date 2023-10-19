@@ -104,7 +104,9 @@
   let breadcrumbsEnabled;
   let contextRequested = false;
   let loadingIndicatorTimeout;
-  let btpToolLayout = true;
+  let btpToolLayout = LuigiConfig.getConfigBooleanValue(
+      'settings.btpToolLayout'
+    );
 
   export let isSearchFieldVisible;
   export let inputElem;
@@ -2062,7 +2064,7 @@
       </div>
       <div class="fd-tool-layout__container lui-main-content">
           <div class="fd-tool-layout__navigation-container">
-            <div class="lui-nav-cnt">
+            <div class="NEW__fd-tool-layout__stable-box-reference">
               {#if !(hideNav || hideSideNav)}
                 <LeftNav
                   pathData={navigationPath}
@@ -2074,7 +2076,8 @@
               {/if}
             </div>
           </div>
-          <div class="fd-tool-layout__content-container">
+          <div class="fd-tool-layout__content-container">            
+            <div class="NEW__fd-tool-layout__stable-box-reference">
             <Backdrop disable={disableBackdrop}>
               <div
                 class="fd-page iframeContainer"
@@ -2116,6 +2119,7 @@
                 </div>
               </div>
             {/if}
+            </div>
           </div>
       </div>
     </div>
@@ -2420,53 +2424,49 @@
     display: block;
   }
 
+/** TOOL LAYOUT */
   .lui-core-layout {
-    background-color: var(--fdToolLayout_Background);
     position: absolute;
     width: 100%;
     height: 100%;
   }
-
-  .fd-tool-layout {    
-    display: flex;
-    flex-direction: column;
-    height: calc(100% - var(--fdToolLayout_Navigation_Container_Margin_Top));
-    position: absolute;
-    justify-content: stretch;
-    align-items: stretch;
-
-    .lui-main-content {
-      flex: 1;
-    }
-
-    .lui-nav-cnt {
-      position: relative;
-      width: var(--luigi__left-sidenav--width);
-      height: 100%;
-    }
-  }
-  .fd-tool-layout .iframeContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .fd-tool-layout__content-container {
-    position: relative;
-  }
-
-  // :global(.fd-tool-layout .iframeContainer.iframeContainer iframe) {
-  //   margin-bottom: 0;
-  // }
 
   :global(.fd-tool-layout .fd-app__sidebar) {
-    position: absolute;
+    position: relative;
     height: 100%;
     top: 0;
     left: 0;
   }
+
+  .fd-tool-layout {
+      .iframeContainer, .spinnerContainer {
+        top: 0;
+        left: 0;
+      }
+    }
+
+  /** Tool layout fd styles adjustments */
+        .fd-tool-layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .fd-tool-layout .fd-tool-layout__container:nth-child(2) {
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .fd-tool-layout__navigation-container,
+        .fd-tool-layout__content-container {
+            height: 100%;
+        }
+
+        .NEW__fd-tool-layout__stable-box-reference {
+            height: calc(100% - var(--fdToolLayout_Navigation_Container_Margin_Top));
+            position: relative;
+        } 
+/** END: TOOL LAYOUT */
 
   .spinnerContainer {
     opacity: 0;
