@@ -1,9 +1,11 @@
 export declare interface NodeParams {
   [key: string]: string;
 }
+
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
 }
+
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
@@ -46,6 +48,21 @@ export default class LuigiContainer extends HTMLElement {
   nodeParams: NodeParams;
 
   /**
+   * The search parameters to be passed to the web-component-based micro frontend.
+   */
+  searchParams: any;
+
+  /**
+   * The path parameters to be passed to the web-component-based micro frontend.
+   */
+  pathParams: any;
+
+  /**
+   * The clientPermissions to be passed to the web-component-based micro frontend.
+   */
+  clientPermissions: any;
+
+  /**
    * Updates the context of the microfrontend
    * @param contextObj The context object to be updated
    * @param internal internal microfrotend data
@@ -68,4 +85,9 @@ export default class LuigiContainer extends HTMLElement {
    * The user settings to be passed to the web-component-based micro frontend
    */
   userSettings: UserSettings;
+
+  /**
+   * The anchor value to be passed to the web-component-based micro frontend.
+   */
+  anchor: string;
 }

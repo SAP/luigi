@@ -555,7 +555,8 @@
     data-testid="semiCollapsibleLeftNav"
   >
     <div class="fd-side-nav__main-navigation">
-      {#if children && pathData.length > 1}
+      {#if children && pathData.length > 0 &&
+        (pathData[0].topNav === false || pathData.length > 1)}
         <div class="lui-fd-side-nav-wrapper">
           <ul
             class="fd-nested-list {sideNavCompactMode
@@ -1198,7 +1199,6 @@
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
     background-color: transparent;
     @include transition(width 0.1s linear);
   }

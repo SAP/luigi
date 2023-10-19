@@ -298,7 +298,7 @@ class NavigationClass {
         children: children
       };
     }
-    if (pathData.length > 2) {
+    if (pathData.length > 1 && (pathData[0].topNav === false || pathData.length > 2)) {
       //try to get the children from parent node
       const parentNode = pathData[pathData.length - 2];
       if (NodeDataManagementStorage.hasChildren(parentNode)) {
@@ -336,6 +336,7 @@ class NavigationClass {
    */
   getTruncatedChildren(children) {
     let childToKeepFound = false;
+    let tabNavUnset = false;
     let res = [];
 
     children
@@ -343,10 +344,17 @@ class NavigationClass {
       .reverse()
       .forEach(node => {
         if (!childToKeepFound || node.tabNav) {
+          if (node.tabNav === false) {
+            // explicitly set to false
+            tabNavUnset = true;
+          }
           if (node.keepSelectedForChildren === false) {
             // explicitly set to false
             childToKeepFound = true;
-          } else if (node.keepSelectedForChildren || (node.tabNav && !RoutingHelpers.isDynamicNode(node))) {
+          } else if (
+            node.keepSelectedForChildren ||
+            (node.tabNav && !tabNavUnset && !RoutingHelpers.isDynamicNode(node))
+          ) {
             childToKeepFound = true;
             res = [];
           }
@@ -359,7 +367,11 @@ class NavigationClass {
 
   async getLeftNavData(current, componentData) {
     const updatedCompData = {};
-    if (current.pathData && 1 < current.pathData.length) {
+    if (
+      current.pathData &&
+      current.pathData.length > 0 &&
+      (current.pathData[0].topNav === false || current.pathData.length > 1)
+    ) {
       const pathDataTruncatedChildren = this.getTruncatedChildren(componentData.pathData);
       let lastElement = [...pathDataTruncatedChildren].pop();
       let selectedNode;
@@ -418,13 +430,9 @@ class NavigationClass {
    */
   getTruncatedChildrenForTabNav(children) {
     const res = [];
-    for (let i = 0; i < children.length; i++) {
-      res.push(children[i]);
+    for (let i = children.length - 1; i >= 0; i--) {
       if (children[i].tabNav) {
-        if (i < children.length - 1) {
-          res.push(children[i + 1]);
-        }
-        break;
+        return children.slice(0, i + 2);
       }
     }
     return res;
@@ -432,11 +440,15 @@ class NavigationClass {
 
   async getTabNavData(current, componentData) {
     const updatedCompData = {};
-    if (current.pathData && 1 < current.pathData.length) {
+    if (
+      current.pathData &&
+      current.pathData.length > 0 &&
+      (current.pathData[0].topNav === false || current.pathData.length > 1)
+    ) {
       const pathDataTruncatedChildren = this.getTruncatedChildrenForTabNav(componentData.pathData);
-      let selectedNode = [...pathDataTruncatedChildren].pop();
+      const selectedNode = [...pathDataTruncatedChildren].pop();
       const children = await this.getChildren(
-        selectedNode.tabNav ? selectedNode : selectedNode.parent,
+        selectedNode.tabNav ? selectedNode : NavigationHelpers.getParentNode(selectedNode, current.pathData),
         current.pathData?._context
       );
       const groupedChildren = this.getGroupedChildren(children, current).children;
@@ -454,7 +466,11 @@ class NavigationClass {
   }
 
   async shouldPreventNavigation(node) {
-    if (node && GenericHelpers.isFunction(node.onNodeActivation) && (await node.onNodeActivation(node)) === false) {
+    if (
+      node &&
+      (GenericHelpers.isFunction(node.onNodeActivation) || GenericHelpers.isAsyncFunction(node.onNodeActivation)) &&
+      (await node.onNodeActivation(node)) === false
+    ) {
       return true;
     }
     return false;

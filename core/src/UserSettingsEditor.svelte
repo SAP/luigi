@@ -52,7 +52,7 @@
   }
 
   function setExpandedState(self, value) {
-    const indicatorBtn = self.querySelector('.lui-activate-language-dropdown');
+    const indicatorBtn = self.querySelector('.lui-activate-dropdown');
     const optionsPopover = self.parentNode.querySelector('.fd-popover__body');
     const optionsSelectControl = self.parentNode.querySelector(
       '.fd-select__control'
@@ -158,7 +158,7 @@
           list.item(chosenElementIndex).classList.add('is-focus');
         }
       }
-      if (event.keyCode === KEYCODE_ENTER) {
+      if (event.keyCode === KEYCODE_ENTER || event.keyCode===KEYCODE_SPACE ) {
         updateComboBox(
           key,
           schemaItem.options[chosenElementIndex],
@@ -274,9 +274,9 @@
                             aria-haspopup="listbox"
                             aria-label="Language"
                             class="fd-select__control lui-anchor-node"
-                            data-testid="lui-us-language-dropdown"
+                            data-testid="lui-us-{schemaItem.type}-{index}"
                             id="fd-form-input-{index}"
-                            on:keydown={(event) =>
+                            on:keydown={event =>
                               handleKeyListDropdown(
                                 event,
                                 key,
@@ -297,7 +297,7 @@
                               )}
                             </span>
                             <span
-                              class="fd-button fd-button--transparent fd-select__button lui-activate-language-dropdown"
+                              class="fd-button fd-button--transparent fd-select__button lui-activate-dropdown"
                             >
                               <i class="sap-icon--slim-arrow-down" />
                             </span>
@@ -325,7 +325,7 @@
                                 data-testid="lui-us-option{index}_{optionIndex}"
                                 on:click={() =>
                                   updateComboBox(key, option, optionIndex)}
-                                on:keydown={(event) =>
+                                on:keydown={event =>
                                   keyPressDropdownNode(event)}
                                 tabindex="0"
                               >

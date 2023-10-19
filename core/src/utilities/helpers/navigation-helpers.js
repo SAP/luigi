@@ -212,7 +212,7 @@ class NavigationHelpersClass {
   }
 
   async generateTopNavNodes(pathData) {
-    const rawChildren = await Navigation.getFilteredChildren(pathData[0]);
+    const rawChildren = pathData[0].topNav === false ? [] : await Navigation.getFilteredChildren(pathData[0]);
     let selectedNode = null;
     let visibleNodeCount = 0;
     let globalNavNodeCount = 0;
@@ -547,6 +547,14 @@ class NavigationHelpersClass {
     }
 
     return label;
+  }
+
+  getParentNode(node, pathData) {
+    let res = node.parent;
+    if (!res && pathData.length > 0 && pathData[1] === node) {
+      res = pathData[0];
+    }
+    return res;
   }
 }
 

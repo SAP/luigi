@@ -185,6 +185,48 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 - **type**: function
 - **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration.
 
+### nodes
+- **type**: array | object
+- **description**: You can define navigation nodes using the `nodes:` attribute. First-level nodes are also referred to as "root nodes". Second-level nodes can be defined inside a [children](#children) array below the root node. 
+
+In addition to an array, `nodes:` can also be defined as a single node object which then serves as the root node. 
+In this case, the root node should not have a [pathSegment](#pathsegment) defined, because it is accessible through the empty path. If you define a `pathSegment` anyway, you should see a warning about this in the console. 
+
+- **example**: 
+```js
+// Nodes array 
+navigation: {
+  nodes:[{
+      pathSegment: 'home'
+      label: 'Root node',
+      viewUrl: 'home.html',
+      children: [
+        {
+          pathSegment: 'sample1',
+          label: 'Sample',
+          viewUrl: 'sample1.html'
+        }
+      ]
+  }]
+}
+
+// Root node as an object
+navigation: {
+  nodes:{
+      label: 'Root node',
+      viewUrl: 'home.html',
+      children: [
+        {
+          pathSegment: 'sample1',
+          label: 'Sample',
+          viewUrl: 'sample1.html'
+        }
+      ]
+  }
+}
+...
+```
+
 ### preloadViewGroups
 - **type**: boolean
 - **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
@@ -276,7 +318,7 @@ navigation: {
             loadingIndicator: {
                 enabled: false
             },
-            viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
+            viewUrl: 'https://sdk.openui5.org/test-resources/sap/m/demokit/cart/webapp/index.html'
         }]
     ...
 ```
@@ -692,6 +734,47 @@ navigation: {
 ```javascript
 tooltipText: 'Useful links'
 ```
+
+### topNav
+- **type**: boolean
+- **description** children of the root node will not be rendered in the top navigation if this value is set to `false`. Instead, the children will be rendered in the left navigation (default) or in the horizontal navigation ([tabNav](#tabNav)) if this is configured on the node. This feature only works if the [nodes](#nodes) property is an object instead of an array. In that case, the root node will not be reflected in the URL.
+- **default**: The default is `true`, meaning that children of the root node show in the top navigation.
+- **example**:
+```javascript
+navigation: {
+  nodes: {
+    pathSegment: "",
+    hideFromNav: true,
+    tabNav: true,
+    topNav: false,
+    hideSideNav: true,
+    viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+    context: {
+        title: 'root'
+    },
+    children: [
+    {
+      pathSegment: "SampleApp1",
+      label: "SampleApp1",
+      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+      context: {
+          title: 'Sample app 1',
+          content: 'Sample app 1'
+      }
+    },
+    {
+      pathSegment: "SampleApp2",
+      label: "SampleApp2",
+      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+      context: {
+          title: 'Sample app 2',
+          content: 'Sample app 2'
+      }
+    }]
+  }
+}
+```
+- **since**: 2.7.0
 
 ### userSettingsGroup
 - - **type**: string

@@ -106,7 +106,7 @@
         WebComponentService.renderWebComponent(
           nodeObject.viewUrl,
           document.querySelector(modalElementClassSelector),
-          {context: pathData.context},
+          { context: pathData.context, clientPermissions: nodeObject.clientPermissions || {}, pathParams: pathData.pathParams || {} },
           nodeObject,
           undefined, true
         );
