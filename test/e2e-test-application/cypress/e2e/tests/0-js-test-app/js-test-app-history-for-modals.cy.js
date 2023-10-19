@@ -144,7 +144,7 @@ describe('JS-TEST-APP', () => {
         cy.expectPathToBe('/home');
         cy.go('back');
       });
-      it.only('Path routing, navigate few times and than open modal and close via browser back', () => {
+      it('Path routing, navigate few times and than open modal and close via browser back', () => {
         cy.vistTestAppPathRouting('', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         clickingAroundInNavigation();
