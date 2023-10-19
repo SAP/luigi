@@ -286,6 +286,16 @@ theming : {
   }
 ```
 
+### webcomponentCreationInterceptor
+- **type**: function
+- **description**: called on web component creation, it gives you full control over the created web component DOM element. You can modify it according to your needs just before it is added to the DOM tree.
+This function is called with the following parameters:
+* `wc` - the web component DOM element. It is not yet added to the DOM tree, but all attributes are already set.
+* `currentNode` - the navigation node.
+* `extendedContext` - extended settings about the current node.
+* `nodeId` - an ID which is set on the web component object in your config, or, if not defined, a generated `id` from Luigi.
+* `isSpecialMf` - allows you to specify whether the web component is rendered in a modal, splitView or drawer. `false` by default.
+
 ## Third-party cookies support check
 
 You can check whether the user's browser supports third-party cookies by defining a **thirdPartyCookieCheck** object which expects a function called **thirdPartyCookieErrorHandling** and an optional **thirdPartyCookiesScriptLocation** parameter. When **thirdPartyCookiesScriptLocation** is set, the Luigi Core application checks third-party cookie support only once and not on every micro frontend call. If it is *not* set, the Luigi Core application checks third-party cookie support whenever a micro frontend is loaded.
