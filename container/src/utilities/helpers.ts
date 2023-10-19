@@ -17,7 +17,6 @@ export class GenericHelpersClass {
    * @returns returns the parsed webcomponent value.
    */
   checkWebcomponentValue(webcomponent: any): object | boolean {
-    console.log('test');
     if (typeof webcomponent === 'string') {
       return JSON.parse(webcomponent);
     } else if (typeof webcomponent === 'boolean' || typeof webcomponent === 'object') {
