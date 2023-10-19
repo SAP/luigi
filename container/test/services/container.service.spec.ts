@@ -172,7 +172,7 @@ describe('Container Service', () => {
     expect(dispatchedEvent.type).toEqual(Events.SET_THIRD_PARTY_COOKIES_REQUEST);
   });
 
-  it('test back navigation request', () => {
+  it('test navigation back request', () => {
     const event = {
       source: cw,
       data: {
@@ -182,6 +182,18 @@ describe('Container Service', () => {
     };
     cm.messageListener(event);
     expect(dispatchedEvent.type).toEqual(Events.BACK_NAVIGATION_REQUEST);
+  });
+
+  it('test navigation request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.NAVIGATION_REQUEST,
+        params: 'navigation-request'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.NAVIGATION_REQUEST);
   });
 
   it('test getCurrentRoute request', () => {
