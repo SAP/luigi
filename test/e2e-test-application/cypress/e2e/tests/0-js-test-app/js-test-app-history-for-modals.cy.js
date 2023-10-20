@@ -159,7 +159,6 @@ describe('JS-TEST-APP', () => {
         cy.expectPathToBe('/home');
         cy.go('back');
         cy.expectPathToBe('/home');
-
       });
       it('Path routing, open modal, navigate through a wizard and close the modal via browser back', () => {
         newConfig.navigation.nodes[0].children.push({
