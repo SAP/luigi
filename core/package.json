@@ -9,7 +9,7 @@
     "bundlesize2": "^0.0.31",
     "chai": "^4.3.6",
     "css-tree": "^2.3.1",
-    "fundamental-styles": "0.30.2-rc.43",
+    "fundamental-styles": "0.30.2-rc.48",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
     "jsdom": "^20.0.0",

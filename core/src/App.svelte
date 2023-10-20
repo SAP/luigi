@@ -2063,9 +2063,10 @@
           </div>
       </div>
       <div class="fd-tool-layout__container lui-main-content">
+          {#if !(hideNav || hideSideNav)}
           <div class="fd-tool-layout__navigation-container">
             <div class="NEW__fd-tool-layout__stable-box-reference">
-              {#if !(hideNav || hideSideNav)}
+              
                 <LeftNav
                   pathData={navigationPath}
                   {pathParams}
@@ -2073,9 +2074,9 @@
                   on:resizeTabNav={onResizeTabNav}
                   {burgerTooltip}
                 />
-              {/if}
             </div>
-          </div>
+          </div>          
+          {/if}
           <div class="fd-tool-layout__content-container">            
             <div class="NEW__fd-tool-layout__stable-box-reference">
             <Backdrop disable={disableBackdrop}>
@@ -2370,7 +2371,7 @@
   :global(*:after) {
     box-sizing: inherit;
   }
-  div :global(div) {
+  :global(body) {
     font-family: '72', sans-serif;
   }
 
