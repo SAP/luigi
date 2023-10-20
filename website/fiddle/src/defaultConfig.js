@@ -97,7 +97,29 @@ Luigi.setConfig({
                     webcomponent: true,
                     openNodeInModal: false
                
-                }
+                },{
+                    category:  'Web Component',
+                    pathSegment: 'nested_wc',
+                    label: 'Nested WC',
+                    webcomponent: true,
+                    viewUrl: '/examples/microfrontends/compound/nested-wc.js',
+                        compound: {
+                          children: [
+                            {
+                              viewUrl: '/examples/microfrontends/compound/w1.js',
+                              layoutConfig: {
+                                slot: "slot-1"
+                              }
+                            },
+                            {
+                              viewUrl: '/examples/microfrontends/compound/w2.js',
+                              layoutConfig: {
+                                slot: "slot-2"
+                              }
+                            }
+                          ]
+                        }
+                  }
                 ] 
             },{ 
                 pathSegment: 'foo', 
