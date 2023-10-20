@@ -63,7 +63,7 @@ describe('JS-TEST-APP', () => {
   const openModal = hash => {
     cy.get('.fd-app__sidebar')
       .contains('Modal MF')
-      .click()
+      .click();
     if (hash) {
       cy.expectPathToBe('/home?modal=' + encodeURIComponent('/home/modalMf'));
     } else {
