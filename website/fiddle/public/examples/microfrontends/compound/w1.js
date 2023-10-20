@@ -1,33 +1,31 @@
-export default class ExampleWC extends HTMLElement {
-    constructor() {
-      super();
-      //const template = document.createElement('template');
-      //template.innerHTML = `<section><p>Hello World!</p></section>`;
-  
-      const templateBtn = document.createElement('template');
-      templateBtn.innerHTML = `
+export default class extends HTMLElement {
+  constructor() {
+    super();
+
+    const template = document.createElement('template');
+    template.innerHTML = `
       <style>
-      *{
-        padding: 5px;
-        margin: 5px;
-      }
+        .wc-container {
+          border: 2px solid DarkBlue;
+          padding: 10px;
+          margin-bottom: 5px;
+        }
       </style>
-      <button>WC 1</button>
-      `;
-      this._shadowRoot = this.attachShadow({
-        mode: 'open',
-        delegatesFocus: false
-      });
-      //this._shadowRoot.appendChild(template.content.cloneNode(true));
-      this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
-  
-      //this.$paragraph = this._shadowRoot.querySelector('p');
-      this.$button = this._shadowRoot.querySelector('button');
-      this.$button.addEventListener('click', () => {
-          this.LuigiClient.uxManager().showAlert({
-            text: 'Hello from WC 1',
+      <div class="wc-container">
+        <p>This is Webcomponent 1</p>
+        <button id="aButton">Click me!</button>
+      </div>
+    `;
+    const shadowRoot = this.attachShadow({ mode: 'open' });
+    let clone = template.content.cloneNode(true);
+    shadowRoot.append(clone);
+
+    this.$button = shadowRoot.querySelector('#aButton');
+    this.$button.addEventListener('click', () => {
+        this.LuigiClient.uxManager().showAlert({
+            text: 'Hello from wc 1',
             type: 'info'
           });
-      });
-    }
+    })
   }
+}
