@@ -64,16 +64,15 @@ describe('JS-TEST-APP', () => {
     cy.get('.fd-app__sidebar')
       .contains('Modal MF')
       .click()
-      .then(() => {
-        if (hash) {
-          cy.expectPathToBe('/home?modal=' + encodeURIComponent('/home/modalMf'));
-        } else {
-          cy.expectPathToBe('/home');
-          cy.location().should(location => {
-            expect(location.search).to.eq('?modal=' + encodeURIComponent('/home/modalMf'));
-          });
-        }
+    if (hash) {
+      cy.expectPathToBe('/home?modal=' + encodeURIComponent('/home/modalMf'));
+    } else {
+      cy.expectPathToBe('/home');
+      cy.location().should(location => {
+        expect(location.search).to.eq('?modal=' + encodeURIComponent('/home/modalMf'));
       });
+    }
+    cy.wait(200);
   };
 
   const closeModal = () => {
@@ -220,15 +219,12 @@ describe('JS-TEST-APP', () => {
         });
       });
       it('Hash routing, visit luigi with modal data and search params', () => {
-        cy.visitTestApp('', newConfig);
+        cy.visitTestApp('/home?~test=tets&modal=' + encodeURIComponent('/home/modalMf'), newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
-        cy.window().then(win => {
-          win.Luigi.navigation().navigate('/home?~test=tets&modal=' + encodeURIComponent('/home/modalMf'));
-          closeModal();
-          expectedPathAfterForward('/home?%7Etest=tets');
-          cy.expectPathToBe('/home?%7Etest=tets');
-          expectedPathAfterBack('/home?%7Etest=tets');
-        });
+        closeModal();
+        expectedPathAfterForward('/home?%7Etest=tets');
+        cy.expectPathToBe('/home?%7Etest=tets');
+        expectedPathAfterBack('/home?%7Etest=tets');
       });
       it('Hash routing, navigate few times and than open modal and close via [X]', () => {
         cy.visitTestApp('', newConfig);
