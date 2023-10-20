@@ -10,9 +10,16 @@ export default class extends HTMLElement {
           padding: 10px;
           margin-bottom: 5px;
         }
+        #aButton {
+          background-color: #3498db;
+          color: #ffffff;
+          border-radius: 5px;
+          padding: 5px 10px;
+          margin-bottom: 5px;
+        }
       </style>
       <div class="wc-container">
-        <p>This is Webcomponent 2</p>
+        <p>This is webcomponent 2</p>
         <button id="aButton">Click me!</button>
       </div>
     `;
@@ -23,7 +30,7 @@ export default class extends HTMLElement {
     this.$button = shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
         this.LuigiClient.uxManager().showAlert({
-            text: 'Hello from wc 2',
+            text: 'Hello from WC 2',
             type: 'info'
           });
     })

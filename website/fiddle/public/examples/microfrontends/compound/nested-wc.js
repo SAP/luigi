@@ -6,15 +6,19 @@ export default class extends HTMLElement {
     template.innerHTML = `
       <style>
         .wc-container {
-          border: 2px solid DarkBlue;
+          border: 3px solid DarkBlue;
           padding: 10px;
         }
-        button {
-          margin-bottom: 5px;
+        #aButton {
+          background-color: #3498db;
+          color: #ffffff;
+          border-radius: 5px;
+          padding: 5px 10px;
+          margin-bottom: 10px;
         }
       </style>
       <div class="wc-container">
-        <p>This is a nested Webcomponent</p>
+        <p>This is a compound webcomponent</p>
         <button id="aButton">Click me!</button>
         <div>
           <slot name="slot-1"></slot>
@@ -29,7 +33,7 @@ export default class extends HTMLElement {
     this.$button = shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
         this.LuigiClient.uxManager().showAlert({
-            text: 'Hello from wc 1',
+            text: 'Hello from compound WC',
             type: 'info'
           });
     })
