@@ -2077,9 +2077,17 @@
             </div>
           </div>          
           {/if}
-          <div class="fd-tool-layout__content-container">            
+          <div class="fd-tool-layout__content-container">        
+            {#if breadcrumbsEnabled}
+                <Breadcrumb
+                  pathData={navigationPath}
+                  {pathParams}
+                  on:handleClick={handleNavClick}
+                />
+              {/if}    
             <div class="NEW__fd-tool-layout__stable-box-reference">
             <Backdrop disable={disableBackdrop}>
+              
               <div
                 class="fd-page iframeContainer"
                 class:lui-split-view={mfSplitView.displayed}
@@ -2446,6 +2454,18 @@
       }
     }
 
+    // :global(.lui-breadcrumb) .fd-tool-layout {
+    //   .iframeContainer, .spinnerContainer {
+    //     top: var(--luigi__breadcrumb--height);
+    //     left: 0;
+    //   }
+    // }
+
+    :global(.lui-breadcrumb) .fd-tool-layout__content-container {
+      margin-top: calc(var(--fdToolLayout_Navigation_Container_Margin_Top) + var(--luigi__breadcrumb--height));
+      height: calc(100% - var(--luigi__breadcrumb--height));
+    }
+
   /** Tool layout fd styles adjustments */
         .fd-tool-layout {
             display: flex;
@@ -2461,11 +2481,15 @@
         .fd-tool-layout__navigation-container,
         .fd-tool-layout__content-container {
             height: 100%;
+            overflow: visible;
+            position: relative;
         }
 
         .NEW__fd-tool-layout__stable-box-reference {
             height: calc(100% - var(--fdToolLayout_Navigation_Container_Margin_Top));
             position: relative;
+            border-radius: var(--fdToolLayout_Content_Container_Border_Radius);
+            overflow: hidden;
         } 
 /** END: TOOL LAYOUT */
 

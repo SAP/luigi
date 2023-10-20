@@ -195,6 +195,14 @@
     display: none;
   }
 
+  :global(.fd-tool-layout) .lui-breadcrumb-container.lui-breadcrumb-container {
+    top: calc(0px - var(--luigi__breadcrumb--height));
+    left: 0;
+    
+    background: transparent;
+    box-shadow: none;
+  }
+
   :global(.lui-breadcrumb) .lui-breadcrumb-container {
     display: block;
   }
