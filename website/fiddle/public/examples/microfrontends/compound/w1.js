@@ -12,8 +12,8 @@ export default class ExampleWC extends HTMLElement {
         margin: 5px;
       }
       </style>
-      <button>Click me 1</button>`;
-  
+      <button>WC 1</button>
+      `;
       this._shadowRoot = this.attachShadow({
         mode: 'open',
         delegatesFocus: false
@@ -24,17 +24,10 @@ export default class ExampleWC extends HTMLElement {
       //this.$paragraph = this._shadowRoot.querySelector('p');
       this.$button = this._shadowRoot.querySelector('button');
       this.$button.addEventListener('click', () => {
-        if (this.LuigiClient) {
           this.LuigiClient.uxManager().showAlert({
-            text: 'Hello from WC1',
+            text: 'Hello from WC 1',
             type: 'info'
           });
-        }
       });
-    }
-  
-    set context(ctx) {
-      //this.$paragraph.innerHTML = ctx.title;
-      //this.$paragraph.innerHTML = ctx.content;
     }
   }

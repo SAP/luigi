@@ -1,6 +1,3 @@
-//This file will be the web component
-//It only needs to run, not be imported by main.js
-
 export default class extends HTMLElement {
   constructor() {
     super();
@@ -17,15 +14,15 @@ export default class extends HTMLElement {
         <slot name="slot-2"></slot>
     </div>
     `;
-    const templateBtn = document.createElement('template');
-    templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
-
     const shadowRoot = this.attachShadow({ mode: 'open' });
+
+    const templateBtn = document.createElement('template');
+    templateBtn.innerHTML = '<button id="aButton">nested WC</button>';
 
     shadowRoot.appendChild(templateBtn.content.cloneNode(true));
     let clone = template.content.cloneNode(true);
     shadowRoot.append(clone);
-
+    
 
     this.$button = shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
@@ -36,4 +33,3 @@ export default class extends HTMLElement {
     })
   }
 }
-// customElements.define('wc-example', WCExample);
