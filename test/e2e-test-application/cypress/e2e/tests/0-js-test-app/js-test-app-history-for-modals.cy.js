@@ -63,15 +63,16 @@ describe('JS-TEST-APP', () => {
   const openModal = hash => {
     cy.get('.fd-app__sidebar')
       .contains('Modal MF')
-      .click();
-    if (hash) {
-      cy.expectPathToBe('/home?modal=' + encodeURIComponent('/home/modalMf'));
-    } else {
-      cy.expectPathToBe('/home');
-      cy.location().should(location => {
-        expect(location.search).to.eq('?modal=' + encodeURIComponent('/home/modalMf'));
+      .click().then(() => {
+        if (hash) {
+          cy.expectPathToBe('/home?modal=' + encodeURIComponent('/home/modalMf'));
+        } else {
+          cy.expectPathToBe('/home');
+          cy.location().should(location => {
+            expect(location.search).to.eq('?modal=' + encodeURIComponent('/home/modalMf'));
+          });
+        }
       });
-    }
   };
 
   const closeModal = () => {
@@ -100,7 +101,6 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           openModal();
-          cy.wait(100);
           closeModal();
           expectedPathAfterForward('/home');
           expectedPathAfterBack('/home');
@@ -111,7 +111,6 @@ describe('JS-TEST-APP', () => {
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home?modal=' + encodeURIComponent('/home/modalMf'));
-          cy.wait(100);
           closeModal();
           expectedPathAfterForward('/home');
           expectedPathAfterBack('/home');
@@ -122,7 +121,6 @@ describe('JS-TEST-APP', () => {
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
-          cy.wait(100);
           clickingAroundInNavigation();
           openModal();
           closeModal();
@@ -141,7 +139,6 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           openModal();
-          cy.wait(100);
           simulateWizardNavigation();
           closeModal();
           expectedPathAfterBack('blank');
@@ -153,7 +150,6 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           openModal();
-          cy.wait(100);
           cy.go('back');
           cy.expectPathToBe('/home');
           cy.location().should(location => {
@@ -171,7 +167,6 @@ describe('JS-TEST-APP', () => {
           win.Luigi.navigation().navigate('/home');
           clickingAroundInNavigation();
           openModal();
-          cy.wait(100);
           closeModal();
           cy.go('forward');
           cy.expectPathToBe('/home');
@@ -190,7 +185,6 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           openModal();
-          cy.wait(100);
           simulateWizardNavigation();
           closeModal();
           cy.go('forward');
@@ -205,7 +199,6 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home');
           openModal();
-          cy.wait(100);
           closeModal();
           openModal();
           closeModal();
@@ -241,7 +234,6 @@ describe('JS-TEST-APP', () => {
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home?modal=' + encodeURIComponent('/home/modalMf'));
-          cy.wait(100);
           closeModal();
           expectedPathAfterForward('/home');
           cy.expectPathToBe('/home');
@@ -253,7 +245,6 @@ describe('JS-TEST-APP', () => {
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
         cy.window().then(win => {
           win.Luigi.navigation().navigate('/home?~test=tets&modal=' + encodeURIComponent('/home/modalMf'));
-          cy.wait(100);
           closeModal();
           expectedPathAfterForward('/home?%7Etest=tets');
           cy.expectPathToBe('/home?%7Etest=tets');
@@ -267,7 +258,6 @@ describe('JS-TEST-APP', () => {
           win.Luigi.navigation().navigate('/home');
           clickingAroundInNavigation();
           openModal(true);
-          cy.wait(100);
           closeModal();
           expectedPathAfterBack('/home/two');
           expectedPathAfterForward('/home');
@@ -319,7 +309,6 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
         openModal(true);
-        cy.wait(100);
         simulateWizardNavigation(true);
         closeModal();
         cy.go('forward');
