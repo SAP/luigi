@@ -5,13 +5,19 @@ import { ContainerService } from '../../src/services/container.service';
 describe('Container Service', () => {
   let service: ContainerService;
   let gtcSpy;
-  let cw = {};
+  let cw : any  = {};
   let cm ;
   let dispatchedEvent;
   service = new ContainerService();
   cm = service.getContainerManager();    
 
   beforeEach(() => {
+    // only get context scenario relies on postMessage, so we need special case handling for it
+    const testName = expect.getState().currentTestName;
+    if (testName === 'test get context message'){
+      cw = {  postMessage: () => {}}
+    }   
+
     gtcSpy = jest.spyOn(service, 'getTargetContainer').mockImplementation(() => {
       return {
         iframeHandle: {
@@ -32,7 +38,6 @@ describe('Container Service', () => {
 
   it('test alert request', () => {    
     const event = {
-
       source: cw,
       data: {
         msg: LuigiInternalMessageID.ALERT_REQUEST,
@@ -62,6 +67,39 @@ describe('Container Service', () => {
     expect(dispatchedEvent.detail).toEqual({ id: 'custMsgId', _metaData: {}, data: { foo: 'bar' } });
     gtcSpy.mockRestore();
   });
+
+  it('test get context message', () => {    
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.GET_CONTEXT,
+        data: {
+          id: 'custMsgId',
+          foo: 'bar'
+        }
+      }
+    };
+
+    // Create a mock for the postMessage method
+    const postMessageMock = jest.fn();
+
+    // Replace the real postMessage with the mock
+     cw.postMessage = postMessageMock;
+
+    // Define the message to send and target Origin
+    const message = {"context": {}, "internal": {}, "msg": "luigi.init"};
+    const targetOrigin = "*";
+
+    // Call the method that should trigger postMessage
+    cm.messageListener(event);
+
+    // Assert that postMessage was called with the expected parameters
+    expect(postMessageMock).toHaveBeenCalledWith(message, targetOrigin);
+
+    // Clean up by restoring the original postMessage function
+    cw.postMessage = () => {}
+  });
+
 
   it('test initialized request', () => {
     const event = {
