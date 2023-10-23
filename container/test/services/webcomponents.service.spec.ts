@@ -26,11 +26,6 @@ describe('Webcomponents Service', () => {
      expect(returnVal).toEqual(viewUrl);
    });
 
-  //  it('attachWC', () => {
-  //   const viewUrl = 'http://localhost:4200/foo/bar';
-  //   const returnVal = service.processViewUrl(viewUrl);
-  //    expect(returnVal).toEqual(viewUrl);
-  //  });
 
   it('test publishEvent custom message', () => {
     const dispatchSpy = jest.spyOn(service.containerService, 'dispatch').mockImplementation(() => {});
@@ -48,4 +43,81 @@ describe('Webcomponents Service', () => {
     };
     expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
   });
+
 });
+
+
+describe('attachWC', () => {
+  let service;
+  // setup data
+  const wc_id = 'span';
+  const wcItemPlaceholder = document.createElement('div');
+  const wc_container = document.createElement('div');
+  wc_container.appendChild(wcItemPlaceholder);
+  const viewUrl = '/path/to/component';
+  const nodeId = 'node123';
+
+      
+  beforeEach(() => {
+    service = new WebComponentService();
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  });
+
+  it('wc_container contains wcItemPlaceholder and nodeId is provided', () => {
+    const innerWCElement = document.createElement(wc_id);
+    innerWCElement.setAttribute('nodeId', nodeId);
+
+    // Mock methods to spy on them
+    const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
+    const createElementSpy = jest.spyOn(document, 'createElement');
+    service.initWC = jest.fn();
+    wc_container.replaceChild = jest.fn();
+
+    // Act
+    service.attachWC(wc_id, wcItemPlaceholder, wc_container, null, viewUrl, nodeId);
+
+    // Assert
+    expect(service.initWC).toHaveBeenCalled();
+    expect(createElementSpy).toHaveBeenCalledWith(wc_id);
+    expect(wc_container.replaceChild).toHaveBeenCalledWith(innerWCElement, wcItemPlaceholder);
+    expect(dispatchEventSpy).toHaveBeenCalledWith(new Event('wc_ready'));
+  });
+
+  it('wc_container does NOT contain wcItemPlaceholder', () => {
+    const wc_container_ = document.createElement('div');
+
+    // Mock methods to spy on them
+    const replaceChildSpy = jest.spyOn(wc_container_, 'replaceChild');
+    const dispatchEventSpy = jest.spyOn(wc_container_, 'dispatchEvent');
+    const createElementSpy = jest.spyOn(document, 'createElement');
+
+    // Act
+    service.attachWC(wc_id, wcItemPlaceholder, wc_container_, null, viewUrl, nodeId);
+
+    // Assert
+    expect(createElementSpy).not.toHaveBeenCalledWith(wc_id);
+    expect(replaceChildSpy).not.toHaveBeenCalled();
+    expect(dispatchEventSpy).not.toHaveBeenCalled();
+  });
+
+  it('nodeId not provided', () => {
+    const innerWCElement = document.createElement(wc_id);
+    
+    // Mock methods to spy on them
+    const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
+    wc_container.replaceChild = jest.fn();
+
+    // Act
+    service.attachWC(wc_id, wcItemPlaceholder, wc_container, null, viewUrl, undefined);
+
+    // Assert
+    expect(wc_container.replaceChild).toHaveBeenCalledWith(innerWCElement, wcItemPlaceholder);
+    expect(dispatchEventSpy).toHaveBeenCalledWith(new Event('wc_ready'));
+  });
+
+});
+
+
