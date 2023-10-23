@@ -2085,7 +2085,7 @@
                   on:handleClick={handleNavClick}
                 />
               {/if}    
-            <div class="NEW__fd-tool-layout__stable-box-reference">
+            <div class="NEW__fd-tool-layout__stable-box-reference lui-no-overflow">
             <Backdrop disable={disableBackdrop}>
               
               <div
@@ -2466,6 +2466,11 @@
       height: calc(100% - var(--luigi__breadcrumb--height));
     }
 
+    .lui-no-overflow {
+      overflow: hidden;
+    }
+
+
   /** Tool layout fd styles adjustments */
         .fd-tool-layout {
             display: flex;
@@ -2476,6 +2481,10 @@
         .fd-tool-layout .fd-tool-layout__container:nth-child(2) {
             overflow: hidden;
             flex-grow: 1;
+        }
+
+        .fd-tool-layout__navigation-container {
+          z-index: 1;
         }
 
         .fd-tool-layout__navigation-container,
@@ -2489,8 +2498,13 @@
             height: calc(100% - var(--fdToolLayout_Navigation_Container_Margin_Top));
             position: relative;
             border-radius: var(--fdToolLayout_Content_Container_Border_Radius);
-            overflow: hidden;
+            // overflow: hidden;
         } 
+
+        
+        :global(.fd-navigation__container--top.fd-navigation__container--top) {
+          overflow: auto;
+        }
 /** END: TOOL LAYOUT */
 
   .spinnerContainer {
@@ -2835,6 +2849,16 @@
       :global(#splitViewDraggerBackdrop),
       :global(#tabsContainer) {
         left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
+      }
+    }
+    :global(.lui-semiCollapsible:not(.semiCollapsed)) {
+      :global(.fd-tool-layout .fd-navigation) {
+        position: absolute;
+      }
+    }
+    :global(.lui-semiCollapsible.semiCollapsed) {
+      :global(.fd-tool-layout .fd-navigation) {
+        display: none;
       }
     }
   }

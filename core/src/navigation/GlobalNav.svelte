@@ -41,7 +41,7 @@
         responsiveNavSetting = LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
-        showGlobalNav =
+        showGlobalNav = !LuigiConfig.getConfigBooleanValue('settings.btpToolLayout')
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
         document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
