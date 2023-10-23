@@ -326,14 +326,15 @@ class RoutingClass {
 
   /**
    * Deal with route changing scenario.
-   * @param {string} path the path of the view to open
+   * @param {string} rawPath the path of the view to open
    * @param {Object} component the settings/functions of component (need refactoring)
    * @param {Object} iframeElement dom element of iframe
    * @param {Object} config the configuration of application
    * @param {boolean} withoutSync disables the navigation handling for a single navigation request.
    * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
    */
-  async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+  async handleRouteChange(rawPath, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+    const path = rawPath || '';
     // Handle intent navigation with new tab scenario.
     if (path.external) {
       this.navigateToExternalLink({
@@ -400,7 +401,7 @@ class RoutingClass {
             console.warn('tabNav:{hideTabNavAutomatically:true|false} is not configured correctly.');
           }
         }
-        cnode = cnode.parent;
+        cnode = NavigationHelpers.getParentNode(cnode, pathData.navigationPath);
       }
 
       let cNode2 = currentNode;
@@ -415,7 +416,7 @@ class RoutingClass {
             hideSideNavInherited = false;
             break;
           }
-          cNode2 = cNode2.parent;
+          cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
         }
       }
 
