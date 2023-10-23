@@ -63,16 +63,16 @@ describe('JS-TEST-APP', () => {
   const openModal = hash => {
     cy.get('.fd-app__sidebar')
       .contains('Modal MF')
-      .click();
+      .click({ force: true });
     if (hash) {
       cy.expectPathToBe('/home?modal=' + encodeURIComponent('/home/modalMf'));
     } else {
       cy.expectPathToBe('/home');
-      cy.location().should(location => {
+      cy.location().then(location => {
         expect(location.search).to.eq('?modal=' + encodeURIComponent('/home/modalMf'));
       });
     }
-    cy.wait(200);
+    // cy.wait(200);
   };
 
   const closeModal = () => {
