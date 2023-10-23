@@ -2,6 +2,8 @@ import { Events } from '../../src/constants/communication';
 import { ContainerService, containerService } from '../../src/services/container.service';
 import { WebComponentService } from '../../src/services/webcomponents.service';
 
+
+
 describe('Webcomponents Service', () => {
   let service;
   beforeEach(() => {
@@ -12,6 +14,23 @@ describe('Webcomponents Service', () => {
     const wcId = service.generateWCId('http://localhost:4200/foo/bar');
     expect(wcId).toEqual('luigi-wc-687474703a2f2f6c6f63616c686f73743a343230302f666f6f2f626172');
   });
+
+  it('checkWCUrl', () => {
+   const returnVal = service.checkWCUrl('http://localhost:4200/foo/bar');
+    expect(returnVal).toEqual(true);
+  });
+
+  it('processViewUrl', () => {
+    const viewUrl = 'http://localhost:4200/foo/bar';
+    const returnVal = service.processViewUrl(viewUrl);
+     expect(returnVal).toEqual(viewUrl);
+   });
+
+  //  it('attachWC', () => {
+  //   const viewUrl = 'http://localhost:4200/foo/bar';
+  //   const returnVal = service.processViewUrl(viewUrl);
+  //    expect(returnVal).toEqual(viewUrl);
+  //  });
 
   it('test publishEvent custom message', () => {
     const dispatchSpy = jest.spyOn(service.containerService, 'dispatch').mockImplementation(() => {});
