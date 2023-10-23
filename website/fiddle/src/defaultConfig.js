@@ -65,7 +65,9 @@ Luigi.setConfig({
                 },{ 
                     pathSegment: 'wc1', 
                     label: 'WC Editable List', 
-                    loadingIndicator: { enabled: false },
+                    loadingIndicator: {
+                        enabled: false
+                    },
                     category: {
                         label: 'Web Component',
                         icon: 'cloud',
@@ -84,7 +86,6 @@ Luigi.setConfig({
                     viewUrl: '/wc/luigiExampleWC.js',
                     webcomponent: true,
                     openNodeInModal: false
-               
                 },
                 { 
                     pathSegment: 'wc3', 
@@ -96,8 +97,30 @@ Luigi.setConfig({
                     viewUrl: '/wc/ui5/ui5example.js',
                     webcomponent: true,
                     openNodeInModal: false
-               
-                }
+                },{
+                    pathSegment: 'wc4',
+                    label: 'WC Compound Example',
+                    category:  'Web Component',
+                    viewUrl: '/examples/microfrontends/compound/nested-wc.js',
+                    webcomponent: true,
+                    openNodeInModal: false,
+                        compound: {
+                          children: [
+                            {
+                              viewUrl: '/examples/microfrontends/compound/w1.js',
+                              layoutConfig: {
+                                slot: "slot-1"
+                              }
+                            },
+                            {
+                              viewUrl: '/examples/microfrontends/compound/w2.js',
+                              layoutConfig: {
+                                slot: "slot-2"
+                              }
+                            }
+                          ]
+                        }
+                  }
                 ] 
             },{ 
                 pathSegment: 'foo', 
