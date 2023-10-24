@@ -14,4 +14,7 @@ class HelloWorldSelfRegistered extends HTMLElement {
     this._shadowRoot.appendChild(template.content.cloneNode(true));
   }
 }
-window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), HelloWorldSelfRegistered);
+window.Luigi._registerWebcomponent(
+  new URL(document.currentScript?.getAttribute('src'), location),
+  HelloWorldSelfRegistered
+);
