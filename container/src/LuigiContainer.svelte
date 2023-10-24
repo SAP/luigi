@@ -54,6 +54,11 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (name === 'context') {
+            this.updateContext(newValue);
+          }
+        }
       };
     }
   }}

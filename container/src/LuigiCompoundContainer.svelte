@@ -28,6 +28,16 @@
         reflect: false,
         attribute: 'client-permissions'
       }
+    },
+    extend: customElementConstructor => {
+      return class extends customElementConstructor {
+        updateContext = notInitFn('updateContext');
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (name === 'context') {
+            this.updateContext(newValue);
+          }
+        }
+      };
     }
   }}
 />
@@ -37,6 +47,7 @@
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
   import { Events } from './constants/communication';
+  import { ContainerAPI } from './api/container-api';
 
   export let viewurl: string;
   export let context: string;
@@ -72,6 +83,9 @@
     if (!compoundConfig || containerInitialized) {
       return;
     }
+    thisComponent.updateContext = (contextObj: any, internal?: any) => {
+      ContainerAPI.updateContext(contextObj, internal);
+    };
     const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {
