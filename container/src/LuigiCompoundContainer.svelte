@@ -30,6 +30,13 @@
       }
     },
     extend: customElementConstructor => {
+      let notInitFn = name => {
+        return () =>
+          console.warn(
+            name +
+              " can't be called on luigi-container before its micro frontend is attached to the DOM."
+          );
+      };
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
         attributeChangedCallback(name, oldValue, newValue) {
@@ -83,9 +90,9 @@
     if (!compoundConfig || containerInitialized) {
       return;
     }
-    thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      ContainerAPI.updateContext(contextObj, internal);
-    };
+    // thisComponent.updateContext = (contextObj: any, internal?: any) => {
+    //   ContainerAPI.updateContext(contextObj, internal);
+    // };
     const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {
