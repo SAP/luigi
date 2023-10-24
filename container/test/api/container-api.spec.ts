@@ -8,19 +8,57 @@ describe('Container Service', () => {
     describe('updateContext', () => {
         let containerAPI = new ContainerAPIFunctions();
 
-        it('iframeHandle exists', () => {
+        it('iframeHandle exists, WITH internalParam', () => {
             // mock and spy
             const contextObj = {};
-            const internal = {};
+            const internal = { empty: false};
             const iframeHandle = {
                 data: 'test'
             };
             containerService.sendCustomMessageToIframe = jest.fn();
             const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
 
+            // act
             containerAPI.updateContext(contextObj, internal,iframeHandle);
 
+            // assert
             expect(spy).toHaveBeenCalledWith(iframeHandle, {context: contextObj, internal: internal }, LuigiInternalMessageID.SEND_CONTEXT_OBJECT)
+        });
+
+        it('iframeHandle exists, UNDEFINED internalParam ', () => {
+            // mock and spy
+            const contextObj = {};
+            const internal = undefined;
+            const iframeHandle = {
+                data: 'test'
+            };
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+
+            // act
+            containerAPI.updateContext(contextObj, internal,iframeHandle);
+
+            // assert
+            expect(spy).toHaveBeenCalledWith(iframeHandle, {context: contextObj, internal: {} }, LuigiInternalMessageID.SEND_CONTEXT_OBJECT)
+        });
+
+
+        it('iframeHandle NOT exists', () => {
+            // mock and spy
+            const contextObj = {};
+            const internal = {};
+            const iframeHandle = undefined;
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+            console.warn = jest.fn()
+            const consoleWarnSpy = jest.spyOn(console, 'warn');
+
+            // act
+            containerAPI.updateContext(contextObj, internal,iframeHandle);
+
+            // assert
+            expect(sendCustomMSGSpy).not.toHaveBeenCalled();
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Attempting to update context on inexisting iframe')
         });
     });
 
@@ -70,9 +108,56 @@ describe('Container Service', () => {
 
             expect(spy).toHaveBeenCalledWith(id, mainComponent._luigi_mfe_webcomponent, data)
         });
+
+        it('isWebComponent FALSE, WITH msg ID', () => {
+            // mock and spy
+            const id = 'some-id';
+            const mainComponent = { };
+            const data = {
+                id: id
+            };
+            const isWebComponent = false;
+            const iframeHandle = {
+                data: 'test'
+            };
+
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+            console.warn = jest.fn()
+            const consoleWarnSpy = jest.spyOn(console, 'warn');
+
+            // act
+            containerAPI.sendCustomMessage(id, mainComponent, isWebComponent, iframeHandle, data );
+
+            // assert
+            expect(sendCustomMSGSpy).toHaveBeenCalledWith(iframeHandle, data )
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Property "id" is reserved and can not be used in custom message data')
+        });
+
+        it('isWebComponent FALSE, UNDEFINED msg ID', () => {
+            // mock and spy
+            const id = 'some-id';
+            const mainComponent = { };
+            const data = { };
+            const isWebComponent = false;
+            const iframeHandle = {
+                data: 'test'
+            };
+
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+            console.warn = jest.fn()
+            const consoleWarnSpy = jest.spyOn(console, 'warn');
+
+            // act
+            containerAPI.sendCustomMessage(id, mainComponent, isWebComponent, iframeHandle, data );
+
+            // assert
+            expect(sendCustomMSGSpy).toHaveBeenCalledWith(iframeHandle, {id} )
+            expect(consoleWarnSpy).not.toHaveBeenCalled();
+        });
     });
     
-
     
 
     
