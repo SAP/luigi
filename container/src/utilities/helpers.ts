@@ -10,6 +10,14 @@ export class GenericHelpersClass {
   isFunction(functionToCheck: any): boolean {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
   }
+  /**
+   * Checks if input is an object.
+   * @param objectToCheck mixed
+   * @returns {boolean}
+   */
+  isObject(objectToCheck) {
+    return !!(objectToCheck && typeof objectToCheck === 'object' && !Array.isArray(objectToCheck));
+  }
 
   /**
    * Checks whether web component is an attribute or property. In case of attribute, it returns the parsed value.
@@ -18,7 +26,17 @@ export class GenericHelpersClass {
    */
   checkWebcomponentValue(webcomponent: any): object | boolean {
     if (typeof webcomponent === 'string') {
-      return JSON.parse(webcomponent);
+      let parsedValue = JSON.parse(webcomponent);
+      if (this.isObject(parsedValue)) {
+        if ('selfRegistered' in parsedValue) {
+          if (parsedValue.selfRegistered === 'true') {
+            parsedValue.selfRegistered = true;
+          } else if (parsedValue.selfRegistered === 'false') {
+            parsedValue.selfRegistered = false;
+          }
+        }
+      }
+      return parsedValue;
     } else if (typeof webcomponent === 'boolean' || typeof webcomponent === 'object') {
       return webcomponent;
     }
