@@ -32,6 +32,6 @@ export default class extends LuigiElement {
   }
 
   set context(ctx) {
-    console.log('context', ctx)
+    console.log('context', ctx);
   }
 }
