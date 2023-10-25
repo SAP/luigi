@@ -10,7 +10,10 @@ export default class extends LuigiElement {
           <button id="addNodeParams">addNodeParams</button>
           <button id="getNodeParams">getNodeParams</button>
           <header><slot name="header">header</slot></header>
-          <main style="flex: auto; overflow: auto"><slot name="content">content</slot><slot></slot></main>
+          <main style="flex: auto; overflow: auto">
+            <slot name="content">content</slot>
+            <slot name="helloWorldSelfRegistered"></slot>
+          </main>
           <footer><slot name="footer">footer</slot></footer>
         </section>
       `;

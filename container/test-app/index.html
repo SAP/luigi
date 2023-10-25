@@ -142,6 +142,11 @@
                   >Simple Web Component</a
                 >
                 <a
+                  href="#hello-world-wc-selfregistered"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Simple Web Component</a
+                >
+                <a
                   href="#error-handling"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Err</a
@@ -289,6 +294,11 @@
             class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >Simple Web Component</a
           >
+          <a
+            href="#hello-world-wc-selfregistered"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Simple Web Component 2</a
+          >
         </div>
       </div>
     </nav>
@@ -344,6 +354,7 @@
         viewURL="/test.js"
         webcomponent="true"
         id="test-defer-init-false"
+        context='{"LuigiCtx":"hallo"}'
         skip-init-check
       ></luigi-container>
     </div>
@@ -371,9 +382,16 @@
         anchor="testanchor"
       ></luigi-container>
     </div>
+    <div class="lui-wrapper" route="hello-world-wc-selfregistered">
+      <luigi-container
+        data-test-id="luigi-client-api-test-02"
+        viewURL="./helloWorldWCSelfRegistered.js"
+        webcomponent='{"selfRegistered": "true"}'
+      ></luigi-container>
+    </div>
     <div class="lui-wrapper" route="error-test">
       <luigi-container
-        viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/mainasdad.js"
+        viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/main.js"
         webcomponent="true"
         context=' {"label": "Error Handler" }'
       ></luigi-container>
@@ -514,6 +532,15 @@
             },
             layoutConfig: {
               slot: 'content'
+            }
+          },
+          {
+            viewUrl: '/./helloWorldWCSelfRegistered.js',
+            webcomponent: {
+              selfRegistered: true
+            },
+            layoutConfig: {
+              slot: 'helloWorldSelfRegistered'
             }
           },
           {
