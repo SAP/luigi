@@ -29,11 +29,7 @@ export class GenericHelpersClass {
       let parsedValue = JSON.parse(webcomponent);
       if (this.isObject(parsedValue)) {
         if ('selfRegistered' in parsedValue) {
-          if (parsedValue.selfRegistered === 'true') {
-            parsedValue.selfRegistered = true;
-          } else if (parsedValue.selfRegistered === 'false') {
-            parsedValue.selfRegistered = false;
-          }
+          parsedValue.selfRegistered = parsedValue.selfRegistered === 'true';
         }
       }
       return parsedValue;
