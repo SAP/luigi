@@ -161,35 +161,44 @@ describe('CustomCompoundRenderer', () => {
 describe('GridCompoundRenderer', () => {
   it('should create a compound container with grid styles', () => {
     // Arrange
-    const config = {
-      columns: '1fr 2fr',
-      rows: 'auto',
-      gap: '10px',
-      minHeight: '100px',
-      layouts: [
-        {
-          minWidth: 600,
-          columns: '1fr',
-          rows: 'auto 1fr',
-          gap: '5px',
-        },
-      ],
-    };
+    const rendererObject = 
+   {
+    config: {
+        columns: '1fr 2fr',
+        rows: 'auto',
+        gap: '10px',
+        minHeight: '100px',
+        layouts: [
+          {
+            minWidth: 600,
+            columns: '1fr',
+            rows: '1fr 1fr',
+            gap: 5,
+          },
+        ],
+      }
+   };
+   const config = rendererObject.config;
     const fixedTimestamp = 1619123456789;
-    const dateNowSpy = jest.spyOn(Date, 'now').mockReturnValue(fixedTimestamp);
+    const mockDate = new Date(fixedTimestamp)
+    const spyDate = jest.spyOn(global, 'Date').mockImplementation(() => mockDate)
+    const gridRenderer = new GridCompoundRenderer(rendererObject);
 
-
-    const gridRenderer = new GridCompoundRenderer(config);
-    // Date().getTime = jest.fn();
     // Act
     const compoundContainer = gridRenderer.createCompoundContainer();
 
     // Assert
     expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
 
-    // You can add more specific assertions to check the generated HTML and styles
     expect(compoundContainer.classList[0]).toEqual(`__lui_compound_${fixedTimestamp}`);
     expect(compoundContainer.innerHTML).toContain('display: grid');
+    expect(compoundContainer.innerHTML).toContain(`grid-template-columns: ${config.columns || 'auto'};`);
+    expect(compoundContainer.innerHTML).toContain(`grid-template-rows: ${config.rows || 'auto'};`);
+    expect(compoundContainer.innerHTML).toContain(`grid-gap: ${config.gap || '0'};`);
+    expect(compoundContainer.innerHTML).toContain(`min-height: ${config.minHeight || 'auto'};`);
+
+    spyDate.mockRestore()
+    // dateNowSpy.mockRestore();
   });
 
   it('should create a compound item container with grid row and column styles', () => {
