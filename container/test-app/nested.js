@@ -2,7 +2,6 @@ import { LuigiElement } from './luigi-element.js';
 export default class extends LuigiElement {
   constructor() {
     super({ openShadow: 'open', deferLuigiClientWCInit: false });
-
     const template = document.createElement('template');
     //remove buttons after review/AC
     template.innerHTML = `
@@ -31,4 +30,10 @@ export default class extends LuigiElement {
       console.log('LuigiClient initialized for LuigiElement Compount WC');
     }, 8000);
   }
+
+  set context(ctx) {
+    this.$span.innerHTML = ctx.title;
+  }
+
+
 }

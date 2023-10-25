@@ -41,7 +41,7 @@
         updateContext = notInitFn('updateContext');
         attributeChangedCallback(name, oldValue, newValue) {
           if (name === 'context') {
-            this.updateContext(newValue);
+            this.updateContext(JSON.parse(newValue));
           }
         }
       };
@@ -90,9 +90,9 @@
     if (!compoundConfig || containerInitialized) {
       return;
     }
-    // thisComponent.updateContext = (contextObj: any, internal?: any) => {
-    //   ContainerAPI.updateContext(contextObj, internal);
-    // };
+    thisComponent.updateContext = (contextObj: any, internal?: any) => {
+      mainComponent._luigi_mfe_webcomponent.context = contextObj;
+    };
     const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {
