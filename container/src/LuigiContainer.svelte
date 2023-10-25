@@ -54,6 +54,11 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (name === 'context') {
+            this.updateContext(JSON.parse(newValue));
+          }
+        }
       };
     }
   }}
@@ -123,7 +128,11 @@
       };
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
-        ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+        if (webcomponent) {
+          mainComponent._luigi_mfe_webcomponent.context = contextObj;
+        } else {
+          ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+        }
       };
 
       thisComponent.closeAlert = (id: any, dismissKey: any) => {

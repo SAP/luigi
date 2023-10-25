@@ -28,6 +28,23 @@
         reflect: false,
         attribute: 'client-permissions'
       }
+    },
+    extend: customElementConstructor => {
+      let notInitFn = name => {
+        return () =>
+          console.warn(
+            name +
+              " can't be called on luigi-container before its micro frontend is attached to the DOM."
+          );
+      };
+      return class extends customElementConstructor {
+        updateContext = notInitFn('updateContext');
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (name === 'context') {
+            this.updateContext(JSON.parse(newValue));
+          }
+        }
+      };
     }
   }}
 />
@@ -74,6 +91,9 @@
     if (!compoundConfig || containerInitialized) {
       return;
     }
+    thisComponent.updateContext = (contextObj: any, internal?: any) => {
+      mainComponent._luigi_mfe_webcomponent.context = contextObj;
+    };
     const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {

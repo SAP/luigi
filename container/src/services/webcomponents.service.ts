@@ -424,6 +424,8 @@ export class WebComponentService {
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, context)
         .then((compoundCnt: HTMLElement) => {
+          (wc_container as any)._luigi_mfe_webcomponent = compoundCnt;
+          (wc_container as any)._luigi_node = navNode;
           const ebListeners = {};
           (compoundCnt as any).eventBus = {
             listeners: ebListeners,
