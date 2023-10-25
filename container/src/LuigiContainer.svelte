@@ -70,11 +70,12 @@
   import { WebComponentService } from './services/webcomponents.service';
   import { ContainerAPI } from './api/container-api';
   import { Events } from './constants/communication';
+  import { GenericHelperFunctions } from './utilities/helpers';
 
   export let viewurl: string;
   export let context: string;
   export let label: string;
-  export let webcomponent: string;
+  export let webcomponent: any;
   export let deferInit: boolean;
   export let locale: string;
   export let theme: string;
@@ -144,7 +145,17 @@
       const ctx = context ? JSON.parse(context) : {};
       if (webcomponent) {
         mainComponent.innerHTML = '';
-        webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
+        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(
+          webcomponent
+        );
+        webcomponentService.renderWebComponent(
+          viewurl,
+          mainComponent,
+          ctx,
+          typeof webComponentValue === 'object'
+            ? { webcomponent: webComponentValue }
+            : {}
+        );
       }
       if (skipInitCheck) {
         thisComponent.initialized = true;

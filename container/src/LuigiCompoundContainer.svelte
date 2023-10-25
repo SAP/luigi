@@ -54,8 +54,10 @@
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
   import { Events } from './constants/communication';
+  import { GenericHelperFunctions } from './utilities/helpers';
 
   export let viewurl: string;
+  export let webcomponent: any;
   export let context: string;
   export let deferInit: boolean;
   export let compoundConfig: any;
@@ -97,7 +99,8 @@
     const node = {
       compound: compoundConfig,
       viewUrl: viewurl,
-      webcomponent: true
+      webcomponent:
+        GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     }; // TODO: fill with sth
     webcomponentService
       .renderWebComponentCompound(node, mainComponent, ctx)
