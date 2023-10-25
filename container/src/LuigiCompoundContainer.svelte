@@ -54,7 +54,6 @@
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
   import { Events } from './constants/communication';
-  import { ContainerAPI } from './api/container-api';
 
   export let viewurl: string;
   export let context: string;
