@@ -34,6 +34,4 @@ export default class extends LuigiElement {
   set context(ctx) {
     this.$span.innerHTML = ctx.title;
   }
-
-
 }
