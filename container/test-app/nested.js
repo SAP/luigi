@@ -12,7 +12,7 @@ export default class extends LuigiElement {
           <header><slot name="header">header</slot></header>
           <main style="flex: auto; overflow: auto">
             <slot name="content">content</slot>
-            <slot name="jod"></slot>
+            <slot name="helloWorldSelfRegistered"></slot>
           </main>
           <footer><slot name="footer">footer</slot></footer>
         </section>
