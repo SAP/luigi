@@ -586,7 +586,7 @@
                       >
                           <a class="fd-navigation__link {node === selectedNode
                             ? 'is-selected'
-                            : ''}" 
+                            : ''} lui-hideOnHover" 
                             tabindex="-1"  href="{getRouteLink(node)}"
                             title={resolveTooltipText(node, getNodeLabel(node))}
                             on:click={event => {
@@ -603,11 +603,11 @@
                               
                               {#if node.icon}
                                 {#if isOpenUIiconName(node.icon)}
-                                <span class="fd-navigation__icon {getSapIconStr(
+                                <span class="fd-navigation__icon lui-hideOnHover-show {getSapIconStr(
                                   node.icon
                                 )}" role="presentation" aria-hidden="true"></span>
                                 {:else}
-                                  <span class="fd-navigation__icon">
+                                  <span class="fd-navigation__icon lui-hideOnHover-show">
                                     <img
                                       src={node.icon}
                                       alt={node.altText ? node.altText : ''}
@@ -615,13 +615,11 @@
                                   </span>
                                 {/if}
                               {:else}
-                                <span class="fd-navigation__icon {isSemiCollapsed
+                                <span class="fd-navigation__icon lui-hideOnHover-show {isSemiCollapsed
                                   ? 'sap-icon--rhombus-milestone-2'
                                   : ''}" role="presentation" aria-hidden="true"></span>
                               {/if}
-                              
-                              {#if !isSemiCollapsed}
-                                <span class="fd-navigation__text badge-align-{node.statusBadge &&
+                                <span class="fd-navigation__text lui-hideOnHover-show badge-align-{node.statusBadge &&
                                   node.statusBadge.align === 'right'
                                     ? 'right'
                                     : 'left'}">
@@ -634,7 +632,6 @@
                                 {#if node.badgeCounter}
                                   <BadgeCounter {node} />
                                 {/if}
-                              {/if}
                               <span class="fd-navigation__selection-indicator" role="presentation" aria-hidden="true" aria-label="selection indicator"></span>
                           </a>
                       </div>
@@ -687,9 +684,7 @@
                               />
                             </span>
                           {/if}
-                          {#if !isSemiCollapsed}
-                            <span class="fd-navigation__text">{$getTranslation(key)}</span>
-                          {/if}
+                          <span class="fd-navigation__text">{$getTranslation(key)}</span>
                           <span class="fd-navigation__selection-indicator" role="presentation" aria-hidden="true" aria-label="selection indicator"></span>
                           <span class="fd-navigation__has-children-indicator" role="presentation" aria-hidden="true" aria-label="has children indicator, expanded"></span>
                       </a>

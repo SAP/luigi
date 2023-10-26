@@ -2502,8 +2502,12 @@
         } 
 
         
-        :global(.fd-navigation__container--top.fd-navigation__container--top) {
+        :global(.fd-navigation:not(.fd-navigation--snapped) .fd-navigation__container--top.fd-navigation__container--top) {
           overflow: auto;
+        }
+
+        :global(.fd-navigation--snapped .lui-hideOnHover:not(:hover) > :not(.lui-hideOnHover-show)) {
+          display: none;
         }
 /** END: TOOL LAYOUT */
 
