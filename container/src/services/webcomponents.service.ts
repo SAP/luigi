@@ -256,7 +256,18 @@ export class WebComponentService {
           window.customElements.define(this.generateWCId(srcString), el);
         };
       }
-
+      // @ts-ignore
+      if (!window.Luigi) {
+        // @ts-ignore
+        window.Luigi = {};
+        // @ts-ignore
+        if (!window.Luigi._registerWebcomponent) {
+          // @ts-ignore
+          window.Luigi._registerWebcomponent = (src, element) => {
+            this.containerService.getContainerManager()._registerWebcomponent(src, element);
+          }
+        }
+      }
       const scriptTag = document.createElement('script');
       scriptTag.setAttribute('src', viewUrl);
       if (node.webcomponent.type === 'module') {
@@ -413,6 +424,8 @@ export class WebComponentService {
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, context)
         .then((compoundCnt: HTMLElement) => {
+          (wc_container as any)._luigi_mfe_webcomponent = compoundCnt;
+          (wc_container as any)._luigi_node = navNode;
           const ebListeners = {};
           (compoundCnt as any).eventBus = {
             listeners: ebListeners,
