@@ -669,7 +669,7 @@ describe('initWC', () => {
     const spyClientAPI = jest.spyOn(service, 'createClientAPI').mockReturnValue(clientAPIReturnVal);
   
     const baseURIMocked ='https://example.com/some-page/1'
-    const getBaseURISpy = jest.spyOn(document, 'baseURI', 'get').mockReturnValue(baseURIMocked);
+    jest.spyOn(document, 'baseURI', 'get').mockReturnValue(baseURIMocked);
     const documentOrigin = 'https://example.com/some-page';
     const urlSpyMockData = {
       origin: documentOrigin,
