@@ -2039,7 +2039,7 @@
 
   {#if btpToolLayout}
   <div class="lui-core-layout">
-    <div class="fd-tool-layout">
+    <div class="fd-tool-layout fd-tool-layout--sticky">
       <div class="fd-tool-layout__container">
           <div class="fd-tool-layout__header-container">
             {#if !isHeaderDisabled}
@@ -2065,7 +2065,7 @@
       <div class="fd-tool-layout__container lui-main-content">
           {#if !(hideNav || hideSideNav)}
           <div class="fd-tool-layout__navigation-container">
-            <div class="NEW__fd-tool-layout__stable-box-reference">
+            <div class="lui-box">
               
                 <LeftNav
                   pathData={navigationPath}
@@ -2085,7 +2085,7 @@
                   on:handleClick={handleNavClick}
                 />
               {/if}    
-            <div class="NEW__fd-tool-layout__stable-box-reference lui-no-overflow">
+            <div class="lui-box">
             <Backdrop disable={disableBackdrop}>
               
               <div
@@ -2454,53 +2454,29 @@
       }
     }
 
-    // :global(.lui-breadcrumb) .fd-tool-layout {
-    //   .iframeContainer, .spinnerContainer {
-    //     top: var(--luigi__breadcrumb--height);
-    //     left: 0;
-    //   }
-    // }
-
     :global(.lui-breadcrumb) .fd-tool-layout__content-container {
-      margin-top: calc(var(--fdToolLayout_Navigation_Container_Margin_Top) + var(--luigi__breadcrumb--height));
+      margin-top: var(--luigi__breadcrumb--height);
       height: calc(100% - var(--luigi__breadcrumb--height));
     }
-
-    .lui-no-overflow {
-      overflow: hidden;
+    .lui-box {
+        height: 100%;
+        position: relative;
     }
+
 
 
   /** Tool layout fd styles adjustments */
-        .fd-tool-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+        .fd-tool-layout.fd-tool-layout--sticky .lui-main-content {
+          overflow: visible;
         }
 
-        .fd-tool-layout .fd-tool-layout__container:nth-child(2) {
-            overflow: hidden;
-            flex-grow: 1;
+        .fd-tool-layout--sticky .fd-tool-layout__content-container {
+          overflow: auto;
         }
-
-        .fd-tool-layout__navigation-container {
+        .fd-tool-layout--sticky .fd-tool-layout__navigation-container {
+          overflow: visible;
           z-index: 1;
         }
-
-        .fd-tool-layout__navigation-container,
-        .fd-tool-layout__content-container {
-            height: 100%;
-            overflow: visible;
-            position: relative;
-        }
-
-        .NEW__fd-tool-layout__stable-box-reference {
-            height: calc(100% - var(--fdToolLayout_Navigation_Container_Margin_Top));
-            position: relative;
-            border-radius: var(--fdToolLayout_Content_Container_Border_Radius);
-            // overflow: hidden;
-        } 
-
         
         :global(.fd-navigation:not(.fd-navigation--snapped) .fd-navigation__container--top.fd-navigation__container--top) {
           overflow: auto;
