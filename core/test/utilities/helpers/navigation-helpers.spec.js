@@ -569,7 +569,7 @@ describe('Navigation-helpers', () => {
         nodes[1].category.collapsible = true;
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
         assert.deepEqual(Object.keys(result), ['luigi', 'test']);
-        assert.deepEqual(result.luigi['metaInfo'], { label: 'luigi', order: 1 });
+        assert.deepEqual(result.luigi['metaInfo'], { label: 'luigi', order: 1, categoryUid: 'luigi' });
         assert.deepEqual(result.test['metaInfo'], {
           label: 'test',
           order: 0,
@@ -597,7 +597,7 @@ describe('Navigation-helpers', () => {
         };
         nodes.push(node);
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
-        assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2 });
+        assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2, categoryUid: 'luigi' });
       });
       it('first category object counts - part 2', () => {
         const node = {
