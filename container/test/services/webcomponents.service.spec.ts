@@ -628,3 +628,67 @@ describe('createClientAPI', () => {
   // });
 
 });
+
+describe('initWC', () => {
+  let service;
+  const wc_id = 'someId';
+  const eventBusElement = 'eventBusElement';
+  const viewUrl = 'https://example.com/some-page';
+  const ctx = { some: 'context' };
+  const nodeId = 'node123';
+  const isSpecialMf = true;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+  });
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should set context and LuigiClient if wc.__postProcess is not defined', () => {
+    // Arrange
+    const wc = { context: null, LuigiClient: null };
+    const spyClientAPI = jest.spyOn(service, 'createClientAPI')
+
+    // Act
+    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isSpecialMf);
+
+    // Assert
+    expect(wc.context).toEqual(ctx);
+    expect(wc.LuigiClient).toBeDefined();
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isSpecialMf)
+  });
+
+  it('should call wc.__postProcess if wc.__postProcess is defined', () => {
+    // Arrange
+    const wc = { __postProcess: jest.fn() };
+
+    const clientAPIReturnVal = {
+      getCurrentLocale: () =>{}
+    }
+    const spyClientAPI = jest.spyOn(service, 'createClientAPI').mockReturnValue(clientAPIReturnVal);
+  
+    const baseURIMocked ='https://example.com/some-page/1'
+    const getBaseURISpy = jest.spyOn(document, 'baseURI', 'get').mockReturnValue(baseURIMocked);
+    const documentOrigin = 'https://example.com/some-page';
+    const urlSpyMockData = {
+      origin: documentOrigin,
+      pathname: '/another-page',
+    }
+    const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation((url) => (urlSpyMockData));
+
+    // Act
+    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isSpecialMf);
+
+    // Assert
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isSpecialMf);
+    expect(wc.__postProcess).toHaveBeenCalledWith(ctx, clientAPIReturnVal, documentOrigin + '/another-page');
+    expect(urlSpy).toHaveBeenCalledTimes(4);
+    expect(urlSpy).toHaveBeenNthCalledWith(1, baseURIMocked);
+    expect(urlSpy).toHaveBeenNthCalledWith(2, documentOrigin, baseURIMocked);
+    expect(urlSpy).toHaveBeenNthCalledWith(3, documentOrigin, baseURIMocked);
+    expect(urlSpy).toHaveBeenNthCalledWith(4, './', urlSpyMockData);
+  });
+
+  
+});
