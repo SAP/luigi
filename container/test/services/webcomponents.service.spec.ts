@@ -769,3 +769,63 @@ describe('renderWebComponentCompound', () => {
   });
 });
 
+describe('createCompoundContainerAsync', () => {
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks(); // Clear mock function call history after each test
+  });
+
+  it.only('should resolve with a web component when renderer has a viewUrl', async () => {
+    // Arrange
+    const renderer = {
+      viewUrl: 'https://example.com/webcomponent',
+    };
+    const ctx = {}
+    const mockGeneratedWCId = 'mocked-wc-id';
+    const mockWebComponent = document.createElement('div');
+
+    const mockInitWC = jest.spyOn(service, 'initWC');
+    const mockRegisterWCFromUrl = jest.spyOn(service, 'registerWCFromUrl');
+
+
+    jest.spyOn(service, 'generateWCId');
+
+    // Act and Assert
+    await expect(service.createCompoundContainerAsync(renderer, ctx)).resolves.toEqual(mockWebComponent);
+
+    // Additional Assertions
+    expect(service.generateWCId).toHaveBeenCalledWith(renderer.viewUrl);
+    expect(mockRegisterWCFromUrl).toHaveBeenCalledWith(renderer.viewUrl, mockGeneratedWCId);
+    expect(mockInitWC).toHaveBeenCalledWith(mockWebComponent, mockGeneratedWCId, mockWebComponent, renderer.viewUrl, ctx, '_root');
+  });
+
+  it.only('should reject when there is an error during registration', async () => {
+    // Arrange
+    const renderer = {
+      viewUrl: 'https://example.com/webcomponent',
+    };
+    const ctx = {};
+    const mockGeneratedWCId = 'mocked-wc-id';
+
+    jest.spyOn(service, 'generateWCId').mockReturnValue(mockGeneratedWCId);
+
+    // Act and Assert
+    await expect(service.createCompoundContainerAsync(renderer, ctx)).rejects.toEqual('Registration error');
+  });
+
+  it.only('should resolve with a compound container when renderer has no viewUrl', async () => {
+    // Arrange
+    const renderer = {
+      createCompoundContainer: jest.fn(),
+    };
+    const ctx = {};
+
+    // Act and Assert
+    await expect(service.createCompoundContainerAsync(renderer, ctx)).resolves.toEqual(renderer.createCompoundContainer());
+  });
+});
