@@ -1,6 +1,6 @@
 class Nested extends HTMLElement {
   constructor() {
-    super()
+    super();
     const template = document.createElement('template');
     //remove buttons after review/AC
     template.innerHTML = `
