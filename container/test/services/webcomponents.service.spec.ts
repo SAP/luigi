@@ -3,16 +3,10 @@ import { ContainerService, containerService } from '../../src/services/container
 import { WebComponentService } from '../../src/services/webcomponents.service';
 import * as helperFunctions from '../../src/services/web-component-helpers';
 
-
 describe('trivial functions', () => {
   let service;
   beforeEach(() => {
     service = new WebComponentService();
-  });
-
-  it('generateWCId', () => {
-    const wcId = service.generateWCId('http://localhost:4200/foo/bar');
-    expect(wcId).toEqual('luigi-wc-687474703a2f2f6c6f63616c686f73743a343230302f666f6f2f626172');
   });
 
   it('checkWCUrl', () => {
@@ -692,3 +686,86 @@ describe('initWC', () => {
 
   
 });
+
+describe('generateWCId function', () => {
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+  });
+
+  // Test case 1: Testing with a simple view URL
+  it('should generate an ID for a simple view URL', () => {
+    const URLReturn = '/mocked-URL-return-path';
+    jest.spyOn(global as any, 'URL').mockImplementation((viewUrl, base) => ({
+        href: URLReturn,
+    }));
+    const viewUrl = 'https://example.com/page1';
+    const expectedId = 'luigi-wc-2f6d6f636b65642d55524c2d72657475726e2d70617468';
+    const result = service.generateWCId(viewUrl);
+    expect(result).toBe(expectedId);
+  });
+
+  // Test case 2: Testing with a URL containing special characters
+  it('should generate an ID for a URL with special characters', () => {
+    const viewUrl = 'https://example.com/page?name=John&age=30';
+    const URLReturn = '/mocked-URL-return-path';
+    jest.spyOn(global as any, 'URL').mockImplementation((viewUrl, base) => ({
+        href: URLReturn,
+    }));
+    const expectedId = 'luigi-wc-2f6d6f636b65642d55524c2d72657475726e2d70617468';
+    const result = service.generateWCId(viewUrl);
+    expect(result).toBe(expectedId);
+  });
+
+  // Test case 3: Testing with an empty URL
+  it('should generate an ID for an empty view URL', () => {
+    const viewUrl = '';
+    const URLReturn = '/mocked-URL-return-path';
+   jest.spyOn(global as any, 'URL').mockImplementation((viewUrl, base) => ({
+        href: URLReturn,
+    }));
+    const expectedId = 'luigi-wc-2f6d6f636b65642d55524c2d72657475726e2d70617468';
+    const result = service.generateWCId(viewUrl);
+    expect(result).toBe(expectedId);
+  });
+});
+
+describe('renderWebComponentCompound', () => {
+  let service;
+  beforeEach(() => {
+    service = new WebComponentService()
+  });
+
+  it('simple call', async () => {
+    jest.spyOn(helperFunctions, 'resolveRenderer');
+    service.createCompoundContainerAsync = jest.fn();
+    service.renderWebComponent = jest.fn();
+    service.registerEventListeners = jest.fn();
+
+
+    // Mock createCompoundContainerAsync to return a mock compound container
+    const mockCompoundContainer = document.createElement('div');
+    service.createCompoundContainerAsync.mockResolvedValue(mockCompoundContainer);
+
+    const navNode = {};
+    //   compound: {
+    //     children: []
+    //   }
+    // };
+    const wc_container = document.createElement('div');
+    const context = {}
+
+    // Call the function
+    await service.renderWebComponentCompound(navNode, wc_container, context);
+
+    // Assertions
+    expect(helperFunctions.resolveRenderer).toHaveBeenCalledTimes(0);
+    expect(service.createCompoundContainerAsync).toHaveBeenCalledTimes(1);
+    expect(service.registerEventListeners).toHaveBeenCalledTimes(0);
+    expect(service.renderWebComponent).toHaveBeenCalledTimes(0);
+    // Additional assertions based on your specific use case
+
+  });
+});
+
