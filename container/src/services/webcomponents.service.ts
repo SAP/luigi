@@ -375,7 +375,7 @@ export class WebComponentService {
       // }
       if (renderer.viewUrl) {
         try {
-          const wc_id = this.generateWCId(renderer.viewUrl);
+          const wc_id = navNode?.webcomponent?.tagName ? navNode.webcomponent.tagName : this.generateWCId(renderer.viewUrl);
           const wc = document.createElement(wc_id);
           if (navNode.webcomponent && navNode.webcomponent.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {

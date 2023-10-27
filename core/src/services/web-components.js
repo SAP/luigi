@@ -9,7 +9,7 @@ import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() {}
+  constructor() { }
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -263,7 +263,8 @@ class WebComponentSvcClass {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
-          const wc_id = this.generateWCId(renderer.viewUrl);
+          const wc_id = navNode?.webcomponent?.tagName ? navNode.webcomponent.tagName : this.generateWCId(renderer.viewUrl);
+          console.log('wc_id', wc_id);
           const wc = document.createElement(wc_id);
           if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
