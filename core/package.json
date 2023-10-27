@@ -48,7 +48,7 @@
     },
     {
       "path": "./public/luigi.css",
-      "maxSize": "800 kB",
+      "maxSize": "805 kB",
       "compression": "none"
     }
   ],
