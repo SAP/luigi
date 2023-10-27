@@ -256,7 +256,18 @@ export class WebComponentService {
           window.customElements.define(this.generateWCId(srcString), el);
         };
       }
-
+      // @ts-ignore
+      if (!window.Luigi) {
+        // @ts-ignore
+        window.Luigi = {};
+        // @ts-ignore
+        if (!window.Luigi._registerWebcomponent) {
+          // @ts-ignore
+          window.Luigi._registerWebcomponent = (src, element) => {
+            this.containerService.getContainerManager()._registerWebcomponent(src, element);
+          }
+        }
+      }
       const scriptTag = document.createElement('script');
       scriptTag.setAttribute('src', viewUrl);
       if (node.webcomponent.type === 'module') {
@@ -356,7 +367,7 @@ export class WebComponentService {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer: any, ctx: any): Promise<HTMLElement> {
+  createCompoundContainerAsync(renderer: any, ctx: any, navNode: any): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
       // remove after review
       // if (1) {
@@ -365,17 +376,24 @@ export class WebComponentService {
       if (renderer.viewUrl) {
         try {
           const wc_id = this.generateWCId(renderer.viewUrl);
-          this.registerWCFromUrl(renderer.viewUrl, wc_id)
-            .then(() => {
-              const wc = document.createElement(wc_id);
+          const wc = document.createElement(wc_id);
+          if (navNode.webcomponent && navNode.webcomponent.selfRegistered) {
+            this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
-            })
-            .catch(error => {
-              console.warn('Error: ', error);
-              // dispatch an error event to be handled core side
-              this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
             });
+          } else {
+            this.registerWCFromUrl(renderer.viewUrl, wc_id)
+              .then(() => {
+                this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+                resolve(wc);
+              })
+              .catch(error => {
+                console.warn('Error: ', error);
+                // dispatch an error event to be handled core side
+                this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
+              });
+          }
         } catch (error) {
           reject(error);
         }
@@ -411,8 +429,10 @@ export class WebComponentService {
 
     renderer = renderer || new DefaultCompoundRenderer();
     return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer, context)
+      this.createCompoundContainerAsync(renderer, context, navNode)
         .then((compoundCnt: HTMLElement) => {
+          (wc_container as any)._luigi_mfe_webcomponent = compoundCnt;
+          (wc_container as any)._luigi_node = navNode;
           const ebListeners = {};
           (compoundCnt as any).eventBus = {
             listeners: ebListeners,

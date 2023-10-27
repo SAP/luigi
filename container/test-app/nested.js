@@ -2,7 +2,6 @@ import { LuigiElement } from './luigi-element.js';
 export default class extends LuigiElement {
   constructor() {
     super({ openShadow: 'open', deferLuigiClientWCInit: false });
-
     const template = document.createElement('template');
     //remove buttons after review/AC
     template.innerHTML = `
@@ -10,7 +9,10 @@ export default class extends LuigiElement {
           <button id="addNodeParams">addNodeParams</button>
           <button id="getNodeParams">getNodeParams</button>
           <header><slot name="header">header</slot></header>
-          <main style="flex: auto; overflow: auto"><slot name="content">content</slot><slot></slot></main>
+          <main style="flex: auto; overflow: auto">
+            <slot name="content">content</slot>
+            <slot name="helloWorldSelfRegistered"></slot>
+          </main>
           <footer><slot name="footer">footer</slot></footer>
         </section>
       `;
@@ -30,5 +32,9 @@ export default class extends LuigiElement {
       this.LuigiClient.luigiClientInit();
       console.log('LuigiClient initialized for LuigiElement Compount WC');
     }, 8000);
+  }
+
+  set context(ctx) {
+    console.log('context', ctx);
   }
 }
