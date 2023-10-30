@@ -45,9 +45,7 @@ describe('JS-TEST-APP', () => {
   };
 
   const expectedPathAfterForward = path => {
-    cy.wait(2000);
     cy.go('forward');
-    cy.wait(2000);
     cy.expectPathToBe(path);
     cy.location().should(location => {
       expect(location.search).to.eq('');
@@ -55,9 +53,7 @@ describe('JS-TEST-APP', () => {
   };
 
   const expectedPathAfterBack = path => {
-    cy.wait(2000);
     cy.go(-1);
-    cy.wait(2000);
     cy.expectPathToBe(path);
     cy.location().should(location => {
       expect(location.search).to.eq('');
@@ -80,7 +76,8 @@ describe('JS-TEST-APP', () => {
   };
 
   const closeModal = () => {
-    cy.get('.lui-modal-index-0 .fd-button').click();
+    cy.get('.lui-modal-index-0 .fd-button').click({ force: true });
+    cy.wait(1000);
   };
 
   describe('History handling for modals', () => {
