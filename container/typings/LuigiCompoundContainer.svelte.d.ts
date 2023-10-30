@@ -44,7 +44,6 @@ export default class LuigiCompoundContainer extends HTMLElement {
   /**
    * The following properties can be set for the web component object. By default, the web component is set to true.
    * @param {Object} [WebComponentSettings]
-   * @param {any} WebComponentSettings.id: unique id of the web component
    * @param {string} WebComponentSettings.type: string, like module.
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
