@@ -2,7 +2,7 @@ import { LuigiInternalMessageID } from '../../src/constants/internal-communicati
 import { Events } from '../../src/constants/communication';
 import { ContainerService } from '../../src/services/container.service';
 
-describe('Container Service', () => {
+describe('getContainerManager messageListener', () => {
   let service: ContainerService;
   let gtcSpy;
   let cw : any  = {};
@@ -306,4 +306,168 @@ describe('Container Service', () => {
     expect(dispatchedEvent.type).toEqual(Events.SET_DIRTY_STATUS_REQUEST);
   });
 
+});
+
+
+describe('getContainerManager branch', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  afterEach(() => {
+    // Reset the global state after each test
+    globalThis.__luigi_container_manager = undefined;
+    window.removeEventListener('message', globalThis.__luigi_container_manager?.messageListener);
+  });
+
+  it('should initialize and return the container manager', () => {
+    const containerManager = service.getContainerManager();
+    expect(containerManager).toBeDefined();
+    expect(containerManager.container).toEqual([]);
+    expect(containerManager.messageListener).toBeDefined();
+  });
+
+  it('should return the existing container manager if it has been initialized', () => {
+    const existingManager = {
+      container: ['existingData'],
+      messageListener: jest.fn(),
+    };
+    globalThis.__luigi_container_manager = existingManager;
+
+    const containerManager = service.getContainerManager();
+    expect(containerManager).toBe(existingManager);
+  });
+
+  it('should add a message event listener when initializing', () => {
+    globalThis.__luigi_container_manager = undefined;
+    const spy = jest.spyOn(window, 'addEventListener');
+
+    const containerManager = service.getContainerManager(); // Initialize the manager
+
+    // Verify that addEventListener was called with 'message' event type
+    expect(containerManager).toBeDefined();
+    expect(containerManager.container).toEqual([]);
+    expect(spy).toHaveBeenCalledWith('message', expect.any(Function))
+  });
+});
+
+describe('registerContainer', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should add an HTMLElement to the container', () => {
+    // Arrange
+    const containerManager = {
+      container: [],
+    };
+    const container = document.createElement('div');
+    service.getContainerManager =  jest.fn().mockReturnValue(containerManager);
+
+    // Act
+    service.registerContainer(container);
+
+    // Assert
+    expect(containerManager.container).toContain(container);
+    expect(service.getContainerManager).toHaveBeenCalled();
+
+  });
+
+  it('should handle multiple containers', () => {
+    // Arrange
+    const containerManager = {
+      container: [],
+    };
+    const container1 = document.createElement('div');
+    const container2 = document.createElement('div');
+    service.getContainerManager =  jest.fn().mockReturnValue(containerManager);
+
+    // Act
+    service.registerContainer(container1);
+    service.registerContainer(container2);
+
+    // Assert
+    expect(containerManager.container).toEqual([container1, container2]);
+    expect(service.getContainerManager).toHaveBeenCalledTimes(2);
+
+  });
+});
+
+describe('getTargetContainer', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should return the correct container when a matching container is found', () => {
+    // Arrange
+    const mockContainer1 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source1',
+        },
+      },
+    };
+    const mockContainer2 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source2',
+        },
+      },
+    };
+
+    globalThis.__luigi_container_manager = {
+      container: [mockContainer1, mockContainer2],
+    };
+
+    const mockEvent = {
+      source: 'source2', // Matched with mockContainer2
+    };
+
+    // Act
+    const targetContainer = service.getTargetContainer(mockEvent);
+
+    // Assert
+    expect(targetContainer).toBe(mockContainer2);
+  });
+
+  it('should return undefined when no matching container is found', () => {
+    // Arrange
+    const mockContainer1 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source1',
+        },
+      },
+    };
+    const mockContainer2 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source2',
+        },
+      },
+    };
+
+    globalThis.__luigi_container_manager = {
+      container: [mockContainer1, mockContainer2],
+    };
+
+    const mockEvent = {
+      source: 'source3', // No matching container
+    };
+
+    // Act
+    const targetContainer = service.getTargetContainer(mockEvent);
+
+    // Assert
+    expect(targetContainer).toBe(undefined);
+  });
 });
