@@ -33,7 +33,7 @@ describe('getContainerManager messageListener', () => {
   });
 
   afterEach(()=>{
-    gtcSpy.mockRestore();
+    jest.resetAllMocks();
   });
 
   it('test alert request', () => {    
@@ -113,6 +113,35 @@ describe('getContainerManager messageListener', () => {
     expect(dispatchedEvent.type).toEqual(Events.INITIALIZED);
     expect(dispatchedEvent.detail).toEqual('init');
   });
+
+  it('test add search params request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.ADD_SEARCH_PARAMS_REQUEST,
+        keepBrowserHistory: true,
+        data: 'some-data'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.ADD_SEARCH_PARAMS_REQUEST);
+    expect(dispatchedEvent.detail).toEqual({data: 'some-data', keepBrowserHistory:true});
+  });
+
+  it('test add node params request', () => {
+    const event = {
+      source: cw,
+      data: {
+        msg: LuigiInternalMessageID.ADD_NODE_PARAMS_REQUEST,
+        keepBrowserHistory: false,
+        data: 'some-data'
+      }
+    };
+    cm.messageListener(event);
+    expect(dispatchedEvent.type).toEqual(Events.ADD_NODE_PARAMS_REQUEST);
+    expect(dispatchedEvent.detail).toEqual({data: 'some-data', keepBrowserHistory:false});
+  });
+
 
   it('test confirmationModal show request', () => {
     const event = {
@@ -306,14 +335,279 @@ describe('getContainerManager messageListener', () => {
     expect(dispatchedEvent.type).toEqual(Events.SET_DIRTY_STATUS_REQUEST);
   });
 
+  it('test third-party-cookie', () => {
+    const event = {
+      data: {
+        msg: 'luigi.third-party-cookie',
+      }
+    };
+    cm.messageListener(event);
+  });
+
+
+  it('test default', () => {
+    // const consoleErrorSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    console.warn = jest.fn();
+    const event = {
+      data: {
+        msg: 'no-func',
+      }
+    };
+    cm.messageListener(event);
+    // expect(console.warn ).toHaveBeenCalled();
+  });
+
 });
 
+
+describe('isVisible', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  afterEach(()=>{
+    jest.resetAllMocks();
+  });
+
+  it('should return true for a visible element', () => {
+    // Arrange
+    const visibleElement = document.createElement('div');
+    jest.spyOn(visibleElement, 'offsetWidth', 'get').mockImplementation(() => 200)
+    document.body.appendChild(visibleElement);
+
+    // Act
+    const result = service.isVisible(visibleElement);
+
+    // Assert
+    expect(result).toBe(true);
+  });
+
+  it('should return false for a hidden element', () => {
+    // Arrange
+    const hiddenElement = document.createElement('div');
+    hiddenElement.style.display = 'none';
+    document.body.appendChild(hiddenElement);
+
+    // Act
+    const result = service.isVisible(hiddenElement);
+
+    // Assert
+    expect(result).toBe(false);
+  });
+
+  it('should return false for an element with zero dimensions', () => {
+    // Arrange
+    const zeroSizeElement = document.createElement('div');
+    zeroSizeElement.style.width = '0';
+    zeroSizeElement.style.height = '0';
+    document.body.appendChild(zeroSizeElement);
+
+    // Act
+    const result = service.isVisible(zeroSizeElement);
+
+    // Assert
+    expect(result).toBe(false);
+  });
+});
+
+
+describe('sendCustomMessageToIframe', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  afterEach(()=>{
+    jest.resetAllMocks();
+  });
+
+  it('should send a custom message to the iframe', () => {
+    // Arrange
+    const iframeHandle = {
+      iframe: {
+        contentWindow: {
+          postMessage: jest.fn(),
+        },
+        src: 'https://example.com',
+      },
+    };
+    const message = { key: 'value' };
+    
+    // Act
+    service.sendCustomMessageToIframe(iframeHandle, message);
+
+    // Assert
+    expect(iframeHandle.iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      { msg: 'custom', data: message },
+      'https://example.com'
+    );
+  });
+
+  it('should send a named message to the iframe', () => {
+    // Arrange
+    const iframeHandle = {
+      iframe: {
+        contentWindow: {
+          postMessage: jest.fn(),
+        },
+        src: 'https://example.com',
+      },
+    };
+    const message = { key: 'value' };
+    
+    // Act
+    service.sendCustomMessageToIframe(iframeHandle, message, 'namedMessage');
+
+    // Assert
+    expect(iframeHandle.iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      { msg: 'namedMessage', key: 'value' },
+      'https://example.com'
+    );
+  });
+
+  it('should log an error if contentWindow is not available', () => {
+    // Arrange
+    const iframeHandle = {
+      iframe: {},
+    };
+    const message = { key: 'value' };
+    
+    // Spy on console.error to capture the log message
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    // Act
+    service.sendCustomMessageToIframe(iframeHandle, message);
+
+    // Assert
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Message target could not be resolved');
+
+    // Restore the original console.error function
+    consoleErrorSpy.mockRestore();
+  });
+});
+
+describe('dispatch', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  afterEach(()=>{
+    jest.resetAllMocks();
+  });
+
+  it('should dispatch a custom event to the target container, no Callback', () => {
+    // Arrange
+    const targetContainer = document.createElement('div');
+    const eventName = 'customEvent';
+    const eventData = { key: 'value' };
+    targetContainer.dispatchEvent = jest.fn()
+
+    // Act
+    service.dispatch(eventName, targetContainer, eventData);
+
+    // Assert
+    const dispatchedEvent = new CustomEvent(eventName, { detail: eventData });
+    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(dispatchedEvent);
+  });
+
+  it('should execute the callback when provided', () => {
+    // Arrange
+    const targetContainer = document.createElement('div');
+    const eventName = 'customEvent';
+    const eventData = { key: 'value' };
+    targetContainer.dispatchEvent = jest.fn()
+
+    // Define a callback function
+    const callbackFunction = (data) => {
+      // This function should not be called in this test
+    };
+
+    // Act
+    service. dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
+  
+    // Assert
+    globalThis.CustomEvent = jest.fn().mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
+
+    const dispatchedEventMock = {"isTrusted": false, "onCallback": expect.any(Function)};
+    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith( expect.objectContaining(dispatchedEventMock));
+  });
+});
+
+describe('getTargetContainer', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  afterEach(()=>{
+    jest.resetAllMocks();
+  });
+
+  it('should return the correct container when a matching container is found', () => {
+    // Arrange
+    const mockContainer1 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source1',
+        },
+      },
+    };
+    const mockContainer2 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source2',
+        },
+      },
+    };
+
+    globalThis.__luigi_container_manager = {
+      container: [mockContainer1, mockContainer2],
+    };
+
+    const mockEvent = {
+      source: 'source2', // Matched with mockContainer2
+    };
+
+    // Act
+    const targetContainer = service.getTargetContainer(mockEvent);
+
+    // Assert
+    expect(targetContainer).toBe(mockContainer2);
+  });
+
+  it('should return undefined when no matching container is found', () => {
+    // Arrange
+    const mockContainer1 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source1',
+        },
+      },
+    };
+    const mockContainer2 = {
+      iframeHandle: {
+        iframe: {
+          contentWindow: 'source2',
+        },
+      },
+    };
+
+    globalThis.__luigi_container_manager = {
+      container: [mockContainer1, mockContainer2],
+    };
+
+    const mockEvent = {
+      source: 'source3', // No matching container
+    };
+
+    // Act
+    const targetContainer = service.getTargetContainer(mockEvent);
+
+    // Assert
+    expect(targetContainer).toBe(undefined);
+  });
+});
 
 describe('getContainerManager branch', () => {
   let service: ContainerService;
   service = new ContainerService();
   
   beforeEach(() => {
+    globalThis.__luigi_container_manager = undefined;
     jest.resetAllMocks();
   });
 
@@ -396,248 +690,5 @@ describe('registerContainer', () => {
     expect(containerManager.container).toEqual([container1, container2]);
     expect(service.getContainerManager).toHaveBeenCalledTimes(2);
 
-  });
-});
-
-describe('getTargetContainer', () => {
-  let service: ContainerService;
-  service = new ContainerService();
-  
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  it('should return the correct container when a matching container is found', () => {
-    // Arrange
-    const mockContainer1 = {
-      iframeHandle: {
-        iframe: {
-          contentWindow: 'source1',
-        },
-      },
-    };
-    const mockContainer2 = {
-      iframeHandle: {
-        iframe: {
-          contentWindow: 'source2',
-        },
-      },
-    };
-
-    globalThis.__luigi_container_manager = {
-      container: [mockContainer1, mockContainer2],
-    };
-
-    const mockEvent = {
-      source: 'source2', // Matched with mockContainer2
-    };
-
-    // Act
-    const targetContainer = service.getTargetContainer(mockEvent);
-
-    // Assert
-    expect(targetContainer).toBe(mockContainer2);
-  });
-
-  it('should return undefined when no matching container is found', () => {
-    // Arrange
-    const mockContainer1 = {
-      iframeHandle: {
-        iframe: {
-          contentWindow: 'source1',
-        },
-      },
-    };
-    const mockContainer2 = {
-      iframeHandle: {
-        iframe: {
-          contentWindow: 'source2',
-        },
-      },
-    };
-
-    globalThis.__luigi_container_manager = {
-      container: [mockContainer1, mockContainer2],
-    };
-
-    const mockEvent = {
-      source: 'source3', // No matching container
-    };
-
-    // Act
-    const targetContainer = service.getTargetContainer(mockEvent);
-
-    // Assert
-    expect(targetContainer).toBe(undefined);
-  });
-});
-
-
-describe('dispatch', () => {
-  let service: ContainerService;
-  service = new ContainerService();
-  
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  it('should dispatch a custom event to the target container, no Callback', () => {
-    // Arrange
-    const targetContainer = document.createElement('div');
-    const eventName = 'customEvent';
-    const eventData = { key: 'value' };
-    targetContainer.dispatchEvent = jest.fn()
-
-    // Act
-    service.dispatch(eventName, targetContainer, eventData);
-
-    // Assert
-    const dispatchedEvent = new CustomEvent(eventName, { detail: eventData });
-    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(dispatchedEvent);
-  });
-
-  it('should execute the callback when provided', () => {
-    // Arrange
-    const targetContainer = document.createElement('div');
-    const eventName = 'customEvent';
-    const eventData = { key: 'value' };
-    targetContainer.dispatchEvent = jest.fn()
-
-    // Define a callback function
-    const callbackFunction = (data) => {
-      // This function should not be called in this test
-    };
-
-    // Act
-    service. dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
-  
-    // Assert
-    globalThis.CustomEvent = jest.fn().mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
-
-    const dispatchedEventMock = {"isTrusted": false, "onCallback": expect.any(Function)};
-    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith( expect.objectContaining(dispatchedEventMock));
-  });
-});
-
-
-describe('isVisible', () => {
-  let service: ContainerService;
-  service = new ContainerService();
-  
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  it('should return true for a visible element', () => {
-    // Arrange
-    const visibleElement = document.createElement('div');
-    jest.spyOn(visibleElement, 'offsetWidth', 'get').mockImplementation(() => 200)
-    document.body.appendChild(visibleElement);
-
-    // Act
-    const result = service.isVisible(visibleElement);
-
-    // Assert
-    expect(result).toBe(true);
-  });
-
-  it('should return false for a hidden element', () => {
-    // Arrange
-    const hiddenElement = document.createElement('div');
-    hiddenElement.style.display = 'none';
-    document.body.appendChild(hiddenElement);
-
-    // Act
-    const result = service.isVisible(hiddenElement);
-
-    // Assert
-    expect(result).toBe(false);
-  });
-
-  it('should return false for an element with zero dimensions', () => {
-    // Arrange
-    const zeroSizeElement = document.createElement('div');
-    zeroSizeElement.style.width = '0';
-    zeroSizeElement.style.height = '0';
-    document.body.appendChild(zeroSizeElement);
-
-    // Act
-    const result = service.isVisible(zeroSizeElement);
-
-    // Assert
-    expect(result).toBe(false);
-  });
-});
-
-describe('sendCustomMessageToIframe', () => {
-  let service: ContainerService;
-  service = new ContainerService();
-  
-  beforeEach(() => {
-    jest.resetAllMocks();
-  });
-
-  it('should send a custom message to the iframe', () => {
-    // Arrange
-    const iframeHandle = {
-      iframe: {
-        contentWindow: {
-          postMessage: jest.fn(),
-        },
-        src: 'https://example.com',
-      },
-    };
-    const message = { key: 'value' };
-    
-    // Act
-    service.sendCustomMessageToIframe(iframeHandle, message);
-
-    // Assert
-    expect(iframeHandle.iframe.contentWindow.postMessage).toHaveBeenCalledWith(
-      { msg: 'custom', data: message },
-      'https://example.com'
-    );
-  });
-
-  it('should send a named message to the iframe', () => {
-    // Arrange
-    const iframeHandle = {
-      iframe: {
-        contentWindow: {
-          postMessage: jest.fn(),
-        },
-        src: 'https://example.com',
-      },
-    };
-    const message = { key: 'value' };
-    
-    // Act
-    service.sendCustomMessageToIframe(iframeHandle, message, 'namedMessage');
-
-    // Assert
-    expect(iframeHandle.iframe.contentWindow.postMessage).toHaveBeenCalledWith(
-      { msg: 'namedMessage', key: 'value' },
-      'https://example.com'
-    );
-  });
-
-  it('should log an error if contentWindow is not available', () => {
-    // Arrange
-    const iframeHandle = {
-      iframe: {},
-    };
-    const message = { key: 'value' };
-    
-    // Spy on console.error to capture the log message
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-    // Act
-    service.sendCustomMessageToIframe(iframeHandle, message);
-
-    // Assert
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Message target could not be resolved');
-
-    // Restore the original console.error function
-    consoleErrorSpy.mockRestore();
   });
 });
