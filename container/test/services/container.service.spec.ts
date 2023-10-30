@@ -568,3 +568,76 @@ describe('isVisible', () => {
     expect(result).toBe(false);
   });
 });
+
+describe('sendCustomMessageToIframe', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should send a custom message to the iframe', () => {
+    // Arrange
+    const iframeHandle = {
+      iframe: {
+        contentWindow: {
+          postMessage: jest.fn(),
+        },
+        src: 'https://example.com',
+      },
+    };
+    const message = { key: 'value' };
+    
+    // Act
+    service.sendCustomMessageToIframe(iframeHandle, message);
+
+    // Assert
+    expect(iframeHandle.iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      { msg: 'custom', data: message },
+      'https://example.com'
+    );
+  });
+
+  it('should send a named message to the iframe', () => {
+    // Arrange
+    const iframeHandle = {
+      iframe: {
+        contentWindow: {
+          postMessage: jest.fn(),
+        },
+        src: 'https://example.com',
+      },
+    };
+    const message = { key: 'value' };
+    
+    // Act
+    service.sendCustomMessageToIframe(iframeHandle, message, 'namedMessage');
+
+    // Assert
+    expect(iframeHandle.iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      { msg: 'namedMessage', key: 'value' },
+      'https://example.com'
+    );
+  });
+
+  it('should log an error if contentWindow is not available', () => {
+    // Arrange
+    const iframeHandle = {
+      iframe: {},
+    };
+    const message = { key: 'value' };
+    
+    // Spy on console.error to capture the log message
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    // Act
+    service.sendCustomMessageToIframe(iframeHandle, message);
+
+    // Assert
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Message target could not be resolved');
+
+    // Restore the original console.error function
+    consoleErrorSpy.mockRestore();
+  });
+});
