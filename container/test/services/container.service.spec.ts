@@ -335,18 +335,8 @@ describe('getContainerManager messageListener', () => {
     expect(dispatchedEvent.type).toEqual(Events.SET_DIRTY_STATUS_REQUEST);
   });
 
-  it('test third-party-cookie', () => {
-    const event = {
-      data: {
-        msg: 'luigi.third-party-cookie',
-      }
-    };
-    cm.messageListener(event);
-  });
-
 
   it('test default', () => {
-    // const consoleErrorSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     console.warn = jest.fn()
     const consoleWarnSpy = jest.spyOn(console, 'warn');
     const event = {
@@ -356,9 +346,7 @@ describe('getContainerManager messageListener', () => {
       }
     };
     cm.messageListener(event);
-    expect(consoleWarnSpy).toHaveBeenCalledWith('Functionality not yet implemented: ','no-func')
-
-    // expect(console.warn ).toHaveBeenCalled();
+    expect(consoleWarnSpy).toHaveBeenCalledWith('Functionality not yet implemented: ','no-func');
   });
 
 });
