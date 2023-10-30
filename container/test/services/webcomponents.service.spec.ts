@@ -737,7 +737,7 @@ describe('renderWebComponentCompound', () => {
     service = new WebComponentService()
   });
 
-  it('simple call', async () => {
+  it('resolved', async () => {
     jest.spyOn(helperFunctions, 'resolveRenderer');
     service.createCompoundContainerAsync = jest.fn();
     service.renderWebComponent = jest.fn();
@@ -768,7 +768,7 @@ describe('renderWebComponentCompound', () => {
 
   });
 
-  it('simple call', async () => {
+  it('rejected',  () => {
     jest.spyOn(helperFunctions, 'resolveRenderer');
     service.createCompoundContainerAsync = jest.fn();
     service.renderWebComponent = jest.fn();
@@ -777,7 +777,7 @@ describe('renderWebComponentCompound', () => {
 
     // Mock createCompoundContainerAsync to return a mock compound container
     const mockCompoundContainer = document.createElement('div');
-    service.createCompoundContainerAsync = jest.fn().mockRejectedValue(mockCompoundContainer);
+    service.createCompoundContainerAsync = jest.fn().mockRejectedValue({});
 
     const navNode = {};
     //   compound: {
@@ -786,8 +786,13 @@ describe('renderWebComponentCompound', () => {
     // };
     const wc_container = document.createElement('div');
     const context = {}
+    service.containerService = new ContainerService();
     service.containerService.dispatch = jest.fn();
-    const spyDispatch = jest.spyOn(service.containerService, 'dispatch');
+
+    const cServiceSpy = jest.spyOn(service.containerService, 'dispatch').mockImplementation();
+
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
 
     // Call the function
     service.renderWebComponentCompound(navNode, wc_container, context);
@@ -795,12 +800,53 @@ describe('renderWebComponentCompound', () => {
     // Assertions
     expect(helperFunctions.resolveRenderer).toHaveBeenCalledTimes(0);
     expect(service.createCompoundContainerAsync).toHaveBeenCalledTimes(1);
+    // expect(service.createCompoundContainerAsync.rejects).toBeCalled()
     expect(service.registerEventListeners).toHaveBeenCalledTimes(0);
     expect(service.renderWebComponent).toHaveBeenCalledTimes(0);
-    // expect(service.containerService.dispatch).toHaveBeenCalled();
+    // expect(cServiceSpy).toHaveBeenCalled();
     // Additional assertions based on your specific use case
 
   });
+
+  // it.only('r2r2',  () => {
+  //   const navNode = {};
+  //   const wc_container = document.createElement('div');
+  //   const context = {}
+  //   service.containerService = new ContainerService();
+
+  //   // Mock createCompoundContainerAsync to reject the Promise
+  //   const mockCreateCompoundContainerAsync = jest.spyOn(service, 'createCompoundContainerAsync');
+  //   mockCreateCompoundContainerAsync.mockRejectedValue(new Error('Test error'));
+
+  //   // Mock dispatch
+  //   const mockDispatch = jest.spyOn(service.containerService, 'dispatch');
+
+  //   // Spy on console.warn
+  //   const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+  //   // Act: Call myFuncLOT
+  //   return service.renderWebComponentCompound(navNode, wc_container, context)
+  //     .then(() => {
+  //       // Assert
+  //       // Verify that createCompoundContainerAsync was called
+  //       expect(mockCreateCompoundContainerAsync).toHaveBeenCalled();
+
+  //       // Verify that dispatch was called with an error
+  //       expect(mockDispatch).toHaveBeenCalledWith(expect.any(Error));
+
+  //       // Verify that console.warn was called with an error
+  //       expect(consoleWarnSpy).toHaveBeenCalledWith(expect.any(Error));
+
+  //       // Optionally, you can add more assertions as needed
+
+  //       // Restore the original console.warn function
+  //       consoleWarnSpy.mockRestore();
+  //     })
+  //     .catch(error => {
+  //       // Handle errors in the test
+  //       throw error; // Rethrow the error for test failure
+  //     });
+  // })
 });
 
 describe('createCompoundContainerAsync', () => {
