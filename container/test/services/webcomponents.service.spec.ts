@@ -91,6 +91,24 @@ describe('attachWC', () => {
     expect(dispatchEventSpy).toHaveBeenCalledWith(new Event('wc_ready'));
   });
 
+  it('_luigi_node provided', () => {
+    const innerWCElement = document.createElement(wc_id);
+    
+    // Mock methods to spy on them
+    const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
+    wc_container.replaceChild = jest.fn();
+    (wc_container as any)._luigi_node = {test: 'node'};
+
+    // Act
+    service.attachWC(wc_id, wcItemPlaceholder, wc_container, null, viewUrl, undefined);
+
+    // Assert
+    expect(wc_container.replaceChild).toHaveBeenCalledWith(innerWCElement, wcItemPlaceholder);
+    expect((wc_container as any)._luigi_mfe_webcomponent).toEqual(innerWCElement);
+
+    expect(dispatchEventSpy).toHaveBeenCalledWith(new Event('wc_ready'));
+  });
+
 });
 
 describe('dispatchLuigiEvent', () => {
@@ -577,20 +595,6 @@ describe('createClientAPI', () => {
     expect(result).toEqual(paramsObject);
   });
 
-  // it('test getClientPermissions UNDEFINED attribute', () => {
-  //   // mock and spy on data/functions
-  //   service.thisComponent = document.createElement('div');
-  //   service.thisComponent.getAttribute = jest.fn().mockReturnValue(undefined);
-
-  //   // act
-  //   const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
-  //   const result = clientAPI.getClientPermissions();
-
-  //   // assert
-  //   expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('client-permissions');
-  //   expect(result).toEqual({}); // SHOULD WORK, NEED CHANGE CODE
-  // });
-
   it('test getUserSettings WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
@@ -606,21 +610,6 @@ describe('createClientAPI', () => {
     expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('user-settings');
     expect(result).toEqual(paramsObject);
   });
-
-  // it('test getUserSettings UNDEFINED attribute', () => {
-  //   // mock and spy on data/functions
-  //   service.thisComponent = document.createElement('div');
-  //   service.thisComponent.getAttribute = jest.fn().mockReturnValue(undefined);
-
-  //   // act
-  //   const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
-  //   const result = clientAPI.getUserSettings();
-
-  //   // assert
-  //   expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('client-permissions');
-  //   expect(result).toEqual({}); // SHOULD WORK, NEED CHANGE CODE
-  // });
-
 });
 
 describe('initWC', () => {
@@ -774,25 +763,14 @@ describe('renderWebComponentCompound', () => {
     service.renderWebComponent = jest.fn();
     service.registerEventListeners = jest.fn();
 
-
     // Mock createCompoundContainerAsync to return a mock compound container
-    const mockCompoundContainer = document.createElement('div');
     service.createCompoundContainerAsync = jest.fn().mockRejectedValue({});
 
     const navNode = {};
-    //   compound: {
-    //     children: []
-    //   }
-    // };
     const wc_container = document.createElement('div');
     const context = {}
     service.containerService = new ContainerService();
     service.containerService.dispatch = jest.fn();
-
-    const cServiceSpy = jest.spyOn(service.containerService, 'dispatch').mockImplementation();
-
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
 
     // Call the function
     service.renderWebComponentCompound(navNode, wc_container, context);
@@ -800,53 +778,9 @@ describe('renderWebComponentCompound', () => {
     // Assertions
     expect(helperFunctions.resolveRenderer).toHaveBeenCalledTimes(0);
     expect(service.createCompoundContainerAsync).toHaveBeenCalledTimes(1);
-    // expect(service.createCompoundContainerAsync.rejects).toBeCalled()
     expect(service.registerEventListeners).toHaveBeenCalledTimes(0);
     expect(service.renderWebComponent).toHaveBeenCalledTimes(0);
-    // expect(cServiceSpy).toHaveBeenCalled();
-    // Additional assertions based on your specific use case
-
   });
-
-  // it.only('r2r2',  () => {
-  //   const navNode = {};
-  //   const wc_container = document.createElement('div');
-  //   const context = {}
-  //   service.containerService = new ContainerService();
-
-  //   // Mock createCompoundContainerAsync to reject the Promise
-  //   const mockCreateCompoundContainerAsync = jest.spyOn(service, 'createCompoundContainerAsync');
-  //   mockCreateCompoundContainerAsync.mockRejectedValue(new Error('Test error'));
-
-  //   // Mock dispatch
-  //   const mockDispatch = jest.spyOn(service.containerService, 'dispatch');
-
-  //   // Spy on console.warn
-  //   const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-  //   // Act: Call myFuncLOT
-  //   return service.renderWebComponentCompound(navNode, wc_container, context)
-  //     .then(() => {
-  //       // Assert
-  //       // Verify that createCompoundContainerAsync was called
-  //       expect(mockCreateCompoundContainerAsync).toHaveBeenCalled();
-
-  //       // Verify that dispatch was called with an error
-  //       expect(mockDispatch).toHaveBeenCalledWith(expect.any(Error));
-
-  //       // Verify that console.warn was called with an error
-  //       expect(consoleWarnSpy).toHaveBeenCalledWith(expect.any(Error));
-
-  //       // Optionally, you can add more assertions as needed
-
-  //       // Restore the original console.warn function
-  //       consoleWarnSpy.mockRestore();
-  //     })
-  //     .catch(error => {
-  //       // Handle errors in the test
-  //       throw error; // Rethrow the error for test failure
-  //     });
-  // })
 });
 
 describe('createCompoundContainerAsync', () => {
@@ -925,4 +859,97 @@ describe('createCompoundContainerAsync', () => {
     // Act and Assert
     await expect(service.createCompoundContainerAsync(renderer, ctx)).resolves.toEqual(renderer.createCompoundContainer());
   });
+});
+
+describe('registerWCFromUrl', () => {
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks(); // Clear mock function call history after each test
+    jest.resetAllMocks()
+  });
+
+  it('should successfully register a web component customElements get = UNDEFINED', async () => {
+    // Arrange
+    const viewUrl = 'valid-view-url';
+    const wc_id = 'custom-element-id';
+
+    // Mock the dynamicImport function to return a module with a valid
+    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined)
+
+    service.dynamicImport = jest.fn((viewUrl) =>
+      Promise.resolve({
+        default: class ValidWebComponent extends HTMLElement {},
+      })
+    );
+    window.customElements.define = jest.fn();
+
+    // act
+    const result = await service.registerWCFromUrl(viewUrl, wc_id);
+
+    // Assert
+    expect(result).toBe(1); // Registration successful
+    expect(service.dynamicImport).toHaveBeenCalledWith('valid-view-url');
+    expect(service.dynamicImport).resolves;
+    expect(spy).toHaveBeenCalled()
+    expect(window.customElements.define).toHaveBeenCalled();
+
+
+    // expect(window.customElements.define).toHaveBeenCalledWith('custom-element-id', expect.any(Function));
+  });
+
+  // it('should reject the promise when registration fails', async () => {
+  //   // Arrange
+  //   const viewUrl = 'valid-view-url';
+  //   const wc_id = 'custom-element-id';
+
+  //   // Mock the dynamicImport function to return a module with an error
+    
+  //   jest.spyOn(window as any, 'customElements').mockImplementation(() => ({
+  //     get: jest.fn(() => undefined),
+  //     define: jest.fn(),
+  //   }));
+  //   const dynamicImportMock = jest.fn(() => Promise.reject('Registration error'));
+  //   jest.spyOn(window, 'fetch').mockImplementation(() =>
+  //     (Promise as any).resolve({
+  //       ok: true,
+  //       json: () => Promise.resolve({}),
+  //     })
+  //   );
+
+  //   // Act and assert
+  //   await expect(service.registerWCFromUrl(viewUrl, wc_id)).rejects.toEqual('Registration error');
+  //   expect(dynamicImportMock).toHaveBeenCalledWith('valid-view-url');
+  // });
+
+  // it('should reject the promise when the view URL is not allowed', async () => {
+  //   // Arrange
+  //   const viewUrl = 'forbidden-view-url';
+  //   const wc_id = 'custom-element-id';
+
+  //   // Mock the dynamicImport function to return a module with a valid web component
+  //   jest.spyOn(window as any, 'customElements').mockImplementation(() => ({
+  //     get: jest.fn(() => undefined),
+  //     define: jest.fn(),
+  //   }));
+  //   const dynamicImportMock = jest.fn(() =>
+  //     Promise.resolve({
+  //       default: class ValidWebComponent extends HTMLElement {},
+  //     })
+  //   );
+  //   jest.spyOn(window, 'fetch').mockImplementation(() =>
+  //     (Promise as any).resolve({
+  //       ok: true,
+  //       json: () => Promise.resolve({}),
+  //     })
+  //   );
+
+  //   // Act and assert
+  //   await expect(service.registerWCFromUrl(viewUrl, wc_id)).rejects.toEqual('Error: View URL \'forbidden-view-url\' not allowed to be included');
+  // });
+
 });

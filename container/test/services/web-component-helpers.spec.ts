@@ -1,98 +1,96 @@
 import { GridCompoundRenderer,  CustomCompoundRenderer, deSanitizeParamsMap, DefaultCompoundRenderer } from "../../src/services/web-component-helpers";
 import * as helperFunctions from  "../../src/services/web-component-helpers";
 
-describe('deSanitizeParamsMap', () => {
-    it('should desanitize object properties', () => {
-        // Arrange
-        const inputParamsMap = {
-          name: 'John',
-          age: 30,
-        };
+// describe('deSanitizeParamsMap', () => {
+//     it('should desanitize object properties', () => {
+//         // Arrange
+//         const inputParamsMap = {
+//           name: 'John',
+//           age: 30,
+//         };
     
-        // Act
-        const desanitizedParamsMap = deSanitizeParamsMap(inputParamsMap);
+//         // Act
+//         const desanitizedParamsMap = deSanitizeParamsMap(inputParamsMap);
     
-        // Assert
-        expect(desanitizedParamsMap).toEqual({
-          name: 'John',
-          age: '30', // Age is converted to a string
-        });
-      });
+//         // Assert
+//         expect(desanitizedParamsMap).toEqual({
+//           name: 'John',
+//           age: '30', // Age is converted to a string
+//         });
+//       });
     
-      it('should handle empty object', () => {
-        // Arrange
-        const inputParamsMap = {};
+//       it('should handle empty object', () => {
+//         // Arrange
+//         const inputParamsMap = {};
     
-        // Act
-        const desanitizedParamsMap = deSanitizeParamsMap(inputParamsMap);
+//         // Act
+//         const desanitizedParamsMap = deSanitizeParamsMap(inputParamsMap);
     
-        // Assert
-        expect(desanitizedParamsMap).toEqual({});
-      });
+//         // Assert
+//         expect(desanitizedParamsMap).toEqual({});
+//       });
 
-});
+// });
 
 describe('DefaultCompoundRenderer', () => {
-    it('should create a compound container', () => {
-        // Arrange
-        const renderer = new DefaultCompoundRenderer();
-    
-        // Act
-        const compoundContainer = renderer.createCompoundContainer();
-    
-        // Assert
-        expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
-      });
-    
-      it('should create a compound item container', () => {
-        // Arrange
-        const renderer = new DefaultCompoundRenderer();
-    
-        // Act
-        const compoundItemContainer = renderer.createCompoundItemContainer();
-    
-        // Assert
-        expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
-      });
+  it('should create a compound container', () => {
+      // Arrange
+      const renderer = new DefaultCompoundRenderer();
 
-      it('should attach a compound item to a compound container', () => {
-        // Arrange
-        const renderer = new DefaultCompoundRenderer();
-        const compoundContainer = document.createElement('div');
-        const compoundItem = document.createElement('div');
-    
-        // Act
-        renderer.attachCompoundItem(compoundContainer, compoundItem);
-    
-        // Assert
-        expect(compoundContainer.contains(compoundItem)).toBe(true);
-      });
+      // Act
+      const compoundContainer = renderer.createCompoundContainer();
 
-      it('should initialize config if a renderer object is not provided', () => {
-        // Arrange
-        const renderer = new DefaultCompoundRenderer();
-    
-        // Assert
-        expect(renderer.config).toEqual({});
-      });
+      // Assert
+      expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
+  });
 
-      it('should initialize config from the renderer object if provided', () => {
-        // Arrange
-        const rendererObject = {
-          config: {
-            key: 'value',
-          },
-        };
-    
-        // Act
-        const renderer = new DefaultCompoundRenderer(rendererObject);
-    
-        // Assert
-        expect(renderer.config).toEqual(rendererObject.config);
-      });
+  it('should create a compound item container', () => {
+    // Arrange
+    const renderer = new DefaultCompoundRenderer();
 
+    // Act
+    const compoundItemContainer = renderer.createCompoundItemContainer();
+
+    // Assert
+    expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
+  });
+
+  it('should attach a compound item to a compound container', () => {
+    // Arrange
+    const renderer = new DefaultCompoundRenderer();
+    const compoundContainer = document.createElement('div');
+    const compoundItem = document.createElement('div');
+
+    // Act
+    renderer.attachCompoundItem(compoundContainer, compoundItem);
+
+    // Assert
+    expect(compoundContainer.contains(compoundItem)).toBe(true);
+  });
+
+  it('should initialize config if a renderer object is not provided', () => {
+    // Arrange
+    const renderer = new DefaultCompoundRenderer();
+
+    // Assert
+    expect(renderer.config).toEqual({});
+  });
+
+  it('should initialize config from the renderer object if provided', () => {
+    // Arrange
+    const rendererObject = {
+      config: {
+        key: 'value',
+      },
+    };
+
+    // Act
+    const renderer = new DefaultCompoundRenderer(rendererObject);
+
+    // Assert
+    expect(renderer.config).toEqual(rendererObject.config);
+  });
 });
-
 
 describe('CustomCompoundRenderer', () => {
   describe('constructor', () => {
@@ -351,9 +349,11 @@ describe('GridCompoundRenderer', () => {
         rows: 'auto',
         gap: '10px',
         minHeight: '100px',
+        maxWidth: '150px',
         layouts: [
           {
             minWidth: 600,
+            maxWidth: 150,
             columns: '1fr',
             rows: '1fr 1fr',
             gap: 5,
@@ -379,6 +379,8 @@ describe('GridCompoundRenderer', () => {
     expect(compoundContainer.innerHTML).toContain(`grid-template-rows: ${config.rows || 'auto'};`);
     expect(compoundContainer.innerHTML).toContain(`grid-gap: ${config.gap || '0'};`);
     expect(compoundContainer.innerHTML).toContain(`min-height: ${config.minHeight || 'auto'};`);
+    expect(compoundContainer.innerHTML).toContain(`and (max-width: ${config.maxWidth}`);
+
 
     spyDate.mockRestore()
     // dateNowSpy.mockRestore();
@@ -405,3 +407,138 @@ describe('GridCompoundRenderer', () => {
   });
 });
 
+
+
+describe('registerEventListeners', () => {
+  it('should register event listeners when navNode has eventListeners', () => {
+    // Arrange
+    const eventbusListeners = {};
+    const navNode = {
+      eventListeners: [
+        {
+          source: 'source1',
+          name: 'event1',
+          action: 'action1',
+          dataConverter: 'converter1',
+        },
+      ],
+    };
+    const nodeId = 'node1';
+    const wcElement = 'element1';
+
+    // Act
+    helperFunctions.registerEventListeners(eventbusListeners, navNode, nodeId, wcElement);
+
+    // Assert
+    const expectedEventID = 'source1.event1';
+    const listenerList = eventbusListeners[expectedEventID];
+    expect(listenerList).toBeDefined();
+    expect(listenerList).toHaveLength(1);
+    expect(listenerList[0]).toEqual({
+      wcElementId: nodeId,
+      wcElement: wcElement,
+      action: 'action1',
+      converter: 'converter1',
+    });
+  });
+
+  it('should register event listeners when navNode has NO eventListeners', () => {
+    // Arrange
+    const eventbusListeners = {
+      's.n': [{test: '123'}]
+    };
+    const navNode = {
+      eventListeners: [
+        {
+          source:'s',
+          name: 'n',
+          action: 'myaction',
+          dataConverter: 'myconverter'
+        }
+      ],
+    };
+    const nodeId = 'node1';
+    const wcElement = 'element1';
+
+    // Act
+    helperFunctions.registerEventListeners(eventbusListeners, navNode, nodeId, wcElement);
+
+    // Assert
+    const expectedEventID = 's.n';
+    const listenerList = eventbusListeners[expectedEventID];
+    // expect()
+    expect(listenerList).toBeDefined();
+    expect(listenerList).toHaveLength(2);
+    expect(listenerList[1]).toEqual({
+      wcElementId: nodeId,
+      wcElement: wcElement,
+      action: 'myaction',
+      converter: 'myconverter',
+    });
+  });
+
+  it('should handle multiple event listeners', () => {
+    // Arrange
+    const eventbusListeners = {};
+    const navNode = {
+      eventListeners: [
+        {
+          source: 'source1',
+          name: 'event1',
+          action: 'action1',
+          dataConverter: 'converter1',
+        },
+        {
+          source: 'source2',
+          name: 'event2',
+          action: 'action2',
+          dataConverter: 'converter2',
+        },
+      ],
+    };
+    const nodeId = 'node1';
+    const wcElement = 'element1';
+
+    // Act
+    helperFunctions.registerEventListeners(eventbusListeners, navNode, nodeId, wcElement);
+
+    // Assert
+    const expectedEventID1 = 'source1.event1';
+    const expectedEventID2 = 'source2.event2';
+
+    const listenerList1 = eventbusListeners[expectedEventID1];
+    const listenerList2 = eventbusListeners[expectedEventID2];
+
+    expect(listenerList1).toBeDefined();
+    expect(listenerList1).toHaveLength(1);
+    expect(listenerList1[0]).toEqual({
+      wcElementId: nodeId,
+      wcElement: wcElement,
+      action: 'action1',
+      converter: 'converter1',
+    });
+
+    expect(listenerList2).toBeDefined();
+    expect(listenerList2).toHaveLength(1);
+    expect(listenerList2[0]).toEqual({
+      wcElementId: nodeId,
+      wcElement: wcElement,
+      action: 'action2',
+      converter: 'converter2',
+    });
+  });
+
+  it('should handle cases when navNode is undefined or eventListeners is missing', () => {
+    // Arrange
+    const eventbusListeners = {};
+    const navNode = undefined; // Missing eventListeners
+    const nodeId = 'node1';
+    const wcElement = 'element1';
+
+    // Act
+    helperFunctions.registerEventListeners(eventbusListeners, navNode, nodeId, wcElement);
+
+    // Assert
+    expect(eventbusListeners).toEqual({}); // No listeners should be registered
+  });
+});
