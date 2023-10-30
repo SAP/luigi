@@ -347,13 +347,17 @@ describe('getContainerManager messageListener', () => {
 
   it('test default', () => {
     // const consoleErrorSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-    console.warn = jest.fn();
+    console.warn = jest.fn()
+    const consoleWarnSpy = jest.spyOn(console, 'warn');
     const event = {
+      source: cw,
       data: {
         msg: 'no-func',
       }
     };
     cm.messageListener(event);
+    expect(consoleWarnSpy).toHaveBeenCalledWith('Functionality not yet implemented: ','no-func')
+
     // expect(console.warn ).toHaveBeenCalled();
   });
 
