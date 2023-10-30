@@ -869,6 +869,7 @@ describe('createCompoundContainerAsync', () => {
     const ctx = {}
     const mockGeneratedWCId = 'mocked-wc-id';
     const mockWebComponent = document.createElement(mockGeneratedWCId);
+    const navNode = {}
 
     service.initWC = jest.fn();
     service.registerWCFromUrl = jest.fn().mockResolvedValue(mockWebComponent);
@@ -876,7 +877,7 @@ describe('createCompoundContainerAsync', () => {
     service.containerService.dispatch = jest.fn();
 
     // Act and Assert
-    const result = await service.createCompoundContainerAsync(renderer, ctx)
+    const result = await service.createCompoundContainerAsync(renderer, ctx, navNode)
     expect(result).toEqual(mockWebComponent);
 
     // Additional Assertions
