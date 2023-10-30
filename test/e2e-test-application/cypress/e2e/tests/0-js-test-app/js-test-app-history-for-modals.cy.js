@@ -45,6 +45,7 @@ describe('JS-TEST-APP', () => {
   };
 
   const expectedPathAfterForward = path => {
+    cy.wait(500);
     cy.go('forward');
     cy.expectPathToBe(path);
     cy.location().should(location => {
@@ -53,6 +54,7 @@ describe('JS-TEST-APP', () => {
   };
 
   const expectedPathAfterBack = path => {
+    cy.wait(500);
     cy.go(-1);
     cy.expectPathToBe(path);
     cy.location().should(location => {
