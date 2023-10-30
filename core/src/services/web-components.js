@@ -259,16 +259,23 @@ class WebComponentSvcClass {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer, ctx) {
+  createCompoundContainerAsync(renderer, ctx, navNode) {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
           const wc_id = this.generateWCId(renderer.viewUrl);
-          this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
-            const wc = document.createElement(wc_id);
-            this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
-            resolve(wc);
-          });
+          const wc = document.createElement(wc_id);
+          if (navNode?.webcomponent?.selfRegistered) {
+            this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
+              this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+              resolve(wc);
+            });
+          } else {
+            this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
+              this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+              resolve(wc);
+            });
+          }
         } catch (e) {
           reject(e);
         }
@@ -307,7 +314,7 @@ class WebComponentSvcClass {
     renderer = renderer || new DefaultCompoundRenderer();
 
     return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer, extendedContext).then(compoundCnt => {
+      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundCnt => {
         const ebListeners = {};
         compoundCnt.eventBus = {
           listeners: ebListeners,
