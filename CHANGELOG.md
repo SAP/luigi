@@ -25,6 +25,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.7.1] (2023-10-27)
+
+#### :bug: Fixed
+* [#3487](https://github.com/SAP/luigi/pull/3487) Self registered compound node ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
 ## [v2.7.0] (2023-10-18)
 
 #### :rocket: Added
@@ -1662,3 +1671,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.6.2]: https://github.com/SAP/luigi/compare/v2.6.1...v2.6.2
 [v2.6.3]: https://github.com/SAP/luigi/compare/v2.6.2...v2.6.3
 [v2.7.0]: https://github.com/SAP/luigi/compare/v2.6.3...v2.7.0
+[v2.7.1]: https://github.com/SAP/luigi/compare/v2.7.0...v2.7.1
