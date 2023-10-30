@@ -471,3 +471,50 @@ describe('getTargetContainer', () => {
     expect(targetContainer).toBe(undefined);
   });
 });
+
+
+describe('dispatch', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should dispatch a custom event to the target container, no Callback', () => {
+    // Arrange
+    const targetContainer = document.createElement('div');
+    const eventName = 'customEvent';
+    const eventData = { key: 'value' };
+    targetContainer.dispatchEvent = jest.fn()
+
+    // Act
+    service.dispatch(eventName, targetContainer, eventData);
+
+    // Assert
+    const dispatchedEvent = new CustomEvent(eventName, { detail: eventData });
+    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith(dispatchedEvent);
+  });
+
+  it('should execute the callback when provided', () => {
+    // Arrange
+    const targetContainer = document.createElement('div');
+    const eventName = 'customEvent';
+    const eventData = { key: 'value' };
+    targetContainer.dispatchEvent = jest.fn()
+
+    // Define a callback function
+    const callbackFunction = (data) => {
+      // This function should not be called in this test
+    };
+
+    // Act
+    service. dispatch(eventName, targetContainer, eventData, callbackFunction, 'onCallback');
+  
+    // Assert
+    globalThis.CustomEvent = jest.fn().mockImplementation((type, eventInit) => ({ isTrusted: false, onCallback: callbackFunction }));
+
+    const dispatchedEventMock = {"isTrusted": false, "onCallback": expect.any(Function)};
+    expect(targetContainer.dispatchEvent).toHaveBeenCalledWith( expect.objectContaining(dispatchedEventMock));
+  });
+});
