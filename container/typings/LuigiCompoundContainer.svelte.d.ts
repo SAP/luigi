@@ -3,7 +3,6 @@ export declare interface UserSettings {
 }
 
 export declare interface WebComponentSettings {
-  id?: any;
   type?: string;
   selfRegistered?: boolean;
   tagName?: string;
