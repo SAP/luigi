@@ -12,7 +12,7 @@ import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() { }
+  constructor() {}
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -89,7 +89,7 @@ class WebComponentSvcClass {
       getUserSettings: async () => {
         return await this.getUserSettingsForWc(eventBusElement._luigi_node);
       },
-      setViewGroupData: (data) => {
+      setViewGroupData: data => {
         const vg = NavigationHelpers.findViewGroup(eventBusElement._luigi_node);
         if (vg) {
           const vgSettings = NavigationHelpers.getViewGroupSettings(vg);

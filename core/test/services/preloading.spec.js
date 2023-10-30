@@ -23,7 +23,7 @@ describe('Iframe', () => {
         Object.assign(lastObj, obj);
       },
       get: () => lastObj,
-      prepareInternalData: () => { }
+      prepareInternalData: () => {}
     };
     preloadingAllowed = false;
     sinon.stub(GenericHelpers);

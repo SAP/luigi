@@ -30,7 +30,7 @@ describe('Iframe', () => {
         Object.assign(lastObj, obj);
       },
       get: () => lastObj,
-      prepareInternalData: () => { }
+      prepareInternalData: () => {}
     };
     sinon.stub(Iframe, 'setOkResponseHandler');
     sinon.stub(NavigationHelpers, 'handleUnresponsiveClient');
