@@ -2466,9 +2466,6 @@
 
 
   /** Tool layout fd styles adjustments */
-        .fd-tool-layout.fd-tool-layout--sticky .lui-main-content {
-          overflow: visible;
-        }
 
         .fd-tool-layout--sticky .fd-tool-layout__content-container {
           overflow: auto;
