@@ -159,8 +159,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   /**
@@ -204,7 +204,7 @@ class RoutingClass {
         this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
       },
       // user clicks no, do nothing, reject promise
-      () => {}
+      () => { }
     );
   }
 
@@ -367,7 +367,7 @@ class RoutingClass {
       const hideNav = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
       const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
       const nodeParams = RoutingHelpers.getNodeParams(params);
-      const viewGroup = RoutingHelpers.findViewGroup(nodeObject);
+      const viewGroup = NavigationHelpers.findViewGroup(nodeObject);
       const urlParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
       const currentNode =
         pathData.navigationPath && pathData.navigationPath.length > 0
@@ -443,10 +443,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );

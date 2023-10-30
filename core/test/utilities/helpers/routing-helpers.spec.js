@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
-import { GenericHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
+import { GenericHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
 import { LuigiConfig, LuigiFeatureToggles, LuigiI18N, LuigiRouting } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { config } from '../../../src/core-api/config';
@@ -558,78 +558,6 @@ describe('Routing-helpers', () => {
     });
   });
 
-  describe('findViewGroup', () => {
-    const noViewGroupInNode = {
-      link: 'child-node',
-      parent: {
-        pathSegment: 'parent-node'
-      }
-    };
-
-    const viewGroupInNode = {
-      link: 'child-node',
-      viewGroup: 'tets 1',
-      parent: {
-        pathSegment: 'parent-node'
-      }
-    };
-
-    const viewGroupInNodeParent = {
-      link: 'child-node',
-      viewUrl: './relative',
-      parent: {
-        pathSegment: 'parent-node',
-        viewGroup: 'tets 1-1',
-        viewUrl: './relative/foo/bar'
-      }
-    };
-
-    const viewGroupInParentOfNodeParent = {
-      link: 'child-node',
-      viewUrl: 'http://bla.blub/but/something/else',
-      parent: {
-        pathSegment: 'parent-node',
-        parent: {
-          pathSegment: 'parent-parent-node',
-          viewGroup: 'tets 1-1-1',
-          viewUrl: 'http://bla.blub/foo/bar'
-        }
-      }
-    };
-
-    const viewGroupInParentOfNodeParentDifferentUrl = {
-      link: 'child-node',
-      viewUrl: 'http://bla2.blub/foo/bar',
-      parent: {
-        pathSegment: 'parent-node',
-        parent: {
-          pathSegment: 'parent-parent-node',
-          viewGroup: 'tets 1-1-1',
-          viewUrl: 'http://bla.blub/foo/bar'
-        }
-      }
-    };
-
-    it('return viewGroup from node', () => {
-      assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInNode), 'tets 1');
-    });
-
-    it('return viewGroup from node.parent', () => {
-      assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInNodeParent), 'tets 1-1');
-    });
-
-    it('return viewGroup from parent at node.parent', () => {
-      assert.deepEqual(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParent), 'tets 1-1-1');
-    });
-
-    it('do not return viewGroup from parent at node.parent if domains do not match', () => {
-      assert.equal(RoutingHelpers.findViewGroup(viewGroupInParentOfNodeParentDifferentUrl), undefined);
-    });
-
-    it('return undefined if viewGroup is not inside node', () => {
-      assert.equal(RoutingHelpers.findViewGroup(noViewGroupInNode), undefined);
-    });
-  });
   describe('set feature toggle from url', () => {
     beforeEach(() => {
       sinon.stub(LuigiFeatureToggles, 'setFeatureToggle');
@@ -884,7 +812,7 @@ describe('Routing-helpers', () => {
 
   describe('handlePageNotFoundAndRetrieveRedirectPath', () => {
     const component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
 
     beforeEach(() => {

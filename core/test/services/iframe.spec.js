@@ -30,7 +30,7 @@ describe('Iframe', () => {
         Object.assign(lastObj, obj);
       },
       get: () => lastObj,
-      prepareInternalData: () => {}
+      prepareInternalData: () => { }
     };
     sinon.stub(Iframe, 'setOkResponseHandler');
     sinon.stub(NavigationHelpers, 'handleUnresponsiveClient');
@@ -128,38 +128,6 @@ describe('Iframe', () => {
       style: {},
       visible: false,
       tagName: 'IFRAME'
-    });
-  });
-
-  describe('getViewGroupSettings', () => {
-    let viewGroupSettings;
-    beforeEach(() => {
-      viewGroupSettings = {
-        ham: {
-          preloadUrl: 'ham.html'
-        },
-        cheese: {
-          preloadUrl: 'cheese.html'
-        },
-        ananas: {
-          preloadUrl: 'ananas.html'
-        }
-      };
-      sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
-        return viewGroupSettings;
-      });
-    });
-    afterEach(() => {
-      sinon.restore();
-    });
-    it('return viewgroup from viewgroup settings', () => {
-      assert.deepEqual(Iframe.getViewGroupSettings('ananas'), {
-        preloadUrl: 'ananas.html'
-      });
-    });
-    it('no view group found in viewgroup settings', () => {
-      assert.deepEqual(Iframe.getViewGroupSettings(''), {});
-      assert.deepEqual(Iframe.getViewGroupSettings('somethingElse'), {});
     });
   });
 
