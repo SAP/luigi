@@ -878,11 +878,11 @@ settings: {
 - **since**: 1.7.0
 
 <!-- add-attribute:class:warning -->
->**NOTE:** If you have to use the mechanism of `selfRegistered` we recommend to use the the following code in your webcomponent:
+>**NOTE:** If you have to use the mechanism of `selfRegistered`, we recommend using the following code in your web component:
 ```javascript
 window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), <YOUR_WEBCOMPONENT_CLASS>);
 ```
-Advantage of this line of code: You don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
+The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
 
 
 ## Context switcher
