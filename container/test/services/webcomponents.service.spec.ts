@@ -723,7 +723,13 @@ describe('generateWCId function', () => {
 describe('renderWebComponentCompound', () => {
   let service;
   beforeEach(() => {
+    jest.resetAllMocks()
+
     service = new WebComponentService()
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks()
   });
 
   it('resolved', async () => {
@@ -732,16 +738,14 @@ describe('renderWebComponentCompound', () => {
     service.renderWebComponent = jest.fn();
     service.registerEventListeners = jest.fn();
 
-
     // Mock createCompoundContainerAsync to return a mock compound container
     const mockCompoundContainer = document.createElement('div');
     service.createCompoundContainerAsync.mockResolvedValue(mockCompoundContainer);
 
-    const navNode = {};
-    //   compound: {
-    //     children: []
-    //   }
-    // };
+    const navNode = {
+      webcomponent: true,
+      viewUrl :'viewURL-1'
+    };
     const wc_container = document.createElement('div');
     const context = {}
 
@@ -754,7 +758,54 @@ describe('renderWebComponentCompound', () => {
     expect(service.registerEventListeners).toHaveBeenCalledTimes(0);
     expect(service.renderWebComponent).toHaveBeenCalledTimes(0);
     // Additional assertions based on your specific use case
+  });
 
+  it('resolved with onPublishEvent called', async () => {
+    jest.spyOn(helperFunctions, 'resolveRenderer');
+    service.createCompoundContainerAsync = jest.fn();
+    service.renderWebComponent = jest.fn();
+
+    const compoundCntReturn = document.createElement('div');
+    service.createCompoundContainerAsync = jest.fn((renderer, context, navNode) =>
+      Promise.resolve(
+        compoundCntReturn
+      )
+    );
+
+    const renderer =  helperFunctions.resolveRenderer({})
+    const navNode = {
+      compound: {
+        renderer: renderer,
+        children: [
+          {
+            context: 'compoundCtx'
+          }
+        ]
+      }
+    };
+    navNode.compound.renderer.createCompoundItemContainer = jest.fn()
+
+    const wc_container = document.createElement('div');
+    const context = {}
+    const customEvent = new CustomEvent('test-event', { detail: 1 })
+    const srcNodeId = 'srcNodeID001'
+    const wc_id = 'some0id'
+
+    console.debug = jest.fn();
+    const compountCreateSpy = jest.spyOn(helperFunctions.DefaultCompoundRenderer.prototype, 'createCompoundItemContainer');
+    const attachCompoundItemSpy = jest.spyOn(helperFunctions.DefaultCompoundRenderer.prototype, 'attachCompoundItem');
+
+
+    // Call the function
+    let compoundReturn = await service.renderWebComponentCompound(navNode, wc_container, context);
+    (compoundReturn as any).eventBus.onPublishEvent(customEvent, srcNodeId, wc_id);
+
+    // Assertions
+    expect(helperFunctions.resolveRenderer).toHaveBeenCalledTimes(2);
+    expect(service.createCompoundContainerAsync).toHaveBeenCalledTimes(1);
+    expect(service.renderWebComponent).toHaveBeenCalledTimes(1);
+    expect(compountCreateSpy).toHaveBeenCalled();
+    expect(attachCompoundItemSpy).toHaveBeenCalled();
   });
 
   it('rejected',  () => {
@@ -870,7 +921,8 @@ describe('registerWCFromUrl', () => {
 
   afterEach(() => {
     jest.clearAllMocks(); // Clear mock function call history after each test
-    jest.resetAllMocks()
+    jest.resetAllMocks();
+
   });
 
   it('should successfully register a web component customElements get = UNDEFINED', async () => {
@@ -883,7 +935,8 @@ describe('registerWCFromUrl', () => {
 
     service.dynamicImport = jest.fn((viewUrl) =>
       Promise.resolve({
-        default: class ValidWebComponent extends HTMLElement {},
+        default: class InValidWebComponent {},
+        valid: class ValidWebComponent extends HTMLElement{},
       })
     );
     window.customElements.define = jest.fn();
@@ -897,59 +950,292 @@ describe('registerWCFromUrl', () => {
     expect(service.dynamicImport).resolves;
     expect(spy).toHaveBeenCalled()
     expect(window.customElements.define).toHaveBeenCalled();
-
-
     // expect(window.customElements.define).toHaveBeenCalledWith('custom-element-id', expect.any(Function));
   });
 
-  // it('should reject the promise when registration fails', async () => {
-  //   // Arrange
-  //   const viewUrl = 'valid-view-url';
-  //   const wc_id = 'custom-element-id';
+  it('should fail the try catch reject', async () => {
+    // Arrange
+    const viewUrl = 'valid-view-url';
+    const wc_id = 'custom-element-id';
 
-  //   // Mock the dynamicImport function to return a module with an error
+    // Mock the dynamicImport function to return a module with a valid
+    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined)
+
+    service.dynamicImport = jest.fn((viewUrl) =>
+      Promise.resolve({
+        default: class InValidWebComponent {},
+        valid: class ValidWebComponent extends HTMLElement{},
+      })
+    );
+    window.customElements.define = jest.fn().mockImplementation(() => {
+      throw new Error('Registration error');
+    });
+
+    // act
+    let result;
+    try {
+      result = await service.registerWCFromUrl(viewUrl, wc_id);
+    } catch (error) {
+      expect(error.message).toBe('Registration error');
+      expect(service.dynamicImport).toHaveBeenCalledWith('valid-view-url');
+      expect(service.dynamicImport).rejects;
+      expect(spy).toHaveBeenCalled()
+      expect(window.customElements.define).toHaveBeenCalled();
+      expect(window.customElements.define).toHaveBeenCalledWith('custom-element-id', expect.any(Function));
+    }
+   });
+
+   it('should fail with dynamicReport error', async () => {
+    // Arrange
+    const viewUrl = 'valid-view-url';
+    const wc_id = 'custom-element-id';
+
+    // Mock the dynamicImport function to return a module with a valid
+    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined)
+
+    service.dynamicImport = jest.fn((viewUrl) =>
+      Promise.reject(new Error('Dynamic import error'))
+    );
+
+    // act
+    let result;
+    try {
+      result = await service.registerWCFromUrl(viewUrl, wc_id);
+    } catch (error) {
+      expect(error.message).toBe('Dynamic import error');
+    }
+  });
+
+  it('should reject with checkWCUrl FALSE', async () => {
+    // Arrange
+    const viewUrl = 'valid-view-url';
+    const wc_id = 'custom-element-id';
+
+    // Mock the dynamicImport function to return a module with a valid
+    service.checkWCUrl = jest.fn().mockReturnValue(false);
+    const failMessage = `Error: View URL '${viewUrl}' not allowed to be included`;
+
+    // act
+    try {
+      await service.registerWCFromUrl(viewUrl, wc_id);
+    } catch (error) {
+      expect(error).toBe(`Error: View URL '${viewUrl}' not allowed to be included`);
+    }
+  });
+});
+
+describe('includeSelfRegisteredWCFromUrl', () => {
+  let originalCustomElements;
+  let originalLuigi;
+  let service;
+
+  beforeEach(() => {
+    service = new WebComponentService();
+     // Store the original values of customElements and Luigi
+     originalCustomElements = window.customElements;
+     originalLuigi = (window as any).Luigi;
+  });
+
+  afterEach(() => {
+    // Restore the original values after each test
+    window.customElements = originalCustomElements;
+    (window as any).Luigi = originalLuigi;
+    jest.clearAllMocks(); // Clear mock function call history after each test
+    jest.resetAllMocks();
+
+  });
+
+  it('should modify document body with script tag', () => {
+    // Arrange
+    const node = { webcomponent: { type: 'module' } };
+    const viewUrl = 'valid-view-url';
+    const onload = jest.fn();
+
+    // Mock checkWCUrl to return true
+    jest.spyOn(service, 'checkWCUrl').mockReturnValue(true);
+
+    // Mock customElements.define to capture the arguments passed
+    window.customElements.define = jest.fn();
+    const containerManagerSpy = jest.spyOn(service.containerService, 'getContainerManager');
+    const gwID =  jest.spyOn(service, 'generateWCId').mockReturnValue('my-wc-id');
+    const mockedElement = document.createElement('div')
+    const mockedSrc = 'src';
+
+    // Act
+    service.includeSelfRegisteredWCFromUrl(node, viewUrl, onload);
+    (window as any).Luigi._registerWebcomponent(mockedSrc, mockedElement);
+
+    const resultingScript = document.body.getElementsByTagName('script')[0];
+    resultingScript.dispatchEvent(new Event('load'))
+
+    // Assert
+    expect(containerManagerSpy).toHaveBeenCalled();
+    expect(window.customElements.define).toHaveBeenCalledWith('my-wc-id', mockedElement);
+    expect(resultingScript.getAttribute('defer')).toEqual('true');
+    expect(resultingScript.getAttribute('src')).toEqual(viewUrl);
+    expect(resultingScript.getAttribute('type')).toEqual('module');
+    expect(onload).toHaveBeenCalled();
+  });
+
+  it('should log warning if checkWCURL return false', () => {
+    // Arrange
+    const node = { webcomponent: { type: 'module' } };
+    const viewUrl = 'valid-view-url';
+    const onload = jest.fn();
+
+    // Mock checkWCUrl to return true
+    jest.spyOn(service, 'checkWCUrl').mockReturnValue(false);
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
+    const warningMsg = `View URL '${viewUrl}' not allowed to be included`;
+    // Act
+    service.includeSelfRegisteredWCFromUrl(node, viewUrl, onload);
+
+    // assert
+    expect(consoleWarnSpy).toHaveBeenCalledWith(warningMsg);
+  });
+});
+
+
+describe('renderWebComponent', () => {
+  let originalCustomElements;
+  let originalLuigi;
+  let originalWindowCustomElements;
+  let originalLuigiWCFn;
+  let service;
+  let mockedViewURL;
+  let wc_container;
+  let context;
+  let node ;
+  let wcItemPlaceholder;
+  const wc_id = 'my-custom-element';
+  let spyAttachWc ;
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+
+    service = new WebComponentService();
+
+    // Mock necessary functions and objects
+    mockedViewURL = 'mocked-view-url'
+    jest.spyOn(service, 'processViewUrl').mockReturnValue(mockedViewURL);
+    spyAttachWc = jest.spyOn(service, 'attachWC').mockImplementation(jest.fn());
+    wc_container = document.createElement('div');
+    context = {};
+    node = { webcomponent: { tagName: wc_id } };
+    wcItemPlaceholder = document.createElement('div');
+    wc_container.appendChild(wcItemPlaceholder);
     
-  //   jest.spyOn(window as any, 'customElements').mockImplementation(() => ({
-  //     get: jest.fn(() => undefined),
-  //     define: jest.fn(),
-  //   }));
-  //   const dynamicImportMock = jest.fn(() => Promise.reject('Registration error'));
-  //   jest.spyOn(window, 'fetch').mockImplementation(() =>
-  //     (Promise as any).resolve({
-  //       ok: true,
-  //       json: () => Promise.resolve({}),
-  //     })
-  //   );
+    // Store the original values of customElements, Luigi, and window.customElements
+    originalCustomElements = window.customElements;
+    originalLuigi = (window as any).Luigi;
+    originalWindowCustomElements = window.customElements;
+    originalLuigiWCFn = (window as any).lugiWCFn;
+    
+  });
 
-  //   // Act and assert
-  //   await expect(service.registerWCFromUrl(viewUrl, wc_id)).rejects.toEqual('Registration error');
-  //   expect(dynamicImportMock).toHaveBeenCalledWith('valid-view-url');
-  // });
+  afterEach(() => {
+    // Restore the original values after each test
+    window.customElements = originalCustomElements;
+    (window as any).Luigi = originalLuigi;
+    window.customElements = originalWindowCustomElements;
+    (window as any).lugiWCFn = originalLuigiWCFn;
+    jest.resetAllMocks();
+  });
 
-  // it('should reject the promise when the view URL is not allowed', async () => {
-  //   // Arrange
-  //   const viewUrl = 'forbidden-view-url';
-  //   const wc_id = 'custom-element-id';
+  it('should call attachWC if customeElements get returns valid value', () => {
+    // Mock necessary functions and objects
+    const mockCustomElementConstructor = class MockCustomElement extends HTMLElement {};
+    jest.spyOn(window.customElements, 'get').mockReturnValue(mockCustomElementConstructor); 
 
-  //   // Mock the dynamicImport function to return a module with a valid web component
-  //   jest.spyOn(window as any, 'customElements').mockImplementation(() => ({
-  //     get: jest.fn(() => undefined),
-  //     define: jest.fn(),
-  //   }));
-  //   const dynamicImportMock = jest.fn(() =>
-  //     Promise.resolve({
-  //       default: class ValidWebComponent extends HTMLElement {},
-  //     })
-  //   );
-  //   jest.spyOn(window, 'fetch').mockImplementation(() =>
-  //     (Promise as any).resolve({
-  //       ok: true,
-  //       json: () => Promise.resolve({}),
-  //     })
-  //   );
+    // Call the function to be tested
+    service.renderWebComponent(mockedViewURL, wc_container, context, node);
 
-  //   // Act and assert
-  //   await expect(service.registerWCFromUrl(viewUrl, wc_id)).rejects.toEqual('Error: View URL \'forbidden-view-url\' not allowed to be included');
-  // });
+    // Assert that the web component was attached
+    expect(spyAttachWc).toHaveBeenCalled();
+  });
 
+  it('should call luigiWCFn when customElements get returns UNDEFINED', () => {
+    // Mock necessary functions and objects
+    jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
+    const mockedFn = (url, id, placeholder, callsAttachWC) => {
+      callsAttachWC();
+    }
+    (window as any).luigiWCFn = jest.fn().mockImplementation(mockedFn);
+
+    // Call the function to be tested
+    service.renderWebComponent(mockedViewURL, wc_container, context, node);
+    (window as any).luigiWCFn(mockedViewURL, wc_id, wcItemPlaceholder, jest.fn());
+
+    // Assert that the web component was attached
+    expect((window as any).luigiWCFn).toHaveBeenCalledWith(mockedViewURL, wc_id, wcItemPlaceholder, expect.any(Function));
+    expect(spyAttachWc).toHaveBeenCalled()
+  });
+
+  it('should call includeSelfRegisteredWCFromUrl when selfRegistered = TRUE', () => {
+    // Mock necessary functions and objects
+    jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
+    jest.spyOn(service, 'generateWCId').mockReturnValue(mockedViewURL);
+
+    (window as any).luigiWCFn = undefined;
+    node = {
+      webcomponent: {
+        selfRegistered: true
+      }
+    }
+    const mockedFn = (node, url, callsAttachWC) => {
+      callsAttachWC();
+    }
+    const spyIncludeSRWU = jest.spyOn(service, 'includeSelfRegisteredWCFromUrl').mockImplementation(mockedFn)
+ 
+    // Call the function to be tested
+    service.renderWebComponent(mockedViewURL, wc_container, context, node);
+
+    // Assert that the web component was attached
+    expect(spyIncludeSRWU).toHaveBeenCalled();
+    expect(spyAttachWc).toHaveBeenCalled()
+  });
+
+  it('should call attachWC inside when selfRegistered = TRUE', () => {
+    // Mock necessary functions and objects
+    jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
+    jest.spyOn(service, 'generateWCId').mockReturnValue(mockedViewURL);
+
+    (window as any).luigiWCFn = undefined;
+    node = {
+      webcomponent: {
+        selfRegistered: false
+      }
+    }
+    service.registerWCFromUrl = jest.fn((viewUrl) =>
+      Promise.resolve()
+    );
+
+    // Call the function to be tested
+    service.renderWebComponent(mockedViewURL, wc_container, context, node);
+
+    // Assert that the web component was attached
+    expect(service.registerWCFromUrl).toHaveBeenCalled();
+  });
+
+  it('should call throw warning and dispatch runtime error when registerWCFromUrl fails ', async () => {
+    // Mock necessary functions and objects
+    jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
+    jest.spyOn(service, 'generateWCId').mockReturnValue(mockedViewURL);
+    (window as any).luigiWCFn = undefined;
+    node = {
+      webcomponent: {
+        selfRegistered: false
+      }
+    };
+    const errorThrown = new Error('Error registering WC from URL');
+    service.registerWCFromUrl = jest.fn().mockRejectedValue(errorThrown);
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
+    service.containerService.dispatch = jest.fn();
+
+    // act
+    await service.renderWebComponent(mockedViewURL, wc_container, context, node);
+      
+    // assert
+    expect(service.registerWCFromUrl).toHaveBeenCalled();
+  });
 });

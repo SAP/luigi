@@ -50,8 +50,7 @@ describe('Container Service', () => {
             const iframeHandle = undefined;
             containerService.sendCustomMessageToIframe = jest.fn();
             const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
-            console.warn = jest.fn()
-            const consoleWarnSpy = jest.spyOn(console, 'warn');
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
 
             // act
             containerAPI.updateContext(contextObj, internal,iframeHandle);
@@ -84,6 +83,10 @@ describe('Container Service', () => {
 
     describe('sendCustomMessage', () => {
         let containerAPI = new ContainerAPIFunctions();
+        beforeEach(() => {
+            // jest.restoreAllMocks();
+            jest.resetAllMocks();
+        });
 
         it('isWebComponent microfrontend', () => {
             // mock and spy
@@ -123,8 +126,7 @@ describe('Container Service', () => {
 
             containerService.sendCustomMessageToIframe = jest.fn();
             const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
-            console.warn = jest.fn()
-            const consoleWarnSpy = jest.spyOn(console, 'warn');
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
 
             // act
             containerAPI.sendCustomMessage(id, mainComponent, isWebComponent, iframeHandle, data );
@@ -146,9 +148,8 @@ describe('Container Service', () => {
 
             containerService.sendCustomMessageToIframe = jest.fn();
             const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
-            console.warn = jest.fn()
-            const consoleWarnSpy = jest.spyOn(console, 'warn');
-
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(()=>{jest.fn()});
+            
             // act
             containerAPI.sendCustomMessage(id, mainComponent, isWebComponent, iframeHandle, data );
 
@@ -157,8 +158,4 @@ describe('Container Service', () => {
             expect(consoleWarnSpy).not.toHaveBeenCalled();
         });
     });
-    
-    
-
-    
 });

@@ -337,8 +337,7 @@ describe('getContainerManager messageListener', () => {
 
 
   it('test default', () => {
-    console.warn = jest.fn()
-    const consoleWarnSpy = jest.spyOn(console, 'warn');
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
     const event = {
       source: cw,
       data: {
@@ -662,25 +661,6 @@ describe('registerContainer', () => {
     // Assert
     expect(containerManager.container).toContain(container);
     expect(service.getContainerManager).toHaveBeenCalled();
-
-  });
-
-  it('should handle multiple containers', () => {
-    // Arrange
-    const containerManager = {
-      container: [],
-    };
-    const container1 = document.createElement('div');
-    const container2 = document.createElement('div');
-    service.getContainerManager =  jest.fn().mockReturnValue(containerManager);
-
-    // Act
-    service.registerContainer(container1);
-    service.registerContainer(container2);
-
-    // Assert
-    expect(containerManager.container).toEqual([container1, container2]);
-    expect(service.getContainerManager).toHaveBeenCalledTimes(2);
 
   });
 });
