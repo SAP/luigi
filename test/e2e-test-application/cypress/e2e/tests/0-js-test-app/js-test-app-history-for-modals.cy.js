@@ -72,7 +72,6 @@ describe('JS-TEST-APP', () => {
         expect(location.search).to.eq('?modal=' + encodeURIComponent('/home/modalMf'));
       });
     }
-    // cy.wait(200);
   };
 
   const closeModal = () => {
