@@ -453,7 +453,7 @@
             />
           {/if}
         </div>
-        <div class="iframeUserSettingsCtn iframe-wrapper" />
+        <div class="iframeUserSettingsCtn iframe-wrapper"/>
       </div>
     </div>
     <footer class="fd-dialog__footer fd-bar fd-bar--footer">
@@ -565,6 +565,7 @@
     height: 100%;
     overflow: visible;
     -webkit-overflow-scrolling: touch;
+    line-height: 0;
   }
 
   .iframeUserSettingsCtn :global(iframe) {
