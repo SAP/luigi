@@ -518,3 +518,53 @@ describe('dispatch', () => {
     expect(targetContainer.dispatchEvent).toHaveBeenCalledWith( expect.objectContaining(dispatchedEventMock));
   });
 });
+
+
+describe('isVisible', () => {
+  let service: ContainerService;
+  service = new ContainerService();
+  
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should return true for a visible element', () => {
+    // Arrange
+    const visibleElement = document.createElement('div');
+    jest.spyOn(visibleElement, 'offsetWidth', 'get').mockImplementation(() => 200)
+    document.body.appendChild(visibleElement);
+
+    // Act
+    const result = service.isVisible(visibleElement);
+
+    // Assert
+    expect(result).toBe(true);
+  });
+
+  it('should return false for a hidden element', () => {
+    // Arrange
+    const hiddenElement = document.createElement('div');
+    hiddenElement.style.display = 'none';
+    document.body.appendChild(hiddenElement);
+
+    // Act
+    const result = service.isVisible(hiddenElement);
+
+    // Assert
+    expect(result).toBe(false);
+  });
+
+  it('should return false for an element with zero dimensions', () => {
+    // Arrange
+    const zeroSizeElement = document.createElement('div');
+    zeroSizeElement.style.width = '0';
+    zeroSizeElement.style.height = '0';
+    document.body.appendChild(zeroSizeElement);
+
+    // Act
+    const result = service.isVisible(zeroSizeElement);
+
+    // Assert
+    expect(result).toBe(false);
+  });
+});
