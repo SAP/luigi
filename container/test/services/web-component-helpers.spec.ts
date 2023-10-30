@@ -115,136 +115,156 @@ describe('CustomCompoundRenderer', () => {
     });
   });
 
-describe('createCompoundContainer', () => {
-  it('should create a custom compound container when defined', () => {
-    // Arrange
-    const rendererObj = {
-      use: {
-        createCompoundContainer: (config, superRenderer) => {
-          // Custom logic for creating a compound container
-          return document.createElement('div');
-        },
-      },
-    };
-    const customRenderer = new CustomCompoundRenderer(rendererObj);
-
-    // Act
-    const compoundContainer = customRenderer.createCompoundContainer();
-
-    // Assert
-    expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
-    // You can add more specific assertions for the custom logic
-  });
-
-
-  it('should create a custom compound container when defined', () => {
-    // Arrange
-    const rendererObj = {
-      use: {
-        createCompoundContainer: (config, superRenderer) => {
-          // Custom logic for creating a compound container
-          return document.createElement('div');
-        },
-      },
-    };
-    const customRenderer = new CustomCompoundRenderer(rendererObj);
-
-    // Act
-    const compoundContainer = customRenderer.createCompoundContainer();
-
-    // Assert
-    expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
-    // You can add more specific assertions for the custom logic
-  });
-
-  it('should call the provided createCompoundContainer function', () => {
-    const rendererObj = {
-      use: {
-        createCompoundContainer: jest.fn(),
-      },
-      config: {},
-    };
-    // Arrange
-    const renderer = new CustomCompoundRenderer(rendererObj);
-    const createCompoundContainerFn = jest.fn();
-    renderer.rendererObject.use.createCompoundContainer = createCompoundContainerFn;
-
-    // Act
-    const result = renderer.createCompoundContainer();
-
-    // Assert
-    expect(result).toBeUndefined();
-    expect(createCompoundContainerFn).toHaveBeenCalledWith(renderer.config, renderer.superRenderer);
-  });
-
-  it('should call the superRenderer\'s createCompoundContainer when no function is provided', () => {
-    // Arrange
-    const rendererObj = {
-      use: {
-      },
-      config: {},
-    };
-    const renderer = new CustomCompoundRenderer(rendererObj);
-   
-    const superRenderer = new CustomCompoundRenderer(rendererObj); // Create a mock superRenderer
-    renderer.superRenderer = superRenderer;
-    const mockElm = document.createElement('div')
-    const createCompoundContainerSpy = jest.spyOn(superRenderer, 'createCompoundContainer').mockReturnValue(mockElm);
-
-
-    // Act
-    const result = renderer.createCompoundContainer();
-
-    // Assert
-    expect(result).toEqual(mockElm);
-    expect(createCompoundContainerSpy ).toHaveBeenCalled();
-  });
-
-
-  it('should call the super.createCompoundContainer when no function or superRenderer is provided', () => {
-    // Arrange
-    const rendererObj = {
-      use: {
-      },
-      config: {},
-    };
-    const renderer = new CustomCompoundRenderer(rendererObj);
-
-    // Act
-    const result = renderer.createCompoundContainer();
-
-    // Assert
-    expect(result).toBeInstanceOf(HTMLDivElement); // Assuming super.createCompoundContainer returns an HTMLDivElement
-  });
-});
-
-
-  describe('createCompoundItemContainer', () => {
-    it('should create a compound item container when defined', () => {
+  describe('createCompoundContainer', () => {
+    it('should create a custom compound container when defined', () => {
       // Arrange
       const rendererObj = {
         use: {
-          createCompoundItemContainer: (layoutConfig, config, superRenderer) => {
-            // Custom logic for creating a compound item container
-            return document.createElement('span');
+          createCompoundContainer: (config, superRenderer) => {
+            // Custom logic for creating a compound container
+            return document.createElement('div');
           },
         },
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
 
       // Act
-      const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
+      const compoundContainer = customRenderer.createCompoundContainer();
 
       // Assert
-      expect(compoundItemContainer).toBeInstanceOf(HTMLSpanElement);
+      expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
+      // You can add more specific assertions for the custom logic
     });
-  
-    it('should create a compound item container from superRenderer', () => {
+
+
+    it('should create a custom compound container when defined', () => {
+      // Arrange
+      const rendererObj = {
+        use: {
+          createCompoundContainer: (config, superRenderer) => {
+            // Custom logic for creating a compound container
+            return document.createElement('div');
+          },
+        },
+      };
+      const customRenderer = new CustomCompoundRenderer(rendererObj);
+
+      // Act
+      const compoundContainer = customRenderer.createCompoundContainer();
+
+      // Assert
+      expect(compoundContainer).toBeInstanceOf(HTMLDivElement);
+      // You can add more specific assertions for the custom logic
+    });
+
+    it('should call the provided createCompoundContainer function', () => {
+      const rendererObj = {
+        use: {
+          createCompoundContainer: jest.fn(),
+        },
+        config: {},
+      };
+      // Arrange
+      const renderer = new CustomCompoundRenderer(rendererObj);
+      const createCompoundContainerFn = jest.fn();
+      renderer.rendererObject.use.createCompoundContainer = createCompoundContainerFn;
+
+      // Act
+      const result = renderer.createCompoundContainer();
+
+      // Assert
+      expect(result).toBeUndefined();
+      expect(createCompoundContainerFn).toHaveBeenCalledWith(renderer.config, renderer.superRenderer);
+    });
+
+    it('should call the superRenderer\'s createCompoundContainer when no function is provided', () => {
+      // Arrange
+      const rendererObj = {
+        use: {
+        },
+        config: {},
+      };
+      const renderer = new CustomCompoundRenderer(rendererObj);
+    
+      const superRenderer = new CustomCompoundRenderer(rendererObj); // Create a mock superRenderer
+      renderer.superRenderer = superRenderer;
+      const mockElm = document.createElement('div')
+      const createCompoundContainerSpy = jest.spyOn(superRenderer, 'createCompoundContainer').mockReturnValue(mockElm);
+
+
+      // Act
+      const result = renderer.createCompoundContainer();
+
+      // Assert
+      expect(result).toEqual(mockElm);
+      expect(createCompoundContainerSpy ).toHaveBeenCalled();
+    });
+
+
+    it('should call the super.createCompoundContainer when no function or superRenderer is provided', () => {
+      // Arrange
+      const rendererObj = {
+        use: {
+        },
+        config: {},
+      };
+      const renderer = new CustomCompoundRenderer(rendererObj);
+
+      // Act
+      const result = renderer.createCompoundContainer();
+
+      // Assert
+      expect(result).toBeInstanceOf(HTMLDivElement); // Assuming super.createCompoundContainer returns an HTMLDivElement
+    });
+  });
+
+
+  describe('createCompoundItemContainer', () => {
+      it('should create a compound item container when defined', () => {
+        // Arrange
+        const rendererObj = {
+          use: {
+            createCompoundItemContainer: (layoutConfig, config, superRenderer) => {
+              // Custom logic for creating a compound item container
+              return document.createElement('span');
+            },
+          },
+        };
+        const customRenderer = new CustomCompoundRenderer(rendererObj);
+
+        // Act
+        const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
+
+        // Assert
+        expect(compoundItemContainer).toBeInstanceOf(HTMLSpanElement);
+      });
+    
+      it('should create a compound item container from superRenderer', () => {
+        // Arrange
+        const rendererObj = {
+          use: {
+            createCompoundItemContainer: undefined,
+            extends: 'test'
+          },
+        };
+        const customRenderer = new CustomCompoundRenderer(rendererObj);
+
+        const mockDiv = document.createElement('div');
+        mockDiv.style.color = 'red';
+        
+        // Act
+        const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
+
+        // Assert
+        expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
+    });
+
+
+    it('should create a compound item container with superRenderer and use undefined', () => {
       // Arrange
       const rendererObj = {
         use: {
           createCompoundItemContainer: undefined,
-          extends: 'test'
         },
       };
       const customRenderer = new CustomCompoundRenderer(rendererObj);
@@ -257,29 +277,8 @@ describe('createCompoundContainer', () => {
 
       // Assert
       expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
+    });
   });
-
-
-  it('should create a compound item container with superRenderer and use undefined', () => {
-    // Arrange
-    const rendererObj = {
-      use: {
-        createCompoundItemContainer: undefined,
-      },
-    };
-    const customRenderer = new CustomCompoundRenderer(rendererObj);
-
-    const mockDiv = document.createElement('div');
-    mockDiv.style.color = 'red';
-    
-    // Act
-    const compoundItemContainer = customRenderer.createCompoundItemContainer({ layout: 'custom' });
-
-    // Assert
-    expect(compoundItemContainer).toBeInstanceOf(HTMLDivElement);
-  });
-});
-
 
   describe('attachCompoundItem', () => {
     it('should attach a compound item with custom logic when defined', () => {
@@ -296,19 +295,50 @@ describe('createCompoundContainer', () => {
       const compoundContainer = document.createElement('div');
       const compoundItem = document.createElement('div');
       compoundItem.style.color = 'white';
-  
+
       // Act
       customRenderer.attachCompoundItem(compoundContainer, compoundItem);
-  
+
+      // Assert
+      expect(compoundContainer.contains(compoundItem)).toBe(true);
+    });
+
+    it('should attach a compound item with superRenderer', () => {
+      // Arrange
+      const rendererObj = {
+        use: {
+          extends: 'test'
+        },
+      };
+      const customRenderer = new CustomCompoundRenderer(rendererObj);
+      const compoundContainer = document.createElement('div');
+      const compoundItem = document.createElement('div');
+      compoundItem.style.color = 'blue';
+
+      // Act
+      customRenderer.attachCompoundItem(compoundContainer, compoundItem);
+
+      // Assert
+      expect(compoundContainer.contains(compoundItem)).toBe(true);
+    });
+
+    it('should attach a compound item with use and superrenderer undefined', () => {
+      // Arrange
+      const rendererObj = {
+        use: {},
+      };
+      const customRenderer = new CustomCompoundRenderer(rendererObj);
+      const compoundContainer = document.createElement('div');
+      const compoundItem = document.createElement('div');
+      compoundItem.style.color = 'yellow';
+
+      // Act
+      customRenderer.attachCompoundItem(compoundContainer, compoundItem);
+
       // Assert
       expect(compoundContainer.contains(compoundItem)).toBe(true);
     });
   });
-
-
-
-
-
 });
 
 describe('GridCompoundRenderer', () => {
