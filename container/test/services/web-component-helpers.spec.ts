@@ -1,37 +1,6 @@
 import { GridCompoundRenderer,  CustomCompoundRenderer, deSanitizeParamsMap, DefaultCompoundRenderer } from "../../src/services/web-component-helpers";
 import * as helperFunctions from  "../../src/services/web-component-helpers";
 
-// describe('deSanitizeParamsMap', () => {
-//     it('should desanitize object properties', () => {
-//         // Arrange
-//         const inputParamsMap = {
-//           name: 'John',
-//           age: 30,
-//         };
-    
-//         // Act
-//         const desanitizedParamsMap = deSanitizeParamsMap(inputParamsMap);
-    
-//         // Assert
-//         expect(desanitizedParamsMap).toEqual({
-//           name: 'John',
-//           age: '30', // Age is converted to a string
-//         });
-//       });
-    
-//       it('should handle empty object', () => {
-//         // Arrange
-//         const inputParamsMap = {};
-    
-//         // Act
-//         const desanitizedParamsMap = deSanitizeParamsMap(inputParamsMap);
-    
-//         // Assert
-//         expect(desanitizedParamsMap).toEqual({});
-//       });
-
-// });
-
 describe('DefaultCompoundRenderer', () => {
   it('should create a compound container', () => {
       // Arrange
@@ -406,8 +375,6 @@ describe('GridCompoundRenderer', () => {
     expect(compoundItemContainer.getAttribute('style')).toContain('grid-column: 2');
   });
 });
-
-
 
 describe('registerEventListeners', () => {
   it('should register event listeners when navNode has eventListeners', () => {
