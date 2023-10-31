@@ -55,7 +55,7 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
-          if (name === 'context') {
+          if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
         }
@@ -174,6 +174,7 @@
         });
       }
       containerInitialized = true;
+      thisComponent.containerInitialized = true;
     }
   };
 
