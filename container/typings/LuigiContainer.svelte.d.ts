@@ -7,7 +7,6 @@ export declare interface UserSettings {
 }
 
 export declare interface WebComponentSettings {
-  id?: any;
   type?: string;
   selfRegistered?: boolean;
   tagName?: string;
@@ -32,7 +31,6 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * Predicate that sets whether the microfrontend is to be rendered in a web component or not. It can also be an object with the following attributes:
    * @param {Object} [WebComponentSettings]
-   * @param {any} WebComponentSettings.id: unique id of the web component
    * @param {string} WebComponentSettings.type: string, like module.
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
