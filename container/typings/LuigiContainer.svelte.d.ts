@@ -1,9 +1,17 @@
 export declare interface NodeParams {
   [key: string]: string;
 }
+
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
 }
+
+export declare interface WebComponentSettings {
+  type?: string;
+  selfRegistered?: boolean;
+  tagName?: string;
+}
+
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
@@ -21,9 +29,13 @@ export default class LuigiContainer extends HTMLElement {
   label: string;
 
   /**
-   * Predicate that sets whether the microfrontend is to be rendered in a web component or not
+   * Predicate that sets whether the microfrontend is to be rendered in a web component or not. It can also be an object with the following attributes:
+   * @param {Object} [WebComponentSettings]
+   * @param {string} WebComponentSettings.type: string, like module.
+   * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
+   * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
    */
-  webcomponent: string;
+  webcomponent: boolean | WebComponentSettings;
 
   /**
    * The locale to be passed to the web-component-based micro frontend
@@ -44,6 +56,21 @@ export default class LuigiContainer extends HTMLElement {
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    */
   nodeParams: NodeParams;
+
+  /**
+   * The search parameters to be passed to the web-component-based micro frontend.
+   */
+  searchParams: any;
+
+  /**
+   * The path parameters to be passed to the web-component-based micro frontend.
+   */
+  pathParams: any;
+
+  /**
+   * The clientPermissions to be passed to the web-component-based micro frontend.
+   */
+  clientPermissions: any;
 
   /**
    * Updates the context of the microfrontend
@@ -68,4 +95,9 @@ export default class LuigiContainer extends HTMLElement {
    * The user settings to be passed to the web-component-based micro frontend
    */
   userSettings: UserSettings;
+
+  /**
+   * The anchor value to be passed to the web-component-based micro frontend.
+   */
+  anchor: string;
 }

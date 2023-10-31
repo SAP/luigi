@@ -22,11 +22,23 @@ export default class extends HTMLElement {
     const setAnchorBtn = document.createElement('template');
     setAnchorBtn.innerHTML = '<button id="setAnchor">setAnchor</button>';
 
+    const getCoreSearchParamsBtn = document.createElement('template');
+    getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
+
+    const getPathParamsBtn = document.createElement('template');
+    getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
+
+    const getClientPermissionsBtn = document.createElement('template');
+    getClientPermissionsBtn.innerHTML = '<button id="getClientPermissions">getClientPermissions</button>';
+
     const empty = document.createElement('template');
     empty.innerHTML = `<section><p>Test!</p><br/><br/></section>`;
 
     const getUserSettingsBtn = document.createElement('template');
     getUserSettingsBtn.innerHTML = '<button id="getUserSettings">getUserSettings</button>';
+
+    const getAnchorBtn = document.createElement('template');
+    getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
     this._shadowRoot = this.attachShadow({
       mode: 'open',
@@ -38,7 +50,11 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
 
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -92,6 +108,28 @@ export default class extends HTMLElement {
         this.LuigiClient.setAnchor('#myAnchor');
       }
     });
+
+    this.$coreSearchParamsBtn = this._shadowRoot.querySelector('#coreSearchParams');
+    this.$coreSearchParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getCoreSearchParams()));
+      }
+    });
+
+    this.$getPathParamsBtn = this._shadowRoot.querySelector('#getPathParams');
+    this.$getPathParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getPathParams()));
+      }
+    });
+
+    this.$getClientPermissionsBtn = this._shadowRoot.querySelector('#getClientPermissions');
+    this.$getClientPermissionsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getClientPermissions()));
+      }
+    });
+
     this.$getUserSettingsBtn = this._shadowRoot.querySelector('#getUserSettings');
     this.$getUserSettingsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
@@ -101,6 +139,14 @@ export default class extends HTMLElement {
           type: 'info'
         });
       }
+    });
+    this.$getAnchorBtn = this._shadowRoot.querySelector('#getAnchor');
+    this.$getAnchorBtn.addEventListener('click', () => {
+      let getAnchor = this.LuigiClient.getAnchor();
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getAnchor()=' + JSON.stringify(getAnchor),
+        type: 'info'
+      });
     });
   }
 

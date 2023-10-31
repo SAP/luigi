@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { getPathParams, linkManager } from '@luigi-project/client';
-import { LuigiContextService, IContextMessage } from '../../../../services/luigi-context.service';
+import { LuigiContextService, IContextMessage } from '@luigi-project/client-support-angular';
 import { toTitleCase } from '../../../../services/helpers';
 
 @Component({
@@ -18,10 +18,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public currentRouteFromClosestContext: string;
   public currentRouteFromParent: string;
 
-  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) {}
+  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+    this.lcSubscription = this.luigiService.contextObservable().subscribe((ctx: IContextMessage) => {
       // We can directly access our custom specified context value here
       this.groupLabel = toTitleCase(ctx.context.currentGroup);
 

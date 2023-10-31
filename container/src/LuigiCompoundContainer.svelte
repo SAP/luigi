@@ -15,7 +15,36 @@
         type: 'Object',
         reflect: false,
         attribute: 'user-settings'
+      },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      searchParams: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'search-params'
+      },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'client-permissions'
       }
+    },
+    extend: customElementConstructor => {
+      let notInitFn = name => {
+        return () =>
+          console.warn(
+            name +
+              " can't be called on luigi-container before its micro frontend is attached to the DOM."
+          );
+      };
+      return class extends customElementConstructor {
+        updateContext = notInitFn('updateContext');
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (name === 'context') {
+            this.updateContext(JSON.parse(newValue));
+          }
+        }
+      };
     }
   }}
 />
@@ -25,13 +54,19 @@
   import { ContainerService } from './services/container.service';
   import { WebComponentService } from './services/webcomponents.service';
   import { Events } from './constants/communication';
+  import { GenericHelperFunctions } from './utilities/helpers';
 
   export let viewurl: string;
+  export let webcomponent: any;
   export let context: string;
   export let deferInit: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
+  export let searchParams: any;
+  export let pathParams: any;
+  export let clientPermissions: any;
   export let userSettings: any;
+  export let anchor: string;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -42,19 +77,30 @@
 
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
-    return nodeParams && userSettings;
+    return (
+      nodeParams &&
+      searchParams &&
+      pathParams &&
+      clientPermissions &&
+      userSettings &&
+      anchor
+    );
   };
 
   const initialize = (thisComponent: any) => {
     if (!compoundConfig || containerInitialized) {
       return;
     }
+    thisComponent.updateContext = (contextObj: any, internal?: any) => {
+      mainComponent._luigi_mfe_webcomponent.context = contextObj;
+    };
     const ctx = context ? JSON.parse(context) : {};
     deferInit = false;
     const node = {
       compound: compoundConfig,
       viewUrl: viewurl,
-      webcomponent: true
+      webcomponent:
+        GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     }; // TODO: fill with sth
     webcomponentService
       .renderWebComponentCompound(node, mainComponent, ctx)

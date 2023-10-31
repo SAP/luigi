@@ -28,6 +28,18 @@
         type: 'Object',
         reflect: false,
         attribute: 'user-settings'
+      },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      searchParams: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'search-params'
+      },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'client-permissions'
       }
     },
     extend: customElementConstructor => {
@@ -42,6 +54,11 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (name === 'context') {
+            this.updateContext(JSON.parse(newValue));
+          }
+        }
       };
     }
   }}
@@ -53,18 +70,24 @@
   import { WebComponentService } from './services/webcomponents.service';
   import { ContainerAPI } from './api/container-api';
   import { Events } from './constants/communication';
+  import { GenericHelperFunctions } from './utilities/helpers';
 
   export let viewurl: string;
   export let context: string;
   export let label: string;
-  export let webcomponent: string;
+  export let webcomponent: any;
   export let deferInit: boolean;
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
   export let skipInitCheck: boolean;
   export let nodeParams: any;
+  export let searchParams: any;
+  export let pathParams: any;
+  export let clientPermissions: any;
+
   export let userSettings: any;
+  export let anchor: string;
 
   const iframeHandle:
     | {
@@ -80,7 +103,15 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
-      locale && theme && activeFeatureToggleList && nodeParams && userSettings
+      locale &&
+      theme &&
+      activeFeatureToggleList &&
+      nodeParams &&
+      searchParams &&
+      pathParams &&
+      clientPermissions &&
+      userSettings &&
+      anchor
     );
   };
 
@@ -97,7 +128,11 @@
       };
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
-        ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+        if (webcomponent) {
+          mainComponent._luigi_mfe_webcomponent.context = contextObj;
+        } else {
+          ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+        }
       };
 
       thisComponent.closeAlert = (id: any, dismissKey: any) => {
@@ -110,7 +145,17 @@
       const ctx = context ? JSON.parse(context) : {};
       if (webcomponent) {
         mainComponent.innerHTML = '';
-        webcomponentService.renderWebComponent(viewurl, mainComponent, ctx, {});
+        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(
+          webcomponent
+        );
+        webcomponentService.renderWebComponent(
+          viewurl,
+          mainComponent,
+          ctx,
+          typeof webComponentValue === 'object'
+            ? { webcomponent: webComponentValue }
+            : {}
+        );
       }
       if (skipInitCheck) {
         thisComponent.initialized = true;

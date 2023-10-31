@@ -238,7 +238,7 @@ describe('JS-TEST-APP 2', () => {
         .eq(1)
         .click();
 
-      cy.get('[data-testid="lui-us-language-dropdown"]')
+      cy.get('[data-testid="lui-us-enum-0"]')
         .eq(0)
         .click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
@@ -252,11 +252,11 @@ describe('JS-TEST-APP 2', () => {
         .should('exist')
         .should('contain', 'English');
 
-      cy.get('[data-testid="lui-us-language-dropdown"]')
+      cy.get('[data-testid="lui-us-enum-0"]')
         .eq(0)
         .click();
-      cy.get('[data-testid="lui-us-language-dropdown"]').should('be.visible');
-      cy.get('[data-testid="lui-us-language-dropdown"]')
+      cy.get('[data-testid="lui-us-enum-0"]').should('be.visible');
+      cy.get('[data-testid="lui-us-enum-0"]')
         .eq(0)
         .click();
       cy.wait(500);

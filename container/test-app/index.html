@@ -142,6 +142,11 @@
                   >Simple Web Component</a
                 >
                 <a
+                  href="#hello-world-wc-selfregistered"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >Simple Web Component</a
+                >
+                <a
                   href="#error-handling"
                   class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >Err</a
@@ -289,6 +294,11 @@
             class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
             >Simple Web Component</a
           >
+          <a
+            href="#hello-world-wc-selfregistered"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Simple Web Component 2</a
+          >
         </div>
       </div>
     </nav>
@@ -300,7 +310,11 @@
         id="dashboard"
         context='{"label": "Dashboard"}'
         node-params='{"Luigi":"rocks"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
         user-settings='{"language":"it", "date":""}'
+        anchor="testAnchorCompound"
       ></luigi-compound-container>
     </div>
     <div class="lui-wrapper" route="dashboard2">
@@ -310,6 +324,7 @@
         viewUrl="http://localhost:8080/nested.js"
         node-params='{"Das ist ein":"compound tets"}'
       ></luigi-compound-container>
+      <!-- viewUrl="http://localhost:8080/nestedSelfRegistered.js"-->
     </div>
     <!-- viewUrl="http://localhost:8080/nested.js" -->
     <!-- https://luigiwebcomponents.gitlab.io/nested.js skip-init-check="true"-->
@@ -340,6 +355,7 @@
         viewURL="/test.js"
         webcomponent="true"
         id="test-defer-init-false"
+        context='{"LuigiCtx":"hallo"}'
         skip-init-check
       ></luigi-container>
     </div>
@@ -360,12 +376,23 @@
         theme="sap_fiori_3"
         active-feature-toggle-list='["ft1","ft2"]'
         node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
         user-settings='{"language": "de", "date":""}'
+        anchor="testanchor"
+      ></luigi-container>
+    </div>
+    <div class="lui-wrapper" route="hello-world-wc-selfregistered">
+      <luigi-container
+        data-test-id="luigi-client-api-test-02"
+        viewURL="./helloWorldWCSelfRegistered.js"
+        webcomponent='{"selfRegistered": "true"}'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="error-test">
       <luigi-container
-        viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/mainasdad.js"
+        viewURL="https://luigiwebcomponents.gitlab.io/luigiwebcomponentmf/main.js"
         webcomponent="true"
         context=' {"label": "Error Handler" }'
       ></luigi-container>
@@ -413,7 +440,7 @@
           {
             viewUrl: layoutMFEDomain + '/panelHeader.js',
             context: {
-              title: 'My Awesome Grid',
+              title: 'My Awesome Grid 000',
               description: 'Really awesome'
             },
             layoutConfig: {
@@ -506,6 +533,15 @@
             },
             layoutConfig: {
               slot: 'content'
+            }
+          },
+          {
+            viewUrl: '/./helloWorldWCSelfRegistered.js',
+            webcomponent: {
+              selfRegistered: true
+            },
+            layoutConfig: {
+              slot: 'helloWorldSelfRegistered'
             }
           },
           {

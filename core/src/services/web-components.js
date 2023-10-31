@@ -5,11 +5,11 @@ import {
   deSanitizeParamsMap
 } from '../utilities/helpers/web-component-helpers';
 import { LuigiConfig } from '../core-api';
-import { RoutingHelpers } from '../utilities/helpers';
+import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() { }
+  constructor() {}
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -36,6 +36,11 @@ class WebComponentSvcClass {
   initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, isSpecialMf) {
     const ctx = extendedContext.context;
     wc.extendedContext = extendedContext;
+
+    // handle difference modal vs main mf
+    if (wc.extendedContext.currentNode) {
+      wc.extendedContext.clientPermissions = wc.extendedContext.currentNode.clientPermissions;
+    }
     const clientAPI = {
       linkManager: window.Luigi.navigation,
       uxManager: window.Luigi.ux,
@@ -47,6 +52,14 @@ class WebComponentSvcClass {
       },
       getActiveFeatureToggleList: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
       getActiveFeatureToggles: () => window.Luigi.featureToggles().getActiveFeatureToggleList(),
+      getPathParams: () => (wc.extendedContext?.pathParams ? wc.extendedContext.pathParams : {}),
+      getCoreSearchParams: () => {
+        const node = {
+          clientPermissions: wc.extendedContext.clientPermissions
+        };
+        return RoutingHelpers.prepareSearchParamsForClient(node);
+      },
+      getClientPermissions: () => (wc.extendedContext?.clientPermissions ? wc.extendedContext.clientPermissions : {}),
       addNodeParams: (params, keepBrowserHistory) => {
         if (!isSpecialMf) {
           window.Luigi.routing().addNodeParams(params, keepBrowserHistory);
@@ -67,6 +80,9 @@ class WebComponentSvcClass {
           window.Luigi.routing().setAnchor(anchor);
         }
       },
+      getAnchor: () => {
+        return window.Luigi.routing().getAnchor();
+      },
       getUserSettings: async () => {
         return await this.getUserSettingsForWc(eventBusElement._luigi_node);
       }
@@ -83,6 +99,11 @@ class WebComponentSvcClass {
       wc.nodeParams = extendedContext.nodeParams;
       wc.LuigiClient = clientAPI;
     }
+
+    const wcCreationInterceptor = LuigiConfig.getConfigValue('settings.webcomponentCreationInterceptor');
+    if (GenericHelpers.isFunction(wcCreationInterceptor)) {
+      wcCreationInterceptor(wc, extendedContext.currentNode, extendedContext, nodeId, isSpecialMf);
+    }
   }
 
   /** Generates a unique web component id (tagname) based on the viewUrl
@@ -91,7 +112,7 @@ class WebComponentSvcClass {
    */
   generateWCId(viewUrl) {
     let charRep = '';
-    let normalizedViewUrl = new URL(viewUrl, location.href).href;
+    let normalizedViewUrl = new URL(viewUrl, encodeURI(location.href)).href;
     for (let i = 0; i < normalizedViewUrl.length; i++) {
       charRep += normalizedViewUrl.charCodeAt(i).toString(16);
     }
@@ -207,8 +228,7 @@ class WebComponentSvcClass {
   renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
-    const wc_id =
-      node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
+    const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
@@ -238,16 +258,23 @@ class WebComponentSvcClass {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(renderer, ctx) {
+  createCompoundContainerAsync(renderer, ctx, navNode) {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
-          const wc_id = this.generateWCId(renderer.viewUrl);
-          this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
-            const wc = document.createElement(wc_id);
-            this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
-            resolve(wc);
-          });
+          const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
+          const wc = document.createElement(wc_id);
+          if (navNode?.webcomponent?.selfRegistered) {
+            this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
+              this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+              resolve(wc);
+            });
+          } else {
+            this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
+              this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+              resolve(wc);
+            });
+          }
         } catch (e) {
           reject(e);
         }
@@ -286,7 +313,7 @@ class WebComponentSvcClass {
     renderer = renderer || new DefaultCompoundRenderer();
 
     return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer, extendedContext).then(compoundCnt => {
+      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundCnt => {
         const ebListeners = {};
         compoundCnt.eventBus = {
           listeners: ebListeners,

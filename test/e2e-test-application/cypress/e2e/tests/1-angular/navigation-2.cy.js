@@ -162,7 +162,7 @@ describe('Navigation', () => {
       cy.get('[data-testid=modal-mf]').should('not.exist');
     });
 
-    it.only('Define a data-testid for close button on modal', () => {
+    it('Define a data-testid for close button on modal', () => {
       cy.window().then(win => {
         win.Luigi.navigation().openAsModal('/projects/pr1/developers', { closebtn_data_testid: 'MyCustomTestId' });
       });

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { getPathParams, linkManager } from '@luigi-project/client';
 
-import { LuigiContextService, IContextMessage } from '../../../../../services/luigi-context.service';
+import { LuigiContextService } from '@luigi-project/client-support-angular';
 import { Subscription } from 'rxjs';
 import { toTitleCase } from '../../../../../services/helpers';
 
@@ -16,10 +16,10 @@ export class GroupSettingsComponent implements OnInit, OnDestroy {
   public groupLabel: string;
   private lcSubscription: Subscription;
 
-  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) {}
+  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.lcSubscription = this.luigiService.getContext().subscribe((ctx: IContextMessage) => {
+    this.lcSubscription = this.luigiService.contextObservable().subscribe((ctx) => {
       this.pathParams = getPathParams();
       this.groupLabel = this.pathParams && this.pathParams.group && toTitleCase(this.pathParams.group);
       if (!this.cdr['destroyed']) {
