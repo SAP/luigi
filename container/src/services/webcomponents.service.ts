@@ -368,22 +368,19 @@ export class WebComponentService {
    */
   createCompoundContainerAsync(renderer: any, ctx: any, navNode: any): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
-      // remove after review
-      // if (1) {
-      //   reject({ test: 'error' });
-      // }
       if (renderer.viewUrl) {
         try {
           const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
-          const wc = document.createElement(wc_id);
           if (navNode.webcomponent && navNode.webcomponent.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
+              const wc = document.createElement(wc_id);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
           } else {
             this.registerWCFromUrl(renderer.viewUrl, wc_id)
               .then(() => {
+                const wc = document.createElement(wc_id);
                 this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
                 resolve(wc);
               })
