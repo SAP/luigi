@@ -9,7 +9,7 @@ import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() {}
+  constructor() { }
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -228,8 +228,7 @@ class WebComponentSvcClass {
   renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
-    const wc_id =
-      node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
+    const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
@@ -263,9 +262,7 @@ class WebComponentSvcClass {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
-          const wc_id = navNode?.webcomponent?.tagName
-            ? navNode.webcomponent.tagName
-            : this.generateWCId(renderer.viewUrl);
+          const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
           const wc = document.createElement(wc_id);
           if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
