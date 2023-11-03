@@ -242,10 +242,6 @@ class NavigationHelpersClass {
 
       if (node.category) {
         const catLabel = node.category.label || node.category;
-        //console.log("--------------------------------------------------------------");
-        //console.log(node);
-        //console.log(catLabel);
-        //console.log(node.category.showLabel);
         if (cats[catLabel]) {
           if (!cats[catLabel].icon) {
             cats[catLabel].icon = node.category.icon;
@@ -262,7 +258,7 @@ class NavigationHelpersClass {
           }
         } else {
           cats[catLabel] = {
-            showLabel: true,
+            showLabel: node.category.showLabel,
             isCat: true,
             label: catLabel,
             icon: node.category.icon,

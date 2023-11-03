@@ -15,18 +15,12 @@
   function getNodeLabel(node) {
     return NavigationHelpers.getNodeLabel(node);
   }
-  /*
-  console.log("111111111111111111111111111111111111111111111");
-  console.log(node);
-  console.log(node.showLabel);
-  console.log(node.isCat);
-*/
 </script>
 
 {#if node.icon} <!--wenn es ein icon gibt-->
-  {#if hasOpenUIicon(node) && node.isCat === true && node.showLabel === true}
+  {#if hasOpenUIicon(node) && node.isCat && node.showLabel}
     <span class="fd-top-nav__icon777 sap-icon {getSapIconStr(node.icon)}" />
-    <!-- <span>{getNodeLabel(node)}</span> fügt label neben icon hinzu, aber auch bei nicht categories-->
+    <span>{getNodeLabel(node)}</span>
   {:else if hasOpenUIicon(node)}  
     <span class="fd-top-nav__icon777 sap-icon {getSapIconStr(node.icon)}" />
   {:else}
@@ -39,7 +33,7 @@
   <!-- end hasOpenUIicon-->
 {/if}
 <!-- end node.icon -->
-{#if !node.icon || node.showLabel}  <!--wenn es kein icon gibt-->
+{#if !node.icon && !node.isCat}
   <span
     >{getNodeLabel(node)}
     <StatusBadge {node} />

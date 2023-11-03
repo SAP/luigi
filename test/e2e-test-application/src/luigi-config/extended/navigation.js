@@ -88,90 +88,6 @@ class Navigation {
         {}
       ]
     },
-/*
-    {
-      icon: 'dimension',
-      pathSegment: "home2",    
-      label: "Home222",
-      showLabel: true,
-      // hideFromNav: true,
-      children: [{
-              pathSegment: "hw",
-              label: "hello world",
-              icon: 'home',
-              loadingIndicator: {
-                  enabled: false      // HAS TO BE FALSE OTHERWISE ENDLESS LOADING SCREEN?
-              },
-              viewUrl: 'https://fiddle.luigi-project.io/img/logos/Luigi-logo_rgb.svg',
-          },{
-              pathSegment: "one",
-              label: "section one",
-              icon: 'dimension',
-              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
-          },{
-              pathSegment: "two",
-              label: "section two",
-              icon: 'cloud',
-              viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
-              context: {
-                  title: "this is the title",
-                  content: "this is content specified in the context", 
-              }
-          },{
-              pathSegment: "four",
-              label: "Luigi Website",
-              loadingIndicator: {
-                  enabled: false      // HAS TO BE FALSE OTHERWISE ENDLESS LOADING SCREEN?
-              },
-              viewUrl: 'https://luigi-project.io',
-          }
-      ]
-      },
-
-    {   // new root node = new Top Nav
-      category: {
-          label: 'TopNav',
-          icon: 'dimension',
-          // collapsible: true,
-          showLabel: false,         // TODO
-      },
-      pathSegment: "topNav1",
-      label: "Top Navigation Element 1",
-      icon: 'cloud',
-      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
-      children: [{
-          category: {id: 'anyId', label: 'Links', icon: 'myIcon', collapsible: true },    // when there is an "id" you have to use the "id" in category in other tabs
-          externalLink: {
-              url: 'http://www.luigi-project.io',
-              sameWindow: false   // opens new tab when clicked on
-          },
-          label: 'Luigi homepage',
-      },
-      {
-          category: 'anyId',  
-          externalLink: {
-              url: 'https://github.com/SAP/luigi',
-              sameWindow: false
-          },
-          label: 'Luigi Github',
-      }]
-  },{
-      // this creates a drop down in the top navigation (category "TopNav")
-      category: "TopNav",
-      pathSegment: "topNav2",
-      label: "Top Navigation Element 2",
-      icon: 'home',
-      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
-  },
-  {
-    // this creates a drop down in the top navigation (category "TopNav")
-    category: "TopNav",
-    pathSegment: "topNav3",
-    label: "Top Navigation Element 3",
-    icon: 'globe',
-    viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
-},
-*/
     {
       pathSegment: 'view-groups',
       label: 'View Groups',
@@ -249,14 +165,14 @@ class Navigation {
         url: 'https://github.com/SAP/luigi',
         sameWindow: true
       },
-      label: 'Git123',
+      label: 'Git',
       icon: 'globe',
       showLabel: true,
       hideSideNav: false,
       globalNav: true,
       testId: 'icon-and-label',
       statusBadge: {
-        label: 'Git456',
+        label: 'Git',
         type: 'negative'
       }
     },
@@ -275,7 +191,7 @@ class Navigation {
     },
 
     {
-      category: { label: 'Misc', icon: 'badge', showLabel: false, },
+      category: { label: 'Misc', icon: 'badge', },
       label: 'Open Google in this tab',
       externalLink: {
         url: 'http://google.com',
@@ -336,7 +252,7 @@ class Navigation {
       hideSideNav: true
     },
     {
-      category: { label: 'Messages', icon: 'lightbulb' },
+      category: { label: 'Messages', icon: 'lightbulb', showLabel: true },
       label: 'Errors',
       pathSegment: 'errors',
       viewUrl: '/sampleapp.html#/projects/pr1/dynamic/errors',
@@ -438,7 +354,7 @@ class Navigation {
 
   // The following configuration will be used to render the context switcher component
   contextSwitcher = {
-    defaultLabel: 'Select Environment 123',
+    defaultLabel: 'Select Environment',
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
     options: () =>
