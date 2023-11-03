@@ -33,7 +33,7 @@
   <!-- end hasOpenUIicon-->
 {/if}
 <!-- end node.icon -->
-{#if !node.icon && !node.isCat}
+{#if !node.icon || node.statusBadge}
   <span
     >{getNodeLabel(node)}
     <StatusBadge {node} />
