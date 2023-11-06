@@ -191,7 +191,7 @@ class Navigation {
     },
 
     {
-      category: { label: 'Misc', icon: 'badge', },
+      category: { label: 'Misc', icon: 'badge'},
       label: 'Open Google in this tab',
       externalLink: {
         url: 'http://google.com',
@@ -354,7 +354,7 @@ class Navigation {
 
   // The following configuration will be used to render the context switcher component
   contextSwitcher = {
-    defaultLabel: 'Select Environment',
+    defaultLabel: 'Select Environment ...',
     parentNodePath: '/environments', // absolute path
     lazyloadOptions: true, // load options on click instead on page load
     options: () =>

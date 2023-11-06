@@ -17,12 +17,12 @@
   }
 </script>
 
-{#if node.icon} <!--wenn es ein icon gibt-->
+{#if node.icon}
   {#if hasOpenUIicon(node) && node.isCat && node.showLabel}
-    <span class="fd-top-nav__icon777 sap-icon {getSapIconStr(node.icon)}" />
+    <span class="fd-top-nav__icon sap-icon {getSapIconStr(node.icon)}" />
     <span>{getNodeLabel(node)}</span>
   {:else if hasOpenUIicon(node)}  
-    <span class="fd-top-nav__icon777 sap-icon {getSapIconStr(node.icon)}" />
+    <span class="fd-top-nav__icon sap-icon {getSapIconStr(node.icon)}" />
   {:else}
     <img
       class="fd-top-nav__icon sap-icon"
