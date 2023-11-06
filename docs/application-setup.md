@@ -20,7 +20,7 @@ meta -->
 > **NOTE:** The quick setup scripts are not intended for production use.  
 
 This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/main/core/examples). They can be a good way to learn about setting up a Luigi project, but are not intended for production use. How you add Luigi to your application will depend on the framework you use and the application itself. However, you should follow these general steps:
-* Add Luigi's `npm` packages to your project dependencies.
+* Add Luigi's `npm` packages (for [Core](https://www.npmjs.com/package/@luigi-project/core) or [Client](https://www.npmjs.com/package/@luigi-project/client)) to your project dependencies.
 * Give Luigi exclusive control over your entry `index.html` file.
 * Start the server to run your application.
 
