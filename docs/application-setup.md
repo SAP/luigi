@@ -24,7 +24,6 @@ This document shows you how to quickly set up a Luigi web application by install
 In the quick setup examples on this page, you can use a single **installer** script which executes these steps: 
 * Add Luigi's `npm` packages (e.g. for Luigi [Core](https://www.npmjs.com/package/@luigi-project/core)/[Client](https://www.npmjs.com/package/@luigi-project/client)) to your project dependencies.
 * Give Luigi exclusive control over your entry `index.html` file.
-* In the case of a single page application, transfer it to a "two-page application". 
 * Start the server to run your application. It's necessary to run the application to make sure the existing router doesn't interfere.  
 
 You can find quick setup scripts for the following frameworks: 
