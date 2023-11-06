@@ -67,5 +67,25 @@
    },
    "engines": {
       "node": ">=18"
-   }
+   },
+   "workspaces": [
+      "scripts",
+      "client",
+      "client/public",
+      "core",
+      "core/public",
+      "container",
+      "container/public",
+      "plugins",
+      "plugins/auth/public/auth-oauth2",
+      "plugins/auth/public/auth-oidc",
+      "client-frameworks-support/client-support-angular",
+      "client-frameworks-support/client-support-ui5",
+      "client-frameworks-support/testing-utilities/test",
+      "client-frameworks-support/testing-utilities",
+      "test/e2e-test-application",
+      "test/e2e-test-application/externalMf",
+      "website/fiddle",
+      "test/e2e-js-test-application"
+    ]
 }
