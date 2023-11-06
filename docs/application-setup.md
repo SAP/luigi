@@ -16,22 +16,27 @@ meta -->
 
 # Quick setup
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/kEzTZ2U9KMM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<!-- add-attribute:class:warning -->
+> **NOTE:** The quick setup scripts are not intended for production use.  
 
-This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/main/core/examples). 
+This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/main/core/examples). They can be a good way to learn about setting up a Luigi project, but are not intended for production use. How you add Luigi to your application will depend on the framework you use and the application itself. However, you should follow these general steps:
+* Add Luigi's `npm` packages to your project dependencies.
+* Give Luigi exclusive control over your entry `index.html` file.
+* Start the server to run your application.
 
-Luigi can be added to any application using these steps:
-* Adding Luigi's `npm` packages to your project dependencies.
-* Giving Luigi exclusive control over your entry `index.html` file.
-* Starting the server to run your application.
+Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere. 
 
-In this example, all these steps are achieved through a single **installer** script for any of the frameworks listed below. Keep in mind that if you have a single page application, you need to transfer it to a "two-page application". You should run your application to make sure the existing router doesn't interfere. 
+In the quick setup examples on this page, the above steps are achieved through a single **installer** script for any of the frameworks listed below: 
 
 * [Application setup without a framework](#application-setup-without-a-framework)
 * [Angular](#application-setup-for-angular)
 * [SAPUI5/OpenUI5](#application-setup-for-sapui5openui5)
 * [VUE.JS](#application-setup-for-vuejs)
 * [React](#application-setup-for-react)
+
+You can see how to quickly start an Angular Luigi application in this video:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kEzTZ2U9KMM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Application setup without a framework
 
