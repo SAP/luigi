@@ -74,9 +74,9 @@ curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-exampl
 
 curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/router/index.js > src/router/index.js
 
-curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/Home.vue > src/views/Home.vue
-curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/Sample1.vue > src/views/Sample1.vue
-curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/Sample2.vue > src/views/Sample2.vue
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/home.vue > src/views/home.vue
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/sample1.vue > src/views/sample1.vue
+curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-vue/src/views/sample2.vue > src/views/sample2.vue
 
 # generic assets
 
