@@ -1,6 +1,8 @@
+const path = require('node:path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const pluginRoot = __dirname + '/../../../';
+const pluginRoot = path.join(__dirname, '../../../');
+
 module.exports = {
   plugins: [
     new CopyWebpackPlugin({
