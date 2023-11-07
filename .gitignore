@@ -21,6 +21,7 @@ container/cypress/screenshots
 # WhiteSource
 whitesource.config.json
 plugin*.js
+plugin*.js.LICENSE.txt
 core/dev-tools/latest_build.log
 core/dev-tools/simple-app
 /full_eslint_report.html
