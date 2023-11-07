@@ -211,6 +211,7 @@ or execute these commands manually to get the same result:
 <!-- accordion:start -->
 ### Click to expand
 ```bash
+
 # create sample vue app
 vue create -d my-vue-app && cd my-vue-app
 
