@@ -55,32 +55,6 @@ To install the plugins, follow these installation guides:
 <!-- add-attribute:class:warning -->
 > **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
 
-### Internet Explorer 11 (IE11)
-
-IE11-related content is now in a separate package.
-
-If you want to support IE11, install the client in your project using npm:
-```bash
-npm install @luigi-project/client-ie11
-npm install @luigi-project/core-ie11
-```
-
-Import the client in places where you want to use it, depending on the environment of your choice:
-```javascript
-var LuigiClient = require('@luigi-project/client-ie11');
-var LuigiCore = require('@luigi-project/core-ie11');
-```
-or
-```javascript
-import LuigiClient from '@luigi-project/client-ie11';
-import LuigiCore from '@luigi-project/core-ie11';
-```
-or, if you are not using any bundler, Luigi is still available as a global object:
-```javascript
-window.LuigiClient
-window.Luigi
-```
-
 ### Fundamental Library Styles
 
 Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there were changes in the HTML structure. Some classes were renamed or removed completely. You can find the full list of Fundamental Library Styles changes [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes).
