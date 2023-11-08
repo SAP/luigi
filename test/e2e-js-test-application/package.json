@@ -1,10 +1,10 @@
 {
-  "name": "e2e-js-test-applicaiton",
+  "name": "e2e-js-test-application",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "live-server --port=4500 --mount='/node_modules':'./node_modules' ./public --no-browser"
+    "dev": "live-server --port=4500 --mount=\"/node_modules\":\"./node_modules\" ./public --no-browser"
   },
   "devDependencies": {
     "@luigi-project/core": "^2.7.0",
