@@ -60,9 +60,11 @@ You can use the Luigi compound container as follows:
     </luigi-compound-container>
 ```
 
-## Example
+## Examples
 
-1. You can find a Luigi Container example on [GitHub](https://github.com/SAP/luigi/tree/main/container). First, clone the Luigi repository if you haven't already done so:
+### Test application
+
+1. You can find a Luigi Container example application on [GitHub](https://github.com/SAP/luigi/tree/main/container). First, clone the Luigi repository if you haven't already done so:
 
 ```bash
 git clone git@github.com:SAP/luigi.git
@@ -82,4 +84,8 @@ The app should be available at `http://localhost:8080` in your browser.
 3. Check `./test-app/index.html` to see how Luigi Container is used.
 
 
-<!--- TODO: Add OpenUI5 tutorial, on SAP developers website ---->
+### UI5 tutorial
+
+You can follow the [Luigi Container UI5 tutorial](https://developers.sap.com/tutorials/luigi-container.html) in order to learn how to: 
+- Install Luigi Container in an UI5 app with the help of the UI5 Tooling Modules
+- Use Luigi Container to implement micro frontends  
