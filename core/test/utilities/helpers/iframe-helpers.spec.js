@@ -141,6 +141,7 @@ describe('Iframe-helpers', () => {
       assert.isFalse(IframeHelpers.urlMatchesTheDomain(href, domain));
     });
 
+    /*
     it('ie11 urlMatchesTheDomain', () => {
       const domain = 'https://luigi.url.com/bla/bli';
       const a1 = document.createElement('a');
@@ -171,6 +172,7 @@ describe('Iframe-helpers', () => {
       expect(a1.host).to.equal('luigi.url.com:443');
       expect(a2.host).to.equal('luigi.url.com:443');
     });
+    */
   });
 
   describe('canReuseIframe', () => {

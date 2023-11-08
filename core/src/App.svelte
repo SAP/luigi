@@ -2618,6 +2618,7 @@
   }
 
   //Fixing issues for fundamental styles
+    /*
   //IE11 fixes
   :global(.fd-nested-list__content),
   :global(.fd-nested-list__link) {
@@ -2625,6 +2626,7 @@
       max-height: 100%;
     }
   }
+  */
 
   //Add padding for shellbar buttons
   :global(.fd-shellbar__button) {

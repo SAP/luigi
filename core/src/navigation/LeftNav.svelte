@@ -1000,11 +1000,13 @@
   @import 'src/styles/_mixins.scss';
   @import 'src/styles/_variables.scss';
 
+  /*
   :root {
-    /* needed for IE11 support */
+    // needed for IE11 support 
     --fd-color-neutral-2: #eeeeef;
     --fd-color-neutral-3: #d9d9d9;
   }
+  */
 
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
