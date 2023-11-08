@@ -140,39 +140,6 @@ describe('Iframe-helpers', () => {
       const domain = 'http://luigi.url.com/fd';
       assert.isFalse(IframeHelpers.urlMatchesTheDomain(href, domain));
     });
-
-    /*
-    it('ie11 urlMatchesTheDomain', () => {
-      const domain = 'https://luigi.url.com/bla/bli';
-      const a1 = document.createElement('a');
-      const a2 = document.createElement('a');
-      sb.stub(document, 'createElement')
-        .callThrough()
-        .withArgs('a')
-        .callsFake(() => {
-          if (a1.stubReturned) {
-            return a2;
-          } else {
-            a1.stubReturned = true;
-            return a1;
-          }
-        });
-      // Mimic IE11 behaviour
-      // no origin
-      sb.stub(a1, 'origin').value(undefined);
-      sb.stub(a2, 'origin').value(undefined);
-      // add port to https urls
-      sb.stub(a1, 'host').get(() => {
-        return a1.protocol === 'https:' ? a1.hostname + ':443' : a1.hostname;
-      });
-      sb.stub(a2, 'host').get(() => {
-        return a2.protocol === 'https:' ? a2.hostname + ':443' + a2.port : a2.hostname;
-      });
-      assert.isTrue(IframeHelpers.urlMatchesTheDomain(href, domain));
-      expect(a1.host).to.equal('luigi.url.com:443');
-      expect(a2.host).to.equal('luigi.url.com:443');
-    });
-    */
   });
 
   describe('canReuseIframe', () => {
