@@ -119,6 +119,7 @@ var params = {
   wait: 1000,
   mount: [
     ['/public', './public'],
+    //ie11', './public-ie11'],
     ['/public_client', '../client/public']
   ],
   logLevel: 0,
