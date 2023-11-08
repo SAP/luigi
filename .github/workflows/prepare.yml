@@ -58,6 +58,7 @@ jobs:
       - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
       - run: lerna run bundle --ignore docs --scope @luigi-project/client-support-angular
       - run: ls -la test/e2e-test-application/node_modules/@luigi-project/client-support-angular
+      - run: ls -la client-frameworks-support/client-support-angular/dist/client-support-angular
       - run: lerna run bundle --ignore docs
       - run: lerna run bundlesizeOnly --ignore docs
       - run: lerna run build --ignore docs
