@@ -57,8 +57,11 @@ jobs:
       - run: lerna run bundle --ignore docs --scope luigi-client-private
       - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
       - run: lerna run bundle --ignore docs --scope @luigi-project/client-support-angular
+      # Check if support library built and present
       - run: ls -la test/e2e-test-application/node_modules/@luigi-project/client-support-angular
       - run: ls -la client-frameworks-support/client-support-angular/dist/client-support-angular
+      # Bootstrap again to make sure dependencys are properly linked
+      - run: lerna bootstrap --ci --force-local --ignore docs
       - run: lerna run bundle --ignore docs
       - run: lerna run bundlesizeOnly --ignore docs
       - run: lerna run build --ignore docs
