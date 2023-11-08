@@ -4,7 +4,7 @@
   "description": "",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "npm run buildConfig && ls -la node_modules/@luigi-project/client-support-angular && ng build",
+    "build": "npm run buildConfig  && ng build",
     "lint": "ng lint",
     "e2e:open:angular": "cypress open --browser chrome --e2e --config-file cypress/config/e2e-angular-app.config.js",
     "e2e:open:external": "cypress open  --browser chrome --e2e --config-file cypress/config/externalmf.config.js",
