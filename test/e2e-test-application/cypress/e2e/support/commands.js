@@ -370,3 +370,44 @@ Cypress.Commands.add('getModalWindow', () => {
     .iframeWindow()
     .its('0.contentWindow');
 });
+
+Cypress.Commands.add('getDocumentFromWindowOrIframe', (getDocumentFromIframe = false) => {
+  return getDocumentFromIframe
+    ? cy
+        .get('iframe')
+        .iframeWindow()
+        .then($iframe => $iframe[0].contentDocument)
+    : cy.document();
+});
+
+Cypress.Commands.add('hasCssVar', { prevSubject: true }, (subject, styleName, cssVarName, runInIframe = false) => {
+  cy.getDocumentFromWindowOrIframe(runInIframe).then(doc => {
+    const dummy = doc.createElement('span');
+
+    dummy.style.setProperty(styleName, `var(${cssVarName})`);
+    doc.body.appendChild(dummy);
+
+    const evaluatedStyle = window
+      .getComputedStyle(dummy)
+      .getPropertyValue(styleName)
+      .trim();
+    console.info({ doc, dummy, evaluatedStyle });
+    dummy.remove();
+
+    cy.wrap(subject)
+      .then($el => {
+        console.info({ element: $el[0] });
+        console.info({
+          [styleName]: window
+            .getComputedStyle($el[0])
+            .getPropertyValue(styleName)
+            .trim()
+        });
+        return window
+          .getComputedStyle($el[0])
+          .getPropertyValue(styleName)
+          .trim();
+      })
+      .should('eq', evaluatedStyle);
+  });
+});

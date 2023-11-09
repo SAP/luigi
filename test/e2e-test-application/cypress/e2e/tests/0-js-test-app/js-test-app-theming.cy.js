@@ -602,8 +602,7 @@ describe('JS-TEST-APP 2', () => {
       cy.getIframeBody().then($body => {
         cy.wrap($body)
           .contains('ApplyCSS')
-          .should('have.css', 'color')
-          .and('eq', 'rgb(0, 0, 0)');
+          .hasCssVar('color', '--sapTextColor', true);
         cy.wrap($body)
           .contains('ApplyCSS')
           .should('have.css', 'color')
