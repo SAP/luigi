@@ -96,12 +96,6 @@ class IframeHelpersClass {
 
     if (element.origin) {
       return element.origin;
-    } else if (element.protocol && element.host) {
-      // IE11, url contains domain
-      return `${element.protocol}//${element.host}`;
-    } else {
-      // IE11, url does not contain domain
-      return window.location.origin;
     }
   }
 

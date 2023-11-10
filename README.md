@@ -34,36 +34,6 @@ Go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site to see Luigi in a
 
 For details, see [Luigi documentation](https://docs.luigi-project.io).
 
-## Browser support
-
-If you want to support Internet Explorer 11 in your application, install the `@luigi-project/core-ie11` package and update your Luigi imports as follows:
-### Luigi Core
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link rel='stylesheet' href='/luigi-core/luigi-ie11.css'>
-    <!-- <link rel='stylesheet' href='/luigi-core/luigi.css'> -->
-  </head>
-  <body>
-    <script type="module" src="/luigi-core/luigi.js"></script>
-    <script nomodule src="/luigi-core/luigi-ie11.js"></script>
-    <!-- <script src="/luigi-core/luigi.js"></script> -->
-  </body>
-</html>
-```
-
-### Luigi Client
-Install the `@luigi-project/client-ie11` package and update your Luigi imports as follows:
-```javascript
-import {
-  linkManager,
-  uxManager
-} from '@luigi-project/client-ie11';
-```
-
-> **NOTE**: The example applications are not fully compatible with IE11.
-
 ## Development
 
 ### Development guidelines for micro frontend developers

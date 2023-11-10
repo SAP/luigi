@@ -79,7 +79,6 @@ Respectively from `oidc-client` library you need:
 and from our library `@luigi-project/plugin-auth-oidc` you need:
 - `plugin.js`
 - `silent-callback.html`
-- `plugin-ie11.js` (for IE11 only)
 which all reside under `node_modules/@luigi-project/plugin-auth-oidc/plugin.js`.
 
 The above mentioned files should be copied to `assets/auth-oidc` as the default location.
@@ -98,10 +97,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
     new CopyWebpackPlugin([
      {
          from: 'node_modules/@luigi-project/plugin-auth-oidc/plugin.js',
-         to: 'assets/auth-oidc'
-     },
-     {
-         from: 'node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js',
          to: 'assets/auth-oidc'
      },
      {
