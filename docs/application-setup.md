@@ -17,7 +17,7 @@ meta -->
 # Quick setup
 
 <!-- add-attribute:class:warning -->
-> **NOTE:** The setup scripts are a quick and easy way to create a running core app and micro frontend hosted by the same webserver, but they don't represent a real-life scenario where the different pieces are distributed.
+> **NOTE:** The setup scripts are a quick and easy way to create a running Luigi Core app and micro frontend hosted by the same webserver, but they don't represent a real-life scenario where the different pieces are distributed.
 
 This document shows you how to quickly set up a Luigi web application by installing some of our [examples](https://github.com/SAP/luigi/tree/main/core/examples). They can be a good way to learn about setting up a Luigi project, but how you add Luigi to your application will depend on the framework you use and the application itself. 
 
