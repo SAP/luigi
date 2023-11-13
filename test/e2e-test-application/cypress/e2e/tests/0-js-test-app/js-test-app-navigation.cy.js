@@ -90,6 +90,26 @@ describe('JS-TEST-APP', () => {
         cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:80%;height:80%;');
         cy.get('[aria-label="close"]').click();
       });
+      it('Update modal settings', () => {
+        newConfig.routing.showModalPathInUrl = true;
+        cy.visitTestApp('/', newConfig);
+        cy.get('[configversion="js-test-app-core-api-nav-test"]');
+        cy.window().then(win => {
+          win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
+        });
+        cy.get('.lui-modal-mf').should('exist');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
+        cy.url().should('include', 'width%22%3A%2250rem');
+        cy.url().should('include', 'height%22%3A%2270rem');
+        cy.url().should('not.contain', '/title%22%3A%22test/');
+        cy.getIframeBody({}, 0, '.iframeModalCtn').then(result => {
+          cy.wrap(result).contains('updateModalSettings')
+            .click();
+          cy.url().should('include', 'width%22%3A%2250rem');
+          cy.url().should('include', 'height%22%3A%2270rem');
+          cy.url().should('include', 'title%22%3A%22test');
+        });
+      });
     });
     describe('Normal navigation', () => {
       let newConfig;
@@ -276,7 +296,7 @@ describe('JS-TEST-APP', () => {
         defaultLabel: 'Select Environment',
         parentNodePath: '/environments',
         lazyloadOptions: true,
-        options: function() {
+        options: function () {
           return [
             {
               label: 'Environment 1',
@@ -290,7 +310,7 @@ describe('JS-TEST-APP', () => {
             }
           ];
         },
-        customSelectedOptionRenderer: function(option) {
+        customSelectedOptionRenderer: function (option) {
           if (option.customRendererCategory === 'production') {
             return `<label style='color: rgb(136, 255, 0); font-weight:700'>
                   ${option.label}
