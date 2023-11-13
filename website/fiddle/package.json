@@ -24,6 +24,7 @@
     "@luigi-project/core": "2.6.3",
     "@luigi-project/plugin-auth-oauth2": "2.6.3",
     "@luigi-project/plugin-auth-oidc": "2.6.3",
+    "@luigi-project/container": "1.0.0",
     "@sap-theming/theming-base-content": "~11.1.35",
     "@ui5/webcomponents": "^1.18.0",
     "@ui5/webcomponents-fiori": "^1.18.0",
