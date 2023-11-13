@@ -103,7 +103,8 @@ describe('JS-TEST-APP', () => {
         cy.url().should('include', 'height%22%3A%2270rem');
         cy.url().should('not.contain', '/title%22%3A%22test/');
         cy.getIframeBody({}, 0, '.iframeModalCtn').then(result => {
-          cy.wrap(result).contains('updateModalSettings')
+          cy.wrap(result)
+            .contains('updateModalSettings')
             .click();
           cy.url().should('include', 'width%22%3A%2250rem');
           cy.url().should('include', 'height%22%3A%2270rem');
@@ -296,7 +297,7 @@ describe('JS-TEST-APP', () => {
         defaultLabel: 'Select Environment',
         parentNodePath: '/environments',
         lazyloadOptions: true,
-        options: function () {
+        options: function() {
           return [
             {
               label: 'Environment 1',
@@ -310,7 +311,7 @@ describe('JS-TEST-APP', () => {
             }
           ];
         },
-        customSelectedOptionRenderer: function (option) {
+        customSelectedOptionRenderer: function(option) {
           if (option.customRendererCategory === 'production') {
             return `<label style='color: rgb(136, 255, 0); font-weight:700'>
                   ${option.label}

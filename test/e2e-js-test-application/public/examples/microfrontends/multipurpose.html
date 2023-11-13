@@ -1,123 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <title></title>
-  <meta charset="utf-8" />
-  <link href="../../../node_modules/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet" />
-  <link href="../../styles/styles.css" rel="stylesheet" />
-  <script src="/node_modules/@luigi-project/client/luigi-client.js"></script>
-  <style>
-    html,
-    body {
-      position: relative;
-    }
-
-    #imgCnt img {
-      width: 100%;
-    }
-
-    #imgCnt {
-      text-align: center;
-    }
-
-    #textCnt {
-      padding: 30px;
-      text-align: center;
-      font-family: '72', sans-serif;
-      visibility: hidden;
-    }
-
-    #textCnt.visible {
-      visibility: visible;
-    }
-
-    .transferVars {
-      color: var(--sapTextColor);
-    }
-  </style>
-</head>
-
-<body style="-webkit-font-smoothing: antialiased;">
-  <div id="routeCnt"></div>
-  <div id="imgCnt"></div>
-  <div id="textCnt">
-    <h1 id="title">Multi purpose demo page</h1>
-    <p id="content">Some content</p>
-    <button id="anothermfBtn" class="goToAnotherMf" onclick="goToAnotherMf()">
-      open US
-    </button>
-    <button id="vgDataUpdate" onclick="vgDataUpdate()">Set view group data</button>
-    <button class="transferVars" onclick="applyCSS()">ApplyCSS</button>
-    <button class="updateModalSettingsBtn"
-      onclick="LuigiClient.linkManager().updateModalSettings({ 'title': 'test' });">updateModalSettings</button>
-  </div>
-
-  <script>
-    function navigate(route) {
-      if (route === '#/preload') {
-        document.body.style.display = 'none';
-      } else {
-        document.body.style.display = 'block';
-        document.getElementById('title').innerHTML = route
-          ? `<h2>${encodeURIComponent(route.replace('#/', ''))}</h2>`
-          : '';
+  <head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link
+      href="../../../node_modules/fundamental-styles/dist/fundamental-styles.css"
+      rel="stylesheet"
+    />
+    <link href="../../styles/styles.css" rel="stylesheet" />
+    <script src="/node_modules/@luigi-project/client/luigi-client.js"></script>
+    <style>
+      html,
+      body {
+        position: relative;
       }
-    }
 
-    const navChangeLst = () => {
+      #imgCnt img {
+        width: 100%;
+      }
+
+      #imgCnt {
+        text-align: center;
+      }
+
+      #textCnt {
+        padding: 30px;
+        text-align: center;
+        font-family: '72', sans-serif;
+        visibility: hidden;
+      }
+
+      #textCnt.visible {
+        visibility: visible;
+      }
+
+      .transferVars {
+        color: var(--sapTextColor);
+      }
+    </style>
+  </head>
+
+  <body style="-webkit-font-smoothing: antialiased;">
+    <div id="routeCnt"></div>
+    <div id="imgCnt"></div>
+    <div id="textCnt">
+      <h1 id="title">Multi purpose demo page</h1>
+      <p id="content">Some content</p>
+      <button id="anothermfBtn" class="goToAnotherMf" onclick="goToAnotherMf()">
+        open US
+      </button>
+      <button id="vgDataUpdate" onclick="vgDataUpdate()">Set view group data</button>
+      <button class="transferVars" onclick="applyCSS()">ApplyCSS</button>
+      <button
+        class="updateModalSettingsBtn"
+        onclick="LuigiClient.linkManager().updateModalSettings({ 'title': 'test' });"
+      >
+        updateModalSettings
+      </button>
+    </div>
+
+    <script>
+      function navigate(route) {
+        if (route === '#/preload') {
+          document.body.style.display = 'none';
+        } else {
+          document.body.style.display = 'block';
+          document.getElementById('title').innerHTML = route
+            ? `<h2>${encodeURIComponent(route.replace('#/', ''))}</h2>`
+            : '';
+        }
+      }
+
+      const navChangeLst = () => {
+        navigate(window.location.hash);
+      };
+      window.addEventListener('hashchange', navChangeLst);
+      window.addEventListener('popstate', navChangeLst);
+
       navigate(window.location.hash);
-    };
-    window.addEventListener('hashchange', navChangeLst);
-    window.addEventListener('popstate', navChangeLst);
+    </script>
 
-    navigate(window.location.hash);
-  </script>
-
-  <script>
-    function goToAnotherMf() {
-      LuigiClient.linkManager().openAsModal('/home/usersettings');
-    }
-    function updateFn(context) {
-      if (context.title) {
-        document.getElementById('title').innerHTML = context.title;
+    <script>
+      function goToAnotherMf() {
+        LuigiClient.linkManager().openAsModal('/home/usersettings');
       }
-      if (context.content) {
-        document.getElementById('content').innerHTML = context.content;
+      function updateFn(context) {
+        if (context.title) {
+          document.getElementById('title').innerHTML = context.title;
+        }
+        if (context.content) {
+          document.getElementById('content').innerHTML = context.content;
+        }
+        if (context.imgUrl) {
+          var iwidth = !isNaN(context.imgWidth)
+            ? 'width: ' + context.imgWidth + 'px'
+            : '';
+          document.getElementById('imgCnt').innerHTML =
+            "<img src='" +
+            context.imgUrl +
+            "' style='" +
+            iwidth +
+            '; margin-top: ' +
+            (context.imgTopMargin ? '5' : '') +
+            "0px'>";
+        }
+        document.getElementById('textCnt').classList.add('visible');
       }
-      if (context.imgUrl) {
-        var iwidth = !isNaN(context.imgWidth)
-          ? 'width: ' + context.imgWidth + 'px'
-          : '';
-        document.getElementById('imgCnt').innerHTML =
-          "<img src='" +
-          context.imgUrl +
-          "' style='" +
-          iwidth +
-          '; margin-top: ' +
-          (context.imgTopMargin ? '5' : '') +
-          "0px'>";
+      function vgDataUpdate() {
+        LuigiClient.setViewGroupData({
+          foo: 'Luigi rocks',
+          bar: '(' + Math.round(Math.random() * 100) + ')'
+        });
       }
-      document.getElementById('textCnt').classList.add('visible');
-    }
-    function vgDataUpdate() {
-      LuigiClient.setViewGroupData({
-        foo: 'Luigi rocks',
-        bar: '(' + Math.round(Math.random() * 100) + ')'
-      });
-    }
-    LuigiClient.addInitListener(updateFn);
-    LuigiClient.addContextUpdateListener(updateFn);
+      LuigiClient.addInitListener(updateFn);
+      LuigiClient.addContextUpdateListener(updateFn);
 
-    // fallback visibility if no initlistener called for 3 seconds
-    setTimeout(function () {
-      document.getElementById('textCnt').classList.add('visible');
-    }, 3000);
+      // fallback visibility if no initlistener called for 3 seconds
+      setTimeout(function() {
+        document.getElementById('textCnt').classList.add('visible');
+      }, 3000);
 
-    function applyCSS() {
-      LuigiClient.uxManager().applyCSS();
-    }
-  </script>
-</body>
-
+      function applyCSS() {
+        LuigiClient.uxManager().applyCSS();
+      }
+    </script>
+  </body>
 </html>
