@@ -871,12 +871,17 @@ settings: {
 - **type**: boolean OR object
 - **description**: mark a node as web component either by setting this attribute to `true` or defining an object with the attributes described below. In the latter case, the `viewUrl` attribute of the node must point to the web component `.js` file.
 - **attributes**:
-  - **id**: unique id of the web component
   - **type**: string, like `module`.
   - **selfRegistered**: if it is `true`, the web component bundle will be added via script tag.
   - **tagName**: tag name where web component is added to DOM.
 - **since**: 1.7.0
 
+<!-- add-attribute:class:warning -->
+>**NOTE:** If you have to use the mechanism of `selfRegistered`, we recommend using the following code in your web component:
+```javascript
+window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), <YOUR_WEBCOMPONENT_CLASS>);
+```
+The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
 
 
 ## Context switcher
