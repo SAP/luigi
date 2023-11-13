@@ -256,12 +256,12 @@
       if (e.data.updatedModalSettings.size) {
         settings.size = e.data.updatedModalSettings.size;
         await setModalSize();
-      }else if(e.data.updatedModalSettings.width && e.data.updatedModalSettings.height){
-        settings.height = e.data.updateModalDataInUrl.height;
-        settings.width = e.data.updateModalDataInUrl.width;
+      } else if (e.data.updatedModalSettings.width && e.data.updatedModalSettings.height) {
+        settings.height = e.data.updatedModalSettings.height;
+        settings.width = e.data.updatedModalSettings.width;
       }
-      if(LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')){
-        Routing.updateModalDataInUrl(RoutingHelpers.getModalPathFromPath(), {'title':settings.title, 'size':settings.size, 'height': settings.height, 'width': settings.width}, e.data.addHistoryEntry);   
+      if (LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')) {
+        Routing.updateModalDataInUrl(RoutingHelpers.getModalPathFromPath(), {'title': settings.title, 'size': settings.size, 'height': settings.height, 'width': settings.width}, e.data.addHistoryEntry);   
       }
     }
   };
