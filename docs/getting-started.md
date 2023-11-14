@@ -63,20 +63,9 @@ Luigi consists of two main parts:
 
 ## Quick setup
 
-If you want to begin developing your own app with Luigi, start here:
-
 ### Luigi Core
 
-Follow these steps to create a global user interface and host a **full web application** in Luigi:
-
-1. Set up a Luigi Core application on one of the following frameworks:
-  * [No framework](application-setup.md#application-setup-without-a-framework)
-  * [Angular](application-setup.md#application-setup-for-angular)
-  * [SAPUI5/OpenUI5](application-setup.md#application-setup-for-sapui5openui5)
-  * [VUE.JS](application-setup.md#application-setup-for-vuejs)
-  * [React](application-setup.md#application-setup-for-react)
-
-2. Configure the application according to your needs. For example, you can begin by configuring the [basic navigation](navigation-configuration.md) of your application.
+You can find Luigi setup examples for different frameworks [here](application-setup.md). 
 
 ### Luigi Client
 
