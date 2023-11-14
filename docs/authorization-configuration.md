@@ -290,11 +290,9 @@ Luigi.setConfig({
 })
 ```
 ​
-[oAuth2ImplicitGrant.js](../core/src/providers/auth/oAuth2ImplicitGrant.js) is a good starting point if you don't use an external authorization library.
-​
 After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
-​
-[openIdConnect.js](../core/src/providers/auth/openIdConnect.js) lazy loads the official `oidc-client` library and is a good starting point if you also depend on external authorization libraries.
+
+You can use the Luigi implementations of [OAuth2](https://github.com/SAP/luigi/blob/main/plugins/auth/src/auth-oauth2/index.js) and [OpenID Connect](https://github.com/SAP/luigi/blob/main/plugins/auth/src/auth-oidc/index.js) as examples when creating your own authorization provider.
 
 <!-- add-attribute:class:warning -->
 >**NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.
