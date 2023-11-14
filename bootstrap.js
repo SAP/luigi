@@ -11,7 +11,7 @@ const folders = [
   // check if/when needed actually. Scripts might not be needed for all build processes
   'scripts',
   'test/e2e-test-application',
-  'test/e2e-js-test-application',
+  'test/e2e-js-test-application'
 
   // check if needed
   // 'website/docs',
@@ -23,7 +23,6 @@ const folders = [
 // - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/client
 // - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
 // - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
-        
 
 // Function to install npm packages in each folder
 function installPackages(folder, index, totalFolders) {
@@ -35,7 +34,9 @@ function installPackages(folder, index, totalFolders) {
         console.error(`\x1b[31mError installing npm packages in ${folder}: ${stderr}\x1b[0m`);
         reject(error);
       } else {
-        console.log(`\x1b[32m[${index + 1}/${totalFolders}] : npm packages installed successfully in \x1b[33m${folder}\x1b[0m`);
+        console.log(
+          `\x1b[32m[${index + 1}/${totalFolders}] : npm packages installed successfully in \x1b[33m${folder}\x1b[0m`
+        );
         resolve();
       }
     });
@@ -51,10 +52,9 @@ async function installAllPackages() {
 
 console.log('\x1b[36m\n\nInstalling node_modules packages in these folders in the following order:\x1b[0m');
 for (const folder of folders) {
-  console.log('- '+ folder);
+  console.log('- ' + folder);
 }
 
-console.log('Starting...')
+console.log('Starting...');
 
 installAllPackages();
-
