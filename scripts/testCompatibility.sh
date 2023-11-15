@@ -204,6 +204,8 @@ linkLuigi() {
     ln -s $LUIGI_DIR/client/public $NODE_MODULES/client
     ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $NODE_MODULES/plugin-auth-oauth2
     ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $NODE_MODULES/plugin-auth-oidc
+    ln -s $LUIGI_DIR/client-frameworks-support/client-support-angular/dist/client-support-angular $NODE_MODULES/client-support-angular
+
     
     #TODO: Consider manually linking e2e-test-app packages here as well from failing build
 
@@ -212,6 +214,7 @@ linkLuigi() {
     ls $NODE_MODULES/client
     ls $NODE_MODULES/plugin-auth-oauth2
     ls $NODE_MODULES/plugin-auth-oidc
+    ls $NODE_MODULES/client-support-angular
 
     if [ ! -f $NODE_MODULES/core/package.json ]; then
       echoe "There was an issue linking the core module"
@@ -227,6 +230,10 @@ linkLuigi() {
     fi
     if [ ! -f $NODE_MODULES/plugin-auth-oidc/package.json ]; then
       echoe "There was an issue linking the auth-oidc module"
+      exit 2
+    fi
+    if [ ! -f $NODE_MODULES/client-support-angular/package.json ]; then
+      echoe "There was an issue linking the client-support-angular module"
       exit 2
     fi
   done
