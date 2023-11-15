@@ -1,17 +1,9 @@
 const { exec } = require('child_process');
 
 // Array of folder names
-const foldersToBundle = [
-  'core',
-  'client',
-  'client-frameworks-support/client-support-angular',
-  'container',
-  'plugins',
-];
+const foldersToBundle = ['core', 'client', 'client-frameworks-support/client-support-angular', 'container', 'plugins'];
 
-const foldersToBuild = [
-  'test/e2e-test-application',
-];
+const foldersToBuild = ['test/e2e-test-application'];
 
 let timeToBundle = 0;
 let timeToBuild = 0;
@@ -29,7 +21,7 @@ function runCommand(folder, index, totalFolders, operation) {
 
     exec(command, (error, stdout, stderr) => {
       const endTime = new Date();
-      const elapsedTime = (endTime - startTime) / 1000; 
+      const elapsedTime = (endTime - startTime) / 1000;
       timeToBundle += operation === 'bundle' ? elapsedTime : 0;
       timeToBuild += operation === 'build' ? elapsedTime : 0;
 
@@ -38,7 +30,8 @@ function runCommand(folder, index, totalFolders, operation) {
         reject(error);
       } else {
         console.log(
-          `\x1b[36m[${index + 1}/${totalFolders}]\x1b[0m: \x1b[33m${folder}\x1b[0m ${operation} successful (\x1b[33m${elapsedTime.toFixed(
+          `\x1b[36m[${index +
+            1}/${totalFolders}]\x1b[0m: \x1b[33m${folder}\x1b[0m ${operation} successful (\x1b[33m${elapsedTime.toFixed(
             2
           )}s\x1b[0m)`
         );
@@ -54,7 +47,11 @@ function runCommand(folder, index, totalFolders, operation) {
 
 // Function to run 'npm run bundle' in all specified folders
 async function runCommandInAllFolders(folders, operation) {
-  console.log(`\x1b[36m\n\nRunning (npm run ${operation}) in these folders in the following order:\x1b[0m ${isVerbose? '\x1b[41m\x1b[37m(VERBOSE)\x1b[0m':''}`);
+  console.log(
+    `\x1b[36m\n\nRunning (npm run ${operation}) in these folders in the following order:\x1b[0m ${
+      isVerbose ? '\x1b[41m\x1b[37m(VERBOSE)\x1b[0m' : ''
+    }`
+  );
   for (const folder of folders) {
     console.log('- ' + folder);
   }
@@ -66,13 +63,13 @@ async function runCommandInAllFolders(folders, operation) {
 }
 
 // Run the 'npm run bundle' command in the specified folders
-runCommandInAllFolders(foldersToBundle, 'bundle').then(()=>{
-  console.log(`Bundle finished in ${timeToBundle.toFixed(2)}s`)
+runCommandInAllFolders(foldersToBundle, 'bundle').then(() => {
+  console.log(`Bundle finished in ${timeToBundle.toFixed(2)}s`);
 
   // Run the 'npm run build' command in the specified folders
-  runCommandInAllFolders(foldersToBuild, 'build').then(()=>{
-    console.log(`Build finished in ${timeToBuild.toFixed(2)}s\n`)
-    console.log(`\nBuild+Bundle finished in ${(timeToBuild+timeToBundle).toFixed(2)}s\n`)
+  runCommandInAllFolders(foldersToBuild, 'build').then(() => {
+    console.log(`Build finished in ${timeToBuild.toFixed(2)}s\n`);
+    console.log(`\nBuild+Bundle finished in ${(timeToBuild + timeToBundle).toFixed(2)}s\n`);
   }, errorHandler);
 }, errorHandler);
 
@@ -80,8 +77,7 @@ runCommandInAllFolders(foldersToBundle, 'bundle').then(()=>{
  * Function to handle the error case for promises
  * @param {*} error error
  */
-function errorHandler(error){
+function errorHandler(error) {
   console.error('Stopping execution of the process due to error:', error);
   process.exit(1);
 }
-

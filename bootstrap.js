@@ -28,7 +28,6 @@ const folders = [
 const verboseFlagIndex = process.argv.indexOf('--verbose');
 let isVerbose = verboseFlagIndex !== -1;
 
-
 // Function to install npm packages in given folder
 function installPackages(folder, index, totalFolders) {
   return new Promise((resolve, reject) => {
@@ -59,24 +58,26 @@ async function installAllPackages() {
   }
 }
 
-console.log(`\x1b[36m\n\nInstalling node_modules packages in these folders in the following order:\x1b[0m ${isVerbose? '\x1b[41m\x1b[37m(VERBOSE)\x1b[0m':''}`);
+console.log(
+  `\x1b[36m\n\nInstalling node_modules packages in these folders in the following order:\x1b[0m ${
+    isVerbose ? '\x1b[41m\x1b[37m(VERBOSE)\x1b[0m' : ''
+  }`
+);
 for (const folder of folders) {
   console.log('- ' + folder);
 }
 
 console.log('Starting...');
 
-installAllPackages().then(()=>{
+installAllPackages().then(() => {
   console.log('Finishing installing packages');
 }, errorHandler);
-
 
 /**
  * Function to handle the error case for promises
  * @param {*} error error
  */
-function errorHandler(error){
+function errorHandler(error) {
   console.error('Stopping execution of the process due to error:', error);
   process.exit(1);
 }
-
