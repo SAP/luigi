@@ -2,9 +2,6 @@ on:
   push:
     branches:
       - 'main'
-  pull_request:
-    branches:
-      - 'main'
 name: Backwards Compatibility Check
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
@@ -38,6 +35,4 @@ jobs:
       # - run: lerna run bundle --ignore docs --scope luigi-client-private
       # - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
       #- run: lerna run bundle --ignore docs
-      # - run: node bootstrap.js
-      # - run: node bundle.js
       - run: bash ./scripts/testCompatibility.sh --tag latest
