@@ -2,6 +2,7 @@ const { exec } = require('child_process');
 
 // Array of folder names
 const folders = [
+  './',
   'core',
   'client',
   'client-frameworks-support/client-support-angular',
@@ -65,7 +66,7 @@ for (const folder of folders) {
 console.log('Starting...');
 
 installAllPackages().then(() => {
-  console.log('Finishing installing packages');
+  console.log('Finished installing packages successfuly.');
 }, errorHandler);
 
 /**
