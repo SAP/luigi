@@ -12,7 +12,7 @@ let timeToBuild = 0;
 const verboseFlagIndex = process.argv.indexOf('--verbose');
 let isVerbose = verboseFlagIndex !== -1;
 
-// Function to run 'npm run bundle' in a folder
+// Function to run 'npm run <operation>' in a folder
 function runCommand(folder, index, totalFolders, operation) {
   const startTime = new Date();
 
