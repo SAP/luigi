@@ -169,9 +169,9 @@ const symbolicLinkSD = [
 ];
 
 async function symbolicLinkAll() {
-  symbolicLinkSD.forEach(async link => {
-    await createSymbolicLinkFromTo(link.source, link.destination, link.scope);
-  });
+  for (let index = 0; index < symbolicLinkSD.length; index++) {
+    await createSymbolicLinkFromTo(symbolicLinkSD[i].source, symbolicLinkSD[i].destination, symbolicLinkSD[i].scope);    
+  }
 }
 
 // Create symbolic link before running other commands
