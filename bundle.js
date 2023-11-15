@@ -3,7 +3,14 @@ const fs = require('fs');
 const path = require('path');
 
 // Array of folder names
-const foldersToBundle = ['core', 'client', 'client-frameworks-support/testing-utilities', 'client-frameworks-support/client-support-angular', 'container', 'plugins', ];
+const foldersToBundle = [
+  'core',
+  'client',
+  'client-frameworks-support/testing-utilities',
+  'client-frameworks-support/client-support-angular',
+  'container',
+  'plugins'
+];
 
 const foldersToBuild = ['test/e2e-test-application'];
 
@@ -64,13 +71,13 @@ async function runCommandInAllFolders(folders, operation) {
   }
 }
 
-
 // Function to create a symbolic link. Deletes destination folder if already exists
 function createSymbolicLink(source, target) {
   return new Promise(async (resolve, reject) => {
     try {
       // Check if the destination path already exists
-      const destExists = await fs.promises.access(target)
+      const destExists = await fs.promises
+        .access(target)
         .then(() => true)
         .catch(() => false);
 
@@ -80,7 +87,7 @@ function createSymbolicLink(source, target) {
       }
 
       // Create the symbolic link
-      fs.symlink(source, target, 'dir', (error) => {
+      fs.symlink(source, target, 'dir', error => {
         if (error) {
           reject(error);
         } else {
@@ -148,13 +155,13 @@ const symbolicLinkSD = [
     source: 'client-frameworks-support/testing-utilities/dist',
     destination: 'test/e2e-test-application',
     scope: '@luigi-project/testing-utilities'
-  },
-]
+  }
+];
 
-async function symbolicLinkAll(){
-  symbolicLinkSD.forEach(async(link)=>{
+async function symbolicLinkAll() {
+  symbolicLinkSD.forEach(async link => {
     await createSymbolicLinkFromTo(link.source, link.destination, link.scope);
-  })
+  });
 }
 
 // Create symbolic link before running other commands
@@ -184,8 +191,6 @@ symbolicLinkAll().then(() => {
   }, errorHandler);
 });
 
-
-
 /**
  * Function to handle the error case for promises
  * @param {*} error error
@@ -194,4 +199,3 @@ function errorHandler(error) {
   console.error('Stopping execution of the process due to error:', error);
   process.exit(1);
 }
-
