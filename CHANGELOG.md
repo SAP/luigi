@@ -25,6 +25,14 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.7.2] (2023-11-14)
+
+#### :bug: Fixed
+* [#3524](https://github.com/SAP/luigi/pull/3524) Update width and height property on updateModalSettings ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.7.1] (2023-10-27)
 
 #### :bug: Fixed
@@ -1672,3 +1680,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.6.3]: https://github.com/SAP/luigi/compare/v2.6.2...v2.6.3
 [v2.7.0]: https://github.com/SAP/luigi/compare/v2.6.3...v2.7.0
 [v2.7.1]: https://github.com/SAP/luigi/compare/v2.7.0...v2.7.1
+[v2.7.2]: https://github.com/SAP/luigi/compare/v2.7.1...v2.7.2
