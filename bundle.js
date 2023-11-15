@@ -170,7 +170,7 @@ const symbolicLinkSD = [
 
 async function symbolicLinkAll() {
   for (let index = 0; index < symbolicLinkSD.length; index++) {
-    await createSymbolicLinkFromTo(symbolicLinkSD[i].source, symbolicLinkSD[i].destination, symbolicLinkSD[i].scope);    
+    await createSymbolicLinkFromTo(symbolicLinkSD[i].source, symbolicLinkSD[i].destination, symbolicLinkSD[i].scope);
   }
 }
 
