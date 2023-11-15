@@ -13,7 +13,6 @@ const folders = [
   'scripts',
   'test/e2e-test-application',
   'test/e2e-js-test-application'
-
   // check if needed
   // 'website/docs',
   // 'website/fiddle',
