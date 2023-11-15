@@ -104,6 +104,7 @@
   export const unwarn = () => {
     return (
       locale &&
+      theme &&
       activeFeatureToggleList &&
       nodeParams &&
       searchParams &&
