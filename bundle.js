@@ -155,7 +155,17 @@ const symbolicLinkSD = [
     source: 'client-frameworks-support/testing-utilities/dist',
     destination: 'test/e2e-test-application',
     scope: '@luigi-project/testing-utilities'
-  }
+  }, 
+  {
+    source: 'client-frameworks-support/testing-utilities/dist',
+    destination: 'client-frameworks-support/testing-utilities/test',
+    scope: '@luigi-project/testing-utilities'
+  }, 
+  {
+    source: 'client/public',
+    destination: 'client-frameworks-support/testing-utilities/test',
+    scope: '@luigi-project/client'
+  }, 
 ];
 
 async function symbolicLinkAll() {

@@ -136,6 +136,8 @@ promptForTag() {
   fi
 }
 
+## TODO: Done in Build and Cache stage, not needed, consider deleting
+
 verifyInstallation() {
   ### VERIFY LOCAL CURRENT LUIGI
   if [ "$INSTALL" == "true" ]; then
@@ -202,6 +204,9 @@ linkLuigi() {
     ln -s $LUIGI_DIR/client/public $NODE_MODULES/client
     ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $NODE_MODULES/plugin-auth-oauth2
     ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $NODE_MODULES/plugin-auth-oidc
+    
+    #TODO: Consider manually linking e2e-test-app packages here as well from failing build
+
     ls -la $NODE_MODULES
     ls $NODE_MODULES/core
     ls $NODE_MODULES/client

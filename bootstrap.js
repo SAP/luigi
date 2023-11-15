@@ -12,7 +12,8 @@ const folders = [
   // check if/when needed actually. Scripts might not be needed for all build processes
   'scripts',
   'test/e2e-test-application',
-  'test/e2e-js-test-application'
+  'test/e2e-js-test-application',
+  'client-frameworks-support/testing-utilities/test'
   // check if needed
   // 'website/docs',
   // 'website/fiddle',
