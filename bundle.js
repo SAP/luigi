@@ -157,7 +157,7 @@ const symbolicLinkSD = [
     scope: '@luigi-project/testing-utilities'
   },
   {
-    source: 'client-frameworks-support/testing-utilities/dist',
+    source: 'client-frameworks-support/testing-utilities',
     destination: 'client-frameworks-support/testing-utilities/test',
     scope: '@luigi-project/testing-utilities'
   },
