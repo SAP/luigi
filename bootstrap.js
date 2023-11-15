@@ -18,12 +18,6 @@ const folders = [
   // 'website/fiddle',
   // 'website/landingpage',
 ];
-
-// - ln -s $TRAVIS_BUILD_DIR/client-frameworks-support/testing-utilities/dist $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/testing-utilities
-// - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/client
-// - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
-// - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
-
 // Check for verbose flag
 const verboseFlagIndex = process.argv.indexOf('--verbose');
 let isVerbose = verboseFlagIndex !== -1;

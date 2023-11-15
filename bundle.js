@@ -1,7 +1,9 @@
 const { exec } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 // Array of folder names
-const foldersToBundle = ['core', 'client', 'client-frameworks-support/client-support-angular', 'container', 'plugins'];
+const foldersToBundle = ['core', 'client', 'client-frameworks-support/testing-utilities', 'client-frameworks-support/client-support-angular', 'container', 'plugins', ];
 
 const foldersToBuild = ['test/e2e-test-application'];
 
@@ -62,16 +64,127 @@ async function runCommandInAllFolders(folders, operation) {
   }
 }
 
-// Run the 'npm run bundle' command in the specified folders
-runCommandInAllFolders(foldersToBundle, 'bundle').then(() => {
-  console.log(`Bundle finished in ${timeToBundle.toFixed(2)}s`);
 
-  // Run the 'npm run build' command in the specified folders
-  runCommandInAllFolders(foldersToBuild, 'build').then(() => {
-    console.log(`Build finished in ${timeToBuild.toFixed(2)}s\n`);
-    console.log(`\nBuild+Bundle finished in ${(timeToBuild + timeToBundle).toFixed(2)}s\n`);
+// Function to create a symbolic link. Deletes destination folder if already exists
+function createSymbolicLink(source, target) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Check if the destination path already exists
+      const destExists = await fs.promises.access(target)
+        .then(() => true)
+        .catch(() => false);
+
+      // If the destination path exists, delete it
+      if (destExists) {
+        await fs.promises.rm(target, { recursive: true });
+      }
+
+      // Create the symbolic link
+      fs.symlink(source, target, 'dir', (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+const symbolicLinkSD = [
+  {
+    source: 'client/public',
+    destination: 'client-frameworks-support/client-support-angular',
+    scope: '@luigi-project/client'
+  },
+  {
+    source: 'client-frameworks-support/testing-utilities/dist',
+    destination: 'client-frameworks-support/client-support-angular',
+    scope: '@luigi-project/testing-utilities'
+  },
+  {
+    source: 'client/public',
+    destination: 'test/e2e-js-test-application',
+    scope: '@luigi-project/client'
+  },
+  {
+    source: 'core/public',
+    destination: 'test/e2e-js-test-application',
+    scope: '@luigi-project/core'
+  },
+  {
+    source: 'plugins/auth/public/auth-oauth2',
+    destination: 'test/e2e-js-test-application',
+    scope: '@luigi-project/plugin-auth-oauth2'
+  },
+  {
+    source: 'client/public',
+    destination: 'test/e2e-test-application',
+    scope: '@luigi-project/client'
+  },
+  {
+    source: 'client-frameworks-support/client-support-angular/dist/client-support-angular',
+    destination: 'test/e2e-test-application',
+    scope: '@luigi-project/client-support-angular'
+  },
+  {
+    source: 'core/public',
+    destination: 'test/e2e-test-application',
+    scope: '@luigi-project/core'
+  },
+  {
+    source: 'plugins/auth/public/auth-oauth2',
+    destination: 'test/e2e-test-application',
+    scope: '@luigi-project/plugin-auth-oauth2'
+  },
+  {
+    source: 'plugins/auth/public/auth-oidc',
+    destination: 'test/e2e-test-application',
+    scope: '@luigi-project/plugin-auth-oidc'
+  },
+  {
+    source: 'client-frameworks-support/testing-utilities/dist',
+    destination: 'test/e2e-test-application',
+    scope: '@luigi-project/testing-utilities'
+  },
+]
+
+async function symbolicLinkAll(){
+  symbolicLinkSD.forEach(async(link)=>{
+    await createSymbolicLinkFromTo(link.source, link.destination, link.scope);
+  })
+}
+
+// Create symbolic link before running other commands
+async function createSymbolicLinkFromTo(source, destination, scope) {
+  try {
+    const sourcePath = path.resolve(__dirname, source);
+    const linkFolderPath = path.resolve(__dirname, destination, 'node_modules', scope);
+
+    await createSymbolicLink(sourcePath, linkFolderPath);
+    console.log(`\x1b[32mSymbolic link created successfully.\x1b[0m : ${sourcePath} => ${linkFolderPath}`);
+  } catch (error) {
+    console.error('\x1b[31mError creating symbolic link for client package.\x1b[0m', error);
+    process.exit(1);
+  }
+}
+
+symbolicLinkAll().then(() => {
+  // Run the 'npm run bundle' command in the specified folders
+  runCommandInAllFolders(foldersToBundle, 'bundle').then(() => {
+    console.log(`Bundle finished in ${timeToBundle.toFixed(2)}s`);
+
+    // Run the 'npm run build' command in the specified folders
+    runCommandInAllFolders(foldersToBuild, 'build').then(() => {
+      console.log(`Build finished in ${timeToBuild.toFixed(2)}s\n`);
+      console.log(`\nBuild+Bundle finished in ${(timeToBuild + timeToBundle).toFixed(2)}s\n`);
+    }, errorHandler);
   }, errorHandler);
-}, errorHandler);
+});
+
+
 
 /**
  * Function to handle the error case for promises
@@ -81,3 +194,4 @@ function errorHandler(error) {
   console.error('Stopping execution of the process due to error:', error);
   process.exit(1);
 }
+
