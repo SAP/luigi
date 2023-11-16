@@ -2,7 +2,7 @@
    "name": "luigi",
    "private": true,
    "scripts": {
-      "bootstrap": "node bootstrap.js && node symbolicLink.js",
+      "bootstrap": "node bootstrap.js && node symbolic-link.js",
       "bundle": "node bundle.js",
       "symbolink": "node symbolic-link.js",
       "bundlesize": "node bundle-size.js",
