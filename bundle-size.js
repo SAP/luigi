@@ -8,20 +8,20 @@ const path = require('path');
 const filesAndLimits = [
   {
     path: 'client/public/luigi-client.js',
-    limit: 50,
+    limit: 50
   },
   {
     path: 'core/public/luigi.js',
-    limit: 650,
+    limit: 650
   },
   {
     path: 'core/public/luigi.css',
-    limit: 800,
+    limit: 800
   },
   {
     path: 'plugins/auth/public/auth-oauth2/plugin.js',
-    limit: 75,
-  },
+    limit: 75
+  }
 ];
 
 async function checkFileSizes() {
@@ -34,10 +34,15 @@ async function checkFileSizes() {
       const fileSizeInKB = (stats.size / 1024).toFixed(2);
 
       if (fileSizeInKB > limit) {
-        console.error(`\x1b[31m \n ERROR: ${filePath} exceeds the size limit.  Actual size: ${fileSizeInKB} KB, Limit: ${limit} KB ! \x1b[0m\n`);
+        console.error(
+          `\x1b[31m \n ERROR: ${filePath} exceeds the size limit.  Actual size: ${fileSizeInKB} KB, Limit: ${limit} KB ! \x1b[0m\n`
+        );
         process.exit(1);
       } else {
-        console.log(`\x1b[32m\u2713\x1b[0m  ${filePath} is within the size limit. Size: \x1b[33m${fileSizeInKB} KB\x1b[0m < \x1b[32m${limit} KB\x1b[0m`);      }
+        console.log(
+          `\x1b[32m\u2713\x1b[0m  ${filePath} is within the size limit. Size: \x1b[33m${fileSizeInKB} KB\x1b[0m < \x1b[32m${limit} KB\x1b[0m`
+        );
+      }
     } catch (error) {
       console.error(`Error reading file ${filePath}: ${error.message}`);
       process.exit(1);
