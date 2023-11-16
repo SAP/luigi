@@ -71,8 +71,8 @@ validateMdChanges() {
   # validateAndGenerateDocumentation "${FOLDER}"
 # done
 
-lerna run docu:client:validate
-lerna run docu:core:validate
+npm run docu:client:validate
+npm run docu:core:validate
 validateMdChanges
 
 echoe "Validation successful, documentation OK"

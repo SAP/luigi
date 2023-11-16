@@ -36,7 +36,7 @@ showHelp() {
   echo "--install"
   echo "Run with --install flag if current luigi installation requires "
   echo "install and bundling, eg. directly after CI checkout. By default"
-  echo "we assume that luigi is installed and lerna run bundle was executed."
+  echo "we assume that luigi is installed and node bundle.js was executed."
   echo ""
   echo "Test only usage:"
   echo "--test-only"
@@ -156,7 +156,8 @@ verifyInstallation() {
     npm i
 
     echoe "Bundling current Luigi"
-    lerna run bundle
+    cd "$LUIGI_DIR"
+    node bundle.js
 
     echoe "Luigi installation done"
   fi
