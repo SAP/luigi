@@ -11,6 +11,7 @@ function check_and_generate_docu() {
     echo "Changes in .js found. Building docu"
     cd scripts
     npm run docu
+    cd ..
     RES=$?
     if [ "$RES" != 0 ]; then
       echo "npm run docu failed."
