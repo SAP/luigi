@@ -23,7 +23,6 @@ const folders = [
 const verboseFlagIndex = process.argv.indexOf('--verbose');
 let isVerbose = verboseFlagIndex !== -1;
 
-
 // Function to install npm packages in given folder
 function installPackages(folder, index, totalFolders) {
   return new Promise((resolve, reject) => {
@@ -63,8 +62,7 @@ function errorHandler(error) {
   process.exit(1);
 }
 
-
-// EXECUTE CODE STARTS HERE 
+// EXECUTE CODE STARTS HERE
 
 console.log(
   `\x1b[36m\n\nInstalling node_modules packages in these folders in the following order:\x1b[0m ${
@@ -79,6 +77,4 @@ console.log('Starting ---------->');
 
 installAllPackages().then(() => {
   console.log('\x1b[32m+++++++++++> Finished installing packages successfuly. <++++++++++++++++\x1b[0m\n');
- 
 }, errorHandler);
-
