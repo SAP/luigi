@@ -14,9 +14,10 @@ for (const folder of folders) {
   const folderPath = path.join(__dirname, folder);
   try {
     console.log(`Running "bundleSizeOnly" in ${folder}...`);
-    execSync('npm run bundleSizeOnly', { cwd: folderPath, stdio: 'inherit' });
+    execSync(`npm run --prefix ${folderPath} bundleSizeOnly`);
     console.log(`"bundleSizeOnly" completed successfully in ${folder}\n`);
   } catch (error) {
     console.error(`Error running "bundleSizeOnly" in ${folder}:`, error.message);
+    process.exit(1);
   }
 }
