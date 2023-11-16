@@ -71,6 +71,7 @@ validateMdChanges() {
   # validateAndGenerateDocumentation "${FOLDER}"
 # done
 
+cd scripts
 npm run docu:client:validate
 npm run docu:core:validate
 validateMdChanges
