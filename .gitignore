@@ -8,9 +8,6 @@ node_modules
 .vscode/diff
 .vscode/settings.json
 
-# Lerna
-lerna-debug.log
-
 .changelog
 
 # temporary files and folders

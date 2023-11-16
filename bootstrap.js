@@ -1,3 +1,7 @@
+/**
+ * This file is used to run (npm install) in all of the folders which have it as a prerequisite in the pipeline and during local development
+ */
+
 const { exec } = require('child_process');
 
 // Array of folder names
@@ -9,20 +13,16 @@ const folders = [
   'client-frameworks-support/testing-utilities',
   'container',
   'plugins',
-
   // check if/when needed actually. Scripts might not be needed for all build processes
   'scripts',
   'test/e2e-test-application',
   'test/e2e-js-test-application',
   'client-frameworks-support/testing-utilities/test'
-  // check if needed
-  // 'website/docs',
-  // 'website/fiddle',
-  // 'website/landingpage',
 ];
 // Check for verbose flag
 const verboseFlagIndex = process.argv.indexOf('--verbose');
 let isVerbose = verboseFlagIndex !== -1;
+
 
 // Function to install npm packages in given folder
 function installPackages(folder, index, totalFolders) {
@@ -54,6 +54,18 @@ async function installAllPackages() {
   }
 }
 
+/**
+ * Function to handle the error case for promises
+ * @param {*} error error
+ */
+function errorHandler(error) {
+  console.error('Stopping execution of the process due to error:', error);
+  process.exit(1);
+}
+
+
+// EXECUTE CODE STARTS HERE 
+
 console.log(
   `\x1b[36m\n\nInstalling node_modules packages in these folders in the following order:\x1b[0m ${
     isVerbose ? '\x1b[41m\x1b[37m(VERBOSE)\x1b[0m' : ''
@@ -63,17 +75,10 @@ for (const folder of folders) {
   console.log('- ' + folder);
 }
 
-console.log('Starting...');
+console.log('Starting ---------->');
 
 installAllPackages().then(() => {
-  console.log('Finished installing packages successfuly.');
+  console.log('\x1b[32m+++++++++++> Finished installing packages successfuly. <++++++++++++++++\x1b[0m\n');
+ 
 }, errorHandler);
 
-/**
- * Function to handle the error case for promises
- * @param {*} error error
- */
-function errorHandler(error) {
-  console.error('Stopping execution of the process due to error:', error);
-  process.exit(1);
-}

@@ -2,6 +2,9 @@
    "name": "luigi",
    "private": true,
    "scripts": {
+      "bootstrap": "node bootstrap.js && node symbolicLink.js",
+      "bundle": "node bundle.js",
+      "bundleSize": "node bundleSize.js",
       "test:compatibility": "./scripts/testCompatibility.sh",
       "code-quality": "node code_quality.js -- mode=pre_commit",
       "code-quality-prettier": "node code_quality.js -- mode=pre_commit_prettier",
@@ -11,8 +14,7 @@
       "full-code-quality-eslint": "node code_quality.js -- mode=full_eslint",
       "full-code-quality-eslint-core": "node code_quality.js -- mode=full_eslint sourcePaths=core/src,core/test report=core_full_eslint_report.html",
       "full-code-quality-eslint-client": "node code_quality.js -- mode=full_eslint sourcePaths=client/src report=client_full_eslint_report.html",
-      "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/cypress/e2e/tests report=e2e-test_full_eslint_report.html",
-      "change-node-version": "node ./scripts/change.node.version.js"
+      "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/cypress/e2e/tests report=e2e-test_full_eslint_report.html"
    },
    "devDependencies": {
       "@starptech/prettyhtml": "^0.10.0",
@@ -31,7 +33,6 @@
       "husky": "^4.3.5",
       "ini": ">=1.3.6",
       "json-schema": ">=0.4.0",
-      "lerna": "^5.4.0",
       "lerna-changelog": "^2.2.0",
       "lodash": ">=4.17.13",
       "lodash.template": ">=4.5.0",

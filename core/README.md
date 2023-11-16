@@ -8,9 +8,9 @@ Luigi Core is a micro frontend framework written in Svelte. To learn how it work
 
 Read the subsections to learn how to use the project.
 
-### Link and build with Lerna
+### Link and build dependencies
 
-Linking and building with [Lerna](https://lerna.js.org) is the preferred development method. This monorepo uses Lerna for project management. 
+Linking and building with is the preferred development method. This monorepo uses Lerna for project management. 
 
 Follow these steps:
 
@@ -20,13 +20,13 @@ Follow these steps:
     ```
 
 2. Install dependencies. 
-The `lerna bootstrap --force-local` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
+The `npm run bootstrap` command executes the Node Package Manager (NPM) installation and links cross-dependencies.
     ```bash
-    lerna bootstrap --force-local
+    npm run bootstrap
     ```
 
 3. Bundle the Luigi Core.
-The `lerna run bundle` command runs the `bundle` script in every package referenced in the `lerna.json` file.
+The `npm run bundle` command runs the `bundle` script in every package referenced in the `symbolic-links.json` file.
     ```bash
     lerna run bundle
 

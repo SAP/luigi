@@ -30,9 +30,4 @@ jobs:
             ~/cypress-binary-cache
           key: compat_buildcache  
       - run: cp -r ~/tmp_build/* .
-      # - run: npm i -g lerna
-      # - run: lerna bootstrap --ci --force-local --ignore docs
-      # - run: lerna run bundle --ignore docs --scope luigi-client-private
-      # - run: lerna run bundle --ignore docs --scope @luigi-project/testing-utilities
-      #- run: lerna run bundle --ignore docs
       - run: bash ./scripts/testCompatibility.sh --tag latest
