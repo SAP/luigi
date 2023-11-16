@@ -36,7 +36,7 @@ showHelp() {
   echo "--install"
   echo "Run with --install flag if current luigi installation requires "
   echo "install and bundling, eg. directly after CI checkout. By default"
-  echo "we assume that luigi is installed and node bundle.js was executed."
+  echo "we assume that luigi is installed and npm run bundle was executed in root folder."
   echo ""
   echo "Test only usage:"
   echo "--test-only"
@@ -136,30 +136,21 @@ promptForTag() {
   fi
 }
 
-## TODO: Done in Build and Cache stage, not needed, consider deleting
-
+### This function verifies that the local current luigi is properly built/bundled
+### TODO / Since this is already done in build stage, it might not be needed here. Check again after release if tests run properly
 verifyInstallation() {
   ### VERIFY LOCAL CURRENT LUIGI
   if [ "$INSTALL" == "true" ]; then
     echoe "Verifying current Luigi"
 
-    echoe "Core"
-    cd "$LUIGI_DIR/core"
-    npm i
-
-    echoe "Client"
-    cd "$LUIGI_DIR/client"
-    npm i
-
-    echoe "Plugins"
-    cd "$LUIGI_DIR/plugins"
-    npm i
-
-    echoe "Bundling current Luigi"
+    echoe "Installing all packages and symlink cross dependencies"
     cd "$LUIGI_DIR"
-    node bundle.js
+    npm run bootstrap 
 
-    echoe "Luigi installation done"
+    echoe "Bundling packages"
+    npm run bundle
+
+    echoe "Luigi installation & bundling done"
   fi
 }
 
@@ -196,44 +187,42 @@ checkoutLuigiToTestfolder() {
 
 linkLuigi() {
   for FOLDER in "${APP_FOLDERS[@]}"; do
-    NODE_MODULES=$LUIGI_DIR_TESTING/$FOLDER/node_modules/@luigi-project
+    NODE_MODULES_LUIGI=$LUIGI_DIR_TESTING/$FOLDER/node_modules/@luigi-project
     echoe "Linking current Luigi to selected version in $FOLDER"
     # remove installed luigi versions and symlink with latest
-    mkdir -p $NODE_MODULES
-    rm -rf $NODE_MODULES/*
-    ln -s $LUIGI_DIR/core/public $NODE_MODULES/core
-    ln -s $LUIGI_DIR/client/public $NODE_MODULES/client
-    ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $NODE_MODULES/plugin-auth-oauth2
-    ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $NODE_MODULES/plugin-auth-oidc
-    ln -s $LUIGI_DIR/client-frameworks-support/client-support-angular/dist/client-support-angular $NODE_MODULES/client-support-angular
+    mkdir -p $NODE_MODULES_LUIGI
+    rm -rf $NODE_MODULES_LUIGI/*
+    ln -s $LUIGI_DIR/core/public $NODE_MODULES_LUIGI/core
+    ln -s $LUIGI_DIR/client/public $NODE_MODULES_LUIGI/client
+    ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $NODE_MODULES_LUIGI/plugin-auth-oauth2
+    ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $NODE_MODULES_LUIGI/plugin-auth-oidc
+    ln -s $LUIGI_DIR/client-frameworks-support/client-support-angular/dist/client-support-angular $NODE_MODULES_LUIGI/client-support-angular
 
-    
-    #TODO: Consider manually linking e2e-test-app packages here as well from failing build
+    # Print content of folders for debugging
+    ls -la $NODE_MODULES_LUIGI
+    ls $NODE_MODULES_LUIGI/core
+    ls $NODE_MODULES_LUIGI/client
+    ls $NODE_MODULES_LUIGI/plugin-auth-oauth2
+    ls $NODE_MODULES_LUIGI/plugin-auth-oidc
+    ls $NODE_MODULES_LUIGI/client-support-angular
 
-    ls -la $NODE_MODULES
-    ls $NODE_MODULES/core
-    ls $NODE_MODULES/client
-    ls $NODE_MODULES/plugin-auth-oauth2
-    ls $NODE_MODULES/plugin-auth-oidc
-    ls $NODE_MODULES/client-support-angular
-
-    if [ ! -f $NODE_MODULES/core/package.json ]; then
+    if [ ! -f $NODE_MODULES_LUIGI/core/package.json ]; then
       echoe "There was an issue linking the core module"
       exit 2
     fi
-    if [ ! -f $NODE_MODULES/client/package.json ]; then
+    if [ ! -f $NODE_MODULES_LUIGI/client/package.json ]; then
       echoe "There was an issue linking the client module"
       exit 2
     fi
-    if [ ! -f $NODE_MODULES/plugin-auth-oauth2/package.json ]; then
+    if [ ! -f $NODE_MODULES_LUIGI/plugin-auth-oauth2/package.json ]; then
       echoe "There was an issue linking the auth-oauth2 module"
       exit 2
     fi
-    if [ ! -f $NODE_MODULES/plugin-auth-oidc/package.json ]; then
+    if [ ! -f $NODE_MODULES_LUIGI/plugin-auth-oidc/package.json ]; then
       echoe "There was an issue linking the auth-oidc module"
       exit 2
     fi
-    if [ ! -f $NODE_MODULES/client-support-angular/package.json ]; then
+    if [ ! -f $NODE_MODULES_LUIGI/client-support-angular/package.json ]; then
       echoe "There was an issue linking the client-support-angular module"
       exit 2
     fi
