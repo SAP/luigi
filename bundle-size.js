@@ -1,3 +1,7 @@
+/**
+ * This file is used to run the bundleSizeOnly scrpt to check if bundle size threshold is not exceded
+ */
+
 const { execSync } = require('child_process');
 const path = require('path');
 

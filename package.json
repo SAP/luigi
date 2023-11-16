@@ -4,8 +4,8 @@
    "scripts": {
       "bootstrap": "node bootstrap.js && node symbolicLink.js",
       "bundle": "node bundle.js",
-      "symbolink": "node symbolicLink.js",
-      "bundleSize": "node bundleSize.js",
+      "symbolink": "node symbolic-link.js",
+      "bundlesize": "node bundle-size.js",
       "test:compatibility": "./scripts/testCompatibility.sh",
       "code-quality": "node code_quality.js -- mode=pre_commit",
       "code-quality-prettier": "node code_quality.js -- mode=pre_commit_prettier",

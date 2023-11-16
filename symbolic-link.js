@@ -1,3 +1,7 @@
+/**
+ * This file is used to link cross-dependencies by creating symbolic links as needed.
+ * The symbolic links list can found in ./symbolic-links.json
+ */
 const fs = require('fs');
 const path = require('path');
 

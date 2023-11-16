@@ -14,7 +14,7 @@ const folders = [
   'container',
   'plugins',
   // check if/when needed actually. Scripts might not be needed for all build processes
-  'scripts',
+  // 'scripts',
   'test/e2e-test-application',
   'test/e2e-js-test-application',
   'client-frameworks-support/testing-utilities/test'

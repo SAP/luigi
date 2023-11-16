@@ -56,7 +56,7 @@ jobs:
       - run: npm run bootstrap
       - run: npm run bundle
       # Check bundlesize not exceeded
-      - run: npm run bundleSize
+      - run: npm run bundlesize
       - run: pwd
       - run: sudo cp -r . ~/tmp_build
       - run: ls -l ~/tmp_build
