@@ -11,13 +11,16 @@ const folders = ['core', 'client', 'plugins'];
 console.log('Running bundleSizeOnly to check core, client, plugins file size limit not exceeded');
 // Run "bundleSizeOnly" script in each folder
 for (const folder of folders) {
-  const folderPath = path.join(__dirname, folder);
   try {
-    console.log(`Running "bundleSizeOnly" in ${folder}...`);
-    execSync(`npm run --prefix ${folderPath} bundleSizeOnly`);
-    console.log(`"bundleSizeOnly" completed successfully in ${folder}\n`);
+    console.log(`\x1b[33m\n\nRunning "bundleSizeOnly" in ${folder}\x1b[32m...\x1b[0m`);
+    const commandToRun = `npm run --prefix ${folder} bundlesizeOnly`;
+    console.log(commandToRun);
+
+    const logs = execSync(commandToRun, { encoding: 'utf-8', stdio: 'inherit' });
+    console.log(logs);
+    console.log(`\x1b[32m"bundleSizeOnly" completed successfully in ${folder}\x1b[0m\n\n`);
   } catch (error) {
-    console.error(`Error running "bundleSizeOnly" in ${folder}:`, error.message);
+    console.error(`Error running "bundleSizeOnly" in ${folder}:`, error.stderr, error.message);
     process.exit(1);
   }
 }
