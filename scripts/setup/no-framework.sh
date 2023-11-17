@@ -18,27 +18,23 @@ npm init -y > /dev/null
 
 # add "start" command to the package.json file. This command is split into 2 lines on purpose!
 sed 's/"scripts": {/"scripts": {\
-\   "buildConfig":"webpack --entry .\/src\/luigi-config\/luigi-config.es6.js --output-path .\/public\/assets --output-filename luigi-config.js --mode production",/1' package.json > p.tmp.json && mv p.tmp.json package.json
-sed 's/"scripts": {/"scripts": {\
-\   "start":"live-server --entry-file=index.html public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+\   "start":"server public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
 
-npm i -save @luigi-project/core @luigi-project/client fundamental-styles @sap-theming/theming-base-content live-server webpack webpack-cli @babel/core @babel/preset-env babel-loader 
-mkdir -p public/assets
-mkdir -p src/luigi-config
+npm i 
+mkdir -p public/
+mkdir -p public/views
 
-# download assets
-curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/index.html > public/index.html
-curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/luigi-config.es6.js > src/luigi-config/luigi-config.es6.js
-curl https://raw.githubusercontent.com/SAP/luigi/main/scripts/setup/assets/basicMicroFrontend.html > public/assets/basicMicroFrontend.html
+# download assets from core/examples folder
+# UNCOMMENT after testing
+# curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-js/public/index.html > public/index.html
+# curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-js/public/luigi-config.js > public/luigi-config.js
+# curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-js/public/views/home.html > public/views/home.html
+# curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-js/public/views/sample1.html > public/views/sample1.html
 
+curl https://raw.githubusercontent.com/SAP/luigi/f3728e1c91f1ea2deb97836d4ca323e471e3845a/core/examples/luigi-example-js/public/index.html > public/index.html
+curl https://raw.githubusercontent.com/SAP/luigi/f3728e1c91f1ea2deb97836d4ca323e471e3845a/core/examples/luigi-example-js/public/luigi-config.js > public/luigi-config.js
+curl https://raw.githubusercontent.com/SAP/luigi/f3728e1c91f1ea2deb97836d4ca323e471e3845a/core/examples/luigi-example-js/public/views/home.html > public/views/home.html
+curl https://raw.githubusercontent.com/SAP/luigi/f3728e1c91f1ea2deb97836d4ca323e471e3845a/core/examples/luigi-example-js/public/views/sample1.html > public/views/sample1.html
 
-cp -r node_modules/\@luigi-project/core public/luigi-core
-cp -r node_modules/\@luigi-project/client public/luigi-client
-cp -r node_modules/fundamental-styles/dist public/fundamental-styles
-cp -r node_modules/@sap-theming/theming-base-content public/theming-base-content
-
-echo "Building config with command: npm run buildConfig"
-npm run buildConfig
-
-echo "Running live-server with command: npm run start"
+echo "Running server with command: npm run start"
 npm run start
