@@ -4,19 +4,13 @@
   "description": "",
   "main": "public/index.html",
   "scripts": {
-    "build": "webpack --entry ./luigi-config.js --mode production",
-    "start": "live-server --entry-file=index.html public",
+    "build": "mkdir -p public/luigi-core && cp -R node_modules/@luigi-project/core/* public/luigi-core",
+    "start": "serve public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "ISC",
   "dependencies": {
-    "@luigi-project/client": "^1.25.1",
-    "@luigi-project/core": "^1.25.1",
-    "@sap-theming/theming-base-content": "^11.1.44",
-    "copy-webpack-plugin": "^11.0.0",
-    "fundamental-styles": "^0.23.1",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.0",
-    "live-server": "1.2.2"
+    "serve": "^14.2.1",
+    "@luigi-project/core": "2.7.2"
   }
 }
