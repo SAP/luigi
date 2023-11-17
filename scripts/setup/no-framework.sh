@@ -14,11 +14,14 @@ echo ""
 
 mkdir $folder && cd $folder
 
-npm init -y > /dev/null
+# npm init -y > /dev/null
 
 # add "start" command to the package.json file. This command is split into 2 lines on purpose!
-sed 's/"scripts": {/"scripts": {\
-\   "start":"server public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+# sed 's/"scripts": {/"scripts": {\
+# \   "start":"server public",/1' package.json > p.tmp.json && mv p.tmp.json package.json
+
+curl https://raw.githubusercontent.com/SAP/luigi/f3728e1c91f1ea2deb97836d4ca323e471e3845a/core/examples/luigi-example-js/package.json > package.json
+
 
 npm i 
 mkdir -p public/
