@@ -34,6 +34,8 @@ mkdir -p public/views
 # curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-js/public/views/home.html > public/views/home.html
 # curl https://raw.githubusercontent.com/SAP/luigi/main/core/examples/luigi-example-js/public/views/sample1.html > public/views/sample1.html
 
+curl https://raw.githubusercontent.com/SAP/luigi/0b3dff050f5808b8e7852fe9e757a87be3b87de7/core/examples/luigi-example-js/public/favicon.ico > public/favicon.ico
+curl https://raw.githubusercontent.com/SAP/luigi/0b3dff050f5808b8e7852fe9e757a87be3b87de7/core/examples/luigi-example-js/public/logo.png > public/logo.png
 curl https://raw.githubusercontent.com/SAP/luigi/0b3dff050f5808b8e7852fe9e757a87be3b87de7/core/examples/luigi-example-js/public/index.html > public/index.html
 curl https://raw.githubusercontent.com/SAP/luigi/0b3dff050f5808b8e7852fe9e757a87be3b87de7/core/examples/luigi-example-js/public/luigi-config.js > public/luigi-config.js
 curl https://raw.githubusercontent.com/SAP/luigi/0b3dff050f5808b8e7852fe9e757a87be3b87de7/core/examples/luigi-example-js/public/views/home.html > public/views/home.html
