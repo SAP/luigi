@@ -10,7 +10,7 @@ This is the JS-based sample application which runs with the Luigi framework.
 To run this application, follow these steps:
 
 
-1. First install dependency`server` to serve your application locally by running the following
+1. First, install the dependency `server` to serve your application locally by running the following:
     ```bash
     npm install
     ```
