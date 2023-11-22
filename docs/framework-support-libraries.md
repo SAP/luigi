@@ -108,7 +108,7 @@ For `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, this L
  ```javascript
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({truncated url});
  ```
- In the above case, the specified string (e.g. `projects`) will be cut off from the beginning of the current micro frontend route before being sent to Luigi Core. This can be useful when the micro frontend is not served under the webroot, but under a subfolder. If the truncate string starts with `_`, the route will be truncated after the first occurrence of the string following `_`.
+ In the above case, the specified string (e.g. `projects`) will be cut off from the beginning of the current micro frontend route before being sent to Luigi Core. This can be useful when the micro frontend is not served under the webroot, but under a subfolder. If the truncate string starts with `*`, the route will be truncated after the first occurrence of the string following `*`.
 
 For `data: { luigiRoute: '/home/sample2' }`, this Luigi Client API method is called:
  ```javascript
