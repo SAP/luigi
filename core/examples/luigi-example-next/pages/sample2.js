@@ -3,11 +3,11 @@ import Head from 'next/head';
 
 export default function Sample2() {
   useEffect(() => {
-    const LuigiClient = require('@luigi-project/client');
+    // const LuigiClient = require('@luigi-project/client');
 
-    LuigiClient.addInitListener(function(context) {
-      console.log('Luigi Client initialised in Sample2');
-    });
+    // LuigiClient.addInitListener(function(context) {
+    //   console.log('Luigi Client initialised in Sample2');
+    // });
   }, []);
 
   return (

@@ -7,18 +7,27 @@ Luigi.setConfig({
         label: 'Home',
         icon: 'home',
         viewUrl: '/home',
+        loadingIndicator: {
+          enabled:false,
+        },
         children: [
           {
             pathSegment: 'sample1',
             label: 'First',
             icon: 'nutrition-activity',
-            viewUrl: '/sample1'
+            viewUrl: '/sample1',
+            loadingIndicator: {
+              enabled:false,
+            }
           },
           {
             pathSegment: 'sample2',
             label: 'Second',
             icon: 'paper-plane',
-            viewUrl: '/sample2'
+            viewUrl: '/sample2',
+            loadingIndicator: {
+              enabled:false,
+            }
           },
           {
             category: { label: 'Links', icon: 'cloud' },
