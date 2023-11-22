@@ -71,6 +71,7 @@ In your Angular route configuration, you can add in any of the following preload
  ```javascript
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: true }}
 {path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: : {"truncate": "*/projects"} }}
+{path: 'luigi-client-support-preload',component: Sample1Component,data: { fromVirtualTreeRoot: : {"truncate": "/projects"} }}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2' }}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: true}}
 {path: 'luigi-client-support-preload',component: Sample2Component,data: { luigiRoute: '/home/sample2', fromContext: 'localContext'}}
@@ -83,7 +84,7 @@ For `data: { fromVirtualTreeRoot: true }`, once we load Sample1Component, this L
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
  ```
 
- For `data: { fromVirtualTreeRoot: : {"truncate": "*/projects"} }}`, this Luigi Client API method is called:
+ For `data: { fromVirtualTreeRoot: : {"truncate": "*/projects"} }}` or `{"truncate": "/projects"} }}`, this Luigi Client API method is called:
  ```javascript
   luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({truncated url});
  ```
