@@ -1,23 +1,21 @@
 // next.config.js
 module.exports = {
-    webpack: (config, { isServer }) => {
-      // Modify the webpack configuration here
-      if (isServer) {
-        // Server-side webpack configuration
-        console.log('Bundling in server');
-      } else {
-        // Client-side webpack configuration
-        console.log('Bundling in client');
-            config.externals = {
-                // externalsType: 'umd',
-                '@luigi-project/client': 'LuigiClient',
-            }
+  webpack: (config, { isServer }) => {
+    // Modify the webpack configuration here
+    if (isServer) {
+      // Server-side webpack configuration
+      console.log('Bundling in server');
+    } else {
+      // Client-side webpack configuration
+      console.log('Bundling in client');
+      config.externals = {
+        // externalsType: 'umd',
+        '@luigi-project/client': 'LuigiClient'
+      };
 
-            // config.output.libraryTarget = 'umd';
-            // config.output.umdNamedDefine = true;
-
-      
-      }
+      // config.output.libraryTarget = 'umd';
+      // config.output.umdNamedDefine = true;
+    }
 
     //   config.module.rules.push(
     //     {
@@ -30,26 +28,22 @@ module.exports = {
     //         },
     //     }
 
-        // {
-        //     test: /\.js$/,
-        //     exclude: /node_modules/,
-        //     use: {
-        //       loader: 'babel-loader',
-        //       options: {
-        //         presets: [
-        //           ['@babel/preset-env', { targets: 'defaults' }],
-        //           ['@babel/preset-react', { runtime: 'automatic' }]
-        //         ]
-        //       }
-        //     }
-        //   }
-          
-          
-        //   );
-  
+    // {
+    //     test: /\.js$/,
+    //     exclude: /node_modules/,
+    //     use: {
+    //       loader: 'babel-loader',
+    //       options: {
+    //         presets: [
+    //           ['@babel/preset-env', { targets: 'defaults' }],
+    //           ['@babel/preset-react', { runtime: 'automatic' }]
+    //         ]
+    //       }
+    //     }
+    //   }
 
-  
-      return config;
-    },
-  };
-  
+    //   );
+
+    return config;
+  }
+};

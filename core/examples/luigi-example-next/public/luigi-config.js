@@ -8,7 +8,7 @@ Luigi.setConfig({
         icon: 'home',
         viewUrl: '/home',
         loadingIndicator: {
-          enabled:false,
+          enabled: false
         },
         children: [
           {
@@ -17,7 +17,7 @@ Luigi.setConfig({
             icon: 'nutrition-activity',
             viewUrl: '/sample1',
             loadingIndicator: {
-              enabled:false,
+              enabled: false
             }
           },
           {
@@ -26,7 +26,7 @@ Luigi.setConfig({
             icon: 'paper-plane',
             viewUrl: '/sample2',
             loadingIndicator: {
-              enabled:false,
+              enabled: false
             }
           },
           {

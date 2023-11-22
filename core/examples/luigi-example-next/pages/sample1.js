@@ -4,7 +4,6 @@ import Head from 'next/head';
 export default function Sample1() {
   useEffect(() => {
     // const LuigiClient = require('@luigi-project/client');
-
     // LuigiClient.addInitListener(function(context) {
     //   console.log('Luigi Client initialised in Sample1');
     // });
