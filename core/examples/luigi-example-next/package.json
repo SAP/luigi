@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "copy:luigi-client": "cp node_modules/@luigi-project/client/luigi-client.js public",
+    "dev": "npm run copy:luigi-client && next dev",
+    "build": "next build &&  npm run copy:luigi-client",
     "start": "next start"
   },
   "dependencies": {
