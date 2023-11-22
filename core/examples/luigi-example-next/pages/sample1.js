@@ -4,9 +4,9 @@ import Head from 'next/head';
 export default function Sample1() {
   useEffect(() => {
     const LuigiClient = window['LuigiClient'];
-    LuigiClient.addInitListener(()=>{
-      console.log('Sample 1 Initialized')
-    })
+    LuigiClient.addInitListener(() => {
+      console.log('Sample 1 Initialized');
+    });
   }, []);
 
   return (
