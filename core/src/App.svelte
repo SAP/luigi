@@ -18,6 +18,7 @@
     createEventDispatcher,
   } from 'svelte';
   import { CSS_BREAKPOINTS } from './utilities/constants';
+  import { KEYCODE_ESC } from './utilities/keycode.js';
   import {
     EventListenerHelpers,
     GenericHelpers,
@@ -1979,7 +1980,7 @@
   });
 
   const handleKeyDown = (event) => {
-    if (event.keyCode===27 && mfModalList && mfModalList.length>0) {
+    if (event.keyCode === KEYCODE_ESC && mfModalList && mfModalList.length>0) {
       closeModal(mfModalList.length-1);
     }
   }

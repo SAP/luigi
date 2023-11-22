@@ -16,7 +16,6 @@
     NavigationHelpers,
     StateHelpers
   } from './utilities/helpers';
-  import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
   import { Routing } from './services';
   import { LuigiConfig } from './core-api';
