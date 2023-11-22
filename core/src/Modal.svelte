@@ -302,14 +302,6 @@
       : '';
   });
 
-  //  [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function handleKeydown(event) {
-    if (event.keyCode === KEYCODE_ESC) {
-      dispatch('close');
-    }
-  }
-
   /**
    * This function will be called if the LuigiClient requested the context.
    * That means spinner can fade out in order to display the mf.
@@ -331,7 +323,6 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
 <div
   class={isModal || (isDrawer && settings.backdrop)
     ? 'fd-dialog fd-dialog--active'
