@@ -1978,14 +1978,14 @@
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
   });
 
-  function handlekeyDown(event){
-    if(event.keyCode===27 && mfModalList && mfModalList.length>0){
+  const handleKeyDown = (event) => {
+    if (event.keyCode===27 && mfModalList && mfModalList.length>0) {
       closeModal(mfModalList.length-1);
     }
   }
 </script>
 
-<svelte:window on:resize={onResize} on:keydown={handlekeyDown} />
+<svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
 <div
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
