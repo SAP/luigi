@@ -12,7 +12,7 @@ module.exports = {
     app: ['./src/main.js']
   },
   resolve: {
-    conditionNames: [ 'svelte'], 
+    conditionNames: ['svelte'],
     alias: {
       svelte: path.resolve('node_modules', 'svelte')
     },

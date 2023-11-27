@@ -1,11 +1,9 @@
-<section class="fd-section">
-  <div class="fd-section__header">
-    <h1 class="fd-section__title">Home</h1>
-  </div>
-  <div class="fd-panel">
+<div>
+    <h1>Home</h1>
+  <div>
     { message }
   </div>
-</section>
+</div>
 <script>
   import LuigiClient from '@luigi-project/client';
   import { onMount } from 'svelte';
