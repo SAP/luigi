@@ -1980,8 +1980,8 @@
   });
 
   const handleKeyDown = (event) => {
-    if (event.keyCode === KEYCODE_ESC && mfModalList && mfModalList.length>0) {
-      closeModal(mfModalList.length-1);
+    if (event.keyCode === KEYCODE_ESC && mfModalList && mfModalList.length > 0) {
+      closeModal(mfModalList.length - 1);
     }
   }
 </script>
