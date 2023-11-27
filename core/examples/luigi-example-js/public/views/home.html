@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link
-      href="https://unpkg.com/@sap-theming/theming-base-content@11.1.35/content/Base/baseLib/sap_fiori_3/css_variables.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/fundamental-styles/fundamental-styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@luigi-project/client@2.7.2/luigi-client.js"></script>
     <style type="text/css">
       .fd-panel {
         padding: 15px;
@@ -13,14 +9,10 @@
     </style>
   </head>
   <body>
-    <section class="fd-section">
-      <div class="fd-section__header">
-        <h1 class="fd-section__title">Home</h1>
-      </div>
-      <div class="fd-panel" id="init-text"></div>
-    </section>
-
-    <script type="text/javascript" src="/luigi-client/luigi-client.js"></script>
+    <div>
+      <h1>Home</h1>
+    </div>
+    <div class="fd-panel" id="init-text"></div>
     <script type="text/javascript">
       LuigiClient.addContextUpdateListener(updatedContext => {
         document.getElementById('init-text').textContent = 'Luigi Client updated.';
