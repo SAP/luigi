@@ -23,7 +23,7 @@
     'getUnsavedChangesModalPromise'
   );
   let openViewInModal = getContext('openViewInModal');
-  let addNavHrefForAnchor;
+  export let addNavHrefForAnchor;
   const getNodeSubtitle = () => {};
 
   //TODO refactor

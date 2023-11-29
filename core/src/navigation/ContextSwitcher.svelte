@@ -48,7 +48,7 @@
   let getTranslation = getContext('getTranslation');
   let prevContextSwitcherToggle = false;
   let selectedNodePath;
-  let addNavHrefForAnchor;
+  export let addNavHrefForAnchor;
   let isContextSwitcherDropdownShown;
 
   onMount(async () => {
