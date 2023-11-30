@@ -197,14 +197,19 @@ linkLuigi() {
     ln -s $LUIGI_DIR/plugins/auth/public/auth-oauth2 $NODE_MODULES_LUIGI/plugin-auth-oauth2
     ln -s $LUIGI_DIR/plugins/auth/public/auth-oidc $NODE_MODULES_LUIGI/plugin-auth-oidc
     ln -s $LUIGI_DIR/client-frameworks-support/client-support-angular/dist/client-support-angular $NODE_MODULES_LUIGI/client-support-angular
-
+    ln -s $LUIGI_DIR/client-frameworks-support/testing-utilities/dist $NODE_MODULES_LUIGI/testing-utilities
+    
     # Print content of folders for debugging
+    echoe "Contents of node_modules/@luigi-project/* packages ..."
     ls -la $NODE_MODULES_LUIGI
     ls $NODE_MODULES_LUIGI/core
     ls $NODE_MODULES_LUIGI/client
     ls $NODE_MODULES_LUIGI/plugin-auth-oauth2
     ls $NODE_MODULES_LUIGI/plugin-auth-oidc
     ls $NODE_MODULES_LUIGI/client-support-angular
+    ls $NODE_MODULES_LUIGI/testing-utilities
+    echoe "Finished printing contents"
+
 
     if [ ! -f $NODE_MODULES_LUIGI/core/package.json ]; then
       echoe "There was an issue linking the core module"
