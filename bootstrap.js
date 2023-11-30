@@ -15,6 +15,7 @@ const folders = [
   'plugins',
   'scripts',
   'test/e2e-test-application',
+  'test/e2e-test-application/externalMf',
   'test/e2e-js-test-application',
   'client-frameworks-support/testing-utilities/test'
 ];
