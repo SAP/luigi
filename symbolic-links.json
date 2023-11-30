@@ -63,5 +63,10 @@
     "source": "client/public",
     "destination": "client-frameworks-support/testing-utilities/test",
     "scope": "@luigi-project/client"
-  } 
+  } ,
+  {
+    "source": "client/public",
+    "destination": "test/e2e-test-application/externalMf",
+    "scope": "@luigi-project/client"
+  }
 ]
