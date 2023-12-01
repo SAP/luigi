@@ -13,13 +13,10 @@ Luigi.setConfig({
             pathSegment: 'sample1',
             label: 'First',
             icon: 'nutrition-activity',
-            viewUrl: '/views/sample1.html'
-          },
-          {
-            pathSegment: 'sample2',
-            label: 'Second',
-            icon: 'paper-plane',
-            viewUrl: '/views/sample2.html'
+            viewUrl: '/views/sample1.html',
+            loadingIndicator: {
+              enabled: false
+            }
           },
           {
             category: { label: 'Links', icon: 'cloud' },

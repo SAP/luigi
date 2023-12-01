@@ -50,7 +50,6 @@ jobs:
           key: buildcache
       - run: cp -r ~/tmp_build/* . 
       - run: npm i -g cypress
-      - run: npm i -g lerna@4.0.0
       - run: npm i -g live-server
       - run: bash ./test/mockengine.sh || exit 1
 
