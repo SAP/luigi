@@ -25,6 +25,13 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.7.3] (2023-11-30)
+
+#### :bug: Fixed
+* [#3539](https://github.com/SAP/luigi/pull/3539) Prevent multiple eventListener when creating modals ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
 ## [v2.7.2] (2023-11-14)
 
 #### :bug: Fixed
@@ -1681,3 +1688,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.7.0]: https://github.com/SAP/luigi/compare/v2.6.3...v2.7.0
 [v2.7.1]: https://github.com/SAP/luigi/compare/v2.7.0...v2.7.1
 [v2.7.2]: https://github.com/SAP/luigi/compare/v2.7.1...v2.7.2
+[v2.7.3]: https://github.com/SAP/luigi/compare/v2.7.2...v2.7.3

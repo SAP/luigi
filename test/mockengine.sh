@@ -33,32 +33,6 @@ runApp() {
   echo "Webserver was ready after $WAITCOUNT seconds"
 }
 
-echo ""
-echo "INSTALL testing-utilities dependencies"
-echo ""
-
-cd $BASE_DIR/../client-frameworks-support/testing-utilities
-npm install
-echo ""
-ls
-echo ""
-
-cd $BASE_DIR/../client-frameworks-support/testing-utilities
-
-echo ""
-echo "Bundle testing-utilities"
-echo ""
-npm run bundle
-
-cd ..
-
-echo ""
-echo "Bootstrap packages"
-echo ""
-lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope luigi-mock-module-test-mf
-lerna bootstrap --no-ci --force-local --include-dependents --include-dependencies --scope @luigi-project/testing-utilities
-
-
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 #Run acutal test
 PORT=8181

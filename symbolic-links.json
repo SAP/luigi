@@ -1,0 +1,72 @@
+[
+  {
+    "source": "client/public",
+    "destination": "client-frameworks-support/client-support-angular",
+    "scope": "@luigi-project/client"
+  },
+  {
+    "source": "client-frameworks-support/testing-utilities/dist",
+    "destination": "client-frameworks-support/client-support-angular",
+    "scope": "@luigi-project/testing-utilities"
+  },
+  {
+    "source": "client/public",
+    "destination": "test/e2e-js-test-application",
+    "scope": "@luigi-project/client"
+  },
+  {
+    "source": "core/public",
+    "destination": "test/e2e-js-test-application",
+    "scope": "@luigi-project/core"
+  },
+  {
+    "source": "plugins/auth/public/auth-oauth2",
+    "destination": "test/e2e-js-test-application",
+    "scope": "@luigi-project/plugin-auth-oauth2"
+  },
+  {
+    "source": "client/public",
+    "destination": "test/e2e-test-application",
+    "scope": "@luigi-project/client"
+  },
+  {
+    "source": "client-frameworks-support/client-support-angular/dist/client-support-angular",
+    "destination": "test/e2e-test-application",
+    "scope": "@luigi-project/client-support-angular"
+  },
+  {
+    "source": "core/public",
+    "destination": "test/e2e-test-application",
+    "scope": "@luigi-project/core"
+  },
+  {
+    "source": "plugins/auth/public/auth-oauth2",
+    "destination": "test/e2e-test-application",
+    "scope": "@luigi-project/plugin-auth-oauth2"
+  },
+  {
+    "source": "plugins/auth/public/auth-oidc",
+    "destination": "test/e2e-test-application",
+    "scope": "@luigi-project/plugin-auth-oidc"
+  },
+  {
+    "source": "client-frameworks-support/testing-utilities/dist",
+    "destination": "test/e2e-test-application",
+    "scope": "@luigi-project/testing-utilities"
+  },
+  {
+    "source": "client-frameworks-support/testing-utilities",
+    "destination": "client-frameworks-support/testing-utilities/test",
+    "scope": "@luigi-project/testing-utilities"
+  },
+  {
+    "source": "client/public",
+    "destination": "client-frameworks-support/testing-utilities/test",
+    "scope": "@luigi-project/client"
+  } ,
+  {
+    "source": "client/public",
+    "destination": "test/e2e-test-application/externalMf",
+    "scope": "@luigi-project/client"
+  }
+]

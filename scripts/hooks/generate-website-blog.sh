@@ -15,7 +15,7 @@ function check_and_generate_website() {
     RES=$?
     cd $BASE;
     if [ "$RES" != 0 ]; then
-      echo "lerna run build.website failed."
+      echo "npm run build.website failed."
       exit 1;
     fi
 
