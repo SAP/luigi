@@ -13,9 +13,3 @@
   import Sample2 from "./routes/Sample2.svelte";
   export let url = "";
 </script>
-
-<style type="text/scss">
-  :global(.fd-panel) {
-    padding: 15px;
-  }
-</style>

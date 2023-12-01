@@ -16,7 +16,7 @@
     "local-web-server": "^5.3.0"
   },
   "scripts": {
-    "build:prod": "NODE_ENV=production webpack --display-error-details",
+    "build:prod": "NODE_ENV=production webpack",
     "build:dev": "webpack",
     "dev": "concurrently \"npm run build:dev -- --watch\" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
     "serve": "concurrently \"npm run build:prod \" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
