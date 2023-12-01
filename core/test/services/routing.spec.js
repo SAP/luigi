@@ -9,7 +9,7 @@ const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
 
-describe('Routing', function() {
+describe('Routing', function () {
   jest.retryTimes(2);
 
   let component;
@@ -776,7 +776,7 @@ describe('Routing', function() {
     it('should call console.warn when node has no children and there is no intention for empty viewUrl', async () => {
       // given
       const path = 'compound';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       // when
       console.warn = sinon.spy();
@@ -794,7 +794,7 @@ describe('Routing', function() {
     it('should navigate to rootPath if node can be reached directly', async () => {
       // given
       const path = 'compound2';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       // when
       component.viewUrl = path;
@@ -812,7 +812,7 @@ describe('Routing', function() {
     it('should handle nodeObject that is compound', async () => {
       // given
       const path = 'compound3';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       // when
       component.viewUrl = path;
@@ -838,7 +838,7 @@ describe('Routing', function() {
     it('should handle nodeObject that is webcomponent', async () => {
       // given
       const path = 'compound-webcomponent';
-      const node = { compound: { renderer: () => {} } };
+      const node = { compound: { renderer: () => { } } };
 
       // when
       component.viewUrl = path;
@@ -1160,7 +1160,7 @@ describe('Routing', function() {
 
   describe('showPageNotFoundError()', () => {
     const component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
     const pathToRedirect = '/go/here';
     const pathToRedirect2 = '/go/there';
@@ -1259,7 +1259,7 @@ describe('Routing', function() {
       // then
       sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
       sinon.assert.calledOnce(LuigiNavigation.openAsModal);
-      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, mockNodeModalSettings.openNodeInModal);
+      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, modalParams);
     });
   });
   describe('append and remove modal data from URL using path routing', () => {
@@ -1626,7 +1626,7 @@ describe('Routing', function() {
           }
         };
       };
-      component.getUnsavedChangesModalPromise = () => {};
+      component.getUnsavedChangesModalPromise = () => { };
       sinon.stub(component, 'getUnsavedChangesModalPromise').resolves();
     });
 
