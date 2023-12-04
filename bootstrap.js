@@ -11,6 +11,7 @@ const folders = [
   'client',
   'client-frameworks-support/client-support-angular',
   'client-frameworks-support/testing-utilities',
+  'client-frameworks-support/client-support-ui5',
   'container',
   'plugins',
   'scripts',

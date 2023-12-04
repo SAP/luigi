@@ -263,14 +263,15 @@ class WebComponentSvcClass {
       if (renderer.viewUrl) {
         try {
           const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
-          const wc = document.createElement(wc_id);
           if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
+              const wc = document.createElement(wc_id);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
           } else {
             this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
+              const wc = document.createElement(wc_id);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
