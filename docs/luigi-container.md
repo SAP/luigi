@@ -18,11 +18,11 @@ meta -->
 
 ## Overview
 
-Luigi Container is a [web component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) which can be used to render a Luigi micro frontend without the need of a Luigi Core application. Luigi container can work with any framework that supports HTML. It can be an easy solution for integrating micro frontends inside already existing apps without the cost of refactoring. The scenario of [multiple](#compound-container) micro frontends on the same page is also supported.
+Luigi Container is a [web component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) that can be used to render a Luigi micro frontend without the need of a Luigi Core application. Luigi Container can work with any framework that supports HTML. It can be an easy solution for integrating micro frontends inside already existing apps without the cost of refactoring. You can also have [multiple](#compound-container) micro frontends on the same page.
 
 ## Installation
 
-1. Install the Luigi container [npm](https://www.npmjs.com/) package: `@luigi-project/container` 
+1. Install the Luigi Container [npm](https://www.npmjs.com/) package: `@luigi-project/container` 
 
 ```bash
 npm install @luigi-project/container
@@ -47,11 +47,11 @@ After importing the package, you can use the Luigi container anywhere in your ap
     </luigi-container>
 ```
 
-### Compound container 
+### Compound Container 
 
-The Luigi compound container works similarly to Luigi's compound web components [feature](web-component.md#compound-web-components) and it allows you to insert multiple micro frontends on the same page. 
+The Luigi compound Container works similarly to Luigi's compound web components [feature](web-component.md#compound-web-components) and allows you to insert multiple micro frontends on the same page. 
 
-You can use the Luigi compound container as follows:
+You can use the Luigi compound Container as follows:
 
 ```html
     <luigi-compound-container 
@@ -62,7 +62,7 @@ You can use the Luigi compound container as follows:
 
 ## Examples
 
-### Test application
+### Test Application
 
 1. You can find a Luigi Container example application on [GitHub](https://github.com/SAP/luigi/tree/main/container). First, clone the Luigi repository if you haven't already done so:
 
@@ -86,6 +86,6 @@ The app should be available at `http://localhost:8080` in your browser.
 
 ### UI5 tutorial
 
-You can follow the [Luigi Container UI5 tutorial](https://developers.sap.com/tutorials/luigi-container.html) in order to learn how to: 
-- Install Luigi Container in an UI5 app with the help of the UI5 Tooling Modules
+You can follow the [Luigi Container UI5 tutorial](https://developers.sap.com/tutorials/luigi-container.html) to learn how to: 
+- Install Luigi Container in an UI5 app with the help of the UI5 Tooling modules
 - Use Luigi Container to implement micro frontends  
