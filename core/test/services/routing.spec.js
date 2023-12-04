@@ -1259,7 +1259,7 @@ describe('Routing', function() {
       // then
       sinon.assert.calledWith(Navigation.extractDataFromPath, modalPath);
       sinon.assert.calledOnce(LuigiNavigation.openAsModal);
-      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, mockNodeModalSettings.openNodeInModal);
+      sinon.assert.calledWithExactly(LuigiNavigation.openAsModal, modalPath, modalParams);
     });
   });
   describe('append and remove modal data from URL using path routing', () => {
