@@ -1,8 +1,6 @@
+<h1>Home</h1>
 <div>
-    <h1>Home</h1>
-  <div>
-    { message }
-  </div>
+  { message }
 </div>
 <script>
   import LuigiClient from '@luigi-project/client';
