@@ -6,6 +6,7 @@ const foldersToBundle = [
   'client',
   'client-frameworks-support/testing-utilities',
   'client-frameworks-support/client-support-angular',
+  'client-frameworks-support/client-support-ui5',
   'container',
   'plugins'
 ];
