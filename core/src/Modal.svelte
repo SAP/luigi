@@ -16,7 +16,6 @@
     NavigationHelpers,
     StateHelpers
   } from './utilities/helpers';
-  import { KEYCODE_ESC } from './utilities/keycode.js';
   import { WebComponentService } from './services/web-components';
   import { Routing } from './services';
   import { LuigiConfig } from './core-api';
@@ -253,12 +252,13 @@
       ) {
         settings.title = e.data.updatedModalSettings.title;
       }
-      if (e.data.updatedModalSettings.size) {
+      if (e.data.updatedModalSettings.size ||
+        e.data.updatedModalSettings.width || 
+        e.data.updatedModalSettings.height) {
         settings.size = e.data.updatedModalSettings.size;
-        await setModalSize();
-      } else if (e.data.updatedModalSettings.width && e.data.updatedModalSettings.height) {
         settings.height = e.data.updatedModalSettings.height;
         settings.width = e.data.updatedModalSettings.width;
+        await setModalSize();
       }
       if (LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')) {
         Routing.updateModalDataInUrl(RoutingHelpers.getModalPathFromPath(), {'title': settings.title, 'size': settings.size, 'height': settings.height, 'width': settings.width}, e.data.addHistoryEntry);   
@@ -302,14 +302,6 @@
       : '';
   });
 
-  //  [svelte-upgrade suggestion]
-  // review these functions and remove unnecessary 'export' keywords
-  export function handleKeydown(event) {
-    if (event.keyCode === KEYCODE_ESC) {
-      dispatch('close');
-    }
-  }
-
   /**
    * This function will be called if the LuigiClient requested the context.
    * That means spinner can fade out in order to display the mf.
@@ -331,7 +323,6 @@
   }
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
 <div
   class={isModal || (isDrawer && settings.backdrop)
     ? 'fd-dialog fd-dialog--active'
