@@ -25,6 +25,18 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.7.4] (2023-12-04)
+
+#### :bug: Fixed
+* [#3554](https://github.com/SAP/luigi/pull/3554) Update modal settings after openNodeInModal ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3553](https://github.com/SAP/luigi/pull/3553) Refresh modal width/height in DOM on modal settings update ([@hardl](https://github.com/hardl))
+* [#3552](https://github.com/SAP/luigi/pull/3552) Fix potential race condition in init phase of compound mfe ([@hardl](https://github.com/hardl))
+
+
+
+
+
+
 ## [v2.7.3] (2023-11-30)
 
 #### :bug: Fixed
@@ -1689,3 +1701,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.7.1]: https://github.com/SAP/luigi/compare/v2.7.0...v2.7.1
 [v2.7.2]: https://github.com/SAP/luigi/compare/v2.7.1...v2.7.2
 [v2.7.3]: https://github.com/SAP/luigi/compare/v2.7.2...v2.7.3
+[v2.7.4]: https://github.com/SAP/luigi/compare/v2.7.3...v2.7.4
