@@ -42,30 +42,36 @@ async function createSymbolicLinkFromTo(source, destination, scope, index, numLi
 
 // Function to create a symbolic link. Deletes destination folder if already exists
 function createSymbolicLink(source, target) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      // Check if the destination path already exists
-      const destExists = await fs.promises
-        .access(target)
-        .then(() => true)
-        .catch(() => false);
-
-      // If the destination path exists, delete it
-      if (destExists) {
-        await fs.promises.rm(target, { recursive: true });
+  return new Promise((resolve, reject) => {
+    // Check if the destination path already exists
+    fs.access(target, fs.constants.F_OK, (err) => {
+      if (!err) {
+        // If the destination path exists, delete it
+        fs.rm(target, { recursive: true }, (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            // Create the symbolic link
+            fs.symlink(source, target, 'junction', (err) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve();
+              }
+            });
+          }
+        });
+      } else {
+        // Create the symbolic link
+        fs.symlink(source, target, 'junction', (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
       }
-
-      // Create the symbolic link
-      fs.symlink(source, target, 'dir', error => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve();
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
+    });
   });
 }
 
