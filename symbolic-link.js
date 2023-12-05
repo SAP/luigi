@@ -44,15 +44,15 @@ async function createSymbolicLinkFromTo(source, destination, scope, index, numLi
 function createSymbolicLink(source, target) {
   return new Promise((resolve, reject) => {
     // Check if the destination path already exists
-    fs.access(target, fs.constants.F_OK, (err) => {
+    fs.access(target, fs.constants.F_OK, err => {
       if (!err) {
         // If the destination path exists, delete it
-        fs.rm(target, { recursive: true }, (err) => {
+        fs.rm(target, { recursive: true }, err => {
           if (err) {
             reject(err);
           } else {
             // Create the symbolic link
-            fs.symlink(source, target, 'junction', (err) => {
+            fs.symlink(source, target, 'junction', err => {
               if (err) {
                 reject(err);
               } else {
@@ -63,7 +63,7 @@ function createSymbolicLink(source, target) {
         });
       } else {
         // Create the symbolic link
-        fs.symlink(source, target, 'junction', (err) => {
+        fs.symlink(source, target, 'junction', err => {
           if (err) {
             reject(err);
           } else {
