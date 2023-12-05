@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "dev":   "concurrently \"npm run build:dev -- --watch\" && \"npm run serve:luigi\" && \"npm run serve:microfrontend\"",
+    "dev":   "concurrently \"npm run build -- --watch\" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
     "serve:luigi": "cd public && ws --spa index.html --port 5100",
     "serve:microfrontend": "cd public && ws --spa mf.html --port 5101"
   },
