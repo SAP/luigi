@@ -1070,23 +1070,38 @@
     );
   };
 
-  const resizeMicrofrontendIframe = () => {
+  const resizeMicrofrontendIframe = (resetSize = false) => {
     if (!isResizeMF()) return;
-    const drawer = document.querySelector('.iframeModalCtn._drawer');
-    const currentMfIframe = IframeHelpers.getCurrentMicrofrontendIframe();
-    if (drawer && currentMfIframe) {
-      //reset computed width
-      currentMfIframe.removeAttribute('style');
-      document.querySelector('div.iframeContainer').removeAttribute('style');
 
-      const { width } = getComputedStyle(drawer);
-      const clientWidth = currentMfIframe.clientWidth;
-      currentMfIframe.setAttribute(
-        'style',
-        `width: calc(${clientWidth}px - ${width})`
-      );
+    const drawer = document.querySelector('.iframeModalCtn._drawer');
+    
+    if (!!drawer) {
+      const { width: drawerWidth } = getComputedStyle(drawer);
+
+      [
+        document.querySelector('div.iframeContainer'),
+        document.getElementById('splitViewContainer'),
+        document.getElementById('splitViewDragger'),
+        document.getElementById('splitViewDraggerBackdrop'),
+        document.getElementById('tabsContainer'),
+      ].forEach(container => {
+        setContainerWidth(container, drawerWidth, resetSize);
+      })
     }
   };
+
+  const setContainerWidth = (containerElement, drawerWidth, resetSize) => {
+    if (containerElement) {
+      if (resetSize) {
+        containerElement.style.removeProperty("width");
+      } else {
+        containerElement.style.setProperty(
+          "width",
+          `calc(${containerElement.clientWidth}px - ${drawerWidth})`
+        );
+      }
+    }
+  }
 
   const drawerIframeCreated = (event) => {
     drawerIframe = event.detail.modalIframe;
@@ -1128,7 +1143,7 @@
             () => {}
           );
         }
-        IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
+        resizeMicrofrontendIframe(true);
       } catch (e) {
         console.log(e);
       }
