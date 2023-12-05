@@ -14,7 +14,7 @@ cd luigi-example-svelte
 npm install
 ```
 
-2. Start webpack to run this application:
+2. Build and run this application in development mode:
 
 ```bash
 npm run dev
@@ -22,17 +22,4 @@ npm run dev
 
 Open it in your browser by going to [localhost:5100](http://localhost:5100).
 
-## Build
-
-1. Build your application
-    ```bash
-    npm run build:prod
-    ```
-    
-2. Serve your application
-    ```bash
-    npm run serve
-    ```
-
-The build compiles and minimizes the source files for production usage.
-The build generates a `public` folder which you can serve using a web server.
+Note that this example serves as a starting point and is not to be used directly in production without necessary adjustments.

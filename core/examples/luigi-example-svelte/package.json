@@ -13,10 +13,8 @@
     "local-web-server": "^5.3.0"
   },
   "scripts": {
-    "build:prod": "NODE_ENV=production webpack",
-    "build:dev": "webpack",
-    "dev": "concurrently \"npm run build:dev -- --watch\" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
-    "serve": "concurrently \"npm run build:prod \" \"npm run serve:luigi\" \"npm run serve:microfrontend\"",
+    "build": "webpack",
+    "dev":   "concurrently \"npm run build:dev -- --watch\" && \"npm run serve:luigi\" && \"npm run serve:microfrontend\"",
     "serve:luigi": "cd public && ws --spa index.html --port 5100",
     "serve:microfrontend": "cd public && ws --spa mf.html --port 5101"
   },
