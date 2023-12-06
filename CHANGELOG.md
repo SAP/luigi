@@ -25,6 +25,14 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.7.5] (2023-12-06)
+
+#### :bug: Fixed
+* [#3544](https://github.com/SAP/luigi/pull/3544) Fix addNavHrefs for ContextSwitcher and TopNavDropDown ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.7.4] (2023-12-04)
 
 #### :bug: Fixed
@@ -1702,3 +1710,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.7.2]: https://github.com/SAP/luigi/compare/v2.7.1...v2.7.2
 [v2.7.3]: https://github.com/SAP/luigi/compare/v2.7.2...v2.7.3
 [v2.7.4]: https://github.com/SAP/luigi/compare/v2.7.3...v2.7.4
+[v2.7.5]: https://github.com/SAP/luigi/compare/v2.7.4...v2.7.5
