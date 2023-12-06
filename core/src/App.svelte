@@ -1074,34 +1074,43 @@
     if (!isResizeMF()) return;
 
     const drawer = document.querySelector('.iframeModalCtn._drawer');
-    
-    if (!!drawer) {
+
+    if (!drawer) return;
+
+    const containers = [
+      document.querySelector('div.iframeContainer'),
+      document.getElementById('splitViewContainer'),
+      document.getElementById('splitViewDragger'),
+      document.getElementById('splitViewDraggerBackdrop'),
+      document.getElementById('tabsContainer'),
+    ];
+
+    if (resetSize) {
+      containers.forEach((container) => {
+        container?.style.removeProperty('width');
+      });
+    } else {
       const { width: drawerWidth } = getComputedStyle(drawer);
 
-      [
-        document.querySelector('div.iframeContainer'),
-        document.getElementById('splitViewContainer'),
-        document.getElementById('splitViewDragger'),
-        document.getElementById('splitViewDraggerBackdrop'),
-        document.getElementById('tabsContainer'),
-      ].forEach(container => {
-        setContainerWidth(container, drawerWidth, resetSize);
-      })
+      containers.forEach((container) => {
+        setContainerWidth(container, drawerWidth);
+      });
     }
   };
 
-  const setContainerWidth = (containerElement, drawerWidth, resetSize) => {
-    if (containerElement) {
-      if (resetSize) {
-        containerElement.style.removeProperty("width");
-      } else {
-        containerElement.style.setProperty(
-          "width",
-          `calc(${containerElement.clientWidth}px - ${drawerWidth})`
-        );
-      }
+  const setContainerWidth = (containerElement, drawerWidth) => {
+    if (
+      containerElement &&
+      // Only change the width if it is not already resized due to a
+      // drawer being opened earlier.
+      !containerElement.style.getPropertyValue('width').includes('calc(')
+    ) {
+      containerElement.style.setProperty(
+        'width',
+        `calc(${containerElement.clientWidth}px - ${drawerWidth})`,
+      );
     }
-  }
+  };
 
   const drawerIframeCreated = (event) => {
     drawerIframe = event.detail.modalIframe;
