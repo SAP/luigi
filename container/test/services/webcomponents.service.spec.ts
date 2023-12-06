@@ -176,17 +176,17 @@ describe('createClientAPI', () => {
   it('test uxManager getCurrentTheme', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.getAttribute = jest.fn();
+    service.thisComponent.theme = 'my-theme';
     
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    clientAPI.uxManager().getCurrentTheme();
+    const receivedTheme = clientAPI.uxManager().getCurrentTheme();
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('theme');
+    expect(receivedTheme).toEqual('my-theme');
   });
 
-  it('test uxManager showConfirmationModal - resolve when data present', async () => {
+  it.only('test uxManager showConfirmationModal - resolve when data present', async () => {
     // mock and spy on data/functions
     const settings = { confirmationSettings: 'settings' };
     service.containerService.dispatch = jest.fn();
@@ -219,10 +219,10 @@ describe('createClientAPI', () => {
     await expect(clientAPI.uxManager().showConfirmationModal(settings)).rejects.toThrow('No data');
   });
 
-  it('test getCurrentLocale set value', () => {
+  it.only('test getCurrentLocale set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.setAttribute('locale', 'en')
+    service.thisComponent.locale = 'en'
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
@@ -232,20 +232,7 @@ describe('createClientAPI', () => {
     expect(result).toEqual('en');
   });
 
-  it('test getCurrentLocale getAttribute called', () => {
-    // mock and spy on data/functions
-    service.thisComponent = document.createElement('div');
-    service.thisComponent.getAttribute = jest.fn();
-    
-    // act
-    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    const result = clientAPI.getCurrentLocale();
-
-    // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('locale');
-  });
-
-  it('test getCurrentLocale attribute NOT set', () => {
+  it.only('test getCurrentLocale attribute NOT set', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
     

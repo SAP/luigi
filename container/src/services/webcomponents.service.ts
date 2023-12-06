@@ -98,15 +98,15 @@ export class WebComponentService {
             });
           },
           getCurrentTheme: () => {
-            return this.thisComponent.getAttribute('theme');
+            return this.thisComponent.theme;
           }
         };
       },
       getCurrentLocale: () => {
-        return this.thisComponent.getAttribute('locale');
+        return this.thisComponent.locale;
       },
       getActiveFeatureToggles: () => {
-        return this.thisComponent.getAttribute('active-feature-toggle-list');
+        return this.thisComponent.activeFeatureToggleList;
       },
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
@@ -136,8 +136,7 @@ export class WebComponentService {
         if (isSpecialMf) {
           return {};
         }
-        let result = this.thisComponent.getAttribute('node-params') || {};
-        result = JSON.parse(result);
+        let result = this.thisComponent.nodeParams;
         if (shouldDesanitise) {
           return deSanitizeParamsMap(result);
         }
@@ -150,25 +149,22 @@ export class WebComponentService {
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
       },
       getAnchor: () => {
-        return this.thisComponent.getAttribute('anchor') || '';
+        return this.thisComponent.anchor;
       },
       getCoreSearchParams: () => {
-        let result = this.thisComponent.getAttribute('search-params') || {};
-        result = JSON.parse(result);
+        let result = this.thisComponent.searchParams;
         return result;
       },
       getPathParams: () => {
-        let result = this.thisComponent.getAttribute('path-params') || {};
-        result = JSON.parse(result);
+        let result = this.thisComponent.pathParams;
         return result;
       },
       getClientPermissions: () => {
-        let result = this.thisComponent.getAttribute('client-permissions') || {};
-        result = JSON.parse(result);
+        let result = this.thisComponent.clientPermissions;
         return result;
       },
       getUserSettings: () => {
-        return JSON.parse(this.thisComponent.getAttribute('user-settings')) || {};
+        return this.thisComponent.userSettings;
       }
     };
   }
