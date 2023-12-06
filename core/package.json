@@ -6,7 +6,6 @@
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
-    "bundlesize2": "^0.0.31",
     "chai": "^4.3.6",
     "css-tree": "^2.3.1",
     "fundamental-styles": "0.31.0",
@@ -26,32 +25,13 @@
     "typescript": "^4.9.4",
     "vite": "^3.0.3"
   },
-  "overrides": {
-    "bundlesize2": {
-      "node-fetch": "2.6.7"
-    }
-  },
   "scripts": {
     "test": "jest",
-    "bundlesize": "npm run build && bundlesize",
-    "bundlesizeOnly": "bundlesize",
     "build": "vite build",
-    "watch": "vite build --watch",
+    "bundle-develop": "vite build --watch",
     "bundle": "npm run build",
     "simpledev": "node ./dev-tools/simpledev-vite.mjs"
   },
-  "bundlesize": [
-    {
-      "path": "./public/luigi.js",
-      "maxSize": "650 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./public/luigi.css",
-      "maxSize": "805 kB",
-      "compression": "none"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"

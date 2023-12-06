@@ -18,6 +18,7 @@
     createEventDispatcher,
   } from 'svelte';
   import { CSS_BREAKPOINTS } from './utilities/constants';
+  import { KEYCODE_ESC } from './utilities/keycode.js';
   import {
     EventListenerHelpers,
     GenericHelpers,
@@ -1981,9 +1982,15 @@
     configTag = LuigiConfig.getConfigValue('tag');
     isHeaderDisabled = LuigiConfig.getConfigValue('settings.header.disabled');
   });
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === KEYCODE_ESC && mfModalList && mfModalList.length > 0) {
+      closeModal(mfModalList.length - 1);
+    }
+  }
 </script>
 
-<svelte:window on:resize={onResize} />
+<svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
 <div
   id="app"
   class="{hideNav ? 'no-nav' : ''} {hideSideNav
@@ -2869,15 +2876,6 @@
       &.has-child:after {
         height: 0;
       }
-    }
-  }
-
-  //Fixing issues for fundamental styles
-  //IE11 fixes
-  :global(.fd-nested-list__content),
-  :global(.fd-nested-list__link) {
-    &.has-child:after {
-      max-height: 100%;
     }
   }
 

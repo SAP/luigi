@@ -7,28 +7,19 @@ This is the Angular-based sample application which runs with Luigi framework.
 > **NOTE:** The authorization flow `mockAuth` in this application is a mock implementation for local development. **DO NOT USE IN PRODUCTION!**
 
 ## Development
-
-Use  [Lerna](https://lerna.js.org) to link the dependencies and bundle scripts within the packages.
-
 To have this application running, follow these steps:
 
-1. Install Lerna globally.
+1. Install dependencies, link cross-dependencies and bundle needed packages, by running the following command in the root `luigi` folder.
+   Note that this step is usually only executed once before development. Doesn't need to be ran every time. 
     ```bash
-    npm install -g lerna
+    npm run bootstrap # installs dependencies and links cross-dependencies
+    npm run bundle # bundles all packages in the repo that are used mostly during development
     ```
 
-2. Install dependencies by running the following command in the root `luigi` folder.
+3. During development the package under development needs to be bundled after any changes are made to it. For example, to bundle Luigi Core, simply run the following command in the `luigi/core` folder. Same goes for other packages you are making changes to.
     ```bash
-    # The `lerna bootstrap --force-local` command executes the npm package manager installation and links cross-dependencies.
-
-    lerna bootstrap --force-local
-    ```
-
-3. Bundle Luigi Core by running the following command in the `luigi/core` folder.
-    ```bash
-    # Lerna runs the bundle script in every package where the script exists.
-
-    lerna run bundle
+    npm run bundle
+    npm run bundle-develop # ran only once instead with watch option set 
     ```
 
 4. Start the example application from the `luigi/test/e2e-test-application` folder.
@@ -49,10 +40,10 @@ To have this application running, follow these steps:
 
 6. Optional: Reflect the changes introduced to the Luigi Core code in the sample application.
 
-    - Allow the Luigi Core to bundle every change you apply to it. The easiest approach is to open the Luigi `root` folder in another tab of your terminal window and run the following command:
+    - Allow the Luigi Core to bundle every change you apply to it. The easiest approach is to open the Luigi `core` folder in another tab of your terminal window and run the following command:
 
       ```bash
-      lerna run bundle-develop
+      npm run bundle-develop
       ```
     - The Luigi Client is not bundled, so you can update it without bundling.
 
