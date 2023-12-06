@@ -186,7 +186,7 @@ describe('createClientAPI', () => {
     expect(receivedTheme).toEqual('my-theme');
   });
 
-  it.only('test uxManager showConfirmationModal - resolve when data present', async () => {
+  it('test uxManager showConfirmationModal - resolve when data present', async () => {
     // mock and spy on data/functions
     const settings = { confirmationSettings: 'settings' };
     service.containerService.dispatch = jest.fn();
@@ -219,7 +219,7 @@ describe('createClientAPI', () => {
     await expect(clientAPI.uxManager().showConfirmationModal(settings)).rejects.toThrow('No data');
   });
 
-  it.only('test getCurrentLocale set value', () => {
+  it('test getCurrentLocale set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
     service.thisComponent.locale = 'en'
@@ -232,7 +232,7 @@ describe('createClientAPI', () => {
     expect(result).toEqual('en');
   });
 
-  it.only('test getCurrentLocale attribute NOT set', () => {
+  it('test getCurrentLocale attribute NOT set', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
     
@@ -241,33 +241,20 @@ describe('createClientAPI', () => {
     const result = clientAPI.getCurrentLocale();
 
     // assert
-    expect(result).toEqual(null);
+    expect(result).toEqual(undefined);
   });
 
   it('test getActiveFeatureToggles set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.setAttribute('active-feature-toggle-list', "['ft1','ft2']")
+    service.thisComponent.activeFeatureToggleList = ['ft1','ft2'];
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     const result = clientAPI.getActiveFeatureToggles();
 
     // assert
-    expect(result).toEqual("['ft1','ft2']");
-  });
-
-  it('test getActiveFeatureToggles getAttribute called', () => {
-    // mock and spy on data/functions
-    service.thisComponent = document.createElement('div');
-    service.thisComponent.getAttribute = jest.fn();
-    
-    // act
-    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    const result = clientAPI.getActiveFeatureToggles();
-
-    // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('active-feature-toggle-list');
+    expect(result).toEqual(['ft1','ft2']);
   });
 
   it('test getActiveFeatureToggles attribute NOT set', () => {
@@ -279,7 +266,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getActiveFeatureToggles();
 
     // assert
-    expect(result).toEqual(null);
+    expect(result).toEqual([]);
   });
 
   it('test publishEvent custom message Defined eventBusElement', () => {

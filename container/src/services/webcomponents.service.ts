@@ -102,11 +102,11 @@ export class WebComponentService {
           }
         };
       },
-      getCurrentLocale: () => {
+      getCurrentLocale: () : string | undefined =>  {
         return this.thisComponent.locale;
       },
-      getActiveFeatureToggles: () => {
-        return this.thisComponent.activeFeatureToggleList;
+      getActiveFeatureToggles: (): string[] => {
+        return this.thisComponent.activeFeatureToggleList || [];
       },
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
