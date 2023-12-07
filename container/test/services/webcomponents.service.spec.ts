@@ -588,7 +588,7 @@ describe('initWC', () => {
   const viewUrl = 'https://example.com/some-page';
   const ctx = { some: 'context' };
   const nodeId = 'node123';
-  const isSpecialMf = true;
+  const isCompoundChild = true;
 
   beforeEach(() => {
     service = new WebComponentService();
@@ -603,12 +603,12 @@ describe('initWC', () => {
     const spyClientAPI = jest.spyOn(service, 'createClientAPI')
 
     // Act
-    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isSpecialMf);
+    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
 
     // Assert
     expect(wc.context).toEqual(ctx);
     expect(wc.LuigiClient).toBeDefined();
-    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isSpecialMf)
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isCompoundChild)
   });
 
   it('should call wc.__postProcess if wc.__postProcess is defined', () => {
@@ -630,10 +630,10 @@ describe('initWC', () => {
     const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation((url) => (urlSpyMockData));
 
     // Act
-    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isSpecialMf);
+    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
 
     // Assert
-    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isSpecialMf);
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isCompoundChild);
     expect(wc.__postProcess).toHaveBeenCalledWith(ctx, clientAPIReturnVal, documentOrigin + '/another-page');
     expect(urlSpy).toHaveBeenCalledTimes(4);
     expect(urlSpy).toHaveBeenNthCalledWith(1, baseURIMocked);
