@@ -132,7 +132,7 @@
         ? userSettingGroups[userSettingsGroupName]
         : null,
       anchor: LuigiRouting.getAnchor(),
-      cssVariables: await LuigiTheming.getCSSVariables()
+      cssVariables: await LuigiTheming.getCSSVariables(),
     });
 
     IframeHelpers.specialIframeTypes
@@ -153,21 +153,21 @@
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
-        Object.assign({}, config.context || context, goBackContext)
+        Object.assign({}, config.context || context, goBackContext),
       ),
       nodeParams: JSON.stringify(
-        Object.assign({}, config.nodeParams || nodeParams)
+        Object.assign({}, config.nodeParams || nodeParams),
       ),
       pathParams: JSON.stringify(
-        Object.assign({}, config.pathParams || pathParams)
+        Object.assign({}, config.pathParams || pathParams),
       ),
       searchParams: JSON.stringify(
         Object.assign(
           {},
           RoutingHelpers.prepareSearchParamsForClient(
-            config.iframe.luigi.currentNode
-          )
-        )
+            config.iframe.luigi.currentNode,
+          ),
+        ),
       ),
       internal: JSON.stringify(await prepareInternalData(config)),
       authData: AuthHelpers.getStoredAuthData(),
@@ -197,7 +197,7 @@
                 nodePath,
                 config.iframe.luigi.pathParams,
                 ':',
-                false
+                false,
               )
             : nodePath,
         nextPath: nextPath.startsWith('/') ? nextPath : '/' + nextPath,
@@ -272,7 +272,7 @@
           },
           () => {
             reject();
-          }
+          },
         );
       } else {
         resolve();
@@ -358,11 +358,11 @@
             } else if (prop == 'splitViewWC') {
               splitViewWC = obj.splitViewWC;
             } else if (prop === 'showLoadingIndicator') {
-              if(obj.showLoadingIndicator===true){
-                loadingIndicatorTimeout = setTimeout(()=>{
+              if (obj.showLoadingIndicator === true) {
+                loadingIndicatorTimeout = setTimeout(() => {
                   showLoadingIndicator = true;
-                },250);
-              }else{
+                }, 250);
+              } else {
                 showLoadingIndicator = false;
                 clearTimeout(loadingIndicatorTimeout);
               }
@@ -394,17 +394,17 @@
       () => {
         const wc_container = document.querySelector('.wcContainer');
         if (wc_container) wc_container.configChangedRequest = true;
-        
+
         NodeDataManagementStorage.deleteCache();
         const currentPath = Routing.getCurrentPath();
         Routing.handleRouteChange(
           currentPath,
           getComponentWrapper(),
           node,
-          config
+          config,
         );
       },
-      ['navigation.nodes']
+      ['navigation.nodes'],
     );
 
     // subsequential route handling
@@ -431,7 +431,7 @@
         node,
         config,
         withoutSync,
-        preventContextUpdate
+        preventContextUpdate,
       );
     });
   };
@@ -441,7 +441,7 @@
       Routing.getNodePath(node),
       nodePathParams,
       ':',
-      false
+      false,
     );
   };
 
@@ -464,19 +464,19 @@
       const node = [...localNavPath].reverse().find((n) => n.virtualTree);
       if (!node) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.',
         );
         return;
       }
       path = Routing.concatenatePath(
         getSubPath(node, localPathParams),
-        params.link
+        params.link,
       );
     } else if (params.fromParent) {
       // from direct parent
       path = Routing.concatenatePath(
         getSubPath(localNode.parent, localPathParams),
-        params.link
+        params.link,
       );
     } else if (params.fromClosestContext) {
       // from the closest navigation context
@@ -485,7 +485,7 @@
         .find((n) => n.navigationContext && n.navigationContext.length > 0);
       path = Routing.concatenatePath(
         getSubPath(node, localPathParams),
-        params.link
+        params.link,
       );
     } else if (params.fromContext) {
       // from a given navigation context
@@ -495,7 +495,7 @@
         .find((n) => navigationContext === n.navigationContext);
       path = Routing.concatenatePath(
         getSubPath(node, localPathParams),
-        params.link
+        params.link,
       );
     } else if (params.intent) {
       path = RoutingHelpers.getIntentPath(params.link);
@@ -503,7 +503,7 @@
       // relative
       path = Routing.concatenatePath(
         getSubPath(localNode, localPathParams),
-        params.link
+        params.link,
       );
     }
     if (params.nodeParams && Object.keys(params.nodeParams).length > 0) {
@@ -511,7 +511,7 @@
       Object.entries(params.nodeParams).forEach((entry, index) => {
         path +=
           encodeURIComponent(
-            RoutingHelpers.getContentViewParamPrefix() + entry[0]
+            RoutingHelpers.getContentViewParamPrefix() + entry[0],
           ) +
           '=' +
           encodeURIComponent(entry[1]) +
@@ -530,7 +530,7 @@
           const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
           openViewInModal(
             route,
-            node.openNodeInModal === true ? {} : node.openNodeInModal
+            node.openNodeInModal === true ? {} : node.openNodeInModal,
           );
         } else if (node.drawer) {
           const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
@@ -541,7 +541,7 @@
           Routing.handleRouteClick(node, getComponentWrapper());
         }
       },
-      () => {}
+      () => {},
     );
   };
 
@@ -608,7 +608,7 @@
           searchProvider.onInput();
         } else {
           console.error(
-            'onInput is not a function. Please check the global search configuration.'
+            'onInput is not a function. Please check the global search configuration.',
           );
         }
       }
@@ -636,7 +636,7 @@
           searchProvider.customSearchResultRenderer(
             arr,
             luigiCustomSearchRenderer__slot,
-            searchApiObj
+            searchApiObj,
           );
         } else {
           displaySearchResult = true;
@@ -655,7 +655,7 @@
       if (luigiCustomSearchRenderer__slot) {
         while (luigiCustomSearchRenderer__slot.lastElementChild) {
           luigiCustomSearchRenderer__slot.removeChild(
-            luigiCustomSearchRenderer__slot.lastElementChild
+            luigiCustomSearchRenderer__slot.lastElementChild,
           );
         }
       }
@@ -775,7 +775,7 @@
 
   export const showAlert = (settings, openFromClient = false) => {
     const customAlertHandler = LuigiConfig.getConfigValue(
-      'settings.customAlertHandler'
+      'settings.customAlertHandler',
     );
     if (GenericHelpers.isFunction(customAlertHandler)) {
       const customReturnValue = customAlertHandler(settings, openFromClient);
@@ -796,7 +796,7 @@
       getAlertWithId(currentAlerts, settings.id)
     ) {
       console.error(
-        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `
+        `The alert with id '${settings.id}' already exists in a queue, therefore it won't be displayed `,
       );
       return Promise.reject();
     }
@@ -971,7 +971,7 @@
 
     // check if modalPath feature enable and set URL accordingly
     const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-      'routing.showModalPathInUrl'
+      'routing.showModalPathInUrl',
     );
 
     //  only show the modal path in the URL when the first modal is opened.
@@ -1009,7 +1009,7 @@
   const closeModal = (index, isClosedInternal, goBackContext) => {
     const resetModalData = (index, isClosedInternal) => {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue(
-        'routing.showModalPathInUrl'
+        'routing.showModalPathInUrl',
       );
       // only remove the modal path in URL when closing the first modal
       if (showModalPathInUrl && mfModalList.length === 1) {
@@ -1019,7 +1019,7 @@
     };
     const targetModal = mfModalList[index];
     const rp = GenericHelpers.getRemotePromise(
-      targetModal.mfModal.settings.onClosePromiseId
+      targetModal.mfModal.settings.onClosePromiseId,
     );
     if (targetModal && targetModal.modalIframe) {
       getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
@@ -1027,7 +1027,7 @@
           resetModalData(index, isClosedInternal);
           rp && rp.doResolve(goBackContext);
         },
-        () => {}
+        () => {},
       );
     } else if (targetModal && targetModal.modalWC) {
       resetModalData(index, isClosedInternal);
@@ -1083,7 +1083,7 @@
       const clientWidth = currentMfIframe.clientWidth;
       currentMfIframe.setAttribute(
         'style',
-        `width: calc(${clientWidth}px - ${width})`
+        `width: calc(${clientWidth}px - ${width})`,
       );
     }
   };
@@ -1118,14 +1118,14 @@
             () => {
               resetMicrofrontendDrawerData();
             },
-            () => {}
+            () => {},
           );
         } else if (drawerWC) {
           getUnsavedChangesModalPromise().then(
             () => {
               resetMicrofrontendDrawerData();
             },
-            () => {}
+            () => {},
           );
         }
         IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
@@ -1144,7 +1144,7 @@
       internalUserSettingsObject.displayed = true;
     } else {
       console.info(
-        'There are no user setting groups in the settings section of the luigi config defined.'
+        'There are no user setting groups in the settings section of the luigi config defined.',
       );
     }
   };
@@ -1196,7 +1196,7 @@
         .find((n) => n.virtualTree);
       if (!virtualTreeNode) {
         console.error(
-          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.'
+          'LuigiClient Error: fromVirtualTreeRoot() is not possible because you are not inside a Luigi virtualTree navigation node.',
         );
         return;
       }
@@ -1236,13 +1236,13 @@
     ViewGroupPreloading.shouldPreload = false;
 
     const isolateAllViews = LuigiConfig.getConfigValue(
-      'navigation.defaults.isolateView'
+      'navigation.defaults.isolateView',
     );
     const defaultPageErrorHandler = LuigiConfig.getConfigValue(
-      'navigation.defaults.pageErrorHandler'
+      'navigation.defaults.pageErrorHandler',
     );
     const defaultRunTimeErrorHandler = LuigiConfig.getConfigValue(
-      'navigation.defaults.runTimeErrorHandler'
+      'navigation.defaults.runTimeErrorHandler',
     );
     const config = {
       iframe: null,
@@ -1310,7 +1310,7 @@
         specialIframeMessageSource && specialIframeMessageSource.length > 0;
 
       const skipInactiveConfig = LuigiConfig.getConfigValue(
-        'communication.skipEventsWhenInactive'
+        'communication.skipEventsWhenInactive',
       );
 
       if (
@@ -1330,31 +1330,31 @@
           LuigiConfig.getConfigValue('communication.customMessagesListeners') ||
           {};
         const message = MessagesListeners.convertCustomMessageInternalToUser(
-          e.data
+          e.data,
         );
         const customMessageListener = customMessagesListeners[message.id];
         const userSettingsCMKey = 'luigi.updateUserSettings';
         if (internalUserSettingsObject && message.id === userSettingsCMKey) {
           if (customMessageListener) {
             console.warn(
-              `The key "${userSettingsCMKey}" is not allowed to use for custom messages.`
+              `The key "${userSettingsCMKey}" is not allowed to use for custom messages.`,
             );
           }
           return;
         }
         if (typeof customMessageListener === 'function') {
           const microfrontend = LuigiElements.getMicrofrontends().find((mf) =>
-            IframeHelpers.isMessageSource(e, mf.container)
+            IframeHelpers.isMessageSource(e, mf.container),
           );
 
           customMessageListener(
             message,
             microfrontend,
-            GenericHelpers.removeInternalProperties(iframe.luigi.currentNode)
+            GenericHelpers.removeInternalProperties(iframe.luigi.currentNode),
           );
         } else {
           console.warn(
-            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file.`
+            `Warning: Custom message with id: '${message.id}' does not exist. Make sure you provided the same id as in the config file.`,
           );
         }
       }
@@ -1392,7 +1392,7 @@
               pathParams: specialIframeProps[typ.dataKey].pathParams,
               nodeParams: specialIframeProps[typ.dataKey].nodeParams,
               searchParams: RoutingHelpers.prepareSearchParamsForClient(
-                specialIframeProps[typ.iframeKey].luigi.currentNode
+                specialIframeProps[typ.iframeKey].luigi.currentNode,
               ),
               modal: typ.iframeKey.startsWith('modal'),
               drawer: typ.iframeKey.startsWith('drawer'),
@@ -1410,7 +1410,7 @@
             !currentNode.loadingIndicator ||
             currentNode.loadingIndicator.hideAutomatically !== false;
           if (loadingIndicatorAutoHideEnabled) {
-              fadeOutAppLoadingIndicator();
+            fadeOutAppLoadingIndicator();
           }
           ViewGroupPreloading.preload();
         } else if (iframe.luigi.preloading) {
@@ -1423,7 +1423,7 @@
               pathParams: {},
               internal: {},
             },
-            {}
+            {},
           );
         } else {
           let userSettingsIframe =
@@ -1468,7 +1468,7 @@
 
         const resolveRemotePromise = () => {
           const remotePromise = GenericHelpers.getRemotePromise(
-            e.data.remotePromiseId
+            e.data.remotePromiseId,
           );
           if (remotePromise) {
             remotePromise.doResolve();
@@ -1477,7 +1477,7 @@
 
         const rejectRemotePromise = () => {
           const remotePromise = GenericHelpers.getRemotePromise(
-            e.data.remotePromiseId
+            e.data.remotePromiseId,
           );
           if (remotePromise) {
             remotePromise.doReject();
@@ -1544,7 +1544,7 @@
           path = await RoutingHelpers.handlePageNotFoundAndRetrieveRedirectPath(
             getComponentWrapper(),
             path,
-            pathExist
+            pathExist,
           );
 
           if (!path) {
@@ -1572,27 +1572,32 @@
 
       if ('luigi.navigation.back' === e.data.msg) {
         const mfModalTopMostElement = mfModalList[mfModalList.length - 1];
-        const mfModalPreviousElement = mfModalList.length > 1 && mfModalList[mfModalList.length - 2];
+        const mfModalPreviousElement =
+          mfModalList.length > 1 && mfModalList[mfModalList.length - 2];
         const _goBackContext =
           e.data.goBackContext && JSON.parse(e.data.goBackContext);
         if (
           IframeHelpers.isMessageSource(
             e,
-            mfModalTopMostElement && mfModalTopMostElement.modalIframe
+            mfModalTopMostElement && mfModalTopMostElement.modalIframe,
           )
         ) {
           closeModal(mfModalList.length - 1, true, _goBackContext);
           let modalConfig = config;
           // special case if going back with multiple modals, context should go back to previous modal, not main iframe
-          if (mfModalPreviousElement && mfModalPreviousElement.modalIframeData && mfModalPreviousElement.modalIframe){
+          if (
+            mfModalPreviousElement &&
+            mfModalPreviousElement.modalIframeData &&
+            mfModalPreviousElement.modalIframe
+          ) {
             const topMostModal = mfModalPreviousElement;
             const topMostModalData = topMostModal.modalIframeData;
-            modalConfig =  {
-               pathParams: topMostModalData.pathParams,
-               context: topMostModalData.context,
-               iframe: topMostModal.modalIframe
+            modalConfig = {
+              pathParams: topMostModalData.pathParams,
+              context: topMostModalData.context,
+              iframe: topMostModal.modalIframe,
             };
-          } 
+          }
           modalConfig.iframe &&
             (await sendContextToClient(modalConfig, {
               goBackContext: _goBackContext,
@@ -1628,15 +1633,15 @@
                 // TODO: check if getNavigationPath or history pop to update hash / path
                 handleNavigation(
                   { params: { link: previousActiveIframeData.path } },
-                  config
+                  config,
                 );
               },
-              () => {}
+              () => {},
             );
           } else {
             if (_goBackContext) {
               console.warn(
-                `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`
+                `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`,
               );
             }
             // TODO: does not work with default child node behavior, fixed by #216
@@ -1666,7 +1671,7 @@
       }
 
       if ('luigi.navigation.updateModalDataPath' === e.data.msg) {
-        if(!LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')){
+        if (!LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl')) {
           return;
         }
         if (isSpecialIframe) {
@@ -1674,17 +1679,17 @@
             buildPath(
               e.data.params,
               iframe.luigi.currentNode,
-              iframe.luigi.pathParams
-            )
+              iframe.luigi.pathParams,
+            ),
           );
           Routing.updateModalDataInUrl(
             route,
             e.data.params.modal,
-            e.data.params.history
+            e.data.params.history,
           );
         } else {
           console.warn(
-            'updateModalDataPath can only be called from modal, ignoring.'
+            'updateModalDataPath can only be called from modal, ignoring.',
           );
         }
       }
@@ -1697,7 +1702,7 @@
         const pathData = path
           ? await Navigation.getNavigationPath(
               LuigiConfig.getConfigValueAsync('navigation.nodes'),
-              path
+              path,
             )
           : false;
         const message = {
@@ -1740,11 +1745,11 @@
         if (
           !settings.text &&
           !GenericHelpers.isFunction(
-            LuigiConfig.getConfigValue('settings.customAlertHandler')
+            LuigiConfig.getConfigValue('settings.customAlertHandler'),
           )
         ) {
           console.error(
-            "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed"
+            "Luigi Client alert: 'text' field for alert is empty or not present, therefore alert will not be displayed",
           );
           return;
         }
@@ -1765,7 +1770,7 @@
           }
         } else {
           console.error(
-            'Current local change from client declined because client permission changeCurrentLocale is not set for this view.'
+            'Current local change from client declined because client permission changeCurrentLocale is not set for this view.',
           );
         }
       }
@@ -1785,7 +1790,7 @@
           e.origin,
           e.data.data.id,
           e.data.data.operation,
-          e.data.data.params
+          e.data.data.params,
         );
       }
 
@@ -1814,11 +1819,11 @@
           RoutingHelpers.addSearchParamsFromClient(
             iframe.luigi.currentNode,
             data,
-            keepBrowserHistory
+            keepBrowserHistory,
           );
         } else {
           console.warn(
-            'No client permissions to add url parameter for this node.'
+            'No client permissions to add url parameter for this node.',
           );
         }
       }
@@ -1860,7 +1865,7 @@
       thirdPartyCookiesCheck &&
       thirdPartyCookiesCheck.thirdPartyCookieErrorHandling &&
       GenericHelpers.isFunction(
-        thirdPartyCookiesCheck.thirdPartyCookieErrorHandling
+        thirdPartyCookiesCheck.thirdPartyCookieErrorHandling,
       )
     ) {
       thirdPartyCookiesCheck.thirdPartyCookieErrorHandling();
@@ -1872,15 +1877,17 @@
    * That means spinner can fade out in order to display the mf.
    * After 250 ms the spinner will be removed from DOM.
    */
-  function fadeOutAppLoadingIndicator(){
-    const spinnerContainer = document.querySelector('.spinnerContainer.appSpinner');
+  function fadeOutAppLoadingIndicator() {
+    const spinnerContainer = document.querySelector(
+      '.spinnerContainer.appSpinner',
+    );
     if (spinnerContainer && spinnerContainer.classList.contains('fade-out')) {
       spinnerContainer.classList.remove('fade-out');
-      setTimeout(()=>{
+      setTimeout(() => {
         clearTimeout(loadingIndicatorTimeout);
         showLoadingIndicator = false;
       }, 250);
-    }else{
+    } else {
       clearTimeout(loadingIndicatorTimeout);
     }
   }
@@ -1895,7 +1902,7 @@
     const pathData = builtPath
       ? await Navigation.getNavigationPath(
           LuigiConfig.getConfigValueAsync('navigation.nodes'),
-          builtPath
+          builtPath,
         )
       : false;
     return pathData ? pathData.isExistingRoute : false;
@@ -1909,7 +1916,7 @@
     LuigiTheming._init();
     searchProvider = LuigiConfig.getConfigValue('globalSearch.searchProvider');
     responsiveNavSetting = LuigiConfig.getConfigValue(
-      'settings.responsiveNavigation'
+      'settings.responsiveNavigation',
     );
     previousWindowWidth = window.innerWidth;
     if (responsiveNavSetting === 'simple') {
@@ -1933,7 +1940,7 @@
           NavigationHelpers.getBurgerTooltipConfig();
         if (collapseNavTooltip && expandNavTooltip) {
           const collapsedNavState = JSON.parse(
-            localStorage.getItem(NavigationHelpers.COL_NAV_KEY)
+            localStorage.getItem(NavigationHelpers.COL_NAV_KEY),
           );
           burgerTooltip = collapsedNavState
             ? collapseNavTooltip
@@ -1943,7 +1950,7 @@
       document.body.classList.add('lui-semiCollapsible');
     }
     thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
-      'settings.thirdPartyCookieCheck'
+      'settings.thirdPartyCookieCheck',
     );
     if (
       thirdPartyCookiesCheck &&
@@ -1980,10 +1987,14 @@
   });
 
   const handleKeyDown = (event) => {
-    if (event.keyCode === KEYCODE_ESC && mfModalList && mfModalList.length > 0) {
+    if (
+      event.keyCode === KEYCODE_ESC &&
+      mfModalList &&
+      mfModalList.length > 0
+    ) {
       closeModal(mfModalList.length - 1);
     }
-  }
+  };
 </script>
 
 <svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
@@ -2007,8 +2018,8 @@
         nodepath={modalItem.mfModal.nodepath}
         modalIndex={index}
         on:close={() => closeModal(index, true)}
-        on:iframeCreated={event => modalIframeCreated(event, index)}
-        on:wcCreated={event => modalWCCreated(event, index)}
+        on:iframeCreated={(event) => modalIframeCreated(event, index)}
+        on:wcCreated={(event) => modalWCCreated(event, index)}
         {disableBackdrop}
       />
     {/if}
@@ -2230,7 +2241,10 @@
   :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
     top: calc(
       var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
-        var(--luigi__horizontal-nav--height)
+        var(
+          --luigi__horizontal-nav--live-height,
+          var(--luigi__horizontal-nav--height)
+        )
     );
   }
   .iframeContainer,
