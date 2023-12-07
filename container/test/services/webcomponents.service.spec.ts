@@ -186,6 +186,18 @@ describe('createClientAPI', () => {
     expect(receivedTheme).toEqual('my-theme');
   });
 
+  it('test uxManager getCurrentTheme UNDEFINED', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
+    
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    const receivedTheme = clientAPI.uxManager().getCurrentTheme();
+
+    // assert
+    expect(receivedTheme).toEqual(undefined);
+  });
+
   it('test uxManager showConfirmationModal - resolve when data present', async () => {
     // mock and spy on data/functions
     const settings = { confirmationSettings: 'settings' };

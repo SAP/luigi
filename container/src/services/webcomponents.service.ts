@@ -109,7 +109,7 @@ export class WebComponentService {
               });
             });
           },
-          getCurrentTheme: () => {
+          getCurrentTheme: () : string | undefined => {
             return this.thisComponent.theme;
           }
         };
