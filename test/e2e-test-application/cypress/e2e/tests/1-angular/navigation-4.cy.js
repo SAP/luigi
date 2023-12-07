@@ -290,4 +290,34 @@ describe('Navigation', () => {
       );
     });
   });
+
+  describe('Split View and Modal', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+    });
+
+    it('keeps a split view open if a modal with the same view is opened and closed again', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        cy.wrap(result)
+          .find('a[data-testid="open-overview-in-splitview"]')
+          .click();
+
+        cy.wrap(result)
+          .find('a[data-testid="open-overview-in-modal"]')
+          .click();
+      });
+
+      // Modal is open
+      cy.get('div[data-testid="modal-mf"]').should('exist');
+
+      // Close modal
+      cy.get('button[data-testid="lui-modal-index-0"]')
+        .click();
+      
+      cy.get('#splitViewContainer').should('exist');
+      cy.get('#splitViewDragger').should('exist');
+      cy.get('div[data-testid="modal-mf"]').should('not.exist');
+    });
+  });
 });
