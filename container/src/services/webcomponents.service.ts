@@ -70,6 +70,7 @@ export class WebComponentService {
    * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
    * @param nodeId refers to an attribute of the web component to be identified from the rest
    * @param wc_id a tagname that is used when creating the web component element
+   * 
    * @returns an object with the Luigi Client API
    */
   createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isSpecialMf?: boolean) {
@@ -132,7 +133,7 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
-      getNodeParams: shouldDesanitise => {
+      getNodeParams: (shouldDesanitise: boolean): Object => {
         if (isSpecialMf) {
           return {};
         }
@@ -315,6 +316,15 @@ export class WebComponentService {
 
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
+   */
+  /**
+   * 
+   * @param viewUrl url to render content from
+   * @param wc_container web component container element
+   * @param context luigi context
+   * @param node node to operate on
+   * @param nodeId id identifying the node
+   * @param isSpecialMf defines if rendered mf is a compound child or not
    */
   renderWebComponent(
     viewUrl: string,
