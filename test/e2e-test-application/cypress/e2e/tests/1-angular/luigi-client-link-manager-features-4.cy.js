@@ -462,4 +462,56 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
   });
+
+  describe('Drawer Resizing', () => {
+    let $iframeBody;
+    const mfIframeSelector = 'div.iframeContainerTabNav';
+    const tabNavSelector = '#tabsContainer';
+
+    function isResizedStatus($element, isResized) {
+      const resizedWidthRegex = /^calc\(/;
+      const elementWidth = $element[0].style.width;
+
+      if (isResized) {
+        expect(elementWidth).to.match(resizedWidthRegex);
+      } else {
+        expect(elementWidth).to.not.match(resizedWidthRegex);
+      }
+      return elementWidth;
+    }
+
+    function expectIsResized($element) {
+      return isResizedStatus($element, true);
+    }
+
+    function expectIsNotResized($element) {
+      return isResizedStatus($element, false);
+    }
+
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/tabNav');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        cy.expectPathToBe('/projects/tabNav');
+        cy.get('.drawer').should('not.exist');
+      });
+    });
+
+    it('resizes the microfrontend and tab navigation when opening the drawer', () => {
+      cy.wrap($iframeBody)
+        .contains('Open Drawer')
+        .click();
+
+      cy.get('.drawer').should('exist');
+      cy.expectPathToBe('/projects/tabNav');
+
+      cy.get(mfIframeSelector).then($element => {
+        expectIsResized($element);
+      });
+
+      cy.get(tabNavSelector).then($element => {
+        expectIsResized($element);
+      });
+    });
+  });
 });
