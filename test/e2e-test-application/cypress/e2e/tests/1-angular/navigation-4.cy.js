@@ -312,9 +312,8 @@ describe('Navigation', () => {
       cy.get('div[data-testid="modal-mf"]').should('exist');
 
       // Close modal
-      cy.get('button[data-testid="lui-modal-index-0"]')
-        .click();
-      
+      cy.get('button[data-testid="lui-modal-index-0"]').click();
+
       cy.get('#splitViewContainer').should('exist');
       cy.get('#splitViewDragger').should('exist');
       cy.get('div[data-testid="modal-mf"]').should('not.exist');
