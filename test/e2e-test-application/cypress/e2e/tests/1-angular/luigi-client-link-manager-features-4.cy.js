@@ -463,7 +463,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     });
   });
 
-  describe.only('Drawer Resizing', () => {
+  describe('Drawer Resizing', () => {
     let $iframeBody;
     const openDrawerButtonText = 'Open Drawer';
     const openSplitviewButtonText = 'Open Splitview';
