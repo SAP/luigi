@@ -141,15 +141,21 @@ describe('Navigation', () => {
       it('scrollable dropdown in tabNav', () => {
         cy.viewport(1000, 300);
         cy.get('[data-testid="tabnavheader_tabnavheader"]').click();
-        cy.get('.tabsContainer').contains('Header 3').click();
-        cy.get('.tabsContainer .fd-popover__body').then(($div) => {
+        cy.get('.tabsContainer')
+          .contains('Header 3')
+          .click();
+        cy.get('.tabsContainer .fd-popover__body').then($div => {
           const hasScrollbar = $div[0].scrollHeight > $div[0].clientHeight;
           expect(hasScrollbar).to.be.true;
         });
-        cy.get('.tabsContainer .fd-popover__body').contains('TabNav 8').should('be.not.visible');
+        cy.get('.tabsContainer .fd-popover__body')
+          .contains('TabNav 8')
+          .should('be.not.visible');
 
         cy.get('.tabsContainer .fd-popover__body').scrollTo('bottom');
-        cy.get('.tabsContainer .fd-popover__body').contains('TabNav 8').should('be.visible');
+        cy.get('.tabsContainer .fd-popover__body')
+          .contains('TabNav 8')
+          .should('be.visible');
       });
     });
 
