@@ -133,9 +133,9 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
-      getNodeParams: (shouldDesanitise: boolean): Object => {
+      getNodeParams: (shouldDesanitise: boolean): Object|undefined => {
         if (isSpecialMf) {
-          return {};
+          return;
         }
         let result = this.thisComponent.nodeParams;
         if (shouldDesanitise) {
@@ -149,22 +149,22 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
       },
-      getAnchor: () => {
+      getAnchor: (): string|undefined => {
         return this.thisComponent.anchor;
       },
-      getCoreSearchParams: () => {
+      getCoreSearchParams: (): Object|undefined => {
         let result = this.thisComponent.searchParams;
         return result;
       },
-      getPathParams: () => {
+      getPathParams: (): Object|undefined => {
         let result = this.thisComponent.pathParams;
         return result;
       },
-      getClientPermissions: () => {
+      getClientPermissions: (): Object|undefined => {
         let result = this.thisComponent.clientPermissions;
         return result;
       },
-      getUserSettings: () => {
+      getUserSettings: (): Object|undefined => {
         return this.thisComponent.userSettings;
       }
     };
