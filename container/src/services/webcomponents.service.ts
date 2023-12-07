@@ -144,15 +144,11 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
-      getNodeParams: (shouldDesanitise: boolean): Object|undefined => {
+      getNodeParams: (shouldDesanitise: boolean): Object | undefined => {
         if (isCompoundChild) {
           return;
         }
-        let result = this.thisComponent.nodeParams;
-        if (shouldDesanitise) {
-          return deSanitizeParamsMap(result);
-        }
-        return result;
+        return shouldDesanitise ? deSanitizeParamsMap(this.thisComponent.nodeParams) : this.thisComponent.nodeParams;
       },
       setAnchor: anchor => {
         if (isCompoundChild) {
@@ -160,22 +156,19 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
       },
-      getAnchor: (): string|undefined => {
+      getAnchor: (): string | undefined => {
         return this.thisComponent.anchor;
       },
-      getCoreSearchParams: (): Object|undefined => {
-        let result = this.thisComponent.searchParams;
-        return result;
+      getCoreSearchParams: (): Object | undefined => {
+        return this.thisComponent.searchParams;
       },
-      getPathParams: (): Object|undefined => {
-        let result = this.thisComponent.pathParams;
-        return result;
+      getPathParams: (): Object | undefined => {
+        return this.thisComponent.pathParams;
       },
-      getClientPermissions: (): Object|undefined => {
-        let result = this.thisComponent.clientPermissions;
-        return result;
+      getClientPermissions: (): Object | undefined => {
+        return this.thisComponent.clientPermissions;
       },
-      getUserSettings: (): Object|undefined => {
+      getUserSettings: (): Object | undefined => {
         return this.thisComponent.userSettings;
       }
     };
