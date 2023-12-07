@@ -24,10 +24,6 @@ module.exports = {
         to: '.'
       },
       {
-        from: 'src/styles.css',
-        to: '.'
-      },
-      {
         from: 'node_modules/@luigi-project/core',
         to: 'luigi-core'
       },
