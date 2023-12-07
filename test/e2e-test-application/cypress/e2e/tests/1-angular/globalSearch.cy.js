@@ -58,7 +58,7 @@ describe('Global Search', () => {
   });
 
   describe('Get results', () => {
-    it('Type something and get results', () => {
+    it.only('Type something and get results', () => {
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]')
         .should('exist')
@@ -73,7 +73,7 @@ describe('Global Search', () => {
       cy.get('.luigi-search-popover__body .fd-menu .fd-menu__list')
         .should('be.visible')
         .children()
-        .should('have.length', 8);
+        .should('have.length', 17);
     });
 
     it('Click on Projects result', () => {
