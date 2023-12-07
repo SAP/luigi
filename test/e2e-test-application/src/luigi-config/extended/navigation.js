@@ -121,21 +121,18 @@ class Navigation {
           label: 'TabNav 5',
           viewUrl: '/sampleapp.html#/overview'
         },
-        ,
         {
           pathSegment: 'tabNav6',
           category: { label: 'Header 3' },
           label: 'TabNav 6',
           viewUrl: '/sampleapp.html#/overview'
         },
-        ,
         {
           pathSegment: 'tabNav7',
           category: { label: 'Header 3' },
           label: 'TabNav 7',
           viewUrl: '/sampleapp.html#/overview'
         },
-        ,
         {
           pathSegment: 'tabNav8',
           category: { label: 'Header 3' },
