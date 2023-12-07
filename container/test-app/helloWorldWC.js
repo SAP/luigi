@@ -69,8 +69,9 @@ export default class extends HTMLElement {
           type: 'info'
         });
 
+        const featureToggles = this.LuigiClient.getActiveFeatureToggles();
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.getActiveFeatureToggles()=' + this.LuigiClient.getActiveFeatureToggles(),
+          text: 'LuigiClient.getActiveFeatureToggles()=' + featureToggles + ','+ featureToggles.length,
           type: 'info'
         });
 
