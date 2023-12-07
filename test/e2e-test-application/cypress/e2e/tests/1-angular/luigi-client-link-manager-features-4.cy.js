@@ -502,8 +502,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     });
 
     it('does not resize elements before opening the drawer', () => {
-      cy.wrap($iframeBody)
-        .contains(openDrawerButtonText);
+      cy.wrap($iframeBody).contains(openDrawerButtonText);
 
       cy.get(drawerSelector).should('not.exist');
 
@@ -550,9 +549,9 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
     it('resizes the split view when opening the drawer before the split view', () => {
       cy.wrap($iframeBody)
-      .contains(openDrawerButtonText)
-      .click();
-      
+        .contains(openDrawerButtonText)
+        .click();
+
       cy.wrap($iframeBody)
         .contains(openSplitviewButtonText)
         .click();
@@ -566,7 +565,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
     it('does not resize several times if the drawer is opened several times', () => {
       let mfIframeWidthAfterFirstResize;
-      
+
       cy.wrap($iframeBody)
         .contains(openDrawerButtonText)
         .click();
@@ -578,8 +577,8 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
 
       cy.wrap($iframeBody)
-      .contains(openDrawerButtonText)
-      .click();
+        .contains(openDrawerButtonText)
+        .click();
 
       cy.get(mfIframeSelector).then($element => {
         expect(mfIframeWidthAfterFirstResize).to.equal(expectToBeResized($element));
