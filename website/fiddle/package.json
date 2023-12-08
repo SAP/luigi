@@ -25,7 +25,7 @@
     "@luigi-project/plugin-auth-oauth2": "2.7.5",
     "@luigi-project/plugin-auth-oidc": "2.7.5",
     "@luigi-project/container": "1.0.0",
-    "@sap-theming/theming-base-content": "~11.1.35",
+    "@sap-theming/theming-base-content": "^11.9.0",
     "@ui5/webcomponents": "^1.20.0",
     "@ui5/webcomponents-fiori": "^1.20.0",
     "ace-builds": "^1.32.0",
