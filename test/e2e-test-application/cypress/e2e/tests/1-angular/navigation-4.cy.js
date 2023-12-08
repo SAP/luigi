@@ -307,15 +307,15 @@ describe('Navigation', () => {
           .find('a[data-testid="open-overview-in-modal"]')
           .click();
 
-          // Modal is open
-          cy.get('div[data-testid="modal-mf"]').should('exist');
+        // Modal is open
+        cy.get('div[data-testid="modal-mf"]').should('exist');
 
-          // Close modal
-          cy.get('button[data-testid="lui-modal-index-0"]').click();
+        // Close modal
+        cy.get('button[data-testid="lui-modal-index-0"]').click();
 
-          cy.get('#splitViewContainer').should('exist');
-          cy.get('#splitViewDragger').should('exist');
-          cy.get('div[data-testid="modal-mf"]').should('not.exist');
+        cy.get('#splitViewContainer').should('exist');
+        cy.get('#splitViewDragger').should('exist');
+        cy.get('div[data-testid="modal-mf"]').should('not.exist');
       });
     });
   });
