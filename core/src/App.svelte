@@ -1070,20 +1070,44 @@
     );
   };
 
-  const resizeMicrofrontendIframe = () => {
+  const resizeMicrofrontendIframe = (resetSize = false) => {
     if (!isResizeMF()) return;
-    const drawer = document.querySelector('.iframeModalCtn._drawer');
-    const currentMfIframe = IframeHelpers.getCurrentMicrofrontendIframe();
-    if (drawer && currentMfIframe) {
-      //reset computed width
-      currentMfIframe.removeAttribute('style');
-      document.querySelector('div.iframeContainer').removeAttribute('style');
 
-      const { width } = getComputedStyle(drawer);
-      const clientWidth = currentMfIframe.clientWidth;
-      currentMfIframe.setAttribute(
-        'style',
-        `width: calc(${clientWidth}px - ${width})`,
+    const drawer = document.querySelector('.iframeModalCtn._drawer');
+
+    if (!drawer) return;
+
+    const containers = [
+      document.querySelector('div.iframeContainer'),
+      document.getElementById('splitViewContainer'),
+      document.getElementById('splitViewDragger'),
+      document.getElementById('splitViewDraggerBackdrop'),
+      document.getElementById('tabsContainer'),
+    ];
+
+    if (resetSize) {
+      containers.forEach((container) => {
+        container?.style.removeProperty('width');
+      });
+    } else {
+      const { width: drawerWidth } = getComputedStyle(drawer);
+
+      containers.forEach((container) => {
+        setContainerWidth(container, drawerWidth);
+      });
+    }
+  };
+
+  const setContainerWidth = (containerElement, drawerWidth) => {
+    if (
+      containerElement &&
+      // Only change the width if it is not already resized due to a
+      // drawer being opened earlier.
+      !containerElement.style.getPropertyValue('width').includes('calc(')
+    ) {
+      containerElement.style.setProperty(
+        'width',
+        `calc(${containerElement.clientWidth}px - ${drawerWidth})`,
       );
     }
   };
@@ -1128,7 +1152,7 @@
             () => {},
           );
         }
-        IframeHelpers.getCurrentMicrofrontendIframe().removeAttribute('style');
+        resizeMicrofrontendIframe(true);
       } catch (e) {
         console.log(e);
       }
