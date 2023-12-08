@@ -109,13 +109,13 @@ export class WebComponentService {
               });
             });
           },
-          getCurrentTheme: () : string | undefined => {
-            return this.thisComponent.theme;
+          getCurrentTheme: () : string | undefined | boolean => {
+            return this.thisComponent.theme || false || 'defaultTheme';
           }
         };
       },
-      getCurrentLocale: () : string | undefined =>  {
-        return this.thisComponent.locale;
+      getCurrentLocale: () : string =>  {
+        return this.thisComponent.locale || 'en';
       },
       getActiveFeatureToggles: (): string[] => {
         return this.thisComponent.activeFeatureToggleList || [];
@@ -144,11 +144,14 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
-      getNodeParams: (shouldDesanitise: boolean): Object | undefined => {
+      getNodeParams: (shouldDesanitise: boolean): Object | undefined  => {
         if (isCompoundChild) {
-          return;
+          return {};
         }
-        return shouldDesanitise ? deSanitizeParamsMap(this.thisComponent.nodeParams) : this.thisComponent.nodeParams;
+        if (shouldDesanitise) {
+          return deSanitizeParamsMap(this.thisComponent.nodeParams)
+        }
+        return this.thisComponent.nodeParams || {} || undefined;
       },
       setAnchor: anchor => {
         if (isCompoundChild) {
@@ -156,20 +159,20 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
       },
-      getAnchor: (): string | undefined => {
-        return this.thisComponent.anchor;
+      getAnchor: (): string  => {
+        return this.thisComponent.anchor || '';
       },
-      getCoreSearchParams: (): Object | undefined => {
-        return this.thisComponent.searchParams;
+      getCoreSearchParams: (): Object => {
+        return this.thisComponent.searchParams || {};
       },
-      getPathParams: (): Object | undefined => {
-        return this.thisComponent.pathParams;
+      getPathParams: (): Object => {
+        return this.thisComponent.pathParams || {};
       },
-      getClientPermissions: (): Object | undefined => {
-        return this.thisComponent.clientPermissions;
+      getClientPermissions: (): Object  => {
+        return this.thisComponent.clientPermissions || {};
       },
-      getUserSettings: (): Object | undefined => {
-        return this.thisComponent.userSettings;
+      getUserSettings: (): Object | null => {
+        return this.thisComponent.userSettings || null;
       }
     };
   }

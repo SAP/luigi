@@ -195,7 +195,7 @@ describe('createClientAPI', () => {
     const receivedTheme = clientAPI.uxManager().getCurrentTheme();
 
     // assert
-    expect(receivedTheme).toEqual(undefined);
+    expect(receivedTheme).toEqual('defaultTheme');
   });
 
   it('test uxManager showConfirmationModal - resolve when data present', async () => {
@@ -253,7 +253,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getCurrentLocale();
 
     // assert
-    expect(result).toEqual(undefined);
+    expect(result).toEqual('en');
   });
 
   it('test getActiveFeatureToggles set value', () => {
@@ -379,7 +379,7 @@ describe('createClientAPI', () => {
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', true);
    
     // assert
-    expect(clientAPI.getNodeParams()).toEqual(undefined);
+    expect(clientAPI.getNodeParams()).toEqual({});
   });
 
   it('test getNodeParams isSpecial FALSE, shouldDesanitise true', () => {
@@ -431,7 +431,7 @@ describe('createClientAPI', () => {
 
     // assert
     expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled()
-    expect(result).toEqual(undefined); 
+    expect(result).toEqual({}); 
   });
 
   it('test setAnchor isSpecial FALSE', () => {
@@ -484,7 +484,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getAnchor();
 
     // assert
-    expect(result).toEqual(undefined);
+    expect(result).toEqual('');
   });
 
   it('test getCoreSearchParams WITH attribute', () => {
@@ -510,7 +510,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getCoreSearchParams();
 
     // assert
-    expect(result).toEqual(undefined);
+    expect(result).toEqual({});
   });
 
   it('test getPathParams WITH attribute', () => {
@@ -536,7 +536,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getPathParams();
 
     // assert
-    expect(result).toEqual(undefined); 
+    expect(result).toEqual({}); 
   });
 
   
@@ -563,7 +563,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getClientPermissions();
 
     // assert
-    expect(result).toEqual(undefined);
+    expect(result).toEqual({});
   });
 
   it('test getUserSettings WITH attribute', () => {
@@ -589,7 +589,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getUserSettings();
 
     // assert
-    expect(result).toEqual(undefined);
+    expect(result).toEqual(null);
   });
 });
 
