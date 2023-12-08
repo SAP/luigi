@@ -58,7 +58,7 @@ describe('Global Search', () => {
   });
 
   describe('Get results', () => {
-    it.only('Type something and get results', () => {
+    it('Type something and get results', () => {
       // Click on Search Button
       cy.get('button[data-testid="luigi-search-btn-desktop"]')
         .should('exist')
