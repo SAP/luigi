@@ -109,13 +109,13 @@ export class WebComponentService {
               });
             });
           },
-          getCurrentTheme: () : string | undefined | boolean => {
-            return this.thisComponent.theme || false || 'defaultTheme';
+          getCurrentTheme: () : string | undefined  => {
+            return this.thisComponent.theme;
           }
         };
       },
-      getCurrentLocale: () : string =>  {
-        return this.thisComponent.locale || 'en';
+      getCurrentLocale: () : string | undefined =>  {
+        return this.thisComponent.locale;
       },
       getActiveFeatureToggles: (): string[] => {
         return this.thisComponent.activeFeatureToggleList || [];
@@ -144,14 +144,14 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
-      getNodeParams: (shouldDesanitise: boolean): Object | undefined  => {
+      getNodeParams: (shouldDesanitise: boolean): Object  => {
         if (isCompoundChild) {
           return {};
         }
         if (shouldDesanitise) {
           return deSanitizeParamsMap(this.thisComponent.nodeParams)
         }
-        return this.thisComponent.nodeParams || {} || undefined;
+        return this.thisComponent.nodeParams || {};
       },
       setAnchor: anchor => {
         if (isCompoundChild) {
@@ -171,8 +171,8 @@ export class WebComponentService {
       getClientPermissions: (): Object  => {
         return this.thisComponent.clientPermissions || {};
       },
-      getUserSettings: (): Object | null => {
-        return this.thisComponent.userSettings || null;
+      getUserSettings: (): Object => {
+        return this.thisComponent.userSettings || {};
       }
     };
   }
