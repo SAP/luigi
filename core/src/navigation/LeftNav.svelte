@@ -1,5 +1,6 @@
 <script>
   import {
+    afterUpdate,
     beforeUpdate,
     createEventDispatcher,
     onMount,
@@ -187,6 +188,7 @@
   let btpToolLayout = LuigiConfig.getConfigBooleanValue(
       'settings.btpToolLayout'
     );
+  let btpNavTopCnt;
 
   const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
@@ -249,6 +251,48 @@
         setLeftNavData();
       }
     });
+  });
+
+  calculateNavEntries = () => {
+    const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
+    if(entries.length <= 0) {
+      return;
+    }
+    entries.forEach((item) => {
+      item.style.display = 'flex';
+    });
+    btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'none';
+
+    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
+
+    if(spacer.clientHeight === 0) {
+        btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
+        for(let i = entries.length -1; i > 0; i--) {
+          entries[i].style.display = 'none';
+          lastNode = entries[i-1];
+          if(spacer.clientHeight > 0) {
+            break;
+          }
+        }
+    }
+  }
+
+  afterUpdate(() => {
+    if(!window.Luigi.__btpNavTopCntRszObs) {
+      let updateTimeout;
+      window.Luigi.__btpNavTopCntRszObs = new ResizeObserver((entries, observer) => {
+        if(updateTimeout) {
+          clearTimeout(updateTimeout);
+        }
+        if(isSemiCollapsed) {
+          updateTimeout = setTimeout(() => {
+            calculateNavEntries();
+          }, 100);
+        }
+      });
+    }
+    window.Luigi.__btpNavTopCntRszObs.disconnect();
+    btpNavTopCnt && window.Luigi.__btpNavTopCntRszObs.observe(btpNavTopCnt);
   });
 
   beforeUpdate(() => {
@@ -561,7 +605,7 @@
     {/if}
 
     {#if children && pathData.length > 1}
-      <div class="fd-navigation__container fd-navigation__container--top" >
+      <div class="fd-navigation__container fd-navigation__container--top" bind:this="{btpNavTopCnt}">
           <ul 
               class="fd-navigation__list" 
               role="tree" 
@@ -574,7 +618,7 @@
               {#each nodes as node}
                 {#if !node.hideFromNav}
                   {#if node.label}
-                    <li class="fd-navigation__list-item" aria-hidden="true">
+                    <li class="fd-navigation__list-item lui-nav-entry" aria-hidden="true">
                       <div 
                           class="fd-navigation__item" 
                           aria-level="2" 
@@ -645,7 +689,7 @@
 
                  
 
-                <li class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''}" aria-hidden="true"
+                <li class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry" aria-hidden="true"
                 data-testid={getTestIdForCat(nodes.metaInfo, key)}>
                   <div 
                       class="fd-navigation__item {isSemiCollapsed ? 'fd-popover__control' : ''}" 
@@ -829,7 +873,7 @@
 
               {:else}
                 <!-- Category nodes -->
-                <div class="fd-navigation__item fd-navigation__item--title" aria-level="1" role="treeitem" aria-expanded="true" aria-selected="false"
+                <div class="fd-navigation__item fd-navigation__item--title lui-nav-entry" aria-level="1" role="treeitem" aria-expanded="true" aria-selected="false"
                     title={resolveTooltipText(nodes, $getTranslation(key))}
                     data-testid={getTestIdForCat(nodes.metaInfo, key)} >
                   <a class="fd-navigation__link" role="button" tabindex="0">
@@ -928,7 +972,33 @@
               {/if}
             {/if}
           {/each}
-               
+          
+          
+
+          <li class="lui-spacer" role="presentation" aria-hidden="true">
+          </li>
+
+          <li class="fd-navigation__list-item fd-navigation__list-item--overflow" aria-hidden="true">
+            <div 
+                class="fd-navigation__item" 
+                aria-roledescription="Navigation List Menu Item"
+                aria-haspopup="menu" 
+                role="menuitem" 
+                aria-expanded="true"
+                tabindex="-1">
+                <a class="fd-navigation__link" role="button" tabindex="0">
+                    <span class="fd-navigation__icon sap-icon--overflow" role="presentation" aria-hidden="true"></span>
+                    <span class="fd-navigation__text">More Items</span>
+                </a>
+            </div>
+            <div class="fd-navigation__list-container fd-navigation__list-container--menu fd-menu" aria-hidden="false" >
+                <div class="fd-navigation__list-wrapper">
+                    <ul class="lui-moreItems">
+
+                    </ul>
+                </div>
+            </div>
+          </li>
           </ul>
       </div>
       {/if}
@@ -1745,6 +1815,10 @@
     :global(.fd-object-status) {
       margin-left: auto;
     }
+  }
+
+  .lui-spacer {
+    flex-grow: 1;
   }
 
   .fd-nested-list__content.has-child {
