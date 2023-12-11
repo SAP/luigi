@@ -28,8 +28,6 @@
 		"@docsearch/js": "^3.4.0",
 		"@playwright/test": "^1.28.1",
 		"@rollup/plugin-json": "^6.0.0",
-		"@sveltejs/adapter-auto": "^2.0.0",
-		"@sveltejs/adapter-netlify": "^2.0.6",
 		"@sveltejs/adapter-static": "^2.0.2",
 		"@sveltejs/kit": "^1.16.1",
 		"@sveltejs/vite-plugin-svelte": "^2.2.0",
