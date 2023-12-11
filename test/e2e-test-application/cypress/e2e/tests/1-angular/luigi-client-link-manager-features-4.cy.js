@@ -462,4 +462,127 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
   });
+
+  describe('Drawer Resizing', () => {
+    let $iframeBody;
+    const openDrawerButtonText = 'Open Drawer';
+    const openSplitviewButtonText = 'Open Splitview';
+    const drawerSelector = '.drawer';
+    const mfIframeSelector = 'div.iframeContainerTabNav';
+    const tabNavSelector = '#tabsContainer';
+    const splitViewSelector = '#splitViewContainer';
+
+    function isResizedStatus($element, isResized) {
+      const resizedWidthRegex = /^calc\(/;
+      const elementWidth = $element[0].style.width;
+
+      if (isResized) {
+        expect(elementWidth).to.match(resizedWidthRegex);
+      } else {
+        expect(elementWidth).to.not.match(resizedWidthRegex);
+      }
+      return elementWidth;
+    }
+
+    function expectToBeResized($element) {
+      return isResizedStatus($element, true);
+    }
+
+    function expectToNotBeResized($element) {
+      return isResizedStatus($element, false);
+    }
+
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/tabNav');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+        cy.expectPathToBe('/projects/tabNav');
+        cy.get(drawerSelector).should('not.exist');
+      });
+    });
+
+    it('does not resize elements before opening the drawer', () => {
+      cy.wrap($iframeBody).contains(openDrawerButtonText);
+
+      cy.get(drawerSelector).should('not.exist');
+
+      cy.get(mfIframeSelector).then($element => {
+        expectToNotBeResized($element);
+      });
+
+      cy.get(tabNavSelector).then($element => {
+        expectToNotBeResized($element);
+      });
+    });
+
+    it('resizes the microfrontend and tab navigation when opening the drawer', () => {
+      cy.wrap($iframeBody)
+        .contains(openDrawerButtonText)
+        .click();
+
+      cy.get(drawerSelector).should('exist');
+
+      cy.get(mfIframeSelector).then($element => {
+        expectToBeResized($element);
+      });
+
+      cy.get(tabNavSelector).then($element => {
+        expectToBeResized($element);
+      });
+    });
+
+    it('resizes the split view when opening the drawer after the split view', () => {
+      cy.wrap($iframeBody)
+        .contains(openSplitviewButtonText)
+        .click();
+
+      cy.wrap($iframeBody)
+        .contains(openDrawerButtonText)
+        .click();
+
+      cy.get(drawerSelector).should('exist');
+
+      cy.get(splitViewSelector).then($element => {
+        expectToBeResized($element);
+      });
+    });
+
+    it('resizes the split view when opening the drawer before the split view', () => {
+      cy.wrap($iframeBody)
+        .contains(openDrawerButtonText)
+        .click();
+
+      cy.wrap($iframeBody)
+        .contains(openSplitviewButtonText)
+        .click();
+
+      cy.get(drawerSelector).should('exist');
+
+      cy.get(splitViewSelector).then($element => {
+        expectToBeResized($element);
+      });
+    });
+
+    it('does not resize several times if the drawer is opened several times', () => {
+      let mfIframeWidthAfterFirstResize;
+
+      cy.wrap($iframeBody)
+        .contains(openDrawerButtonText)
+        .click();
+
+      cy.get(drawerSelector).should('exist');
+
+      cy.get(mfIframeSelector).then($element => {
+        mfIframeWidthAfterFirstResize = expectToBeResized($element);
+      });
+
+      cy.wrap($iframeBody)
+        .contains(openDrawerButtonText)
+        .click();
+
+      cy.get(mfIframeSelector).then($element => {
+        expect(mfIframeWidthAfterFirstResize).to.equal(expectToBeResized($element));
+      });
+    });
+  });
 });
