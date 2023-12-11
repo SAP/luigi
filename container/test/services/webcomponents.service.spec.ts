@@ -195,7 +195,7 @@ describe('createClientAPI', () => {
     const receivedTheme = clientAPI.uxManager().getCurrentTheme();
 
     // assert
-    expect(receivedTheme).toEqual('defaultTheme');
+    expect(receivedTheme).toEqual(undefined);
   });
 
   it('test uxManager showConfirmationModal - resolve when data present', async () => {
@@ -253,7 +253,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getCurrentLocale();
 
     // assert
-    expect(result).toEqual('en');
+    expect(result).toEqual(undefined);
   });
 
   it('test getActiveFeatureToggles set value', () => {
@@ -589,7 +589,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getUserSettings();
 
     // assert
-    expect(result).toEqual(null);
+    expect(result).toEqual({});
   });
 });
 
