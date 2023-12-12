@@ -21,20 +21,31 @@ export class GenericHelpersClass {
 
   /**
    * Checks whether web component is an attribute or property. In case of attribute, it returns the parsed value.
-   * @param webcomponent 
-   * @returns returns the parsed webcomponent value.
+   * @param {object | boolean | string} webcomponent value can either be an object, boolean or a stringified object, e.g webcomponent='{"selfregistered":"true"}'
+   * @returns {object | boolean} webcomponent returns the parsed webcomponent value.
    */
-  checkWebcomponentValue(webcomponent: any): object | boolean {
+  checkWebcomponentValue(webcomponent: object | boolean | string): object | boolean {
     if (typeof webcomponent === 'string') {
-      let parsedValue = JSON.parse(webcomponent);
-      if (this.isObject(parsedValue)) {
-        if ('selfRegistered' in parsedValue) {
+      try {
+        let parsedValue = JSON.parse(webcomponent);
+        if (this.isObject(parsedValue) && 'selfRegistered' in parsedValue) {
           parsedValue.selfRegistered = parsedValue.selfRegistered === 'true';
+          return parsedValue;
+        } else if (typeof parsedValue === 'boolean') {
+          return parsedValue;
+        } else {
+          console.warn('Webcomponent value has a wrong value. Must be a stringified object or a stringified boolean.');
+          return {};
         }
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        return {};
       }
-      return parsedValue;
     } else if (typeof webcomponent === 'boolean' || typeof webcomponent === 'object') {
       return webcomponent;
+    } else {
+      console.warn('Webcomponent value has a wrong type.')
+      return {};
     }
   }
 }

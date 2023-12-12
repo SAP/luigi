@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <title>luigi-container</title>
+    <script type="module">
+        import './bundle.js';
+    </script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            font-family: var(--sapFontFamily);
+            height: 100%;
+        }
+
+        .layout {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .layout .content {
+            flex: 1;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <div class="content">
+        </div>
+    </div>
+
+</body>
+
+</html>
