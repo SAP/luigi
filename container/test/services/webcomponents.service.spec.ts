@@ -176,14 +176,26 @@ describe('createClientAPI', () => {
   it('test uxManager getCurrentTheme', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.getAttribute = jest.fn();
+    service.thisComponent.theme = 'my-theme';
     
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    clientAPI.uxManager().getCurrentTheme();
+    const receivedTheme = clientAPI.uxManager().getCurrentTheme();
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('theme');
+    expect(receivedTheme).toEqual('my-theme');
+  });
+
+  it('test uxManager getCurrentTheme UNDEFINED', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
+    
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    const receivedTheme = clientAPI.uxManager().getCurrentTheme();
+
+    // assert
+    expect(receivedTheme).toEqual(undefined);
   });
 
   it('test uxManager showConfirmationModal - resolve when data present', async () => {
@@ -222,7 +234,7 @@ describe('createClientAPI', () => {
   it('test getCurrentLocale set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.setAttribute('locale', 'en')
+    service.thisComponent.locale = 'en'
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
@@ -230,19 +242,6 @@ describe('createClientAPI', () => {
 
     // assert
     expect(result).toEqual('en');
-  });
-
-  it('test getCurrentLocale getAttribute called', () => {
-    // mock and spy on data/functions
-    service.thisComponent = document.createElement('div');
-    service.thisComponent.getAttribute = jest.fn();
-    
-    // act
-    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    const result = clientAPI.getCurrentLocale();
-
-    // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('locale');
   });
 
   it('test getCurrentLocale attribute NOT set', () => {
@@ -254,33 +253,20 @@ describe('createClientAPI', () => {
     const result = clientAPI.getCurrentLocale();
 
     // assert
-    expect(result).toEqual(null);
+    expect(result).toEqual(undefined);
   });
 
   it('test getActiveFeatureToggles set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.setAttribute('active-feature-toggle-list', "['ft1','ft2']")
+    service.thisComponent.activeFeatureToggleList = ['ft1','ft2'];
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     const result = clientAPI.getActiveFeatureToggles();
 
     // assert
-    expect(result).toEqual("['ft1','ft2']");
-  });
-
-  it('test getActiveFeatureToggles getAttribute called', () => {
-    // mock and spy on data/functions
-    service.thisComponent = document.createElement('div');
-    service.thisComponent.getAttribute = jest.fn();
-    
-    // act
-    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    const result = clientAPI.getActiveFeatureToggles();
-
-    // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('active-feature-toggle-list');
+    expect(result).toEqual(['ft1','ft2']);
   });
 
   it('test getActiveFeatureToggles attribute NOT set', () => {
@@ -292,7 +278,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getActiveFeatureToggles();
 
     // assert
-    expect(result).toEqual(null);
+    expect(result).toEqual([]);
   });
 
   it('test publishEvent custom message Defined eventBusElement', () => {
@@ -399,30 +385,28 @@ describe('createClientAPI', () => {
   it('test getNodeParams isSpecial FALSE, shouldDesanitise true', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsRaw = `{ "test": "sum 2+2 &lt; 3+5 and 5 &gt; 1" }`;
+    // const paramsRaw = { "test": "sum 2+2 &lt; 3+5 and 5 &gt; 1" };
     const paramsObject = { "test": 'sum 2+2 &lt; 3+5 and 5 &gt; 1' };
     const paramsResult = { "test": 'sum 2+2 < 3+5 and 5 > 1' };
 
-    service.thisComponent.getAttribute =  jest.fn().mockReturnValue(paramsRaw);
-    const ddeSanitizeParamsMapSpy = jest.spyOn(helperFunctions, 'deSanitizeParamsMap');
+    service.thisComponent.nodeParams = paramsObject;
+    const deSanitizeParamsMapSpy = jest.spyOn(helperFunctions, 'deSanitizeParamsMap');
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
     const result = clientAPI.getNodeParams(true);
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('node-params');
-    expect(ddeSanitizeParamsMapSpy).toHaveBeenCalledWith(paramsObject)
+    expect(deSanitizeParamsMapSpy).toHaveBeenCalledWith(paramsObject)
     expect(result).toEqual(paramsResult);
   });
 
   it('test getNodeParams isSpecial FALSE, shouldDesanitise false', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsRaw = `{ "test": "luigi" }`;
-    const params = { "test": 'luigi' };
+    const params = { "test": 'luigi &lt;' };
 
-    service.thisComponent.getAttribute =  jest.fn().mockReturnValue(paramsRaw);
+    service.thisComponent.nodeParams = params;
     const deSanitizeParamsMapSpy = jest.spyOn(helperFunctions, 'deSanitizeParamsMap');
 
     // act
@@ -430,27 +414,25 @@ describe('createClientAPI', () => {
     const result = clientAPI.getNodeParams(false);
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('node-params');
     expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled()
     expect(result).toEqual(params);
   });
 
-  // it('test getNodeParams isSpecial FALSE, shouldDesanitise false, NO node-params', () => {
-  //   // mock and spy on data/functions
-  //   service.thisComponent = document.createElement('div');
+  it('test getNodeParams isSpecial FALSE, shouldDesanitise false, NO node-params', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
 
-  //   service.thisComponent.getAttribute =  jest.fn().mockReturnValue(undefined);
-  //   const deSanitizeParamsMapSpy = jest.spyOn(helperFunctions, 'deSanitizeParamsMap');
+    // service.thisComponent.getAttribute =  jest.fn().mockReturnValue(undefined);
+    const deSanitizeParamsMapSpy = jest.spyOn(helperFunctions, 'deSanitizeParamsMap');
 
-  //   // act
-  //   const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
-  //   const result = clientAPI.getNodeParams(false);
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    const result = clientAPI.getNodeParams(false);
 
-  //   // assert
-  //   expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('node-params');
-  //   expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled()
-  //   expect(result).toEqual({}); // SHOULD WORK, NEED TO FIX CONTAINER CODE
-  // });
+    // assert
+    expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled()
+    expect(result).toEqual({}); 
+  });
 
   it('test setAnchor isSpecial FALSE', () => {
     // mock and spy on functions
@@ -483,7 +465,7 @@ describe('createClientAPI', () => {
   it('test getAnchor set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.setAttribute('anchor', "home")
+    service.thisComponent.anchor = "home";
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
@@ -491,19 +473,6 @@ describe('createClientAPI', () => {
 
     // assert
     expect(result).toEqual("home");
-  });
-
-  it('test getAnchor getAttribute called', () => {
-    // mock and spy on data/functions
-    service.thisComponent = document.createElement('div');
-    service.thisComponent.getAttribute = jest.fn();
-    
-    // act
-    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    const result = clientAPI.getAnchor();
-
-    // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('anchor');
   });
 
   it('test getAnchor attribute NOT set', () => {
@@ -521,94 +490,106 @@ describe('createClientAPI', () => {
   it('test getCoreSearchParams WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsRaw = `{ "test": "sum 2+2 = 4" }`;
     const paramsObject = { "test": "sum 2+2 = 4" };
-    service.thisComponent.getAttribute =  jest.fn().mockReturnValue(paramsRaw);
+    service.thisComponent.searchParams = paramsObject;
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
     const result = clientAPI.getCoreSearchParams();
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('search-params');
     expect(result).toEqual(paramsObject);
   });
 
-  // it('test getCoreSearchParams UNDEFINED attribute', () => {
-  //   // mock and spy on data/functions
-  //   service.thisComponent = document.createElement('div');
-  //   service.thisComponent.getAttribute =  jest.fn().mockReturnValue(undefined);
+  it('test getCoreSearchParams UNDEFINED attribute', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
 
-  //   // act
-  //   const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
-  //   const result = clientAPI.getCoreSearchParams();
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    const result = clientAPI.getCoreSearchParams();
 
-  //   // assert
-  //   expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('search-params');
-  //   expect(result).toEqual({}); // SHOULD WORK, NEED CHANGE CODE
-  // });
+    // assert
+    expect(result).toEqual({});
+  });
 
   it('test getPathParams WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsRaw = `{ "pathParam": "sum 2+2 = 4" }`;
     const paramsObject = { "pathParam": "sum 2+2 = 4" };
-    service.thisComponent.getAttribute =  jest.fn().mockReturnValue(paramsRaw);
+    service.thisComponent.pathParams = paramsObject;
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
     const result = clientAPI.getPathParams();
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('path-params');
     expect(result).toEqual(paramsObject);
   });
 
-  // it('test getPathParams UNDEFINED attribute', () => {
-  //   // mock and spy on data/functions
-  //   service.thisComponent = document.createElement('div');
-  //   service.thisComponent.getAttribute = jest.fn().mockReturnValue(undefined);
+  it('test getPathParams UNDEFINED attribute', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
 
-  //   // act
-  //   const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
-  //   const result = clientAPI.getPathParams();
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    const result = clientAPI.getPathParams();
 
-  //   // assert
-  //   expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('path-params');
-  //   expect(result).toEqual({}); // SHOULD WORK, NEED CHANGE CODE
-  // });
+    // assert
+    expect(result).toEqual({}); 
+  });
 
   
   it('test getClientPermissions WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsRaw = `{ "permissions": "lots of permission" }`;
     const paramsObject = { "permissions": "lots of permission" };
-    service.thisComponent.getAttribute =  jest.fn().mockReturnValue(paramsRaw);
+    service.thisComponent.clientPermissions = paramsObject;
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
     const result = clientAPI.getClientPermissions();
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('client-permissions');
     expect(result).toEqual(paramsObject);
+  });
+
+  it('test getClientPermissions UNDEFINED attribute', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    const result = clientAPI.getClientPermissions();
+
+    // assert
+    expect(result).toEqual({});
   });
 
   it('test getUserSettings WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsRaw = `{ "permissions": "lots of permission" }`;
     const paramsObject = { "permissions": "lots of permission" };
-    service.thisComponent.getAttribute =  jest.fn().mockReturnValue(paramsRaw);
+    service.thisComponent.userSettings =  paramsObject;
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
     const result = clientAPI.getUserSettings();
 
     // assert
-    expect(service.thisComponent.getAttribute).toHaveBeenCalledWith('user-settings');
     expect(result).toEqual(paramsObject);
+  });
+
+  it('test getUserSettings UNDEFINED attribute', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
+    const result = clientAPI.getUserSettings();
+
+    // assert
+    expect(result).toEqual({});
   });
 });
 
@@ -619,7 +600,7 @@ describe('initWC', () => {
   const viewUrl = 'https://example.com/some-page';
   const ctx = { some: 'context' };
   const nodeId = 'node123';
-  const isSpecialMf = true;
+  const isCompoundChild = true;
 
   beforeEach(() => {
     service = new WebComponentService();
@@ -634,12 +615,12 @@ describe('initWC', () => {
     const spyClientAPI = jest.spyOn(service, 'createClientAPI')
 
     // Act
-    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isSpecialMf);
+    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
 
     // Assert
     expect(wc.context).toEqual(ctx);
     expect(wc.LuigiClient).toBeDefined();
-    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isSpecialMf)
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isCompoundChild)
   });
 
   it('should call wc.__postProcess if wc.__postProcess is defined', () => {
@@ -661,10 +642,10 @@ describe('initWC', () => {
     const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation((url) => (urlSpyMockData));
 
     // Act
-    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isSpecialMf);
+    service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
 
     // Assert
-    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isSpecialMf);
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isCompoundChild);
     expect(wc.__postProcess).toHaveBeenCalledWith(ctx, clientAPIReturnVal, documentOrigin + '/another-page');
     expect(urlSpy).toHaveBeenCalledTimes(4);
     expect(urlSpy).toHaveBeenNthCalledWith(1, baseURIMocked);
