@@ -1,52 +1,60 @@
 describe('Create container dynamically', () => {
-    const tetsPage = 'http://localhost:8080/index3.html';
-    describe('luigi container', () => {
-        it('luigi container webcomponent object selfRegistered', () => {
-            const scriptCode = `
+  const tetsPage = 'http://localhost:8080/index3.html';
+  describe('luigi container', () => {
+    it('luigi container webcomponent object selfRegistered', () => {
+      const scriptCode = `
             const lc = document.querySelector('#lc');
             lc.viewurl = "./helloWorldWCSelfRegistered.js";
             lc.webcomponent = { "selfRegistered": "true" };
             lc.context = { title: 'Nested' }
             `;
 
-            const htmlCode = `
+      const htmlCode = `
             <luigi-container id="lc" data-test-id="luigi-container"></luigi-container>
               <script>${scriptCode}</script>
             `;
 
-            const stub = cy.stub();
-            cy.on('window:alert', stub);
-            cy.visit(tetsPage);
-            cy.get('.content').invoke('append', htmlCode);
-            cy.get('[data-test-id="luigi-container"]').shadow().find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f68656c6c6f576f726c64574353656c66526567697374657265642e6a73').shadow().find('section')
-                .should('contain.text', 'Hello World (self registered)!');
-
-        });
-        it('luigi container webcomponent is true', () => {
-            const scriptCode = `
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+      cy.visit(tetsPage);
+      cy.get('.content').invoke('append', htmlCode);
+      cy.get('[data-test-id="luigi-container"]')
+        .shadow()
+        .find(
+          'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f68656c6c6f576f726c64574353656c66526567697374657265642e6a73'
+        )
+        .shadow()
+        .find('section')
+        .should('contain.text', 'Hello World (self registered)!');
+    });
+    it('luigi container webcomponent is true', () => {
+      const scriptCode = `
             const lc = document.querySelector('#lc');
             lc.viewurl = "./helloWorldWC.js";
             lc.webcomponent = true;
             lc.context = { title: 'Nested' }
             `;
 
-            const htmlCode = `
+      const htmlCode = `
             <luigi-container id="lc" data-test-id="luigi-container"></luigi-container>
               <script>${scriptCode}</script>
             `;
 
-            const stub = cy.stub();
-            cy.on('window:alert', stub);
-            cy.visit(tetsPage);
-            cy.get('.content').invoke('append', htmlCode);
-            cy.get('[data-test-id="luigi-container"]').shadow().find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f68656c6c6f576f726c6457432e6a73').shadow().find('section')
-                .should('contain.text', 'Nested');
-
-        });
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+      cy.visit(tetsPage);
+      cy.get('.content').invoke('append', htmlCode);
+      cy.get('[data-test-id="luigi-container"]')
+        .shadow()
+        .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f68656c6c6f576f726c6457432e6a73')
+        .shadow()
+        .find('section')
+        .should('contain.text', 'Nested');
     });
-    describe('luigi container compound', () => {
-        it('luigi container webcomponent object selfRegistered', () => {
-            const scriptCode = `
+  });
+  describe('luigi container compound', () => {
+    it('luigi container webcomponent object selfRegistered', () => {
+      const scriptCode = `
             <script>
                 const content = document.querySelector('.content');
                 const wc = document.createElement('luigi-compound-container');
@@ -127,16 +135,31 @@ describe('Create container dynamically', () => {
                 content.appendChild(wc);
                 </script>
            `;
-            const stub = cy.stub();
-            cy.on('window:alert', stub);
-            cy.visit(tetsPage);
-            cy.get('.content').invoke('append', scriptCode);
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+      cy.visit(tetsPage);
+      cy.get('.content').invoke('append', scriptCode);
 
-            cy.get('luigi-compound-container').shadow().then(($container) => {
-                return cy.wrap($container).find('luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6e6573746564322e6a73').shadow();
-            }).then(($innerContainer) => {
-                cy.wrap($innerContainer).get('luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6c756967692d77632d6d66652f6d61696e2e6a73').should('exist').shadow().find('section').should('contain.text', 'This is a luigi micro frontend, based on web components.');
-            });
+      cy.get('luigi-compound-container')
+        .shadow()
+        .then($container => {
+          return cy
+            .wrap($container)
+            .find(
+              'luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6e6573746564322e6a73'
+            )
+            .shadow();
+        })
+        .then($innerContainer => {
+          cy.wrap($innerContainer)
+            .get(
+              'luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6c756967692d77632d6d66652f6d61696e2e6a73'
+            )
+            .should('exist')
+            .shadow()
+            .find('section')
+            .should('contain.text', 'This is a luigi micro frontend, based on web components.');
         });
     });
+  });
 });
