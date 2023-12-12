@@ -64,47 +64,6 @@ try {
   console.error(err);
 }
 
-// webpack_compiler.hooks.watchRun.tap('CLI output', () => {
-//   console.log('\x1b[33mVite [' + new Date().toLocaleTimeString() + ']: ', ' Rebuild in progress...', '\x1b[0m');
-// });
-
-// const watching = webpack_compiler.watch(
-//   {
-//     aggregateTimeout: 300,
-//     poll: undefined,
-//     logLevel: 'verbose'
-//   },
-//   (err, stats) => {
-//     if (err) {
-//       console.error(err.stack || err);
-//       if (err.details) {
-//         console.error(err.details);
-//       }
-//       return;
-//     }
-
-//     if (stats.hasErrors()) {
-//       console.log(
-//         '\x1b[33mWebpack [' + new Date().toLocaleTimeString() + ']: ',
-//         '\x1b[31m',
-//         'Rebuild of Luigi core failed! \n',
-//         stats.toString({
-//           all: false,
-//           errors: true,
-//           colors: true
-//         })
-//       );
-//     } else {
-//       console.log(
-//         '\x1b[33mWebpack [' + new Date().toLocaleTimeString() + ']: ',
-//         '\x1b[32m',
-//         'Luigi core rebuilt without errors.\n',
-//         '\x1b[0m'
-//       );
-//     }
-//   }
-// );
-
 build({
   build: {
    watch: {}
