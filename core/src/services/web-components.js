@@ -9,7 +9,18 @@ import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() {}
+  /**
+   *  @typedef {object} WcContainerData
+   *  @property {string} viewUrl
+   *  @property {HTMLElement} wc_container
+   *  @property {object} extendedContext
+   *  @property {object} node
+   *  @property {string} nodeId
+   *  @property {boolean} isSpecialMf
+   */
+
+  /** @type {Map<HTMLElement, WcContainerData>} */
+  wcContainerData = new Map();
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -21,6 +32,16 @@ class WebComponentSvcClass {
    * if attached to wc_container
    */
   attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isSpecialMf) {
+    // console.log('attachWC, entry', {
+    //   wc_id,
+    //   wcItemPlaceholder,
+    //   wc_container,
+    //   extendedContext,
+    //   viewUrl,
+    //   nodeId,
+    //   isSpecialMf,
+    //   sizeOfWcContiner: wc_container.clientHeight
+    // });
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
@@ -31,6 +52,16 @@ class WebComponentSvcClass {
 
       wc_container.replaceChild(wc, wcItemPlaceholder);
     }
+    // console.log('attachWC, exit', {
+    //   wc_id,
+    //   wcItemPlaceholder,
+    //   wc_container,
+    //   extendedContext,
+    //   viewUrl,
+    //   nodeId,
+    //   isSpecialMf,
+    //   sizeOfWcContiner: wc_container.clientHeight
+    // });
   }
 
   initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, isSpecialMf) {
@@ -230,8 +261,21 @@ class WebComponentSvcClass {
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
+
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
+
+    console.log('renderWebComponent', {
+      viewUrl,
+      wc_container,
+      extendedContext,
+      node,
+      nodeId,
+      isSpecialMf,
+      wc_id,
+      wcItemPlaceholder
+    });
+
     if (window.customElements.get(wc_id)) {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
     } else {
@@ -286,6 +330,57 @@ class WebComponentSvcClass {
   }
 
   /**
+   * @param {IntersectionObserverEntry[]} entries 
+   * @param {IntersectionObserver} observer 
+   */
+  intersectionObserverCallback(entries, observer) {
+    const intersectingEntries = entries.filter(entry=>entry.isIntersecting)
+
+    console.log("Observer callback", {
+      entries,
+      intersectingEntries,
+      intersectingTargets: intersectingEntries.map(entry=>entry.target)
+    });
+
+    intersectingEntries.forEach(entry=>{
+      const coumpoundItemContainer = entry.target;
+      const wcContainerData = this.wcContainerData.get(coumpoundItemContainer);
+      
+      if (!!wcContainerData) {
+
+        console.log("Found WC container data", {wcContainerData});
+        
+        this.renderWebComponent(
+          wcContainerData.viewUrl, 
+          wcContainerData.wc_container, 
+          wcContainerData.extendedContext, 
+          wcContainerData.node,
+          wcContainerData.nodeId,
+          wcContainerData.isSpecialMf
+          );
+        this.removeTemporaryHeightFromCompoundItemContainer(coumpoundItemContainer);
+      } else {
+        console.warn("Could not find WC container data", {for: coumpoundItemContainer});
+      }
+      observer.unobserve(coumpoundItemContainer);
+    });
+  }
+
+  /**
+   * @param {HTMLElement} compoundItemContainer 
+   */
+  setTemporaryHeightForCompoundItemContainer(compoundItemContainer) {
+    compoundItemContainer.style.height = "500px";
+  }
+
+  /**
+   * @param {HTMLElement} compoundItemContainer 
+   */
+  removeTemporaryHeightFromCompoundItemContainer(compoundItemContainer) {
+    compoundItemContainer.style.removeProperty("height");
+  }
+
+  /**
    * Responsible for rendering web component compounds based on a renderer or a nesting
    * micro frontend.
    *
@@ -294,8 +389,19 @@ class WebComponentSvcClass {
    * @param {*} context the luigi node context
    */
   renderWebComponentCompound(navNode, wc_container, extendedContext) {
-    const context = extendedContext.context;
+
+    // console.log('renderWebComponentCompound, entry', {
+    //   navNode,
+    //   wc_container,
+    //   extendedContext
+    // });
+
     let renderer;
+    const context = extendedContext.context;
+    const intersectionObserver = new IntersectionObserver((entries, observer) => {
+        this.intersectionObserverCallback(entries, observer);
+    });
+
     wc_container._luigi_node = navNode;
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
@@ -311,12 +417,20 @@ class WebComponentSvcClass {
       renderer = resolveRenderer(navNode.compound.renderer);
     }
 
-    renderer = renderer || new DefaultCompoundRenderer();
+    renderer ??= new DefaultCompoundRenderer();
 
     return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundCnt => {
+      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
+
+        // console.log('renderWebComponentCompound, after createCompoundContainerAsync', {
+        //   renderer,
+        //   extendedContext,
+        //   navNode,
+        //   compoundContainer
+        // });
+
         const ebListeners = {};
-        compoundCnt.eventBus = {
+        compoundContainer.eventBus = {
           listeners: ebListeners,
           onPublishEvent: (event, srcNodeId, wcId) => {
             const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
@@ -324,7 +438,7 @@ class WebComponentSvcClass {
 
             listeners.forEach(listenerInfo => {
               const target =
-                listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+                listenerInfo.wcElement || compoundContainer.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
               if (target) {
                 target.dispatchEvent(
                   new CustomEvent(listenerInfo.action, {
@@ -339,19 +453,40 @@ class WebComponentSvcClass {
         };
         navNode.compound.children.forEach((wc, index) => {
           const ctx = { ...context, ...wc.context };
-          const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
-          compoundItemCnt.eventBus = compoundCnt.eventBus;
-          renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
-
+          const compoundItemContainer = renderer.createCompoundItemContainer(wc.layoutConfig);
+          
+          this.setTemporaryHeightForCompoundItemContainer(compoundItemContainer);
+          compoundItemContainer.eventBus = compoundContainer.eventBus;
+          renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
+          
           const nodeId = wc.id || 'gen_' + index;
-          this.renderWebComponent(wc.viewUrl, compoundItemCnt, { context: ctx }, wc, nodeId, true);
+
+          // console.log('renderWebComponentCompound, before registering observer', {
+          //   wc,
+          //   compoundItemCnt: compoundItemContainer,
+          //   nodeId,
+          //   ctx,
+          //   sizeOfCompoundItemCnt: compoundItemContainer.clientHeight,
+          //   sizeOfCompoundCnt: compoundContainer.clientHeight
+          // });
+
+          this.wcContainerData.set(compoundItemContainer, {
+            viewUrl: wc.viewUrl,
+            wc_container: compoundItemContainer,
+            extendedContext: { context: ctx },
+            node: wc,
+            nodeId: nodeId,
+            isSpecialMf: true
+          });
+          intersectionObserver.observe(compoundItemContainer);
+          // this.renderWebComponent(wc.viewUrl, compoundItemContainer, { context: ctx }, wc, nodeId, true);
           registerEventListeners(ebListeners, wc, nodeId);
         });
-        wc_container.appendChild(compoundCnt);
+        wc_container.appendChild(compoundContainer);
 
         // listener for nesting wc
-        registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
-        resolve(compoundCnt);
+        registerEventListeners(ebListeners, navNode.compound, '_root', compoundContainer);
+        resolve(compoundContainer);
       });
     });
   }
