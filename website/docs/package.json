@@ -1,6 +1,7 @@
 {
 	"name": "docu-page",
 	"version": "0.0.1",
+	"type": "module",
 	"private": true,
 	"scripts": {
 		"core": "npm run serve-core",
@@ -45,7 +46,6 @@
 		"vite": "^4.4.2",
 		"vitest": "^0.34.6"
 	},
-	"type": "module",
 	"dependencies": {
 		"@agentofuser/rehype-section": "^1.0.5",
 		"@luigi-project/client": "^2.2.0",
