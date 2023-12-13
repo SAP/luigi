@@ -27,25 +27,14 @@ export class GenericHelpersClass {
   checkWebcomponentValue(webcomponent: object | boolean | string): object | boolean {
     if (typeof webcomponent === 'string') {
       try {
-        let parsedValue = JSON.parse(webcomponent);
-        if (this.isObject(parsedValue) && 'selfRegistered' in parsedValue) {
-          parsedValue.selfRegistered = parsedValue.selfRegistered === 'true';
-          return parsedValue;
-        } else if (typeof parsedValue === 'boolean') {
-          return parsedValue;
-        } else {
-          console.warn('Webcomponent value has a wrong value. Must be a stringified object or a stringified boolean.');
-          return {};
-        }
+        return JSON.parse(webcomponent);
       } catch (error) {
         console.error('Error parsing JSON:', error);
-        return {};
       }
     } else if (typeof webcomponent === 'boolean' || typeof webcomponent === 'object') {
       return webcomponent;
     } else {
       console.warn('Webcomponent value has a wrong type.')
-      return {};
     }
   }
 }

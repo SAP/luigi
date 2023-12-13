@@ -105,9 +105,7 @@
       compound: compoundConfig,
       viewUrl: viewurl,
       webcomponent:
-        webcomponent === undefined
-          ? true
-          : GenericHelperFunctions.checkWebcomponentValue(webcomponent),
+        GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true,
     }; // TODO: fill with sth
     webcomponentService
       .renderWebComponentCompound(node, mainComponent, ctx)

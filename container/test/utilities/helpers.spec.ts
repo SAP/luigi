@@ -70,6 +70,12 @@ describe('GenericHelpers', () => {
     it('should return the parsed object for a valid JSON string', () => {
       const jsonString = '{"selfRegistered": "true", "name": "MyComponent"}';
       const result = GenericHelperFunctions.checkWebcomponentValue(jsonString);
+      expect(result).toEqual({ selfRegistered: "true", name: "MyComponent" });
+    });
+
+    it('should return the parsed object for a valid JSON string', () => {
+      const jsonString = '{"selfRegistered": true, "name": "MyComponent"}';
+      const result = GenericHelperFunctions.checkWebcomponentValue(jsonString);
       expect(result).toEqual({ selfRegistered: true, name: "MyComponent" });
     });
 
@@ -91,14 +97,14 @@ describe('GenericHelpers', () => {
       console.error = () => { };
       const invalidJsonString = '{"selfRegistered": "true", "name": "MyComponent"';
       const result = GenericHelperFunctions.checkWebcomponentValue(invalidJsonString);
-      expect(result).toEqual({});
+      expect(result).toEqual(undefined);
       global.originalConsoleError = originalConsoleError;
     });
 
     it('should return undefined for unsupported input types', () => {
       const unsupportedValue = 42; // Number
       const result = GenericHelperFunctions.checkWebcomponentValue(unsupportedValue);
-      expect(result).toStrictEqual({});
+      expect(result).toStrictEqual(undefined);
     });
   });
 
