@@ -26,8 +26,17 @@ export class WebComponentService {
     return viewUrl;
   }
 
-  /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
+  /** 
+   * Attaches a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
+   * 
+   * @param wc_id a tagname that is used when creating the web component element
+   * @param wcItemPlaceholder placeholder for web component container
+   * @param wc_container web component container element
+   * @param ctx context to be passed to the web component
+   * @param viewUrl url to render content from
+   * @param nodeId refers to an attribute of the web component to be identified from the rest
+   * @param isCompoundChild defines if rendered mf is a compound child or not
    */
   attachWC(
     wc_id: string,
@@ -36,7 +45,7 @@ export class WebComponentService {
     ctx,
     viewUrl: string,
     nodeId: string,
-    isSpecialMf?: boolean
+    isCompoundChild?: boolean
   ) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
@@ -44,7 +53,7 @@ export class WebComponentService {
         wc.setAttribute('nodeId', nodeId);
       }
 
-      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId, isSpecialMf);
+      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId, isCompoundChild);
       wc_container.replaceChild(wc, wcItemPlaceholder);
       if (wc_container._luigi_node) {
         wc_container._luigi_mfe_webcomponent = wc;
@@ -67,12 +76,15 @@ export class WebComponentService {
   /**
    * This function is used to create the Luigi Client API for the web-component-based micro frontend.
    * As the function expands with more functionality, it might be moved to a separate class.
+   * 
    * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
    * @param nodeId refers to an attribute of the web component to be identified from the rest
    * @param wc_id a tagname that is used when creating the web component element
+   * @param component 
+   * @param isCompoundChild defines if rendered mf is a compound child or not
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isSpecialMf?: boolean) {
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
     return {
       linkManager: () => {
         return {
@@ -97,16 +109,16 @@ export class WebComponentService {
               });
             });
           },
-          getCurrentTheme: () => {
-            return this.thisComponent.getAttribute('theme');
+          getCurrentTheme: () : string | undefined  => {
+            return this.thisComponent.theme;
           }
         };
       },
-      getCurrentLocale: () => {
-        return this.thisComponent.getAttribute('locale');
+      getCurrentLocale: () : string | undefined =>  {
+        return this.thisComponent.locale;
       },
-      getActiveFeatureToggles: () => {
-        return this.thisComponent.getAttribute('active-feature-toggle-list');
+      getActiveFeatureToggles: (): string[] => {
+        return this.thisComponent.activeFeatureToggleList || [];
       },
       publishEvent: ev => {
         if (eventBusElement && eventBusElement.eventBus) {
@@ -127,54 +139,59 @@ export class WebComponentService {
         this.dispatchLuigiEvent(Events.INITIALIZED, {});
       },
       addNodeParams: (params, keepBrowserHistory) => {
-        if (isSpecialMf) {
+        if (isCompoundChild) {
           return;
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
-      getNodeParams: shouldDesanitise => {
-        if (isSpecialMf) {
+      getNodeParams: (shouldDesanitise: boolean): Object  => {
+        if (isCompoundChild) {
           return {};
         }
-        let result = this.thisComponent.getAttribute('node-params') || {};
-        result = JSON.parse(result);
         if (shouldDesanitise) {
-          return deSanitizeParamsMap(result);
+          return deSanitizeParamsMap(this.thisComponent.nodeParams)
         }
-        return result;
+        return this.thisComponent.nodeParams || {};
       },
       setAnchor: anchor => {
-        if (isSpecialMf) {
+        if (isCompoundChild) {
           return;
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
       },
-      getAnchor: () => {
-        return this.thisComponent.getAttribute('anchor') || '';
+      getAnchor: (): string  => {
+        return this.thisComponent.anchor || '';
       },
-      getCoreSearchParams: () => {
-        let result = this.thisComponent.getAttribute('search-params') || {};
-        result = JSON.parse(result);
-        return result;
+      getCoreSearchParams: (): Object => {
+        return this.thisComponent.searchParams || {};
       },
-      getPathParams: () => {
-        let result = this.thisComponent.getAttribute('path-params') || {};
-        result = JSON.parse(result);
-        return result;
+      getPathParams: (): Object => {
+        return this.thisComponent.pathParams || {};
       },
-      getClientPermissions: () => {
-        let result = this.thisComponent.getAttribute('client-permissions') || {};
-        result = JSON.parse(result);
-        return result;
+      getClientPermissions: (): Object  => {
+        return this.thisComponent.clientPermissions || {};
       },
-      getUserSettings: () => {
-        return JSON.parse(this.thisComponent.getAttribute('user-settings')) || {};
+      getUserSettings: (): Object => {
+        return this.thisComponent.userSettings || {};
       }
     };
   }
 
-  initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string, isSpecialMf?: boolean) {
-    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc, isSpecialMf);
+  /**
+   * Attaches Client Api to web component 
+   * if __postProcess defined allow for custom setting of clientApi when developers want to decide how to add it to their mf 
+   * otherwise just attach it to the wc webcomponent alongside the context directly.
+   * 
+   * @param wc web component to attach to
+   * @param wc_id a tagname that is used when creating the web component element
+   * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
+   * @param viewUrl url to render content from
+   * @param ctx context to be passed to the web component
+   * @param nodeId refers to an attribute of the web component to be identified from the rest
+   * @param isCompoundChild defines if rendered mf is a compound child or not
+   */
+  initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string, isCompoundChild?: boolean) {
+    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc, isCompoundChild);
 
     if (wc.__postProcess) {
       const url =
@@ -188,7 +205,8 @@ export class WebComponentService {
     }
   }
 
-  /** Generates a unique web component id (tagname) based on the viewUrl
+  /**
+   * Generates a unique web component id (tagname) based on the viewUrl
    * returns a string that can be used as part of a tagname, only alphanumeric
    * characters and no whitespaces.
    */
@@ -201,10 +219,14 @@ export class WebComponentService {
     return 'luigi-wc-' + charRep;
   }
 
-  /** Does a module import from viewUrl and defines a new web component
+  /**
+   * Does a module import from viewUrl and defines a new web component
    * with the default export of the module or the first export extending HTMLElement if no default is
    * specified.
-   * @returns a promise that gets resolved after successfull import */
+   * @param viewUrl url to render content from
+   * @param wc_id a tagname that is used when creating the web component element
+   * @returns a promise that gets resolved after successfull import
+   */
   registerWCFromUrl(viewUrl: string, wc_id: string) {
     const i18nViewUrl = this.processViewUrl(viewUrl);
     return new Promise((resolve, reject) => {
@@ -317,8 +339,16 @@ export class WebComponentService {
     return true;
   }
 
-  /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
+  /** 
+   * Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
+   * 
+   * @param viewUrl url to render content from
+   * @param wc_container web component container element
+   * @param context luigi context
+   * @param node node to operate on
+   * @param nodeId id identifying the node
+   * @param isCompoundChild defines if rendered mf is a compound child or not
    */
   renderWebComponent(
     viewUrl: string,
@@ -326,7 +356,7 @@ export class WebComponentService {
     context: any,
     node: any,
     nodeId?: any,
-    isSpecialMf?: boolean
+    isCompoundChild?: boolean
   ) {
     const i18nViewUrl = this.processViewUrl(viewUrl, { context });
     const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
@@ -335,21 +365,21 @@ export class WebComponentService {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
     } else {
       /** Custom import function, if defined */
       if ((window as any).luigiWCFn) {
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id)
           .then(() => {
-            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isSpecialMf);
+            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
           })
           .catch(error => {
             console.warn('ERROR =>', error);
