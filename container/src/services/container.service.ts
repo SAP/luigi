@@ -155,9 +155,6 @@ export class ContainerService {
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
                 this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
                 break;
-              case 'luigi.third-party-cookie':
-                // TODO: check if needed
-                break;
               default:
                 console.warn('Functionality not yet implemented: ', msg);
                 break;
