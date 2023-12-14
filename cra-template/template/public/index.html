@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+  <!-- This is an example index.html file for developing a luigi based app with react.  -->
+
   <head>
     <title>Luigi</title>
     <meta
@@ -11,7 +13,13 @@
 
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!--
+    The import below starts the luigi core logic when the index.html file is first loaded. 
+    The visual part of core logic at runtime is the left-side navigation and the top navigation (shellbar) that you see when 
+    running the app
+  -->
     <script src="/luigi-core/luigi.js"></script>
+    <!-- The initial config imported here runs on startup right after luigi core is loaded. The config can also be an external link instead of a static internal file -->
     <script src="/luigi-config.js"></script>
   </body>
 </html>
