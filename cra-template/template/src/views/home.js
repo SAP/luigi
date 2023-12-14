@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import 'fundamental-styles';
+import React, { Component, useState, useEffect } from 'react';
 import {
   addInitListener,
   addContextUpdateListener,
@@ -7,44 +6,36 @@ import {
   removeInitListener
 } from '@luigi-project/client';
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: ''
-    };
-    this.initListener = null;
-    this.contextUpdateListener = null;
-  }
+const Home = () => {
+  const [message, setMessage] = useState('');
+  const [initListener, setInitListener] = useState(null);
+  const [contextUpdateListener, setContextUpdateListener] = useState(null);
 
-  componentDidMount() {
-    this.initListener = addInitListener(initialContext => {
-      this.setState({
-        message: 'Luigi Client initialized.'
-      });
-    });
-    this.contextUpdateListener = addContextUpdateListener(updatedContext => {
-      this.setState({
-        message: 'Luigi Client updated.'
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    removeContextUpdateListener(this.contextUpdateListener);
-    removeInitListener(this.initListener);
-  }
-
-  render() {
-    return (
-      <div>
-        <section className="fd-section">
-          <div className="fd-section__header">
-            <h1 className="fd-section__title">Home</h1>
-          </div>
-          <div className="fd-panel">{this.state.message}</div>
-        </section>
-      </div>
+  useEffect(() => {
+    setInitListener(
+      addInitListener(initialContext => {
+        setMessage('Luigi Client initialized.');
+      })
     );
-  }
-}
+
+    setContextUpdateListener(
+      addContextUpdateListener(updatedContext => {
+        setMessage('Luigi Client updated.');
+      })
+    );
+
+    return function cleanup() {
+      removeContextUpdateListener(contextUpdateListener);
+      removeInitListener(initListener);
+    };
+  }, []);
+
+  return (
+    <div>
+      <h1>Home</h1>
+      <div>{message}</div>
+    </div>
+  );
+};
+
+export default Home;
