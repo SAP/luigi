@@ -68,40 +68,10 @@
       "marked": "^4.0.10",
       "highlight.js": "^11.0.0"
     },
-    "localtunnel": {
-      "axios": "1.6.0"
-    },
     "browser-sync" : {
       "localtunnel": {
         "axios": "1.6.0"
-      },
-      "socket.io": {
-        "engine.io": "6.4.2"
       }
-    },
-    "@babel/register": {
-      "make-dir": {
-        "semver": "^5.7.2"
-      },
-      "find-cache-dir":{
-        "make-dir": {
-          "semver": "^5.7.2"
-        }
-      }
-    },
-    "gulp-cli":{
-      "yargs": {
-        "read-pkg-up":{
-          "read-pkg":{
-            "normalize-package-data": {
-              "semver": "^5.7.2"
-            }
-          }
-        }
-      }
-    },
-    "normalize-package-data": {
-      "semver": "^5.7.2"
     }
   },
   "engines": {
