@@ -19,7 +19,7 @@
   "devDependencies": {
     "@babel/core": "7.23.6",
     "@babel/preset-env": "^7.23.6",
-    "@babel/register": "^7.9.0",
+    "@babel/register": "^7.22.15",
     "autoprefixer": "^10.4.16",
     "babel-loader": "^9.1.3",
     "browser-sync": "^2.29.3",
@@ -27,7 +27,7 @@
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^3.3.1",
-    "gulp-cli": "^2.0.1",
+    "gulp-cli": "^2.3.0",
     "gulp-concat": "^2.5.2",
     "gulp-extname": "^0.2.0",
     "gulp-if": "^2.0.0",
@@ -50,7 +50,7 @@
     "webpack": "^5.89.0",
     "webpack-stream": "^7.0.0",
     "ws": ">=6.2.2",
-    "yargs": "^17.7.1"
+    "yargs": "^17.7.2"
   },
   "repository": {
     "type": "git",
@@ -67,6 +67,41 @@
     "panini": {
       "marked": "^4.0.10",
       "highlight.js": "^11.0.0"
+    },
+    "localtunnel": {
+      "axios": "1.6.0"
+    },
+    "browser-sync" : {
+      "localtunnel": {
+        "axios": "1.6.0"
+      },
+      "socket.io": {
+        "engine.io": "6.4.2"
+      }
+    },
+    "@babel/register": {
+      "make-dir": {
+        "semver": "^5.7.2"
+      },
+      "find-cache-dir":{
+        "make-dir": {
+          "semver": "^5.7.2"
+        }
+      }
+    },
+    "gulp-cli":{
+      "yargs": {
+        "read-pkg-up":{
+          "read-pkg":{
+            "normalize-package-data": {
+              "semver": "^5.7.2"
+            }
+          }
+        }
+      }
+    },
+    "normalize-package-data": {
+      "semver": "^5.7.2"
     }
   },
   "engines": {
