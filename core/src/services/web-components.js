@@ -19,8 +19,8 @@ class WebComponentSvcClass {
    *  @property {boolean} isSpecialMf
    */
 
-  /** @type {Map<HTMLElement, WcContainerData>} */
-  wcContainerData = new Map();
+  /** @type {WeakMap<HTMLElement, WcContainerData>} */
+  wcContainerData = new WeakMap();
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -358,6 +358,7 @@ class WebComponentSvcClass {
           wcContainerData.isSpecialMf
         );
         this.removeTemporaryHeightFromCompoundItemContainer(coumpoundItemContainer);
+        this.wcContainerData.delete(coumpoundItemContainer);
       } else {
         console.warn('Could not find WC container data', { for: coumpoundItemContainer });
       }
