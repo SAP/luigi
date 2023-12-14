@@ -330,54 +330,53 @@ class WebComponentSvcClass {
   }
 
   /**
-   * @param {IntersectionObserverEntry[]} entries 
-   * @param {IntersectionObserver} observer 
+   * @param {IntersectionObserverEntry[]} entries
+   * @param {IntersectionObserver} observer
    */
   intersectionObserverCallback(entries, observer) {
-    const intersectingEntries = entries.filter(entry=>entry.isIntersecting)
+    const intersectingEntries = entries.filter(entry => entry.isIntersecting);
 
-    console.log("Observer callback", {
+    console.log('Observer callback', {
       entries,
       intersectingEntries,
-      intersectingTargets: intersectingEntries.map(entry=>entry.target)
+      intersectingTargets: intersectingEntries.map(entry => entry.target)
     });
 
-    intersectingEntries.forEach(entry=>{
+    intersectingEntries.forEach(entry => {
       const coumpoundItemContainer = entry.target;
       const wcContainerData = this.wcContainerData.get(coumpoundItemContainer);
-      
-      if (!!wcContainerData) {
 
-        console.log("Found WC container data", {wcContainerData});
-        
+      if (!!wcContainerData) {
+        console.log('Found WC container data', { wcContainerData });
+
         this.renderWebComponent(
-          wcContainerData.viewUrl, 
-          wcContainerData.wc_container, 
-          wcContainerData.extendedContext, 
+          wcContainerData.viewUrl,
+          wcContainerData.wc_container,
+          wcContainerData.extendedContext,
           wcContainerData.node,
           wcContainerData.nodeId,
           wcContainerData.isSpecialMf
-          );
+        );
         this.removeTemporaryHeightFromCompoundItemContainer(coumpoundItemContainer);
       } else {
-        console.warn("Could not find WC container data", {for: coumpoundItemContainer});
+        console.warn('Could not find WC container data', { for: coumpoundItemContainer });
       }
       observer.unobserve(coumpoundItemContainer);
     });
   }
 
   /**
-   * @param {HTMLElement} compoundItemContainer 
+   * @param {HTMLElement} compoundItemContainer
    */
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer) {
-    compoundItemContainer.style.height = "500px";
+    compoundItemContainer.style.height = '500px';
   }
 
   /**
-   * @param {HTMLElement} compoundItemContainer 
+   * @param {HTMLElement} compoundItemContainer
    */
   removeTemporaryHeightFromCompoundItemContainer(compoundItemContainer) {
-    compoundItemContainer.style.removeProperty("height");
+    compoundItemContainer.style.removeProperty('height');
   }
 
   /**
@@ -389,7 +388,6 @@ class WebComponentSvcClass {
    * @param {*} context the luigi node context
    */
   renderWebComponentCompound(navNode, wc_container, extendedContext) {
-
     // console.log('renderWebComponentCompound, entry', {
     //   navNode,
     //   wc_container,
@@ -399,7 +397,7 @@ class WebComponentSvcClass {
     let renderer;
     const context = extendedContext.context;
     const intersectionObserver = new IntersectionObserver((entries, observer) => {
-        this.intersectionObserverCallback(entries, observer);
+      this.intersectionObserverCallback(entries, observer);
     });
 
     wc_container._luigi_node = navNode;
@@ -421,7 +419,6 @@ class WebComponentSvcClass {
 
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
-
         // console.log('renderWebComponentCompound, after createCompoundContainerAsync', {
         //   renderer,
         //   extendedContext,
@@ -454,11 +451,11 @@ class WebComponentSvcClass {
         navNode.compound.children.forEach((wc, index) => {
           const ctx = { ...context, ...wc.context };
           const compoundItemContainer = renderer.createCompoundItemContainer(wc.layoutConfig);
-          
+
           this.setTemporaryHeightForCompoundItemContainer(compoundItemContainer);
           compoundItemContainer.eventBus = compoundContainer.eventBus;
           renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
-          
+
           const nodeId = wc.id || 'gen_' + index;
 
           // console.log('renderWebComponentCompound, before registering observer', {
