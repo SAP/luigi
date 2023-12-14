@@ -274,12 +274,11 @@ describe('Create container dynamically', () => {
       cy.get('luigi-compound-container')
         .shadow()
         .then($container => {
-          cy
-            .wrap($container)
+          cy.wrap($container)
             .find(
               'luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6e6573746564322e6a73'
             )
-            .should('not.exist')
+            .should('not.exist');
         });
     });
   });
