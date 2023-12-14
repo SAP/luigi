@@ -1,11 +1,14 @@
+import { LuigiConfig } from '../core-api';
+import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 import {
   DefaultCompoundRenderer,
-  resolveRenderer,
+  deSanitizeParamsMap,
   registerEventListeners,
-  deSanitizeParamsMap
+  resolveRenderer
 } from '../utilities/helpers/web-component-helpers';
-import { LuigiConfig } from '../core-api';
-import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
+
+// QST: central storage for constants?
+const DEFAULT_TEMPORARY_HEIGHT = "500px";
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
@@ -32,16 +35,6 @@ class WebComponentSvcClass {
    * if attached to wc_container
    */
   attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isSpecialMf) {
-    // console.log('attachWC, entry', {
-    //   wc_id,
-    //   wcItemPlaceholder,
-    //   wc_container,
-    //   extendedContext,
-    //   viewUrl,
-    //   nodeId,
-    //   isSpecialMf,
-    //   sizeOfWcContiner: wc_container.clientHeight
-    // });
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
       if (nodeId) {
@@ -52,16 +45,6 @@ class WebComponentSvcClass {
 
       wc_container.replaceChild(wc, wcItemPlaceholder);
     }
-    // console.log('attachWC, exit', {
-    //   wc_id,
-    //   wcItemPlaceholder,
-    //   wc_container,
-    //   extendedContext,
-    //   viewUrl,
-    //   nodeId,
-    //   isSpecialMf,
-    //   sizeOfWcContiner: wc_container.clientHeight
-    // });
   }
 
   initWC(wc, wc_id, eventBusElement, viewUrl, extendedContext, nodeId, isSpecialMf) {
@@ -265,17 +248,6 @@ class WebComponentSvcClass {
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
 
-    console.log('renderWebComponent', {
-      viewUrl,
-      wc_container,
-      extendedContext,
-      node,
-      nodeId,
-      isSpecialMf,
-      wc_id,
-      wcItemPlaceholder
-    });
-
     if (window.customElements.get(wc_id)) {
       this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
     } else {
@@ -342,13 +314,11 @@ class WebComponentSvcClass {
       intersectingTargets: intersectingEntries.map(entry => entry.target)
     });
 
-    intersectingEntries.forEach(entry => {
-      const coumpoundItemContainer = entry.target;
+    intersectingEntries.forEach(intersectingEntry => {
+      const coumpoundItemContainer = intersectingEntry.target;
       const wcContainerData = this.wcContainerData.get(coumpoundItemContainer);
 
       if (!!wcContainerData) {
-        console.log('Found WC container data', { wcContainerData });
-
         this.renderWebComponent(
           wcContainerData.viewUrl,
           wcContainerData.wc_container,
@@ -360,7 +330,8 @@ class WebComponentSvcClass {
         this.removeTemporaryHeightFromCompoundItemContainer(coumpoundItemContainer);
         this.wcContainerData.delete(coumpoundItemContainer);
       } else {
-        console.warn('Could not find WC container data', { for: coumpoundItemContainer });
+        // QST: proper error handling?
+        console.error('Could not find WC container data', { for: coumpoundItemContainer });
       }
       observer.unobserve(coumpoundItemContainer);
     });
@@ -368,9 +339,15 @@ class WebComponentSvcClass {
 
   /**
    * @param {HTMLElement} compoundItemContainer
+   * @param {object} compoundSettings
+   * @param {string} compoundSettings.temporaryContainerHeight
    */
-  setTemporaryHeightForCompoundItemContainer(compoundItemContainer) {
-    compoundItemContainer.style.height = '500px';
+  setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings) {
+    const temporaryContainerHeight = compoundSettings.temporaryContainerHeight || DEFAULT_TEMPORARY_HEIGHT;
+
+    console.log("Applying temporary container height", {temporaryContainerHeight});
+
+    compoundItemContainer.style.height = temporaryContainerHeight;
   }
 
   /**
@@ -389,12 +366,13 @@ class WebComponentSvcClass {
    * @param {*} context the luigi node context
    */
   renderWebComponentCompound(navNode, wc_container, extendedContext) {
-    // console.log('renderWebComponentCompound, entry', {
-    //   navNode,
-    //   wc_container,
-    //   extendedContext
-    // });
+    console.log('renderWebComponentCompound, entry', {
+      navNode,
+      wc_container,
+      extendedContext
+    });
 
+    /** @type {DefaultCompoundRenderer} */
     let renderer;
     const context = extendedContext.context;
     const intersectionObserver = new IntersectionObserver((entries, observer) => {
@@ -402,6 +380,7 @@ class WebComponentSvcClass {
     });
 
     wc_container._luigi_node = navNode;
+    // QST: this is the nested case - lazy load relevant for this?
     if (navNode.webcomponent && navNode.viewUrl) {
       renderer = new DefaultCompoundRenderer();
       renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, { context });
@@ -418,22 +397,18 @@ class WebComponentSvcClass {
 
     renderer ??= new DefaultCompoundRenderer();
 
+    console.log("Renderer used:", {renderer});
+
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
-        // console.log('renderWebComponentCompound, after createCompoundContainerAsync', {
-        //   renderer,
-        //   extendedContext,
-        //   navNode,
-        //   compoundContainer
-        // });
-
         const ebListeners = {};
+
         compoundContainer.eventBus = {
           listeners: ebListeners,
           onPublishEvent: (event, srcNodeId, wcId) => {
             const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
-            listeners.push(...(ebListeners['*.' + event.type] || []));
 
+            listeners.push(...(ebListeners['*.' + event.type] || []));
             listeners.forEach(listenerInfo => {
               const target =
                 listenerInfo.wcElement || compoundContainer.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
@@ -449,24 +424,15 @@ class WebComponentSvcClass {
             });
           }
         };
+
         navNode.compound.children.forEach((wc, index) => {
           const ctx = { ...context, ...wc.context };
           const compoundItemContainer = renderer.createCompoundItemContainer(wc.layoutConfig);
-
-          this.setTemporaryHeightForCompoundItemContainer(compoundItemContainer);
-          compoundItemContainer.eventBus = compoundContainer.eventBus;
-          renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
-
           const nodeId = wc.id || 'gen_' + index;
 
-          // console.log('renderWebComponentCompound, before registering observer', {
-          //   wc,
-          //   compoundItemCnt: compoundItemContainer,
-          //   nodeId,
-          //   ctx,
-          //   sizeOfCompoundItemCnt: compoundItemContainer.clientHeight,
-          //   sizeOfCompoundCnt: compoundContainer.clientHeight
-          // });
+          this.setTemporaryHeightForCompoundItemContainer(compoundItemContainer, navNode.compound);
+          compoundItemContainer.eventBus = compoundContainer.eventBus;
+          renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
 
           this.wcContainerData.set(compoundItemContainer, {
             viewUrl: wc.viewUrl,
@@ -477,7 +443,7 @@ class WebComponentSvcClass {
             isSpecialMf: true
           });
           intersectionObserver.observe(compoundItemContainer);
-          // this.renderWebComponent(wc.viewUrl, compoundItemContainer, { context: ctx }, wc, nodeId, true);
+
           registerEventListeners(ebListeners, wc, nodeId);
         });
         wc_container.appendChild(compoundContainer);
