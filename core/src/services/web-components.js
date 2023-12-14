@@ -8,7 +8,7 @@ import {
 } from '../utilities/helpers/web-component-helpers';
 
 // QST: central storage for constants?
-const DEFAULT_TEMPORARY_HEIGHT = "500px";
+const DEFAULT_TEMPORARY_HEIGHT = '500px';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
@@ -345,7 +345,7 @@ class WebComponentSvcClass {
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings) {
     const temporaryContainerHeight = compoundSettings.temporaryContainerHeight || DEFAULT_TEMPORARY_HEIGHT;
 
-    console.log("Applying temporary container height", {temporaryContainerHeight});
+    console.log('Applying temporary container height', { temporaryContainerHeight });
 
     compoundItemContainer.style.height = temporaryContainerHeight;
   }
@@ -397,7 +397,7 @@ class WebComponentSvcClass {
 
     renderer ??= new DefaultCompoundRenderer();
 
-    console.log("Renderer used:", {renderer});
+    console.log('Renderer used:', { renderer });
 
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
