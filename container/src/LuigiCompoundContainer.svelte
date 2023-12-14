@@ -94,11 +94,7 @@
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
       mainComponent._luigi_mfe_webcomponent.context = contextObj;
     };
-    const ctx = context
-      ? typeof context === 'string'
-        ? JSON.parse(context)
-        : context
-      : {};
+    const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;
 
     const node = {

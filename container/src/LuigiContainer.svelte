@@ -142,11 +142,7 @@
       containerService.registerContainer(thisComponent);
       webcomponentService.thisComponent = thisComponent;
 
-      const ctx = context
-        ? typeof context === 'string'
-          ? JSON.parse(context)
-          : context
-        : {};
+      const ctx = GenericHelperFunctions.resolveContext(context);
       if (webcomponent) {
         mainComponent.innerHTML = '';
         const webComponentValue =
