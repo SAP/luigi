@@ -34,16 +34,22 @@ class WebComponentSvcClass {
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
    */
-  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isSpecialMf) {
+  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isSpecialMf, isLazyLoading) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
+      
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
       wc.setAttribute('lui_web_component', true);
       this.initWC(wc, wc_id, wc_container, viewUrl, extendedContext, nodeId, isSpecialMf);
-
+      
       wc_container.replaceChild(wc, wcItemPlaceholder);
+      
+      if (isLazyLoading) {
+        this.removeTemporaryHeightFromCompoundItemContainer(wc_container);
+        this.wcContainerData.delete(wc_container);
+      }
     }
   }
 
@@ -239,7 +245,7 @@ class WebComponentSvcClass {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
+  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf, isLazyLoading) {
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
@@ -249,20 +255,20 @@ class WebComponentSvcClass {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
     } else {
       /** Custom import function, if defined */
       if (window.luigiWCFn) {
         window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
         });
       }
     }
@@ -325,12 +331,10 @@ class WebComponentSvcClass {
           wcContainerData.extendedContext,
           wcContainerData.node,
           wcContainerData.nodeId,
-          wcContainerData.isSpecialMf
+          wcContainerData.isSpecialMf,
+          true
         );
-        this.removeTemporaryHeightFromCompoundItemContainer(coumpoundItemContainer);
-        this.wcContainerData.delete(coumpoundItemContainer);
       } else {
-        // QST: proper error handling?
         console.error('Could not find WC container data', { for: coumpoundItemContainer });
       }
       observer.unobserve(coumpoundItemContainer);
@@ -344,8 +348,6 @@ class WebComponentSvcClass {
    */
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings) {
     const temporaryContainerHeight = compoundSettings.temporaryContainerHeight || DEFAULT_TEMPORARY_HEIGHT;
-
-    console.log('Applying temporary container height', { temporaryContainerHeight });
 
     compoundItemContainer.style.height = temporaryContainerHeight;
   }
@@ -462,7 +464,7 @@ class WebComponentSvcClass {
             });
             intersectionObserver.observe(compoundItemContainer);
           } else {
-            this.renderWebComponent(wc.viewUrl, compoundItemContainer, { context: ctx }, wc, nodeId, true);
+            this.renderWebComponent(wc.viewUrl, compoundItemContainer, { context: ctx }, wc, nodeId, true, false);
           }
 
           registerEventListeners(ebListeners, wc, nodeId);
