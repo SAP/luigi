@@ -254,22 +254,27 @@
   });
 
   calculateNavEntries = () => {
+    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
+    const moreEntries = btpNavTopCnt.querySelectorAll('.lui-moreItems  > .lui-nav-entry');
+    const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
+    const navList = btpNavTopCnt.querySelector('.fd-navigation__list');
+
+    moreEntries?.forEach((item) => {
+      navList.insertBefore(item, spacer);
+    });
+
     const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
     if(entries.length <= 0) {
       return;
     }
-    entries.forEach((item) => {
-      item.style.display = 'flex';
-    });
     btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'none';
 
-    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
 
     if(spacer.clientHeight === 0) {
         btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
         for(let i = entries.length -1; i > 0; i--) {
-          entries[i].style.display = 'none';
           lastNode = entries[i-1];
+          moreUL.insertBefore(entries[i], moreUL.firstChild);
           if(spacer.clientHeight > 0) {
             break;
           }
@@ -394,6 +399,8 @@
 
       if(sideBar) {
         calculateFlyoutPosition(el);
+      } else if (btpToolLayout) {
+        calculateBTPNavFlyoutPosition(el)
       }
     }
   }
@@ -426,6 +433,19 @@
         flyoutSublist.className += ' has-bottom-position';
       } else {
         flyoutSublist.style.top = topPosition - shellbarHeight + 'px';
+      }
+    });
+  }
+
+  export function calculateBTPNavFlyoutPosition(el) {
+    const parent = el.closest('.lui-nav-entry');
+    parent.style.setProperty("--lui_popover_offset", '0px');
+    
+    setTimeout(() => {
+      const popover = parent.querySelector('.fd-popover__body');
+      const rect = popover.getBoundingClientRect();
+      if(rect.top + rect.height > window.innerHeight) {
+        parent.style.setProperty("--lui_popover_offset", (rect.top + rect.height - window.innerHeight) + 'px');
       }
     });
   }
@@ -477,6 +497,7 @@
   export function closePopupMenu() {
     selectedCategory =
       SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
+    btpNavTopCnt.querySelector('.fd-navigation__item.lui-nav-more').setAttribute('aria-expanded', false);
   }
 
   function closePopupMenuOnEsc(event){
@@ -980,13 +1001,22 @@
 
           <li class="fd-navigation__list-item fd-navigation__list-item--overflow" aria-hidden="true">
             <div 
-                class="fd-navigation__item" 
+                class="fd-navigation__item lui-nav-more" 
                 aria-roledescription="Navigation List Menu Item"
                 aria-haspopup="menu" 
                 role="menuitem" 
-                aria-expanded="true"
+                aria-expanded="false"
                 tabindex="-1">
-                <a class="fd-navigation__link" role="button" tabindex="0">
+                <a class="fd-navigation__link" role="button" tabindex="0"
+                  on:click={event => {
+                    const parent = event.target.parentElement;
+                    if(parent.getAttribute('aria-expanded') === "true") {
+                      parent.setAttribute('aria-expanded', 'false');
+                    } else {
+                      parent.setAttribute('aria-expanded', 'true');
+                    }
+                    event.stopPropagation();
+                  }}>
                     <span class="fd-navigation__icon sap-icon--overflow" role="presentation" aria-hidden="true"></span>
                     <span class="fd-navigation__text">More Items</span>
                 </a>
@@ -1809,6 +1839,9 @@
     display: inline-block;
     height: auto;
   }
+
+
+  /* BTP CSS */
   .fd-nested-list .fd-nested-list__title.badge-align-right,
   .fd-navigation__text.badge-align-right {
     display: flex;
@@ -1817,8 +1850,30 @@
     }
   }
 
-  .lui-spacer {
+  .fd-navigation--snapped .lui-spacer {
     flex-grow: 1;
+  }
+
+  .fd-navigation--snapped .lui-moreItems {
+    padding: 0;
+  }
+
+  .fd-navigation--snapped .fd-navigation__list-container--menu.fd-navigation__list-container--menu {
+    top: auto;
+    bottom: 0;
+  }
+
+  .fd-navigation--snapped .fd-popover {
+    
+    --lui_popover_offset: 0px;
+    .fd-popover__body--after {
+      
+      max-height: 80vh;
+      transform: translateY(calc(0px - (var(--lui_popover_offset))));
+      &:after, &:before {
+        transform: translateY(var(--lui_popover_offset));
+      }
+    }
   }
 
   .fd-nested-list__content.has-child {
