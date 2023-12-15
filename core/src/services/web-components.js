@@ -358,9 +358,9 @@ class WebComponentSvcClass {
   }
 
   /**
-   * @param {object} navNode 
+   * @param {object} navNode
    */
-  getCompoundRenderer(navNode) {
+  getCompoundRenderer(navNode, context) {
     const isNestedWebComponent = navNode.webcomponent && !!navNode.viewUrl;
     let renderer;
 
@@ -381,10 +381,6 @@ class WebComponentSvcClass {
       renderer = new DefaultCompoundRenderer();
     }
 
-    console.log('Renderer used:', {
-      renderer,
-    });
-
     return renderer;
   }
 
@@ -397,18 +393,25 @@ class WebComponentSvcClass {
    * @param {*} context the luigi node context
    */
   renderWebComponentCompound(navNode, wc_container, extendedContext) {
+    const useLazyLoading = navNode.compound.useLazyLoading === true;
+    const context = extendedContext.context;
+    const renderer = this.getCompoundRenderer(navNode, context);
+    /** @type {IntersectionObserver} */
+    let intersectionObserver;
+
     console.log('renderWebComponentCompound, entry', {
       navNode,
       wc_container,
-      extendedContext
+      extendedContext,
+      useLazyLoading,
+      renderer
     });
 
-    const context = extendedContext.context;
-    const renderer = this.getCompoundRenderer(navNode);
-    /** @type {IntersectionObserver} */
-    const intersectionObserver = new IntersectionObserver((entries, observer) => {
-      this.intersectionObserverCallback(entries, observer);
-    });
+    if (useLazyLoading) {
+      intersectionObserver = new IntersectionObserver((entries, observer) => {
+        this.intersectionObserverCallback(entries, observer);
+      });
+    }
 
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
@@ -441,19 +444,26 @@ class WebComponentSvcClass {
           const compoundItemContainer = renderer.createCompoundItemContainer(wc.layoutConfig);
           const nodeId = wc.id || 'gen_' + index;
 
-          this.setTemporaryHeightForCompoundItemContainer(compoundItemContainer, navNode.compound);
+          if (useLazyLoading) {
+            this.setTemporaryHeightForCompoundItemContainer(compoundItemContainer, navNode.compound);
+          }
+
           compoundItemContainer.eventBus = compoundContainer.eventBus;
           renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
 
-          this.wcContainerData.set(compoundItemContainer, {
-            viewUrl: wc.viewUrl,
-            wc_container: compoundItemContainer,
-            extendedContext: { context: ctx },
-            node: wc,
-            nodeId: nodeId,
-            isSpecialMf: true
-          });
-          intersectionObserver.observe(compoundItemContainer);
+          if (useLazyLoading) {
+            this.wcContainerData.set(compoundItemContainer, {
+              viewUrl: wc.viewUrl,
+              wc_container: compoundItemContainer,
+              extendedContext: { context: ctx },
+              node: wc,
+              nodeId: nodeId,
+              isSpecialMf: true
+            });
+            intersectionObserver.observe(compoundItemContainer);
+          } else {
+            this.renderWebComponent(wc.viewUrl, compoundItemContainer, { context: ctx }, wc, nodeId, true);
+          }
 
           registerEventListeners(ebListeners, wc, nodeId);
         });
