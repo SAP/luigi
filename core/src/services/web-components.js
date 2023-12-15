@@ -37,15 +37,15 @@ class WebComponentSvcClass {
   attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isSpecialMf, isLazyLoading) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
-      
+
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
       wc.setAttribute('lui_web_component', true);
       this.initWC(wc, wc_id, wc_container, viewUrl, extendedContext, nodeId, isSpecialMf);
-      
+
       wc_container.replaceChild(wc, wcItemPlaceholder);
-      
+
       if (isLazyLoading) {
         this.removeTemporaryHeightFromCompoundItemContainer(wc_container);
         this.wcContainerData.delete(wc_container);
@@ -255,20 +255,56 @@ class WebComponentSvcClass {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
+      this.attachWC(
+        wc_id,
+        wcItemPlaceholder,
+        wc_container,
+        extendedContext,
+        i18nViewUrl,
+        nodeId,
+        isSpecialMf,
+        isLazyLoading
+      );
     } else {
       /** Custom import function, if defined */
       if (window.luigiWCFn) {
         window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
+          this.attachWC(
+            wc_id,
+            wcItemPlaceholder,
+            wc_container,
+            extendedContext,
+            i18nViewUrl,
+            nodeId,
+            isSpecialMf,
+            isLazyLoading
+          );
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
+          this.attachWC(
+            wc_id,
+            wcItemPlaceholder,
+            wc_container,
+            extendedContext,
+            i18nViewUrl,
+            nodeId,
+            isSpecialMf,
+            isLazyLoading
+          );
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf, isLazyLoading);
+          this.attachWC(
+            wc_id,
+            wcItemPlaceholder,
+            wc_container,
+            extendedContext,
+            i18nViewUrl,
+            nodeId,
+            isSpecialMf,
+            isLazyLoading
+          );
         });
       }
     }
