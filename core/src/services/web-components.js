@@ -358,6 +358,37 @@ class WebComponentSvcClass {
   }
 
   /**
+   * @param {object} navNode 
+   */
+  getCompoundRenderer(navNode) {
+    const isNestedWebComponent = navNode.webcomponent && !!navNode.viewUrl;
+    let renderer;
+
+    if (isNestedWebComponent) {
+      // Nested web component
+      renderer = new DefaultCompoundRenderer();
+      renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, { context });
+      renderer.createCompoundItemContainer = layoutConfig => {
+        var cnt = document.createElement('div');
+        if (layoutConfig && layoutConfig.slot) {
+          cnt.setAttribute('slot', layoutConfig.slot);
+        }
+        return cnt;
+      };
+    } else if (navNode.compound.renderer) {
+      renderer = resolveRenderer(navNode.compound.renderer);
+    } else {
+      renderer = new DefaultCompoundRenderer();
+    }
+
+    console.log('Renderer used:', {
+      renderer,
+    });
+
+    return renderer;
+  }
+
+  /**
    * Responsible for rendering web component compounds based on a renderer or a nesting
    * micro frontend.
    *
@@ -372,32 +403,12 @@ class WebComponentSvcClass {
       extendedContext
     });
 
-    /** @type {DefaultCompoundRenderer} */
-    let renderer;
     const context = extendedContext.context;
+    const renderer = this.getCompoundRenderer(navNode);
+    /** @type {IntersectionObserver} */
     const intersectionObserver = new IntersectionObserver((entries, observer) => {
       this.intersectionObserverCallback(entries, observer);
     });
-
-    wc_container._luigi_node = navNode;
-    // QST: this is the nested case - lazy load relevant for this?
-    if (navNode.webcomponent && navNode.viewUrl) {
-      renderer = new DefaultCompoundRenderer();
-      renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, { context });
-      renderer.createCompoundItemContainer = layoutConfig => {
-        var cnt = document.createElement('div');
-        if (layoutConfig && layoutConfig.slot) {
-          cnt.setAttribute('slot', layoutConfig.slot);
-        }
-        return cnt;
-      };
-    } else if (navNode.compound.renderer) {
-      renderer = resolveRenderer(navNode.compound.renderer);
-    }
-
-    renderer ??= new DefaultCompoundRenderer();
-
-    console.log('Renderer used:', { renderer });
 
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
