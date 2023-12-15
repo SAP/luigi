@@ -21,7 +21,6 @@
   import StatusBadge from './StatusBadge.svelte';
   import { KEYCODE_ENTER } from '../utilities/keycode';
   
-  //TODO refactor
   const __this = {
     get: () => ({
       children,
@@ -41,17 +40,7 @@
     set: async (obj) => {
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach(async (prop) => {
-          if (prop === 'pathData') {
-            pathData = obj.pathData;
-          } else if (prop === 'context') {
-            context = obj.context;
-          } else if (prop === 'children') {
-            children = obj.children;
-          } else if (prop === 'selectedNode') {
-            selectedNode = obj.selectedNode;
-          } else if (prop === 'hasCategoriesWithIcon') {
-            hasCategoriesWithIcon = obj.hasCategoriesWithIcon;
-          } else if (prop === 'navParent') {
+          if (prop === 'navParent') {
             navHeader = undefined;
             let parentNode = obj.navParent;
             navParentNode = parentNode;
@@ -151,6 +140,8 @@
                 );
               }
             }
+          } else {
+            eval(prop + " = " + JSON.stringify(obj[prop]));
           }
         });
         sideNavAccordionMode = NavigationHelpers.getSideNavAccordionMode(selectedNode);

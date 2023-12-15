@@ -34,7 +34,6 @@
   let store = getContext('store');
   let resizeObserver;
 
-  //TODO refactor
   const __this = {
     get: () => ({
       children,
@@ -49,17 +48,7 @@
     set: (obj) => {
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach((prop) => {
-          if (prop === 'pathData') {
-            pathData = obj.pathData;
-          } else if (prop === 'context') {
-            context = obj.context;
-          } else if (prop === 'children') {
-            children = obj.children;
-          } else if (prop === 'selectedNode') {
-            selectedNode = obj.selectedNode;
-          } else if (prop === 'selectedNodeForTabNav') {
-            selectedNodeForTabNav = obj.selectedNodeForTabNav;
-          }
+          eval(prop + " = " + JSON.stringify(obj[prop]));
         });
       }
     },

@@ -41,7 +41,6 @@
     'getUnsavedChangesModalPromise'
   );
 
-  //TODO refactor
   const getComponentWrapper = () => {
     return {
       get: () => {
@@ -62,29 +61,7 @@
       set: (obj) => {
         if (obj) {
           Object.getOwnPropertyNames(obj).forEach((prop) => {
-            if (prop === 'splitViewSettings') {
-              splitViewSettings = obj.splitViewSettings;
-            } else if (prop === 'lastNode') {
-              lastNode = obj.lastNode;
-            } else if (prop === 'pathData') {
-              pathData = obj.pathData;
-            } else if (prop === 'nodeParams') {
-              nodeParams = obj.nodeParams;
-            } else if (prop === 'collapsed') {
-              collapsed = obj.collapsed;
-            } else if (prop === 'isDataPrepared') {
-              isDataPrepared = obj.isDataPrepared;
-            } else if (prop === 'currentNode') {
-              currentNode = obj.currentNode;
-            } else if (prop === 'splitViewIframe') {
-              splitViewIframe = obj.splitViewIframe;
-            } else if (prop === 'splitViewIframeData') {
-              splitViewIframeData = obj.splitViewIframeData;
-            } else if (prop === 'splitViewWC') {
-              splitViewWC = obj.splitViewWC;
-            } else if (prop === 'splitViewWCData') {
-              splitViewWCData = obj.splitViewWCData;
-            }
+            eval(prop + " = " + JSON.stringify(obj[prop]));
           });
         }
       },

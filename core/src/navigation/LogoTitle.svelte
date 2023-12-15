@@ -43,7 +43,6 @@
     },
   };
 
-  //TODO refactor
   const getComponentWrapper = () => {
     return {
       get: () => {
@@ -66,33 +65,7 @@
       set: (obj) => {
         if (obj) {
           Object.getOwnPropertyNames(obj).forEach((prop) => {
-            if (prop === 'pathData') {
-              pathData = obj.pathData;
-            } else if (prop === 'appSwitcherItems') {
-              appSwitcherItems = obj.appSwitcherItems;
-            } else if (prop === 'itemRenderer') {
-              itemRenderer = obj.itemRenderer;
-            } else if (prop === 'pathParams') {
-              pathParams = obj.pathParams;
-            } else if (prop === 'selectedItem') {
-              selectedItem = obj.selectedItem;
-            } else if (prop === 'title') {
-              title = obj.title;
-            } else if (prop === 'defaultSubTitle') {
-              defaultSubTitle = obj.defaultSubTitle;
-            } else if (prop === 'subTitle') {
-              subTitle = obj.subTitle;
-            } else if (prop === 'defaultTitle') {
-              defaultTitle = obj.defaultTitle;
-            } else if (prop === 'subTitle') {
-              subTitle = obj.subTitle;
-            } else if (prop === 'showMainAppEntry') {
-              showMainAppEntry = obj.showMainAppEntry;
-            } else if (prop === 'hasApps') {
-              hasApps = obj.hasApps;
-            } else if (prop === 'hasLogo') {
-              hasLogo = obj.hasLogo;
-            }
+            eval(prop + " = " + JSON.stringify(obj[prop]));
           });
         }
       },
