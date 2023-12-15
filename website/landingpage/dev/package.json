@@ -17,7 +17,7 @@
     "what-input": "^5.2.12"
   },
   "devDependencies": {
-    "@babel/core": "7.23.6",
+    "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@babel/register": "^7.22.15",
     "autoprefixer": "^10.4.16",
@@ -36,7 +36,7 @@
     "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1",
-    "is-svg": "5.0.0",
+    "is-svg": "^5.0.0",
     "js-yaml": "^3.4.6",
     "lodash.template": ">=4.5.0",
     "marked": "^4.2.12",
