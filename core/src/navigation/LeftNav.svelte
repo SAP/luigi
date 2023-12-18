@@ -40,7 +40,12 @@
     set: async (obj) => {
       if (obj) {
         Object.getOwnPropertyNames(obj).forEach(async (prop) => {
-          if (prop === 'navParent') {
+          prop === 'pathData' ? pathData = obj.pathData:
+          prop === 'context' ? context = obj.context:
+          prop === 'children' ? children = obj.children:
+          prop === 'selectedNode' ? selectedNode = obj.selectedNode:
+          prop === 'hasCategoriesWithIcon' ? hasCategoriesWithIcon = obj.hasCategoriesWithIcon:
+          prop === 'navParent' ? (() => {
             navHeader = undefined;
             let parentNode = obj.navParent;
             navParentNode = parentNode;
@@ -48,7 +53,8 @@
               parentNode &&
               parentNode.navHeader &&
               GenericHelpers.requestExperimentalFeature('navHeader', true)
-            ) {
+            )
+            {
               let resolvedNavHeader = parentNode.navHeader;
               let resolvedNavHeaderNode = parentNode;
 
@@ -137,13 +143,13 @@
                 navHeader = await processHeader(
                   resolvedNavHeader,
                   resolvedNavHeaderNode
-                );
-              }
+                  );
+                }
             }
-          } else {
-            eval(prop + " = " + JSON.stringify(obj[prop]));
-          }
-        });
+          })():
+          undefined;
+          });
+        }
         sideNavAccordionMode = NavigationHelpers.getSideNavAccordionMode(selectedNode);
       }
     },

@@ -64,9 +64,22 @@
       },
       set: (obj) => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach((prop) => {
-            eval(prop + " = " + JSON.stringify(obj[prop]));
-          });
+          for (const [prop, value] of Object.entries(obj)) {
+            prop === 'pathData' ? pathData = value:
+            prop === 'appSwitcherItems' ? appSwitcherItems = value:
+            prop === 'itemRenderer' ? itemRenderer = value:
+            prop === 'pathParams' ? pathParams = value:
+            prop === 'selectedItem' ? selectedItem = value:
+            prop === 'title' ? title = value:
+            prop === 'defaultSubTitle' ? defaultSubTitle = value:
+            prop === 'subTitle' ? subTitle = value:
+            prop === 'defaultTitle' ? defaultTitle = value:
+            prop === 'subTitle' ? subTitle = value:
+            prop === 'showMainAppEntry' ? showMainAppEntry = value:
+            prop === 'hasApps' ? hasApps = value:
+            prop === 'hasLogo' ? hasLogo = value:
+            undefined;
+          };
         }
       },
       store,

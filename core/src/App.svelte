@@ -312,8 +312,17 @@
       set: (obj) => {
         if (obj) {
           noAnimation = false;
-          Object.getOwnPropertyNames(obj).forEach((prop) => {
-            if (prop === 'hideSideNav') {
+          for (const [prop, value] of Object.entries(obj)) {
+            prop === 'hideNav' ? hideNav = value:
+            prop === 'viewUrl' ? viewUrl = value:
+            prop === 'nodeParams' ? nodeParams = value:
+            prop === 'viewGroup' ? viewGroup = value:
+            prop === 'urlParamsRaw' ? urlParamsRaw = value:
+            prop === 'currentNode' ? currentNode = value:
+            prop === 'navigationPath' ? navigationPath = value:
+            prop === 'context' ? context = value:
+            prop === 'pathParams' ? pathParams = value: undefined;
+            prop === 'hideSideNav' ? (() => {
               if (hideSideNav != obj.hideSideNav) {
                 noAnimation = true;
                 setTimeout(() => {
@@ -322,9 +331,16 @@
                     appNode.classList.remove('no-animation');
                   }
                 });
-              }
-              hideSideNav = obj.hideSideNav;
-            } else if (prop === 'showLoadingIndicator') {
+              }hideSideNav = obj.hideSideNav;
+            })():
+            prop === 'isolateView' ? isolateView = value:
+            prop === 'pageErrorHandler' ? pageErrorHandler = value:
+            prop === 'previousNodeValues' ? previousNodeValues = value:
+            prop === 'mfSplitView' ? mfSplitView = value:
+            prop === 'splitViewValues' ? splitViewValues = value:
+            prop === 'splitViewIframe' ? splitViewIframe = value:
+            prop == 'splitViewWC' ? splitViewWC = value:
+            prop === 'showLoadingIndicator' ? (() => {
               if (obj.showLoadingIndicator === true) {
                 loadingIndicatorTimeout = setTimeout(() => {
                   showLoadingIndicator = true;
@@ -333,10 +349,13 @@
                 showLoadingIndicator = false;
                 clearTimeout(loadingIndicatorTimeout);
               }
-            } else {
-              eval(prop + " = " + JSON.stringify(obj[prop]));
-            }
-          });
+            })():
+            prop === 'tabNav' ? tabNav = value:
+            prop === 'isNavigateBack' ? isNavigateBack = value:
+            prop === 'goBackContext' ? goBackContext = value:
+            prop === 'isNavigationSyncEnabled' ? isNavigationSyncEnabled = value:
+            undefined;
+          };
         }
       },
       shouldShowUnsavedChangesModal,
@@ -800,6 +819,7 @@
         msg: 'luigi.ux.alert.hide',
         id,
         dismissKey,
+        //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
     } else if (alert.promise) {
@@ -1628,6 +1648,7 @@
                 `Warning: goBack() does not support goBackContext value. This is available only when using the Luigi preserveView feature.`,
               );
             }
+            // TODO: does not work with default child node behavior, fixed by #216
             window.history.back();
           }
         }

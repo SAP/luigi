@@ -47,9 +47,14 @@
     }),
     set: (obj) => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach((prop) => {
-          eval(prop + " = " + JSON.stringify(obj[prop]));
-        });
+        for (const [prop, value] of Object.entries(obj)) {
+          prop === 'pathData' ? pathData = value:
+          prop === 'context' ? context = value:
+          prop === 'children' ? children = value:
+          prop === 'selectedNode' ? selectedNode = value:
+          prop === 'selectedNodeForTabNav' ? selectedNodeForTabNav = value:
+          undefined;
+        };
       }
     },
   };

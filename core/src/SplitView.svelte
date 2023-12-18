@@ -60,9 +60,20 @@
       },
       set: (obj) => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach((prop) => {
-            eval(prop + " = " + JSON.stringify(obj[prop]));
-          });
+          for (const [prop, value] of Object.entries(obj)) {
+            prop === 'splitViewSettings' ? splitViewSettings = value:
+            prop === 'lastNode' ? lastNode = value:
+            prop === 'pathData' ? pathData = value:
+            prop === 'nodeParams' ? nodeParams = value:
+            prop === 'collapsed' ? collapsed = value:
+            prop === 'isDataPrepared' ? isDataPrepared = value:
+            prop === 'currentNode' ? currentNode = value:
+            prop === 'splitViewIframe' ? splitViewIframe = value:
+            prop === 'splitViewIframeData' ? splitViewIframeData = value:
+            prop === 'splitViewWC' ? splitViewWC = value:
+            prop === 'splitViewWCData' ? splitViewWCData = value:
+            undefined;
+          };
         }
       },
       dispatch,
