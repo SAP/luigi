@@ -19,6 +19,11 @@ export default class LuigiContainer extends HTMLElement {
   viewurl: string;
 
   /**
+   * If set to true defers from initializing the microfronted automatically. In that case init() can be used
+   */
+  deferInit: boolean;
+
+  /**
    * The context to be passed to the microfrontend
    */
   context: any;
@@ -53,6 +58,11 @@ export default class LuigiContainer extends HTMLElement {
   activeFeatureToggleList: string[];
 
   /**
+   * ???
+   */
+  skipInitCheck: boolean;
+
+  /**
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    */
   nodeParams: NodeParams;
@@ -74,10 +84,17 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * Updates the context of the microfrontend
-   * @param contextObj The context object to be updated
-   * @param internal internal microfrotend data
+   * @param contextObj The context data
+   * @param internal internal luigi legacy data
    */
   updateContext(contextObj: any, internal?: any): Function;
+
+  /**
+   * Send a custom message to the microfronted
+   * @param id a string containing the message id
+   * @param data data to be sent alongside the custom message
+   */
+  sendCustomMessage(id: string, data?: any): void;
 
   /**
    * Notifies the microfrontend that the opened alert has been closed
