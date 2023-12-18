@@ -58,7 +58,7 @@ export default class LuigiContainer extends HTMLElement {
   activeFeatureToggleList: string[];
 
   /**
-   * ???
+   * If set to true, skips handshake and ready event is fired immediately 
    */
   skipInitCheck: boolean;
 
@@ -83,11 +83,21 @@ export default class LuigiContainer extends HTMLElement {
   clientPermissions: any;
 
   /**
+   * The user settings to be passed to the web-component-based micro frontend
+   */
+  userSettings: UserSettings;
+
+  /**
+   * The anchor value to be passed to the web-component-based micro frontend.
+   */
+  anchor: string;
+
+  /**
    * Updates the context of the microfrontend
    * @param contextObj The context data
-   * @param internal internal luigi legacy data
+   * @param internal internal luigi legacy data used for iframes
    */
-  updateContext(contextObj: any, internal?: any): Function;
+  updateContext(contextObj: any, internal?: any): void;
 
   /**
    * Send a custom message to the microfronted
@@ -107,14 +117,4 @@ export default class LuigiContainer extends HTMLElement {
    * Manually triggers the micro frontend rendering process when using defer-init attribute
    */
   init(): Function;
-
-  /**
-   * The user settings to be passed to the web-component-based micro frontend
-   */
-  userSettings: UserSettings;
-
-  /**
-   * The anchor value to be passed to the web-component-based micro frontend.
-   */
-  anchor: string;
 }
