@@ -19,9 +19,11 @@ export default class LuigiContainer extends HTMLElement {
   viewurl: string;
 
   /**
-   * The context to be passed to the microfrontend
+   * The context to be passed to the microfrontend. It can be an object or a stringified object.
+   * @param {Object} object to be passed to the microfrontend
+   * @param {string} string must be a stringified JSON object.
    */
-  context: any;
+  context: object | string;
 
   /**
    * Label information for the microfrontend
@@ -30,12 +32,14 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * Predicate that sets whether the microfrontend is to be rendered in a web component or not. It can also be an object with the following attributes:
-   * @param {Object} [WebComponentSettings]
+   * @param {boolean} specifies if a microfrontend is a webcomponent or not without any other settings.
+   * @param {Object} [WebComponentSettings] specifies that the microfrontend is a webcomponent with addtional settings.
    * @param {string} WebComponentSettings.type: string, like module.
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
+   * @param {string} string must be a stringified boolean or JSON object from type `WebComponentSettings`.
    */
-  webcomponent: boolean | WebComponentSettings;
+  webcomponent: boolean | WebComponentSettings | string;
 
   /**
    * The locale to be passed to the web-component-based micro frontend
