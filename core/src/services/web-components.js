@@ -350,11 +350,13 @@ class WebComponentSvcClass {
   intersectionObserverCallback(entries, observer) {
     const intersectingEntries = entries.filter(entry => entry.isIntersecting);
 
-    console.log('Observer callback', {
-      entries,
-      intersectingEntries,
-      intersectingTargets: intersectingEntries.map(entry => entry.target)
-    });
+    if (!globalThis.beforeEach) {
+      console.log('Observer callback', {
+        entries,
+        intersectingEntries,
+        intersectingTargets: intersectingEntries.map(entry => entry.target)
+      });
+    }
 
     intersectingEntries.forEach(intersectingEntry => {
       const coumpoundItemContainer = intersectingEntry.target;
@@ -437,15 +439,18 @@ class WebComponentSvcClass {
     /** @type {IntersectionObserver} */
     let intersectionObserver;
 
-    console.log('renderWebComponentCompound, entry', {
-      navNode,
-      wc_container,
-      extendedContext,
-      useLazyLoading,
-      renderer
-    });
+    if (!globalThis.beforeEach) {
+      console.log('renderWebComponentCompound, entry', {
+        navNode,
+        wc_container,
+        extendedContext,
+        useLazyLoading,
+        renderer
+      });
+    }
 
     if (useLazyLoading) {
+      console.log('Calling IntersectionObserver');
       intersectionObserver = new IntersectionObserver((entries, observer) => {
         this.intersectionObserverCallback(entries, observer);
       });
