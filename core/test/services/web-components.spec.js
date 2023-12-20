@@ -106,44 +106,6 @@ describe('WebComponentService', function() {
       assert(myEl.__postProcess.calledOnce, '__postProcess should be called');
       expect(myEl.setAttribute.calledWith('lui_web_component', true)).to.equal(true);
     });
-
-    describe('attachWC and lazy loading', () => {
-      let mockedRemoveTemporaryHeightFromCompoundItemContainer;
-
-      beforeEach(() => {
-        mockedRemoveTemporaryHeightFromCompoundItemContainer = jest.spyOn(
-          WebComponentService,
-          'removeTemporaryHeightFromCompoundItemContainer'
-        );
-      });
-
-      afterEach(() => {
-        mockedRemoveTemporaryHeightFromCompoundItemContainer.mockRestore();
-      });
-
-      it('does not call removeTemporaryHeightFromCompoundItemContainer if lazy loading is off', () => {
-        container.appendChild(itemPlaceholder);
-        WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
-
-        expect(mockedRemoveTemporaryHeightFromCompoundItemContainer.mock.calls).to.have.lengthOf(0);
-      });
-
-      it('calls removeTemporaryHeightFromCompoundItemContainer if lazy loading is on', () => {
-        container.appendChild(itemPlaceholder);
-        WebComponentService.attachWC(
-          'div',
-          itemPlaceholder,
-          container,
-          extendedContext,
-          undefined,
-          undefined,
-          undefined,
-          true
-        );
-
-        expect(mockedRemoveTemporaryHeightFromCompoundItemContainer.mock.calls).to.have.lengthOf(1);
-      });
-    });
   });
 
   describe('register web component from url', function() {
@@ -286,59 +248,6 @@ describe('WebComponentService', function() {
       });
 
       WebComponentService.renderWebComponent(viewUrl, container, ctx, node);
-    });
-
-    describe('renderWebComponent and lazy loading', () => {
-      let mockAttachWc;
-      let mockRegisterWcFromUrl;
-
-      beforeEach(() => {
-        mockAttachWc = jest.spyOn(WebComponentService, 'attachWC');
-        mockRegisterWcFromUrl = jest.spyOn(WebComponentService, 'registerWCFromUrl');
-      });
-
-      afterEach(() => {
-        mockAttachWc.mockRestore();
-        mockRegisterWcFromUrl.mockRestore();
-      });
-
-      it('passes on isLazyLoading in case wc already exists', done => {
-        customElementsGetSpy.mockReturnValue(true);
-
-        mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
-          expect(isLazyLoading).to.equal(true);
-          done();
-        });
-
-        WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
-      });
-
-      it('passes on isLazyLoading in case of custom function', done => {
-        customElementsGetSpy.mockReturnValue(false);
-        mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
-          expect(isLazyLoading).to.equal(true);
-          done();
-        });
-
-        window.luigiWCFn = (viewUrl, wc_id, wc_container, cb) => {
-          cb();
-        };
-
-        WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
-
-        delete window.luigiWCFn;
-      });
-
-      it('passes on isLazyLoading in case of new wc', done => {
-        customElementsGetSpy.mockReturnValue(false);
-        mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
-          expect(isLazyLoading).to.equal(true);
-          done();
-        });
-        mockRegisterWcFromUrl.mockImplementation(() => Promise.resolve());
-
-        WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
-      });
     });
   });
 
@@ -591,45 +500,6 @@ describe('WebComponentService', function() {
         }
       );
     });
-
-    describe('renderWebComponentCompound and lazy loading', () => {
-      let mockRenderWebComponent;
-      let mockRegisterWcFromUrl;
-      let mockSetTemporaryHeight;
-
-      beforeEach(() => {
-        navNode.compound.useLazyLoading = true;
-        mockRenderWebComponent = jest.spyOn(WebComponentService, 'renderWebComponent');
-        mockRegisterWcFromUrl = jest.spyOn(WebComponentService, 'registerWCFromUrl').mockResolvedValue();
-        mockSetTemporaryHeight = jest.spyOn(WebComponentService, 'setTemporaryHeightForCompoundItemContainer');
-      });
-
-      afterEach(() => {
-        delete navNode.compound.useLazyLoading;
-        mockRenderWebComponent.mockRestore();
-        mockRegisterWcFromUrl.mockRestore();
-        mockSetTemporaryHeight.mockRestore();
-      });
-
-      it('renders a flat compound with lazy loading', done => {
-        const wc_container = document.createElement('div');
-
-        WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
-          .then(() => {
-            // IntersectionObserver should be instantiated
-            expect(globalThis.IntersectionObserver.mock.instances).to.have.lengthOf(1);
-            // The observe function of the IntersectionObserver instance should be called once for each compound item
-            const intersectionObserverInstance = globalThis.IntersectionObserver.mock.instances[0];
-            expect(intersectionObserverInstance.observe.mock.calls).to.have.lengthOf(2);
-            // setTemporaryHeightForCompoundItemContainer should be called once for each compound item
-            expect(mockSetTemporaryHeight.mock.calls).to.have.lengthOf(2);
-            done();
-          })
-          .catch(reason => {
-            done(reason);
-          });
-      });
-    });
   });
 
   describe('Get user settings for wc', () => {
@@ -665,51 +535,253 @@ describe('WebComponentService', function() {
     });
   });
 
-  describe('setTemporaryHeightForCompoundItemContainer', () => {
-    let mockContainerElement;
+  describe('Lazy loading', () => {
+    describe('setTemporaryHeightForCompoundItemContainer', () => {
+      let mockContainerElement;
 
-    beforeEach(() => {
-      mockContainerElement = {
-        style: {
-          height: ''
-        }
-      };
+      beforeEach(() => {
+        mockContainerElement = {
+          style: {
+            height: ''
+          }
+        };
+      });
+
+      it('applies the fallback height if no height is configured', () => {
+        WebComponentService.setTemporaryHeightForCompoundItemContainer(mockContainerElement, {}, {});
+
+        expect(mockContainerElement.style.height).to.equal('500px');
+      });
+
+      it('applies the compound setting if it is configured', () => {
+        WebComponentService.setTemporaryHeightForCompoundItemContainer(
+          mockContainerElement,
+          { lazyLoadingOptions: { temporaryContainerHeight: '666px' } },
+          {}
+        );
+
+        expect(mockContainerElement.style.height).to.equal('666px');
+      });
+
+      it('applies the compound item setting if it is configured', () => {
+        WebComponentService.setTemporaryHeightForCompoundItemContainer(
+          mockContainerElement,
+          {},
+          { temporaryContainerHeight: '777px' }
+        );
+
+        expect(mockContainerElement.style.height).to.equal('777px');
+      });
+
+      it('applies the compound item setting if it is configured, overriding a compound setting', () => {
+        WebComponentService.setTemporaryHeightForCompoundItemContainer(
+          mockContainerElement,
+          { lazyLoadingOptions: { temporaryContainerHeight: '666px' } },
+          { temporaryContainerHeight: '777px' }
+        );
+
+        expect(mockContainerElement.style.height).to.equal('777px');
+      });
     });
 
-    it('applies the fallback height if no height is configured', () => {
-      WebComponentService.setTemporaryHeightForCompoundItemContainer(mockContainerElement, {}, {});
+    describe('attachWC and lazy loading', () => {
+      let container;
+      let itemPlaceholder;
+      let mockedRemoveTemporaryHeightFromCompoundItemContainer;
+      let extendedContext;
 
-      expect(mockContainerElement.style.height).to.equal('500px');
+      beforeEach(() => {
+        window.Luigi = {
+          navigation: 'mock1',
+          ux: 'mock2',
+          i18n: () => LuigiI18N
+        };
+        container = document.createElement('div');
+        itemPlaceholder = document.createElement('div');
+        extendedContext = { context: { someValue: true } };
+        mockedRemoveTemporaryHeightFromCompoundItemContainer = jest.spyOn(
+          WebComponentService,
+          'removeTemporaryHeightFromCompoundItemContainer'
+        );
+      });
+
+      afterEach(() => {
+        mockedRemoveTemporaryHeightFromCompoundItemContainer.mockRestore();
+        delete window.Luigi;
+      });
+
+      it('does not call removeTemporaryHeightFromCompoundItemContainer if lazy loading is off', () => {
+        container.appendChild(itemPlaceholder);
+        WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
+
+        expect(mockedRemoveTemporaryHeightFromCompoundItemContainer.mock.calls).to.have.lengthOf(0);
+      });
+
+      it('calls removeTemporaryHeightFromCompoundItemContainer if lazy loading is on', () => {
+        container.appendChild(itemPlaceholder);
+        WebComponentService.attachWC(
+          'div',
+          itemPlaceholder,
+          container,
+          extendedContext,
+          undefined,
+          undefined,
+          undefined,
+          true
+        );
+
+        expect(mockedRemoveTemporaryHeightFromCompoundItemContainer.mock.calls).to.have.lengthOf(1);
+      });
     });
 
-    it('applies the compound setting if it is configured', () => {
-      WebComponentService.setTemporaryHeightForCompoundItemContainer(
-        mockContainerElement,
-        { lazyLoadingOptions: { temporaryContainerHeight: '666px' } },
-        {}
-      );
+    describe('renderWebComponent and lazy loading', () => {
+      let mockAttachWc;
+      let mockRegisterWcFromUrl;
+      let viewUrl;
+      let ctx;
+      let node;
+      let container;
 
-      expect(mockContainerElement.style.height).to.equal('666px');
+      beforeEach(() => {
+        viewUrl = 'someurl';
+        ctx = { someValue: true };
+        node = {};
+        container = document.createElement('div');
+        mockAttachWc = jest.spyOn(WebComponentService, 'attachWC');
+        mockRegisterWcFromUrl = jest.spyOn(WebComponentService, 'registerWCFromUrl');
+      });
+
+      afterEach(() => {
+        mockAttachWc.mockRestore();
+        mockRegisterWcFromUrl.mockRestore();
+      });
+
+      it('passes on isLazyLoading in case wc already exists', done => {
+        customElementsGetSpy.mockReturnValue(true);
+
+        mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
+          expect(isLazyLoading).to.equal(true);
+          done();
+        });
+
+        WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
+      });
+
+      it('passes on isLazyLoading in case of custom function', done => {
+        customElementsGetSpy.mockReturnValue(false);
+        mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
+          expect(isLazyLoading).to.equal(true);
+          done();
+        });
+
+        window.luigiWCFn = (viewUrl, wc_id, wc_container, cb) => {
+          cb();
+        };
+
+        WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
+
+        delete window.luigiWCFn;
+      });
+
+      it('passes on isLazyLoading in case of new wc', done => {
+        customElementsGetSpy.mockReturnValue(false);
+        mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
+          expect(isLazyLoading).to.equal(true);
+          done();
+        });
+        mockRegisterWcFromUrl.mockImplementation(() => Promise.resolve());
+
+        WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
+      });
     });
 
-    it('applies the compound item setting if it is configured', () => {
-      WebComponentService.setTemporaryHeightForCompoundItemContainer(
-        mockContainerElement,
-        {},
-        { temporaryContainerHeight: '777px' }
-      );
+    describe('renderWebComponentCompound and lazy loading', () => {
+      let mockRenderWebComponent;
+      let mockRegisterWcFromUrl;
+      let mockSetTemporaryHeight;
+      let navNode;
+      let extendedContext;
 
-      expect(mockContainerElement.style.height).to.equal('777px');
-    });
+      beforeEach(() => {
+        globalThis.IntersectionObserver = jest.fn(function IntersectionObserver() {
+          this.observe = jest.fn();
+        });
+        extendedContext = { context: { key: 'value', mario: 'luigi' } };
+        navNode = {
+          compound: {
+            useLazyLoading: true,
+            eventListeners: [
+              {
+                source: '*',
+                name: 'emitterId',
+                action: 'update',
+                dataConverter: data => {
+                  return 'new text: ' + data;
+                }
+              }
+            ],
+            children: [
+              {
+                viewUrl: 'mfe1.js',
+                context: {
+                  title: 'My Awesome Grid'
+                },
+                layoutConfig: {
+                  row: '1',
+                  column: '1 / -1'
+                },
+                eventListeners: [
+                  {
+                    source: 'emitterId',
+                    name: 'emitterId',
+                    action: 'update',
+                    dataConverter: data => {
+                      return 'new text: ' + data;
+                    }
+                  }
+                ]
+              },
+              {
+                id: 'emitterId',
+                viewUrl: 'mfe2.js',
+                context: {
+                  title: 'Some input',
+                  instant: true
+                }
+              }
+            ]
+          }
+        };
+        mockRenderWebComponent = jest.spyOn(WebComponentService, 'renderWebComponent');
+        mockRegisterWcFromUrl = jest.spyOn(WebComponentService, 'registerWCFromUrl').mockResolvedValue();
+        mockSetTemporaryHeight = jest.spyOn(WebComponentService, 'setTemporaryHeightForCompoundItemContainer');
+      });
 
-    it('applies the compound item setting if it is configured, overriding a compound setting', () => {
-      WebComponentService.setTemporaryHeightForCompoundItemContainer(
-        mockContainerElement,
-        { lazyLoadingOptions: { temporaryContainerHeight: '666px' } },
-        { temporaryContainerHeight: '777px' }
-      );
+      afterEach(() => {
+        mockRenderWebComponent.mockRestore();
+        mockRegisterWcFromUrl.mockRestore();
+        mockSetTemporaryHeight.mockRestore();
+        delete globalThis.IntersectionObserver;
+      });
 
-      expect(mockContainerElement.style.height).to.equal('777px');
+      it('renders a flat compound with lazy loading', done => {
+        const wc_container = document.createElement('div');
+
+        WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
+          .then(() => {
+            // IntersectionObserver should be instantiated
+            expect(globalThis.IntersectionObserver.mock.instances).to.have.lengthOf(1);
+            // The observe function of the IntersectionObserver instance should be called once for each compound item
+            const intersectionObserverInstance = globalThis.IntersectionObserver.mock.instances[0];
+            expect(intersectionObserverInstance.observe.mock.calls).to.have.lengthOf(2);
+            // setTemporaryHeightForCompoundItemContainer should be called once for each compound item
+            expect(mockSetTemporaryHeight.mock.calls).to.have.lengthOf(2);
+            done();
+          })
+          .catch(reason => {
+            done(reason);
+          });
+      });
     });
   });
 });
