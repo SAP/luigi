@@ -386,11 +386,7 @@ class WebComponentSvcClass {
    * @param {object} compoundItemSettings
    * @param {string} compoundItemSettings.temporaryContainerHeight
    */
-  setTemporaryHeightForCompoundItemContainer(
-    compoundItemContainer,
-    compoundSettings,
-    compoundItemSettings
-  ) {
+  setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings, compoundItemSettings) {
     const temporaryContainerHeight =
       compoundItemSettings.temporaryContainerHeight ||
       compoundSettings.temporaryContainerHeight ||
@@ -500,9 +496,7 @@ class WebComponentSvcClass {
 
         navNode.compound.children.forEach((compoundItemSettings, index) => {
           const ctx = { ...context, ...compoundItemSettings.context };
-          const compoundItemContainer = renderer.createCompoundItemContainer(
-            compoundItemSettings.layoutConfig
-          );
+          const compoundItemContainer = renderer.createCompoundItemContainer(compoundItemSettings.layoutConfig);
           const nodeId = compoundItemSettings.id || 'gen_' + index;
 
           if (useLazyLoading) {

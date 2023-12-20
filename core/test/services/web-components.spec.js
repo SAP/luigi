@@ -673,15 +673,11 @@ describe('WebComponentService', function() {
         style: {
           height: ''
         }
-      }
+      };
     });
 
     it('applies the fallback height if no height is configured', () => {
-      WebComponentService.setTemporaryHeightForCompoundItemContainer(
-        mockContainerElement,
-        {},
-        {}
-      );
+      WebComponentService.setTemporaryHeightForCompoundItemContainer(mockContainerElement, {}, {});
 
       expect(mockContainerElement.style.height).to.equal('500px');
     });
