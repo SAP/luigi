@@ -584,6 +584,43 @@ describe('WebComponentService', function() {
       });
     });
 
+    describe('createIntersectionObserver', () => {
+      beforeEach(() => {
+        globalThis.IntersectionObserver = jest.fn(function IntersectionObserver(callback, options) {
+          this.callback = callback;
+          this.options = options;
+          this.observe = jest.fn();
+        });
+      });
+
+      afterEach(() => {
+        delete globalThis.IntersectionObserver;
+      });
+
+      it('correctly applies intersectionRootMargin', () => {
+        const observer = WebComponentService.createIntersectionObserver({
+          compound: {
+            useLazyLoading: true,
+            lazyLoadingOptions: {
+              intersectionRootMargin: '50px'
+            }
+          }
+        });
+
+        expect(observer.options.rootMargin).to.equal('50px');
+      });
+
+      it('correctly applies the fallback if intersectionRootMargin is not set', () => {
+        const observer = WebComponentService.createIntersectionObserver({
+          compound: {
+            useLazyLoading: true
+          }
+        });
+
+        expect(observer.options.rootMargin).to.equal('0px');
+      });
+    });
+
     describe('attachWC and lazy loading', () => {
       let container;
       let itemPlaceholder;
@@ -701,15 +738,22 @@ describe('WebComponentService', function() {
       let mockSetTemporaryHeight;
       let navNode;
       let extendedContext;
+      let wc_container;
 
       beforeEach(() => {
-        globalThis.IntersectionObserver = jest.fn(function IntersectionObserver() {
+        globalThis.IntersectionObserver = jest.fn(function IntersectionObserver(callback, options) {
+          this.callback = callback;
+          this.options = options;
           this.observe = jest.fn();
         });
         extendedContext = { context: { key: 'value', mario: 'luigi' } };
+        wc_container = document.createElement('div');
         navNode = {
           compound: {
             useLazyLoading: true,
+            lazyLoadingOptions: {
+              intersectionRootMargin: '50px'
+            },
             eventListeners: [
               {
                 source: '*',
@@ -765,8 +809,6 @@ describe('WebComponentService', function() {
       });
 
       it('renders a flat compound with lazy loading', done => {
-        const wc_container = document.createElement('div');
-
         WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
           .then(() => {
             // IntersectionObserver should be instantiated
@@ -776,6 +818,20 @@ describe('WebComponentService', function() {
             expect(intersectionObserverInstance.observe.mock.calls).to.have.lengthOf(2);
             // setTemporaryHeightForCompoundItemContainer should be called once for each compound item
             expect(mockSetTemporaryHeight.mock.calls).to.have.lengthOf(2);
+            done();
+          })
+          .catch(reason => {
+            done(reason);
+          });
+      });
+
+      it('passes intersectionRootMargin to IntersectionObserver', done => {
+        WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
+          .then(() => {
+            // expect(globalThis.IntersectionObserver.options).to.be.an('object');
+            const intersectionObserverInstance = globalThis.IntersectionObserver.mock.instances[0];
+            expect(intersectionObserverInstance.options).to.be.an('object');
+            expect(intersectionObserverInstance.options.rootMargin).to.equal('50px');
             done();
           })
           .catch(reason => {
