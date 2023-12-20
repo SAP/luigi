@@ -382,14 +382,15 @@ class WebComponentSvcClass {
   /**
    * @param {HTMLElement} compoundItemContainer
    * @param {object} compoundSettings
-   * @param {string} compoundSettings.temporaryContainerHeight
+   * @param {object} [compoundSettings.lazyLoadingOptions]
+   * @param {string} [compoundSettings.lazyLoadingOptions.temporaryContainerHeight]
    * @param {object} compoundItemSettings
-   * @param {string} compoundItemSettings.temporaryContainerHeight
+   * @param {string} [compoundItemSettings.temporaryContainerHeight]
    */
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings, compoundItemSettings) {
     const temporaryContainerHeight =
       compoundItemSettings.temporaryContainerHeight ||
-      compoundSettings.temporaryContainerHeight ||
+      compoundSettings.lazyLoadingOptions?.temporaryContainerHeight ||
       DEFAULT_TEMPORARY_HEIGHT;
 
     compoundItemContainer.style.height = temporaryContainerHeight;

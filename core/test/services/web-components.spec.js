@@ -685,7 +685,7 @@ describe('WebComponentService', function() {
     it('applies the compound setting if it is configured', () => {
       WebComponentService.setTemporaryHeightForCompoundItemContainer(
         mockContainerElement,
-        { temporaryContainerHeight: '666px' },
+        { lazyLoadingOptions: { temporaryContainerHeight: '666px' }},
         {}
       );
 
@@ -705,7 +705,7 @@ describe('WebComponentService', function() {
     it('applies the compound item setting if it is configured, overriding a compound setting', () => {
       WebComponentService.setTemporaryHeightForCompoundItemContainer(
         mockContainerElement,
-        { temporaryContainerHeight: '666px' },
+        { lazyLoadingOptions: { temporaryContainerHeight: '666px' }},
         { temporaryContainerHeight: '777px' }
       );
 
