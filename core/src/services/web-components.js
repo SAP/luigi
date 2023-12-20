@@ -383,11 +383,27 @@ class WebComponentSvcClass {
    * @param {HTMLElement} compoundItemContainer
    * @param {object} compoundSettings
    * @param {string} compoundSettings.temporaryContainerHeight
+   * @param {object} compoundItemSettings
+   * @param {string} compoundItemSettings.temporaryContainerHeight
    */
-  setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings) {
-    const temporaryContainerHeight = compoundSettings.temporaryContainerHeight || DEFAULT_TEMPORARY_HEIGHT;
+  setTemporaryHeightForCompoundItemContainer(
+    compoundItemContainer,
+    compoundSettings,
+    compoundItemSettings
+  ) {
+    const temporaryContainerHeight =
+      compoundItemSettings.temporaryContainerHeight ||
+      compoundSettings.temporaryContainerHeight ||
+      DEFAULT_TEMPORARY_HEIGHT;
 
     compoundItemContainer.style.height = temporaryContainerHeight;
+
+    if (!globalThis.beforeEach) {
+      console.log(`Set temporary height of ${temporaryContainerHeight}`, {
+        compoundSettings,
+        compoundItemSettings
+      });
+    }
   }
 
   /**
@@ -482,13 +498,19 @@ class WebComponentSvcClass {
           }
         };
 
-        navNode.compound.children.forEach((wc, index) => {
-          const ctx = { ...context, ...wc.context };
-          const compoundItemContainer = renderer.createCompoundItemContainer(wc.layoutConfig);
-          const nodeId = wc.id || 'gen_' + index;
+        navNode.compound.children.forEach((compoundItemSettings, index) => {
+          const ctx = { ...context, ...compoundItemSettings.context };
+          const compoundItemContainer = renderer.createCompoundItemContainer(
+            compoundItemSettings.layoutConfig
+          );
+          const nodeId = compoundItemSettings.id || 'gen_' + index;
 
           if (useLazyLoading) {
-            this.setTemporaryHeightForCompoundItemContainer(compoundItemContainer, navNode.compound);
+            this.setTemporaryHeightForCompoundItemContainer(
+              compoundItemContainer,
+              navNode.compound,
+              compoundItemSettings
+            );
           }
 
           compoundItemContainer.eventBus = compoundContainer.eventBus;
@@ -496,19 +518,27 @@ class WebComponentSvcClass {
 
           if (useLazyLoading) {
             this.wcContainerData.set(compoundItemContainer, {
-              viewUrl: wc.viewUrl,
+              viewUrl: compoundItemSettings.viewUrl,
               wc_container: compoundItemContainer,
               extendedContext: { context: ctx },
-              node: wc,
+              node: compoundItemSettings,
               nodeId: nodeId,
               isSpecialMf: true
             });
             intersectionObserver.observe(compoundItemContainer);
           } else {
-            this.renderWebComponent(wc.viewUrl, compoundItemContainer, { context: ctx }, wc, nodeId, true, false);
+            this.renderWebComponent(
+              compoundItemSettings.viewUrl,
+              compoundItemContainer,
+              { context: ctx },
+              compoundItemSettings,
+              nodeId,
+              true,
+              false
+            );
           }
 
-          registerEventListeners(ebListeners, wc, nodeId);
+          registerEventListeners(ebListeners, compoundItemSettings, nodeId);
         });
         wc_container.appendChild(compoundContainer);
 

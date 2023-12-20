@@ -664,4 +664,56 @@ describe('WebComponentService', function() {
       });
     });
   });
+
+  describe('setTemporaryHeightForCompoundItemContainer', () => {
+    let mockContainerElement;
+
+    beforeEach(() => {
+      mockContainerElement = {
+        style: {
+          height: ''
+        }
+      }
+    });
+
+    it('applies the fallback height if no height is configured', () => {
+      WebComponentService.setTemporaryHeightForCompoundItemContainer(
+        mockContainerElement,
+        {},
+        {}
+      );
+
+      expect(mockContainerElement.style.height).to.equal('500px');
+    });
+
+    it('applies the compound setting if it is configured', () => {
+      WebComponentService.setTemporaryHeightForCompoundItemContainer(
+        mockContainerElement,
+        { temporaryContainerHeight: '666px' },
+        {}
+      );
+
+      expect(mockContainerElement.style.height).to.equal('666px');
+    });
+
+    it('applies the compound item setting if it is configured', () => {
+      WebComponentService.setTemporaryHeightForCompoundItemContainer(
+        mockContainerElement,
+        {},
+        { temporaryContainerHeight: '777px' }
+      );
+
+      expect(mockContainerElement.style.height).to.equal('777px');
+    });
+
+    it('applies the compound item setting if it is configured, overriding a compound setting', () => {
+      WebComponentService.setTemporaryHeightForCompoundItemContainer(
+        mockContainerElement,
+        { temporaryContainerHeight: '666px' },
+        { temporaryContainerHeight: '777px' }
+      );
+
+      expect(mockContainerElement.style.height).to.equal('777px');
+    });
+  });
 });
