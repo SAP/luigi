@@ -41,6 +41,7 @@
     'getUnsavedChangesModalPromise'
   );
 
+  //TODO refactor
   const getComponentWrapper = () => {
     return {
       get: () => {
@@ -60,20 +61,31 @@
       },
       set: (obj) => {
         if (obj) {
-          for (const [prop, value] of Object.entries(obj)) {
-            prop === 'splitViewSettings' ? splitViewSettings = value:
-            prop === 'lastNode' ? lastNode = value:
-            prop === 'pathData' ? pathData = value:
-            prop === 'nodeParams' ? nodeParams = value:
-            prop === 'collapsed' ? collapsed = value:
-            prop === 'isDataPrepared' ? isDataPrepared = value:
-            prop === 'currentNode' ? currentNode = value:
-            prop === 'splitViewIframe' ? splitViewIframe = value:
-            prop === 'splitViewIframeData' ? splitViewIframeData = value:
-            prop === 'splitViewWC' ? splitViewWC = value:
-            prop === 'splitViewWCData' ? splitViewWCData = value:
-            undefined;
-          };
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
+            if (prop === 'splitViewSettings') {
+              splitViewSettings = obj.splitViewSettings;
+            } else if (prop === 'lastNode') {
+              lastNode = obj.lastNode;
+            } else if (prop === 'pathData') {
+              pathData = obj.pathData;
+            } else if (prop === 'nodeParams') {
+              nodeParams = obj.nodeParams;
+            } else if (prop === 'collapsed') {
+              collapsed = obj.collapsed;
+            } else if (prop === 'isDataPrepared') {
+              isDataPrepared = obj.isDataPrepared;
+            } else if (prop === 'currentNode') {
+              currentNode = obj.currentNode;
+            } else if (prop === 'splitViewIframe') {
+              splitViewIframe = obj.splitViewIframe;
+            } else if (prop === 'splitViewIframeData') {
+              splitViewIframeData = obj.splitViewIframeData;
+            } else if (prop === 'splitViewWC') {
+              splitViewWC = obj.splitViewWC;
+            } else if (prop === 'splitViewWCData') {
+              splitViewWCData = obj.splitViewWCData;
+            }
+          });
         }
       },
       dispatch,

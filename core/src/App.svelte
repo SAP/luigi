@@ -280,6 +280,7 @@
     });
   };
 
+  //TODO refactor
   const getComponentWrapper = () => {
     return {
       get: () => {
@@ -312,17 +313,26 @@
       set: (obj) => {
         if (obj) {
           noAnimation = false;
-          for (const [prop, value] of Object.entries(obj)) {
-            prop === 'hideNav' ? hideNav = value:
-            prop === 'viewUrl' ? viewUrl = value:
-            prop === 'nodeParams' ? nodeParams = value:
-            prop === 'viewGroup' ? viewGroup = value:
-            prop === 'urlParamsRaw' ? urlParamsRaw = value:
-            prop === 'currentNode' ? currentNode = value:
-            prop === 'navigationPath' ? navigationPath = value:
-            prop === 'context' ? context = value:
-            prop === 'pathParams' ? pathParams = value: undefined;
-            prop === 'hideSideNav' ? (() => {
+          Object.getOwnPropertyNames(obj).forEach((prop) => {
+            if (prop === 'hideNav') {
+              hideNav = obj.hideNav;
+            } else if (prop === 'viewUrl') {
+              viewUrl = obj.viewUrl;
+            } else if (prop === 'nodeParams') {
+              nodeParams = obj.nodeParams;
+            } else if (prop === 'viewGroup') {
+              viewGroup = obj.viewGroup;
+            } else if (prop === 'urlParamsRaw') {
+              urlParamsRaw = obj.urlParamsRaw;
+            } else if (prop === 'currentNode') {
+              currentNode = obj.currentNode;
+            } else if (prop === 'navigationPath') {
+              navigationPath = obj.navigationPath;
+            } else if (prop === 'context') {
+              context = obj.context;
+            } else if (prop === 'pathParams') {
+              pathParams = obj.pathParams;
+            } else if (prop === 'hideSideNav') {
               if (hideSideNav != obj.hideSideNav) {
                 noAnimation = true;
                 setTimeout(() => {
@@ -331,16 +341,23 @@
                     appNode.classList.remove('no-animation');
                   }
                 });
-              }hideSideNav = obj.hideSideNav;
-            })():
-            prop === 'isolateView' ? isolateView = value:
-            prop === 'pageErrorHandler' ? pageErrorHandler = value:
-            prop === 'previousNodeValues' ? previousNodeValues = value:
-            prop === 'mfSplitView' ? mfSplitView = value:
-            prop === 'splitViewValues' ? splitViewValues = value:
-            prop === 'splitViewIframe' ? splitViewIframe = value:
-            prop == 'splitViewWC' ? splitViewWC = value:
-            prop === 'showLoadingIndicator' ? (() => {
+              }
+              hideSideNav = obj.hideSideNav;
+            } else if (prop === 'isolateView') {
+              isolateView = obj.isolateView;
+            } else if (prop === 'pageErrorHandler') {
+              pageErrorHandler = obj.pageErrorHandler;
+            } else if (prop === 'previousNodeValues') {
+              previousNodeValues = obj.previousNodeValues;
+            } else if (prop === 'mfSplitView') {
+              mfSplitView = obj.mfSplitView;
+            } else if (prop === 'splitViewValues') {
+              splitViewValues = obj.splitViewValues;
+            } else if (prop === 'splitViewIframe') {
+              splitViewIframe = obj.splitViewIframe;
+            } else if (prop == 'splitViewWC') {
+              splitViewWC = obj.splitViewWC;
+            } else if (prop === 'showLoadingIndicator') {
               if (obj.showLoadingIndicator === true) {
                 loadingIndicatorTimeout = setTimeout(() => {
                   showLoadingIndicator = true;
@@ -349,13 +366,16 @@
                 showLoadingIndicator = false;
                 clearTimeout(loadingIndicatorTimeout);
               }
-            })():
-            prop === 'tabNav' ? tabNav = value:
-            prop === 'isNavigateBack' ? isNavigateBack = value:
-            prop === 'goBackContext' ? goBackContext = value:
-            prop === 'isNavigationSyncEnabled' ? isNavigationSyncEnabled = value:
-            undefined;
-          };
+            } else if (prop === 'tabNav') {
+              tabNav = obj.tabNav;
+            } else if (prop === 'isNavigateBack') {
+              isNavigateBack = obj.isNavigateBack;
+            } else if (prop === 'goBackContext') {
+              goBackContext = obj.goBackContext;
+            } else if (prop === 'isNavigationSyncEnabled') {
+              isNavigationSyncEnabled = obj.isNavigationSyncEnabled;
+            }
+          });
         }
       },
       shouldShowUnsavedChangesModal,
