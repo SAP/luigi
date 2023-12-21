@@ -513,18 +513,15 @@ class WebComponentSvcClass {
           const compoundItemContainer = renderer.createCompoundItemContainer(compoundItemSettings.layoutConfig);
           const nodeId = compoundItemSettings.id || 'gen_' + index;
 
+          compoundItemContainer.eventBus = compoundContainer.eventBus;
+
           if (useLazyLoading) {
             this.setTemporaryHeightForCompoundItemContainer(
               compoundItemContainer,
               navNode.compound,
               compoundItemSettings
-            );
-          }
-
-          compoundItemContainer.eventBus = compoundContainer.eventBus;
-          renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
-
-          if (useLazyLoading) {
+              );
+            renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
             this.wcContainerData.set(compoundItemContainer, {
               viewUrl: compoundItemSettings.viewUrl,
               wc_container: compoundItemContainer,
@@ -535,6 +532,7 @@ class WebComponentSvcClass {
             });
             intersectionObserver.observe(compoundItemContainer);
           } else {
+            renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
             this.renderWebComponent(
               compoundItemSettings.viewUrl,
               compoundItemContainer,
@@ -548,6 +546,7 @@ class WebComponentSvcClass {
 
           registerEventListeners(ebListeners, compoundItemSettings, nodeId);
         });
+        
         wc_container.appendChild(compoundContainer);
 
         // listener for nesting wc
