@@ -395,7 +395,7 @@ class WebComponentSvcClass {
     if (compoundSettings.lazyLoadingOptions?.noTemporaryContainerHeight === true) {
       return;
     }
-    
+
     const temporaryContainerHeight =
       compoundItemSettings.temporaryContainerHeight ||
       compoundSettings.lazyLoadingOptions?.temporaryContainerHeight ||
@@ -416,7 +416,7 @@ class WebComponentSvcClass {
    */
   removeTemporaryHeightFromCompoundItemContainer(compoundItemContainer) {
     const wcContainerData = this.wcContainerData.get(compoundItemContainer);
-    
+
     if (wcContainerData?.noTemporaryContainerHeight !== true) {
       compoundItemContainer.style.removeProperty('height');
     }

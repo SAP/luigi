@@ -611,22 +611,22 @@ describe('WebComponentService', function() {
       afterEach(() => {
         mockWcContainerDataGet.mockRestore();
       });
-      
+
       it('removes the height style property', () => {
         mockWcContainerDataGet.mockReturnValue({});
 
         WebComponentService.removeTemporaryHeightFromCompoundItemContainer(mockContainerElement);
 
         expect(mockContainerElement.style.removeProperty.mock.calls).to.have.lengthOf(1);
-      })
-      
+      });
+
       it('does not remove the height style property if noTemporaryContainerHeight is set', () => {
         mockWcContainerDataGet.mockReturnValue({ noTemporaryContainerHeight: true });
 
         WebComponentService.removeTemporaryHeightFromCompoundItemContainer(mockContainerElement);
 
         expect(mockContainerElement.style.removeProperty.mock.calls).to.have.lengthOf(0);
-      })
+      });
     });
 
     describe('createIntersectionObserver', () => {
