@@ -520,7 +520,7 @@ class WebComponentSvcClass {
               compoundItemContainer,
               navNode.compound,
               compoundItemSettings
-              );
+            );
             renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
             this.wcContainerData.set(compoundItemContainer, {
               viewUrl: compoundItemSettings.viewUrl,
@@ -546,7 +546,7 @@ class WebComponentSvcClass {
 
           registerEventListeners(ebListeners, compoundItemSettings, nodeId);
         });
-        
+
         wc_container.appendChild(compoundContainer);
 
         // listener for nesting wc
