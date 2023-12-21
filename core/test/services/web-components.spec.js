@@ -827,10 +827,10 @@ describe('WebComponentService', function() {
 
       it('renders a nested compound', done => {
         const mockInitWc = jest.spyOn(WebComponentService, 'initWC').mockReturnValue();
-        
+
         navNode.viewUrl = 'mfe.js';
         navNode.webcomponent = true;
-  
+
         WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
           .then(() => {
             expect(globalThis.IntersectionObserver.mock.instances).to.have.lengthOf(1);
@@ -839,7 +839,7 @@ describe('WebComponentService', function() {
 
             expect(intersectionObserverInstance.observe.mock.calls).to.have.lengthOf(2);
             expect(mockSetTemporaryHeight.mock.calls).to.have.lengthOf(2);
-            
+
             mockInitWc.mockRestore();
             done();
           })
