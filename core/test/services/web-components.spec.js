@@ -621,7 +621,7 @@ describe('WebComponentService', function() {
       });
     });
 
-    describe('attachWC and lazy loading', () => {
+    describe('attachWC with lazy loading', () => {
       let container;
       let itemPlaceholder;
       let mockedRemoveTemporaryHeightFromCompoundItemContainer;
@@ -671,7 +671,7 @@ describe('WebComponentService', function() {
       });
     });
 
-    describe('renderWebComponent and lazy loading', () => {
+    describe('renderWebComponent with lazy loading', () => {
       let mockAttachWc;
       let mockRegisterWcFromUrl;
       let viewUrl;
@@ -708,6 +708,7 @@ describe('WebComponentService', function() {
         customElementsGetSpy.mockReturnValue(false);
         mockAttachWc.mockImplementation((_1, _2, _3, _4, _5, _6, _7, isLazyLoading) => {
           expect(isLazyLoading).to.equal(true);
+          delete window.luigiWCFn;
           done();
         });
 
@@ -716,8 +717,6 @@ describe('WebComponentService', function() {
         };
 
         WebComponentService.renderWebComponent(viewUrl, container, ctx, node, undefined, undefined, true);
-
-        delete window.luigiWCFn;
       });
 
       it('passes on isLazyLoading in case of new wc', done => {
@@ -732,7 +731,7 @@ describe('WebComponentService', function() {
       });
     });
 
-    describe('renderWebComponentCompound and lazy loading', () => {
+    describe('renderWebComponentCompound with lazy loading', () => {
       let mockRenderWebComponent;
       let mockRegisterWcFromUrl;
       let mockSetTemporaryHeight;
@@ -746,6 +745,8 @@ describe('WebComponentService', function() {
           this.options = options;
           this.observe = jest.fn();
         });
+        customElementsGetSpy.mockReturnValue(false);
+
         extendedContext = { context: { key: 'value', mario: 'luigi' } };
         wc_container = document.createElement('div');
         navNode = {
@@ -811,13 +812,35 @@ describe('WebComponentService', function() {
       it('renders a flat compound with lazy loading', done => {
         WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
           .then(() => {
-            // IntersectionObserver should be instantiated
             expect(globalThis.IntersectionObserver.mock.instances).to.have.lengthOf(1);
-            // The observe function of the IntersectionObserver instance should be called once for each compound item
+
             const intersectionObserverInstance = globalThis.IntersectionObserver.mock.instances[0];
+
             expect(intersectionObserverInstance.observe.mock.calls).to.have.lengthOf(2);
-            // setTemporaryHeightForCompoundItemContainer should be called once for each compound item
             expect(mockSetTemporaryHeight.mock.calls).to.have.lengthOf(2);
+            done();
+          })
+          .catch(reason => {
+            done(reason);
+          });
+      });
+
+      it('renders a nested compound', done => {
+        const mockInitWc = jest.spyOn(WebComponentService, 'initWC').mockReturnValue();
+        
+        navNode.viewUrl = 'mfe.js';
+        navNode.webcomponent = true;
+  
+        WebComponentService.renderWebComponentCompound(navNode, wc_container, extendedContext)
+          .then(() => {
+            expect(globalThis.IntersectionObserver.mock.instances).to.have.lengthOf(1);
+
+            const intersectionObserverInstance = globalThis.IntersectionObserver.mock.instances[0];
+
+            expect(intersectionObserverInstance.observe.mock.calls).to.have.lengthOf(2);
+            expect(mockSetTemporaryHeight.mock.calls).to.have.lengthOf(2);
+            
+            mockInitWc.mockRestore();
             done();
           })
           .catch(reason => {
