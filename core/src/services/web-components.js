@@ -20,6 +20,7 @@ class WebComponentSvcClass {
    *  @property {object} node
    *  @property {string} nodeId
    *  @property {boolean} isSpecialMf
+   *  @property {boolean} noTemporaryContainerHeight
    */
 
   /** @type {WeakMap<HTMLElement, WcContainerData>} */
@@ -359,8 +360,8 @@ class WebComponentSvcClass {
     }
 
     intersectingEntries.forEach(intersectingEntry => {
-      const coumpoundItemContainer = intersectingEntry.target;
-      const wcContainerData = this.wcContainerData.get(coumpoundItemContainer);
+      const compoundItemContainer = intersectingEntry.target;
+      const wcContainerData = this.wcContainerData.get(compoundItemContainer);
 
       if (!!wcContainerData) {
         this.renderWebComponent(
@@ -374,10 +375,10 @@ class WebComponentSvcClass {
         );
       } else {
         console.error('Could not find WC container data', {
-          for: coumpoundItemContainer
+          for: compoundItemContainer
         });
       }
-      observer.unobserve(coumpoundItemContainer);
+      observer.unobserve(compoundItemContainer);
     });
   }
 
@@ -386,10 +387,15 @@ class WebComponentSvcClass {
    * @param {object} compoundSettings
    * @param {object} [compoundSettings.lazyLoadingOptions]
    * @param {string} [compoundSettings.lazyLoadingOptions.temporaryContainerHeight]
+   * @param {boolean} [compoundSettings.lazyLoadingOptions.noTemporaryContainerHeight]
    * @param {object} compoundItemSettings
    * @param {string} [compoundItemSettings.temporaryContainerHeight]
    */
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings, compoundItemSettings) {
+    if (compoundSettings.lazyLoadingOptions?.noTemporaryContainerHeight === true) {
+      return;
+    }
+    
     const temporaryContainerHeight =
       compoundItemSettings.temporaryContainerHeight ||
       compoundSettings.lazyLoadingOptions?.temporaryContainerHeight ||
@@ -409,7 +415,11 @@ class WebComponentSvcClass {
    * @param {HTMLElement} compoundItemContainer
    */
   removeTemporaryHeightFromCompoundItemContainer(compoundItemContainer) {
-    compoundItemContainer.style.removeProperty('height');
+    const wcContainerData = this.wcContainerData.get(compoundItemContainer);
+    
+    if (wcContainerData?.noTemporaryContainerHeight !== true) {
+      compoundItemContainer.style.removeProperty('height');
+    }
   }
 
   /**
@@ -528,7 +538,8 @@ class WebComponentSvcClass {
               extendedContext: { context: ctx },
               node: compoundItemSettings,
               nodeId: nodeId,
-              isSpecialMf: true
+              isSpecialMf: true,
+              noTemporaryContainerHeight: navNode.compound.lazyLoadingOptions?.noTemporaryContainerHeight
             });
             intersectionObserver.observe(compoundItemContainer);
           } else {

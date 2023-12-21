@@ -537,14 +537,25 @@ describe('WebComponentService', function() {
 
   describe('Lazy loading', () => {
     describe('setTemporaryHeightForCompoundItemContainer', () => {
+      const initialHeight = '';
       let mockContainerElement;
 
       beforeEach(() => {
         mockContainerElement = {
           style: {
-            height: ''
+            height: initialHeight
           }
         };
+      });
+
+      it('does not apply anything if noTemporaryContainerHeight is configured', () => {
+        WebComponentService.setTemporaryHeightForCompoundItemContainer(
+          mockContainerElement,
+          { lazyLoadingOptions: { temporaryContainerHeight: '666px', noTemporaryContainerHeight: true } },
+          {}
+        );
+
+        expect(mockContainerElement.style.height).to.equal(initialHeight);
       });
 
       it('applies the fallback height if no height is configured', () => {
@@ -582,6 +593,40 @@ describe('WebComponentService', function() {
 
         expect(mockContainerElement.style.height).to.equal('777px');
       });
+    });
+
+    describe('removeTemporaryHeightFromCompoundItemContainer', () => {
+      let mockWcContainerDataGet;
+      let mockContainerElement;
+
+      beforeEach(() => {
+        mockWcContainerDataGet = jest.spyOn(WebComponentService.wcContainerData, 'get');
+        mockContainerElement = {
+          style: {
+            removeProperty: jest.fn()
+          }
+        };
+      });
+
+      afterEach(() => {
+        mockWcContainerDataGet.mockRestore();
+      });
+      
+      it('removes the height style property', () => {
+        mockWcContainerDataGet.mockReturnValue({});
+
+        WebComponentService.removeTemporaryHeightFromCompoundItemContainer(mockContainerElement);
+
+        expect(mockContainerElement.style.removeProperty.mock.calls).to.have.lengthOf(1);
+      })
+      
+      it('does not remove the height style property if noTemporaryContainerHeight is set', () => {
+        mockWcContainerDataGet.mockReturnValue({ noTemporaryContainerHeight: true });
+
+        WebComponentService.removeTemporaryHeightFromCompoundItemContainer(mockContainerElement);
+
+        expect(mockContainerElement.style.removeProperty.mock.calls).to.have.lengthOf(0);
+      })
     });
 
     describe('createIntersectionObserver', () => {
