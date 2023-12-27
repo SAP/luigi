@@ -379,9 +379,8 @@
     overflow-y: auto;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    /*TODO: check if FD Styles > 0.18.0 has fixed it*/
     .fd-list__title {
-      line-height: var(--sapContent_LineHeight, 1.4);
-    }
+      line-height: var(--sapContent_LineHeight);
+    } 
   }
 </style>
