@@ -396,7 +396,7 @@ class WebComponentSvcClass {
       if (!globalThis.process?.env?.JEST_WORKER_ID) {
         console.log('NOT setting temporary height');
       }
-      
+
       return;
     }
 
