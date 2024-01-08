@@ -578,7 +578,7 @@ describe('WebComponentService', function() {
         WebComponentService.setTemporaryHeightForCompoundItemContainer(
           mockContainerElement,
           {},
-          { temporaryContainerHeight: '777px' }
+          { layoutConfig: { temporaryContainerHeight: '777px' } }
         );
 
         expect(mockContainerElement.style.height).to.equal('777px');
@@ -588,7 +588,7 @@ describe('WebComponentService', function() {
         WebComponentService.setTemporaryHeightForCompoundItemContainer(
           mockContainerElement,
           { lazyLoadingOptions: { temporaryContainerHeight: '666px' } },
-          { temporaryContainerHeight: '777px' }
+          { layoutConfig: { temporaryContainerHeight: '777px' } }
         );
 
         expect(mockContainerElement.style.height).to.equal('777px');

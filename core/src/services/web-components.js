@@ -389,7 +389,8 @@ class WebComponentSvcClass {
    * @param {string} [compoundSettings.lazyLoadingOptions.temporaryContainerHeight]
    * @param {boolean} [compoundSettings.lazyLoadingOptions.noTemporaryContainerHeight]
    * @param {object} compoundItemSettings
-   * @param {string} [compoundItemSettings.temporaryContainerHeight]
+   * @param {object} compoundItemSettings.layoutConfig
+   * @param {string} [compoundItemSettings.layoutConfig.temporaryContainerHeight]
    */
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings, compoundItemSettings) {
     if (compoundSettings.lazyLoadingOptions?.noTemporaryContainerHeight === true) {
@@ -401,7 +402,7 @@ class WebComponentSvcClass {
     }
 
     const temporaryContainerHeight =
-      compoundItemSettings.temporaryContainerHeight ||
+      compoundItemSettings.layoutConfig?.temporaryContainerHeight ||
       compoundSettings.lazyLoadingOptions?.temporaryContainerHeight ||
       DEFAULT_TEMPORARY_HEIGHT;
 
