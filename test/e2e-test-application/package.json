@@ -16,6 +16,7 @@
     "startExternalMf": "http-server --port 8090 ./externalMf",
     "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf\""
   },
+  
   "dependencies": {
     "@angular/animations": "^15.2.9",
     "@angular/common": "^15.2.9",
