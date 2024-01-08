@@ -645,8 +645,8 @@ describe('WebComponentService', function() {
       it('correctly applies intersectionRootMargin', () => {
         const observer = WebComponentService.createIntersectionObserver({
           compound: {
-            useLazyLoading: true,
             lazyLoadingOptions: {
+              enabled: true,
               intersectionRootMargin: '50px'
             }
           }
@@ -658,7 +658,9 @@ describe('WebComponentService', function() {
       it('correctly applies the fallback if intersectionRootMargin is not set', () => {
         const observer = WebComponentService.createIntersectionObserver({
           compound: {
-            useLazyLoading: true
+            lazyLoadingOptions: {
+              enabled: true
+            }
           }
         });
 
@@ -796,8 +798,8 @@ describe('WebComponentService', function() {
         wc_container = document.createElement('div');
         navNode = {
           compound: {
-            useLazyLoading: true,
             lazyLoadingOptions: {
+              enabled: true,
               intersectionRootMargin: '50px'
             },
             eventListeners: [

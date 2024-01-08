@@ -351,7 +351,7 @@ class WebComponentSvcClass {
   intersectionObserverCallback(entries, observer) {
     const intersectingEntries = entries.filter(entry => entry.isIntersecting);
 
-    if (!globalThis.beforeEach) {
+    if (!globalThis.process?.env?.JEST_WORKER_ID) {
       console.log('Observer callback', {
         entries,
         intersectingEntries,
@@ -393,6 +393,10 @@ class WebComponentSvcClass {
    */
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings, compoundItemSettings) {
     if (compoundSettings.lazyLoadingOptions?.noTemporaryContainerHeight === true) {
+      if (!globalThis.process?.env?.JEST_WORKER_ID) {
+        console.log('NOT setting temporary height');
+      }
+      
       return;
     }
 
@@ -403,7 +407,7 @@ class WebComponentSvcClass {
 
     compoundItemContainer.style.height = temporaryContainerHeight;
 
-    if (!globalThis.beforeEach) {
+    if (!globalThis.process?.env?.JEST_WORKER_ID) {
       console.log(`Set temporary height of ${temporaryContainerHeight}`, {
         compoundSettings,
         compoundItemSettings
@@ -419,6 +423,8 @@ class WebComponentSvcClass {
 
     if (wcContainerData?.noTemporaryContainerHeight !== true) {
       compoundItemContainer.style.removeProperty('height');
+    } else if (!globalThis.process?.env?.JEST_WORKER_ID) {
+      console.log('NOT resetting temporary height');
     }
   }
 
@@ -472,21 +478,17 @@ class WebComponentSvcClass {
    * @param {*} context the luigi node context
    */
   renderWebComponentCompound(navNode, wc_container, extendedContext) {
-    const useLazyLoading = navNode.compound.useLazyLoading === true;
+    const useLazyLoading = navNode.compound?.lazyLoadingOptions?.enabled === true;
     const context = extendedContext.context;
     const renderer = this.getCompoundRenderer(navNode, context);
     /** @type {IntersectionObserver} */
     let intersectionObserver;
 
-    if (!globalThis.beforeEach) {
-      console.log('renderWebComponentCompound, entry', {
-        navNode,
-        wc_container,
-        extendedContext,
-        useLazyLoading,
-        renderer
-      });
-    }
+    // if (!globalThis.process?.env?.JEST_WORKER_ID) {
+    //   console.log('renderWebComponentCompound', {
+    //     "navNode - compound": navNode.compound
+    //   });
+    // }
 
     if (useLazyLoading) {
       intersectionObserver = this.createIntersectionObserver(navNode);
