@@ -3,7 +3,7 @@ import { containerService } from '../services/container.service';
 
 export class ContainerAPIFunctions {
   /**
-   * Updates the context of the microfrontend by sending a message to the iframe that sets the context of the microfrontend
+   * Updates the context of the microfrontend by sending a message to the iframe or webcomponent that sets the context of the microfrontend
    * @param contextObj The context data
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
@@ -26,7 +26,7 @@ export class ContainerAPIFunctions {
 
   /**
    * Send a custom message to the referenced iframe or web component
-   * @param id the id of the web component
+   * @param id a string containing the message id
    * @param mainComponent a reference to the web component to be affected
    * @param isWebcomponent predicate showing if currently referencing a web component or not
    * @param iframeHandle a reference to the iframe to be affected
