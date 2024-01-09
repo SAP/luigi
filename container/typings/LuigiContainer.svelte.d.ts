@@ -19,6 +19,11 @@ export default class LuigiContainer extends HTMLElement {
   viewurl: string;
 
   /**
+   * If set to true defers from initializing the microfronted automatically. In that case init() can be used
+   */
+  deferInit: boolean;
+
+  /**
    * The context to be passed to the microfrontend. It can be an object or a stringified object.
    * @param {Object} object to be passed to the microfrontend
    * @param {string} string must be a stringified JSON object.
@@ -57,6 +62,11 @@ export default class LuigiContainer extends HTMLElement {
   activeFeatureToggleList: string[];
 
   /**
+   * If set to true, skips handshake and ready event is fired immediately 
+   */
+  skipInitCheck: boolean;
+
+  /**
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    */
   nodeParams: NodeParams;
@@ -77,11 +87,28 @@ export default class LuigiContainer extends HTMLElement {
   clientPermissions: any;
 
   /**
-   * Updates the context of the microfrontend
-   * @param contextObj The context object to be updated
-   * @param internal internal microfrotend data
+   * The user settings to be passed to the web-component-based micro frontend
    */
-  updateContext(contextObj: any, internal?: any): Function;
+  userSettings: UserSettings;
+
+  /**
+   * The anchor value to be passed to the web-component-based micro frontend.
+   */
+  anchor: string;
+
+  /**
+   * Updates the context of the microfrontend
+   * @param contextObj The context data
+   * @param internal internal luigi legacy data used for iframes
+   */
+  updateContext(contextObj: any, internal?: any): void;
+
+  /**
+   * Send a custom message to the microfronted
+   * @param id a string containing the message id
+   * @param data data to be sent alongside the custom message
+   */
+  sendCustomMessage(id: string, data?: any): void;
 
   /**
    * Notifies the microfrontend that the opened alert has been closed
@@ -94,14 +121,4 @@ export default class LuigiContainer extends HTMLElement {
    * Manually triggers the micro frontend rendering process when using defer-init attribute
    */
   init(): Function;
-
-  /**
-   * The user settings to be passed to the web-component-based micro frontend
-   */
-  userSettings: UserSettings;
-
-  /**
-   * The anchor value to be passed to the web-component-based micro frontend.
-   */
-  anchor: string;
 }

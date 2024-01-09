@@ -3,7 +3,14 @@ import { LuigiInternalMessageID } from '../constants/internal-communication';
 import { GenericHelperFunctions } from '../utilities/helpers';
 
 export class ContainerService {
-  isVisible (component: HTMLElement) {
+  /**
+   * Checks if the given HTML element is visible in the DOM by considering both
+   * its width/height and any client rectangles it may have.
+   *
+   * @param {HTMLElement} component - The HTML element to check for visibility.
+   * @returns {boolean} Returns true if the element is visible, otherwise false.
+   */
+  isVisible (component: HTMLElement): boolean {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
   }
 
@@ -43,6 +50,12 @@ export class ContainerService {
     targetCnt.dispatchEvent(customEvent);
   }
 
+  /**
+   * Retrieves the target container based on the event source.
+   * 
+   * @param event The event object representing the source of the container.
+    @returns {Object| undefined} The target container object or undefined if not found.
+   */
   getTargetContainer (event) {
     let cnt;
     globalThis.__luigi_container_manager.container.forEach(element => {
@@ -54,11 +67,19 @@ export class ContainerService {
     return cnt;
   }
 
+  /**
+   * Initializes the Luigi Container Manager responsible for managing communication
+   * between microfrontends and dispatching events accordingly. Also adds 'message' listener to the window object with 
+   * the defined messageListener list
+   * @returns __luigi_container_manager which has the added container array and message listeners
+   */
   getContainerManager () {
     if (!globalThis.__luigi_container_manager) {
       globalThis.__luigi_container_manager = {
         container: [],
         messageListener: event => {
+          // Handle incoming messages and dispatch events based on the message type
+          // (Custom messages, navigation requests, alert requests, etc.)
           const targetCnt = this.getTargetContainer(event);
           const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
           if (target && target === event.source) {
@@ -167,8 +188,13 @@ export class ContainerService {
     return globalThis.__luigi_container_manager;
   }
 
-  registerContainer (container: HTMLElement): void {
-    this.getContainerManager().container.push(container);
+  /**
+   * Adds thisComponent's object reference the the __luigi_container_manager container list
+   *
+   * @param {HTMLElement} thisComponent - The HTML element that represents the current rendered container (thisComponent)
+   */
+  registerContainer (thisComponent: HTMLElement): void {
+    this.getContainerManager().container.push(thisComponent);
   }
 }
 
