@@ -351,14 +351,6 @@ class WebComponentSvcClass {
   intersectionObserverCallback(entries, observer) {
     const intersectingEntries = entries.filter(entry => entry.isIntersecting);
 
-    if (!globalThis.process?.env?.JEST_WORKER_ID) {
-      console.log('Observer callback', {
-        entries,
-        intersectingEntries,
-        intersectingTargets: intersectingEntries.map(entry => entry.target)
-      });
-    }
-
     intersectingEntries.forEach(intersectingEntry => {
       const compoundItemContainer = intersectingEntry.target;
       const wcContainerData = this.wcContainerData.get(compoundItemContainer);
@@ -394,10 +386,6 @@ class WebComponentSvcClass {
    */
   setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings, compoundItemSettings) {
     if (compoundSettings.lazyLoadingOptions?.noTemporaryContainerHeight === true) {
-      if (!globalThis.process?.env?.JEST_WORKER_ID) {
-        console.log('NOT setting temporary height');
-      }
-
       return;
     }
 
@@ -407,13 +395,6 @@ class WebComponentSvcClass {
       DEFAULT_TEMPORARY_HEIGHT;
 
     compoundItemContainer.style.height = temporaryContainerHeight;
-
-    if (!globalThis.process?.env?.JEST_WORKER_ID) {
-      console.log(`Set temporary height of ${temporaryContainerHeight}`, {
-        compoundSettings,
-        compoundItemSettings
-      });
-    }
   }
 
   /**
@@ -424,8 +405,6 @@ class WebComponentSvcClass {
 
     if (wcContainerData?.noTemporaryContainerHeight !== true) {
       compoundItemContainer.style.removeProperty('height');
-    } else if (!globalThis.process?.env?.JEST_WORKER_ID) {
-      console.log('NOT resetting temporary height');
     }
   }
 
@@ -484,12 +463,6 @@ class WebComponentSvcClass {
     const renderer = this.getCompoundRenderer(navNode, context);
     /** @type {IntersectionObserver} */
     let intersectionObserver;
-
-    // if (!globalThis.process?.env?.JEST_WORKER_ID) {
-    //   console.log('renderWebComponentCompound', {
-    //     "navNode - compound": navNode.compound
-    //   });
-    // }
 
     if (useLazyLoading) {
       intersectionObserver = this.createIntersectionObserver(navNode);
