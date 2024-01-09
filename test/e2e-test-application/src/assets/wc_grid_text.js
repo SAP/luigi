@@ -1,8 +1,8 @@
 export default class extends HTMLElement {
-    connectedCallback() {
-        const template = document.createElement('template');
-        
-        template.innerHTML = `
+  connectedCallback() {
+    const template = document.createElement('template');
+
+    template.innerHTML = `
             <style>
                 section {
                     border: 1px solid black;
@@ -16,9 +16,9 @@ export default class extends HTMLElement {
             </section>
         `;
 
-        this.attachShadow({
-            mode: 'open',
-            delegatesFocus: false
-        }).appendChild(template.content.cloneNode(true));
-    }
+    this.attachShadow({
+      mode: 'open',
+      delegatesFocus: false
+    }).appendChild(template.content.cloneNode(true));
+  }
 }
