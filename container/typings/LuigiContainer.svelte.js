@@ -48,7 +48,7 @@ export default class LuigiContainer extends HTMLElement {
   activeFeatureToggleList;
 
   /**
-   * If set to true, skips handshake and ready event is fired immediately 
+   * If set to true, skips handshake and ready event is fired immediately
    */
   skipInitCheck;
 
@@ -87,24 +87,24 @@ export default class LuigiContainer extends HTMLElement {
    * @param contextObj The context data
    * @param internal internal luigi legacy data used for iframes
    */
-  updateContext(contextObj, internal){};
+  updateContext(contextObj, internal) {}
 
   /**
    * Send a custom message to the microfronted
    * @param id a string containing the message id
    * @param data data to be sent alongside the custom message
    */
-  sendCustomMessage(id, data){};
+  sendCustomMessage(id, data) {}
 
   /**
    * Notifies the microfrontend that the opened alert has been closed
    * @param id the id of the opened alert
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message
    */
-  closeAlert(id, dismissKey){};
+  closeAlert(id, dismissKey) {}
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute
    */
-  init(){};
+  init() {}
 }
