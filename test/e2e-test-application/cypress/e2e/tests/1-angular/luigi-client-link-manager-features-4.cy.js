@@ -334,6 +334,19 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     });
   });
 
+  describe('Compound web components, lazy loading', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr1/lazygrid');
+    });
+
+    it('should lazily open items of a grid compound', async () => {
+      await cy.window();
+
+      cy.get('[nodeid="compoundItem1"]').should('exist');
+      cy.get('[nodeid="compoundItem2"]').should('exist');
+    });
+  });
+
   describe('getCurrentRoute', () => {
     let $iframeBody;
     beforeEach(() => {
