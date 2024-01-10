@@ -15,7 +15,9 @@ export class ContainerAPIFunctions {
         iframeHandle,
         {
           context: contextObj,
-          internal: internalParameter
+          internal: internalParameter,
+          // set withoutSync to true for the container case to avoid browser history changes from luigi client
+          withoutSync: true
         },
         LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );
@@ -51,7 +53,7 @@ export class ContainerAPIFunctions {
    * @param dismissKey the dismiss key being sent if any
    * @param iframeHandle the handle of the iframe to send the message to
    */
-  closeAlert (id: any, dismissKey: any, iframeHandle: any) {
+  closeAlert(id: any, dismissKey: any, iframeHandle: any) {
     containerService.sendCustomMessageToIframe(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
   }
 }
