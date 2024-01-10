@@ -339,7 +339,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       cy.visitLoggedIn('/projects/pr1/lazygrid');
     });
 
-    it('should lazily open items of a grid compound', async () => {
+    it('should lazily open items of a grid compound', () => {
       cy.get('[nodeid="compoundItem1"]').should('exist');
       cy.get('[nodeid="compoundItem2"]').should('exist');
     });
