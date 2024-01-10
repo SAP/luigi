@@ -110,13 +110,11 @@ Cypress.Commands.add('goToLinkManagerMethods', iframe => {
 });
 
 Cypress.Commands.add('goToOverviewPage', () => {
-  cy.get('[data-testid="overview_overview"]')
-    .click();
+  cy.get('[data-testid="overview_overview"]').click();
 });
 
 Cypress.Commands.add('goToProjectsPage', () => {
-  cy.get('[data-testid="projects_projects"]')
-    .click();
+  cy.get('[data-testid="projects_projects"]').click();
 });
 
 Cypress.Commands.add('selectContextSwitcherItem', (item, currentLabel) => {

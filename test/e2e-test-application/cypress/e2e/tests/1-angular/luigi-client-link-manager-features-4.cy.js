@@ -20,8 +20,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       cy.get('.drawer').should('exist');
       cy.expectPathToBe('/projects/pr2');
 
-      cy.get('.drawer-dialog button[aria-label="close"]')
-        .click();
+      cy.get('.drawer-dialog button[aria-label="close"]').click();
       cy.get('.drawer-dialog button[aria-label="close"]').should('not.exist');
       cy.get('.drawer').should('not.exist');
     });
@@ -45,8 +44,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
         cy.get('.drawer').should('exist');
         cy.expectPathToBe('/projects/pr2');
 
-        cy.get('.drawer-dialog button[aria-label="close"]')
-          .click();
+        cy.get('.drawer-dialog button[aria-label="close"]').click();
         cy.get('.drawer').should('not.exist');
       });
     });
@@ -101,8 +99,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
               .should('eq', containerWidth - pageWidth * 0.25);
             cy.expectPathToBe('/projects/pr2');
 
-            cy.get('.drawer-dialog button[aria-label="close"]')
-              .click();
+            cy.get('.drawer-dialog button[aria-label="close"]').click();
 
             cy.get('.iframeContainer iframe')
               .invoke('width')
