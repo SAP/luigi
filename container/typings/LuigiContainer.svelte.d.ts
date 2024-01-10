@@ -24,9 +24,9 @@ export default class LuigiContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
-   * The context to be passed to the microfrontend
+   * The stringified context object to be passed to the microfrontend
    */
-  context: any;
+  context: string;
 
   /**
    * Label information for the microfrontend
@@ -70,17 +70,17 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The search parameters to be passed to the web-component-based micro frontend.
    */
-  searchParams: any;
+  searchParams: Object;
 
   /**
    * The path parameters to be passed to the web-component-based micro frontend.
    */
-  pathParams: any;
+  pathParams: Object;
 
   /**
    * The clientPermissions to be passed to the web-component-based micro frontend.
    */
-  clientPermissions: any;
+  clientPermissions: Object;
 
   /**
    * The user settings to be passed to the web-component-based micro frontend
@@ -94,24 +94,24 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * Updates the context of the microfrontend
-   * @param contextObj The context data
-   * @param internal internal luigi legacy data used for iframes
+   * @param {Object} contextObj The context data
+   * @param {Object} internal internal luigi legacy data used for iframes
    */
-  updateContext(contextObj: any, internal?: any): void;
+  updateContext(contextObj: Object, internal?: Object): void;
 
   /**
    * Send a custom message to the microfronted
    * @param id a string containing the message id
    * @param data data to be sent alongside the custom message
    */
-  sendCustomMessage(id: string, data?: any): void;
+  sendCustomMessage(id: string, data?: Object): void;
 
   /**
    * Notifies the microfrontend that the opened alert has been closed
    * @param id the id of the opened alert
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message
    */
-  closeAlert(id: any, dismissKey: any): Function;
+  closeAlert(id: string, dismissKey: string): Function;
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute
