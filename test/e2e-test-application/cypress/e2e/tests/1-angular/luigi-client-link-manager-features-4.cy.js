@@ -340,8 +340,6 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     });
 
     it('should lazily open items of a grid compound', async () => {
-      await cy.window();
-
       cy.get('[nodeid="compoundItem1"]').should('exist');
       cy.get('[nodeid="compoundItem2"]').should('exist');
     });
