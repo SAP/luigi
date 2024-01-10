@@ -14,7 +14,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   /**
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used
    * @type {boolean}
-  */
+   */
   deferInit;
 
   /**

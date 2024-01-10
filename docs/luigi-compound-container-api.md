@@ -20,6 +20,8 @@ meta -->
 
 ### LuigiCompoundContainer
 
+**Extends HTMLElement**
+
 Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
 
 #### compoundConfig
@@ -27,7 +29,7 @@ Luigi Compound Container provides the possibility to insert multiple webcomponen
 The configuration for the compound microfrontend
 Take a look at <https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound>
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: any
 
 #### deferInit
 
@@ -39,31 +41,31 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 The search parameters to be passed to the compound micro frontend.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: any
 
 #### pathParams
 
 The path parameters to be passed to the compound micro frontend.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: any
 
 #### context
 
 The context to be passed to the compound microfrontend
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: any
 
 #### clientPermissions
 
 The clientPermissions to be passed to the compound micro frontend.
 
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+Type: any
 
 #### userSettings
 
 The user settings to be passed to the compound micro frontend
 
-Type: ([number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean))
+Type: UserSettings
 
 #### anchor
 
@@ -73,9 +75,16 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 #### webcomponent
 
-The boolean if true for default webcomponen behavior or WebComponentSettings for more advanced setup.
+The following properties can be set for the web component object. By default, the web component is set to true.
 
-Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean) \| [WebComponentSettings](#webcomponentsettings))
+Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean) | WebComponentSettings)
+
+##### Parameters
+
+-   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
+    -   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
+    -   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
+    -   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
 
 #### updateContext
 
@@ -83,18 +92,12 @@ Updates the context of the compound microfrontend
 
 ##### Parameters
 
--   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
+-   `contextObj` **any** The context data
+
+Returns **void** 
 
 #### init
 
 Manually triggers the micro frontend rendering process when using defer-init attribute
 
-### WebComponentSettings
-
-Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
-
-#### Properties
-
--   `type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** string, like module.
--   `selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** f it is true, the web component bundle will be added via script tag.
--   `tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** tag name where web component is added to DOM.
+Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
