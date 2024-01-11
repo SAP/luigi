@@ -6,10 +6,6 @@ describe('Luigi client linkManager', () => {
     }
   };
 
-  beforeEach(() => {
-    cy.visitLoggedIn('/');
-  });
-
   describe('linkManager navigation calls', () => {
     let $iframeBody;
     beforeEach(() => {
