@@ -1,11 +1,3 @@
-export declare interface NodeParams {
-  [key: string]: string;
-}
-
-export declare interface UserSettings {
-  [key: string]: number | string | boolean;
-}
-
 export declare interface WebComponentSettings {
   type?: string;
   selfRegistered?: boolean;
@@ -65,7 +57,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    */
-  nodeParams: NodeParams;
+  nodeParams: Object;
 
   /**
    * The search parameters to be passed to the web-component-based micro frontend.
@@ -85,7 +77,7 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The user settings to be passed to the web-component-based micro frontend
    */
-  userSettings: UserSettings;
+  userSettings: Object;
 
   /**
    * The anchor value to be passed to the web-component-based micro frontend.
@@ -93,9 +85,12 @@ export default class LuigiContainer extends HTMLElement {
   anchor: string;
 
   /**
-   * Updates the context of the microfrontend
+   * Function that updates the context of the microfrontend
    * @param {Object} contextObj The context data
    * @param {Object} internal internal luigi legacy data used for iframes
+   * 
+   * @example
+   * containerElement.updateContext({newContextData: 'some data'})
    */
   updateContext(contextObj: Object, internal?: Object): void;
 
@@ -103,18 +98,27 @@ export default class LuigiContainer extends HTMLElement {
    * Send a custom message to the microfronted
    * @param id a string containing the message id
    * @param data data to be sent alongside the custom message
+   * 
+   * @example
+   * containerElement.sendCustomMessage('my-message-id', {dataToSend: 'some data'})
    */
   sendCustomMessage(id: string, data?: Object): void;
 
   /**
-   * Notifies the microfrontend that the opened alert has been closed
+   * A function that notifies the microfrontend that the opened alert has been closed
    * @param id the id of the opened alert
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message
+   * 
+   * @example
+   * containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
    */
-  closeAlert(id: string, dismissKey: string): Function;
+  closeAlert(id: string, dismissKey: string): void;
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute
+   * 
+   * @example
+   * containerElement.init()
    */
-  init(): Function;
+  init(): void;
 }

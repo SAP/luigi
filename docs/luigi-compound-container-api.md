@@ -24,12 +24,18 @@ meta -->
 
 Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
 
+#### viewurl
+
+The URL used for the renderer
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
 #### compoundConfig
 
 The configuration for the compound microfrontend
 Take a look at <https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound>
 
-Type: any
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 #### deferInit
 
@@ -41,31 +47,31 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 The search parameters to be passed to the compound micro frontend.
 
-Type: any
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 #### pathParams
 
 The path parameters to be passed to the compound micro frontend.
 
-Type: any
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 #### context
 
-The context to be passed to the compound microfrontend
+The stringified context to be passed to the compound microfrontend
 
-Type: any
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 #### clientPermissions
 
 The clientPermissions to be passed to the compound micro frontend.
 
-Type: any
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 #### userSettings
 
 The user settings to be passed to the compound micro frontend
 
-Type: UserSettings
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 #### anchor
 
@@ -88,16 +94,20 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 #### updateContext
 
-Updates the context of the compound microfrontend
+Function that updates the context of the compound microfrontend
 
 ##### Parameters
 
--   `contextObj` **any** The context data
+-   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
+
+##### Examples
+
+```javascript
+containerElement.updateContext({newContextData: 'some data'})
+```
 
 Returns **void** 
 
 #### init
 
 Manually triggers the micro frontend rendering process when using defer-init attribute
-
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 

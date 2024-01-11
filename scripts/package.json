@@ -5,7 +5,7 @@
     "docu": "npm run docu:container && npm run docu:client && npm run docu:core",
     "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:section",
     "docu:container": "npm run docu:container:validate && npm run docu:container:generate:sections",
-    "docu:container:validate": "documentation lint ../container/typings/LuigiContainer.svelte.js ../container/typings/LuigiCompoundContainer.svelte.js",
+    "docu:container:validate": "documentation lint ../container/typings/LuigiContainer.svelte.d.ts ../container/typings/LuigiCompoundContainer.svelte.d.ts",
     "docu:container:generate:sections": "npm run docu:container:generate:container-api && npm run docu:container:generate:compound-container-api",
     "docu:container:generate:container-api": "documentation readme ../container/typings/LuigiContainer.svelte.d.ts --parse-extension ts -f md --readme-file=../docs/luigi-container-api.md --section=\"Luigi Container API\" --markdown-toc=false --quiet --github false",
     "docu:container:generate:compound-container-api": "documentation readme ../container/typings/LuigiCompoundContainer.svelte.d.ts --parse-extension ts -f md --readme-file=../docs/luigi-compound-container-api.md --section=\"Luigi Compound Container API\" --markdown-toc=false --quiet --github false",

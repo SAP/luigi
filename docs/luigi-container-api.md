@@ -32,9 +32,9 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### context
 
-The context to be passed to the microfrontend
+The stringified context object to be passed to the microfrontend
 
-Type: any
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 ### label
 
@@ -83,31 +83,31 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
 
-Type: NodeParams
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 ### searchParams
 
 The search parameters to be passed to the web-component-based micro frontend.
 
-Type: any
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 ### pathParams
 
 The path parameters to be passed to the web-component-based micro frontend.
 
-Type: any
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 ### clientPermissions
 
 The clientPermissions to be passed to the web-component-based micro frontend.
 
-Type: any
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 ### userSettings
 
 The user settings to be passed to the web-component-based micro frontend
 
-Type: UserSettings
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 ### anchor
 
@@ -117,12 +117,18 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### updateContext
 
-Updates the context of the microfrontend
+Function that updates the context of the microfrontend
 
 #### Parameters
 
--   `contextObj` **any** The context data
--   `internal` **any?** internal luigi legacy data used for iframes
+-   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
+-   `internal` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** internal luigi legacy data used for iframes
+
+#### Examples
+
+```javascript
+containerElement.updateContext({newContextData: 'some data'})
+```
 
 Returns **void** 
 
@@ -133,23 +139,41 @@ Send a custom message to the microfronted
 #### Parameters
 
 -   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
--   `data` **any?** data to be sent alongside the custom message
+-   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data to be sent alongside the custom message
+
+#### Examples
+
+```javascript
+containerElement.sendCustomMessage('my-message-id', {dataToSend: 'some data'})
+```
 
 Returns **void** 
 
 ### closeAlert
 
-Notifies the microfrontend that the opened alert has been closed
+A function that notifies the microfrontend that the opened alert has been closed
 
 #### Parameters
 
--   `id` **any** the id of the opened alert
--   `dismissKey` **any** the key specifying which dismiss link was clicked on the alert message
+-   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
+-   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the key specifying which dismiss link was clicked on the alert message
 
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+#### Examples
+
+```javascript
+containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
+```
+
+Returns **void** 
 
 ### init
 
 Manually triggers the micro frontend rendering process when using defer-init attribute
 
-Returns **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** 
+#### Examples
+
+```javascript
+containerElement.init()
+```
+
+Returns **void** 
