@@ -25,6 +25,13 @@ export default class LuigiCompoundContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
+   * The context to be passed to the microfrontend. It can be an object or a stringified object.
+   * @param {Object} object to be passed to the microfrontend
+   * @param {string} string must be a stringified JSON object.
+   */
+  context: object | string;
+
+  /**
    * The search parameters to be passed to the compound micro frontend.
    */
   searchParams: Object;
@@ -60,8 +67,9 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @param {string} WebComponentSettings.type: string, like module.
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
+   * @param {string} string must be a stringified JSON object from type `WebComponentSettings`.
    */
-  webcomponent: boolean | WebComponentSettings;
+  webcomponent: boolean | WebComponentSettings | stringf;
 
   /**
    * Function that updates the context of the compound microfrontend
