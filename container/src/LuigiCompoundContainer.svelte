@@ -8,44 +8,44 @@
       compoundConfig: {
         type: 'Object',
         reflect: false,
-        attribute: 'compound-config'
+        attribute: 'compound-config',
       },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
       userSettings: {
         type: 'Object',
         reflect: false,
-        attribute: 'user-settings'
+        attribute: 'user-settings',
       },
       anchor: { type: 'String', reflect: false, attribute: 'anchor' },
       searchParams: {
         type: 'Object',
         reflect: false,
-        attribute: 'search-params'
+        attribute: 'search-params',
       },
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
       clientPermissions: {
         type: 'Object',
         reflect: false,
-        attribute: 'client-permissions'
-      }
+        attribute: 'client-permissions',
+      },
     },
-    extend: customElementConstructor => {
-      let notInitFn = name => {
+    extend: (customElementConstructor) => {
+      let notInitFn = (name) => {
         return () =>
           console.warn(
             name +
-              " can't be called on luigi-container before its micro frontend is attached to the DOM."
+              " can't be called on luigi-container before its micro frontend is attached to the DOM.",
           );
       };
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
         attributeChangedCallback(name, oldValue, newValue) {
-          if (name === 'context') {
+          if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
         }
       };
-    }
+    },
   }}
 />
 
@@ -94,17 +94,18 @@
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
       mainComponent._luigi_mfe_webcomponent.context = contextObj;
     };
-    const ctx = context ? JSON.parse(context) : {};
+    const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;
+
     const node = {
       compound: compoundConfig,
       viewUrl: viewurl,
       webcomponent:
-        GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
+        GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true,
     }; // TODO: fill with sth
     webcomponentService
       .renderWebComponentCompound(node, mainComponent, ctx)
-      .then(compCnt => {
+      .then((compCnt) => {
         eventBusElement = compCnt as HTMLElement;
         if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
           thisComponent.initialized = true;
@@ -120,6 +121,7 @@
         }
       });
     containerInitialized = true;
+    thisComponent.containerInitialized = true;
   };
 
   onMount(async () => {

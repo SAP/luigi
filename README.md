@@ -34,36 +34,6 @@ Go to the [Luigi Fiddle](https://fiddle.luigi-project.io) site to see Luigi in a
 
 For details, see [Luigi documentation](https://docs.luigi-project.io).
 
-## Browser support
-
-If you want to support Internet Explorer 11 in your application, install the `@luigi-project/core-ie11` package and update your Luigi imports as follows:
-### Luigi Core
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <link rel='stylesheet' href='/luigi-core/luigi-ie11.css'>
-    <!-- <link rel='stylesheet' href='/luigi-core/luigi.css'> -->
-  </head>
-  <body>
-    <script type="module" src="/luigi-core/luigi.js"></script>
-    <script nomodule src="/luigi-core/luigi-ie11.js"></script>
-    <!-- <script src="/luigi-core/luigi.js"></script> -->
-  </body>
-</html>
-```
-
-### Luigi Client
-Install the `@luigi-project/client-ie11` package and update your Luigi imports as follows:
-```javascript
-import {
-  linkManager,
-  uxManager
-} from '@luigi-project/client-ie11';
-```
-
-> **NOTE**: The example applications are not fully compatible with IE11.
-
 ## Development
 
 ### Development guidelines for micro frontend developers
@@ -101,7 +71,7 @@ Once the applications are ready:
 
 ### Backward compatibility tests
 
-Use these tests to ensure that applications written for previous versions of Luigi still work after Luigi gets updated with npm. Before running the tests, bundle Luigi by running `lerna run bundle` in the main repository folder.
+Use these tests to ensure that applications written for previous versions of Luigi still work after Luigi gets updated with npm. Before running the tests, bundle Luigi by running `npm run bundle` in the main repository folder.
 
 Install [jq](https://stedolan.github.io/jq/) using the `brew install jq` command. It is required for the script to work, however, you can omit it if the command you are using to run your tests is tagged `latest`.
 

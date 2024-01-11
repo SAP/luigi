@@ -34,7 +34,7 @@ import '@luigi-project/container';
 ```
     <luigi-compound-container 
         context='{"label": "Dashboard"}'
-        compoundConfig = { your config here }
+        compoundConfig = { your config here }>
     </luigi-compound-container>
 ```
 

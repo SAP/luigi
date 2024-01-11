@@ -9,10 +9,12 @@ function check_and_generate_docu() {
   staged_changes=$(git diff --cached --name-only --diff-filter=ACM | grep -e "core/src/core-api" -e "client/src" | wc -l)
   if [[ "$staged_changes" != *"0"* ]]; then
     echo "Changes in .js found. Building docu"
-    lerna run docu
+    cd scripts
+    npm run docu
+    cd ..
     RES=$?
     if [ "$RES" != 0 ]; then
-      echo "lerna run docu failed."
+      echo "npm run docu failed."
       exit 1;
     fi
 

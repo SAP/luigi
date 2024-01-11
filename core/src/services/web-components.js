@@ -239,8 +239,7 @@ class WebComponentSvcClass {
   renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
-    const wc_id =
-      node.webcomponent && node.webcomponent.tagName ? node.webcomponent.tagName : this.generateWCId(i18nViewUrl);
+    const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
@@ -274,15 +273,16 @@ class WebComponentSvcClass {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
-          const wc_id = this.generateWCId(renderer.viewUrl);
-          const wc = document.createElement(wc_id);
+          const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
           if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
+              const wc = document.createElement(wc_id);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
           } else {
             this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
+              const wc = document.createElement(wc_id);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });

@@ -9,45 +9,45 @@
       webcomponent: {
         type: 'String',
         reflect: false,
-        attribute: 'webcomponent'
+        attribute: 'webcomponent',
       },
       locale: { type: 'String', reflect: false, attribute: 'locale' },
       theme: { type: 'String', reflect: false, attribute: 'theme' },
       activeFeatureToggleList: {
         type: 'Array',
         reflect: false,
-        attribute: 'active-feature-toggle-list'
+        attribute: 'active-feature-toggle-list',
       },
       skipInitCheck: {
         type: 'Boolean',
         reflect: false,
-        attribute: 'skip-init-check'
+        attribute: 'skip-init-check',
       },
       nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
       userSettings: {
         type: 'Object',
         reflect: false,
-        attribute: 'user-settings'
+        attribute: 'user-settings',
       },
       anchor: { type: 'String', reflect: false, attribute: 'anchor' },
       searchParams: {
         type: 'Object',
         reflect: false,
-        attribute: 'search-params'
+        attribute: 'search-params',
       },
       pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
       clientPermissions: {
         type: 'Object',
         reflect: false,
-        attribute: 'client-permissions'
-      }
+        attribute: 'client-permissions',
+      },
     },
-    extend: customElementConstructor => {
-      let notInitFn = name => {
+    extend: (customElementConstructor) => {
+      let notInitFn = (name) => {
         return () =>
           console.warn(
             name +
-              " can't be called on luigi-container before its micro frontend is attached to the DOM."
+              " can't be called on luigi-container before its micro frontend is attached to the DOM.",
           );
       };
       return class extends customElementConstructor {
@@ -55,12 +55,12 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
-          if (name === 'context') {
+          if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
         }
       };
-    }
+    },
   }}
 />
 
@@ -123,7 +123,7 @@
           mainComponent,
           !!webcomponent,
           iframeHandle,
-          data
+          data,
         );
       };
 
@@ -142,19 +142,18 @@
       containerService.registerContainer(thisComponent);
       webcomponentService.thisComponent = thisComponent;
 
-      const ctx = context ? JSON.parse(context) : {};
+      const ctx = GenericHelperFunctions.resolveContext(context);
       if (webcomponent) {
         mainComponent.innerHTML = '';
-        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(
-          webcomponent
-        );
+        const webComponentValue =
+          GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
           viewurl,
           mainComponent,
           ctx,
           typeof webComponentValue === 'object'
             ? { webcomponent: webComponentValue }
-            : {}
+            : {},
         );
       }
       if (skipInitCheck) {
@@ -174,6 +173,7 @@
         });
       }
       containerInitialized = true;
+      thisComponent.containerInitialized = true;
     }
   };
 

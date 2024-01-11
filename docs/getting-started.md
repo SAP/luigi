@@ -54,26 +54,18 @@ Luigi consists of two main parts:
 * [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes, third-party cookie configuration and more.
 * [API](luigi-core-api.md) - functions to help with almost every part of your app: navigation, authorization, adding a [search box](luigi-core-api.md#globalsearch), configuring a light/dark [theme](luigi-core-api.md#theming) and others.
 
+<!-- add-attribute:class:success -->
+>**NOTE:** You can also use [Luigi Container](luigi-container.md) to embed a Luigi micro frontend into any existing application without it being a Luigi Core app. 
+
 **Luigi Client** - refers to Luigi options related to micro frontends:
 * [API](luigi-client-api.md)  - diverse API functions which can be used on the micro frontend side.
 * [Communication](communication.md)  - sending messages between the micro frontend and the main application (Luigi Core module).
 
 ## Quick setup
 
-If you want to begin developing your own app with Luigi, start here:
-
 ### Luigi Core
 
-Follow these steps to create a global user interface and host a **full web application** in Luigi:
-
-1. Set up a Luigi Core application on one of the following frameworks:
-  * [No framework](application-setup.md#application-setup-without-a-framework)
-  * [Angular](application-setup.md#application-setup-for-angular)
-  * [SAPUI5/OpenUI5](application-setup.md#application-setup-for-sapui5openui5)
-  * [VUE.JS](application-setup.md#application-setup-for-vuejs)
-  * [React](application-setup.md#application-setup-for-react)
-
-2. Configure the application according to your needs. For example, you can begin by configuring the [basic navigation](navigation-configuration.md) of your application.
+You can find Luigi setup examples for different frameworks [here](application-setup.md). 
 
 ### Luigi Client
 

@@ -521,7 +521,7 @@ class RoutingClass {
     if (additionalModalPath) {
       const modalParams = RoutingHelpers.getModalParamsFromPath();
       const { nodeObject } = await Navigation.extractDataFromPath(additionalModalPath);
-      LuigiNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal || modalParams);
+      LuigiNavigation.openAsModal(additionalModalPath, modalParams || nodeObject.openNodeInModal);
     }
   }
 
