@@ -248,6 +248,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
   describe('getCurrentRoute', () => {
     let $iframeBody;
+    
     beforeEach(() => {
       // "clear" variables to make sure they are not reused and throw error in case something goes wrong
       $iframeBody = undefined;
