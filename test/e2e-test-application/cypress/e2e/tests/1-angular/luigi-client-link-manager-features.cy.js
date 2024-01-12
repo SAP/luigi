@@ -88,6 +88,7 @@ describe('Luigi client linkManager', () => {
 
   describe('linkManager - intent navigation', () => {
     let $iframeBody;
+
     beforeEach(() => {
       // "clear" variables to make sure they are not reused and throw error in case something goes wrong
       $iframeBody = undefined;
