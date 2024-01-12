@@ -392,7 +392,7 @@ Web components can communicate over an event bus.
               - **max-width** max width
   - **lazyLoadingOptions**
     - **type**: object
-    - **description**: allows enabling lazy loading for compounded or nested web components
+    - **description**: allows enabling lazy loading for compound or nested web components
     - **attributes**
       - **enabled**
         - **type**: boolean
@@ -413,7 +413,7 @@ Web components can communicate over an event bus.
       - **noTemporaryContainerHeight**
         - **type**: boolean
         - **default**: false
-        - **description**: When implementing a custom renderer for a compounded web component, the standard behavior of lazy loading of setting and removing temporary heights to the child containers may conflict with the custom renderer. In that case, setting this attribute to `true` will turn off that behavior. In that case, the custom renderer methods and the code of the child web components must ensure that not all child containers are visible right away. Note that the intersection observer will still be in effect: child web components will only be instantiated and added to their containers when the containers are visible in the defined part of the viewport.
+        - **description**: When implementing a custom renderer for a compound web component, the standard behavior of lazy loading of setting and removing temporary heights to the child containers may conflict with the custom renderer. In that case, setting this attribute to `true` will turn off that behavior. In that case, the custom renderer methods and the code of the child web components must ensure that not all child containers are visible right away. Note that the intersection observer will still be in effect: child web components will only be instantiated and added to their containers when the containers are visible in the defined part of the viewport.
   - **children**
     - **type**: array
     - **description**: Array of web component nodes.
@@ -439,7 +439,7 @@ Web components can communicate over an event bus.
           - **temporaryContainerHeight**
             - **type**: string
             - **default**: undefined
-            - **description**: If lazy loading is active for this compounded web component then setting this attribute will define the temporary container height for this individual child. It will override the general default value of `temporaryContainerHeight` that is set for the overall compound.
+            - **description**: If lazy loading is active for this compound web component then setting this attribute will define the temporary container height for this individual child. It will override the general default value of `temporaryContainerHeight` that is set for the overall compound.
       - **eventListeners**
         - **type**: array
         - **description**: array of events.
