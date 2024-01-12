@@ -57,7 +57,7 @@
     "babel-loader": "^8.2.5",
     "babel-preset-minify": "^0.5.2",
     "codelyzer": "^6.0.0",
-    "concurrently": "^4.1.0",
+    "concurrently": "^8.2.2",
     "copy-webpack-plugin": "^9.1.0",
     "cypress": "^12.17.0",
     "cypress-plugin-tab": "1.0.5",
