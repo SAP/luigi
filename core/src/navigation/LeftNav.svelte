@@ -253,22 +253,23 @@
     });
   });
 
-  calculateNavEntries = () => {
-    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
+  resetNavEntries = () => {
     const moreEntries = btpNavTopCnt.querySelectorAll('.lui-moreItems  > .lui-nav-entry');
-    const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
     const navList = btpNavTopCnt.querySelector('.fd-navigation__list');
-
+    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
     moreEntries?.forEach((item) => {
       navList.insertBefore(item, spacer);
     });
+    btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'none';
+  }
 
+  calculateNavEntries = () => {
+    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
+    const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
     const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
     if(entries.length <= 0) {
       return;
     }
-    btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'none';
-
 
     if(spacer.clientHeight === 0) {
         btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
@@ -291,13 +292,18 @@
         }
         if(isSemiCollapsed) {
           updateTimeout = setTimeout(() => {
+            resetNavEntries();
             calculateNavEntries();
           }, 100);
         }
       });
     }
     window.Luigi.__btpNavTopCntRszObs.disconnect();
-    btpNavTopCnt && window.Luigi.__btpNavTopCntRszObs.observe(btpNavTopCnt);
+    if(btpNavTopCnt && isSemiCollapsed) {
+       window.Luigi.__btpNavTopCntRszObs.observe(btpNavTopCnt);
+    } else if(btpNavTopCnt) {
+      resetNavEntries();
+    }
   });
 
   beforeUpdate(() => {
@@ -1861,17 +1867,26 @@
   .fd-navigation--snapped .fd-navigation__list-container--menu.fd-navigation__list-container--menu {
     top: auto;
     bottom: 0;
+    max-height: 100%;
   }
 
-  .fd-navigation--snapped .fd-popover {
+  .fd-navigation--snapped .fd-navigation__list-item--overflow {
+    position: static;
+  }
+
+  .fd-navigation--snapped .lui-moreItems .fd-popover {
     
     --lui_popover_offset: 0px;
     .fd-popover__body--after {
-      
+      padding: 0.5rem;
       max-height: 80vh;
       transform: translateY(calc(0px - (var(--lui_popover_offset))));
       &:after, &:before {
         transform: translateY(var(--lui_popover_offset));
+      }
+
+      .fd-navigation__item--title {
+        display: none;
       }
     }
   }
