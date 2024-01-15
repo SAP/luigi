@@ -1,15 +1,30 @@
+import { LuigiConfig } from '../core-api';
+import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 import {
   DefaultCompoundRenderer,
-  resolveRenderer,
+  deSanitizeParamsMap,
   registerEventListeners,
-  deSanitizeParamsMap
+  resolveRenderer
 } from '../utilities/helpers/web-component-helpers';
-import { LuigiConfig } from '../core-api';
-import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
+
+const DEFAULT_TEMPORARY_HEIGHT = '500px';
+const DEFAULT_INTERSECTION_OBSERVER_ROOTMARGIN = '0px';
 
 /** Methods for dealing with web components based micro frontend handling */
 class WebComponentSvcClass {
-  constructor() {}
+  /**
+   *  @typedef {object} WcContainerData
+   *  @property {string} viewUrl
+   *  @property {HTMLElement} wc_container
+   *  @property {object} extendedContext
+   *  @property {object} node
+   *  @property {string} nodeId
+   *  @property {boolean} isSpecialMf
+   *  @property {boolean} noTemporaryContainerHeight
+   */
+
+  /** @type {WeakMap<HTMLElement, WcContainerData>} */
+  wcContainerData = new WeakMap();
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import() is replaced by import() after webpack is done,
@@ -20,9 +35,10 @@ class WebComponentSvcClass {
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
    */
-  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isSpecialMf) {
+  attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, viewUrl, nodeId, isSpecialMf, isLazyLoading) {
     if (wc_container && wc_container.contains(wcItemPlaceholder)) {
       const wc = document.createElement(wc_id);
+
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
@@ -30,6 +46,11 @@ class WebComponentSvcClass {
       this.initWC(wc, wc_id, wc_container, viewUrl, extendedContext, nodeId, isSpecialMf);
 
       wc_container.replaceChild(wc, wcItemPlaceholder);
+
+      if (isLazyLoading) {
+        this.removeTemporaryHeightFromCompoundItemContainer(wc_container);
+        this.wcContainerData.delete(wc_container);
+      }
     }
   }
 
@@ -225,28 +246,66 @@ class WebComponentSvcClass {
   /** Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
    */
-  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf) {
+  renderWebComponent(viewUrl, wc_container, extendedContext, node, nodeId, isSpecialMf, isLazyLoading) {
     const context = extendedContext.context;
     const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
     const wc_id = node?.webcomponent?.tagName || this.generateWCId(i18nViewUrl);
     const wcItemPlaceholder = document.createElement('div');
+
     wc_container.appendChild(wcItemPlaceholder);
     wc_container._luigi_node = node;
+
     if (window.customElements.get(wc_id)) {
-      this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+      this.attachWC(
+        wc_id,
+        wcItemPlaceholder,
+        wc_container,
+        extendedContext,
+        i18nViewUrl,
+        nodeId,
+        isSpecialMf,
+        isLazyLoading
+      );
     } else {
       /** Custom import function, if defined */
       if (window.luigiWCFn) {
         window.luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(
+            wc_id,
+            wcItemPlaceholder,
+            wc_container,
+            extendedContext,
+            i18nViewUrl,
+            nodeId,
+            isSpecialMf,
+            isLazyLoading
+          );
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(
+            wc_id,
+            wcItemPlaceholder,
+            wc_container,
+            extendedContext,
+            i18nViewUrl,
+            nodeId,
+            isSpecialMf,
+            isLazyLoading
+          );
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id).then(() => {
-          this.attachWC(wc_id, wcItemPlaceholder, wc_container, extendedContext, i18nViewUrl, nodeId, isSpecialMf);
+          this.attachWC(
+            wc_id,
+            wcItemPlaceholder,
+            wc_container,
+            extendedContext,
+            i18nViewUrl,
+            nodeId,
+            isSpecialMf,
+            isLazyLoading
+          );
         });
       }
     }
@@ -286,20 +345,89 @@ class WebComponentSvcClass {
   }
 
   /**
-   * Responsible for rendering web component compounds based on a renderer or a nesting
-   * micro frontend.
-   *
-   * @param {*} navNode the navigation node defining the compound
-   * @param {*} wc_container the web component container dom element
-   * @param {*} context the luigi node context
+   * @param {IntersectionObserverEntry[]} entries
+   * @param {IntersectionObserver} observer
    */
-  renderWebComponentCompound(navNode, wc_container, extendedContext) {
-    const context = extendedContext.context;
+  intersectionObserverCallback(entries, observer) {
+    const intersectingEntries = entries.filter(entry => entry.isIntersecting);
+
+    intersectingEntries.forEach(intersectingEntry => {
+      const compoundItemContainer = intersectingEntry.target;
+      const wcContainerData = this.wcContainerData.get(compoundItemContainer);
+
+      if (!!wcContainerData) {
+        this.renderWebComponent(
+          wcContainerData.viewUrl,
+          wcContainerData.wc_container,
+          wcContainerData.extendedContext,
+          wcContainerData.node,
+          wcContainerData.nodeId,
+          wcContainerData.isSpecialMf,
+          true
+        );
+      } else {
+        console.error('Could not find WC container data', {
+          for: compoundItemContainer
+        });
+      }
+      observer.unobserve(compoundItemContainer);
+    });
+  }
+
+  /**
+   * When lazy loading is active, this function sets a temporary height to the given compound item container.
+   * The temporary height is added because otherwise, when adding the empty containers for all compound items,
+   * all containers would have a height of 0 because the web components they contain will be added
+   * asynchronously later. All containers would be visible so that all web components would be added right away.
+   * In other words, this would break lazy loading.
+   * @param {HTMLElement} compoundItemContainer
+   * @param {object} compoundSettings
+   * @param {object} [compoundSettings.lazyLoadingOptions]
+   * @param {string} [compoundSettings.lazyLoadingOptions.temporaryContainerHeight]
+   * @param {boolean} [compoundSettings.lazyLoadingOptions.noTemporaryContainerHeight]
+   * @param {object} compoundItemSettings
+   * @param {object} compoundItemSettings.layoutConfig
+   * @param {string} [compoundItemSettings.layoutConfig.temporaryContainerHeight]
+   */
+  setTemporaryHeightForCompoundItemContainer(compoundItemContainer, compoundSettings, compoundItemSettings) {
+    if (compoundSettings.lazyLoadingOptions?.noTemporaryContainerHeight === true) {
+      return;
+    }
+
+    const temporaryContainerHeight =
+      compoundItemSettings.layoutConfig?.temporaryContainerHeight ||
+      compoundSettings.lazyLoadingOptions?.temporaryContainerHeight ||
+      DEFAULT_TEMPORARY_HEIGHT;
+
+    compoundItemContainer.style.height = temporaryContainerHeight;
+  }
+
+  /**
+   * When lazy loading is active, this function removes the temporary height from the given compound item
+   * container after the web component is instantiated and attached to the container.
+   * @param {HTMLElement} compoundItemContainer
+   */
+  removeTemporaryHeightFromCompoundItemContainer(compoundItemContainer) {
+    const wcContainerData = this.wcContainerData.get(compoundItemContainer);
+
+    if (wcContainerData?.noTemporaryContainerHeight !== true) {
+      compoundItemContainer.style.removeProperty('height');
+    }
+  }
+
+  /**
+   * @param {object} navNode
+   */
+  getCompoundRenderer(navNode, context) {
+    const isNestedWebComponent = navNode.webcomponent && !!navNode.viewUrl;
     let renderer;
-    wc_container._luigi_node = navNode;
-    if (navNode.webcomponent && navNode.viewUrl) {
+
+    if (isNestedWebComponent) {
+      // Nested web component
       renderer = new DefaultCompoundRenderer();
-      renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, { context });
+      renderer.viewUrl = RoutingHelpers.substituteViewUrl(navNode.viewUrl, {
+        context
+      });
       renderer.createCompoundItemContainer = layoutConfig => {
         var cnt = document.createElement('div');
         if (layoutConfig && layoutConfig.slot) {
@@ -309,22 +437,57 @@ class WebComponentSvcClass {
       };
     } else if (navNode.compound.renderer) {
       renderer = resolveRenderer(navNode.compound.renderer);
+    } else {
+      renderer = new DefaultCompoundRenderer();
     }
 
-    renderer = renderer || new DefaultCompoundRenderer();
+    return renderer;
+  }
+
+  createIntersectionObserver(navNode) {
+    return new IntersectionObserver(
+      (entries, observer) => {
+        this.intersectionObserverCallback(entries, observer);
+      },
+      {
+        rootMargin:
+          navNode.compound.lazyLoadingOptions?.intersectionRootMargin || DEFAULT_INTERSECTION_OBSERVER_ROOTMARGIN
+      }
+    );
+  }
+
+  /**
+   * Responsible for rendering web component compounds based on a renderer or a nesting
+   * micro frontend.
+   *
+   * @param {*} navNode the navigation node defining the compound
+   * @param {*} wc_container the web component container dom element
+   * @param {*} context the luigi node context
+   */
+  renderWebComponentCompound(navNode, wc_container, extendedContext) {
+    const useLazyLoading = navNode.compound?.lazyLoadingOptions?.enabled === true;
+    const context = extendedContext.context;
+    const renderer = this.getCompoundRenderer(navNode, context);
+    /** @type {IntersectionObserver} */
+    let intersectionObserver;
+
+    if (useLazyLoading) {
+      intersectionObserver = this.createIntersectionObserver(navNode);
+    }
 
     return new Promise(resolve => {
-      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundCnt => {
+      this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
         const ebListeners = {};
-        compoundCnt.eventBus = {
+
+        compoundContainer.eventBus = {
           listeners: ebListeners,
           onPublishEvent: (event, srcNodeId, wcId) => {
             const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
-            listeners.push(...(ebListeners['*.' + event.type] || []));
 
+            listeners.push(...(ebListeners['*.' + event.type] || []));
             listeners.forEach(listenerInfo => {
               const target =
-                listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
+                listenerInfo.wcElement || compoundContainer.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
               if (target) {
                 target.dispatchEvent(
                   new CustomEvent(listenerInfo.action, {
@@ -337,21 +500,52 @@ class WebComponentSvcClass {
             });
           }
         };
-        navNode.compound.children.forEach((wc, index) => {
-          const ctx = { ...context, ...wc.context };
-          const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
-          compoundItemCnt.eventBus = compoundCnt.eventBus;
-          renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
-          const nodeId = wc.id || 'gen_' + index;
-          this.renderWebComponent(wc.viewUrl, compoundItemCnt, { context: ctx }, wc, nodeId, true);
-          registerEventListeners(ebListeners, wc, nodeId);
+        navNode.compound.children.forEach((compoundItemSettings, index) => {
+          const ctx = { ...context, ...compoundItemSettings.context };
+          const compoundItemContainer = renderer.createCompoundItemContainer(compoundItemSettings.layoutConfig);
+          const nodeId = compoundItemSettings.id || 'gen_' + index;
+
+          compoundItemContainer.eventBus = compoundContainer.eventBus;
+
+          if (useLazyLoading) {
+            this.setTemporaryHeightForCompoundItemContainer(
+              compoundItemContainer,
+              navNode.compound,
+              compoundItemSettings
+            );
+            renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
+            this.wcContainerData.set(compoundItemContainer, {
+              viewUrl: compoundItemSettings.viewUrl,
+              wc_container: compoundItemContainer,
+              extendedContext: { context: ctx },
+              node: compoundItemSettings,
+              nodeId: nodeId,
+              isSpecialMf: true,
+              noTemporaryContainerHeight: navNode.compound.lazyLoadingOptions?.noTemporaryContainerHeight
+            });
+            intersectionObserver.observe(compoundItemContainer);
+          } else {
+            renderer.attachCompoundItem(compoundContainer, compoundItemContainer);
+            this.renderWebComponent(
+              compoundItemSettings.viewUrl,
+              compoundItemContainer,
+              { context: ctx },
+              compoundItemSettings,
+              nodeId,
+              true,
+              false
+            );
+          }
+
+          registerEventListeners(ebListeners, compoundItemSettings, nodeId);
         });
-        wc_container.appendChild(compoundCnt);
+
+        wc_container.appendChild(compoundContainer);
 
         // listener for nesting wc
-        registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
-        resolve(compoundCnt);
+        registerEventListeners(ebListeners, navNode.compound, '_root', compoundContainer);
+        resolve(compoundContainer);
       });
     });
   }
