@@ -375,6 +375,11 @@ class WebComponentSvcClass {
   }
 
   /**
+   * When lazy loading is active, this function sets a temporary height to the given compound item container.
+   * The temporary height is added because otherwise, when adding the empty containers for all compound items,
+   * all containers would have a height of 0 because the web components they contain will be added
+   * asynchronously later. All containers would be visible so that all web components would be added right away.
+   * In other words, this would break lazy loading.
    * @param {HTMLElement} compoundItemContainer
    * @param {object} compoundSettings
    * @param {object} [compoundSettings.lazyLoadingOptions]
@@ -398,6 +403,8 @@ class WebComponentSvcClass {
   }
 
   /**
+   * When lazy loading is active, this function removes the temporary height from the given compound item
+   * container after the web component is instantiated and attached to the container.
    * @param {HTMLElement} compoundItemContainer
    */
   removeTemporaryHeightFromCompoundItemContainer(compoundItemContainer) {
