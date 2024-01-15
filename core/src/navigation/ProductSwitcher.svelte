@@ -99,6 +99,7 @@
     <div class="fd-shellbar__action fd-shellbar__action--desktop">
       <div class="fd-product-switch">
         <div class="fd-popover fd-popover--right">
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
             <button
               class="fd-button fd-button--transparent fd-shellbar__button fd-product-switch__control"
@@ -128,6 +129,7 @@
               <ul class="fd-product-switch__list">
                 {#each productSwitcherItems as productSwitcherItem}
                   {#if productSwitcherItem.label}
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <li
                       class="fd-product-switch__item {productSwitcherItem.selected
                         ? 'selected'

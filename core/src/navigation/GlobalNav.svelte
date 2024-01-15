@@ -166,6 +166,7 @@
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
                     title={$getTranslation(node.label)}
                   >
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div
                       class="lui-fd-nested-list__content"
                       on:click|preventDefault={() => handleClick(node)}

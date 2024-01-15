@@ -394,6 +394,7 @@
                     class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
                   >
                     <div class="fd-popover fd-popover--right">
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <div
                         class="fd-popover__control"
                         on:click|stopPropagation={() => {}}
@@ -492,6 +493,7 @@
           <div class="fd-shellbar__action fd-shellbar__action--mobile">
             <div class="fd-shellbar-collapse">
               <div class="fd-popover fd-popover--right">
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div
                   class="fd-popover__control"
                   on:click|stopPropagation={() => {}}
@@ -524,6 +526,7 @@
                     <ul class="fd-menu__list fd-menu__list--no-shadow">
                       {#if globalSearchConfig && !isGlobalSearchCentered}
                         <li class="fd-menu__item">
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={() => {
@@ -541,6 +544,7 @@
                       {/if}
                       {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
                         <li class="fd-menu__item">
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={openMobileContextSwitcher}
@@ -632,6 +636,7 @@
                       {/if}
                       {#if isProductSwitcherAvailable}
                         <li class="fd-menu__item">
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={openMobileProductSwitcher}
@@ -702,6 +707,7 @@
         >
           {#if profileTypeSettings === 'Fiori3' && GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true)}
             <div class="fd-popover fd-popover--right fd-user-menu">
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
               <div
                 class="fd-popover__control"
                 on:click|stopPropagation={() => {}}
@@ -748,6 +754,7 @@
           {:else}
             <div class="fd-user-menu">
               <div class="fd-popover">
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div
                   class="fd-popover__control"
                   on:click|stopPropagation={() => {}}

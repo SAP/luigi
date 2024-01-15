@@ -205,6 +205,7 @@
         </li>
       {/if}
       {#each profileNav.items as profileItem}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <li
           class="fd-menu__item"
           on:click={() => onActionClick(profileItem)}
@@ -276,6 +277,7 @@
       {/if}
       {#if isAuthorizationEnabled || isProfileLogoutItem}
         {#if isLoggedIn || (!isAuthorizationEnabled && isProfileLogoutItem)}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="fd-menu__item"
             on:click={onLogoutClick}
@@ -310,6 +312,7 @@
           </li>
         {/if}
         {#if isAuthorizationEnabled && !isLoggedIn}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li class="fd-menu__item" on:click={startAuthorization}>
             <a aria-label="Login" class="fd-menu__link" data-testid="login-btn">
               <span class="fd-menu__title">Login</span>

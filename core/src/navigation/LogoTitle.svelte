@@ -193,6 +193,7 @@
     {/if}
   </a>
 {:else}
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <span
     class="fd-shellbar__logo {!hasLogo
       ? 'fd-shellbar__logo--image-replaced'
@@ -224,6 +225,7 @@
         </span>
       </a>
     {:else}
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <span
         class="fd-shellbar__title lui-shellbar-single-app-title"
         data-testid="luigi-topnav-title"
@@ -235,6 +237,7 @@
       </span>
     {/if}{:else}
     <div class="fd-popover">
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
         {#if addNavHrefForAnchor}
           {#if appSwitcherItems && appSwitcherItems.length === 1}

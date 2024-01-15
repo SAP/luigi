@@ -331,6 +331,7 @@
                     tabindex="0"
                   >
                     {#if !isCustomSearchResultItemRenderer}
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <a
                         class="fd-menu__link"
                         on:click|preventDefault={() => {}}
@@ -365,6 +366,7 @@
 </div>
 {#if !isSearchFieldVisible}
   <div class="lui-global-search-btn">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="fd-shellbar__group" on:click|stopPropagation={() => {}}>
       <button
         class="fd-button fd-button--transparent fd-shellbar__button"

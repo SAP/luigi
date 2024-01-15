@@ -637,6 +637,7 @@
               {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
+                  <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <li
                     class="fd-nested-list__item lui-collapsible-item"
                     class:lui-item-expanded={isExpanded(

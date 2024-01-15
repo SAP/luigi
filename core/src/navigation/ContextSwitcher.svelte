@@ -258,6 +258,7 @@
   {#if !isMobile}
     <div class="fd-shellbar__action fd-shellbar__action--desktop">
       <div class="fd-popover fd-popover--right">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
           {#if addNavHrefForAnchor && selectedOption !== config.defaultLabel}
             <a
@@ -333,6 +334,7 @@
   {/if}
   <!-- MOBILE VERSION (fullscreen dialog): -->
   {#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div
       class="fd-dialog fd-dialog--active"
       on:click|stopPropagation={() => {}}

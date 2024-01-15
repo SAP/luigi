@@ -260,6 +260,7 @@
                 {#if schemaItem.type === 'enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
                   <div class="fd-form-item">
                     <div class="fd-popover">
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <div
                         class="fd-popover__control"
                         aria-expanded="false"

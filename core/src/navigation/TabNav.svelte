@@ -320,6 +320,7 @@
                 {/if}
               {/each}
             {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
               <span
                 class="fd-tabs__item"
                 uid="{index}-0"
@@ -378,6 +379,7 @@
       </div>
 
       <div class="luigi-tabsMoreButton">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span
           class="fd-tabs__item"
           on:click={(event) => event.stopPropagation()}

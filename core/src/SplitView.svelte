@@ -300,6 +300,7 @@
         id="splitViewDraggerCollapsed"
         class="splitViewSeparator isCollapsed"
       >
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <a
           class="lui-collapse-btn"
           on:click|stopPropagation|preventDefault={expand}
@@ -317,6 +318,7 @@
   <div id="splitViewDraggerBackdrop" />
   <div id="splitViewDragger" on:mousedown|stopPropagation={onDragStart}>
     <div class="splitViewSeparator" />
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <a
       class="lui-collapse-btn"
       on:click|stopPropagation|preventDefault={collapse}

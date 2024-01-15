@@ -235,6 +235,7 @@
         role="list"
       >
         {#each profileNav.items as profileItem}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             tabindex="-1"
             role="listitem"

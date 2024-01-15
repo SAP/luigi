@@ -275,6 +275,7 @@
                     tabindex="0"
                   >
                     {#if !isCustomSearchResultItemRenderer}
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <a
                         class="fd-menu__link"
                         on:click|preventDefault={() => {}}
@@ -308,6 +309,7 @@
   </div>
 </div>
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div on:click|stopPropagation={() => {}}>
     <button
       class="fd-button fd-button--transparent fd-shellbar__button"
