@@ -327,8 +327,6 @@
 {/if}
 
 <style type="text/scss">
-  @import 'src/styles/_variables.scss';
-
   $collapsedSplitviewHeight: 38px;
   $colorNeutral4: #89919a;
 

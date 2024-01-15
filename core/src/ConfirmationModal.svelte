@@ -106,8 +106,6 @@
 </div>
 
 <style type="text/scss">
-  @import 'src/styles/_variables.scss';
-
   .fd-message-box {
     z-index: 1001;
     &__body {

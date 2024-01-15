@@ -202,7 +202,6 @@
 {/if}
 
 <style type="text/scss">
-  @import 'src/styles/_variables.scss';
   .lui-globalnav {
     position: fixed;
     width: $globalNavWidth;

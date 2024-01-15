@@ -375,8 +375,6 @@
   {/if}{/if}
 
 <style type="text/scss">
-  @import 'src/styles/_variables.scss';
-
   // Force height because of base64 img src
   .lui-customlogo img {
     height: 24px;

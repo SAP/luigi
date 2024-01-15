@@ -2167,9 +2167,6 @@
 </div>
 
 <style type="text/scss">
-  @import 'src/styles/_mixins.scss';
-  @import 'src/styles/_variables.scss';
-
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {
     --luigi__left-sidenav--width: 15rem;
