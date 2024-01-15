@@ -632,5 +632,41 @@ export const projectDetailNavStructure = projectId => [
         }
       }
     ]
+  },
+  {
+    category: {
+      label: 'Lazy Loading',
+      icon: 'away'
+    },
+    pathSegment: 'lazygrid',
+    label: 'Grid Compound',
+    compound: {
+      lazyLoadingOptions: {
+        enabled: true,
+        temporaryContainerHeight: '600px'
+      },
+      renderer: {
+        use: 'grid',
+        config: {
+          columns: '1fr'
+        }
+      },
+      children: [
+        {
+          id: 'compoundItem1',
+          viewUrl: '/assets/wc_grid_text.js',
+          context: {
+            text: 'Start'
+          }
+        },
+        {
+          id: 'compoundItem2',
+          viewUrl: '/assets/wc_grid_text.js',
+          context: {
+            s: '00:00'
+          }
+        }
+      ]
+    }
   }
 ];
