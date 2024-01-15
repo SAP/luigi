@@ -3,6 +3,7 @@ export declare interface WebComponentSettings {
   selfRegistered?: boolean;
   tagName?: string;
 }
+
 /**
  * Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
  */
