@@ -1,6 +1,5 @@
 sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-client'], function(JSONModel, LuigiClient) {
   const model = new JSONModel();
-  var currentRoute='testxsw';
   LuigiClient.addInitListener(ctx => {
     model.setData(ctx);
   });
@@ -46,7 +45,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
         target: 'LuigiPreloadView'
       });
 
-      oComponent.getRouter().attachRoutePatternMatched(oEvent => {
+      oComponent.getRouter().attachRouteMatched(oEvent => {
         const currentRoute = oEvent.getParameter('name');
         const args = oEvent.getParameter('arguments');
         let currentRouteObj = {};
