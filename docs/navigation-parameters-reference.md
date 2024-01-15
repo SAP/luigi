@@ -390,6 +390,30 @@ Web components can communicate over an event bus.
               - **gap**: represents the css `grid-gap`, e.g. `auto`.
               - **min-width** min width
               - **max-width** max width
+  - **lazyLoadingOptions**
+    - **type**: object
+    - **description**: allows enabling lazy loading for compound or nested web components
+    - **attributes**
+      - **enabled**
+        - **type**: boolean
+        - **default**: false
+        - **description**: This will activate lazy loading. In that case, an [intersection observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) will be used to attach and render only children that are within a defined part of the brower's [viewport](https://developer.mozilla.org/en-US/docs/Glossary/Viewport). The empty containers for all children will be added but the intersection observer makes sure that web components will only be added to the containers that are inside that defined part of the viewport.
+      - **intersectionRootMargin**
+        - **type**: string
+        - **default**: "0px"
+        - **description**: This allows setting the [`rootMargin` option for the intersection observer](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#rootmargin). In short, this allows configuring that child web components are instantiated before or after their containers enter the viewport.
+      - **temporaryContainerHeight**
+        - **type**: string
+        - **default**: "500px"
+        - **description**: When lazy loading is active, the containers for all children will be created with a fixed, temporary height. That is because otherwise, when adding the empty containers for all children, all containers would have a height of 0. All containers would be visible so that all web components would be added right away. In other words, this would break lazy loading.
+
+          This attribute must be a valid CSS height string. Its value will be used for the default temporary height for all children. Individual children can override this default with their own value, see below.
+
+          After the web component of a child is rendered and attached to its container, the temporary height will be removed from the container.
+      - **noTemporaryContainerHeight**
+        - **type**: boolean
+        - **default**: false
+        - **description**: When implementing a custom renderer for a compound web component, the standard behavior of lazy loading of setting and removing temporary heights to the child containers may conflict with the custom renderer. In that case, setting this attribute to `true` will turn off that behavior. In that case, the custom renderer methods and the code of the child web components must ensure that not all child containers are visible right away. Note that the intersection observer will still be in effect: child web components will only be instantiated and added to their containers when the containers are visible in the defined part of the viewport.
   - **children**
     - **type**: array
     - **description**: Array of web component nodes.
@@ -397,7 +421,25 @@ Web components can communicate over an event bus.
       - **id**: unique `id` of the web component.
       - **viewUrl**: URL which points to the web component `.js` file. If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration.
       - **context**: object, which you can pass to the web component.
-      - **layoutConfig**: config object to define the position of an item in a grid. The properties are `row` and `column` and get the same values as in the CSS grid standard. If you want to use the mechanism of nested web components, you can define a `slot` property with the slot name instead of the config object. In that case this web component node will be plugged in the parent web component.
+      - **layoutConfig**:
+        - **type**: object
+        - **attributes**
+          - **row**
+            - **type**: string
+            - **default**: "auto"
+            - **description**: Sets the `grid-row` value in the [CSS grid standard](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout). Use it to define the position of the child item in the grid.
+          - **column**
+            - **type**: string
+            - **default**: "auto"
+            - **description**: Sets the `grid-column` value in the [CSS grid standard](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout). Use it to define the position of the child item in the grid.
+          - **slot**
+            - **type**: string
+            - **default**: ""
+            - **description**: If you want to use the mechanism of nested web components, you can use this instead of `row` and `column` to define the slot into which to render this child. In that case this web component node will be plugged in that slot of the parent web component.
+          - **temporaryContainerHeight**
+            - **type**: string
+            - **default**: undefined
+            - **description**: If lazy loading is active for this compound web component then setting this attribute will define the temporary container height for this individual child. It will override the general default value of `temporaryContainerHeight` that is set for the overall compound.
       - **eventListeners**
         - **type**: array
         - **description**: array of events.
