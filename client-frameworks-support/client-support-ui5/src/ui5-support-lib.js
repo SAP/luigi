@@ -1,5 +1,6 @@
 sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-client'], function(JSONModel, LuigiClient) {
   const model = new JSONModel();
+  var currentRoute='testxsw';
   LuigiClient.addInitListener(ctx => {
     model.setData(ctx);
   });
@@ -12,6 +13,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
     LuigiClient,
     connectTo: function(oComponent) {
       const routingConfig = oComponent.getManifestEntry('sap.ui5').routing;
+      let sOldRouteName = '';
       oComponent.setModel(model, '$luigiCtx');
 
       // Create preload view
@@ -44,7 +46,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
         target: 'LuigiPreloadView'
       });
 
-      oComponent.getRouter().attachRouteMatched(oEvent => {
+      oComponent.getRouter().attachRoutePatternMatched(oEvent => {
         const currentRoute = oEvent.getParameter('name');
         const args = oEvent.getParameter('arguments');
         let currentRouteObj = {};
@@ -97,8 +99,13 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
               lm.updateModalPathInternalNavigation(route, {}, currentRouteObj.data.addHistoryEntry);
             }
           } else if (route) {
-            lm.navigate(route);
+            let bPreventHistory = false;
+            if(currentRouteObj.data.preventBrowserHistory === true && sOldRouteName === currentRouteObj.name){
+              bPreventHistory=true;
+            }
+            lm.withOptions({ preventHistoryEntry: bPreventHistory }).navigate(route);
           }
+          sOldRouteName = currentRouteObj.name;
         }
       });
     }
