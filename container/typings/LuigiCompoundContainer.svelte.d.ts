@@ -26,13 +26,6 @@ export default class LuigiCompoundContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
-   * The context to be passed to the microfrontend. It can be an object or a stringified object.
-   * @param {Object} object to be passed to the microfrontend
-   * @param {string} string must be a stringified JSON object.
-   */
-  context: object | string;
-
-  /**
    * The search parameters to be passed to the compound micro frontend.
    */
   searchParams: Object;
