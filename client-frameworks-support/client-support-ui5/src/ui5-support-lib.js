@@ -100,7 +100,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
           } else if (route) {
             let bPreventHistory = false;
             if(currentRouteObj.data.preventBrowserHistory === true && sOldRouteName === currentRouteObj.name){
-              bPreventHistory=true;
+              bPreventHistory=true; 
             }
             lm.withOptions({ preventHistoryEntry: bPreventHistory }).navigate(route);
           }
