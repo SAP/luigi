@@ -1850,6 +1850,15 @@
 
 
   /* BTP CSS */
+  .fd-navigation--vertical {
+    .lui-nav-title {
+      padding-bottom: 1rem;
+
+      .fd-nested-list {
+        border-bottom: none;
+      }
+    }
+  }
   .fd-nested-list .fd-nested-list__title.badge-align-right,
   .fd-navigation__text.badge-align-right {
     display: flex;
