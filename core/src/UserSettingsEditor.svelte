@@ -8,7 +8,6 @@
     KEYCODE_ARROW_DOWN,
   } from './utilities/keycode.js';
   export let userSettingGroup;
-  export let userSettingsGroupKey;
   export let storedUserSettingData;
   const dispatch = createEventDispatcher();
   let getTranslation = getContext('getTranslation');

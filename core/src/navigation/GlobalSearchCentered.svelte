@@ -12,7 +12,6 @@
   import { TOP_NAV_DEFAULTS } from '../utilities/luigi-config-defaults';
   export let searchResult = [];
   export let displaySearchResult;
-  export let displayCustomSearchResult;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;

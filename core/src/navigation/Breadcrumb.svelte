@@ -20,8 +20,6 @@
   let store = getContext('store');
 
   export let showBreadcrumb;
-  export let hideNavComponent;
-  export let responsiveNavSetting;
   let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setNavData = async () => {

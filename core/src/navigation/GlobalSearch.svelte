@@ -12,7 +12,6 @@
   export let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
-  export let displayCustomSearchResult;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;

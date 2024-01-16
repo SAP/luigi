@@ -20,7 +20,6 @@
   import { LuigiConfig } from './core-api';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
   import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_HOME, KEYCODE_END } from './utilities/keycode.js';
-  export let schemaObj;
   export let userSettingGroups;
 
 

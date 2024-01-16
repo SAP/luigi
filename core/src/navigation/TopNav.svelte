@@ -49,14 +49,12 @@
   export let nodeForMobile;
   export let profileItemsAvailable;
   export let userInfo = {};
-  export let urlAuthError;
   export let globalSearchConfig;
   export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let displaySearchResult;
-  export let displayCustomSearchResult;
   export let searchResult;
   export let burgerTooltip;
   export let responsiveShellbarPadding;
@@ -351,7 +349,6 @@
           on:handleSearchNavigation
           bind:searchResult
           bind:displaySearchResult
-          bind:displayCustomSearchResult
           bind:inputElem
           bind:luigiCustomSearchRenderer__slot
           on:closeSearchResult
@@ -369,7 +366,6 @@
             on:handleSearchNavigation
             bind:searchResult
             bind:displaySearchResult
-            bind:displayCustomSearchResult
             bind:inputElem
             bind:luigiCustomSearchRenderer__slot
             on:closeSearchResult

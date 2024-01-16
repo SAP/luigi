@@ -109,7 +109,6 @@
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let displaySearchResult;
-  export let displayCustomSearchResult = true;
   export let searchResult;
   export let storedUserSettings;
 
@@ -627,7 +626,6 @@
         if (
           GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
         ) {
-          displayCustomSearchResult = true;
           let searchApiObj = {
             fireItemSelected: (item) => {
               searchProvider.onSearchResultItemSelected(item);
@@ -2126,7 +2124,6 @@
       on:handleSearchNavigation={handleSearchNavigation}
       bind:isSearchFieldVisible
       bind:displaySearchResult
-      bind:displayCustomSearchResult
       bind:searchResult
       bind:inputElem
       bind:luigiCustomSearchRenderer__slot
