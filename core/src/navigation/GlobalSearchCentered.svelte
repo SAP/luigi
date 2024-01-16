@@ -265,50 +265,58 @@
 >
   <div class="fd-popover">
     <div
-      class="fd-popover__control luigi-search fd-shellbar__group"
+      class="luigi-search fd-shellbar__group"
       on:click|stopPropagation={() => {}}
       aria-hidden={!isSearchFieldVisible}
       aria-haspopup="true"
     >
       <div
-        class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn"
+        class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn fd-shellbar__search-field"
       >
         {#if search && search.disableInputHandlers}
           <input
             type="text"
-            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
-            data-testid="luigi-search-input__no-handlers"
+            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input fd-shellbar__search-field-input"
+            data-testid="luigi-search-input__no-handlers" onfocus="event.target.parentNode.classList.add('is-focus')"
+            onblur="event.target.parentNode.classList.remove('is-focus')"
+            placeholder=" "
           />
         {:else}
           <input
             type="text"
             on:keyup={event => onKeyUp(event)}
-            class="fd-input
+            class="fd-input fd-shellbar__search-field-input
         fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
             data-testid="luigi-search-input"
             bind:this={inputElem}
             on:input={() => renderClearBtn()}
+            onfocus="event.target.parentNode.classList.add('is-focus')"
+            onblur="event.target.parentNode.classList.remove('is-focus')"
+            placeholder=" "
           />
-          <span
-            class="fd-input-group__addon fd-shellbar__input-group__addon fd-input-group__addon--button lui-search-btn-ctn"
+          <div
+            class="fd-input-group__addon fd-shellbar__search-field-addon fd-shellbar__search-cancel fd-input-group__addon--button"
           >
-            {#if displayClearSearchFieldBtn}
-              <button
-                aria-label="button-decline"
-                class="fd-shellbar__button fd-button fd-button--transparent"
-                on:click={clearSearchField}
-              >
-                <i class="sap-icon--decline lui-clear-search" />
-              </button>
-            {/if}
             <button
               aria-label="button-search"
-              class="fd-shellbar__button fd-button fd-button--transparent lui-search-btn"
+              class="fd-shellbar__button fd-button fd-button--transparent"
+              on:click={clearSearchField}
+            >
+              <i class="sap-icon--decline"></i>
+            </button>
+          </div>
+          <div
+            class="fd-input-group__addon fd-shellbar__search-field-addon fd-shellbar__search-submit fd-input-group__addon--button"
+          >
+            <button
+              aria-label="button-search"
+              class="fd-shellbar__button fd-button fd-button--transparent"
               on:click={searchBtnClicked}
             >
-              <i class="sap-icon--search" />
+              <i class="sap-icon--search"></i>
             </button>
-          </span>
+          </div>
+          <div class="fd-shellbar__search-field-helper"></div>
         {/if}
       </div>
       {#if !isCustomSearchRenderer}
@@ -410,12 +418,6 @@
       isolation: isolate;
     }
 
-    .fd-input-group,
-    .fd-button,
-    .luigi-search__input {
-      height: 2rem;
-      min-height: 2rem;
-    }
 
     .fd-input-group__addon,
     .luigi-search__input {
@@ -427,9 +429,6 @@
       flex: 1;
     }
 
-    .fd-input-group__addon {
-      min-height: 2rem;
-    }
   }
 
   .luigi-search__input:hover + .fd-input-group__addon--button {

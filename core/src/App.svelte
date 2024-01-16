@@ -2370,7 +2370,7 @@
     --luigi__app-title--width: 60vw;
     --luigi__multi-app-dropdown--width: 60vw;
     --luigi__breadcrumb--height: 2.75rem;
-    --luigi__shellbar--height: 2.75rem;
+    --luigi__shellbar--height: 3.25rem;
     --luigi__horizontal-nav--height: 2.75rem;
   }
 
@@ -2917,11 +2917,11 @@
     }
   }
 
-  //Add padding for shellbar buttons
-  :global(.fd-shellbar__button) {
-    padding-left: 0.5625rem !important;
-    padding-right: 0.5625rem !important;
+  //avatar clipping
+  :global(.fd-avatar--circle) {
+    background-clip: padding-box;
   }
+  
   :global(.fd-shellbar__logo) {
     margin-right: 0px;
   }
