@@ -2073,6 +2073,7 @@
     />
   {/if}
   <Backdrop disable={disableBackdrop}>
+    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <div
       class="fd-page iframeContainer"
       class:lui-split-view={mfSplitView.displayed}

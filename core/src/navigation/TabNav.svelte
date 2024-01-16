@@ -420,6 +420,7 @@
                     {/each}
                   {:else}
                     <li class="fd-nested-list__item" uid="{index}-0">
+                      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                       <div
                         class="fd-nested-list__content has-child"
                         tabindex="0"

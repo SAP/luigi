@@ -314,6 +314,7 @@
 
 <svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} />
 {#if showTopNav}
+  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <div
     class="fd-shellbar {responsiveShellbarPadding
       ? 'fd-shellbar--responsive-paddings'

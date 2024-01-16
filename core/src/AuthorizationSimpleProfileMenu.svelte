@@ -246,6 +246,7 @@
           on:keyup={event => handleKeyUp(event)}
           data-testid={getTestId(profileNav.settings)}
         >
+          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
           <a
             tabindex="0"
             title="User Settings"

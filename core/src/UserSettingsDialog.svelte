@@ -332,6 +332,7 @@
 </script>
 
 <svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog" tabindex="0">
   <div
     class="fd-dialog__content lui-usersettings-dialog-size"

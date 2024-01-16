@@ -280,6 +280,7 @@
             on:click|preventDefault={onUserSettingsClick}
             on:keyup={event => handleKeyUp(event)}
           >
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
             <a
               tabindex="0"
               class="fd-list__link"

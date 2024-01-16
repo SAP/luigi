@@ -337,6 +337,7 @@
               {#each appSwitcherItems as item, index}
                 {#if GenericHelpers.isFunction(itemRenderer)}
                   {#if customItemRenderer__slotContainer}
+                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <li class="fd-menu__item" tabindex="0">
                       {@html renderCustomList(
                         item,

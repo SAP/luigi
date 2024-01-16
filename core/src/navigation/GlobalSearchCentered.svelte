@@ -322,6 +322,7 @@
                 bind:this={luigiCustomSearchItemRenderer__slotContainer}
               >
                 {#each searchResult as result, index}
+                  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
                     on:click={event =>

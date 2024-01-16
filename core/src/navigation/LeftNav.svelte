@@ -648,6 +648,7 @@
                       handleIconClick(nodes, event.currentTarget)}
                     data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
+                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <div
                       class="fd-nested-list__content has-child"
                       on:keypress={event =>
@@ -979,6 +980,7 @@
                 />
               </button>
             {:else}
+              <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
               <i
                 class="lui-side-nav__footer--icon {isSemiCollapsed
                   ? 'sap-icon--open-command-field'
