@@ -4,9 +4,6 @@ export declare interface WebComponentSettings {
   tagName?: string;
 }
 
-/**
- * Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
- */
 export default class LuigiCompoundContainer extends HTMLElement {
   /**
    * The URL used for the renderer
@@ -63,7 +60,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
    * @param {string} string must be a stringified JSON object from type `WebComponentSettings`.
    */
-  webcomponent: boolean | WebComponentSettings | stringf;
+  webcomponent: boolean | WebComponentSettings | string;
 
   /**
    * Function that updates the context of the compound microfrontend
