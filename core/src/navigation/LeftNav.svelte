@@ -254,13 +254,15 @@
   });
 
   resetNavEntries = () => {
-    const moreEntries = btpNavTopCnt.querySelectorAll('.lui-moreItems  > .lui-nav-entry');
-    const navList = btpNavTopCnt.querySelector('.fd-navigation__list');
-    const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
-    moreEntries?.forEach((item) => {
-      navList.insertBefore(item, spacer);
-    });
-    btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'none';
+    if(btpNavTopCnt) {
+      const moreEntries = btpNavTopCnt.querySelectorAll('.lui-moreItems  > .lui-nav-entry');
+      const navList = btpNavTopCnt.querySelector('.fd-navigation__list');
+      const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
+      moreEntries?.forEach((item) => {
+        navList.insertBefore(item, spacer);
+      });
+      btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'none';
+    }
   }
 
   calculateNavEntries = () => {
@@ -301,7 +303,7 @@
     window.Luigi.__btpNavTopCntRszObs.disconnect();
     if(btpNavTopCnt && isSemiCollapsed) {
        window.Luigi.__btpNavTopCntRszObs.observe(btpNavTopCnt);
-    } else if(btpNavTopCnt) {
+    } else {
       resetNavEntries();
     }
   });
@@ -501,9 +503,9 @@
   }
 
   export function closePopupMenu() {
-    selectedCategory =
-      SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
-    btpNavTopCnt.querySelector('.fd-navigation__item.lui-nav-more').setAttribute('aria-expanded', false);
+    // selectedCategory =
+    //   SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
+    // btpNavTopCnt && btpNavTopCnt.querySelector('.fd-navigation__item.lui-nav-more').setAttribute('aria-expanded', false);
   }
 
   function closePopupMenuOnEsc(event){
@@ -1874,9 +1876,7 @@
     position: static;
   }
 
-  .fd-navigation--snapped .lui-moreItems .fd-popover {
-    
-    --lui_popover_offset: 0px;
+  .fd-navigation--snapped .fd-popover {
     .fd-popover__body--after {
       padding: 0.5rem;
       max-height: 80vh;
@@ -1884,7 +1884,13 @@
       &:after, &:before {
         transform: translateY(var(--lui_popover_offset));
       }
+    }
+  }
 
+  .fd-navigation--snapped .lui-moreItems .fd-popover {
+    
+    --lui_popover_offset: 0px;
+    .fd-popover__body--after {
       .fd-navigation__item--title {
         display: none;
       }
