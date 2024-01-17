@@ -1,14 +1,12 @@
-import { LuigiConfig } from '../core-api';
-import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
+
 import {
   DefaultCompoundRenderer,
   deSanitizeParamsMap,
   registerEventListeners,
   resolveRenderer
 } from '../utilities/helpers/web-component-helpers';
-import { NavigationHelpers } from '../utilities/helpers';
 import { LuigiConfig } from '../core-api';
-import { RoutingHelpers, GenericHelpers } from '../utilities/helpers';
+import { RoutingHelpers, GenericHelpers, NavigationHelpers } from '../utilities/helpers';
 
 const DEFAULT_TEMPORARY_HEIGHT = '500px';
 const DEFAULT_INTERSECTION_OBSERVER_ROOTMARGIN = '0px';
