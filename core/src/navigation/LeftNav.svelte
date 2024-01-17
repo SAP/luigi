@@ -1283,10 +1283,8 @@
       }
     }
 
-    .isBlocked {
-      .lui-fd-side-nav-wrapper {
-        overflow: hidden !important;
-      }
+    :global(.isBlocked .lui-fd-side-nav-wrapper) {
+      overflow: hidden !important;
     }
 
     .lui-side-nav {
@@ -1406,13 +1404,11 @@
       overflow-y: auto;
     }
 
-    &.has-bottom-position {
-      .lui-flyout-sublist__wrapper {
-        &:before,
-        &:after {
-          top: auto;
-          bottom: 9px;
-        }
+    &:global(.has-bottom-position .lui-flyout-sublist__wrapper) {
+      &:before,
+      &:after {
+        top: auto;
+        bottom: 9px;
       }
     }
   }

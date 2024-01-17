@@ -20,7 +20,7 @@
       color: var(--sapContent_BadgeTextColor, #fff);
     }
 
-    .fd-menu .fd-top-nav__icon {
+    :global(.fd-menu .fd-top-nav__icon) {
       position: relative;
       margin-right: 8px;
       min-width: 16px;
@@ -33,8 +33,8 @@
       }
     }
 
-    .fd-product-switch__body--mobile {
-      .lui-product-switch__icon {
+    :global(.fd-product-switch__body--mobile) {
+      :global(.lui-product-switch__icon) {
         position: relative;
 
         .fd-shellbar__counter--notification {

@@ -454,7 +454,7 @@
   .fd-row .fd-col .fd-select__control.lui-anchor-node {
     margin: 0;
   }
-  .fd-select__control.lui-anchor-node[aria-expanded='true']:focus {
+  .fd-select__control:global(.lui-anchor-node[aria-expanded='true']:focus) {
     outline: none;
   }
 

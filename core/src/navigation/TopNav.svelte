@@ -861,13 +861,6 @@
     }
   }
 
-  img {
-    &.fd-top-nav__icon {
-      height: 16px;
-      min-width: auto;
-    }
-  }
-
   .fd-popover {
     .nav-icon {
       height: 2em;

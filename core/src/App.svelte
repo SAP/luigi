@@ -2301,14 +2301,14 @@
     overflow: hidden;
     margin-bottom: -5px;
   }
-  .iframeContainerNoNav {
+  :global(.iframeContainerNoNav) {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
   }
-  .iframeContainerNoNav :global(iframe) {
+  :global(.iframeContainerNoNav iframe) {
     border: none;
     width: 100%;
     height: 100%;
@@ -2628,7 +2628,7 @@
   :global(html.luigi-app-in-custom-container) {
     position: relative;
 
-    [luigi-app-root] {
+    :global([luigi-app-root]) {
       position: relative;
       overflow: hidden;
     }
@@ -2651,7 +2651,7 @@
   :global(.fd-side-nav--condensed) {
     :global(.fd-nested-list__link) {
       font-size: 10px;
-      &.has-child:after {
+      &:global(.has-child:after) {
         height: 0;
       }
     }
@@ -2742,7 +2742,7 @@
       display: block;
     }
 
-    iframe {
+    :global(iframe) {
       display: none;
     }
   }

@@ -424,18 +424,6 @@
   }
 
   .fd-popover {
-    #context_menu_middle {
-      max-height: 50vh;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .fd-button--secondary,
-    .fd-menu__link {
-      max-width: 300px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
     .fd-popover__body {
       right: 0;
     }
