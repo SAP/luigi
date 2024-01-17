@@ -7,7 +7,6 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       cy.getIframeBody().then(result => {
         $iframeBody = result;
         cy.goToLinkManagerMethods($iframeBody);
-        // cy.expectPathToBe('/projects/pr2');
         cy.get('.drawer').should('not.exist');
       });
     });
