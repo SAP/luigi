@@ -295,7 +295,7 @@
       height: 100%;
       &:focus {
         outline: var(--sapContent_FocusWidth) var(--sapContent_FocusStyle) var(--fdShellbar_Button_Outline_Color);
-        outline-offset: var(--fdButton_Outline_Offset);
+        outline-offset: -0.325rem;
       }
     }
   }
