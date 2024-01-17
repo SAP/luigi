@@ -507,6 +507,7 @@
     <div class="lui-nav-title">
       <ul class="fd-nested-list">
         <li class="fd-nested-list__item">
+          <!-- svelte-ignore a11y-missing-attribute -->
           <a
             class="fd-nested-list__link"
             title={resolveTooltipText(

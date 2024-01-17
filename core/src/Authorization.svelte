@@ -281,6 +281,7 @@
             on:keyup={event => handleKeyUp(event)}
           >
             <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a
               tabindex="0"
               class="fd-list__link"

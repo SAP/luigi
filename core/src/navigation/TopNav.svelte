@@ -524,6 +524,7 @@
                       {#if globalSearchConfig && !isGlobalSearchCentered}
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <!-- svelte-ignore a11y-missing-attribute -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={() => {
@@ -542,6 +543,7 @@
                       {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <!-- svelte-ignore a11y-missing-attribute -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={openMobileContextSwitcher}
@@ -634,6 +636,7 @@
                       {#if isProductSwitcherAvailable}
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <!-- svelte-ignore a11y-missing-attribute -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={openMobileProductSwitcher}

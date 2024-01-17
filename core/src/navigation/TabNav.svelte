@@ -329,6 +329,7 @@
               >
                 <div class="fd-popover">
                   <div class="fd-popover__control">
+                    <!-- svelte-ignore a11y-missing-attribute -->
                     <a
                       class="fd-tabs__link has-child"
                       aria-expanded="false"
@@ -385,6 +386,7 @@
           on:click={(event) => event.stopPropagation()}
         >
           <div class="fd-popover fd-popover--right">
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a
               class="fd-tabs__link fd-popover__control has-child luigi__more"
               aria-expanded="false"
