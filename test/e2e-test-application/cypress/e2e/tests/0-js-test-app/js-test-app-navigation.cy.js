@@ -405,7 +405,7 @@ describe('JS-TEST-APP', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(defaultLuigiConfig);
-      cy.visitTestApp('/home/two', newConfig);
+      cy.visitTestApp('/', newConfig);
     });
     it('Core API unload', () => {
       let config;
