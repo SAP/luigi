@@ -456,6 +456,7 @@
 
   :global(.lui-global-search.lui-global-search-toggle) {
     justify-content: flex-end;
+    z-index: 10;
     .lui-global-search-btn {
       display: inline-block;
     }
@@ -485,8 +486,10 @@
       width: calc(100% - 90px);
       left: 0;
       top: 0;
+      height: 100%;
       z-index: 2;
       padding-left: 1rem;
+      padding-right: 0.25rem;
       .fd-shellbar__input-group {
         margin-top: 6px;
       }
@@ -502,6 +505,7 @@
       top: 0;
       z-index: 2;
       width: 90px;
+      height: 100%;
       .fd-shellbar__button {
         margin-top: 4px;
       }
