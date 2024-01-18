@@ -323,6 +323,8 @@
                                 class:is-focus={selectedLanguageLabel ===
                                   optionIndex}
                                 data-testid="lui-us-option{index}_{optionIndex}"
+                                aria-selected={selectedLanguageLabel ===
+                                  optionIndex}
                                 on:click={() =>
                                   updateComboBox(key, option, optionIndex)}
                                 on:keydown={event =>
