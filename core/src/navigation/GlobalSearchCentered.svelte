@@ -399,7 +399,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {
     li[class*='luigi-search-result']:focus {

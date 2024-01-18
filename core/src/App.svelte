@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
   import Alerts from './Alerts.svelte';
   import ConfirmationModal from './ConfirmationModal.svelte';
   import Modal from './Modal.svelte';
@@ -2164,7 +2164,7 @@
   {/if}
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {
     --luigi__left-sidenav--width: 15rem;

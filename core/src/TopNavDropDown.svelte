@@ -163,7 +163,7 @@
   />
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     img {
       max-width: 16px;

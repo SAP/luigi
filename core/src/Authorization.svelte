@@ -355,7 +355,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     display: inline-block;
     vertical-align: middle;

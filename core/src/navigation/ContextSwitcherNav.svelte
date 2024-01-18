@@ -119,7 +119,7 @@
   {/if}
 </nav>
 
-<style type="text/scss">
+<style lang="scss">
   :global(.fd-popover__body) {
     .lui-ctx-switch-nav {
       max-height: calc(100vh - 76px);

@@ -229,7 +229,7 @@
   {/if}
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .lui-product-switch__icon {
     img {
       max-height: 24px;

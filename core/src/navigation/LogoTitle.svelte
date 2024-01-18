@@ -378,7 +378,7 @@
     <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
   {/if}{/if}
 
-<style type="text/scss">
+<style lang="scss">
   // Force height because of base64 img src
   .lui-customlogo img {
     height: 24px;

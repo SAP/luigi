@@ -13,7 +13,7 @@
   {/await}
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   :global(.fd-shellbar__action) {
     .fd-shellbar__counter--notification {
       top: 0;

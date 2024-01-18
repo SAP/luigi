@@ -825,7 +825,7 @@
   />
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   /*Remove Safari bug with blue outlines of dropdowns in the shellbar*/
   .fd-shellbar:focus {
     outline: none;

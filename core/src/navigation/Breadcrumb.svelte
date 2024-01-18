@@ -182,7 +182,7 @@
 
 <div class="lui-breadcrumb-container" bind:this={breadcrumbContainer} />
 
-<style type="text/scss">
+<style lang="scss">
   .lui-breadcrumb-container {
     position: absolute;
     right: 0;

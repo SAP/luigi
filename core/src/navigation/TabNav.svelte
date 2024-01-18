@@ -502,7 +502,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .tabsContainer {
     width: 100%;
   }

@@ -395,7 +395,7 @@
   {/if}
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .lui-ctx-switch-menu {
     max-width: 30vw;
     color: var(--sapShell_TextColor, #fff);

@@ -1000,7 +1000,7 @@
   </nav>
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
 

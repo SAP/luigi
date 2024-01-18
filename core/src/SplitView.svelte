@@ -330,7 +330,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   $collapsedSplitviewHeight: 38px;
   $colorNeutral4: #89919a;
 
