@@ -189,7 +189,7 @@
       const nextPath = buildPath(data.params);
       const nodePath = Routing.getNodePath(currentNode, urlParamsRaw);
 
-      $: preservedViews.push({
+      preservedViews.push({
         path:
           config.iframe.luigi && config.iframe.luigi.pathParams
             ? GenericHelpers.replaceVars(
@@ -715,14 +715,14 @@
   const splitViewIframeCreated = (event) => {
     splitViewIframe = event.detail.splitViewIframe;
     splitViewIframeData = event.detail.splitViewIframeData;
-    $: mfSplitView.collapsed = event.detail.collapsed;
+    mfSplitView.collapsed = event.detail.collapsed;
   };
 
   const splitViewStatusChanged = (event) => {
-    $: if (event.detail.displayed !== undefined) {
+    if (event.detail.displayed !== undefined) {
       mfSplitView.displayed = event.detail.displayed;
     }
-    $: if (event.detail.collapsed !== undefined) {
+    if (event.detail.collapsed !== undefined) {
       mfSplitView.collapsed = event.detail.collapsed;
     }
   };
@@ -730,7 +730,7 @@
   const splitViewWCCreated = (event) => {
     splitViewWC = event.detail.splitViewWC;
     splitViewWCData = event.detail.splitViewWCData;
-    $: mfSplitView.collapsed = event.detail.collapsed;
+    mfSplitView.collapsed = event.detail.collapsed;
   };
 
   /// RESIZING
