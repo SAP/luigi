@@ -1,22 +1,21 @@
-export declare interface UserSettings {
-  [key: string]: number | string | boolean;
-}
-
 export declare interface WebComponentSettings {
   type?: string;
   selfRegistered?: boolean;
   tagName?: string;
 }
-/**
- * Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
- */
+
 export default class LuigiCompoundContainer extends HTMLElement {
+  /**
+   * The URL used for the renderer
+   */
+  viewurl: string;
+
   /**
    * The configuration for the compound microfrontend
    * Take a look at https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound
    * 
    */
-  compoundConfig: any;
+  compoundConfig: Object;
 
   /**
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used
@@ -24,31 +23,29 @@ export default class LuigiCompoundContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
-   * The context to be passed to the microfrontend. It can be an object or a stringified object.
-   * @param {Object} object to be passed to the microfrontend
-   * @param {string} string must be a stringified JSON object.
-   */
-  context: object | string;
-
-  /**
    * The search parameters to be passed to the compound micro frontend.
    */
-  searchParams: any;
+  searchParams: Object;
 
   /**
    * The path parameters to be passed to the compound micro frontend.
    */
-  pathParams: any;
+  pathParams: Object;
+
+  /**
+   * The stringified context to be passed to the compound microfrontend
+   */
+  context: string;
 
   /**
    * The clientPermissions to be passed to the compound micro frontend.
    */
-  clientPermissions: any;
+  clientPermissions: Object;
 
   /**
    * The user settings to be passed to the compound micro frontend
    */
-  userSettings: UserSettings;
+  userSettings: Object;
 
   /**
    * The anchor value to be passed to the compound micro frontend.
@@ -63,16 +60,19 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
    * @param {string} string must be a stringified JSON object from type `WebComponentSettings`.
    */
-  webcomponent: boolean | WebComponentSettings | stringf;
+  webcomponent: boolean | WebComponentSettings | string;
 
   /**
-   * Updates the context of the compound microfrontend
+   * Function that updates the context of the compound microfrontend
    * @param contextObj The context data
+   * 
+   * @example
+   * containerElement.updateContext({newContextData: 'some data'})
    */
-  updateContext(contextObj: any): void;
+  updateContext(contextObj: Object): void;
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute
    */
-  init(): Function;
+  init();
 }
