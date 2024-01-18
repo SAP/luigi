@@ -232,13 +232,11 @@
 
       <ul
         class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border"
-        role="list"
       >
         {#each profileNav.items as profileItem}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             tabindex="-1"
-            role="listitem"
             class="fd-list__item fd-list__item--link"
             on:click={() => onActionClick(profileItem)}
             data-testid={getTestId(profileItem)}
@@ -275,7 +273,6 @@
         {#if hasUserSettings}
           <li
             tabindex="-1"
-            role="listitem"
             class="fd-list__item fd-list__item--link lui-anchor-node"
             on:click|preventDefault={onUserSettingsClick}
             on:keyup={event => handleKeyUp(event)}

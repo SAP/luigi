@@ -353,12 +353,10 @@
           >
             <ul
               class="fd-list fd-list--byline fd-list--navigation lui-us-list"
-              role="list"
             >
               {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
                 {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
                   <li
-                    role="listitem"
                     class="fd-list__item fd-list__item--link lui-us-navlist__item"
                     data-testid="us-navigation-item"
                     on:click|preventDefault={() =>
