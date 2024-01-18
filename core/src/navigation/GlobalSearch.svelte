@@ -237,6 +237,7 @@
     >
       <div class="fd-input-group fd-shellbar__input-group">
         {#if search && search.disableInputHandlers}
+          <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
             class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
@@ -244,6 +245,7 @@
             autofocus
           />
         {:else}
+          <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
             on:keyup={event => onKeyUp(event)}
