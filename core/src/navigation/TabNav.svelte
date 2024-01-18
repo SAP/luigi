@@ -427,6 +427,7 @@
                         class="fd-nested-list__content has-child"
                         tabindex="0"
                       >
+                        <!-- svelte-ignore a11y-invalid-attribute -->
                         <a
                           href="javascript:void(null)"
                           tabindex="-1"

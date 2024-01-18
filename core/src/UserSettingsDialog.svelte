@@ -364,6 +364,7 @@
                     on:keydown={event => handleKeyUp(event, [index])}
                     tabindex="0"
                   >
+                    <!-- svelte-ignore a11y-invalid-attribute -->
                     <a tabindex="-1" class="fd-list__link" href="#">
                       {#if userSettingsGroupProperty[1].icon}
                         {#if hasOpenUIicon(userSettingsGroupProperty[1])}
