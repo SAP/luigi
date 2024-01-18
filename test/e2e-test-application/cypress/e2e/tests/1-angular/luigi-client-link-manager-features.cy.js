@@ -6,10 +6,6 @@ describe('Luigi client linkManager', () => {
     }
   };
 
-  beforeEach(() => {
-    cy.visitLoggedIn('/');
-  });
-
   describe('linkManager navigation calls', () => {
     let $iframeBody;
     beforeEach(() => {
@@ -92,6 +88,7 @@ describe('Luigi client linkManager', () => {
 
   describe('linkManager - intent navigation', () => {
     let $iframeBody;
+
     beforeEach(() => {
       // "clear" variables to make sure they are not reused and throw error in case something goes wrong
       $iframeBody = undefined;
@@ -108,14 +105,17 @@ describe('Luigi client linkManager', () => {
       cy.wrap($iframeBody)
         .contains('Open webcomponent in splitView')
         .click();
-      cy.get('.iframeSplitViewCnt>').then(container => {
-        const root = container.children().prevObject[0].shadowRoot;
-        const wcContent = root.querySelector('p').innerText;
-        expect(wcContent).to.equal('Hello WebComponent!');
-        root.querySelector('button').click();
-        cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
-        cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from uxManager in Web Component, Language:en');
-      });
+      cy.get('.iframeSplitViewCnt>')
+        .shadow()
+        .as('shw')
+        .find('p')
+        .should('contain', 'Hello WebComponent!');
+      cy.get('@shw')
+        .find('button')
+        .eq(0)
+        .click();
+      cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
+      cy.get('[data-testid=luigi-alert]').should('contain', 'Hello from uxManager in Web Component, Language:en');
     });
 
     it('should be able to list active featureToggles from WC "API"', localRetries, () => {
@@ -125,14 +125,17 @@ describe('Luigi client linkManager', () => {
       cy.wrap($iframeBody)
         .contains('Open webcomponent in splitView')
         .click();
-      cy.get('.iframeSplitViewCnt>').then(container => {
-        const root = container.children().prevObject[0].shadowRoot;
-        const wcContent = root.querySelector('p').innerText;
-        expect(wcContent).to.equal('Hello WebComponent!');
-        root.querySelector('button').click();
-        cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles list: ft1');
-        cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles: ft1');
-      });
+      cy.get('.iframeSplitViewCnt>')
+        .shadow()
+        .as('shw')
+        .find('p')
+        .should('contain', 'Hello WebComponent!');
+      cy.get('@shw')
+        .find('button')
+        .eq(0)
+        .click();
+      cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles list: ft1');
+      cy.get('[data-testid=luigi-alert]').should('contain', 'Active feature toggles: ft1');
     });
 
     it('navigate with intent', localRetries, () => {
