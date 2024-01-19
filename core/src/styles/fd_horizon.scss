@@ -1,6 +1,8 @@
 @import '@sap-theming/theming-base-content/content/Base/baseLib/sap_horizon/css_variables.css';
 @import 'fundamental-styles/dist/theming/sap_horizon.css';
 
+@import './fd_base.scss';
+
 @import './btp_tool_layout.scss';
 
 @font-face {
