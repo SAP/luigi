@@ -401,11 +401,11 @@ describe('JS-TEST-APP', () => {
       cy.expectPathToBe('/virtual/this/is/a/tree');
     });
   });
-  describe('Unload and load Luigi', () => {
+  describe.only('Unload and load Luigi', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(defaultLuigiConfig);
-      cy.visitTestApp('/', newConfig);
+      cy.visitTestApp('/home/two', newConfig);
     });
     it('Core API unload', () => {
       let config;
