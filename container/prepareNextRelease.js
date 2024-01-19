@@ -6,7 +6,7 @@
  * 2. Replace 'your-folder-path' with the target folder.
  *
  * @example
- * $ node replace-version.js
+ * $ node prepareNextRelease.js
  * Replaced in file1.txt: 3 occurrences
  * Version replaced successfully in /path/to/your/folder: 1.3.1
  */
