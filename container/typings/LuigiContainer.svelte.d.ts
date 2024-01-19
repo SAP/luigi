@@ -1,11 +1,3 @@
-export declare interface NodeParams {
-  [key: string]: string;
-}
-
-export declare interface UserSettings {
-  [key: string]: number | string | boolean;
-}
-
 export declare interface WebComponentSettings {
   type?: string;
   selfRegistered?: boolean;
@@ -28,12 +20,10 @@ export default class LuigiContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
-   * The context to be passed to the microfrontend. It can be an object or a stringified object.
-   * @param {Object} object to be passed to the microfrontend
-   * @param {string} string must be a stringified JSON object.
+   * The stringified context object to be passed to the microfrontend
    * @since 1.0.0
    */
-  context: object | string;
+  context: string;
 
   /**
    * Label information for the microfrontend
@@ -81,31 +71,31 @@ export default class LuigiContainer extends HTMLElement {
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
    * @since 1.0.0
    */
-  nodeParams: NodeParams;
+  nodeParams: Object;
 
   /**
    * The search parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
-  searchParams: any;
+  searchParams: Object;
 
   /**
    * The path parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
-  pathParams: any;
+  pathParams: Object;
 
   /**
    * The clientPermissions to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
-  clientPermissions: any;
+  clientPermissions: Object;
 
   /**
    * The user settings to be passed to the web-component-based micro frontend
    * @since 1.0.0
    */
-  userSettings: UserSettings;
+  userSettings: Object;
 
   /**
    * The anchor value to be passed to the web-component-based micro frontend.
@@ -114,32 +104,44 @@ export default class LuigiContainer extends HTMLElement {
   anchor: string;
 
   /**
-   * Updates the context of the microfrontend
-   * @param contextObj The context data
-   * @param internal internal luigi legacy data used for iframes
+   * Function that updates the context of the microfrontend
+   * @param {Object} contextObj The context data
+   * @param {Object} internal internal luigi legacy data used for iframes
+   * 
+   * @example
+   * containerElement.updateContext({newContextData: 'some data'})
    * @since 1.0.0
    */
-  updateContext(contextObj: any, internal?: any): void;
+  updateContext(contextObj: Object, internal?: Object): void;
 
   /**
    * Send a custom message to the microfronted
    * @param id a string containing the message id
    * @param data data to be sent alongside the custom message
+   * 
+   * @example
+   * containerElement.sendCustomMessage('my-message-id', {dataToSend: 'some data'})
    * @since 1.0.0
    */
-  sendCustomMessage(id: string, data?: any): void;
+  sendCustomMessage(id: string, data?: Object): void;
 
   /**
-   * Notifies the microfrontend that the opened alert has been closed
+   * A function that notifies the microfrontend that the opened alert has been closed
    * @param id the id of the opened alert
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message
+   * 
+   * @example
+   * containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
    * @since 1.0.0
    */
-  closeAlert(id: any, dismissKey: any): Function;
+  closeAlert(id: string, dismissKey: string): void;
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute
+   * 
+   * @example
+   * containerElement.init()
    * @since 1.0.0
    */
-  init(): Function;
+  init(): void;
 }
