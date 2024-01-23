@@ -25,6 +25,17 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.8.0] (2024-01-23)
+
+#### :rocket: Added
+* [#3590](https://github.com/SAP/luigi/pull/3590) Lazy loading option for compound web component mode ([@camelCaseChris](https://github.com/camelCaseChris))
+
+#### :bug: Fixed
+* [#3572](https://github.com/SAP/luigi/pull/3572) Calc max-height for tabNav dropdown ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3564](https://github.com/SAP/luigi/pull/3564) Fix resizing when drawer opens/closes ([@camelCaseChris](https://github.com/camelCaseChris))
+
+
+
 ## [v2.7.5] (2023-12-06)
 
 #### :bug: Fixed
@@ -1711,3 +1722,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.7.3]: https://github.com/SAP/luigi/compare/v2.7.2...v2.7.3
 [v2.7.4]: https://github.com/SAP/luigi/compare/v2.7.3...v2.7.4
 [v2.7.5]: https://github.com/SAP/luigi/compare/v2.7.4...v2.7.5
+[v2.8.0]: https://github.com/SAP/luigi/compare/v2.7.5...v2.8.0
