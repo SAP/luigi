@@ -557,10 +557,19 @@ class NavigationHelpersClass {
     return res;
   }
 
+  /**
+   * Returns the whole viewgroup settings from config.
+   * @returns {Object} viewgroup settings from config
+   */
   getAllViewGroupSettings() {
     return LuigiConfig.getConfigValue('navigation.viewGroupSettings');
   }
 
+  /**
+   * Retrieves the settings for a specific view group.
+   * @param {string} viewGroup - The name of the view group for which settings are to be retrieved.
+   * @returns {Object} The settings for the specified view group. If the view group is not found, an empty object is returned.
+  */
   getViewGroupSettings(viewGroup) {
     const viewGroupSettings = this.getAllViewGroupSettings();
     if (viewGroup && viewGroupSettings && viewGroupSettings[viewGroup]) {
@@ -570,6 +579,12 @@ class NavigationHelpersClass {
     }
   }
 
+  /**
+   * Recursively finds the view group associated with a given node in a hierarchical structure.
+   * @param {Object} node - The current node being examined.
+   * @param {Object} [originalNode] - The original node from which the search started.
+   * @returns {string | undefined} The view group associated with the node, or undefined if not found.
+  */
   findViewGroup(node, originalNode) {
     if (node.viewGroup) {
       if (originalNode && originalNode !== node) {
