@@ -7,8 +7,10 @@ describe('JS-TEST-APP 2', () => {
       openMode: 4
     }
   };
+
   describe('Theming', () => {
     let newConfig;
+
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
       newConfig.settings.theming = {
@@ -17,15 +19,6 @@ describe('JS-TEST-APP 2', () => {
           { id: 'dark', name: 'Fiori3 Dark' }
         ],
         defaultTheme: 'light'
-        // nodeViewURLDecorator: {
-        //   queryStringParameter: {
-        //     keyName: 'sap-theme'
-        //     // optional
-        //     // value: themeId => {
-        //     //   return themeId + 'YES';
-        //     // }
-        //   }
-        // }
       };
       newConfig.navigation.nodes.push({
         pathSegment: 'theming',
@@ -47,6 +40,7 @@ describe('JS-TEST-APP 2', () => {
           .contains('light');
       });
     });
+
     it('Iframe Url should get set with value by default', () => {
       newConfig.settings.theming.nodeViewURLDecorator = {
         queryStringParameter: {
@@ -62,6 +56,7 @@ describe('JS-TEST-APP 2', () => {
         );
       });
     });
+
     it('Iframe Url should get set with custom value', () => {
       newConfig.settings.theming.nodeViewURLDecorator = {
         queryStringParameter: {
@@ -88,10 +83,8 @@ describe('JS-TEST-APP 2', () => {
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
       newConfig.settings.responsiveNavigation = 'semiCollapsible';
-      // cy.window().then(win => {
-      //   win.Luigi.configChanged('settings');
-      // });
     });
+
     it('should check if the btn hide/show left side nav visible', () => {
       cy.visitTestApp('/', newConfig);
       cy.get('[data-testid="semiCollapsibleButton"]').should('be.visible');
@@ -160,8 +153,10 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.have.class', 'fd-side-nav--condensed');
     });
   });
+
   describe('User settings dialog', () => {
     let newConfig;
+
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'user-settings-dialog';
@@ -222,6 +217,7 @@ describe('JS-TEST-APP 2', () => {
         }
       };
     });
+
     it('User settings dialog', () => {
       cy.visitTestApp('/', newConfig);
       cy.get('#app[configversion="user-settings-dialog"]');
@@ -241,15 +237,11 @@ describe('JS-TEST-APP 2', () => {
         .eq(0)
         .click();
       cy.get('[data-testid="lui-us-option0_0"]').click();
-      cy.get('[data-testid="lui-us-input0"]')
-        .should('exist')
-        .should('contain', 'Deutsch');
+      cy.get('[data-testid="lui-us-input0"]').should('contain', 'Deutsch');
 
       cy.get('[data-testid="lui-us-input0"]').click();
       cy.get('[data-testid="lui-us-option0_1"]').click();
-      cy.get('[data-testid="lui-us-input0"]')
-        .should('exist')
-        .should('contain', 'English');
+      cy.get('[data-testid="lui-us-input0"]').should('contain', 'English');
 
       cy.get('[data-testid="lui-us-enum-0"]')
         .eq(0)
@@ -263,6 +255,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
       cy.get('.lui-usersettings-dialog').should('not.exist');
     });
+
     it('Check if external mf is loaded in custom user settings editor', () => {
       cy.visitTestApp('/', newConfig);
       cy.get('#app[configversion="user-settings-dialog"]');
@@ -285,6 +278,7 @@ describe('JS-TEST-APP 2', () => {
 
   describe('Bookmarkable micro frontends', () => {
     let newConfig;
+
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
     });
@@ -302,8 +296,6 @@ describe('JS-TEST-APP 2', () => {
           .withParams({ mp: 'one' })
           .openAsModal('/home/one');
       });
-
-      // cy.wait(150); // it takes some time for the nodeParams be available
 
       // TODO - Accessing LuigiCLient directly results in flaky behavoir, skip for now
       // cy.getModalWindow().then(win => {
@@ -327,7 +319,6 @@ describe('JS-TEST-APP 2', () => {
           .openAsModal('/home/one');
       });
 
-      // cy.wait(150); // it takes some time for the nodeParams be available
       // TODO - Accessing LuigiCLient directly results in flaky behavoir, skip for now
       // cy.getModalWindow().then(win => {
       //   assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
@@ -342,6 +333,7 @@ describe('JS-TEST-APP 2', () => {
 
   describe('GlobalSearchCentered', () => {
     let newConfig;
+
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
       newConfig.globalSearch = {
@@ -356,14 +348,16 @@ describe('JS-TEST-APP 2', () => {
 
       cy.visitTestApp('/home', newConfig);
     });
-    context('Desktop', () => {
+
+    describe('Desktop', () => {
       it('Search on large viewport', () => {
         cy.get('.lui-global-search-btn').should('not.be.visible');
         cy.get('.lui-global-search-cancel-btn').should('not.exist');
         cy.get('.lui-global-search-input').should('be.visible');
       });
     });
-    context('Mobile', () => {
+
+    describe('Mobile', () => {
       it('Search on smaller viewport', () => {
         cy.viewport('iphone-6');
         cy.get('.lui-global-search-btn').should('be.visible');
@@ -387,7 +381,7 @@ describe('JS-TEST-APP 2', () => {
 
   describe('BreadCrumb and NavHeader', () => {
     let newConfig;
-    var breadcrumbsConfig = {
+    const breadcrumbsConfig = {
       clearBeforeRender: true,
       renderer: (el, items, clickHandler) => {
         el.classList.add('myBreadcrumb');
@@ -481,6 +475,7 @@ describe('JS-TEST-APP 2', () => {
         ]
       };
     });
+
     it('Breadcrumb container visible with static nodes', localRetries, () => {
       cy.visitTestApp('/home', newConfig);
       cy.get('#app[configversion="breadcrumbs"]');
@@ -490,6 +485,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid=breadcrumb_Home_index0]').should('be.visible');
       cy.get('[data-testid=breadcrumb_static_index1]').should('be.visible');
     });
+
     it('Breadcrumbs with dynamic nodes', localRetries, () => {
       cy.visitTestApp('/home/dyn/dynValue', newConfig);
       cy.get('#app[configversion="breadcrumbs"]');
@@ -500,6 +496,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid=breadcrumb_dynValue_index2]').should('be.visible');
       cy.get('[data-testid=breadcrumb_1_index3]').should('be.visible');
     });
+
     it('Breadcrumbs with virtual nodes', localRetries, () => {
       cy.visitTestApp('/home/virtual-tree/virtualValue/test', newConfig);
       cy.get('#app[configversion="breadcrumbs"]');
@@ -510,12 +507,14 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid=breadcrumb_virtualValue_index2]').should('be.visible');
       cy.get('[data-testid=breadcrumb_test_index3]').should('be.visible');
     });
+
     it('dynamic nav header', localRetries, () => {
       cy.visitTestApp('/home/dyn/dynValue', newConfig);
       cy.get('#app[configversion="breadcrumbs"]');
       cy.expectPathToBe('/home/dyn/dynValue/1');
       cy.get('.lui-nav-title .fd-nested-list__title').should('contain', 'dynValue');
     });
+
     it('static nav header', localRetries, () => {
       newConfig.navigation.nodes[0].children[0].children[0].navHeader.label = 'test';
 
@@ -529,6 +528,7 @@ describe('JS-TEST-APP 2', () => {
 
   describe('Encoded ViewURL Search Params with Decorators', () => {
     let newConfig;
+
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'encodeViewURL';
@@ -583,8 +583,10 @@ describe('JS-TEST-APP 2', () => {
       );
     });
   });
+
   describe('Transfer theme vars to client', () => {
     let newConfig;
+
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'transferThemeVars';
@@ -593,6 +595,7 @@ describe('JS-TEST-APP 2', () => {
         variables: 'fiori'
       };
     });
+
     it('Tranfer var and override it', () => {
       cy.visitTestApp('/home/one', newConfig);
       cy.get('#app[configversion="transferThemeVars"]');
