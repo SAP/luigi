@@ -1,5 +1,4 @@
 import defaultLuigiConfig from '../../configs/default';
-import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP', () => {
   const localRetries = {
@@ -8,13 +7,17 @@ describe('JS-TEST-APP', () => {
       openMode: 4
     }
   };
+
   describe('Navigation', () => {
+
     describe('Core api navigation test', () => {
       let newConfig;
+
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.tag = 'js-test-app-core-api-nav-test';
       });
+
       it('Core API navigate and open and close modal', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-core-api-nav-test"]');
@@ -36,47 +39,50 @@ describe('JS-TEST-APP', () => {
           .click();
         cy.expectPathToBe('/home/two');
       });
+
       it('Open modal via core api with "fullscreen"', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { size: 'fullscreen' });
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.class', 'lui-modal-fullscreen');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:100vw;height:100vh;');
+        cy.get('.lui-modal-mf')
+          .should('have.class', 'lui-modal-fullscreen')
+          .and('have.attr', 'style', 'width:100vw;height:100vh;');
         cy.get('[aria-label="close"]').click();
       });
+
       it('Open modal via core api with "px"', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '500px', height: '500px' });
         });
-        cy.get('.lui-modal-mf').should('exist');
         cy.get('.lui-modal-mf')
           .should('have.css', 'width', '500px')
           .and('have.css', 'height', '500px');
         cy.get('[aria-label="close"]').click();
       });
+
       it('Open modal via core api with "%"', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
+        cy.get('.lui-modal-mf')
+          .should('have.attr', 'style', 'width:20%;height:40%;');
         cy.get('[aria-label="close"]').click();
       });
+
       it('Open modal via core api with "rem"', localRetries, () => {
         cy.visitTestApp('/', newConfig);
         cy.get('[configversion="js-test-app-core-api-nav-test"]');
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
+        cy.get('.lui-modal-mf')
+          .should('have.attr', 'style', 'width:50rem;height:70rem;');
         cy.get('[aria-label="close"]').click();
       });
 
@@ -86,10 +92,11 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:80%;height:80%;');
+        cy.get('.lui-modal-mf')
+          .should('have.attr', 'style', 'width:80%;height:80%;');
         cy.get('[aria-label="close"]').click();
       });
+
       it('Update modal settings', () => {
         newConfig.routing.showModalPathInUrl = true;
         cy.visitTestApp('/', newConfig);
@@ -97,28 +104,33 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
-        cy.get('.lui-modal-mf').should('exist');
-        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
-        cy.url().should('include', 'width%22%3A%2250rem');
-        cy.url().should('include', 'height%22%3A%2270rem');
-        cy.url().should('not.contain', '/title%22%3A%22test/');
+        cy.get('.lui-modal-mf')
+          .should('have.attr', 'style', 'width:50rem;height:70rem;');
+        cy.url()
+          .should('include', 'width%22%3A%2250rem')
+          .and('include', 'height%22%3A%2270rem')
+          .and('not.contain', '/title%22%3A%22test/');
         cy.getIframeBody({}, 0, '.iframeModalCtn').then(result => {
           cy.wrap(result)
             .contains('updateModalSettings')
             .click();
-          cy.url().should('include', 'width%22%3A%2250rem');
-          cy.url().should('include', 'height%22%3A%2270rem');
-          cy.url().should('include', 'title%22%3A%22test');
+          cy.url()
+            .should('include', 'width%22%3A%2250rem')
+            .and('include', 'height%22%3A%2270rem')
+            .and('include', 'title%22%3A%22test');
         });
       });
     });
+
     describe('Normal navigation', () => {
       let newConfig;
+
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.navigation.nodes[0].viewUrl = null;
         newConfig.tag = 'normal-navigation';
       });
+
       it('defaultChildNode', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="normal-navigation"]');
@@ -127,6 +139,7 @@ describe('JS-TEST-APP', () => {
           cy.expectPathToBe('/home/two');
         });
       });
+
       it('hideShellbar', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="normal-navigation"]');
@@ -138,10 +151,12 @@ describe('JS-TEST-APP', () => {
         cy.contains('.fd-shellbar').should('not.exist');
       });
     });
+
     describe('Tooltext for category button', () => {
       let newConfig;
+
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.navigation.nodes[0].children[0].category = {
           label: 'Test Category',
           collapsible: true,
@@ -150,6 +165,7 @@ describe('JS-TEST-APP', () => {
         };
         newConfig.tag = 'tooltip-test';
       });
+
       it('Tooltip for expand/collapse button', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="tooltip-test"]');
@@ -160,6 +176,7 @@ describe('JS-TEST-APP', () => {
           .click();
         cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Collapse test category');
       });
+
       it('Tooltip for expand button not defined', () => {
         delete newConfig.navigation.nodes[0].children[0].category.titleExpandButton;
         newConfig.tag = 'tooltip-test-2';
@@ -172,6 +189,7 @@ describe('JS-TEST-APP', () => {
           .click();
         cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Collapse test category');
       });
+
       it('Tooltip for collapse button not defined', () => {
         delete newConfig.navigation.nodes[0].children[0].category.titleCollapseButton;
         newConfig.tag = 'tooltip-test-3';
@@ -184,6 +202,7 @@ describe('JS-TEST-APP', () => {
           .click();
         cy.get('.lui-collapsible-item button').should('not.have.attr', 'title');
       });
+
       it('Default tooltip for collapse and expand button only applied if it is not configured on category itself', () => {
         newConfig.navigation.defaults = {
           category: {
@@ -203,34 +222,13 @@ describe('JS-TEST-APP', () => {
         cy.get('.lui-collapsible-item button').should('have.attr', 'title', 'Default collapse tooltip');
       });
     });
+
     describe('Viewgroup live settings', () => {
       let newConfig;
       let $iframeBody;
-      const additionalChildren = [
-        {
-          pathSegment: 'mfe1',
-          label: 'MFE 1 {viewGroupData.foo}',
-          icon: 'home',
-          viewUrl: 'mfe.html#1',
-          viewGroup: 'vg1'
-        },
-        {
-          pathSegment: 'mfe2',
-          label: 'MFE 2 {viewGroupData.foo}',
-          icon: 'home',
-          viewUrl: 'mfe.html#2',
-          viewGroup: 'vg2'
-        },
-        {
-          pathSegment: 'mfe3',
-          label: 'MFE 3 {viewGroupData.bar}',
-          icon: 'home',
-          viewUrl: 'mfe.html#3',
-          viewGroup: 'vg2'
-        }
-      ];
+
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.tag = 'viewgroup-live-settings';
         newConfig.navigation['viewGroupSettings'] = {
           vg1: {},
@@ -278,10 +276,12 @@ describe('JS-TEST-APP', () => {
       });
     });
   });
+
   describe('ContextSwitcher', () => {
     let newConfig;
+
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.navigation.nodes.push({
         hideFromNav: true,
         pathSegment: 'environments',
@@ -324,6 +324,7 @@ describe('JS-TEST-APP', () => {
         }
       };
     });
+
     it('custom selected option renderer', () => {
       cy.visitTestApp('/', newConfig);
 
@@ -369,10 +370,12 @@ describe('JS-TEST-APP', () => {
       cy.get('#context_menu_middle .is-selected').should('have.length', 1);
     });
   });
+
   describe('virtualTree with fromVirtualTreeRoot', localRetries, () => {
     let newConfig;
+
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.navigation.nodes.push({
         pathSegment: 'virtual',
         label: 'Virtual',
@@ -387,6 +390,7 @@ describe('JS-TEST-APP', () => {
         }
       });
     });
+
     it('navigate', localRetries, () => {
       cy.visitTestApp('/virtual', newConfig);
       let $iframeBody;
@@ -401,12 +405,15 @@ describe('JS-TEST-APP', () => {
       cy.expectPathToBe('/virtual/this/is/a/tree');
     });
   });
+
   describe('Unload and load Luigi', () => {
     let newConfig;
+
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       cy.visitTestApp('/home/two', newConfig);
     });
+
     it('Core API unload', () => {
       let config;
       cy.window().then(win => {
@@ -435,6 +442,7 @@ describe('JS-TEST-APP', () => {
       cy.get('.fd-shellbar').should('be.visible');
     });
   });
+
   describe('Show-hide of Logout & Login Buttons', () => {
     const loginLink = () => {
       return cy.get('[data-testid="login-btn"]');
@@ -442,10 +450,12 @@ describe('JS-TEST-APP', () => {
     const logoutLink = () => {
       return cy.get('[data-testid="logout-btn"]');
     };
+
     describe('No Auth', () => {
       let newConfig;
+
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.auth = undefined;
         newConfig.navigation.profile = {
           logout: {
@@ -454,6 +464,7 @@ describe('JS-TEST-APP', () => {
           }
         };
       });
+
       it('Static profile, and logging out with customLogoutFn', () => {
         cy.visitTestApp('/home/two', newConfig);
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
@@ -483,10 +494,12 @@ describe('JS-TEST-APP', () => {
         });
       });
     });
+
     describe('With Auth', () => {
       let newConfig;
+
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.auth = {
           use: 'myOAuth2',
           myOAuth2: {
@@ -576,7 +589,7 @@ describe('JS-TEST-APP', () => {
         newConfig.navigation.profile = undefined;
         newConfig.auth.disableAutoLogin = true;
         newConfig.tag = 'loginlogoutcoreapi';
-        let cfg = cloneDeep(newConfig);
+        let cfg = structuredClone(newConfig);
         cy.visitTestApp('/', cfg);
 
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
@@ -591,7 +604,7 @@ describe('JS-TEST-APP', () => {
 
         cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
         logoutLink().should('exist');
-        cfg = cloneDeep(newConfig);
+        cfg = structuredClone(newConfig);
         cy.visit('http://localhost:4500/auth/logout.html');
         cfg.auth.myOAuth2.idpProvider = 'LuigiAuthOAuth2';
 
