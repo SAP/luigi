@@ -1,5 +1,4 @@
 import defaultLuigiConfig from '../../configs/default';
-import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP 2', () => {
   const localRetries = {
@@ -11,7 +10,7 @@ describe('JS-TEST-APP 2', () => {
   describe('Theming', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.settings.theming = {
         themes: () => [
           { id: 'light', name: 'Fiori3 Light' },
@@ -87,7 +86,7 @@ describe('JS-TEST-APP 2', () => {
     let newConfig;
 
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.settings.responsiveNavigation = 'semiCollapsible';
       // cy.window().then(win => {
       //   win.Luigi.configChanged('settings');
@@ -124,7 +123,7 @@ describe('JS-TEST-APP 2', () => {
     let newConfig;
 
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.settings.responsiveNavigation = 'Fiori3';
       cy.visitTestApp('/', newConfig);
       cy.window().then(win => {
@@ -164,7 +163,7 @@ describe('JS-TEST-APP 2', () => {
   describe('User settings dialog', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'user-settings-dialog';
       newConfig.userSettings = {
         userSettingGroups: {
@@ -288,7 +287,7 @@ describe('JS-TEST-APP 2', () => {
   describe('Bookmarkable micro frontends', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
     });
 
     it('Hash routing with showModalPathInUrl enabled and custom modalPathParam and node params', () => {
@@ -345,7 +344,7 @@ describe('JS-TEST-APP 2', () => {
   describe('GlobalSearchCentered', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.globalSearch = {
         searchFieldCentered: true,
         searchProvider: {}
@@ -414,7 +413,7 @@ describe('JS-TEST-APP 2', () => {
     };
 
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.settings = {
         experimental: {
           navHeader: true,
@@ -532,7 +531,7 @@ describe('JS-TEST-APP 2', () => {
   describe('Encoded ViewURL Search Params with Decorators', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'encodeViewURL';
       newConfig.settings.theming = {
         defaultTheme: 'light',
@@ -588,7 +587,7 @@ describe('JS-TEST-APP 2', () => {
   describe('Transfer theme vars to client', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'transferThemeVars';
       newConfig.settings.theming = {
         defaultTheme: 'light',

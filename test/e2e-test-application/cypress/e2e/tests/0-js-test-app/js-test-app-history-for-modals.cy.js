@@ -1,5 +1,4 @@
 import defaultLuigiConfig from '../../configs/default';
-import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP', () => {
   const clickingAroundInNavigation = () => {
@@ -74,7 +73,7 @@ describe('JS-TEST-APP', () => {
       let newConfig;
 
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.routing.showModalPathInUrl = true;
         newConfig.routing.useHashRouting = false;
         newConfig.tag = 'js-test-app-history-handling-modals-1';
@@ -189,7 +188,7 @@ describe('JS-TEST-APP', () => {
       let newConfig;
 
       beforeEach(() => {
-        newConfig = cloneDeep(defaultLuigiConfig);
+        newConfig = structuredClone(defaultLuigiConfig);
         newConfig.routing.showModalPathInUrl = true;
         newConfig.routing.useHashRouting = true;
         newConfig.tag = 'js-test-app-history-handling-modals-2';
