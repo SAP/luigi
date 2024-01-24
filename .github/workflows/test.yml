@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18.15.0'
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18.15.0'    
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
@@ -62,7 +62,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18.15.0'    
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
@@ -81,7 +81,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18.15.0'    
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
@@ -99,7 +99,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18.15.0'
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/tmp_build
