@@ -102,7 +102,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="semiCollapsibleButton"]').click();
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
 
-      cy.reload().wait(1000);
+      cy.reload();
       cy.window().then(win => {
         win.Luigi.setConfig(newConfig);
       });
@@ -114,7 +114,7 @@ describe('JS-TEST-APP 2', () => {
       cy.window().then(win => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
-      cy.reload().wait(1000);
+      cy.reload();
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('not.exist');
     });
   });
@@ -141,7 +141,7 @@ describe('JS-TEST-APP 2', () => {
       cy.get('button.lui-burger').click();
       cy.get('[data-testid="semiCollapsibleLeftNav"]').should('have.class', 'fd-side-nav--condensed');
 
-      cy.reload().wait(1000);
+      cy.reload();
       cy.window().then(win => {
         win.Luigi.setConfig(newConfig);
       });
@@ -153,7 +153,7 @@ describe('JS-TEST-APP 2', () => {
       cy.window().then(win => {
         win.Luigi.ux().collapseLeftSideNav(false);
       });
-      cy.reload().wait(1000);
+      cy.reload();
       cy.window().then(win => {
         win.Luigi.setConfig(newConfig);
       });
@@ -258,7 +258,6 @@ describe('JS-TEST-APP 2', () => {
       cy.get('[data-testid="lui-us-enum-0"]')
         .eq(0)
         .click();
-      cy.wait(500);
       cy.get('[data-testid="lui-us-option0_0"]').should('not.be.visible');
 
       cy.get('[data-testid="lui-us-dismissBtn"]').click();
