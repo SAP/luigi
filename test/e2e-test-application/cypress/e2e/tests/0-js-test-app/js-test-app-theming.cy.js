@@ -55,7 +55,7 @@ describe('JS-TEST-APP 2', () => {
       };
       cy.visitTestApp('/', newConfig);
 
-      cy.get('iframe').then(ifr => {
+      cy.get('iframe').should(ifr => {
         const url = new URL(ifr.attr('src'));
         expect(`${url.pathname}${url.search}${url.hash}`).to.equal(
           '/examples/microfrontends/multipurpose.html?sap-theme=light'
@@ -73,7 +73,7 @@ describe('JS-TEST-APP 2', () => {
       };
       cy.visitTestApp('/', newConfig);
 
-      cy.get('iframe').then(ifr => {
+      cy.get('iframe').should(ifr => {
         const url = new URL(ifr.attr('src'));
         expect(`${url.pathname}${url.search}${url.hash}`).to.equal(
           '/examples/microfrontends/multipurpose.html?sap-theme=lightLUIGI'
@@ -278,7 +278,7 @@ describe('JS-TEST-APP 2', () => {
         .eq(2)
         .click();
 
-      cy.get('.iframeUserSettingsCtn iframe').then(ifr => {
+      cy.get('.iframeUserSettingsCtn iframe').should(ifr => {
         expect(ifr[0].src).to.equal('http://localhost:4500/examples/microfrontends/customUserSettingsMf.html');
       });
     });
