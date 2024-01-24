@@ -13,8 +13,8 @@ jobs:
       WHITESOURCE_PRODUCT_TOKEN: ${{ secrets.WHITESOURCE_PRODUCT_TOKEN }}
       WHITESOURCE_USER_TOKEN: ${{ secrets.WHITESOURCE_USER_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18.15.0'
       - uses: actions/cache@v3
