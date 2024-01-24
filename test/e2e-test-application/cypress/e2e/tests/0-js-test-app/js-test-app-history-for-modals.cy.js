@@ -64,6 +64,8 @@ describe('JS-TEST-APP', () => {
 
   const closeModal = () => {
     cy.get('.lui-modal-index-0 .fd-button').click({ force: true });
+    // We were not able to avoid this wait due to random timing issues
+    // with navigation, popstate events and the modal closing.
     cy.wait(1000);
   };
 
@@ -182,7 +184,7 @@ describe('JS-TEST-APP', () => {
         cy.expectPathToBe('/home');
       });
     });
-    
+
     describe('Hash routing, history handling for a single modal', () => {
       let newConfig;
 
@@ -198,7 +200,7 @@ describe('JS-TEST-APP', () => {
           openNodeInModal: true
         });
       });
-      
+
       it('Hash routing, open modal and close via [X]', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-2"]');
