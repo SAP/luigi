@@ -9,7 +9,6 @@ describe('JS-TEST-APP', () => {
   };
 
   describe('Navigation', () => {
-
     describe('Core api navigation test', () => {
       let newConfig;
 
@@ -70,8 +69,7 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '20%', height: '40%' });
         });
-        cy.get('.lui-modal-mf')
-          .should('have.attr', 'style', 'width:20%;height:40%;');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:20%;height:40%;');
         cy.get('[aria-label="close"]').click();
       });
 
@@ -81,8 +79,7 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
-        cy.get('.lui-modal-mf')
-          .should('have.attr', 'style', 'width:50rem;height:70rem;');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
         cy.get('[aria-label="close"]').click();
       });
 
@@ -92,8 +89,7 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '34psx', height: '70rm' });
         });
-        cy.get('.lui-modal-mf')
-          .should('have.attr', 'style', 'width:80%;height:80%;');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:80%;height:80%;');
         cy.get('[aria-label="close"]').click();
       });
 
@@ -104,8 +100,7 @@ describe('JS-TEST-APP', () => {
         cy.window().then(win => {
           win.Luigi.navigation().openAsModal('/home/two', { width: '50rem', height: '70rem' });
         });
-        cy.get('.lui-modal-mf')
-          .should('have.attr', 'style', 'width:50rem;height:70rem;');
+        cy.get('.lui-modal-mf').should('have.attr', 'style', 'width:50rem;height:70rem;');
         cy.url()
           .should('include', 'width%22%3A%2250rem')
           .and('include', 'height%22%3A%2270rem')
