@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && npm run copy",
-    "copy": "README.md ./dist/README.md",
+    "copy": "ncp README.md ./dist/README.md",
     "bundle": "npm run build"
   },
   "types": "dist/index.d.ts",
