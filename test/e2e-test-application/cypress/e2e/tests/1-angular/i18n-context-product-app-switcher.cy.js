@@ -19,7 +19,8 @@ describe('Context switcher', () => {
   it('Add and remove project with context switcher', () => {
     cy.goToProjectsPage();
 
-    cy.get('.fd-app__sidebar').as('sidebar')
+    cy.get('.fd-app__sidebar')
+      .as('sidebar')
       .should('contain', 'Project One')
       .and('contain', 'Project Two')
       .and('not.contain', 'Project 3');
@@ -213,7 +214,8 @@ describe('ProductSwitcher', () => {
         .should('contain', 'hybris');
 
       //check if internal link is there
-      cy.get('.fd-product-switch .fd-product-switch__title').as('title')
+      cy.get('.fd-product-switch .fd-product-switch__title')
+        .as('title')
         .contains('Project One')
         .click();
 
