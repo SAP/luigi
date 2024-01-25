@@ -503,9 +503,9 @@
   }
 
   export function closePopupMenu() {
-    // selectedCategory =
-    //   SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
-    // btpNavTopCnt && btpNavTopCnt.querySelector('.fd-navigation__item.lui-nav-more').setAttribute('aria-expanded', false);
+    selectedCategory =
+      SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
+    btpNavTopCnt && btpNavTopCnt.querySelector('.fd-navigation__item.lui-nav-more').setAttribute('aria-expanded', false);
   }
 
   function closePopupMenuOnEsc(event){
