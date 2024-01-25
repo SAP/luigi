@@ -17,7 +17,7 @@ describe('Luigi client lifecycle manager features', () => {
   });
 
   it('get/add node params with wc luigi client', () => {
-    const stub = cy.stub();
+    const stub = cy.stub().as('alertStub');
 
     cy.on('window:alert', stub);
     cy.visitLoggedIn('/projects/pr1/webcomponent');
@@ -34,14 +34,12 @@ describe('Luigi client lifecycle manager features', () => {
     )
       .shadow()
       .contains('getNodeParams')
-      .click()
-      .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('{"Luigi":"rocks"}');
-      });
+      .click();
+    cy.get('@alertStub').should('be.calledOnceWith', '{"Luigi":"rocks"}');
   });
 
   it('getCoreSearchParams', () => {
-    const stub = cy.stub();
+    const stub = cy.stub().as('alertStub');
 
     cy.on('window:alert', stub);
     cy.visitLoggedIn('/projects/pr1/webcomponent2?testParam=searchParam1');
@@ -52,14 +50,12 @@ describe('Luigi client lifecycle manager features', () => {
     )
       .shadow()
       .contains('getCoreSearchParams')
-      .click()
-      .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith('{"testParam":"searchParam1"}');
-      });
+      .click();
+    cy.get('@alertStub').should('be.calledOnceWith', '{"testParam":"searchParam1"}');
   });
 
   it('getClientPermissions', () => {
-    const stub = cy.stub();
+    const stub = cy.stub().as('alertStub');
 
     cy.on('window:alert', stub);
     cy.visitLoggedIn('/projects/pr1/webcomponent2');
@@ -70,11 +66,10 @@ describe('Luigi client lifecycle manager features', () => {
     )
       .shadow()
       .contains('getClientPermissions')
-      .click()
-      .then(() => {
-        expect(stub.getCall(0)).to.be.calledWith(
-          '{"changeCurrentLocale":true,"urlParameters":{"testParam":{"read":true}}}'
-        );
-      });
+      .click();
+    cy.get('@alertStub').should(
+      'be.calledOnceWith',
+      '{"changeCurrentLocale":true,"urlParameters":{"testParam":{"read":true}}}'
+    );
   });
 });
