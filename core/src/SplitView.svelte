@@ -338,7 +338,7 @@
     margin-bottom: $collapsedSplitviewHeight;
   }
 
-  :global(.splitViewContainer) {
+  .splitViewContainer {
     position: absolute;
     bottom: 0;
     right: 0;

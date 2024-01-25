@@ -430,7 +430,7 @@
     min-height: 2rem; /*required for empty labels to not shrink*/
   }
 
-  .lui-usersettings-content .fd-col {
+  .lui-usersettings-content .fd-container .fd-row .fd-col {
     overflow: visible; /*make dropdown visible above the text below*/
   }
 
