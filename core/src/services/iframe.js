@@ -47,21 +47,8 @@ class IframeClass {
     return iframes.filter(iframe => iframe.pv);
   }
 
-  getAllViewGroupSettings() {
-    return LuigiConfig.getConfigValue('navigation.viewGroupSettings');
-  }
-
-  getViewGroupSettings(viewGroup) {
-    const viewGroupSettings = this.getAllViewGroupSettings();
-    if (viewGroup && viewGroupSettings && viewGroupSettings[viewGroup]) {
-      return viewGroupSettings[viewGroup];
-    } else {
-      return {};
-    }
-  }
-
   canCache(viewGroup) {
-    const vgSettings = this.getViewGroupSettings(viewGroup);
+    const vgSettings = NavigationHelpers.getViewGroupSettings(viewGroup);
     return vgSettings && vgSettings.preloadUrl;
   }
 
@@ -88,7 +75,7 @@ class IframeClass {
           if (removeCurrentActive) {
             container.removeChild(child);
           } else {
-            const vgSettings = this.getViewGroupSettings(child.vg);
+            const vgSettings = NavigationHelpers.getViewGroupSettings(child.vg);
             if (vgSettings) {
               this.notifyInactiveIframes();
             }
