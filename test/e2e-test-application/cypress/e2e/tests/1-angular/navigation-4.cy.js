@@ -240,7 +240,6 @@ describe('Navigation', () => {
           config.settings.profileType = 'Fiori3';
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
-          cy.wait(1000);
 
           cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('be.visible');
@@ -255,9 +254,6 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
 
-          cy.wait(1000);
-
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('[data-testid="luigi-topnav-profile-avatar"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-initials"]').should('not.exist');
