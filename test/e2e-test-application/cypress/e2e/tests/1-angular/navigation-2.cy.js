@@ -223,7 +223,7 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr2/nav-sync/one');
 
       const labels = ['two', 'three', 'four', 'one'];
-      labels.forEach((label) => {
+      labels.forEach(label => {
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
             .contains(label)
