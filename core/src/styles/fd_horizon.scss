@@ -5,6 +5,10 @@
 
 @import './btp_tool_layout.scss';
 
+:root {
+  --luigi__shellbar--height: 3.5rem;
+}
+
 @font-face {
   font-family: 'SAP-icons';
   src: url('@sap-theming/theming-base-content/content/Base/baseLib/sap_horizon/fonts/SAP-icons.woff') format('woff');
