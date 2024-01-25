@@ -401,7 +401,7 @@ describe('JS-TEST-APP', () => {
       cy.expectPathToBe('/virtual/this/is/a/tree');
     });
   });
-  describe.only('Unload and load Luigi', () => {
+  describe('Unload and load Luigi', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = cloneDeep(defaultLuigiConfig);
