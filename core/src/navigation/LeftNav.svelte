@@ -585,7 +585,6 @@
           ? 'fd-navigation--snapped'
           : ''}" 
       role="navigation" 
-      aria-roledescription="Side Navigation" 
       style="width: var(--luigi__left-sidenav--width); height: 100%;">
           
     {#if navHeader}
@@ -638,7 +637,6 @@
           <ul 
               class="fd-navigation__list" 
               role="tree" 
-              aria-roledescription="Navigation List Tree" 
               tabindex="-1"
           >
           {#each sortedChildrenEntries as [key, nodes], index}
@@ -652,8 +650,6 @@
                           class="fd-navigation__item" 
                           aria-level="2" 
                           role="treeitem"
-                          title="Time"
-                          aria-roledescription="Navigation List Tree Item - Parent"
                           aria-selected={node === selectedNode}
                           aria-expanded="false"
                       >
@@ -725,7 +721,6 @@
                       
                       role="treeitem" 
                       title={resolveTooltipText(nodes, $getTranslation(key))}
-                      aria-roledescription="Navigation List Tree Item - Parent"
                       aria-expanded={isSemiCollapsed ? nodes.metaInfo && nodes.metaInfo.label === selectedCategory : isExpanded(
                         nodes,
                         expandedCategories
@@ -795,7 +790,6 @@
                           <ul 
                               class="fd-navigation__list fd-navigation__list--child-items" 
                               role="tree" 
-                              aria-roledescription="Navigation List Tree - Child Items" 
                               tabindex="-1"
                           >
                           {#each nodes as node}
@@ -810,7 +804,6 @@
                                         node,
                                         getNodeLabel(node)
                                       )}
-                                      aria-roledescription="Navigation List Tree Item - Child"
                                       aria-expanded="false" 
                                       aria-selected={node === selectedNode}
                                       data-testid={getTestId(node)}
@@ -1010,7 +1003,6 @@
           <li class="fd-navigation__list-item fd-navigation__list-item--overflow" aria-hidden="true">
             <div 
                 class="fd-navigation__item lui-nav-more" 
-                aria-roledescription="Navigation List Menu Item"
                 aria-haspopup="menu" 
                 role="menuitem" 
                 aria-expanded="false"
@@ -1041,50 +1033,6 @@
       </div>
       {/if}
   
-      <!-- TODO -->
-      <div style="display: none" class="fd-navigation__container fd-navigation__container--bottom">
-          <ul 
-              class="fd-navigation__list" 
-              role="tree" 
-              aria-roledescription="Navigation List Tree" 
-              tabindex="-1">
-              <li class="fd-navigation__list-item" aria-hidden="true">
-                  <div 
-                      class="fd-navigation__item" 
-                      aria-level="1" 
-                      role="treeitem" 
-                      title="Help"
-                      aria-roledescription="Navigation List Tree Item"
-                      aria-selected="false"
-                      aria-expanded="false"
-                  >
-                      <a class="fd-navigation__link" role="link" tabindex="-1"  href="#">
-                          <span class="fd-navigation__icon sap-icon--sys-help" role="presentation" aria-hidden="true"></span>
-                          <span class="fd-navigation__text">Help</span>
-                          <span class="fd-navigation__selection-indicator" aria-label="selection indicator"></span>
-                      </a>
-                  </div>
-              </li>
-  
-              <li class="fd-navigation__list-item" aria-hidden="true">
-                  <div 
-                      class="fd-navigation__item" 
-                      aria-level="1" 
-                      role="treeitem" 
-                      title="Legal"
-                      aria-roledescription="Navigation List Tree Item"
-                      aria-selected="false"
-                      aria-expanded="false"
-                  >
-                      <a class="fd-navigation__link" role="link" tabindex="-1"  href="#">
-                          <span class="fd-navigation__icon sap-icon--compare" role="presentation" aria-hidden="true"></span>
-                          <span class="fd-navigation__text">Legal</span>
-                          <span class="fd-navigation__selection-indicator" aria-label="selection indicator"></span>
-                      </a>
-                  </div>
-              </li>
-          </ul>
-      </div>
   </div>
   
 {:else}
