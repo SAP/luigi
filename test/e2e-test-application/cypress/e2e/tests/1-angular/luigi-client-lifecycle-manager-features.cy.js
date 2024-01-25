@@ -1,8 +1,4 @@
 describe('Luigi client lifecycle manager features', () => {
-  beforeEach(() => {
-    cy.visitLoggedIn('/');
-  });
-
   it('setAnchor with wc luigi client', () => {
     cy.visitLoggedIn('/projects/pr1/webcomponent');
     cy.expectPathToBe('/projects/pr1/webcomponent');
