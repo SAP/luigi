@@ -11,7 +11,7 @@ You can read about the new features in Luigi v2.8 in the release notes below.
 <!-- Excerpt -->
 
 
-####  
+####  Lazy loading for compound web components
 
 In this release, we have extended the `compound web component` to support lazy loading within child web components of compound or nested structures. Here is the documentation on how to configure the [lazyLoadingOptions](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=compound).
 
