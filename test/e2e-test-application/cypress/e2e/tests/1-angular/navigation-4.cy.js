@@ -3,7 +3,7 @@ describe('Navigation', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/');
     });
-  
+
     it('It should have multiple categories collapsed', () => {
       cy.visit('/projects/pr2/collapsibles');
 
@@ -111,14 +111,10 @@ describe('Navigation', () => {
         // Click link is still here (we haven't changed page)
         cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]');
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]')
-          .should('exist')
-          .should('have.class', 'is-selected');
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('have.class', 'is-selected');
 
         // checking if we have NOT highlighted  menu item
-        cy.get('a[href="/projects/pr2/settings"]')
-          .should('exist')
-          .not('.is-selected');
+        cy.get('a[href="/projects/pr2/settings"]').not('.is-selected');
 
         // CLICK ON navigate-withoutSync-virtual-tree
         // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
@@ -131,9 +127,7 @@ describe('Navigation', () => {
         // Click link is still here (we haven't changed page)
         cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]');
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/settings"]')
-          .should('exist')
-          .should('have.class', 'is-selected');
+        cy.get('a[href="/projects/pr2/settings"]').should('have.class', 'is-selected');
       });
     });
 
@@ -162,9 +156,7 @@ describe('Navigation', () => {
           .contains(' with params: project to global settings and back')
           .should('not.exist');
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]')
-          .should('exist')
-          .should('have.class', 'is-selected');
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('have.class', 'is-selected');
 
         cy.wrap(result).contains('Add Segments To The Url content');
       });
@@ -215,7 +207,7 @@ describe('Navigation', () => {
     beforeEach(() => {
       cy.visitLoggedIn('/');
     });
-  
+
     context('Desktop', () => {
       it('not render Fiori3 profile in Shellbar when profileType is equal "simple"', () => {
         cy.window().then(win => {
@@ -223,9 +215,7 @@ describe('Navigation', () => {
           config.settings.profileType = 'simple';
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
-            .should('exist')
-            .click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('not.exist');
           cy.get('.lui-profile-simple-menu').should('be.visible');
         });
@@ -238,9 +228,7 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: false };
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
-            .should('exist')
-            .click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('not.exist');
           cy.get('.lui-profile-simple-menu').should('be.visible');
         });
@@ -254,7 +242,6 @@ describe('Navigation', () => {
           win.Luigi.configChanged();
           cy.wait(1000);
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('be.visible');
           cy.get('.lui-profile-simple-menu').should('not.exist');
