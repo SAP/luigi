@@ -1,9 +1,9 @@
 describe('Navigation', () => {
-  beforeEach(() => {
-    cy.visitLoggedIn('/');
-  });
-
   describe('Collapsible Categories / Accordion', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/');
+    });
+  
     it('It should have multiple categories collapsed', () => {
       cy.visit('/projects/pr2/collapsibles');
 
@@ -173,6 +173,7 @@ describe('Navigation', () => {
 
   describe('Link withOptions', () => {
     beforeEach(() => {
+      cy.visitLoggedIn('/');
       cy.visitLoggedIn('/projects/pr2');
     });
 
@@ -211,6 +212,10 @@ describe('Navigation', () => {
   });
 
   describe('ProfileMenu Fiori 3 Style', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/');
+    });
+  
     context('Desktop', () => {
       it('not render Fiori3 profile in Shellbar when profileType is equal "simple"', () => {
         cy.window().then(win => {
