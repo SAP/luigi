@@ -244,17 +244,19 @@ describe('Context Update Listener test', () => {
     // This wait is required to let the Angular component render
     cy.wait(2500);
 
-      cy.getIframeBody().then($iframeBody => {
-        cy.wrap($iframeBody)
-          .find('#console')
-          .should('have.text', 'InitListener called');
+    cy.getIframeBody().then($iframeBody => {
+      cy.wrap($iframeBody)
+        .find('#console')
+        .should('have.text', 'InitListener called');
 
-        cy.window().its('Luigi').invoke('configChanged');
+      cy.window()
+        .its('Luigi')
+        .invoke('configChanged');
 
-        cy.wrap($iframeBody)
-          .find('#console')
-          .should('have.text', 'ContextUpdateListener called');
-      });
+      cy.wrap($iframeBody)
+        .find('#console')
+        .should('have.text', 'ContextUpdateListener called');
+    });
   });
 });
 
