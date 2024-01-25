@@ -1,11 +1,11 @@
-import { LuigiConfig } from '../core-api';
-import { GenericHelpers, RoutingHelpers } from '../utilities/helpers';
 import {
   DefaultCompoundRenderer,
   deSanitizeParamsMap,
   registerEventListeners,
   resolveRenderer
 } from '../utilities/helpers/web-component-helpers';
+import { LuigiConfig } from '../core-api';
+import { RoutingHelpers, GenericHelpers, NavigationHelpers } from '../utilities/helpers';
 
 const DEFAULT_TEMPORARY_HEIGHT = '500px';
 const DEFAULT_INTERSECTION_OBSERVER_ROOTMARGIN = '0px';
@@ -106,6 +106,14 @@ class WebComponentSvcClass {
       },
       getUserSettings: async () => {
         return await this.getUserSettingsForWc(eventBusElement._luigi_node);
+      },
+      setViewGroupData: data => {
+        const vg = NavigationHelpers.findViewGroup(eventBusElement._luigi_node);
+        if (vg) {
+          const vgSettings = NavigationHelpers.getViewGroupSettings(vg);
+          vgSettings._liveCustomData = data;
+          LuigiConfig.configChanged('navigation.viewgroupdata');
+        }
       }
     };
 

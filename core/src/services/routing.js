@@ -367,7 +367,7 @@ class RoutingClass {
       const hideNav = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
       const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
       const nodeParams = RoutingHelpers.getNodeParams(params);
-      const viewGroup = RoutingHelpers.findViewGroup(nodeObject);
+      const viewGroup = NavigationHelpers.findViewGroup(nodeObject);
       const urlParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
       const currentNode =
         pathData.navigationPath && pathData.navigationPath.length > 0
