@@ -7,9 +7,6 @@
   "publishConfig": {
     "tag": "testing-utilities"
   },
-  "devDependencies": {
-    "typescript": "4.8.2"
-  },
   "repository": {
     "type": "git",
     "url": "ssh://github.com/SAP/luigi.git"

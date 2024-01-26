@@ -3,6 +3,7 @@ test/cypress/screenshots/**/*
 # compiled output
 /dist/index*
 /dist/luigi*
+/dist/README.md
 /tmp
 /out-tsc
 # Only exists if Bazel was run
