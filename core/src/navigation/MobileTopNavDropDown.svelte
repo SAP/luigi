@@ -24,6 +24,7 @@
   }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="fd-dialog fd-dialog--active" on:click|stopPropagation={() => {}}>
   <div
     class="fd-dialog__content fd-dialog__content--mobile"
@@ -102,7 +103,7 @@
   </div>
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   /* TODO remove after update to fundamental 0.9 */
   .fd-product-switch__item.selected .fd-product-switch__title:before,
   .fd-product-switch__item.selected .fd-product-switch__title:after {

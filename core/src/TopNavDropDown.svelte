@@ -115,6 +115,7 @@
       {#if children}
         {#each children as node}
           {#if node.label}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <li
               class="fd-menu__item"
               on:click={() => onActionClick(node)}
@@ -162,7 +163,7 @@
   />
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     img {
       max-width: 16px;

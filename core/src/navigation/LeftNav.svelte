@@ -507,6 +507,7 @@
     <div class="lui-nav-title">
       <ul class="fd-nested-list">
         <li class="fd-nested-list__item">
+          <!-- svelte-ignore a11y-missing-attribute -->
           <a
             class="fd-nested-list__link"
             title={resolveTooltipText(
@@ -637,6 +638,7 @@
               {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
                 <!-- Collapsible nodes -->
                 {#if nodes.metaInfo.collapsible}
+                  <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <li
                     class="fd-nested-list__item lui-collapsible-item"
                     class:lui-item-expanded={isExpanded(
@@ -647,6 +649,7 @@
                       handleIconClick(nodes, event.currentTarget)}
                     data-testid={getTestIdForCat(nodes.metaInfo, key)}
                   >
+                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <div
                       class="fd-nested-list__content has-child"
                       on:keypress={event =>
@@ -978,6 +981,7 @@
                 />
               </button>
             {:else}
+              <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
               <i
                 class="lui-side-nav__footer--icon {isSemiCollapsed
                   ? 'sap-icon--open-command-field'
@@ -996,10 +1000,7 @@
   </nav>
 </div>
 
-<style type="text/scss">
-  @import 'src/styles/_mixins.scss';
-  @import 'src/styles/_variables.scss';
-
+<style lang="scss">
   $footerPaddingVertical: 13px;
   $footerHeight: calc(16px + (2 * #{$footerPaddingVertical}));
 
@@ -1282,10 +1283,8 @@
       }
     }
 
-    .isBlocked {
-      .lui-fd-side-nav-wrapper {
-        overflow: hidden !important;
-      }
+    :global(.isBlocked .lui-fd-side-nav-wrapper) {
+      overflow: hidden !important;
     }
 
     .lui-side-nav {
@@ -1405,13 +1404,11 @@
       overflow-y: auto;
     }
 
-    &.has-bottom-position {
-      .lui-flyout-sublist__wrapper {
-        &:before,
-        &:after {
-          top: auto;
-          bottom: 9px;
-        }
+    &:global(.has-bottom-position .lui-flyout-sublist__wrapper) {
+      &:before,
+      &:after {
+        top: auto;
+        bottom: 9px;
       }
     }
   }
