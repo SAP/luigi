@@ -83,6 +83,10 @@ The app should be available at `http://localhost:8080` in your browser.
 
 3. Check `./test-app/index.html` to see how Luigi Container is used.
 
+### API Reference
+To make use of all of the container based Luigi functionalities you can take a further look at the API reference:
+  - [Luigi Container API](luigi-container-api.md) 
+  - [Luigi Compound Container API](luigi-compound-container-api.md) 
 
 ### UI5 tutorial
 
