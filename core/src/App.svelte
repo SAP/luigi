@@ -2140,6 +2140,14 @@
                 <Backdrop area="main" disable={disableBackdrop} />
                 <div class="wcContainer" />
               </div>
+              {#if tabNav && !hideNav}
+                <TabNav
+                  pathData={navigationPath}
+                  {pathParams}
+                  on:handleClick={handleNavClick}
+                  {resizeTabNavToggle}
+                />
+              {/if}
               {#if mfSplitView.displayed}
                 <SplitView
                   splitViewSettings={mfSplitView.settings}
@@ -2572,6 +2580,12 @@
           var(--luigi__horizontal-nav--height)
         )
     );
+  }
+  :global(.fd-tool-layout .lui-main-content .iframeContainer.iframeContainerTabNav) {
+    top: var(
+          --luigi__horizontal-nav--live-height,
+          var(--luigi__horizontal-nav--height)
+        );
   }
 
   :global(.no-top-nav .iframeContainer.iframeContainerTabNav) {

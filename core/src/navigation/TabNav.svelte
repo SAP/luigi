@@ -573,6 +573,12 @@
     display: none;
   }
 
+  :global(.fd-tool-layout .lui-main-content) {
+    .lui-tabs#tabsContainer {
+      left: 0;
+    }
+  }
+
   .lui-tabs {
     right: 0;
     left: var(--luigi__left-sidenav--width);
