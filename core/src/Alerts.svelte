@@ -138,7 +138,7 @@
   {/each}
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   .luigi-alert--overlay {
     position: absolute;
     z-index: 1100;

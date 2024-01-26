@@ -320,6 +320,7 @@
                 {/if}
               {/each}
             {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
               <span
                 class="fd-tabs__item"
                 uid="{index}-0"
@@ -328,6 +329,7 @@
               >
                 <div class="fd-popover">
                   <div class="fd-popover__control">
+                    <!-- svelte-ignore a11y-missing-attribute -->
                     <a
                       class="fd-tabs__link has-child"
                       aria-expanded="false"
@@ -378,11 +380,13 @@
       </div>
 
       <div class="luigi-tabsMoreButton">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span
           class="fd-tabs__item"
           on:click={(event) => event.stopPropagation()}
         >
           <div class="fd-popover fd-popover--right">
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a
               class="fd-tabs__link fd-popover__control has-child luigi__more"
               aria-expanded="false"
@@ -418,10 +422,12 @@
                     {/each}
                   {:else}
                     <li class="fd-nested-list__item" uid="{index}-0">
+                      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                       <div
                         class="fd-nested-list__content has-child"
                         tabindex="0"
                       >
+                        <!-- svelte-ignore a11y-invalid-attribute -->
                         <a
                           href="javascript:void(null)"
                           tabindex="-1"
@@ -496,10 +502,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
-  @import 'src/styles/_mixins.scss';
-  @import 'src/styles/_variables.scss';
-
+<style lang="scss">
   .tabsContainer {
     width: 100%;
   }

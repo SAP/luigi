@@ -398,8 +398,7 @@
   </div>
 </div>
 
-<style type="text/scss">
-  @import 'src/styles/_variables.scss';
+<style lang="scss">
   :global(.lui-breadcrumb) .drawer-dialog {
     top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
