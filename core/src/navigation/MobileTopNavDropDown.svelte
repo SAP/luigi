@@ -24,6 +24,7 @@
   }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="fd-dialog fd-dialog--active" on:click|stopPropagation={() => {}}>
   <div
     class="fd-dialog__content fd-dialog__content--mobile"
@@ -102,7 +103,7 @@
   </div>
 </div>
 
-<style type="text/scss">
+<style lang="scss">
 
   @media (max-width: 1023px) {
     .fd-product-switch__body--mobile {

@@ -13,7 +13,7 @@
   </span>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-object-status {
     word-break: keep-all;
   }

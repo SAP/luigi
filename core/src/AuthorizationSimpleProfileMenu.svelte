@@ -205,6 +205,7 @@
         </li>
       {/if}
       {#each profileNav.items as profileItem}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <li
           class="fd-menu__item"
           on:click={() => onActionClick(profileItem)}
@@ -245,6 +246,8 @@
           on:keyup={event => handleKeyUp(event)}
           data-testid={getTestId(profileNav.settings)}
         >
+          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          <!-- svelte-ignore a11y-missing-attribute -->
           <a
             tabindex="0"
             title="User Settings"
@@ -276,6 +279,7 @@
       {/if}
       {#if isAuthorizationEnabled || isProfileLogoutItem}
         {#if isLoggedIn || (!isAuthorizationEnabled && isProfileLogoutItem)}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="fd-menu__item"
             on:click={onLogoutClick}
@@ -310,7 +314,9 @@
           </li>
         {/if}
         {#if isAuthorizationEnabled && !isLoggedIn}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li class="fd-menu__item" on:click={startAuthorization}>
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a aria-label="Login" class="fd-menu__link" data-testid="login-btn">
               <span class="fd-menu__title">Login</span>
             </a>
@@ -321,7 +327,7 @@
   </nav>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     display: inline-block;
     vertical-align: middle;
