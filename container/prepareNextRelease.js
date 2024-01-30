@@ -18,7 +18,6 @@ const replaceVersionInFolder = folderPath => {
     // Read package.json file
     const packageJson = JSON.parse(fs.readFileSync('./public/package.json', 'utf8'));
 
-
     // Get the version
     const version = packageJson.version;
 
