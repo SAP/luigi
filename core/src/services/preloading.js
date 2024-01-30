@@ -1,7 +1,7 @@
 // Methods related to view group preloading.
 import { Iframe } from './iframe';
 import { LuigiConfig } from '../core-api';
-import { IframeHelpers } from '../utilities/helpers';
+import { IframeHelpers, NavigationHelpers } from '../utilities/helpers';
 
 class ViewGroupPreloadingClass {
   constructor() {
@@ -14,7 +14,7 @@ class ViewGroupPreloadingClass {
     if (preloadViewGroupsSetting === false) {
       return;
     }
-    const vgSettings = Iframe.getAllViewGroupSettings();
+    const vgSettings = NavigationHelpers.getAllViewGroupSettings();
     if (!vgSettings) {
       return;
     }

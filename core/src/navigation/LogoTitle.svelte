@@ -193,6 +193,7 @@
     {/if}
   </a>
 {:else}
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <span
     class="fd-shellbar__logo {!hasLogo
       ? 'fd-shellbar__logo--image-replaced'
@@ -224,6 +225,7 @@
         </span>
       </a>
     {:else}
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <span
         class="fd-shellbar__title lui-shellbar-single-app-title"
         data-testid="luigi-topnav-title"
@@ -235,6 +237,7 @@
       </span>
     {/if}{:else}
     <div class="fd-popover">
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
         {#if addNavHrefForAnchor}
           {#if appSwitcherItems && appSwitcherItems.length === 1}
@@ -334,6 +337,7 @@
               {#each appSwitcherItems as item, index}
                 {#if GenericHelpers.isFunction(itemRenderer)}
                   {#if customItemRenderer__slotContainer}
+                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <li class="fd-menu__item" tabindex="0">
                       {@html renderCustomList(
                         item,
@@ -374,9 +378,7 @@
     <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
   {/if}{/if}
 
-<style type="text/scss">
-  @import 'src/styles/_variables.scss';
-
+<style lang="scss">
   // Force height because of base64 img src
   .lui-customlogo img {
     height: 24px;

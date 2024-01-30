@@ -178,7 +178,7 @@ It is possible to create compound web components using the [compound](navigation
 
 In the case of nested web components, [slots](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot) need to be defined which will then be filled by Luigi with the corresponding compound children from your Luigi config. The parent web component has to be defined by a slot with a name to plug in the child web component, for example `<header><slot name="header">header</slot></header>`. Web components can communicate over an event bus.
 
-Compound web components can suppoort lazy loading of the child web components. See the [compound](navigation-parameters-reference.md#compound) parameter for details.
+Compound web components can support lazy loading of the child web components. See the [compound](navigation-parameters-reference.md#compound) parameter for details.
 
 Keep in mind that this feature may not work properly if you are importing the Luigi library from an external source (like a CDN). We recommend downloading our packages from [npm](https://www.npmjs.com/package/@luigi-project/core). 
 
