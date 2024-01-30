@@ -20,7 +20,6 @@
   import { LuigiConfig } from './core-api';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
   import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_HOME, KEYCODE_END } from './utilities/keycode.js';
-  export let schemaObj;
   export let userSettingGroups;
 
 
@@ -333,6 +332,7 @@
 </script>
 
 <svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog" tabindex="0">
   <div
     class="fd-dialog__content lui-usersettings-dialog-size"
@@ -353,12 +353,10 @@
           >
             <ul
               class="fd-list fd-list--byline fd-list--navigation lui-us-list"
-              role="list"
             >
               {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
                 {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
                   <li
-                    role="listitem"
                     class="fd-list__item fd-list__item--link lui-us-navlist__item"
                     data-testid="us-navigation-item"
                     on:click|preventDefault={() =>
@@ -366,6 +364,7 @@
                     on:keydown={event => handleKeyUp(event, [index])}
                     tabindex="0"
                   >
+                    <!-- svelte-ignore a11y-invalid-attribute -->
                     <a tabindex="-1" class="fd-list__link" href="#">
                       {#if userSettingsGroupProperty[1].icon}
                         {#if hasOpenUIicon(userSettingsGroupProperty[1])}

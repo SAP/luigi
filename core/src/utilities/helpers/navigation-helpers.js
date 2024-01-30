@@ -4,7 +4,7 @@ import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
 import { reject, get } from 'lodash';
-import { Iframe } from '../../services/iframe';
+import { IframeHelpers } from './';
 
 class NavigationHelpersClass {
   constructor() {
@@ -538,10 +538,10 @@ class NavigationHelpersClass {
    */
   getNodeLabel(node) {
     let label = LuigiI18N.getTranslation(node.label);
-    const vg = RoutingHelpers.findViewGroup(node);
+    const vg = this.findViewGroup(node);
 
     if (vg) {
-      const vgSettings = Iframe.getViewGroupSettings(vg) || {};
+      const vgSettings = this.getViewGroupSettings(vg) || {};
       let cdata = { ...(vgSettings.customData || {}), ...(vgSettings._liveCustomData || {}) };
       label = GenericHelpers.replaceVars(label, cdata, 'viewGroupData.');
     }
@@ -555,6 +555,54 @@ class NavigationHelpersClass {
       res = pathData[0];
     }
     return res;
+  }
+
+  /**
+   * Returns the whole viewgroup settings from config.
+   * @returns {Object} viewgroup settings from config
+   */
+  getAllViewGroupSettings() {
+    return LuigiConfig.getConfigValue('navigation.viewGroupSettings');
+  }
+
+  /**
+   * Retrieves the settings for a specific view group.
+   * @param {string} viewGroup - The name of the view group for which settings are to be retrieved.
+   * @returns {Object} The settings for the specified view group. If the view group is not found, an empty object is returned.
+   */
+  getViewGroupSettings(viewGroup) {
+    const viewGroupSettings = this.getAllViewGroupSettings();
+    if (viewGroup && viewGroupSettings && viewGroupSettings[viewGroup]) {
+      return viewGroupSettings[viewGroup];
+    } else {
+      return {};
+    }
+  }
+
+  /**
+   * Recursively finds the view group associated with a given node in a hierarchical structure.
+   * @param {Object} node - The current node being examined.
+   * @param {Object} [originalNode] - The original node from which the search started.
+   * @returns {string | undefined} The view group associated with the node, or undefined if not found.
+   */
+  findViewGroup(node, originalNode) {
+    if (node.viewGroup) {
+      if (originalNode && originalNode !== node) {
+        if (
+          node.viewUrl &&
+          originalNode.viewUrl &&
+          IframeHelpers.getLocation(node.viewUrl) === IframeHelpers.getLocation(originalNode.viewUrl)
+        ) {
+          return node.viewGroup;
+        }
+
+        return undefined;
+      } else {
+        return node.viewGroup;
+      }
+    } else if (node.parent) {
+      return this.findViewGroup(node.parent, originalNode || node);
+    }
   }
 }
 

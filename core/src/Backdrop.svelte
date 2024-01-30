@@ -90,7 +90,7 @@
   <slot />
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   .lui-backdrop {
     background-color: rgba(0, 0, 0, 0.6);
     position: absolute;

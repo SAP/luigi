@@ -7,21 +7,27 @@ export declare interface WebComponentSettings {
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
+   * 
+   * @since 1.0.0
    */
   viewurl: string;
 
   /**
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used
+   * 
+   * @since 1.0.0
    */
   deferInit: boolean;
 
   /**
    * The stringified context object to be passed to the microfrontend
+   * @since 1.0.0
    */
   context: string;
 
   /**
    * Label information for the microfrontend
+   * @since 1.0.0
    */
   label: string;
 
@@ -33,56 +39,67 @@ export default class LuigiContainer extends HTMLElement {
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
    * @param {string} string must be a stringified boolean or JSON object from type `WebComponentSettings`.
+   * @since 1.0.0
    */
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
    * The locale to be passed to the web-component-based micro frontend
+   * @since 1.0.0
    */
   locale: string;
 
   /**
    * The theme to be passed to the  web-component-based micro frontend
+   * @since 1.0.0
    */
   theme: string;
 
   /**
    * The list of active feature toggles to be passed to the web-component-based micro frontend
+   * @since 1.0.0
    */
   activeFeatureToggleList: string[];
 
   /**
    * If set to true, skips handshake and ready event is fired immediately 
+   * @since 1.0.0
    */
   skipInitCheck: boolean;
 
   /**
    * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
+   * @since 1.0.0
    */
   nodeParams: Object;
 
   /**
    * The search parameters to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
   searchParams: Object;
 
   /**
    * The path parameters to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
   pathParams: Object;
 
   /**
    * The clientPermissions to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
   clientPermissions: Object;
 
   /**
    * The user settings to be passed to the web-component-based micro frontend
+   * @since 1.0.0
    */
   userSettings: Object;
 
   /**
    * The anchor value to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
   anchor: string;
 
@@ -93,6 +110,7 @@ export default class LuigiContainer extends HTMLElement {
    * 
    * @example
    * containerElement.updateContext({newContextData: 'some data'})
+   * @since 1.0.0
    */
   updateContext(contextObj: Object, internal?: Object): void;
 
@@ -103,6 +121,7 @@ export default class LuigiContainer extends HTMLElement {
    * 
    * @example
    * containerElement.sendCustomMessage('my-message-id', {dataToSend: 'some data'})
+   * @since 1.0.0
    */
   sendCustomMessage(id: string, data?: Object): void;
 
@@ -113,6 +132,7 @@ export default class LuigiContainer extends HTMLElement {
    * 
    * @example
    * containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
+   * @since 1.0.0
    */
   closeAlert(id: string, dismissKey: string): void;
 
@@ -121,6 +141,7 @@ export default class LuigiContainer extends HTMLElement {
    * 
    * @example
    * containerElement.init()
+   * @since 1.0.0
    */
   init(): void;
 }

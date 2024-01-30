@@ -1,5 +1,5 @@
 import { Iframe } from '../../src/services/iframe';
-import { IframeHelpers, GenericHelpers } from '../../src/utilities/helpers';
+import { IframeHelpers, GenericHelpers, NavigationHelpers } from '../../src/utilities/helpers';
 import { ViewGroupPreloading, ViewUrlDecorator } from '../../src/services';
 import { LuigiConfig } from '../../src/core-api';
 
@@ -63,7 +63,7 @@ describe('Iframe', () => {
         preloadUrl: 'ananas.html'
       }
     };
-    sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
+    sinon.stub(NavigationHelpers, 'getAllViewGroupSettings').callsFake(() => {
       return viewGroupSettings;
     });
     sinon.stub(IframeHelpers, 'getIframeContainer').callsFake(() => {
