@@ -12,6 +12,7 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
     LuigiClient,
     connectTo: function(oComponent) {
       const routingConfig = oComponent.getManifestEntry('sap.ui5').routing;
+      let sOldRouteName = '';
       oComponent.setModel(model, '$luigiCtx');
 
       // Create preload view
@@ -97,8 +98,13 @@ sap.ui.define(['sap/ui/model/json/JSONModel', '@luigi-project/client/luigi-clien
               lm.updateModalPathInternalNavigation(route, {}, currentRouteObj.data.addHistoryEntry);
             }
           } else if (route) {
-            lm.navigate(route);
+            let bPreventHistory = false;
+            if (currentRouteObj.data?.preventBrowserHistory === true && sOldRouteName === currentRouteObj.name) {
+              bPreventHistory = true;
+            }
+            lm.withOptions({ preventHistoryEntry: bPreventHistory }).navigate(route);
           }
+          sOldRouteName = currentRouteObj.name;
         }
       });
     }
