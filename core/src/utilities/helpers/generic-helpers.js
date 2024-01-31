@@ -1,6 +1,7 @@
 // Standalone or partly-standalone methods that are used widely through the whole app and are synchronous.
 import { LuigiElements, LuigiConfig } from '../../core-api';
 import { replace, get } from 'lodash';
+import { IframeHelpers } from './iframe-helpers';
 
 class GenericHelpersClass {
   /**
@@ -257,11 +258,11 @@ class GenericHelpersClass {
   }
 
   getInnerHeight /* istanbul ignore next */() {
-    return LuigiElements.isCustomLuigiContainer() ? LuigiElements.getLuigiContainer().clientHeight : window.innerHeight;
+    return IframeHelpers.getIframeContainer().clientHeight;
   }
 
   getContentAreaHeight /* istanbul ignore next */() {
-    const contentAreaHeight = this.getInnerHeight() - this.getShellbarHeight();
+    const contentAreaHeight = this.getInnerHeight() - IframeHelpers.getIframeContainer().getBoundingClientRect().top;
     return contentAreaHeight;
   }
 
