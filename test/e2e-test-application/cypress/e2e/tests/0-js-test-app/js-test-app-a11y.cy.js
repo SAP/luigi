@@ -1,17 +1,10 @@
 import defaultLuigiConfig from '../../configs/default';
-import { cloneDeep } from 'lodash';
 require('cypress-plugin-tab');
 describe('JS-TEST-APP 4', () => {
-  const localRetries = {
-    retries: {
-      runMode: 4,
-      openMode: 4
-    }
-  };
   describe('AY11', () => {
     let newConfig;
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.tag = 'user-settings-dialog';
       newConfig.userSettings = {
         userSettingGroups: {
