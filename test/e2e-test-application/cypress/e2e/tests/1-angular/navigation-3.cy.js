@@ -234,7 +234,6 @@ describe('Navigation', () => {
             .contains('Miscellaneous 2')
             .should('not.exist');
           cy.get('[data-testid="semiCollapsibleButton"]').click();
-          cy.wait(1000);
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous2')
             .should('be.visible');

@@ -87,7 +87,8 @@ describe('TopNavDropDown', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
-  context('Desktop', () => {
+
+  describe('Desktop', () => {
     beforeEach(() => {
       // run these tests as if in a desktop
       cy.viewport('macbook-15');
@@ -107,7 +108,7 @@ describe('TopNavDropDown', () => {
     });
   });
 
-  context('Mobile', () => {
+  describe('Mobile', () => {
     beforeEach(() => {
       cy.viewport('iphone-6');
     });
