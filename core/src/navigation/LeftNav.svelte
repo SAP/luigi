@@ -1184,11 +1184,11 @@
     }
   }
 
-  /*TODO: check if FD Styles >v.0.17 included it*/
-  .lui-category {
-    border-top: var(--sapList_BorderWidth, 0.0625rem) solid
-      var(--sapList_GroupHeaderBorderColor, #d8d8d8);
-  }
+.lui-category {
+  border-top:
+  var(--sapList_BorderWidth) solid
+  var(--sapList_GroupHeaderBorderColor);
+}
 
   .lui-fd-side-nav-wrapper {
     height: 100%;

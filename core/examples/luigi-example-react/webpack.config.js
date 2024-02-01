@@ -87,15 +87,6 @@ module.exports = function(webpackEnv) {
       port: 3000,
       open: true
     },
-    optimization: {
-      minimize: true,
-      // todo: Remove after renaming luigi core map files
-      minimizer: [
-        new TerserPlugin({
-          exclude: /\.svelte\.map\.js$/
-        })
-      ]
-    },
     devtool: !isEnvProduction ? 'inline-source-map' : false,
     // Change accordingly on prodcuciton
     performance: {
