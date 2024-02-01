@@ -2093,7 +2093,6 @@
               on:handleSearchNavigation={handleSearchNavigation}
               bind:isSearchFieldVisible
               bind:displaySearchResult
-              bind:displayCustomSearchResult
               bind:searchResult
               bind:inputElem
               bind:luigiCustomSearchRenderer__slot
@@ -2126,8 +2125,8 @@
                 />
               {/if}    
             <div class="lui-box">
-            <Backdrop disable={disableBackdrop}>
-              
+            <Backdrop disable={disableBackdrop}>              
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
               <div
                 class="fd-page iframeContainer"
                 class:lui-split-view={mfSplitView.displayed}
@@ -2235,7 +2234,6 @@
           on:handleSearchNavigation={handleSearchNavigation}
           bind:isSearchFieldVisible
           bind:displaySearchResult
-          bind:displayCustomSearchResult
           bind:searchResult
           bind:inputElem
           bind:luigiCustomSearchRenderer__slot

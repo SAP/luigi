@@ -472,11 +472,6 @@
     display: inline-block;
   }
 
-  div.luigi-search-input-ctn .lui-search-btn {
-    border-radius: var(--fdShellbar_Input_Border_Radius);
-  }
-
-
   :global(.lui-global-search.lui-global-search-toggle) {
     .lui-global-search-input {
       display: none;

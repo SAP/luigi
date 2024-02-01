@@ -380,6 +380,7 @@
   }
 
   export function handleIconClick(nodeOrNodes, el) {
+    closeMorePopup();
     if (SemiCollapsibleNavigation.getCollapsed()) {
       let selectedCat;
       let sideBar = document.getElementsByClassName('fd-app__sidebar')[0];
@@ -502,10 +503,14 @@
     );
   }
 
+  function closeMorePopup() {
+    btpNavTopCnt && btpNavTopCnt.querySelector('.fd-navigation__item.lui-nav-more').setAttribute('aria-expanded', false);
+  }
+
   export function closePopupMenu() {
     selectedCategory =
       SemiCollapsibleNavigation.closePopupMenu(selectedCategory);
-    btpNavTopCnt && btpNavTopCnt.querySelector('.fd-navigation__item.lui-nav-more').setAttribute('aria-expanded', false);
+      closeMorePopup();
   }
 
   function closePopupMenuOnEsc(event){
@@ -591,6 +596,7 @@
       <div class="lui-nav-title">
         <ul class="fd-nested-list">
           <li class="fd-nested-list__item">
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a
               class="fd-nested-list__link"
               title={resolveTooltipText(
@@ -709,13 +715,9 @@
                 {/if}
               {/each}
             {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
-              <!-- Collapsible nodes -->
-              {#if /*nodes.metaInfo.collapsible*/ /*all collapsible in btp layout*/ true }
-
-                 
-
                 <li class="fd-navigation__list-item {isSemiCollapsed ? 'fd-popover' : ''} lui-nav-entry" aria-hidden="true"
                 data-testid={getTestIdForCat(nodes.metaInfo, key)}>
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                   <div 
                       class="fd-navigation__item {isSemiCollapsed ? 'fd-popover__control' : ''}" 
                       
@@ -729,6 +731,8 @@
                       on:click|stopPropagation={(event) =>
                         handleIconClick(nodes, event.currentTarget)}
                   >
+                      <!-- svelte-ignore a11y-missing-attribute -->
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <a class="fd-navigation__link" role="button" tabindex="-1"  on:click|preventDefault={() =>
                         setExpandedState(
                           nodes,
@@ -766,6 +770,7 @@
                             <div class="fd-navigation__item fd-navigation__item--title" aria-level="1" role="treeitem" aria-expanded="true" aria-selected="false"
                                 title={resolveTooltipText(nodes, $getTranslation(key))}
                                 data-testid={getTestIdForCat(nodes.metaInfo, key)} >
+                                <!-- svelte-ignore a11y-missing-attribute -->
                               <a class="fd-navigation__link" role="button" tabindex="0">
                                 {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
                                   {#if isOpenUIiconName(nodes.metaInfo.icon)}
@@ -808,7 +813,7 @@
                                       aria-selected={node === selectedNode}
                                       data-testid={getTestId(node)}
                                   >
-                                      <a class="fd-navigation__link" role="link" tabindex="-1"  
+                                      <a class="fd-navigation__link" tabindex="-1"  
                                         href={getRouteLink(node)}
                                         on:click={event => {
                                           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
@@ -893,105 +898,6 @@
                   {/if}
                 </li>
 
-              {:else}
-                <!-- Category nodes -->
-                <div class="fd-navigation__item fd-navigation__item--title lui-nav-entry" aria-level="1" role="treeitem" aria-expanded="true" aria-selected="false"
-                    title={resolveTooltipText(nodes, $getTranslation(key))}
-                    data-testid={getTestIdForCat(nodes.metaInfo, key)} >
-                  <a class="fd-navigation__link" role="button" tabindex="0">
-                    {#if hasCategoriesWithIcon && nodes.metaInfo.icon}
-                      {#if isOpenUIiconName(nodes.metaInfo.icon)}
-                        <span class="fd-navigation__icon {getSapIconStr(nodes.metaInfo.icon)}" role="presentation" aria-hidden="true"></span>
-                      {:else}
-                        <span class="fd-navigation__icon" role="presentation" aria-hidden="true">
-                          <img
-                            src={nodes.metaInfo.icon}
-                            alt={nodes.metaInfo.altText
-                              ? nodes.metaInfo.altText
-                              : ''}
-                          />
-                        </span>
-                      {/if}
-                    {/if}
-                      <span class="fd-navigation__text">{$getTranslation(key)}</span>
-                      <span class="fd-navigation__selection-indicator"></span>
-                  </a>
-                </div>
-                {#each nodes as node}
-                  {#if !node.hideFromNav}
-                    {#if node.label}
-                      <li
-                        class="fd-nested-list__item"
-                        title={resolveTooltipText(node, getNodeLabel(node))}
-                        aria-labelledby="category_list_level1_{index}"
-                      >
-                        <a
-                          href={getRouteLink(node)}
-                          tabindex="0"
-                          class="fd-nested-list__link {node === selectedNode
-                            ? 'is-selected'
-                            : ''}"
-                          on:click={event => {
-                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
-                              event
-                            ) && handleClick(node);
-                          }}
-                          on:keyup={!addNavHrefForAnchor
-                            ? event => handleEnterPressed(event, node)
-                            : undefined}
-                          role={!addNavHrefForAnchor ? 'button' : undefined}
-                          data-testid={getTestId(node)}
-                        >
-                          {#if node.icon}
-                            {#if isOpenUIiconName(node.icon)}
-                              <i
-                                class="fd-nested-list__icon sap-icon {getSapIconStr(
-                                  node.icon
-                                )}"
-                              />
-                            {:else}
-                              <span class="fd-nested-list__icon sap-icon">
-                                <img
-                                  src={node.icon}
-                                  alt={node.altText ? node.altText : ''}
-                                />
-                              </span>
-                            {/if}
-                          {:else}
-                            <i
-                              class="fd-nested-list__icon sap-icon {isSemiCollapsed
-                                ? 'sap-icon--rhombus-milestone-2'
-                                : ''}"
-                            />
-                            <span
-                              >{isSemiCollapsed
-                                ? 'sap-icon--rhombus-milestone-2'
-                                : ''}</span
-                            >
-                          {/if}
-                          <span
-                            class="fd-nested-list__title badge-align-{node.statusBadge &&
-                            node.statusBadge.align === 'right'
-                              ? 'right'
-                              : 'left'}"
-                            >{getNodeLabel(node)}
-                            {#if node.statusBadge}
-                              <StatusBadge {node} />
-                            {/if}
-                          </span>
-
-                          {#if node.externalLink && node.externalLink.url}
-                            <i class="sap-icon--action" />
-                          {/if}
-                          {#if node.badgeCounter}
-                            <BadgeCounter {node} />
-                          {/if}
-                        </a>
-                      </li>
-                    {/if}
-                  {/if}
-                {/each}
-              {/if}
             {/if}
           {/each}
           
@@ -1007,12 +913,15 @@
                 role="menuitem" 
                 aria-expanded="false"
                 tabindex="-1">
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <a class="fd-navigation__link" role="button" tabindex="0"
                   on:click={event => {
                     const parent = event.target.parentElement;
                     if(parent.getAttribute('aria-expanded') === "true") {
                       parent.setAttribute('aria-expanded', 'false');
                     } else {
+                      closePopupMenu();
                       parent.setAttribute('aria-expanded', 'true');
                     }
                     event.stopPropagation();
