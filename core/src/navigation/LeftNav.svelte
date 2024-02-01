@@ -185,7 +185,9 @@
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let addNavHrefForAnchor = false;
-  let btpToolLayout = false;
+  let btpToolLayout = LuigiConfig.getConfigBooleanValue(
+      'settings.btpToolLayout'
+    ) && GenericHelpers.requestExperimentalFeature('btpToolLayout', false);
   let btpNavTopCnt;
 
   const getNodeLabel = (node) => {
@@ -220,9 +222,6 @@
       'settings.sideNavCompactMode'
     );
     expandedCategories = NavigationHelpers.loadExpandedCategories();
-    btpToolLayout = LuigiConfig.getConfigBooleanValue(
-      'settings.btpToolLayout'
-    ) && GenericHelpers.requestExperimentalFeature('btpToolLayout', false);
 
     StateHelpers.doOnStoreChange(
       store,
