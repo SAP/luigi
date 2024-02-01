@@ -258,6 +258,7 @@
   {#if !isMobile}
     <div class="fd-shellbar__action fd-shellbar__action--desktop">
       <div class="fd-popover fd-popover--right">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
           {#if addNavHrefForAnchor && selectedOption !== config.defaultLabel}
             <a
@@ -333,6 +334,7 @@
   {/if}
   <!-- MOBILE VERSION (fullscreen dialog): -->
   {#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div
       class="fd-dialog fd-dialog--active"
       on:click|stopPropagation={() => {}}
@@ -393,7 +395,7 @@
   {/if}
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .lui-ctx-switch-menu {
     max-width: 30vw;
     color: var(--sapShell_TextColor, #fff);
@@ -422,18 +424,6 @@
   }
 
   .fd-popover {
-    #context_menu_middle {
-      max-height: 50vh;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .fd-button--secondary,
-    .fd-menu__link {
-      max-width: 300px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
     .fd-popover__body {
       right: 0;
     }

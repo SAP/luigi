@@ -8,7 +8,6 @@
     KEYCODE_ARROW_DOWN,
   } from './utilities/keycode.js';
   export let userSettingGroup;
-  export let userSettingsGroupKey;
   export let storedUserSettingData;
   const dispatch = createEventDispatcher();
   let getTranslation = getContext('getTranslation');
@@ -260,6 +259,7 @@
                 {#if schemaItem.type === 'enum' && (schemaItem.style === undefined || schemaItem.style === 'list')}
                   <div class="fd-form-item">
                     <div class="fd-popover">
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <div
                         class="fd-popover__control"
                         aria-expanded="false"
@@ -323,6 +323,8 @@
                                 class:is-focus={selectedLanguageLabel ===
                                   optionIndex}
                                 data-testid="lui-us-option{index}_{optionIndex}"
+                                aria-selected={selectedLanguageLabel ===
+                                  optionIndex}
                                 on:click={() =>
                                   updateComboBox(key, option, optionIndex)}
                                 on:keydown={event =>
@@ -454,7 +456,7 @@
   .fd-row .fd-col .fd-select__control.lui-anchor-node {
     margin: 0;
   }
-  .fd-select__control.lui-anchor-node[aria-expanded='true']:focus {
+  .fd-select__control:global(.lui-anchor-node[aria-expanded='true']:focus) {
     outline: none;
   }
 

@@ -12,7 +12,6 @@
   export let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
-  export let displayCustomSearchResult;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
@@ -238,6 +237,7 @@
     >
       <div class="fd-input-group fd-shellbar__input-group fd-shellbar__search-field">
         {#if search && search.disableInputHandlers}
+          <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
             class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input fd-shellbar__search-field-input"
@@ -246,6 +246,7 @@
             onblur="event.target.parentNode.classList.remove('is-focus')"
           />
         {:else}
+          <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
             on:keyup={event => onKeyUp(event)}
@@ -270,6 +271,7 @@
                 bind:this={luigiCustomSearchItemRenderer__slotContainer}
               >
                 {#each searchResult as result, index}
+                  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
                     on:click={event =>
@@ -278,6 +280,8 @@
                     tabindex="0"
                   >
                     {#if !isCustomSearchResultItemRenderer}
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-missing-attribute -->
                       <a
                         class="fd-menu__link"
                         on:click|preventDefault={() => {}}
@@ -311,6 +315,7 @@
   </div>
 </div>
 <div class="fd-shellbar__action fd-shellbar__action--desktop">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div on:click|stopPropagation={() => {}}>
     <button
       class="fd-button fd-button--transparent fd-shellbar__button"
@@ -324,7 +329,7 @@
   </div>
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {
     li[class*='luigi-search-result']:focus {

@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
   import Alerts from './Alerts.svelte';
   import ConfirmationModal from './ConfirmationModal.svelte';
   import Modal from './Modal.svelte';
@@ -113,7 +113,6 @@
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let displaySearchResult;
-  export let displayCustomSearchResult = true;
   export let searchResult;
   export let storedUserSettings;
 
@@ -194,7 +193,7 @@
       const nextPath = buildPath(data.params);
       const nodePath = Routing.getNodePath(currentNode, urlParamsRaw);
 
-      $: preservedViews.push({
+      preservedViews.push({
         path:
           config.iframe.luigi && config.iframe.luigi.pathParams
             ? GenericHelpers.replaceVars(
@@ -631,7 +630,6 @@
         if (
           GenericHelpers.isFunction(searchProvider.customSearchResultRenderer)
         ) {
-          displayCustomSearchResult = true;
           let searchApiObj = {
             fireItemSelected: (item) => {
               searchProvider.onSearchResultItemSelected(item);
@@ -721,14 +719,14 @@
   const splitViewIframeCreated = (event) => {
     splitViewIframe = event.detail.splitViewIframe;
     splitViewIframeData = event.detail.splitViewIframeData;
-    $: mfSplitView.collapsed = event.detail.collapsed;
+    mfSplitView.collapsed = event.detail.collapsed;
   };
 
   const splitViewStatusChanged = (event) => {
-    $: if (event.detail.displayed !== undefined) {
+    if (event.detail.displayed !== undefined) {
       mfSplitView.displayed = event.detail.displayed;
     }
-    $: if (event.detail.collapsed !== undefined) {
+    if (event.detail.collapsed !== undefined) {
       mfSplitView.collapsed = event.detail.collapsed;
     }
   };
@@ -736,7 +734,7 @@
   const splitViewWCCreated = (event) => {
     splitViewWC = event.detail.splitViewWC;
     splitViewWCData = event.detail.splitViewWCData;
-    $: mfSplitView.collapsed = event.detail.collapsed;
+    mfSplitView.collapsed = event.detail.collapsed;
   };
 
   /// RESIZING
@@ -2185,6 +2183,7 @@
   </div>
     {:else}
       <Backdrop disable={disableBackdrop}>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div
           class="fd-page iframeContainer"
           class:lui-split-view={mfSplitView.displayed}
@@ -2277,10 +2276,7 @@
     {/if}
 </div>
 
-<style type="text/scss">
-  @import 'src/styles/_mixins.scss';
-  @import 'src/styles/_variables.scss';
-
+<style lang="scss">
   /* custom width of left side nav, single App title width or Multiple-App dropdown width*/
   :root {
     --luigi__left-sidenav--width: 15rem;
@@ -2468,14 +2464,14 @@
     overflow: hidden;
     margin-bottom: -5px;
   }
-  .iframeContainerNoNav {
+  :global(.iframeContainerNoNav) {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
   }
-  .iframeContainerNoNav :global(iframe) {
+  :global(.iframeContainerNoNav iframe) {
     border: none;
     width: 100%;
     height: 100%;
@@ -2811,7 +2807,7 @@
   :global(html.luigi-app-in-custom-container) {
     position: relative;
 
-    [luigi-app-root] {
+    :global([luigi-app-root]) {
       position: relative;
       overflow: hidden;
     }
@@ -2834,7 +2830,7 @@
   :global(.fd-side-nav--condensed) {
     :global(.fd-nested-list__link) {
       font-size: 10px;
-      &.has-child:after {
+      &:global(.has-child:after) {
         height: 0;
       }
     }
@@ -2925,7 +2921,7 @@
       display: block;
     }
 
-    iframe {
+    :global(iframe) {
       display: none;
     }
   }

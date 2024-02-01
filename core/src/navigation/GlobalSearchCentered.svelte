@@ -12,7 +12,6 @@
   import { TOP_NAV_DEFAULTS } from '../utilities/luigi-config-defaults';
   export let searchResult = [];
   export let displaySearchResult;
-  export let displayCustomSearchResult;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
@@ -331,6 +330,7 @@
                 bind:this={luigiCustomSearchItemRenderer__slotContainer}
               >
                 {#each searchResult as result, index}
+                  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
                     on:click={event =>
@@ -339,6 +339,8 @@
                     tabindex="0"
                   >
                     {#if !isCustomSearchResultItemRenderer}
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
+                      <!-- svelte-ignore a11y-missing-attribute -->
                       <a
                         class="fd-menu__link"
                         on:click|preventDefault={() => {}}
@@ -373,6 +375,7 @@
 </div>
 {#if !isSearchFieldVisible}
   <div class="lui-global-search-btn">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div class="fd-shellbar__group" on:click|stopPropagation={() => {}}>
       <button
         class="fd-button fd-button--transparent fd-shellbar__button"
@@ -404,8 +407,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
-  @import 'src/styles/_variables.scss';
+<style lang="scss">
   //remove default browser outline on focus for search results
   .luigi-search-popover__body {
     li[class*='luigi-search-result']:focus {
