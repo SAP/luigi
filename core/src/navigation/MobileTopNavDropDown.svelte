@@ -104,11 +104,6 @@
 </div>
 
 <style lang="scss">
-  /* TODO remove after update to fundamental 0.9 */
-  .fd-product-switch__item.selected .fd-product-switch__title:before,
-  .fd-product-switch__item.selected .fd-product-switch__title:after {
-    content: none !important;
-  }
 
   @media (max-width: 1023px) {
     .fd-product-switch__body--mobile {
