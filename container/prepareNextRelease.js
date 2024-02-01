@@ -16,7 +16,7 @@ const path = require('path');
 const replaceVersionInFolder = folderPath => {
   try {
     // Read package.json file
-    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    const packageJson = JSON.parse(fs.readFileSync('./public/package.json', 'utf8'));
 
     // Get the version
     const version = packageJson.version;
@@ -43,7 +43,7 @@ const replaceVersionInFolder = folderPath => {
           // Write the updated content back to the file
           fs.writeFileSync(filePath, fileContent, 'utf8');
 
-          console.log(`Replaced occurrence in file: ${file} )`);
+          console.log(`Replaced occurrence in file: ${file} `);
         } else {
           console.log(`No occurrences found in ${file}`);
         }
