@@ -105,9 +105,7 @@
   let breadcrumbsEnabled;
   let contextRequested = false;
   let loadingIndicatorTimeout;
-  let btpToolLayout = LuigiConfig.getConfigBooleanValue(
-      'settings.btpToolLayout'
-    );
+  let btpToolLayout;
 
   export let isSearchFieldVisible;
   export let inputElem;
@@ -1944,6 +1942,9 @@
     responsiveNavSetting = LuigiConfig.getConfigValue(
       'settings.responsiveNavigation',
     );
+    btpToolLayout = LuigiConfig.getConfigBooleanValue(
+      'settings.btpToolLayout'
+    ) && GenericHelpers.requestExperimentalFeature('btpToolLayout', true);
     previousWindowWidth = window.innerWidth;
     if (responsiveNavSetting === 'simple') {
       document.body.classList.add('lui-simpleSlideInNav');
