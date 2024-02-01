@@ -19,9 +19,11 @@ describe('Context switcher', () => {
   it('Add and remove project with context switcher', () => {
     cy.goToProjectsPage();
 
-    cy.get('.fd-app__sidebar').should('contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('contain', 'Project Two');
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
+    cy.get('.fd-app__sidebar')
+      .as('sidebar')
+      .should('contain', 'Project One')
+      .and('contain', 'Project Two')
+      .and('not.contain', 'Project 3');
 
     cy.goToOverviewPage();
     cy.expectPathToBe('/overview');
@@ -34,9 +36,10 @@ describe('Context switcher', () => {
 
     cy.expectPathToBe('/projects');
 
-    cy.get('.fd-app__sidebar').should('contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('contain', 'Project Two');
-    cy.get('.fd-app__sidebar').should('contain', 'Project 5');
+    cy.get('@sidebar')
+      .should('contain', 'Project One')
+      .and('contain', 'Project Two')
+      .and('contain', 'Project 5');
 
     cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
 
@@ -51,9 +54,10 @@ describe('Context switcher', () => {
 
     cy.expectPathToBe('/projects');
 
-    cy.get('.fd-app__sidebar').should('contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('contain', 'Project Two');
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
+    cy.get('@sidebar')
+      .should('contain', 'Project One')
+      .and('contain', 'Project Two')
+      .and('not.contain', 'Project 3');
 
     // remove all projects
 
@@ -73,9 +77,10 @@ describe('Context switcher', () => {
 
     cy.expectPathToBe('/projects');
 
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project One');
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project Two');
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
+    cy.get('@sidebar')
+      .should('not.contain', 'Project One')
+      .and('not.contain', 'Project Two')
+      .and('not.contain', 'Project 3');
 
     cy.get('[data-testid="luigi-contextswitcher-popover"]').should('not.contain', 'Remove Project');
 
@@ -85,9 +90,10 @@ describe('Context switcher', () => {
 
     cy.expectPathToBe('/projects');
 
-    cy.get('.fd-app__sidebar').should('contain', 'Project 1');
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project 2');
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
+    cy.get('@sidebar')
+      .should('contain', 'Project 1')
+      .and('not.contain', 'Project 2')
+      .and('not.contain', 'Project 3');
 
     cy.get('[data-testid="luigi-contextswitcher-popover"]').should('contain', 'Remove Project');
 
@@ -95,9 +101,10 @@ describe('Context switcher', () => {
 
     cy.expectPathToBe('/projects');
 
-    cy.get('.fd-app__sidebar').should('contain', 'Project 1');
-    cy.get('.fd-app__sidebar').should('contain', 'Project 2');
-    cy.get('.fd-app__sidebar').should('not.contain', 'Project 3');
+    cy.get('@sidebar')
+      .should('contain', 'Project 1')
+      .and('contain', 'Project 2')
+      .and('not.contain', 'Project 3');
 
     cy.get('[data-testid="luigi-contextswitcher-popover"]').should('contain', 'Remove Project');
 
@@ -193,7 +200,8 @@ describe('ProductSwitcher', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
-  context('Desktop', () => {
+
+  describe('Desktop', () => {
     beforeEach(() => {
       // run these tests as if in a desktop
       cy.viewport('macbook-15');
@@ -203,16 +211,17 @@ describe('ProductSwitcher', () => {
       //check if hybris is there
       cy.get('.fd-product-switch')
         .click()
-        .contains('hybris');
+        .should('contain', 'hybris');
 
       //check if internal link is there
       cy.get('.fd-product-switch .fd-product-switch__title')
+        .as('title')
         .contains('Project One')
         .click();
 
       cy.expectPathToBe('/projects/pr1');
 
-      cy.get('.fd-product-switch .fd-product-switch__title').should('not.contain', 'Project 3');
+      cy.get('@title').should('not.contain', 'Project 3');
 
       cy.goToOverviewPage();
       cy.expectPathToBe('/overview');
@@ -221,11 +230,11 @@ describe('ProductSwitcher', () => {
       cy.selectContextSwitcherItem('New Project');
       cy.expectPathToBe('/projects');
 
-      cy.get('.fd-product-switch .fd-product-switch__title').should('contain', 'Project 5');
+      cy.get('@title').should('contain', 'Project 5');
 
       cy.get('.fd-product-switch').click();
 
-      cy.get('.fd-product-switch .fd-product-switch__title')
+      cy.get('@title')
         .contains('Project 5')
         .click();
 
@@ -237,7 +246,7 @@ describe('ProductSwitcher', () => {
     });
   });
 
-  context('Mobile', () => {
+  describe('Mobile', () => {
     beforeEach(() => {
       cy.viewport('iphone-6');
     });
@@ -282,6 +291,7 @@ describe('AppSwitcher', () => {
   beforeEach(() => {
     cy.visitLoggedIn('/');
   });
+
   it('Clicking around the app switcher', () => {
     cy.window().then(win => {
       const config = win.Luigi.getConfig();

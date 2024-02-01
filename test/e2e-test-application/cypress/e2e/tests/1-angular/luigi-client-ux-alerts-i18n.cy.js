@@ -40,6 +40,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
 
       cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
     });
+
     it('hides Alert after specified time', () => {
       const closeAfter = 500;
       cy.goToUxManagerMethods($iframeBody);
@@ -54,6 +55,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .find('[data-testid=show-luigi-alert]')
         .click();
 
+      // Waiting is part of the test in this case, use of cy.wait() is intended.
       cy.wait(closeAfter - 100); //the time may not be one-millisecond perfect so give it some 'flexibility'
       cy.get('[data-testid=luigi-alert]').should('exist');
 
