@@ -50,7 +50,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: ${{ inputs.buildcache_key }}}
+          key: ${{ inputs.buildcache_key }}
       - run: ls test
       # Bundle all 
       - run: npm run bootstrap
