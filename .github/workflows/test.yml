@@ -112,14 +112,6 @@ jobs:
       - run: bash ./test/e2e-js.sh || exit 1
       - run: bash ./test/e2e-angular.sh || exit 1
 
-  cleanup: 
-    needs: [e2e, container_unit_tests, container_e2e_tests, mock_engine, unit]
-    uses: ./.github/workflows/cleanup.yml
-    secrets: inherit
-    with:
-      buildcache_key: buildcache
-        
-
   docu_check:
     name: Check Documentation
     runs-on: ubuntu-latest
