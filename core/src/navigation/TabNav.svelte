@@ -307,6 +307,7 @@
                         class="fd-tabs__link"
                         href={getRouteLink(node)}
                         role="tab"
+                        data-testid={getTestId(node)}
                         aria-selected={node === selectedNodeForTabNav}
                         on:click|preventDefault={() => handleClick(node)}
                       >
