@@ -23,10 +23,12 @@ jobs:
 
           ## echo "Fetching list of cache key"
           ## cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
-          cacheKeysForPR=(${{ inputs.buildcache_key }})
+          cacheKeysForPR=(${{ inputs.buildcache_key }}-${{ github.ref }})
 
           ## Setting this to not fail the workflow while deleting cache keys. 
           set +e
+          echo "Existing caches"
+          gh actions-cache list
           echo "Deleting caches..."
           for cacheKey in $cacheKeysForPR
           do
@@ -50,7 +52,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: ${{ inputs.buildcache_key }}
+          key: ${{ inputs.buildcache_key }}-${{ github.ref }}
       - run: ls test
       # Bundle all 
       - run: npm run bootstrap
