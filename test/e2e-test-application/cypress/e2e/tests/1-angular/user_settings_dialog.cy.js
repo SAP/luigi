@@ -3,14 +3,10 @@ describe('Navigation', () => {
 
   const openSettingsDialogBox = () => {
     //Click on User Icon (top menu right)
-    cy.get('[data-testid="luigi-topnav-profile-btn"]')
-      .should('exist')
-      .click();
+    cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
 
     //Click on Setting link and open Dialog Box
-    cy.get('[data-testid="settings-link"]')
-      .should('exist')
-      .click();
+    cy.get('[data-testid="settings-link"]').click();
 
     //Check Dialog is open
     cy.get('.lui-usersettings-dialog').should('exist');
@@ -23,9 +19,7 @@ describe('Navigation', () => {
 
   const saveSettings = () => {
     //Check save button and click
-    cy.get('.lui-usersettings-dialog [data-testid="lui-us-saveBtn"]')
-      .should('exist')
-      .click();
+    cy.get('.lui-usersettings-dialog [data-testid="lui-us-saveBtn"]').click();
 
     //Check settings dialog box is closed...
     cy.get('.lui-usersettings-dialog').should('not.exist');
@@ -33,9 +27,7 @@ describe('Navigation', () => {
 
   const closeSettings = () => {
     //Check cancel button and click
-    cy.get('.lui-usersettings-dialog [data-testid="lui-us-dismissBtn"]')
-      .should('exist')
-      .click();
+    cy.get('.lui-usersettings-dialog [data-testid="lui-us-dismissBtn"]').click();
 
     //Check settings dialog box is closed...
     cy.get('.lui-usersettings-dialog').should('not.exist');
@@ -62,9 +54,6 @@ describe('Navigation', () => {
       cy.get('[data-testid="us-navigation-item"]')
         .eq(0)
         .should('have.class', 'is-selected');
-
-      //Check Name Input exist
-      cy.get('[data-testid="lui-us-input0"]').should('exist');
 
       //Check Name Input has placeholder
       cy.get('[data-testid="lui-us-input0"]')
@@ -103,9 +92,6 @@ describe('Navigation', () => {
         .eq(2)
         .should('have.class', 'is-selected');
 
-      //Check Private Policy Input exist
-      cy.get('[data-testid="lui-us-input0"]').should('exist');
-
       //Check Private Policy Input has placeholder
       cy.get('[data-testid="lui-us-input0"]')
         .invoke('attr', 'placeholder')
@@ -127,19 +113,14 @@ describe('Navigation', () => {
         .should('have.class', 'is-selected');
 
       //Check Name Input field and type a new name
-      cy.get('[data-testid="lui-us-input0"]')
-        .should('exist')
-        .type(setting_name);
+      cy.get('[data-testid="lui-us-input0"]').type(setting_name);
 
       //Email Input field should be disabled and a usual text
       cy.get('[data-testid="lui-us-input1"]')
-        .should('exist')
         .should('have.class', 'fd-text')
         .should('have.attr', 'disabled');
 
-      cy.get('[data-testid="lui-us-label-switch_checkbox"]')
-        .should('exist')
-        .click();
+      cy.get('[data-testid="lui-us-label-switch_checkbox"]').click();
 
       //Check Checkbox is checked
       cy.get('[data-testid="lui-us-checkbox-switch_checkbox"]').should('be.checked');
@@ -188,14 +169,10 @@ describe('Navigation', () => {
         .should('have.length', 4);
 
       //Click on Français list item
-      cy.get('[data-testid="lui-us-option0_2"]')
-        .should('exist')
-        .click();
+      cy.get('[data-testid="lui-us-option0_2"]').click();
 
       //Check Placeholder of input field is Français
-      cy.get('[data-testid="lui-us-input0"]')
-        .should('exist')
-        .should('contain', 'Français');
+      cy.get('[data-testid="lui-us-input0"]').should('contain', 'Français');
 
       //Open button to show enumeration list options
       cy.get('.lui-usersettings-content .fd-page__content .fd-form-item')
@@ -205,30 +182,22 @@ describe('Navigation', () => {
 
       //Choose option one above French
       cy.get('[data-testid="lui-us-enum-0"]')
-        .should('exist')
         .type('{upArrow}')
         .type('{enter}');
 
       //Check Placeholder of input field is English (en)
-      cy.get('[data-testid="lui-us-input0"]')
-        .should('exist')
-        .should('contain', 'English (en)');
+      cy.get('[data-testid="lui-us-input0"]').should('contain', 'English (en)');
 
       //Choose option one below English
       cy.get('[data-testid="lui-us-enum-0"]')
-        .should('exist')
         .type('{downArrow}')
         .type('{enter}');
 
       //Confirm with keyboard: Enter
-      cy.get('.fd-popover__body--dropdown-fill')
-        .should('exist')
-        .type('{enter}');
+      cy.get('.fd-popover__body--dropdown-fill').type('{enter}');
 
       //Check Date Formant Input field and type a new format
-      cy.get('[data-testid="lui-us-input1"]')
-        .should('exist')
-        .type(setting_date_format);
+      cy.get('[data-testid="lui-us-input1"]').type(setting_date_format);
 
       //Save Settings
       saveSettings();
@@ -242,9 +211,7 @@ describe('Navigation', () => {
         .click();
 
       //Check Placeholder of input field is Français
-      cy.get('[data-testid="lui-us-input0"]')
-        .should('exist')
-        .should('contain', 'Français');
+      cy.get('[data-testid="lui-us-input0"]').should('contain', 'Français');
 
       //Check Name Input field and type a new name
       cy.get('[data-testid="lui-us-input1"]').should('have.value', setting_date_format);
@@ -258,9 +225,6 @@ describe('Navigation', () => {
       cy.get('[data-testid="us-navigation-item"]')
         .eq(2)
         .click();
-
-      // //Check Private Policy Input field exist and placeholder is
-      cy.get('[data-testid="lui-us-input0"]').should('exist');
 
       //Check Private Policy Input field exist and placeholder is
       cy.get('[data-testid="lui-us-input0"]').type(setting_privacy_policy);

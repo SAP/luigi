@@ -1,5 +1,4 @@
 import defaultLuigiConfig from '../../configs/default';
-import { cloneDeep } from 'lodash';
 
 describe('JS-TEST-APP 3', () => {
   const localRetries = {
@@ -8,10 +7,12 @@ describe('JS-TEST-APP 3', () => {
       openMode: 4
     }
   };
+
   describe('LuigiClient add and delete node and search params', () => {
     let newConfig;
+
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.routing.useHashRouting = true;
       const node = {
         pathSegment: 'mynode',
@@ -54,6 +55,7 @@ describe('JS-TEST-APP 3', () => {
       });
       cy.expectPathToBe('/home/mynode?luigi=rocks');
     });
+
     it('Add and delete node params hash routing enabled', () => {
       cy.visitTestApp('/home/mynode', newConfig);
       cy.getIframeBody().then($body => {
@@ -79,8 +81,9 @@ describe('JS-TEST-APP 3', () => {
 
   describe('LuigiClient add and delete node and search paramstest', () => {
     let newConfig;
+
     beforeEach(() => {
-      newConfig = cloneDeep(defaultLuigiConfig);
+      newConfig = structuredClone(defaultLuigiConfig);
       newConfig.routing.useHashRouting = false;
       const node = {
         pathSegment: 'mynode',

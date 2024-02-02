@@ -12,7 +12,6 @@ describe('Luigi Client ux manager features', () => {
 
   describe('uxManager', () => {
     it('backdrop', () => {
-      cy.wait(500);
       cy.goToUxManagerMethods($iframeBody);
       cy.wrap($iframeBody).should('not.contain', 'Lorem tipsum dolor sit amet');
       cy.get('.lui-backdrop').should('not.exist');
@@ -122,10 +121,8 @@ describe('Luigi Client ux manager features', () => {
           .click();
 
         cy.get('[data-testid=luigi-loading-spinner]').should('exist');
-
-        cy.wait(250); // give it some time to hide
-
-        cy.get('[data-testid=luigi-loading-spinner]').should('not.exist');
+        // should disappear after a while
+        cy.get('[data-testid=luigi-loading-spinner]', { timeout: 5000 }).should('not.exist');
 
         // show loading indicator
         cy.getIframeBody().then($iframeBody => {
@@ -134,9 +131,8 @@ describe('Luigi Client ux manager features', () => {
             .click();
 
           cy.get('[data-testid=luigi-loading-spinner]').should('exist');
-          cy.wait(250); // give it some time to hide
-          // wait for programmatic hide of loading indicator
-          cy.get('[data-testid=luigi-loading-spinner]').should('not.exist');
+          // should disappear after a while
+          cy.get('[data-testid=luigi-loading-spinner]', { timeout: 5000 }).should('not.exist');
         });
       }
     );

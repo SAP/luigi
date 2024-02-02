@@ -168,6 +168,12 @@ with `data: { fromVirtualTreeRoot: true }`, Luigi Client API will be called in t
 ```javascript
     luigiClient.linkManager().fromVirtualTreeRoot().withoutSync().navigate({route url});
 ```
+with `data: { preventBrowserHistory: true }`, Luigi Client API will be called in this way:
+```javascript
+    luigiClient.linkManager().withoutSync().withOptions({ preventHistoryEntry: true }).navigate({route url});
+```
+IF you are navigating inside the same route.
+
 Additionally, it is possible to truncate the URL. Everything before and including the specified value is truncated from the URL.
 For example, all but `/{sitesId}` are removed from the URL with the above configuration.
 ​

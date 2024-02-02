@@ -429,11 +429,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.get(drawerSelector).should('not.exist');
 
-      cy.get(mfIframeSelector).then($element => {
+      cy.get(mfIframeSelector).should($element => {
         expectToNotBeResized($element);
       });
 
-      cy.get(tabNavSelector).then($element => {
+      cy.get(tabNavSelector).should($element => {
         expectToNotBeResized($element);
       });
     });
@@ -445,11 +445,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.get(drawerSelector).should('exist');
 
-      cy.get(mfIframeSelector).then($element => {
+      cy.get(mfIframeSelector).should($element => {
         expectToBeResized($element);
       });
 
-      cy.get(tabNavSelector).then($element => {
+      cy.get(tabNavSelector).should($element => {
         expectToBeResized($element);
       });
     });
@@ -465,7 +465,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.get(drawerSelector).should('exist');
 
-      cy.get(splitViewSelector).then($element => {
+      cy.get(splitViewSelector).should($element => {
         expectToBeResized($element);
       });
     });
@@ -481,7 +481,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.get(drawerSelector).should('exist');
 
-      cy.get(splitViewSelector).then($element => {
+      cy.get(splitViewSelector).should($element => {
         expectToBeResized($element);
       });
     });
@@ -495,7 +495,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.get(drawerSelector).should('exist');
 
-      cy.get(mfIframeSelector).then($element => {
+      cy.get(mfIframeSelector).should($element => {
         mfIframeWidthAfterFirstResize = expectToBeResized($element);
       });
 
@@ -503,7 +503,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
         .contains(openDrawerButtonText)
         .click();
 
-      cy.get(mfIframeSelector).then($element => {
+      cy.get(mfIframeSelector).should($element => {
         expect(mfIframeWidthAfterFirstResize).to.equal(expectToBeResized($element));
       });
     });
