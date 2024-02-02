@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/prepare.yml
     secrets: inherit
     with:
-      buildcache_key: buildcache
+      buildcache_key: buildcache-${{ github.ref }}
 
   unit:
     name: Unit Tests
@@ -29,7 +29,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache
+          key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
       - run: npm test --prefix core || exit 1
 
@@ -47,7 +47,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache
+          key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* . 
       - run: npm i -g cypress
       - run: npm i -g live-server
@@ -67,7 +67,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache
+          key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* . 
       - run: npm test --prefix container || exit 1
     
@@ -86,7 +86,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache
+          key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* . 
       - run: bash ./container/run-container-e2e.sh || exit 1
 
@@ -104,7 +104,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache
+          key: buildcache-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
       - run: sudo apt-get install libgconf-2-4 libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - run: npm install --prefix test/e2e-test-application @babel/plugin-proposal-class-properties
