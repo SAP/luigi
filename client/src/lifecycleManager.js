@@ -151,7 +151,7 @@ class LifecycleManager extends LuigiClientBase {
     }
     if (luigiCookie === 'luigiCookie=true') {
       luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     }
     document.cookie = 'luigiCookie=true; SameSite=None; Secure';
     cookies = document.cookie;
@@ -163,7 +163,7 @@ class LifecycleManager extends LuigiClientBase {
     }
     if (luigiCookie === 'luigiCookie=true') {
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     } else {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
