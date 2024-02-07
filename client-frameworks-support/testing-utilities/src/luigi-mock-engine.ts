@@ -60,7 +60,6 @@ export class LuigiMockEngine {
           },
           mockListeners: {
             'luigi.navigation.pathExists': (event: any) => {
-              console.log('######luigi.navigation.pathExists');
               const mockData = window.sessionStorage.getItem('luigiMockData');
               let mockDataParsed = mockData ? JSON.parse(mockData) : undefined;
               const inputPath = event.data.data.link;
@@ -150,7 +149,6 @@ export class LuigiMockEngine {
    * which holds data that is useful for e2e testing.
    */
   public static visualize(data: string): void {
-    console.log('#######testsetset visualize');
     let luigiVisualizationContainer: Element | null = document.querySelector('#luigi-debug-vis-cnt');
     // Construct element structure if not already constructed
     if (!luigiVisualizationContainer) {

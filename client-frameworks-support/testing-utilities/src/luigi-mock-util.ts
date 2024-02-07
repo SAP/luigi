@@ -14,7 +14,6 @@ export class LuigiMockUtil {
     try {
       const getTextNodeValues = async () =>
         Array.from(document.getElementById('luigi-debug-vis-cnt').childNodes).map((item) => item.textContent);
-      console.log('parseLuigiMockedMessages');
       const textElements: string[] = this.browser.executeScript
         ? await this.browser.executeScript(getTextNodeValues)
         : await this.browser(getTextNodeValues);
@@ -46,7 +45,6 @@ export class LuigiMockUtil {
       if (this.browser.executeScript) {
         this.browser.executeScript(postMessageToLuigi, mockContext);
       } else {
-        console.log('mockContext');
         this.browser(postMessageToLuigi, mockContext);
       }
     } catch (e) {
@@ -84,7 +82,6 @@ export class LuigiMockUtil {
       if (this.browser.executeScript) {
         this.browser.executeScript(setPathExistsMockData, path, exists);
       } else {
-        console.log('mockPathExists');
         this.browser(setPathExistsMockData, path, exists);
       }
     } catch (e) {
