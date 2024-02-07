@@ -224,7 +224,6 @@
       {hasOpenUIicon}
       {getNodeLabel}
       {getNodeSubtitle}
-      {getTestId}
     />
   {/if}
 {/if}

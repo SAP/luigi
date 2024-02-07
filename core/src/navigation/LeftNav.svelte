@@ -282,12 +282,6 @@
     );
   }
 
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
@@ -587,7 +581,7 @@
                             ? event => handleEnterPressed(event, node)
                             : undefined}
                           role={!addNavHrefForAnchor ? 'button' : undefined}
-                          data-testid={getTestId(node)}
+                          data-testid={NavigationHelpers.getTestId(node)}
                         >
                           {#if node.icon}
                             {#if isOpenUIiconName(node.icon)}
@@ -754,7 +748,7 @@
                                   ? 'button'
                                   : undefined}
                                 tabindex="0"
-                                data-testid={getTestId(node)}
+                                data-testid={NavigationHelpers.getTestId(node)}
                                 title={resolveTooltipText(
                                   node,
                                   getNodeLabel(node)
@@ -815,7 +809,7 @@
                                       role={!addNavHrefForAnchor
                                         ? 'button'
                                         : undefined}
-                                      data-testid={getTestId(node)}
+                                      data-testid={NavigationHelpers.getTestId(node)}
                                       title={resolveTooltipText(
                                         node,
                                         getNodeLabel(node)
@@ -899,7 +893,7 @@
                               ? event => handleEnterPressed(event, node)
                               : undefined}
                             role={!addNavHrefForAnchor ? 'button' : undefined}
-                            data-testid={getTestId(node)}
+                            data-testid={NavigationHelpers.getTestId(node)}
                           >
                             {#if node.icon}
                               {#if isOpenUIiconName(node.icon)}

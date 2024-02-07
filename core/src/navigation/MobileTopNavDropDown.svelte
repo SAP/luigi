@@ -7,7 +7,6 @@
 
   export let label;
   export let nodes;
-  export let getTestId;
   export let hasOpenUIicon;
   export let getNodeLabel;
   export let getNodeSubtitle;
@@ -53,7 +52,7 @@
                     : ''} {node.selected ? 'selected' : ''}"
                   on:click={() => onActionClick(node)}
                   data-e2e="mobile-topnav-item"
-                  data-testid={getTestId(node)}
+                  data-testid={NavigationHelpers.getTestId(node)}
                 >
                   <div class="lui-product-switch__icon">
                     {#if hasOpenUIicon(node)}
