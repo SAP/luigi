@@ -613,13 +613,8 @@ class NavigationHelpersClass {
    * @returns The test ID of the navigation node.
    */
   getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+    return node.testId ? node.testId : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 }
-
-
-
 
 export const NavigationHelpers = new NavigationHelpersClass();
