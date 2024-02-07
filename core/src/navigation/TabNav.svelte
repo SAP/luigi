@@ -232,6 +232,12 @@
     );
   }
 
+  function getTestId(node) {
+    return node.testId
+      ? node.testId
+      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
+  
   function isSelectedCat(key, selectedNodeForTabNav) {
     return (
       selectedNodeForTabNav &&
