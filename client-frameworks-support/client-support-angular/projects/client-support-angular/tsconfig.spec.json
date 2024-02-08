@@ -9,7 +9,6 @@
   },
   "files": [
     "src/test.ts",
-    "../../node_modules/@types/jest/index.d.ts"
   ],
   "include": [
     "**/*.spec.ts",
