@@ -106,6 +106,8 @@ export default class openIdConnect {
   }
 
   setTokenExpirationAction() {
+    debugger;
+    console.log('token exp action');
     if (!this.settings.automaticSilentRenew) {
       this.client.events.addAccessTokenExpired(() => {
         Luigi.auth().handleAuthEvent(
