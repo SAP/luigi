@@ -43,7 +43,7 @@ class Auth {
     // redirect_uri: '',
     // post_logout_redirect_uri: '/logout.html',
     // options settings
-    automaticSilentRenew: true,
+    // automaticSilentRenew: true,
 
     // for PKCE flow
     client_id: 'authorisation-code-pkce-mock-client', // oidc-mockserver client id
