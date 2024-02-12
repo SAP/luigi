@@ -90,6 +90,39 @@ export class WebComponentService {
         return {
           navigate: route => {
             this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route });
+          },
+          fromClosestContext: () => {
+
+          },
+          fromContext: () => {
+            
+          },
+          fromVirtualTreeRoot: () => {
+            
+          },
+          goBack: () => {
+            
+          },
+          hasBack: () => {
+            
+          },
+          openAsDrawer: () => {
+            
+          },
+          openAsModal: () => {
+            
+          },
+          openAsSplitView: () => {
+            
+          },
+          pathExists: () => {
+            
+          },
+          updateTopNavigation: () => {
+            
+          },
+          withParams: () => {
+            
           }
         };
       },
