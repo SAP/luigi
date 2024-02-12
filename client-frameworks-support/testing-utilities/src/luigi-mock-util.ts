@@ -9,6 +9,7 @@ export class LuigiMockUtil {
 
   /**
    * Parses the elements added by LuigiMockModule into the DOM and assigns them to the local this.messages variable
+   *  @returns {Promise<void>} - A Promise that resolves when parsing is complete.
    */
   async parseLuigiMockedMessages(): Promise<void> {
     try {
@@ -69,6 +70,12 @@ export class LuigiMockUtil {
    *
    */
   mockPathExists = (path: string, exists: boolean): void => {
+    /**
+    * Sets the path exists mock data in sessionStorage.
+    * @param {string} path - The path for which mock data is to be set.
+    * @param {boolean} exists - Boolean indicating whether the path exists.
+    * @returns {void}
+    */
     const setPathExistsMockData = (path: string, exists: boolean) => {
       globalThis.sessionStorage.clear();
       let pathExistsMockData = {
@@ -87,7 +94,6 @@ export class LuigiMockUtil {
     } catch (e) {
       console.debug('Failed to mock path exists: ', e);
     }
-    this.browser.executeScript ? this.browser.executeScript(setPathExistsMockData, path, exists) : this.browser(setPathExistsMockData, path, exists);
   };
 
   /**
