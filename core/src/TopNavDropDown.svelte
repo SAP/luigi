@@ -97,12 +97,6 @@
     return LuigiI18N.getTranslation(node.label);
   }
 
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
@@ -119,7 +113,7 @@
             <li
               class="fd-menu__item"
               on:click={() => onActionClick(node)}
-              data-testid={getTestId(node)}
+              data-testid={NavigationHelpers.getTestId(node)}
             >
               <a
                 href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
@@ -158,7 +152,6 @@
     {hasOpenUIicon}
     {getNodeLabel}
     {getNodeSubtitle}
-    {getTestId}
     noSubTitle="true"
   />
 {/if}

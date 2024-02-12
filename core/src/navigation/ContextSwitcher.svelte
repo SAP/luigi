@@ -134,12 +134,6 @@
     return ContextSwitcherHelpers.getFallbackLabel(config, id);
   }
 
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
@@ -321,7 +315,6 @@
             {selectedOption}
             {getNodeName}
             {getRouteLink}
-            {getTestId}
             {getTranslation}
             {isMobile}
             {isContextSwitcherDropdownShown}
@@ -369,7 +362,6 @@
             {selectedOption}
             {getNodeName}
             {getRouteLink}
-            {getTestId}
             {getTranslation}
             {isMobile}
             {isContextSwitcherDropdownShown}
