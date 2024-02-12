@@ -11,7 +11,6 @@
   export let isMobile;
   export let getNodeName;
   export let getRouteLink;
-  export let getTestId;
   export let getTranslation;
   export let isContextSwitcherDropdownShown;
 
@@ -34,7 +33,7 @@
           <li
             class="fd-menu__item"
             on:click={() => onActionClick(node)}
-            data-testid={getTestId(node)}
+            data-testid={NavigationHelpers.getTestId(node)}
           >
             <a
               href={getRouteLink(node)}
@@ -70,7 +69,7 @@
           <li
             class="fd-menu__item"
             on:click={() => goToOption(node, selectedOption)}
-            data-testid={getTestId(node)}
+            data-testid={NavigationHelpers.getTestId(node)}
           >
             {#if customOptionsRenderer}
               {@html customOptionsRenderer(node, label === selectedLabel)}
@@ -101,7 +100,7 @@
           <li
             class="fd-menu__item"
             on:click={() => onActionClick(node)}
-            data-testid={getTestId(node)}
+            data-testid={NavigationHelpers.getTestId(node)}
           >
             <a
               href={getRouteLink(node)}
