@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { NavigationEnd } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import * as Client from '@luigi-project/client';
 import { of } from 'rxjs';
+import { LuigiAngularSupportModule } from '../luigi.angular.support.module';
 import { LuigiAutoRoutingService } from './luigi-auto-routing.service';
 import { LuigiContextService } from './luigi-context-service';
 
@@ -10,8 +12,11 @@ describe('LuigiAutoRoutingService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LuigiAutoRoutingService, LuigiContextService],
-      imports: [RouterTestingModule.withRoutes([])]
+      providers: [LuigiContextService, LuigiAutoRoutingService],
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        LuigiAngularSupportModule
+      ],
     });
     service = TestBed.inject(LuigiAutoRoutingService);
   });
@@ -52,6 +57,25 @@ describe('LuigiAutoRoutingService', () => {
           expect(count).toBe(1);
         }
       });
+    });
+  });
+
+  describe('doSubscription', () => {
+    it('doSubscription should take a NavigationEnd event and not do anything if the navigation was to no route with Luigi data', () => {
+      const doSubscriptionSpy = spyOn(
+        LuigiAutoRoutingService.prototype,
+        'doSubscription'
+      ).and.callThrough();
+      const navigateSpy = jasmine.createSpy('navigate');
+      const linkManagerSpy = spyOn(Client, 'linkManager').and.returnValue(({
+        withoutSync: () => navigateSpy
+      } as unknown) as Client.LinkManager);
+      const event = new NavigationEnd(0, 'url', 'urlAfterRedirects');
+
+      service.doSubscription(event);
+      expect(doSubscriptionSpy).toHaveBeenCalled();
+      expect(linkManagerSpy).toHaveBeenCalled();
+      expect(navigateSpy).not.toHaveBeenCalled();
     });
   });
 });
