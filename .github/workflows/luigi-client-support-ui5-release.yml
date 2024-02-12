@@ -8,7 +8,7 @@ jobs:
     uses: ./.github/workflows/prepare.yml
     secrets: inherit
     with:
-      buildcache_key: buildcache-luigi-client-support-ui5-release
+      buildcache_key: buildcache-luigi-client-support-ui5-release-${{ github.ref }}
 
   publish:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache-luigi-client-support-ui5-release
+          key: buildcache-luigi-client-support-ui5-release-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
       - run: ls ./client-frameworks-support/client-support-ui5/dist

@@ -16,7 +16,7 @@ jobs:
     uses: ./.github/workflows/prepare.yml
     secrets: inherit
     with:
-      buildcache_key: buildcache-rc
+      buildcache_key: buildcache-rc-${{ github.ref }}
 
   publish:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
           path: |
             ~/tmp_build
             ~/cypress-binary-cache
-          key: buildcache-rc
+          key: buildcache-rc-${{ github.ref }}
       - run: cp -r ~/tmp_build/* .
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
       - run: cd ./scripts && npm ci
