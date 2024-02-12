@@ -1,11 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { OperatorFunction, PartialObserver, Subscription } from 'rxjs';
-import { convertToParamMap, NavigationEnd, ParamMap, Router, RouterEvent } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationEnd, ParamMap, Router, RouterEvent, convertToParamMap } from '@angular/router';
 import { linkManager, uxManager } from '@luigi-project/client';
+import { OperatorFunction, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiContextService } from './luigi-context-service';
-import { ActivatedRouteSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
