@@ -150,11 +150,8 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
               .invoke('height')
               .should('eq', splitViewHeight);
 
-            if (`${splitViewHeight}px` === win.getComputedStyle($iframe[0]).marginBottom) {
-              cy.log('Positive');
-            } else {
-              cy.error('Negative');
-            }
+            expect(`${splitViewHeight}px`).to.equal(win.getComputedStyle($iframe[0]).marginBottom);
+
             cy.expectPathToBe('/projects/pr2');
           });
         });

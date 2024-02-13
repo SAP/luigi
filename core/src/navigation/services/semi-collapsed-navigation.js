@@ -99,7 +99,7 @@ class SemiCollapsibleNavigationClass {
   closePopupMenu(selectedCategory) {
     if (selectedCategory) {
       selectedCategory = null;
-      document.getElementsByClassName('fd-app__sidebar')[0].classList.remove('isBlocked');
+      document.getElementsByClassName('fd-app__sidebar')[0]?.classList.remove('isBlocked');
     }
     return selectedCategory;
   }
@@ -110,10 +110,12 @@ class SemiCollapsibleNavigationClass {
       this.setCollapsed(true);
 
       //Force browser to re-render vertical scrollbar
-      document.getElementsByClassName('lui-fd-side-nav-wrapper')[0].setAttribute('style', 'overflow-y:hidden;');
-      window.setTimeout(function() {
-        document.getElementsByClassName('lui-fd-side-nav-wrapper')[0].setAttribute('style', 'overflow-y:auto;');
-      });
+      if (document.getElementsByClassName('lui-fd-side-nav-wrapper')[0]) {
+        document.getElementsByClassName('lui-fd-side-nav-wrapper')[0].setAttribute('style', 'overflow-y:hidden;');
+        window.setTimeout(function() {
+          document.getElementsByClassName('lui-fd-side-nav-wrapper')[0].setAttribute('style', 'overflow-y:auto;');
+        });
+      }
     } else {
       this.setCollapsed(false);
     }

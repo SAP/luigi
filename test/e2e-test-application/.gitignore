@@ -44,6 +44,8 @@ testem.log
 .DS_Store
 Thumbs.db
 
+cypress/downloads
+
 # config
 /src/assets/devconfig.js
 /src/assets/*.bundle.js
