@@ -34,7 +34,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#3494](https://github.com/SAP/luigi/pull/3494) Set view group data for wc api ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 #### :bug: Fixed
-* [#3623](https://github.com/SAP/luigi/pull/3623) Refactor testing-utilities and support angular v17 in client-support-angular library ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3623](https://github.com/SAP/luigi/pull/3623) Refactor testing-utilities and angular v17 support in client-support-angular library ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 
 
