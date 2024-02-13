@@ -192,6 +192,15 @@
     display: none;
   }
 
+  :global(.fd-tool-layout) .lui-breadcrumb-container.lui-breadcrumb-container {    
+    background: transparent;
+    box-shadow: none;
+    top: 0;
+    left: unset;
+    right: unset;
+    width: 100%;
+  }
+
   :global(.lui-breadcrumb) .lui-breadcrumb-container {
     display: block;
   }

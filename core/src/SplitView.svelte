@@ -122,7 +122,7 @@
     }
 
     elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
-    elements.iframe.style.marginBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
+    elements.iframe.style.marginBottom = `${elements.split.clientHeight}px`;
   };
 
   function _messageHandler(e) {
@@ -340,7 +340,7 @@
     margin-bottom: $collapsedSplitviewHeight;
   }
 
-  :global(.splitViewContainer) {
+  .splitViewContainer {
     position: absolute;
     bottom: 0;
     right: 0;
