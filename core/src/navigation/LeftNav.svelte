@@ -667,7 +667,7 @@
                               ? event => handleEnterPressed(event, node)
                               : undefined}
                             role={!addNavHrefForAnchor ? 'button' : undefined}
-                            data-testid={getTestId(node)}
+                            data-testid={NavigationHelpers.getTestId(node)}
                             >
                               
                               {#if node.icon}
@@ -805,7 +805,7 @@
                                       )}
                                       aria-expanded="false" 
                                       aria-selected={node === selectedNode}
-                                      data-testid={getTestId(node)}
+                                      data-testid={NavigationHelpers.getTestId(node)}
                                   >
                                       <a class="fd-navigation__link" tabindex="-1"  
                                         href={getRouteLink(node)}
@@ -858,7 +858,7 @@
                                       ? 'button'
                                       : undefined}
                                     tabindex="0"
-                                    data-testid={getTestId(node)}
+                                    data-testid={NavigationHelpers.getTestId(node)}
                                     title={resolveTooltipText(
                                       node,
                                       getNodeLabel(node)
