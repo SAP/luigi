@@ -9,12 +9,16 @@ export class LuigiMockUtil {
 
   /**
    * Parses the elements added by LuigiMockModule into the DOM and assigns them to the local this.messages variable
+   *  @returns {Promise<void>} - A Promise that resolves when parsing is complete.
    */
   async parseLuigiMockedMessages(): Promise<void> {
     try {
-      const textElements: string[] = await this.browser.executeScript(() =>
-        Array.from(document.getElementById('luigi-debug-vis-cnt').childNodes).map(item => item.textContent)
-      );
+      const getTextNodeValues = async () =>
+        Array.from(document.getElementById('luigi-debug-vis-cnt').childNodes).map((item) => item.textContent);
+      const textElements: string[] = this.browser.executeScript
+        ? await this.browser.executeScript(getTextNodeValues)
+        : await this.browser(getTextNodeValues);
+
       this.messages = textElements
         .map((item: string) => {
           try {
@@ -23,7 +27,7 @@ export class LuigiMockUtil {
             return undefined;
           }
         })
-        .filter(item => item !== undefined);
+        .filter((item) => item !== undefined);
     } catch (e) {
       console.debug('Failed to parse luigi mocked messages: ', e);
     }
@@ -33,10 +37,20 @@ export class LuigiMockUtil {
    * Mocks the context by sending luigi context messegaes with the desired mocked context as parameter.
    * @param mockContext an object representing the context to be mocked
    */
-  mockContext = (mockContext: any) => {
-    this.browser.executeScript((mockContext: any) => {
-      globalThis.postMessage({ msg: 'luigi.get-context', context: mockContext }, '*');
-    }, mockContext);
+  mockContext = (mockContext: any): void => {
+    const postMessageToLuigi = (context: any) => {
+      globalThis.postMessage({ msg: 'luigi.get-context', context }, '*');
+    };
+
+    try {
+      if (this.browser.executeScript) {
+        this.browser.executeScript(postMessageToLuigi, mockContext);
+      } else {
+        this.browser(postMessageToLuigi, mockContext);
+      }
+    } catch (e) {
+      console.debug('Failed to mock context: ', e);
+    }
   };
 
   /**
@@ -55,20 +69,31 @@ export class LuigiMockUtil {
    * await mockPathExists('pathToCheck', false);
    *
    */
-  mockPathExists = (path: string, exists: boolean) => {
-    this.browser.executeScript(
-      (path: string, exists: boolean) => {
-        globalThis.sessionStorage.clear();
-        let pathExistsMockData = {
-          pathExists: {
-            [path]: exists
-          }
-        };
-        globalThis.sessionStorage.setItem('luigiMockData', JSON.stringify(pathExistsMockData));
-      },
-      path,
-      exists
-    );
+  mockPathExists = (path: string, exists: boolean): void => {
+    /**
+    * Sets the path exists mock data in sessionStorage.
+    * @param {string} path - The path for which mock data is to be set.
+    * @param {boolean} exists - Boolean indicating whether the path exists.
+    * @returns {void}
+    */
+    const setPathExistsMockData = (path: string, exists: boolean) => {
+      globalThis.sessionStorage.clear();
+      let pathExistsMockData = {
+        pathExists: {
+          [path]: exists
+        }
+      };
+      globalThis.sessionStorage.setItem('luigiMockData', JSON.stringify(pathExistsMockData));
+    };
+    try {
+      if (this.browser.executeScript) {
+        this.browser.executeScript(setPathExistsMockData, path, exists);
+      } else {
+        this.browser(setPathExistsMockData, path, exists);
+      }
+    } catch (e) {
+      console.debug('Failed to mock path exists: ', e);
+    }
   };
 
   /**
