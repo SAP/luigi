@@ -44,6 +44,7 @@ export default defineConfig({
   base: '',
   build: {
     sourcemap: true,
+    chunkSizeWarningLimit: 530,
     rollupOptions: {
       input: ['src/main.js', 'src/styles/fd_horizon.scss', 'src/styles/fd_fiori.scss'],
       output: {

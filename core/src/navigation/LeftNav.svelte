@@ -269,11 +269,8 @@
     const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
     const moreUL = btpNavTopCnt.querySelector('.lui-moreItems');
     const entries = btpNavTopCnt.querySelectorAll('.fd-navigation__list > .lui-nav-entry');
-    if(entries.length <= 0) {
-      return;
-    }
 
-    if(spacer.clientHeight === 0) {
+    if(spacer.clientHeight === 0 && entries.length > 1) {
         btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
         for(let i = entries.length -1; i > 0; i--) {
           lastNode = entries[i-1];
