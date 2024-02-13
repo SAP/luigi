@@ -52,8 +52,16 @@ const routes: Routes = [
     component: DynamicComponent
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
-  { path: 'internal/virtualTree', component: SettingsComponent },
-  { path: 'projects/:projectId/developers/internal/virtualTree', component: SettingsComponent },
+  {
+    path: 'internal/virtualTree',
+    component: SettingsComponent,
+    data: { fromVirtualTreeRoot: true }
+  },
+  {
+    path: 'projects/:projectId/developers/internal/virtualTree',
+    component: SettingsComponent,
+    data: { fromVirtualTreeRoot: true }
+  },
 
   { path: 'projects/:projectId/drawer', component: DrawerComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
@@ -119,7 +127,8 @@ const routes: Routes = [
   },
   {
     path: 'nav-sync-example/:dyn',
-    component: NavSyncComponent
+    component: NavSyncComponent,
+    data: { luigiRoute: ':dyn', fromContext: true }
   },
   {
     path: 'view-group/:vg',
