@@ -70,12 +70,6 @@
     return LuigiI18N.getTranslation(node.label);
   }
 
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
@@ -113,7 +107,7 @@
                   class="fd-nested-list__item {node === selectedNode
                     ? 'is-selected'
                     : ''}"
-                  data-testid={getTestId(node)}
+                  data-testid={NavigationHelpers.getTestId(node)}
                 >
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
@@ -161,7 +155,7 @@
                   class="fd-nested-list__item {node === selectedNode
                     ? 'is-selected'
                     : ''}"
-                  data-testid={getTestId(node)}
+                  data-testid={NavigationHelpers.getTestId(node)}
                 >
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}

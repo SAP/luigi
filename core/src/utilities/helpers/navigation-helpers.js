@@ -604,6 +604,17 @@ class NavigationHelpersClass {
       return this.findViewGroup(node.parent, originalNode || node);
     }
   }
+
+  /**
+   * Generates the test ID of a navigation node.
+   * If the node has a test ID, it returns the test ID.
+   * Otherwise, it prepares a test ID using the node's path segment and label.
+   * @param node - The navigation node.
+   * @returns The test ID of the navigation node.
+   */
+  getTestId(node) {
+    return node.testId ? node.testId : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
+  }
 }
 
 export const NavigationHelpers = new NavigationHelpersClass();

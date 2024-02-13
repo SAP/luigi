@@ -172,12 +172,6 @@
     return NavigationHelpers.getNodeLabel(node);
   }
 
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
@@ -409,7 +403,7 @@
                           aria-haspopup="true"
                           on:click={() =>
                             toggleDropdownState(`dropDownPopover-${i}`)}
-                          data-testid={getTestId(node)}
+                          data-testid={NavigationHelpers.getTestId(node)}
                         >
                           <TopNavNode bind:node />
                           <BadgeCounter {node} />
@@ -451,7 +445,7 @@
                           event
                         ) && handleClick(node);
                       }}
-                      data-testid={getTestId(node)}
+                      data-testid={NavigationHelpers.getTestId(node)}
                     >
                       <TopNavNode bind:node />
                       <BadgeCounter {node} />
@@ -466,7 +460,7 @@
                       aria-expanded="false"
                       aria-haspopup="true"
                       on:click={() => handleClick(node)}
-                      data-testid={getTestId(node)}
+                      data-testid={NavigationHelpers.getTestId(node)}
                     >
                       <TopNavNode bind:node />
                       <BadgeCounter {node} />
@@ -574,7 +568,7 @@
                                     : ''}"
                                   on:click|preventDefault={() =>
                                     handleClick(node)}
-                                  data-testid="{getTestId(node)}-mobile"
+                                  data-testid="{NavigationHelpers.getTestId(node)}-mobile"
                                 >
                                   <span
                                     class="fd-top-nav__icon sap-icon {node.icon &&

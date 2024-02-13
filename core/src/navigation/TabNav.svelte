@@ -307,6 +307,7 @@
                         class="fd-tabs__link"
                         href={getRouteLink(node)}
                         role="tab"
+                        data-testid={NavigationHelpers.getTestId(node)}
                         aria-selected={node === selectedNodeForTabNav}
                         on:click|preventDefault={() => handleClick(node)}
                       >
@@ -356,6 +357,7 @@
                                 <a
                                   href={getRouteLink(node)}
                                   class="fd-menu__link"
+                                  data-testid={NavigationHelpers.getTestId(node)}
                                   on:click|preventDefault={() =>
                                     handleClick(node)}
                                   aria-selected={node === selectedNodeForTabNav}
@@ -410,6 +412,7 @@
                         <a
                           href={getRouteLink(node)}
                           class="fd-nested-list__link"
+                          data-testid={NavigationHelpers.getTestId(node)}
                           on:click|preventDefault={() => handleClick(node)}
                           aria-selected={node === selectedNodeForTabNav}
                         >
@@ -477,6 +480,7 @@
                               <a
                                 class="fd-nested-list__link"
                                 href={getRouteLink(node)}
+                                data-testid={NavigationHelpers.getTestId(node)}
                                 on:click|preventDefault={() =>
                                   handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
