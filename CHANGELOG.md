@@ -25,6 +25,20 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.9.0] (2024-02-13)
+
+#### :rocket: Added
+* [#3486](https://github.com/SAP/luigi/pull/3486) Btp layout ([@hardl](https://github.com/hardl))
+* [#3638](https://github.com/SAP/luigi/pull/3638) Fix: use SameSite=None and Secure attributes for cookie deletions ([@vladm9800](https://github.com/vladm9800))
+* [#3635](https://github.com/SAP/luigi/pull/3635) Add datatest-id to tab nav ([@ndricimrr](https://github.com/ndricimrr))
+* [#3494](https://github.com/SAP/luigi/pull/3494) Set view group data for wc api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3623](https://github.com/SAP/luigi/pull/3623) Refactor testing-utilities and support angular v17 in client-support-angular library ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.8.0] (2024-01-23)
 
 #### :rocket: Added
@@ -1723,3 +1737,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.7.4]: https://github.com/SAP/luigi/compare/v2.7.3...v2.7.4
 [v2.7.5]: https://github.com/SAP/luigi/compare/v2.7.4...v2.7.5
 [v2.8.0]: https://github.com/SAP/luigi/compare/v2.7.5...v2.8.0
+[v2.9.0]: https://github.com/SAP/luigi/compare/v2.8.0...v2.9.0
