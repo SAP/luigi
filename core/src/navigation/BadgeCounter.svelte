@@ -45,7 +45,7 @@
     }
   }
 
-  :global(.fd-nested-list__link) {
+  :global(.fd-nested-list__link), :global(.fd-navigation__link) {
     .fd-counter--notification {
       transform: translate(0px, 0px) !important;
       margin-left: auto;
