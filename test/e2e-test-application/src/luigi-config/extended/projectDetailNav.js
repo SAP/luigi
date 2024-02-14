@@ -479,11 +479,25 @@ export const projectDetailNavStructure = projectId => [
     label: 'Nav Sync',
     icon: 'synchronize',
     navigationContext: 'navSync',
-    children: ['one', 'two', 'three', 'four'].map(seg => ({
-      label: seg,
-      pathSegment: seg,
-      viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
-    }))
+    children: [
+      ...['one', 'two', 'three', 'four'].map(seg => ({
+        label: seg,
+        pathSegment: seg,
+        viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
+      })),
+      {
+        label: 'Flat Dynamic Parameter',
+        pathSegment: 'dynamic-parameter-flat',
+        viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-flat',
+        children: [
+          {
+            pathSegment: ':dynamic',
+            label: 'Dynamic Parameter',
+            viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-flat/:dynamic'
+          }
+        ]
+      }
+    ]
   },
   {
     label: 'Open Github in new tab',

@@ -133,6 +133,11 @@ const routes: Routes = [
   {
     path: 'view-group/:vg',
     component: ViewGroupComponent
+  },
+  {
+    path: 'dynamic-parameter-flat/:dyn',
+    component: NavSyncComponent,
+    data: { luigiRoute: 'dynamic-parameter-flat/:dyn', fromContext: true },
   }
 ];
 

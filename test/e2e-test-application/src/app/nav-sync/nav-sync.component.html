@@ -3,6 +3,9 @@
     <h3 class="fd-section__title">Navigation Synchronization</h3>
   </div>
   <div class="fd-layout-panel">
+    <div class="fd-panel__header">
+      <h4 class="fd-panel__title">Summary</h4>
+    </div>
     <div class="fd-layout-panel__body">
       <p>
         This page uses the Angular router to navigate between pages. The URL of the
@@ -11,11 +14,45 @@
         <code>LuigiAngularSupportModule</code>, which utilized router events to update the
         URL on Luigi Core side by using the <code>LuigiClient.linkManager()</code>.
       </p>
+    </div>
+  </div>
+  <div class="fd-layout-panel fd-margin-top--lg">
+    <div class="fd-panel__header">
+      <h4 class="fd-panel__title">From Context</h4>
+    </div>
+    <div class="fd-layout-panel__body">
+      <p>
+        Uses <code>fromContext: true</code> in the Angular route in order to make Luigi
+        navigate to a path relative to the closest navigation context.
+      </p>
       <ul class="fd-list">
         <li class="fd-list__item">Current pathsegment: {{ currentSegment }}</li>
         <li class="fd-list__item">
           Go to:&nbsp;<a class="fd-link" [routerLink]="['../' + nextSegment]"
             >{{ nextSegment }}</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="fd-layout-panel fd-margin-top--lg">
+    <div class="fd-panel__header">
+      <h4 class="fd-panel__title">Flat dynamic parameter</h4>
+    </div>
+    <div class="fd-layout-panel__body">
+      <p>
+        Uses dynamic parameters and configuration <code>luigiRoute</code> within one
+        Angular Route.
+      </p>
+      <ul class="fd-list">
+        <li class="fd-list__item">
+          Go to:&nbsp;<a class="fd-link" routerLink="../../dynamic-parameter-flat/1"
+            >dynamic-parameter-flat/1</a
+          >
+        </li>
+        <li class="fd-list__item">
+          Go to:&nbsp;<a class="fd-link" routerLink="../../dynamic-parameter-flat/2"
+            >dynamic-parameter-flat/2</a
           >
         </li>
       </ul>
