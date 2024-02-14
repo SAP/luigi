@@ -144,7 +144,33 @@ export class WebComponentService {
           },
           getCurrentTheme: () : string | undefined  => {
             return this.thisComponent.theme;
-          }
+          },
+          closeUserSettings: () =>{
+
+          },
+          collapseLeftSideNav:()=>{
+
+          },
+          getDirtyStatus: ()=>{
+
+          },
+          getDocumentTitle: ()=>{
+
+          },
+          setDocumentTitle: ()=>{
+
+          },
+          removeBackdrop:()=>{
+
+          },
+          openUserSettings: ()=>{
+
+          },
+          hideAppLoadingIndicator:()=>{
+
+          },
+          
+
         };
       },
       getCurrentLocale: () : string | undefined =>  {
