@@ -510,7 +510,14 @@ export const projectDetailNavStructure = projectId => [
               {
                 pathSegment: 'child',
                 label: 'Child',
-                viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-stacked/:dynamic/child'
+                viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-stacked/:dynamic/child',
+                children: [
+                  {
+                    pathSegment: ':dynamic2',
+                    label: 'Dynamic Parameter 2',
+                    viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-stacked/:dynamic/:dynamic2'
+                  }
+                ]
               }
             ]
           }

@@ -260,6 +260,12 @@ describe('Navigation', () => {
           .click();
       });
       cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/2/child/3')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child/3');
     });
   });
 });

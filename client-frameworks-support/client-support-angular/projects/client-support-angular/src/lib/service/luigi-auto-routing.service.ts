@@ -119,8 +119,6 @@ export class LuigiAutoRoutingService implements OnDestroy {
 
     const pmap: ParamMap = convertToParamMap(allParams);
 
-    console.log({ pmap, params: allParams, current })
-
     pmap.keys.forEach(key => {
       pmap.getAll(key).forEach(param => {
         route = route?.replace(':' + key, param);

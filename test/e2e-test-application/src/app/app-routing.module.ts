@@ -148,6 +148,13 @@ const routes: Routes = [
         path: 'child',
         component: NavSyncComponent,
         data: { luigiRoute: 'dynamic-parameter-stacked/:dyn/child', fromContext: true },
+        children: [
+          {
+            path: ':dyn2',
+            component: NavSyncComponent,
+            data: { luigiRoute: 'dynamic-parameter-stacked/:dyn/child/:dyn2', fromContext: true },
+          },
+        ]
       },
     ]
   },
