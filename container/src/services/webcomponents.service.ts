@@ -145,32 +145,30 @@ export class WebComponentService {
           getCurrentTheme: () : string | undefined  => {
             return this.thisComponent.theme;
           },
-          closeUserSettings: () =>{
+          closeUserSettings: () => {
+            
+          },
+          collapseLeftSideNav:() => {
 
           },
-          collapseLeftSideNav:()=>{
+          getDirtyStatus: () => {
 
           },
-          getDirtyStatus: ()=>{
+          getDocumentTitle: () => {
 
           },
-          getDocumentTitle: ()=>{
+          setDocumentTitle: () => {
 
           },
-          setDocumentTitle: ()=>{
+          removeBackdrop:() => {
 
           },
-          removeBackdrop:()=>{
+          openUserSettings: () => {
 
           },
-          openUserSettings: ()=>{
+          hideAppLoadingIndicator:() => {
 
           },
-          hideAppLoadingIndicator:()=>{
-
-          },
-
-
         };
       },
       getCurrentLocale: () : string | undefined =>  {
@@ -234,7 +232,7 @@ export class WebComponentService {
         return this.thisComponent.userSettings || {};
       },
       setViewGroupData: (data) => {
-        
+
       }
     };
   }
