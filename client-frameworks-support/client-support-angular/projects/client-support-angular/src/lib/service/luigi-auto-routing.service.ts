@@ -69,16 +69,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
       let route: string | undefined;
 
       if (current.data.luigiRoute) {
-        route = current.data.luigiRoute;
-
-        if (current.params) {
-          const pmap: ParamMap = convertToParamMap(current.params);
-          pmap.keys.forEach(key => {
-            const val = pmap.getAll(key).forEach(param => {
-              route = route?.replace(':' + key, param);
-            });
-          });
-        }
+        route = this.getResolvedLuigiRoute(current);
         if (current.data.fromContext) {
           if (!this.luigiContextService.getContext()) {
             console.debug('Ignoring auto navigation request, luigi context not set');
@@ -114,6 +105,43 @@ export class LuigiAutoRoutingService implements OnDestroy {
         lm.navigate(route);
       }
     }
+  }
+
+  getResolvedLuigiRoute(
+    current: ActivatedRouteSnapshot
+  ): string | undefined {
+    let route: string | undefined = current.data.luigiRoute;
+    const allParams = this.getAllParamsFromParents(current);
+
+    if (!route || !allParams) {
+      return route;
+    }
+
+    const pmap: ParamMap = convertToParamMap(allParams);
+
+    console.log({ pmap, params: allParams, current })
+
+    pmap.keys.forEach(key => {
+      pmap.getAll(key).forEach(param => {
+        route = route?.replace(':' + key, param);
+      });
+    });
+
+    return route;
+  }
+
+  getAllParamsFromParents(current: ActivatedRouteSnapshot): { [key: string]: string } | undefined {
+    let allParams: { [key: string]: string } = {};
+    let currentToCheck:ActivatedRouteSnapshot|null = current;
+
+    while (currentToCheck) {
+      if (currentToCheck.params) {
+        allParams = { ...allParams, ...currentToCheck.params };
+      }
+      currentToCheck = currentToCheck.parent;
+    }
+
+    return allParams;
   }
 
   ngOnDestroy(): void {

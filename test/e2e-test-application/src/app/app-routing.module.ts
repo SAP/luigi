@@ -138,7 +138,19 @@ const routes: Routes = [
     path: 'dynamic-parameter-flat/:dyn',
     component: NavSyncComponent,
     data: { luigiRoute: 'dynamic-parameter-flat/:dyn', fromContext: true },
-  }
+  },
+  {
+    path: 'dynamic-parameter-stacked/:dyn',
+    component: NavSyncComponent,
+    data: { luigiRoute: 'dynamic-parameter-stacked/:dyn', fromContext: true },
+    children: [
+      {
+        path: 'child',
+        component: NavSyncComponent,
+        data: { luigiRoute: 'dynamic-parameter-stacked/:dyn/child', fromContext: true },
+      },
+    ]
+  },
 ];
 
 @NgModule({

@@ -234,5 +234,32 @@ describe('Navigation', () => {
       });
       cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-flat/2');
     });
+
+    it('Nav sync - stacked dynamic parameters', () => {
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/1')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/1');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/2')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/1/child')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/1/child');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/2/child')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child');
+    });
   });
 });
