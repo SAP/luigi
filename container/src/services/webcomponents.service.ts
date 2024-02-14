@@ -169,7 +169,7 @@ export class WebComponentService {
           hideAppLoadingIndicator:()=>{
 
           },
-          
+
 
         };
       },
@@ -232,6 +232,9 @@ export class WebComponentService {
       },
       getUserSettings: (): Object => {
         return this.thisComponent.userSettings || {};
+      },
+      setViewGroupData: (data) => {
+        
       }
     };
   }
