@@ -219,5 +219,20 @@ describe('Navigation', () => {
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
       });
     });
+
+    it('Nav sync - flat dynamic parameters', () => {
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-flat/1')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-flat/1');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-flat/2')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-flat/2');
+    });
   });
 });
