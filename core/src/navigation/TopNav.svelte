@@ -837,6 +837,10 @@
     .fd-avatar:focus:after {
       border-color: var(--fdShellbar_Button_Outline_Color);
     }
+
+    .fd-shellbar__group .fd-shellbar__action.fd-shellbar__action .fd-shellbar__button {
+      padding: 0 0.325rem 0 0.325rem;
+    }
   }
 
   .hideNavComponent {

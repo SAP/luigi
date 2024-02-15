@@ -105,6 +105,10 @@
   let breadcrumbsEnabled;
   let contextRequested = false;
   let loadingIndicatorTimeout;
+  let btpToolLayout = LuigiConfig.getConfigBooleanValue(
+      'settings.btpToolLayout'
+    ) && GenericHelpers.requestExperimentalFeature('btpToolLayout', true);
+
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
@@ -2072,96 +2076,202 @@
       bind:storedUserSettings
     />
   {/if}
-  <Backdrop disable={disableBackdrop}>
-    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-    <div
-      class="fd-page iframeContainer"
-      class:lui-split-view={mfSplitView.displayed}
-      class:lui-collapsed={mfSplitView.collapsed}
-      tabindex="0"
-      use:init
-    >
-      <Backdrop area="main" disable={disableBackdrop} />
-      <div class="wcContainer" />
-    </div>
-    {#if mfSplitView.displayed}
-      <SplitView
-        splitViewSettings={mfSplitView.settings}
-        collapsed={mfSplitView.collapsed}
-        nodepath={mfSplitView.nodepath}
-        on:iframeCreated={splitViewIframeCreated}
-        on:statusChanged={splitViewStatusChanged}
-        on:wcCreated={splitViewWCCreated}
-        {disableBackdrop}
-      />
-    {/if}
-  </Backdrop>
-  {#if showLoadingIndicator}
-    <div
-      class="fd-page spinnerContainer appSpinner fade-out"
-      aria-hidden="false"
-      aria-label="Loading"
-    >
-      <div
-        class="fd-busy-indicator fd-busy-indicator--m"
-        aria-hidden="false"
-        aria-label="Loading"
-        data-testid="luigi-loading-spinner"
-      >
-        <div class="fd-busy-indicator__circle" />
-        <div class="fd-busy-indicator__circle" />
-        <div class="fd-busy-indicator__circle" />
+
+  {#if btpToolLayout}
+  <div class="lui-core-layout">
+    <div class="fd-tool-layout fd-tool-layout--sticky">
+      <div class="fd-tool-layout__container">
+          <div class="fd-tool-layout__header-container">
+            {#if !isHeaderDisabled}
+            <TopNav
+              pathData={navigationPath}
+              {pathParams}
+              on:handleClick={handleNavClick}
+              on:resizeTabNav={onResizeTabNav}
+              on:toggleSearch={toggleSearch}
+              on:closeSearchResult={closeSearchResult}
+              on:handleSearchNavigation={handleSearchNavigation}
+              bind:isSearchFieldVisible
+              bind:displaySearchResult
+              bind:searchResult
+              bind:inputElem
+              bind:luigiCustomSearchRenderer__slot
+              {burgerTooltip}
+            />
+          {/if}
+          </div>
+      </div>
+      <div class="fd-tool-layout__container lui-main-content">
+          {#if !(hideNav || hideSideNav)}
+          <div class="fd-tool-layout__navigation-container">
+            <div class="lui-box">
+              
+                <LeftNav
+                  pathData={navigationPath}
+                  {pathParams}
+                  on:handleClick={handleNavClick}
+                  on:resizeTabNav={onResizeTabNav}
+                  {burgerTooltip}
+                />
+            </div>
+          </div>          
+          {/if}
+          <div class="fd-tool-layout__content-container">        
+            {#if breadcrumbsEnabled}
+                <Breadcrumb
+                  pathData={navigationPath}
+                  {pathParams}
+                  on:handleClick={handleNavClick}
+                />
+              {/if}    
+            <div class="lui-box">
+            <Backdrop disable={disableBackdrop}>              
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+              <div
+                class="fd-page iframeContainer"
+                class:lui-split-view={mfSplitView.displayed}
+                class:lui-collapsed={mfSplitView.collapsed}
+                tabindex="0"
+                use:init
+              >
+                <Backdrop area="main" disable={disableBackdrop} />
+                <div class="wcContainer" />
+              </div>
+              {#if tabNav && !hideNav}
+                <TabNav
+                  pathData={navigationPath}
+                  {pathParams}
+                  on:handleClick={handleNavClick}
+                  {resizeTabNavToggle}
+                />
+              {/if}
+              {#if mfSplitView.displayed}
+                <SplitView
+                  splitViewSettings={mfSplitView.settings}
+                  collapsed={mfSplitView.collapsed}
+                  nodepath={mfSplitView.nodepath}
+                  on:iframeCreated={splitViewIframeCreated}
+                  on:statusChanged={splitViewStatusChanged}
+                  on:wcCreated={splitViewWCCreated}
+                  {disableBackdrop}
+                />
+              {/if}
+            </Backdrop>
+            {#if showLoadingIndicator}
+              <div
+                class="fd-page spinnerContainer appSpinner fade-out"
+                aria-hidden="false"
+                aria-label="Loading"
+              >
+                <div
+                  class="fd-busy-indicator fd-busy-indicator--m"
+                  aria-hidden="false"
+                  aria-label="Loading"
+                  data-testid="luigi-loading-spinner"
+                >
+                  <div class="fd-busy-indicator__circle" />
+                  <div class="fd-busy-indicator__circle" />
+                  <div class="fd-busy-indicator__circle" />
+                </div>
+              </div>
+            {/if}
+            </div>
+          </div>
       </div>
     </div>
-  {/if}
-  {#if !isHeaderDisabled}
-    <TopNav
-      pathData={navigationPath}
-      {pathParams}
-      on:handleClick={handleNavClick}
-      on:resizeTabNav={onResizeTabNav}
-      on:toggleSearch={toggleSearch}
-      on:closeSearchResult={closeSearchResult}
-      on:handleSearchNavigation={handleSearchNavigation}
-      bind:isSearchFieldVisible
-      bind:displaySearchResult
-      bind:searchResult
-      bind:inputElem
-      bind:luigiCustomSearchRenderer__slot
-      {burgerTooltip}
-    />
-  {/if}
-  {#if !hideNav}
-    <GlobalNav
-      pathData={navigationPath}
-      {pathParams}
-      on:handleClick={handleNavClick}
-    />
-    {#if breadcrumbsEnabled}
-      <Breadcrumb
-        pathData={navigationPath}
-        {pathParams}
-        on:handleClick={handleNavClick}
-      />
+  </div>
+    {:else}
+      <Backdrop disable={disableBackdrop}>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+        <div
+          class="fd-page iframeContainer"
+          class:lui-split-view={mfSplitView.displayed}
+          class:lui-collapsed={mfSplitView.collapsed}
+          tabindex="0"
+          use:init
+        >
+          <Backdrop area="main" disable={disableBackdrop} />
+          <div class="wcContainer" />
+        </div>
+        {#if mfSplitView.displayed}
+          <SplitView
+            splitViewSettings={mfSplitView.settings}
+            collapsed={mfSplitView.collapsed}
+            nodepath={mfSplitView.nodepath}
+            on:iframeCreated={splitViewIframeCreated}
+            on:statusChanged={splitViewStatusChanged}
+            on:wcCreated={splitViewWCCreated}
+            {disableBackdrop}
+          />
+        {/if}
+      </Backdrop>
+      {#if showLoadingIndicator}
+        <div
+          class="fd-page spinnerContainer appSpinner fade-out"
+          aria-hidden="false"
+          aria-label="Loading"
+        >
+          <div
+            class="fd-busy-indicator fd-busy-indicator--m"
+            aria-hidden="false"
+            aria-label="Loading"
+            data-testid="luigi-loading-spinner"
+          >
+            <div class="fd-busy-indicator__circle" />
+            <div class="fd-busy-indicator__circle" />
+            <div class="fd-busy-indicator__circle" />
+          </div>
+        </div>
+      {/if}
+      {#if !isHeaderDisabled}
+        <TopNav
+          pathData={navigationPath}
+          {pathParams}
+          on:handleClick={handleNavClick}
+          on:resizeTabNav={onResizeTabNav}
+          on:toggleSearch={toggleSearch}
+          on:closeSearchResult={closeSearchResult}
+          on:handleSearchNavigation={handleSearchNavigation}
+          bind:isSearchFieldVisible
+          bind:displaySearchResult
+          bind:searchResult
+          bind:inputElem
+          bind:luigiCustomSearchRenderer__slot
+          {burgerTooltip}
+        />
+      {/if}
+      {#if !hideNav}
+        <GlobalNav
+          pathData={navigationPath}
+          {pathParams}
+          on:handleClick={handleNavClick}
+        />
+        {#if breadcrumbsEnabled}
+          <Breadcrumb
+            pathData={navigationPath}
+            {pathParams}
+            on:handleClick={handleNavClick}
+          />
+        {/if}
+      {/if}
+      {#if !(hideNav || hideSideNav)}
+        <LeftNav
+          pathData={navigationPath}
+          {pathParams}
+          on:handleClick={handleNavClick}
+          on:resizeTabNav={onResizeTabNav}
+          {burgerTooltip}
+        />
+      {/if}
+      {#if tabNav && !hideNav}
+        <TabNav
+          pathData={navigationPath}
+          {pathParams}
+          on:handleClick={handleNavClick}
+          {resizeTabNavToggle}
+        />
+      {/if}
     {/if}
-  {/if}
-  {#if !(hideNav || hideSideNav)}
-    <LeftNav
-      pathData={navigationPath}
-      {pathParams}
-      on:handleClick={handleNavClick}
-      on:resizeTabNav={onResizeTabNav}
-      {burgerTooltip}
-    />
-  {/if}
-  {#if tabNav && !hideNav}
-    <TabNav
-      pathData={navigationPath}
-      {pathParams}
-      on:handleClick={handleNavClick}
-      {resizeTabNavToggle}
-    />
-  {/if}
 </div>
 
 <style lang="scss">
@@ -2222,7 +2332,7 @@
   :global(*:after) {
     box-sizing: inherit;
   }
-  div :global(div) {
+  :global(body) {
     font-family: '72', sans-serif;
   }
 
@@ -2279,6 +2389,57 @@
     display: block;
   }
 
+/** TOOL LAYOUT */
+  .lui-core-layout {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  :global(.fd-tool-layout .fd-app__sidebar) {
+    position: relative;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .fd-tool-layout {
+      .iframeContainer, .spinnerContainer {
+        top: 0;
+        left: 0;
+      }
+    }
+
+    :global(.lui-breadcrumb) .fd-tool-layout__content-container {
+      margin-top: var(--luigi__breadcrumb--height);
+      height: calc(100% - var(--luigi__breadcrumb--height));
+    }
+    .lui-box {
+        height: 100%;
+        position: relative;
+    }
+
+
+
+  /** Tool layout fd styles adjustments */
+
+        .fd-tool-layout--sticky .fd-tool-layout__content-container {
+          overflow: auto;
+        }
+        .fd-tool-layout--sticky .fd-tool-layout__navigation-container {
+          overflow: visible;
+          z-index: 1;
+        }
+        
+        :global(.fd-navigation:not(.fd-navigation--snapped) .fd-navigation__container--top.fd-navigation__container--top) {
+          overflow: auto;
+        }
+
+        :global(.fd-navigation--snapped .lui-hideOnHover:not(:hover) > :not(.lui-hideOnHover-show)) {
+          display: none;
+        }
+/** END: TOOL LAYOUT */
+
   .spinnerContainer {
     opacity: 0;
     transition: opacity 0.25s;
@@ -2322,6 +2483,12 @@
           var(--luigi__horizontal-nav--height)
         )
     );
+  }
+  :global(.fd-tool-layout .lui-main-content .iframeContainer.iframeContainerTabNav) {
+    top: var(
+          --luigi__horizontal-nav--live-height,
+          var(--luigi__horizontal-nav--height)
+        );
   }
 
   :global(.no-top-nav .iframeContainer.iframeContainerTabNav) {
@@ -2623,6 +2790,16 @@
         left: calc(#{$leftNavWidthCollapsed} + #{$globalNavWidth});
       }
     }
+    :global(.lui-semiCollapsible:not(.semiCollapsed)) {
+      :global(.fd-tool-layout .fd-navigation) {
+        position: absolute;
+      }
+    }
+    :global(.lui-semiCollapsible.semiCollapsed) {
+      :global(.fd-tool-layout .fd-navigation) {
+        display: none;
+      }
+    }
   }
 
   :global(html.luigi-app-in-custom-container) {
@@ -2657,11 +2834,11 @@
     }
   }
 
-  //Add padding for shellbar buttons
-  :global(.fd-shellbar__button) {
-    padding-left: 0.5625rem !important;
-    padding-right: 0.5625rem !important;
+  //avatar clipping
+  :global(.fd-avatar--circle) {
+    background-clip: padding-box;
   }
+  
   :global(.fd-shellbar__logo) {
     margin-right: 0px;
   }

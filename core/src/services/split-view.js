@@ -170,7 +170,7 @@ class SplitViewSvcClass {
   calculateAndSetSplitViewValues(percentBottom, values) {
     const newBottom =
       parseInt(GenericHelpers.computePxFromPercent(values.rightContentHeight, 100 - percentBottom)) +
-      GenericHelpers.getShellbarHeight();
+      IframeHelpers.getIframeContainer().getBoundingClientRect().top;
 
     this.splitViewValues = this.enforceTresholds(newBottom, values.innerHeight - newBottom, values);
   }

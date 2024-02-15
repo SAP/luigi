@@ -41,7 +41,8 @@
         responsiveNavSetting = LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
-        showGlobalNav =
+        showGlobalNav = !(LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') && 
+          GenericHelpers.requestExperimentalFeature('btpToolLayout', false)) &&
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
         document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
@@ -289,7 +290,7 @@
       height: 100%;
       &:focus {
         outline: var(--sapContent_FocusWidth) var(--sapContent_FocusStyle) var(--fdShellbar_Button_Outline_Color);
-        outline-offset: var(--fdButton_Outline_Offset);
+        outline-offset: -0.325rem;
       }
     }
   }

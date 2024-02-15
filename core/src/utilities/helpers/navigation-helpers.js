@@ -172,7 +172,7 @@ class NavigationHelpersClass {
           ? (arr.metaInfo.titleCollapseButton = category.titleCollapseButton)
           : (arr.metaInfo.titleCollapseButton = defaultTooltipForExpandCollapseCategories.titleCollapseButton);
       }
-      if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
+      if (!arr.metaInfo.categoryUid && key) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
       }
       if (!node.hideFromNav) {

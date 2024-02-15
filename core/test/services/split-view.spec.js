@@ -170,6 +170,12 @@ describe('SplitViewSvc', () => {
 
       SplitViewSvc.splitViewValues = {};
 
+      IframeHelpers.getIframeContainer.returns({
+        getBoundingClientRect: () => {
+          return { top: shellbarHeight };
+        }
+      });
+
       // then
       SplitViewSvc.calculateAndSetSplitViewValues(40, mockValues);
 
