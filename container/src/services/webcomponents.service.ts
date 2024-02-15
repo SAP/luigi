@@ -232,6 +232,7 @@ export class WebComponentService {
         return this.thisComponent.userSettings || {};
       },
       setViewGroupData: (data) => {
+        this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, data);
 
       }
     };

@@ -99,5 +99,10 @@ export namespace Events {
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
+ /**
+   * A message emitted from the micro frontend when a request to set the 'dirty status' (eg: avoid closing if unsaved changes) is sent
+   */
+ export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
+
   // TODO: ignore auth
 }
