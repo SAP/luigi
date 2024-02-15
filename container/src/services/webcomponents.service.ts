@@ -146,10 +146,13 @@ export class WebComponentService {
             return this.thisComponent.theme;
           },
           closeUserSettings: () => {
-            
+            this.dispatchLuigiEvent(Events.OPEN_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
+          },          
+          openUserSettings: () => {
+            this.dispatchLuigiEvent(Events.CLOSE_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },
           collapseLeftSideNav:() => {
-
+            this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, null);
           },
           getDirtyStatus: () => {
             return this.thisComponent.dirtyStatus;
@@ -158,16 +161,13 @@ export class WebComponentService {
             return this.thisComponent.documentTitle;
           },
           setDocumentTitle: (title) => {
-            this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, title);
+            this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
           removeBackdrop:() => {
-
-          },
-          openUserSettings: () => {
-
+            this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, null);
           },
           hideAppLoadingIndicator:() => {
-
+            this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, null);
           },
         };
       },
@@ -232,8 +232,7 @@ export class WebComponentService {
         return this.thisComponent.userSettings || {};
       },
       setViewGroupData: (data) => {
-        this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, data);
-
+        this.dispatchLuigiEvent(Events.SET_VIEW_GROUP_DATA_REQUEST, data);
       }
     };
   }

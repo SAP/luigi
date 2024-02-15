@@ -100,9 +100,33 @@ export namespace Events {
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
  /**
-   * A message emitted from the micro frontend when a request to set the 'dirty status' (eg: avoid closing if unsaved changes) is sent
+   * A message emitted from the micro frontend when a request to set the view group data
    */
  export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
 
+  /**
+   * A message emitted from the micro frontend when a request to set the document title
+   */
+  export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to open user settings 
+   */
+  export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to close user settings 
+   */
+  export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to collapse left side navigation
+   */
+  export const COLLAPSE_LEFT_NAV_REQUEST = 'collapse-leftnav-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to remove the backdrop
+   */
+  export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
   // TODO: ignore auth
 }
