@@ -152,13 +152,13 @@ export class WebComponentService {
 
           },
           getDirtyStatus: () => {
-
+            return this.thisComponent.dirtyStatus;
           },
           getDocumentTitle: () => {
-
+            return this.thisComponent.documentTitle;
           },
-          setDocumentTitle: () => {
-
+          setDocumentTitle: (title) => {
+            this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, title);
           },
           removeBackdrop:() => {
 
