@@ -2,7 +2,7 @@
   export let node;
   const STATUS = ['negative', 'positive', 'critical', 'informative'];
   const statusType = node && node.statusBadge && node.statusBadge.type;
-  const type = STATUS.includes(statusType) ? statusType : 'neutral';
+  const type = STATUS.includes(statusType) ? statusType : 'none';
 </script>
 
 {#if node.statusBadge && node.statusBadge.label}

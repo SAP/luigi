@@ -146,7 +146,7 @@
     left: 50%;
     -webkit-transform: translate(-50%);
     transform: translate(-50%);
-    margin-top: 28px;
+    margin-top: calc(var(--luigi__shellbar--height) - 0.625rem);
     .fd-message-strip:not(:first-child) {
       margin-top: 8px;
     }

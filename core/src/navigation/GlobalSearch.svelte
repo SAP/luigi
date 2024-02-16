@@ -235,26 +235,29 @@
       aria-hidden={!isSearchFieldVisible}
       aria-haspopup="true"
     >
-      <div class="fd-input-group fd-shellbar__input-group">
+      <div class="fd-input-group fd-shellbar__input-group fd-shellbar__search-field">
         {#if search && search.disableInputHandlers}
           <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
-            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
+            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input fd-shellbar__search-field-input"
             data-testid="luigi-search-input__no-handlers"
-            autofocus
+            autofocus onfocus="event.target.parentNode.classList.add('is-focus')"
+            onblur="event.target.parentNode.classList.remove('is-focus')"
           />
         {:else}
           <!-- svelte-ignore a11y-autofocus -->
           <input
             type="text"
             on:keyup={event => onKeyUp(event)}
-            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input"
+            class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input fd-shellbar__search-field-input"
             data-testid="luigi-search-input"
-            autofocus
+            autofocus onfocus="event.target.parentNode.classList.add('is-focus')"
+            onblur="event.target.parentNode.classList.remove('is-focus')"
             bind:this={inputElem}
           />
         {/if}
+        <div class="fd-shellbar__search-field-helper"></div>
       </div>
       {#if !isCustomSearchRenderer}
         <div
@@ -381,7 +384,7 @@
 
       .luigi-search {
         position: absolute;
-        top: 0;
+        top: -2px;
         right: 0;
         background: var(--sapShellColor);
         z-index: 2;
