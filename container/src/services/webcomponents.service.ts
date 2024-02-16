@@ -87,25 +87,39 @@ export class WebComponentService {
   createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
     return {
       linkManager: () => {
-        return {
+        let fromContext = null;
+        let fromClosestContext = null;
+        let fromVirtualTreeRoot = null;
+        let nodeParams = null;
+
+        const linkManagerInstance = {
           navigate: route => {
-            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route });
+            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams };
+            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route , ...options});
           },
           fromClosestContext: () => {
-
+            fromClosestContext = true;
+            return linkManagerInstance;
           },
-          fromContext: () => {
-            
+          fromContext: (navigationContext) => {
+            fromContext = navigationContext;
+            return linkManagerInstance;
           },
           fromVirtualTreeRoot: () => {
-            
+            fromVirtualTreeRoot = true;
+            return linkManagerInstance;
+          },         
+          withParams: (params) => {
+            nodeParams = params;
+            return linkManagerInstance;
           },
-          goBack: () => {
-            
+          updateTopNavigation: (): void => {
+            this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, null);
           },
-          hasBack: () => {
-            
-          },
+          pathExists: () => {
+            this.dispatchLuigiEvent(Events.PATH_EXISTS_REQUEST, null);
+
+          },          
           openAsDrawer: () => {
             
           },
@@ -114,17 +128,17 @@ export class WebComponentService {
           },
           openAsSplitView: () => {
             
+          },          
+          goBack: () => {
+            this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, null);
+
           },
-          pathExists: () => {
-            
-          },
-          updateTopNavigation: () => {
-            
-          },
-          withParams: () => {
-            
-          }
+          hasBack: () => {
+            this.dispatchLuigiEvent(Events.HAS_BACK_REQUEST, null);
+
+          }, 
         };
+        return linkManagerInstance;
       },
       uxManager: () => {
         return {
