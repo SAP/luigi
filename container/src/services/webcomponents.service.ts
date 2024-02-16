@@ -117,8 +117,15 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, null);
           },
           pathExists: () => {
-            this.dispatchLuigiEvent(Events.PATH_EXISTS_REQUEST, null);
-
+            return new Promise((resolve, reject) => {
+              this.dispatchLuigiEvent(Events.PATH_EXISTS_REQUEST, {}, (exists)=>{
+                if (exists !== undefined || exists !== null) {
+                  resolve(exists)
+                }  else {
+                  reject(new Error('Path exists response not received'));
+                }
+              });
+            })
           },          
           openAsDrawer: () => {
             
