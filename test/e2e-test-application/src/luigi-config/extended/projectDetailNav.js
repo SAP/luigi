@@ -488,34 +488,34 @@ export const projectDetailNavStructure = projectId => [
       {
         label: 'Flat Dynamic Parameter',
         pathSegment: 'dynamic-parameter-flat',
-        viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-flat',
+        viewUrl: '/sampleapp.html#/dynamic-parameter-flat',
         children: [
           {
             pathSegment: ':dynamic',
             label: 'Dynamic Parameter',
-            viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-flat/:dynamic'
+            viewUrl: '/sampleapp.html#/dynamic-parameter-flat/:dynamic'
           }
         ]
       },
       {
         label: 'Stacked Dynamic Parameter',
         pathSegment: 'dynamic-parameter-stacked',
-        viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-stacked',
+        viewUrl: '/sampleapp.html#/dynamic-parameter-stacked',
         children: [
           {
-            pathSegment: ':dynamic',
+            pathSegment: ':dynamic1',
             label: 'Dynamic Parameter',
-            viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-stacked/:dynamic',
+            viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1',
             children: [
               {
                 pathSegment: 'child',
                 label: 'Child',
-                viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-stacked/:dynamic/child',
+                viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1/child',
                 children: [
                   {
                     pathSegment: ':dynamic2',
                     label: 'Dynamic Parameter 2',
-                    viewUrl: '/sampleapp.html#/nav-sync-example/dynamic-parameter-stacked/:dynamic/:dynamic2'
+                    viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1/child/:dynamic2'
                   }
                 ]
               }

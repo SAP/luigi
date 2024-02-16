@@ -28,7 +28,9 @@
       <ul class="fd-list">
         <li class="fd-list__item">Current pathsegment: {{ currentSegment }}</li>
         <li class="fd-list__item">
-          Go to:&nbsp;<a class="fd-link" [routerLink]="['../' + nextSegment]"
+          Go to:&nbsp;<a
+            class="fd-link"
+            [routerLink]="['/nav-sync-example/' + nextSegment]"
             >{{ nextSegment }}</a
           >
         </li>
@@ -46,12 +48,12 @@
       </p>
       <ul class="fd-list">
         <li class="fd-list__item">
-          Go to:&nbsp;<a class="fd-link" routerLink="../../dynamic-parameter-flat/1"
+          Go to:&nbsp;<a class="fd-link" routerLink="/dynamic-parameter-flat/1"
             >dynamic-parameter-flat/1</a
           >
         </li>
         <li class="fd-list__item">
-          Go to:&nbsp;<a class="fd-link" routerLink="../../dynamic-parameter-flat/2"
+          Go to:&nbsp;<a class="fd-link" routerLink="/dynamic-parameter-flat/2"
             >dynamic-parameter-flat/2</a
           >
         </li>
@@ -69,33 +71,27 @@
       </p>
       <ul class="fd-list">
         <li class="fd-list__item">
-          Go to:&nbsp;<a class="fd-link" routerLink="../../dynamic-parameter-stacked/1"
+          Go to:&nbsp;<a class="fd-link" routerLink="/dynamic-parameter-stacked/1"
             >dynamic-parameter-stacked/1</a
           >
         </li>
         <li class="fd-list__item">
-          Go to:&nbsp;<a
-            class="fd-link"
-            routerLink="../../dynamic-parameter-stacked/1/child"
+          Go to:&nbsp;<a class="fd-link" routerLink="/dynamic-parameter-stacked/1/child"
             >dynamic-parameter-stacked/1/child</a
           >
         </li>
         <li class="fd-list__item">
-          Go to:&nbsp;<a class="fd-link" routerLink="../../dynamic-parameter-stacked/2"
+          Go to:&nbsp;<a class="fd-link" routerLink="/dynamic-parameter-stacked/2"
             >dynamic-parameter-stacked/2</a
           >
         </li>
         <li class="fd-list__item">
-          Go to:&nbsp;<a
-            class="fd-link"
-            routerLink="../../dynamic-parameter-stacked/2/child"
+          Go to:&nbsp;<a class="fd-link" routerLink="/dynamic-parameter-stacked/2/child"
             >dynamic-parameter-stacked/2/child</a
           >
         </li>
         <li class="fd-list__item">
-          Go to:&nbsp;<a
-            class="fd-link"
-            routerLink="../../dynamic-parameter-stacked/2/child/3"
+          Go to:&nbsp;<a class="fd-link" routerLink="/dynamic-parameter-stacked/2/child/3"
             >dynamic-parameter-stacked/2/child/3</a
           >
         </li>

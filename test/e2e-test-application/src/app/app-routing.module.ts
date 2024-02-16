@@ -135,27 +135,41 @@ const routes: Routes = [
     component: ViewGroupComponent
   },
   {
-    path: 'dynamic-parameter-flat/:dyn',
+    path: 'dynamic-parameter-flat',
     component: NavSyncComponent,
-    data: { luigiRoute: 'dynamic-parameter-flat/:dyn', fromContext: true },
-  },
-  {
-    path: 'dynamic-parameter-stacked/:dyn',
-    component: NavSyncComponent,
-    data: { luigiRoute: 'dynamic-parameter-stacked/:dyn', fromContext: true },
+    data: { luigiRoute: '/dynamic-parameter-flat', fromContext: 'navSync' },
     children: [
       {
-        path: 'child',
+        path: ':dyn',
         component: NavSyncComponent,
-        data: { luigiRoute: 'dynamic-parameter-stacked/:dyn/child', fromContext: true },
+        data: { luigiRoute: '/dynamic-parameter-flat/:dyn', fromContext: 'navSync' },
+      }
+    ]
+  },
+  {
+    path: 'dynamic-parameter-stacked',
+    component: NavSyncComponent,
+    data: { luigiRoute: '/dynamic-parameter-stacked', fromContext: 'navSync' },
+    children: [
+      {
+        path: ':dyn',
+        component: NavSyncComponent,
+        data: { luigiRoute: '/dynamic-parameter-stacked/:dyn', fromContext: 'navSync' },
         children: [
           {
-            path: ':dyn2',
+            path: 'child',
             component: NavSyncComponent,
-            data: { luigiRoute: 'dynamic-parameter-stacked/:dyn/child/:dyn2', fromContext: true },
+            data: { luigiRoute: '/dynamic-parameter-stacked/:dyn/child', fromContext: 'navSync' },
+            children: [
+              {
+                path: ':dyn2',
+                component: NavSyncComponent,
+                data: { luigiRoute: '/dynamic-parameter-stacked/:dyn/child/:dyn2', fromContext: 'navSync' },
+              },
+            ]
           },
         ]
-      },
+      }
     ]
   },
 ];
