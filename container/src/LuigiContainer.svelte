@@ -46,10 +46,10 @@
         reflect: false,
         attribute: 'allow-rules',
       },
-      customSandboxRules: {
+      sandboxRules: {
         type: 'Array',
         reflect: false,
-        attribute: 'custom-sandbox-rules',
+        attribute: 'sandbox-rules',
       },
     },
     extend: (customElementConstructor) => {
@@ -97,7 +97,7 @@
   export let pathParams: any;
   export let clientPermissions: any;
   export let allowRules: string[];
-  export let customSandboxRules: string[];
+  export let sandboxRules: string[];
 
   export let userSettings: any;
   export let anchor: string;
@@ -126,7 +126,7 @@
       userSettings &&
       anchor &&
       allowRules &&
-      customSandboxRules
+      sandboxRules
     );
   };
 
@@ -217,7 +217,7 @@
         src={viewurl}
         title={label}
         allow={getAllowRules(allowRules)}
-        sandbox={customSandboxRules ? customSandboxRules.join(' ') : undefined}
+        sandbox={sandboxRules ? sandboxRules.join(' ') : undefined}
       />
     {/if}
   {/if}
