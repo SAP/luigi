@@ -18,7 +18,6 @@ describe('Navigation', () => {
           .contains('Overview')
           .click();
 
-        cy.wait(500);
         // dig into the iframe
 
         cy.getIframeBody().then($iframeBody => {
@@ -26,7 +25,6 @@ describe('Navigation', () => {
             .find('.fd-list__item')
             .contains('keepSelectedForChildren')
             .click();
-          cy.wait(500);
         });
 
         cy.expectPathToBe('/projects/pr1/avengers');
@@ -38,7 +36,6 @@ describe('Navigation', () => {
             .find('.fd-list__item')
             .contains('Thor')
             .click();
-          cy.wait(500);
         });
         cy.expectPathToBe('/projects/pr1/avengers/thor');
 
@@ -52,7 +49,6 @@ describe('Navigation', () => {
           .contains('Overview')
           .click();
 
-        cy.wait(500);
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
             .find('.fd-list__item strong')
@@ -227,10 +223,9 @@ describe('Navigation', () => {
       cy.expectPathToBe('/projects/pr2/nav-sync/one');
 
       const labels = ['two', 'three', 'four', 'one'];
-      labels.forEach((label, index) => {
+      labels.forEach(label => {
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
-            // .find('.fd-link')
             .contains(label)
             .click();
         });

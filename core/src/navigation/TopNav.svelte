@@ -49,14 +49,12 @@
   export let nodeForMobile;
   export let profileItemsAvailable;
   export let userInfo = {};
-  export let urlAuthError;
   export let globalSearchConfig;
   export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
   export let luigiCustomSearchRenderer__slot;
   export let displaySearchResult;
-  export let displayCustomSearchResult;
   export let searchResult;
   export let burgerTooltip;
   export let responsiveShellbarPadding;
@@ -172,12 +170,6 @@
 
   const getNodeLabel = (node) => {
     return NavigationHelpers.getNodeLabel(node);
-  }
-
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 
   function getRouteLink(node) {
@@ -316,6 +308,7 @@
 
 <svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} />
 {#if showTopNav}
+  <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <div
     class="fd-shellbar {responsiveShellbarPadding
       ? 'fd-shellbar--responsive-paddings'
@@ -351,7 +344,6 @@
           on:handleSearchNavigation
           bind:searchResult
           bind:displaySearchResult
-          bind:displayCustomSearchResult
           bind:inputElem
           bind:luigiCustomSearchRenderer__slot
           on:closeSearchResult
@@ -369,7 +361,6 @@
             on:handleSearchNavigation
             bind:searchResult
             bind:displaySearchResult
-            bind:displayCustomSearchResult
             bind:inputElem
             bind:luigiCustomSearchRenderer__slot
             on:closeSearchResult
@@ -394,6 +385,7 @@
                     class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
                   >
                     <div class="fd-popover fd-popover--right">
+                      <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <div
                         class="fd-popover__control"
                         on:click|stopPropagation={() => {}}
@@ -411,7 +403,7 @@
                           aria-haspopup="true"
                           on:click={() =>
                             toggleDropdownState(`dropDownPopover-${i}`)}
-                          data-testid={getTestId(node)}
+                          data-testid={NavigationHelpers.getTestId(node)}
                         >
                           <TopNavNode bind:node />
                           <BadgeCounter {node} />
@@ -453,7 +445,7 @@
                           event
                         ) && handleClick(node);
                       }}
-                      data-testid={getTestId(node)}
+                      data-testid={NavigationHelpers.getTestId(node)}
                     >
                       <TopNavNode bind:node />
                       <BadgeCounter {node} />
@@ -468,7 +460,7 @@
                       aria-expanded="false"
                       aria-haspopup="true"
                       on:click={() => handleClick(node)}
-                      data-testid={getTestId(node)}
+                      data-testid={NavigationHelpers.getTestId(node)}
                     >
                       <TopNavNode bind:node />
                       <BadgeCounter {node} />
@@ -492,6 +484,7 @@
           <div class="fd-shellbar__action fd-shellbar__action--mobile">
             <div class="fd-shellbar-collapse">
               <div class="fd-popover fd-popover--right">
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div
                   class="fd-popover__control"
                   on:click|stopPropagation={() => {}}
@@ -524,6 +517,8 @@
                     <ul class="fd-menu__list fd-menu__list--no-shadow">
                       {#if globalSearchConfig && !isGlobalSearchCentered}
                         <li class="fd-menu__item">
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <!-- svelte-ignore a11y-missing-attribute -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={() => {
@@ -541,6 +536,8 @@
                       {/if}
                       {#if contextSwitcherConfig && (!authorizationEnabled || isLoggedIn)}
                         <li class="fd-menu__item">
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <!-- svelte-ignore a11y-missing-attribute -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={openMobileContextSwitcher}
@@ -571,7 +568,7 @@
                                     : ''}"
                                   on:click|preventDefault={() =>
                                     handleClick(node)}
-                                  data-testid="{getTestId(node)}-mobile"
+                                  data-testid="{NavigationHelpers.getTestId(node)}-mobile"
                                 >
                                   <span
                                     class="fd-top-nav__icon sap-icon {node.icon &&
@@ -632,6 +629,8 @@
                       {/if}
                       {#if isProductSwitcherAvailable}
                         <li class="fd-menu__item">
+                          <!-- svelte-ignore a11y-click-events-have-key-events -->
+                          <!-- svelte-ignore a11y-missing-attribute -->
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={openMobileProductSwitcher}
@@ -702,6 +701,7 @@
         >
           {#if profileTypeSettings === 'Fiori3' && GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true)}
             <div class="fd-popover fd-popover--right fd-user-menu">
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
               <div
                 class="fd-popover__control"
                 on:click|stopPropagation={() => {}}
@@ -748,6 +748,7 @@
           {:else}
             <div class="fd-user-menu">
               <div class="fd-popover">
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <div
                   class="fd-popover__control"
                   on:click|stopPropagation={() => {}}
@@ -818,8 +819,7 @@
   />
 {/if}
 
-<style type="text/scss">
-  @import 'src/styles/_variables.scss';
+<style lang="scss">
   /*Remove Safari bug with blue outlines of dropdowns in the shellbar*/
   .fd-shellbar:focus {
     outline: none;
@@ -837,6 +837,10 @@
     .fd-avatar:focus:after {
       border-color: var(--fdShellbar_Button_Outline_Color);
     }
+
+    .fd-shellbar__group .fd-shellbar__action.fd-shellbar__action .fd-shellbar__button {
+      padding: 0 0.325rem 0 0.325rem;
+    }
   }
 
   .hideNavComponent {
@@ -852,13 +856,6 @@
       max-height: 16px;
       vertical-align: top;
       max-width: 16px;
-    }
-  }
-
-  img {
-    &.fd-top-nav__icon {
-      height: 16px;
-      min-width: auto;
     }
   }
 

@@ -41,7 +41,8 @@
         responsiveNavSetting = LuigiConfig.getConfigValue(
           'settings.responsiveNavigation'
         );
-        showGlobalNav =
+        showGlobalNav = !(LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') && 
+          GenericHelpers.requestExperimentalFeature('btpToolLayout', false)) &&
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
         document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
@@ -67,12 +68,6 @@
 
   function getNodeLabel(node) {
     return LuigiI18N.getTranslation(node.label);
-  }
-
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 
   function getRouteLink(node) {
@@ -112,7 +107,7 @@
                   class="fd-nested-list__item {node === selectedNode
                     ? 'is-selected'
                     : ''}"
-                  data-testid={getTestId(node)}
+                  data-testid={NavigationHelpers.getTestId(node)}
                 >
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
@@ -160,12 +155,13 @@
                   class="fd-nested-list__item {node === selectedNode
                     ? 'is-selected'
                     : ''}"
-                  data-testid={getTestId(node)}
+                  data-testid={NavigationHelpers.getTestId(node)}
                 >
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
                     title={$getTranslation(node.label)}
                   >
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <div
                       class="lui-fd-nested-list__content"
                       on:click|preventDefault={() => handleClick(node)}
@@ -201,8 +197,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
-  @import 'src/styles/_variables.scss';
+<style lang="scss">
   .lui-globalnav {
     position: fixed;
     width: $globalNavWidth;
@@ -295,7 +290,7 @@
       height: 100%;
       &:focus {
         outline: var(--sapContent_FocusWidth) var(--sapContent_FocusStyle) var(--fdShellbar_Button_Outline_Color);
-        outline-offset: var(--fdButton_Outline_Offset);
+        outline-offset: -0.325rem;
       }
     }
   }

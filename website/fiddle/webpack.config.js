@@ -12,10 +12,11 @@ module.exports = {
   },
   resolve: {
     alias: {
-      svelte: path.resolve('node_modules', 'svelte')
+      svelte: path.resolve('node_modules', 'svelte/src/runtime')
     },
     extensions: ['.mjs', '.js', '.svelte'],
-    mainFields: ['svelte', 'browser', 'module', 'main']
+    mainFields: ['svelte', 'browser', 'module', 'main'],
+    conditionNames: ['svelte']
   },
   output: {
     path: __dirname + '/public',
@@ -67,15 +68,6 @@ module.exports = {
       filename: '[name].css'
     })
   ],
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        // TODO: Remove when renaming luigi.svete.map.js to .map filetype
-        exclude: /\.svelte\.map\.js$/
-      })
-    ]
-  },
   devtool: prod ? false : 'source-map',
   stats: {
     errorDetails: true

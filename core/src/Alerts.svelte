@@ -138,7 +138,7 @@
   {/each}
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   .luigi-alert--overlay {
     position: absolute;
     z-index: 1100;
@@ -146,7 +146,7 @@
     left: 50%;
     -webkit-transform: translate(-50%);
     transform: translate(-50%);
-    margin-top: 28px;
+    margin-top: calc(var(--luigi__shellbar--height) - 0.625rem);
     .fd-message-strip:not(:first-child) {
       margin-top: 8px;
     }

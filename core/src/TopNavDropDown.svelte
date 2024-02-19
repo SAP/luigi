@@ -23,7 +23,7 @@
     'getUnsavedChangesModalPromise'
   );
   let openViewInModal = getContext('openViewInModal');
-  let addNavHrefForAnchor;
+  export let addNavHrefForAnchor;
   const getNodeSubtitle = () => {};
 
   //TODO refactor
@@ -97,12 +97,6 @@
     return LuigiI18N.getTranslation(node.label);
   }
 
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
@@ -115,10 +109,11 @@
       {#if children}
         {#each children as node}
           {#if node.label}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <li
               class="fd-menu__item"
               on:click={() => onActionClick(node)}
-              data-testid={getTestId(node)}
+              data-testid={NavigationHelpers.getTestId(node)}
             >
               <a
                 href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
@@ -157,12 +152,11 @@
     {hasOpenUIicon}
     {getNodeLabel}
     {getNodeSubtitle}
-    {getTestId}
     noSubTitle="true"
   />
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     img {
       max-width: 16px;

@@ -20,8 +20,6 @@
   let store = getContext('store');
 
   export let showBreadcrumb;
-  export let hideNavComponent;
-  export let responsiveNavSetting;
   let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setNavData = async () => {
@@ -184,8 +182,7 @@
 
 <div class="lui-breadcrumb-container" bind:this={breadcrumbContainer} />
 
-<style type="text/scss">
-  @import 'src/styles/_variables.scss';
+<style lang="scss">
   .lui-breadcrumb-container {
     position: absolute;
     right: 0;
@@ -193,6 +190,15 @@
     height: var(--luigi__breadcrumb--height);
     left: 0;
     display: none;
+  }
+
+  :global(.fd-tool-layout) .lui-breadcrumb-container.lui-breadcrumb-container {    
+    background: transparent;
+    box-shadow: none;
+    top: 0;
+    left: unset;
+    right: unset;
+    width: 100%;
   }
 
   :global(.lui-breadcrumb) .lui-breadcrumb-container {

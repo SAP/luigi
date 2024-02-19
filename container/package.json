@@ -23,7 +23,8 @@
     "bundle:watch": "chokidar \"src/**/*.*\" -c \"npm run build && npm run copyBundle\"",
     "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
     "cypress-headless": "cypress run -c video=false",
-    "cypress-browser": "cypress open --e2e --browser chrome -c video=false"
+    "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
+    "prepare-release": "node prepareNextRelease.js"
   },
   "devDependencies": {
     "@babel/node": "7.22.10",

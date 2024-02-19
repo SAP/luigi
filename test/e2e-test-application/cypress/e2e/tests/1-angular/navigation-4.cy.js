@@ -1,9 +1,9 @@
 describe('Navigation', () => {
-  beforeEach(() => {
-    cy.visitLoggedIn('/');
-  });
-
   describe('Collapsible Categories / Accordion', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/');
+    });
+
     it('It should have multiple categories collapsed', () => {
       cy.visit('/projects/pr2/collapsibles');
 
@@ -111,14 +111,10 @@ describe('Navigation', () => {
         // Click link is still here (we haven't changed page)
         cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]');
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]')
-          .should('exist')
-          .should('have.class', 'is-selected');
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('have.class', 'is-selected');
 
         // checking if we have NOT highlighted  menu item
-        cy.get('a[href="/projects/pr2/settings"]')
-          .should('exist')
-          .not('.is-selected');
+        cy.get('a[href="/projects/pr2/settings"]').not('.is-selected');
 
         // CLICK ON navigate-withoutSync-virtual-tree
         // linkManager().withoutSync().navigate('/projects/pr2/virtual-tree')
@@ -131,9 +127,7 @@ describe('Navigation', () => {
         // Click link is still here (we haven't changed page)
         cy.wrap(result).find('a[data-testid="navigate-withoutSync-virtual-tree"]');
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/settings"]')
-          .should('exist')
-          .should('have.class', 'is-selected');
+        cy.get('a[href="/projects/pr2/settings"]').should('have.class', 'is-selected');
       });
     });
 
@@ -162,9 +156,7 @@ describe('Navigation', () => {
           .contains(' with params: project to global settings and back')
           .should('not.exist');
         // checking if we have highlighted  menu item
-        cy.get('a[href="/projects/pr2/virtual-tree"]')
-          .should('exist')
-          .should('have.class', 'is-selected');
+        cy.get('a[href="/projects/pr2/virtual-tree"]').should('have.class', 'is-selected');
 
         cy.wrap(result).contains('Add Segments To The Url content');
       });
@@ -173,6 +165,7 @@ describe('Navigation', () => {
 
   describe('Link withOptions', () => {
     beforeEach(() => {
+      cy.visitLoggedIn('/');
       cy.visitLoggedIn('/projects/pr2');
     });
 
@@ -211,6 +204,10 @@ describe('Navigation', () => {
   });
 
   describe('ProfileMenu Fiori 3 Style', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/');
+    });
+
     context('Desktop', () => {
       it('not render Fiori3 profile in Shellbar when profileType is equal "simple"', () => {
         cy.window().then(win => {
@@ -218,9 +215,7 @@ describe('Navigation', () => {
           config.settings.profileType = 'simple';
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
-            .should('exist')
-            .click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('not.exist');
           cy.get('.lui-profile-simple-menu').should('be.visible');
         });
@@ -233,9 +228,7 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: false };
           win.Luigi.configChanged();
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]')
-            .should('exist')
-            .click();
+          cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('not.exist');
           cy.get('.lui-profile-simple-menu').should('be.visible');
         });
@@ -247,9 +240,7 @@ describe('Navigation', () => {
           config.settings.profileType = 'Fiori3';
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
-          cy.wait(1000);
 
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('.lui-user-menu-fiori').should('be.visible');
           cy.get('.lui-profile-simple-menu').should('not.exist');
@@ -263,9 +254,6 @@ describe('Navigation', () => {
           config.settings.experimental = { profileMenuFiori3: true };
           win.Luigi.configChanged();
 
-          cy.wait(1000);
-
-          cy.get('[data-testid="luigi-topnav-profile-btn"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-btn"]').click();
           cy.get('[data-testid="luigi-topnav-profile-avatar"]').should('exist');
           cy.get('[data-testid="luigi-topnav-profile-initials"]').should('not.exist');
@@ -288,6 +276,35 @@ describe('Navigation', () => {
         'href',
         'http://sap.com/en?foo=bar'
       );
+    });
+  });
+
+  describe('Split View and Modal', () => {
+    beforeEach(() => {
+      cy.visitLoggedIn('/projects/pr2');
+    });
+
+    it('keeps a split view open if a modal with the same view is opened and closed again', () => {
+      cy.expectPathToBe('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        cy.wrap(result)
+          .find('a[data-testid="open-overview-in-splitview"]')
+          .click();
+
+        cy.wrap(result)
+          .find('a[data-testid="open-overview-in-modal"]')
+          .click();
+
+        // Modal is open
+        cy.get('div[data-testid="modal-mf"]').should('exist');
+
+        // Close modal
+        cy.get('button[data-testid="lui-modal-index-0"]').click();
+
+        cy.get('#splitViewContainer').should('exist');
+        cy.get('#splitViewDragger').should('exist');
+        cy.get('div[data-testid="modal-mf"]').should('not.exist');
+      });
     });
   });
 });

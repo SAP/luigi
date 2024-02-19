@@ -122,7 +122,7 @@
     }
 
     elements.split.style.top = `${SplitViewSvc.splitViewValues.top}px`;
-    elements.iframe.style.marginBottom = `${SplitViewSvc.splitViewValues.bottom}px`;
+    elements.iframe.style.marginBottom = `${elements.split.clientHeight}px`;
   };
 
   function _messageHandler(e) {
@@ -300,6 +300,8 @@
         id="splitViewDraggerCollapsed"
         class="splitViewSeparator isCollapsed"
       >
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-missing-attribute -->
         <a
           class="lui-collapse-btn"
           on:click|stopPropagation|preventDefault={expand}
@@ -317,6 +319,8 @@
   <div id="splitViewDraggerBackdrop" />
   <div id="splitViewDragger" on:mousedown|stopPropagation={onDragStart}>
     <div class="splitViewSeparator" />
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-missing-attribute -->
     <a
       class="lui-collapse-btn"
       on:click|stopPropagation|preventDefault={collapse}
@@ -326,9 +330,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
-  @import 'src/styles/_variables.scss';
-
+<style lang="scss">
   $collapsedSplitviewHeight: 38px;
   $colorNeutral4: #89919a;
 
@@ -338,7 +340,7 @@
     margin-bottom: $collapsedSplitviewHeight;
   }
 
-  :global(.splitViewContainer) {
+  .splitViewContainer {
     position: absolute;
     bottom: 0;
     right: 0;

@@ -16,7 +16,7 @@ describe('Web Container Test', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getCurrentLocale()=en');
-          expect(stub.getCall(1)).to.be.calledWith('LuigiClient.getActiveFeatureToggles()=["ft1","ft2"]');
+          expect(stub.getCall(1)).to.be.calledWith('LuigiClient.getActiveFeatureToggles()=ft1,ft2,2');
           expect(stub.getCall(2)).to.be.calledWith('LuigiClient.uxManager().getCurrentTheme()=sap_fiori_3');
         });
     });

@@ -3,7 +3,7 @@ import { containerService } from '../services/container.service';
 
 export class ContainerAPIFunctions {
   /**
-   * Updates the context of the microfrontend by sending a message to the iframe that sets the context of the microfrontend
+   * Updates the context of the microfrontend by sending a message to the iframe or webcomponent that sets the context of the microfrontend
    * @param contextObj The context data
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
@@ -15,7 +15,9 @@ export class ContainerAPIFunctions {
         iframeHandle,
         {
           context: contextObj,
-          internal: internalParameter
+          internal: internalParameter,
+          // set withoutSync to true for the container case to avoid browser history changes from luigi client
+          withoutSync: true
         },
         LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );
@@ -26,7 +28,7 @@ export class ContainerAPIFunctions {
 
   /**
    * Send a custom message to the referenced iframe or web component
-   * @param id the id of the web component
+   * @param id a string containing the message id
    * @param mainComponent a reference to the web component to be affected
    * @param isWebcomponent predicate showing if currently referencing a web component or not
    * @param iframeHandle a reference to the iframe to be affected
@@ -51,7 +53,7 @@ export class ContainerAPIFunctions {
    * @param dismissKey the dismiss key being sent if any
    * @param iframeHandle the handle of the iframe to send the message to
    */
-  closeAlert (id: any, dismissKey: any, iframeHandle: any) {
+  closeAlert(id: any, dismissKey: any, iframeHandle: any) {
     containerService.sendCustomMessageToIframe(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED);
   }
 }

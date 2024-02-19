@@ -232,12 +232,11 @@
 
       <ul
         class="fd-list fd-list--compact fd-list--navigation fd-list--navigation-indication fd-list--no-border"
-        role="list"
       >
         {#each profileNav.items as profileItem}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             tabindex="-1"
-            role="listitem"
             class="fd-list__item fd-list__item--link"
             on:click={() => onActionClick(profileItem)}
             data-testid={getTestId(profileItem)}
@@ -274,11 +273,12 @@
         {#if hasUserSettings}
           <li
             tabindex="-1"
-            role="listitem"
             class="fd-list__item fd-list__item--link lui-anchor-node"
             on:click|preventDefault={onUserSettingsClick}
             on:keyup={event => handleKeyUp(event)}
           >
+            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a
               tabindex="0"
               class="fd-list__link"
@@ -355,7 +355,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     display: inline-block;
     vertical-align: middle;
@@ -379,9 +379,8 @@
     overflow-y: auto;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    /*TODO: check if FD Styles > 0.18.0 has fixed it*/
     .fd-list__title {
-      line-height: var(--sapContent_LineHeight, 1.4);
-    }
+      line-height: var(--sapContent_LineHeight);
+    } 
   }
 </style>

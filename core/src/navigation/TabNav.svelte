@@ -1,11 +1,22 @@
 <script>
-  import { afterUpdate, beforeUpdate, createEventDispatcher, onMount, getContext, onDestroy } from 'svelte';
+  import {
+    afterUpdate,
+    beforeUpdate,
+    createEventDispatcher,
+    onMount,
+    getContext,
+    onDestroy,
+  } from 'svelte';
   import { Navigation } from './services/navigation';
-  import { NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
+  import {
+    NavigationHelpers,
+    RoutingHelpers,
+    StateHelpers,
+  } from '../utilities/helpers';
   import { LuigiConfig } from '../core-api';
   import StatusBadge from './StatusBadge.svelte';
-  
-  import TabHeader from './TabHeader.svelte'; 
+
+  import TabHeader from './TabHeader.svelte';
 
   export let children;
   export let pathData;
@@ -33,11 +44,11 @@
       selectedNode,
       selectedNodeForTabNav,
       dropDownStates,
-      isMoreBtnExpanded
+      isMoreBtnExpanded,
     }),
-    set: obj => {
+    set: (obj) => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach(prop => {
+        Object.getOwnPropertyNames(obj).forEach((prop) => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -51,7 +62,7 @@
           }
         });
       }
-    }
+    },
   };
 
   const dispatch = createEventDispatcher();
@@ -64,12 +75,12 @@
     const componentData = __this.get();
     const tabNavData = await Navigation.getTabNavData(
       { ...componentData },
-      componentData
+      componentData,
     );
     if (!tabNavData) {
       return;
     }
-    __this.set({ ...tabNavData });  
+    __this.set({ ...tabNavData });
     previousPathData = pathData;
     window['LEFTNAVDATA'] = tabNavData.groupedChildren;
     setTimeout(calcTabsContainer);
@@ -77,7 +88,9 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
+    let tabsContainer = document.getElementsByClassName(
+      'luigi-tabsContainer',
+    )[0];
     let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
     let moreLink = document.getElementsByClassName('luigi__more')[0];
     let tabsContainerOffsetWidth;
@@ -90,7 +103,7 @@
     if (tabsContainer) {
       tabsContainerOffsetWidth = tabsContainer.offsetWidth;
       let tabs = [...tabsContainer.children];
-      tabs.forEach(element => {
+      tabs.forEach((element) => {
         style = element.currentStyle || window.getComputedStyle(element);
         margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
         totalTabsSize += element.offsetWidth + margin;
@@ -105,7 +118,9 @@
             .classList.remove('hide_element');
           hasMoreBtnElements = true;
         } else {
-          document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
+          document
+            .querySelector('li[uid="' + uid + '"]')
+            .classList.add('hide_element');
         }
       });
       !hasMoreBtnElements
@@ -115,10 +130,12 @@
   };
 
   const clearTapNav = () => {
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
+    let tabsContainer = document.getElementsByClassName(
+      'luigi-tabsContainer',
+    )[0];
     if (tabsContainer !== undefined) {
       const tabs = [...tabsContainer.children];
-      tabs.forEach(element => {
+      tabs.forEach((element) => {
         element.classList.remove('hide_element');
       });
     }
@@ -126,12 +143,15 @@
 
   /**
    * This function attaches on Svelte's ResizeObserver to detect the height of the component so that the 'top' distance property
-   * is changed according to the variable horizontal tabnav web component height. 
+   * is changed according to the variable horizontal tabnav web component height.
    */
   const handleHorizontalNavHeightChange = () => {
     resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        document.documentElement.style.setProperty('--luigi__horizontal-nav--live-height', entry.contentRect.height + 'px');
+        document.documentElement.style.setProperty(
+          '--luigi__horizontal-nav--live-height',
+          entry.contentRect.height + 'px',
+        );
       }
     });
     setTimeout(() => {
@@ -140,33 +160,36 @@
         resizeObserver.observe(luiTabs);
       }
     });
-  }
+  };
 
   /**
    * This function resets ResizeObserver's affected property to 0 and it is used to reset the state upon destroying of the TabNav component.
    */
   const resetResizeObserver = () => {
-    if(resizeObserver) {
+    if (resizeObserver) {
       resizeObserver.disconnect();
     }
-  }
-
+  };
 
   onMount(() => {
-    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    hideNavComponent = LuigiConfig.getConfigBooleanValue(
+      'settings.hideNavigation',
+    );
     handleHorizontalNavHeightChange();
     StateHelpers.doOnStoreChange(
       store,
       () => {
         setTabNavData();
       },
-      ['navigation.viewgroupdata']
+      ['navigation.viewgroupdata'],
     );
   });
 
   onDestroy(() => {
     resetResizeObserver();
-    document.documentElement.style.removeProperty('--luigi__horizontal-nav--live-height');
+    document.documentElement.style.removeProperty(
+      '--luigi__horizontal-nav--live-height',
+    );
   });
 
   // [svelte-upgrade warning]
@@ -204,7 +227,9 @@
   }
 
   function isExpanded(nodes, expandedList) {
-    return expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0;
+    return (
+      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
+    );
   }
 
   function isSelectedCat(key, selectedNodeForTabNav) {
@@ -254,8 +279,7 @@
   on:blur={closeAllDropdowns}
   on:resize={onResize}
 />
-{#if children && pathData.length > 0 &&
-  (pathData[0].topNav === false || pathData.length > 1)}
+{#if children && pathData.length > 0 && (pathData[0].topNav === false || pathData.length > 1)}
   <div class="lui-tabs" id="tabsContainer">
     {#if selectedNode.parent && selectedNode.parent.tabNav && selectedNode.parent.tabNav.showAsTabHeader}
       <TabHeader node={selectedNode.parent} />
@@ -263,7 +287,7 @@
     <nav
       class="fd-tabs fd-tabs--l"
       role="tablist"
-      on:toggleDropdownState={event => toggleDropdownState(event.name)}
+      on:toggleDropdownState={(event) => toggleDropdownState(event.name)}
     >
       <div class="tabsContainerWrapper">
         <div class="tabsContainer luigi-tabsContainer">
@@ -283,6 +307,7 @@
                         class="fd-tabs__link"
                         href={getRouteLink(node)}
                         role="tab"
+                        data-testid={NavigationHelpers.getTestId(node)}
                         aria-selected={node === selectedNodeForTabNav}
                         on:click|preventDefault={() => handleClick(node)}
                       >
@@ -295,15 +320,17 @@
                   {/if}
                 {/if}
               {/each}
-            {:else if nodes.filter(node => !node.hideFromNav && node.label).length > 0}
+            {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
               <span
                 class="fd-tabs__item"
                 uid="{index}-0"
-                on:click={event => event.stopPropagation()}
+                on:click={(event) => event.stopPropagation()}
                 isSelected={isSelectedCat(key, selectedNodeForTabNav)}
               >
                 <div class="fd-popover">
                   <div class="fd-popover__control">
+                    <!-- svelte-ignore a11y-missing-attribute -->
                     <a
                       class="fd-tabs__link has-child"
                       aria-expanded="false"
@@ -330,6 +357,7 @@
                                 <a
                                   href={getRouteLink(node)}
                                   class="fd-menu__link"
+                                  data-testid={NavigationHelpers.getTestId(node)}
                                   on:click|preventDefault={() =>
                                     handleClick(node)}
                                   aria-selected={node === selectedNodeForTabNav}
@@ -354,8 +382,13 @@
       </div>
 
       <div class="luigi-tabsMoreButton">
-        <span class="fd-tabs__item" on:click={event => event.stopPropagation()}>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <span
+          class="fd-tabs__item"
+          on:click={(event) => event.stopPropagation()}
+        >
           <div class="fd-popover fd-popover--right">
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a
               class="fd-tabs__link fd-popover__control has-child luigi__more"
               aria-expanded="false"
@@ -379,6 +412,7 @@
                         <a
                           href={getRouteLink(node)}
                           class="fd-nested-list__link"
+                          data-testid={NavigationHelpers.getTestId(node)}
                           on:click|preventDefault={() => handleClick(node)}
                           aria-selected={node === selectedNodeForTabNav}
                         >
@@ -391,10 +425,12 @@
                     {/each}
                   {:else}
                     <li class="fd-nested-list__item" uid="{index}-0">
+                      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                       <div
                         class="fd-nested-list__content has-child"
                         tabindex="0"
                       >
+                        <!-- svelte-ignore a11y-invalid-attribute -->
                         <a
                           href="javascript:void(null)"
                           tabindex="-1"
@@ -404,7 +440,7 @@
                           aria-expanded={dropDownStates[key + index]}
                           aria-selected={isSelectedCat(
                             key,
-                            selectedNodeForTabNav
+                            selectedNodeForTabNav,
                           )}
                           on:click|preventDefault={() =>
                             toggleDropdownState(key + index)}
@@ -444,6 +480,7 @@
                               <a
                                 class="fd-nested-list__link"
                                 href={getRouteLink(node)}
+                                data-testid={NavigationHelpers.getTestId(node)}
                                 on:click|preventDefault={() =>
                                   handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
@@ -469,10 +506,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
-  @import 'src/styles/_mixins.scss';
-  @import 'src/styles/_variables.scss';
-
+<style lang="scss">
   .tabsContainer {
     width: 100%;
   }
@@ -513,11 +547,43 @@
     }
   }
 
+  .lui-breadcrumb .luigi-tabsContainer .fd-popover__body {
+    max-height: calc(
+      100vh - calc(
+          var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
+            var(
+              --luigi__horizontal-nav--live-height,
+              var(--luigi__horizontal-nav--height)
+            )
+        )
+    );
+    overflow-y: auto;
+  }
+
+  .luigi-tabsContainer .fd-popover__body {
+    max-height: calc(
+      100vh - calc(
+          var(--luigi__shellbar--height) +
+            var(
+              --luigi__horizontal-nav--live-height,
+              var(--luigi__horizontal-nav--height)
+            )
+        )
+    );
+    overflow-y: auto;
+  }
+
   :global(.luigi-tabsMoreButton.hide_element) {
     display: none;
   }
   :global(.luigi-tabsMoreButton .fd-nested-list__item.hide_element) {
     display: none;
+  }
+
+  :global(.fd-tool-layout .lui-main-content) {
+    .lui-tabs#tabsContainer {
+      left: 0;
+    }
   }
 
   .lui-tabs {

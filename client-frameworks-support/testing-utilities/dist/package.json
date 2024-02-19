@@ -1,0 +1,26 @@
+{
+  "name": "@luigi-project/testing-utilities",
+  "description": "Luigi testing utilities for standalone testing of microfrontends",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "tag": "testing-utilities"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://github.com/SAP/luigi.git"
+  },
+  "keywords": [
+    "luigi",
+    "UI",
+    "extensibility",
+    "micro-frontends",
+    "microfrontends",
+    "testing"
+  ],
+  "version": "2.9.0",
+  "engines": {
+    "node": ">=18"
+  }
+}

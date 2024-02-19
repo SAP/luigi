@@ -25,6 +25,39 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.9.0] (2024-02-13)
+
+#### :rocket: Added
+* [#3486](https://github.com/SAP/luigi/pull/3486) Btp layout ([@hardl](https://github.com/hardl))
+* [#3638](https://github.com/SAP/luigi/pull/3638) Fix: use SameSite=None and Secure attributes for cookie deletions ([@vladm9800](https://github.com/vladm9800))
+* [#3635](https://github.com/SAP/luigi/pull/3635) Add datatest-id to tab nav ([@ndricimrr](https://github.com/ndricimrr))
+* [#3494](https://github.com/SAP/luigi/pull/3494) Set view group data for wc api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3623](https://github.com/SAP/luigi/pull/3623) Refactor testing-utilities and angular v17 support in client-support-angular library ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+## [v2.8.0] (2024-01-23)
+
+#### :rocket: Added
+* [#3590](https://github.com/SAP/luigi/pull/3590) Lazy loading option for compound web component mode ([@camelCaseChris](https://github.com/camelCaseChris))
+
+#### :bug: Fixed
+* [#3572](https://github.com/SAP/luigi/pull/3572) Calc max-height for tabNav dropdown ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3564](https://github.com/SAP/luigi/pull/3564) Fix resizing when drawer opens/closes ([@camelCaseChris](https://github.com/camelCaseChris))
+
+
+
+## [v2.7.5] (2023-12-06)
+
+#### :bug: Fixed
+* [#3544](https://github.com/SAP/luigi/pull/3544) Fix addNavHrefs for ContextSwitcher and TopNavDropDown ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.7.4] (2023-12-04)
 
 #### :bug: Fixed
@@ -1702,3 +1735,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.7.2]: https://github.com/SAP/luigi/compare/v2.7.1...v2.7.2
 [v2.7.3]: https://github.com/SAP/luigi/compare/v2.7.2...v2.7.3
 [v2.7.4]: https://github.com/SAP/luigi/compare/v2.7.3...v2.7.4
+[v2.7.5]: https://github.com/SAP/luigi/compare/v2.7.4...v2.7.5
+[v2.8.0]: https://github.com/SAP/luigi/compare/v2.7.5...v2.8.0
+[v2.9.0]: https://github.com/SAP/luigi/compare/v2.8.0...v2.9.0

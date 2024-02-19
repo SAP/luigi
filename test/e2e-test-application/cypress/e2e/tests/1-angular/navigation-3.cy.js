@@ -138,6 +138,25 @@ describe('Navigation', () => {
           cy.wrap(result).contains('Global Settings');
         });
       });
+      it('scrollable dropdown in tabNav', () => {
+        cy.viewport(1000, 300);
+        cy.get('[data-testid="tabnavheader_tabnavheader"]').click();
+        cy.get('.tabsContainer')
+          .contains('Header 3')
+          .click();
+        cy.get('.tabsContainer .fd-popover__body').then($div => {
+          const hasScrollbar = $div[0].scrollHeight > $div[0].clientHeight;
+          expect(hasScrollbar).to.be.true;
+        });
+        cy.get('.tabsContainer .fd-popover__body')
+          .contains('TabNav 8')
+          .should('be.not.visible');
+
+        cy.get('.tabsContainer .fd-popover__body').scrollTo('bottom');
+        cy.get('.tabsContainer .fd-popover__body')
+          .contains('TabNav 8')
+          .should('be.visible');
+      });
     });
 
     context('Mobile', () => {
@@ -215,7 +234,6 @@ describe('Navigation', () => {
             .contains('Miscellaneous 2')
             .should('not.exist');
           cy.get('[data-testid="semiCollapsibleButton"]').click();
-          cy.wait(1000);
           cy.get('.fd-tabs__item')
             .contains('Miscellaneous2')
             .should('be.visible');

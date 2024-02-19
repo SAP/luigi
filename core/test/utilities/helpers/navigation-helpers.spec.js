@@ -7,7 +7,6 @@ import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/uti
 import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../../src/core-api';
 import { Routing } from '../../../src/services/routing';
 import { Navigation } from '../../../src/navigation/services/navigation';
-import { Iframe } from '../../../src/services/iframe';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
@@ -569,7 +568,7 @@ describe('Navigation-helpers', () => {
         nodes[1].category.collapsible = true;
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
         assert.deepEqual(Object.keys(result), ['luigi', 'test']);
-        assert.deepEqual(result.luigi['metaInfo'], { label: 'luigi', order: 1 });
+        assert.deepEqual(result.luigi['metaInfo'], { label: 'luigi', order: 1, categoryUid: 'luigi' });
         assert.deepEqual(result.test['metaInfo'], {
           label: 'test',
           order: 0,
@@ -597,7 +596,7 @@ describe('Navigation-helpers', () => {
         };
         nodes.push(node);
         const result = NavigationHelpers.groupNodesBy(nodes, 'category', true);
-        assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2 });
+        assert.deepEqual(result.luigi.metaInfo, { label: 'luigi', order: 2, categoryUid: 'luigi' });
       });
       it('first category object counts - part 2', () => {
         const node = {
@@ -848,7 +847,7 @@ describe('Navigation-helpers', () => {
     };
     beforeEach(() => {
       sinon.stub(LuigiI18N, 'getTranslation').returns('myNode {viewGroupData.foo}');
-      sinon.stub(Iframe, 'getViewGroupSettings').returns({ _liveCustomData: { foo: 'Luigi rocks!' } });
+      sinon.stub(NavigationHelpers, 'getViewGroupSettings').returns({ _liveCustomData: { foo: 'Luigi rocks!' } });
     });
     afterEach(() => {
       sinon.restore();
@@ -862,6 +861,111 @@ describe('Navigation-helpers', () => {
       delete node.viewGroup;
       assert.notEqual(NavigationHelpers.getNodeLabel(node), 'myNode Luigi rocks!');
       assert.equal(NavigationHelpers.getNodeLabel(node), 'myNode {viewGroupData.foo}');
+    });
+  });
+
+  describe('getViewGroupSettings', () => {
+    let viewGroupSettings;
+    beforeEach(() => {
+      viewGroupSettings = {
+        ham: {
+          preloadUrl: 'ham.html'
+        },
+        cheese: {
+          preloadUrl: 'cheese.html'
+        },
+        ananas: {
+          preloadUrl: 'ananas.html'
+        }
+      };
+      sinon.stub(NavigationHelpers, 'getAllViewGroupSettings').callsFake(() => {
+        return viewGroupSettings;
+      });
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('return viewgroup from viewgroup settings', () => {
+      assert.deepEqual(NavigationHelpers.getViewGroupSettings('ananas'), {
+        preloadUrl: 'ananas.html'
+      });
+    });
+    it('no view group found in viewgroup settings', () => {
+      assert.deepEqual(NavigationHelpers.getViewGroupSettings(''), {});
+      assert.deepEqual(NavigationHelpers.getViewGroupSettings('somethingElse'), {});
+    });
+  });
+
+  describe('findViewGroup', () => {
+    const noViewGroupInNode = {
+      link: 'child-node',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    const viewGroupInNode = {
+      link: 'child-node',
+      viewGroup: 'tets 1',
+      parent: {
+        pathSegment: 'parent-node'
+      }
+    };
+
+    const viewGroupInNodeParent = {
+      link: 'child-node',
+      viewUrl: './relative',
+      parent: {
+        pathSegment: 'parent-node',
+        viewGroup: 'tets 1-1',
+        viewUrl: './relative/foo/bar'
+      }
+    };
+
+    const viewGroupInParentOfNodeParent = {
+      link: 'child-node',
+      viewUrl: 'http://bla.blub/but/something/else',
+      parent: {
+        pathSegment: 'parent-node',
+        parent: {
+          pathSegment: 'parent-parent-node',
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
+        }
+      }
+    };
+
+    const viewGroupInParentOfNodeParentDifferentUrl = {
+      link: 'child-node',
+      viewUrl: 'http://bla2.blub/foo/bar',
+      parent: {
+        pathSegment: 'parent-node',
+        parent: {
+          pathSegment: 'parent-parent-node',
+          viewGroup: 'tets 1-1-1',
+          viewUrl: 'http://bla.blub/foo/bar'
+        }
+      }
+    };
+
+    it('return viewGroup from node', () => {
+      assert.deepEqual(NavigationHelpers.findViewGroup(viewGroupInNode), 'tets 1');
+    });
+
+    it('return viewGroup from node.parent', () => {
+      assert.deepEqual(NavigationHelpers.findViewGroup(viewGroupInNodeParent), 'tets 1-1');
+    });
+
+    it('return viewGroup from parent at node.parent', () => {
+      assert.deepEqual(NavigationHelpers.findViewGroup(viewGroupInParentOfNodeParent), 'tets 1-1-1');
+    });
+
+    it('do not return viewGroup from parent at node.parent if domains do not match', () => {
+      assert.equal(NavigationHelpers.findViewGroup(viewGroupInParentOfNodeParentDifferentUrl), undefined);
+    });
+
+    it('return undefined if viewGroup is not inside node', () => {
+      assert.equal(NavigationHelpers.findViewGroup(noViewGroupInNode), undefined);
     });
   });
 

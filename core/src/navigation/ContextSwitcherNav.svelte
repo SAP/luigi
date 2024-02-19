@@ -11,9 +11,9 @@
   export let isMobile;
   export let getNodeName;
   export let getRouteLink;
-  export let getTestId;
   export let getTranslation;
   export let isContextSwitcherDropdownShown;
+
   const dispatch = createEventDispatcher();
   export function onActionClick(node) {
     dispatch('onActionClick', { node });
@@ -29,10 +29,11 @@
     <ul class="fd-menu__list fd-menu__list--top">
       {#each actions as node}
         {#if node.position === 'top' || !['top', 'bottom'].includes(node.position)}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="fd-menu__item"
             on:click={() => onActionClick(node)}
-            data-testid={getTestId(node)}
+            data-testid={NavigationHelpers.getTestId(node)}
           >
             <a
               href={getRouteLink(node)}
@@ -64,10 +65,11 @@
     {#if options && options.length}
       {#each options as node}
         {#await getNodeName(node.label, config.fallbackLabelResolver, node.id) then label}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="fd-menu__item"
             on:click={() => goToOption(node, selectedOption)}
-            data-testid={getTestId(node)}
+            data-testid={NavigationHelpers.getTestId(node)}
           >
             {#if customOptionsRenderer}
               {@html customOptionsRenderer(node, label === selectedLabel)}
@@ -94,10 +96,11 @@
     <ul class="fd-menu__list fd-menu__list--bottom">
       {#each actions as node}
         {#if node.position === 'bottom'}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li
             class="fd-menu__item"
             on:click={() => onActionClick(node)}
-            data-testid={getTestId(node)}
+            data-testid={NavigationHelpers.getTestId(node)}
           >
             <a
               href={getRouteLink(node)}
@@ -115,7 +118,7 @@
   {/if}
 </nav>
 
-<style type="text/scss">
+<style lang="scss">
   :global(.fd-popover__body) {
     .lui-ctx-switch-nav {
       max-height: calc(100vh - 76px);

@@ -1,11 +1,3 @@
-export declare interface NodeParams {
-  [key: string]: string;
-}
-
-export declare interface UserSettings {
-  [key: string]: number | string | boolean;
-}
-
 export declare interface WebComponentSettings {
   type?: string;
   selfRegistered?: boolean;
@@ -15,89 +7,141 @@ export declare interface WebComponentSettings {
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
+   * 
+   * @since 1.0.0
    */
   viewurl: string;
 
   /**
-   * The context to be passed to the microfrontend
+   * If set to true defers from initializing the microfronted automatically. In that case init() can be used
+   * 
+   * @since 1.0.0
    */
-  context: any;
+  deferInit: boolean;
+
+  /**
+   * The stringified context object to be passed to the microfrontend
+   * @since 1.0.0
+   */
+  context: string;
 
   /**
    * Label information for the microfrontend
+   * @since 1.0.0
    */
   label: string;
 
   /**
    * Predicate that sets whether the microfrontend is to be rendered in a web component or not. It can also be an object with the following attributes:
-   * @param {Object} [WebComponentSettings]
+   * @param {boolean} specifies if a microfrontend is a webcomponent or not without any other settings.
+   * @param {Object} [WebComponentSettings] specifies that the microfrontend is a webcomponent with addtional settings.
    * @param {string} WebComponentSettings.type: string, like module.
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
+   * @param {string} string must be a stringified boolean or JSON object from type `WebComponentSettings`.
+   * @since 1.0.0
    */
-  webcomponent: boolean | WebComponentSettings;
+  webcomponent: boolean | WebComponentSettings | string;
 
   /**
    * The locale to be passed to the web-component-based micro frontend
+   * @since 1.0.0
    */
   locale: string;
 
   /**
    * The theme to be passed to the  web-component-based micro frontend
+   * @since 1.0.0
    */
   theme: string;
 
   /**
    * The list of active feature toggles to be passed to the web-component-based micro frontend
+   * @since 1.0.0
    */
   activeFeatureToggleList: string[];
 
   /**
-   * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
+   * If set to true, skips handshake and ready event is fired immediately 
+   * @since 1.0.0
    */
-  nodeParams: NodeParams;
+  skipInitCheck: boolean;
+
+  /**
+   * The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
+   * @since 1.0.0
+   */
+  nodeParams: Object;
 
   /**
    * The search parameters to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
-  searchParams: any;
+  searchParams: Object;
 
   /**
    * The path parameters to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
-  pathParams: any;
+  pathParams: Object;
 
   /**
    * The clientPermissions to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
-  clientPermissions: any;
-
-  /**
-   * Updates the context of the microfrontend
-   * @param contextObj The context object to be updated
-   * @param internal internal microfrotend data
-   */
-  updateContext(contextObj: any, internal?: any): Function;
-
-  /**
-   * Notifies the microfrontend that the opened alert has been closed
-   * @param id the id of the opened alert
-   * @param dismissKey the key specifying which dismiss link was clicked on the alert message
-   */
-  closeAlert(id: any, dismissKey: any): Function;
-
-  /**
-   * Manually triggers the micro frontend rendering process when using defer-init attribute
-   */
-  init(): Function;
+  clientPermissions: Object;
 
   /**
    * The user settings to be passed to the web-component-based micro frontend
+   * @since 1.0.0
    */
-  userSettings: UserSettings;
+  userSettings: Object;
 
   /**
    * The anchor value to be passed to the web-component-based micro frontend.
+   * @since 1.0.0
    */
   anchor: string;
+
+  /**
+   * Function that updates the context of the microfrontend
+   * @param {Object} contextObj The context data
+   * @param {Object} internal internal luigi legacy data used for iframes
+   * 
+   * @example
+   * containerElement.updateContext({newContextData: 'some data'})
+   * @since 1.0.0
+   */
+  updateContext(contextObj: Object, internal?: Object): void;
+
+  /**
+   * Send a custom message to the microfronted
+   * @param id a string containing the message id
+   * @param data data to be sent alongside the custom message
+   * 
+   * @example
+   * containerElement.sendCustomMessage('my-message-id', {dataToSend: 'some data'})
+   * @since 1.0.0
+   */
+  sendCustomMessage(id: string, data?: Object): void;
+
+  /**
+   * A function that notifies the microfrontend that the opened alert has been closed
+   * @param id the id of the opened alert
+   * @param dismissKey the key specifying which dismiss link was clicked on the alert message
+   * 
+   * @example
+   * containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
+   * @since 1.0.0
+   */
+  closeAlert(id: string, dismissKey: string): void;
+
+  /**
+   * Manually triggers the micro frontend rendering process when using defer-init attribute
+   * 
+   * @example
+   * containerElement.init()
+   * @since 1.0.0
+   */
+  init(): void;
 }

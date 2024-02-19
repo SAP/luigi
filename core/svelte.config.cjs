@@ -1,4 +1,9 @@
+const { resolve } = require('node:path');
+const { pathToFileURL } = require('node:url');
 const preprocess = require('svelte-preprocess');
+
+const variablePath = resolve(__dirname, 'src/styles', 'variables');
+const mixinPath = resolve(__dirname, 'src/styles', 'mixins');
 
 const config = {
   extensions: ['.svelte'],
@@ -8,7 +13,7 @@ const config = {
   preprocess: [
     preprocess({
       scss: {
-        prependData: '@use "src/variables.scss" as *;'
+        prependData: `@import "${pathToFileURL(variablePath)}", "${pathToFileURL(mixinPath)}";`
       }
     })
   ]
