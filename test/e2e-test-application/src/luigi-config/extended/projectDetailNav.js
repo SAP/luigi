@@ -479,11 +479,51 @@ export const projectDetailNavStructure = projectId => [
     label: 'Nav Sync',
     icon: 'synchronize',
     navigationContext: 'navSync',
-    children: ['one', 'two', 'three', 'four'].map(seg => ({
-      label: seg,
-      pathSegment: seg,
-      viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
-    }))
+    children: [
+      ...['one', 'two', 'three', 'four'].map(seg => ({
+        label: seg,
+        pathSegment: seg,
+        viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
+      })),
+      {
+        label: 'Flat Dynamic Parameter',
+        pathSegment: 'dynamic-parameter-flat',
+        viewUrl: '/sampleapp.html#/dynamic-parameter-flat',
+        children: [
+          {
+            pathSegment: ':dynamic',
+            label: 'Dynamic Parameter',
+            viewUrl: '/sampleapp.html#/dynamic-parameter-flat/:dynamic'
+          }
+        ]
+      },
+      {
+        label: 'Stacked Dynamic Parameter',
+        pathSegment: 'dynamic-parameter-stacked',
+        viewUrl: '/sampleapp.html#/dynamic-parameter-stacked',
+        children: [
+          {
+            pathSegment: ':dynamic1',
+            label: 'Dynamic Parameter',
+            viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1',
+            children: [
+              {
+                pathSegment: 'child',
+                label: 'Child',
+                viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1/child',
+                children: [
+                  {
+                    pathSegment: ':dynamic2',
+                    label: 'Dynamic Parameter 2',
+                    viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1/child/:dynamic2'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     label: 'Open Github in new tab',
