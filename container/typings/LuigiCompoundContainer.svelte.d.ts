@@ -85,5 +85,5 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * Manually triggers the micro frontend rendering process when using defer-init attribute
    * @since 1.0.0
    */
-  init();
+  init(): void;
 }
