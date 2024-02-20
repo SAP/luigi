@@ -175,6 +175,11 @@ class IframeClass {
     if (viewUrl) {
       viewUrl = RoutingHelpers.substituteViewUrl(viewUrl, componentData);
     }
+
+    if (componentData.currentNode.compound) {
+      viewUrl = '_none_';
+    }
+
     const isSameViewGroup = IframeHelpers.isSameViewGroup(config, component);
     const previousViewIsolated = this.hasIsolatedView(
       componentData.previousNodeValues.isolateView,

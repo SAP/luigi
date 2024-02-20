@@ -231,6 +231,46 @@ class IframeHelpersClass {
     if (currentNode && currentNode.clientPermissions) {
       iframe.luigi.clientPermissions = currentNode.clientPermissions;
     }
+
+    if (currentNode && currentNode.compound) {
+      iframe.srcdoc = /* html */ `
+              <!DOCTYPE html>
+              <html lang="en">
+              
+              <head>
+                <title></title>
+                <meta charset="utf-8">
+                <style>
+                  body {
+                    margin: 0;
+                  }
+                </style>
+                <script src="https://cdn.jsdelivr.net/npm/@luigi-project/client/luigi-client.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@luigi-project/container" type="module"></script>
+              </head>
+              <body>
+                <script>
+                  let cc;
+                  LuigiClient.addInitListener(ctx => {
+                    customElements.whenDefined('luigi-compound-container').then(() => {
+                      cc = document.createElement('luigi-compound-container');
+                      cc.viewurl = ctx.viewUrl;
+                      cc.context = JSON.stringify(ctx);
+                      cc.compoundConfig = ctx.compoundConfig;
+                      document.body.appendChild(cc);
+                    });
+                  });
+              
+                  LuigiClient.addContextUpdateListener(ctx => {
+                    cc.updateContext(ctx);
+                  });
+              
+                </script>
+              </body>
+              
+              </html>
+      `;
+    }
     const iframeInterceptor = LuigiConfig.getConfigValue('settings.iframeCreationInterceptor');
     if (GenericHelpers.isFunction(iframeInterceptor)) {
       try {

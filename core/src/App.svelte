@@ -153,10 +153,21 @@
       return;
     }
 
+    let ctx = config.context || context;
+    if (config.iframe.luigi.currentNode.compound) {
+      ctx = {
+        ...ctx,
+        ...({
+          compoundConfig: config.iframe.luigi.currentNode.compound,
+          viewUrl: config.iframe.luigi.currentNode.viewUrl
+        })
+      };
+    }
+
     const message = {
       msg: 'luigi.init',
       context: JSON.stringify(
-        Object.assign({}, config.context || context, goBackContext),
+        Object.assign({}, ctx, goBackContext),
       ),
       nodeParams: JSON.stringify(
         Object.assign({}, config.nodeParams || nodeParams),
