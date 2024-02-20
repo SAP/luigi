@@ -160,7 +160,9 @@ describe('Navigation', () => {
 
     it('Define a data-testid for close button on modal', () => {
       cy.window().then(win => {
-        win.Luigi.navigation().openAsModal('/projects/pr1/developers', { closebtn_data_testid: 'MyCustomTestId' });
+        win.Luigi.navigation().openAsModal('/projects/pr1/developers', {
+          closebtn_data_testid: 'MyCustomTestId'
+        });
       });
       cy.get('[data-testid=MyCustomTestId]')
         .should('be.visible')
@@ -172,14 +174,14 @@ describe('Navigation', () => {
         .should('be.visible')
         .click();
     });
+  });
 
-    it('Nav sync - click sidenav', () => {
-      // projects page
+  describe('Nav sync', () => {
+    beforeEach(() => {
       cy.get('.fd-shellbar')
         .contains('Projects')
         .click();
 
-      //projects page
       cy.get('.fd-app__sidebar')
         .contains('Project Two')
         .click();
@@ -187,7 +189,9 @@ describe('Navigation', () => {
       cy.get('.fd-app__sidebar')
         .contains('Nav Sync')
         .click();
+    });
 
+    it('Nav sync - click sidenav', () => {
       cy.expectPathToBe('/projects/pr2/nav-sync/one');
 
       ['four', 'three', 'two', 'three', 'two'].forEach(label => {
@@ -206,24 +210,7 @@ describe('Navigation', () => {
     });
 
     it('Nav sync - use synched nav', () => {
-      // projects page
-      cy.get('.fd-shellbar')
-        .contains('Projects')
-        .click();
-
-      //projects page
-      cy.get('.fd-app__sidebar')
-        .contains('Project Two')
-        .click();
-
-      cy.get('.fd-app__sidebar')
-        .contains('Nav Sync')
-        .click();
-
-      cy.expectPathToBe('/projects/pr2/nav-sync/one');
-
-      const labels = ['two', 'three', 'four', 'one'];
-      labels.forEach(label => {
+      ['two', 'three', 'four', 'one'].forEach(label => {
         cy.getIframeBody().then($iframeBody => {
           cy.wrap($iframeBody)
             .contains(label)
@@ -231,6 +218,54 @@ describe('Navigation', () => {
         });
         cy.expectPathToBe('/projects/pr2/nav-sync/' + label);
       });
+    });
+
+    it('Nav sync - flat dynamic parameters', () => {
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-flat/1')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-flat/1');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-flat/2')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-flat/2');
+    });
+
+    it('Nav sync - stacked dynamic parameters', () => {
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/1')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/1');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/2')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/1/child')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/1/child');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/2/child')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child');
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('dynamic-parameter-stacked/2/child/3')
+          .click();
+      });
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child/3');
     });
   });
 });
