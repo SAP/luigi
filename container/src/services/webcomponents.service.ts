@@ -127,22 +127,30 @@ export class WebComponentService {
               });
             })
           },          
-          openAsDrawer: () => {
-            
+          openAsDrawer: (route) => {
+            linkManagerInstance.navigate(route)
           },
-          openAsModal: () => {
-            
+          openAsModal: (route) => {
+            linkManagerInstance.navigate(route)
+
           },
-          openAsSplitView: () => {
-            
+          openAsSplitView: (route) => {
+            linkManagerInstance.navigate(route)
+
           },          
           goBack: () => {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, null);
-
           },
           hasBack: () => {
-            this.dispatchLuigiEvent(Events.HAS_BACK_REQUEST, null);
-
+              return new Promise((resolve, reject) => {
+                this.dispatchLuigiEvent(Events.HAS_BACK_REQUEST, {}, (exists)=>{
+                  if (exists !== undefined || exists !== null) {
+                    resolve(exists)
+                  }  else {
+                    reject(new Error('Has back response not received'));
+                  }
+                });
+              })
           }, 
         };
         return linkManagerInstance;
