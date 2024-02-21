@@ -41,7 +41,7 @@
         reflect: false,
         attribute: 'client-permissions',
       },
-      dirtyStatus: {}
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'}
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
