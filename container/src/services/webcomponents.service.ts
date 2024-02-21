@@ -182,7 +182,7 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
           },
           getDirtyStatus: () => {
-            return this.thisComponent.dirtyStatus;
+            return this.thisComponent.dirtyStatus || false;
           },
           getDocumentTitle: () => {
             return this.thisComponent.documentTitle;

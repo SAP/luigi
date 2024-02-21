@@ -40,6 +40,9 @@ export default class extends HTMLElement {
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
+    const getDirtyStatusBtn = document.createElement('template');
+    getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -55,6 +58,8 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+
 
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -146,6 +151,16 @@ export default class extends HTMLElement {
       let getAnchor = this.LuigiClient.getAnchor();
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.getAnchor()=' + JSON.stringify(getAnchor),
+        type: 'info'
+      });
+    });
+
+    this.$getDirtyStatusBtn = this._shadowRoot.querySelector('#getDirtyStatus');
+    this.$getDirtyStatusBtn.addEventListener('click', () => {
+      let dirtyStatus = this.LuigiClient.uxManager().getDirtyStatus();
+      console.log('getDirtyStatus',dirtyStatus)
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.uxManager().getDirtyStatus()=' + (dirtyStatus),
         type: 'info'
       });
     });

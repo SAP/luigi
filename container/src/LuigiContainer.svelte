@@ -86,6 +86,8 @@
   export let searchParams: any;
   export let pathParams: any;
   export let clientPermissions: any;
+  export let dirtyStatus: any;
+
 
   export let userSettings: any;
   export let anchor: string;
@@ -112,7 +114,8 @@
       pathParams &&
       clientPermissions &&
       userSettings &&
-      anchor
+      anchor &&
+      dirtyStatus
     );
   };
 
