@@ -88,9 +88,9 @@ export class WebComponentService {
     return {
       linkManager: () => {
         let fromContext = null;
-        let fromClosestContext = null;
-        let fromVirtualTreeRoot = null;
-        let nodeParams = null;
+        let fromClosestContext = false;
+        let fromVirtualTreeRoot = false;
+        let nodeParams = {};
 
         const linkManagerInstance = {
           navigate: (route , settings = {})=> {
@@ -127,14 +127,14 @@ export class WebComponentService {
               });
             })
           },          
-          openAsDrawer: (route, drawerSettings) => {
+          openAsDrawer: (route, drawerSettings = {}) => {
             
             linkManagerInstance.navigate(route, drawerSettings)
           },
-          openAsModal: (route, modalSettings) => {
+          openAsModal: (route, modalSettings = {}) => {
             linkManagerInstance.navigate(route, modalSettings)
           },
-          openAsSplitView: (route, splitViewSettings) => {
+          openAsSplitView: (route, splitViewSettings = {}) => {
             linkManagerInstance.navigate(route, splitViewSettings)
           },          
           goBack: () => {
