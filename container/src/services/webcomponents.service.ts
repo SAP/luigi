@@ -93,8 +93,8 @@ export class WebComponentService {
         let nodeParams = null;
 
         const linkManagerInstance = {
-          navigate: route => {
-            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams };
+          navigate: (route , settings = {})=> {
+            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams, settings };
             this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route , ...options});
           },
           fromClosestContext: () => {
@@ -127,16 +127,15 @@ export class WebComponentService {
               });
             })
           },          
-          openAsDrawer: (route) => {
-            linkManagerInstance.navigate(route)
+          openAsDrawer: (route, drawerSettings) => {
+            
+            linkManagerInstance.navigate(route, drawerSettings)
           },
-          openAsModal: (route) => {
-            linkManagerInstance.navigate(route)
-
+          openAsModal: (route, modalSettings) => {
+            linkManagerInstance.navigate(route, modalSettings)
           },
-          openAsSplitView: (route) => {
-            linkManagerInstance.navigate(route)
-
+          openAsSplitView: (route, splitViewSettings) => {
+            linkManagerInstance.navigate(route, splitViewSettings)
           },          
           goBack: () => {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, null);
