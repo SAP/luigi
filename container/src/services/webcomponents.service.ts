@@ -191,10 +191,10 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
           removeBackdrop:() => {
-            this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, null);
+            this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
           },
           hideAppLoadingIndicator:() => {
-            this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, null);
+            this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
           },
         };
       },
