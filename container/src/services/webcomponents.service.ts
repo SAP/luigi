@@ -143,9 +143,9 @@ export class WebComponentService {
           },
           hasBack: () => {
               return new Promise((resolve, reject) => {
-                this.dispatchLuigiEvent(Events.HAS_BACK_REQUEST, {}, (exists)=>{
-                  if (exists !== undefined || exists !== null) {
-                    resolve(exists)
+                this.dispatchLuigiEvent(Events.HAS_BACK_REQUEST, {}, (result)=>{
+                  if (result !== undefined || result !== null) {
+                    resolve(result)
                   }  else {
                     reject(new Error('Has back response not received'));
                   }
