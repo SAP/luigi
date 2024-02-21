@@ -114,7 +114,7 @@ export class WebComponentService {
             return linkManagerInstance;
           },
           updateTopNavigation: (): void => {
-            this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, null);
+            this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
           pathExists: () => {
             return new Promise((resolve, reject) => {
@@ -128,7 +128,6 @@ export class WebComponentService {
             })
           },          
           openAsDrawer: (route, drawerSettings = {}) => {
-            
             linkManagerInstance.navigate(route, drawerSettings)
           },
           openAsModal: (route, modalSettings = {}) => {
@@ -137,8 +136,8 @@ export class WebComponentService {
           openAsSplitView: (route, splitViewSettings = {}) => {
             linkManagerInstance.navigate(route, splitViewSettings)
           },          
-          goBack: () => {
-            this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, null);
+          goBack: (goBackContext) => {
+            this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
               return new Promise((resolve, reject) => {
@@ -180,7 +179,7 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.CLOSE_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },
           collapseLeftSideNav:() => {
-            this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, null);
+            this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
           },
           getDirtyStatus: () => {
             return this.thisComponent.dirtyStatus;

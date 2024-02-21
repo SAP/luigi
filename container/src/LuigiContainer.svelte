@@ -41,6 +41,7 @@
         reflect: false,
         attribute: 'client-permissions',
       },
+      dirtyStatus: {}
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
