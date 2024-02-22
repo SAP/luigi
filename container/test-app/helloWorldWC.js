@@ -72,7 +72,6 @@ export default class extends HTMLElement {
     hasBack()
     </button>`;
 
-
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -219,11 +218,10 @@ export default class extends HTMLElement {
 
     this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
     this.$linkManagerOpenAsRequests.addEventListener('click', () => {
-      this.LuigiClient.uxManager().openAsDrawer();
-      this.LuigiClient.uxManager().openAsModal();
-      this.LuigiClient.uxManager().openAsSplitView();
+      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc',{size: 's'});
+      this.LuigiClient.linkManager().openAsModal('hello-world-wc',{size: 'm'});
+      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc',{size: 'l'});
     });
-
   }
 
   set context(ctx) {

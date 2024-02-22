@@ -94,7 +94,7 @@ export class WebComponentService {
 
         const linkManagerInstance = {
           navigate: (route , settings = {})=> {
-            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams, settings };
+            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams, ...settings };
             this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route , ...options});
           },
           fromClosestContext: () => {
@@ -128,13 +128,13 @@ export class WebComponentService {
             })
           },          
           openAsDrawer: (route, drawerSettings = {}) => {
-            linkManagerInstance.navigate(route, drawerSettings)
+            linkManagerInstance.navigate(route, {drawer: drawerSettings})
           },
           openAsModal: (route, modalSettings = {}) => {
-            linkManagerInstance.navigate(route, modalSettings)
+            linkManagerInstance.navigate(route, {modal: modalSettings})
           },
           openAsSplitView: (route, splitViewSettings = {}) => {
-            linkManagerInstance.navigate(route, splitViewSettings)
+            linkManagerInstance.navigate(route, {splitView: splitViewSettings})
           },          
           goBack: (goBackContext) => {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
@@ -173,10 +173,10 @@ export class WebComponentService {
             return this.thisComponent.theme;
           },
           closeUserSettings: () => {
-            this.dispatchLuigiEvent(Events.OPEN_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
+            this.dispatchLuigiEvent(Events.CLOSE_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },          
           openUserSettings: () => {
-            this.dispatchLuigiEvent(Events.CLOSE_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
+            this.dispatchLuigiEvent(Events.OPEN_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },
           collapseLeftSideNav:() => {
             this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
