@@ -60,7 +60,6 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
 
-
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
     }
@@ -158,9 +157,9 @@ export default class extends HTMLElement {
     this.$getDirtyStatusBtn = this._shadowRoot.querySelector('#getDirtyStatus');
     this.$getDirtyStatusBtn.addEventListener('click', () => {
       let dirtyStatus = this.LuigiClient.uxManager().getDirtyStatus();
-      console.log('getDirtyStatus',dirtyStatus)
+      console.log('getDirtyStatus', dirtyStatus);
       this.LuigiClient.uxManager().showAlert({
-        text: 'LuigiClient.uxManager().getDirtyStatus()=' + (dirtyStatus),
+        text: 'LuigiClient.uxManager().getDirtyStatus()=' + dirtyStatus,
         type: 'info'
       });
     });
