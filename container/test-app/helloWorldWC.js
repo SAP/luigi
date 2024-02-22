@@ -44,13 +44,32 @@ export default class extends HTMLElement {
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
     const uxManagerMultipleRequestsBtn = document.createElement('template');
-    uxManagerMultipleRequestsBtn.innerHTML = 
-    `<button id="uxManagerManyRequests">uxManager().closeUserSettings,
+    uxManagerMultipleRequestsBtn.innerHTML = `<button id="uxManagerManyRequests">uxManager().closeUserSettings,
     openUserSettings,
     collapseLeftSideNav,
     setDocumentTitle,
     removeBackdrop,
     hideAppLoadingIndicator,
+    </button>`;
+
+    const linkManagerChainedFunctionsRequestsBtn = document.createElement('template');
+    linkManagerChainedFunctionsRequestsBtn.innerHTML = `<button id="linkManagerChainRequests">
+    linkManager().fromClosestContext,
+    fromContext,
+    fromVirtualTreeRoot,
+    withParams().navigate()
+    </button>`;
+
+    const linkManagerOpenAsRequestsBtn = document.createElement('template');
+    linkManagerOpenAsRequestsBtn.innerHTML = `<button id="linkManagerOpenAsRequests">linkManager().
+    openAsDrawer,
+    openAsModal,
+    openAsSplitView,
+    </button>`;
+
+    const linkManagerHasBackRequestBtn = document.createElement('template');
+    linkManagerHasBackRequestBtn.innerHTML = `<button id="linkManagerHasBackRequest">linkManager().
+    hasBack()
     </button>`;
 
 
@@ -71,9 +90,9 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
 
-
-    
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
     }
@@ -180,20 +199,31 @@ export default class extends HTMLElement {
 
     this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
     this.$uxManagerManyRequests.addEventListener('click', () => {
-      this.LuigiClient.uxManager().closeUserSettings();
+      this.LuigiClient.linkManager().closeUserSettings();
       this.LuigiClient.uxManager().openUserSettings();
       this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().setDocumentTitle('my-title');
       this.LuigiClient.uxManager().removeBackdrop();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
-
-      // this.LuigiClient.uxManager().showAlert({
-      //   text: 'LuigiClient.uxManager().getDirtyStatus()=' + dirtyStatus,
-      //   type: 'info'
-      // });
     });
 
-    
+    this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
+    this.$linkManagerChainRequests.addEventListener('click', () => {
+      this.LuigiClient.linkManager().closeUserSettings();
+      this.LuigiClient.linkManager().openUserSettings();
+      this.LuigiClient.linkManager().collapseLeftSideNav();
+      this.LuigiClient.linkManager().setDocumentTitle('my-title');
+      this.LuigiClient.linkManager().removeBackdrop();
+      this.LuigiClient.linkManager().hideAppLoadingIndicator();
+    });
+
+    this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
+    this.$linkManagerOpenAsRequests.addEventListener('click', () => {
+      this.LuigiClient.uxManager().openAsDrawer();
+      this.LuigiClient.uxManager().openAsModal();
+      this.LuigiClient.uxManager().openAsSplitView();
+    });
+
   }
 
   set context(ctx) {

@@ -600,7 +600,7 @@
           console.log('anhor', event.detail);
         });
 
-        // uxManager(). closeUserSettings openUserSettings collapseLeftSideNav 
+        // uxManager(). closeUserSettings openUserSettings collapseLeftSideNav
         // setDocumentTitle removeBackdrop hideAppLoadingIndicator
         luigiContainer.addEventListener(MFEventID.CLOSE_USER_SETTINGS_REQUEST, event => {
           console.log('Close User Settings Request received', event.detail);
@@ -617,9 +617,12 @@
         luigiContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, event => {
           console.log('Remove Backdrop Request received', event.detail);
         });
-        luigiContainer.addEventListener(MFEventID.HIDE_LOADING_INDICATOR_REQUEST, event => {
-          console.log('Hide Loading Indicator Request received', event.detail);
-        });
+        luigiContainer.addEventListener(
+          MFEventID.HIDE_LOADING_INDICATOR_REQUEST,
+          event => {
+            console.log('Hide Loading Indicator Request received', event.detail);
+          }
+        );
       });
       let testDeferInitFalse = document.getElementById('test-defer-init-false');
       if (!testDeferInitFalse.initialized) {
