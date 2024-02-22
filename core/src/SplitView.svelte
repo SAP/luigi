@@ -346,8 +346,14 @@
     right: 0;
     top: 60%; /* default, overridden by computed.getIframeSplitViewTop */
   }
-  :global(.splitViewContainer, #splitViewDragger, #splitViewDraggerBackdrop) {
+  .splitViewContainer,
+  :global(#splitViewDragger),
+  :global(#splitViewDraggerBackdrop) {
     left: var(--luigi__left-sidenav--width);
+
+    :global(.btp-layout) & {
+      left: 0;
+    }
   }
 
   :global(.lui-collapsed.splitViewContainer) {
