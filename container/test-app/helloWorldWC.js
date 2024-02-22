@@ -208,19 +208,17 @@ export default class extends HTMLElement {
 
     this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
     this.$linkManagerChainRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().closeUserSettings();
-      this.LuigiClient.linkManager().openUserSettings();
-      this.LuigiClient.linkManager().collapseLeftSideNav();
-      this.LuigiClient.linkManager().setDocumentTitle('my-title');
-      this.LuigiClient.linkManager().removeBackdrop();
-      this.LuigiClient.linkManager().hideAppLoadingIndicator();
+      this.LuigiClient.linkManager().fromContext({ctx: 123}).navigate('hello-world-wc');
+      this.LuigiClient.linkManager().fromClosestContext().navigate('hello-world-wc');
+      this.LuigiClient.linkManager().fromVirtualTreeRoot().navigate('hello-world-wc');
+      this.LuigiClient.linkManager().withParams('my-params').navigate('hello-world-wc');
     });
 
     this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
     this.$linkManagerOpenAsRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc',{size: 's'});
-      this.LuigiClient.linkManager().openAsModal('hello-world-wc',{size: 'm'});
-      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc',{size: 'l'});
+      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', { size: 's' });
+      this.LuigiClient.linkManager().openAsModal('hello-world-wc', { size: 'm' });
+      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', { size: 'l' });
     });
   }
 
