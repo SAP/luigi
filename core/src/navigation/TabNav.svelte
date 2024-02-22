@@ -272,6 +272,14 @@
   export function toggleMoreBtn() {
     isMoreBtnExpanded = !isMoreBtnExpanded;
   }
+
+  function isSingleTabItem(key) {
+    return key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0;
+  }
+
+  function isTabItemWithSubItems(nodes) {
+    return nodes.some((node) => !node.hideFromNav && node.label);
+  }
 </script>
 
 <svelte:window
@@ -292,7 +300,7 @@
       <div class="tabsContainerWrapper">
         <div class="tabsContainer luigi-tabsContainer">
           {#each Object.entries(children) as [key, nodes], index}
-            {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+            {#if isSingleTabItem(key)}
               {#each nodes as node, index2}
                 {#if !node.hideFromNav}
                   {#if node.label}
@@ -320,7 +328,7 @@
                   {/if}
                 {/if}
               {/each}
-            {:else if nodes.filter((node) => !node.hideFromNav && node.label).length > 0}
+            {:else if isTabItemWithSubItems(nodes)}
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <span
                 class="fd-tabs__item"
