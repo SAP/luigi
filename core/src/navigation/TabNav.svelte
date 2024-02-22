@@ -365,7 +365,9 @@
                                 <a
                                   href={getRouteLink(node)}
                                   class="fd-menu__link"
-                                  data-testid={NavigationHelpers.getTestId(node)}
+                                  data-testid={NavigationHelpers.getTestId(
+                                    node,
+                                  )}
                                   on:click|preventDefault={() =>
                                     handleClick(node)}
                                   aria-selected={node === selectedNodeForTabNav}
