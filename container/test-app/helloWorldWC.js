@@ -208,10 +208,18 @@ export default class extends HTMLElement {
 
     this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
     this.$linkManagerChainRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().fromContext({ctx: 123}).navigate('hello-world-wc');
-      this.LuigiClient.linkManager().fromClosestContext().navigate('hello-world-wc');
-      this.LuigiClient.linkManager().fromVirtualTreeRoot().navigate('hello-world-wc');
-      this.LuigiClient.linkManager().withParams('my-params').navigate('hello-world-wc');
+      this.LuigiClient.linkManager()
+        .fromContext({ ctx: 123 })
+        .navigate('hello-world-wc');
+      this.LuigiClient.linkManager()
+        .fromClosestContext()
+        .navigate('hello-world-wc');
+      this.LuigiClient.linkManager()
+        .fromVirtualTreeRoot()
+        .navigate('hello-world-wc');
+      this.LuigiClient.linkManager()
+        .withParams('my-params')
+        .navigate('hello-world-wc');
     });
 
     this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
