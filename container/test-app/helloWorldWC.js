@@ -43,6 +43,17 @@ export default class extends HTMLElement {
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
+    const uxManagerMultipleRequestsBtn = document.createElement('template');
+    uxManagerMultipleRequestsBtn.innerHTML = 
+    `<button id="uxManagerManyRequests">uxManager().closeUserSettings,
+    openUserSettings,
+    collapseLeftSideNav,
+    setDocumentTitle,
+    removeBackdrop,
+    hideAppLoadingIndicator,
+    </button>`;
+
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -59,7 +70,10 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
 
+
+    
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
     }
@@ -163,6 +177,23 @@ export default class extends HTMLElement {
         type: 'info'
       });
     });
+
+    this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
+    this.$uxManagerManyRequests.addEventListener('click', () => {
+      this.LuigiClient.uxManager().closeUserSettings();
+      this.LuigiClient.uxManager().openUserSettings();
+      this.LuigiClient.uxManager().collapseLeftSideNav();
+      this.LuigiClient.uxManager().setDocumentTitle('my-title');
+      this.LuigiClient.uxManager().removeBackdrop();
+      this.LuigiClient.uxManager().hideAppLoadingIndicator();
+
+      // this.LuigiClient.uxManager().showAlert({
+      //   text: 'LuigiClient.uxManager().getDirtyStatus()=' + dirtyStatus,
+      //   type: 'info'
+      // });
+    });
+
+    
   }
 
   set context(ctx) {
