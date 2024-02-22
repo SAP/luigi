@@ -151,7 +151,13 @@ describe('createClientAPI', () => {
     clientAPI.linkManager().navigate(route);
 
     // assert
-    const expectedPayload = { link: route };
+    const expectedPayload = { 
+      fromClosestContext: false,
+      fromContext: null,
+      fromVirtualTreeRoot: false,
+      link: "/test/route",
+      nodeParams: {}  
+    };
     expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
   });
 
