@@ -1,10 +1,10 @@
-import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
-  sendCustomMessage,
-  addInactiveListener
+  addInactiveListener,
+  sendCustomMessage
 } from '@luigi-project/client';
 import { LuigiContextService } from '@luigi-project/client-support-angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,12 +14,11 @@ import { LuigiContextService } from '@luigi-project/client-support-angular';
 export class AppComponent implements OnInit {
   public title = 'app';
 
-  constructor(private luigiService: LuigiContextService, private luigiAutoNav: LuigiAutoNavigationService) { }
+  constructor(private luigiService: LuigiContextService) { }
 
   ngOnInit() {
     this.luigiService.contextObservable().subscribe((ctxObj) => {
       if (ctxObj.contextType === 0) {
-        this.luigiAutoNav.init();
         sendCustomMessage({ id: 'my-micro-frontend-is-ready' });
       }
     });
