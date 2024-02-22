@@ -2,9 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LuigiAngularSupportModule } from '@luigi-project/client-support-angular';
-
-import { LuigiAutoNavigationService } from './services/luigi-auto-navigation.service';
-
 import { AppComponent } from './app.component';
 import { PreloadComponent } from './preload/preload.component';
 import { ProjectComponent } from './project/project.component';
@@ -63,7 +60,7 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
     ViewGroupComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule, LuigiAngularSupportModule],
-  providers: [LuigiAutoNavigationService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
