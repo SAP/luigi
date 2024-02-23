@@ -40,6 +40,10 @@ export default class extends HTMLElement {
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
+
+    const setViewGroupDataBtn = document.createElement('template');
+    setViewGroupDataBtn.innerHTML = '<button id="setViewGroupData">setViewGroupData</button>';
+
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
@@ -93,7 +97,9 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
 
+    
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
     }
@@ -241,7 +247,7 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager()
         .pathExists()
         .then(result => {
-          console.log("PATH EXISTS")
+          console.log('PATH EXISTS');
           this.LuigiClient.uxManager().showAlert({
             text:
               'LuigiClient.linkManager().pathExists()=' +
@@ -252,6 +258,12 @@ export default class extends HTMLElement {
           });
         });
       this.LuigiClient.linkManager().goBack();
+    });
+
+    
+    this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
+    this.$setViewGroupData.addEventListener('click', () => {
+      this.LuigiClient.setViewGroupData({vg: 'some data'})
     });
   }
 

@@ -627,11 +627,16 @@
 
         // linkManager listeners:
         // path exists
-        
-        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, (event) => {
+        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, event => {
           console.log('Remove Backdrop Request received', event.detail, event);
+          // send back result with defined 'callback'
+          event.callback(true);
+        });
 
-          event.callback(true)
+        // setViewGroup Data listener
+        luigiContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
+          console.log('Set View Group Data Request received', event.detail, event);
+
         });
 
       });
