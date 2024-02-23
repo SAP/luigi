@@ -280,6 +280,18 @@
   function isTabItemWithSubItems(nodes) {
     return nodes.some((node) => !node.hideFromNav && node.label);
   }
+
+  function getNodeToNavigateTo(nodes) {
+    return nodes.find((node) => node.category.navigateOnClick);
+  }
+
+  function tabItemNameCanNavigate(nodes) {
+    return !!getNodeToNavigateTo(nodes);
+  }
+
+  $: {
+    children && console.log({ children, pathData, pathParams });
+  }
 </script>
 
 <svelte:window
@@ -329,63 +341,113 @@
                 {/if}
               {/each}
             {:else if isTabItemWithSubItems(nodes)}
-              <!-- svelte-ignore a11y-click-events-have-key-events -->
-              <span
-                class="fd-tabs__item"
-                uid="{index}-0"
-                on:click={(event) => event.stopPropagation()}
-                isSelected={isSelectedCat(key, selectedNodeForTabNav)}
-              >
-                <div class="fd-popover">
-                  <div class="fd-popover__control">
-                    <!-- svelte-ignore a11y-missing-attribute -->
-                    <a
-                      class="fd-tabs__link has-child"
-                      aria-expanded="false"
-                      role="tab"
-                      on:click|preventDefault={() => toggleDropdownState(key)}
-                      aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+              {#if tabItemNameCanNavigate(nodes)}
+                <span
+                  uid="{index}-0"
+                  role="presentation"
+                  class="fd-icon-tab-bar__item fd-icon-tab-bar__item--multi-click"
+                >
+                  <!-- svelte-ignore a11y-missing-attribute -->
+                  <a role="tab" class="fd-icon-tab-bar__tab" tabindex="0">
+                    <span class="fd-icon-tab-bar__tag">Yes!</span>
+                  </a>
+                  <div class="fd-popover fd-icon-tab-bar__popover">
+                    <div class="fd-popover__control">
+                      <div class="fd-icon-tab-bar__button-container">
+                        <button
+                          class="fd-button fd-button--transparent fd-icon-tab-bar__button"
+                          aria-controls="TODO"
+                          aria-expanded="true"
+                          aria-haspopup="true"
+                          aria-label="open menu button"
+                          onclick="TODO"
+                        >
+                          <i class="sap-icon--slim-arrow-down"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                      aria-hidden="false"
+                      id="TODO"
                     >
-                      <span class="label fd-tabs__tag"
-                        >{$getTranslation(key)}</span
+                      <ul
+                        class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
                       >
-                      <span class="sap-icon--dropdown luigi-icon--dropdown" />
-                    </a>
-                  </div>
-                  <div
-                    class="fd-popover__body fd-popover__body--no-arrow"
-                    aria-hidden={!dropDownStates[key]}
-                  >
-                    <nav class="fd-menu">
-                      <ul class="fd-menu__list fd-menu__list--no-shadow">
-                        {#each nodes as node}
-                          {#if !node.hideFromNav}
-                            {#if node.label}
-                              <li class="fd-menu__item">
-                                <a
-                                  href={getRouteLink(node)}
-                                  class="fd-menu__link"
-                                  data-testid={NavigationHelpers.getTestId(
-                                    node,
-                                  )}
-                                  on:click|preventDefault={() =>
-                                    handleClick(node)}
-                                  aria-selected={node === selectedNodeForTabNav}
-                                >
-                                  <span class="fd-menu__title"
-                                    >{getNodeLabel(node)}
-                                    <StatusBadge {node} /></span
-                                  >
-                                </a>
-                              </li>
-                            {/if}
-                          {/if}
-                        {/each}
+                        <li
+                          tabindex="-1"
+                          aria-level="1"
+                          class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
+                        >
+                          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                          <!-- svelte-ignore a11y-missing-attribute -->
+                          <a tabindex="0" class="fd-list__link fd-icon-tab-bar__list-link">
+                            <span class="fd-list__title">Subsection 1</span>
+                          </a>
+                        </li>
                       </ul>
-                    </nav>
+                    </div>
                   </div>
-                </div>
               </span>
+              {:else}
+                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                <span
+                  class="fd-tabs__item"
+                  uid="{index}-0"
+                  on:click={(event) => event.stopPropagation()}
+                  isSelected={isSelectedCat(key, selectedNodeForTabNav)}
+                >
+                  <div class="fd-popover">
+                    <div class="fd-popover__control">
+                      <!-- svelte-ignore a11y-missing-attribute -->
+                      <a
+                        class="fd-tabs__link has-child"
+                        aria-expanded="false"
+                        role="tab"
+                        on:click|preventDefault={() => toggleDropdownState(key)}
+                        aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+                      >
+                        <span class="label fd-tabs__tag"
+                          >{$getTranslation(key)}</span
+                        >
+                        <span class="sap-icon--dropdown luigi-icon--dropdown" />
+                      </a>
+                    </div>
+                    <div
+                      class="fd-popover__body fd-popover__body--no-arrow"
+                      aria-hidden={!dropDownStates[key]}
+                    >
+                      <nav class="fd-menu">
+                        <ul class="fd-menu__list fd-menu__list--no-shadow">
+                          {#each nodes as node}
+                            {#if !node.hideFromNav}
+                              {#if node.label}
+                                <li class="fd-menu__item">
+                                  <a
+                                    href={getRouteLink(node)}
+                                    class="fd-menu__link"
+                                    data-testid={NavigationHelpers.getTestId(
+                                      node,
+                                    )}
+                                    on:click|preventDefault={() =>
+                                      handleClick(node)}
+                                    aria-selected={node === selectedNodeForTabNav}
+                                  >
+                                    <span class="fd-menu__title"
+                                      >{getNodeLabel(node)}
+                                      <StatusBadge {node} /></span
+                                    >
+                                  </a>
+                                </li>
+                              {/if}
+                            {/if}
+                          {/each}
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </span>
+              {/if}
             {/if}
           {/each}
         </div>
@@ -617,6 +679,11 @@
       &__item {
         white-space: nowrap;
         display: inline-block;
+      }
+
+      .fd-icon-tab-bar__item {
+        white-space: nowrap;
+        display: inline-flex;
       }
 
       &__link {
