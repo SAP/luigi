@@ -48,6 +48,7 @@ export default class extends HTMLElement {
     openUserSettings,
     collapseLeftSideNav,
     setDocumentTitle,
+    getDocumentTitle,
     removeBackdrop,
     hideAppLoadingIndicator,
     </button>`;
@@ -203,8 +204,13 @@ export default class extends HTMLElement {
       this.LuigiClient.uxManager().openUserSettings();
       this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().setDocumentTitle('my-title');
+      
       this.LuigiClient.uxManager().removeBackdrop();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.uxManager().getDocumentTitle()=' + this.LuigiClient.uxManager().getDocumentTitle(),
+        type: 'info'
+      });
     });
 
     this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
