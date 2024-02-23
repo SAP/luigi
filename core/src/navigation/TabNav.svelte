@@ -349,7 +349,7 @@
                 >
                   <!-- svelte-ignore a11y-missing-attribute -->
                   <a role="tab" class="fd-icon-tab-bar__tab" tabindex="0">
-                    <span class="fd-icon-tab-bar__tag">Yes!</span>
+                    <span class="fd-icon-tab-bar__tag">{$getTranslation(key)}</span>
                   </a>
                   <div class="fd-popover fd-icon-tab-bar__popover">
                     <div class="fd-popover__control">
@@ -374,21 +374,27 @@
                       <ul
                         class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
                       >
-                        <li
-                          tabindex="-1"
-                          aria-level="1"
-                          class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
-                        >
-                          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                          <!-- svelte-ignore a11y-missing-attribute -->
-                          <a tabindex="0" class="fd-list__link fd-icon-tab-bar__list-link">
-                            <span class="fd-list__title">Subsection 1</span>
-                          </a>
-                        </li>
+                        {#each nodes as node}
+                          {#if !node.hideFromNav}
+                            {#if node.label}
+                              <li
+                                tabindex="-1"
+                                aria-level="1"
+                                class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
+                              >
+                                <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                                <!-- svelte-ignore a11y-missing-attribute -->
+                                <a tabindex="0" class="fd-list__link fd-icon-tab-bar__list-link">
+                                  <span class="fd-list__title">{getNodeLabel(node)}</span>
+                                </a>
+                              </li>
+                            {/if}
+                          {/if}
+                        {/each}
                       </ul>
                     </div>
                   </div>
-              </span>
+                </span>
               {:else}
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
                 <span
