@@ -6,7 +6,7 @@ env:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: github.ref_name == 'main'
+    if: github.ref_name == 'fix-cra-release-workflow'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
