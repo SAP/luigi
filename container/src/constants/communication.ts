@@ -127,22 +127,22 @@ export namespace Events {
   /**
    * A message emitted from the micro frontend when a request to remove the backdrop
    */
-  export const UPDATE_TOP_NAVIGATION_REQUEST = 'remove-backdrop-request';
+  export const UPDATE_TOP_NAVIGATION_REQUEST = 'update-top-navigation-request';
 
   /**
    * A message emitted from the micro frontend when a request to remove the backdrop
    */
-  export const PATH_EXISTS_REQUEST = 'remove-backdrop-request';
+  export const PATH_EXISTS_REQUEST = 'path-exists-request';
 
   /**
    * A message emitted from the micro frontend when a request to remove the backdrop
    */
-  export const GO_BACK_REQUEST = 'remove-backdrop-request';
+  export const GO_BACK_REQUEST = 'go-back-request';
 
   /**
    * A message emitted from the micro frontend when a request to remove the backdrop
    */
-  export const HAS_BACK_REQUEST = 'remove-backdrop-request';
+  export const HAS_BACK_REQUEST = 'has-back-request';
 
   /**
    * A message emitted from the micro frontend when a request to remove the backdrop
