@@ -67,13 +67,10 @@ export default class extends HTMLElement {
     openAsSplitView,
     </button>`;
 
-
     const linkManagerUpdateTopPathExistsBackBtn = document.createElement('template');
     linkManagerUpdateTopPathExistsBackBtn.innerHTML = `<button id="linkManagerUpdateTopPathExistsBack">linkManager().
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
-    
-
 
     this._shadowRoot = this.attachShadow({
       mode: 'open',
@@ -236,17 +233,20 @@ export default class extends HTMLElement {
     this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector('#linkManagerUpdateTopPathExistsBack');
     this.$linkManagerUpdateTopPathExistsBack.addEventListener('click', () => {
       this.LuigiClient.linkManager().updateTopNavigation();
-      this.LuigiClient.linkManager().pathExists().then((result) => {
-        this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.linkManager().pathExists()=' + result +
-          "this.LuigiClient.linkManager().hasBack()=" + this.LuigiClient.linkManager().hasBack(),
-          type: 'info'
+      this.LuigiClient.linkManager()
+        .pathExists()
+        .then(result => {
+          this.LuigiClient.uxManager().showAlert({
+            text:
+              'LuigiClient.linkManager().pathExists()=' +
+              result +
+              'this.LuigiClient.linkManager().hasBack()=' +
+              this.LuigiClient.linkManager().hasBack(),
+            type: 'info'
+          });
         });
-       });
       this.LuigiClient.linkManager().goBack();
     });
-
-
   }
 
   set context(ctx) {
