@@ -40,7 +40,6 @@ export default class extends HTMLElement {
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
-
     const setViewGroupDataBtn = document.createElement('template');
     setViewGroupDataBtn.innerHTML = '<button id="setViewGroupData">setViewGroupData</button>';
 
@@ -99,7 +98,6 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
 
-    
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
     }
@@ -260,10 +258,9 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().goBack();
     });
 
-    
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
-      this.LuigiClient.setViewGroupData({vg: 'some data'})
+      this.LuigiClient.setViewGroupData({ vg: 'some data' });
     });
   }
 
