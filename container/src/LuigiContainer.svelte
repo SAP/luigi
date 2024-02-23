@@ -41,7 +41,8 @@
         reflect: false,
         attribute: 'client-permissions',
       },
-      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'}
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'}
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -87,6 +88,7 @@
   export let pathParams: any;
   export let clientPermissions: any;
   export let dirtyStatus: any;
+  export let hasBack: any;
 
 
   export let userSettings: any;
@@ -115,7 +117,8 @@
       clientPermissions &&
       userSettings &&
       anchor &&
-      dirtyStatus
+      dirtyStatus &&
+      hasBack
     );
   };
 

@@ -140,15 +140,7 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
-              return new Promise((resolve, reject) => {
-                this.dispatchLuigiEvent(Events.HAS_BACK_REQUEST, {}, (result)=>{
-                  if (result !== undefined || result !== null) {
-                    resolve(result)
-                  }  else {
-                    reject(new Error('Has back response not received'));
-                  }
-                });
-              })
+            return this.thisComponent.hasBack;
           }, 
         };
         return linkManagerInstance;
