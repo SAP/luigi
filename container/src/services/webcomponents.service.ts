@@ -140,7 +140,7 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
-            return this.thisComponent.hasBack;
+            return this.thisComponent.hasBack || false;
           }, 
         };
         return linkManagerInstance;

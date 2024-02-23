@@ -67,10 +67,13 @@ export default class extends HTMLElement {
     openAsSplitView,
     </button>`;
 
-    const linkManagerHasBackRequestBtn = document.createElement('template');
-    linkManagerHasBackRequestBtn.innerHTML = `<button id="linkManagerHasBackRequest">linkManager().
-    hasBack()
+
+    const linkManagerUpdateTopPathExistsBackBtn = document.createElement('template');
+    linkManagerUpdateTopPathExistsBackBtn.innerHTML = `<button id="linkManagerUpdateTopPathExistsBack">linkManager().
+    hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
+    
+
 
     this._shadowRoot = this.attachShadow({
       mode: 'open',
@@ -91,6 +94,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
 
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
@@ -198,7 +202,7 @@ export default class extends HTMLElement {
 
     this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
     this.$uxManagerManyRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().closeUserSettings();
+      this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().openUserSettings();
       this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().setDocumentTitle('my-title');
@@ -228,6 +232,21 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().openAsModal('hello-world-wc', { size: 'm' });
       this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', { size: 'l' });
     });
+
+    this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector('#linkManagerUpdateTopPathExistsBack');
+    this.$linkManagerUpdateTopPathExistsBack.addEventListener('click', () => {
+      this.LuigiClient.linkManager().updateTopNavigation();
+      this.LuigiClient.linkManager().pathExists().then((result) => {
+        this.LuigiClient.uxManager().showAlert({
+          text: 'LuigiClient.linkManager().pathExists()=' + result +
+          "this.LuigiClient.linkManager().hasBack()=" + this.LuigiClient.linkManager().hasBack(),
+          type: 'info'
+        });
+       });
+      this.LuigiClient.linkManager().goBack();
+    });
+
+
   }
 
   set context(ctx) {
