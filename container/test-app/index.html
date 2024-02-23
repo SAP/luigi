@@ -626,7 +626,14 @@
         );
 
         // linkManager listeners:
-        //
+        // path exists
+        
+        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, (event) => {
+          console.log('Remove Backdrop Request received', event.detail, event);
+
+          event.callback(true)
+        });
+
       });
       let testDeferInitFalse = document.getElementById('test-defer-init-false');
       if (!testDeferInitFalse.initialized) {

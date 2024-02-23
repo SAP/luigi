@@ -118,13 +118,14 @@ export class WebComponentService {
           },
           pathExists: () => {
             return new Promise((resolve, reject) => {
-              this.dispatchLuigiEvent(Events.PATH_EXISTS_REQUEST, {}, (exists)=>{
+              this.containerService.dispatch(Events.PATH_EXISTS_REQUEST, this.thisComponent, {}, (exists)=>{
+                console.log("inside exisst check")
                 if (exists !== undefined || exists !== null) {
                   resolve(exists)
                 }  else {
                   reject(new Error('Path exists response not received'));
                 }
-              });
+              }, 'callback');
             })
           },          
           openAsDrawer: (route, drawerSettings = {}) => {

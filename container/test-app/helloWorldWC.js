@@ -204,7 +204,6 @@ export default class extends HTMLElement {
       this.LuigiClient.uxManager().openUserSettings();
       this.LuigiClient.uxManager().collapseLeftSideNav();
       this.LuigiClient.uxManager().setDocumentTitle('my-title');
-      
       this.LuigiClient.uxManager().removeBackdrop();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
       this.LuigiClient.uxManager().showAlert({
@@ -242,11 +241,12 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager()
         .pathExists()
         .then(result => {
+          console.log("PATH EXISTS")
           this.LuigiClient.uxManager().showAlert({
             text:
               'LuigiClient.linkManager().pathExists()=' +
               result +
-              'this.LuigiClient.linkManager().hasBack()=' +
+              '\nthis.LuigiClient.linkManager().hasBack()=' +
               this.LuigiClient.linkManager().hasBack(),
             type: 'info'
           });
