@@ -104,6 +104,18 @@ export default class LuigiContainer extends HTMLElement {
   anchor: string;
 
   /**
+   * The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
+   * You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
+   */
+  allowRules: string[];
+
+  /**
+   * The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
+   * You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
+   */
+  sandboxRules: string[];
+
+  /**
    * Function that updates the context of the microfrontend
    * @param {Object} contextObj The context data
    * @param {Object} internal internal luigi legacy data used for iframes

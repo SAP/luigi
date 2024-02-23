@@ -41,6 +41,16 @@
         reflect: false,
         attribute: 'client-permissions',
       },
+      allowRules: {
+        type: 'Array',
+        reflect: false,
+        attribute: 'allow-rules',
+      },
+      sandboxRules: {
+        type: 'Array',
+        reflect: false,
+        attribute: 'sandbox-rules',
+      },
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -71,6 +81,7 @@
   import { ContainerAPI } from './api/container-api';
   import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
+  import { getAllowRules } from './services/iframe-helpers';
 
   export let viewurl: string;
   export let context: string;
@@ -85,6 +96,8 @@
   export let searchParams: any;
   export let pathParams: any;
   export let clientPermissions: any;
+  export let allowRules: string[];
+  export let sandboxRules: string[];
 
   export let userSettings: any;
   export let anchor: string;
@@ -111,7 +124,9 @@
       pathParams &&
       clientPermissions &&
       userSettings &&
-      anchor
+      anchor &&
+      allowRules &&
+      sandboxRules
     );
   };
 
@@ -197,7 +212,13 @@
 >
   {#if containerInitialized}
     {#if !webcomponent}
-      <iframe bind:this={iframeHandle.iframe} src={viewurl} title={label} />
+      <iframe
+        bind:this={iframeHandle.iframe}
+        src={viewurl}
+        title={label}
+        allow={getAllowRules(allowRules)}
+        sandbox={sandboxRules ? sandboxRules.join(' ') : undefined}
+      />
     {/if}
   {/if}
 </main>
