@@ -35,7 +35,7 @@ describe('JS-TEST-APP with tab navigation', () => {
   it('renders the tab navigation as expected', () => {
     cy.visitTestApp('/home/tabnav', newConfig);
     cy.get('#app[configversion="tab-navigation"]');
-    cy.get('a.fd-tabs__link').as('tabMenu');
+    cy.get('a.luigi__more').as('tabMenu');
     cy.get('@tabMenu').should('have.length', 2);
     // cy.getIframeBody().then($iframeBody => {
     //   cy.wrap($iframeBody)

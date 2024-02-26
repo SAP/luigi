@@ -92,20 +92,27 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    let tabsContainerOffsetWidth;
-    let totalTabsSize = 0;
-    let hasMoreBtnElements = false;
-    let style;
-    let margin;
     moreLink && moreLink.setAttribute('aria-selected', 'false');
-    if (tabsContainerHeader) {
-      tabsContainerOffsetWidth = tabsContainerHeader.offsetWidth;
+
+    if (tabsContainerHeader && moreButton) {
+      let tabsContainerHeaderStyles = tabsContainerHeader.currentStyle || window.getComputedStyle(tabsContainerHeader);
+      let availableSpaceForTabItems = tabsContainerHeader.offsetWidth - moreButton.offsetWidth - parseFloat(tabsContainerHeaderStyles.paddingLeft) - parseFloat(tabsContainerHeaderStyles.paddingRight);
+      let totalTabsSize = 0;
+      let hasMoreBtnElements = false;
+      let style;
+      let margin;
+
       [...tabsContainerHeader.children].forEach((tabElement) => {
+        let uid = tabElement.getAttribute('uid');
+
+        if (!uid) {
+          return;
+        }
+
         style = tabElement.currentStyle || window.getComputedStyle(tabElement);
         margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
         totalTabsSize += tabElement.offsetWidth + margin;
-        let uid = tabElement.getAttribute('uid');
-        if (totalTabsSize >= tabsContainerOffsetWidth) {
+        if (totalTabsSize >= availableSpaceForTabItems) {
           tabElement.classList.add('hide_element');
           if (tabElement.getAttribute('isSelected') === 'true') {
             moreLink.setAttribute('aria-selected', 'true');
@@ -453,128 +460,129 @@
             {/if}
           {/if}
         {/each}
-      </div>
-      <div class="luigi-tabsMoreButton" bind:this={moreButton}>
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <span
-          class="fd-tabs__item"
-          on:click={(event) => event.stopPropagation()}
-        >
-          <div class="fd-popover fd-popover--right">
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <a
-              class="fd-tabs__link fd-popover__control has-child luigi__more"
-              aria-expanded="false"
-              role="tab"
-              on:click|preventDefault={toggleMoreBtn}
-              bind:this={moreLink}
-            >
-              <span class="label fd-tabs__tag">More</span>
-              <span class="sap-icon--dropdown luigi-icon--dropdown" />
-            </a>
-            <div
-              class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
-              aria-hidden={!isMoreBtnExpanded}
-            >
-              <ul
-                class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <span
+            class="luigi-tabsMoreButton fd-icon-tab-bar__item fd-icon-tab-bar__item--overflow"
+            on:click={(event) => event.stopPropagation()}
+            bind:this={moreButton}
+          >
+            <div class="fd-popover">
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a
+                class="fd-popover__control has-child luigi__more"
+                aria-expanded="false"
+                role="tab"
+                on:click|preventDefault={toggleMoreBtn}
+                bind:this={moreLink}
               >
-                {#each Object.entries(children) as [key, nodes], index}
-                  {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-                    {#each nodes as node, index2}
-                      <li class="fd-nested-list__item" uid="{index}-{index2}">
-                        <a
-                          href={getRouteLink(node)}
-                          class="fd-nested-list__link"
-                          data-testid={NavigationHelpers.getTestId(node)}
-                          on:click|preventDefault={() => handleClick(node)}
-                          aria-selected={node === selectedNodeForTabNav}
-                        >
-                          <span class="fd-nested-list__title"
-                            >{getNodeLabel(node)}
-                            <StatusBadge {node} /></span
+                <button class="fd-icon-tab-bar__overflow">
+                  <span class="label fd-icon-tab-bar__overflow-text">More</span>
+                  <span class="sap-icon--slim-arrow-down luigi-icon--dropdown" />
+                </button>
+              </a>
+              <div
+                class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                aria-hidden={!isMoreBtnExpanded}
+              >
+                <ul
+                  class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
+                >
+                  {#each Object.entries(children) as [key, nodes], index}
+                    {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+                      {#each nodes as node, index2}
+                        <li class="fd-nested-list__item" uid="{index}-{index2}">
+                          <a
+                            href={getRouteLink(node)}
+                            class="fd-nested-list__link"
+                            data-testid={NavigationHelpers.getTestId(node)}
+                            on:click|preventDefault={() => handleClick(node)}
+                            aria-selected={node === selectedNodeForTabNav}
                           >
-                        </a>
-                      </li>
-                    {/each}
-                  {:else}
-                    <li class="fd-nested-list__item" uid="{index}-0">
-                      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                      <div
-                        class="fd-nested-list__content has-child"
-                        tabindex="0"
-                      >
-                        <!-- svelte-ignore a11y-invalid-attribute -->
-                        <a
-                          href="javascript:void(null)"
-                          tabindex="-1"
-                          class="fd-nested-list__link"
-                          id="tabnav_list_level1_{index}"
-                          aria-haspopup="true"
-                          aria-expanded={dropDownStates[key + index]}
-                          aria-selected={isSelectedCat(
-                            key,
-                            selectedNodeForTabNav,
-                          )}
-                          on:click|preventDefault={() =>
-                            toggleDropdownState(key + index)}
-                        >
-                          <span class="fd-nested-list__title"
-                            >{$getTranslation(key)}</span
-                          >
-                        </a>
-                        <button
-                          class="fd-button fd-nested-list__button"
-                          href="#"
-                          tabindex="-1"
-                          aria-label="Expand submenu"
-                          aria-haspopup="true"
-                          aria-expanded={dropDownStates[key + index]}
-                          on:click|preventDefault={() =>
-                            toggleDropdownState(key + index)}
-                        >
-                          <i
-                            class={dropDownStates[key + index]
-                              ? 'sap-icon--navigation-down-arrow'
-                              : 'sap-icon--navigation-right-arrow'}
-                            role="presentation"
-                          />
-                        </button>
-                      </div>
-                      <ul
-                        class="fd-nested-list level-2"
-                        aria-hidden={!dropDownStates[key + index]}
-                      >
-                        {#each nodes as node}
-                          {#if node.label}
-                            <li
-                              class="fd-nested-list__item"
-                              aria-labelledby="tabnav_list_level1_{index}"
+                            <span class="fd-nested-list__title"
+                              >{getNodeLabel(node)}
+                              <StatusBadge {node} /></span
                             >
-                              <a
-                                class="fd-nested-list__link"
-                                href={getRouteLink(node)}
-                                data-testid={NavigationHelpers.getTestId(node)}
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
-                                aria-selected={node === selectedNodeForTabNav}
+                          </a>
+                        </li>
+                      {/each}
+                    {:else}
+                      <li class="fd-nested-list__item" uid="{index}-0">
+                        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                        <div
+                          class="fd-nested-list__content has-child"
+                          tabindex="0"
+                        >
+                          <!-- svelte-ignore a11y-invalid-attribute -->
+                          <a
+                            href="javascript:void(null)"
+                            tabindex="-1"
+                            class="fd-nested-list__link"
+                            id="tabnav_list_level1_{index}"
+                            aria-haspopup="true"
+                            aria-expanded={dropDownStates[key + index]}
+                            aria-selected={isSelectedCat(
+                              key,
+                              selectedNodeForTabNav,
+                            )}
+                            on:click|preventDefault={() =>
+                              toggleDropdownState(key + index)}
+                          >
+                            <span class="fd-nested-list__title"
+                              >{$getTranslation(key)}</span
+                            >
+                          </a>
+                          <button
+                            class="fd-button fd-nested-list__button"
+                            href="#"
+                            tabindex="-1"
+                            aria-label="Expand submenu"
+                            aria-haspopup="true"
+                            aria-expanded={dropDownStates[key + index]}
+                            on:click|preventDefault={() =>
+                              toggleDropdownState(key + index)}
+                          >
+                            <i
+                              class={dropDownStates[key + index]
+                                ? 'sap-icon--navigation-down-arrow'
+                                : 'sap-icon--navigation-right-arrow'}
+                              role="presentation"
+                            />
+                          </button>
+                        </div>
+                        <ul
+                          class="fd-nested-list level-2"
+                          aria-hidden={!dropDownStates[key + index]}
+                        >
+                          {#each nodes as node}
+                            {#if node.label}
+                              <li
+                                class="fd-nested-list__item"
+                                aria-labelledby="tabnav_list_level1_{index}"
                               >
-                                <span class="fd-nested-list__title"
-                                  >{getNodeLabel(node)}
-                                  <StatusBadge {node} />
-                                </span>
-                              </a>
-                            </li>
-                          {/if}
-                        {/each}
-                      </ul>
-                    </li>
-                  {/if}
-                {/each}
-              </ul>
+                                <a
+                                  class="fd-nested-list__link"
+                                  href={getRouteLink(node)}
+                                  data-testid={NavigationHelpers.getTestId(node)}
+                                  on:click|preventDefault={() =>
+                                    handleClick(node)}
+                                  aria-selected={node === selectedNodeForTabNav}
+                                >
+                                  <span class="fd-nested-list__title"
+                                    >{getNodeLabel(node)}
+                                    <StatusBadge {node} />
+                                  </span>
+                                </a>
+                              </li>
+                            {/if}
+                          {/each}
+                        </ul>
+                      </li>
+                    {/if}
+                  {/each}
+                </ul>
+              </div>
             </div>
-          </div>
-        </span>
+          </span>
       </div>
     </nav>
   </div>
@@ -597,8 +605,8 @@
           &:last-child {
             .fd-nested-list__content {
               border-bottom: none;
-            }
-          }
+            }  
+          }  
 
           :global(.hide_element) {
             display: none;
@@ -607,16 +615,6 @@
         .fd-nested-list__title {
           display: inline-block;
           height: auto;
-        }
-      }
-    }
-
-    .fd-tabs__link {
-      padding-right: 0;
-
-      &.has-child {
-        .luigi-icon--dropdown {
-          right: 0;
         }
       }
     }
