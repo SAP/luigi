@@ -161,6 +161,73 @@ describe('createClientAPI', () => {
     expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
   });
 
+  it('test linkManager fromClosestContext', () => {
+    const route = '/test/route'
+
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    clientAPI.linkManager().fromClosestContext().navigate(route);
+
+    // assert
+    const expectedPayload = { 
+      fromClosestContext: true,
+      fromContext: null,
+      fromVirtualTreeRoot: false,
+      link: "/test/route",
+      nodeParams: {}  
+    };
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
+  });
+
+  it('test linkManager fromContext', () => {
+    const route = '/test/route'
+
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    clientAPI.linkManager().fromContext({test: 'data'}).navigate(route);
+
+    // assert
+    const expectedPayload = { 
+      fromClosestContext: false,
+      fromContext: {test: 'data'},
+      fromVirtualTreeRoot: false,
+      link: "/test/route",
+      nodeParams: {}  
+    };
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
+  });
+
+  it('test linkManager fromVirtualTreeRoot', () => {
+    const route = '/test/route'
+
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    clientAPI.linkManager().fromVirtualTreeRoot().navigate(route);
+
+    // assert
+    const expectedPayload = { 
+      fromClosestContext: false,
+      fromContext: null,
+      fromVirtualTreeRoot: true,
+      link: "/test/route",
+      nodeParams: {}  
+    };
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
+  });
+
+
   it('test uxManager showAlert', () => {
     const alertSettings = {
         text: "Some alert text",
