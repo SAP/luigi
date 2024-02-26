@@ -33,6 +33,10 @@
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
   let resizeObserver;
+  let tabsContainer;
+  let tabsContainerHeader;
+  let moreButton;
+  let moreLink;
 
   //TODO refactor
   const __this = {
@@ -88,29 +92,22 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    let tabsContainer = document.getElementsByClassName(
-      'luigi-tabsContainer',
-    )[0];
-    let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
-    let moreLink = document.getElementsByClassName('luigi__more')[0];
     let tabsContainerOffsetWidth;
     let totalTabsSize = 0;
     let hasMoreBtnElements = false;
-    let componentData = __this.get();
     let style;
     let margin;
     moreLink && moreLink.setAttribute('aria-selected', 'false');
-    if (tabsContainer) {
-      tabsContainerOffsetWidth = tabsContainer.offsetWidth;
-      let tabs = [...tabsContainer.children];
-      tabs.forEach((element) => {
-        style = element.currentStyle || window.getComputedStyle(element);
+    if (tabsContainerHeader) {
+      tabsContainerOffsetWidth = tabsContainerHeader.offsetWidth;
+      [...tabsContainerHeader.children].forEach((tabElement) => {
+        style = tabElement.currentStyle || window.getComputedStyle(tabElement);
         margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
-        totalTabsSize += element.offsetWidth + margin;
-        let uid = element.getAttribute('uid');
+        totalTabsSize += tabElement.offsetWidth + margin;
+        let uid = tabElement.getAttribute('uid');
         if (totalTabsSize >= tabsContainerOffsetWidth) {
-          element.classList.add('hide_element');
-          if (element.getAttribute('isSelected') === 'true') {
+          tabElement.classList.add('hide_element');
+          if (tabElement.getAttribute('isSelected') === 'true') {
             moreLink.setAttribute('aria-selected', 'true');
           }
           document
@@ -123,18 +120,15 @@
             .classList.add('hide_element');
         }
       });
-      !hasMoreBtnElements
-        ? morebtn.classList.add('hide_element')
-        : morebtn.classList.remove('hide_element');
+      hasMoreBtnElements
+        ? moreButton.classList.remove('hide_element')
+        : moreButton.classList.add('hide_element');
     }
   };
 
   const clearTapNav = () => {
-    let tabsContainer = document.getElementsByClassName(
-      'luigi-tabsContainer',
-    )[0];
-    if (tabsContainer !== undefined) {
-      const tabs = [...tabsContainer.children];
+    if (tabsContainerHeader !== undefined) {
+      const tabs = [...tabsContainerHeader.children];
       tabs.forEach((element) => {
         element.classList.remove('hide_element');
       });
@@ -155,9 +149,8 @@
       }
     });
     setTimeout(() => {
-      const luiTabs = document.querySelector('#tabsContainer.lui-tabs');
-      if (luiTabs) {
-        resizeObserver.observe(luiTabs);
+      if (tabsContainer) {
+        resizeObserver.observe(tabsContainer);
       }
     });
   };
@@ -214,9 +207,8 @@
       handleHorizontalNavHeightChange();
     } else {
       setTimeout(() => {
-        const luiTabs = document.querySelector('#tabsContainer.lui-tabs');
-        if (luiTabs) {
-          resizeObserver.observe(luiTabs);
+        if (tabsContainer) {
+          resizeObserver.observe(tabsContainer);
         }
       });
     }
@@ -300,166 +292,169 @@
   on:resize={onResize}
 />
 {#if children && pathData.length > 0 && (pathData[0].topNav === false || pathData.length > 1)}
-  <div class="lui-tabs" id="tabsContainer">
+  <div id="tabsContainer" bind:this={tabsContainer}>
     {#if selectedNode.parent && selectedNode.parent.tabNav && selectedNode.parent.tabNav.showAsTabHeader}
       <TabHeader node={selectedNode.parent} />
     {/if}
     <nav
-      class="fd-tabs fd-tabs--l"
+      class="fd-icon-tab-bar fd-icon-tab-bar--lg"
       role="tablist"
       on:toggleDropdownState={(event) => toggleDropdownState(event.name)}
     >
-      <div class="tabsContainerWrapper">
-        <div class="tabsContainer luigi-tabsContainer">
-          {#each Object.entries(children) as [key, nodes], index}
-            {#if isSingleTabItem(key)}
-              {#each nodes as node, index2}
-                {#if !node.hideFromNav}
-                  {#if node.label}
-                    <span
-                      class="fd-tabs__item {node === selectedNodeForTabNav
-                        ? 'is-selected'
-                        : ''}"
-                      uid="{index}-{index2}"
-                      isSelected={node === selectedNodeForTabNav}
+      <div
+        class="tabsContainerHeader luigi-tabsContainerHeader fd-icon-tab-bar__header"
+        role="tablist"
+        bind:this={tabsContainerHeader}
+      >
+        {#each Object.entries(children) as [key, nodes], index}
+          {#if isSingleTabItem(key)}
+            {#each nodes as node, index2}
+              {#if !node.hideFromNav}
+                {#if node.label}
+                  {@const isSelected = node === selectedNodeForTabNav}
+                  <span
+                    role="presentation"
+                    class="fd-icon-tab-bar__item"
+                    uid="{index}-{index2}"
+                    {isSelected}
+                  >
+                    <a
+                      role="tab"
+                      class="fd-icon-tab-bar__tab"
+                      href={getRouteLink(node)}
+                      data-testid={NavigationHelpers.getTestId(node)}
+                      aria-selected={isSelected}
+                      on:click|preventDefault={() => handleClick(node)}
                     >
-                      <a
-                        class="fd-tabs__link"
-                        href={getRouteLink(node)}
-                        role="tab"
-                        data-testid={NavigationHelpers.getTestId(node)}
-                        aria-selected={node === selectedNodeForTabNav}
-                        on:click|preventDefault={() => handleClick(node)}
+                      <span class="fd-icon-tab-bar__tag"
+                        >{getNodeLabel(node)}
+                        <StatusBadge {node} /></span
                       >
-                        <span class="fd-tabs__tag"
-                          >{getNodeLabel(node)}
-                          <StatusBadge {node} /></span
-                        >
-                      </a>
-                    </span>
-                  {/if}
+                    </a>
+                  </span>
                 {/if}
-              {/each}
-            {:else if isTabItemWithSubItems(nodes)}
-              {#if tabItemNameCanNavigate(nodes)}
-                <span
-                  uid="{index}-0"
-                  role="presentation"
-                  class="fd-icon-tab-bar__item fd-icon-tab-bar__item--multi-click"
-                >
-                  <!-- svelte-ignore a11y-missing-attribute -->
-                  <a role="tab" class="fd-icon-tab-bar__tab" tabindex="0">
-                    <span class="fd-icon-tab-bar__tag">{$getTranslation(key)}</span>
-                  </a>
-                  <div class="fd-popover fd-icon-tab-bar__popover">
-                    <div class="fd-popover__control">
-                      <div class="fd-icon-tab-bar__button-container">
-                        <button
-                          class="fd-button fd-button--transparent fd-icon-tab-bar__button"
-                          aria-controls="TODO"
-                          aria-expanded="true"
-                          aria-haspopup="true"
-                          aria-label="open menu button"
-                          onclick="TODO"
-                        >
-                          <i class="sap-icon--slim-arrow-down"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div
-                      class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
-                      aria-hidden="false"
-                      id="TODO"
-                    >
-                      <ul
-                        class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
+              {/if}
+            {/each}
+          {:else if isTabItemWithSubItems(nodes)}
+            {#if tabItemNameCanNavigate(nodes)}
+              <span
+                uid="{index}-0"
+                role="presentation"
+                class="fd-icon-tab-bar__item fd-icon-tab-bar__item--multi-click"
+              >
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <a role="tab" class="fd-icon-tab-bar__tab" tabindex="0">
+                  <span class="fd-icon-tab-bar__tag">{$getTranslation(key)}</span>
+                </a>
+                <div class="fd-popover fd-icon-tab-bar__popover">
+                  <div class="fd-popover__control">
+                    <div class="fd-icon-tab-bar__button-container">
+                      <button
+                        class="fd-button fd-button--transparent fd-icon-tab-bar__button"
+                        aria-controls="TODO"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        aria-label="open menu button"
+                        onclick="TODO"
                       >
-                        {#each nodes as node}
-                          {#if !node.hideFromNav}
-                            {#if node.label}
-                              <li
-                                tabindex="-1"
-                                aria-level="1"
-                                class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
-                              >
-                                <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                                <!-- svelte-ignore a11y-missing-attribute -->
-                                <a tabindex="0" class="fd-list__link fd-icon-tab-bar__list-link">
-                                  <span class="fd-list__title">{getNodeLabel(node)}</span>
-                                </a>
-                              </li>
-                            {/if}
-                          {/if}
-                        {/each}
-                      </ul>
+                        <i class="sap-icon--slim-arrow-down"></i>
+                      </button>
                     </div>
                   </div>
-                </span>
-              {:else}
-                <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <span
-                  class="fd-tabs__item"
-                  uid="{index}-0"
-                  on:click={(event) => event.stopPropagation()}
-                  isSelected={isSelectedCat(key, selectedNodeForTabNav)}
-                >
-                  <div class="fd-popover">
-                    <div class="fd-popover__control">
-                      <!-- svelte-ignore a11y-missing-attribute -->
-                      <a
-                        class="fd-tabs__link has-child"
-                        aria-expanded="false"
-                        role="tab"
-                        on:click|preventDefault={() => toggleDropdownState(key)}
-                        aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
-                      >
-                        <span class="label fd-tabs__tag"
+                  <div
+                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    aria-hidden="false"
+                    id="TODO"
+                  >
+                    <ul
+                      class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
+                    >
+                      {#each nodes as node}
+                        {#if !node.hideFromNav}
+                          {#if node.label}
+                            <li
+                              tabindex="-1"
+                              aria-level="1"
+                              class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
+                            >
+                              <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                              <!-- svelte-ignore a11y-missing-attribute -->
+                              <a tabindex="0" class="fd-list__link fd-icon-tab-bar__list-link">
+                                <span class="fd-list__title">{getNodeLabel(node)}</span>
+                              </a>
+                            </li>
+                          {/if}
+                        {/if}
+                      {/each}
+                    </ul>
+                  </div>
+                </div>
+              </span>
+            {:else}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <span
+                class="fd-icon-tab-bar__item fd-icon-tab-bar__item--single-click"
+                uid="{index}-0"
+                on:click={(event) => event.stopPropagation()}
+                isSelected={isSelectedCat(key, selectedNodeForTabNav)}
+              >
+                <div class="fd-popover">
+                  <div class="fd-popover__control">
+                    <!-- svelte-ignore a11y-missing-attribute -->
+                    <a
+                      class="fd-icon-tab-bar__tab"
+                      aria-expanded="false"
+                      role="tab"
+                      on:click|preventDefault={() => toggleDropdownState(key)}
+                      aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+                    >
+                      <div class="fd-icon-tab-bar__tab-container">
+                        <span class="fd-icon-tab-bar__tag"
                           >{$getTranslation(key)}</span
                         >
-                        <span class="sap-icon--dropdown luigi-icon--dropdown" />
-                      </a>
-                    </div>
-                    <div
-                      class="fd-popover__body fd-popover__body--no-arrow"
-                      aria-hidden={!dropDownStates[key]}
-                    >
-                      <nav class="fd-menu">
-                        <ul class="fd-menu__list fd-menu__list--no-shadow">
-                          {#each nodes as node}
-                            {#if !node.hideFromNav}
-                              {#if node.label}
-                                <li class="fd-menu__item">
-                                  <a
-                                    href={getRouteLink(node)}
-                                    class="fd-menu__link"
-                                    data-testid={NavigationHelpers.getTestId(
-                                      node,
-                                    )}
-                                    on:click|preventDefault={() =>
-                                      handleClick(node)}
-                                    aria-selected={node === selectedNodeForTabNav}
-                                  >
-                                    <span class="fd-menu__title"
-                                      >{getNodeLabel(node)}
-                                      <StatusBadge {node} /></span
-                                    >
-                                  </a>
-                                </li>
-                              {/if}
-                            {/if}
-                          {/each}
-                        </ul>
-                      </nav>
-                    </div>
+                        <span class="fd-icon-tab-bar__arrow">
+                          <i class="sap-icon--slim-arrow-down" role="presentation"></i>
+                        </span>
+                      </div>
+                    </a>
                   </div>
-                </span>
-              {/if}
+                  <div
+                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    aria-hidden={!dropDownStates[key]}
+                  >
+                    <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
+                      {#each nodes as node}
+                        {#if !node.hideFromNav}
+                          {#if node.label}
+                            <li class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item">
+                              <a
+                                href={getRouteLink(node)}
+                                class="fd-list__link fd-icon-tab-bar__list-link"
+                                data-testid={NavigationHelpers.getTestId(
+                                  node,
+                                )}
+                                on:click|preventDefault={() =>
+                                  handleClick(node)}
+                                aria-selected={node === selectedNodeForTabNav}
+                              >
+                                <span class="fd-list__title"
+                                  >{getNodeLabel(node)}
+                                  <StatusBadge {node} /></span
+                                >
+                              </a>
+                            </li>
+                          {/if}
+                        {/if}
+                      {/each}
+                    </ul>
+                  </div>
+                </div>
+              </span>
             {/if}
-          {/each}
-        </div>
+          {/if}
+        {/each}
       </div>
-
-      <div class="luigi-tabsMoreButton">
+      <div class="luigi-tabsMoreButton" bind:this={moreButton}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span
           class="fd-tabs__item"
@@ -472,6 +467,7 @@
               aria-expanded="false"
               role="tab"
               on:click|preventDefault={toggleMoreBtn}
+              bind:this={moreLink}
             >
               <span class="label fd-tabs__tag">More</span>
               <span class="sap-icon--dropdown luigi-icon--dropdown" />
@@ -585,14 +581,8 @@
 {/if}
 
 <style lang="scss">
-  .tabsContainer {
+  .tabsContainerHeader {
     width: 100%;
-  }
-
-  .tabsContainerWrapper {
-    flex-grow: 1;
-    flex-basis: auto;
-    flex-shrink: 1;
   }
 
   .luigi-tabsMoreButton {
@@ -603,9 +593,15 @@
         padding-top: 4px;
         padding-bottom: 4px;
 
-        .fd-nested-list__item:last-child {
-          .fd-nested-list__content {
-            border-bottom: none;
+        .fd-nested-list__item {
+          &:last-child {
+            .fd-nested-list__content {
+              border-bottom: none;
+            }
+          }
+
+          :global(.hide_element) {
+            display: none;
           }
         }
         .fd-nested-list__title {
@@ -614,6 +610,7 @@
         }
       }
     }
+
     .fd-tabs__link {
       padding-right: 0;
 
@@ -623,9 +620,13 @@
         }
       }
     }
+
+    :global(.hide_element) {
+      display: none;
+    }
   }
 
-  .lui-breadcrumb .luigi-tabsContainer .fd-popover__body {
+  .lui-breadcrumb .luigi-tabsContainerHeader .fd-popover__body {
     max-height: calc(
       100vh - calc(
           var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
@@ -638,7 +639,7 @@
     overflow-y: auto;
   }
 
-  .luigi-tabsContainer .fd-popover__body {
+  .luigi-tabsContainerHeader .fd-popover__body {
     max-height: calc(
       100vh - calc(
           var(--luigi__shellbar--height) +
@@ -651,20 +652,14 @@
     overflow-y: auto;
   }
 
-  :global(.luigi-tabsMoreButton.hide_element) {
-    display: none;
-  }
-  :global(.luigi-tabsMoreButton .fd-nested-list__item.hide_element) {
-    display: none;
-  }
-
+  
   :global(.fd-tool-layout .lui-main-content) {
-    .lui-tabs#tabsContainer {
+    #tabsContainer {
       left: 0;
     }
   }
 
-  .lui-tabs {
+  #tabsContainer {
     right: 0;
     left: var(--luigi__left-sidenav--width);
     border: none;
@@ -674,40 +669,9 @@
       left: 0;
     }
 
-    .fd-tabs {
-      flex-wrap: nowrap;
-      align-items: stretch;
-      @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
-      border: none;
-      right: 0;
-      left: 0;
-
-      &__item {
-        white-space: nowrap;
-        display: inline-block;
-      }
-
-      .fd-icon-tab-bar__item {
-        white-space: nowrap;
-        display: inline-flex;
-      }
-
-      &__link {
-        &.has-child {
-          .label {
-            padding-right: 17px;
-          }
-          .luigi-icon--dropdown {
-            position: absolute;
-            top: 0.4em;
-            right: 14px;
-          }
-        }
-      }
+    :global(.hide_element) {
+      display: none;
     }
   }
 
-  :global(.lui-tabs .fd-tabs__item.fd-tabs__item.hide_element) {
-    display: none;
-  }
 </style>

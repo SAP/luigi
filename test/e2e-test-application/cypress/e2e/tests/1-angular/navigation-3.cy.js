@@ -141,19 +141,19 @@ describe('Navigation', () => {
       it('scrollable dropdown in tabNav', () => {
         cy.viewport(1000, 300);
         cy.get('[data-testid="tabnavheader_tabnavheader"]').click();
-        cy.get('.tabsContainer')
+        cy.get('.tabsContainerHeader')
           .contains('Header 3')
           .click();
-        cy.get('.tabsContainer .fd-popover__body').then($div => {
+        cy.get('.tabsContainerHeader .fd-popover__body').then($div => {
           const hasScrollbar = $div[0].scrollHeight > $div[0].clientHeight;
           expect(hasScrollbar).to.be.true;
         });
-        cy.get('.tabsContainer .fd-popover__body')
+        cy.get('.tabsContainerHeader .fd-popover__body')
           .contains('TabNav 8')
           .should('be.not.visible');
 
-        cy.get('.tabsContainer .fd-popover__body').scrollTo('bottom');
-        cy.get('.tabsContainer .fd-popover__body')
+        cy.get('.tabsContainerHeader .fd-popover__body').scrollTo('bottom');
+        cy.get('.tabsContainerHeader .fd-popover__body')
           .contains('TabNav 8')
           .should('be.visible');
       });
@@ -191,7 +191,7 @@ describe('Navigation', () => {
 
       it('recalc of tab nav by using resizing', () => {
         cy.visit('/projects/tabNav');
-        cy.get('.luigi-tabsContainer').within(() => {
+        cy.get('.luigi-tabsContainerHeader').within(() => {
           cy.get('.fd-tabs__item')
             .contains('User Management')
             .should('be.visible');
@@ -203,7 +203,7 @@ describe('Navigation', () => {
             .should('not.be.visible');
         });
         cy.viewport(900, 750);
-        cy.get('.luigi-tabsContainer').within(() => {
+        cy.get('.luigi-tabsContainerHeader').within(() => {
           cy.get('.fd-tabs__item')
             .contains('Settings')
             .should('be.visible');
