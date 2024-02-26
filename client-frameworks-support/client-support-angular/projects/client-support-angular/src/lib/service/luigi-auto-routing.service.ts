@@ -1,11 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { OperatorFunction, PartialObserver, Subscription } from 'rxjs';
-import { convertToParamMap, NavigationEnd, ParamMap, Router, RouterEvent } from '@angular/router';
+import { ActivatedRouteSnapshot, NavigationEnd, ParamMap, Router, RouterEvent, convertToParamMap } from '@angular/router';
 import { linkManager, uxManager } from '@luigi-project/client';
+import { OperatorFunction, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiContextService } from './luigi-context-service';
-import { ActivatedRouteSnapshot } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -70,16 +69,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
       let route: string | undefined;
 
       if (current.data.luigiRoute) {
-        route = current.data.luigiRoute;
-
-        if (current.params) {
-          const pmap: ParamMap = convertToParamMap(current.params);
-          pmap.keys.forEach(key => {
-            const val = pmap.getAll(key).forEach(param => {
-              route = route?.replace(':' + key, param);
-            });
-          });
-        }
+        route = this.getResolvedLuigiRoute(current);
         if (current.data.fromContext) {
           if (!this.luigiContextService.getContext()) {
             console.debug('Ignoring auto navigation request, luigi context not set');
@@ -115,6 +105,41 @@ export class LuigiAutoRoutingService implements OnDestroy {
         lm.navigate(route);
       }
     }
+  }
+
+  getResolvedLuigiRoute(
+    current: ActivatedRouteSnapshot
+  ): string | undefined {
+    let route: string | undefined = current.data.luigiRoute;
+    const allParams = this.getAllParamsFromParents(current);
+
+    if (!route || !allParams) {
+      return route;
+    }
+
+    const pmap: ParamMap = convertToParamMap(allParams);
+
+    pmap.keys.forEach(key => {
+      pmap.getAll(key).forEach(param => {
+        route = route?.replace(':' + key, param);
+      });
+    });
+
+    return route;
+  }
+
+  getAllParamsFromParents(current: ActivatedRouteSnapshot): { [key: string]: string } | undefined {
+    let allParams: { [key: string]: string } = {};
+    let currentToCheck:ActivatedRouteSnapshot|null = current;
+
+    while (currentToCheck) {
+      if (currentToCheck.params) {
+        allParams = { ...allParams, ...currentToCheck.params };
+      }
+      currentToCheck = currentToCheck.parent;
+    }
+
+    return allParams;
   }
 
   ngOnDestroy(): void {

@@ -2026,11 +2026,11 @@
 <svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
 <div
   id="app"
-  class="{hideNav ? 'no-nav' : ''} {hideSideNav
-    ? 'no-side-nav'
-    : ''} {isHeaderDisabled ? 'no-top-nav' : ''} {noAnimation
-    ? 'no-animation'
-    : ''}"
+  class:no-nav={hideNav}
+  class:no-side-nav={hideSideNav}
+  class:no-top-nav={isHeaderDisabled}
+  class:no-animation={noAnimation}
+  class:btp-layout={btpToolLayout}
   configversion={configTag}
 >
   {#if alerts && alerts.length}

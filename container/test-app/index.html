@@ -332,6 +332,8 @@
       <luigi-container
         viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
         context='{"title": "Team", "content":""}'
+        allow-rules='["fullscreen", "microphone", "camera \"none\"", "geolocation \"self\" https://a.example.com https://b.example.com"]'
+        sandbox-rules='["allow-scripts", "allow-same-origin"]'
       ></luigi-container>
     </div>
     <div class="lui-wrapper" route="projects">
