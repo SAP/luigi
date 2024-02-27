@@ -119,11 +119,10 @@ export class WebComponentService {
           pathExists: () => {
             return new Promise((resolve, reject) => {
               this.containerService.dispatch(Events.PATH_EXISTS_REQUEST, this.thisComponent, {}, (exists)=>{
-                console.log("inside exisst check")
-                if (exists !== undefined || exists !== null) {
-                  resolve(exists)
+              if (exists) {
+                  resolve(true)
                 }  else {
-                  reject(new Error('Path exists response not received'));
+                  reject(false);
                 }
               }, 'callback');
             })

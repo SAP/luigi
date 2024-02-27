@@ -298,7 +298,7 @@ describe('createClientAPI', () => {
     });
   });
 
-  it('test linkManager pathExists: should resolve with false if path does not exist', () => {
+  it('test linkManager pathExists: should reject with false if path does not exist', () => {
     // Mock and spy on functions
     service.containerService.dispatch = jest.fn((event, component, options, callback) => {
       callback(false);
@@ -310,44 +310,20 @@ describe('createClientAPI', () => {
 
     // Simulate asynchronous behavior
     return pathExistsPromise.then(result => {
-      // Check if the dispatch function was called with the correct arguments
-      expect(service.containerService.dispatch).toHaveBeenCalledWith(
+     
+    }).catch((error)=>{
+       // Check if the dispatch function was called with the correct arguments
+       expect(service.containerService.dispatch).toHaveBeenCalledWith(
         Events.PATH_EXISTS_REQUEST,
         service.thisComponent,
         {},
         expect.any(Function),
         'callback'
       );
-      // Check if the function resolves with the correct value
-      expect(result).toBe(false);
+      expect(error).toBe(false);
     });
   });
 
-  
-  it('test linkManager pathExists: should reject with an error if path exists response not received', () => {
-    // Mock and spy on functions
-    service.containerService.dispatch = jest.fn((event, component, options, callback) => {
-
-    });
-
-    // Call the function and get the Promise
-    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    const pathExistsPromise = clientAPI.linkManager().pathExists();
-
-    // Simulate asynchronous behavior
-    return pathExistsPromise.catch(error => {
-      // Check if the dispatch function was called with the correct arguments
-      expect(service.containerService.dispatch).toHaveBeenCalledWith(
-        Events.PATH_EXISTS_REQUEST,
-        service.thisComponent,
-        {},
-        expect.any(Function),
-        'callback'
-      );
-      // Check if the function rejects with the correct error message   
-      expect(error.message).toBe('Path exists response not received');
-    });
-  });
 
   it('test uxManager showAlert', () => {
     const alertSettings = {
