@@ -171,7 +171,8 @@ class IframeHelpersClass {
     if (!(iframe.luigi && iframe.luigi.viewUrl && iframe._ready)) {
       return;
     }
-    const trustedIframeDomain = iframe.srcdoc && iframe.luigi.viewUrl === '_none_' ? '*' : this.getLocation(iframe.luigi.viewUrl);
+    const trustedIframeDomain =
+      iframe.srcdoc && iframe.luigi.viewUrl === '_none_' ? '*' : this.getLocation(iframe.luigi.viewUrl);
     if (trustedIframeDomain !== '' && iframe.contentWindow) {
       iframe.contentWindow.postMessage(message, trustedIframeDomain);
     }
