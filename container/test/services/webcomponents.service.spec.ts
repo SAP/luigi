@@ -249,6 +249,41 @@ describe('createClientAPI', () => {
     expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
   });
 
+  
+  it('test linkManager updateTopNavigation', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    clientAPI.linkManager().updateTopNavigation();
+
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
+  });
+  
+  it('test linkManager goBack', () => {
+    const route = '/test/route'
+
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    clientAPI.linkManager().withParams({params: 'some params'}).navigate(route);
+
+    // assert
+    const expectedPayload = { 
+      fromClosestContext: false,
+      fromContext: null,
+      fromVirtualTreeRoot: false,
+      link: "/test/route",
+      nodeParams: {params: 'some params'}  
+    };
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
+  });
+
 
   it('test uxManager showAlert', () => {
     const alertSettings = {
