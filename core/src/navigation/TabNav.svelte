@@ -365,7 +365,7 @@
                     <div class="fd-icon-tab-bar__button-container">
                       <button
                         class="fd-button fd-button--transparent fd-icon-tab-bar__button"
-                        aria-controls="{popoverId}"
+                        aria-controls={popoverId}
                         aria-expanded={!!dropDownStates[key]}
                         aria-haspopup="true"
                         aria-label="open menu button"
@@ -378,7 +378,7 @@
                   <div
                     class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
                     aria-hidden={!dropDownStates[key]}
-                    id="{popoverId}"
+                    id={popoverId}
                   >
                     <ul
                       class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
@@ -490,7 +490,11 @@
               aria-expanded="false"
               role="tab"
             >
-              <button class="fd-icon-tab-bar__overflow" on:click|preventDefault={toggleMoreBtn} bind:this={moreLink}>
+              <button
+                class="fd-icon-tab-bar__overflow"
+                on:click|preventDefault={toggleMoreBtn}
+                bind:this={moreLink}
+              >
                 <span class="label fd-icon-tab-bar__overflow-text">More</span>
                 <span class="sap-icon--slim-arrow-down" />
               </button>
