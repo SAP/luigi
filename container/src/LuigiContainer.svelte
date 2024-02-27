@@ -4,6 +4,7 @@
     props: {
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow'},
       context: { type: 'String', reflect: false, attribute: 'context' },
       label: { type: 'String', reflect: false, attribute: 'label' },
       webcomponent: {
@@ -41,16 +42,6 @@
         reflect: false,
         attribute: 'client-permissions',
       },
-      allowRules: {
-        type: 'Array',
-        reflect: false,
-        attribute: 'allow-rules',
-      },
-      sandboxRules: {
-        type: 'Array',
-        reflect: false,
-        attribute: 'sandbox-rules',
-      },
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -64,6 +55,7 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
+        attachShadow(settings) { if(this.hasAttribute('no-shadow')) return this; return super.attachShadow(settings); }
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
@@ -81,13 +73,13 @@
   import { ContainerAPI } from './api/container-api';
   import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
-  import { getAllowRules } from './services/iframe-helpers';
 
   export let viewurl: string;
   export let context: string;
   export let label: string;
   export let webcomponent: any;
   export let deferInit: boolean;
+  export let noShadow: Boolean;
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
@@ -96,8 +88,6 @@
   export let searchParams: any;
   export let pathParams: any;
   export let clientPermissions: any;
-  export let allowRules: string[];
-  export let sandboxRules: string[];
 
   export let userSettings: any;
   export let anchor: string;
@@ -124,9 +114,7 @@
       pathParams &&
       clientPermissions &&
       userSettings &&
-      anchor &&
-      allowRules &&
-      sandboxRules
+      anchor
     );
   };
 
@@ -135,7 +123,7 @@
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
         ContainerAPI.sendCustomMessage(
           id,
-          mainComponent,
+          noShadow ? thisComponent : mainComponent,
           !!webcomponent,
           iframeHandle,
           data,
@@ -144,7 +132,7 @@
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
         if (webcomponent) {
-          mainComponent._luigi_mfe_webcomponent.context = contextObj;
+          (noShadow ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
@@ -159,12 +147,13 @@
 
       const ctx = GenericHelperFunctions.resolveContext(context);
       if (webcomponent) {
-        mainComponent.innerHTML = '';
+        const elRoot = noShadow ? thisComponent : mainComponent;
+        elRoot.innerHTML = '';
         const webComponentValue =
           GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
           viewurl,
-          mainComponent,
+          elRoot,
           ctx,
           typeof webComponentValue === 'object'
             ? { webcomponent: webComponentValue }
@@ -177,9 +166,9 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         });
       } else if (webcomponent) {
-        mainComponent.addEventListener('wc_ready', () => {
+        (noShadow ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
           if (
-            !(mainComponent as any)._luigi_mfe_webcomponent
+            !(noShadow ? thisComponent : mainComponent as any)._luigi_mfe_webcomponent
               ?.deferLuigiClientWCInit
           ) {
             thisComponent.initialized = true;
@@ -193,7 +182,7 @@
   };
 
   onMount(async () => {
-    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any = mainComponent.getRootNode() === document ? mainComponent.parentNode : (mainComponent.getRootNode() as ShadowRoot).host;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
       initialize(thisComponent);
@@ -208,21 +197,19 @@
 
 <main
   bind:this={mainComponent}
+></main>
+<main
+  bind:this={mainComponent}
   class={webcomponent ? undefined : 'lui-isolated'}
 >
   {#if containerInitialized}
     {#if !webcomponent}
-      <iframe
-        bind:this={iframeHandle.iframe}
-        src={viewurl}
-        title={label}
-        allow={getAllowRules(allowRules)}
-        sandbox={sandboxRules ? sandboxRules.join(' ') : undefined}
-      />
+      <iframe bind:this={iframeHandle.iframe} src={viewurl} title={label} />
     {/if}
   {/if}
 </main>
 
+{#if !noShadow}
 <style>
   main,
   iframe {
@@ -235,3 +222,4 @@
     line-height: 0;
   }
 </style>
+{/if}
