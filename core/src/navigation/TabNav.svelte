@@ -396,6 +396,10 @@
                               <a
                                 tabindex="0"
                                 class="fd-list__link fd-icon-tab-bar__list-link"
+                                href={getRouteLink(node)}
+                                aria-selected={node === selectedNodeForTabNav}
+                                on:click|preventDefault={() =>
+                                  handleClick(node)}
                               >
                                 <span class="fd-list__title"
                                   >{getNodeLabel(node)}</span
