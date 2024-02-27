@@ -249,7 +249,6 @@ describe('createClientAPI', () => {
     expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
   });
 
-  
   it('test linkManager updateTopNavigation', () => {
     // mock and spy on functions
     service.containerService.dispatch = jest.fn();
@@ -263,27 +262,41 @@ describe('createClientAPI', () => {
   });
   
   it('test linkManager goBack', () => {
-    const route = '/test/route'
-
     // mock and spy on functions
     service.containerService.dispatch = jest.fn();
     const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    clientAPI.linkManager().withParams({params: 'some params'}).navigate(route);
+    clientAPI.linkManager().goBack({ctx: 'context'});
 
-    // assert
-    const expectedPayload = { 
-      fromClosestContext: false,
-      fromContext: null,
-      fromVirtualTreeRoot: false,
-      link: "/test/route",
-      nodeParams: {params: 'some params'}  
-    };
-    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.GO_BACK_REQUEST, {ctx: 'context'});
   });
+  
+  it('test linkManager pathExists: should resolve with true if path exists', () => {
+    // Mock and spy on functions
+    service.containerService.dispatch = jest.fn((event, component, options, callback) => {
+      callback(true);
+    });
 
+    // Call the function and get the Promise
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    const pathExistsPromise = clientAPI.linkManager().pathExists();
+
+    // Simulate asynchronous behavior
+    return pathExistsPromise.then(result => {
+      // Check if the dispatch function was called with the correct arguments
+      expect(service.containerService.dispatch).toHaveBeenCalledWith(
+        Events.PATH_EXISTS_REQUEST,
+        service.thisComponent,
+        {},
+        expect.any(Function),
+        'callback'
+      );
+      // Check if the function resolves with the correct value
+      expect(result).toBe(true);
+    });
+  });
 
   it('test uxManager showAlert', () => {
     const alertSettings = {
