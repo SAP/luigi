@@ -348,6 +348,7 @@
             {@const uid = `${index}-0`}
             {@const popoverId = `lui-${uid}-popover`}
             {#if tabItemNameCanNavigate(nodes)}
+              {@const nodeToNavigateTo = getNodeToNavigateTo(nodes)}
               <span
                 {uid}
                 role="presentation"
@@ -355,7 +356,13 @@
                 on:click={(event) => event.stopPropagation()}
               >
                 <!-- svelte-ignore a11y-missing-attribute -->
-                <a role="tab" class="fd-icon-tab-bar__tab" tabindex="0">
+                <a
+                  role="tab"
+                  class="fd-icon-tab-bar__tab"
+                  tabindex="0"
+                  href={getRouteLink(nodeToNavigateTo)}
+                  on:click|preventDefault={() => handleClick(nodeToNavigateTo)}
+                >
                   <span class="fd-icon-tab-bar__tag"
                     >{$getTranslation(key)}</span
                   >
