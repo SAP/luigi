@@ -92,7 +92,7 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    
+
     if (tabsContainerHeader && moreButton && moreLink) {
       moreLink && moreLink.setAttribute('aria-selected', 'false');
       let tabsContainerHeaderStyles =
