@@ -512,7 +512,7 @@
 
   function semiCollapsibleButtonClicked() {
     isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
-    if (document.getElementsByClassName('fd-tabs').length > 0) {
+    if (document.getElementsByClassName('luigi-tabsContainerHeader').length > 0) {
       dispatch('resizeTabNav', {});
     }
     setBurgerTooltip();

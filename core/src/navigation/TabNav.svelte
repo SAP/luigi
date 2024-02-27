@@ -92,9 +92,9 @@
 
   const calcTabsContainer = () => {
     clearTapNav();
-    moreLink && moreLink.setAttribute('aria-selected', 'false');
-
-    if (tabsContainerHeader && moreButton) {
+    
+    if (tabsContainerHeader && moreButton && moreLink) {
+      moreLink && moreLink.setAttribute('aria-selected', 'false');
       let tabsContainerHeaderStyles =
         tabsContainerHeader.currentStyle ||
         window.getComputedStyle(tabsContainerHeader);
@@ -292,10 +292,6 @@
 
   function tabItemNameCanNavigate(nodes) {
     return !!getNodeToNavigateTo(nodes);
-  }
-
-  $: {
-    children && console.log({ children, pathData, pathParams });
   }
 </script>
 
