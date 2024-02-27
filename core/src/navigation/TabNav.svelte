@@ -495,7 +495,7 @@
             >
               <button class="fd-icon-tab-bar__overflow">
                 <span class="label fd-icon-tab-bar__overflow-text">More</span>
-                <span class="sap-icon--slim-arrow-down luigi-icon--dropdown" />
+                <span class="sap-icon--slim-arrow-down" />
               </button>
             </a>
             <div
