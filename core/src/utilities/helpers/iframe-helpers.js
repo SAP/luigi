@@ -171,7 +171,7 @@ class IframeHelpersClass {
     if (!(iframe.luigi && iframe.luigi.viewUrl && iframe._ready)) {
       return;
     }
-    const trustedIframeDomain = this.getLocation(iframe.luigi.viewUrl);
+    const trustedIframeDomain = iframe.srcdoc && iframe.luigi.viewUrl === '_none_' ? '*' : this.getLocation(iframe.luigi.viewUrl);
     if (trustedIframeDomain !== '' && iframe.contentWindow) {
       iframe.contentWindow.postMessage(message, trustedIframeDomain);
     }
@@ -233,6 +233,7 @@ class IframeHelpersClass {
     }
 
     if (currentNode && currentNode.compound) {
+      // iframe.sandbox = iframe.sandbox.value.replace('allow-same-origin', '');
       iframe.srcdoc = /* html */ `
               <!DOCTYPE html>
               <html lang="en">
@@ -241,10 +242,11 @@ class IframeHelpersClass {
                 <title></title>
                 <meta charset="utf-8">
                 <style>
-                  body {
-                    margin: 0;
+                  html, body {
+                    margin: 0; height:100%;
                   }
                 </style>
+                <!-- <script src="/public_client/luigi-client.js"></script>-->
                 <script src="https://cdn.jsdelivr.net/npm/@luigi-project/client/luigi-client.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/@luigi-project/container" type="module"></script>
               </head>
@@ -270,6 +272,8 @@ class IframeHelpersClass {
               
               </html>
       `;
+      // minified
+      //iframe.srcdoc = '<html lang=en><head><title></title><meta charset=utf-8><style>body,html{margin:0;height:100%}</style><script src=https://cdn.jsdelivr.net/npm/@luigi-project/client/luigi-client.js></script><script src=https://cdn.jsdelivr.net/npm/@luigi-project/container type=module></script></head><body><script>let cc;LuigiClient.addInitListener((e=>{customElements.whenDefined("luigi-compound-container").then((()=>{cc=document.createElement("luigi-compound-container"),cc.viewurl=e.viewUrl,cc.context=JSON.stringify(e),cc.compoundConfig=e.compoundConfig,document.body.appendChild(cc)}))})),LuigiClient.addContextUpdateListener((e=>{cc.updateContext(e)}))</script></body></html>';
     }
     const iframeInterceptor = LuigiConfig.getConfigValue('settings.iframeCreationInterceptor');
     if (GenericHelpers.isFunction(iframeInterceptor)) {

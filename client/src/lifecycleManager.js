@@ -135,7 +135,7 @@ class LifecycleManager extends LuigiClientBase {
       },
       '*'
     );
-    this._tpcCheck();
+    //this._tpcCheck();
   }
 
   _tpcCheck() {
