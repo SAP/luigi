@@ -94,7 +94,7 @@
     clearTapNav();
 
     if (tabsContainerHeader && moreButton && moreLink) {
-      moreLink && moreLink.setAttribute('aria-selected', 'false');
+      moreLink.classList.remove('is-active');
       let tabsContainerHeaderStyles =
         tabsContainerHeader.currentStyle ||
         window.getComputedStyle(tabsContainerHeader);
@@ -121,7 +121,7 @@
         if (totalTabsSize >= availableSpaceForTabItems) {
           tabElement.classList.add('hide_element');
           if (tabElement.getAttribute('isSelected') === 'true') {
-            moreLink.setAttribute('aria-selected', 'true');
+            moreLink.classList.add('is-active');
           }
           document
             .querySelector('li[uid="' + uid + '"]')
@@ -482,18 +482,16 @@
         >
           <div class="fd-popover">
             <!-- svelte-ignore a11y-missing-attribute -->
-            <a
+            <div
               class="fd-popover__control has-child luigi__more"
               aria-expanded="false"
               role="tab"
-              on:click|preventDefault={toggleMoreBtn}
-              bind:this={moreLink}
             >
-              <button class="fd-icon-tab-bar__overflow">
+              <button class="fd-icon-tab-bar__overflow" on:click|preventDefault={toggleMoreBtn} bind:this={moreLink}>
                 <span class="label fd-icon-tab-bar__overflow-text">More</span>
                 <span class="sap-icon--slim-arrow-down" />
               </button>
-            </a>
+            </div>
             <div
               class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
               aria-hidden={!isMoreBtnExpanded}
