@@ -181,6 +181,20 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 -   **since**: 1.0.0
 
+### allowRules
+
+The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
+You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
+
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+### sandboxRules
+
+The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
+You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
+
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
 ### updateContext
 
 Function that updates the context of the microfrontend

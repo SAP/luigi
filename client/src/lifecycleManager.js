@@ -12,7 +12,7 @@ class LifecycleManager extends LuigiClientBase {
     this.luigiInitialized = false;
     this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
     this.setCurrentContext(
-      this.defaultContextKeys.reduce(function(acc, key) {
+      this.defaultContextKeys.reduce(function (acc, key) {
         acc[key] = {};
         return acc;
       }, {})
@@ -128,7 +128,6 @@ class LifecycleManager extends LuigiClientBase {
      * Get context once initially
      * @private
      */
-    console.log('sending postmessage luigi.get-context');
     window.parent.postMessage(
       {
         msg: 'luigi.get-context',
@@ -136,7 +135,6 @@ class LifecycleManager extends LuigiClientBase {
       },
       '*'
     );
-    console.log('Sent postmessage luigi.get-context');
     this._tpcCheck();
   }
 

@@ -151,6 +151,8 @@ Returns **void**
 
 Manually triggers the micro frontend rendering process when using defer-init attribute
 
+Returns **void** 
+
 **Meta**
 
 -   **since**: 1.0.0
