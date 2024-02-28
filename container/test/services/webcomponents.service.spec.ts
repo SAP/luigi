@@ -364,6 +364,19 @@ describe('createClientAPI', () => {
       // assert
       expect(hasBack).toEqual(true);
     });
+
+    it('test linkManager hasBack set to false', () => {
+      // mock and spy on data/functions
+      service.thisComponent = document.createElement('div');
+      service.thisComponent.hasBack = false;
+      
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      const hasBack = clientAPI.linkManager().hasBack();
+  
+      // assert
+      expect(hasBack).toEqual(false);
+    });
   
     it('test linkManager hasBack not set', () => {
       // mock and spy on data/functions
@@ -753,6 +766,20 @@ describe('createClientAPI', () => {
 
     // assert
     expect(dispatchEventSpy).toHaveBeenCalledWith(Events.INITIALIZED, {});
+  });
+
+  it('test setViewGroupData', () => {
+    // mock and spy on functions
+    service.containerService.dispatch = jest.fn();
+    const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    const data = {vg: 'some data'}
+    clientAPI.setViewGroupData(data);
+
+    // assert
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_VIEW_GROUP_DATA_REQUEST, data);
   });
 
   it('test addNodeParams isSpecial FALSE', () => {
