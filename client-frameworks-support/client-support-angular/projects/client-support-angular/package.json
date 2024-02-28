@@ -17,8 +17,8 @@
     "tag": "client-support-angular"
   },
   "devDependencies": {
-    "@luigi-project/client": "2.9.0",
-    "@luigi-project/testing-utilities": "2.9.1-dev.202402271112"
+    "@luigi-project/client": "^2.0.0",
+    "@luigi-project/testing-utilities": "^2.0.0"
   },
   "version": "2.9.0"
 }

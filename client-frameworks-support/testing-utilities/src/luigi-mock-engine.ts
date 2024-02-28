@@ -16,134 +16,129 @@ export class LuigiMockEngine {
   public static initPostMessageHook() {
     return async (): Promise<void> => {
       // Check if Luigi Client is running standalone
-      console.log('luigiMockModule sapluigi testing-utitlities');
-      // if (window.parent === window) {
-      console.debug('Detected standalone mode');
+      if (window.parent === window) {
+        console.debug('Detected standalone mode');
 
-      // Check and skip if Luigi environment is already mocked
-      if ((window as any).luigiMockEnvironment) {
-        return;
-      }
-
-      // mock target origin
-      console.log('testing utils', (window as any).LuigiClient);
-      if ((window as any).LuigiClient) {
-        (window as any).LuigiClient.setTargetOrigin('*');
-      }
-
-      (window as any).luigiMockEnvironment = {
-        msgListener: function (e: any) {
-          console.log('testing utils msg starts with luigi. or storage', e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage'));
-          if (e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage')) {
-            console.debug('Luigi msg', e.data);
-
-            if (e.data.msg === 'luigi.get-context') {
-              window.postMessage(
-                {
-                  msg: 'luigi.init',
-                  emulated: true,
-                  internal: {
-                    viewStackSize: 1
-                  },
-                  context: e.data.context
-                },
-                '*'
-              );
-            }
-
-            // vizualise retrieved event data
-            LuigiMockEngine.visualize(JSON.stringify(e.data));
-
-            // Check and run mocked callback if it exists
-            const mockListener = (window as any).luigiMockEnvironment.mockListeners[e.data.msg];
-            if (mockListener) {
-              mockListener(e);
-            }
-          }
-        },
-        mockListeners: {
-          'luigi.navigation.pathExists': (event: any) => {
-            const mockData = window.sessionStorage.getItem('luigiMockData');
-            let mockDataParsed = mockData ? JSON.parse(mockData) : undefined;
-            const inputPath = event.data.data.link;
-            const pathExists = mockDataParsed && mockDataParsed.pathExists && mockDataParsed.pathExists[inputPath];
-
-            const response = {
-              msg: 'luigi.navigation.pathExists.answer',
-              data: {
-                correlationId: event.data.data.id,
-                pathExists: pathExists ? pathExists : false
-              },
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          //ux
-          'luigi.ux.confirmationModal.show': (event: any) => {
-            const response = {
-              msg: 'luigi.ux.confirmationModal.hide',
-              data: event.data,
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          'luigi.ux.alert.show': (event: any) => {
-            const response = {
-              msg: 'luigi.ux.alert.hide',
-              data: event.data,
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          'luigi.ux.set-current-locale': (event: any) => {
-            const response = {
-              msg: 'luigi.current-locale-changed',
-              currentLocale: event.data.data.currentLocale,
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          // linkManager
-          'luigi.navigation.open': (event: any) => {
-            const response = {
-              msg: 'luigi.navigate.ok',
-              data: event.data,
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          'luigi.navigation.splitview.close': (event: any) => {
-            const response = {
-              msg: 'luigi.navigate.ok',
-              data: event.data,
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          'luigi.navigation.splitview.collapse': (event: any) => {
-            const response = {
-              msg: 'luigi.navigate.ok',
-              data: event.data,
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          'luigi.navigation.splitview.expand': (event: any) => {
-            const response = {
-              msg: 'luigi.navigate.ok',
-              data: event.data,
-              emulated: true
-            };
-            window.postMessage(response, '*');
-          },
-          // storage
-          storage: () => { }
+        // Check and skip if Luigi environment is already mocked
+        if ((window as any).luigiMockEnvironment) {
+          return;
         }
-      };
 
-      // Listen to the global 'message' event of the window object
-      window.addEventListener('message', (window as any).luigiMockEnvironment.msgListener);
-      // }
+        // mock target origin
+        if ((window as any).LuigiClient) {
+          (window as any).LuigiClient.setTargetOrigin('*');
+        }
+
+        (window as any).luigiMockEnvironment = {
+          msgListener: function (e: any) {
+            if (e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage')) {
+              if (e.data.msg === 'luigi.get-context') {
+                window.postMessage(
+                  {
+                    msg: 'luigi.init',
+                    emulated: true,
+                    internal: {
+                      viewStackSize: 1
+                    },
+                    context: e.data.context
+                  },
+                  '*'
+                );
+              }
+
+              // vizualise retrieved event data
+              LuigiMockEngine.visualize(JSON.stringify(e.data));
+
+              // Check and run mocked callback if it exists
+              const mockListener = (window as any).luigiMockEnvironment.mockListeners[e.data.msg];
+              if (mockListener) {
+                mockListener(e);
+              }
+            }
+          },
+          mockListeners: {
+            'luigi.navigation.pathExists': (event: any) => {
+              const mockData = window.sessionStorage.getItem('luigiMockData');
+              let mockDataParsed = mockData ? JSON.parse(mockData) : undefined;
+              const inputPath = event.data.data.link;
+              const pathExists = mockDataParsed && mockDataParsed.pathExists && mockDataParsed.pathExists[inputPath];
+
+              const response = {
+                msg: 'luigi.navigation.pathExists.answer',
+                data: {
+                  correlationId: event.data.data.id,
+                  pathExists: pathExists ? pathExists : false
+                },
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            //ux
+            'luigi.ux.confirmationModal.show': (event: any) => {
+              const response = {
+                msg: 'luigi.ux.confirmationModal.hide',
+                data: event.data,
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            'luigi.ux.alert.show': (event: any) => {
+              const response = {
+                msg: 'luigi.ux.alert.hide',
+                data: event.data,
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            'luigi.ux.set-current-locale': (event: any) => {
+              const response = {
+                msg: 'luigi.current-locale-changed',
+                currentLocale: event.data.data.currentLocale,
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            // linkManager
+            'luigi.navigation.open': (event: any) => {
+              const response = {
+                msg: 'luigi.navigate.ok',
+                data: event.data,
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            'luigi.navigation.splitview.close': (event: any) => {
+              const response = {
+                msg: 'luigi.navigate.ok',
+                data: event.data,
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            'luigi.navigation.splitview.collapse': (event: any) => {
+              const response = {
+                msg: 'luigi.navigate.ok',
+                data: event.data,
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            'luigi.navigation.splitview.expand': (event: any) => {
+              const response = {
+                msg: 'luigi.navigate.ok',
+                data: event.data,
+                emulated: true
+              };
+              window.postMessage(response, '*');
+            },
+            // storage
+            storage: () => { }
+          }
+        };
+
+        // Listen to the global 'message' event of the window object
+        window.addEventListener('message', (window as any).luigiMockEnvironment.msgListener);
+      }
     };
   }
 
