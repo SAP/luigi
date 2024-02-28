@@ -527,6 +527,117 @@ describe('createClientAPI', () => {
     });
 
 
+    it('test uxManager openUserSettings', () => {
+      service.thisComponent = document.createElement('div');
+      const userSettings = {
+        user: "Some open user settings data"
+      }
+      service.thisComponent.userSettings = userSettings;
+  
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+  
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().openUserSettings(userSettings);
+  
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.OPEN_USER_SETTINGS_REQUEST, userSettings);
+    });
+
+    
+    it('test uxManager collapseLeftSideNav', () => {  
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+  
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().collapseLeftSideNav();
+  
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
+    });
+
+    it('test uxManager setDocumentTitle', () => {  
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+  
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().setDocumentTitle('TITLE');
+  
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_DOCUMENT_TITLE_REQUEST, 'TITLE');
+    });
+
+    
+    it('test uxManager getDocumentTitle', () => {
+      // mock and spy on data/functions
+      service.thisComponent = document.createElement('div');
+      service.thisComponent.documentTitle = 'Title'
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      const result = clientAPI.uxManager().getDocumentTitle();
+
+      // assert
+      expect(result).toEqual('Title');
+    });
+
+    it('test uxManager getDirtyStatus', () => {
+      // mock and spy on data/functions
+      service.thisComponent = document.createElement('div');
+      service.thisComponent.dirtyStatus = true;
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      const result = clientAPI.uxManager().getDirtyStatus();
+
+      // assert
+      expect(result).toEqual(true);
+    });
+
+    it('test uxManager getDirtyStatus', () => {
+      // mock and spy on data/functions
+      service.thisComponent = document.createElement('div');
+      
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      const result = clientAPI.uxManager().getDirtyStatus();
+
+      // assert
+      expect(result).toEqual(false);
+    });
+  
+    it('test uxManager removeBackdrop', () => {  
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+  
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().removeBackdrop();
+  
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.REMOVE_BACKDROP_REQUEST, {});
+    });
+        
+    it('test uxManager hideAppLoadingIndicator', () => {  
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+  
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.uxManager().hideAppLoadingIndicator();
+  
+      // assert
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
+    });
+
   });
 
   it('test getCurrentLocale set value', () => {
