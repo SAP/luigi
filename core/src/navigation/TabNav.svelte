@@ -621,6 +621,19 @@
 <style lang="scss">
   .tabsContainerHeader {
     width: 100%;
+
+    // This override fixes an issue in fd that causes the link of an item with
+    // multi-click area in the icon tab bar to "steal" the focus
+    // so that the button of that item is not clickable anymore.
+    // Issue found in fd 0.33.2. The problematic style is
+    // .fd-icon-tab-bar__tab:focus { z-index: 5; }
+    // This alone does not cause the issue but in combination with
+    // the fact that the link of the item has padding that stretches
+    // over the button. But the z-index seems to be the main issue.
+    .fd-icon-tab-bar__item.fd-icon-tab-bar__item--multi-click
+      a.fd-icon-tab-bar__tab:focus {
+      z-index: initial;
+    }
   }
 
   .luigi-tabsMoreButton {
