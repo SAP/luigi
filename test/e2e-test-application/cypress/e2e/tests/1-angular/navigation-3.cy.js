@@ -182,8 +182,8 @@ describe('Navigation', () => {
 
       it('Test activated node on moible with keep selected context', () => {
         cy.visit('/projects/tabNav/avengers/captain-america/super-power');
-        cy.get('.luigi__more').should('have.attr', 'aria-selected', 'true');
-        cy.get('.luigi__more').click();
+        cy.get('.fd-icon-tab-bar__overflow').should('have.class', 'is-active');
+        cy.get('.fd-icon-tab-bar__overflow').click();
         cy.get('.fd-nested-list__title')
           .contains('Keep Selected Example')
           .parent()
