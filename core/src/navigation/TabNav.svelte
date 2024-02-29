@@ -14,21 +14,21 @@
     StateHelpers,
   } from '../utilities/helpers';
   import StatusBadge from './StatusBadge.svelte';
-  import { Navigation } from './services/navigation';
-
   import TabHeader from './TabHeader.svelte';
+  import { Navigation } from './services/navigation';
 
   export let children;
   export let pathData;
   export let pathParams;
-  let previousPathData;
   export let hideNavComponent;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
-  let selectedNode;
   export let selectedNodeForTabNav;
   export let dropDownStates = {};
   export let isMoreBtnExpanded = false;
   export let resizeTabNavToggle;
+
+  let selectedNode;
+  let previousPathData;
   let previousResizeTabNavToggle;
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
@@ -287,10 +287,10 @@
   }
 
   function getNodeToNavigateTo(nodes) {
-    return nodes.find((node) => node.category.navigateOnClick);
+    return nodes.find((node) => node.category?.navigateOnClick);
   }
 
-  function tabItemNameCanNavigate(nodes) {
+  function isMultiClickAreaTabItem(nodes) {
     return !!getNodeToNavigateTo(nodes);
   }
 </script>
@@ -347,7 +347,8 @@
           {:else if isTabItemWithSubItems(nodes)}
             {@const uid = `${index}-0`}
             {@const popoverId = `lui-${uid}-popover`}
-            {#if tabItemNameCanNavigate(nodes)}
+
+            {#if isMultiClickAreaTabItem(nodes)}
               {@const nodeToNavigateTo = getNodeToNavigateTo(nodes)}
               <span
                 {uid}
@@ -391,29 +392,26 @@
                       class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
                     >
                       {#each nodes as node}
-                        {#if !node.hideFromNav}
-                          {#if node.label}
-                            <li
-                              tabindex="-1"
-                              aria-level="1"
-                              class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
+                        {#if !node.hideFromNav && node.label}
+                          <li
+                            tabindex="-1"
+                            aria-level="1"
+                            class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
+                          >
+                            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                            <!-- svelte-ignore a11y-missing-attribute -->
+                            <a
+                              tabindex="0"
+                              class="fd-list__link fd-icon-tab-bar__list-link"
+                              href={getRouteLink(node)}
+                              aria-selected={node === selectedNodeForTabNav}
+                              on:click|preventDefault={() => handleClick(node)}
                             >
-                              <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                              <!-- svelte-ignore a11y-missing-attribute -->
-                              <a
-                                tabindex="0"
-                                class="fd-list__link fd-icon-tab-bar__list-link"
-                                href={getRouteLink(node)}
-                                aria-selected={node === selectedNodeForTabNav}
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
+                              <span class="fd-list__title"
+                                >{getNodeLabel(node)}</span
                               >
-                                <span class="fd-list__title"
-                                  >{getNodeLabel(node)}</span
-                                >
-                              </a>
-                            </li>
-                          {/if}
+                            </a>
+                          </li>
                         {/if}
                       {/each}
                     </ul>
