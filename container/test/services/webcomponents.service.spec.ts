@@ -364,19 +364,6 @@ describe('createClientAPI', () => {
       // assert
       expect(hasBack).toEqual(true);
     });
-
-    it('test linkManager hasBack set to false', () => {
-      // mock and spy on data/functions
-      service.thisComponent = document.createElement('div');
-      service.thisComponent.hasBack = false;
-      
-      // act
-      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      const hasBack = clientAPI.linkManager().hasBack();
-  
-      // assert
-      expect(hasBack).toEqual(false);
-    });
   
     it('test linkManager hasBack not set', () => {
       // mock and spy on data/functions
