@@ -3,7 +3,7 @@ export class LuigiMockUtil {
   private browser: any;
   private win: any
 
-  constructor(browser: any, win: any) {
+  constructor(browser: any, win?: any) {
     this.messages = [];
     this.browser = browser;
     this.win = win;
