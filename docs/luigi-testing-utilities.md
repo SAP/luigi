@@ -22,7 +22,7 @@ The [Luigi Testing Utilities](https://github.com/SAP/luigi/tree/main/client-fram
 
 ## LuigiMockUtil 
 This class contains certain utility helper functions needed when writing [protractor-based](https://www.npmjs.com/package/protractor) e2e tests. You can simply import this module into you project and then use an instance of it to test micro frontend functionality.
-With version 2.9.0 this class can also used for [cypress-based](https://www.cypress.io/) e2e tests.
+With version 2.9.0 this class can also be used for [cypress-based](https://www.cypress.io/) e2e tests.
 
 ## How to use the library with protractor
 
