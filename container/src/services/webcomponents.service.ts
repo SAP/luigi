@@ -119,6 +119,7 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
           pathExists: () => {
+            // create TS Event type 
             return new Promise((resolve, reject) => {
               this.containerService.dispatch(Events.PATH_EXISTS_REQUEST, this.thisComponent, {}, (exists)=>{
               if (exists) {
@@ -142,7 +143,7 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
-            return this.thisComponent.hasBack || false;
+            return false;
           }, 
         };
         return linkManagerInstance;
