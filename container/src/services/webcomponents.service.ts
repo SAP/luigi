@@ -119,7 +119,6 @@ export class WebComponentService {
             this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
           },
           pathExists: () => {
-            // create TS Event type 
             return new Promise((resolve, reject) => {
               this.containerService.dispatch(Events.PATH_EXISTS_REQUEST, this.thisComponent, {}, (exists)=>{
               if (exists) {

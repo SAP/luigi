@@ -1,12 +1,8 @@
 import LuigiContainer from './LuigiContainer.svelte';
 import LuigiCompoundContainer from './LuigiCompoundContainer.svelte';
 import { Events } from './constants/communication';
-// import  PathExistsEvent   from './constants/event-type.ts';
 export { default as LuigiContainer } from './LuigiContainer.svelte';
 export { default as LuigiCompoundContainer } from './LuigiCompoundContainer.svelte';
-// export { default as PathExistsEvent } from './constants/event-type.ts';
-
-// export { PathExistsEvent }  from './constants/event-type';
 
 export default Events;
 
