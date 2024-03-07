@@ -1,0 +1,24 @@
+<!-- .js => webcomponent -->
+<!-- .html => iFrame -->
+
+<!-- npm install --save-prod @luigi-project/container --prefix . -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Luigi Webcomponent Container</title>
+  </head>
+
+  <script type="module">
+    import './bundle.js'
+  </script>'
+
+  <body>
+    <luigi-container
+      viewURL="./helloWorldWC.js"
+      webcomponent="true"
+      context='{"content":"some extra content"}'
+    ></luigi-container>
+  </body>
+</html>
