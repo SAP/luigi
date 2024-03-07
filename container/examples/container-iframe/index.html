@@ -1,0 +1,28 @@
+<!-- .js => webcomponent -->
+<!-- .html => iFrame -->
+
+<!-- npm install --save-prod @luigi-project/container --prefix . -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Luigi iFrame Container</title>
+  </head>
+
+  <script type="module">
+    import './bundle.js'
+  </script>
+
+  <body>
+    <!-- <luigi-container
+      viewURL="https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html"
+      context='{"title": "Team", "content":""}'
+    ></luigi-container> -->
+
+    <luigi-container
+      viewURL="./microfrontend.html"
+      context='{"title": "Projects", "content":"123123123123"}'
+    ></luigi-container>
+  </body>
+</html>
