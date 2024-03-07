@@ -1,0 +1,53 @@
+<!-- .js => webcomponent -->
+<!-- .html => iFrame -->
+
+<!-- npm install --save-prod @luigi-project/container --prefix . -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Luigi Compound Container</title>
+  </head>
+
+  <body>
+    <luigi-compound-container
+      viewURL="./myCompoundWebComponent1.js"
+      id = "compound1"
+      webcomponent="true"
+      context='{"label":"some extra content 2"}'
+    ></luigi-compound-container>
+    
+    <luigi-compound-container
+      viewURL="./myCompoundWebComponent2.js"
+      id = "compound2"
+      webcomponent="true"
+      context='{"label":"some extra content 2"}'
+    ></luigi-compound-container>
+  </body>
+
+  <script type="module">
+    import './bundle.js';
+    
+    document.getElementById('compound1').compoundConfig = {
+      children: [
+        {
+          viewURL: "./myCompoundWebComponent1.js",
+          //context:'{"content":"some extra content"}'
+        },
+        {
+          viewURL: "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html",
+          context: {label: 'My Label'}
+        },
+      ]
+    };
+    document.getElementById('compound2').compoundConfig = {
+      children: [
+        {
+          viewURL: "./myCompoundWebComponent2.js",
+        },
+      ]
+    };
+
+  </script>
+</html>
