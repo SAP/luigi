@@ -629,9 +629,10 @@
 
         // linkManager listeners:
         // path exists
-        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, event => {
+        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, (event) => {
           console.log('Remove Backdrop Request received', event.detail, event);
           // send back result with defined 'callback'
+          // event: MFEventID.PathExistsEvent can be used as an event type to get the callback function
           event.callback(true);
         });
 

@@ -352,7 +352,9 @@ describe('createClientAPI', () => {
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.GO_BACK_REQUEST, {ctx: 'context'});
     });
   
-    it('test linkManager hasBack set to true', () => {
+    it('test linkManager hasBack set to default false', () => {
+      // since the hasBack functionality is not relevant to container but we need to keep 
+      // container - core wc client api in sync, leaving it as a default false functionality
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
       service.thisComponent.hasBack = true;
@@ -362,7 +364,7 @@ describe('createClientAPI', () => {
       const hasBack = clientAPI.linkManager().hasBack();
   
       // assert
-      expect(hasBack).toEqual(true);
+      expect(hasBack).toEqual(false);
     });
   
     it('test linkManager hasBack not set', () => {
