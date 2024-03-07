@@ -35,11 +35,19 @@ Take a look at <https://docs.luigi-project.io/docs/navigation-parameters-referen
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### deferInit
 
 If set to true defers from initializing the microfronted automatically. In that case init() can be used
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### searchParams
 
@@ -47,11 +55,19 @@ The search parameters to be passed to the compound micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### pathParams
 
 The path parameters to be passed to the compound micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### context
 
@@ -59,11 +75,19 @@ The stringified context to be passed to the compound microfrontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### clientPermissions
 
 The clientPermissions to be passed to the compound micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### userSettings
 
@@ -71,11 +95,19 @@ The user settings to be passed to the compound micro frontend
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### anchor
 
 The anchor value to be passed to the compound micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### webcomponent
 
@@ -90,6 +122,10 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
     -   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
     -   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
 -   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified JSON object from type `WebComponentSettings`.
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### updateContext
 
@@ -107,6 +143,16 @@ containerElement.updateContext({newContextData: 'some data'})
 
 Returns **void** 
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### init
 
 Manually triggers the micro frontend rendering process when using defer-init attribute
+
+Returns **void** 
+
+**Meta**
+
+-   **since**: 1.0.0

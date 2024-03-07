@@ -169,7 +169,22 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
   openAsModal(path, modalSettings = {}) {
+    helpers.addEventListener('luigi.navigation.modal.close', (e, listenerId) => {
+      const promise = this.getPromise('modal');
+      if (promise) {
+        promise.resolveFn(e.data);
+        this.setPromise('modal', undefined);
+      }
+      helpers.removeEventListener(listenerId);
+    });
+    const modalPromise = {};
+    modalPromise.promise = new Promise((resolve, reject) => {
+      modalPromise.resolveFn = resolve;
+      modalPromise.rejectFn = reject;
+    });
+    this.setPromise('modal', modalPromise);
     this.navigate(path, 0, true, modalSettings);
+    return modalPromise.promise;
   }
 
   /**
