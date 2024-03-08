@@ -188,12 +188,52 @@ You can use one or more rules by adding them to the array, for example allowRule
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
 ### sandboxRules
 
 The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
 You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### documentTitle
+
+The document title value to be passed to the web-component-based micro frontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### hasBack
+
+The hasBack value to be passed to the web-component-based micro frontend.
+You can use it to mark if there is one or more preserved views. Useful when needing to show a back button.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### dirtyStatus
+
+The dirty status value to be passed to the web-component-based micro frontend.
+Used for unsaved changes when navigating away
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
 
 ### updateContext
 

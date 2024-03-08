@@ -109,6 +109,38 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 -   **since**: 1.0.0
 
+### documentTitle
+
+The document title value to be passed to the compound micro frontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### hasBack
+
+The hasBack value to be passed to the compound micro frontend.
+You can use it to mark if there is one or more preserved views. Useful when needing to show a back button.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### dirtyStatus
+
+The dirty status value to be passed to the compound micro frontend.
+Used for unsaved changes when navigating away
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
 ### webcomponent
 
 The following properties can be set for the web component object. By default, the web component is set to true.

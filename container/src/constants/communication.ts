@@ -99,5 +99,53 @@ export namespace Events {
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
-  // TODO: ignore auth
+ /**
+   * A message emitted from the micro frontend when a request to set the view group data
+   */
+ export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to set the document title
+   */
+  export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to open user settings 
+   */
+  export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to close user settings 
+   */
+  export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to collapse left side navigation
+   */
+  export const COLLAPSE_LEFT_NAV_REQUEST = 'collapse-leftnav-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to remove the backdrop
+   */
+  export const UPDATE_TOP_NAVIGATION_REQUEST = 'update-top-navigation-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to remove the backdrop
+   */
+  export const PATH_EXISTS_REQUEST = 'path-exists-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to remove the backdrop
+   */
+  export const GO_BACK_REQUEST = 'go-back-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to remove the backdrop
+   */
+  export const HAS_BACK_REQUEST = 'has-back-request';
+
+  /**
+   * A message emitted from the micro frontend when a request to remove the backdrop
+   */
+  export const REMOVE_BACKDROP_REQUEST = 'remove-backdrop-request';
 }
