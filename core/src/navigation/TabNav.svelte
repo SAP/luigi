@@ -90,45 +90,63 @@
     setTimeout(calcTabsContainer);
   };
 
-  const calcTabsContainer = () => {
-    clearTabNav();
+  /**
+ * Adjusts the visibility of tab elements based on available space in the tabs container.
+ * Hides overflowing tabs and shows a 'more' button if necessary.
+ */
+const calcTabsContainer = () => {
+  // Clear the tab navigation
+  clearTabNav();
 
-    if (tabsContainerHeader && moreButton && moreLink) {
-      moreLink.classList.remove('is-active');
-      let tabsContainerHeaderStyles = tabsContainerHeader.currentStyle || window.getComputedStyle(tabsContainerHeader);
-      let availableSpaceForTabItems = tabsContainerHeader.offsetWidth - moreButton.offsetWidth - parseFloat(tabsContainerHeaderStyles.paddingLeft) -
-        parseFloat(tabsContainerHeaderStyles.paddingRight);
-      let totalTabsSize = 0;
-      let hasMoreBtnElements = false;
-      let style;
-      let margin;
+  // Check if necessary elements exist
+  if (tabsContainerHeader && moreButton && moreLink) {
+    // Reset 'more' link to inactive state
+    moreLink.classList.remove('is-active');
 
-      [...tabsContainerHeader.children].forEach((tabElement) => {
-        let uid = tabElement.getAttribute('uid');
+    // Calculate available space for tab items
+    const tabsContainerHeaderStyles = getComputedStyle(tabsContainerHeader);
+    const availableSpaceForTabItems = tabsContainerHeader.offsetWidth - moreButton.offsetWidth - 
+      parseFloat(tabsContainerHeaderStyles.paddingLeft) - parseFloat(tabsContainerHeaderStyles.paddingRight);
 
-        if (!uid) {
-          return;
+    // Initialize variables
+    let totalTabsSize = 0;
+    let hasMoreBtnElements = false;
+
+    // Iterate through tab elements
+    [...tabsContainerHeader.children].forEach((tabElement) => {
+      // Get unique identifier for the tab
+      const uid = tabElement.getAttribute('uid');
+      if (!uid) {
+        return; // Skip if no UID
+      }
+
+      // Calculate total width of tab including margins
+      const style = getComputedStyle(tabElement);
+      const margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+      totalTabsSize += tabElement.offsetWidth + margin;
+
+      // Check if tab overflows available space
+      if (totalTabsSize >= availableSpaceForTabItems) {
+        tabElement.classList.add('hide_element');
+        // Check if hidden tab is selected, show 'more' link
+        if (tabElement.getAttribute('isSelected') === 'true') {
+          moreLink.classList.add('is-active');
         }
+        // Show tab in 'more' dropdown
+        document.querySelector('li[uid="' + uid + '"]').classList.remove('hide_element');
+        hasMoreBtnElements = true;
+      } else {
+        // Hide tab from 'more' dropdown
+        document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
+      }
+    });
 
-        style = tabElement.currentStyle || window.getComputedStyle(tabElement);
-        margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
-        totalTabsSize += tabElement.offsetWidth + margin;
-        if (totalTabsSize >= availableSpaceForTabItems) {
-          tabElement.classList.add('hide_element');
-          if (tabElement.getAttribute('isSelected') === 'true') {
-            moreLink.classList.add('is-active');
-          }
-          document.querySelector('li[uid="' + uid + '"]').classList.remove('hide_element');
-          hasMoreBtnElements = true;
-        } else {
-          document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
-        }
-      });
-      hasMoreBtnElements
-        ? moreButton.classList.remove('hide_element')
-        : moreButton.classList.add('hide_element');
-    }
-  };
+    // Show/hide 'more' button based on presence of overflow tabs
+    hasMoreBtnElements
+      ? moreButton.classList.remove('hide_element')
+      : moreButton.classList.add('hide_element');
+  }
+};
 
   const clearTabNav = () => {
     if (tabsContainerHeader !== undefined) {
