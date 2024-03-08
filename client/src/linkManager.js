@@ -165,8 +165,12 @@ export class linkManager extends LuigiClientBase {
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
    * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
+   * @returns {promise} which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access the `goBackContext` when the promise will be resolved.
    * @example
-   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'}).then((res) => {
+   *     // Logic to execute when the modal will be closed
+   *     console.log(res.data) //=> {foo: 'bar'}
+   *  });
    */
   openAsModal(path, modalSettings = {}) {
     helpers.addEventListener('luigi.navigation.modal.close', (e, listenerId) => {
@@ -376,8 +380,8 @@ export class linkManager extends LuigiClientBase {
     const currentId = helpers.getRandomId();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn) {
+      resolveFn: function () { },
+      then: function (resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
@@ -386,7 +390,7 @@ export class linkManager extends LuigiClientBase {
     // register event listener, which will be cleaned up after this usage
     helpers.addEventListener(
       'luigi.navigation.pathExists.answer',
-      function(e, listenerId) {
+      function (e, listenerId) {
         const data = e.data.data;
         const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
         if (data.correlationId === currentId) {
@@ -489,8 +493,8 @@ export class linkManager extends LuigiClientBase {
 
     const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
     currentRoutePromise[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn) {
+      resolveFn: function () { },
+      then: function (resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
