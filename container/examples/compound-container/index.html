@@ -15,7 +15,7 @@
       viewURL="./myCompoundWebComponent1.js"
       id = "compound1"
       webcomponent="true"
-      context='{"label":"some extra content 2"}'
+      context='{"label":"some extra content 1"}'
     ></luigi-compound-container>
     
     <luigi-compound-container
@@ -33,11 +33,15 @@
       children: [
         {
           viewURL: "./myCompoundWebComponent1.js",
-          //context:'{"content":"some extra content"}'
+          context:'{"content":"some extra content"}'
         },
+        // {
+        //   viewURL: "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html",
+        //   context: {label: 'My Label'}
+        // },
         {
-          viewURL: "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html",
-          context: {label: 'My Label'}
+          viewURL: "./myCompoundWebComponent3.js",
+          context:'{"content":"some extra content"}'
         },
       ]
     };
