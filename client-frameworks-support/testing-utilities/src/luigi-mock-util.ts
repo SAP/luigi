@@ -1,11 +1,23 @@
 export class LuigiMockUtil {
   private messages: any[];
   private browser: any;
+  private win: any
 
-  constructor(browser: any) {
+  constructor(browser: any, win?: any) {
     this.messages = [];
     this.browser = browser;
+    this.win = win;
   }
+
+  /**
+   * Returns the global window object.
+   * @returns the glboal win object
+   */
+
+  private getGlobalThis(): any {
+    return this.win || globalThis;
+  }
+
 
   /**
    * Parses the elements added by LuigiMockModule into the DOM and assigns them to the local this.messages variable
@@ -13,12 +25,15 @@ export class LuigiMockUtil {
    */
   async parseLuigiMockedMessages(): Promise<void> {
     try {
-      const getTextNodeValues = async () =>
-        Array.from(document.getElementById('luigi-debug-vis-cnt').childNodes).map((item) => item.textContent);
+      const getTextNodeValues = () => {
+        const targetDocument = this.getGlobalThis();
+        const debugCtn = targetDocument.getElementById('luigi-debug-vis-cnt');
+        return Array.from(debugCtn?.childNodes || []).map((item: any) => item.textContent || '');
+      }
+
       const textElements: string[] = this.browser.executeScript
         ? await this.browser.executeScript(getTextNodeValues)
         : await this.browser(getTextNodeValues);
-
       this.messages = textElements
         .map((item: string) => {
           try {
@@ -34,19 +49,21 @@ export class LuigiMockUtil {
   }
 
   /**
-   * Mocks the context by sending luigi context messegaes with the desired mocked context as parameter.
+   * Mocks the context by sending luigi context messages with the desired mocked context as parameter.
    * @param mockContext an object representing the context to be mocked
    */
   mockContext = (mockContext: any): void => {
-    const postMessageToLuigi = (context: any) => {
-      globalThis.postMessage({ msg: 'luigi.get-context', context }, '*');
+    const context = mockContext;
+    const targetDocument = this.getGlobalThis();
+    const postMessageToLuigi = () => {
+      targetDocument.postMessage({ msg: 'luigi.get-context', context }, '*');
     };
 
     try {
       if (this.browser.executeScript) {
-        this.browser.executeScript(postMessageToLuigi, mockContext);
+        this.browser.executeScript(postMessageToLuigi, context);
       } else {
-        this.browser(postMessageToLuigi, mockContext);
+        this.browser(postMessageToLuigi);
       }
     } catch (e) {
       console.debug('Failed to mock context: ', e);
@@ -70,20 +87,21 @@ export class LuigiMockUtil {
    *
    */
   mockPathExists = (path: string, exists: boolean): void => {
+    const targetDocument = this.getGlobalThis();
     /**
     * Sets the path exists mock data in sessionStorage.
     * @param {string} path - The path for which mock data is to be set.
     * @param {boolean} exists - Boolean indicating whether the path exists.
     * @returns {void}
     */
-    const setPathExistsMockData = (path: string, exists: boolean) => {
-      globalThis.sessionStorage.clear();
+    const setPathExistsMockData = () => {
+      targetDocument.sessionStorage.clear();
       let pathExistsMockData = {
         pathExists: {
           [path]: exists
         }
       };
-      globalThis.sessionStorage.setItem('luigiMockData', JSON.stringify(pathExistsMockData));
+      targetDocument.sessionStorage.setItem('luigiMockData', JSON.stringify(pathExistsMockData));
     };
     try {
       if (this.browser.executeScript) {
