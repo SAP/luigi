@@ -91,7 +91,7 @@
   };
 
   const calcTabsContainer = () => {
-    clearTapNav();
+    clearTabNav();
 
     if (tabsContainerHeader && moreButton && moreLink) {
       moreLink.classList.remove('is-active');
@@ -130,7 +130,7 @@
     }
   };
 
-  const clearTapNav = () => {
+  const clearTabNav = () => {
     if (tabsContainerHeader !== undefined) {
       const tabs = [...tabsContainerHeader.children];
       tabs.forEach((element) => {
@@ -262,7 +262,7 @@
   }
 
   export function onResize() {
-    clearTapNav();
+    clearTabNav();
     calcTabsContainer();
   }
   export function toggleMoreBtn() {
