@@ -95,13 +95,8 @@
 
     if (tabsContainerHeader && moreButton && moreLink) {
       moreLink.classList.remove('is-active');
-      let tabsContainerHeaderStyles =
-        tabsContainerHeader.currentStyle ||
-        window.getComputedStyle(tabsContainerHeader);
-      let availableSpaceForTabItems =
-        tabsContainerHeader.offsetWidth -
-        moreButton.offsetWidth -
-        parseFloat(tabsContainerHeaderStyles.paddingLeft) -
+      let tabsContainerHeaderStyles = tabsContainerHeader.currentStyle || window.getComputedStyle(tabsContainerHeader);
+      let availableSpaceForTabItems = tabsContainerHeader.offsetWidth - moreButton.offsetWidth - parseFloat(tabsContainerHeaderStyles.paddingLeft) -
         parseFloat(tabsContainerHeaderStyles.paddingRight);
       let totalTabsSize = 0;
       let hasMoreBtnElements = false;
@@ -123,14 +118,10 @@
           if (tabElement.getAttribute('isSelected') === 'true') {
             moreLink.classList.add('is-active');
           }
-          document
-            .querySelector('li[uid="' + uid + '"]')
-            .classList.remove('hide_element');
+          document.querySelector('li[uid="' + uid + '"]').classList.remove('hide_element');
           hasMoreBtnElements = true;
         } else {
-          document
-            .querySelector('li[uid="' + uid + '"]')
-            .classList.add('hide_element');
+          document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
         }
       });
       hasMoreBtnElements
