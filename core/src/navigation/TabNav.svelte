@@ -148,9 +148,16 @@
     }
   };
 
+  /**
+   * Clears the tab navigation by removing the 'hide_element' class from all tab elements.
+   */
   const clearTabNav = () => {
+    // Check if tabs container header exists
     if (tabsContainerHeader !== undefined) {
+      // Get all tab elements
       const tabs = [...tabsContainerHeader.children];
+      
+      // Remove 'hide_element' class from each tab element
       tabs.forEach((element) => {
         element.classList.remove('hide_element');
       });
