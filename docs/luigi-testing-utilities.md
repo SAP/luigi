@@ -21,9 +21,10 @@ meta -->
 The [Luigi Testing Utilities](https://github.com/SAP/luigi/tree/main/client-frameworks-support/testing-utilities) are a set of auxiliary functions used to enhance the user experience while testing Luigi-based micro frontends. The functions abstract away Luigi-specific logic from the tester so that it is easier for them to mock and assert Luigi functionality. 
 
 ## LuigiMockUtil 
-This class contains certain utility helper functions needed when writing [protractor-based](https://www.npmjs.com/package/protractor) e2e tests. You can simply import this module into you project and then use an instance of it to test micro frontend functionality. 
+This class contains certain utility helper functions needed when writing [protractor-based](https://www.npmjs.com/package/protractor) e2e tests. You can simply import this module into you project and then use an instance of it to test micro frontend functionality.
+With version 2.9.0 this class can also be used for [cypress-based](https://www.cypress.io/) e2e tests.
 
-## How to use the library
+## How to use the library with protractor
 
 **Prerequisites:**
 
@@ -60,6 +61,58 @@ describe('Another test', () => {
     });
   }
 }
+```
+
+## How to use the library with cypress
+
+Step 1. and 2. are the same like in the protractor example.
+
+### Example
+```javascript
+describe('Another test using cypress', () => {
+  let luigiMockUtil: LuigiMockUtil;
+
+  beforeAll(async () => {
+    luigiMockUtil = new LuigiMockUtil(browser);
+    // Necessary to execute the functions from LuigiMockUtil in cypress context and get the 
+    // the window object of the page that is currently active
+    cy.window().then((win: any) => {
+      luigiMockUtil = new LuigiMockUtil((fn: any) => {
+        return new Promise((resolve, reject) => {
+          resolve(fn());
+        })
+      }, win);
+
+    });
+    //Necessary that luigi-client sends postmessages to the same window and not to parent (which is cypress engine)
+    cy.visit('http://localhost:4200', {
+      onBeforeLoad: (win) => {
+        win["parent"] = win;
+      }
+    });
+  });
+
+  it('Mock path exists', () => {
+    cy.get('.pathExists').click().then(() => {
+      luigiMockUtil.mockPathExists('/test', false);
+    });
+    cy.getAllSessionStorage().then((result: any) => {
+      expect(result).to.deep.equal({
+        "http://localhost:4200": {
+          luigiMockData: '{"pathExists":{"/test":false}}'
+        },
+      });
+    })
+  });
+
+  it('mock context update', () => {
+    let context = {
+      ctxKey: 'ctxValue'
+    }
+    luigiMockUtil.mockContext(context);
+    cy.get('#luigi-debug-vis-cnt').contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
+  });
+});
 ```
 
 ## Functions provided
