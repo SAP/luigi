@@ -634,8 +634,13 @@ Opens a view in a modal. You can specify the modal's title and size. If you don'
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'}).then((res) => {
+    // Logic to execute when the modal will be closed
+    console.log(res.data) //=> {foo: 'bar'}
+ });
 ```
+
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access the `goBackContext` when the promise will be resolved.
 
 #### updateModalSettings
 
