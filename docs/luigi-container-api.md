@@ -28,11 +28,19 @@ The URL of the microfrontend to be rendered
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### deferInit
 
 If set to true defers from initializing the microfronted automatically. In that case init() can be used
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### context
 
@@ -40,11 +48,19 @@ The stringified context object to be passed to the microfrontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### label
 
 Label information for the microfrontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### webcomponent
 
@@ -61,11 +77,19 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
     -   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
 -   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified boolean or JSON object from type `WebComponentSettings`.
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### locale
 
 The locale to be passed to the web-component-based micro frontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### theme
 
@@ -73,11 +97,19 @@ The theme to be passed to the  web-component-based micro frontend
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### activeFeatureToggleList
 
 The list of active feature toggles to be passed to the web-component-based micro frontend
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### skipInitCheck
 
@@ -85,11 +117,19 @@ If set to true, skips handshake and ready event is fired immediately
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### nodeParams
 
 The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### searchParams
 
@@ -97,11 +137,19 @@ The search parameters to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### pathParams
 
 The path parameters to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### clientPermissions
 
@@ -109,17 +157,83 @@ The clientPermissions to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### userSettings
 
 The user settings to be passed to the web-component-based micro frontend
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### anchor
 
 The anchor value to be passed to the web-component-based micro frontend.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: 1.0.0
+
+### allowRules
+
+The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
+You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
+
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### sandboxRules
+
+The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
+You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
+
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### documentTitle
+
+The document title value to be passed to the web-component-based micro frontend.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### hasBack
+
+The hasBack value to be passed to the web-component-based micro frontend.
+You can use it to mark if there is one or more preserved views. Useful when needing to show a back button.
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
+
+### dirtyStatus
+
+The dirty status value to be passed to the web-component-based micro frontend.
+Used for unsaved changes when navigating away
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXT_RELEASE
 
 ### updateContext
 
@@ -138,6 +252,10 @@ containerElement.updateContext({newContextData: 'some data'})
 
 Returns **void** 
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### sendCustomMessage
 
 Send a custom message to the microfronted
@@ -154,6 +272,10 @@ containerElement.sendCustomMessage('my-message-id', {dataToSend: 'some data'})
 ```
 
 Returns **void** 
+
+**Meta**
+
+-   **since**: 1.0.0
 
 ### closeAlert
 
@@ -172,6 +294,10 @@ containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
 
 Returns **void** 
 
+**Meta**
+
+-   **since**: 1.0.0
+
 ### init
 
 Manually triggers the micro frontend rendering process when using defer-init attribute
@@ -183,3 +309,7 @@ containerElement.init()
 ```
 
 Returns **void** 
+
+**Meta**
+
+-   **since**: 1.0.0

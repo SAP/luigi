@@ -106,14 +106,36 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
    * You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
+   * @since NEXT_RELEASE 
    */
   allowRules: string[];
 
   /**
    * The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
    * You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
+   * @since NEXT_RELEASE 
    */
   sandboxRules: string[];
+
+  /**
+   * The document title value to be passed to the web-component-based micro frontend.
+   * @since NEXT_RELEASE
+   */
+  documentTitle: string;
+
+  /**
+   * The hasBack value to be passed to the web-component-based micro frontend.
+   * You can use it to mark if there is one or more preserved views. Useful when needing to show a back button. 
+   * @since NEXT_RELEASE
+   */
+  hasBack: string;
+
+  /**
+   * The dirty status value to be passed to the web-component-based micro frontend.
+   * Used for unsaved changes when navigating away
+   * @since NEXT_RELEASE
+   */
+  dirtyStatus: boolean;
 
   /**
    * Function that updates the context of the microfrontend
