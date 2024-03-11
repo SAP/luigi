@@ -6,12 +6,8 @@ export default class extends HTMLElement {
     super();
     const shadowRoot = this.attachShadow({ mode: 'open' });
     const template = document.createElement('template');
-    template.innerHTML = `<section><p id="paragraph"> Hello From Compound Webcomponent 2 </p></section>`;
+    template.innerHTML = `<section><h2 style="border: solid blue 2px;" id="paragraph"> Hello From Webcomponent 2 </h2></section>`;
     shadowRoot.appendChild(template.content.cloneNode(true));
     this.$paragraph = shadowRoot.getElementById('paragraph');
   }
-    
-  // set context(ctx) {
-  //   this.$paragraph.innerHTML += ctx.content;
-  // }
 }

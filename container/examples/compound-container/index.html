@@ -1,8 +1,6 @@
 <!-- .js => webcomponent -->
 <!-- .html => iFrame -->
 
-<!-- npm install --save-prod @luigi-project/container --prefix . -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,43 +10,47 @@
 
   <body>
     <luigi-compound-container
-      viewURL="./myCompoundWebComponent1.js"
-      id = "compound1"
+      id="compound1"
       webcomponent="true"
-      context='{"label":"some extra content 1"}'
-    ></luigi-compound-container>
-    
-    <luigi-compound-container
-      viewURL="./myCompoundWebComponent2.js"
-      id = "compound2"
-      webcomponent="true"
-      context='{"label":"some extra content 2"}'
+      context='{"content":"some extra content"}'
     ></luigi-compound-container>
   </body>
 
   <script type="module">
     import './bundle.js';
-    
     document.getElementById('compound1').compoundConfig = {
+      renderer: { 
+        use: 'grid', 
+        config: { 
+          columns: '1fr 1fr', 
+          gap: '20px',
+          layouts: [ 
+            { 
+              minWidth: 0, 
+              maxWidth: 600, 
+              columns: '1fr', 
+            }, 
+            { 
+              minWidth: 600, 
+              maxWidth: 1024, 
+              columns: '1fr 1fr',
+            },
+          ] 
+        } 
+      },
       children: [
         {
-          viewURL: "./myCompoundWebComponent1.js",
-          context:'{"content":"some extra content"}'
+          id: 'input1',
+          viewUrl: './myCompoundWebComponent1.js',
         },
-        // {
-        //   viewURL: "https://fiddle.luigi-project.io/examples/microfrontends/fundamental/table-demo-page.html",
-        //   context: {label: 'My Label'}
-        // },
         {
-          viewURL: "./myCompoundWebComponent3.js",
-          context:'{"content":"some extra content"}'
+          viewUrl: './myCompoundWebComponent2.js',
         },
-      ]
-    };
-    document.getElementById('compound2').compoundConfig = {
-      children: [
         {
-          viewURL: "./myCompoundWebComponent2.js",
+          viewUrl: './myCompoundWebComponent3.js',
+        },
+        {
+          viewUrl: './myCompoundWebComponent4.js',
         },
       ]
     };

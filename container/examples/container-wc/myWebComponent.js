@@ -6,7 +6,7 @@ export default class extends HTMLElement {
     super();
     const shadowRoot = this.attachShadow({ mode: 'open' });
     const template = document.createElement('template');
-    template.innerHTML = `<section><p id="paragraph">Hello World !!! </p></section>`;
+    template.innerHTML = `<h1 style="border: solid blue 2px;" id="paragraph">Hello World !!! </h1>`;
     shadowRoot.appendChild(template.content.cloneNode(true));
     this.$paragraph = shadowRoot.getElementById('paragraph');
   }
