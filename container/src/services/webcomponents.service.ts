@@ -77,6 +77,8 @@ export class WebComponentService {
    * This function is used to create the Luigi Client API for the web-component-based micro frontend.
    * As the function expands with more functionality, it might be moved to a separate class.
    * 
+   * The client API here should be a reflection of the Core WC Client api from core/src/services/web-components.js
+   * 
    * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
    * @param nodeId refers to an attribute of the web component to be identified from the rest
    * @param wc_id a tagname that is used when creating the web component element
@@ -87,11 +89,63 @@ export class WebComponentService {
   createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
     return {
       linkManager: () => {
-        return {
-          navigate: route => {
-            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route });
-          }
+        let fromContext = null;
+        let fromClosestContext = false;
+        let fromVirtualTreeRoot = false;
+        let nodeParams = {};
+
+        const linkManagerInstance = {
+          navigate: (route , settings = {})=> {
+            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams, ...settings };
+            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route , ...options});
+          },
+          fromClosestContext: () => {
+            fromClosestContext = true;
+            return linkManagerInstance;
+          },
+          fromContext: (navigationContext) => {
+            fromContext = navigationContext;
+            return linkManagerInstance;
+          },
+          fromVirtualTreeRoot: () => {
+            fromVirtualTreeRoot = true;
+            return linkManagerInstance;
+          },         
+          withParams: (params) => {
+            nodeParams = params;
+            return linkManagerInstance;
+          },
+          updateTopNavigation: (): void => {
+            this.dispatchLuigiEvent(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
+          },
+          pathExists: () => {
+            return new Promise((resolve, reject) => {
+              this.containerService.dispatch(Events.PATH_EXISTS_REQUEST, this.thisComponent, {}, (exists)=>{
+              if (exists) {
+                  resolve(true)
+                }  else {
+                  reject(false);
+                }
+              }, 'callback');
+            })
+          },          
+          openAsDrawer: (route, drawerSettings = {}) => {
+            linkManagerInstance.navigate(route, {drawer: drawerSettings})
+          },
+          openAsModal: (route, modalSettings = {}) => {
+            linkManagerInstance.navigate(route, {modal: modalSettings})
+          },
+          openAsSplitView: (route, splitViewSettings = {}) => {
+            linkManagerInstance.navigate(route, {splitView: splitViewSettings})
+          },          
+          goBack: (goBackContext) => {
+            this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
+          },
+          hasBack: () => {
+            return false;
+          }, 
         };
+        return linkManagerInstance;
       },
       uxManager: () => {
         return {
@@ -111,7 +165,31 @@ export class WebComponentService {
           },
           getCurrentTheme: () : string | undefined  => {
             return this.thisComponent.theme;
-          }
+          },
+          closeUserSettings: () => {
+            this.dispatchLuigiEvent(Events.CLOSE_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
+          },          
+          openUserSettings: () => {
+            this.dispatchLuigiEvent(Events.OPEN_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
+          },
+          collapseLeftSideNav:() => {
+            this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
+          },
+          getDirtyStatus: () => {
+            return this.thisComponent.dirtyStatus || false;
+          },
+          getDocumentTitle: () => {
+            return this.thisComponent.documentTitle;
+          },
+          setDocumentTitle: (title) => {
+            this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
+          },
+          removeBackdrop:() => {
+            this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
+          },
+          hideAppLoadingIndicator:() => {
+            this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
+          },
         };
       },
       getCurrentLocale: () : string | undefined =>  {
@@ -173,6 +251,9 @@ export class WebComponentService {
       },
       getUserSettings: (): Object => {
         return this.thisComponent.userSettings || {};
+      },
+      setViewGroupData: (data) => {
+        this.dispatchLuigiEvent(Events.SET_VIEW_GROUP_DATA_REQUEST, data);
       }
     };
   }

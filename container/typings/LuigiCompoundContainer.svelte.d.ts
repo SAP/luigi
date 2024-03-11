@@ -61,6 +61,26 @@ export default class LuigiCompoundContainer extends HTMLElement {
   anchor: string;
 
   /**
+   * The document title value to be passed to the compound micro frontend.
+   * @since NEXT_RELEASE
+   */
+  documentTitle: string;
+
+  /**
+   * The hasBack value to be passed to the compound micro frontend.
+   * You can use it to mark if there is one or more preserved views. Useful when needing to show a back button. 
+   * @since NEXT_RELEASE
+   */
+  hasBack: string;
+
+  /**
+   * The dirty status value to be passed to the compound micro frontend.
+   * Used for unsaved changes when navigating away
+   * @since NEXT_RELEASE
+   */
+  dirtyStatus: boolean;
+
+  /**
    * The following properties can be set for the web component object. By default, the web component is set to true.
    * @param {Object} [WebComponentSettings]
    * @param {string} WebComponentSettings.type: string, like module.
