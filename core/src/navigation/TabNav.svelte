@@ -314,11 +314,29 @@
 
   /**
    * Finds the node in the provided array of nodes to navigate to based on the category's navigateOnClick property.
+   * Search based on navigateOnClick set to true or a string representing the desired pathSegment to navigate to.
    * @param {Array<Object>} nodes - An array of nodes to search.
    * @returns {Object|undefined} Returns the first node with a truthy navigateOnClick property, or undefined if not found.
    */
   function getNodeToNavigateTo(nodes) {
-    return nodes.find((node) => node.category?.navigateOnClick);
+    const referenceNode = nodes.find((node) => node.category?.navigateOnClick);
+    if (!referenceNode) {
+      return;
+    }
+    const navigateOnClick = referenceNode.category.navigateOnClick;
+    if (navigateOnClick === true) {
+      return true;
+    }
+    // find target node and ensure it exists
+    const targetNode = nodes.find((node) => node.pathSegment === navigateOnClick);
+    if (!targetNode) {
+      return;
+    }
+    const referenceCategoryName = referenceNode.category.label || referenceNode.category.id
+
+    const isHiddenNode = targetNode.hideFromNav;
+    const isOnlyOtherCategoryNode = nodes.filter((node) => node.category === referenceCategoryName).length === 1;
+    return (isHiddenNode && isOnlyOtherCategoryNode) ? undefined : targetNode;
   }
 
   /**
@@ -352,6 +370,7 @@
         bind:this={tabsContainerHeader}
       >
         {#each Object.entries(children) as [key, nodes], index}
+        {console.log(children)}
           {#if isSingleTabItem(key)}
             {#each nodes as node, index2}
               {#if !node.hideFromNav}
