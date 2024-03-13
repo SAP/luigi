@@ -17,40 +17,30 @@
   </body>
 
   <script type="module">
-    import './bundle.js';
+    //import '../../public/bundle.js';
+    import '../bundle.js';
     document.getElementById('compound1').compoundConfig = {
       renderer: { 
         use: 'grid', 
         config: { 
           columns: '1fr 1fr', 
-          gap: '20px',
-          layouts: [ 
-            { 
-              minWidth: 0, 
-              maxWidth: 600, 
-              columns: '1fr', 
-            }, 
-            { 
-              minWidth: 600, 
-              maxWidth: 1024, 
-              columns: '1fr 1fr',
-            },
-          ] 
+          gap: '20px'
         } 
       },
       children: [
         {
           id: 'input1',
-          viewUrl: './myCompoundWebComponent1.js',
+          //           viewUrl: "../examples/compound-container/myCompoundWebComponent1.js",
+          viewUrl: "./compound-container/myCompoundWebComponent1.js",
         },
         {
-          viewUrl: './myCompoundWebComponent2.js',
+          viewUrl: "./compound-container/myCompoundWebComponent2.js",
         },
         {
-          viewUrl: './myCompoundWebComponent3.js',
+          viewUrl: "./compound-container/myCompoundWebComponent3.js",
         },
         {
-          viewUrl: './myCompoundWebComponent4.js',
+          viewUrl: "./compound-container/myCompoundWebComponent4.js",
         },
       ]
     };

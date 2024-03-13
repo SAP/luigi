@@ -11,12 +11,14 @@
   </head>
 
   <script type="module">
-    import './bundle.js';
+    //import '../../public/bundle.js';
+    import '../bundle.js';
   </script>
 
   <body>
+    <!-- viewURL="../examples/container-wc/myWebcomponent.js" -->
     <luigi-container
-      viewURL="./myWebComponent.js"
+      viewURL="./container-wc/myWebcomponent.js"
       webcomponent="true"
       context='{"content":"some extra content"}'
     ></luigi-container>

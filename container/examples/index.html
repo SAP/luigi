@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Navigation</title>
+<style>
+  /* Simple CSS for navigation */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  nav {
+    background-color: rgb(191, 189, 189);
+    padding: 10px 0;
+    color: black;
+    text-align: center;
+  }
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  nav ul li {
+    display: inline;
+    padding: 10px;
+    background-color: rgb(251, 251, 251);
+  }
+  nav ul li a {
+    color: black;
+    text-decoration: none;
+  }
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+
+  iframe {
+    width: 100%;
+    height: calc(100vh - 70px); 
+    border: none;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="javascript:void(0);" onclick="loadPage('container-iframe/index.html')">Container Iframe Example</a></li>
+    <li><a href="javascript:void(0);" onclick="loadPage('container-wc/index.html')">Container Web Component Example</a></li>
+    <li><a href="javascript:void(0);" onclick="loadPage('compound-container/index.html')">Compound Container Example</a></li>
+  </ul>
+</nav>
+
+<iframe id="contentFrame" src="container-wc/index.html"></iframe>
+
+<script>
+ function loadPage(pageUrl) {
+    document.getElementById('contentFrame').src = pageUrl;
+  }
+</script>
+</body>
+</html>
