@@ -181,7 +181,7 @@ Returns **void**
 
 ### init
 
-Manually triggers the micro frontend rendering process when using defer-init attribute.
+Manually triggers the micro frontend rendering process when using the defer-init attribute.
 
 Returns **void** 
 
