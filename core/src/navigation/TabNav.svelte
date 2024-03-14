@@ -303,7 +303,6 @@
    * @returns {boolean} Returns true if the key is 'undefined' or starts with the virtualGroupPrefix; otherwise, returns false.
    */
   function isSingleTabItem(key, nodes) {
-    console.log('isSingleTabItem', nodes)
     return (key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0) || isHiddenAndOnlySubCategoryNode(nodes);
   }
 
@@ -313,7 +312,6 @@
    * @returns {boolean} Returns true if any node has a label and is not hidden from navigation; otherwise, returns false.
    */
   function isTabItemWithSubItems(nodes) {
-    console.log('isTabItemWithSubItems', nodes)
     return nodes.some((node) => !node.hideFromNav && node.label);
   }
 
