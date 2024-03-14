@@ -64,7 +64,7 @@ You can use the Luigi compound Container as follows:
 
 ### Test Application
 
-1. You can find a Luigi Container example application on [GitHub](https://github.com/SAP/luigi/tree/main/container). First, clone the Luigi repository if you haven't already done so:
+1. You can find a Luigi Container example application on [GitHub](https://github.com/SAP/luigi/tree/main/container/examples). First, clone the Luigi repository if you haven't already done so:
 
 ```bash
 git clone git@github.com:SAP/luigi.git
@@ -76,12 +76,12 @@ cd luigi/container
 ```bash
 npm install
 npm run build
-npm start
+npm run start-examples
 ```
 
 The app should be available at `http://localhost:8080` in your browser. 
 
-3. Check `./test-app/index.html` to see how Luigi Container is used.
+3. Check the examples folders at`./examples` to see how Luigi Container is used.
 
 ### API Reference
 To make use of all of the container based Luigi functionalities you can take a further look at the API reference:
