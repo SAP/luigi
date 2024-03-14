@@ -296,11 +296,15 @@
 
   /**
    * Checks if the provided key corresponds to a single tab item.
+   * Info: Nodes are grouped in Category or non - category groups for the tab nav logic.
+   * A Category node group object usually has the Category Name as a key
+   * A non-Category node usually would have an undefined key or a virtualGroupPrefix
    * @param {string} key - The key to check.
    * @returns {boolean} Returns true if the key is 'undefined' or starts with the virtualGroupPrefix; otherwise, returns false.
    */
-  function isSingleTabItem(key) {
-    return key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0;
+  function isSingleTabItem(key, nodes) {
+    console.log('isSingleTabItem', nodes)
+    return (key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0) || isHiddenAndOnlySubCategoryNode(nodes);
   }
 
   /**
@@ -309,7 +313,19 @@
    * @returns {boolean} Returns true if any node has a label and is not hidden from navigation; otherwise, returns false.
    */
   function isTabItemWithSubItems(nodes) {
+    console.log('isTabItemWithSubItems', nodes)
     return nodes.some((node) => !node.hideFromNav && node.label);
+  }
+
+  function isHiddenAndOnlySubCategoryNode(nodes){
+    const referenceNode = nodes.find((node) => node.category?.navigateOnClick);
+    if (!referenceNode) {
+      return;
+    }
+    const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
+
+    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName && node.hideFromNav).length === 1;
+    return isOnlyOtherCategoryNodeHidden;
   }
 
   /**
@@ -325,18 +341,10 @@
     }
     const navigateOnClick = referenceNode.category.navigateOnClick;
     if (navigateOnClick === true) {
-      return true;
+      return referenceNode;
     }
-    // find target node and ensure it exists
-    const targetNode = nodes.find((node) => node.pathSegment === navigateOnClick);
-    if (!targetNode) {
-      return;
-    }
-    const referenceCategoryName = referenceNode.category.label || referenceNode.category.id
-
-    const isHiddenNode = targetNode.hideFromNav;
-    const isOnlyOtherCategoryNode = nodes.filter((node) => node.category === referenceCategoryName).length === 1;
-    return (isHiddenNode && isOnlyOtherCategoryNode) ? undefined : targetNode;
+    // return node which has same pathSegment as the navigateOnClick value
+    return nodes.find((node) => node.pathSegment === navigateOnClick);
   }
 
   /**
@@ -370,8 +378,7 @@
         bind:this={tabsContainerHeader}
       >
         {#each Object.entries(children) as [key, nodes], index}
-        {console.log(children)}
-          {#if isSingleTabItem(key)}
+          {#if isSingleTabItem(key, nodes)}
             {#each nodes as node, index2}
               {#if !node.hideFromNav}
                 {#if node.label}

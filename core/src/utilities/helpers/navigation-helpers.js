@@ -175,9 +175,8 @@ class NavigationHelpersClass {
       if (!arr.metaInfo.categoryUid && key) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
       }
-      if (!node.hideFromNav) {
+      // Previously we skipped pushing hideFromNav nodes, but we need them now for TabNav logic
         arr.push(node);
-      }
     });
     Object.keys(result).forEach(category => {
       const metaInfo = result[category].metaInfo;
