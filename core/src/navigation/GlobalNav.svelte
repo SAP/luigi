@@ -99,7 +99,7 @@
   <div class="lui-globalnav">
     <nav class="fd-side-nav fd-side-nav--condensed">
       <div class="fd-side-nav__main-navigation">
-        {#if children && pathData.length > 0}
+        {#if children && pathData.length >= 0}
           <ul class="fd-nested-list">
             {#each children as node, i}
               {#if node.globalNav === true && !node.separator}
@@ -147,7 +147,7 @@
         {/if}
       </div>
       <div class="fd-side-nav__utility" aria-label="Utility Menu">
-        {#if children && pathData.length > 0}
+        {#if children && pathData.length >= 0}
           <ul class="fd-nested-list">
             {#each children as node, i}
               {#if node.globalNav === 'bottom' && !node.separator}
