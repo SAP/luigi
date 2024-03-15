@@ -316,13 +316,17 @@
   }
 
   function isHiddenAndOnlySubCategoryNode(nodes){
-    const referenceNode = nodes.find((node) => node.category?.navigateOnClick);
+    const referenceNode = nodes.find((node) => node.category !== undefined);
+    console.log('referenceNode', referenceNode)
     if (!referenceNode) {
       return;
     }
     const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
+    console.log('referenceCategoryName', referenceCategoryName)
 
-    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName && node.hideFromNav).length === 1;
+    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName ).length === 0;
+    console.log('isOnlyOtherCategoryNodeHidden', nodes.filter((node) => node.category === referenceCategoryName))
+
     return isOnlyOtherCategoryNodeHidden;
   }
 
