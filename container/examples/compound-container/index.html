@@ -17,20 +17,18 @@
   </body>
 
   <script type="module">
-    //import '../../public/bundle.js';
+    // simple Luigi Container pacakge bundle import
     import '../bundle.js';
     document.getElementById('compound1').compoundConfig = {
       renderer: { 
         use: 'grid', 
-        config: { 
+        config: {
           columns: '1fr 1fr', 
           gap: '20px'
         } 
       },
       children: [
         {
-          id: 'input1',
-          //           viewUrl: "../examples/compound-container/myCompoundWebComponent1.js",
           viewUrl: "./compound-container/myCompoundWebComponent1.js",
         },
         {

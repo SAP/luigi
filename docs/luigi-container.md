@@ -81,7 +81,7 @@ npm run start-examples
 
 The app should be available at `http://localhost:8080` in your browser. 
 
-3. Check the examples folders at`./examples` to see how Luigi Container is used.
+3. Check the [examples folders](https://github.com/SAP/luigi/tree/main/container/examples) to see how Luigi Container is used.
 
 ### API Reference
 To make use of all of the container based Luigi functionalities you can take a further look at the API reference:

@@ -27,7 +27,7 @@ When using web components the [viewURL](https://docs.luigi-project.io/docs/navig
       viewURL="./microfrontend.html"
     ></luigi-container>
 ```
-When using iframes the [viewURL](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=viewurl) parameter expects a html file that contains the iframe.
+When using iframes the [viewURL](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=viewurl) parameter expects a HTML file that contains the iframe.
 
 3. A **compound container** that inserts 4 microfrontends in one page:
 ```
@@ -37,11 +37,10 @@ When using iframes the [viewURL](https://docs.luigi-project.io/docs/navigation-p
       context='{"content":"some extra content"}'
     ></luigi-compound-container>
 ```
-The *compoundConfig* parameter works similar to the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=compound). For Luigi compound container it is recommended to use a *grid* structure. In this example we have 2 columns and 4 web components.
+The *compoundConfig* parameter works similar to the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=compound). It is used to configure your compound microfrontend structure by letting you arrange a customizable grid layout of the microfrontends. In this example we have 2 columns and 4 web components.
 
 ```
-import './bundle.js';
-    document.getElementById('compound1').compoundConfig = {
+    yourCompoundContainerElement.compoundConfig = {
       renderer: { 
         use: 'grid', 
         config: { 

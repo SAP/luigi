@@ -11,7 +11,7 @@
 npm install @luigi-project/container
 ```
 
-2. Import bundle.js, which can be found in node_modules/@luigi-project/container, into your project:
+2. Import it into your project:
 
 ```
 import './bundle.js';
@@ -28,7 +28,7 @@ You can now use the Luigi container as follows anywhere in your application:
         context='{"label": "Calendar"}'>
     </luigi-container>
 ```
-You can find simple examples that use **webcomponents** and **iframes** at `./examples/container-wc` and `./examples/container-iframe` respectively.
+You can find simple examples that use [webcomponents](https://github.com/SAP/luigi/tree/main/container/examples/container-wc) and [iframes](https://github.com/SAP/luigi/tree/main/container/examples/container-iframe).
 
 4. In a similar way you can use the Luigi **compound container** to insert multiple microfrontends as follows:
 
@@ -39,4 +39,4 @@ You can find simple examples that use **webcomponents** and **iframes** at `./ex
         compoundConfig = { your config here }>
     </luigi-compound-container>
 ```
-An example can be found at `./examples/compound-container/index.html`.
+An example can be found at [./examples/compound-container/index.html](https://github.com/SAP/luigi/tree/main/container/examples/compound-container).
