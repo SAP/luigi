@@ -37,7 +37,7 @@ When using iframes the [viewURL](https://docs.luigi-project.io/docs/navigation-p
       context='{"content":"some extra content"}'
     ></luigi-compound-container>
 ```
-The *compoundConfig* parameter works similar to the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=compound). It is used to configure your compound microfrontend structure by letting you arrange a customizable grid layout of the microfrontends. In this example we have 2 columns and 4 web components.
+The *compoundConfig* parameter works similar to the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=compound). It lets you arrange microfrontends in a customizable grid layout. In this example we have 2 columns and 4 web components.
 
 ```
     yourCompoundContainerElement.compoundConfig = {
