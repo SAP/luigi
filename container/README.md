@@ -14,7 +14,7 @@ npm install @luigi-project/container
 2. Import it into your project:
 
 ```
-import './bundle.js';
+import '@luigi-project/container';
 ```
 
 ## Usage
