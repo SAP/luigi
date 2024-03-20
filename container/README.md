@@ -34,7 +34,6 @@ You can find simple examples that use [webcomponents](https://github.com/SAP/lui
 
 ```
     <luigi-compound-container 
-        id="compound1"
         context='{"label": "Dashboard"}'
         compoundConfig = { your config here }>
     </luigi-compound-container>
