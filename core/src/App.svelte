@@ -362,6 +362,7 @@
               splitViewWC = obj.splitViewWC;
             } else if (prop === 'showLoadingIndicator') {
               if (obj.showLoadingIndicator === true) {
+                clearTimeout(loadingIndicatorTimeout);
                 loadingIndicatorTimeout = setTimeout(() => {
                   showLoadingIndicator = true;
                 }, 250);
