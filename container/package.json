@@ -12,7 +12,7 @@
     "public"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "sync-event-typings && rollup -c",
     "test": "jest",
     "lint": "eslint src/**/*.*",
     "bundle": "npm run build",
@@ -24,7 +24,8 @@
     "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
     "cypress-headless": "cypress run -c video=false",
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
-    "prepare-release": "node prepareNextRelease.js"
+    "prepare-release": "node prepareNextRelease.js",
+    "sync-event-typings":"cp src/constants/communication.ts typings/constants/events.d.ts"
   },
   "devDependencies": {
     "@babel/node": "7.22.10",
