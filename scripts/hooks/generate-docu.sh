@@ -6,7 +6,7 @@
 # ./scripts/hooks/generate-docu.sh
 
 function check_and_generate_docu() {
-  staged_changes=$(git diff --cached --name-only --diff-filter=ACM | grep -e "core/src/core-api" -e "client/src" | wc -l)
+  staged_changes=$(git diff --cached --name-only --diff-filter=ACM | grep -e "core/src/core-api" -e "client/src" -e "container"| wc -l)
   if [[ "$staged_changes" != *"0"* ]]; then
     echo "Changes in .js found. Building docu"
     cd scripts
