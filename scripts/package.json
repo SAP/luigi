@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "docu": "npm run docu:container && npm run docu:client && npm run docu:core",
-    "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:section",
+    "docu:generate:section": "npm run docu:client:generate:section && npm run docu:core:generate:sections",
     "docu:container": "npm run docu:container:validate && npm run docu:container:generate:sections",
     "docu:container:validate": "documentation lint ../container/typings/LuigiContainer.svelte.d.ts ../container/typings/LuigiCompoundContainer.svelte.d.ts",
     "docu:container:generate:sections": "npm run docu:container:generate:container-api && npm run docu:container:generate:compound-container-api",
