@@ -84,6 +84,4 @@ describe('JS-TEST-APP with multi-click tab navigation', () => {
       .click();
     cy.expectPathToBe('/home/tabnav/one');
   });
-
-  
 });
