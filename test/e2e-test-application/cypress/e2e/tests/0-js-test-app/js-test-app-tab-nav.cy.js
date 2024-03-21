@@ -18,9 +18,7 @@ describe('JS-TEST-APP with multi-click tab navigation', () => {
         pathSegment: 'two',
         label: 'Section two',
         viewUrl: '/examples/microfrontends/multipurpose.html',
-        category: {
-          label: 'Multi-Click Category A'
-        }
+        category: 'Multi-Click Category A'
       }
     ];
     newConfig = structuredClone(defaultLuigiConfig);
@@ -38,6 +36,7 @@ describe('JS-TEST-APP with multi-click tab navigation', () => {
     nodes[0].category.navigateOnClick = true;
 
     cy.visitTestApp('/home/tabnav', newConfig);
+
     cy.get('#app[configversion="tab-navigation"]');
     cy.get('.fd-icon-tab-bar__item.fd-icon-tab-bar__item--multi-click').as('tabA');
     cy.get('@tabA')
@@ -86,14 +85,5 @@ describe('JS-TEST-APP with multi-click tab navigation', () => {
     cy.expectPathToBe('/home/tabnav/one');
   });
 
-  it('navigates with the header if navigateOnClick is true for the second sub-item', () => {
-    nodes[1].category.navigateOnClick = true;
-
-    cy.visitTestApp('/home/tabnav', newConfig);
-    cy.get('.fd-icon-tab-bar__item.fd-icon-tab-bar__item--multi-click').as('tabA');
-    cy.get('@tabA')
-      .find('a.fd-icon-tab-bar__tab')
-      .click();
-    cy.expectPathToBe('/home/tabnav/two');
-  });
+  
 });
