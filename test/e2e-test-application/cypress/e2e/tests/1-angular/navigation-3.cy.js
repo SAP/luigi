@@ -109,7 +109,7 @@ describe('Navigation', () => {
         cy.get('.fd-icon-tab-bar')
           .contains('Settings')
           .click();
-        cy.get('.fd-list')
+        cy.get('.fd-icon-tab-bar')
           .contains('Project Settings')
           .click();
         cy.expectPathToBe('/projects/tabNav/settings');
