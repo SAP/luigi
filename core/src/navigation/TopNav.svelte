@@ -288,14 +288,14 @@
 
   export function simpleNav() {
     document.body.classList.toggle('lui-leftNavToggle');
-    if (document.getElementsByClassName('fd-tabs').length > 0) {
+    if (document.getElementsByClassName('luigi-tabsContainerHeader').length > 0) {
       dispatch('resizeTabNav', {});
     }
   }
 
   export function semicollapsedNav() {
     SemiCollapsibleNavigation.buttonClicked();
-    if (document.getElementsByClassName('fd-tabs').length > 0) {
+    if (document.getElementsByClassName('luigi-tabsContainerHeader').length > 0) {
       dispatch('resizeTabNav', {});
     }
   }
