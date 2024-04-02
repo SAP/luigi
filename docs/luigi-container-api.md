@@ -216,7 +216,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### hasBack
 
 The hasBack value to be passed to the web-component-based micro frontend.
-You can use it to mark if there is one or more preserved views. Useful when needing to show a back button.
+It indicates that there is one or more preserved views. Useful when you need to show a back button.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -227,7 +227,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### dirtyStatus
 
 The dirty status value to be passed to the web-component-based micro frontend.
-Used for unsaved changes when navigating away
+It's used to indicate that there are unsaved changes when navigating away.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
