@@ -1,4 +1,6 @@
 /node_modules/
+
+/examples/bundle.js
 /public/bundle.js
 /public/bundle.js.map
 /public/bundle.d.ts

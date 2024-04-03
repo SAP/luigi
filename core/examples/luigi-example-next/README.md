@@ -6,7 +6,7 @@ This is the NextJS-based sample application which runs with Luigi framework.
 
 Due to the nature of NextJS's routing strategy, it is not possible to use `useHashRouting: false` in the Luigi Configuration. If you want to use path based routing, Luigi Core's index.html should be served separately.
 
->**NOTE**: Due to NextJS's server side nature, injecting Luigi Client in your pages is not straightforward, since Lugi Client relies on the window object only available at the client side. To resolve that, simply include the `luigi-client.js` file as the source of an HTML script as shown in the `home.js` file. 
+>**NOTE**: Due to NextJS's server side nature, injecting Luigi Client in your pages is not straightforward, since Luigi Client relies on the window object only available at the client side. To resolve that, simply include the `luigi-client.js` file as the source of an HTML script as shown in the `home.js` file. 
 This will allow you to use Luigi Client as part of the window object of that micro frontend, for example: `window['LuigiClient']`
 
 ## Getting Started
