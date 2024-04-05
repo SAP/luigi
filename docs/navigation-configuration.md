@@ -155,10 +155,10 @@ To define all subsequent nodes, use the category label:
 {
   category: 'Links',
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.luigi-project.io/docs/navigation-configuration',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the Luigi navigation doc',
 },
 ...
 ```
@@ -183,10 +183,10 @@ To define all subsequent nodes, use the category label:
 {
   category: 'anyId',
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.luigi-project.io/docs/navigation-configuration',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the Luigi navigation doc',
 },
 ...
 ```
