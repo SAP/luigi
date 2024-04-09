@@ -30,7 +30,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 #### :rocket: Added
 * [#3672](https://github.com/SAP/luigi/pull/3672) Add on close promise to Luigi Client openAsModal  ([@hardl](https://github.com/hardl))
 * [#3654](https://github.com/SAP/luigi/pull/3654) Cypress support for testing utilities ([@JohannesDoberer](https://github.com/JohannesDoberer))
-* [#3650](https://github.com/SAP/luigi/pull/3650) Specify iframe sandbox and allow rules ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
 
 #### :bug: Fixed
 * [#3680](https://github.com/SAP/luigi/pull/3680) Fix global nav focus issue ([@hardl](https://github.com/hardl))
