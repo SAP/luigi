@@ -312,11 +312,7 @@
     if (isHiddenAndOnlySubCategoryNode(nodes)){
       return true;
     }
-    // return ((key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0));
   }
-  // function isSingleTabItem(key) {
-  //   return key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0;
-  // }
 
   /**
    * Checks if any of the nodes is a tab item with sub-items.
@@ -327,20 +323,21 @@
     return nodes.some((node) => !node.hideFromNav && node.label);
   }
 
-  function isHiddenAndOnlySubCategoryNode(nodes, key){
+  /**
+   * Checks if for the given nodes list there is a category that has a subcategory node which is hidden.
+   * In this case the category node should be shown as a single tab item and not a category on the tabnav view
+   * @param nodes list of nodes to check in the same level
+   * @returns {boolean} true if only one hidden item found. 
+   */
+  function isHiddenAndOnlySubCategoryNode(nodes){
     // reference node = a subcategory node
     const referenceNode = nodes.find((node) => GenericHelpers.isObject(node.category) );
-    console.log('\n NODES = ', nodes)
-    // const referenceNode = nodes.find((node) => node.category.label !== undefined || node.category.id !== undefined);
-    console.log('referenceNode', referenceNode)
     if (!referenceNode) {
       return;
     }
     const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
-    console.log('referenceCategoryName', referenceCategoryName)
 
     const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName && node.hideFromNav === true ).length === 1;
-    console.log('isOnlyOtherCategoryNodeHidden', nodes.filter((node) => node.category === referenceCategoryName  && node.hideFromNav === true))
 
     return isOnlyOtherCategoryNodeHidden;
   }
