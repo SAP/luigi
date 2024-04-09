@@ -303,7 +303,15 @@
    * @returns {boolean} Returns true if the key is 'undefined' or starts with the virtualGroupPrefix; otherwise, returns false.
    */
   function isSingleTabItem(key, nodes) {
-    return ((key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0));
+    const isKeyUndefined = key === 'undefined';
+    const isVirtualGroupPrefix = key.indexOf(virtualGroupPrefix) === 0;
+    if (isKeyUndefined || isVirtualGroupPrefix) {
+      return true;
+    }
+    if (isHiddenAndOnlySubCategoryNode(nodes)){
+      return true;
+    }
+    // return ((key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0));
   }
   // function isSingleTabItem(key) {
   //   return key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0;
@@ -318,7 +326,7 @@
     return nodes.some((node) => !node.hideFromNav && node.label);
   }
 
-  function isHiddenAndOnlySubCategoryNode(nodes){
+  function isHiddenAndOnlySubCategoryNode(nodes, key){
     // reference node = a subcategory node
     const referenceNode = nodes.find((node) => node.category !== undefined );
 
