@@ -329,7 +329,7 @@
   function isHiddenAndOnlySubCategoryNode(nodes, key){
     // reference node = a subcategory node
     const referenceNode = nodes.find((node) => node.category !== undefined );
-
+    console.log('\n NODES = ', nodes)
     // const referenceNode = nodes.find((node) => node.category.label !== undefined || node.category.id !== undefined);
     console.log('referenceNode', referenceNode)
     if (!referenceNode) {
@@ -338,7 +338,7 @@
     const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
     console.log('referenceCategoryName', referenceCategoryName)
 
-    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName ).length === 0;
+    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName ).length === 1;
     console.log('isOnlyOtherCategoryNodeHidden', nodes.filter((node) => node.category === referenceCategoryName))
 
     return isOnlyOtherCategoryNodeHidden;
