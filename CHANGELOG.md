@@ -25,6 +25,23 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.10.0] (2024-04-09)
+
+#### :rocket: Added
+* [#3672](https://github.com/SAP/luigi/pull/3672) Add on close promise to Luigi Client openAsModal  ([@hardl](https://github.com/hardl))
+* [#3654](https://github.com/SAP/luigi/pull/3654) Cypress support for testing utilities ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+#### :bug: Fixed
+* [#3680](https://github.com/SAP/luigi/pull/3680) Fix global nav focus issue ([@hardl](https://github.com/hardl))
+* [#3679](https://github.com/SAP/luigi/pull/3679) Fix loading indicator not going away when fast clicking multiple times to a nav node  ([@hardl](https://github.com/hardl))
+* [#3662](https://github.com/SAP/luigi/pull/3662) Fix runtime error ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3646](https://github.com/SAP/luigi/pull/3646) Fix dynamic params for angular routing([@camelCaseChris](https://github.com/camelCaseChris))
+* [#3652](https://github.com/SAP/luigi/pull/3652) Fix return type of compound container init ([@hardl](https://github.com/hardl))
+
+
+
+
 ## [v2.9.0] (2024-02-13)
 
 #### :rocket: Added
@@ -1738,3 +1755,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.7.5]: https://github.com/SAP/luigi/compare/v2.7.4...v2.7.5
 [v2.8.0]: https://github.com/SAP/luigi/compare/v2.7.5...v2.8.0
 [v2.9.0]: https://github.com/SAP/luigi/compare/v2.8.0...v2.9.0
+[v2.10.0]: https://github.com/SAP/luigi/compare/v2.9.0...v2.10.0
