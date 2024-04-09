@@ -9,6 +9,7 @@
   } from 'svelte';
   import { LuigiConfig } from '../core-api';
   import {
+  GenericHelpers,
     NavigationHelpers,
     RoutingHelpers,
     StateHelpers,
@@ -328,7 +329,7 @@
 
   function isHiddenAndOnlySubCategoryNode(nodes, key){
     // reference node = a subcategory node
-    const referenceNode = nodes.find((node) => node.category !== undefined );
+    const referenceNode = nodes.find((node) => GenericHelpers.isObject(node.category) );
     console.log('\n NODES = ', nodes)
     // const referenceNode = nodes.find((node) => node.category.label !== undefined || node.category.id !== undefined);
     console.log('referenceNode', referenceNode)
@@ -338,8 +339,8 @@
     const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
     console.log('referenceCategoryName', referenceCategoryName)
 
-    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName ).length === 1;
-    console.log('isOnlyOtherCategoryNodeHidden', nodes.filter((node) => node.category === referenceCategoryName))
+    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName && node.hideFromNav === true ).length === 1;
+    console.log('isOnlyOtherCategoryNodeHidden', nodes.filter((node) => node.category === referenceCategoryName  && node.hideFromNav === true))
 
     return isOnlyOtherCategoryNodeHidden;
   }
