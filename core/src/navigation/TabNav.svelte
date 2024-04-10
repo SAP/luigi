@@ -437,6 +437,7 @@
                   role="tab"
                   class="fd-icon-tab-bar__tab"
                   tabindex="0"
+                  aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
                   href={getRouteLink(nodeToNavigateTo)}
                   on:click|preventDefault={() => handleClick(nodeToNavigateTo)}
                 >
