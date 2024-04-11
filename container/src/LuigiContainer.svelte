@@ -168,7 +168,7 @@
       webcomponentService.thisComponent = thisComponent;
 
       const ctx = GenericHelperFunctions.resolveContext(context);
-      if (webcomponent) {
+      if (webcomponent && webcomponent != "false") {
         mainComponent.innerHTML = '';
         const webComponentValue =
           GenericHelperFunctions.checkWebcomponentValue(webcomponent);
@@ -221,7 +221,7 @@
   class={webcomponent ? undefined : 'lui-isolated'}
 >
   {#if containerInitialized}
-    {#if !webcomponent}
+    {#if !webcomponent || webcomponent == "false"}
       <iframe
         bind:this={iframeHandle.iframe}
         src={viewurl}
