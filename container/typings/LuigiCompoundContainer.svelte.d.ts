@@ -61,6 +61,26 @@ export default class LuigiCompoundContainer extends HTMLElement {
   anchor: string;
 
   /**
+   * The document title value to be passed to the compound micro frontend.
+   * @since NEXT_RELEASE
+   */
+  documentTitle: string;
+
+  /**
+   * The hasBack value to be passed to the compound micro frontend.
+   * It indicates that there is one or more preserved views. Useful when you need to show a back button. 
+   * @since NEXT_RELEASE
+   */
+  hasBack: string;
+
+  /**
+   * The dirty status value to be passed to the compound micro frontend.
+   * It's used to indicate that there are unsaved changes when navigating away.
+   * @since NEXT_RELEASE
+   */
+  dirtyStatus: boolean;
+
+  /**
    * The following properties can be set for the web component object. By default, the web component is set to true.
    * @param {Object} [WebComponentSettings]
    * @param {string} WebComponentSettings.type: string, like module.
@@ -72,7 +92,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
-   * Function that updates the context of the compound microfrontend
+   * Function that updates the context of the compound microfrontend.
    * @param contextObj The context data
    * 
    * @example
@@ -82,7 +102,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   updateContext(contextObj: Object): void;
 
   /**
-   * Manually triggers the micro frontend rendering process when using defer-init attribute
+   * Manually triggers the micro frontend rendering process when using the defer-init attribute.
    * @since 1.0.0
    */
   init(): void;
