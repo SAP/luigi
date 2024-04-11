@@ -197,9 +197,6 @@
 
 <main
   bind:this={mainComponent}
-></main>
-<main
-  bind:this={mainComponent}
   class={webcomponent ? undefined : 'lui-isolated'}
 >
   {#if containerInitialized}
