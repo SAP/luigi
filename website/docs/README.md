@@ -3,15 +3,17 @@ Luigi documentation, deployed via netlify and accessible at https://docs.luigi-p
 
 ## Development
 
-1. Install dependencies. 
+1. Make sure that you are in the `website/docs` folder.
+
+2. Install dependencies. 
 
     `npm install`
 
-2. Build Project.
+3. Build Project.
 
     `npm run build`
 
-3. Run Project: This command will serve Luigi Core on Port 4000 and the Client Microfrontends on Port 4001 on separate servers in parallel. To make sure both servers are running locally run them in separate Terminals
+4. Run Project: This command will serve Luigi Core on Port 4000 and the Client Microfrontends on Port 4001 on separate servers in parallel. To make sure both servers are running locally run them in separate Terminals
 
     `npm run core` and `npm run client`
 
