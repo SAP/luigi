@@ -41,6 +41,9 @@
         reflect: false,
         attribute: 'client-permissions',
       },
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
+      documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
       allowRules: {
         type: 'Array',
         reflect: false,
@@ -50,7 +53,7 @@
         type: 'Array',
         reflect: false,
         attribute: 'sandbox-rules',
-      },
+      }
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -96,8 +99,12 @@
   export let searchParams: any;
   export let pathParams: any;
   export let clientPermissions: any;
+  export let dirtyStatus: boolean;
+  export let hasBack: boolean;
+  export let documentTitle: string;
   export let allowRules: string[];
   export let sandboxRules: string[];
+
 
   export let userSettings: any;
   export let anchor: string;
@@ -125,6 +132,9 @@
       clientPermissions &&
       userSettings &&
       anchor &&
+      dirtyStatus &&
+      hasBack &&
+      documentTitle &&
       allowRules &&
       sandboxRules
     );

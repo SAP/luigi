@@ -165,11 +165,30 @@ export class linkManager extends LuigiClientBase {
    * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
    * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
+   * @returns {promise} which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access the `goBackContext` when the promise will be resolved.
    * @example
-   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'}).then((res) => {
+   *     // Logic to execute when the modal will be closed
+   *     console.log(res.data) //=> {foo: 'bar'}
+   *  });
    */
   openAsModal(path, modalSettings = {}) {
+    helpers.addEventListener('luigi.navigation.modal.close', (e, listenerId) => {
+      const promise = this.getPromise('modal');
+      if (promise) {
+        promise.resolveFn(e.data);
+        this.setPromise('modal', undefined);
+      }
+      helpers.removeEventListener(listenerId);
+    });
+    const modalPromise = {};
+    modalPromise.promise = new Promise((resolve, reject) => {
+      modalPromise.resolveFn = resolve;
+      modalPromise.rejectFn = reject;
+    });
+    this.setPromise('modal', modalPromise);
     this.navigate(path, 0, true, modalSettings);
+    return modalPromise.promise;
   }
 
   /**

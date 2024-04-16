@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Luigi Webcomponent Container</title>
+  </head>
+
+  <script type="module">
+    // simple Luigi Container pacakge bundle import
+    import '../bundle.js';
+  </script>
+
+  <body>
+    <luigi-container
+      viewURL="./container-wc/myWebcomponent.js"
+      webcomponent="true"
+      context='{"content":" -- some content --"}'
+    ></luigi-container>
+  </body>
+</html>

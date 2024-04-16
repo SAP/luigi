@@ -362,6 +362,7 @@
               splitViewWC = obj.splitViewWC;
             } else if (prop === 'showLoadingIndicator') {
               if (obj.showLoadingIndicator === true) {
+                clearTimeout(loadingIndicatorTimeout);
                 loadingIndicatorTimeout = setTimeout(() => {
                   showLoadingIndicator = true;
                 }, 250);
@@ -939,14 +940,27 @@
    * Resets the mf modal data given the index and updates the 'mfModalList'. If no index given, resets the whole list instead
    * @param index {number|undefined}  the index of the modal to reset
    */
-  const resetMicrofrontendModalData = (index) => {
+  const resetMicrofrontendModalData = (index, goBackContext) => {
     if (typeof index === 'undefined') {
       // reset all modal list
       mfModalList = [];
       return;
     }
     // remove the item with specified index from the list
-    mfModalList = mfModalList.filter((item, i) => index !== i);
+    let removedModal;
+    mfModalList = mfModalList.filter((item, i) => {
+      if(index === i) {
+        removedModal = item;
+      }
+      return index !== i;
+    });
+    if(removedModal?.mfModal?.openerIframe) {      
+      const message = {
+          msg: 'luigi.navigation.modal.close',
+          data: goBackContext,
+        };
+      IframeHelpers.sendMessageToIframe(removedModal.mfModal.openerIframe, message);
+    }
   };
 
   resetMicrofrontendModalData();
@@ -956,7 +970,7 @@
    * @param nodepath {string} the path of the view to open
    * @param settings {Object} the respective modal settings
    */
-  const openViewInModal = async (nodepath, settings) => {
+  const openViewInModal = async (nodepath, settings, openerIframe) => {
     // check if navigation to this path is allowed or not
     if (await NavigationHelpers.shouldPreventNavigationForPath(nodepath)) {
       return;
@@ -967,6 +981,7 @@
         displayed: true,
         nodepath,
         settings,
+        openerIframe
       },
     };
     mfModalList = [...mfModalList, newModal];
@@ -1017,7 +1032,7 @@
       if (showModalPathInUrl && mfModalList.length === 1) {
         Routing.removeModalDataFromUrl(isClosedInternal);
       }
-      resetMicrofrontendModalData(index);
+      resetMicrofrontendModalData(index, goBackContext);
     };
     const targetModal = mfModalList[index];
     const rp = GenericHelpers.getRemotePromise(
@@ -1582,7 +1597,7 @@
 
           if (modal !== undefined) {
             !modal.keepPrevious && resetMicrofrontendModalData();
-            await openViewInModal(path, modal === true ? {} : modal);
+            await openViewInModal(path, modal === true ? {} : modal, iframe);
             checkResolve();
           } else if (splitView !== undefined) {
             await openSplitView(path, splitView);

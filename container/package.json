@@ -12,19 +12,21 @@
     "public"
   ],
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run sync-event-typings && rollup -c",
     "test": "jest",
     "lint": "eslint src/**/*.*",
     "bundle": "npm run build",
     "dev": "rollup -c -w",
-    "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ || COPY public\\* test-app\\",
+    "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ && cp public/bundle.js examples/ || COPY public\\* test-app\\",
     "copyLuigiElement": "cp ../client/src/luigi-element.js test-app",
     "serve": "npm run build && npm run copyLuigiElement && npm run copyBundle && sirv -D -c test-app --no-clear",
     "bundle:watch": "chokidar \"src/**/*.*\" -c \"npm run build && npm run copyBundle\"",
     "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
+    "start-examples":"npm run copyBundle && sirv -D -c examples --no-clear",
     "cypress-headless": "cypress run -c video=false",
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
-    "prepare-release": "node prepareNextRelease.js"
+    "prepare-release": "node prepareNextRelease.js",
+    "sync-event-typings":"cp src/constants/communication.ts typings/constants/events.d.ts"
   },
   "devDependencies": {
     "@babel/node": "7.22.10",
