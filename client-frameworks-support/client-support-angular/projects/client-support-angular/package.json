@@ -8,15 +8,19 @@
   },
   "peerDependencies": {
     "@angular/common": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0",
-    "@angular/core": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0"
-  },
-  "dependencies": {
-    "tslib": "^2.0.0",
+    "@angular/core": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0",
     "@luigi-project/client": "^2.0.0",
     "@luigi-project/testing-utilities": "^2.0.0"
   },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "publishConfig": {
     "tag": "client-support-angular"
+  },
+  "devDependencies": {
+    "@luigi-project/client": "^2.0.0",
+    "@luigi-project/testing-utilities": "^2.0.0"
   },
   "version": "2.10.0"
 }
