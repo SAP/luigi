@@ -9,8 +9,15 @@ echo ""
 echo "Container Test App"
 cd "$BASE_DIR"
 killWebserver 8080
+
+# simple examples on 2222 port
+killWebserver 2222
+
 npm run start &
 WS_FID_PID=$!
+
+npm run start-examples-test &
+EXAMPLES_FID_PID=$!
 
 sleep 10
 
@@ -25,4 +32,5 @@ fi
 
 RV=$?
 kill $WS_FID_PID
+kill $EXAMPLES_FID_PI
 exit $RV

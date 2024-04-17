@@ -29,7 +29,7 @@
   }
   nav ul li a {
     color: black;
-    text-decoration: none;
+    /* text-decoration: none; */
   }
   nav ul li a:hover {
     text-decoration: underline;
@@ -46,18 +46,25 @@
 
 <nav>
   <ul>
-    <li><a href="javascript:void(0);" onclick="loadPage('container-iframe/index.html')">Container Iframe Example</a></li>
-    <li><a href="javascript:void(0);" onclick="loadPage('container-wc/index.html')">Container Web Component Example</a></li>
-    <li><a href="javascript:void(0);" onclick="loadPage('compound-container/index.html')">Compound Container Example</a></li>
+    <li><a href="#iframe-container" id="iframe-container" onclick="loadPage('container-iframe/index.html', 'iframe-container')">Container Iframe Example</a></li>
+    <li><a href="#wc-container" id="wc-container" onclick="loadPage('container-wc/index.html', 'wc-container')">Container Web Component Example</a></li>
+    <li><a href="#compound-wc-container" id="compound-wc-container" onclick="loadPage('compound-container/index.html', 'compound-wc-container')">Compound Container Example</a></li>
   </ul>
 </nav>
 
 <iframe id="contentFrame" src="container-wc/index.html"></iframe>
 
 <script>
- function loadPage(pageUrl) {
+ function loadPage(pageUrl, activePage) {
     document.getElementById('contentFrame').src = pageUrl;
+    // window.location.href = '#' + activePage;
+    document.querySelectorAll('nav ul li a').forEach(item=>{item.style.textDecoration = 'none'})
+
+    document.getElementById(activePage).style.textDecoration = 'underline';
+
+
   }
+  loadPage('container-wc/index.html', 'wc-container')
 </script>
 </body>
 </html>

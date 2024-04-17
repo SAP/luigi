@@ -23,6 +23,7 @@
     "bundle:watch": "chokidar \"src/**/*.*\" -c \"npm run build && npm run copyBundle\"",
     "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
     "start-examples":"npm run copyBundle && sirv -D -c examples --no-clear",
+    "start-examples-test":"npm run copyBundle && sirv -D -c examples --no-clear --port 2222",
     "cypress-headless": "cypress run -c video=false",
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
     "prepare-release": "node prepareNextRelease.js",
