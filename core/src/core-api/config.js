@@ -1,4 +1,11 @@
-import { AsyncHelpers, EventListenerHelpers, GenericHelpers, StateHelpers, IframeHelpers, RoutingHelpers } from '../utilities/helpers';
+import {
+  AsyncHelpers,
+  EventListenerHelpers,
+  GenericHelpers,
+  StateHelpers,
+  IframeHelpers,
+  RoutingHelpers
+} from '../utilities/helpers';
 import { LuigiAuth, LuigiElements } from '.';
 import { AuthLayerSvc, LifecycleHooks } from '../services';
 import { NodeDataManagementStorage } from '../services/node-data-management.js';
@@ -11,7 +18,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function () { };
+    this.configReadyCallback = function() {};
     this.initialized = false;
     this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
@@ -333,16 +340,16 @@ class LuigiConfig {
   }
 
   /**
-  * Updates the context values for visible iframes and LUI web components.
-  * Note: the updated context values are not persisted. The developers have to do it by it's own.
-  * @param {Object} ctx - The context to be updated.
-  * @memberof Configuration
-  * @since NEXTRELEASE
-  */
+   * Updates the context values for visible iframes and LUI web components.
+   * Note: the updated context values are not persisted. The developers have to do it by it's own.
+   * @param {Object} ctx - The context to be updated.
+   * @memberof Configuration
+   * @since NEXTRELEASE
+   */
   updateContextValues(ctx) {
     const visibleIframes = IframeHelpers.getMicrofrontendIframes();
     if (visibleIframes && visibleIframes.length > 0) {
-      visibleIframes.forEach((iframe) => {
+      visibleIframes.forEach(iframe => {
         if (iframe.luigi) {
           IframeHelpers.sendMessageToIframe(iframe, {
             msg: 'luigi.navigate',
@@ -361,7 +368,7 @@ class LuigiConfig {
       let luiWebComponents = document.querySelectorAll('[lui_web_component=true]');
       luiWebComponents.forEach(luiWebComponent => {
         luiWebComponent.context = Object.assign({}, luiWebComponent.context, ctx);
-      })
+      });
     }
   }
 }
