@@ -159,8 +159,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   /**
@@ -204,7 +204,7 @@ class RoutingClass {
         this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
       },
       // user clicks no, do nothing, reject promise
-      () => {}
+      () => { }
     );
   }
 
@@ -419,101 +419,95 @@ class RoutingClass {
           cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
         }
       }
-      StateHelpers.doOnStoreChange(
-        window.Luigi._store,
-        async () => {
-          const ctx = RoutingHelpers.substituteDynamicParamsInObject(
-            Object.assign({}, pathData.context, currentNode.context),
-            pathData.pathParams
-          );
-          pathData.navigationPath._context = ctx;
-          const newNodeData = {
-            hideNav,
-            viewUrl,
-            nodeParams,
-            viewGroup,
-            urlParamsRaw,
-            currentNode,
-            navigationPath: pathData.navigationPath,
-            context: ctx,
-            pathParams: pathData.pathParams,
-            hideSideNav: hideSideNavInherited || false,
-            isolateView: nodeObject.isolateView || false,
-            tabNav: tabNavInherited
-          };
-          component.set(
-            Object.assign({}, newNodeData, {
-              previousNodeValues: previousCompData
-                ? {
-                    viewUrl: previousCompData.viewUrl,
-                    isolateView: previousCompData.isolateView,
-                    viewGroup: previousCompData.viewGroup
-                  }
-                : {}
-            })
-          );
-
-          let iContainer = document.getElementsByClassName('iframeContainer')[0];
-          if (iContainer) {
-            if (tabNavInherited) {
-              //document.body.classList.add('lui-simpleSlideInNav');
-              iContainer.classList.add('iframeContainerTabNav');
-            } else {
-              if (iContainer.classList.contains('iframeContainerTabNav')) {
-                iContainer.classList.remove('iframeContainerTabNav');
-              }
-            }
-          }
-          if (nodeObject.compound) {
-            Iframe.switchActiveIframe(iframeElement, undefined, false);
-            if (iContainer) {
-              iContainer.classList.add('lui-webComponent');
-            }
-            this.navigateWebComponentCompound(component, nodeObject);
-          } else if (nodeObject.webcomponent) {
-            Iframe.switchActiveIframe(iframeElement, undefined, false);
-            if (iContainer) {
-              iContainer.classList.add('lui-webComponent');
-            }
-            this.navigateWebComponent(component, nodeObject);
-          } else {
-            const wc_container = document.querySelector('.wcContainer');
-            if (wc_container) wc_container.configChangedRequest = false;
-            if (iContainer) {
-              iContainer.classList.remove('lui-webComponent');
-              this.removeLastChildFromWCContainer();
-            }
-
-            if (!preventContextUpdate) {
-              if (!withoutSync) {
-                await Iframe.navigateIframe(config, component, iframeElement);
-              } else {
-                const componentData = component.get();
-                const internalData = await component.prepareInternalData(config);
-                // send a message to the iFrame to trigger a context update listener when withoutSync enabled
-                IframeHelpers.sendMessageToIframe(config.iframe, {
-                  msg: 'luigi.navigate',
-                  viewUrl: viewUrl,
-                  context: JSON.stringify(componentData.context),
-                  nodeParams: JSON.stringify(componentData.nodeParams),
-                  pathParams: JSON.stringify(componentData.pathParams),
-                  searchParams: JSON.stringify(
-                    RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)
-                  ),
-                  internal: JSON.stringify(internalData),
-                  withoutSync: true
-                });
-              }
-            }
-          }
-
-          const tabHeaderCnt = document.querySelector('.lui-tab-header');
-          if (tabHeaderCnt) {
-            tabHeaderCnt.dispatchEvent(new Event('lui_ctx_update'));
-          }
-        },
-        ['navigation.context']
+      const ctx = RoutingHelpers.substituteDynamicParamsInObject(
+        Object.assign({}, pathData.context, currentNode.context),
+        pathData.pathParams
       );
+      pathData.navigationPath._context = ctx;
+      const newNodeData = {
+        hideNav,
+        viewUrl,
+        nodeParams,
+        viewGroup,
+        urlParamsRaw,
+        currentNode,
+        navigationPath: pathData.navigationPath,
+        context: ctx,
+        pathParams: pathData.pathParams,
+        hideSideNav: hideSideNavInherited || false,
+        isolateView: nodeObject.isolateView || false,
+        tabNav: tabNavInherited
+      };
+      component.set(
+        Object.assign({}, newNodeData, {
+          previousNodeValues: previousCompData
+            ? {
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
+            : {}
+        })
+      );
+
+      let iContainer = document.getElementsByClassName('iframeContainer')[0];
+      if (iContainer) {
+        if (tabNavInherited) {
+          //document.body.classList.add('lui-simpleSlideInNav');
+          iContainer.classList.add('iframeContainerTabNav');
+        } else {
+          if (iContainer.classList.contains('iframeContainerTabNav')) {
+            iContainer.classList.remove('iframeContainerTabNav');
+          }
+        }
+      }
+      if (nodeObject.compound) {
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
+        if (iContainer) {
+          iContainer.classList.add('lui-webComponent');
+        }
+        this.navigateWebComponentCompound(component, nodeObject);
+      } else if (nodeObject.webcomponent) {
+        Iframe.switchActiveIframe(iframeElement, undefined, false);
+        if (iContainer) {
+          iContainer.classList.add('lui-webComponent');
+        }
+        this.navigateWebComponent(component, nodeObject);
+      } else {
+        const wc_container = document.querySelector('.wcContainer');
+        if (wc_container) wc_container.configChangedRequest = false;
+        if (iContainer) {
+          iContainer.classList.remove('lui-webComponent');
+          this.removeLastChildFromWCContainer();
+        }
+
+        if (!preventContextUpdate) {
+          if (!withoutSync) {
+            await Iframe.navigateIframe(config, component, iframeElement);
+          } else {
+            const componentData = component.get();
+            const internalData = await component.prepareInternalData(config);
+            // send a message to the iFrame to trigger a context update listener when withoutSync enabled
+            IframeHelpers.sendMessageToIframe(config.iframe, {
+              msg: 'luigi.navigate',
+              viewUrl: viewUrl,
+              context: JSON.stringify(componentData.context),
+              nodeParams: JSON.stringify(componentData.nodeParams),
+              pathParams: JSON.stringify(componentData.pathParams),
+              searchParams: JSON.stringify(
+                RoutingHelpers.prepareSearchParamsForClient(config.iframe.luigi.currentNode)
+              ),
+              internal: JSON.stringify(internalData),
+              withoutSync: true
+            });
+          }
+        }
+      }
+
+      const tabHeaderCnt = document.querySelector('.lui-tab-header');
+      if (tabHeaderCnt) {
+        tabHeaderCnt.dispatchEvent(new Event('lui_ctx_update'));
+      }
 
       Navigation.onNodeChange(previousCompData.currentNode, currentNode);
     } catch (err) {

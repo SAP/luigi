@@ -1,4 +1,4 @@
-import { AsyncHelpers, EventListenerHelpers, GenericHelpers, StateHelpers } from '../utilities/helpers';
+import { AsyncHelpers, EventListenerHelpers, GenericHelpers, StateHelpers, IframeHelpers, RoutingHelpers } from '../utilities/helpers';
 import { LuigiAuth, LuigiElements } from '.';
 import { AuthLayerSvc, LifecycleHooks } from '../services';
 import { NodeDataManagementStorage } from '../services/node-data-management.js';
@@ -11,7 +11,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function() {};
+    this.configReadyCallback = function () { };
     this.initialized = false;
     this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
@@ -330,6 +330,39 @@ class LuigiConfig {
    */
   getGlobalContext() {
     return this.config?.navigation?.globalContext || {};
+  }
+
+  /**
+  * Updates the context values for visible iframes and LUI web components.
+  * Note: the updated context values are not persisted. The developers have to do it by it's own.
+  * @param {Object} ctx - The context to be updated.
+  * @memberof Configuration
+  * @since NEXTRELEASE
+  */
+  updateContextValues(ctx) {
+    const visibleIframes = IframeHelpers.getMicrofrontendIframes();
+    if (visibleIframes && visibleIframes.length > 0) {
+      visibleIframes.forEach((iframe) => {
+        if (iframe.luigi) {
+          IframeHelpers.sendMessageToIframe(iframe, {
+            msg: 'luigi.navigate',
+            context: JSON.stringify(Object.assign({}, JSON.parse(iframe.luigi._lastUpdatedMessage.context), ctx)),
+            nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
+            pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
+            searchParams: JSON.stringify(
+              Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(iframe.luigi.currentNode))
+            ),
+            internal: IframeHelpers.applyCoreStateData(JSON.parse(iframe.luigi._lastUpdatedMessage.internal))
+          });
+        }
+      });
+    }
+    if (document.querySelector('.wcContainer')) {
+      let luiWebComponents = document.querySelectorAll('[lui_web_component=true]');
+      luiWebComponents.forEach(luiWebComponent => {
+        luiWebComponent.context = Object.assign({}, luiWebComponent.context, ctx);
+      })
+    }
   }
 }
 
