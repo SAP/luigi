@@ -1,7 +1,7 @@
 // Methods related to the routing. They mostly end up changing the iframe view which is handled by `iframe.js` file;
 // Please consider adding any new methods to 'routing-helpers' if they don't require anything from this file.
 import { Navigation } from '../navigation/services/navigation';
-import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
+import { GenericHelpers, IframeHelpers, NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
 import { LuigiConfig, LuigiNavigation } from '../core-api';
 import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
@@ -159,8 +159,8 @@ class RoutingClass {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? window.location.hash.replace('#', '') // TODO: GenericHelpers.getPathWithoutHash(window.location.hash) fails in ContextSwitcher
       : window.location.search
-      ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
-      : GenericHelpers.trimLeadingSlash(window.location.pathname);
+        ? GenericHelpers.trimLeadingSlash(window.location.pathname) + window.location.search
+        : GenericHelpers.trimLeadingSlash(window.location.pathname);
   }
 
   /**
@@ -204,7 +204,7 @@ class RoutingClass {
         this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
       },
       // user clicks no, do nothing, reject promise
-      () => {}
+      () => { }
     );
   }
 
@@ -419,6 +419,7 @@ class RoutingClass {
           cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
         }
       }
+
       const ctx = RoutingHelpers.substituteDynamicParamsInObject(
         Object.assign({}, pathData.context, currentNode.context),
         pathData.pathParams
@@ -442,10 +443,10 @@ class RoutingClass {
         Object.assign({}, newNodeData, {
           previousNodeValues: previousCompData
             ? {
-                viewUrl: previousCompData.viewUrl,
-                isolateView: previousCompData.isolateView,
-                viewGroup: previousCompData.viewGroup
-              }
+              viewUrl: previousCompData.viewUrl,
+              isolateView: previousCompData.isolateView,
+              viewGroup: previousCompData.viewGroup
+            }
             : {}
         })
       );
