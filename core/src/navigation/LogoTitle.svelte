@@ -20,7 +20,7 @@
   export let title;
   export let hasApps;
   export let keepMainTitle;
-  export let showSubTitle;
+  export let showSubTitle = true;
   export let dropDownStates = {};
   export let showMainAppEntry;
   export let selectedItem;
