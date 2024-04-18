@@ -19,3 +19,22 @@
 body:not(.semiCollapsed) .fd-tool-layout.fd-tool-layout .fd-app__sidebar.fd-app__sidebar .fd-side-nav.lui-nav-header-visible {
   top: calc(3.25rem + 0.5rem);
 }
+
+.btp-layout {
+  .fd-shellbar__title > span::after {
+    content: "\23D0";
+    color: var(--sapGroup_TitleBorderColor);
+    position: absolute;
+    top: -.5em;
+    padding-left: 0.3em;
+    font-size: 2em;
+  }
+
+  .fd-shellbar__group--product > .fd-shellbar__title {
+    padding-right: 1.25rem;
+  }
+
+  .fd-shellbar__group--product > .fd-popover {
+    margin-left: -.5rem;
+  }
+}
