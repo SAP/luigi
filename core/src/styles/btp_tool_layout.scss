@@ -21,7 +21,7 @@ body:not(.semiCollapsed) .fd-tool-layout.fd-tool-layout .fd-app__sidebar.fd-app_
 }
 
 .btp-layout {
-  .fd-shellbar__title > span::after {
+  .fd-shellbar__title.lui-has-apps > span::after {
     content: "\23D0";
     color: var(--sapGroup_TitleBorderColor);
     position: absolute;
@@ -30,11 +30,11 @@ body:not(.semiCollapsed) .fd-tool-layout.fd-tool-layout .fd-app__sidebar.fd-app_
     font-size: 2em;
   }
 
-  .fd-shellbar__group--product > .fd-shellbar__title {
+  .fd-shellbar__group--product > .fd-shellbar__title.lui-has-apps {
     padding-right: 1.25rem;
   }
 
-  .fd-shellbar__group--product > .fd-popover {
+  .fd-shellbar__group--product > .lui-keep-main {
     margin-left: -.5rem;
   }
 }

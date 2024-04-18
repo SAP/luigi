@@ -220,7 +220,7 @@
   {#if !hasApps || keepMainTitle}
     {#if addNavHrefForAnchor}
       <a
-        class="fd-shellbar__title lui-shellbar-single-app-title"
+        class="fd-shellbar__title lui-shellbar-single-app-title {hasApps && 'lui-has-apps'}"
         data-testid="luigi-topnav-title"
         on:click={(event) => {
           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
@@ -246,7 +246,7 @@
     {/if}
   {/if}
   {#if hasApps}
-    <div class="fd-popover">
+    <div class="fd-popover {keepMainTitle && 'lui-keep-main'}">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
         {#if addNavHrefForAnchor}
