@@ -10,6 +10,10 @@ export const processHeaderSettings = component => {
         component.set({ appSwitcherItems: appSwitcher.items });
         component.set({ showMainAppEntry: appSwitcher.showMainAppEntry });
         component.set({ itemRenderer: appSwitcher.itemRenderer });
+        if (GenericHelpers.requestExperimentalFeature('btpToolLayout')) {
+          component.set({ keepMainTitle: appSwitcher.keepMainTitle });
+          component.set({ showSubTitle: appSwitcher.showSubTitle !== false });
+        }
       }
       component.set({
         hasApps:
