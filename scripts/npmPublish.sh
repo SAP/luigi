@@ -81,7 +81,7 @@ function publishPackage {
     npm dist-tag add $NAME@$VERSION next
     if [[ $VERSION != *"rc."* ]] && [[ $VERSION != *"next."* ]]; then
       npm dist-tag add $NAME@$VERSION latest
-      M_TAG=`echo $VERSION | cut -d "." -f 1,2`
+      M_TAG=`echo $VERSION | cut -d "." -f 1,2 | tr . -`
       npm dist-tag add $NAME@$VERSION v$M_TAG
       echo "Tag $NAME@$VERSION with latest, next and v${M_TAG} on npm"
     else
