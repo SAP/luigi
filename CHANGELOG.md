@@ -25,6 +25,17 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.11.0] (2024-04-19)
+
+#### :rocket: Added
+* [#3664](https://github.com/SAP/luigi/pull/3664) Add TabNav navigate on click ([@camelCaseChris](https://github.com/camelCaseChris))
+
+#### :bug: Fixed
+* [#3696](https://github.com/SAP/luigi/pull/3696) Fix dependency issue in client-support-angular ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.10.0] (2024-04-09)
 
 #### :rocket: Added
@@ -1756,3 +1767,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.8.0]: https://github.com/SAP/luigi/compare/v2.7.5...v2.8.0
 [v2.9.0]: https://github.com/SAP/luigi/compare/v2.8.0...v2.9.0
 [v2.10.0]: https://github.com/SAP/luigi/compare/v2.9.0...v2.10.0
+[v2.11.0]: https://github.com/SAP/luigi/compare/v2.10.0...v2.11.0
