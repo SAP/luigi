@@ -17,32 +17,40 @@ describe('Simple Examples Iframe Container Test', () => {
     cy.get('luigi-container')
       .shadow()
       .then(container => {
-
         cy.wrap(container)
-        .get('luigi-wc-687474703a2f2f6c6f63616c686f73743a323232322f636f6e7461696e65722d77632f636f6e7461696e65722d77632f6d79576562636f6d706f6e656e742e6a73')
-        .shadow()
-        .then(shadowRoot =>{
-          const $content = shadowRoot.contents()
-          cy.wrap($content).should('contain','This is a webcomponent based microfrontend container  -- some content --')
-        })
+          .get(
+            'luigi-wc-687474703a2f2f6c6f63616c686f73743a323232322f636f6e7461696e65722d77632f636f6e7461696e65722d77632f6d79576562636f6d706f6e656e742e6a73'
+          )
+          .shadow()
+          .then(shadowRoot => {
+            const $content = shadowRoot.contents();
+            cy.wrap($content).should(
+              'contain',
+              'This is a webcomponent based microfrontend container  -- some content --'
+            );
+          });
       });
   });
 
-// TODO
+  // TODO
   it.only('Compound WebComponent Container Test', () => {
     cy.visit('http://localhost:2222/container-wc/index.html');
 
     cy.get('luigi-container')
       .shadow()
       .then(container => {
-
         cy.wrap(container)
-        .get('luigi-wc-687474703a2f2f6c6f63616c686f73743a323232322f636f6e7461696e65722d77632f636f6e7461696e65722d77632f6d79576562636f6d706f6e656e742e6a73')
-        .shadow()
-        .then(shadowRoot =>{
-          const $content = shadowRoot.contents()
-          cy.wrap($content).should('contain','This is a webcomponent based microfrontend container  -- some content --')
-        })
+          .get(
+            'luigi-wc-687474703a2f2f6c6f63616c686f73743a323232322f636f6e7461696e65722d77632f636f6e7461696e65722d77632f6d79576562636f6d706f6e656e742e6a73'
+          )
+          .shadow()
+          .then(shadowRoot => {
+            const $content = shadowRoot.contents();
+            cy.wrap($content).should(
+              'contain',
+              'This is a webcomponent based microfrontend container  -- some content --'
+            );
+          });
       });
   });
 
