@@ -1,5 +1,4 @@
 describe('Simple Examples Iframe Container Test', () => {
-
   it('Iframe Container Test', () => {
     cy.visit('http://localhost:2222/container-iframe/index.html');
 
@@ -15,11 +14,10 @@ describe('Simple Examples Iframe Container Test', () => {
   it('WebComponent Container Test', () => {
     cy.visit('http://localhost:2222/container-wc/index.html');
 
-      cy.get('luigi-container')
+    cy.get('luigi-container')
       .shadow()
       .find('h1')
       .should('contain.text', 'This is a webcomponent based microfrontend container  -- some content --');
-
   });
 
   it('Compound WebComponent Container Test', () => {
@@ -30,17 +28,17 @@ describe('Simple Examples Iframe Container Test', () => {
       .find('h2')
       .should('contain.text', 'Hello From Web Component 1 some extra content');
 
-      cy.get('luigi-compound-container')
+    cy.get('luigi-compound-container')
       .shadow()
       .find('h2')
       .should('contain.text', 'Hello From Web Component 2');
 
-      cy.get('luigi-compound-container')
+    cy.get('luigi-compound-container')
       .shadow()
       .find('h2')
       .should('contain.text', 'Hello From Web Component 3');
 
-      cy.get('luigi-compound-container')
+    cy.get('luigi-compound-container')
       .shadow()
       .find('h2')
       .should('contain.text', 'Hello From Web Component 4');
