@@ -1,4 +1,8 @@
 describe('Simple Examples Iframe Container Test', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:2222');
+  });
+
   it('Iframe Container Test', () => {
     cy.visit('http://localhost:2222/container-iframe/index.html');
 
