@@ -1,3 +1,4 @@
+// this file is identical with iframe-container
 describe('Iframe Container Test', () => {
   it('navigation sent', () => {
     cy.visit('http://localhost:8080');
