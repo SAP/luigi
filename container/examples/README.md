@@ -50,7 +50,6 @@ The *compoundConfig* parameter works similar to the [compound parameter](https:/
       },
       children: [
         {
-          id: 'input1',
           viewUrl: './myCompoundWebComponent1.js',
         },
         {
