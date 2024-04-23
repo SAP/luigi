@@ -19,6 +19,8 @@
   export let hasLogo;
   export let title;
   export let hasApps;
+  export let keepMainTitle;
+  export let showSubTitle = true;
   export let dropDownStates = {};
   export let showMainAppEntry;
   export let selectedItem;
@@ -59,6 +61,8 @@
           defaultSubTitle,
           showMainAppEntry,
           hasApps,
+          keepMainTitle,
+          showSubTitle,
           hasLogo,
           logo,
         };
@@ -90,6 +94,10 @@
               showMainAppEntry = obj.showMainAppEntry;
             } else if (prop === 'hasApps') {
               hasApps = obj.hasApps;
+            } else if (prop === 'keepMainTitle') {
+              keepMainTitle = obj.keepMainTitle;
+            } else if (prop === 'showSubTitle') {
+              showSubTitle = obj.showSubTitle;
             } else if (prop === 'hasLogo') {
               hasLogo = obj.hasLogo;
             }
@@ -209,10 +217,10 @@
   </span>
 {/if}
 {#if title}
-  {#if !hasApps}
+  {#if !hasApps || keepMainTitle}
     {#if addNavHrefForAnchor}
       <a
-        class="fd-shellbar__title lui-shellbar-single-app-title"
+        class="fd-shellbar__title lui-shellbar-single-app-title {hasApps && 'lui-has-apps'}"
         data-testid="luigi-topnav-title"
         on:click={(event) => {
           NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
@@ -221,7 +229,7 @@
         href="/"
       >
         <span>
-          {$getTranslation(title)}
+          {$getTranslation(keepMainTitle ? defaultTitle : title)}
         </span>
       </a>
     {:else}
@@ -232,11 +240,13 @@
         on:click={() => goTo('/')}
       >
         <span>
-          {$getTranslation(title)}
+          {$getTranslation(keepMainTitle ? defaultTitle : title)}
         </span>
       </span>
-    {/if}{:else}
-    <div class="fd-popover">
+    {/if}
+  {/if}
+  {#if hasApps}
+    <div class="fd-popover {keepMainTitle && 'lui-keep-main'}">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
         {#if addNavHrefForAnchor}
@@ -374,7 +384,7 @@
       </div>
     </div>
   {/if}
-  {#if subTitle}
+  {#if subTitle && showSubTitle}
     <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
   {/if}{/if}
 
