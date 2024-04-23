@@ -131,7 +131,12 @@
     if(!versions) {
       const response = await fetch('https://registry.npmjs.org/@luigi-project/core');
       const entries = await response.json();
-      versions = [...new Set(Object.values(entries['dist-tags']) || [])].sort();
+      versions = [...new Set(Object.values(entries['dist-tags']) || [])].sort((a, b) => {
+        const a_parts = a.split('.');
+        const b_parts = b.split('.');
+        console.log('comparing', a, b, '---', (a_parts[0] * 10000 + a_parts[1] * 1),' - ', (b_parts[0] * 10000 + b_parts[1] * 1), '=', (a_parts[0] * 10000 + a_parts[1]) - (b_parts[0] * 10000 + b_parts[1]))
+        return (a_parts[0] * 10000 + a_parts[1] * 1) - (b_parts[0] * 10000 + b_parts[1] * 1);
+      });
       versions.push('Reset...');
     }
   }
