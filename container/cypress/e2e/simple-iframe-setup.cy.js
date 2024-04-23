@@ -16,6 +16,7 @@ describe('Simple Examples Iframe Container Test', () => {
   });
 
   it('WebComponent Container Test', () => {
+    cy.visit('http://localhost:2222');
     cy.visit('http://localhost:2222/container-wc/index.html');
 
     cy.get('luigi-container')
