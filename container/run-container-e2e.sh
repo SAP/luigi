@@ -17,19 +17,12 @@ killWebserver 2222 || true
 npm run start &
 WS_FID_PID=$!
 
-echo "TEST -------- -1"
-
 
 # Start the second server in the background
 npm run start-examples-test &
 EXAMPLES_FID_PID=$!
 
-echo "TEST --------0"
-
-
 # sleep 
-
-echo "TEST --------1"
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
