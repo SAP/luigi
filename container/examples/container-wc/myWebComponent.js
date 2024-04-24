@@ -10,7 +10,7 @@ export default class extends HTMLElement {
     shadowRoot.appendChild(template.content.cloneNode(true));
     this.$paragraph = shadowRoot.getElementById('paragraph');
   }
-    
+
   set context(ctx) {
     this.$paragraph.innerHTML += ctx.content;
   }
