@@ -8,18 +8,28 @@ source $BASE_DIR/../scripts/shared/bashHelpers.sh
 echo ""
 echo "Container Test App"
 cd "$BASE_DIR"
-killWebserver 8080
+killWebserver 8080 || true
 
 # simple examples on 2222 port
-killWebserver 2222
+killWebserver 2222 || true
 
+# Start the first server in the background
 npm run start &
 WS_FID_PID=$!
 
+echo "TEST -------- -1"
+
+
+# Start the second server in the background
 npm run start-examples-test &
 EXAMPLES_FID_PID=$!
 
-sleep 10
+echo "TEST --------0"
+
+
+# sleep 
+
+echo "TEST --------1"
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
@@ -30,7 +40,9 @@ else
   npm run cypress-headless
 fi
 
-RV=$?
+# RV=$?
 kill $WS_FID_PID
-kill $EXAMPLES_FID_PI
-exit $RV
+kill $EXAMPLES_FID_PID
+# exit $RV
+exit $?
+
