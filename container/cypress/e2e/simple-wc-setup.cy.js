@@ -3,7 +3,6 @@ describe('Simple Examples Iframe Container Test', () => {
     cy.visit('http://localhost:2222');
   });
 
-
   it('WebComponent Container Test', () => {
     cy.visit('http://localhost:2222/container-wc/index.html');
 
@@ -23,7 +22,7 @@ describe('Simple Examples Iframe Container Test', () => {
     // // console.log(
     // //   JSON.stringify(a)
     // //   )
-    
+
     cy.get('luigi-container')
       .shadow()
       .find('main');
