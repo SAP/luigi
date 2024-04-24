@@ -6,7 +6,7 @@ export default class extends HTMLElement {
     super();
     const shadowRoot = this.attachShadow({ mode: 'open' });
     const template = document.createElement('template');
-    template.innerHTML = `<h1 style="border: solid blue 2px;" id="paragraph">This is a webcomponent based microfrontend container </h1>`;
+    template.innerHTML = `<section><h1 style="border: solid blue 2px;" id="paragraph">This is a webcomponent based microfrontend container </h1></section>`;
     shadowRoot.appendChild(template.content.cloneNode(true));
     this.$paragraph = shadowRoot.getElementById('paragraph');
   }
