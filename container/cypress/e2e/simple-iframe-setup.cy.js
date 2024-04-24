@@ -20,18 +20,19 @@ describe('Simple Examples Iframe Container Test', () => {
     cy.visit('http://localhost:2222/container-wc/index.html');
 
     // cy.get('luigi-container').shadow();
-    const a = cy.get('luigi-container').shadow().then((t)=>{
-      console.log('luigi-container',t)
+    const a = cy
+      .get('luigi-container')
+      .shadow()
+      .then(t => {
+        console.log('luigi-container', t);
 
-      console.log('luigi-container[0]',t[0])
+        console.log('luigi-container[0]', t[0]);
 
+        console.log('luigi-container[0].innerHtml', t[0].innerHTML);
+        console.log('luigi-container[0].children[1]', t[0].children[1]);
+      });
 
-      console.log('luigi-container[0].innerHtml',t[0].innerHTML)
-      console.log('luigi-container[0].children[1]',t[0].children[1])
-
-    })
-    
-    // console.log(  
+    // console.log(
     //   JSON.stringify(a)
     //   )
     cy.get('luigi-container')
@@ -47,17 +48,17 @@ describe('Simple Examples Iframe Container Test', () => {
   it('Compound WebComponent Container Test', () => {
     cy.visit('http://localhost:2222/compound-container/index.html');
 
-    const a = cy.get('luigi-compound-container').shadow().then((t)=>{
-      console.log('\n Compound 0',t)
+    const a = cy
+      .get('luigi-compound-container')
+      .shadow()
+      .then(t => {
+        console.log('\n Compound 0', t);
 
-      console.log('\n Compound 1',t[0])
+        console.log('\n Compound 1', t[0]);
 
-
-      console.log('\n Compound 2',t[0].innerHTML)
-      console.log('Compound[0].children[1]',t[0].children[1])
-
-    })
-    
+        console.log('\n Compound 2', t[0].innerHTML);
+        console.log('Compound[0].children[1]', t[0].children[1]);
+      });
 
     cy.get('luigi-compound-container')
       .shadow()
