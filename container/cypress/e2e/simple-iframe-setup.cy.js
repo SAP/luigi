@@ -15,7 +15,7 @@ describe('Simple Examples Iframe Container Test', () => {
       });
   });
 
-  it('WebComponent Container Test', () => {
+  it.only('WebComponent Container Test', () => {
     cy.visit('http://localhost:2222');
     cy.visit('http://localhost:2222/container-wc/index.html');
 
@@ -39,10 +39,10 @@ describe('Simple Examples Iframe Container Test', () => {
       .shadow()
       .find('main');
 
-    // cy.get('luigi-container')
-    //   .shadow()
-    //   .find('h1')
-    //   .should('contain.text', 'This is a webcomponent based microfrontend container  -- some content --');
+    cy.get('luigi-container')
+      .shadow()
+      .find('h2')
+      .should('contain.text', 'This is a webcomponent based microfrontend container  -- some content --');
   });
 
   it('Compound WebComponent Container Test', () => {
