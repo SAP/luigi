@@ -221,7 +221,7 @@
   class={webcomponent ? undefined : 'lui-isolated'}
 >
   {#if containerInitialized}
-    {#if !webcomponent || webcomponent == "false"}
+    {#if !webcomponent || webcomponent === "false"}
       <iframe
         bind:this={iframeHandle.iframe}
         src={viewurl}
