@@ -18,7 +18,7 @@ class LuigiConfig {
    * @memberof Configuration
    */
   constructor() {
-    this.configReadyCallback = function() {};
+    this.configReadyCallback = function () { };
     this.initialized = false;
     this.USER_SETTINGS_KEY = 'luigi.preferences.userSettings';
   }
@@ -350,6 +350,7 @@ class LuigiConfig {
     const visibleIframes = IframeHelpers.getMicrofrontendIframes();
     if (visibleIframes && visibleIframes.length > 0) {
       visibleIframes.forEach(iframe => {
+        // luigi configuration data about the mf which is rendered in the iframe
         if (iframe.luigi) {
           IframeHelpers.sendMessageToIframe(iframe, {
             msg: 'luigi.navigate',

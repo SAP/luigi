@@ -267,7 +267,7 @@ Get the global context object.
 #### updateContextValues
 
 Updates the context values for visible iframes and LUI web components.
-Note: the updated context values are not persisted. The developers have to do it by it's own.
+Note: the updated context values are not persisted. The developers have to do it on their own.
 
 ##### Parameters
 
