@@ -772,20 +772,23 @@ describe('Routing-helpers', () => {
     it('with custom pageNotFoundHandler defined keepURL', async () => {
       const customKeepURL = true;
       const somePath = 'somePath';
+      const ignoreNavigation = undefined;
       sinon
         .stub(LuigiConfig, 'getConfigValue')
         .withArgs('routing.pageNotFoundHandler')
         .returns(() => {
           return {
             redirectTo: somePath,
-            keepURL: customKeepURL
+            keepURL: customKeepURL,
+            ignoreNavigation: ignoreNavigation
           };
         });
       const expected = await RoutingHelpers.getPageNotFoundRedirectResult('');
       assert.deepEqual(
         {
           path: somePath,
-          keepURL: customKeepURL
+          keepURL: customKeepURL,
+          ignoreNavigation: ignoreNavigation
         },
         expected
       );
@@ -812,7 +815,7 @@ describe('Routing-helpers', () => {
 
   describe('handlePageNotFoundAndRetrieveRedirectPath', () => {
     const component = {
-      showAlert: () => {}
+      showAlert: () => { }
     };
 
     beforeEach(() => {
