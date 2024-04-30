@@ -21,7 +21,7 @@
     showVersions = false;
   }
 
-  function injectLuigiAssets() {
+  async function injectLuigiAssets() {
     let coreBasePath = '/vendor/luigi-core';
     let oidcBasePath = '/vendor/plugin-auth-oidc';
     let oauth2BasePath = '/vendor/plugin-auth-oauth2';
@@ -39,24 +39,42 @@
       if (v_info[0] < 2 || (v_info[0] === '2' && v_info[1] < 10)) {
         horizonStandard = false;
       }
+      document.body.classList.add('lui-v' + v_info[0] + '_' + v_info[1]);
     }
 
     const style = document.createElement('link');
     style.setAttribute('rel', 'stylesheet');
     style.setAttribute('href', coreBasePath + (horizonStandard ? '/luigi_horizon.css' : '/luigi.css'));
     document.head.appendChild(style);
-    const s_oidc = document.createElement('script');
-    s_oidc.setAttribute('src', oidcBasePath + '/plugin.js');
-    document.head.appendChild(s_oidc);
-    const s_oauth = document.createElement('script');
-    s_oauth.setAttribute('src', oauth2BasePath + '/plugin.js');
-    document.head.appendChild(s_oauth);
+    
     const core = document.createElement('script');
     core.setAttribute('src', coreBasePath + '/luigi.js');
     document.head.appendChild(core);
-    
-    window.LuigiAuthOAuth2 = window['LuigiPlugin-auth-oauth2'];
-    window.LuigiAuthOIDC = window['LuigiPlugin-auth-oidc'];  
+    return new Promise((resolve) => {
+      window.loadInterval = setInterval(() => {
+        if(window.Luigi) {
+          clearInterval(window.loadInterval);
+          const s_oidc = document.createElement('script');
+          s_oidc.setAttribute('src', oidcBasePath + '/plugin.js');
+          document.head.appendChild(s_oidc);
+          const s_oauth = document.createElement('script');
+          s_oauth.setAttribute('src', oauth2BasePath + '/plugin.js');
+          document.head.appendChild(s_oauth);
+
+          window.loadInterval = setInterval(() => {
+            if(
+              window['LuigiPlugin-auth-oauth2'] &&
+              window['LuigiPlugin-auth-oidc']
+            ) {
+              clearInterval(window.loadInterval);
+              window.LuigiAuthOAuth2 = window['LuigiPlugin-auth-oauth2'];
+              window.LuigiAuthOIDC = window['LuigiPlugin-auth-oidc'];
+              resolve('resolved');
+            }
+        }, 100);
+        }
+      }, 100);
+    });
   }
 
   function reloadConfig() {
@@ -150,17 +168,12 @@
   }
 
   onMount(async () => {
-    injectLuigiAssets();
+    await injectLuigiAssets();
 
     window.editor = ace.edit('editor');
     window.editorTA = document.getElementById('editorTA');
     editor.session.setMode('ace/mode/javascript');
-    window.loadInterval = setInterval(() => {
-      if(window.Luigi) {
-        clearInterval(window.loadInterval);
-        reloadConfig();
-      }
-    }, 100);
+    reloadConfig();
   });
 </script>
 
@@ -229,17 +242,49 @@
   .editor_container {
     visibility: hidden;
     z-index: -1;
-    width: 100%;
-    height: 100%;
+  }
+
+  :global(body.lui-v1_0) .editor_container .fd-dialog__content {
+    background: white;
+    padding: .5rem;
+    border-radius: 1rem;
+  }
+
+  :global(body.lui-v1_0) .editor_container .fd-dialog__body {
+    border: 1px solid #3c4553;
   }
 
   :global(.editorVisible) .editor_container {
     visibility: visible;
     z-index: 2;
   }
+  
+  .editor_container .fd-dialog {
+    display: none;
+  }
 
-  :global(.editorVisible) .fd-dialog {
+  :global(.editorVisible) .editor_container .fd-dialog {
     display: flex;
+    position: fixed;
+    z-index: 1000;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .6);
+  }
+  
+  .editor_container .fd-bar__right {
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
   }
 
   #editor, #editorTA {
@@ -359,6 +404,12 @@
     100% {
       transform: rotate(360deg);
     }
+  }
+
+  .fiddle-toolbar .fd-action-bar__header {
+    display: flex;
+    align-items: center;
+    padding-top: 0;
   }
 </style>
 
