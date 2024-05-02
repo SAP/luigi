@@ -815,7 +815,7 @@ describe('Routing-helpers', () => {
 
   describe('handlePageNotFoundAndRetrieveRedirectPath', () => {
     const component = {
-      showAlert: () => { }
+      showAlert: () => {}
     };
 
     beforeEach(() => {
