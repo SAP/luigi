@@ -565,11 +565,11 @@ class RoutingHelpersClass {
     if (typeof pageNotFoundHandler === 'function') {
       // custom 404 handler is provided, use it
       const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
-      if (result && (result.redirectTo || result.ignoreNavigation)) {
+      if (result && (result.redirectTo || result.ignoreLuigiErrorHandling)) {
         return {
           path: result.redirectTo,
           keepURL: result.keepURL,
-          ignoreNavigation: result.ignoreNavigation
+          ignoreLuigiErrorHandling: result.ignoreLuigiErrorHandling
         };
       }
     }
