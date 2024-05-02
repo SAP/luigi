@@ -411,6 +411,11 @@
     align-items: center;
     padding-top: 0;
   }
+
+  .fiddle-toolbar .fd-button {
+    position: relative;
+    overflow: visible;
+  }
 </style>
 
 <div class="editor_container">
