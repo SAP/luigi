@@ -18,7 +18,7 @@ describe('Simple Examples Iframe Container Test', () => {
   it('WebComponent Container Test', () => {
     cy.visit('http://localhost:2222/container-wc/index.html');
 
-     cy.get('luigi-container')
+    cy.get('luigi-container')
       .shadow()
       .find('h2')
       .should('contain.text', 'This is a webcomponent based microfrontend container  -- some content --');
