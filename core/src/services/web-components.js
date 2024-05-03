@@ -333,12 +333,14 @@ class WebComponentSvcClass {
           if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
               const wc = document.createElement(wc_id);
+              wc.setAttribute('lui_web_component', true);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
           } else {
             this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
               const wc = document.createElement(wc_id);
+              wc.setAttribute('lui_web_component', true);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });

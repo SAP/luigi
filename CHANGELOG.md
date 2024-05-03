@@ -25,6 +25,18 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.12.0] (2024-05-03)
+
+#### :rocket: Added
+* [#3709](https://github.com/SAP/luigi/pull/3709) Ignore page not found error handling by Luigi ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3693](https://github.com/SAP/luigi/pull/3693) Update context via core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3711](https://github.com/SAP/luigi/pull/3711) Change Luigi core version on the fly in Luigi fiddle ([@hardl](https://github.com/hardl))
+* [#3712](https://github.com/SAP/luigi/pull/3712) Remove favicon console warning ([@Jotrorox](https://github.com/Jotrorox))
+
+
+
+
+
 ## [v2.11.0] (2024-04-19)
 
 #### :rocket: Added
@@ -1768,3 +1780,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.9.0]: https://github.com/SAP/luigi/compare/v2.8.0...v2.9.0
 [v2.10.0]: https://github.com/SAP/luigi/compare/v2.9.0...v2.10.0
 [v2.11.0]: https://github.com/SAP/luigi/compare/v2.10.0...v2.11.0
+[v2.12.0]: https://github.com/SAP/luigi/compare/v2.11.0...v2.12.0
