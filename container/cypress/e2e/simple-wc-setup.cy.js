@@ -139,6 +139,82 @@ describe('Simple Examples Iframe Container Test', () => {
   );
 
   it(
+    'WebComponent Container Test - children get main children shadow exist -find h2',
+    {
+      defaultCommandTimeout: 10000
+    },
+    () => {
+      cy.visit('http://localhost:2222/container-wc/index.html');
+
+      // cy.get('[data-test-id="luigi-container-element"]')
+      // .shadow()
+      // .contains('This is a webcomponent based microfrontend container  -- some content --')
+
+      cy.wait(1000);
+
+      // cy.get('luigi-container', { timeout: 50000 })
+
+      cy.get('luigi-container')
+        .shadow()
+        .children()
+        .get('main')
+        .children()
+        .find('h2')
+    }
+  );
+
+  it(
+    'WebComponent Container Test - children get main children shadow exist -find h2 - contains no shadow',
+    {
+      defaultCommandTimeout: 10000
+    },
+    () => {
+      cy.visit('http://localhost:2222/container-wc/index.html');
+
+      // cy.get('[data-test-id="luigi-container-element"]')
+      // .shadow()
+      // .contains('This is a webcomponent based microfrontend container  -- some content --')
+
+      cy.wait(1000);
+
+      // cy.get('luigi-container', { timeout: 50000 })
+
+      cy.get('luigi-container')
+        .shadow()
+        .children()
+        .get('main')
+        .children()
+        .contains('his is a webcomponent based microfrontend container')
+    }
+  );
+
+  it(
+    'WebComponent Container Test - children get main children shadow exist -find h2 + shadow + cotnains',
+    {
+      defaultCommandTimeout: 10000
+    },
+    () => {
+      cy.visit('http://localhost:2222/container-wc/index.html');
+
+      // cy.get('[data-test-id="luigi-container-element"]')
+      // .shadow()
+      // .contains('This is a webcomponent based microfrontend container  -- some content --')
+
+      cy.wait(1000);
+
+      // cy.get('luigi-container', { timeout: 50000 })
+
+      cy.get('luigi-container')
+        .shadow()
+        .children()
+        .get('main')
+        .children()
+        .shadow()
+        .contains('his is a webcomponent based microfrontend container')
+    }
+  );
+
+  it(
     'WebComponent Container Test - cotnain text',
     {
       defaultCommandTimeout: 10000
