@@ -34,8 +34,7 @@ describe('Simple Examples Iframe Container Test', () => {
       cy.get('luigi-container')
         .shadow()
         .get('main')
-        .should('exist')
-    
+        .should('exist');
     }
   );
 
@@ -59,8 +58,7 @@ describe('Simple Examples Iframe Container Test', () => {
         .shadow()
         .get('main')
         .children()
-        .should('exist')
-    
+        .should('exist');
     }
   );
 
@@ -85,8 +83,7 @@ describe('Simple Examples Iframe Container Test', () => {
         .get('main')
         .children()
         .first()
-        .should('exist')
-    
+        .should('exist');
     }
   );
 
@@ -111,8 +108,7 @@ describe('Simple Examples Iframe Container Test', () => {
         .children()
         .get('main')
         .children()
-        .should('exist')
-    
+        .should('exist');
     }
   );
 
@@ -138,8 +134,7 @@ describe('Simple Examples Iframe Container Test', () => {
         .get('main')
         .children()
         // .shadow()
-        .should('exist')
-    
+        .should('exist');
     }
   );
 
@@ -163,7 +158,4 @@ describe('Simple Examples Iframe Container Test', () => {
         .should('contain.text', 'This is a webcomponent based microfrontend container  -- some content --');
     }
   );
-
-
-
 });
