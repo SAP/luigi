@@ -159,7 +159,7 @@ describe('Simple Examples Iframe Container Test', () => {
         .children()
         .get('main')
         .children()
-        .find('h2')
+        .find('h2');
     }
   );
 
@@ -184,7 +184,7 @@ describe('Simple Examples Iframe Container Test', () => {
         .children()
         .get('main')
         .children()
-        .contains('his is a webcomponent based microfrontend container')
+        .contains('his is a webcomponent based microfrontend container');
     }
   );
 
@@ -210,7 +210,7 @@ describe('Simple Examples Iframe Container Test', () => {
         .get('main')
         .children()
         .shadow()
-        .contains('his is a webcomponent based microfrontend container')
+        .contains('his is a webcomponent based microfrontend container');
     }
   );
 
