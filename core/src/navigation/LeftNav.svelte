@@ -536,7 +536,9 @@
 
   function semiCollapsibleButtonClicked() {
     isSemiCollapsed = SemiCollapsibleNavigation.buttonClicked();
-    if (document.getElementsByClassName('luigi-tabsContainerHeader').length > 0) {
+    if (
+      document.getElementsByClassName('luigi-tabsContainerHeader').length > 0
+    ) {
       dispatch('resizeTabNav', {});
     }
     setBurgerTooltip();
@@ -684,7 +686,7 @@
                           class="fd-navigation__link {node === selectedNode
                             ? 'is-selected'
                             : ''} lui-hideOnHover"
-                          tabindex="-1"
+                          tabindex="0"
                           href={getRouteLink(node)}
                           title={resolveTooltipText(node, getNodeLabel(node))}
                           on:click={(event) => {
@@ -783,17 +785,25 @@
                     handleIconClick(nodes, event.currentTarget)}
                 >
                   <!-- svelte-ignore a11y-missing-attribute -->
-                  <!-- svelte-ignore a11y-click-events-have-key-events -->
+                  <!-- svelte-ignore a11y-click-events-have-key-events                   -->
                   <a
                     class="fd-navigation__link"
                     role="button"
-                    tabindex="-1"
+                    tabindex="0"
                     on:click|preventDefault={() =>
                       setExpandedState(
                         nodes,
                         !isExpanded(nodes, expandedCategories),
                         this,
                       )}
+                    on:keypress|preventDefault={() =>
+                      setExpandedState(
+                        nodes,
+                        !isExpanded(nodes, expandedCategories),
+                        this,
+                      )}
+                    on:keypress|preventDefault={(event) =>
+                      handleExpandCollapseCategories(event, nodes)}
                   >
                     {#if isOpenUIiconName(nodes.metaInfo.icon)}
                       <span
@@ -928,7 +938,7 @@
                                 >
                                   <a
                                     class="fd-navigation__link"
-                                    tabindex="-1"
+                                    tabindex="0"
                                     href={getRouteLink(node)}
                                     on:click={(event) => {
                                       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
