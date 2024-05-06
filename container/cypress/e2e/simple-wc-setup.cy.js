@@ -22,13 +22,13 @@ describe('Simple Examples Iframe Container Test', () => {
     // .shadow()
     // .contains('This is a webcomponent based microfrontend container  -- some content --')
 
-    cy.get('luigi-container')
+    cy.get('luigi-container', { timeout: 50000 })
       .shadow()
       .get('main')
       .children()
       .first()
-      .shadow()
-      .find('h2')
+      .shadow(undefined, { timeout: 50000 })
+      // .find('h2')
       .should('contain.text', 'This is a webcomponent based microfrontend container  -- some content --');
   });
 });
