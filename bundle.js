@@ -11,7 +11,7 @@ const foldersToBundle = [
   // 'plugins'
 ];
 
-const foldersToBuild = ['test/e2e-test-application'];
+const foldersToBuild = []; // ['test/e2e-test-application'];
 
 let timeToBundle = 0;
 let timeToBuild = 0;
