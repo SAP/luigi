@@ -7,7 +7,9 @@ describe('Web Container Test', () => {
       // stub = cy.stub();
     });
 
-    it.only();
+    it.only('test',()=>{
+      
+    });
 
     it('Test finding h2 element inside shadow dom', () => {
       cy.get('[data-test-id="luigi-client-api-test-01"]')

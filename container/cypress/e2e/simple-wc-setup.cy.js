@@ -1,7 +1,7 @@
 describe('Simple Examples Iframe Container Test', () => {
   beforeEach(() => {
     // cy.visit('http://localhost:2222');
-    cy.visit('http://localhost:2222');
+    cy.visit('http://localhost:8080');
     // cy.visit('http://localhost:2222/container-wc/index.html');
   });
 
@@ -19,6 +19,9 @@ describe('Simple Examples Iframe Container Test', () => {
 
   it.only('test - same as wc-container', () => {
     // cy.visit('http://localhost:2222/container-wc/index.html');
+
+    cy.get('.testCl')
+    .contains('Test001')
 
     cy.wait(1000);
     cy.get('[data-test-id="luigi-client-api-test-01"]')
