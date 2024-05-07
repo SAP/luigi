@@ -2,13 +2,13 @@ const { exec } = require('child_process');
 
 // Array of folder names
 const foldersToBundle = [
-  'core',
-  'client',
-  'client-frameworks-support/testing-utilities',
-  'client-frameworks-support/client-support-angular',
-  'client-frameworks-support/client-support-ui5',
+  // 'core',
+  // 'client',
+  // 'client-frameworks-support/testing-utilities',
+  // 'client-frameworks-support/client-support-angular',
+  // 'client-frameworks-support/client-support-ui5',
   'container',
-  'plugins'
+  // 'plugins'
 ];
 
 const foldersToBuild = ['test/e2e-test-application'];
