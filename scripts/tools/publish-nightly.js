@@ -89,7 +89,7 @@ const FILES_CHANGED = execTrim(`git diff --name-only HEAD ${LATEST_TAG}`);
     logHeadline('\nNothing to publish.');
   } else {
     logHeadline('\nPackages to publish:\n');
-    const packagesToUpdate = changed.map(c => c[0]);
+    const packagesToUpdate = Object.entries(packagePaths).map(c => c[0]);
     logStep(packagesToUpdate.join(', '));
     logStep('\n');
 
