@@ -108,4 +108,59 @@ describe('JS-TEST-APP 4', () => {
       cy.get('[data-testid="lui-us-enum-0"]').contains('Italiano');
     });
   });
+
+  describe('A11y left nav with btp layout enabled', () => {
+    let newConfig;
+    let $iframeBody;
+
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.settings.experimental = {
+        btpToolLayout: true
+      };
+      newConfig.navigation.nodes[0].children.push(
+        {
+          pathSegment: 'node1',
+          label: 'Node 1',
+          category: { label: 'My Cat', collapsible: true, id: 'mycat' },
+          viewUrl: '/examples/microfrontends/multipurpose.html',
+          context: {
+            title: 'Node 1',
+            content: 'Content of node 1'
+          }
+        },
+        {
+          pathSegment: 'node2',
+          label: 'Node 2',
+          category: 'mycat',
+          viewUrl: '/examples/microfrontends/multipurpose.html',
+          context: {
+            title: 'Node 2',
+            content: 'Content of node 2'
+          }
+        }
+      )
+      newConfig.settings.btpToolLayout = true;
+    });
+    it('Left nav a11y', () => {
+      cy.visitTestApp('/home', newConfig);
+
+      cy.get('.fd-navigation.fd-navigation--vertical').contains('Section one').click();
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').should('not.be.visible');
+      cy.tab();
+      cy.tab();
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('My Cat').should('be.focused')
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('My Cat').focused().type('{enter}');
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').should('be.visible');
+      cy.tab();
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').should('be.focused');
+      cy.get('.fd-navigation__list-item.lui-nav-entry').contains('Node 1').click();
+      cy.getIframeBody({}, 0, '.iframeContainer').then(result => {
+        $iframeBody = result;
+        cy.wrap($iframeBody)
+          .find('#content')
+          .contains('Content of node 1').should('be.visible');
+      });
+    });
+  });
 });
