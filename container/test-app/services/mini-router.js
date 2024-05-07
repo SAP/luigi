@@ -40,8 +40,11 @@ function activateRoute() {
   const activeOutlet = document.querySelector(`[route=${route}]`);
   if (activeOutlet) {
     activeOutlet.style.display = 'unset';
-    activeOutlet.querySelector('luigi-container')?.init();
-    activeOutlet.querySelector('luigi-compound-container')?.init();
+
+
+    // try commenting this out to see if it affects the other test -- check in pipeline. Might need init to make Cypress detect it
+    // activeOutlet.querySelector('luigi-container')?.init();
+    // activeOutlet.querySelector('luigi-compound-container')?.init();
   }
 }
 

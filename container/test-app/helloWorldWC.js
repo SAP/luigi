@@ -80,6 +80,14 @@ export default class extends HTMLElement {
       mode: 'open',
       delegatesFocus: false
     });
+
+    // added to check if finding h2 element works in pipeline also --> TEST
+    const templateh2 = document.createElement('template');
+    templateh2.innerHTML = `<section><h2 style="border: solid blue 2px;" id="paragraph">This is a webcomponent based microfrontend container </h2></section>`;
+    this._shadowRoot.appendChild(templateh2.content.cloneNode(true));
+    
+
+
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn2.content.cloneNode(true));
@@ -101,6 +109,9 @@ export default class extends HTMLElement {
     for (let index = 0; index < 10; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
     }
+
+
+
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');
