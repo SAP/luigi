@@ -8,14 +8,16 @@ source $BASE_DIR/../scripts/shared/bashHelpers.sh
 echo ""
 echo "Container Test App"
 cd "$BASE_DIR"
-killWebserver 8080 || true
+
+
+# killWebserver 8080 || true
 
 # simple examples on 2222 port
 killWebserver 2222 || true
 
 # Start the first server in the background
-npm run start &
-WS_FID_PID=$!
+# npm run start &
+# WS_FID_PID=$!
 
 
 # Start the second server in the background
@@ -34,7 +36,7 @@ sleep 100
 # fi
 
 # RV=$?
-kill $WS_FID_PID
+# kill $WS_FID_PID
 kill $EXAMPLES_FID_PID
 # exit $RV
 exit $?
