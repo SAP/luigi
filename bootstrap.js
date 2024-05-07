@@ -12,7 +12,7 @@ const folders = [
   // 'client-frameworks-support/client-support-angular',
   // 'client-frameworks-support/testing-utilities',
   // 'client-frameworks-support/client-support-ui5',
-  'container',
+  'container'
   // 'plugins',
   // 'scripts',
   // 'test/e2e-test-application',
