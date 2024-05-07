@@ -24,7 +24,8 @@ killWebserver 2222 || true
 npm run start-examples-test &
 EXAMPLES_FID_PID=$!
 
-sleep 100
+# in seconds careful!
+sleep 5
 
 # if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
