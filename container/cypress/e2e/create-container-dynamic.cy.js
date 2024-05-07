@@ -15,7 +15,6 @@
 //               <script>${scriptCode}</script>
 //             `;
 
-
 //             const stub = cy.stub();
 //             cy.on('window:alert', stub);
 //             cy.visit(tetsPage);
@@ -86,7 +85,6 @@
 //                 const wc = document.createElement('luigi-compound-container');
 //                 wc.context = { title: 'Nested' }
 //                 wc.viewurl = 'https://luigiwebcomponents.gitlab.io/nested2.js';
-
 
 //                 wc.compoundConfig = {
 //                     eventListeners: [
@@ -193,7 +191,6 @@
 //                 const wc = document.createElement('luigi-compound-container');
 //                 wc.context = '{"invalid": "JSON}'
 //                 wc.viewurl = 'https://luigiwebcomponents.gitlab.io/nested2.js';
-
 
 //                 wc.compoundConfig = {
 //                     eventListeners: [
