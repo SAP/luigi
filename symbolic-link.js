@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 // List of symbolic links for the repo
-const symbolicLinkList = require('./symbolic-links.json');
+const symbolicLinkList =  []; //require('./symbolic-links.json');
 
 /**
  * Iterate over the list of symbolic links and create links throughout the repo as needed
