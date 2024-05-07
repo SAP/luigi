@@ -16,9 +16,6 @@ export default class extends HTMLElement {
   }
 }
 
-
-
-
 // /**
 //  * This class is used to test LuigiClient webcomponent based functionality
 //  */

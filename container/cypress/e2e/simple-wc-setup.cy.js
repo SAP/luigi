@@ -15,6 +15,23 @@ describe('Simple Examples Iframe Container Test', () => {
   //     });
   // });
 
+   
+  it('test - same as wc-container',()=>{
+    cy.visit('http://localhost:2222/container-wc/index.html');
+
+    cy.get('[data-test-id="luigi-client-api-test-01"]')
+    .shadow()
+    // .get('main')
+    // .get('main', {timeout: 50000})
+    // .children()
+    // .first()
+    // .shadow()
+    // .shadow(undefined, { timeout: 50000 })
+    // .find('h2')
+    // .should('contain.text', 'This is a webcomponent based microfrontend container ');
+    .contains('This is a webcomponent based microfrontend container');
+  })
+
   it(
     'WebComponent Container Test- get main exist',
     {
