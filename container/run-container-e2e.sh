@@ -25,7 +25,7 @@ npm run start-examples-test &
 EXAMPLES_FID_PID=$!
 
 # in seconds careful!
-sleep 5
+sleep 3
 
 # if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
