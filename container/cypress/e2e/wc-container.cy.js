@@ -1,10 +1,10 @@
 describe('Web Container Test', () => {
   describe('LuigiClient API LuigiContainer', () => {
-    let stub;
+    // let stub;
     beforeEach(() => {
       cy.visit('http://localhost:8080');
       cy.visit('http://localhost:8080/index.html');
-      stub = cy.stub();
+      // stub = cy.stub();
     });
 
     it.only('Test finding h2 element inside shadow dom', () => {
