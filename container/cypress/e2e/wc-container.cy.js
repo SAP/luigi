@@ -7,11 +7,7 @@ describe('Web Container Test', () => {
       stub = cy.stub();
     });
 
-
-  it.only(
-    'Test finding h2 element inside shadow dom',
-    () => {
-
+    it.only('Test finding h2 element inside shadow dom', () => {
       cy.get('[data-test-id="luigi-client-api-test-01"]')
         .shadow()
         // .get('main')
@@ -22,11 +18,8 @@ describe('Web Container Test', () => {
         // .shadow(undefined, { timeout: 50000 })
         // .find('h2')
         // .should('contain.text', 'This is a webcomponent based microfrontend container ');
-        .contains('This is a webcomponent based microfrontend container')
-    }
-  );
-
-
+        .contains('This is a webcomponent based microfrontend container');
+    });
 
     it('getCurrentLocale, getActiveFeatureToggles, getCurrentTheme', () => {
       cy.on('window:alert', stub);
