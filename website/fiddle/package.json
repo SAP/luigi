@@ -20,10 +20,10 @@
     "dev": "node patch.js && node build_patch_ui5.js && webpack serve  --static public"
   },
   "dependencies": {
-    "@luigi-project/client": "2.11.0",
-    "@luigi-project/core": "2.11.0",
-    "@luigi-project/plugin-auth-oauth2": "2.11.0",
-    "@luigi-project/plugin-auth-oidc": "2.11.0",
+    "@luigi-project/client": "2.12.0",
+    "@luigi-project/core": "2.12.0",
+    "@luigi-project/plugin-auth-oauth2": "2.12.0",
+    "@luigi-project/plugin-auth-oidc": "2.12.0",
     "@luigi-project/container": "1.1.0",
     "@ui5/webcomponents": "^1.24.0",
     "@ui5/webcomponents-fiori": "^1.24.0",
