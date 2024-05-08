@@ -28,7 +28,7 @@ class WebComponentSvcClass {
 
   dynamicImport(viewUrl) {
     /** __luigi_dyn_import_____________() is replaced by import(\/* webpackIgnore: true *\/) after webpack is done,
-     *    because webpack can't let his hands off imports ;) 
+     *    because webpack can't let his hands off imports ;)
      * trailing underscores are there to match the replacement char nr to avoid sourcemap mess*/
     return __luigi_dyn_import_____________(viewUrl);
   }
