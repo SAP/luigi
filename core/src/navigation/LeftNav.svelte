@@ -594,6 +594,18 @@
         ? $getTranslation(nodes.metaInfo.titleExpandButton)
         : undefined;
   }
+
+  function displayMoreButtonMenu(event) {
+    if (!event) return;
+    const parent = event.target.parentElement;
+    if (parent.getAttribute('aria-expanded') === 'true') {
+      parent.setAttribute('aria-expanded', 'false');
+    } else {
+      closePopupMenu();
+      parent.setAttribute('aria-expanded', 'true');
+    }
+    event.stopPropagation();
+  }
 </script>
 
 <svelte:window
@@ -1059,16 +1071,8 @@
                 class="fd-navigation__link"
                 role="button"
                 tabindex="0"
-                on:click={(event) => {
-                  const parent = event.target.parentElement;
-                  if (parent.getAttribute('aria-expanded') === 'true') {
-                    parent.setAttribute('aria-expanded', 'false');
-                  } else {
-                    closePopupMenu();
-                    parent.setAttribute('aria-expanded', 'true');
-                  }
-                  event.stopPropagation();
-                }}
+                on:click={displayMoreButtonMenu}
+                on:keypress={displayMoreButtonMenu}
               >
                 <span
                   class="fd-navigation__icon sap-icon--overflow"
