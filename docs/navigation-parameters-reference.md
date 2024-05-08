@@ -293,6 +293,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### children
 - **type**: array | function
 - **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix URL.
+You can also return a Promise that resolves to an array of nodes. Which can be useful if the child nodes aren't available immediately and need to get fetched asynchronously.
 For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children URLs.
 ```javascript
 navigation: {
@@ -322,6 +323,24 @@ navigation: {
             viewUrl: 'https://sdk.openui5.org/test-resources/sap/m/demokit/cart/webapp/index.html'
         }]
     ...
+    }]
+}
+
+// Example of Children as a Promise
+navigation: {
+  nodes: [{
+    ...,
+    children:  () => {
+      return new Promise((resolve, reject) => {
+        fetch('/node/endpoint').then((...)=>{
+        ...
+          resolve(nodes);
+        });
+      })
+    },
+    ...
+  }]
+}
 ```
 
 ### clientPermissions.changeCurrentLocale
