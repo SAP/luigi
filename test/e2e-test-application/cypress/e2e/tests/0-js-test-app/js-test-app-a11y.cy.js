@@ -140,6 +140,17 @@ describe('JS-TEST-APP 4', () => {
           }
         }
       );
+      //generate nodes to get the "more items" button
+      for (let i = 3; i < 23; i++) {
+        newConfig.navigation.nodes[0].children.push(
+          {
+            pathSegment: `node${i}`,
+            label: `Node ${i}`,
+            viewUrl: '/examples/microfrontends/multipurpose.html'
+          });
+      }
+
+      newConfig.settings.responsiveNavigation = 'Fiori3';
       newConfig.settings.btpToolLayout = true;
     });
     it('Left nav a11y', () => {
@@ -178,5 +189,25 @@ describe('JS-TEST-APP 4', () => {
           .should('be.visible');
       });
     });
+    it('More Btn in left nav', () => {
+      cy.visitTestApp('/home', newConfig);
+      cy.get('.fd-shellbar__button.fd-button.fd-button--transparent.lui-burger').click();
+      cy.get('.fd-navigation.fd-navigation--vertical')
+        .should('have.class', 'fd-navigation--snapped');
+      cy.get('.fd-navigation__list-container.fd-navigation__list-container--menu').should('not.be.visible');
+      cy.get('.fd-navigation__item.lui-nav-more').click();
+      cy.get('.fd-navigation__list-container.fd-navigation__list-container--menu').should('be.visible');
+      cy.get('body').type('{esc}');
+      cy.get('.fd-navigation__list-container.fd-navigation__list-container--menu').should('not.be.visible');
+      cy.get('.lui-nav-more .fd-navigation__link').should('have.focus');
+      cy.get('.lui-nav-more .fd-navigation__link').tab({ shift: true });
+      cy.get('.lui-nav-more .fd-navigation__link').should('not.have.focus');
+      cy.tab();
+      cy.get('.lui-nav-more .fd-navigation__link').should('have.focus');
+      cy.get('.lui-nav-more .fd-navigation__link').focused().type('{enter}');
+      cy.get('.fd-navigation__list-container.fd-navigation__list-container--menu').should('be.visible');
+      cy.tab();
+      cy.get('.lui-moreItems .fd-navigation__list-item.lui-nav-entry .fd-navigation__link').should('have.focus')
+    })
   });
 });
