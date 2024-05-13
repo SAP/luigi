@@ -9,6 +9,8 @@
   <script type="module">
     // simple Luigi Container package bundle import
     import './bundle.js';
+    import MFEventID from './bundle.js';
+
     // document.querySelector('luigi-container').init()
 
     function captureConsoleErrors() {
@@ -28,7 +30,7 @@
         console.log('0-first.children', first.children)
         console.log('0-first.children[0]', first.children[0].$paragraph)
       console.error('no problem');
-        document.getElementById('replace').innerHTML = first.children[0].$paragraph.innerHTML
+        document.getElementById('replace').innerHTML = first.children[0].$paragraph;
 
         // console.log('0-first.children[0]...innerHTML', first.children[0].shadowRoot.innerHTML)
         // document.getElementById('replace').innerHTML =  first.children[0].shadowRoot.innerHTML
