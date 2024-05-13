@@ -10,6 +10,7 @@
     // simple Luigi Container package bundle import
     import './bundle.js';
     setTimeout(() => {
+      document.querySelector('luigi-container').init()
         const first =  document.querySelector('luigi-container').shadowRoot.children[1];
         console.log('0-first', first)
         console.log('0-first.children', first.children)
