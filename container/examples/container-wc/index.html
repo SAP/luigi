@@ -21,7 +21,7 @@
         originalError.apply(console, arguments);
       };
     }
-
+    captureConsoleErrors()
     setTimeout(() => {
         const first =  document.querySelector('luigi-container').shadowRoot.children[1];
         console.log('0-first', first)
