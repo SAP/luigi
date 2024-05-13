@@ -20,11 +20,7 @@ describe('Simple Examples Iframe Container Test', () => {
   it.only('test - same as wc-container', () => {
     // cy.visit('http://localhost:2222/container-wc/index.html');
 
-    cy.get('.testCl')
-    .contains('Test001')
-
-    cy.wait(10000);
-    cy.get('[data-test-id="luigi-client-api-test-01"]')
+    cy.get('luigi-container')
       .shadow()
       // .get('main')
       // .get('main', {timeout: 50000})

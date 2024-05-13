@@ -4,38 +4,20 @@
     <meta charset="utf-8" />
     <title>Luigi Webcomponent Container</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-    <script type="module">
-      import './bundle.js';
-      import MFEventID from './bundle.js';
-
-   
-    </script>
   </head>
 
-  <!-- <script type="module">
+  <script type="module">
     // simple Luigi Container package bundle import
     import './bundle.js';
-    import MFEventID from './bundle.js';
-
-    // document.querySelector('luigi-container').init()
-
-   
-   
-  </script> -->
+  </script>
 
   <body>
-    <p id="error-container">Errors here</p>
     <div id="c1" class="testCl">Test001 this is loading rendering something</div>
-    <p id="replace" style="border: solid 1px red;">This to be replaced</p>
-    <div style="border: solid green 1px;">
-      container should show below
     <luigi-container
       data-test-id="luigi-client-api-test-01"
-      viewURL="./myWebComponent.js"
+      viewURL="./myWebcomponent.js"
       webcomponent="true"
       context='{"content":" -- some content --"}'
     ></luigi-container>
-    </div>
   </body>
 </html>
