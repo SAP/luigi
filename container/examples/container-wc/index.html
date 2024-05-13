@@ -9,10 +9,17 @@
   <script type="module">
     // simple Luigi Container package bundle import
     import './bundle.js';
+    window.onload = () =>{
+      const first =  document.querySelector('luigi-container').shadowRoot.children[1];
+      const scond = first.children[0].shadowRoot;
+      console.log(scond)
+      const third = scond.children[0].innerHTML
+      document.getElementById('c1').innerHTML = first
+    }
   </script>
 
   <body>
-    <div class="testCl">Test001 this is loading rendering something</div>
+    <div id="c1" class="testCl">Test001 this is loading rendering something</div>
     <luigi-container
       data-test-id="luigi-client-api-test-01"
       viewURL="./myWebcomponent.js"
