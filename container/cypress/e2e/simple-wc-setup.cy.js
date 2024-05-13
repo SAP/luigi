@@ -23,7 +23,7 @@ describe('Simple Examples Iframe Container Test', () => {
     cy.get('.testCl')
     .contains('Test001')
 
-    cy.wait(1000);
+    cy.wait(2000);
     cy.get('[data-test-id="luigi-client-api-test-01"]')
       .shadow()
       // .get('main')
