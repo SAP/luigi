@@ -20,6 +20,12 @@
       };
     }
     captureConsoleErrors()
+
+    const first =  document.querySelector('luigi-container').shadowRoot.children[1];
+        console.log('0-first', first)
+        console.log('0-first.children', first.children)
+        console.log('0-first.children[0]', first.children[0].$paragraph)
+        
     setTimeout(() => {
         const first =  document.querySelector('luigi-container').shadowRoot.children[1];
         console.log('0-first', first)
@@ -28,7 +34,7 @@
       console.error('no problem');
         document.getElementById('replace').innerHTML = first.children[0].$paragraph;
 
-        // console.log('0-first.children[0]...innerHTML', first.children[0].shadowRoot.innerHTML)
+        console.log('0-first.children[0]...innerHTML', first.children[0].shadowRoot.innerHTML)
         // document.getElementById('replace').innerHTML =  first.children[0].shadowRoot.innerHTML
       }, 3000);
     </script>
@@ -49,11 +55,14 @@
     <p id="error-container">Errors here</p>
     <div id="c1" class="testCl">Test001 this is loading rendering something</div>
     <p id="replace" style="border: solid 1px red;">This to be replaced</p>
+    <div style="border: solid green 1px;">
+      container should show below
     <luigi-container
       data-test-id="luigi-client-api-test-01"
       viewURL="./myWebcomponent.js"
       webcomponent="true"
       context='{"content":" -- some content --"}'
     ></luigi-container>
+    </div>
   </body>
 </html>
