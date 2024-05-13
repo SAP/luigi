@@ -321,13 +321,13 @@ profile: {
 ```
 
 
-## Context switcher
+## Context switcher
 
 ![Context switcher](/assets/context-switcher.jpg)
 
 The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
- Example:
+Example:
 
 ```javascript
 contextSwitcher: {
@@ -355,7 +355,7 @@ contextSwitcher: {
 },
 ```
 
-## Product switcher
+## Product switcher
 
 ![Product switcher](/assets/product-switcher.jpg)
 
@@ -387,7 +387,7 @@ productSwitcher: {
 },
 ```
 
-## App switcher
+## App switcher
 
 ![App switcher](/assets/app-switcher.jpg)
 
