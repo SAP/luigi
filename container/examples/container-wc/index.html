@@ -9,34 +9,7 @@
       import './bundle.js';
       import MFEventID from './bundle.js';
 
-      function captureConsoleErrors() {
-      const originalError = console.error;
-      console.error = function(error) {
-        // Update UI to display error
-        const errorContainer = document.getElementById('error-container');
-        errorContainer.innerHTML += `<p style="color: red;">Error: ${error}</p>`;
-        // Call the original console.error to keep the original behavior
-        originalError.apply(console, arguments);
-      };
-    }
-    captureConsoleErrors()
-
-    const first =  document.querySelector('luigi-container').shadowRoot.children[1];
-        console.log('0-first', first)
-        console.log('0-first.children', first.children)
-        console.log('0-first.children[0]', first.children[0].$paragraph)
-
-    setTimeout(() => {
-        const first =  document.querySelector('luigi-container').shadowRoot.children[1];
-        console.log('0-first', first)
-        console.log('0-first.children', first.children)
-        console.log('0-first.children[0]', first.children[0].$paragraph)
-      console.error('no problem');
-        document.getElementById('replace').innerHTML = first.children[0].$paragraph;
-
-        console.log('0-first.children[0]...innerHTML', first.children[0].shadowRoot.innerHTML)
-        // document.getElementById('replace').innerHTML =  first.children[0].shadowRoot.innerHTML
-      }, 3000);
+   
     </script>
   </head>
 
