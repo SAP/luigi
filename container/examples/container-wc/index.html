@@ -9,17 +9,20 @@
   <script type="module">
     // simple Luigi Container package bundle import
     import './bundle.js';
-    window.onload = () =>{
-      const first =  document.querySelector('luigi-container').shadowRoot.children[1];
-      const scond = first.children[0].shadowRoot;
-      console.log(scond)
-      const third = scond.children[0].innerHTML
-      document.getElementById('c1').innerHTML = first
-    }
+    setTimeout(() => {
+        const first =  document.querySelector('luigi-container').shadowRoot.children[1];
+        console.log('0-first', first)
+        console.log('0-first.children', first.children)
+        console.log('0-first.children[0]', first.children[0])
+        console.log('0-first.children[0]', first.children[0].shadowRoot.innerHTML)
+      document.getElementById('replace').innerHTML =  first.children[0].shadowRoot.innerHTML
+      }, 1000);
+   
   </script>
 
   <body>
     <div id="c1" class="testCl">Test001 this is loading rendering something</div>
+    <p id="replace" style="border: solid 1px red;">This to be replaced</p>
     <luigi-container
       data-test-id="luigi-client-api-test-01"
       viewURL="./myWebcomponent.js"
