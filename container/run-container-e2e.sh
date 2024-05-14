@@ -13,7 +13,7 @@ cd "$BASE_DIR"
 # killWebserver 8080 || true
 
 # simple examples on 2222 port
-killWebserver 8080 || true
+killWebserver 2222 || true
 
 # Start the first server in the background
 npm run start-examples-test &
