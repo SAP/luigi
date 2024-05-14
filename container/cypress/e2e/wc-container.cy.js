@@ -3,7 +3,7 @@ describe('Web Container Test', () => {
     let stub;
     beforeEach(() => {
       cy.visit('http://localhost:8080');
-      cy.visit('http://localhost:8080/index.html');
+      cy.visit('http://localhost:8080/#hello-world-wc');
       stub = cy.stub();
     });
 
