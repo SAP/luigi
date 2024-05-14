@@ -80,7 +80,6 @@ export default class extends HTMLElement {
       mode: 'open',
       delegatesFocus: false
     });
-
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn2.content.cloneNode(true));
