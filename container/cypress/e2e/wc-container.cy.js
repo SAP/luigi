@@ -1,28 +1,10 @@
 describe('Web Container Test', () => {
   describe('LuigiClient API LuigiContainer', () => {
-    // let stub;
+    let stub;
     beforeEach(() => {
-      // cy.visit('http://localhost:8080');
-      // cy.visit('http://localhost:8080/index.html');
-      // stub = cy.stub();
-    });
-
-    it.only('test',()=>{
-      
-    });
-
-    it('Test finding h2 element inside shadow dom', () => {
-      cy.get('[data-test-id="luigi-client-api-test-01"]')
-        .shadow()
-        // .get('main')
-        // .get('main', {timeout: 50000})
-        // .children()
-        // .first()
-        // .shadow()
-        // .shadow(undefined, { timeout: 50000 })
-        // .find('h2')
-        // .should('contain.text', 'This is a webcomponent based microfrontend container ');
-        .contains('This is a webcomponent based microfrontend container');
+      cy.visit('http://localhost:8080');
+      cy.visit('http://localhost:8080/index.html');
+      stub = cy.stub();
     });
 
     it('getCurrentLocale, getActiveFeatureToggles, getCurrentTheme', () => {
