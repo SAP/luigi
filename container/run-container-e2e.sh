@@ -16,7 +16,7 @@ cd "$BASE_DIR"
 killWebserver 8080 || true
 
 # Start the first server in the background
-npm run start &
+npm run start-examples-test &
 WS_FID_PID=$!
 
 
