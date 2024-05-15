@@ -1,0 +1,30 @@
+<html>
+<head>
+    <script type="module">
+        import './bundle.js';
+        import MFEventID from './bundle.js';
+      </script>
+</head>
+<body>
+    <h3>This page is used to test Container Luigi CLient API functionalities for web component based microfrontend</h3>
+    <div style="border:solid 1px blue">
+        <luigi-container
+            data-test-id="luigi-client-api-test-01"
+            viewURL="./helloWorldWC.js"
+            webcomponent="true"
+            context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
+            locale="en"
+            theme="sap_fiori_3"
+            active-feature-toggle-list='["ft1","ft2"]'
+            node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
+            search-params='{"test":"searchParam1"}'
+            path-params='{"path":"param"}'
+            client-permissions='{"permission": "testPermission"}'
+            user-settings='{"language": "de", "date":""}'
+            anchor="testanchor"
+            dirty-status="true"
+            document-title="Perfect Title"
+      ></luigi-container>
+    </div>
+</body>
+</html>
