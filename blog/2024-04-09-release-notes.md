@@ -13,12 +13,12 @@ You can read about the new features in Luigi v2.10 in the release notes below.
 
 ####  Added an On Close Promise for LuigiClient's openAsModal
 
-We've enhanced the Luigi Client's openAsModal facilitating any post processing logic you would want to run by adding a promise that resolves when the modal is closed.
+We've added a promise to the Luigi Client's openAsModal that resolves when the modal is closed. You can also access the `goBackContext` When you close the modal using LuigiClient.linkManager().goBack({ foo: 'bar' }).
 
 
-#### The Testing Utilities now Support Cypress 
+#### Cypress Is Now Supported by the Testing Utilities  
 
-We have extended the scope of the Luigi testing utilities to add support for writing cypress based end-to-end (e2e) tests.
+We have extended the scope of Luigi testing utilities to add cypress support. This will help with writing end-to-end (e2e) tests for your Luigi projects.
 
 #### Bugfixes
 

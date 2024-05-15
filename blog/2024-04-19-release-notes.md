@@ -13,7 +13,7 @@ You can read about the new features in Luigi v2.11 in the release notes below.
 
 #### Added onClick Navigation for Categories in the TabNav Bar
 
-With Luigi v2.11, clicking on the category in the TabNav bar can be configured to navigate to a node in the same category.
+With Luigi v2.11, clicking the category in the TabNav bar can be configured to navigate to a node in the same category.
 
 
 #### Bugfixes
