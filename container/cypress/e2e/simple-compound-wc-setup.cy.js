@@ -1,9 +1,9 @@
-describe('Simple Examples Iframe Container Test', () => {
+describe('Simple Examples Compound Container Test', () => {
   beforeEach(() => {
     cy.visit('http://localhost:2222');
   });
 
-  it('Compound WebComponent Container Test', () => {
+  it('Compound WebComponent Container loading inner text', () => {
     cy.visit('http://localhost:2222/compound-container/index.html');
 
     cy.get('luigi-compound-container')

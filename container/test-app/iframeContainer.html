@@ -1,0 +1,41 @@
+<html>
+<head>
+    <script type="module">
+        import './bundle.js';
+    </script>
+</head>
+<body>
+    <h3>This page is used to test Container Luigi CLient API functionalities for web component based microfrontend</h3>
+    <div style="border:solid 1px blue">
+
+
+    <luigi-container
+        data-test-id="iframe-based-container-test"
+        viewURL="./microfrontend.html"
+        context='{"title": "Projects", "content":" "}'
+        >
+    </luigi-container>
+</div>
+
+
+<script type="module">
+            import MFEventID from './bundle.js';
+
+    const luigiContainer = document.querySelector('luigi-container')
+    luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
+        console.log(event.detail);
+        window.location.hash = event.detail.link;
+     });
+
+     luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+        alert('Custom message recieved: ' + JSON.stringify(event.detail));
+      });
+
+    //     luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, e => {
+    //     console.log('Publish Event', e.detail);
+    //   });
+</script>
+</body>
+
+</html>
+
