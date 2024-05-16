@@ -32,7 +32,7 @@ export default class extends HTMLElement {
     getClientPermissionsBtn.innerHTML = '<button id="getClientPermissions">getClientPermissions</button>';
 
     const empty = document.createElement('template');
-    empty.innerHTML = `<section><p>Test!</p><br/><br/></section>`;
+    empty.innerHTML = `<section><p>Test-----!</p><br/><br/></section>`;
 
     const getUserSettingsBtn = document.createElement('template');
     getUserSettingsBtn.innerHTML = '<button id="getUserSettings">getUserSettings</button>';
@@ -98,9 +98,8 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
 
-    for (let index = 0; index < 10; index++) {
-      this._shadowRoot.appendChild(empty.content.cloneNode(true));
-    }
+    this._shadowRoot.appendChild(empty.content.cloneNode(true));
+    
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');
