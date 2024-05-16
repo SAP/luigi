@@ -1,13 +1,31 @@
 <html>
 <head>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
     <script type="module">
         import '../bundle.js';
         import MFEventID from '../bundle.js';
     </script>
+    <style>
+      /* .ui5-card-root{ 
+        height: 0;
+      } */
+      html, body {
+        /* position: relative;
+        width: 100%;
+        height: 100%; */
+        margin: 10;
+        margin-top:20;
+        
+      }
+    
+  
+    </style>
+
 </head>
 <body>
     <h3>This page is used to test Compound-Container Luigi CLient API functionalities for web component based microfrontend</h3>
-    <div style="border:solid 1px blue">
+    <div  style="border:solid 1px blue">
         <luigi-compound-container
             data-test-id="luigi-client-api-test-compound-01"
             id="dashboard"
@@ -36,7 +54,7 @@
           use: 'grid',
           config: {
             columns: '1fr 1fr 1fr 2fr',
-            /*rows: '150px',*/
+            // rows: '150px',
             /*gap: '30px',*/
             layouts: [
               {
@@ -85,32 +103,28 @@
             }
           },
           {
-            viewUrl: './compound/main.js',
+            viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
+            // viewUrl: './compound/another-wc.js',
             context: {
               label: 'Another web component'
             }
           },
           {
             id: 'timerMFE',
-            viewUrl: './compound/timer.js',
+            viewUrl: 'https://luigiwebcomponents.gitlab.io/util/timer.js',
             context: {
               min: 2,
               fontScale: '0.5'
             }
           },
           {
-            viewUrl: './compound/roadmap.js',
-            context: {
-              label: 'UI5 Button'
-            }
-          },
-          {
-            viewUrl: './compound/main.js',
+            viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
             context: {
               label: 'My Label'
             }
           },
           {
+            // viewUrl: 'https://luigiwebcomponents.gitlab.io/layouts/panelFooter.js',
             viewUrl: './compound/panelFooter.js',
             context: {
               footer: 'This is the end of awesomeness'
@@ -203,4 +217,5 @@
       
     </script>
 </body>
+
 </html>

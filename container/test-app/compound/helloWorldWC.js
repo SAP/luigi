@@ -98,9 +98,9 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
 
-    for (let index = 0; index < 10; index++) {
+    // for (let index = 0; index < 5; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
-    }
+    // }
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');

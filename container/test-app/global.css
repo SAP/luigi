@@ -1,4 +1,4 @@
-html, body {
+/* html, body {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -32,4 +32,4 @@ body > nav {
     src: url("https://unpkg.com/@sap-theming/theming-base-content/content/Base/baseLib/sap_horizon/fonts/SAP-icons.woff") format("woff");
     font-weight: normal;
     font-style: normal;
-}
+} */

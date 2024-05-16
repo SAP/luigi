@@ -163,7 +163,7 @@ class LuigiElement extends HTMLElement {
   constructor() {
     super();
     this.luigiConfig = {
-      styleSources: ['../layout-panel.css'],
+      styleSources: ['../css/layout-panel.css'],
       loadStylesSync: true
     }; 
   }
