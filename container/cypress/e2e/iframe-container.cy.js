@@ -1,6 +1,6 @@
 describe('Iframe Container Test', () => {
   it('navigation sent', () => {
-    cy.visit('http://localhost:8080/iframeContainer.html');
+    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
 
     cy.get('[data-test-id="iframe-based-container-test"]')
       .shadow()
@@ -12,7 +12,7 @@ describe('Iframe Container Test', () => {
           .click();
 
         cy.location().should(loc => {
-          expect(loc.href).to.eq('http://localhost:8080/iframeContainer.html#/test');
+          expect(loc.href).to.eq('http://localhost:8080/iframe/iframeContainer.html#/test');
         });
       });
   });
@@ -21,7 +21,7 @@ describe('Iframe Container Test', () => {
     const stub = cy.stub();
     cy.on('window:alert', stub);
 
-    cy.visit('http://localhost:8080/iframeContainer.html');
+    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
 
     cy.get('[data-test-id="iframe-based-container-test"]')
         .shadow()

@@ -3,7 +3,7 @@ describe('Compound Container Tests', () => {
   describe('LuigiClient API - LuigiCompoundContainer', () => {
     let stub;
     beforeEach(() => {
-      cy.visit('http://localhost:8080/compoundClientAPI.html');
+      cy.visit('http://localhost:8080/compound/compoundClientAPI.html');
       stub = cy.stub();
     });
 
