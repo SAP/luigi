@@ -31,7 +31,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### compoundConfig
 
 The configuration for the compound microfrontend.
-We recommend you taking a look at the Docs covering the compund [here](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound)
+Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details. 
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
