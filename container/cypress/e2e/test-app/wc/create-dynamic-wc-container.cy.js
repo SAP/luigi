@@ -33,7 +33,7 @@ describe('Create luigi-container dynamically', () => {
     cy.once('uncaught:exception', () => false);
     const scriptCode = `
             const lc = document.querySelector('#lc');
-            lc.viewurl = "./helloWorldWC.js";
+            lc.viewurl = "./wc/helloWorldWC.js";
             lc.webcomponent = true;
             lc.context = { title: 'Nested' }
             `;
@@ -49,7 +49,7 @@ describe('Create luigi-container dynamically', () => {
     cy.get('.content').invoke('append', htmlCode);
     cy.get('[data-test-id="luigi-container"]')
       .shadow()
-      .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f77632f68656c6c6f576f726c6457432e6a73')
+      .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f77632f77632f68656c6c6f576f726c6457432e6a73')
       .shadow()
       .find('section')
       .should('contain.text', 'Nested');
