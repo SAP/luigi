@@ -485,7 +485,7 @@ class WebComponentSvcClass {
     if (useLazyLoading) {
       intersectionObserver = this.createIntersectionObserver(navNode);
     }
-    
+
     wc_container._luigi_node = navNode;
 
     return new Promise(resolve => {
