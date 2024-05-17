@@ -8,14 +8,13 @@
 
   <script type="module">
     // simple Luigi Container package bundle import
-    import './bundle.js';
+    import '../bundle.js';
   </script>
 
   <body>
-    <div id="c1" class="testCl">Test001 this is loading rendering something</div>
     <luigi-container
       data-test-id="luigi-client-api-test-01"
-      viewURL="./myWebComponent.js"
+      viewURL="./container-wc/myWebComponent.js"
       webcomponent="true"
       context='{"content":" -- some content --"}'
     ></luigi-container>
