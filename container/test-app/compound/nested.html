@@ -1,30 +1,28 @@
-
 <html>
-<head>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <script type="module">
-        import '../bundle.js';
-        import MFEventID from '../bundle.js';
+      import '../bundle.js';
+      import MFEventID from '../bundle.js';
     </script>
-
-</head>
-<body>
+  </head>
+  <body>
     <h3>This page is used to test Compound-Container nested functionality</h3>
-      
-      <!-- Used for testing nested compound container functionality -->
-      <luigi-compound-container
-        id="nested-wc-compound-container"
-        context='{"label": "Dashboard2", "title":"Dashboard2"}'
-        viewUrl="./compound/nested.js"
-        webcomponent="true"
-        node-params='{"Das ist ein":"compound tets"}'
-      ></luigi-compound-container>
+
+    <!-- Used for testing nested compound container functionality -->
+    <luigi-compound-container
+      id="nested-wc-compound-container"
+      context='{"label": "Dashboard2", "title":"Dashboard2"}'
+      viewUrl="./compound/nested.js"
+      webcomponent="true"
+      node-params='{"Das ist ein":"compound tets"}'
+    ></luigi-compound-container>
 
     <script>
-        var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
+      var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
 
-        document.getElementById('nested-wc-compound-container').compoundConfig = {
+      document.getElementById('nested-wc-compound-container').compoundConfig = {
         children: [
           {
             viewUrl: layoutMFEDomain + '/panelHeader.js',
@@ -86,8 +84,5 @@
         });
       }
     </script>
-</body>
-
+  </body>
 </html>
-
-
