@@ -24,16 +24,19 @@ describe('Iframe Container Test', () => {
     cy.visit('http://localhost:8080/iframe/iframeContainer.html');
 
     cy.get('[data-test-id="iframe-based-container-test"]')
-        .shadow()
-        .get('iframe')
-        .then(iframe => {
-            const $body = iframe.contents().find('body');
-            cy.wrap($body)
-                .contains('test custom message')
-                .click()
-                .then(() => {
-                    cy.wrap(stub).should('have.been.calledWith', 'Custom message recieved: {"id":"my.customMessage","_metaData":{},"data":{"bar":"foo"}}');
-                });
-        });
+      .shadow()
+      .get('iframe')
+      .then(iframe => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test custom message')
+          .click()
+          .then(() => {
+            cy.wrap(stub).should(
+              'have.been.calledWith',
+              'Custom message recieved: {"id":"my.customMessage","_metaData":{},"data":{"bar":"foo"}}'
+            );
+          });
+      });
   });
 });

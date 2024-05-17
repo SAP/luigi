@@ -1,43 +1,44 @@
 <html>
-<head>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <script type="module">
-        import '../bundle.js';
-        import MFEventID from '../bundle.js';
+      import '../bundle.js';
+      import MFEventID from '../bundle.js';
     </script>
     <style>
-      html, body {
+      html,
+      body {
         /* position: relative;
         width: 100%;
         height: 100%; */
         margin: 10;
-        margin-top:20;
-        
+        margin-top: 20;
       }
     </style>
-
-</head>
-<body>
-    <h3>This page is used to test Compound-Container Luigi CLient API functionalities for web component based microfrontend</h3>
-    <div  style="border:solid 1px blue">
-        <luigi-compound-container
-            data-test-id="luigi-client-api-test-compound-01"
-            id="dashboard"
-            context='{"label": "Dashboard"}'
-            node-params='{"Luigi":"rocks"}'
-            search-params='{"test":"searchParam1"}'
-            path-params='{"path":"param"}'
-            client-permissions='{"permission": "testPermission"}'
-            user-settings='{"language":"it", "date":""}'
-            anchor="testAnchorCompound"
-            defer-init=false
-            webcomponent="true"
+  </head>
+  <body>
+    <h3>
+      This page is used to test Compound-Container Luigi CLient API functionalities for
+      web component based microfrontend
+    </h3>
+    <div style="border:solid 1px blue">
+      <luigi-compound-container
+        data-test-id="luigi-client-api-test-compound-01"
+        id="dashboard"
+        context='{"label": "Dashboard"}'
+        node-params='{"Luigi":"rocks"}'
+        search-params='{"test":"searchParam1"}'
+        path-params='{"path":"param"}'
+        client-permissions='{"permission": "testPermission"}'
+        user-settings='{"language":"it", "date":""}'
+        anchor="testAnchorCompound"
+        defer-init="false"
+        webcomponent="true"
       ></luigi-compound-container>
-      
+
       <!-- Used for testing dynamic compound container creation -->
       <div class="content"></div>
-
     </div>
 
     <script type="module">
@@ -211,9 +212,6 @@
       compoundContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
         console.log('Set View Group Data Request received', event.detail, event);
       });
-
-      
     </script>
-</body>
-
+  </body>
 </html>

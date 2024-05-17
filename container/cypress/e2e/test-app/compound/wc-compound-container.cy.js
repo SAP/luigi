@@ -1,5 +1,4 @@
 describe('Compound Container Tests', () => {
-  
   describe('LuigiClient API - LuigiCompoundContainer', () => {
     let stub;
     beforeEach(() => {
@@ -30,5 +29,4 @@ describe('Compound Container Tests', () => {
         });
     });
   });
-
 });
