@@ -12,6 +12,7 @@ cache:
     - $TRAVIS_BUILD_DIR/core/public
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2
     - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc
+    - $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc-legacy
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/dist
     - $TRAVIS_BUILD_DIR/test/e2e-test-application/externalMf
     - $TRAVIS_BUILD_DIR/test/e2e-js-test-application
@@ -41,7 +42,7 @@ integration-testing: &integration-testing
         # needed dependencies for cypress 5.3.0
         - libgtk2.0-0
         - libgtk-3-0
-        - libgbm-dev  
+        - libgbm-dev
         - libnotify-dev
         - libgconf-2-4
         - libnss3
@@ -81,12 +82,14 @@ jobs:
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/client-frameworks-support/client-support-angular/node_modules/@luigi-project/client
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oauth2
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc
+        - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/test/e2e-test-application/node_modules/@luigi-project/plugin-auth-oidc-legacy
         # Link fiddle manually:
         - rm -rf $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/*
         - ln -s $TRAVIS_BUILD_DIR/core/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/core
         - ln -s $TRAVIS_BUILD_DIR/client/public $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/client
         - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oauth2 $TRAVIS_BUILD_DIR/test/e2e-js-test-application/node_modules/@luigi-project/plugin-auth-oauth2
         # - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc
+        # - ln -s $TRAVIS_BUILD_DIR/plugins/auth/public/auth-oidc $TRAVIS_BUILD_DIR/website/fiddle/node_modules/@luigi-project/plugin-auth-oidc-legacy
         # WORKAROUND - END
         # Make sure client is build first, required for client-support-angular
         - lerna run bundle --ignore docs --scope luigi-client-private || travis_terminate 1
@@ -113,13 +116,13 @@ jobs:
     # ----- INTEGRATION WITH MOCKENGINE -----
     - stage: 'Run LuigiMockEngine tests'
       if: NOT (commit_message = test-setup-scripts) AND NOT (commit_message = publish)
-      script: 
+      script:
         - export CYPRESS_CACHE_FOLDER=$TRAVIS_BUILD_DIR/cypress-binary-cache
         - ls $CYPRESS_CACHE_FOLDER
         - npm i -g cypress
         - npm i -g lerna@4.0.0
         - npm i -g live-server
-        - bash ./test/mockengine.sh  
+        - bash ./test/mockengine.sh
       addons:
         apt:
         chrome: stable
@@ -207,7 +210,7 @@ jobs:
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
-    
+
     - name: 'Publish CRA template to NPM'
       # run only when custom commit message given to Travis
       if: repo = SAP/luigi AND (type = api AND commit_message = publish-cra-luigi)
@@ -220,12 +223,11 @@ jobs:
       # run only when custom commit message given to Travis
       if: repo = SAP/luigi AND (type = api AND commit_message = publish-luigi-container)
       script:
-        - ls ./container/public 
+        - ls ./container/public
         - bash ./scripts/npmPublish.sh luigi-container-release
       before_cache:
         - rm -rf ~/.npm/_logs
         - rm -rf ~/.npm/_cacache
-    
 
     # ----- SETUP EXAMPLES TESTS -----
     - stage: 'Test Setup Scripts'
@@ -264,7 +266,7 @@ jobs:
         - RES=$(grep -c "Stopping webserver on port 8080" <<< "$OUT")
         - echo "$RES"
         - if [ $RES == 1 ]; then travis_terminate 0; else travis_terminate 1; fi
-            
+
     - name: 'Test No-Framework setup script'
       node_js: 16
       if: type = api AND commit_message = test-setup-scripts

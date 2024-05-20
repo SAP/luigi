@@ -33,6 +33,10 @@ module.exports = {
         {
           from: 'node_modules/@luigi-project/plugin-auth-oidc',
           to: path.resolve(__dirname, 'src/assets') + '/auth-oidc/'
+        },
+        {
+          from: 'node_modules/@luigi-project/plugin-auth-oidc-legacy',
+          to: path.resolve(__dirname, 'src/assets') + '/auth-oidc-legacy/'
         }
       ]
     })

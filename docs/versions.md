@@ -34,6 +34,7 @@ Luigi versions 1.0 and above differ from earlier versions in some important ways
 - @luigi-project/core
 - @luigi-project/plugin-auth-oauth2
 - @luigi-project/plugin-auth-oidc
+- @luigi-project/plugin-auth-oidc-legacy
 
 You can read more about the other changes below:
 
@@ -49,6 +50,7 @@ To install the plugins, follow these installation guides:
 
 - [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oauth2)
 - [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc)
+- [Legacy OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-legacy)
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
@@ -72,15 +74,15 @@ In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recomm
 
 ## Luigi 2.x upgrades
 
-Luigi v2.0 introduced two new important changes in regards to previous versions. 
+Luigi v2.0 introduced two new important changes in regards to previous versions.
 
 <!-- accordion:start -->
 
 ### Internet Explorer 11 (IE11)
 
-As of Luigi v2.0, **Internet Explorer 11 is no longer supported**. Luigi is compatible with all other modern browsers. We recommend that you switch to another web browser such as Chrome or Edge. If you still need to use IE11, you can use Luigi versions lower than 2.0, all of which can be found on our [GitHub repository](https://github.com/SAP/luigi/releases). 
+As of Luigi v2.0, **Internet Explorer 11 is no longer supported**. Luigi is compatible with all other modern browsers. We recommend that you switch to another web browser such as Chrome or Edge. If you still need to use IE11, you can use Luigi versions lower than 2.0, all of which can be found on our [GitHub repository](https://github.com/SAP/luigi/releases).
 
-### Update to Angular 14 and 15 
+### Update to Angular 14 and 15
 
 With Luigi 2.0, we are updating to a newer version of Angular. This means that **Angular v.13 and below are no longer supported**. The [Luigi Angular support library](https://docs.luigi-project.io/docs/framework-support-libraries) can now be used with Angular 14 or 15 instead. You can read about how to update your Angular version [here](https://angular.io/guide/updating).
 

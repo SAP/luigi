@@ -4,17 +4,15 @@ import { Helpers } from '../helpers';
 export default class oAuth2ImplicitGrant {
   constructor(settings = {}) {
     const defaultSettings = {
+      accessTokenExpiringNotificationTimeInSeconds: 60,
+      authorizeMethod: 'GET',
+      expirationCheckInterval: 5,
       oAuthData: {
-        redirect_uri:
-          window.location.origin + '/assets/auth-oauth2/callback.html',
-        response_type: 'id_token token',
+        redirect_uri: window.location.origin + '/assets/auth-oauth2/callback.html',
+        response_type: 'code',
         scope: ''
       },
-      authorizeMethod: 'GET',
-      logoutUrl: '',
-      post_logout_redirect_uri: window.location.origin + '/logout.html',
-      accessTokenExpiringNotificationTime: 60,
-      expirationCheckInterval: 5
+      post_logout_redirect_uri: window.location.origin + '/logout.html'
     };
     const mergedSettings = Helpers.deepMerge(defaultSettings, settings);
 
@@ -48,8 +46,7 @@ export default class oAuth2ImplicitGrant {
   login() {
     return new Promise((resolve, reject) => {
       const settings = this.settings;
-      const generatedNonce =
-        (settings.nonceFn && settings.nonceFn()) || this.generateNonce();
+      const generatedNonce = (settings.nonceFn && settings.nonceFn()) || this.generateNonce();
       sessionStorage.setItem('luigi.nonceValue', generatedNonce);
       if (!settings.oAuthData.nonce) {
         settings.oAuthData.nonce = generatedNonce;
@@ -75,9 +72,7 @@ export default class oAuth2ImplicitGrant {
       settings.oAuthData.redirect_uri = `${Helpers.prependOrigin(
         settings.oAuthData.redirect_uri
       )}?storageType=${Luigi.auth().store.getStorageType()}`;
-      settings.oAuthData.state = btoa(
-        encodeURI(window.location.href) + '_luigiNonce=' + generatedNonce
-      );
+      settings.oAuthData.state = btoa(encodeURI(window.location.href) + '_luigiNonce=' + generatedNonce);
 
       for (const name in settings.oAuthData) {
         const node = createInputElement(name, settings.oAuthData[name]);
@@ -100,13 +95,9 @@ export default class oAuth2ImplicitGrant {
 
   logout(authData, authEventLogoutFn) {
     const settings = this.settings;
-    const logouturl = `${settings.logoutUrl}?id_token_hint=${
-      authData.idToken
-    }&client_id=${
+    const logouturl = `${settings.post_logout_redirect_uri}?id_token_hint=${authData.idToken}&client_id=${
       settings.oAuthData.client_id
-    }&post_logout_redirect_uri=${Helpers.prependOrigin(
-      settings.post_logout_redirect_uri
-    )}`;
+    }&post_logout_redirect_uri=${Helpers.prependOrigin(settings.post_logout_redirect_uri)}`;
     authEventLogoutFn && authEventLogoutFn();
 
     setTimeout(() => {
@@ -122,43 +113,30 @@ export default class oAuth2ImplicitGrant {
         return clearInterval(this.expirationCheckIntervalInstance);
       }
 
-      const tokenExpirationDate =
-        (authData && authData.accessTokenExpirationDate) || 0;
+      const tokenExpirationDate = (authData && authData.accessTokenExpirationDate) || 0;
       const currentDate = new Date();
       if (tokenExpirationDate - currentDate < expirationCheckInterval) {
         clearInterval(this.expirationCheckIntervalInstance);
         Luigi.auth().store.removeAuthData();
         // TODO: check if valid (mock-auth requires it), post_logout_redirect_uri is an assumption, might not be available for all auth providers
         const redirectUrl = `${
-          this.settings.logoutUrl
-        }?error=tokenExpired&post_logout_redirect_uri=${Helpers.prependOrigin(
           this.settings.post_logout_redirect_uri
-        )}`;
-        Luigi.auth().handleAuthEvent(
-          'onAuthExpired',
-          this.settings,
-          undefined,
-          redirectUrl
-        );
+        }?error=tokenExpired&post_logout_redirect_uri=${Helpers.prependOrigin(this.settings.post_logout_redirect_uri)}`;
+        Luigi.auth().handleAuthEvent('onAuthExpired', this.settings, undefined, redirectUrl);
       }
     }, expirationCheckInterval);
   }
 
   setTokenExpireSoonAction() {
-    const accessTokenExpiringNotificationTime =
-      this.settings.accessTokenExpiringNotificationTime * 1000;
-    const expirationCheckInterval =
-      this.settings.expirationCheckInterval * 1000;
+    const accessTokenExpiringNotificationTimeInSeconds =
+      this.settings.accessTokenExpiringNotificationTimeInSeconds * 1000;
+    const expirationCheckInterval = this.settings.expirationCheckInterval * 1000;
     let authData = this.getAuthData();
     if (authData) {
       this.expirationSoonCheckIntervalInstance = setInterval(() => {
-        const tokenExpirationDate =
-          (authData && authData.accessTokenExpirationDate) || 0;
+        const tokenExpirationDate = (authData && authData.accessTokenExpirationDate) || 0;
         const currentDate = new Date();
-        if (
-          tokenExpirationDate - currentDate.getTime() <
-          accessTokenExpiringNotificationTime
-        ) {
+        if (tokenExpirationDate - currentDate.getTime() < accessTokenExpiringNotificationTimeInSeconds) {
           Luigi.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
           clearInterval(this.expirationSoonCheckIntervalInstance);
         }
@@ -167,8 +145,7 @@ export default class oAuth2ImplicitGrant {
   }
 
   generateNonce() {
-    const validChars =
-      '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz';
+    const validChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz';
     const crypto = window.crypto || window.msCrypto;
     const random = Array.from(crypto.getRandomValues(new Uint8Array(20)));
 

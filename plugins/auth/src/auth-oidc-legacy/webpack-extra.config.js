@@ -8,8 +8,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: pluginRoot + 'node_modules/oidc-client-ts/dist/browser/oidc-client-ts.min.js',
-          to: pluginRoot + 'auth/public/auth-oidc'
+          from: pluginRoot + 'node_modules/oidc-client/dist/oidc-client.min.js',
+          to: pluginRoot + 'auth/public/auth-oidc-legacy'
         }
       ]
     })

@@ -143,6 +143,12 @@ else
     publishPackage "plugins" "plugins/auth/public/auth-oidc"
   fi
 
+  # Luigi Legacy Oidc Plugin
+  if ( prepublishCheck "plugins/auth/public/auth-oidc-legacy" ); then
+    checkRequiredFiles "plugins/auth/public/auth-oidc-legacy" "plugin.js" "README.md"
+    publishPackage "plugins" "plugins/auth/public/auth-oidc-legacy"
+  fi
+
   # Luigi Client Support Anguar
   if ( prepublishCheck "client-frameworks-support/client-support-angular/dist/client-support-angular"); then
     checkRequiredFiles "client-frameworks-support/client-support-angular/dist/client-support-angular" "public-api.d.ts" "README.md"

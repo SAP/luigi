@@ -100,7 +100,7 @@ auth: {
     post_logout_redirect_uri: '/logout.html',
     automaticSilentRenew: true,
     userInfoFn:(authSettings, authData)=>{},
-    accessTokenExpiringNotificationTime: 60
+    accessTokenExpiringNotificationTimeInSeconds: 60
     profileStorageInterceptorFn:(jwtProfile)=>{}
   },
   disableAutoLogin: false
@@ -129,8 +129,8 @@ auth: {
 #### automaticSilentRenew
 - **type**: boolean
 - **description**: enables the automatic silent renewal of the token if it is supported by the server. For this mechanism to work, the browser must have third-party cookies support enabled.
-- **default**: `false`
-#### accessTokenExpiringNotificationTime
+- **default**: `true`
+#### accessTokenExpiringNotificationTimeInSeconds
 - **type**: number
 - **description**: is the number of seconds before an access token expires and triggers silent token refresh.
 - **default**: `60` seconds
@@ -182,7 +182,7 @@ auth: {
     nonceFn: () => {},
     logoutFn: (settings, authData, logoutCallback) => { ...; logoutCallback('/logout.html'); },
     userInfoFn:(settings, authData)=>{},
-    accessTokenExpiringNotificationTime: 60,
+    accessTokenExpiringNotificationTimeInSeconds: 60,
     expirationCheckInterval: 5
   },
   disableAutoLogin: false
@@ -220,7 +220,7 @@ auth: {
 #### userInfoFn
 - **type**: function
 - **description**:provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
-#### accessTokenExpiringNotificationTime
+#### accessTokenExpiringNotificationTimeInSeconds
 - **type**: number
 - **description**: number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired.
 - **default**: the default value is `60` seconds.
@@ -292,7 +292,7 @@ Luigi.setConfig({
 ​
 After authorization is successful on the authorization provider's side, it redirects back to `Luigi callback.html` **redirect_uri**. The provider verifies the authorization data, saves it in  **localStorage** for Luigi, and redirects to the Luigi main page.
 
-You can use the Luigi implementations of [OAuth2](https://github.com/SAP/luigi/blob/main/plugins/auth/src/auth-oauth2/index.js) and [OpenID Connect](https://github.com/SAP/luigi/blob/main/plugins/auth/src/auth-oidc/index.js) as examples when creating your own authorization provider.
+You can use the Luigi implementations of [OAuth2](https://github.com/SAP/luigi/blob/main/plugins/auth/src/auth-oauth2/index.js) and [OpenID Connect](https://github.com/SAP/luigi/blob/main/plugins/auth/src/auth-oidc/index.js) (or [Legacy OpenID Connect](https://github.com/SAP/luigi/blob/main/plugins/auth/src/auth-oidc-legacy/index.js) for implict flow) as examples when creating your own authorization provider.
 
 <!-- add-attribute:class:warning -->
 >**NOTE:** Read more about authorization helpers in the [Core API: AuthorizationStore](luigi-core-api.md#AuthorizationStore) section.

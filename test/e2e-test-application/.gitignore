@@ -50,6 +50,7 @@ cypress/downloads
 /src/assets/devconfig.js
 /src/assets/*.bundle.js
 /src/assets/auth-oidc
+/src/assets/auth-oidc-legacy
 /src/assets/auth-oauth2
 /src/assets/basicConfiguration.bundle.js.LICENSE.txt
 /src/assets/extendedConfiguration.bundle.js.LICENSE.txt

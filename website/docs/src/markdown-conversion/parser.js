@@ -17,7 +17,8 @@ function setParsedDocs() {
   const dirs = [
     './../../../../docs',
     './../../../../plugins/auth/public/auth-oauth2',
-    './../../../../plugins/auth/public/auth-oidc'
+    './../../../../plugins/auth/public/auth-oidc',
+    './../../../../plugins/auth/public/auth-oidc-legacy'
   ];
   const parsingArr = [];
   dirs.forEach(dir => {

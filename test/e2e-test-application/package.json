@@ -29,7 +29,7 @@
     "@luigi-project/client-support-angular": "2.7.5",
     "@luigi-project/core": "2.7.5",
     "@luigi-project/plugin-auth-oauth2": "2.7.5",
-    "@luigi-project/plugin-auth-oidc": "2.7.5",
+    "@luigi-project/plugin-auth-oidc-legacy": "2.7.5",
     "@luigi-project/testing-utilities": "2.7.5",
     "@sap-theming/theming-base-content": "^11.1.41",
     "core-js": "^2.4.1",
