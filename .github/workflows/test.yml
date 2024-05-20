@@ -76,6 +76,9 @@ jobs:
     name: Container E2E Tests
     runs-on: ubuntu-latest
     needs: prepare
+
+    env:
+      USE_CYPRESS_DASHBOARD: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

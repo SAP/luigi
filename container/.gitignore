@@ -8,8 +8,7 @@
 /public/bundle.d.ts.map
 /test-app/bundle.js
 /test-app/bundle.js.map
-/test-app/luigi-element.js
-
+/test-app/compound/luigi-element.js
 /public/**/*.ts
 
 /coverage

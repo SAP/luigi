@@ -21,7 +21,7 @@ To run the test suite:
 Go to `container` folder:
 
 1. Start the app:
-    `npm run start`
+    - `npm run start`
 
 2. Start the cypress tests with User Interface:
     - `npm run cypress-browser`
