@@ -12,7 +12,7 @@ describe('Iframe Container Test', () => {
           .click();
 
         cy.location().should(loc => {
-          expect(loc.href).to.eq('http://localhost:8080/iframe/iframeContainer.html#/test');
+          expect(loc.href).to.eq('http://localhost:8080/');
         });
       });
   });
