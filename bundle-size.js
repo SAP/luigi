@@ -5,9 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const filesAndLimits = [];
-
-const filesAndLimits2 = [
+const filesAndLimits = [
   {
     path: 'client/public/luigi-client.js',
     limit: 50

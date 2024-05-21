@@ -6,19 +6,19 @@ const { exec } = require('child_process');
 
 // Array of folder names
 const folders = [
-  // './',
-  // 'core',
-  // 'client',
-  // 'client-frameworks-support/client-support-angular',
-  // 'client-frameworks-support/testing-utilities',
-  // 'client-frameworks-support/client-support-ui5',
-  'container'
-  // 'plugins',
-  // 'scripts',
-  // 'test/e2e-test-application',
-  // 'test/e2e-test-application/externalMf',
-  // 'test/e2e-js-test-application',
-  // 'client-frameworks-support/testing-utilities/test'
+  './',
+  'core',
+  'client',
+  'client-frameworks-support/client-support-angular',
+  'client-frameworks-support/testing-utilities',
+  'client-frameworks-support/client-support-ui5',
+  'container',
+  'plugins',
+  'scripts',
+  'test/e2e-test-application',
+  'test/e2e-test-application/externalMf',
+  'test/e2e-js-test-application',
+  'client-frameworks-support/testing-utilities/test'
 ];
 // Check for verbose flag
 const verboseFlagIndex = process.argv.indexOf('--verbose');
