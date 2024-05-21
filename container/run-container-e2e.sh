@@ -28,12 +28,12 @@ EXAMPLES_FID_PID=$!
 sleep 3
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
-  echo "Running tests in parallel with recording"
+  echo "Running tests with recording"
   echo "Check the link https://dashboard.cypress.io/#/projects/czq7qc for the recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
-  npm run cypress-headless -- --record --parallel --key $CYPRESS_DASHBOARD_RECORD_KEY
+  npm run cypress-headless -- --record --key $CYPRESS_DASHBOARD_RECORD_KEY
 else
-  echo "Running tests without parallelization and recording"
+  echo "Running tests without recording"
   npm run cypress-headless
 fi
 
