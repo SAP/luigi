@@ -27,9 +27,10 @@ class WebComponentSvcClass {
   wcContainerData = new WeakMap();
 
   dynamicImport(viewUrl) {
-    /** __luigi_dyn_import() is replaced by import() after webpack is done,
-     *    because webpack can't let his hands off imports ;) */
-    return __luigi_dyn_import(viewUrl);
+    /** __luigi_dyn_import_____________() is replaced by import(\/* webpackIgnore: true *\/) after webpack is done,
+     *    because webpack can't let his hands off imports ;)
+     * trailing underscores are there to match the replacement char nr to avoid sourcemap mess*/
+    return __luigi_dyn_import_____________(viewUrl);
   }
 
   /** Creates a web component with tagname wc_id and adds it to wcItemContainer,
@@ -333,12 +334,14 @@ class WebComponentSvcClass {
           if (navNode?.webcomponent?.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
               const wc = document.createElement(wc_id);
+              wc.setAttribute('lui_web_component', true);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
           } else {
             this.registerWCFromUrl(renderer.viewUrl, wc_id).then(() => {
               const wc = document.createElement(wc_id);
+              wc.setAttribute('lui_web_component', true);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
@@ -482,6 +485,8 @@ class WebComponentSvcClass {
     if (useLazyLoading) {
       intersectionObserver = this.createIntersectionObserver(navNode);
     }
+
+    wc_container._luigi_node = navNode;
 
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {

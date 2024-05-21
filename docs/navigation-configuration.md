@@ -177,7 +177,7 @@ This is an example of what a node with a category including an id, label and ico
 ...
 ```
 
-To define all subsequent nodes, use the category label:
+To define all subsequent nodes, use the category id:
 
 ```javascript
 {
