@@ -486,6 +486,8 @@ class WebComponentSvcClass {
       intersectionObserver = this.createIntersectionObserver(navNode);
     }
 
+    wc_container._luigi_node = navNode;
+
     return new Promise(resolve => {
       this.createCompoundContainerAsync(renderer, extendedContext, navNode).then(compoundContainer => {
         const ebListeners = {};
