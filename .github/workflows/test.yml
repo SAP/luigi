@@ -8,6 +8,7 @@ on:
 name: Build & Test
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+  CYPRESS_DASHBOARD_RECORD_KEY:  ${{ secrets.CYPRESS_DASHBOARD }}
 
 jobs:
   prepare: 
@@ -98,6 +99,9 @@ jobs:
     name: Integration Tests
     needs: prepare
     runs-on: ubuntu-latest
+    
+    env:
+      USE_CYPRESS_DASHBOARD: true
     steps:
       - uses: actions/setup-node@v4
         with:
