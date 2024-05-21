@@ -24,15 +24,15 @@
     </div>
 
     <script type="module">
-      import MFEventID from '../bundle.js';
+      import Events from '../bundle.js';
 
       const luigiContainer = document.querySelector('luigi-container');
-      luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
+      luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
       });
 
-      luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+      luigiContainer.addEventListener(Events.CUSTOM_MESSAGE, event => {
         alert('Custom message recieved: ' + JSON.stringify(event.detail));
       });
 
