@@ -79,7 +79,7 @@ jobs:
     needs: prepare
 
     env:
-      USE_CYPRESS_DASHBOARD: true
+      USE_CYPRESS_DASHBOARD: false # enable when trying to debug
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env:
-      USE_CYPRESS_DASHBOARD: true
+      USE_CYPRESS_DASHBOARD: false  # enable when trying to debug
     steps:
       - uses: actions/setup-node@v4
         with:

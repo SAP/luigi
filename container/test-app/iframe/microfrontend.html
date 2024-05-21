@@ -181,6 +181,8 @@
       }
 
       function updateFn(context) {
+        // report-navigation-completed-request will be detected since 
+        // context update is tied to navigation being completed
         console.log('context updated', context);
         if (context.title) {
           document.getElementById('title').innerHTML = context.title;
@@ -206,7 +208,8 @@
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
       LuigiClient.addCustomMessageListener('update', data => {
-        document.getElementById('content').innerHTML = new Date().getMilliseconds();
+        console.log('Custom Message Received inside iframe Container', data)
+        document.getElementById('content').innerHTML = 'Received Custom Message: ' + data.milliseconds;
       });
 
       // fallback visibility if no initlistener called for 3 seconds
