@@ -205,10 +205,15 @@ Luigi.setConfig({
         routing: { 
             useHashRouting: true 
         }, 
+        lifecycleHooks: {
+            luigiAfterInit: () => {
+                console.log('Luigi initialized.');
+            }
+        },
         settings: { 
             responsiveNavigation: 'semiCollapsible',
             header: { 
-                logo: 'img/luigi.png', 
+                logo: 'img/luigi.svg', 
                 title: 'Luigi Fiddle'
             },
             burgerTooltip: {
