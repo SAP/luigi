@@ -573,15 +573,16 @@ class WebComponentSvcClass {
     return new Promise((resolve, reject) => {
       if (wc.userSettingsGroup) {
         const userSettingsGroupName = wc.userSettingsGroup;
-        LuigiConfig.readUserSettings().then(storedUserSettingsData => {
+
+        LuigiConfig.readUserSettings().then((storedUserSettingsData) => {
           const hasUserSettings =
             userSettingsGroupName && typeof storedUserSettingsData === 'object' && storedUserSettingsData !== null;
+          const userSettings = hasUserSettings ? storedUserSettingsData[userSettingsGroupName] : {};
 
-          const userSettings = hasUserSettings ? storedUserSettingsData[userSettingsGroupName] : null;
           resolve(userSettings);
         });
       } else {
-        reject(null);
+        reject({});
       }
     });
   }
