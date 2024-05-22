@@ -528,7 +528,7 @@
                   size: 'm'
                 })
               "
-              >Open webcomponent in a modal</a
+              >Open webcomponent in a modal -----------------------------</a
             >
             <app-code-snippet
               data="linkManager()
@@ -585,6 +585,74 @@
             >
             </app-code-snippet>
           </li>
+          <button
+          class="fd-button fd-margin-end--sm"
+          onclick="const splitResult = LuigiClient.linkManager().openAsSplitView('misc2-isolated', {title: 'Logs', size: 40});
+          console.log('Splitresult: ')
+          console.log(splitResult)
+          "
+          >
+          <span class="fd-button__text">1 Open Splitview</span>
+          <br>
+          </button>
+          <button
+            class="fd-button"
+            onclick="const p1 = LuigiClient.linkManager().openAsModal('/projects/pr2/settings', {
+              title: 'microfrontend in a modal',
+              size: 'm',
+              keepPrevious: true
+            })
+            // LuigiClient.uxManager().closeCurrentModal()
+            p1.then((res) => {
+              console.log(res);
+            })
+
+            "
+          >
+          <span class="fd-button__text">2 openAsModal Promise res</span>
+          </button>
+          <br>
+
+          <button
+            class="fd-button"
+            onclick="
+            const modalResult = LuigiClient.linkManager().openAsModal('/projects/pr2/settings', {
+            title: 'microfrontend in a modal',
+            size: 'm',
+            keepPrevious: true
+            });
+            console.log('modalResult:');
+            console.log(modalResult);
+            if (modalResult) {
+              modalResult.then((res) => {
+                console.log(res);
+              });
+            } else {
+              console.error('openAsModal did not return a promise');
+            }
+            "
+          >
+          <span class="fd-button__text">3 Print what openAsModal returns</span>
+          </button>
+          <button
+            class="fd-button"
+            onclick="
+            console.log('LuigiClient')
+            console.log(LuigiClient)
+
+            console.log('LuigiClient.linkManager()')
+            console.log(LuigiClient.linkManager())
+
+            console.log('LuigiClient.linkManager().openAsModal(\'/projects/pr2/settings\')');
+            const p = LuigiClient.linkManager().openAsModal('/projects/pr2/settings');
+            console.log(p);
+
+            console.log('LuigiClient.uxManager()')
+            console.log(LuigiClient.uxManager())
+            "
+          >
+          <span class="fd-button__text">4 print LuigiClient stuff</span>
+          </button>
           <li class="fd-list__item">
             <a
               href="javascript:void(0)"
