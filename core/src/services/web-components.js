@@ -574,7 +574,7 @@ class WebComponentSvcClass {
       if (wc.userSettingsGroup) {
         const userSettingsGroupName = wc.userSettingsGroup;
 
-        LuigiConfig.readUserSettings().then((storedUserSettingsData) => {
+        LuigiConfig.readUserSettings().then(storedUserSettingsData => {
           const hasUserSettings =
             userSettingsGroupName && typeof storedUserSettingsData === 'object' && storedUserSettingsData !== null;
           const userSettings = hasUserSettings ? storedUserSettingsData[userSettingsGroupName] : {};
