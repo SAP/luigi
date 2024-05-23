@@ -31,7 +31,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 * [#3719](https://github.com/SAP/luigi/pull/3719) A11y for left nav if btp layout is enabled ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 #### :bug: Fixed
-* [#3742](https://github.com/SAP/luigi/pull/3742) Fixes show confirmation modal method ([@walmazacn](https://github.com/walmazacn))
 * [#3741](https://github.com/SAP/luigi/pull/3741) fix left nav cat focus outline in condensed mode ([@hardl](https://github.com/hardl))
 * [#3733](https://github.com/SAP/luigi/pull/3733) Fix compound double rendering ([@hardl](https://github.com/hardl))
 * [#3722](https://github.com/SAP/luigi/pull/3722) Add webpack ignore comment to dynamic import in bundle ([@hardl](https://github.com/hardl))
