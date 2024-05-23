@@ -18,5 +18,14 @@
       "tabWidth": 2,
       "singleQuote": true,
       "printWidth": 90
+   },
+   "svelte": {
+      "parser": "svelte",
+      "plugins": ["prettier-plugin-svelte"],
+      "svelteAllowShorthand": true,
+      "svelteBracketNewLine": false,
+      "svelteIndentScriptAndStyle": true,
+      "svelteSortOrder": "options-scripts-markup-styles",
+      "svelteStrictMode": true
    }
 }

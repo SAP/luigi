@@ -23,21 +23,21 @@ const getAllFiles = () => {
   }
   const sourcePaths = getSourcePaths(options.sourcePaths);
   let results = [];
-  sourcePaths.forEach(sourcePath => {
+  sourcePaths.forEach((sourcePath) => {
     const files = getAllFilesRecoursive(sourcePath);
     results = results.concat(files);
   });
   return results;
 };
 
-const getSourcePaths = sourcePaths => {
-  return sourcePaths.split(',').map(sourcePath => path.resolve(__dirname, ...sourcePath.split('/')));
+const getSourcePaths = (sourcePaths) => {
+  return sourcePaths.split(',').map((sourcePath) => path.resolve(__dirname, ...sourcePath.split('/')));
 };
 
-const getAllFilesRecoursive = dir => {
+const getAllFilesRecoursive = (dir) => {
   let results = [];
   const list = fs.readdirSync(dir);
-  list.forEach(function(file) {
+  list.forEach(function (file) {
     file = dir + '/' + file;
     const stat = fs.statSync(file);
     if (fileToExclude(file, stat)) {
@@ -73,7 +73,9 @@ const fileToExclude = (file, stat) => {
  */
 const getChangedFiles = async () => {
   const committedGitFiles = await gitChangedFiles({ baseBranch: 'main' });
-  return committedGitFiles.unCommittedFiles.filter(file => fs.existsSync(file) && !file.endsWith('package-lock.json'));
+  return committedGitFiles.unCommittedFiles.filter(
+    (file) => fs.existsSync(file) && !file.endsWith('package-lock.json')
+  );
 };
 
 /**
@@ -81,7 +83,7 @@ const getChangedFiles = async () => {
  * @param files: array of file absolute paths
  * @returns {key: 'File extension:, value: Array of file absolute paths}
  */
-const groupFilesByExtension = files => {
+const groupFilesByExtension = (files) => {
   return files.reduce((map, file) => {
     try {
       if (file.startsWith('./') || file.indexOf('.') === -1) {
@@ -108,13 +110,18 @@ const groupFilesByExtension = files => {
 const prettifyFile = (file, config) => {
   try {
     const text = fs.readFileSync(file).toString();
-    if (prettier.check(text, config)) {
-      return;
-    }
 
-    console.log('Running prettier on the file: ' + file);
-    fs.writeFileSync(file, prettier.format(text, config));
-    return true;
+    prettier.check(text, config).then((result) => {
+      if (result) {
+        return;
+      }
+
+      console.log('Running prettier on the file: ' + file);
+      prettier.format(text, config).then((output) => {
+        fs.writeFileSync(file, output);
+        return true;
+      });
+    });
   } catch (error) {
     console.log('Error in running prettier the file ' + file + ': \n' + error);
   }
@@ -124,26 +131,31 @@ const prettifyFile = (file, config) => {
  * Applying prettier on several files. We have a specific configuration for file extension on file prettier_config.json.
  * @param filesByExtension: we pass a Map json object where the key is the extension, value is an Array with absolute file paths
  */
-const prettifyFiles = filesByExtension => {
+const prettifyFiles = (filesByExtension) => {
   let filesChanged = 0;
+
   if (!codeQualityConfig.usePrettier) {
     return; // no need to use pretty;
   }
-  Object.keys(filesByExtension).forEach(extension => {
+
+  Object.keys(filesByExtension).forEach((extension) => {
     const files = filesByExtension[extension];
     const config = prettierConfig[extension];
+
     if (!config) {
       console.log(
         "We don't have any configuration for extension " + extension + ', please add it in file prettier_config.json'
       );
       return;
     }
-    files.forEach(file => {
+
+    files.forEach((file) => {
       if (prettifyFile(file, config)) {
         filesChanged++;
       }
     });
   });
+
   return filesChanged;
 };
 
@@ -152,7 +164,7 @@ const prettifyFiles = filesByExtension => {
  * @param files: array with absolute file paths
  * @returns {Promise<{}|{report: string, error: boolean}>}
  */
-const eslintFiles = async files => {
+const eslintFiles = async (files) => {
   if (!codeQualityConfig.useEslint) {
     return {};
   }
@@ -163,7 +175,7 @@ const eslintFiles = async files => {
   for (const file of files) {
     try {
       const result = await eslint.lintFiles(file);
-      error = error || result.some(res => res.errorCount > 0);
+      error = error || result.some((res) => res.errorCount > 0);
       await ESLint.outputFixes(result);
       const resultText = formatter.format(result);
       if (!!resultText && resultText.trim().length > 0) {
@@ -182,7 +194,7 @@ const eslintFiles = async files => {
  * Run `prettier` on changed files before commit;
  * You can also call this function using: npm run code-quality-prettier
  */
-const preCommitPrettier = async filesByExtension => {
+const preCommitPrettier = async (filesByExtension) => {
   if (!filesByExtension) {
     const files = await getChangedFiles();
     if (!files) {
@@ -200,7 +212,7 @@ const preCommitPrettier = async filesByExtension => {
  * Run `eslint` on changed files before commit;
  * You can also call this function using: npm run code-quality-eslint
  */
-const preCommitEslint = async filesByExtension => {
+const preCommitEslint = async (filesByExtension) => {
   if (!filesByExtension) {
     const files = await getChangedFiles();
     if (!files) {
@@ -265,12 +277,12 @@ const preCommit = async () => {
  * @param filesByExtension: we pass a Map json object where the key is the extension, value is an Array with absolute file paths
  * @returns {Promise<{report: string, numberFiles: number, error: boolean}>}
  */
-const eslintFilesByExtension = async filesByExtension => {
+const eslintFilesByExtension = async (filesByExtension) => {
   let error = false;
   let report = '';
   let numberFiles = 0;
   const extensions = Object.keys(filesByExtension);
-  for (const extension of extensions.filter(extension => extension === 'ts' || extension === 'js')) {
+  for (const extension of extensions.filter((extension) => extension === 'ts' || extension === 'js')) {
     const esLintFiles = filesByExtension[extension];
     numberFiles += esLintFiles.length;
     const eslintResult = await eslintFiles(esLintFiles);
@@ -299,7 +311,7 @@ const full = async () => {
  * Run `prettier` on all project files;
  * You can also call this function using: npm run full-code-quality
  */
-const fullPrettier = async filesByExtension => {
+const fullPrettier = async (filesByExtension) => {
   if (!filesByExtension) {
     const files = getAllFiles();
     filesByExtension = groupFilesByExtension(files);
@@ -311,7 +323,7 @@ const fullPrettier = async filesByExtension => {
  * Run `eslint` on all project files;
  * You can also call this function using: npm run full-code-quality
  */
-const fullEslint = async filesByExtension => {
+const fullEslint = async (filesByExtension) => {
   if (!filesByExtension) {
     const files = getAllFiles();
     filesByExtension = groupFilesByExtension(files);
@@ -376,7 +388,7 @@ const getOptions = () => {
   console.error(
     'You need to pass application parameter -- mode=pre_commit|pre_commit-prettier|pre_commit-eslint|full|full-prettier|full-eslint'
   );
-})().catch(err => {
+})().catch((err) => {
   console.log(err);
   process.exit(1);
 });

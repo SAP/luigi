@@ -1,9 +1,9 @@
 {
   "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
   "plugins": ["prettier-plugin-svelte"],
-  "svelteAllowShorthand": false,
+  "svelteAllowShorthand": true,
   "svelteBracketNewLine": false,
-  "svelteIndentScriptAndStyle": false,
-  "svelteSortOrder": "options-styles-scripts-markup",
+  "svelteIndentScriptAndStyle": true,
+  "svelteSortOrder": "options-scripts-markup-styles",
   "svelteStrictMode": true
 }
