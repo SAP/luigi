@@ -640,7 +640,7 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
  });
 ```
 
-Returns a **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
+Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access the `goBackContext` when the promise will be resolved.
 
 #### updateModalSettings
 

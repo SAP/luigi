@@ -26,10 +26,10 @@ export class WebComponentService {
     return viewUrl;
   }
 
-  /** 
+  /**
    * Attaches a web component with tagname wc_id and adds it to wcItemContainer,
    * if attached to wc_container
-   * 
+   *
    * @param wc_id a tagname that is used when creating the web component element
    * @param wcItemPlaceholder placeholder for web component container
    * @param wc_container web component container element
@@ -76,13 +76,13 @@ export class WebComponentService {
   /**
    * This function is used to create the Luigi Client API for the web-component-based micro frontend.
    * As the function expands with more functionality, it might be moved to a separate class.
-   * 
+   *
    * The client API here should be a reflection of the Core WC Client api from core/src/services/web-components.js
-   * 
+   *
    * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
    * @param nodeId refers to an attribute of the web component to be identified from the rest
    * @param wc_id a tagname that is used when creating the web component element
-   * @param component 
+   * @param component
    * @param isCompoundChild defines if rendered mf is a compound child or not
    * @returns an object with the Luigi Client API
    */
@@ -110,7 +110,7 @@ export class WebComponentService {
           fromVirtualTreeRoot: () => {
             fromVirtualTreeRoot = true;
             return linkManagerInstance;
-          },         
+          },
           withParams: (params) => {
             nodeParams = params;
             return linkManagerInstance;
@@ -128,7 +128,7 @@ export class WebComponentService {
                 }
               }, 'callback');
             })
-          },          
+          },
           openAsDrawer: (route, drawerSettings = {}) => {
             linkManagerInstance.navigate(route, {drawer: drawerSettings})
           },
@@ -137,13 +137,13 @@ export class WebComponentService {
           },
           openAsSplitView: (route, splitViewSettings = {}) => {
             linkManagerInstance.navigate(route, {splitView: splitViewSettings})
-          },          
+          },
           goBack: (goBackContext) => {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
             return false;
-          }, 
+          },
         };
         return linkManagerInstance;
       },
@@ -152,15 +152,15 @@ export class WebComponentService {
           showAlert: alertSettings => {
             this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
           },
-          showConfirmationModal: async settings => {
+          showConfirmationModal: (settings) => {
             return new Promise((resolve, reject) => {
-              this.dispatchLuigiEvent(Events.SHOW_CONFIRMATION_MODAL_REQUEST, settings, data => {
+              this.containerService.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, this.thisComponent, settings, (data) => {
                 if (data) {
                   resolve(data);
                 } else {
                   reject(new Error('No data'));
                 }
-              });
+              }, 'callback');
             });
           },
           getCurrentTheme: () : string | undefined  => {
@@ -168,7 +168,7 @@ export class WebComponentService {
           },
           closeUserSettings: () => {
             this.dispatchLuigiEvent(Events.CLOSE_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
-          },          
+          },
           openUserSettings: () => {
             this.dispatchLuigiEvent(Events.OPEN_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },
@@ -259,10 +259,10 @@ export class WebComponentService {
   }
 
   /**
-   * Attaches Client Api to web component 
-   * if __postProcess defined allow for custom setting of clientApi when developers want to decide how to add it to their mf 
+   * Attaches Client Api to web component
+   * if __postProcess defined allow for custom setting of clientApi when developers want to decide how to add it to their mf
    * otherwise just attach it to the wc webcomponent alongside the context directly.
-   * 
+   *
    * @param wc web component to attach to
    * @param wc_id a tagname that is used when creating the web component element
    * @param eventBusElement the event bus to be used for cross web component communication, i.e.: for compound micro frontends container scenario
@@ -420,10 +420,10 @@ export class WebComponentService {
     return true;
   }
 
-  /** 
+  /**
    * Adds a web component defined by viewUrl to the wc_container and sets the node context.
    * If the web component is not defined yet, it gets imported.
-   * 
+   *
    * @param viewUrl url to render content from
    * @param wc_container web component container element
    * @param context luigi context
