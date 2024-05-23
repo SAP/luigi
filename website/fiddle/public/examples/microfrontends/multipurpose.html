@@ -1,100 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title></title>
-    <meta charset="utf-8" />
-    <link
-      href="/vendor/fundamental-styles/dist/fundamental-styles.css"
-      rel="stylesheet"
-    />
-    <link href="../../styles/styles.css" rel="stylesheet" />
-    <script src="/vendor/luigi-client/luigi-client.js"></script>
-    <style>
-      html,
-      body {
-        position: relative;
+
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+  <link href="/vendor/fundamental-styles/dist/fundamental-styles.css" rel="stylesheet" />
+  <link href="../../styles/styles.css" rel="stylesheet" />
+  <script src="/vendor/luigi-client/luigi-client.js"></script>
+  <style>
+    html,
+    body {
+      position: relative;
+    }
+
+    #imgCnt img {
+      width: 100%;
+    }
+
+    #imgCnt {
+      text-align: center;
+    }
+
+    #textCnt {
+      padding: 30px;
+      text-align: center;
+      font-family: '72', sans-serif;
+      visibility: hidden;
+    }
+
+    #textCnt.visible {
+      visibility: visible;
+    }
+  </style>
+</head>
+
+<body style="-webkit-font-smoothing: antialiased; color: #515559;">
+  <div id="routeCnt"></div>
+  <div id="imgCnt"></div>
+  <div id="textCnt">
+    <h1 id="title">Multi purpose demo page</h1>
+    <p id="content">Some content</p>
+  </div>
+
+  <script>
+    function setTheme() {
+      let theme = LuigiClient.uxManager().getCurrentTheme() || 'sap_fiori_3'
+      const themeUrl = `https://cdn.jsdelivr.net/npm/@sap-theming/theming-base-content@11.1.48/content/Base/baseLib/${theme}/css_variables.css`;
+      const themeTag = document.querySelector('#_theme');
+      if (themeTag) {
+        document.head.removeChild(themeTag);
       }
 
-      #imgCnt img {
-        width: 100%;
+      const link = document.createElement('link');
+      link.id = '_theme';
+      link.href = themeUrl;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+    function navigate(route) {
+      if (route === '#/preload') {
+        document.body.style.display = 'none';
+      } else {
+        document.body.style.display = 'block';
+        document.getElementById('title').innerHTML = route
+          ? `<h2>${encodeURIComponent(route.replace('#/', ''))}</h2>`
+          : '';
       }
+    }
 
-      #imgCnt {
-        text-align: center;
-      }
-
-      #textCnt {
-        padding: 30px;
-        text-align: center;
-        font-family: '72', sans-serif;
-        visibility: hidden;
-      }
-
-      #textCnt.visible {
-        visibility: visible;
-      }
-    </style>
-  </head>
-
-  <body style="-webkit-font-smoothing: antialiased; color: #515559;">
-    <div id="routeCnt"></div>
-    <div id="imgCnt"></div>
-    <div id="textCnt">
-      <h1 id="title">Multi purpose demo page</h1>
-      <p id="content">Some content</p>
-    </div>
-
-    <script>
-      function navigate(route) {
-        if (route === '#/preload') {
-          document.body.style.display = 'none';
-        } else {
-          document.body.style.display = 'block';
-          document.getElementById('title').innerHTML = route
-            ? `<h2>${encodeURIComponent(route.replace('#/', ''))}</h2>`
-            : '';
-        }
-      }
-
-      const navChangeLst = () => {
-        navigate(window.location.hash);
-      };
-      window.addEventListener('hashchange', navChangeLst);
-      window.addEventListener('popstate', navChangeLst);
-
+    const navChangeLst = () => {
       navigate(window.location.hash);
-    </script>
+    };
+    window.addEventListener('hashchange', navChangeLst);
+    window.addEventListener('popstate', navChangeLst);
 
-    <script>
-      function updateFn(context) {
-        if (context.title) {
-          document.getElementById('title').innerHTML = context.title;
-        }
-        if (context.content) {
-          document.getElementById('content').innerHTML = context.content;
-        }
-        if (context.imgUrl) {
-          var iwidth = !isNaN(context.imgWidth)
-            ? 'width: ' + context.imgWidth + 'px'
-            : '';
-          document.getElementById('imgCnt').innerHTML =
-            "<img src='" +
-            context.imgUrl +
-            "' style='" +
-            iwidth +
-            '; margin-top: ' +
-            (context.imgTopMargin ? '5' : '') +
-            "0px'>";
-        }
-        document.getElementById('textCnt').classList.add('visible');
+    navigate(window.location.hash);
+  </script>
+
+  <script>
+    function updateFn(context) {
+      setTheme()
+      if (context.title) {
+        document.getElementById('title').innerHTML = context.title;
       }
-      LuigiClient.addInitListener(updateFn);
-      LuigiClient.addContextUpdateListener(updateFn);
+      if (context.content) {
+        document.getElementById('content').innerHTML = context.content;
+      }
+      if (context.imgUrl) {
+        var iwidth = !isNaN(context.imgWidth)
+          ? 'width: ' + context.imgWidth + 'px'
+          : '';
+        document.getElementById('imgCnt').innerHTML =
+          "<img src='" +
+          context.imgUrl +
+          "' style='" +
+          iwidth +
+          '; margin-top: ' +
+          (context.imgTopMargin ? '5' : '') +
+          "0px'>";
+      }
+      document.getElementById('textCnt').classList.add('visible');
+    }
+    LuigiClient.addInitListener(updateFn);
+    LuigiClient.addContextUpdateListener(updateFn);
 
-      // fallback visibility if no initlistener called for 3 seconds
-      setTimeout(function() {
-        document.getElementById('textCnt').classList.add('visible');
-      }, 3000);
-    </script>
-  </body>
+    // fallback visibility if no initlistener called for 3 seconds
+    setTimeout(function () {
+      document.getElementById('textCnt').classList.add('visible');
+    }, 3000);
+  </script>
+</body>
+
 </html>
