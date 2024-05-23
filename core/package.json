@@ -18,6 +18,8 @@
     "lodash.template": "^4.5.0",
     "mock-local-storage": "^1.1.23",
     "node-fetch": "2.6.7",
+    "prettier": "^3.2.5",
+    "prettier-plugin-svelte": "^3.2.3",
     "sass": "^1.54.0",
     "sinon": "^14.0.0",
     "svelte": "3.54.0",
@@ -30,6 +32,7 @@
     "build": "vite build",
     "bundle-develop": "vite build --watch",
     "bundle": "npm run build",
+    "format": "prettier --write ./src/**/*.svelte",
     "simpledev": "node ./dev-tools/simpledev-vite.mjs"
   },
   "repository": {
