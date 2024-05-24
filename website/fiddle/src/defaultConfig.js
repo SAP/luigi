@@ -277,17 +277,7 @@ Luigi.setConfig({
                     if (JSON.stringify(obj) !== JSON.stringify(previous)) {
                         let theme = obj.theme.theme;
                         sessionStorage.setItem('myUserSettings', JSON.stringify(obj));
-                        const themeUrl = 'https://cdn.jsdelivr.net/npm/@sap-theming/theming-base-content@11.1.48/content/Base/baseLib/' + theme +'/css_variables.css';
-                        const themeTag = document.querySelector('#_theme');
-                        if (themeTag) {
-                            document.head.removeChild(themeTag);
-                        }
-
-                        const link = document.createElement('link');
-                        link.id = '_theme';
-                        link.href = themeUrl;
-                        link.rel = 'stylesheet';
-                        document.head.appendChild(link);
+                        setTheme(theme);
                         Luigi.theming().setCurrentTheme(theme);
                         Luigi.configChanged();
                         resolve();
@@ -300,19 +290,9 @@ Luigi.setConfig({
                         if (sessionStorage.getItem('myUserSettings')) {
                             let theme = JSON.parse(sessionStorage.getItem('myUserSettings')).theme.theme;
                             if (theme !== Luigi.theming().getCurrentTheme()) {
-                                const themeUrl = 'https://cdn.jsdelivr.net/npm/@sap-theming/theming-base-content@11.1.48/content/Base/baseLib/' + theme + '/css_variables.css';
-                                const themeTag = document.querySelector('#_theme');
-                                if (themeTag) {
-                                    document.head.removeChild(themeTag);
-                                }
-        
-                                const link = document.createElement('link');
-                                link.id = '_theme';
-                                link.href = themeUrl;
-                                link.rel = 'stylesheet';
-                                document.head.appendChild(link);
-                                Luigi.theming().setCurrentTheme(theme);
-                                Luigi.configChanged();
+                               setTheme(theme);
+                               Luigi.theming().setCurrentTheme(theme);
+                               Luigi.configChanged();
                             }
                         }
                         resolve(JSON.parse(sessionStorage.getItem('myUserSettings')));
@@ -322,6 +302,19 @@ Luigi.setConfig({
                 })
             }
         }
-    });    
+    });
+    function setTheme(theme){
+        const themeUrl = 'https://cdn.jsdelivr.net/npm/@sap-theming/theming-base-content@11.1.48/content/Base/baseLib/' + theme + '/css_variables.css';
+        const themeTag = document.querySelector('#_theme');
+        if (themeTag) {
+            document.head.removeChild(themeTag);
+        }
+    
+        const link = document.createElement('link');
+        link.id = '_theme';
+        link.href = themeUrl;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    }    
 `;
 export default defaultConfig;
