@@ -275,7 +275,7 @@ Note: the updated context values are not persisted. The developers have to do it
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.13.0
 
 ## Luigi.elements()
 
