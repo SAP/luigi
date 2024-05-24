@@ -92,8 +92,7 @@ export default class openIdConnect {
       state: encodeURI(window.location.href)
     };
 
-    return this.client
-      .createSignoutRequest(signoutData)
+    return this.client._client.createSignoutRequest(signoutData)
       .then(req => {
         authOnLogoutFn();
         window.location = req.url;
@@ -148,8 +147,7 @@ export default class openIdConnect {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout
       if (window.location.href.indexOf('?logout') >= 0) {
-        this.client
-          .processSignoutResponse()
+        this.client._client.processSignoutResponse()
           .then(response => {
             Luigi.auth().store.removeAuthData();
             resolve(response);
