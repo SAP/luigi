@@ -56,17 +56,32 @@ export declare interface DrawerSettings {
   overlap?: boolean;
 }
 
-export declare interface Context {
+export declare interface AuthContext {
   authData?: AuthData;
-  context?: { parentNavigationContext?: string[] };
+}
+
+export declare interface NavigationContext {
+  context?: {
+    parentNavigationContext?: string[];
+  };
+}
+
+export declare interface InternalContext {
   internal?: {
     userSettings?: getUserSettings;
   };
+}
+
+export declare interface ParamsContext {
   nodeParams?: NodeParams;
   pathParams?: PathParams;
+}
+
+export declare interface Context extends AuthContext, NavigationContext, InternalContext, ParamsContext {
   anchor?: string;
   [key: string]: any;
 }
+
 export declare interface NodeParams {
   [key: string]: string;
 }
