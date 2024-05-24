@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { NavigationEnd } from '@angular/router';
+import { Event, NavigationEnd } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as Client from '@luigi-project/client';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { LuigiAngularSupportModule } from '../luigi.angular.support.module';
 import { LuigiAutoRoutingService } from './luigi-auto-routing.service';
-import { LuigiContextService } from './luigi-context-service';
+import { LuigiContextService } from './luigi-context.service';
 
 describe('LuigiAutoRoutingService', () => {
   let service: LuigiAutoRoutingService;
@@ -13,11 +13,9 @@ describe('LuigiAutoRoutingService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LuigiContextService, LuigiAutoRoutingService],
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        LuigiAngularSupportModule
-      ],
+      imports: [RouterTestingModule.withRoutes([]), LuigiAngularSupportModule],
     });
+
     service = TestBed.inject(LuigiAutoRoutingService);
   });
 
@@ -35,7 +33,7 @@ describe('LuigiAutoRoutingService', () => {
       const event$ = of(event);
       const filterResult$ = service.doFilter()(event$);
 
-      filterResult$.subscribe(result => {
+      filterResult$.subscribe((result) => {
         expect(result).toBeInstanceOf(NavigationEnd);
       });
     });
@@ -44,18 +42,22 @@ describe('LuigiAutoRoutingService', () => {
       const event = new NavigationEnd(0, 'url', 'urlAfterRedirects');
       const notAnEvent = new Object();
       const wrongEvent = new CustomEvent('wrongEvent');
-      const events$ = of(notAnEvent, event, wrongEvent);
+      const events$ = of(
+        notAnEvent,
+        event,
+        wrongEvent
+      ) as unknown as Observable<Event>;
       const filterResult$ = service.doFilter()(events$);
       let count = 0;
 
       filterResult$.subscribe({
-        next: result => {
+        next: (result) => {
           expect(result).toBeInstanceOf(NavigationEnd);
           count++;
         },
         complete: () => {
           expect(count).toBe(1);
-        }
+        },
       });
     });
   });
@@ -67,12 +69,13 @@ describe('LuigiAutoRoutingService', () => {
         'doSubscription'
       ).and.callThrough();
       const navigateSpy = jasmine.createSpy('navigate');
-      const linkManagerSpy = spyOn(Client, 'linkManager').and.returnValue(({
-        withoutSync: () => navigateSpy
-      } as unknown) as Client.LinkManager);
+      const linkManagerSpy = spyOn(Client, 'linkManager').and.returnValue({
+        withoutSync: () => navigateSpy,
+      } as unknown as Client.LinkManager);
       const event = new NavigationEnd(0, 'url', 'urlAfterRedirects');
 
       service.doSubscription(event);
+
       expect(doSubscriptionSpy).toHaveBeenCalled();
       expect(linkManagerSpy).toHaveBeenCalled();
       expect(navigateSpy).not.toHaveBeenCalled();
