@@ -292,7 +292,7 @@ describe('JS-TEST-APP', () => {
         defaultLabel: 'Select Environment',
         parentNodePath: '/environments',
         lazyloadOptions: true,
-        options: function () {
+        options: function() {
           return [
             {
               label: 'Environment 1',
@@ -306,7 +306,7 @@ describe('JS-TEST-APP', () => {
             }
           ];
         },
-        customSelectedOptionRenderer: function (option) {
+        customSelectedOptionRenderer: function(option) {
           if (option.customRendererCategory === 'production') {
             return `<label style='color: rgb(136, 255, 0); font-weight:700'>
                   ${option.label}
@@ -658,23 +658,27 @@ describe('JS-TEST-APP', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
-      newConfig.navigation.nodes.unshift(
-        {
-          pathSegment: 'firstnode',
-          label: 'First Node',
-          children: []
-        }
-      )
+      newConfig.navigation.nodes.unshift({
+        pathSegment: 'firstnode',
+        label: 'First Node',
+        children: []
+      });
     });
     it('TopNav nodes should be visible either first node has no view', () => {
       cy.visitTestAppLoggedIn('/', newConfig);
       cy.expectPathToBe('/firstnode/');
-      cy.get('.fd-app__sidebar .fd-nested-list').children().should('have.length', 0);
+      cy.get('.fd-app__sidebar .fd-nested-list')
+        .children()
+        .should('have.length', 0);
       cy.get('.fd-shellbar').contains('First Node');
-      cy.get('.fd-shellbar').contains('Home').click();
+      cy.get('.fd-shellbar')
+        .contains('Home')
+        .click();
       cy.expectPathToBe('/home');
-      cy.get('.fd-app__sidebar .fd-nested-list').children().should('have.length', 2);
+      cy.get('.fd-app__sidebar .fd-nested-list')
+        .children()
+        .should('have.length', 2);
       cy.get('.fd-app__sidebar').contains('Section one');
-    })
+    });
   });
 });
