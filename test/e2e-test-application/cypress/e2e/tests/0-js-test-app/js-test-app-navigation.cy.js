@@ -654,7 +654,7 @@ describe('JS-TEST-APP', () => {
     });
   });
 
-  describe.only('First topNav node has no viewURL and empty children', () => {
+  describe('First topNav node has no viewURL and empty children', () => {
     let newConfig;
     beforeEach(() => {
       newConfig = structuredClone(defaultLuigiConfig);
