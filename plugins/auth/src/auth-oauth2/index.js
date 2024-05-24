@@ -4,7 +4,7 @@ import { Helpers } from '../helpers';
 export default class oAuth2ImplicitGrant {
   constructor(settings = {}) {
     const defaultSettings = {
-      accessTokenExpiringNotificationTimeInSeconds: 60,
+      accessTokenExpiringNotificationTime: 60,
       authorizeMethod: 'GET',
       expirationCheckInterval: 5,
       oAuthData: {
@@ -128,15 +128,15 @@ export default class oAuth2ImplicitGrant {
   }
 
   setTokenExpireSoonAction() {
-    const accessTokenExpiringNotificationTimeInSeconds =
-      this.settings.accessTokenExpiringNotificationTimeInSeconds * 1000;
+    const accessTokenExpiringNotificationTime =
+      this.settings.accessTokenExpiringNotificationTime * 1000;
     const expirationCheckInterval = this.settings.expirationCheckInterval * 1000;
     let authData = this.getAuthData();
     if (authData) {
       this.expirationSoonCheckIntervalInstance = setInterval(() => {
         const tokenExpirationDate = (authData && authData.accessTokenExpirationDate) || 0;
         const currentDate = new Date();
-        if (tokenExpirationDate - currentDate.getTime() < accessTokenExpiringNotificationTimeInSeconds) {
+        if (tokenExpirationDate - currentDate.getTime() < accessTokenExpiringNotificationTime) {
           Luigi.auth().handleAuthEvent('onAuthExpireSoon', this.settings);
           clearInterval(this.expirationSoonCheckIntervalInstance);
         }

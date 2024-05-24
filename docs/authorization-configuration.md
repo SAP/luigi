@@ -134,9 +134,6 @@ auth: {
 - **type**: number
 - **description**: is the number of seconds before an access token expires and triggers silent token refresh.
 - **default**: `60` seconds
-#### thirdPartyCookiesScriptLocation
-- **type**: string
-- **description**: is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 #### userInfoFn
 - **type**: function
 - **description**: provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
@@ -182,7 +179,7 @@ auth: {
     nonceFn: () => {},
     logoutFn: (settings, authData, logoutCallback) => { ...; logoutCallback('/logout.html'); },
     userInfoFn:(settings, authData)=>{},
-    accessTokenExpiringNotificationTimeInSeconds: 60,
+    accessTokenExpiringNotificationTime: 60,
     expirationCheckInterval: 5
   },
   disableAutoLogin: false
@@ -220,7 +217,7 @@ auth: {
 #### userInfoFn
 - **type**: function
 - **description**:provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
-#### accessTokenExpiringNotificationTimeInSeconds
+#### accessTokenExpiringNotificationTime
 - **type**: number
 - **description**: number of seconds that pass before an access token expires and the **onAuthExpireSoon** event is fired.
 - **default**: the default value is `60` seconds.

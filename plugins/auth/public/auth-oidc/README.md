@@ -45,7 +45,7 @@ Luigi.setConfig({
     myProviderConfig: {
       idpProvider: OpenIdConnect,
       authority: 'http://authority.server',
-      logoutUrl: 'http://authority.server/connect/endsession',
+      post_logout_redirect_uri: 'http://authority.server/connect/endsession',
       scope: 'openid profile email',
 
       // for PKCE flow
