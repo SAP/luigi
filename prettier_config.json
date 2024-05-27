@@ -22,10 +22,11 @@
    "svelte": {
       "parser": "svelte",
       "plugins": ["prettier-plugin-svelte"],
+      "pluginSearchDirs": ["."],
       "svelteAllowShorthand": true,
       "svelteBracketNewLine": false,
       "svelteIndentScriptAndStyle": true,
       "svelteSortOrder": "options-scripts-markup-styles",
-      "svelteStrictMode": true
+      "svelteStrictMode": false
    }
 }
