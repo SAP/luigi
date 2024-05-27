@@ -110,9 +110,18 @@ body {
     }
 
     // API Function names
-    .page-luigi-core-api,
-    .page-luigi-client-api {
+    &.page-luigi-core-api,
+    &.page-luigi-client-api {
         h4 {
+            margin-top: 35px;
+            display: inline-block;
+            border-left: 4px solid $primary-color;
+            padding-left: 10px;
+        }
+    }
+    &.page-luigi-container-api,
+    &.page-luigi-compound-container-api {
+        h3 {
             margin-top: 35px;
             display: inline-block;
             border-left: 4px solid $primary-color;
