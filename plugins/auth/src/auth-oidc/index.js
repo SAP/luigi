@@ -131,10 +131,7 @@ export default class openIdConnect {
         case 'login_required':
         case 'account_selection_required':
         case 'consent_required': // possible cause: disabled third party cookies in the browser
-          redirectUrl =
-            this.settings.logoutUrl +
-            '?error=tokenExpired&errorDescription=' +
-            e.message;
+          redirectUrl = this.settings.logoutUrl + '?error=tokenExpired&errorDescription=' + e.message;
           break;
         default:
           console.error('[OIDC] addSilentRenewError Error', e);
