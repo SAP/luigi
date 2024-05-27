@@ -1926,7 +1926,7 @@
     }
   }
 
-  .fd-nested-list__content.has-child {
+  .fd-side-nav:not(.fd-side-nav--condensed) .fd-nested-list__content.has-child {
     .fd-nested-list__link {
       max-width: calc(100% - 2.5rem);
     }
