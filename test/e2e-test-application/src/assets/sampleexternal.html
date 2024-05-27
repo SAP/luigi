@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>External sample page</title>
@@ -114,17 +114,17 @@
         hideLoadingIndicator();
       }
       function hideLoadingIndicator() {
-        setTimeout(function () {
+        setTimeout(function() {
           LuigiClient.uxManager().hideLoadingIndicator();
         }, 3000);
       }
       hideLoadingIndicator();
     </script>
     <script type="text/javascript">
-      window.addEventListener('popstate', function (event) {
+      window.addEventListener('popstate', function(event) {
         if (window.location.hash) {
           var anch = document.getElementsByName(
-            encodeURIComponent(window.location.hash.replace('#', '')),
+            encodeURIComponent(window.location.hash.replace('#', ''))
           );
           if (anch.length > 0) {
             anch[0].scrollIntoView();
