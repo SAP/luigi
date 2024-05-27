@@ -379,8 +379,8 @@ export class linkManager extends LuigiClientBase {
     const currentId = helpers.getRandomId();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
-      resolveFn: function () { },
-      then: function (resolveFn) {
+      resolveFn: function() {},
+      then: function(resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
@@ -389,7 +389,7 @@ export class linkManager extends LuigiClientBase {
     // register event listener, which will be cleaned up after this usage
     helpers.addEventListener(
       'luigi.navigation.pathExists.answer',
-      function (e, listenerId) {
+      function(e, listenerId) {
         const data = e.data.data;
         const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
         if (data.correlationId === currentId) {
@@ -492,8 +492,8 @@ export class linkManager extends LuigiClientBase {
 
     const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
     currentRoutePromise[currentId] = {
-      resolveFn: function () { },
-      then: function (resolveFn) {
+      resolveFn: function() {},
+      then: function(resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
