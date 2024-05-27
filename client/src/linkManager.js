@@ -277,8 +277,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext() {
-    const hasParentNavigationContext =
-      this.currentContext && this.currentContext.context?.parentNavigationContexts?.length > 0;
+    const hasParentNavigationContext = this.currentContext?.context?.parentNavigationContexts?.length > 0;
     if (hasParentNavigationContext) {
       this.options.fromContext = null;
       this.options.fromClosestContext = true;
@@ -380,8 +379,8 @@ export class linkManager extends LuigiClientBase {
     const currentId = helpers.getRandomId();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
     pathExistsPromises[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn) {
+      resolveFn: function () { },
+      then: function (resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
@@ -390,7 +389,7 @@ export class linkManager extends LuigiClientBase {
     // register event listener, which will be cleaned up after this usage
     helpers.addEventListener(
       'luigi.navigation.pathExists.answer',
-      function(e, listenerId) {
+      function (e, listenerId) {
         const data = e.data.data;
         const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
         if (data.correlationId === currentId) {
@@ -493,8 +492,8 @@ export class linkManager extends LuigiClientBase {
 
     const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
     currentRoutePromise[currentId] = {
-      resolveFn: function() {},
-      then: function(resolveFn) {
+      resolveFn: function () { },
+      then: function (resolveFn) {
         this.resolveFn = resolveFn;
       }
     };
