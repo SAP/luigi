@@ -48,8 +48,6 @@
     document.head.appendChild(style);
     
     const core = document.createElement('script');
-    // core.setAttribute('type', 'module');
-    // viewurl auf localhost
     core.setAttribute('src', coreBasePath + '/luigi.js');
     document.head.appendChild(core);
     return new Promise((resolve) => {
