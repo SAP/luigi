@@ -23,10 +23,14 @@
       "parser": "svelte",
       "plugins": ["prettier-plugin-svelte"],
       "pluginSearchDirs": ["."],
+      "printWidth": 120,
+      "singleQuote": true,
       "svelteAllowShorthand": true,
-      "svelteBracketNewLine": false,
+      "svelteBracketNewLine": true,
       "svelteIndentScriptAndStyle": true,
-      "svelteSortOrder": "options-scripts-markup-styles",
-      "svelteStrictMode": false
+      "svelteSortOrder": "scripts-markup-styles",
+      "svelteStrictMode": false,
+      "tabWidth": 2,
+      "trailingComma": "none"
    }
 }
