@@ -36,6 +36,15 @@ body {
 
     //Content styles
 
+    .headingWrapper {
+        h1:hover, h2:hover, h3:hover, h4:hover {
+            .icon-link:after {
+                content: '#';
+                margin-left: 1rem;
+            }
+        }
+    }
+
     .h2Wrapper {
         margin-top: 45px;
         padding-top: 40px;
