@@ -227,18 +227,6 @@ describe('getContainerManager messageListener', () => {
     expect(dispatchedEvent.type).toEqual(Events.SET_ANCHOR_LINK_REQUEST);
   });
 
-  it('test third party cookies request', () => {
-    const event = {
-      source: cw,
-      data: {
-        msg: LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST,
-        params: 'set-thirdparty-cookies-request'
-      }
-    };
-    cm.messageListener(event);
-    expect(dispatchedEvent.type).toEqual(Events.SET_THIRD_PARTY_COOKIES_REQUEST);
-  });
-
   it('test navigation back request', () => {
     const event = {
       source: cw,

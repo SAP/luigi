@@ -45,7 +45,6 @@
   import { SplitViewSvc } from './services/split-view';
   import { ViewGroupPreloading } from './services/preloading';
   import { MessagesListeners } from './services/messages-listeners';
-  import { thirdPartyCookiesStatus } from './utilities/third-party-cookies-check.js';
   import { NodeDataManagementStorage } from './services/node-data-management.js';
 
   const dispatch = createEventDispatcher();
@@ -98,7 +97,6 @@
   let responsiveNavSetting;
   let tabNav;
   let resizeTabNavToggle = false;
-  let thirdPartyCookiesCheck;
   let searchProvider;
   let internalUserSettingsObject = {};
   let burgerTooltip;
@@ -1815,15 +1813,6 @@
           );
         }
       }
-      if (
-        thirdPartyCookiesCheck &&
-        !thirdPartyCookiesCheck.thirdPartyCookieScriptLocation &&
-        'luigi.third-party-cookie' === e.data.msg
-      ) {
-        if (e.data.tpc === 'disabled') {
-          tpcErrorHandling(thirdPartyCookiesCheck);
-        }
-      }
 
       if ('storage' === e.data.msg) {
         StorageHelper.process(
@@ -1901,18 +1890,6 @@
   setContext('store', store);
   setContext('getTranslation', getTranslation);
 
-  const tpcErrorHandling = (thirdpartycookiecheck) => {
-    if (
-      thirdPartyCookiesCheck &&
-      thirdPartyCookiesCheck.thirdPartyCookieErrorHandling &&
-      GenericHelpers.isFunction(
-        thirdPartyCookiesCheck.thirdPartyCookieErrorHandling,
-      )
-    ) {
-      thirdPartyCookiesCheck.thirdPartyCookieErrorHandling();
-    }
-  };
-
   /**
    * This function will be called if the LuigiClient requested the context.
    * That means spinner can fade out in order to display the mf.
@@ -1989,30 +1966,6 @@
         }
       }
       document.body.classList.add('lui-semiCollapsible');
-    }
-    thirdPartyCookiesCheck = LuigiConfig.getConfigValue(
-      'settings.thirdPartyCookieCheck',
-    );
-    if (
-      thirdPartyCookiesCheck &&
-      thirdPartyCookiesCheck.thirdPartyCookieScriptLocation
-    ) {
-      setTimeout(() => {
-        let thirdPartyCookieCheckIframe = document.createElement('iframe');
-        thirdPartyCookieCheckIframe.width = '0px';
-        thirdPartyCookieCheckIframe.height = '0px';
-        thirdPartyCookieCheckIframe.src =
-          thirdPartyCookiesCheck.thirdPartyCookieScriptLocation;
-        document.body.appendChild(thirdPartyCookieCheckIframe);
-        thirdPartyCookieCheckIframe.onload = function () {
-          setTimeout(() => {
-            if (thirdPartyCookiesStatus() === 'disabled') {
-              tpcErrorHandling(thirdPartyCookiesCheck);
-            }
-          });
-          document.body.removeChild(thirdPartyCookieCheckIframe);
-        };
-      });
     }
   });
 

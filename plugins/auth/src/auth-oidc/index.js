@@ -1,6 +1,6 @@
 import { UserManager, WebStorageStateStore, InMemoryWebStorage } from 'oidc-client';
 import { Helpers } from '../helpers';
-import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
+
 export default class openIdConnect {
   constructor(settings = {}) {
     const defaultSettings = {
@@ -133,9 +133,7 @@ export default class openIdConnect {
         case 'consent_required': // possible cause: disabled third party cookies in the browser
           redirectUrl =
             this.settings.logoutUrl +
-            '?error=tokenExpired&thirdPartyCookies=' +
-            thirdPartyCookiesStatus() +
-            '&errorDescription=' +
+            '?error=tokenExpired&errorDescription=' +
             e.message;
           break;
         default:

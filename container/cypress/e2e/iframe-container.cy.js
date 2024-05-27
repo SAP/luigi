@@ -33,7 +33,6 @@ describe('Iframe Container Test', () => {
           .contains('test custom message')
           .click()
           .then(() => {
-            expect(stub.getCall(0)).to.be.calledWith('set-third-party-cookies-request');
             expect(stub.getCall(1)).to.be.calledWith(
               'Custom message recieved: {"id":"my.customMessage","_metaData":{},"data":{"bar":"foo"}}'
             );

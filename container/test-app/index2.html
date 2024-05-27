@@ -181,15 +181,6 @@
         );
       });
 
-      // SET_THIRD_PARTY_COOKIES_REQUEST - called on microfrontend startup
-      luigiCnt2.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event => {
-        console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
-        alert(
-          Events.SET_THIRD_PARTY_COOKIES_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data.data)
-        );
-      });
-
       // BACK_NAVIGATION_REQUEST
       luigiCnt2.addEventListener(Events.BACK_NAVIGATION_REQUEST, event => {
         console.log(Events.BACK_NAVIGATION_REQUEST, event);

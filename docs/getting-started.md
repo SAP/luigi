@@ -51,7 +51,7 @@ Luigi consists of two main parts:
 * [Navigation](navigation-configuration.md) - consistent user navigation created using specific Luigi [parameters](navigation-parameters-reference.md).
 * [Authorization](authorization-configuration.md) - integration with an authentication provider, allowing users to log in.
 * [Localization](i18n.md) - displaying an application in multiple languages.
-* [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes, third-party cookie configuration and more.
+* [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes and more.
 * [API](luigi-core-api.md) - functions to help with almost every part of your app: navigation, authorization, adding a [search box](luigi-core-api.md#globalsearch), configuring a light/dark [theme](luigi-core-api.md#theming) and others.
 
 <!-- add-attribute:class:success -->

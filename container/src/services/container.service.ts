@@ -154,9 +154,6 @@ export class ContainerService {
               case LuigiInternalMessageID.SET_ANCHOR_LINK_REQUEST:
                 this.dispatch(Events.SET_ANCHOR_LINK_REQUEST, targetCnt, event);
                 break;
-              case LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST:
-                this.dispatch(Events.SET_THIRD_PARTY_COOKIES_REQUEST, targetCnt, event);
-                break;
               case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
                 this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event);
                 break;

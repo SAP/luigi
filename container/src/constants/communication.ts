@@ -65,11 +65,6 @@ export namespace Events {
   export const SET_ANCHOR_LINK_REQUEST = 'set-anchor-request';
 
   /**
-   * A message emitted from the micro frontend when a request to set third-party cookies is sent
-   */
-  export const SET_THIRD_PARTY_COOKIES_REQUEST = 'set-third-party-cookies-request';
-
-  /**
    * A message emitted from the micro frontend when a request to navigate back is sent
    */
   export const BACK_NAVIGATION_REQUEST = 'navigate-back-request';
