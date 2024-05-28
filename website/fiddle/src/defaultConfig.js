@@ -272,7 +272,6 @@ Luigi.setConfig({
                 }
             },
             storeUserSettings: (obj, previous) => {
-                console.log('test');
                 return new Promise((resolve, reject) => {
                     if (JSON.stringify(obj) !== JSON.stringify(previous)) {
                         let theme = obj.theme.theme;
