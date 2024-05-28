@@ -34,6 +34,7 @@
 		"cpy-cli": "^4.2.0",
 		"hastscript": "^7.2.0",
 		"hogan.js": "^3.0.2",
+		"rehype-autolink-headings": "^7.1.0",
 		"rehype-format": "^4.0.1",
 		"rehype-slug": "^5.1.0",
 		"rehype-stringify": "^9.0.3",
