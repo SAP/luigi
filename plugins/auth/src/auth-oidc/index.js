@@ -14,7 +14,7 @@ export default class openIdConnect {
       accessTokenExpiringNotificationTime: 60,
       thirdPartyCookiesScriptLocation: '',
       logoutUrl: window.location.origin + '/logout.html',
-      silent_redirect_uri: window.location.origin + '/assets/auth-oidc-pkce/silent-callback.html'
+      silent_redirect_uri: window.location.origin + '/assets/auth-oidc/silent-callback.html'
     };
 
     const mergedSettings = Helpers.deepMerge(defaultSettings, settings);

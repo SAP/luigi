@@ -134,6 +134,9 @@ auth: {
 - **type**: number
 - **description**: is the number of seconds before an access token expires and triggers silent token refresh.
 - **default**: `60` seconds
+#### thirdPartyCookiesScriptLocation
+- **type**: string
+- **description**: is the URL to the page containing third-party cookies support check. For details, see [Third-party cookies and silent token refresh section](#Third-party-cookies-and-silent-token-refresh).
 #### userInfoFn
 - **type**: function
 - **description**: provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.

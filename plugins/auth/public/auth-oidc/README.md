@@ -25,7 +25,7 @@ Further configuration details can be found in the [main documentation](https://d
 
 Install the plugin in your project using npm:
 ```bash
-npm install @luigi-project/plugin-auth-oidcy
+npm install @luigi-project/plugin-auth-oidc
 ```
 
 Import the plugin in places where you want to use it, depending on the environment of your choice:
@@ -63,7 +63,7 @@ Luigi.setConfig({
 ```
 
 If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation,
-which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc-pkce/silent-callback.html`.
+which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`.
 
 Next, you must install `oidc-client` in your project as a dev dependency:
 
