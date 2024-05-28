@@ -1,31 +1,31 @@
 <!-- meta
 {
   "node": {
-    "label": "OpenID Connect Plugin",
+    "label": "Legacy OpenID Connect Plugin",
     "category": {
       "label": "Authorization",
       "collapsible": true
     },
     "metaData": {
       "categoryPosition": 4,
-      "position": 3
+      "position": 4
     }
   }
 }
 meta -->
 
-# OpenID Connect - Authorization Plugin for Luigi Core
+# Legacy OpenID Connect - Authorization Plugin for Luigi Core
 
 ## Overview
 
-This [authorization plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/main/core) with an OpenID Connect authorization provider.
-Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support only Authorization Code flow with PKCE - for Implict flow please check [legacy OIDC plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-legacy).
+This [legacy authorization plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/main/core) with an OpenID Connect authorization provider.
+Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow. If you don't need Implict flow please use [modern OIDC plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce) instead of legacy one.
 
 ## Installation
 
 Install the plugin in your project using npm:
 ```bash
-npm install @luigi-project/plugin-auth-oidc
+npm install @luigi-project/plugin-auth-oidcy
 ```
 
 Import the plugin in places where you want to use it, depending on the environment of your choice:
@@ -45,13 +45,16 @@ Luigi.setConfig({
     myProviderConfig: {
       idpProvider: OpenIdConnect,
       authority: 'http://authority.server',
-      post_logout_redirect_uri: 'http://authority.server/connect/endsession',
+      logoutUrl: 'http://authority.server/connect/endsession',
       scope: 'openid profile email',
 
       // for PKCE flow
       client_id: 'authorisation-code-pkce-mock-client', // example oidc-mockserver client id
       response_type: "code", // for PKCE
       response_mode: "fragment", // change between `query` and `fragment`
+
+      // for implicit grant flow
+      // client_id: 'implicit-mock-client', // example oidc-mockserver client id
 
       // ... further configuration data comes here
     }
@@ -60,18 +63,18 @@ Luigi.setConfig({
 ```
 
 If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation,
-which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc/silent-callback.html`.
+which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc-pkce/silent-callback.html`.
 
-Next, you must install `oidc-client-ts` in your project as a dev dependency:
+Next, you must install `oidc-client` in your project as a dev dependency:
 
 ```javascript
-npm i -save-dev oidc-client-ts
+npm i -save-dev oidc-client
 ```
 
 Then, you need to copy certain auxiliary plugin files and the callback file, as they are needed for the initial setup.
 
-Respectively from `oidc-client-ts` library you need:
-- `oidc-client-ts.min.js` which normally resides in `node_modules/oidc-client-ts/dist/browser`
+Respectively from `oidc-client` library you need:
+- `oidc-client.min.js` which normally resides in `node_modules/oidc-client/dist`
 
 and from our library `@luigi-project/plugin-auth-oidc` you need:
 - `plugin.js`
@@ -101,7 +104,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
          to: 'assets/auth-oidc'
      },
      {
-         from: 'node_modules/oidc-client-ts/dist/browser/oidc-client-ts.min.js',
+         from: 'node_modules/oidc-client/dist/oidc-client.min.js',
          to: 'assets/auth-oidc'
      }
     ])
@@ -114,7 +117,7 @@ If your application does not use webpack or you installed Luigi without a framew
 ```javascript
 "buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
 "build": "npm run buildConfig && npm run copyCallbackOIdc",
-"copyCallbackOidc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html node_modules/@luigi-project/plugin-auth-oidc/plugin.js node_modules/oidc-client-ts/dist/browser/oidc-client-ts.min.js public/assets/auth-oidc"
+"copyCallbackOidc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html node_modules/@luigi-project/plugin-auth-oidc/plugin.js node_modules/oidc-client/dist/oidc-client.min.js public/assets/auth-oidc"
 ```
 
 Running `npm run build` should then suffice to bundle the config and also copy the callback file.

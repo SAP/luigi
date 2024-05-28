@@ -21,7 +21,7 @@ function setParsedDocs() {
     rootPath + 'docs',
     rootPath + 'plugins/auth/public/auth-oauth2',
     rootPath + 'plugins/auth/public/auth-oidc',
-    rootPath + 'plugins/auth/public/auth-oidc-legacy'
+    rootPath + 'plugins/auth/public/auth-oidc-pkce'
   ];
   const parsingArr = [];
   dirs.forEach(dir => {

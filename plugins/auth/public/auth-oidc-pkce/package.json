@@ -1,5 +1,5 @@
 {
-  "name": "@luigi-project/plugin-auth-oidc-legacy",
+  "name": "@luigi-project/plugin-auth-oidc-pkce",
   "description": "OpenID Connect provider plugin for @luigi-project/core",
   "license": "Apache-2.0",
   "main": "plugin.js",
@@ -8,7 +8,7 @@
     "url": "ssh://github.com/SAP/luigi.git"
   },
   "publishConfig": {
-    "tag": "luigi-plugin-auth-oidc-legacy"
+    "tag": "luigi-plugin-auth-oidc-pkce"
   },
   "keywords": [
     "luigi",

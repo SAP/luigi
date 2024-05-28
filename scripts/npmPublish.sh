@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Publishes the current version 
+# Publishes the current version
 
 set -e # exit on errors
 
@@ -28,9 +28,9 @@ function prepublishChecks {
   CLIENT_VERSION=$(node -p "require('./package.json').version")
   cd $BASE_DIR/../core/public
   CORE_VERSION=$(node -p "require('./package.json').version")
-  
+
   echoe "Core Version: $CORE_VERSION, Client Version: $CLIENT_VERSION, Base Dir: $BASE_DIR"
-  
+
   if [ "$CORE_VERSION" != "$CLIENT_VERSION" ]; then
     echoe "Version mismatch between Client and Core."
     exit 1
@@ -48,7 +48,7 @@ function prepublishChecks {
 function prepublishCheck {
   cd $BASE_DIR/../$1
   VERSION=$(node -p "require('./package.json').version")
-  
+
   # Check if it can be published (github release must exist )
   TAGS_GREP=`git ls-remote --tags origin | grep "v$VERSION$" | wc -l`
   if [[ "$TAGS_GREP" =~ "0" ]]; then
@@ -138,15 +138,15 @@ else
   fi
 
   # Luigi Oidc Plugin
-  if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
-    checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "README.md"
-    publishPackage "plugins" "plugins/auth/public/auth-oidc"
+  if ( prepublishCheck "plugins/auth/public/auth-oidc-pkce" ); then
+    checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
+    publishPackage "plugins" "plugins/auth/public/auth-oidc-pkce"
   fi
 
   # Luigi Legacy Oidc Plugin
-  if ( prepublishCheck "plugins/auth/public/auth-oidc-legacy" ); then
-    checkRequiredFiles "plugins/auth/public/auth-oidc-legacy" "plugin.js" "README.md"
-    publishPackage "plugins" "plugins/auth/public/auth-oidc-legacy"
+  if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
+    checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "README.md"
+    publishPackage "plugins" "plugins/auth/public/auth-oidc"
   fi
 
   # Luigi Client Support Anguar
@@ -160,7 +160,7 @@ else
     checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
     publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
   fi
-  
+
   # Luigi Client & Core
   checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
   publishPackage "core" "core/public"

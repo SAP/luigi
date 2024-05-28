@@ -1,5 +1,5 @@
 import oAuth2ImplicitGrant from '@luigi-project/plugin-auth-oauth2';
-import openIdConnect from '@luigi-project/plugin-auth-oidc-legacy';
+import openIdConnect from '@luigi-project/plugin-auth-oidc';
 class Auth {
   use = 'mockAuth';
 

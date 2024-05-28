@@ -33,8 +33,8 @@ Luigi versions 1.0 and above differ from earlier versions in some important ways
 - @luigi-project/client
 - @luigi-project/core
 - @luigi-project/plugin-auth-oauth2
+- @luigi-project/plugin-auth-oidc-pkce
 - @luigi-project/plugin-auth-oidc
-- @luigi-project/plugin-auth-oidc-legacy
 
 You can read more about the other changes below:
 
@@ -49,8 +49,8 @@ Additionally, you need to copy callback assets to your Core application.
 To install the plugins, follow these installation guides:
 
 - [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oauth2)
-- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc)
-- [Legacy OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-legacy)
+- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce)
+- [Legacy OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc)
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.

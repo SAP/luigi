@@ -1,18 +1,20 @@
-import { UserManager, WebStorageStateStore, InMemoryWebStorage } from 'oidc-client-ts';
+import { UserManager, WebStorageStateStore, InMemoryWebStorage } from 'oidc-client';
 import { Helpers } from '../helpers';
 import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
 
 export default class openIdConnect {
   constructor(settings = {}) {
     const defaultSettings = {
-      accessTokenExpiringNotificationTimeInSeconds: 60,
-      automaticSilentRenew: false,
+      redirect_uri: window.location.origin,
+      post_logout_redirect_uri: window.location.origin + '/logout.html',
+      response_type: 'id_token token',
       filterProtocolClaims: true,
       loadUserInfo: false,
-      post_logout_redirect_uri: window.location.origin + '/logout.html',
-      redirect_uri: window.location.origin,
-      response_type: 'code',
-      silent_redirect_uri: window.location.origin + '/assets/auth-oidc/silent-callback.html'
+      automaticSilentRenew: false,
+      accessTokenExpiringNotificationTime: 60,
+      thirdPartyCookiesScriptLocation: '',
+      logoutUrl: window.location.origin + '/logout.html',
+      silent_redirect_uri: window.location.origin + '/assets/auth-oidc-pkce/silent-callback.html'
     };
 
     const mergedSettings = Helpers.deepMerge(defaultSettings, settings);
@@ -81,7 +83,7 @@ export default class openIdConnect {
 
   login() {
     return this.client.signinRedirect({ state: window.location.href }).catch(err => {
-      console.error('[OIDC] login() Error', err);
+      console.error('[OIDC Legacy] login() Error', err);
       return err;
     });
   }
@@ -92,13 +94,14 @@ export default class openIdConnect {
       state: encodeURI(window.location.href)
     };
 
-    return this.client._client.createSignoutRequest(signoutData)
+    return this.client
+      .createSignoutRequest(signoutData)
       .then(req => {
         authOnLogoutFn();
         window.location = req.url;
       })
       .catch(function(err) {
-        console.error('[OIDC] logout() Error', err);
+        console.error('[OIDC Legacy] logout() Error', err);
         authOnLogoutFn();
       });
   }
@@ -110,9 +113,16 @@ export default class openIdConnect {
           'onAuthExpired',
           this.settings,
           undefined,
-          this.settings.post_logout_redirect_uri + '?error=tokenExpired'
+          this.settings.logoutUrl + '?error=tokenExpired'
         );
       });
+    }
+
+    if (this.settings.thirdPartyCookiesScriptLocation) {
+      const iframe = document.createElement('iframe');
+      iframe.src = this.settings.thirdPartyCookiesScriptLocation;
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
     }
 
     this.client.events.addSilentRenewError(e => {
@@ -123,15 +133,15 @@ export default class openIdConnect {
         case 'account_selection_required':
         case 'consent_required': // possible cause: disabled third party cookies in the browser
           redirectUrl =
-            this.settings.post_logout_redirect_uri +
+            this.settings.logoutUrl +
             '?error=tokenExpired&thirdPartyCookies=' +
             thirdPartyCookiesStatus() +
             '&errorDescription=' +
             e.message;
           break;
         default:
-          console.error('[OIDC] addSilentRenewError Error', e);
-          redirectUrl = this.settings.post_logout_redirect_uri + '?error=tokenExpired&errorDescription=' + e.message;
+          console.error('[OIDC Legacy] addSilentRenewError Error', e);
+          redirectUrl = this.settings.logoutUrl + '?error=tokenExpired&errorDescription=' + e.message;
       }
       Luigi.auth().handleAuthEvent('onAuthError', this.settings, e, redirectUrl);
     });
@@ -147,14 +157,15 @@ export default class openIdConnect {
     return new Promise((resolve, reject) => {
       // TODO: dex logout does not yet support proper logout
       if (window.location.href.indexOf('?logout') >= 0) {
-        this.client._client.processSignoutResponse()
+        this.client
+          .processSignoutResponse()
           .then(response => {
             Luigi.auth().store.removeAuthData();
             resolve(response);
           })
           .catch(function(err) {
             reject(response);
-            console.error('[OIDC] Logout Error', err);
+            console.error('[OIDC Legacy] Logout Error', err);
           });
       }
       resolve(true);
@@ -191,7 +202,7 @@ export default class openIdConnect {
         .then((authenticatedUser = {}) => {
           if (authenticatedUser.error) {
             return console.error(
-              '[OIDC] Error',
+              '[OIDC Legacy] Error',
               authenticatedUser.error,
               authenticatedUser.error_description,
               authenticatedUser
@@ -216,13 +227,13 @@ export default class openIdConnect {
           }, 50);
         })
         .catch(err => {
-          console.error('[OIDC] tryToSignIn Error', err);
+          console.error('[OIDC Legacy] tryToSignIn Error', err);
           Luigi.auth().store.removeAuthData();
           Luigi.auth().handleAuthEvent(
             'onAuthExpired',
             this.settings,
             err,
-            this.settings.post_logout_redirect_uri + '?error=loginError'
+            this.settings.logoutUrl + '?error=loginError'
           );
         });
     });
@@ -231,14 +242,14 @@ export default class openIdConnect {
   async tryToSignIn() {
     try {
       // If the user was just redirected here from the sign in page, sign them in.
-      console.debug('[OIDC] User was redirected via the sign-in page. Now signed in.');
+      console.debug('[OIDC Legacy] User was redirected via the sign-in page. Now signed in.');
       return await this.client.signinRedirectCallback();
     } catch (error) {
-      console.debug("[OIDC] Error. Sign-in redirect callback doesn't work. Let's try a silent sign-in.", error);
+      console.debug("[OIDC Legacy] Error. Sign-in redirect callback doesn't work. Let's try a silent sign-in.", error);
       // Barring that, if the user chose to have the Identity Server remember their
       // credentials and permission decisions, we may be able to silently sign them
       // back in via a background iframe.
-      console.debug('[OIDC] Silent sign-in completed.');
+      console.debug('[OIDC Legacy] Silent sign-in completed.');
       return await this.client.signinSilent();
     }
   }

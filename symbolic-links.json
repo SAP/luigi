@@ -50,9 +50,9 @@
     "scope": "@luigi-project/plugin-auth-oidc"
   },
   {
-    "source": "plugins/auth/public/auth-oidc-legacy",
+    "source": "plugins/auth/public/auth-oidc-pkce",
     "destination": "test/e2e-test-application",
-    "scope": "@luigi-project/plugin-auth-oidc-legacy"
+    "scope": "@luigi-project/plugin-auth-oidc-pkce"
   },
   {
     "source": "client-frameworks-support/testing-utilities/dist",
