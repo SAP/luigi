@@ -20,26 +20,26 @@
     // simple Luigi Container package bundle import
     import '../bundle.js';
     document.getElementById('compound1').compoundConfig = {
-      renderer: { 
-        use: 'grid', 
+      renderer: {
+        use: 'grid',
         config: {
-          columns: '1fr 1fr', 
+          columns: '1fr 1fr',
           gap: '20px'
-        } 
+        }
       },
       children: [
         {
-          viewUrl: "./compound-container/myCompoundWebComponent1.js",
+          viewUrl: './compound-container/myCompoundWebComponent1.js'
         },
         {
-          viewUrl: "./compound-container/myCompoundWebComponent2.js",
+          viewUrl: './compound-container/myCompoundWebComponent2.js'
         },
         {
-          viewUrl: "./compound-container/myCompoundWebComponent3.js",
+          viewUrl: './compound-container/myCompoundWebComponent3.js'
         },
         {
-          viewUrl: "./compound-container/myCompoundWebComponent4.js",
-        },
+          viewUrl: './compound-container/myCompoundWebComponent4.js'
+        }
       ]
     };
   </script>

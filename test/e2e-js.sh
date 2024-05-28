@@ -18,7 +18,7 @@ cd $NG_EXAMPLE
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
   echo "Running tests in parallel with recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
-  npm run e2e:run:js -- --record --parallel --key 4bf20f87-8352-47d5-aefa-1e684fab69cf
+  npm run e2e:run:js -- --record --parallel --key $CYPRESS_DASHBOARD_RECORD_KEY
 else
   echo "Running tests without parallelization"
   npm run e2e:run:js
