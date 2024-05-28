@@ -528,7 +528,7 @@
                   size: 'm'
                 })
               "
-              >Open webcomponent in a modal -----------------------------</a
+              >Open webcomponent in a modal</a
             >
             <app-code-snippet
               data="linkManager()
@@ -586,73 +586,36 @@
             </app-code-snippet>
           </li>
           <button
-          class="fd-button fd-margin-end--sm"
-          onclick="const splitResult = LuigiClient.linkManager().openAsSplitView('misc2-isolated', {title: 'Logs', size: 40});
-          console.log('Splitresult: ')
-          console.log(splitResult)
-          "
-          >
-          <span class="fd-button__text">1 Open Splitview</span>
-          <br>
-          </button>
-          <button
             class="fd-button"
-            onclick="const p1 = LuigiClient.linkManager().openAsModal('/projects/pr2/settings', {
+            data-testid="modal-on-close-promise"
+            onclick="
+            const p2 = LuigiClient.linkManager().openAsModal('/projects/pr2/settings', {
               title: 'microfrontend in a modal',
               size: 'm',
               keepPrevious: true
-            })
-            // LuigiClient.uxManager().closeCurrentModal()
-            p1.then((res) => {
-              console.log(res);
-            })
-
-            "
-          >
-          <span class="fd-button__text">2 openAsModal Promise res</span>
-          </button>
-          <br>
-
-          <button
-            class="fd-button"
-            onclick="
-            const modalResult = LuigiClient.linkManager().openAsModal('/projects/pr2/settings', {
-            title: 'microfrontend in a modal',
-            size: 'm',
-            keepPrevious: true
             });
-            console.log('modalResult:');
-            console.log(modalResult);
-            if (modalResult) {
-              modalResult.then((res) => {
-                console.log(res);
-              });
-            } else {
-              console.error('openAsModal did not return a promise');
+            console.log('promise p2 BEFORE closing modal: ', p2);
+            console.log('_zone_symbol__state: ', p2.__zone_symbol__state)
+            console.log('_zone_symbol__value: ', p2.__zone_symbol__value)
+            if (p2.__zone_symbol__state === null){
+              document.getElementById('resolveTextField').value = 'NULL';
+            } else{
+              document.getElementById('resolveTextField').value = p2.__zone_symbol__state;
             }
+            p2.then((res) => {
+              console.log('------------------------------- MODAL CLOSED -----------------------------------')
+              console.log('promise p2 AFTER closing modal: ', p2);
+              console.log('res of p2', res)
+              console.log('res.data of p2 ', res.data)
+              console.log('_zone_symbol__state: ', p2.__zone_symbol__state)
+              console.log('_zone_symbol__value: ', p2.__zone_symbol__value)
+              document.getElementById('resolveTextField').value = p2.__zone_symbol__state;
+            });
             "
           >
-          <span class="fd-button__text">3 Print what openAsModal returns</span>
+          <span class="fd-button__text">log infos about the promise, res and _zone_symbol__state</span>
           </button>
-          <button
-            class="fd-button"
-            onclick="
-            console.log('LuigiClient')
-            console.log(LuigiClient)
-
-            console.log('LuigiClient.linkManager()')
-            console.log(LuigiClient.linkManager())
-
-            console.log('LuigiClient.linkManager().openAsModal(\'/projects/pr2/settings\')');
-            const p = LuigiClient.linkManager().openAsModal('/projects/pr2/settings');
-            console.log(p);
-
-            console.log('LuigiClient.uxManager()')
-            console.log(LuigiClient.uxManager())
-            "
-          >
-          <span class="fd-button__text">4 print LuigiClient stuff</span>
-          </button>
+          <input type="text" id="resolveTextField" data-testid="__zone_symbol__state_textField" disabled value="promiseState" style="float: right">
           <li class="fd-list__item">
             <a
               href="javascript:void(0)"
