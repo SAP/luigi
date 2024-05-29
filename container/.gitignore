@@ -1,14 +1,14 @@
 /node_modules/
 
 /examples/bundle.js
+/examples/bundle.js.map
 /public/bundle.js
 /public/bundle.js.map
 /public/bundle.d.ts
 /public/bundle.d.ts.map
 /test-app/bundle.js
 /test-app/bundle.js.map
-/test-app/luigi-element.js
-
+/test-app/compound/luigi-element.js
 /public/**/*.ts
 
 /coverage

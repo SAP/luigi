@@ -8,6 +8,7 @@ import format from 'rehype-format';
 import html from 'rehype-stringify';
 import addIdsToHeadings from 'rehype-slug';
 import frontmatter from 'remark-frontmatter';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 import luigiLinkParser from '../unified-plugins/rehype-luigi-linkparser.js';
 import addCopyToClipboard from '../unified-plugins/rehype-copy-to-clipboard.js';
@@ -34,8 +35,9 @@ class MarkdownService {
         .use(rehypeRaw)
         .use(addCustomAttributes)
         .use(wrapAccordion, { questionTagName: 'h3' })
-        .use(luigiLinkParser, data)
         .use(addIdsToHeadings)
+        .use(rehypeAutolinkHeadings, { behavior: 'append' })
+        .use(luigiLinkParser, data)
         .use(addCopyToClipboard)
         .use(addKeyWords)
         .use(oldVersions)

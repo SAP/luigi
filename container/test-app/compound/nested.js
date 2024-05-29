@@ -3,6 +3,7 @@ export default class extends LuigiElement {
   constructor() {
     super({ openShadow: 'open', deferLuigiClientWCInit: false });
     const template = document.createElement('template');
+
     //remove buttons after review/AC
     template.innerHTML = `
         <section style="display: flex; height: 100%; flex-direction: column">
