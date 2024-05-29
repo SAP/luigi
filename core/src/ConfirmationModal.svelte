@@ -12,12 +12,12 @@
     information: 'message-information',
     warning: 'message-warning',
     error: 'message-error',
-    success: 'message-success',
+    success: 'message-success'
   };
 
-  onDestroy(()=> {
+  onDestroy(() => {
     IframeHelpers.enableA11YKeyboardBackdropExceptClassName('.fd-message-box-docs-static');
-  })
+  });
 
   onMount(() => {
     const defaultSettings = {
@@ -25,19 +25,17 @@
       header: LuigiI18N.getTranslation('luigi.confirmationModal.header'),
       body: LuigiI18N.getTranslation('luigi.confirmationModal.body'),
       buttonDismiss: LuigiI18N.getTranslation('luigi.button.dismiss'),
-      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm'),
+      buttonConfirm: LuigiI18N.getTranslation('luigi.button.confirm')
     };
     settings = {
       ...settings,
-      body: EscapingHelpers.sanatizeHtmlExceptTextFormatting(settings.body),
+      body: EscapingHelpers.sanatizeHtmlExceptTextFormatting(settings.body)
     };
     settings = Object.assign(defaultSettings, settings);
 
     IframeHelpers.disableA11YKeyboardExceptClassName('.fd-message-box-docs-static');
 
-    const focusedButton = settings.buttonConfirm
-      ? 'confirm-button'
-      : 'dismiss-button';
+    const focusedButton = settings.buttonConfirm ? 'confirm-button' : 'dismiss-button';
 
     try {
       document.querySelector(`.${focusedButton}`).focus();
@@ -68,14 +66,14 @@
     <header class="fd-bar fd-bar--header fd-message-box__header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          {#if settings.type}
-            <i class={getSapIconStr(settings.icon)} />
-          {/if}
+          {#if settings.type}<i class={getSapIconStr(settings.icon)} />{/if}
           <h2 class="fd-title fd-title--h5">{settings.header}</h2>
         </div>
       </div>
     </header>
-    <div class="fd-message-box__body">{@html settings.body}</div>
+    <div class="fd-message-box__body">
+      {@html settings.body}
+    </div>
     <footer class="fd-bar fd-bar--footer fd-message-box__footer">
       <div class="fd-bar__right">
         {#if settings.buttonConfirm !== false}
@@ -93,9 +91,7 @@
           <button
             on:click={() => dispatch('modalDismiss')}
             data-testid="luigi-modal-dismiss"
-            class="fd-button {settings.buttonConfirm === false
-              ? 'fd-button--emphasized'
-              : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
+            class="fd-button {settings.buttonConfirm === false ? 'fd-button--emphasized' : 'fd-button--transparent'} fd-button--compact fd-message-box__decisive-button dismiss-button"
           >
             {settings.buttonDismiss}
           </button>
