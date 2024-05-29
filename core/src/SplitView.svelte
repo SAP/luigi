@@ -1,26 +1,16 @@
 <script>
   import Backdrop from './Backdrop.svelte';
-  import {
-    afterUpdate,
-    onDestroy,
-    onMount,
-    createEventDispatcher,
-    getContext,
-  } from 'svelte';
+  import { afterUpdate, onDestroy, onMount, createEventDispatcher, getContext } from 'svelte';
   import { LuigiElements } from './core-api';
   import { SplitViewSvc } from './services';
-  import {
-    EventListenerHelpers,
-    GenericHelpers,
-    IframeHelpers,
-  } from './utilities/helpers';
+  import { EventListenerHelpers, GenericHelpers, IframeHelpers } from './utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
   let elements = {
     draggable: null,
     iframe: null,
-    split: null,
+    split: null
   };
   let lastNode;
   let pathData;
@@ -37,9 +27,7 @@
   export let isDataPrepared = false;
   export let disableBackdrop;
   let wasDataPrepared = false;
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
 
   //TODO refactor
   const getComponentWrapper = () => {
@@ -56,12 +44,12 @@
           splitViewIframe,
           splitViewIframeData,
           splitViewWC,
-          splitViewWCData,
+          splitViewWCData
         };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach((prop) => {
+          Object.getOwnPropertyNames(obj).forEach(prop => {
             if (prop === 'splitViewSettings') {
               splitViewSettings = obj.splitViewSettings;
             } else if (prop === 'lastNode') {
@@ -89,7 +77,7 @@
         }
       },
       dispatch,
-      getUnsavedChangesModalPromise,
+      getUnsavedChangesModalPromise
     };
   };
 
@@ -142,20 +130,14 @@
     }
     if ('luigi.navigation.splitview.resize' === e.data.msg) {
       const percentBottom = parseInt(e.data.data);
-      SplitViewSvc.calculateAndSetSplitViewValues(
-        percentBottom,
-        SplitViewSvc.internalValues
-      );
+      SplitViewSvc.calculateAndSetSplitViewValues(percentBottom, SplitViewSvc.internalValues);
 
       // In case setSize gets called before expanding
       if (collapsed) {
         return;
       }
       setSplitViewSize();
-      SplitViewSvc.sendMessageToClients(
-        'resize.ok',
-        SplitViewSvc.splitViewValues.percent
-      );
+      SplitViewSvc.sendMessageToClients('resize.ok', SplitViewSvc.splitViewValues.percent);
     }
   }
 
@@ -197,14 +179,10 @@
   export function updateSizes() {
     const shellbarHeight = GenericHelpers.getShellbarHeight();
     SplitViewSvc.internalValues.innerHeight = GenericHelpers.getInnerHeight();
-    SplitViewSvc.internalValues.rightContentHeight =
-      SplitViewSvc.internalValues.innerHeight - shellbarHeight;
+    SplitViewSvc.internalValues.rightContentHeight = SplitViewSvc.internalValues.innerHeight - shellbarHeight;
     SplitViewSvc.internalValues.thresholdBottom = 30;
     SplitViewSvc.internalValues.thresholdTop = shellbarHeight + 30;
-    SplitViewSvc.calculateAndSetSplitViewValues(
-      SplitViewSvc.splitViewValues.percent,
-      SplitViewSvc.internalValues
-    );
+    SplitViewSvc.calculateAndSetSplitViewValues(SplitViewSvc.splitViewValues.percent, SplitViewSvc.internalValues);
     if (!collapsed) {
       setSplitViewSize();
     }
@@ -241,11 +219,7 @@
 
     const onMouseUp = function onMouseUp() {
       clearListeners();
-      if (
-        !newValues.top ||
-        !newValues.bottom ||
-        newValues.top == SplitViewSvc.internalValues.m_pos_prev
-      ) {
+      if (!newValues.top || !newValues.bottom || newValues.top == SplitViewSvc.internalValues.m_pos_prev) {
         SplitViewSvc.getDraggerBackdrop().style.display = 'none';
         return;
       }
@@ -272,40 +246,27 @@
     SplitViewSvc.getDraggerBackdrop().style.display = 'block';
   }
 
-  const setDraggerVisibility = (visible) => {
+  const setDraggerVisibility = visible => {
     let dragger = SplitViewSvc.getDraggerButton();
     if (dragger) dragger.style.display = visible ? 'block' : 'none';
     dragger = SplitViewSvc.getCollapsedDraggerButton();
     if (dragger) dragger.style.display = visible ? 'block' : 'none';
   };
 
-  const backdropStateChanged = (event) => {
+  const backdropStateChanged = event => {
     setDraggerVisibility(!event.detail || event.detail.backdropActive !== true);
   };
 </script>
 
 <svelte:window on:resize={updateSizes} />
-<div
-  id="splitViewContainer"
-  class="fd-page splitViewContainer {collapsed ? 'lui-collapsed' : ''}"
->
-  <Backdrop
-    area="split-view"
-    disable={disableBackdrop}
-    on:stateChanged={backdropStateChanged}
-  />
+<div id="splitViewContainer" class="fd-page splitViewContainer {collapsed ? 'lui-collapsed' : ''}">
+  <Backdrop area="split-view" disable={disableBackdrop} on:stateChanged={backdropStateChanged} />
   <div class="lui-split-view">
     {#if collapsed}
-      <div
-        id="splitViewDraggerCollapsed"
-        class="splitViewSeparator isCollapsed"
-      >
+      <div id="splitViewDraggerCollapsed" class="splitViewSeparator isCollapsed">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <!-- svelte-ignore a11y-missing-attribute -->
-        <a
-          class="lui-collapse-btn"
-          on:click|stopPropagation|preventDefault={expand}
-        >
+        <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault={expand}>
           <i class="sap-icon sap-icon--navigation-up-arrow" />
         </a>
       </div>
@@ -321,10 +282,7 @@
     <div class="splitViewSeparator" />
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-missing-attribute -->
-    <a
-      class="lui-collapse-btn"
-      on:click|stopPropagation|preventDefault={collapse}
-    >
+    <a class="lui-collapse-btn" on:click|stopPropagation|preventDefault={collapse}>
       <i class="sap-icon sap-icon--navigation-down-arrow" />
     </a>
   </div>
@@ -469,7 +427,9 @@
       :global(.fd-app__sidebar) {
         left: calc(var(--luigi__left-sidenav--width) * -1);
       }
-      :global(#splitViewContainer), :global(#splitViewDragger), :global(#splitViewDraggerBackdrop) {
+      :global(#splitViewContainer),
+      :global(#splitViewDragger),
+      :global(#splitViewDraggerBackdrop) {
         left: 0;
       }
     }
