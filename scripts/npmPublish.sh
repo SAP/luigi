@@ -137,12 +137,6 @@ else
     publishPackage "plugins" "plugins/auth/public/auth-oauth2"
   fi
 
-  # Luigi Oidc Plugin
-  if ( prepublishCheck "plugins/auth/public/auth-oidc-pkce" ); then
-    checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
-    publishPackage "plugins" "plugins/auth/public/auth-oidc-pkce"
-  fi
-
   # Luigi Legacy Oidc Plugin
   if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
     checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "README.md"
