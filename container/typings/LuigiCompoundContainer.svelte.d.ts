@@ -12,7 +12,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The configuration for the compound microfrontend
-   * Take a look at https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound
+   * Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details. 
    * @since 1.0.0
    * 
    */

@@ -23,17 +23,15 @@
     }
   };
 
-  const isValidForArea = (e) => {
+  const isValidForArea = e => {
     if (!area) {
       return true;
     }
     const allMessagesSources = [
       ...IframeHelpers.getMicrofrontendsInDom(),
-      { contentWindow: window, luigi: { viewUrl: window.location.href } },
+      { contentWindow: window, luigi: { viewUrl: window.location.href } }
     ];
-    const microfrontend = allMessagesSources.find(
-      (mf) => mf.container && mf.container.contentWindow === e.source
-    );
+    const microfrontend = allMessagesSources.find(mf => mf.container && mf.container.contentWindow === e.source);
     if (microfrontend && area === microfrontend.type) {
       return false;
     }
@@ -41,12 +39,10 @@
   };
 
   onMount(() => {
-    const backdropDisabled = LuigiConfig.getConfigValue(
-      'settings.backdropDisabled'
-    );
+    const backdropDisabled = LuigiConfig.getConfigValue('settings.backdropDisabled');
     if (!backdropDisabled) {
       setBackdropClass();
-      EventListenerHelpers.addEventListener('message', (e) => {
+      EventListenerHelpers.addEventListener('message', e => {
         const srcIframe = IframeHelpers.getValidMessageSource(e);
         if (!srcIframe) return;
         if (disable !== true) {
@@ -63,7 +59,7 @@
             // enable backdrop background elements' accessbility
             // enable it only if backdrop was active,
             // otherwise all tabindex properties will be removed
-            if(wasBackdropActive){
+            if (wasBackdropActive) {
               IframeHelpers.enableA11yOfInactiveIframe();
             }
           }
@@ -83,10 +79,7 @@
   });
 </script>
 
-<div
-  class="{backdropClass} {area === 'main' ? 'zIndexZero' : ''}"
-  aria-hidden="false"
->
+<div class="{backdropClass} {area === 'main' ? 'zIndexZero' : ''}" aria-hidden="false">
   <slot />
 </div>
 

@@ -8,6 +8,7 @@ on:
 name: Build & Test
 env:
   CYPRESS_CACHE_FOLDER: ~/cypress-binary-cache
+  CYPRESS_DASHBOARD_RECORD_KEY:  ${{ secrets.CYPRESS_DASHBOARD }}
 
 jobs:
   prepare: 
@@ -76,6 +77,9 @@ jobs:
     name: Container E2E Tests
     runs-on: ubuntu-latest
     needs: prepare
+
+    env:
+      USE_CYPRESS_DASHBOARD: false # enable when trying to debug
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -95,6 +99,9 @@ jobs:
     name: Integration Tests
     needs: prepare
     runs-on: ubuntu-latest
+    
+    env:
+      USE_CYPRESS_DASHBOARD: false  # enable when trying to debug
     steps:
       - uses: actions/setup-node@v4
         with:
