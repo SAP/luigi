@@ -35,11 +35,7 @@
             on:click={() => onActionClick(node)}
             data-testid={NavigationHelpers.getTestId(node)}
           >
-            <a
-              href={getRouteLink(node)}
-              on:click|preventDefault={() => {}}
-              class="fd-menu__link"
-            >
+            <a href={getRouteLink(node)} on:click|preventDefault={() => {}} class="fd-menu__link">
               <span class="fd-menu__title">{$getTranslation(node.label)}</span>
             </a>
           </li>
@@ -79,9 +75,7 @@
                 on:click={event => {
                   NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
                 }}
-                class="fd-menu__link {label === selectedLabel
-                  ? 'is-selected'
-                  : ''}"
+                class="fd-menu__link {label === selectedLabel ? 'is-selected' : ''}"
                 title={label}
               >
                 <span class="fd-menu__title">{label}</span>
@@ -128,14 +122,12 @@
 
   .fd-menu__list {
     &--bottom {
-      border-top: var(--sapList_BorderWidth, 0.0625rem) solid
-        var(--sapList_BorderColor, #e4e4e4);
+      border-top: var(--sapList_BorderWidth, 0.0625rem) solid var(--sapList_BorderColor, #e4e4e4);
       border-top-left-radius: 0;
       border-top-right-radius: 0;
     }
     &--top {
-      border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid
-        var(--sapList_BorderColor, #e4e4e4);
+      border-bottom: var(--sapList_BorderWidth, 0.0625rem) solid var(--sapList_BorderColor, #e4e4e4);
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }

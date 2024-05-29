@@ -7,7 +7,6 @@ module.exports = defineConfig({
     viewportWidth: 1250,
     viewportHeight: 790,
     chromeWebSecurity: false,
-    baseUrl: 'http://localhost:8080/',
     supportFile: false
   }
 });

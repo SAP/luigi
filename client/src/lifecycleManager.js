@@ -528,7 +528,7 @@ class LifecycleManager extends LuigiClientBase {
    * const userSettings = LuigiClient.getUserSettings()
    */
   getUserSettings() {
-    return this.currentContext.internal.userSettings;
+    return this.currentContext.internal.userSettings || {};
   }
 
   /**

@@ -530,7 +530,7 @@ describe('WebComponentService', function() {
       };
       sb.stub(LuigiConfig, 'readUserSettings').resolves();
       WebComponentService.getUserSettingsForWc(wc).then(userSettings => {
-        expect(userSettings).equal(null);
+        expect(userSettings).to.deep.equal({});
       });
     });
   });

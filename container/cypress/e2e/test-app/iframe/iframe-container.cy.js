@@ -1,7 +1,6 @@
 describe('Iframe Container Test', () => {
   it('navigation sent', () => {
-    cy.visit('http://localhost:8080');
-    cy.visit('http://localhost:8080/#projects');
+    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
 
     cy.get('[data-test-id="iframe-based-container-test"]')
       .shadow()
@@ -13,7 +12,7 @@ describe('Iframe Container Test', () => {
           .click();
 
         cy.location().should(loc => {
-          expect(loc.href).to.eq('http://localhost:8080/#/');
+          expect(loc.href).to.eq('http://localhost:8080/');
         });
       });
   });
@@ -22,9 +21,9 @@ describe('Iframe Container Test', () => {
     const stub = cy.stub();
     cy.on('window:alert', stub);
 
-    cy.visit('http://localhost:8080/index2.html');
+    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
 
-    cy.get('[data-test-id="iframe-mf-w-messages"]')
+    cy.get('[data-test-id="iframe-based-container-test"]')
       .shadow()
       .get('iframe')
       .then(iframe => {
@@ -33,7 +32,8 @@ describe('Iframe Container Test', () => {
           .contains('test custom message')
           .click()
           .then(() => {
-            expect(stub.getCall(1)).to.be.calledWith(
+            cy.wrap(stub).should(
+              'have.been.calledWith',
               'Custom message recieved: {"id":"my.customMessage","_metaData":{},"data":{"bar":"foo"}}'
             );
           });
