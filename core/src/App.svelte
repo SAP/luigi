@@ -381,6 +381,9 @@
         Iframe.removeInactiveIframes(node);
       }
       for (let i = mfModalList.length; i--; ) {
+        if (mfModalList[i].modalWC && mfModalList[i].mfModal?.displayed) {
+          continue;
+        }
         closeModal(i);
       }
 
