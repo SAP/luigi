@@ -13,7 +13,7 @@ You can read about the new features in Luigi v2.13 in the release notes below.
 
 #### Accessibility for Left Nav in BTP Layout
 
-The Left Nav bar is now accessible when in BTP Layout.
+The Left Nav is now keyboard accessible when the BTP Layout is active.
 
 
 
