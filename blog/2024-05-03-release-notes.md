@@ -13,7 +13,7 @@ You can read about the new features in Luigi v2.12 in the release notes below.
 
 #### Opt Out of Luigi Error Handling for 404s
 
-If you have implemented your own `page not found` error handler function, then you can set **ignoreLuigiErrorHandling** to `true` in your routing configuration.
+If you have implemented your own `page not found` error handler function, then you can set [**ignoreLuigiErrorHandling**](https://docs.luigi-project.io/docs/navigation-parameters-reference?section=pagenotfoundhandler) to `true` in your routing configuration.
 
 #### Update Context via Core API
 
