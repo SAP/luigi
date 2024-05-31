@@ -134,9 +134,6 @@ auth: {
 - **type**: number
 - **description**: is the number of seconds before an access token expires and triggers silent token refresh.
 - **default**: `60` seconds
-#### thirdPartyCookiesScriptLocation
-- **type**: string
-- **description**: is the URL to the page containing third-party cookies support check. For details, see [Silent token refresh section](#silent-token-refresh).
 #### userInfoFn
 - **type**: function
 - **description**: provides a function to get user information. It returns a promise of a **userinfo** object which can contain **name**, **email** and **picture** (value is a URL to the image). **Name** or **email** are displayed in the profile drop-down menu and the user’s profile picture is displayed in the top navigation.
@@ -148,7 +145,7 @@ auth: {
 
 The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
 
-When Luigi fails to renew the token and then logs the user out, it adds the `?reason=tokenExpired` query parameter to the logout page redirect URL. Use this parameter to set a logout page.
+When Luigi fails to renew the token it logs the user out and adds the `?reason=tokenExpired` query parameter to the logout page redirect URL. Use this parameter to set a logout page.
 
 > **NOTE:** Starting from version 3.0 Luigi doesn't support third-party cookies in any way.
 

@@ -11,7 +11,6 @@ export default class openIdConnect {
       loadUserInfo: false,
       automaticSilentRenew: false,
       accessTokenExpiringNotificationTime: 60,
-      thirdPartyCookiesScriptLocation: '',
       logoutUrl: window.location.origin + '/logout.html',
       silent_redirect_uri: window.location.origin + '/assets/auth-oidc/silent-callback.html'
     };
@@ -115,13 +114,6 @@ export default class openIdConnect {
           this.settings.logoutUrl + '?error=tokenExpired'
         );
       });
-    }
-
-    if (this.settings.thirdPartyCookiesScriptLocation) {
-      const iframe = document.createElement('iframe');
-      iframe.src = this.settings.thirdPartyCookiesScriptLocation;
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
     }
 
     this.client.events.addSilentRenewError(e => {
