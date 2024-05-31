@@ -23,9 +23,7 @@
       async () => {
         config = NavigationHelpers.getProductSwitcherConfig();
         if (config) {
-          productSwitcherItems = await LuigiConfig.getConfigValueAsync(
-            'navigation.productSwitcher.items'
-          );
+          productSwitcherItems = await LuigiConfig.getConfigValueAsync('navigation.productSwitcher.items');
           setColumnsClass();
         }
         setViewportHeightVariable();
@@ -37,9 +35,12 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function onActionClick(productSwitcherItem) {
-    getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateToLink(productSwitcherItem);
-    }, () => {});
+    getUnsavedChangesModalPromise().then(
+      () => {
+        Routing.navigateToLink(productSwitcherItem);
+      },
+      () => {}
+    );
     toggleDropdownState();
   }
 
@@ -112,12 +113,7 @@
               {#if hasOpenUIicon(config)}
                 <!-- default: sap-icon--grid -->
                 <i class="sap-icon {getSapIconStr(config.icon)}" />
-              {:else}
-                <img
-                  src={config.icon}
-                  alt={config.altText ? config.altText : ''}
-                />
-              {/if}
+              {:else}<img src={config.icon} alt={config.altText ? config.altText : ''} />{/if}
             </button>
           </div>
           <div
@@ -131,9 +127,7 @@
                   {#if productSwitcherItem.label}
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
                     <li
-                      class="fd-product-switch__item {productSwitcherItem.selected
-                        ? 'selected'
-                        : ''}"
+                      class="fd-product-switch__item {productSwitcherItem.selected ? 'selected' : ''}"
                       on:click={() => onActionClick(productSwitcherItem)}
                       data-testid={getTestId(productSwitcherItem)}
                     >
@@ -141,37 +135,26 @@
                         <a
                           href={getRouteLink(productSwitcherItem)}
                           on:click={event => {
-                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
-                              event
-                            );
+                            NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
                           }}
                           class="fd-menu__link"
                         >
                           <div class="lui-product-switch__icon">
                             {#if hasOpenUIicon(productSwitcherItem)}
                               <i
-                                class="sap-icon {productSwitcherItem.icon &&
-                                hasOpenUIicon(productSwitcherItem)
-                                  ? getSapIconStr(productSwitcherItem.icon)
-                                  : ''}"
+                                class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? getSapIconStr(productSwitcherItem.icon) : ''}"
                               />
                             {:else}
                               <img
                                 src={productSwitcherItem.icon}
-                                alt={productSwitcherItem.altText
-                                  ? productSwitcherItem.altText
-                                  : ''}
+                                alt={productSwitcherItem.altText ? productSwitcherItem.altText : ''}
                               />
                             {/if}
                           </div>
                           <div class="fd-product-switch__text">
-                            <div class="fd-product-switch__title">
-                              {getNodeLabel(productSwitcherItem)}
-                            </div>
+                            <div class="fd-product-switch__title">{getNodeLabel(productSwitcherItem)}</div>
                             {#if getNodeSubtitle(productSwitcherItem)}
-                              <div class="fd-product-switch__subtitle">
-                                {getNodeSubtitle(productSwitcherItem)}
-                              </div>
+                              <div class="fd-product-switch__subtitle">{getNodeSubtitle(productSwitcherItem)}</div>
                             {/if}
                           </div>
                         </a>
@@ -179,28 +162,19 @@
                         <div class="lui-product-switch__icon">
                           {#if hasOpenUIicon(productSwitcherItem)}
                             <i
-                              class="sap-icon {productSwitcherItem.icon &&
-                              hasOpenUIicon(productSwitcherItem)
-                                ? getSapIconStr(productSwitcherItem.icon)
-                                : ''}"
+                              class="sap-icon {productSwitcherItem.icon && hasOpenUIicon(productSwitcherItem) ? getSapIconStr(productSwitcherItem.icon) : ''}"
                             />
                           {:else}
                             <img
                               src={productSwitcherItem.icon}
-                              alt={productSwitcherItem.altText
-                                ? productSwitcherItem.altText
-                                : ''}
+                              alt={productSwitcherItem.altText ? productSwitcherItem.altText : ''}
                             />
                           {/if}
                         </div>
                         <div class="fd-product-switch__text">
-                          <div class="fd-product-switch__title">
-                            {getNodeLabel(productSwitcherItem)}
-                          </div>
+                          <div class="fd-product-switch__title">{getNodeLabel(productSwitcherItem)}</div>
                           {#if getNodeSubtitle(productSwitcherItem)}
-                            <div class="fd-product-switch__subtitle">
-                              {getNodeSubtitle(productSwitcherItem)}
-                            </div>
+                            <div class="fd-product-switch__subtitle">{getNodeSubtitle(productSwitcherItem)}</div>
                           {/if}
                         </div>
                       {/if}

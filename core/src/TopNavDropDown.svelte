@@ -1,12 +1,7 @@
 <script>
   import BadgeCounter from './navigation/BadgeCounter.svelte';
   import MobileTopNav from './navigation/MobileTopNavDropDown.svelte';
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext,
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
@@ -19,9 +14,7 @@
   export let children;
   export let node;
   let pathParams;
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
   export let addNavHrefForAnchor;
   const getNodeSubtitle = () => {};
@@ -31,13 +24,13 @@
     return {
       get: () => {
         return {
-          pathParams,
+          pathParams
         };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
         }
-      },
+      }
     };
   };
 
@@ -56,17 +49,17 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function onActionClick(node) {
-    getUnsavedChangesModalPromise().then(() => {
-      if (node.openNodeInModal) {
-        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        openViewInModal(
-          route,
-          node.openNodeInModal === true ? {} : node.openNodeInModal
-        );
-      } else {
-        Routing.handleRouteClick(node, getComponentWrapper());
-      }
-    }, () => {});
+    getUnsavedChangesModalPromise().then(
+      () => {
+        if (node.openNodeInModal) {
+          const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+          openViewInModal(route, node.openNodeInModal === true ? {} : node.openNodeInModal);
+        } else {
+          Routing.handleRouteClick(node, getComponentWrapper());
+        }
+      },
+      () => {}
+    );
     closeSubNav();
   }
 
@@ -125,13 +118,7 @@
                 <span class="fd-top-nav__icon">
                   {#if node.icon && hasOpenUIicon(node)}
                     <i class="sap-icon {getSapIconStr(node.icon)}" />
-                  {:else}
-                    <img
-                      class="sap-icon"
-                      src={node.icon}
-                      alt={node.altText ? node.altText : ''}
-                    />
-                  {/if}
+                  {:else}<img class="sap-icon" src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
                   <BadgeCounter {node} />
                 </span>
                 <span class="fd-menu__title">{getNodeLabel(node)}</span>
