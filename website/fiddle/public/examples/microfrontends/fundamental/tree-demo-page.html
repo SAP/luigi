@@ -23,15 +23,18 @@
         .fd-tree--header .fd-tree__col:nth-child(2) {
           display: none;
         }
+
         .fd-tree__item .fd-tree__col:nth-child(2) {
           display: none;
         }
       }
+
       .fd-tree__expander[aria-pressed='true'] .sap-icon--navigation-right-arrow {
         transform: rotate(90deg);
       }
     </style>
   </head>
+
   <body>
     <div>
       <div class="fd-page">
@@ -433,7 +436,15 @@
         </div>
       </div>
     </div>
+    <script type="module">
+      import setTheme from '../../../themeHelper.js';
+      function updateFn() {
+        setTheme();
+      }
 
+      LuigiClient.addInitListener(updateFn);
+      LuigiClient.addContextUpdateListener(updateFn);
+    </script>
     <script type="text/javascript">
       (function() {
         //dropdown
