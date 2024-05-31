@@ -21,7 +21,7 @@ meta -->
 
 The configuration file contains a section called **Settings** where you can configure additional Luigi options.
 
-Notice - starting from version 3.0 Luigi doesn't support third-party cookies in any way.
+> **NOTE:** Starting from version 3.0 Luigi doesn't support third-party cookies in any way.
 
 <!-- accordion:start -->
 ### Settings code example

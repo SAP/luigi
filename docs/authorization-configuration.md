@@ -150,7 +150,7 @@ The OpenID Connect configuration allows you to specify the **automaticSilentRene
 
 When Luigi fails to renew the token and then logs the user out, it adds the `?reason=tokenExpired` query parameter to the logout page redirect URL. Use this parameter to set a logout page.
 
-Notice - starting from version 3.0 Luigi doesn't support third-party cookies in any way.
+> **NOTE:** Starting from version 3.0 Luigi doesn't support third-party cookies in any way.
 
 ## OAuth2 Implicit Grant configuration
 
