@@ -17,7 +17,7 @@ If you have implemented your own `page not found` error handler function, then y
 
 #### Update Context via Core API
 
-This addition lets you update the context values for visible iframes and LUI web components.
+This addition lets you update the context values for visible iframes and Luigi web components.
 
 #### Change Luigi Core Version on the Fly in Luigi Fiddle
 
