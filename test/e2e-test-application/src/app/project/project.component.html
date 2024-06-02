@@ -585,37 +585,29 @@
             >
             </app-code-snippet>
           </li>
-          <button
-            class="fd-button"
-            data-testid="modal-on-close-promise"
-            onclick="
-            const p2 = LuigiClient.linkManager().openAsModal('/projects/pr2/settings', {
-              title: 'microfrontend in a modal',
-              size: 'm',
-              keepPrevious: true
-            });
-            console.log('promise p2 BEFORE closing modal: ', p2);
-            console.log('_zone_symbol__state: ', p2.__zone_symbol__state)
-            console.log('_zone_symbol__value: ', p2.__zone_symbol__value)
-            if (p2.__zone_symbol__state === null){
-              document.getElementById('resolveTextField').value = 'NULL';
-            } else{
-              document.getElementById('resolveTextField').value = p2.__zone_symbol__state;
-            }
-            p2.then((res) => {
-              console.log('------------------------------- MODAL CLOSED -----------------------------------')
-              console.log('promise p2 AFTER closing modal: ', p2);
-              console.log('res of p2', res)
-              console.log('res.data of p2 ', res.data)
-              console.log('_zone_symbol__state: ', p2.__zone_symbol__state)
-              console.log('_zone_symbol__value: ', p2.__zone_symbol__value)
-              document.getElementById('resolveTextField').value = p2.__zone_symbol__state;
-            });
-            "
-          >
-          <span class="fd-button__text">log infos about the promise, res and _zone_symbol__state</span>
-          </button>
-          <input type="text" id="resolveTextField" data-testid="__zone_symbol__state_textField" disabled value="promiseState" style="float: right">
+          <li class="fd-list__item">
+            <a
+              href="javascript:void(0)"
+              class="fd-link"
+              data-testid="open-modal-to-settings-medium"
+              (click)="openAsModal()"
+              >Open A modal with On Close Promise</a
+            >
+            <app-code-snippet
+              data="
+              linkManager().openAsModal('/projects/pr2/settings', {
+                title: 'microfrontend in a modal',
+                size: 'm',
+              }).then(() => {
+                ...
+              }).catch(() => {
+                ...
+              });
+              "
+            >
+            </app-code-snippet>
+          </li>
+          <div id="promiseTest"></div>
           <li class="fd-list__item">
             <a
               href="javascript:void(0)"
