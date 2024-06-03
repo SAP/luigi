@@ -1,19 +1,7 @@
 <script>
-  import {
-    afterUpdate,
-    beforeUpdate,
-    createEventDispatcher,
-    getContext,
-    onDestroy,
-    onMount,
-  } from 'svelte';
+  import { afterUpdate, beforeUpdate, createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
   import { LuigiConfig } from '../core-api';
-  import {
-  GenericHelpers,
-    NavigationHelpers,
-    RoutingHelpers,
-    StateHelpers,
-  } from '../utilities/helpers';
+  import { GenericHelpers, NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
   import StatusBadge from './StatusBadge.svelte';
   import TabHeader from './TabHeader.svelte';
   import { Navigation } from './services/navigation';
@@ -49,11 +37,11 @@
       selectedNode,
       selectedNodeForTabNav,
       dropDownStates,
-      isMoreBtnExpanded,
+      isMoreBtnExpanded
     }),
-    set: (obj) => {
+    set: obj => {
       if (obj) {
-        Object.getOwnPropertyNames(obj).forEach((prop) => {
+        Object.getOwnPropertyNames(obj).forEach(prop => {
           if (prop === 'pathData') {
             pathData = obj.pathData;
           } else if (prop === 'context') {
@@ -67,7 +55,7 @@
           }
         });
       }
-    },
+    }
   };
 
   const dispatch = createEventDispatcher();
@@ -78,10 +66,7 @@
 
   const setTabNavData = async () => {
     const componentData = __this.get();
-    const tabNavData = await Navigation.getTabNavData(
-      { ...componentData },
-      componentData,
-    );
+    const tabNavData = await Navigation.getTabNavData({ ...componentData }, componentData);
     if (!tabNavData) {
       return;
     }
@@ -106,15 +91,18 @@
 
       // Calculate available space for tab items
       const tabsContainerHeaderStyles = getComputedStyle(tabsContainerHeader);
-      const availableSpaceForTabItems = tabsContainerHeader.offsetWidth - moreButton.offsetWidth - 
-        parseFloat(tabsContainerHeaderStyles.paddingLeft) - parseFloat(tabsContainerHeaderStyles.paddingRight);
+      const availableSpaceForTabItems =
+        tabsContainerHeader.offsetWidth -
+        moreButton.offsetWidth -
+        parseFloat(tabsContainerHeaderStyles.paddingLeft) -
+        parseFloat(tabsContainerHeaderStyles.paddingRight);
 
       // Initialize variables
       let totalTabsSize = 0;
       let hasMoreBtnElements = false;
 
       // Iterate through tab elements
-      [...tabsContainerHeader.children].forEach((tabElement) => {
+      [...tabsContainerHeader.children].forEach(tabElement => {
         // Get unique identifier for the tab
         const uid = tabElement.getAttribute('uid');
         if (!uid) {
@@ -143,9 +131,7 @@
       });
 
       // Show/hide 'more' button based on presence of overflow tabs
-      hasMoreBtnElements
-        ? moreButton.classList.remove('hide_element')
-        : moreButton.classList.add('hide_element');
+      hasMoreBtnElements ? moreButton.classList.remove('hide_element') : moreButton.classList.add('hide_element');
     }
   };
 
@@ -157,9 +143,9 @@
     if (tabsContainerHeader !== undefined) {
       // Get all tab elements
       const tabs = [...tabsContainerHeader.children];
-      
+
       // Remove 'hide_element' class from each tab element
-      tabs.forEach((element) => {
+      tabs.forEach(element => {
         element.classList.remove('hide_element');
       });
     }
@@ -170,11 +156,11 @@
    * is changed according to the variable horizontal tabnav web component height.
    */
   const handleHorizontalNavHeightChange = () => {
-    resizeObserver = new ResizeObserver((entries) => {
+    resizeObserver = new ResizeObserver(entries => {
       for (const entry of entries) {
         document.documentElement.style.setProperty(
           '--luigi__horizontal-nav--live-height',
-          entry.contentRect.height + 'px',
+          entry.contentRect.height + 'px'
         );
       }
     });
@@ -195,24 +181,20 @@
   };
 
   onMount(() => {
-    hideNavComponent = LuigiConfig.getConfigBooleanValue(
-      'settings.hideNavigation',
-    );
+    hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
     handleHorizontalNavHeightChange();
     StateHelpers.doOnStoreChange(
       store,
       () => {
         setTabNavData();
       },
-      ['navigation.viewgroupdata'],
+      ['navigation.viewgroupdata']
     );
   });
 
   onDestroy(() => {
     resetResizeObserver();
-    document.documentElement.style.removeProperty(
-      '--luigi__horizontal-nav--live-height',
-    );
+    document.documentElement.style.removeProperty('--luigi__horizontal-nav--live-height');
   });
 
   // [svelte-upgrade warning]
@@ -222,10 +204,7 @@
     if (!previousPathData || previousPathData != pathData) {
       setTabNavData();
     }
-    if (
-      previousResizeTabNavToggle === undefined ||
-      previousResizeTabNavToggle !== resizeTabNavToggle
-    ) {
+    if (previousResizeTabNavToggle === undefined || previousResizeTabNavToggle !== resizeTabNavToggle) {
       previousResizeTabNavToggle = resizeTabNavToggle;
       setTabNavData();
     }
@@ -249,17 +228,14 @@
   }
 
   function isExpanded(nodes, expandedList) {
-    return (
-      expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0
-    );
+    return expandedList && expandedList.indexOf(nodes.metaInfo.categoryUid) >= 0;
   }
 
   function isSelectedCat(key, selectedNodeForTabNav) {
     return (
       selectedNodeForTabNav &&
       selectedNodeForTabNav.category &&
-      (selectedNodeForTabNav.category === key ||
-        selectedNodeForTabNav.category.label === key)
+      (selectedNodeForTabNav.category === key || selectedNodeForTabNav.category.label === key)
     );
   }
 
@@ -309,7 +285,7 @@
     if (isKeyUndefined || isVirtualGroupPrefix) {
       return true;
     }
-    if (isHiddenAndOnlySubCategoryNode(nodes)){
+    if (isHiddenAndOnlySubCategoryNode(nodes)) {
       return true;
     }
   }
@@ -320,24 +296,25 @@
    * @returns {boolean} Returns true if any node has a label and is not hidden from navigation; otherwise, returns false.
    */
   function isTabItemWithSubItems(nodes) {
-    return nodes.some((node) => !node.hideFromNav && node.label);
+    return nodes.some(node => !node.hideFromNav && node.label);
   }
 
   /**
    * Checks if for the given nodes list there is a category that has a subcategory node which is hidden.
    * In this case the category node should be shown as a single tab item and not a category on the tabnav view
    * @param nodes list of nodes to check in the same level
-   * @returns {boolean} true if only one hidden item found. 
+   * @returns {boolean} true if only one hidden item found.
    */
-  function isHiddenAndOnlySubCategoryNode(nodes){
+  function isHiddenAndOnlySubCategoryNode(nodes) {
     // reference node = a subcategory node
-    const referenceNode = nodes.find((node) => GenericHelpers.isObject(node.category) );
+    const referenceNode = nodes.find(node => GenericHelpers.isObject(node.category));
     if (!referenceNode) {
       return;
     }
     const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
 
-    const isOnlyOtherCategoryNodeHidden = nodes.filter((node) => node.category === referenceCategoryName && node.hideFromNav === true ).length === 1;
+    const isOnlyOtherCategoryNodeHidden =
+      nodes.filter(node => node.category === referenceCategoryName && node.hideFromNav === true).length === 1;
 
     return isOnlyOtherCategoryNodeHidden;
   }
@@ -349,7 +326,7 @@
    * @returns {Object|undefined} Returns the first node with a truthy navigateOnClick property, or undefined if not found.
    */
   function getNodeToNavigateTo(nodes) {
-    const referenceNode = nodes.find((node) => node.category?.navigateOnClick);
+    const referenceNode = nodes.find(node => node.category?.navigateOnClick);
     if (!referenceNode) {
       return;
     }
@@ -358,7 +335,7 @@
       return referenceNode;
     }
     // return node which has same pathSegment as the navigateOnClick value
-    return nodes.find((node) => node.pathSegment === navigateOnClick);
+    return nodes.find(node => node.pathSegment === navigateOnClick);
   }
 
   /**
@@ -371,11 +348,7 @@
   }
 </script>
 
-<svelte:window
-  on:click={closeAllDropdowns}
-  on:blur={closeAllDropdowns}
-  on:resize={onResize}
-/>
+<svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} on:resize={onResize} />
 {#if children && pathData.length > 0 && (pathData[0].topNav === false || pathData.length > 1)}
   <div id="tabsContainer" bind:this={tabsContainer}>
     {#if selectedNode.parent && selectedNode.parent.tabNav && selectedNode.parent.tabNav.showAsTabHeader}
@@ -384,7 +357,7 @@
     <nav
       class="fd-icon-tab-bar fd-icon-tab-bar--lg"
       role="tablist"
-      on:toggleDropdownState={(event) => toggleDropdownState(event.name)}
+      on:toggleDropdownState={event => toggleDropdownState(event.name)}
     >
       <div
         class="tabsContainerHeader luigi-tabsContainerHeader fd-icon-tab-bar__header"
@@ -396,13 +369,9 @@
             {#each nodes as node, index2}
               {#if !node.hideFromNav}
                 {#if node.label}
+                  <!-- prettier-ignore -->
                   {@const isSelected = node === selectedNodeForTabNav}
-                  <span
-                    role="presentation"
-                    class="fd-icon-tab-bar__item"
-                    uid="{index}-{index2}"
-                    {isSelected}
-                  >
+                  <span role="presentation" class="fd-icon-tab-bar__item" uid="{index}-{index2}" {isSelected}>
                     <a
                       role="tab"
                       class="fd-icon-tab-bar__tab"
@@ -411,26 +380,27 @@
                       aria-selected={isSelected}
                       on:click|preventDefault={() => handleClick(node)}
                     >
-                      <span class="fd-icon-tab-bar__tag"
-                        >{getNodeLabel(node)}
-                        <StatusBadge {node} /></span
-                      >
+                      <span class="fd-icon-tab-bar__tag">{getNodeLabel(node)}
+                        <StatusBadge {node} /></span>
                     </a>
                   </span>
                 {/if}
               {/if}
             {/each}
           {:else if isTabItemWithSubItems(nodes)}
+            <!-- prettier-ignore -->
             {@const uid = `${index}-0`}
+            <!-- prettier-ignore -->
             {@const popoverId = `lui-${uid}-popover`}
 
             {#if isMultiClickAreaTabItem(nodes)}
+              <!-- prettier-ignore -->
               {@const nodeToNavigateTo = getNodeToNavigateTo(nodes)}
               <span
                 {uid}
                 role="presentation"
                 class="fd-icon-tab-bar__item fd-icon-tab-bar__item--multi-click"
-                on:click={(event) => event.stopPropagation()}
+                on:click={event => event.stopPropagation()}
               >
                 <!-- svelte-ignore a11y-missing-attribute -->
                 <a
@@ -441,9 +411,7 @@
                   href={getRouteLink(nodeToNavigateTo)}
                   on:click|preventDefault={() => handleClick(nodeToNavigateTo)}
                 >
-                  <span class="fd-icon-tab-bar__tag"
-                    >{$getTranslation(key)}</span
-                  >
+                  <span class="fd-icon-tab-bar__tag">{$getTranslation(key)}</span>
                 </a>
                 <div class="fd-popover fd-icon-tab-bar__popover">
                   <div class="fd-popover__control">
@@ -456,7 +424,7 @@
                         aria-label="open menu button"
                         on:click|preventDefault={() => toggleDropdownState(key)}
                       >
-                        <i class="sap-icon--slim-arrow-down"></i>
+                        <i class="sap-icon--slim-arrow-down" />
                       </button>
                     </div>
                   </div>
@@ -465,9 +433,7 @@
                     aria-hidden={!dropDownStates[key]}
                     id={popoverId}
                   >
-                    <ul
-                      class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
-                    >
+                    <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
                       {#each nodes as node}
                         {#if !node.hideFromNav && node.label}
                           <li
@@ -484,9 +450,7 @@
                               aria-selected={node === selectedNodeForTabNav}
                               on:click|preventDefault={() => handleClick(node)}
                             >
-                              <span class="fd-list__title"
-                                >{getNodeLabel(node)}</span
-                              >
+                              <span class="fd-list__title">{getNodeLabel(node)}</span>
                             </a>
                           </li>
                         {/if}
@@ -500,7 +464,7 @@
               <span
                 class="fd-icon-tab-bar__item fd-icon-tab-bar__item--single-click"
                 {uid}
-                on:click={(event) => event.stopPropagation()}
+                on:click={event => event.stopPropagation()}
                 isSelected={isSelectedCat(key, selectedNodeForTabNav)}
               >
                 <div class="fd-popover">
@@ -514,14 +478,9 @@
                       aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
                     >
                       <div class="fd-icon-tab-bar__tab-container">
-                        <span class="fd-icon-tab-bar__tag"
-                          >{$getTranslation(key)}</span
-                        >
+                        <span class="fd-icon-tab-bar__tag">{$getTranslation(key)}</span>
                         <span class="fd-icon-tab-bar__arrow">
-                          <i
-                            class="sap-icon--slim-arrow-down"
-                            role="presentation"
-                          ></i>
+                          <i class="sap-icon--slim-arrow-down" role="presentation" />
                         </span>
                       </div>
                     </a>
@@ -530,27 +489,20 @@
                     class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
                     aria-hidden={!dropDownStates[key]}
                   >
-                    <ul
-                      class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list"
-                    >
+                    <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
                       {#each nodes as node}
                         {#if !node.hideFromNav}
                           {#if node.label}
-                            <li
-                              class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
-                            >
+                            <li class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item">
                               <a
                                 href={getRouteLink(node)}
                                 class="fd-list__link fd-icon-tab-bar__list-link"
                                 data-testid={NavigationHelpers.getTestId(node)}
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
+                                on:click|preventDefault={() => handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
                               >
-                                <span class="fd-list__title"
-                                  >{getNodeLabel(node)}
-                                  <StatusBadge {node} /></span
-                                >
+                                <span class="fd-list__title">{getNodeLabel(node)}
+                                  <StatusBadge {node} /></span>
                               </a>
                             </li>
                           {/if}
@@ -566,21 +518,13 @@
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span
           class="luigi-tabsMoreButton fd-icon-tab-bar__item fd-icon-tab-bar__item--overflow"
-          on:click={(event) => event.stopPropagation()}
+          on:click={event => event.stopPropagation()}
           bind:this={moreButton}
         >
           <div class="fd-popover">
             <!-- svelte-ignore a11y-missing-attribute -->
-            <div
-              class="fd-popover__control has-child luigi__more"
-              aria-expanded="false"
-              role="tab"
-            >
-              <button
-                class="fd-icon-tab-bar__overflow"
-                on:click|preventDefault={toggleMoreBtn}
-                bind:this={moreLink}
-              >
+            <div class="fd-popover__control has-child luigi__more" aria-expanded="false" role="tab">
+              <button class="fd-icon-tab-bar__overflow" on:click|preventDefault={toggleMoreBtn} bind:this={moreLink}>
                 <span class="label fd-icon-tab-bar__overflow-text">More</span>
                 <span class="sap-icon--slim-arrow-down" />
               </button>
@@ -589,9 +533,7 @@
               class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
               aria-hidden={!isMoreBtnExpanded}
             >
-              <ul
-                class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
-              >
+              <ul class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only">
                 {#each Object.entries(children) as [key, nodes], index}
                   {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
                     {#each nodes as node, index2}
@@ -603,20 +545,15 @@
                           on:click|preventDefault={() => handleClick(node)}
                           aria-selected={node === selectedNodeForTabNav}
                         >
-                          <span class="fd-nested-list__title"
-                            >{getNodeLabel(node)}
-                            <StatusBadge {node} /></span
-                          >
+                          <span class="fd-nested-list__title">{getNodeLabel(node)}
+                            <StatusBadge {node} /></span>
                         </a>
                       </li>
                     {/each}
                   {:else}
                     <li class="fd-nested-list__item" uid="{index}-0">
                       <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                      <div
-                        class="fd-nested-list__content has-child"
-                        tabindex="0"
-                      >
+                      <div class="fd-nested-list__content has-child" tabindex="0">
                         <!-- svelte-ignore a11y-invalid-attribute -->
                         <a
                           href="javascript:void(null)"
@@ -625,16 +562,10 @@
                           id="tabnav_list_level1_{index}"
                           aria-haspopup="true"
                           aria-expanded={dropDownStates[key + index]}
-                          aria-selected={isSelectedCat(
-                            key,
-                            selectedNodeForTabNav,
-                          )}
-                          on:click|preventDefault={() =>
-                            toggleDropdownState(key + index)}
+                          aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+                          on:click|preventDefault={() => toggleDropdownState(key + index)}
                         >
-                          <span class="fd-nested-list__title"
-                            >{$getTranslation(key)}</span
-                          >
+                          <span class="fd-nested-list__title">{$getTranslation(key)}</span>
                         </a>
                         <button
                           class="fd-button fd-nested-list__button"
@@ -643,37 +574,26 @@
                           aria-label="Expand submenu"
                           aria-haspopup="true"
                           aria-expanded={dropDownStates[key + index]}
-                          on:click|preventDefault={() =>
-                            toggleDropdownState(key + index)}
+                          on:click|preventDefault={() => toggleDropdownState(key + index)}
                         >
                           <i
-                            class={dropDownStates[key + index]
-                              ? 'sap-icon--navigation-down-arrow'
-                              : 'sap-icon--navigation-right-arrow'}
+                            class={dropDownStates[key + index] ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}
                             role="presentation"
                           />
                         </button>
                       </div>
-                      <ul
-                        class="fd-nested-list level-2"
-                        aria-hidden={!dropDownStates[key + index]}
-                      >
+                      <ul class="fd-nested-list level-2" aria-hidden={!dropDownStates[key + index]}>
                         {#each nodes as node}
                           {#if node.label}
-                            <li
-                              class="fd-nested-list__item"
-                              aria-labelledby="tabnav_list_level1_{index}"
-                            >
+                            <li class="fd-nested-list__item" aria-labelledby="tabnav_list_level1_{index}">
                               <a
                                 class="fd-nested-list__link"
                                 href={getRouteLink(node)}
                                 data-testid={NavigationHelpers.getTestId(node)}
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
+                                on:click|preventDefault={() => handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
                               >
-                                <span class="fd-nested-list__title"
-                                  >{getNodeLabel(node)}
+                                <span class="fd-nested-list__title">{getNodeLabel(node)}
                                   <StatusBadge {node} />
                                 </span>
                               </a>
@@ -705,8 +625,7 @@
       This alone does not cause the issue but in combination with the fact that the link of the item has padding that stretches
       over the button. But the z-index seems to be the main issue.
      */
-    .fd-icon-tab-bar__item.fd-icon-tab-bar__item--multi-click
-      a.fd-icon-tab-bar__tab:focus {
+    .fd-icon-tab-bar__item.fd-icon-tab-bar__item--multi-click a.fd-icon-tab-bar__tab:focus {
       z-index: initial;
     }
   }
@@ -744,12 +663,10 @@
 
   .lui-breadcrumb .luigi-tabsContainerHeader .fd-popover__body {
     max-height: calc(
-      100vh - calc(
+      100vh -
+        calc(
           var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
-            var(
-              --luigi__horizontal-nav--live-height,
-              var(--luigi__horizontal-nav--height)
-            )
+            var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
         )
     );
     overflow-y: auto;
@@ -757,12 +674,10 @@
 
   .luigi-tabsContainerHeader .fd-popover__body {
     max-height: calc(
-      100vh - calc(
+      100vh -
+        calc(
           var(--luigi__shellbar--height) +
-            var(
-              --luigi__horizontal-nav--live-height,
-              var(--luigi__horizontal-nav--height)
-            )
+            var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
         )
     );
     overflow-y: auto;

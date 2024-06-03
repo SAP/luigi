@@ -475,38 +475,47 @@ describe('createClientAPI', () => {
       // assert
       expect(receivedTheme).toEqual(undefined);
     });
-  
-    it('test uxManager showConfirmationModal - resolve when data present', async () => {
+
+    it('test uxManager showConfirmationModal - resolve when data present', () => {
       // mock and spy on data/functions
       const settings = { confirmationSettings: 'settings' };
-      service.containerService.dispatch = jest.fn();
-  
       const mockEventData = { result: 'confirmation data' };
-  
-      service.dispatchLuigiEvent = jest.fn((eventType, eventData, callback) => {
+
+      service.containerService.dispatch = jest.fn((eventType, target, eventData, callback, callbackName) => {
         callback(mockEventData);
       });
-      
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      const result = await clientAPI.uxManager().showConfirmationModal(settings);
-  
+      const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
+
       // assert
-      expect(result).toEqual(mockEventData);
-      expect(service.dispatchLuigiEvent).toHaveBeenCalledWith(Events.SHOW_CONFIRMATION_MODAL_REQUEST, settings, expect.any(Function))
+      return confirmationModalPromise.then((result) => {
+        expect(service.containerService.dispatch).toHaveBeenCalledWith(
+          Events.SHOW_CONFIRMATION_MODAL_REQUEST,
+          service.thisComponent,
+          settings,
+          expect.any(Function),
+          'callback'
+        );
+        expect(result).toEqual(mockEventData);
+      });
     });
-    
-    it('test uxManager showConfirmationModal - reject when NO data present', async () => {
+
+    it('test uxManager showConfirmationModal - reject when NO data present', () => {
       // mock and spy on data/functions
       const settings = { confirmationSettings: 'settings' };
-  
-      service.dispatchLuigiEvent = jest.fn((eventType, eventData, callback) => {
-        callback(null); // Simulate no data from dispatchLuigiEvent
+
+      service.containerService.dispatch = jest.fn((eventType, target, eventData, callback, callbackName) => {
+        callback(null);
       });
-  
-      // Act and Assert
+
+      // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      await expect(clientAPI.uxManager().showConfirmationModal(settings)).rejects.toThrow('No data');
+      const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
+
+      // assert
+      expect(confirmationModalPromise).rejects.toThrow('No data');
     });
 
     it('test uxManager closeUserSettings', () => {

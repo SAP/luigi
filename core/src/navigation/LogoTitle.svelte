@@ -1,17 +1,8 @@
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext,
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import * as Header from './services/header';
   import { Routing } from '../services/routing';
-  import {
-    NavigationHelpers,
-    RoutingHelpers,
-    GenericHelpers,
-  } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers, GenericHelpers } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -19,6 +10,8 @@
   export let hasLogo;
   export let title;
   export let hasApps;
+  export let keepMainTitle;
+  export let showSubTitle = true;
   export let dropDownStates = {};
   export let showMainAppEntry;
   export let selectedItem;
@@ -32,15 +25,13 @@
   export let addNavHrefForAnchor;
   let customItemRenderer__slotContainer;
   let previousPathData;
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let getTranslation = getContext('getTranslation');
   let store = getContext('store');
   const appSwitcherApiObj = {
     closeDropDown: () => {
       toggleDropdownState('appSwitcherPopover');
-    },
+    }
   };
 
   //TODO refactor
@@ -59,13 +50,15 @@
           defaultSubTitle,
           showMainAppEntry,
           hasApps,
+          keepMainTitle,
+          showSubTitle,
           hasLogo,
-          logo,
+          logo
         };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
-          Object.getOwnPropertyNames(obj).forEach((prop) => {
+          Object.getOwnPropertyNames(obj).forEach(prop => {
             if (prop === 'pathData') {
               pathData = obj.pathData;
             } else if (prop === 'appSwitcherItems') {
@@ -90,13 +83,17 @@
               showMainAppEntry = obj.showMainAppEntry;
             } else if (prop === 'hasApps') {
               hasApps = obj.hasApps;
+            } else if (prop === 'keepMainTitle') {
+              keepMainTitle = obj.keepMainTitle;
+            } else if (prop === 'showSubTitle') {
+              showSubTitle = obj.showSubTitle;
             } else if (prop === 'hasLogo') {
               hasLogo = obj.hasLogo;
             }
           });
         }
       },
-      store,
+      store
     };
   };
 
@@ -148,21 +145,13 @@
   }
 
   function getTestId(item) {
-    return item.testId
-      ? item.testId
-      : NavigationHelpers.prepareForTests(item.title || item);
+    return item.testId ? item.testId : NavigationHelpers.prepareForTests(item.title || item);
   }
 
   function hasValidLink(item, pathParams) {
     if (item.link) {
-      const concreteLink = RoutingHelpers.applyPathParams(
-        item.link,
-        pathParams
-      );
-      if (
-        concreteLink.indexOf(':') !== 0 &&
-        concreteLink.indexOf('/:') === -1
-      ) {
+      const concreteLink = RoutingHelpers.applyPathParams(item.link, pathParams);
+      if (concreteLink.indexOf(':') !== 0 && concreteLink.indexOf('/:') === -1) {
         return true;
       }
     }
@@ -176,53 +165,41 @@
 
 {#if addNavHrefForAnchor}
   <a
-    class="fd-shellbar__logo {!hasLogo
-      ? 'fd-shellbar__logo--image-replaced'
-      : ''} {hasLogo ? 'lui-customlogo' : ''}"
+    class="fd-shellbar__logo {!hasLogo ? 'fd-shellbar__logo--image-replaced' : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
-    on:click={(event) => {
-      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
-        goTo('/');
+    on:click={event => {
+      NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
     }}
     href="/"
     role="button"
     tabindex="0"
   >
-    {#if hasLogo}
-      <img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />
-    {/if}
+    {#if hasLogo}<img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />{/if}
   </a>
 {:else}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <span
-    class="fd-shellbar__logo {!hasLogo
-      ? 'fd-shellbar__logo--image-replaced'
-      : ''} {hasLogo ? 'lui-customlogo' : ''}"
+    class="fd-shellbar__logo {!hasLogo ? 'fd-shellbar__logo--image-replaced' : ''} {hasLogo ? 'lui-customlogo' : ''}"
     aria-label={title}
     on:click={() => goTo('/')}
     role="button"
     tabindex="0"
   >
-    {#if hasLogo}
-      <img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />
-    {/if}
+    {#if hasLogo}<img data-testid="luigi-topnav-logo" bind:this={logo} alt={title} />{/if}
   </span>
 {/if}
 {#if title}
-  {#if !hasApps}
+  {#if !hasApps || keepMainTitle}
     {#if addNavHrefForAnchor}
       <a
-        class="fd-shellbar__title lui-shellbar-single-app-title"
+        class="fd-shellbar__title lui-shellbar-single-app-title {hasApps && 'lui-has-apps'}"
         data-testid="luigi-topnav-title"
-        on:click={(event) => {
-          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) &&
-            goTo('/');
+        on:click={event => {
+          NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo('/');
         }}
         href="/"
       >
-        <span>
-          {$getTranslation(title)}
-        </span>
+        <span> {$getTranslation(keepMainTitle ? defaultTitle : title)} </span>
       </a>
     {:else}
       <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -231,23 +208,18 @@
         data-testid="luigi-topnav-title"
         on:click={() => goTo('/')}
       >
-        <span>
-          {$getTranslation(title)}
-        </span>
+        <span> {$getTranslation(keepMainTitle ? defaultTitle : title)} </span>
       </span>
-    {/if}{:else}
-    <div class="fd-popover">
+    {/if}
+  {/if}
+  {#if hasApps}
+    <div class="fd-popover {keepMainTitle && 'lui-keep-main'}">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
         {#if addNavHrefForAnchor}
           {#if appSwitcherItems && appSwitcherItems.length === 1}
-            <a
-              href={getRouteLink(appSwitcherItems[0])}
-              class="fd-shellbar__title lui-shellbar-single-app-title"
-            >
-              <span>
-                {$getTranslation(appSwitcherItems[0].title)}
-              </span>
+            <a href={getRouteLink(appSwitcherItems[0])} class="fd-shellbar__title lui-shellbar-single-app-title">
+              <span> {$getTranslation(appSwitcherItems[0].title)} </span>
             </a>
           {/if}
           {#if appSwitcherItems && appSwitcherItems.length > 1}
@@ -258,18 +230,11 @@
                   class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button fd-shellbar__button--menu lui-app-switch"
                   aria-haspopup="true"
                   aria-expanded={dropDownStates.appSwitcherPopover || false}
-                  on:click|preventDefault={() =>
-                    toggleDropdownState('appSwitcherPopover')}
+                  on:click|preventDefault={() => toggleDropdownState('appSwitcherPopover')}
                   data-testid="app-switcher"
                 >
-                  <span
-                    class="fd-shellbar__title"
-                    data-testid="luigi-topnav-title"
-                    >{$getTranslation(title)}</span
-                  >
-                  <i
-                    class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"
-                  />
+                  <span class="fd-shellbar__title" data-testid="luigi-topnav-title">{$getTranslation(title)}</span>
+                  <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon" />
                 </a>
               {/if}
             {/each}
@@ -280,16 +245,11 @@
               class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button fd-shellbar__button--menu lui-app-switch"
               aria-haspopup="true"
               aria-expanded={dropDownStates.appSwitcherPopover || false}
-              on:click|preventDefault={() =>
-                toggleDropdownState('appSwitcherPopover')}
+              on:click|preventDefault={() => toggleDropdownState('appSwitcherPopover')}
               data-testid="app-switcher"
             >
-              <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
-                >{$getTranslation(title)}</span
-              >
-              <i
-                class="sap-icon sap-icon--megamenu fd-shellbar__button--icon"
-              />
+              <span class="fd-shellbar__title" data-testid="luigi-topnav-title">{$getTranslation(title)}</span>
+              <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon" />
             </a>
           {/if}
         {:else}
@@ -297,13 +257,10 @@
             class="fd-button fd-button--transparent fd-button--menu fd-shellbar__button fd-shellbar__button--menu lui-app-switch"
             aria-haspopup="true"
             aria-expanded={dropDownStates.appSwitcherPopover || false}
-            on:click|stopPropagation={() =>
-              toggleDropdownState('appSwitcherPopover')}
+            on:click|stopPropagation={() => toggleDropdownState('appSwitcherPopover')}
             data-testid="app-switcher"
           >
-            <span class="fd-shellbar__title" data-testid="luigi-topnav-title"
-              >{$getTranslation(title)}</span
-            >
+            <span class="fd-shellbar__title" data-testid="luigi-topnav-title">{$getTranslation(title)}</span>
             <i class="sap-icon sap-icon--megamenu fd-shellbar__button--icon" />
           </button>
         {/if}
@@ -314,10 +271,7 @@
         id="appSwitcherPopover"
       >
         <nav class="fd-menu">
-          <ul
-            class="fd-menu__list fd-menu__list--no-shadow"
-            bind:this={customItemRenderer__slotContainer}
-          >
+          <ul class="fd-menu__list fd-menu__list--no-shadow" bind:this={customItemRenderer__slotContainer}>
             {#if showMainAppEntry && selectedItem}
               <li class="fd-menu__item">
                 <a
@@ -327,9 +281,7 @@
                   on:click|preventDefault={goToRoot}
                   data-testid={getTestId(defaultTitle)}
                 >
-                  <span class="fd-menu__title"
-                    >{$getTranslation(defaultTitle)}</span
-                  >
+                  <span class="fd-menu__title">{$getTranslation(defaultTitle)}</span>
                 </a>
               </li>
             {/if}
@@ -339,11 +291,7 @@
                   {#if customItemRenderer__slotContainer}
                     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <li class="fd-menu__item" tabindex="0">
-                      {@html renderCustomList(
-                        item,
-                        customItemRenderer__slotContainer,
-                        index
-                      )}
+                      {@html renderCustomList(item, customItemRenderer__slotContainer, index)}
                     </li>
                   {/if}
                 {:else if item !== selectedItem && hasValidLink(item, pathParams)}
@@ -351,19 +299,13 @@
                     <a
                       role="button"
                       class="fd-menu__link"
-                      on:click={(event) => {
-                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
-                          event
-                        ) && goTo(item.link);
+                      on:click={event => {
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && goTo(item.link);
                       }}
-                      href={addNavHrefForAnchor
-                        ? getRouteLink(item, pathParams)
-                        : undefined}
+                      href={addNavHrefForAnchor ? getRouteLink(item, pathParams) : undefined}
                       data-testid={getTestId(item)}
                     >
-                      <span class="fd-menu__title"
-                        >{$getTranslation(item.title)}</span
-                      >
+                      <span class="fd-menu__title">{$getTranslation(item.title)}</span>
                     </a>
                   </li>
                 {/if}
@@ -374,9 +316,10 @@
       </div>
     </div>
   {/if}
-  {#if subTitle}
+  {#if subTitle && showSubTitle}
     <div class="fd-shellbar__subtitle">{$getTranslation(subTitle)}</div>
-  {/if}{/if}
+  {/if}
+{/if}
 
 <style lang="scss">
   // Force height because of base64 img src

@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <script type="module">
+      import '../bundle.js';
+    </script>
+  </head>
+  <body>
+    <h3>This page is used to test Compound-Container nested functionality</h3>
+
+    <!-- Used for testing nested compound container functionality -->
+    <luigi-compound-container
+      id="nested-wc-compound-container"
+      context='{"label": "Dashboard2", "title":"Dashboard2"}'
+      viewUrl="./compound/nested.js"
+      webcomponent="true"
+      node-params='{"Das ist ein":"compound tets"}'
+    ></luigi-compound-container>
+
+    <script>
+      var layoutMFEDomain = 'https://luigiwebcomponents.gitlab.io/layouts';
+
+      document.getElementById('nested-wc-compound-container').compoundConfig = {
+        children: [
+          {
+            viewUrl: layoutMFEDomain + '/panelHeader.js',
+            context: {
+              title: 'My Awesome Grid',
+              description: 'Really awesome'
+            },
+            layoutConfig: {
+              slot: 'header'
+            },
+            eventListeners: [
+              {
+                source: 'input1',
+                name: 'sendInput',
+                action: 'update',
+                dataConverter: data => {
+                  return 'new text: ' + data;
+                }
+              }
+            ]
+          },
+          {
+            viewUrl: 'https://luigiwebcomponents.gitlab.io/luigi-wc-mfe/main.js',
+            context: {
+              label: 'Another web component'
+            },
+            layoutConfig: {
+              slot: 'content'
+            }
+          },
+          {
+            viewUrl: './helloWorldWCSelfRegistered.js',
+            webcomponent: {
+              selfRegistered: true
+            },
+            layoutConfig: {
+              slot: 'helloWorldSelfRegistered'
+            }
+          },
+          {
+            viewUrl: layoutMFEDomain + '/panelFooter.js',
+            context: {
+              footer: 'This is the end of awesomeness'
+            },
+            layoutConfig: {
+              slot: 'footer'
+            }
+          }
+        ]
+      };
+
+      const INITIALIZED = 'initialized';
+      let skipInitCheckCompoundCtn = document.getElementById(
+        'nested-wc-compound-container'
+      );
+      if (!skipInitCheckCompoundCtn.initialized) {
+        skipInitCheckCompoundCtn.addEventListener(INITIALIZED, () => {
+          console.log('compoundTest is ready now!');
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,84 +1,3 @@
-<svelte:options
-  customElement={{
-    tag: null,
-    props: {
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-      deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      noShadow: { type: 'Boolean', attribute: 'no-shadow'},
-      context: { type: 'String', reflect: false, attribute: 'context' },
-      label: { type: 'String', reflect: false, attribute: 'label' },
-      webcomponent: {
-        type: 'String',
-        reflect: false,
-        attribute: 'webcomponent',
-      },
-      locale: { type: 'String', reflect: false, attribute: 'locale' },
-      theme: { type: 'String', reflect: false, attribute: 'theme' },
-      activeFeatureToggleList: {
-        type: 'Array',
-        reflect: false,
-        attribute: 'active-feature-toggle-list',
-      },
-      skipInitCheck: {
-        type: 'Boolean',
-        reflect: false,
-        attribute: 'skip-init-check',
-      },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      userSettings: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'user-settings',
-      },
-      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
-      searchParams: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'search-params',
-      },
-      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'client-permissions',
-      },
-      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
-      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
-      documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
-      allowRules: {
-        type: 'Array',
-        reflect: false,
-        attribute: 'allow-rules',
-      },
-      sandboxRules: {
-        type: 'Array',
-        reflect: false,
-        attribute: 'sandbox-rules',
-      }
-    },
-    extend: (customElementConstructor) => {
-      let notInitFn = (name) => {
-        return () =>
-          console.warn(
-            name +
-              " can't be called on luigi-container before its micro frontend is attached to the DOM.",
-          );
-      };
-      return class extends customElementConstructor {
-        sendCustomMessage = notInitFn('sendCustomMessage');
-        updateContext = notInitFn('updateContext');
-        closeAlert = notInitFn('closeAlert');
-        attachShadow(settings) { if(this.hasAttribute('no-shadow')) return this; return super.attachShadow(settings); }
-        attributeChangedCallback(name, oldValue, newValue) {
-          if (this.containerInitialized && name === 'context') {
-            this.updateContext(JSON.parse(newValue));
-          }
-        }
-      };
-    },
-  }}
-/>
-
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { containerService } from './services/container.service';
@@ -86,6 +5,7 @@
   import { ContainerAPI } from './api/container-api';
   import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
+  import { getAllowRules } from './services/iframe-helpers';
 
   export let viewurl: string;
   export let context: string;
@@ -106,7 +26,6 @@
   export let documentTitle: string;
   export let allowRules: string[];
   export let sandboxRules: string[];
-
 
   export let userSettings: any;
   export let anchor: string;
@@ -150,13 +69,16 @@
           noShadow ? thisComponent : mainComponent,
           !!webcomponent,
           iframeHandle,
-          data,
+          data
         );
       };
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
         if (webcomponent) {
-          (noShadow ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+          (noShadow
+            ? thisComponent
+            : mainComponent
+          )._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
@@ -170,18 +92,19 @@
       webcomponentService.thisComponent = thisComponent;
 
       const ctx = GenericHelperFunctions.resolveContext(context);
-      if (webcomponent) {
+      if (webcomponent && webcomponent != 'false') {
         const elRoot = noShadow ? thisComponent : mainComponent;
         elRoot.innerHTML = '';
-        const webComponentValue =
-          GenericHelperFunctions.checkWebcomponentValue(webcomponent);
+        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(
+          webcomponent
+        );
         webcomponentService.renderWebComponent(
           viewurl,
           elRoot,
           ctx,
           typeof webComponentValue === 'object'
             ? { webcomponent: webComponentValue }
-            : {},
+            : {}
         );
       }
       if (skipInitCheck) {
@@ -190,15 +113,18 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         });
       } else if (webcomponent) {
-        (noShadow ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
-          if (
-            !(noShadow ? thisComponent : mainComponent as any)._luigi_mfe_webcomponent
-              ?.deferLuigiClientWCInit
-          ) {
-            thisComponent.initialized = true;
-            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+        (noShadow ? thisComponent : mainComponent).addEventListener(
+          'wc_ready',
+          () => {
+            if (
+              !(noShadow ? thisComponent : (mainComponent as any))
+                ._luigi_mfe_webcomponent?.deferLuigiClientWCInit
+            ) {
+              thisComponent.initialized = true;
+              webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+            }
           }
-        });
+        );
       }
       containerInitialized = true;
       thisComponent.containerInitialized = true;
@@ -206,7 +132,10 @@
   };
 
   onMount(async () => {
-    const thisComponent: any = mainComponent.getRootNode() === document ? mainComponent.parentNode : (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any =
+      mainComponent.getRootNode() === document
+        ? mainComponent.parentNode
+        : (mainComponent.getRootNode() as ShadowRoot).host;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
       initialize(thisComponent);
@@ -219,28 +148,52 @@
   onDestroy(async () => {});
 </script>
 
+<svelte:options
+  customElement={{ tag: null, props: { viewurl: { type: 'String', reflect: false, attribute: 'viewurl' }, deferInit: { type: 'Boolean', attribute: 'defer-init' }, noShadow: { type: 'Boolean', attribute: 'no-shadow' }, context: { type: 'String', reflect: false, attribute: 'context' }, label: { type: 'String', reflect: false, attribute: 'label' }, webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' }, locale: { type: 'String', reflect: false, attribute: 'locale' }, theme: { type: 'String', reflect: false, attribute: 'theme' }, activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' }, skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' }, nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }, userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' }, anchor: { type: 'String', reflect: false, attribute: 'anchor' }, searchParams: { type: 'Object', reflect: false, attribute: 'search-params' }, pathParams: { type: 'Object', reflect: false, attribute: 'path-params' }, clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }, dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' }, hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' }, documentTitle: { type: 'String', reflect: false, attribute: 'document-title' }, allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' }, sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' } }, extend: customElementConstructor => {
+      let notInitFn = name => {
+        return () => console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
+      };
+      return class extends customElementConstructor {
+        sendCustomMessage = notInitFn('sendCustomMessage');
+        updateContext = notInitFn('updateContext');
+        closeAlert = notInitFn('closeAlert');
+        attachShadow(settings) {
+          if (this.hasAttribute('no-shadow')) return this;
+          return super.attachShadow(settings);
+        }
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (this.containerInitialized && name === 'context') {
+            this.updateContext(JSON.parse(newValue));
+          }
+        }
+      };
+    } }} />
 <main
   bind:this={mainComponent}
-  class={webcomponent ? undefined : 'lui-isolated'}
->
+  class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
-    {#if !webcomponent}
-      <iframe bind:this={iframeHandle.iframe} src={viewurl} title={label} />
+    {#if !webcomponent || webcomponent === 'false'}
+      <iframe
+        bind:this={iframeHandle.iframe}
+        src={viewurl}
+        title={label}
+        allow={getAllowRules(allowRules)}
+        sandbox={sandboxRules ? sandboxRules.join(' ') : undefined} />
     {/if}
   {/if}
 </main>
 
 {#if !noShadow}
-<style>
-  main,
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
+  <style>
+    main,
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
-  main.lui-isolated {
-    line-height: 0;
-  }
-</style>
+    main.lui-isolated {
+      line-height: 0;
+    }
+  </style>
 {/if}

@@ -10,6 +10,10 @@ export const processHeaderSettings = component => {
         component.set({ appSwitcherItems: appSwitcher.items });
         component.set({ showMainAppEntry: appSwitcher.showMainAppEntry });
         component.set({ itemRenderer: appSwitcher.itemRenderer });
+        if (GenericHelpers.requestExperimentalFeature('btpToolLayout')) {
+          component.set({ keepMainTitle: appSwitcher.keepMainTitle });
+          component.set({ showSubTitle: appSwitcher.showSubTitle !== false });
+        }
       }
       component.set({
         hasApps:
@@ -41,11 +45,6 @@ export const processHeaderSettings = component => {
 
         // Set Favicon
         if (header.favicon) {
-          const isInvalidFaviconFormat =
-            !header.favicon.split('?')[0].endsWith('.ico') && !header.favicon.startsWith('data:image');
-          if (isInvalidFaviconFormat) {
-            console.warn('Favicon is not an .ico filetype and might get displayed wrong.');
-          }
           const link = Object.assign(document.createElement('link'), {
             type: 'image/x-icon',
             rel: 'shortcut icon',

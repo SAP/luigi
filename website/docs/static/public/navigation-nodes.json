@@ -138,5 +138,25 @@
       "categoryPosition": 8,
       "position": 7
     }
+  },
+  {
+    "label": "Luigi Container",
+    "pathSegment": "",
+    "navigationContext": "doc",
+    "keepSelectedForChildren": true,
+    "viewUrl": "__BASE_URL__/docs/",
+    "context": {
+      "doc": ""
+    },
+    "category": {
+      "label": "Examples"
+    },
+    "externalLink": {
+      "url": "https://github.com/SAP/luigi/tree/main/container/examples"
+    },
+    "metaData": {
+      "categoryPosition": 8,
+      "position": 8
+    }
   }
 ]

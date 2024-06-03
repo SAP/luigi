@@ -25,6 +25,45 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.13.0] (2024-05-23)
+
+#### :rocket: Added
+* [#3719](https://github.com/SAP/luigi/pull/3719) A11y for left nav if btp layout is enabled ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3741](https://github.com/SAP/luigi/pull/3741) Fix left nav cat focus outline in condensed mode ([@hardl](https://github.com/hardl))
+* [#3733](https://github.com/SAP/luigi/pull/3733) Fix compound double rendering ([@hardl](https://github.com/hardl))
+* [#3722](https://github.com/SAP/luigi/pull/3722) Add webpack ignore comment to dynamic import in bundle ([@hardl](https://github.com/hardl))
+
+
+
+
+
+
+
+## [v2.12.0] (2024-05-03)
+
+#### :rocket: Added
+* [#3709](https://github.com/SAP/luigi/pull/3709) Ignore page not found error handling by Luigi ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3693](https://github.com/SAP/luigi/pull/3693) Update context via core api ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3711](https://github.com/SAP/luigi/pull/3711) Change Luigi core version on the fly in Luigi fiddle ([@hardl](https://github.com/hardl))
+* [#3712](https://github.com/SAP/luigi/pull/3712) Remove favicon console warning ([@Jotrorox](https://github.com/Jotrorox))
+
+
+
+
+
+## [v2.11.0] (2024-04-19)
+
+#### :rocket: Added
+* [#3664](https://github.com/SAP/luigi/pull/3664) Add TabNav navigate on click ([@camelCaseChris](https://github.com/camelCaseChris))
+
+#### :bug: Fixed
+* [#3696](https://github.com/SAP/luigi/pull/3696) Fix dependency issue in client-support-angular ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.10.0] (2024-04-09)
 
 #### :rocket: Added
@@ -1756,3 +1795,6 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.8.0]: https://github.com/SAP/luigi/compare/v2.7.5...v2.8.0
 [v2.9.0]: https://github.com/SAP/luigi/compare/v2.8.0...v2.9.0
 [v2.10.0]: https://github.com/SAP/luigi/compare/v2.9.0...v2.10.0
+[v2.11.0]: https://github.com/SAP/luigi/compare/v2.10.0...v2.11.0
+[v2.12.0]: https://github.com/SAP/luigi/compare/v2.11.0...v2.12.0
+[v2.13.0]: https://github.com/SAP/luigi/compare/v2.12.0...v2.13.0

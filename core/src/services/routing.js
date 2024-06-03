@@ -596,7 +596,11 @@ class RoutingClass {
 
   async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false, config = {}) {
     const redirectResult = RoutingHelpers.getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched);
+    if (redirectResult.ignoreLuigiErrorHandling) {
+      return;
+    }
     const redirectPathFromNotFoundHandler = redirectResult.path;
+
     if (redirectPathFromNotFoundHandler) {
       if (redirectResult.keepURL) {
         this.handleRouteChange(redirectPathFromNotFoundHandler, component, IframeHelpers.getIframeContainer(), config);
