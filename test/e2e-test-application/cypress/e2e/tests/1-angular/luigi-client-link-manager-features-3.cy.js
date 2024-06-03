@@ -172,11 +172,20 @@ describe('Luigi client linkManager', () => {
         })
       cy.wrap($iframeBody).should('contain', 'promise resolved!');
     });
+    it('Open and Close Modal With Esc Key', () => {
+      cy.wrap($iframeBody)
+        .contains('Open A modal with On Close Promise')
+        .click();
+      cy.get('body').trigger('keydown', { keyCode: 27});
+      cy.wait(300);
+      cy.get('body').trigger('keyup', { keyCode: 27});
+      cy.wrap($iframeBody).should('contain', 'promise resolved!');
+    });
     it('Open and Close Modal With linkManager.goBack()', () => {
       cy.wrap($iframeBody)
         .contains('Open A modal with On Close Promise')
         .click();
-      cy.get('[data-testid=modal-mf] iframe') //
+      cy.get('[data-testid=modal-mf] iframe')
         .iframe()
         .then($modal => {
           cy.wrap($modal)
@@ -188,11 +197,25 @@ describe('Luigi client linkManager', () => {
         });
       cy.wrap($iframeBody).should('contain', 'promise resolved!');
     });
+    it('Open and Close Modal With linkManager().navigate()', () => {
+      cy.wrap($iframeBody)
+        .contains('Open A modal with On Close Promise')
+        .click();
+      cy.get('[data-testid=modal-mf] iframe')
+        .eq(0)
+        .iframe()
+        .then($modal => {
+          cy.wrap($modal)
+            .contains('absolute: to /projects/pr2') // linkManager().navigate('/projects/pr2')
+            .click();
+        });
+      cy.wrap($iframeBody).should('contain', 'promise resolved!');
+    });
     it('Open and Close Modal With uxManager().closeCurrentModal()', () => {
       cy.wrap($iframeBody)
         .contains('Open A modal with On Close Promise')
         .click();
-      cy.get('[data-testid=modal-mf] iframe') //
+      cy.get('[data-testid=modal-mf] iframe')
         .eq(0)
         .iframe()
         .then($modal => {
@@ -204,8 +227,6 @@ describe('Luigi client linkManager', () => {
     });
   });
   
-    
-
   describe('linkManager wrong paths navigation', () => {
     let $iframeBody;
     beforeEach(() => {
