@@ -19,6 +19,7 @@
     <link href="../../../styles/styles.css" rel="stylesheet" />
     <script src="/vendor/luigi-client/luigi-client.js"></script>
   </head>
+
   <body>
     <div>
       <div class="fd-page">
@@ -449,7 +450,15 @@
         </div>
       </div>
     </div>
+    <script type="module">
+      import setTheme from '../../../themeHelper.js';
+      function updateFn() {
+        setTheme();
+      }
 
+      LuigiClient.addInitListener(updateFn);
+      LuigiClient.addContextUpdateListener(updateFn);
+    </script>
     <script type="text/javascript">
       (function() {
         //dropdown

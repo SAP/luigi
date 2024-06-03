@@ -9,6 +9,7 @@
     />
     <link href="../../styles/styles.css" rel="stylesheet" />
     <script src="/vendor/luigi-client/luigi-client.js"></script>
+
     <style>
       html,
       body {
@@ -65,8 +66,10 @@
       navigate(window.location.hash);
     </script>
 
-    <script>
+    <script type="module">
+      import setTheme from '/themeHelper.js';
       function updateFn(context) {
+        setTheme();
         if (context.title) {
           document.getElementById('title').innerHTML = context.title;
         }
