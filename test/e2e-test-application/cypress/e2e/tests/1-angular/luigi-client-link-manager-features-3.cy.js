@@ -164,7 +164,7 @@ describe('Luigi client linkManager', () => {
     });
     it('Open and Close Modal with Close Button', () => {
       cy.wrap($iframeBody)
-        .contains('Open A modal with On Close Promise')
+        .find('[data-testid=open-modal-on-close-promise]')
         .click()
         .then(() => {
           cy.get('[data-testid=lui-modal-index-0]') // X-button
@@ -174,16 +174,14 @@ describe('Luigi client linkManager', () => {
     });
     it('Open and Close Modal With Esc Key', () => {
       cy.wrap($iframeBody)
-        .contains('Open A modal with On Close Promise')
+        .find('[data-testid=open-modal-on-close-promise]')
         .click();
-      cy.get('body').trigger('keydown', { keyCode: 27});
-      cy.wait(300);
-      cy.get('body').trigger('keyup', { keyCode: 27});
+      cy.get('body').trigger('keydown', { keyCode: 27});  // Esc
       cy.wrap($iframeBody).should('contain', 'promise resolved!');
     });
     it('Open and Close Modal With linkManager.goBack()', () => {
       cy.wrap($iframeBody)
-        .contains('Open A modal with On Close Promise')
+        .find('[data-testid=open-modal-on-close-promise]')
         .click();
       cy.get('[data-testid=modal-mf] iframe')
         .iframe()
@@ -192,14 +190,11 @@ describe('Luigi client linkManager', () => {
             .contains('Click here') // linkManager().goBack()
             .click();
         });
-        cy.getIframeBody().then(result => {
-          $iframeBody = result;
-        });
       cy.wrap($iframeBody).should('contain', 'promise resolved!');
     });
     it('Open and Close Modal With linkManager().navigate()', () => {
       cy.wrap($iframeBody)
-        .contains('Open A modal with On Close Promise')
+        .find('[data-testid=open-modal-on-close-promise]')
         .click();
       cy.get('[data-testid=modal-mf] iframe')
         .eq(0)
@@ -213,7 +208,7 @@ describe('Luigi client linkManager', () => {
     });
     it('Open and Close Modal With uxManager().closeCurrentModal()', () => {
       cy.wrap($iframeBody)
-        .contains('Open A modal with On Close Promise')
+        .find('[data-testid=open-modal-on-close-promise]')
         .click();
       cy.get('[data-testid=modal-mf] iframe')
         .eq(0)
