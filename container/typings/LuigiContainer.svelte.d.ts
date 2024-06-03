@@ -74,6 +74,12 @@ export default class LuigiContainer extends HTMLElement {
   nodeParams: Object;
 
   /**
+   * If set to true, luigi container webcomponent don't have an shadow dom.
+   * @since NEXTRELEASE
+   */
+  noShadow: boolean;
+
+  /**
    * The search parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */

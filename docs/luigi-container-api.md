@@ -131,6 +131,16 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 -   **since**: 1.0.0
 
+### noShadow
+
+If set to true, luigi container webcomponent don't have an shadow dom.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 ### searchParams
 
 The search parameters to be passed to the web-component-based micro frontend.

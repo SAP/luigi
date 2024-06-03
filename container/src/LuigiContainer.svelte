@@ -75,10 +75,7 @@
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
         if (webcomponent) {
-          (noShadow
-            ? thisComponent
-            : mainComponent
-          )._luigi_mfe_webcomponent.context = contextObj;
+          (noShadow ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
@@ -95,16 +92,12 @@
       if (webcomponent && webcomponent != 'false') {
         const elRoot = noShadow ? thisComponent : mainComponent;
         elRoot.innerHTML = '';
-        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(
-          webcomponent
-        );
+        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
           viewurl,
           elRoot,
           ctx,
-          typeof webComponentValue === 'object'
-            ? { webcomponent: webComponentValue }
-            : {}
+          typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
         );
       }
       if (skipInitCheck) {
@@ -113,18 +106,12 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         });
       } else if (webcomponent) {
-        (noShadow ? thisComponent : mainComponent).addEventListener(
-          'wc_ready',
-          () => {
-            if (
-              !(noShadow ? thisComponent : (mainComponent as any))
-                ._luigi_mfe_webcomponent?.deferLuigiClientWCInit
-            ) {
-              thisComponent.initialized = true;
-              webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-            }
+        (noShadow ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
+          if (!(noShadow ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
+            thisComponent.initialized = true;
+            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           }
-        );
+        });
       }
       containerInitialized = true;
       thisComponent.containerInitialized = true;
@@ -168,9 +155,7 @@
         }
       };
     } }} />
-<main
-  bind:this={mainComponent}
-  class={webcomponent ? undefined : 'lui-isolated'}>
+<main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
     {#if !webcomponent || webcomponent === 'false'}
       <iframe
@@ -178,7 +163,8 @@
         src={viewurl}
         title={label}
         allow={getAllowRules(allowRules)}
-        sandbox={sandboxRules ? sandboxRules.join(' ') : undefined} />
+        sandbox={sandboxRules ? sandboxRules.join(' ') : undefined}
+      />
     {/if}
   {/if}
 </main>
