@@ -133,18 +133,8 @@ export class ProjectComponent implements OnInit, OnDestroy {
       title: 'microfrontend in a modal',
       size: 'm',
     }).then(() => {
-      const newListEl = document.createElement('li');
-      newListEl.textContent = 'promise resolved!';
-      newListEl.id = "promiseResolved";
-      newListEl.className = 'fd-list__item';
-      document.getElementById('promiseTest').appendChild(newListEl);
-    }).catch(() => {
-      const newListEl = document.createElement('li');
-      newListEl.textContent = 'promise rejected';
-      newListEl.id = "promiseRejected";
-      newListEl.className = 'fd-list__item';
-      document.getElementById('promiseTest').appendChild(newListEl);
-    });
+      document.getElementById('promiseTest').innerHTML='promise resolved!'
+    })
   }
 
   showConfirmationModal() {
