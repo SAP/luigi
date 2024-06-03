@@ -14,7 +14,10 @@
     "e2e:run:external": "cypress run --config-file cypress/config/externalmf.config.js --browser chrome -c video=false",
     "buildConfig": "webpack --config webpack-generateConfig.config",
     "startExternalMf": "http-server --port 8090 ./externalMf",
-    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf\""
+    "start": "concurrently \"npm run buildConfig -- --watch\" \"ng serve --host 0.0.0.0 --port 4200\" \"npm run startExternalMf\"",
+    "e2e": "ng e2e",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@angular/animations": "^16.2.12",
@@ -51,6 +54,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.18.9",
     "@babel/preset-env": "^7.19.3",
     "@babel/register": "^7.18.9",
+    "@cypress/schematic": "^2.5.1",
     "@types/jasmine": "~4.0.0",
     "@types/jasminewd2": "^2.0.10",
     "@types/node": "^12.20.55",
