@@ -10,9 +10,9 @@
     "build:lib": "ng build client-support-angular --configuration production",
     "bundle": "ng build client-support-angular --configuration production",
     "bundle-develop": "ng build client-support-angular --watch",
-    "e2e": "ng e2e",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "e2e": "ng e2e client-support-angular --configuration production",
+    "cypress:open": "cypress open --config-file=projects/client-support-angular/cypress.config.ts",
+    "cypress:run": "cypress run --config-file=projects/client-support-angular/cypress.config.ts"
   },
   "private": true,
   "dependencies": {

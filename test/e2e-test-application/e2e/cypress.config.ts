@@ -9,6 +9,7 @@ export default defineConfig({
     specPattern: '**/*.cy.ts',
   },
   e2e: {
-    'baseUrl': 'http://localhost:4200',
+    baseUrl: 'http://localhost:4200',
+    supportFile: false,
   },
 });
