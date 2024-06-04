@@ -279,8 +279,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext() {
-    const hasParentNavigationContext =
-      this.currentContext && this.currentContext.context.parentNavigationContexts.length > 0;
+    const hasParentNavigationContext = this.currentContext?.context.parentNavigationContexts.length > 0;
     if (hasParentNavigationContext) {
       this.options.fromContext = null;
       this.options.fromClosestContext = true;
