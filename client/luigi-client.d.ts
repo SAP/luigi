@@ -65,9 +65,7 @@ export declare interface PathParams {
 }
 
 export declare interface Context {
-  context?: {
-    parentNavigationContext?: string[];
-  };
+  parentNavigationContext?: string[];
   [key: string]: any;
 }
 
