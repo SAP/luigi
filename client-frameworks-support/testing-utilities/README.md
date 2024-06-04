@@ -52,7 +52,6 @@ describe('Another test using cypress', () => {
   let luigiMockUtil: LuigiMockUtil;
 
   beforeAll(async () => {
-    luigiMockUtil = new LuigiMockUtil(Cypress.browser);
     // Necessary to execute the functions from LuigiMockUtil in cypress context and get the
     // the window object of the page that is currently active
     cy.window().then((win: any) => {
