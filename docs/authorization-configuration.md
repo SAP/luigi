@@ -145,7 +145,7 @@ auth: {
 
 The OpenID Connect configuration allows you to specify the **automaticSilentRenew** option. When set to `true`, Luigi attempts to automatically renew the token in the background before it expires. Be aware that this mechanism requires the browser to support [third-party cookies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Third-party_cookies).
 
-When Luigi fails to renew the token it logs the user out and adds the `?reason=tokenExpired` query parameter to the logout page redirect URL. Use this parameter to set a logout page.
+When Luigi fails to renew the token it logs the user out and adds the `?reason=tokenExpired` query parameter to the logout page redirect URL. Use this parameter to show an appropriate message on the logout page.
 
 > **NOTE:** Starting from version 3.0 Luigi doesn't support third-party cookies in any way.
 
