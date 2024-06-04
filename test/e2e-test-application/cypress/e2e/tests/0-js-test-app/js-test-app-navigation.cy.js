@@ -653,4 +653,32 @@ describe('JS-TEST-APP', () => {
       });
     });
   });
+
+  describe('First topNav node has no viewURL and empty children', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.navigation.nodes.unshift({
+        pathSegment: 'firstnode',
+        label: 'First Node',
+        children: []
+      });
+    });
+    it('TopNav nodes should be visible either first node has no view', () => {
+      cy.visitTestAppLoggedIn('/', newConfig);
+      cy.expectPathToBe('/firstnode/');
+      cy.get('.fd-app__sidebar .fd-nested-list')
+        .children()
+        .should('have.length', 0);
+      cy.get('.fd-shellbar').contains('First Node');
+      cy.get('.fd-shellbar')
+        .contains('Home')
+        .click();
+      cy.expectPathToBe('/home');
+      cy.get('.fd-app__sidebar .fd-nested-list')
+        .children()
+        .should('have.length', 2);
+      cy.get('.fd-app__sidebar').contains('Section one');
+    });
+  });
 });
