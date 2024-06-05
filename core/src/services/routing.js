@@ -291,8 +291,7 @@ class RoutingClass {
         this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, {
           keepBrowserHistory: false
         });
-        // reset comp data
-        component.set({ navigationPath: [] });
+        return false;
       } else {
         if (defaultChildNode && pathData.navigationPath.length > 1) {
           //last path segment was invalid but a default node could be in its place
