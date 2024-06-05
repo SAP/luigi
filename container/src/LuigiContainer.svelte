@@ -136,10 +136,36 @@
 </script>
 
 <svelte:options
-  customElement={{ tag: null, props: { viewurl: { type: 'String', reflect: false, attribute: 'viewurl' }, deferInit: { type: 'Boolean', attribute: 'defer-init' }, noShadow: { type: 'Boolean', attribute: 'no-shadow' }, context: { type: 'String', reflect: false, attribute: 'context' }, label: { type: 'String', reflect: false, attribute: 'label' }, webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' }, locale: { type: 'String', reflect: false, attribute: 'locale' }, theme: { type: 'String', reflect: false, attribute: 'theme' }, activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' }, skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' }, nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }, userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' }, anchor: { type: 'String', reflect: false, attribute: 'anchor' }, searchParams: { type: 'Object', reflect: false, attribute: 'search-params' }, pathParams: { type: 'Object', reflect: false, attribute: 'path-params' }, clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }, dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' }, hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' }, documentTitle: { type: 'String', reflect: false, attribute: 'document-title' }, allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' }, sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' } }, extend: customElementConstructor => {
+  customElement={{
+    tag: null,
+    props: {
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      label: { type: 'String', reflect: false, attribute: 'label' },
+      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
+      theme: { type: 'String', reflect: false, attribute: 'theme' },
+      activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
+      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
+      documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
+      allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' },
+      sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' }
+    },
+    extend: customElementConstructor => {
       let notInitFn = name => {
         return () => console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
       };
+
       return class extends customElementConstructor {
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
@@ -154,7 +180,10 @@
           }
         }
       };
-    } }} />
+    }
+  }}
+/>
+
 <main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
     {#if !webcomponent || webcomponent === 'false'}

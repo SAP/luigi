@@ -1,3 +1,93 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { ContainerService } from './services/container.service';
+  import { WebComponentService } from './services/webcomponents.service';
+  import { Events } from './constants/communication';
+  import { GenericHelperFunctions } from './utilities/helpers';
+
+  export let viewurl: string;
+  export let webcomponent: any;
+  export let context: string;
+  export let deferInit: boolean;
+  export let compoundConfig: any;
+  export let nodeParams: any;
+  export let searchParams: any;
+  export let pathParams: any;
+  export let clientPermissions: any;
+  export let userSettings: any;
+  export let anchor: string;
+  export let dirtyStatus: boolean;
+  export let hasBack: boolean;
+  export let documentTitle: string;
+
+  let containerInitialized = false;
+  let mainComponent: HTMLElement;
+  let eventBusElement: HTMLElement;
+
+  const containerService = new ContainerService();
+  const webcomponentService = new WebComponentService();
+
+  // Only needed for get rid of "unused export property" svelte compiler warnings
+  export const unwarn = () => {
+    return (
+      nodeParams &&
+      searchParams &&
+      pathParams &&
+      clientPermissions &&
+      userSettings &&
+      anchor &&
+      dirtyStatus &&
+      hasBack &&
+      documentTitle
+    );
+  };
+
+  const initialize = (thisComponent: any) => {
+    if (!compoundConfig || containerInitialized) {
+      return;
+    }
+    thisComponent.updateContext = (contextObj: any, internal?: any) => {
+      mainComponent._luigi_mfe_webcomponent.context = contextObj;
+    };
+    const ctx = GenericHelperFunctions.resolveContext(context);
+    deferInit = false;
+
+    const node = {
+      compound: compoundConfig,
+      viewUrl: viewurl,
+      webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
+    }; // TODO: fill with sth
+    webcomponentService.renderWebComponentCompound(node, mainComponent, ctx).then(compCnt => {
+      eventBusElement = compCnt as HTMLElement;
+      if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
+        thisComponent.initialized = true;
+        setTimeout(() => {
+          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+        });
+      } else if ((eventBusElement as any).LuigiClient && !(eventBusElement as any).deferLuigiClientWCInit) {
+        thisComponent.initialized = true;
+        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+      }
+    });
+    containerInitialized = true;
+    thisComponent.containerInitialized = true;
+  };
+
+  onMount(async () => {
+    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
+
+    thisComponent.init = () => {
+      initialize(thisComponent);
+    };
+    if (!deferInit) {
+      initialize(thisComponent);
+    }
+
+    containerService.registerContainer(thisComponent);
+    webcomponentService.thisComponent = thisComponent;
+  });
+</script>
+
 <svelte:options
   customElement={{
     tag: null,
@@ -51,102 +141,6 @@
     },
   }}
 />
-
-<script lang="ts">
-  import { onMount } from 'svelte';
-  import { ContainerService } from './services/container.service';
-  import { WebComponentService } from './services/webcomponents.service';
-  import { Events } from './constants/communication';
-  import { GenericHelperFunctions } from './utilities/helpers';
-
-  export let viewurl: string;
-  export let webcomponent: any;
-  export let context: string;
-  export let deferInit: boolean;
-  export let compoundConfig: any;
-  export let nodeParams: any;
-  export let searchParams: any;
-  export let pathParams: any;
-  export let clientPermissions: any;
-  export let userSettings: any;
-  export let anchor: string;
-  export let dirtyStatus: boolean;
-  export let hasBack: boolean;
-  export let documentTitle: string;
-
-  let containerInitialized = false;
-  let mainComponent: HTMLElement;
-  let eventBusElement: HTMLElement;
-
-  const containerService = new ContainerService();
-  const webcomponentService = new WebComponentService();
-
-  // Only needed for get rid of "unused export property" svelte compiler warnings
-  export const unwarn = () => {
-    return (
-      nodeParams &&
-      searchParams &&
-      pathParams &&
-      clientPermissions &&
-      userSettings &&
-      anchor && 
-      dirtyStatus &&
-      hasBack &&
-      documentTitle
-    );
-  };
-
-  const initialize = (thisComponent: any) => {
-    if (!compoundConfig || containerInitialized) {
-      return;
-    }
-    thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      mainComponent._luigi_mfe_webcomponent.context = contextObj;
-    };
-    const ctx = GenericHelperFunctions.resolveContext(context);
-    deferInit = false;
-
-    const node = {
-      compound: compoundConfig,
-      viewUrl: viewurl,
-      webcomponent:
-        GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true,
-    }; // TODO: fill with sth
-    webcomponentService
-      .renderWebComponentCompound(node, mainComponent, ctx)
-      .then((compCnt) => {
-        eventBusElement = compCnt as HTMLElement;
-        if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
-          thisComponent.initialized = true;
-          setTimeout(() => {
-            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-          });
-        } else if (
-          (eventBusElement as any).LuigiClient &&
-          !(eventBusElement as any).deferLuigiClientWCInit
-        ) {
-          thisComponent.initialized = true;
-          webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-        }
-      });
-    containerInitialized = true;
-    thisComponent.containerInitialized = true;
-  };
-
-  onMount(async () => {
-    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
-
-    thisComponent.init = () => {
-      initialize(thisComponent);
-    };
-    if (!deferInit) {
-      initialize(thisComponent);
-    }
-
-    containerService.registerContainer(thisComponent);
-    webcomponentService.thisComponent = thisComponent;
-  });
-</script>
 
 <main bind:this={mainComponent} />
 
