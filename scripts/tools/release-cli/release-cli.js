@@ -40,7 +40,6 @@ const pkgJsonPaths = {
   client: path.resolve(base, 'client', 'public', 'package.json'),
   authOAuth2: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oauth2', 'package.json'),
   authOIDC: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oidc', 'package.json'),
-  authOIDC_pkce: path.resolve(base, 'plugins', 'auth', 'public', 'auth-oidc-pkce', 'package.json'),
   client_support_angular: path.resolve(
     base,
     'client-frameworks-support',

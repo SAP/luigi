@@ -39,7 +39,6 @@ const packagePaths = {
   client: ['client'],
   oauth2: ['plugins', 'auth', 'src', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'src', 'auth-oidc'],
-  oidc_pkce: ['plugins', 'auth', 'src', 'auth-oidc-pkce'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular'],
   testing_utilities: ['client-frameworks-support', 'testing-utilities']
 };
