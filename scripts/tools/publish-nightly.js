@@ -47,7 +47,6 @@ const publishPaths = {
   client: ['client', 'public'],
   oauth2: ['plugins', 'auth', 'public', 'auth-oauth2'],
   oidc: ['plugins', 'auth', 'public', 'auth-oidc'],
-  oidc_pkce: ['plugins', 'auth', 'public', 'auth-oidc-pkce'],
   client_support_angular: ['client-frameworks-support', 'client-support-angular', 'dist', 'client-support-angular'],
   testing_utilities: ['client-frameworks-support', 'testing-utilities', 'dist']
 };
