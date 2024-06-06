@@ -7,8 +7,8 @@
     {#if count > 0}
       <span
         class="fd-counter fd-counter--notification fd-shellbar__counter--notification"
-        aria-label={node.badgeCounter.label}>{count}</span
-      >
+        aria-label={node.badgeCounter.label}
+      >{count}</span>
     {/if}
   {/await}
 {/if}
@@ -45,7 +45,8 @@
     }
   }
 
-  :global(.fd-nested-list__link), :global(.fd-navigation__link) {
+  :global(.fd-nested-list__link),
+  :global(.fd-navigation__link) {
     .fd-counter--notification {
       transform: translate(0px, 0px) !important;
       margin-left: auto;

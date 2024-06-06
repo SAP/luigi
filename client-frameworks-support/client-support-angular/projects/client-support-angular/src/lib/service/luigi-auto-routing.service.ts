@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRouteSnapshot, NavigationEnd, ParamMap, Router, RouterEvent, convertToParamMap } from '@angular/router';
-import { linkManager, uxManager } from '@luigi-project/client';
+import { linkManager, uxManager, isLuigiClientInitialized } from '@luigi-project/client';
 import { OperatorFunction, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
@@ -63,7 +63,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
         }
       }
     }
-    if (current?.data) {
+    if (current?.data && isLuigiClientInitialized()) {
       const ux = uxManager();
       let lm = linkManager().withoutSync();
       let route: string | undefined;
@@ -130,7 +130,7 @@ export class LuigiAutoRoutingService implements OnDestroy {
 
   getAllParamsFromParents(current: ActivatedRouteSnapshot): { [key: string]: string } | undefined {
     let allParams: { [key: string]: string } = {};
-    let currentToCheck:ActivatedRouteSnapshot|null = current;
+    let currentToCheck: ActivatedRouteSnapshot | null = current;
 
     while (currentToCheck) {
       if (currentToCheck.params) {

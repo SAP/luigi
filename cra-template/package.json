@@ -1,12 +1,14 @@
 {
   "name": "@luigi-project/cra-template-luigi-microfrontend",
   "license": "Apache-2.0",
-  "version": "1.0.1",
-  "keywords": ["cra-template-luigi", "microfrontend", "luigi", "luigi-microfrontend"],
-  "scripts": {
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-  }
+  "version": "1.0.2",
+  "keywords": [
+    "cra-template-luigi",
+    "microfrontend",
+    "luigi",
+    "luigi-microfrontend"
+  ],
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
 }

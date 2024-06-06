@@ -20,6 +20,9 @@
       script.type = 'text/javascript';
       script.src = '/luigi-client/luigi-client.js';
       document.getElementsByTagName('body')[0].appendChild(script);
+      document.body.classList.add(
+        'page-' + location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
+      );
     </script>
   </body>
 </html>
