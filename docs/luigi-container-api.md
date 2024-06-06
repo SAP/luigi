@@ -133,7 +133,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### noShadow
 
-If set to true, luigi container webcomponent don't have a shadow dom.
+If set to true, the Luigi container webcomponent will not be rendered in a shadow DOM.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 

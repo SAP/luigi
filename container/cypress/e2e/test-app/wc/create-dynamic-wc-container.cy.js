@@ -95,9 +95,9 @@ describe('Create luigi-container dynamically', () => {
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', htmlCode);
-    cy.get('[data-test-id="luigi-container"]')
+      cy.get('[data-test-id="luigi-container"]')
       .shadow()
-      .should('not.exist');
+      .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f77632f77632f68656c6c6f576f726c6457432e6a73').should('not.exist');
   });
 
   it('no shadow dom set to false for LuigiContainer', () => {
@@ -117,9 +117,8 @@ describe('Create luigi-container dynamically', () => {
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', htmlCode);
-    // cy.get('[data-test-id="luigi-container"]').shadow().should('exist');
     cy.get('[data-test-id="luigi-container"]')
       .shadow()
-      .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f77632f77632f68656c6c6f576f726c6457432e6a73');
+      .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f77632f77632f68656c6c6f576f726c6457432e6a73').should('exist');
   });
 });
