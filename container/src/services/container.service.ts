@@ -52,7 +52,7 @@ export class ContainerService {
 
   /**
    * Retrieves the target container based on the event source.
-   * 
+   *
    * @param event The event object representing the source of the container.
     @returns {Object| undefined} The target container object or undefined if not found.
    */
@@ -69,122 +69,126 @@ export class ContainerService {
 
   /**
    * Initializes the Luigi Container Manager responsible for managing communication
-   * between microfrontends and dispatching events accordingly. Also adds 'message' listener to the window object with 
+   * between microfrontends and dispatching events accordingly. Also adds 'message' listener to the window object with
    * the defined messageListener list
    * @returns __luigi_container_manager which has the added container array and message listeners
    */
   getContainerManager () {
-    if (!globalThis.__luigi_container_manager) {
-      globalThis.__luigi_container_manager = {
-        container: [],
-        messageListener: event => {
-          // Handle incoming messages and dispatch events based on the message type
-          // (Custom messages, navigation requests, alert requests, etc.)
-          const targetCnt = this.getTargetContainer(event);
-          const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
-          if (target && target === event.source) {
-            // messages emitted from microfrontends
-            const msg = event.data.msg;
-
-            // dispatch an event depending on message
-            switch (msg) {
-              case LuigiInternalMessageID.CUSTOM_MESSAGE:
-                {
-                  const evData = event.data.data;
-                  const id = evData.id;
-                  delete evData.id;
-                  this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, {
-                    id: id,
-                    _metaData: {},
-                    data: evData
-                  });
-                }
-                break;
-              case LuigiInternalMessageID.GET_CONTEXT:
-                // Automatically send a luigi.init message to complete the initial handshake with the microfrontend
-                target.postMessage(
-                  {
-                    msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
-                    context: targetCnt.context || {},
-                    internal: {}
-                  },
-                  '*'
-                );
-                break;
-              case LuigiInternalMessageID.NAVIGATION_REQUEST:
-                this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
-                break;
-              // TODO 1: handle alerts with ids on next iteration
-              case LuigiInternalMessageID.ALERT_REQUEST:
-                this.dispatch(Events.ALERT_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.INITIALIZED:
-                this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
-                break;
-              case LuigiInternalMessageID.ADD_SEARCH_PARAMS_REQUEST:
-                this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, {
-                  data: event.data.data,
-                  keepBrowserHistory: event.data.keepBrowserHistory
-                });
-                break;
-              case LuigiInternalMessageID.ADD_NODE_PARAMS_REQUEST:
-                this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, {
-                  data: event.data.data,
-                  keepBrowserHistory: event.data.keepBrowserHistory
-                });
-                break;
-              case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
-                this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
-                break;
-              case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
-                this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.HIDE_LOADING_INDICATOR_REQUEST:
-                this.dispatch(Events.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.SET_CURRENT_LOCALE_REQUEST:
-                this.dispatch(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST:
-                this.dispatch(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.RUNTIME_ERROR_HANDLING_REQUEST:
-                this.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.SET_ANCHOR_LINK_REQUEST:
-                this.dispatch(Events.SET_ANCHOR_LINK_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST:
-                this.dispatch(Events.SET_THIRD_PARTY_COOKIES_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
-                this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
-                this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
-                break;
-              // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
-              case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
-                this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.UPDATE_MODAL_PATH_DATA_REQUEST:
-                this.dispatch(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
-                this.dispatch(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event);
-                break;
-              case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
-                this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
-                break;
-              default:
-                console.warn('Functionality not yet implemented: ', msg);
-                break;
-            }
-          }
-        }
-      };
-      window.addEventListener('message', globalThis.__luigi_container_manager.messageListener);
+    if (globalThis.__luigi_container_manager) {
+      return globalThis.__luigi_container_manager;
     }
+
+    globalThis.__luigi_container_manager = {
+      container: [],
+      messageListener: event => {
+        // Handle incoming messages and dispatch events based on the message type
+        // (Custom messages, navigation requests, alert requests, etc.)
+        const targetCnt = this.getTargetContainer(event);
+        const target = targetCnt?.iframeHandle?.iframe?.contentWindow;
+
+        if (!target || target !== event.source) {
+          return;
+        }
+
+        // messages emitted from microfrontends
+        const msg = event.data.msg;
+
+        // dispatch an event depending on message
+        switch (msg) {
+          case LuigiInternalMessageID.CUSTOM_MESSAGE:
+            {
+              const evData = event.data.data;
+              const id = evData.id;
+              delete evData.id;
+              this.dispatch(Events.CUSTOM_MESSAGE, targetCnt, {
+                id: id,
+                _metaData: {},
+                data: evData
+              });
+            }
+            break;
+          case LuigiInternalMessageID.GET_CONTEXT:
+            // Automatically send a luigi.init message to complete the initial handshake with the microfrontend
+            target.postMessage(
+              {
+                msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
+                context: targetCnt.context || {},
+                internal: {}
+              },
+              '*'
+            );
+            break;
+          case LuigiInternalMessageID.NAVIGATION_REQUEST:
+            this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
+            break;
+          // TODO 1: handle alerts with ids on next iteration
+          case LuigiInternalMessageID.ALERT_REQUEST:
+            this.dispatch(Events.ALERT_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.INITIALIZED:
+            this.dispatch(Events.INITIALIZED, targetCnt, event.data.params);
+            break;
+          case LuigiInternalMessageID.ADD_SEARCH_PARAMS_REQUEST:
+            this.dispatch(Events.ADD_SEARCH_PARAMS_REQUEST, targetCnt, {
+              data: event.data.data,
+              keepBrowserHistory: event.data.keepBrowserHistory
+            });
+            break;
+          case LuigiInternalMessageID.ADD_NODE_PARAMS_REQUEST:
+            this.dispatch(Events.ADD_NODE_PARAMS_REQUEST, targetCnt, {
+              data: event.data.data,
+              keepBrowserHistory: event.data.keepBrowserHistory
+            });
+            break;
+          case LuigiInternalMessageID.SHOW_CONFIRMATION_MODAL_REQUEST:
+            this.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, targetCnt, event.data.data);
+            break;
+          case LuigiInternalMessageID.SHOW_LOADING_INDICATOR_REQUEST:
+            this.dispatch(Events.SHOW_LOADING_INDICATOR_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.HIDE_LOADING_INDICATOR_REQUEST:
+            this.dispatch(Events.HIDE_LOADING_INDICATOR_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.SET_CURRENT_LOCALE_REQUEST:
+            this.dispatch(Events.SET_CURRENT_LOCALE_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.LOCAL_STORAGE_SET_REQUEST:
+            this.dispatch(Events.LOCAL_STORAGE_SET_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.RUNTIME_ERROR_HANDLING_REQUEST:
+            this.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.SET_ANCHOR_LINK_REQUEST:
+            this.dispatch(Events.SET_ANCHOR_LINK_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.SET_THIRD_PARTY_COOKIES_REQUEST:
+            this.dispatch(Events.SET_THIRD_PARTY_COOKIES_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.BACK_NAVIGATION_REQUEST:
+            this.dispatch(Events.BACK_NAVIGATION_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
+            this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
+            break;
+          // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
+          case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
+            this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.UPDATE_MODAL_PATH_DATA_REQUEST:
+            this.dispatch(Events.UPDATE_MODAL_PATH_DATA_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.CHECK_PATH_EXISTS_REQUEST:
+            this.dispatch(Events.CHECK_PATH_EXISTS_REQUEST, targetCnt, event);
+            break;
+          case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
+            this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
+            break;
+        }
+      }
+    };
+
+    window.addEventListener('message', globalThis.__luigi_container_manager.messageListener);
+
     return globalThis.__luigi_container_manager;
   }
 
