@@ -1,5 +1,5 @@
 import { WebComponentService } from '../../src/services/web-components';
-import { LuigiConfig, LuigiI18N } from '../../src/core-api';
+import { LuigiConfig, LuigiI18N, LuigiTheming } from '../../src/core-api';
 
 import { DefaultCompoundRenderer } from '../../src/utilities/helpers/web-component-helpers';
 import { LuigiElement } from '../../../client/src/luigi-element';
@@ -48,7 +48,15 @@ describe('WebComponentService', function() {
     beforeEach(() => {
       window.Luigi = {
         navigation: 'mock1',
-        ux: 'mock2',
+        ux: () => {
+          return {
+            LuigiUX,
+            getCurrentTheme: () => {
+              return window.Luigi.theming().getCurrentTheme();
+            }
+          };
+        },
+        theming: () => LuigiTheming,
         i18n: () => LuigiI18N
       };
 
@@ -70,11 +78,12 @@ describe('WebComponentService', function() {
     it('check dom injection', () => {
       container.appendChild(itemPlaceholder);
       WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
-
-      const expectedCmp = container.children[0];
+      
+      const expectedCmp = container.children[0];    
       expect(expectedCmp.context).to.equal(extendedContext.context);
       expect(expectedCmp.LuigiClient.linkManager).to.equal(window.Luigi.navigation);
-      expect(expectedCmp.LuigiClient.uxManager).to.equal(window.Luigi.ux);
+      expect(expectedCmp.LuigiClient.uxManager).to.be.a('function');
+      expect(expectedCmp.LuigiClient.uxManager().getCurrentTheme()).to.equal(window.Luigi.theming().getCurrentTheme());
       expect(expectedCmp.LuigiClient.getCurrentLocale()).to.equal(window.Luigi.i18n().getCurrentLocale());
       expect(expectedCmp.LuigiClient.getCurrentLocale).to.be.a('function');
       expect(expectedCmp.LuigiClient.publishEvent).to.be.a('function');
