@@ -65,14 +65,7 @@ class WebComponentSvcClass {
     }
     const clientAPI = {
       linkManager: window.Luigi.navigation,
-      uxManager: () => {
-        return {
-          ...window.Luigi.ux,
-          getCurrentTheme: () => {
-            return window.Luigi.theming().getCurrentTheme();
-          }
-        };
-      },
+      uxManager: window.Luigi.ux,
       getCurrentLocale: () => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
         if (eventBusElement.eventBus) {
