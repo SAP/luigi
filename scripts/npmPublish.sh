@@ -119,20 +119,20 @@ setLuigiNpmToken
 
 if [ "$1" = "cra-release" ]; then
   echo "$PWD"
-  checkRequiredFiles  "cra-template/template/public" "index.html" "luigi-config.js"
+  checkRequiredFiles "cra-template/template/public" "index.html" "luigi-config.js"
   publishPackage "cra-template" "cra-template"
 elif [ "$1" = "luigi-container-release" ]; then
   echo "$PWD"
-  checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
+  checkRequiredFiles "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
   publishPackage "container" "container/public"
 elif [ "$1" = "luigi-client-support-ui5-release" ]; then
   echo "$PWD"
   checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "package.json" "README.md" "ui5-support-lib.js"
   publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
-elif [ "$1" = "auth-oidc-pkce-plugin-release" ]; then
-  echo "$PWD"
-  checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
-  publishPackage "plugins" "plugins/auth/public/auth-oidc-pkce"
+# elif [ "$1" = "auth-oidc-pkce-plugin-release" ]; then
+  # echo "$PWD"
+  # checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
+  # publishPackage "plugins" "plugins/auth/public/auth-oidc-pkce"
 else
   prepublishChecks
   # Luigi OAuth Plugin
@@ -141,7 +141,7 @@ else
     publishPackage "plugins" "plugins/auth/public/auth-oauth2"
   fi
 
-  # Luigi Legacy Oidc Plugin
+  # Luigi Oidc Plugin
   if ( prepublishCheck "plugins/auth/public/auth-oidc" ); then
     checkRequiredFiles "plugins/auth/public/auth-oidc" "plugin.js" "README.md"
     publishPackage "plugins" "plugins/auth/public/auth-oidc"

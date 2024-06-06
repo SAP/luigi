@@ -1,25 +1,25 @@
 <!-- meta
 {
   "node": {
-    "label": "Legacy OpenID Connect Plugin",
+    "label": "OpenID Connect Plugin",
     "category": {
       "label": "Authorization",
       "collapsible": true
     },
     "metaData": {
       "categoryPosition": 4,
-      "position": 4
+      "position": 3
     }
   }
 }
 meta -->
 
-# Legacy OpenID Connect - Authorization Plugin for Luigi Core
+# OpenID Connect - Authorization Plugin for Luigi Core
 
 ## Overview
 
-This [legacy authorization plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/main/core) with an OpenID Connect authorization provider.
-Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow. If you don't need Implict flow please use [modern OIDC plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce) instead of legacy one.
+This [authorization plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/main/core) with an OpenID Connect authorization provider.
+Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow. If you don't need Implict flow please use [OIDC plugin with PKCE](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce) instead of this one.
 
 ## Installation
 
@@ -71,7 +71,7 @@ Next, you must install `oidc-client` in your project as a dev dependency:
 npm i -save-dev oidc-client
 ```
 
-Then, you need to copy certain auxiliary plugin files and the callback file, as they are needed for the initial setup.
+Then, you need to copy certain auxiliary plugin files and the callback file, as they are needed for the initial setup. 
 
 Respectively from `oidc-client` library you need:
 - `oidc-client.min.js` which normally resides in `node_modules/oidc-client/dist`

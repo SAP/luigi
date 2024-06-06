@@ -49,8 +49,8 @@ Additionally, you need to copy callback assets to your Core application.
 To install the plugins, follow these installation guides:
 
 - [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oauth2)
-- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce)
-- [Legacy OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc)
+- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc)
+- [OpenID Connect (OIDC) with PKCE](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce)
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
