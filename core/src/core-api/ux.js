@@ -185,8 +185,8 @@ class LuigiUX {
    * @example
    * Luigi.ux().getCurrentTheme()
    */
-  getCurrentTheme(){
-    return Luigi.theming().getCurrentTheme()
+  getCurrentTheme() {
+    return Luigi.theming().getCurrentTheme();
   }
 }
 
