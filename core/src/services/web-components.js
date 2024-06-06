@@ -71,7 +71,7 @@ class WebComponentSvcClass {
           getCurrentTheme: () => {
             return window.Luigi.theming().getCurrentTheme();
           }
-        }
+        };
       },
       getCurrentLocale: () => window.Luigi.i18n().getCurrentLocale(),
       publishEvent: ev => {
