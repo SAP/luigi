@@ -33,7 +33,6 @@ Luigi versions 1.0 and above differ from earlier versions in some important ways
 - @luigi-project/client
 - @luigi-project/core
 - @luigi-project/plugin-auth-oauth2
-- @luigi-project/plugin-auth-oidc-pkce
 - @luigi-project/plugin-auth-oidc
 
 You can read more about the other changes below:
