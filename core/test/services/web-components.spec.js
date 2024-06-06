@@ -78,8 +78,8 @@ describe('WebComponentService', function() {
     it('check dom injection', () => {
       container.appendChild(itemPlaceholder);
       WebComponentService.attachWC('div', itemPlaceholder, container, extendedContext);
-      
-      const expectedCmp = container.children[0];    
+
+      const expectedCmp = container.children[0];
       expect(expectedCmp.context).to.equal(extendedContext.context);
       expect(expectedCmp.LuigiClient.linkManager).to.equal(window.Luigi.navigation);
       expect(expectedCmp.LuigiClient.uxManager).to.be.a('function');
