@@ -75,6 +75,21 @@ describe('JS-TEST-APP 2', () => {
         );
       });
     });
+
+    it.only('Get current theme for a webcomponent', ()=>{
+      newConfig.navigation.nodes[0].children.push(
+        {
+          pathSegment:'wc',
+          label:'WC',
+          viewUrl:'/examples/microfrontends/helloWorld.js',
+          webcomponent: true
+        }
+      );
+      cy.visitTestApp('/home/wc', newConfig);
+      cy.get('luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c642e6a73').shadow().contains('light').should('not.exist')
+      cy.get('luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c642e6a73').shadow().contains('getCurrentTheme').click();
+      cy.get('luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c642e6a73').shadow().contains('light');
+    });
   });
 
   describe('semiCollapsible settings of Left Side Navigation', () => {
