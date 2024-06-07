@@ -375,16 +375,18 @@
     RoutingHelpers.addRouteChangeListener((path, eventDetail) => {
       const { withoutSync, preventContextUpdate } = eventDetail || {};
       const pv = preservedViews;
+
       // TODO: check if bookmarkable modal is interferring here
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-      for (let i = mfModalList.length; i--; ) {
-        if (mfModalList[i].modalWC && mfModalList[i].mfModal?.displayed) {
-          continue;
+
+      if (!mfModalList.some((item) => item.modalWC && item.mfModal?.displayed)) {
+        // close all modals as we are navigating away here
+        for (let i = mfModalList.length; i--; ) {
+          closeModal(i);
         }
-        closeModal(i);
       }
 
       // remove backdrop
@@ -927,6 +929,10 @@
    * @param goBackContext the goBack context that is passed through when closing the modal
    */
   const closeModal = (index, isClosedInternal, goBackContext) => {
+    if (mfModalList?.length && !mfModalList[index]) {
+      index = mfModalList.length - 1;
+    }
+
     const resetModalData = (index, isClosedInternal) => {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl');
       // only remove the modal path in URL when closing the first modal
@@ -937,6 +943,7 @@
     };
     const targetModal = mfModalList[index];
     const rp = GenericHelpers.getRemotePromise(targetModal.mfModal.settings.onClosePromiseId);
+
     if (targetModal && targetModal.modalIframe) {
       getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
         () => {
