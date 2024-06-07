@@ -929,10 +929,6 @@
    * @param goBackContext the goBack context that is passed through when closing the modal
    */
   const closeModal = (index, isClosedInternal, goBackContext) => {
-    if (mfModalList?.length && !mfModalList[index]) {
-      index = mfModalList.length - 1;
-    }
-
     const resetModalData = (index, isClosedInternal) => {
       const showModalPathInUrl = LuigiConfig.getConfigBooleanValue('routing.showModalPathInUrl');
       // only remove the modal path in URL when closing the first modal
@@ -1416,10 +1412,12 @@
                   rejectRemotePromise();
                 });
               // close all modals to allow navigation to the non-special view
-              mfModalList.forEach((m, index) => {
-                // close modals
-                closeModal(index);
-              });
+              let mfModalListLength = mfModalList.length;
+              while (mfModalListLength) {
+                mfModalListLength--;
+                // close modal
+                closeModal(mfModalListLength);
+              }
 
               closeSplitView();
               closeDrawer();
