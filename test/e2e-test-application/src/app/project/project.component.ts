@@ -128,6 +128,15 @@ export class ProjectComponent implements OnInit, OnDestroy {
     }
   }
 
+  openAsModal() {
+    linkManager().openAsModal('/projects/pr2/settings', {
+      title: 'microfrontend in a modal',
+      size: 'm',
+    }).then(() => {
+      document.getElementById('promiseTest').innerHTML='promise resolved!'
+    })
+  }
+
   showConfirmationModal() {
     this.confirmationModalResult = '';
     const settings = {
