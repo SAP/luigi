@@ -98,7 +98,7 @@ class WebComponentSvcClass {
         return wc.extendedContext.nodeParams;
       },
       setAnchor: anchor => {
-        return window.Luigi.routing().setAnchor(anchor);
+        window.Luigi.routing().setAnchor(anchor);
       },
       getAnchor: () => {
         return window.Luigi.routing().getAnchor();
