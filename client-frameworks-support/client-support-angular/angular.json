@@ -34,69 +34,15 @@
           "options": {
             "tsConfig": [
               "projects/client-support-angular/tsconfig.lib.json",
-              "projects/client-support-angular/tsconfig.spec.json",
-              "projects/client-support-angular/cypress/tsconfig.json"
+              "projects/client-support-angular/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
-        "cypress-run": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "client-support-angular:serve",
-            "configFile": "projects/client-support-angular/cypress.config.ts"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "client-support-angular:serve:production"
-            }
-          }
-        },
-        "cypress-open": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "watch": true,
-            "headless": false,
-            "configFile": "projects/client-support-angular/cypress.config.ts"
-          }
-        },
-        "ct": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "client-support-angular:serve",
-            "watch": true,
-            "headless": false,
-            "testingType": "component"
-          },
-          "configurations": {
-            "development": {
-              "devServerTarget": "client-support-angular:serve:development"
-            }
-          }
-        },
-        "e2e": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "client-support-angular:serve",
-            "watch": true,
-            "headless": false
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "client-support-angular:serve:production"
-            }
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": false,
-    "schematicCollections": [
-      "@cypress/schematic",
-      "@schematics/angular"
-    ]
+    "analytics": false
   }
 }
