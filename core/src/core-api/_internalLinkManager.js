@@ -125,7 +125,7 @@ export class linkManager extends LuigiCoreAPIBase {
     });
   }
 
-  getCurrentRoute(){
+  getCurrentRoute() {
     return Luigi._app.ctx[Luigi._app.props.buildPathForGetCurrentRoute](this.options);
   }
 
