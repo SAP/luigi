@@ -125,6 +125,10 @@ export class linkManager extends LuigiCoreAPIBase {
     });
   }
 
+  getCurrentRoute(){
+    return Luigi._app.ctx[Luigi._app.props.buildPathForGetCurrentRoute](this.options);
+  }
+
   sendPostMessageToLuigiCore(msg) {
     window.postMessage(msg, '*');
   }
