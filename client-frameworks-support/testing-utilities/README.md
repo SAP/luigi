@@ -15,7 +15,7 @@ _In order to use this utility library, you need to import LuigiMockModule into y
 
 1. Import the library in the `package.json`:
 ```javascript
-npm install @luigi-project/testing-utilities -s
+npm install @luigi-project/testing-utilities --save-dev
 ```
 
 2. Once the library is imported and saved in your Angular project, you can now import the module `LuigiMockUtil` into your test:
