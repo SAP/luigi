@@ -15,6 +15,7 @@ export class linkManager extends LuigiCoreAPIBase {
       nodeParams: {},
       errorSkipNavigation: false,
       fromContext: null,
+      fromParent: false,
       fromClosestContext: false,
       relative: false,
       link: ''
@@ -87,6 +88,7 @@ export class linkManager extends LuigiCoreAPIBase {
   fromClosestContext() {
     this.options.fromContext = null;
     this.options.fromClosestContext = true;
+    this.options.fromParent=false;
     return this;
   }
 
@@ -94,6 +96,15 @@ export class linkManager extends LuigiCoreAPIBase {
     this.options.fromContext = null;
     this.options.fromClosestContext = false;
     this.options.fromVirtualTreeRoot = true;
+    this.options.fromParent=false;
+    return this;
+  }
+
+  fromParent(){
+    this.options.fromContext = null;
+    this.options.fromClosestContext=false;
+    this.options.fromVirtualTreeRoot=false;
+    this.options.fromParent=true;
     return this;
   }
 
