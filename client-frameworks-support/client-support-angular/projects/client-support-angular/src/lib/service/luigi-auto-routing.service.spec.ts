@@ -1,13 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { Event, NavigationEnd } from '@angular/router';
+import { ActivatedRouteSnapshot, Event, NavigationEnd } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as Client from '@luigi-project/client';
 import { Observable, of } from 'rxjs';
 import { LuigiAngularSupportModule } from '../luigi.angular.support.module';
+import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiAutoRoutingService } from './luigi-auto-routing.service';
 import { LuigiContextService } from './luigi-context.service';
 
 describe('LuigiAutoRoutingService', () => {
+  const mockedSnapshot: ActivatedRouteSnapshot = {data: {} as any} as ActivatedRouteSnapshot;
   let service: LuigiAutoRoutingService;
 
   beforeEach(() => {
@@ -74,6 +76,8 @@ describe('LuigiAutoRoutingService', () => {
       } as unknown as Client.LinkManager);
       const event = new NavigationEnd(0, 'url', 'urlAfterRedirects');
 
+      spyOn(LuigiActivatedRouteSnapshotHelper, 'getCurrent').and.returnValue(mockedSnapshot);
+      spyOn(Client, 'isLuigiClientInitialized').and.returnValue(true);
       service.doSubscription(event);
 
       expect(doSubscriptionSpy).toHaveBeenCalled();
