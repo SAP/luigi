@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Publishes the current version 
+# Publishes the current version
 
 set -e # exit on errors
 
@@ -28,9 +28,9 @@ function prepublishChecks {
   CLIENT_VERSION=$(node -p "require('./package.json').version")
   cd $BASE_DIR/../core/public
   CORE_VERSION=$(node -p "require('./package.json').version")
-  
+
   echoe "Core Version: $CORE_VERSION, Client Version: $CLIENT_VERSION, Base Dir: $BASE_DIR"
-  
+
   if [ "$CORE_VERSION" != "$CLIENT_VERSION" ]; then
     echoe "Version mismatch between Client and Core."
     exit 1
@@ -48,7 +48,7 @@ function prepublishChecks {
 function prepublishCheck {
   cd $BASE_DIR/../$1
   VERSION=$(node -p "require('./package.json').version")
-  
+
   # Check if it can be published (github release must exist )
   TAGS_GREP=`git ls-remote --tags origin | grep "v$VERSION$" | wc -l`
   if [[ "$TAGS_GREP" =~ "0" ]]; then
@@ -119,16 +119,20 @@ setLuigiNpmToken
 
 if [ "$1" = "cra-release" ]; then
   echo "$PWD"
-  checkRequiredFiles  "cra-template/template/public" "index.html" "luigi-config.js"
+  checkRequiredFiles "cra-template/template/public" "index.html" "luigi-config.js"
   publishPackage "cra-template" "cra-template"
 elif [ "$1" = "luigi-container-release" ]; then
   echo "$PWD"
-  checkRequiredFiles  "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
+  checkRequiredFiles "container/public" "bundle.js" "bundle.js.map" "index.d.ts" "LuigiCompoundContainer.svelte.d.ts" "LuigiContainer.svelte.d.ts" "package.json" "README.md"
   publishPackage "container" "container/public"
 elif [ "$1" = "luigi-client-support-ui5-release" ]; then
   echo "$PWD"
   checkRequiredFiles "client-frameworks-support/client-support-ui5/dist" "package.json" "README.md" "ui5-support-lib.js"
   publishPackage "client-frameworks-support/client-support-ui5" "client-frameworks-support/client-support-ui5/dist"
+# elif [ "$1" = "auth-oidc-pkce-plugin-release" ]; then
+  # echo "$PWD"
+  # checkRequiredFiles "plugins/auth/public/auth-oidc-pkce" "plugin.js" "README.md"
+  # publishPackage "plugins" "plugins/auth/public/auth-oidc-pkce"
 else
   prepublishChecks
   # Luigi OAuth Plugin
@@ -154,7 +158,7 @@ else
     checkRequiredFiles "client-frameworks-support/testing-utilities/dist" "luigi-mock-util.d.ts" "index.d.ts" "README.md"
     publishPackage "client-frameworks-support/testing-utilities" "client-frameworks-support/testing-utilities/dist"
   fi
-  
+
   # Luigi Client & Core
   checkRequiredFiles "core/public" "luigi.js" "luigi.css" "README.md"
   publishPackage "core" "core/public"
