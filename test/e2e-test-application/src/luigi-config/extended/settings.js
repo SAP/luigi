@@ -16,16 +16,6 @@ class Settings {
   profileType = ''; // Options: simple | Fiori3
   responsiveNavigation = 'Fiori3'; // Options: simple | simpleMobileOnly | semiCollapsible | Fiori3
   sideNavFooterText = `Luigi Client: ${version || 'unknown'}`;
-  thirdPartyCookieCheck = {
-    // thirdPartyCookieScriptLocation: 'https://domain/init.html',
-    thirdPartyCookieErrorHandling: () => {
-      const alert = {
-        text: 'Third Party Cookies are not enabled. Please check your browser settings.',
-        type: 'warning'
-      };
-      Luigi.ux().showAlert(alert);
-    }
-  };
   burgerTooltip = {
     navExpanded: 'Collapse navigation test',
     navCollapsed: 'Expand navigation test'

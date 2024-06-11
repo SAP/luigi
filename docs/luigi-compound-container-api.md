@@ -149,7 +149,7 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 #### Parameters
 
--   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**
+-   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
     -   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
     -   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
     -   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
@@ -173,7 +173,7 @@ Function that updates the context of the compound microfrontend.
 containerElement.updateContext({newContextData: 'some data'})
 ```
 
-Returns **void**
+Returns **void** 
 
 **Meta**
 
@@ -183,7 +183,7 @@ Returns **void**
 
 Manually triggers the micro frontend rendering process when using the defer-init attribute.
 
-Returns **void**
+Returns **void** 
 
 **Meta**
 

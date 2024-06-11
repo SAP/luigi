@@ -21,6 +21,8 @@ meta -->
 
 The configuration file contains a section called **Settings** where you can configure additional Luigi options.
 
+> **NOTE:** Starting from version 3.0 Luigi doesn't support third-party cookies in any way.
+
 <!-- accordion:start -->
 ### Settings code example
 
@@ -52,16 +54,6 @@ settings: {
   appLoadingIndicator: {
     hideAutomatically: true
   },
-  thirdPartyCookieCheck = {
-    //thirdPartyCookieScriptLocation: 'https://domain/init.html',
-    thirdPartyCookieErrorHandling: () => {
-      const alert = {
-        text: 'Third Party Cookies are not enabled. Please check your browser settings.',
-        type: 'warning'
-      };
-      Luigi.ux().showAlert(alert);
-    }
-  },
   theming = {
     themes: () => [
       { id: 'light', name: 'Light Theme' },
@@ -75,7 +67,6 @@ settings: {
 
 Below is a list of the parameters you can use in the `settings:` Luigi configuration section.
 * [General parameters](#general-parameters)
-* [Third-party cookies support check](#third-party-cookies-support-check)
 
 ## General parameters
 
@@ -295,25 +286,5 @@ This function is called with the following parameters:
 * `extendedContext` - extended settings about the current node.
 * `nodeId` - an ID which is set on the web component object in your config, or, if not defined, a generated `id` from Luigi.
 * `isSpecialMf` - allows you to specify whether the web component is rendered in a modal, splitView or drawer. `false` by default.
-
-## Third-party cookies support check
-
-You can check whether the user's browser supports third-party cookies by defining a **thirdPartyCookieCheck** object which expects a function called **thirdPartyCookieErrorHandling** and an optional **thirdPartyCookiesScriptLocation** parameter. When **thirdPartyCookiesScriptLocation** is set, the Luigi Core application checks third-party cookie support only once and not on every micro frontend call. If it is *not* set, the Luigi Core application checks third-party cookie support whenever a micro frontend is loaded.
-
-To detect whether the user's browser supports the mechanism, use the script in the [`third-party-cookies`](https://github.com/SAP/luigi/tree/main/core/third-party-cookies) catalog. Deploy this file on a domain different from your main application's and set **thirdPartyCookieScriptLocation** to the `init.html` file. During initialization, Luigi detects cookies support and produces an alert if cookies are disabled in the user's browser.
-
-### Parameters
-
-#### thirdPartyCookieCheck
-- **type**: object
-- **description**: object defined in the general settings part of the Luigi configuration file, containing the **thirdPartyCookieErrorHandling** function and an optional **thirdPartyCookiesScriptLocation** parameter.
-
-#### thirdPartyCookieErrorHandling
-- **type**: function
-- **description**: a function where you could call an alert like `Luigi.ux().showAlert({})`.
-
-#### thirdPartyCookieScriptLocation**
-- **type**: string
-- **description**: the URL to the page containing third-party cookies support check.
 
 <!-- document the schema-->
