@@ -150,7 +150,7 @@ class LuigiNavigationManager {
    * @example
    * Luigi.navigation().fromParent().navigate('/sibling')
    */
-  fromParent(){
+  fromParent() {
     return new linkManager().fromParent();
   }
 
@@ -164,7 +164,7 @@ class LuigiNavigationManager {
    * Luigi.navigation().fromContext('project').getCurrentRoute();
    * Luigi.navigation().fromVirtualTreeRoot().getCurrentRoute();
    */
-  getCurrentRoute(){
+  getCurrentRoute() {
     return new linkManager().getCurrentRoute();
   }
 
