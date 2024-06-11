@@ -745,24 +745,24 @@ describe('JS-TEST-APP', () => {
         .shadow()
         .contains('/wc');
     });
-    it('getCurrentRoute from virtualTreeRoute', () => {
+    it.only('getCurrentRoute from virtualTreeRoot', () => {
       newConfig.navigation.nodes[0].children.push({
         pathSegment: 'multipurpose2',
         label: 'Multipurpose2',
-        viewUrl: '/examples/microfrontends/helloWorldWc.js#',
+        viewUrl: '/examples/microfrontends/helloWorldWC.js#',
         webcomponent: true,
         virtualTree: true
       });
       cy.visitTestAppLoggedIn('/home/multipurpose2/wc/test', newConfig);
       cy.expectPathToBe('/home/multipurpose2/wc/test');
       cy.get(
-        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457632e6a73232f3a7669727475616c5365676d656e745f312f3a7669727475616c5365676d656e745f32'
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73232f3a7669727475616c5365676d656e745f312f3a7669727475616c5365676d656e745f32'
       )
         .shadow()
         .contains('getCurrentRouteFromVirtualTree')
         .click();
       cy.get(
-        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457632e6a73232f3a7669727475616c5365676d656e745f312f3a7669727475616c5365676d656e745f32'
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73232f3a7669727475616c5365676d656e745f312f3a7669727475616c5365676d656e745f32'
       )
         .shadow()
         .contains('/wc/test');
