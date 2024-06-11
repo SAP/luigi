@@ -19,7 +19,7 @@ class WebComponentSvcClass {
    *  @property {object} extendedContext
    *  @property {object} node
    *  @property {string} nodeId
-   *  @property {boolean} isSpecialMf
+   *  @property {boolean} isSpecialMf indicates whether the web component is rendered in a modal, splitView or drawer (`false` by default)
    *  @property {boolean} noTemporaryContainerHeight
    */
 
