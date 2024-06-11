@@ -745,7 +745,7 @@ describe('JS-TEST-APP', () => {
         .shadow()
         .contains('/wc');
     });
-    it.only('getCurrentRoute from virtualTreeRoot', () => {
+    it('getCurrentRoute from virtualTreeRoot', () => {
       newConfig.navigation.nodes[0].children.push({
         pathSegment: 'multipurpose2',
         label: 'Multipurpose2',
