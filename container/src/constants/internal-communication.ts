@@ -74,6 +74,11 @@ export namespace LuigiInternalMessageID {
   export const SET_ANCHOR_LINK_REQUEST = 'luigi.setAnchor';
 
   /**
+   * A message emmitted from the Microfrontend when a request to set third party cookies is sent
+   */
+  export const SET_THIRD_PARTY_COOKIES_REQUEST = 'luigi.third-party-cookie';
+
+  /**
    * A message emmitted from the Microfrontend when a request to navigate back is sent
    */
   export const BACK_NAVIGATION_REQUEST = 'luigi.navigation.back';
