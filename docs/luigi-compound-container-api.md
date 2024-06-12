@@ -24,7 +24,7 @@ This document outlines the parameters provided by the Luigi Compound Container. 
 
 ### viewurl
 
-The URL used for the renderer
+The URL used for the rendere
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 

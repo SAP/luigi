@@ -6,7 +6,7 @@ export declare interface WebComponentSettings {
 
 export default class LuigiCompoundContainer extends HTMLElement {
   /**
-   * The URL used for the renderer
+   * The URL used for the rendere
    */
   viewurl: string;
 
