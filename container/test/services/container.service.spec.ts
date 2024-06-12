@@ -345,7 +345,7 @@ describe('getContainerManager messageListener', () => {
       }
     };
     cm.messageListener(event);
-    expect(consoleWarnSpy).toHaveBeenCalledWith('Functionality not yet implemented: ','no-func');
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
 });
