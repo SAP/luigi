@@ -19,10 +19,6 @@ If you have implemented your own `page not found` error handler function, then y
 
 This addition lets you update the context values for visible iframes and Luigi web components.
 
-#### Change Luigi Core Version on the Fly in Luigi Fiddle
-
-The horizon theme is now used by default and you can select a specific-version from dist-tags.
-
 #### Remove Favicon Console Warning
 
 The console warning that appears when the favicon isn't present or is in the wrong format has been removed.
