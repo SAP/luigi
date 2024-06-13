@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: '18.15.0'
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: |
@@ -105,7 +105,7 @@ jobs:
     steps:
       - uses: actions/setup-node@v4
         with:
-          node-version: '18.15.0'
+          node-version: '20.14.0'
       - uses: actions/cache@v4
         with:
           path: |
