@@ -6,11 +6,10 @@ import {
   NavigationEnd,
   ParamMap,
   Router,
-  RouterEvent,
   convertToParamMap,
 } from '@angular/router';
 import { linkManager, uxManager, isLuigiClientInitialized } from '@luigi-project/client';
-import { Observable, OperatorFunction } from 'rxjs';
+import { OperatorFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { LuigiActivatedRouteSnapshotHelper } from '../route/luigi-activated-route-snapshot-helper';
 import { LuigiContextService } from './luigi-context.service';
