@@ -53,7 +53,8 @@
         type: 'Array',
         reflect: false,
         attribute: 'sandbox-rules',
-      }
+      },
+      authData: { type: 'Object', reflect: false, attribute: 'auth-data' }
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -68,7 +69,7 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
-          if (this.containerInitialized && name === 'context') {
+          if (this.containerInitialized && (name === 'context' || name === 'authData')) {
             this.updateContext(JSON.parse(newValue));
           }
         }
@@ -104,10 +105,9 @@
   export let documentTitle: string;
   export let allowRules: string[];
   export let sandboxRules: string[];
-
-
   export let userSettings: any;
   export let anchor: string;
+  export let authData: String;
 
   const iframeHandle:
     | {
@@ -136,7 +136,8 @@
       hasBack &&
       documentTitle &&
       allowRules &&
-      sandboxRules
+      sandboxRules &&
+      authData
     );
   };
 
@@ -156,7 +157,7 @@
         if (webcomponent) {
           mainComponent._luigi_mfe_webcomponent.context = contextObj;
         } else {
-          ContainerAPI.updateContext(contextObj, internal, iframeHandle);
+          ContainerAPI.updateContext(contextObj, internal, iframeHandle, authData);
         }
       };
 

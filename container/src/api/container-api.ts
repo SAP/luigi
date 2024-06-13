@@ -8,7 +8,7 @@ export class ContainerAPIFunctions {
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    */
-  updateContext = (contextObj: any, internal?: any, iframeHandle?: any) => {
+  updateContext = (contextObj: any, internal?: any, iframeHandle?: any, authData?: any) => {
     if (iframeHandle) {
       const internalParameter = internal || {};
       containerService.sendCustomMessageToIframe(
@@ -17,7 +17,8 @@ export class ContainerAPIFunctions {
           context: contextObj,
           internal: internalParameter,
           // set withoutSync to true for the container case to avoid browser history changes from luigi client
-          withoutSync: true
+          withoutSync: true,
+          authData
         },
         LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );

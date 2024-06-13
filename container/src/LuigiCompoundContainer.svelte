@@ -43,7 +43,7 @@
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
         attributeChangedCallback(name, oldValue, newValue) {
-          if (this.containerInitialized && name === 'context') {
+          if (this.containerInitialized && (name === 'context' || name === 'authData')) {
             this.updateContext(JSON.parse(newValue));
           }
         }
