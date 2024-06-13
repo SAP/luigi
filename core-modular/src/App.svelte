@@ -1,13 +1,8 @@
 <script>
-  
 </script>
 
-<div
-  id="luigi-app-root"
->
-  
-</div>
+<div id="luigi-app-root" />
 
 <style lang="scss">
-/** nothing here yet*/
+  /** nothing here yet*/
 </style>
