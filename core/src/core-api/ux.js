@@ -178,7 +178,7 @@ class LuigiUX {
   }
 
   /**
-   * Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before.
+   * Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
    * @memberof UX
    * @returns {string} theme id
    * @since NEXTRELEASE
