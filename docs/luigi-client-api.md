@@ -659,7 +659,7 @@ In addition, you can specify if a new history entry will be created with the upd
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l', width:'600px', height:'400px'});
+LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
 ```
 
 #### openAsSplitView
