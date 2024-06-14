@@ -84,14 +84,11 @@ export class NavigationService {
             }
         });
 
-        navItems = this.buildNavItems(pathToLeftNavParent.pop()?.children || [], pathData.selectedNode);
-        // if (pathData.selectedNode) {
-        //     if (pathData.rootNodes.includes(pathData.selectedNode)) {
-        //         navItems = this.buildNavItems(pathData.selectedNode.children);
-        //     } else {
-
-        //     }
-        // }
+        if (pathData.selectedNode && pathData.rootNodes.includes(pathData.selectedNode)) {
+            navItems = this.buildNavItems(pathData.selectedNode.children);
+        } else {    
+            navItems = this.buildNavItems(pathToLeftNavParent.pop()?.children || [], pathData.selectedNode);
+        }
 
         return {
             selectedNode: pathData.selectedNode,
