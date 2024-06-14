@@ -48,20 +48,23 @@ describe('Another test using protractor', () => {
 ### Example how to use the library with Cypress
 
 ```javascript
+import { LuigiMockUtil } from "@luigi-project/testing-utilities";
+
 describe('Another test using cypress', () => {
   let luigiMockUtil: LuigiMockUtil;
 
-  beforeAll(async () => {
-    // Necessary to execute the functions from LuigiMockUtil in cypress context and get the
-    // the window object of the page that is currently active
+  beforeEach(() => {
+    // Necessary to execute the functions from LuigiMockUtil in Cypress context
+    // and get the window object of the page that is currently active
     cy.window().then((win: any) => {
       luigiMockUtil = new LuigiMockUtil((fn: any) => {
         return new Promise((resolve, reject) => {
           resolve(fn());
-        })
+        });
       }, win);
     });
-    //Necessary that luigi-client sends postmessages to the same window and not to parent (which is cypress engine)
+    // Necessary that luigi-client sends postmessages to the same window
+    // and not to parent (which is Cypress engine)
     cy.visit('http://localhost:4200', {
       onBeforeLoad: (win) => {
         win["parent"] = win;
@@ -69,7 +72,8 @@ describe('Another test using cypress', () => {
     });
   });
 
-  it('Mock path exists', () => {
+  it('should mock path exists', () => {
+    // Be sure '.pathExists' element is present
     cy.get('.pathExists').click().then(() => {
       luigiMockUtil.mockPathExists('/test', false);
     });
@@ -82,10 +86,9 @@ describe('Another test using cypress', () => {
     })
   });
 
-  it('mock context update', () => {
-    let context = {
-      ctxKey: 'ctxValue'
-    }
+  it('should mock context update', () => {
+    const context = {ctxKey: 'ctxValue'};
+
     luigiMockUtil.mockContext(context);
     cy.get('#luigi-debug-vis-cnt').contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
   });
