@@ -14,8 +14,8 @@ export default class ExampleWC extends HTMLElement {
     this._shadowRoot.appendChild(getCurrentThemeBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(templateSpan.content.cloneNode(true));
 
-    this.$currentTheme = this._shadowRoot.querySelector('#getCurrentTheme');
-    this.$currentTheme.addEventListener('click', async () => {
+    this.$getCurrentThemeBtn = this._shadowRoot.querySelector('#getCurrentTheme');
+    this.$getCurrentThemeBtn.addEventListener('click', async () => {
       if (this.LuigiClient) {
         try {
           this._shadowRoot.querySelector('span').innerHTML = JSON.stringify(

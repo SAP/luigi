@@ -80,24 +80,24 @@ describe('JS-TEST-APP 2', () => {
       newConfig.navigation.nodes[0].children.push({
         pathSegment: 'wc',
         label: 'WC',
-        viewUrl: '/examples/microfrontends/helloWorldWC.js',
+        viewUrl: '/examples/microfrontends/getCurrentThemeWC.js',
         webcomponent: true
       });
       cy.visitTestApp('/home/wc', newConfig);
       cy.get(
-        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f67657443757272656e745468656d6557432e6a73'
       )
         .shadow()
         .contains('light')
         .should('not.exist');
       cy.get(
-        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f67657443757272656e745468656d6557432e6a73'
       )
         .shadow()
         .contains('getCurrentTheme')
         .click();
       cy.get(
-        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f67657443757272656e745468656d6557432e6a73'
       )
         .shadow()
         .contains('light');
