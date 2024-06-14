@@ -47,7 +47,9 @@ export class NavigationService {
             if(pathData.selectedNodeChildren) {
                 pathData.selectedNode = pathData.selectedNodeChildren.filter((n: Node) => n.pathSegment === segment )[0];
                 pathData.selectedNodeChildren = pathData.selectedNode?.children;
-                pathData.nodesInPath?.push(pathData.selectedNode);
+                if (pathData.selectedNode) {
+                    pathData.nodesInPath?.push(pathData.selectedNode);
+                }
             }
         });
         return pathData;
