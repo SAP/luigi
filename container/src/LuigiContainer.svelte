@@ -135,7 +135,9 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
+          console.log('attributeChangedCallback, old,new', name, oldValue,newValue)
           if (this.containerInitialized && (name === 'context' || name === 'authData')) {
+            console.log('test', authData)
             this.updateContext(JSON.parse(newValue));
           }
         }

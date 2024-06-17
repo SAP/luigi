@@ -76,6 +76,10 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
+    const updateCtxButton = document.createElement('template');
+    updateCtxButton.innerHTML = `<button id="updateCtx">update Ctx
+    </button>`;
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -99,6 +103,8 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
+    this._shadowRoot.appendChild(updateCtxButton.content.cloneNode(true));
+
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');
@@ -190,6 +196,12 @@ export default class extends HTMLElement {
       });
     });
 
+    this.$updateCtxBTN = this._shadowRoot.querySelector('#updateCtx');
+    this.$updateCtxBTN.addEventListener('click', () => {
+      console.log('ctx',  this.ctx )
+    });
+
+
     this.$getDirtyStatusBtn = this._shadowRoot.querySelector('#getDirtyStatus');
     this.$getDirtyStatusBtn.addEventListener('click', () => {
       let dirtyStatus = this.LuigiClient.uxManager().getDirtyStatus();
@@ -262,7 +274,14 @@ export default class extends HTMLElement {
     });
   }
 
+  updateFn(ctx){
+    console.log(ctx)
+  }
+
   set context(ctx) {
+    this.ctx = ctx;
+    // this.ctx = ctx;
+    console.log('context', ctx)
     this.$paragraph.innerHTML = ctx.title;
   }
 }

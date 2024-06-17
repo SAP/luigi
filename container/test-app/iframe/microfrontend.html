@@ -63,6 +63,8 @@
       <button onclick="testCheckPathExists()">test check path exists</button>
       <button onclick="testSetDirtyStatus()">test set dirty status</button>
       <button onclick="testShowAlert()">test show alert</button>
+      <button onclick="testGetToken()">test get token</button>
+
     </div>
     <script>
       // List of onclick handlers for client calls
@@ -151,6 +153,10 @@
 
       function testSetDirtyStatus() {
         LuigiClient.uxManager().setDirtyStatus(true);
+      }
+
+      function testGetToken() {
+        console.log('test', LuigiClient.getToken());
       }
 
       function testShowAlert() {
