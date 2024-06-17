@@ -105,7 +105,6 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
     this._shadowRoot.appendChild(updateCtxButton.content.cloneNode(true));
 
-
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');
     this.$button.addEventListener('click', () => {
@@ -198,9 +197,8 @@ export default class extends HTMLElement {
 
     this.$updateCtxBTN = this._shadowRoot.querySelector('#updateCtx');
     this.$updateCtxBTN.addEventListener('click', () => {
-      console.log('ctx',  this.ctx )
+      console.log('ctx', this.ctx);
     });
-
 
     this.$getDirtyStatusBtn = this._shadowRoot.querySelector('#getDirtyStatus');
     this.$getDirtyStatusBtn.addEventListener('click', () => {
@@ -274,14 +272,14 @@ export default class extends HTMLElement {
     });
   }
 
-  updateFn(ctx){
-    console.log(ctx)
+  updateFn(ctx) {
+    console.log(ctx);
   }
 
   set context(ctx) {
     this.ctx = ctx;
     // this.ctx = ctx;
-    console.log('context', ctx)
+    console.log('context', ctx);
     this.$paragraph.innerHTML = ctx.title;
   }
 }
