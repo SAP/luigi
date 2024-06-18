@@ -8,7 +8,7 @@
       rel="stylesheet"
     />
     <!-- <link href="https://fiddle.luigi-project.io/styles/styles.css" rel="stylesheet" /> -->
-    <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
+    <script src="luigi-client.js"></script>
     <style>
       html,
       body {
@@ -212,6 +212,12 @@
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
+      LuigiClient.addCustomMessageListener('update', data => {
+        console.log('Custom Message Received inside iframe Container', data);
+        document.getElementById('content').innerHTML =
+          'Received Custom Message: ' + data.milliseconds;
+      });
+
       LuigiClient.addCustomMessageListener('update', data => {
         console.log('Custom Message Received inside iframe Container', data);
         document.getElementById('content').innerHTML =

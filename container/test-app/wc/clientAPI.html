@@ -37,10 +37,23 @@
         viewURL="./helloWorldWCSelfRegistered.js"
         webcomponent='{"selfRegistered": "true"}'
     ></luigi-container> -->
+    <script>
+      function updateCtx(){
+        const lc = document.querySelector('luigi-container');
+        lc.context = {'title': 'new'}
+       lc.authdata = {'test': 'auth'};
+        console.log(lc, lc.context, lc.authdata)
+      }
+
+
+    </script>
+    <button onclick="updateCtx()">Update context</button>
     </div>
 
     <script type="module">
       import MFEventID from '../bundle.js';
+
+      
 
       [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
         luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {

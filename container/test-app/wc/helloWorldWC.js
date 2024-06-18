@@ -77,7 +77,7 @@ export default class extends HTMLElement {
     </button>`;
 
     const updateCtxButton = document.createElement('template');
-    updateCtxButton.innerHTML = `<button id="updateCtx">update Ctx
+    updateCtxButton.innerHTML = `<button id="updateCtx">get Ctx
     </button>`;
 
     this._shadowRoot = this.attachShadow({

@@ -9,6 +9,8 @@ export class ContainerAPIFunctions {
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    */
   updateContext = (contextObj: any, internal?: any, iframeHandle?: any, authData?: any) => {
+    console.log(authData, 1111)
+    const messageId = authData?.accessToken ? LuigiInternalMessageID.AUTH_SET_TOKEN:  LuigiInternalMessageID.SEND_CONTEXT_OBJECT;
     if (iframeHandle) {
       const internalParameter = internal || {};
       containerService.sendCustomMessageToIframe(
@@ -18,9 +20,9 @@ export class ContainerAPIFunctions {
           internal: internalParameter,
           // set withoutSync to true for the container case to avoid browser history changes from luigi client
           withoutSync: true,
-          authData
+          authData: authData
         },
-        LuigiInternalMessageID.SEND_CONTEXT_OBJECT
+        messageId
       );
     } else {
       console.warn('Attempting to update context on inexisting iframe');

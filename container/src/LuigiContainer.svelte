@@ -71,7 +71,8 @@
         if (webcomponent) {
           mainComponent._luigi_mfe_webcomponent.context = contextObj;
         } else {
-          ContainerAPI.updateContext(contextObj, internal, iframeHandle, authData);
+          console.log(thisComponent, thisComponent.authData, authData)
+          ContainerAPI.updateContext(contextObj, internal, iframeHandle,authData);
         }
       };
 
@@ -135,10 +136,19 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
-          console.log('attributeChangedCallback, old,new', name, oldValue, newValue);
-          if (this.containerInitialized && (name === 'context' || name === 'authData')) {
-            console.log('test', authData);
-            this.updateContext(JSON.parse(newValue));
+          console.log('attributeChangedCallback, old,new', name, oldValue, newValue, this.containerInitialized);
+          if (this.containerInitialized) {
+            if(name === 'context' ) {
+              console.log('new auth Data', this.authData);
+              this.updateContext(JSON.parse(newValue));
+            }
+            // run update context with current context to  update the authData too
+            if(name === 'auth-data'){
+              // this.authData = newValue;
+              console.log('new auth Data 2', this.authData, this.context);
+              this.authData = JSON.parse(newValue);
+              this.updateContext(this.context);
+            }       
           }
         }
       };
