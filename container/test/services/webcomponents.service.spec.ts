@@ -36,7 +36,7 @@ describe('attachWC', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   });
 
   it('wc_container contains wcItemPlaceholder and nodeId is provided', () => {
@@ -136,7 +136,7 @@ describe('createClientAPI', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   });
 
   describe('linkManager', () => {
@@ -1110,7 +1110,7 @@ describe('initWC', () => {
     service = new WebComponentService();
   });
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should set context and LuigiClient if wc.__postProcess is not defined', () => {
@@ -1208,13 +1208,13 @@ describe('generateWCId function', () => {
 describe('renderWebComponentCompound', () => {
   let service;
   beforeEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
 
     service = new WebComponentService()
   });
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   });
 
   it('resolved', async () => {
@@ -1328,7 +1328,7 @@ describe('createCompoundContainerAsync', () => {
 
   afterEach(() => {
     jest.clearAllMocks(); // Clear mock function call history after each test
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   });
 
   it('should resolve with a web component when renderer has a viewUrl', async () => {
@@ -1406,7 +1406,7 @@ describe('registerWCFromUrl', () => {
 
   afterEach(() => {
     jest.clearAllMocks(); // Clear mock function call history after each test
-    jest.resetAllMocks();
+    jest.clearAllMocks();
 
   });
 
@@ -1510,23 +1510,19 @@ describe('registerWCFromUrl', () => {
 });
 
 describe('includeSelfRegisteredWCFromUrl', () => {
-  let originalCustomElements;
   let originalLuigi;
   let service;
 
   beforeEach(() => {
     service = new WebComponentService();
      // Store the original values of customElements and Luigi
-     originalCustomElements = window.customElements;
      originalLuigi = (window as any).Luigi;
   });
 
   afterEach(() => {
     // Restore the original values after each test
-    window.customElements = originalCustomElements;
     (window as any).Luigi = originalLuigi;
     jest.clearAllMocks(); // Clear mock function call history after each test
-    jest.resetAllMocks();
 
   });
 
@@ -1582,9 +1578,7 @@ describe('includeSelfRegisteredWCFromUrl', () => {
 
 
 describe('renderWebComponent', () => {
-  let originalCustomElements;
   let originalLuigi;
-  let originalWindowCustomElements;
   let originalLuigiWCFn;
   let service;
   let mockedViewURL;
@@ -1596,7 +1590,7 @@ describe('renderWebComponent', () => {
   let spyAttachWc ;
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
 
     service = new WebComponentService();
 
@@ -1610,21 +1604,17 @@ describe('renderWebComponent', () => {
     wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
     
-    // Store the original values of customElements, Luigi, and window.customElements
-    originalCustomElements = window.customElements;
+    // Store the original values of Luigi
     originalLuigi = (window as any).Luigi;
-    originalWindowCustomElements = window.customElements;
     originalLuigiWCFn = (window as any).lugiWCFn;
     
   });
 
   afterEach(() => {
     // Restore the original values after each test
-    window.customElements = originalCustomElements;
     (window as any).Luigi = originalLuigi;
-    window.customElements = originalWindowCustomElements;
     (window as any).lugiWCFn = originalLuigiWCFn;
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should call attachWC if customeElements get returns valid value', () => {
