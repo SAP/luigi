@@ -46,6 +46,9 @@ export default class extends HTMLElement {
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
+    const getCurrentRouteBtn = document.createElement('template');
+    getCurrentRouteBtn.innerHTML = '<button id="getCurrentRoute">getCurrentRoute</button>';
+
     const uxManagerMultipleRequestsBtn = document.createElement('template');
     uxManagerMultipleRequestsBtn.innerHTML = `<button id="uxManagerManyRequests">uxManager().closeUserSettings,
     openUserSettings,
@@ -97,6 +100,8 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
+    
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
@@ -259,6 +264,14 @@ export default class extends HTMLElement {
     this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
+    });
+
+    this.$getCurrentRoute = this._shadowRoot.querySelector('#getCurrentRoute');
+    this.$getCurrentRoute.addEventListener('click', ()=>{
+      this.LuigiClient.linkManager().getCurrentRoute().then(result => {
+        console.log(result);
+        alert('current route: '+ result)
+      });
     });
   }
 
