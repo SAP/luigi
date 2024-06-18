@@ -30,10 +30,12 @@ module.exports = {
           to: path.resolve(__dirname, 'src/assets') + '/auth-oauth2/'
         },
         // idpProvider OIDC assets
+        /*
         {
           from: 'node_modules/@luigi-project/plugin-auth-oidc-pkce',
           to: path.resolve(__dirname, 'src/assets') + '/auth-oidc-pkce/'
         },
+        */
         {
           from: 'node_modules/@luigi-project/plugin-auth-oidc',
           to: path.resolve(__dirname, 'src/assets') + '/auth-oidc/'

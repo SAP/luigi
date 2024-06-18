@@ -1,8 +1,8 @@
-# iframe based luigi container e2e test app
+# Iframe Based Luigi Container e2e Test App
 
-This folder contains simple html files which apply **iframe** based luigi-container in different scenarios.
+This folder contains simple HTML files that use **iframe** based luigi-container in different scenarios.
 
-The purpose of it, is to serve as a testing environment for our Cypress tests which reside on container/cypress/e2e folder
+They serve as a testing environment for our Cypress tests, which reside in the container/cypress/e2e folder.
 
-We try to keep our examples here simple and apply separation of concerns. We use plain JS and HTML files to avoid maintaining yet another framework example.
+We try to keep our examples simple and apply separation of concerns. We use plain JS and HTML files to avoid maintaining yet another framework example.
 
