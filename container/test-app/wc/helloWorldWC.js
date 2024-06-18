@@ -101,7 +101,6 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
-    
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
@@ -267,11 +266,13 @@ export default class extends HTMLElement {
     });
 
     this.$getCurrentRoute = this._shadowRoot.querySelector('#getCurrentRoute');
-    this.$getCurrentRoute.addEventListener('click', ()=>{
-      this.LuigiClient.linkManager().getCurrentRoute().then(result => {
-        console.log(result);
-        alert('current route: '+ result)
-      });
+    this.$getCurrentRoute.addEventListener('click', () => {
+      this.LuigiClient.linkManager()
+        .getCurrentRoute()
+        .then(result => {
+          console.log(result);
+          alert('current route: ' + result);
+        });
     });
   }
 
