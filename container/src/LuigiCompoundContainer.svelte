@@ -1,3 +1,57 @@
+<svelte:options
+  customElement={{
+    tag: null,
+    props: {
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      compoundConfig: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'compound-config',
+      },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      userSettings: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'user-settings',
+      },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      searchParams: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'search-params',
+      },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'client-permissions',
+      },
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
+      documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
+    },
+    extend: (customElementConstructor) => {
+      let notInitFn = (name) => {
+        return () =>
+          console.warn(
+            name +
+              " can't be called on luigi-container before its micro frontend is attached to the DOM.",
+          );
+      };
+      return class extends customElementConstructor {
+        updateContext = notInitFn('updateContext');
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (this.containerInitialized && name === 'context') {
+            this.updateContext(JSON.parse(newValue));
+          }
+        }
+      };
+    },
+  }}
+/>
+
 <script lang="ts">
   import { onMount } from 'svelte';
   import { ContainerService } from './services/container.service';
@@ -87,60 +141,6 @@
     webcomponentService.thisComponent = thisComponent;
   });
 </script>
-
-<svelte:options
-  customElement={{
-    tag: null,
-    props: {
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-      deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      context: { type: 'String', reflect: false, attribute: 'context' },
-      compoundConfig: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'compound-config',
-      },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      userSettings: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'user-settings',
-      },
-      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
-      searchParams: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'search-params',
-      },
-      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'client-permissions',
-      },
-      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
-      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
-      documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
-    },
-    extend: (customElementConstructor) => {
-      let notInitFn = (name) => {
-        return () =>
-          console.warn(
-            name +
-              " can't be called on luigi-container before its micro frontend is attached to the DOM.",
-          );
-      };
-      return class extends customElementConstructor {
-        updateContext = notInitFn('updateContext');
-        attributeChangedCallback(name, oldValue, newValue) {
-          if (this.containerInitialized && name === 'context') {
-            this.updateContext(JSON.parse(newValue));
-          }
-        }
-      };
-    },
-  }}
-/>
 
 <main bind:this={mainComponent} />
 
