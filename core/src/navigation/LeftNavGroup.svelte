@@ -1,4 +1,6 @@
 <script>
+  import { KEYCODE_ENTER } from '../utilities/keycode';
+
   export let navGroup;
   export let expanded = true;
 
@@ -20,11 +22,13 @@
       aria-selected="false"
       aria-expanded={expanded}
     >
+      <!-- svelte-ignore a11y-missing-attribute -->
       <a
         class="fd-navigation__link"
         role="button"
-        tabindex="-1"
+        tabindex="0"
         on:click|preventDefault|stopPropagation={toggleExpanded}
+        on:keyup={(event)=>{(event.code === 'Enter' || event.code === 'Space') && toggleExpanded()}}
       >
         <span class="fd-navigation__text">{navGroup.title}</span>
         <span
