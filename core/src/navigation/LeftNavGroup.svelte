@@ -28,7 +28,9 @@
         role="button"
         tabindex="0"
         on:click|preventDefault|stopPropagation={toggleExpanded}
-        on:keyup={(event)=>{(event.code === 'Enter' || event.code === 'Space') && toggleExpanded()}}
+        on:keyup={event => {
+          (event.code === 'Enter' || event.code === 'Space') && toggleExpanded();
+        }}
       >
         <span class="fd-navigation__text">{navGroup.title}</span>
         <span
