@@ -6,13 +6,13 @@ The [Luigi Testing Utilities](https://github.com/SAP/luigi/tree/main/client-fram
 This class contains certain utility helper functions needed when writing e2e tests with different test frameworks. You can simply import this module into you project and then use an instance of it to test micro frontend functionality.
 Before version 2.9.0 this class could only be used for [protractor-based](https://www.npmjs.com/package/protractor) e2e tests.
 Since version 2.9.0 this class supports both Cypress and Protractor.
-Since version 2.14.0 this class supports also Nightwatch and WebdriverIO.
+Since version 2.14.0 this class supports also Nightwatch, WebdriverIO and Puppeteer.
 
 ## How to use the library
 
 **Prerequisites:**
 
-_In order to use this utility library, you need to import LuigiMockModule into your Angular application's entry point - more details [here](https://docs.luigi-project.io/docs/framework-support-libraries/?section=luigicontextservice). You also have to install [Cypress](https://www.npmjs.com/package/cypress) or [Nightwatch](https://www.npmjs.com/package/nightwatch) or [WebdriverIO](https://www.npmjs.com/package/webdriverio) or [Protractor](https://www.npmjs.com/package/protractor) locally as a dev dependency for your project. Bear in mind Protractor is deprecated in Angular since version 15._
+_In order to use this utility library, you need to import LuigiMockModule into your Angular application's entry point - more details [here](https://docs.luigi-project.io/docs/framework-support-libraries/?section=luigicontextservice). You also have to install [Cypress](https://www.npmjs.com/package/cypress) or [Nightwatch](https://www.npmjs.com/package/nightwatch) or [WebdriverIO](https://www.npmjs.com/package/webdriverio) or [Puppeteer](https://www.npmjs.com/package/puppeteer) or [Protractor](https://www.npmjs.com/package/protractor) locally as a dev dependency for your project. Bear in mind Protractor is deprecated in Angular since version 15._
 
 
 1. Import the library in the `package.json`:
@@ -173,6 +173,74 @@ describe('Another test using webdriverio', () => {
     // Wait until '#luigi-debug-vis-cnt' element is present
     await browser.setTimeout(defaultTimeout);
     await expect($('#luigi-debug-vis-cnt')).toHaveHTML(expect.stringContaining('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}'));
+  });
+});
+```
+
+### Example how to use the library with Puppeteer
+
+```javascript
+import * as puppeteer from 'puppeteer'; // <-- target e2e testing library
+import { LuigiMockUtil } from '@luigi-project/testing-utilities';
+
+let luigiMockUtil: LuigiMockUtil;
+let browser: puppeteer.Browser;
+let page: puppeteer.Page;
+
+describe('Another test using puppeteer ->', () => {
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      args: ['--no-sandbox'],
+      headless: false,
+      ignoreDefaultArgs: ['--disable-extensions'],
+    });
+  });
+
+  beforeEach(async () => {
+    page = await browser.newPage();
+    luigiMockUtil = new LuigiMockUtil(page);
+
+    await page?.goto('http://localhost:4200', {timeout: 0});
+  });
+
+  afterEach(async () => {
+    await page?.close();
+  });
+
+  afterAll(async () => {
+    await browser?.close();
+  });
+
+  it('should mock path exists', async () => {
+    // Be sure '.pathExists' element is present
+    await page.waitForSelector('.pathExists').then(async () => {
+      await expect(page.locator('.pathExists').wait()).toBeTruthy();
+
+      await page.click('.pathExists').then(async () => {
+        await luigiMockUtil.mockPathExists('/test', false);
+        // Wait until session storage item is set
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        const result = await page.evaluate(() => window.sessionStorage.getItem('luigiMockData'));
+
+        await expect(result).toContain('{"pathExists":{"/test":false}}');
+      });
+    });
+  });
+
+  it('should mock context update', async () => {
+    const context = {ctxKey: 'ctxValue'};
+
+    await luigiMockUtil.mockContext(context);
+    // Wait until '#luigi-debug-vis-cnt' element is present
+    await page.waitForSelector('#luigi-debug-vis-cnt').then(async () => {
+      const result = await page
+        .locator('#luigi-debug-vis-cnt div:nth-child(1)')
+        .map(div => div.innerText)
+        .wait();
+
+      expect(result).toContain('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
+    });
   });
 });
 ```

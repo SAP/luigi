@@ -31,12 +31,19 @@ export class LuigiMockUtil {
     let textElements: string[];
 
     try {
-      if (this.browser.execute) {
-        textElements = await this.browser.execute(getTextNodeValues);
-      } else if (this.browser.executeScript) {
-        textElements = await this.browser.executeScript(getTextNodeValues);
-      } else {
-        textElements = await this.browser(getTextNodeValues);
+      switch (true) {
+        case 'evaluate' in this.browser:
+          this.browser.evaluate(getTextNodeValues);
+          break;
+        case 'execute' in this.browser:
+          this.browser.execute(getTextNodeValues);
+          break;
+        case 'executeScript' in this.browser:
+          this.browser.executeScript(getTextNodeValues);
+          break;
+        default:
+          this.browser(getTextNodeValues);
+          break;
       }
 
       this.messages = textElements
@@ -66,12 +73,19 @@ export class LuigiMockUtil {
     };
 
     try {
-      if (this.browser.execute) {
-        this.browser.execute(postMessageToLuigi, mockContext);
-      } else if (this.browser.executeScript) {
-        this.browser.executeScript(postMessageToLuigi, mockContext);
-      } else {
-        this.browser(postMessageToLuigi.bind(this, mockContext));
+      switch (true) {
+        case 'evaluate' in this.browser:
+          this.browser.evaluate(postMessageToLuigi, mockContext);
+          break;
+        case 'execute' in this.browser:
+          this.browser.execute(postMessageToLuigi, mockContext);
+          break;
+        case 'executeScript' in this.browser:
+          this.browser.executeScript(postMessageToLuigi, mockContext);
+          break;
+        default:
+          this.browser(postMessageToLuigi.bind(this, mockContext));
+          break;
       }
     } catch (error) {
       console.debug('Failed to mock context: ', error);
@@ -118,12 +132,19 @@ export class LuigiMockUtil {
     };
 
     try {
-      if (this.browser.execute) {
-        this.browser.execute(setPathExistsMockData, mockContext);
-      } else if (this.browser.executeScript) {
-        this.browser.executeScript(setPathExistsMockData, mockContext);
-      } else {
-        this.browser(setPathExistsMockData.bind(this, mockContext));
+      switch (true) {
+        case 'evaluate' in this.browser:
+          this.browser.evaluate(setPathExistsMockData, mockContext);
+          break;
+        case 'execute' in this.browser:
+          this.browser.execute(setPathExistsMockData, mockContext);
+          break;
+        case 'executeScript' in this.browser:
+          this.browser.executeScript(setPathExistsMockData, mockContext);
+          break;
+        default:
+          this.browser(setPathExistsMockData.bind(this, mockContext));
+          break;
       }
     } catch (error) {
       console.debug('Failed to mock path exists: ', error);
