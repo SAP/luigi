@@ -1533,7 +1533,7 @@
     }
 
     .fd-navigation__container--top > .fd-navigation__list {
-      margin-top: .125rem;
+      margin-top: 0.125rem;
     }
   }
   .fd-nested-list .fd-nested-list__title.badge-align-right,
@@ -1549,7 +1549,7 @@
   }
 
   .fd-navigation:not(.fd-navigation--snapped) .lui-spacer {
-    min-height: .125rem;
+    min-height: 0.125rem;
   }
 
   .fd-navigation--snapped .lui-moreItems {
