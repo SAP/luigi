@@ -34,9 +34,7 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attachShadow(settings) {
-          if (this.hasAttribute('no-shadow') || this.noShadow){ 
-            return this
-          };
+          if (this.hasAttribute('no-shadow') || this.noShadow) return this;
           return super.attachShadow(settings);
         }
         attributeChangedCallback(name, oldValue, newValue) {
