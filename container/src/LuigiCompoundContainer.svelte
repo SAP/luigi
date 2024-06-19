@@ -5,6 +5,7 @@
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
       context: { type: 'String', reflect: false, attribute: 'context' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
       compoundConfig: {
         type: 'Object',
         reflect: false,
@@ -42,6 +43,11 @@
       };
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
+        attachShadow(settings) {
+          if (this.hasAttribute('no-shadow') || this.noShadow){ 
+            return this;}
+          return super.attachShadow(settings);
+        }
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
@@ -63,6 +69,7 @@
   export let webcomponent: any;
   export let context: string;
   export let deferInit: boolean;
+  export let noShadow: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
   export let searchParams: any;
@@ -92,7 +99,8 @@
       anchor &&
       dirtyStatus &&
       hasBack &&
-      documentTitle
+      documentTitle && 
+      noShadow
     );
   };
 
@@ -101,7 +109,7 @@
       return;
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      mainComponent._luigi_mfe_webcomponent.context = contextObj;
+      (noShadow ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;
@@ -111,7 +119,9 @@
       viewUrl: viewurl,
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     }; // TODO: fill with sth
-    webcomponentService.renderWebComponentCompound(node, mainComponent, ctx).then(compCnt => {
+    const elRoot = noShadow ? thisComponent : mainComponent;
+    elRoot.innerHTML = '';
+    webcomponentService.renderWebComponentCompound(node, elRoot, ctx).then(compCnt => {
       eventBusElement = compCnt as HTMLElement;
       if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
         thisComponent.initialized = true;
@@ -128,7 +138,7 @@
   };
 
   onMount(async () => {
-    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any = mainComponent.getRootNode() === document ? mainComponent.parentNode : (mainComponent.getRootNode() as ShadowRoot).host;
 
     thisComponent.init = () => {
       initialize(thisComponent);
