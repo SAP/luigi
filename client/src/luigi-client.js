@@ -105,7 +105,6 @@ class LuigiClient {
     return lifecycleManager.setViewGroupData(value);
   }
 
-
   /**
    * @private
    */

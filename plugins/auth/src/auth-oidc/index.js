@@ -1,6 +1,6 @@
 import { UserManager, WebStorageStateStore, InMemoryWebStorage } from 'oidc-client';
 import { Helpers } from '../helpers';
-import { thirdPartyCookiesStatus } from '../third-party-cookies-check';
+
 export default class openIdConnect {
   constructor(settings = {}) {
     const defaultSettings = {
@@ -11,7 +11,6 @@ export default class openIdConnect {
       loadUserInfo: false,
       automaticSilentRenew: false,
       accessTokenExpiringNotificationTime: 60,
-      thirdPartyCookiesScriptLocation: '',
       logoutUrl: window.location.origin + '/logout.html',
       silent_redirect_uri: window.location.origin + '/assets/auth-oidc/silent-callback.html'
     };
@@ -117,13 +116,6 @@ export default class openIdConnect {
       });
     }
 
-    if (this.settings.thirdPartyCookiesScriptLocation) {
-      const iframe = document.createElement('iframe');
-      iframe.src = this.settings.thirdPartyCookiesScriptLocation;
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-    }
-
     this.client.events.addSilentRenewError(e => {
       let redirectUrl;
       switch (e.message) {
@@ -131,12 +123,7 @@ export default class openIdConnect {
         case 'login_required':
         case 'account_selection_required':
         case 'consent_required': // possible cause: disabled third party cookies in the browser
-          redirectUrl =
-            this.settings.logoutUrl +
-            '?error=tokenExpired&thirdPartyCookies=' +
-            thirdPartyCookiesStatus() +
-            '&errorDescription=' +
-            e.message;
+          redirectUrl = this.settings.logoutUrl + '?error=tokenExpired&errorDescription=' + e.message;
           break;
         default:
           console.error('[OIDC] addSilentRenewError Error', e);
