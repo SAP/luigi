@@ -39,4 +39,33 @@ describe('Iframe Container Test', () => {
           });
       });
   });
+
+  it('set auth token', () => {
+    const stub = cy.stub();
+    // cy.on('window:alert', stub);
+
+    cy.on ('window:alert', (text) => {
+      expect(text).to.eq('updated token')
+      done()                              // waiting for event, fails on timeout    
+    });
+    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
+
+    cy.get('button[id="update-token"]').click()
+
+    cy.get('[data-test-id="iframe-based-container-test"]')
+      .shadow()
+      .get('iframe')
+      .then(iframe => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get token')
+          .click()
+          // .then(() => {
+          //   cy.wrap(stub).should(
+          //     'have.been.calledWith',
+          //     'updated token'
+          //   );
+          // });
+      });
+  });
 });

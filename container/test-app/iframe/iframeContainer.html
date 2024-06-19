@@ -53,9 +53,9 @@
         luigiContainer.updateContext({ myContext: 'some context data' });
       });
 
-      updateAccessTokenButton.addEventListener('click', ()=>{
-        luigiContainer.setAttribute('auth-data','{"accessToken": "updated token"}');
-      })
+      updateAccessTokenButton.addEventListener('click', () => {
+        luigiContainer.setAttribute('auth-data', '{"accessToken": "updated token"}');
+      });
 
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
         if (confirm('Do you want to leave this page?')) {
@@ -169,13 +169,13 @@
       });
 
       // SET_THIRD_PARTY_COOKIES_REQUEST - called on microfrontend startup
-      luigiContainer.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event => {
-        console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
-        alert(
-          Events.SET_THIRD_PARTY_COOKIES_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data.data)
-        );
-      });
+      // luigiContainer.addEventListener(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event => {
+      //   console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
+      //   alert(
+      //     Events.SET_THIRD_PARTY_COOKIES_REQUEST,
+      //     'message recieved: ' + JSON.stringify(event.detail.data.data)
+      //   );
+      // });
 
       // BACK_NAVIGATION_REQUEST
       luigiContainer.addEventListener(Events.BACK_NAVIGATION_REQUEST, event => {
