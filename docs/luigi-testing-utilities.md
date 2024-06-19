@@ -18,17 +18,17 @@ meta -->
 
 # Luigi Testing Utilities
 
-The [Luigi Testing Utilities](https://github.com/SAP/luigi/tree/main/client-frameworks-support/testing-utilities) are a set of auxiliary functions used to enhance the user experience while testing Luigi-based micro frontends. The functions abstract away Luigi-specific logic from the tester so that it is easier for them to mock and assert Luigi functionality. 
+The [Luigi Testing Utilities](https://github.com/SAP/luigi/tree/main/client-frameworks-support/testing-utilities) are a set of auxiliary functions used to enhance the user experience while testing Luigi-based micro frontends. The functions abstract away Luigi-specific logic from the tester so that it is easier for them to mock and assert Luigi functionality.
 
-## LuigiMockUtil 
-This class contains certain utility helper functions needed when writing [protractor-based](https://www.npmjs.com/package/protractor) e2e tests. You can simply import this module into you project and then use an instance of it to test micro frontend functionality.
-With version 2.9.0 this class can also be used for [cypress-based](https://www.cypress.io/) e2e tests.
+## LuigiMockUtil
+Since version 2.9.0 this class contains certain utility helper functions needed when writing e2e tests with Cypress or Protractor. You can simply import this module into you project and then use an instance of it to test micro frontend functionality.
+Before version 2.9.0 this class could only be used for [protractor-based](https://www.npmjs.com/package/protractor) e2e tests.
 
-## How to use the library with protractor
+## How to use the library
 
 **Prerequisites:**
 
-_In order to use this utility library, you need to import LuigiMockModule into your Angular application's entry point. See more [here](https://docs.luigi-project.io/docs/framework-support-libraries/?section=luigicontextservice)._
+_In order to use this utility library, you need to import LuigiMockModule into your Angular application's entry point. See more [here](https://docs.luigi-project.io/docs/framework-support-libraries/?section=luigicontextservice). You also have to install [Cypress](https://www.npmjs.com/package/cypress) or [Protractor](https://www.npmjs.com/package/protractor) locally as a dev dependency for your project. Bear in mind Protractor is deprecated in Angular since version 15._
 
 
 1. Import the library in the `package.json`:
@@ -41,13 +41,13 @@ npm install @luigi-project/testing-utilities -s
 import { LuigiMockUtil } from "@luigi-project/testing-utilities";
 ```
 
-### Example
+### Example how to use the library with Protractor
 
 ```javascript
 import { browser } from 'protractor'; // <-- target e2e testing library
 import { LuigiMockUtil } from "@luigi-project/testing-utilities";
 
-describe('Another test', () => {
+describe('Another test using protractor', () => {
   let luigiMockUtil: LuigiMockUtil;
 
   beforeAll(async () => {
@@ -59,32 +59,30 @@ describe('Another test', () => {
       someData: '1',
       someOtherData: 'randomInfo',
     });
-  }
-}
+  });
+});
 ```
 
-## How to use the library with cypress
+### Example how to use the library with Cypress
 
-Step 1. and 2. are the same like in the protractor example.
-
-### Example
 ```javascript
+import { LuigiMockUtil } from "@luigi-project/testing-utilities";
+
 describe('Another test using cypress', () => {
   let luigiMockUtil: LuigiMockUtil;
 
-  beforeAll(async () => {
-    luigiMockUtil = new LuigiMockUtil(browser);
-    // Necessary to execute the functions from LuigiMockUtil in cypress context and get the 
-    // the window object of the page that is currently active
+  beforeEach(() => {
+    // Necessary to execute the functions from LuigiMockUtil in Cypress context
+    // and get the window object of the page that is currently active
     cy.window().then((win: any) => {
       luigiMockUtil = new LuigiMockUtil((fn: any) => {
         return new Promise((resolve, reject) => {
           resolve(fn());
-        })
+        });
       }, win);
-
     });
-    //Necessary that luigi-client sends postmessages to the same window and not to parent (which is cypress engine)
+    // Necessary that luigi-client sends postmessages to the same window
+    // and not to parent (which is Cypress engine)
     cy.visit('http://localhost:4200', {
       onBeforeLoad: (win) => {
         win["parent"] = win;
@@ -92,7 +90,8 @@ describe('Another test using cypress', () => {
     });
   });
 
-  it('Mock path exists', () => {
+  it('should mock path exists', () => {
+    // Be sure '.pathExists' element is present
     cy.get('.pathExists').click().then(() => {
       luigiMockUtil.mockPathExists('/test', false);
     });
@@ -105,10 +104,9 @@ describe('Another test using cypress', () => {
     })
   });
 
-  it('mock context update', () => {
-    let context = {
-      ctxKey: 'ctxValue'
-    }
+  it('should mock context update', () => {
+    const context = {ctxKey: 'ctxValue'};
+
     luigiMockUtil.mockContext(context);
     cy.get('#luigi-debug-vis-cnt').contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
   });
