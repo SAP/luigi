@@ -374,7 +374,6 @@
   }
 
   export function handleIconClick(nodeOrNodes, el) {
-    closeMorePopup();
     if (SemiCollapsibleNavigation.getCollapsed()) {
       let selectedCat;
       let sideBar = document.getElementsByClassName('fd-app__sidebar')[0];
@@ -401,6 +400,9 @@
         calculateFlyoutPosition(el);
       } else if (btpToolLayout) {
         calculateBTPNavFlyoutPosition(el);
+        if (!el.closest('.lui-moreItems')) {
+          closeMorePopup();
+        }
       }
     }
   }
@@ -898,7 +900,9 @@
                 role="button"
                 tabindex="0"
                 on:click={displayMoreButtonMenu}
-                on:keypress={displayMoreButtonMenu}
+                on:keypress={event => {
+                  (event.code === 'Enter' || event.code === 'Space') && displayMoreButtonMenu();
+                }}
               >
                 <span class="fd-navigation__icon sap-icon--overflow" role="presentation" aria-hidden="true" />
                 <span class="fd-navigation__text">More Items</span>
@@ -1527,6 +1531,10 @@
         border-bottom: none;
       }
     }
+
+    .fd-navigation__container--top > .fd-navigation__list {
+      margin-top: .125rem;
+    }
   }
   .fd-nested-list .fd-nested-list__title.badge-align-right,
   .fd-navigation__text.badge-align-right {
@@ -1538,6 +1546,10 @@
 
   .fd-navigation--snapped .lui-spacer {
     flex-grow: 1;
+  }
+
+  .fd-navigation:not(.fd-navigation--snapped) .lui-spacer {
+    min-height: .125rem;
   }
 
   .fd-navigation--snapped .lui-moreItems {
