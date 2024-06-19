@@ -23,7 +23,6 @@
     </div>
 
     <script type="module">
-      
       import Events from '../bundle.js';
 
       const luigiContainer = document.querySelector('luigi-container');
@@ -51,10 +50,9 @@
       updateContextButton.addEventListener('click', () => {
         // luigiContainer.updateContext({ myContext: 'some context data' });
 
-        luigiContainer.context = {'title': 'new'}
-        luigiContainer.authdata = {'test': 'auth'};
-        console.log(luigiContainer, luigiContainer.context, luigiContainer.authdata)
-     
+        luigiContainer.context = { title: 'new' };
+        luigiContainer.authdata = { test: 'auth' };
+        console.log(luigiContainer, luigiContainer.context, luigiContainer.authdata);
       });
 
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
