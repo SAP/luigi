@@ -1,3 +1,56 @@
+<svelte:options
+  customElement={{
+    tag: null,
+    props: {
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      label: { type: 'String', reflect: false, attribute: 'label' },
+      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
+      theme: { type: 'String', reflect: false, attribute: 'theme' },
+      activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
+      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
+      documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
+      allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' },
+      sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' }
+    },
+    extend: customElementConstructor => {
+      let notInitFn = name => {
+        return () => console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
+      };
+
+      return class extends customElementConstructor {
+        sendCustomMessage = notInitFn('sendCustomMessage');
+        updateContext = notInitFn('updateContext');
+        closeAlert = notInitFn('closeAlert');
+        attachShadow(settings) {
+          if (this.getNoShadow()) {
+            return this;}
+          return super.attachShadow(settings);
+        }
+        attributeChangedCallback(name, oldValue, newValue) {
+          if (this.containerInitialized && name === 'context') {
+            this.updateContext(JSON.parse(newValue));
+          }
+        };
+        getNoShadow(){
+          return this.hasAttribute('no-shadow') || this.noShadow;
+        };
+      };
+    }
+  }}
+/>
+
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import { containerService } from './services/container.service';
@@ -12,6 +65,7 @@
   export let label: string;
   export let webcomponent: any;
   export let deferInit: boolean;
+  export let noShadow: Boolean;
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
@@ -25,9 +79,9 @@
   export let documentTitle: string;
   export let allowRules: string[];
   export let sandboxRules: string[];
+
   export let userSettings: any;
   export let anchor: string;
-  export let authData: any;
 
   const iframeHandle:
     | {
@@ -56,20 +110,25 @@
       hasBack &&
       documentTitle &&
       allowRules &&
-      sandboxRules &&
-      authData
+      sandboxRules
     );
   };
 
   const initialize = (thisComponent: any) => {
     if (!containerInitialized) {
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
-        ContainerAPI.sendCustomMessage(id, mainComponent, !!webcomponent, iframeHandle, data);
+        ContainerAPI.sendCustomMessage(
+          id,
+          noShadow ? thisComponent : mainComponent,
+          !!webcomponent,
+          iframeHandle,
+          data
+        );
       };
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
         if (webcomponent) {
-          mainComponent._luigi_mfe_webcomponent.context = contextObj;
+          (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
@@ -84,11 +143,12 @@
 
       const ctx = GenericHelperFunctions.resolveContext(context);
       if (webcomponent && webcomponent != 'false') {
-        mainComponent.innerHTML = '';
+        const elRoot = thisComponent.getNoShadow() ? thisComponent : mainComponent;
+        elRoot.innerHTML = '';
         const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
           viewurl,
-          mainComponent,
+          elRoot,
           ctx,
           typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
         );
@@ -99,8 +159,8 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         });
       } else if (webcomponent) {
-        mainComponent.addEventListener('wc_ready', () => {
-          if (!(mainComponent as any)._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
+        (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
+          if (!(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
             thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           }
@@ -112,7 +172,10 @@
   };
 
   onMount(async () => {
-    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any =
+      mainComponent.getRootNode() === document
+        ? mainComponent.parentNode
+        : (mainComponent.getRootNode() as ShadowRoot).host;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
       initialize(thisComponent);
@@ -125,27 +188,6 @@
   onDestroy(async () => {});
 </script>
 
-<svelte:options
-  customElement={{ tag: null, props: { viewurl: { type: 'String', reflect: false, attribute: 'viewurl' }, deferInit: { type: 'Boolean', attribute: 'defer-init' }, context: { type: 'String', reflect: false, attribute: 'context' }, label: { type: 'String', reflect: false, attribute: 'label' }, webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' }, locale: { type: 'String', reflect: false, attribute: 'locale' }, theme: { type: 'String', reflect: false, attribute: 'theme' }, activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' }, skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' }, nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' }, userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' }, anchor: { type: 'String', reflect: false, attribute: 'anchor' }, searchParams: { type: 'Object', reflect: false, attribute: 'search-params' }, pathParams: { type: 'Object', reflect: false, attribute: 'path-params' }, clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' }, dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' }, hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' }, documentTitle: { type: 'String', reflect: false, attribute: 'document-title' }, allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' }, sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' }, authData: { type: 'Object', reflect: false, attribute: 'auth-data' } }, extend: customElementConstructor => {
-      let notInitFn = name => {
-        return () => console.warn(name + " can't be called on luigi-container before its micro frontend is attached to the DOM.");
-      };
-      return class extends customElementConstructor {
-        sendCustomMessage = notInitFn('sendCustomMessage');
-        updateContext = notInitFn('updateContext');
-        closeAlert = notInitFn('closeAlert');
-        attributeChangedCallback(name, oldValue, newValue) {
-          if (this.containerInitialized) {
-            if (name === 'context') {
-              this.updateContext(JSON.parse(newValue));
-            }
-            if (name === 'auth-data') {
-              ContainerAPI.updateAuthData(this.iframeHandle, JSON.parse(newValue));
-            }
-          }
-        }
-      };
-    } }} />
 <main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
     {#if !webcomponent || webcomponent === 'false'}
