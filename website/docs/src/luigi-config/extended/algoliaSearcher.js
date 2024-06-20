@@ -1,8 +1,8 @@
 import algoliasearch from "algoliasearch";
-const appId="BH4D9OD16A";
-const apiKey="5ab04e0673d89f07c964afcf1522ad3a";
+const appId = "048N3AY92Y";
+const apiKey = "8726f8c70f1618caac31f26ec44b3933";
 
-class AlgoliaSearcher{
+class AlgoliaSearcher {
   constructor() {
     this.client = algoliasearch(appId, apiKey);
     this.index = this.client.initIndex("luigi-project");
@@ -10,17 +10,17 @@ class AlgoliaSearcher{
     this.isDevelop = parseInt(window.location.port) === 4000;
     this.coreBaseUrl = window.location.origin;
   }
-  executeSearch(query){
-    this.index.search(query, {hitsPerPage:  this.searchResult })
+  executeSearch(query) {
+    this.index.search(query, { hitsPerPage: this.searchResult, filters: 'type:content' })
       .then(({ hits }) => {
-        hits = hits.map(this.transformUrls.bind(this)).map(this.transformContent)
+        hits = hits.map(this.transformUrls.bind(this)).map(this.transformContent);
         Luigi.globalSearch().showSearchResult([query].concat(hits));
       })
       .catch(err => {
-        console.log('Error in executing the query '+ err);
+        console.log('Error in executing the query ' + err);
       });
   }
-  transformUrls(hit){
+  transformUrls(hit) {
     hit.url = hit.url.replace('https://docs.luigi-project.io', '');
     hit.url = hit.url.replace('/docu-microfrontend', '');
     return hit;
@@ -43,7 +43,7 @@ class AlgoliaSearcher{
         params
       },
       label: hit.hierarchy['lvl0'],
-      description: hit.content,
+      description: hit.content ?? '',
       title1,
       title2,
       title3,
