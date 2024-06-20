@@ -190,11 +190,6 @@ export default class extends HTMLElement {
       });
     });
 
-    this.$updateCtxBTN = this._shadowRoot.querySelector('#updateCtx');
-    this.$updateCtxBTN.addEventListener('click', () => {
-      console.log('ctx', this.ctx, this.context);
-    });
-
     this.$getDirtyStatusBtn = this._shadowRoot.querySelector('#getDirtyStatus');
     this.$getDirtyStatusBtn.addEventListener('click', () => {
       let dirtyStatus = this.LuigiClient.uxManager().getDirtyStatus();
