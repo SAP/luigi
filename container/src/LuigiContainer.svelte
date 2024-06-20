@@ -33,18 +33,10 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
-        attachShadow(settings) {
-          if (this.getNoShadow()) {
-            return this;}
-          return super.attachShadow(settings);
-        }
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
-        };
-        getNoShadow(){
-          return this.hasAttribute('no-shadow') || this.noShadow;
         };
       };
     }
@@ -65,7 +57,6 @@
   export let label: string;
   export let webcomponent: any;
   export let deferInit: boolean;
-  export let noShadow: Boolean;
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
@@ -119,7 +110,7 @@
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
         ContainerAPI.sendCustomMessage(
           id,
-          noShadow ? thisComponent : mainComponent,
+          mainComponent,
           !!webcomponent,
           iframeHandle,
           data
@@ -128,7 +119,7 @@
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
         if (webcomponent) {
-          (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+          mainComponent._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
@@ -142,15 +133,17 @@
       webcomponentService.thisComponent = thisComponent;
 
       const ctx = GenericHelperFunctions.resolveContext(context);
-      if (webcomponent && webcomponent != 'false') {
-        const elRoot = thisComponent.getNoShadow() ? thisComponent : mainComponent;
-        elRoot.innerHTML = '';
-        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
+      if (webcomponent && webcomponent != "false") {
+        mainComponent.innerHTML = '';
+        const webComponentValue =
+          GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
           viewurl,
-          elRoot,
+          mainComponent,
           ctx,
-          typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
+          typeof webComponentValue === 'object'
+            ? { webcomponent: webComponentValue }
+            : {},
         );
       }
       if (skipInitCheck) {
@@ -159,8 +152,11 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         });
       } else if (webcomponent) {
-        (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
-          if (!(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
+        mainComponent.addEventListener('wc_ready', () => {
+          if (
+            !(mainComponent as any)._luigi_mfe_webcomponent
+              ?.deferLuigiClientWCInit
+          ) {
             thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           }
@@ -172,10 +168,7 @@
   };
 
   onMount(async () => {
-    const thisComponent: any =
-      mainComponent.getRootNode() === document
-        ? mainComponent.parentNode
-        : (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
       initialize(thisComponent);
@@ -188,9 +181,12 @@
   onDestroy(async () => {});
 </script>
 
-<main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
+<main
+  bind:this={mainComponent}
+  class={webcomponent ? undefined : 'lui-isolated'}
+>
   {#if containerInitialized}
-    {#if !webcomponent || webcomponent === 'false'}
+    {#if !webcomponent || webcomponent === "false"}
       <iframe
         bind:this={iframeHandle.iframe}
         src={viewurl}
