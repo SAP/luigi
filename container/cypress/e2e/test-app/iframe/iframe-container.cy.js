@@ -42,12 +42,8 @@ describe('Iframe Container Test', () => {
 
   it('set auth token', () => {
     const stub = cy.stub();
-    // cy.on('window:alert', stub);
+    cy.on('window:alert', stub);
 
-    cy.on('window:alert', text => {
-      expect(text).to.eq('updated token');
-      done(); // waiting for event, fails on timeout
-    });
     cy.visit('http://localhost:8080/iframe/iframeContainer.html');
 
     cy.get('button[id="update-token"]').click();
@@ -59,13 +55,13 @@ describe('Iframe Container Test', () => {
         const $body = iframe.contents().find('body');
         cy.wrap($body)
           .contains('test get token')
-          .click();
-        // .then(() => {
-        //   cy.wrap(stub).should(
-        //     'have.been.calledWith',
-        //     'updated token'
-        //   );
-        // });
+          .click()
+        .then(() => {
+          cy.wrap(stub).should(
+            'have.been.calledWith',
+            'Custom message recieved: {"id":"token.updated","_metaData":{},"data":{"value":"updated token"}}'
+          );
+        });
       });
   });
 });

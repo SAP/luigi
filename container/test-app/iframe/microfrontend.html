@@ -155,12 +155,8 @@
       }
 
       function testGetToken() {
-        console.log('test', LuigiClient.getToken());
-        alert(LuigiClient.getToken());
-        // this.LuigiClient.uxManager().showAlert({
-        //   text: LuigiClient.getToken(),
-        //   type: 'info'
-        // });
+        // send back message with get Token value
+        LuigiClient.sendCustomMessage({id: 'token.updated', value: LuigiClient.getToken()})
       }
 
       function testShowAlert() {
