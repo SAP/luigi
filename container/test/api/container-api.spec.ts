@@ -77,7 +77,7 @@ describe('Container Service', () => {
             containerAPI.updateAuthData(iframeHandle, authData);
 
             // assert
-            expect(spy).toHaveBeenCalledWith(iframeHandle, authData, LuigiInternalMessageID.AUTH_SET_TOKEN)
+            expect(spy).toHaveBeenCalledWith(iframeHandle, {authData}, LuigiInternalMessageID.AUTH_SET_TOKEN)
         });
 
         it('iframeHandle undefined, authData exists', () => {
