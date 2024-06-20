@@ -60,6 +60,25 @@ You can use the Luigi compound Container as follows:
     </luigi-compound-container>
 ```
 
+### Luigi (Compound) Container Light
+The light variant works exactly the same like Luigi Container and Luigi Compound Container with the difference that the light variant will not use the shadow DOM for rendering.
+
+```html
+    <luigi-container-light
+        viewURL="https://www.example-microfronted.com/wc.js" 
+        webcomponent="true" 
+        label="my label"
+        context='{"label": "Calendar"}'>
+    </luigi-container-light>
+```
+
+```html
+    <luigi-compound-container-light 
+        context='{"label": "Dashboard"}'
+        compoundConfig = { your config here }>
+    </luigi-compound-container-light>
+```
+
 ## Examples
 
 ### Test Application

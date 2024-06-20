@@ -26,6 +26,8 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
+   * NOTE: If the Luigi compound container is created dynamically, the `noShadow` property will not work because of the limitation of the `document.createElement()` functionality.
+   * Instead you should use `luigi-compound-container-light` (e.g. document.createElement('luigi-compound-container-light')) and the `noShadow` property is no longer needed.
    * @since NEXTRELEASE
    */
   noShadow: boolean;

@@ -202,17 +202,15 @@
   {/if}
 </main>
 
-{#if !noShadow}
-  <style>
-    main,
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+<style>
+  main,
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 
-    main.lui-isolated {
-      line-height: 0;
-    }
-  </style>
-{/if}
+  main.lui-isolated {
+    line-height: 0;
+  }
+</style>

@@ -14,9 +14,10 @@
 }
 meta -->
 
-# Luigi Container API
+# Luigi Container and Luigi Container Light API
 
-This document outlines the parameters provided by the Luigi Container. 
+This document outlines the parameters provided by the Luigi Container and Luigi Container Light.
+The difference between Luigi Container and Luigi Container Light is that the light variant will not use the shadow DOM for rendering.
 
 ## API Reference
 
@@ -133,7 +134,9 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### noShadow
 
-If set to true, the Luigi container webcomponent will not be rendered in a shadow DOM.
+If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
+NOTE: If the Luigi container is created dynamically, the `noShadow` property will not work because of the limitation of the `document.createElement()` functionality.
+Instead you should use `luigi-container-light` (e.g. document.createElement('luigi-container-light')) and the `noShadow` property is no longer needed.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
