@@ -76,10 +76,6 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
-    const updateCtxButton = document.createElement('template');
-    updateCtxButton.innerHTML = `<button id="updateCtx">get Ctx
-    </button>`;
-
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -103,7 +99,6 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
-    this._shadowRoot.appendChild(updateCtxButton.content.cloneNode(true));
 
     this.$paragraph = this._shadowRoot.querySelector('p');
     this.$button = this._shadowRoot.querySelector('#aButton');
@@ -272,14 +267,7 @@ export default class extends HTMLElement {
     });
   }
 
-  updateFn(ctx) {
-    console.log(ctx);
-  }
-
   set context(ctx) {
-    this.ctx = ctx;
-    // this.ctx = ctx;
-    console.log('context', ctx);
     this.$paragraph.innerHTML = ctx.title;
   }
 }

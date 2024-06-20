@@ -113,7 +113,7 @@ export namespace LuigiInternalMessageID {
    */
   export const SET_DIRTY_STATUS_REQUEST = 'luigi.set-page-dirty';
 
-    /**
+  /**
    * A message emmitted from the Microfrontend when a request to set the 'token auth' is sent
    */
     export const AUTH_SET_TOKEN = 'luigi.auth.tokenIssued';

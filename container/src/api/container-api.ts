@@ -9,8 +9,6 @@ export class ContainerAPIFunctions {
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    */
   updateContext = (contextObj: any, internal?: any, iframeHandle?: any) => {
-    // update auth token if 
-    // const messageId = authData?.accessToken ? LuigiInternalMessageID.AUTH_SET_TOKEN: LuigiInternalMessageID.SEND_CONTEXT_OBJECT;
     if (iframeHandle) {
       const internalParameter = internal || {};
       containerService.sendCustomMessageToIframe(
