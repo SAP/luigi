@@ -89,7 +89,7 @@
       pathParams &&
       clientPermissions &&
       userSettings &&
-      anchor && 
+      anchor &&
       dirtyStatus &&
       hasBack &&
       documentTitle
@@ -102,6 +102,9 @@
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
       mainComponent._luigi_mfe_webcomponent.context = contextObj;
+    };
+    thisComponent.getContext = (): any => {
+      return mainComponent?._luigi_mfe_webcomponent?.context || {};
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;

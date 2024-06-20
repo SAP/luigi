@@ -102,9 +102,11 @@
       }
 
       function testGetContext() {
-        alert(
-          'LuigiClient.getContext()() called' + JSON.stringify(LuigiClient.getContext())
-        );
+        LuigiClient.sendCustomMessage({ id: 'my.contextMessage', ...LuigiClient.getContext() });
+        LuigiClient.uxManager().showAlert({
+          text: `LuigiClient.getContext() called ${JSON.stringify(this.ctx)}`,
+          type: 'info'
+        });
       }
 
       function testSetCurrentLocale() {
