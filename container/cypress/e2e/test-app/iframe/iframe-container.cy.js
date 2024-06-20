@@ -56,12 +56,12 @@ describe('Iframe Container Test', () => {
         cy.wrap($body)
           .contains('test get token')
           .click()
-        .then(() => {
-          cy.wrap(stub).should(
-            'have.been.calledWith',
-            'Custom message recieved: {"id":"token.updated","_metaData":{},"data":{"value":"updated token"}}'
-          );
-        });
+          .then(() => {
+            cy.wrap(stub).should(
+              'have.been.calledWith',
+              'Custom message recieved: {"id":"token.updated","_metaData":{},"data":{"value":"updated token"}}'
+            );
+          });
       });
   });
 });

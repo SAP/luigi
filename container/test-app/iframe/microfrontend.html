@@ -156,7 +156,10 @@
 
       function testGetToken() {
         // send back message with get Token value
-        LuigiClient.sendCustomMessage({id: 'token.updated', value: LuigiClient.getToken()})
+        LuigiClient.sendCustomMessage({
+          id: 'token.updated',
+          value: LuigiClient.getToken()
+        });
       }
 
       function testShowAlert() {

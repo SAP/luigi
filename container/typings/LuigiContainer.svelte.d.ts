@@ -180,7 +180,7 @@ export default class LuigiContainer extends HTMLElement {
   init(): void;
 
   /**
-   * The authData value to be passed to the web-component-based micro frontend.
+   * The authData value to be passed to the iframe-based micro frontend.
    * @since NEXT_RELEASE
    */
     authData: Object;

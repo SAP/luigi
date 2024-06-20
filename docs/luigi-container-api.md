@@ -316,7 +316,7 @@ Returns **void**
 
 ### authData
 
-The authData value to be passed to the web-component-based micro frontend.
+The authData value to be passed to the iframe-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 

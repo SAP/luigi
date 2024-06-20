@@ -102,7 +102,6 @@ export class ContainerService {
                 break;
               case LuigiInternalMessageID.GET_CONTEXT:
                 // Automatically send a luigi.init message to complete the initial handshake with the microfrontend
-                console.log('test GET_CONTEXT',  targetCnt.authdata, targetCnt.authData, targetCnt)
                 target.postMessage(
                   {
                     msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,

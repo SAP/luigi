@@ -3,14 +3,14 @@ import { containerService } from '../services/container.service';
 
 export class ContainerAPIFunctions {
   /**
-   * Updates the context of the microfrontend by sending a message to the iframe or webcomponent that sets the context of the microfrontend
+   * Updates the context of the microfrontend by sending a message to the iframe that sets the context of the microfrontend
    * @param contextObj The context data
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
    */
-  updateContext = (contextObj: any, internal?: any, iframeHandle?: any, authData?: any) => {
-    console.log(authData, 1111)
-    const messageId = authData?.accessToken ? LuigiInternalMessageID.AUTH_SET_TOKEN:  LuigiInternalMessageID.SEND_CONTEXT_OBJECT;
+  updateContext = (contextObj: any, internal?: any, iframeHandle?: any) => {
+    // update auth token if 
+    // const messageId = authData?.accessToken ? LuigiInternalMessageID.AUTH_SET_TOKEN: LuigiInternalMessageID.SEND_CONTEXT_OBJECT;
     if (iframeHandle) {
       const internalParameter = internal || {};
       containerService.sendCustomMessageToIframe(
@@ -20,14 +20,32 @@ export class ContainerAPIFunctions {
           internal: internalParameter,
           // set withoutSync to true for the container case to avoid browser history changes from luigi client
           withoutSync: true,
-          authData: authData
         },
-        messageId
+        LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );
     } else {
       console.warn('Attempting to update context on inexisting iframe');
     }
   };
+
+  /**
+   * Updates the auth data of the microfrontend by sending a message to the iframe that sets the authData of the microfrontend
+   * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
+   * @param authData the authData object being sent to the microfrontend
+   */
+  updateAuthData = (iframeHandle: any, authData: any) => {
+      if (iframeHandle) {
+        containerService.sendCustomMessageToIframe(
+          iframeHandle,
+          {
+            authData: authData
+          },
+          LuigiInternalMessageID.AUTH_SET_TOKEN
+        );
+      } else {
+        console.warn('Attempting to update auth data on inexisting iframe');
+      }
+    };
 
   /**
    * Send a custom message to the referenced iframe or web component
