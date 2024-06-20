@@ -4,7 +4,6 @@
     props: {
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
       context: { type: 'String', reflect: false, attribute: 'context' },
       label: { type: 'String', reflect: false, attribute: 'label' },
       webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
@@ -34,8 +33,13 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
-          if (this.containerInitialized && name === 'context') {
-            this.updateContext(JSON.parse(newValue));
+          if (this.containerInitialized) {
+            if (name === 'context') {
+              this.updateContext(JSON.parse(newValue));
+            }
+            if (name === 'auth-data') {
+              ContainerAPI.updateAuthData(this.iframeHandle, JSON.parse(newValue));
+            }
           }
         };
       };
@@ -70,6 +74,7 @@
   export let documentTitle: string;
   export let allowRules: string[];
   export let sandboxRules: string[];
+
 
   export let userSettings: any;
   export let anchor: string;
