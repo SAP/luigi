@@ -27,7 +27,7 @@
   export let sandboxRules: string[];
   export let userSettings: any;
   export let anchor: string;
-  export let authData: String;
+  export let authData: any;
 
   const iframeHandle:
     | {
@@ -140,7 +140,7 @@
               this.updateContext(JSON.parse(newValue));
             }
             if (name === 'auth-data') {
-              ContainerAPI.updateAuthData(this.iframeHandle, JSON.parse(newValue))
+              ContainerAPI.updateAuthData(this.iframeHandle, JSON.parse(newValue));
             }
           }
         }
