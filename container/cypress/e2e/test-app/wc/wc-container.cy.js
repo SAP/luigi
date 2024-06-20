@@ -85,6 +85,7 @@ describe('Web Container Test', () => {
     it('updateContext', () => {
       cy.on('window:alert', stub);
 
+      cy.wait(500);
       cy.get('#luigi-update-context')
         .click()
         .then(() => {

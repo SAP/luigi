@@ -45,6 +45,8 @@
       import MFEventID from '../bundle.js';
 
       [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
+        luigiContainer.init();
+
         luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
           console.log(event.detail);
           window.location.hash = event.detail.link;
