@@ -32,7 +32,7 @@ export class ContainerAPIFunctions {
    * @param authData the authData object being sent to the microfrontend
    */
   updateAuthData = (iframeHandle: any, authData: any) => {
-      if (iframeHandle) {
+      if (iframeHandle && authData) {
         containerService.sendCustomMessageToIframe(
           iframeHandle,
           {
@@ -41,7 +41,7 @@ export class ContainerAPIFunctions {
           LuigiInternalMessageID.AUTH_SET_TOKEN
         );
       } else {
-        console.warn('Attempting to update auth data on inexisting iframe');
+        console.warn('Attempting to update auth data on inexisting iframe or authData');
       }
     };
 
