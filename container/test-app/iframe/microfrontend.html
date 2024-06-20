@@ -102,7 +102,10 @@
       }
 
       function testGetContext() {
-        LuigiClient.sendCustomMessage({ id: 'my.contextMessage', ...LuigiClient.getContext() });
+        LuigiClient.sendCustomMessage({
+          id: 'my.contextMessage',
+          ...LuigiClient.getContext()
+        });
         LuigiClient.uxManager().showAlert({
           text: `LuigiClient.getContext() called ${JSON.stringify(this.ctx)}`,
           type: 'info'
