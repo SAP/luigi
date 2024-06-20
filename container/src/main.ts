@@ -14,3 +14,19 @@ if (!customElements.get('luigi-container')) {
 if (!customElements.get('luigi-compound-container')) {
   customElements.define('luigi-compound-container', (LuigiCompoundContainer as any).element);
 }
+
+if (!customElements.get('luigi-container-light')) {
+  customElements.define('luigi-container-light', class extends ((LuigiContainer as any).element as CustomElementConstructor){
+    getNoShadow(){
+      return true;
+    }
+  });
+}
+
+if (!customElements.get('luigi-compound-container-light')) {
+  customElements.define('luigi-compound-container-light', class extends ((LuigiCompoundContainer as any).element as CustomElementConstructor){
+    getNoShadow(){
+      return true;
+    }
+  });
+}

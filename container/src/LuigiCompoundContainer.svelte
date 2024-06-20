@@ -44,14 +44,17 @@
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
         attachShadow(settings) {
-          if (this.hasAttribute('no-shadow') || this.noShadow) return this;
+          if (this.getNoShadow()) return this;
           return super.attachShadow(settings);
         }
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
-        }
+        };
+        getNoShadow(){
+          return this.hasAttribute('no-shadow') || this.noShadow;
+        };
       };
     },
   }}
@@ -108,7 +111,7 @@
       return;
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      (noShadow ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+      (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;
@@ -118,7 +121,7 @@
       viewUrl: viewurl,
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     }; // TODO: fill with sth
-    const elRoot = noShadow ? thisComponent : mainComponent;
+    const elRoot = thisComponent.getNoShadow() ? thisComponent : mainComponent;
     elRoot.innerHTML = '';
     webcomponentService.renderWebComponentCompound(node, elRoot, ctx).then(compCnt => {
       eventBusElement = compCnt as HTMLElement;

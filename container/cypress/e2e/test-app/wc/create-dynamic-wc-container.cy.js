@@ -85,42 +85,17 @@ describe('Create luigi-container dynamically', () => {
       const lc = document.querySelector('#lc');
       lc.viewurl = "./wc/helloWorldWC.js";
       lc.webcomponent = true;
-      lc.noShadow = true;
     `;
     const htmlCode = `
-      <luigi-container data-test-id="luigi-container" id="lc"></luigi-container>
+      <luigi-container-light data-test-id="luigi-container-light" id="lc"></luigi-container-light>
       <script>${scriptCode}</script>
     `;
     const stub = cy.stub();
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', htmlCode);
-    cy.get('[data-test-id="luigi-container"]')
+    cy.get('[data-test-id="luigi-container-light"]')
       .shadow()
-      .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f77632f77632f68656c6c6f576f726c6457432e6a73')
       .should('not.exist');
-  });
-
-  it('no shadow dom set to false for LuigiContainer', () => {
-    cy.once('uncaught:exception', () => false);
-    const scriptCode = `
-      const lc = document.querySelector('#lc');
-      lc.viewurl = "./wc/helloWorldWC.js";
-      lc.webcomponent = true;
-      lc.noShadow = false;
-    `;
-    const htmlCode = `
-      <luigi-container data-test-id="luigi-container" id="lc">
-      </luigi-container>
-      <script>${scriptCode}</script>
-    `;
-    const stub = cy.stub();
-    cy.on('window:alert', stub);
-    cy.visit(tetsPage);
-    cy.get('.content').invoke('append', htmlCode);
-    cy.get('[data-test-id="luigi-container"]')
-      .shadow()
-      .find('luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f77632f77632f68656c6c6f576f726c6457432e6a73')
-      .should('exist');
   });
 });

@@ -34,14 +34,18 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attachShadow(settings) {
-          if (this.hasAttribute('no-shadow') || this.noShadow) return this;
+          if (this.getNoShadow()) {
+            return this;}
           return super.attachShadow(settings);
         }
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
-        }
+        };
+        getNoShadow(){
+          return this.hasAttribute('no-shadow') || this.noShadow;
+        };
       };
     }
   }}
@@ -124,7 +128,7 @@
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
         if (webcomponent) {
-          (noShadow ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+          (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
@@ -139,7 +143,7 @@
 
       const ctx = GenericHelperFunctions.resolveContext(context);
       if (webcomponent && webcomponent != 'false') {
-        const elRoot = noShadow ? thisComponent : mainComponent;
+        const elRoot = thisComponent.getNoShadow() ? thisComponent : mainComponent;
         elRoot.innerHTML = '';
         const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
@@ -155,8 +159,8 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         });
       } else if (webcomponent) {
-        (noShadow ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
-          if (!(noShadow ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
+        (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
+          if (!(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
             thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           }
