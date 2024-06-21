@@ -1,7 +1,7 @@
 export class LuigiMockUtil {
   private messages: any[];
   private browser: any;
-  private win: any
+  private win: any;
 
   constructor(browser: any, win?: any) {
     this.messages = [];
@@ -18,7 +18,6 @@ export class LuigiMockUtil {
     return this.win || globalThis;
   }
 
-
   /**
    * Parses the elements added by LuigiMockModule into the DOM and assigns them to the local this.messages variable
    *  @returns {Promise<void>} - A Promise that resolves when parsing is complete.
@@ -29,7 +28,7 @@ export class LuigiMockUtil {
         const targetDocument = this.getGlobalThis();
         const debugCtn = targetDocument.getElementById('luigi-debug-vis-cnt');
         return Array.from(debugCtn?.childNodes || []).map((item: any) => item.textContent || '');
-      }
+      };
 
       const textElements: string[] = this.browser.executeScript
         ? await this.browser.executeScript(getTextNodeValues)
@@ -42,7 +41,7 @@ export class LuigiMockUtil {
             return undefined;
           }
         })
-        .filter((item) => item !== undefined);
+        .filter(item => item !== undefined);
     } catch (e) {
       console.debug('Failed to parse luigi mocked messages: ', e);
     }
@@ -89,11 +88,11 @@ export class LuigiMockUtil {
   mockPathExists = (path: string, exists: boolean): void => {
     const targetDocument = this.getGlobalThis();
     /**
-    * Sets the path exists mock data in sessionStorage.
-    * @param {string} path - The path for which mock data is to be set.
-    * @param {boolean} exists - Boolean indicating whether the path exists.
-    * @returns {void}
-    */
+     * Sets the path exists mock data in sessionStorage.
+     * @param {string} path - The path for which mock data is to be set.
+     * @param {boolean} exists - Boolean indicating whether the path exists.
+     * @returns {void}
+     */
     const setPathExistsMockData = () => {
       targetDocument.sessionStorage.clear();
       let pathExistsMockData = {

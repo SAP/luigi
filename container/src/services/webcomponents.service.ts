@@ -95,15 +95,15 @@ export class WebComponentService {
         let nodeParams = {};
 
         const linkManagerInstance = {
-          navigate: (route , settings = {})=> {
+          navigate: (route, settings = {}) => {
             const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams, ...settings };
-            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route , ...options});
+            this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route, ...options });
           },
           fromClosestContext: () => {
             fromClosestContext = true;
             return linkManagerInstance;
           },
-          fromContext: (navigationContext) => {
+          fromContext: navigationContext => {
             fromContext = navigationContext;
             return linkManagerInstance;
           },
@@ -111,7 +111,7 @@ export class WebComponentService {
             fromVirtualTreeRoot = true;
             return linkManagerInstance;
           },
-          withParams: (params) => {
+          withParams: params => {
             nodeParams = params;
             return linkManagerInstance;
           },
@@ -120,30 +120,36 @@ export class WebComponentService {
           },
           pathExists: () => {
             return new Promise((resolve, reject) => {
-              this.containerService.dispatch(Events.PATH_EXISTS_REQUEST, this.thisComponent, {}, (exists)=>{
-              if (exists) {
-                  resolve(true)
-                }  else {
-                  reject(false);
-                }
-              }, 'callback');
-            })
+              this.containerService.dispatch(
+                Events.PATH_EXISTS_REQUEST,
+                this.thisComponent,
+                {},
+                exists => {
+                  if (exists) {
+                    resolve(true);
+                  } else {
+                    reject(false);
+                  }
+                },
+                'callback'
+              );
+            });
           },
           openAsDrawer: (route, drawerSettings = {}) => {
-            linkManagerInstance.navigate(route, {drawer: drawerSettings})
+            linkManagerInstance.navigate(route, { drawer: drawerSettings });
           },
           openAsModal: (route, modalSettings = {}) => {
-            linkManagerInstance.navigate(route, {modal: modalSettings})
+            linkManagerInstance.navigate(route, { modal: modalSettings });
           },
           openAsSplitView: (route, splitViewSettings = {}) => {
-            linkManagerInstance.navigate(route, {splitView: splitViewSettings})
+            linkManagerInstance.navigate(route, { splitView: splitViewSettings });
           },
-          goBack: (goBackContext) => {
+          goBack: goBackContext => {
             this.dispatchLuigiEvent(Events.GO_BACK_REQUEST, goBackContext);
           },
           hasBack: () => {
             return false;
-          },
+          }
         };
         return linkManagerInstance;
       },
@@ -152,18 +158,24 @@ export class WebComponentService {
           showAlert: alertSettings => {
             this.dispatchLuigiEvent(Events.ALERT_REQUEST, alertSettings);
           },
-          showConfirmationModal: (settings) => {
+          showConfirmationModal: settings => {
             return new Promise((resolve, reject) => {
-              this.containerService.dispatch(Events.SHOW_CONFIRMATION_MODAL_REQUEST, this.thisComponent, settings, (data) => {
-                if (data) {
-                  resolve(data);
-                } else {
-                  reject(new Error('No data'));
-                }
-              }, 'callback');
+              this.containerService.dispatch(
+                Events.SHOW_CONFIRMATION_MODAL_REQUEST,
+                this.thisComponent,
+                settings,
+                data => {
+                  if (data) {
+                    resolve(data);
+                  } else {
+                    reject(new Error('No data'));
+                  }
+                },
+                'callback'
+              );
             });
           },
-          getCurrentTheme: () : string | undefined  => {
+          getCurrentTheme: (): string | undefined => {
             return this.thisComponent.theme;
           },
           closeUserSettings: () => {
@@ -172,7 +184,7 @@ export class WebComponentService {
           openUserSettings: () => {
             this.dispatchLuigiEvent(Events.OPEN_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },
-          collapseLeftSideNav:() => {
+          collapseLeftSideNav: () => {
             this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
           },
           getDirtyStatus: () => {
@@ -181,18 +193,18 @@ export class WebComponentService {
           getDocumentTitle: () => {
             return this.thisComponent.documentTitle;
           },
-          setDocumentTitle: (title) => {
+          setDocumentTitle: title => {
             this.dispatchLuigiEvent(Events.SET_DOCUMENT_TITLE_REQUEST, title);
           },
-          removeBackdrop:() => {
+          removeBackdrop: () => {
             this.dispatchLuigiEvent(Events.REMOVE_BACKDROP_REQUEST, {});
           },
-          hideAppLoadingIndicator:() => {
+          hideAppLoadingIndicator: () => {
             this.dispatchLuigiEvent(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
-          },
+          }
         };
       },
-      getCurrentLocale: () : string | undefined =>  {
+      getCurrentLocale: (): string | undefined => {
         return this.thisComponent.locale;
       },
       getActiveFeatureToggles: (): string[] => {
@@ -222,12 +234,12 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
       },
-      getNodeParams: (shouldDesanitise: boolean): Object  => {
+      getNodeParams: (shouldDesanitise: boolean): Object => {
         if (isCompoundChild) {
           return {};
         }
         if (shouldDesanitise) {
-          return deSanitizeParamsMap(this.thisComponent.nodeParams)
+          return deSanitizeParamsMap(this.thisComponent.nodeParams);
         }
         return this.thisComponent.nodeParams || {};
       },
@@ -237,7 +249,7 @@ export class WebComponentService {
         }
         this.dispatchLuigiEvent(Events.SET_ANCHOR_LINK_REQUEST, anchor);
       },
-      getAnchor: (): string  => {
+      getAnchor: (): string => {
         return this.thisComponent.anchor || '';
       },
       getCoreSearchParams: (): Object => {
@@ -246,13 +258,13 @@ export class WebComponentService {
       getPathParams: (): Object => {
         return this.thisComponent.pathParams || {};
       },
-      getClientPermissions: (): Object  => {
+      getClientPermissions: (): Object => {
         return this.thisComponent.clientPermissions || {};
       },
       getUserSettings: (): Object => {
         return this.thisComponent.userSettings || {};
       },
-      setViewGroupData: (data) => {
+      setViewGroupData: data => {
         this.dispatchLuigiEvent(Events.SET_VIEW_GROUP_DATA_REQUEST, data);
       }
     };
@@ -271,7 +283,15 @@ export class WebComponentService {
    * @param nodeId refers to an attribute of the web component to be identified from the rest
    * @param isCompoundChild defines if rendered mf is a compound child or not
    */
-  initWC(wc: HTMLElement | any, wc_id, eventBusElement, viewUrl: string, ctx, nodeId: string, isCompoundChild?: boolean) {
+  initWC(
+    wc: HTMLElement | any,
+    wc_id,
+    eventBusElement,
+    viewUrl: string,
+    ctx,
+    nodeId: string,
+    isCompoundChild?: boolean
+  ) {
     const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc, isCompoundChild);
 
     if (wc.__postProcess) {
@@ -368,7 +388,7 @@ export class WebComponentService {
           // @ts-ignore
           window.Luigi._registerWebcomponent = (src, element) => {
             this.containerService.getContainerManager()._registerWebcomponent(src, element);
-          }
+          };
         }
       }
       const scriptTag = document.createElement('script');

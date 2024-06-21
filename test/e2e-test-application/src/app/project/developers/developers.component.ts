@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { addInitListener, removeInitListener } from '@luigi-project/client';
-import { LuigiContextService } from '@luigi-project/client-support-angular'
+import { LuigiContextService } from '@luigi-project/client-support-angular';
 @Component({
   selector: 'app-developers',
   templateUrl: './developers.component.html',
@@ -11,7 +11,7 @@ export class DevelopersComponent implements OnInit, OnDestroy {
   contextAsync;
   visitors = 0;
 
-  constructor(private cdr: ChangeDetectorRef, private luigiContextService: LuigiContextService) { }
+  constructor(private cdr: ChangeDetectorRef, private luigiContextService: LuigiContextService) {}
 
   ngOnInit() {
     this.initListener = addInitListener((context, origin) => {
