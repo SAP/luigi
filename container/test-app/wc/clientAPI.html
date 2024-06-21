@@ -125,7 +125,9 @@
 
       // update container context
       document.querySelector('#luigi-update-context').addEventListener('click', () => {
-        document.querySelector('[data-test-id="luigi-client-api-test-01"]').updateContext({ newContextData: 'some data' });
+        document
+          .querySelector('[data-test-id="luigi-client-api-test-01"]')
+          .updateContext({ newContextData: 'some data' });
       });
     </script>
   </body>
