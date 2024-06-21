@@ -35,10 +35,17 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API updateContext', () => {
       cy.on('window:alert', stub);
 
+      cy.wait(500);
       cy.get('#luigi-update-context')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('compound.getContext={"newContextData":"some data"}');
+          cy.get(container)
+            .shadow()
+            .contains('updateContext')
+            .click()
+            .then(() => {
+              expect(stub.getCall(0)).to.be.calledWith('compoundWC.ctx={"newContextData":"some data"}');
+            });
         });
     });
   });
