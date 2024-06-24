@@ -48,7 +48,7 @@
       role="tree"
       aria-roledescription="Navigation List Tree - Parent Items"
       tabindex="-1"
-      navGroupId="{navGroup.uid}"
+      navGroupId={navGroup.uid}
     >
       <slot />
     </ul>
