@@ -304,7 +304,7 @@
               title: $getTranslation(entry[1].metaInfo.label),
               groupEntry: entry,
               uid: catId,
-              entries: [(isGroup ? ['undefined', entry[1]] : entry)]
+              entries: [isGroup ? ['undefined', entry[1]] : entry]
             };
             converted.push(categoryById[catId]);
           }
