@@ -12,8 +12,7 @@
 {#if navGroup.isSingleEntry}
   <slot />
 {:else}
-  <li class="fd-navigation__list-item fd-navigation__list-item--separator" role="presentation" aria-hidden="true">
-  </li>
+  <li class="fd-navigation__list-item fd-navigation__list-item--separator" role="presentation" aria-hidden="true" />
   <li class="fd-navigation__list-item" aria-hidden="true">
     <div
       class="fd-navigation__item fd-navigation__item--group"
@@ -53,8 +52,7 @@
       <slot />
     </ul>
   </li>
-  <li class="fd-navigation__list-item fd-navigation__list-item--separator" role="presentation" aria-hidden="true">
-  </li>
+  <li class="fd-navigation__list-item fd-navigation__list-item--separator" role="presentation" aria-hidden="true" />
 {/if}
 
 <style lang="scss">
