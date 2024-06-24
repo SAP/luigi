@@ -62,4 +62,8 @@
     -ms-user-select: none;
     user-select: none;
   }
+
+  :global(.fd-navigation--snapped) .fd-navigation__list--parent-items {
+    --fdNavigation_Item_Group_Display: flex;
+  }
 </style>
