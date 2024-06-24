@@ -298,12 +298,13 @@
             subCatEntries.push(entry);
           } else {
             // supercat
+            const isGroup = entry[1].metaInfo.isGroup;
             categoryById[catId] = {
-              isSingleEntry: true,
+              isSingleEntry: !isGroup,
               title: $getTranslation(entry[1].metaInfo.label),
               groupEntry: entry,
               uid: catId,
-              entries: [entry]
+              entries: [(isGroup ? ['undefined', entry[1]] : entry)]
             };
             converted.push(categoryById[catId]);
           }
@@ -1539,7 +1540,7 @@
     }
 
     .fd-navigation__container--top > .fd-navigation__list {
-      margin-top: 0.125rem;
+      padding-top: 0.125rem;
     }
   }
   .fd-nested-list .fd-nested-list__title.badge-align-right,
