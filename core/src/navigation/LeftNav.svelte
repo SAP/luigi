@@ -220,7 +220,11 @@
       const navList = btpNavTopCnt.querySelector('.fd-navigation__list');
       const spacer = btpNavTopCnt.querySelector('.fd-navigation__list > .lui-spacer');
       moreEntries?.forEach(item => {
-        navList.insertBefore(item, spacer);
+        if (item.navGroupId) {
+          navList.querySelector(`[navGroupId="${item.navGroupId}"]`).appendChild(item);
+        } else {
+          navList.insertBefore(item, spacer);
+        }
       });
       btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'none';
     }
@@ -235,6 +239,7 @@
       btpNavTopCnt.querySelector('.fd-navigation__list > .fd-navigation__list-item--overflow').style.display = 'flex';
       for (let i = entries.length - 1; i > 0; i--) {
         lastNode = entries[i - 1];
+        entries[i].navGroupId = entries[i].parentNode.getAttribute('navGroupId');
         moreUL.insertBefore(entries[i], moreUL.firstChild);
         if (spacer.clientHeight > 0) {
           break;
@@ -297,6 +302,7 @@
               isSingleEntry: true,
               title: $getTranslation(entry[1].metaInfo.label),
               groupEntry: entry,
+              uid: catId,
               entries: [entry]
             };
             converted.push(categoryById[catId]);
