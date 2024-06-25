@@ -29,8 +29,15 @@
         client-permissions='{"permission": "testPermission"}'
         user-settings='{"language":"it", "date":""}'
         anchor="testAnchorCompound"
-        defer-init="false"
+        defer-init="true"
         webcomponent="true"
+      ></luigi-compound-container>
+      <button id="init-button">container.init()</button>
+      <luigi-compound-container
+        id="defer-init-test"
+        webcomponent="true"
+        context='{"content":" -- defer-init test --"}'
+        defer-init="true"
       ></luigi-compound-container>
 
       <!-- Used for testing dynamic compound container creation -->
@@ -204,6 +211,31 @@
       compoundContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
         console.log('Set View Group Data Request received', event.detail, event);
       });
+
+      const deferInitContainer = document.getElementById('defer-init-test');
+      const button = document.getElementById("init-button");
+      button.addEventListener("click", function() {
+        deferInitContainer.init();
+      });
+      deferInitContainer.compoundConfig = {
+        renderer: {
+          use: 'grid',
+          config: {
+            columns: '1fr 1fr',
+            gap: '20px'
+          }
+        },
+        children: [
+          {
+            viewUrl: './compound/myCompoundWebComponent1.js'
+          },
+          {
+            viewUrl: './compound/myCompoundWebComponent2.js'
+          },
+        ]
+      };
     </script>
+
+    
   </body>
 </html>

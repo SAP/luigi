@@ -10,16 +10,24 @@
 
   <body>
     <luigi-compound-container
-      id="compound1"
+      id="compound-container"
       webcomponent="true"
       context='{"content":" -- some content --"}'
+    ></luigi-compound-container>
+    <button id="init-button">container.init()</button>
+    <luigi-compound-container
+      id="defer-init-test"
+      webcomponent="true"
+      context='{"content":" -- defer-init test --"}'
+      defer-init="true"
     ></luigi-compound-container>
   </body>
 
   <script type="module">
     // simple Luigi Container package bundle import
     import '../bundle.js';
-    document.getElementById('compound1').compoundConfig = {
+    const container = document.getElementById('compound-container');
+    container.compoundConfig = {
       renderer: {
         use: 'grid',
         config: {
@@ -40,6 +48,28 @@
         {
           viewUrl: './compound-container/myCompoundWebComponent4.js'
         }
+      ]
+    };
+    const deferInitContainer = document.getElementById('defer-init-test');
+    const button = document.getElementById("init-button");
+    button.addEventListener("click", function() {
+      deferInitContainer.init();
+    });
+    deferInitContainer.compoundConfig = {
+      renderer: {
+        use: 'grid',
+        config: {
+          columns: '1fr 1fr',
+          gap: '20px'
+        }
+      },
+      children: [
+        {
+          viewUrl: './compound-container/myCompoundWebComponent1.js'
+        },
+        {
+          viewUrl: './compound-container/myCompoundWebComponent2.js'
+        },
       ]
     };
   </script>
