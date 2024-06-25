@@ -27,6 +27,17 @@
         dirty-status="true"
         document-title="Perfect Title"
       ></luigi-container>
+      <!-- Luigi Container to test defer-init flag-->
+      <button id="init-button">container.init()</button>
+      <luigi-container
+        id="defer-init-test"
+        data-test-id="defer-init-container"
+        viewURL="./wc/myWebComponent.js"
+        webcomponent="true"
+        context='{"content":" -- defer-init test --"}'
+        defer-init="true"
+      ></luigi-container>
+
 
       <!-- Used for testing dynamic compound container creation -->
       <div class="content"></div>
@@ -40,7 +51,13 @@
     </div>
 
     <script type="module">
+      import "../bundle.js"
       import MFEventID from '../bundle.js';
+      const deferInitContainer = document.getElementById("defer-init-test");
+      const button = document.getElementById("init-button");
+      button.addEventListener("click", function() {
+        deferInitContainer.init();
+      });
 
       [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
         luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
