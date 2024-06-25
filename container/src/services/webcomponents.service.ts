@@ -92,11 +92,12 @@ export class WebComponentService {
         let fromContext = null;
         let fromClosestContext = false;
         let fromVirtualTreeRoot = false;
+        let fromParent = false;
         let nodeParams = {};
 
         const linkManagerInstance = {
           navigate: (route , settings = {})=> {
-            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, nodeParams, ...settings };
+            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, fromParent, nodeParams, ...settings };
             this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route , ...options});
           },
           fromClosestContext: () => {
@@ -110,6 +111,22 @@ export class WebComponentService {
           fromVirtualTreeRoot: () => {
             fromVirtualTreeRoot = true;
             return linkManagerInstance;
+          },
+          fromParent:()=>{
+            fromParent = true;
+            return linkManagerInstance;
+          },
+          getCurrentRoute:()=>{
+            const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, fromParent, nodeParams };
+            return new Promise((resolve, reject) => {
+              this.containerService.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, this.thisComponent,{ ...options }, (route)=>{
+                if(route){
+                  resolve(route);
+                }else{
+                  reject('No current route received.');
+                }
+              }, 'callback');
+            });
           },
           withParams: (params) => {
             nodeParams = params;

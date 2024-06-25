@@ -84,6 +84,7 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testanchor"');
         });
     });
+    
     it('defer-init flag for webcomponent container', () => {
       // the initialized webcomponent has id="defer-init-flag"
       cy.get('#defer-init-flag').should('not.exist');
@@ -91,6 +92,18 @@ describe('Web Container Test', () => {
       cy.get('#init-button').click();
   
       cy.get('#defer-init-flag').should('exist');
+    });
+    
+    it('LuigiClient API getCurrentRoute for LuigiContainer', () => {
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+      cy.get('[data-test-id="luigi-client-api-test-01"]')
+        .shadow()
+        .contains('getCurrentRoute')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('current route: /wc/clientAPI.html');
+        });
     });
   });
 });
