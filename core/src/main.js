@@ -125,6 +125,8 @@ const configReadyCallback = () => {
           return app.getDirtyStatus();
         };
 
+        //adding App.svelte to a internal Luigi variable
+        Luigi._app = app.$$;
         resolve();
       });
     });
