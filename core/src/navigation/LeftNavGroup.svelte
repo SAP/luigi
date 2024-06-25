@@ -64,6 +64,6 @@
   }
 
   :global(.fd-navigation--snapped) .fd-navigation__list--parent-items {
-    --fdNavigation_Item_Group_Display: flex;
+    --fdNavigation_List_Parent_Items_Display: flex;
   }
 </style>
