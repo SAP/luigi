@@ -1,11 +1,12 @@
 <script>
-  import { KEYCODE_ENTER } from '../utilities/keycode';
+  import { NavigationHelpers } from '../utilities/helpers';
 
   export let navGroup;
   export let expanded = true;
 
   function toggleExpanded() {
     expanded = !expanded;
+    NavigationHelpers.storeExpandedState(navGroup.uid, expanded);
   }
 </script>
 
