@@ -1589,6 +1589,7 @@
   }
 
   .fd-navigation--snapped .lui-moreItems .fd-popover {
+    width: 100%;
     --lui_popover_offset: 0px;
     .fd-popover__body--after {
       .fd-navigation__item--title {
