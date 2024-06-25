@@ -1,7 +1,9 @@
 describe('Iframe Container Test', () => {
-  it('navigation sent', () => {
+  beforeEach(() => {
     cy.visit('http://localhost:8080/iframe/iframeContainer.html');
+  });
 
+  it('navigation sent', () => {
     cy.get('[data-test-id="iframe-based-container-test"]')
       .shadow()
       .get('iframe')
@@ -21,8 +23,6 @@ describe('Iframe Container Test', () => {
     const stub = cy.stub();
     cy.on('window:alert', stub);
 
-    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
-
     cy.get('[data-test-id="iframe-based-container-test"]')
       .shadow()
       .get('iframe')
@@ -38,5 +38,27 @@ describe('Iframe Container Test', () => {
             );
           });
       });
+  });
+  
+  it('defer-init flag for iframe container', () => {
+    cy.get('#defer-init-test')
+    .shadow()
+    .get('iframe')
+    .then(iframe => {
+      const $body = iframe.contents().find('body');
+      cy.wrap($body)
+      .contains('defer-init test for iframes').should('not.exist');
+    });
+    // click button that calls container.init()
+    cy.get('#init-button').click();
+
+    cy.get('#defer-init-test')
+    .shadow()
+    .get('iframe')
+    .then(iframe => {
+      const $body = iframe.contents().find('body');
+      cy.wrap($body)
+      .contains('defer-init test for iframes').should('exist');
+    });
   });
 });

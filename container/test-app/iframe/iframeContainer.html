@@ -17,12 +17,23 @@
         data-test-id="iframe-based-container-test"
         viewURL="./microfrontend.html"
         context='{"title": "Projects", "content":" "}'
-      >
-      </luigi-container>
-    </div>
+      ></luigi-container>
+      <!-- Luigi Container to test defer-init flag-->
+      <button id="init-button">container.init()</button>
+      <luigi-container
+        id="defer-init-test"
+        data-test-id="defer-init-container"
+        viewURL="./microfrontend-defer-init.html"
+        defer-init="true"
+      ></luigi-container>
 
     <script type="module">
       import Events from '../bundle.js';
+      const deferInitContainer = document.getElementById("defer-init-test");
+      const button = document.getElementById("init-button");
+      button.addEventListener("click", function() {
+        deferInitContainer.init();
+      });
 
       const luigiContainer = document.querySelector('luigi-container');
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
