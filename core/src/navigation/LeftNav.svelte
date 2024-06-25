@@ -625,7 +625,10 @@
       <div class="fd-navigation__container fd-navigation__container--top" bind:this={btpNavTopCnt}>
         <ul class="fd-navigation__list" role="tree" tabindex="-1">
           {#each sortedVerticalNavGroups as group}
-            <LeftNavGroup navGroup={group} expanded={group.groupEntry && isExpanded(group.groupEntry[1], expandedCategories)}>
+            <LeftNavGroup
+              navGroup={group}
+              expanded={group.groupEntry && isExpanded(group.groupEntry[1], expandedCategories)}
+            >
               {#each group.entries as [key, nodes], index}
                 {#if key === 'undefined' || key.startsWith(virtualGroupPrefix)}
                   <!-- Single nodes -->
