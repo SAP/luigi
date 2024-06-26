@@ -154,6 +154,7 @@ describe('createClientAPI', () => {
       // assert
       const expectedPayload = { 
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
         link: "/test/route",
@@ -176,6 +177,7 @@ describe('createClientAPI', () => {
       // assert
       const expectedPayload = { 
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
         link: "/test/route",
@@ -201,6 +203,7 @@ describe('createClientAPI', () => {
       // assert
       const expectedPayload = { 
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
         link: "/test/route",
@@ -227,6 +230,7 @@ describe('createClientAPI', () => {
       // assert
       const expectedPayload = { 
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
         link: "/test/route",
@@ -254,6 +258,7 @@ describe('createClientAPI', () => {
       // assert
       const expectedPayload = { 
         fromClosestContext: true,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
         link: "/test/route",
@@ -276,6 +281,7 @@ describe('createClientAPI', () => {
       // assert
       const expectedPayload = { 
         fromClosestContext: false,
+        fromParent: false,
         fromContext: {test: 'data'},
         fromVirtualTreeRoot: false,
         link: "/test/route",
@@ -298,6 +304,7 @@ describe('createClientAPI', () => {
       // assert
       const expectedPayload = { 
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: true,
         link: "/test/route",
@@ -305,6 +312,68 @@ describe('createClientAPI', () => {
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
+
+    it('test linkManager currentRoute', () => {
+ 
+     // Mock and spy on functions
+     service.containerService.dispatch = jest.fn((event, component, options, callback) => {
+      callback('/current/route');
+    });
+  
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      const currentRoutePromise = clientAPI.linkManager().getCurrentRoute();
+  
+      // assert
+      const expectedPayload = { 
+        fromClosestContext: false,
+        fromParent: false,
+        fromContext: null,
+        fromVirtualTreeRoot: false,
+        nodeParams: {}  
+      };
+      return currentRoutePromise.then(result => {
+        expect(service.containerService.dispatch).toHaveBeenCalledWith(
+          Events.GET_CURRENT_ROUTE_REQUEST,
+          service.thisComponent,
+          expectedPayload,
+          expect.any(Function),
+          'callback'
+        );
+        expect(result).toBe('/current/route');
+      });
+    });
+
+    it('test linkManager currentRoute from parent', () => {
+ 
+      // Mock and spy on functions
+      service.containerService.dispatch = jest.fn((event, component, options, callback) => {
+       callback('/route');
+     });
+   
+       // act
+       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+       const currentRoutePromise = clientAPI.linkManager().fromParent().getCurrentRoute();
+   
+       // assert
+       const expectedPayload = { 
+         fromClosestContext: false,
+         fromParent: true,
+         fromContext: null,
+         fromVirtualTreeRoot: false,
+         nodeParams: {}  
+       };
+       return currentRoutePromise.then(result => {
+         expect(service.containerService.dispatch).toHaveBeenCalledWith(
+           Events.GET_CURRENT_ROUTE_REQUEST,
+           service.thisComponent,
+           expectedPayload,
+           expect.any(Function),
+           'callback'
+         );
+         expect(result).toBe('/route');
+       });
+     });
   
     it('test linkManager withParams', () => {
       const route = '/test/route'
@@ -321,6 +390,7 @@ describe('createClientAPI', () => {
       const expectedPayload = { 
         fromClosestContext: false,
         fromContext: null,
+        fromParent: false,
         fromVirtualTreeRoot: false,
         link: "/test/route",
         nodeParams: {params: 'some params'}  
