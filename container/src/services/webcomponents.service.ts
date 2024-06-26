@@ -53,15 +53,7 @@ export class WebComponentService {
         wc.setAttribute('nodeId', nodeId);
       }
 
-      this.initWC(
-        wc,
-        wc_id,
-        wc_container,
-        viewUrl,
-        ctx,
-        nodeId,
-        isCompoundChild
-      );
+      this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId, isCompoundChild);
       wc_container.replaceChild(wc, wcItemPlaceholder);
       if (wc_container._luigi_node) {
         wc_container._luigi_mfe_webcomponent = wc;
@@ -94,13 +86,7 @@ export class WebComponentService {
    * @param isCompoundChild defines if rendered mf is a compound child or not
    * @returns an object with the Luigi Client API
    */
-  createClientAPI(
-    eventBusElement,
-    nodeId: string,
-    wc_id: string,
-    component: HTMLElement,
-    isCompoundChild?: boolean
-  ) {
+  createClientAPI(eventBusElement, nodeId: string, wc_id: string, component: HTMLElement, isCompoundChild?: boolean) {
     return {
       linkManager: () => {
         let fromContext = null;
@@ -234,16 +220,10 @@ export class WebComponentService {
             return this.thisComponent.theme;
           },
           closeUserSettings: () => {
-            this.dispatchLuigiEvent(
-              Events.CLOSE_USER_SETTINGS_REQUEST,
-              this.thisComponent.userSettings
-            );
+            this.dispatchLuigiEvent(Events.CLOSE_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },
           openUserSettings: () => {
-            this.dispatchLuigiEvent(
-              Events.OPEN_USER_SETTINGS_REQUEST,
-              this.thisComponent.userSettings
-            );
+            this.dispatchLuigiEvent(Events.OPEN_USER_SETTINGS_REQUEST, this.thisComponent.userSettings);
           },
           collapseLeftSideNav: () => {
             this.dispatchLuigiEvent(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
@@ -356,18 +336,11 @@ export class WebComponentService {
     nodeId: string,
     isCompoundChild?: boolean
   ) {
-    const clientAPI = this.createClientAPI(
-      eventBusElement,
-      nodeId,
-      wc_id,
-      wc,
-      isCompoundChild
-    );
+    const clientAPI = this.createClientAPI(eventBusElement, nodeId, wc_id, wc, isCompoundChild);
 
     if (wc.__postProcess) {
       const url =
-        new URL(document.baseURI).origin ===
-        new URL(viewUrl, document.baseURI).origin // TODO: check if needed
+        new URL(document.baseURI).origin === new URL(viewUrl, document.baseURI).origin // TODO: check if needed
           ? new URL('./', new URL(viewUrl, document.baseURI))
           : new URL('./', viewUrl);
       wc.__postProcess(ctx, clientAPI, url.origin + url.pathname);
@@ -446,10 +419,7 @@ export class WebComponentService {
     if (this.checkWCUrl(viewUrl)) {
       /** Append reg function to luigi object if not present */
       if (!this.containerService.getContainerManager()._registerWebcomponent) {
-        this.containerService.getContainerManager()._registerWebcomponent = (
-          srcString,
-          el
-        ) => {
+        this.containerService.getContainerManager()._registerWebcomponent = (srcString, el) => {
           window.customElements.define(this.generateWCId(srcString), el);
         };
       }
@@ -461,9 +431,7 @@ export class WebComponentService {
         if (!window.Luigi._registerWebcomponent) {
           // @ts-ignore
           window.Luigi._registerWebcomponent = (src, element) => {
-            this.containerService
-              .getContainerManager()
-              ._registerWebcomponent(src, element);
+            this.containerService.getContainerManager()._registerWebcomponent(src, element);
           };
         }
       }
@@ -542,62 +510,26 @@ export class WebComponentService {
     wc_container._luigi_node = node;
 
     if (window.customElements.get(wc_id)) {
-      this.attachWC(
-        wc_id,
-        wcItemPlaceholder,
-        wc_container,
-        context,
-        i18nViewUrl,
-        nodeId,
-        isCompoundChild
-      );
+      this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
     } else {
       /** Custom import function, if defined */
       if ((window as any).luigiWCFn) {
         (window as any).luigiWCFn(i18nViewUrl, wc_id, wcItemPlaceholder, () => {
-          this.attachWC(
-            wc_id,
-            wcItemPlaceholder,
-            wc_container,
-            context,
-            i18nViewUrl,
-            nodeId,
-            isCompoundChild
-          );
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else if (node.webcomponent && node.webcomponent.selfRegistered) {
         this.includeSelfRegisteredWCFromUrl(node, i18nViewUrl, () => {
-          this.attachWC(
-            wc_id,
-            wcItemPlaceholder,
-            wc_container,
-            context,
-            i18nViewUrl,
-            nodeId,
-            isCompoundChild
-          );
+          this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
         });
       } else {
         this.registerWCFromUrl(i18nViewUrl, wc_id)
           .then(() => {
-            this.attachWC(
-              wc_id,
-              wcItemPlaceholder,
-              wc_container,
-              context,
-              i18nViewUrl,
-              nodeId,
-              isCompoundChild
-            );
+            this.attachWC(wc_id, wcItemPlaceholder, wc_container, context, i18nViewUrl, nodeId, isCompoundChild);
           })
           .catch(error => {
             console.warn('ERROR =>', error);
             // dispatch an error event to be handled core side
-            this.containerService.dispatch(
-              Events.RUNTIME_ERROR_HANDLING_REQUEST,
-              this.thisComponent,
-              error
-            );
+            this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
           });
       }
     }
@@ -609,27 +541,17 @@ export class WebComponentService {
    *
    * @param {DefaultCompoundRenderer} renderer
    */
-  createCompoundContainerAsync(
-    renderer: any,
-    ctx: any,
-    navNode: any
-  ): Promise<HTMLElement> {
+  createCompoundContainerAsync(renderer: any, ctx: any, navNode: any): Promise<HTMLElement> {
     return new Promise((resolve, reject) => {
       if (renderer.viewUrl) {
         try {
-          const wc_id =
-            navNode?.webcomponent?.tagName ||
-            this.generateWCId(renderer.viewUrl);
+          const wc_id = navNode?.webcomponent?.tagName || this.generateWCId(renderer.viewUrl);
           if (navNode.webcomponent && navNode.webcomponent.selfRegistered) {
-            this.includeSelfRegisteredWCFromUrl(
-              navNode,
-              renderer.viewUrl,
-              () => {
-                const wc = document.createElement(wc_id);
-                this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
-                resolve(wc);
-              }
-            );
+            this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
+              const wc = document.createElement(wc_id);
+              this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
+              resolve(wc);
+            });
           } else {
             this.registerWCFromUrl(renderer.viewUrl, wc_id)
               .then(() => {
@@ -640,11 +562,7 @@ export class WebComponentService {
               .catch(error => {
                 console.warn('Error: ', error);
                 // dispatch an error event to be handled core side
-                this.containerService.dispatch(
-                  Events.RUNTIME_ERROR_HANDLING_REQUEST,
-                  this.thisComponent,
-                  error
-                );
+                this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
               });
           }
         } catch (error) {
@@ -695,16 +613,11 @@ export class WebComponentService {
 
               listeners.forEach(listenerInfo => {
                 const target =
-                  listenerInfo.wcElement ||
-                  compoundCnt.querySelector(
-                    '[nodeId=' + listenerInfo.wcElementId + ']'
-                  );
+                  listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');
                 if (target) {
                   target.dispatchEvent(
                     new CustomEvent(listenerInfo.action, {
-                      detail: listenerInfo.converter
-                        ? listenerInfo.converter(event.detail)
-                        : event.detail
+                      detail: listenerInfo.converter ? listenerInfo.converter(event.detail) : event.detail
                     })
                   );
                 } else {
@@ -715,42 +628,24 @@ export class WebComponentService {
           };
           navNode.compound?.children.forEach((wc, index) => {
             const ctx = { ...context, ...wc.context };
-            const compoundItemCnt = renderer.createCompoundItemContainer(
-              wc.layoutConfig
-            );
+            const compoundItemCnt = renderer.createCompoundItemContainer(wc.layoutConfig);
 
             compoundItemCnt.eventBus = (compoundCnt as any).eventBus;
             renderer.attachCompoundItem(compoundCnt, compoundItemCnt);
 
             const nodeId = wc.id || 'gen_' + index;
-            this.renderWebComponent(
-              wc.viewUrl,
-              compoundItemCnt,
-              ctx,
-              wc,
-              nodeId,
-              true
-            );
+            this.renderWebComponent(wc.viewUrl, compoundItemCnt, ctx, wc, nodeId, true);
             registerEventListeners(ebListeners, wc, nodeId);
           });
           wc_container.appendChild(compoundCnt);
           // listener for nesting wc
-          registerEventListeners(
-            ebListeners,
-            navNode.compound,
-            '_root',
-            compoundCnt
-          );
+          registerEventListeners(ebListeners, navNode.compound, '_root', compoundCnt);
           resolve(compoundCnt);
         })
         .catch(error => {
           // dispatch an error event to be handled core sid
           console.warn('Error: ', error);
-          this.containerService.dispatch(
-            Events.RUNTIME_ERROR_HANDLING_REQUEST,
-            this.thisComponent,
-            error
-          );
+          this.containerService.dispatch(Events.RUNTIME_ERROR_HANDLING_REQUEST, this.thisComponent, error);
         });
     });
   }
