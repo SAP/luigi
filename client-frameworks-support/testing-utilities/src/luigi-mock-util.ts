@@ -26,9 +26,7 @@ export class LuigiMockUtil {
     const getTextNodeValues = (): any[] => {
       const debugCtn = window.getElementById('luigi-debug-vis-cnt');
 
-      return Array.from(debugCtn?.childNodes || []).map(
-        (item: any) => item.textContent || ''
-      );
+      return Array.from(debugCtn?.childNodes || []).map((item: any) => item.textContent || '');
     };
     let textElements: string[];
 
@@ -68,9 +66,7 @@ export class LuigiMockUtil {
    */
   mockContext = (mockContext: Record<string, any>): void => {
     const window = this.getGlobalThis();
-    const postMessageToLuigi = (
-      context: Record<string, any>
-    ): Record<string, any> => {
+    const postMessageToLuigi = (context: Record<string, any>): Record<string, any> => {
       window.postMessage({ msg: 'luigi.get-context', context }, '*');
 
       return { ...context, windowMessage: 'isPosted' };
@@ -121,9 +117,7 @@ export class LuigiMockUtil {
      * @param {boolean} exists - Boolean indicating whether the path exists.
      * @returns {Object} - Object indicating session storage item.
      */
-    const setPathExistsMockData = (
-      context: Record<string, boolean | string>
-    ): Record<string, any> => {
+    const setPathExistsMockData = (context: Record<string, boolean | string>): Record<string, any> => {
       window.sessionStorage.clear();
 
       const pathExistsMockData: Record<string, any> = {
@@ -132,10 +126,7 @@ export class LuigiMockUtil {
         }
       };
 
-      window.sessionStorage.setItem(
-        'luigiMockData',
-        JSON.stringify(pathExistsMockData)
-      );
+      window.sessionStorage.setItem('luigiMockData', JSON.stringify(pathExistsMockData));
 
       return { ...pathExistsMockData, sessionItem: 'isStored' };
     };
