@@ -17,7 +17,9 @@ export class GlobalSearchHelperClass {
   getCustomRenderer() {
     if (!this.search.searchProvider) return;
     this.isCustomSearchRenderer = GenericHelpers.isFunction(this.search.searchProvider.customSearchResultRenderer);
-    this.isCustomSearchResultItemRenderer = GenericHelpers.isFunction(this.search.searchProvider.customSearchResultItemRenderer);
+    this.isCustomSearchResultItemRenderer = GenericHelpers.isFunction(
+      this.search.searchProvider.customSearchResultItemRenderer
+    );
   }
 
   handleVisibilityGlobalSearch() {
@@ -62,7 +64,7 @@ export class GlobalSearchHelperClass {
     return '';
   }
 
-  onKeyUp({ keyCode } ) {
+  onKeyUp({ keyCode }) {
     if (this.search && this.search.searchProvider) {
       if (GenericHelpers.isFunction(this.search.searchProvider.onEnter) && keyCode === KEYCODE_ENTER) {
         this.search.searchProvider.onEnter();
@@ -168,14 +170,18 @@ export class GlobalSearchHelperClass {
     else {
       displaySearchResult = false;
     }
-   
+
     this.dispatch('toggleSearch', {
       isSearchFieldVisible,
       inputElem,
       luigiCustomSearchRenderer__slot
     });
 
-    if (this.search && this.search.searchProvider && GenericHelpers.isFunction(this.search.searchProvider.toggleSearch)) {
+    if (
+      this.search &&
+      this.search.searchProvider &&
+      GenericHelpers.isFunction(this.search.searchProvider.toggleSearch)
+    ) {
       const fieldVisible = isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
       this.search.searchProvider.toggleSearch(inputElem, fieldVisible);
     }

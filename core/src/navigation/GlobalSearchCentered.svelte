@@ -22,7 +22,6 @@
   let getTranslation = getContext('getTranslation');
   let globalSearchHelper;
 
-
   onMount(async () => {
     search = globalSearchConfig;
     cancelBtn = search.globalSearchCenteredCancelButton ? search.globalSearchCenteredCancelButton : cancelBtn;
@@ -76,7 +75,7 @@
   }
 
   function onSearchResultItemSelected(searchResultItem) {
-    globalSearchHelper.onSearchResultItemSelected(searchResultItem)
+    globalSearchHelper.onSearchResultItemSelected(searchResultItem);
   }
 
   function handleKeydown(result, event) {
@@ -84,11 +83,16 @@
   }
 
   export function onActionClick(searchResultItem) {
-    globalSearchHelper.onActionClick(searchResultItem)
+    globalSearchHelper.onActionClick(searchResultItem);
   }
 
   export function toggleSearch() {
-    globalSearchHelper.toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, luigiCustomSearchRenderer__slot);
+    globalSearchHelper.toggleSearch(
+      isSearchFieldVisible,
+      displaySearchResult,
+      inputElem,
+      luigiCustomSearchRenderer__slot
+    );
   }
 </script>
 

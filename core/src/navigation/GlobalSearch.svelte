@@ -48,7 +48,12 @@
   }
 
   export function toggleSearch() {
-    globalSearchHelper.toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, luigiCustomSearchRenderer__slot);
+    globalSearchHelper.toggleSearch(
+      isSearchFieldVisible,
+      displaySearchResult,
+      inputElem,
+      luigiCustomSearchRenderer__slot
+    );
   }
 </script>
 
