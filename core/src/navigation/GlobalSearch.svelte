@@ -1,9 +1,6 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount } from 'svelte';
-  import { LuigiI18N } from '../core-api';
-  import { GenericHelpers } from '../utilities/helpers';
-  import { Routing } from '../services/routing';
-  import { KEYCODE_ARROW_UP, KEYCODE_ARROW_DOWN, KEYCODE_ENTER, KEYCODE_ESC } from '../utilities/keycode.js';
+  import { GlobalSearchHelperClass } from '../utilities/helpers/global-search-helpers';
   export let isSearchFieldVisible;
   export let searchResult = [];
   export let displaySearchResult;
@@ -11,180 +8,47 @@
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
   export let globalSearchConfig;
+
   const dispatch = createEventDispatcher();
   const searchApiObj = {
     fireItemSelected: item => {
-      search.searchProvider.onSearchResultItemSelected(item);
+      globalSearchHelper.onSearchResultItemSelected(item);
     }
   };
   let search = {};
-  let isCustomSearchRenderer;
-  let isCustomSearchResultItemRenderer;
+  let globalSearchHelper;
 
   onMount(async () => {
-    search = globalSearchConfig;
-    let inputElement = inputElem;
-    const placeHolder = getSearchPlaceholder(search.searchProvider);
-    if (placeHolder) {
-      inputElement.placeholder = placeHolder;
-    }
-    getCustomRenderer();
+    globalSearchHelper.prepareSearchPlaceholder(inputElem);
+    globalSearchHelper.getCustomRenderer();
   });
 
   beforeUpdate(() => {
     search = globalSearchConfig;
-    getCustomRenderer();
+    if (!globalSearchHelper) {
+      globalSearchHelper = new GlobalSearchHelperClass(search, dispatch);
+    }
+    globalSearchHelper.getCustomRenderer();
   });
 
-  function getCustomRenderer() {
-    if (!search.searchProvider) return;
-    isCustomSearchRenderer = GenericHelpers.isFunction(search.searchProvider.customSearchResultRenderer);
-    isCustomSearchResultItemRenderer = GenericHelpers.isFunction(search.searchProvider.customSearchResultItemRenderer);
-  }
-
-  function getSearchPlaceholder(searchProvider) {
-    if (!searchProvider || !searchProvider.inputPlaceholder) {
-      return undefined;
-    }
-    const currentLocale = LuigiI18N.getCurrentLocale();
-    if (GenericHelpers.isFunction(searchProvider.inputPlaceholder)) {
-      return searchProvider.inputPlaceholder();
-    }
-    if (typeof searchProvider.inputPlaceholder === 'string') {
-      const translated = LuigiI18N.getTranslation(searchProvider.inputPlaceholder);
-      if (!!translated && translated.trim().length > 0) {
-        return translated;
-      }
-      return searchProvider.inputPlaceholder;
-    }
-    if (typeof searchProvider.inputPlaceholder === 'object') {
-      return searchProvider.inputPlaceholder[currentLocale];
-    }
-  }
-
-  function renderCustomSearchItem(item, slotContainer, index) {
-    setTimeout(() => {
-      search.searchProvider.customSearchResultItemRenderer(item, slotContainer.children[index], searchApiObj);
-    });
-    return '';
-  }
-
   function closeSearchResult() {
-    dispatch('closeSearchResult');
+    globalSearchHelper.closeSearchResult();
   }
 
-  function onKeyUp({ keyCode }) {
-    if (search && search.searchProvider) {
-      if (GenericHelpers.isFunction(search.searchProvider.onEnter) && keyCode === KEYCODE_ENTER) {
-        search.searchProvider.onEnter();
-      } else if (GenericHelpers.isFunction(search.searchProvider.onEscape) && keyCode === KEYCODE_ESC) {
-        search.searchProvider.onEscape();
-      } else if (keyCode === KEYCODE_ARROW_DOWN) {
-        if (displaySearchResult) {
-          document.querySelector('.luigi-search-result-item__0').childNodes[0].setAttribute('aria-selected', 'true');
-          document.querySelector('.luigi-search-result-item__0').focus();
-        }
-      } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
-        search.searchProvider.onInput();
-      }
-    } else {
-      console.warn('GlobalSearch is not available.');
-    }
+  function onKeyUp(event) {
+    globalSearchHelper.onKeyUp(event);
   }
 
-  function calcSearchResultItemSelected(direction) {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
-    if (renderedSearchResultItems) {
-      for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let { childNodes, nextSibling, previousSibling } = renderedSearchResultItems[index];
-        let nodeSibling;
-        if (childNodes[0].getAttribute('aria-selected') === 'true') {
-          if (direction === KEYCODE_ARROW_DOWN) {
-            nodeSibling = nextSibling !== null ? nextSibling : renderedSearchResultItems[0];
-          }
-          if (direction === KEYCODE_ARROW_UP) {
-            nodeSibling =
-              previousSibling !== null
-                ? previousSibling
-                : renderedSearchResultItems[renderedSearchResultItems.length - 1];
-          }
-          childNodes[0].setAttribute('aria-selected', 'false');
-          nodeSibling.childNodes[0].setAttribute('aria-selected', 'true');
-          nodeSibling.focus();
-          break;
-        }
-      }
-    }
-  }
-
-  function clearAriaSelected() {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
-    if (renderedSearchResultItems) {
-      for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let element = renderedSearchResultItems[index];
-        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
-          element.childNodes[0].setAttribute('aria-selected', 'false');
-        }
-      }
-    }
-  }
-
-  function onSearchResultItemSelected(searchResultItem) {
-    if (search && GenericHelpers.isFunction(search.searchProvider.onSearchResultItemSelected)) {
-      search.searchProvider.onSearchResultItemSelected(searchResultItem);
-    } else if (GenericHelpers.isFunction(search.searchProvider.onEscape) && event.keyCode === KEYCODE_ESC) {
-      search.searchProvider.onEscape();
-    }
-  }
-
-  function handleKeydown(result, { keyCode }) {
-    if (keyCode === KEYCODE_ENTER) {
-      search.searchProvider.onSearchResultItemSelected(result);
-    }
-    if (keyCode === KEYCODE_ARROW_UP || keyCode === KEYCODE_ARROW_DOWN) {
-      calcSearchResultItemSelected(keyCode);
-    } else if (GenericHelpers.isFunction(search.searchProvider.onEscape) && keyCode === KEYCODE_ESC) {
-      clearAriaSelected();
-      setTimeout(() => {
-        inputElem.focus();
-      });
-      search.searchProvider.onEscape();
-    }
+  function handleKeydown(result, event) {
+    globalSearchHelper.handleKeydown(result, event, luigiCustomSearchItemRenderer__slotContainer);
   }
 
   export function onActionClick(searchResultItem) {
-    let node = searchResultItem.pathObject;
-    if (node.externalLink) {
-      Routing.navigateToLink(node);
-    } else {
-      dispatch('handleSearchNavigation', { node });
-    }
-  }
-
-  function setFocusOnGlobalSearchFieldDesktop() {
-    if (inputElem) {
-      inputElem.focus();
-    }
+    globalSearchHelper.onActionClick(searchResultItem);
   }
 
   export function toggleSearch() {
-    if (!isSearchFieldVisible)
-      setTimeout(() => {
-        setFocusOnGlobalSearchFieldDesktop();
-      });
-    else {
-      displaySearchResult = false;
-    }
-    dispatch('toggleSearch', {
-      isSearchFieldVisible,
-      inputElem,
-      luigiCustomSearchRenderer__slot
-    });
-
-    if (search && search.searchProvider && GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
-      const fieldVisible = isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
-      search.searchProvider.toggleSearch(inputElem, fieldVisible);
-    }
+    globalSearchHelper.toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, luigiCustomSearchRenderer__slot);
   }
 </script>
 
@@ -223,7 +87,7 @@
         {/if}
         <div class="fd-shellbar__search-field-helper" />
       </div>
-      {#if !isCustomSearchRenderer}
+      {#if !globalSearchHelper.isCustomSearchRenderer}
         <div
           class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
           aria-hidden={!displaySearchResult}
@@ -235,11 +99,11 @@
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
-                    on:click={event => onSearchResultItemSelected(result, event)}
+                    on:click={event => globalSearchHelper.onSearchResultItemSelected(result, event)}
                     on:keyup={event => handleKeydown(result, event)}
                     tabindex="0"
                   >
-                    {#if !isCustomSearchResultItemRenderer}
+                    {#if !globalSearchHelper.isCustomSearchResultItemRenderer}
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <!-- svelte-ignore a11y-missing-attribute -->
                       <a class="fd-menu__link" on:click|preventDefault={() => {}}>
@@ -249,7 +113,7 @@
                         </div>
                       </a>
                     {:else}
-                      {@html renderCustomSearchItem(result, luigiCustomSearchItemRenderer__slotContainer, index)}
+                      {@html globalSearchHelper.renderCustomSearchItem(result, luigiCustomSearchItemRenderer__slotContainer, index)}
                     {/if}
                   </li>
                 {/each}
