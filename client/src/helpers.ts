@@ -58,11 +58,11 @@ class Helpers {
   /**
    * Registers a post message listener
    * Don't forget to remove the event listener at the end of
-   * your eventFn if you do not need it anymore
+   * your eventFn if you do not need it anymore.
    * @private
    * @param {string} name event name
    * @param {function} eventFn callback function
-   * @returns {number} listener id
+   * @returns {string} listener id
    */
   addEventListener(
     name: string,
