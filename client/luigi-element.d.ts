@@ -1,60 +1,55 @@
 // Type definitions for Luigi Client web components
 
 export declare interface ConfirmationModalSettings {
-  type?: string;
-  header?: string;
   body?: string;
   buttonConfirm?: string | boolean;
   buttonDismiss?: string;
+  header?: string;
+  type?: string;
 }
 
 export declare interface ModalSettings {
-  title?: string;
-  size?: 'fullscreen' | 'l' | 'm' | 's';
-  width?: string;
+  closebtn_data_testid?: string;
   height?: string;
   keepPrevious?: boolean;
-  closebtn_data_testid?: string;
+  size?: 'fullscreen' | 'l' | 'm' | 's';
+  title?: string;
+  width?: string;
 }
 
 export declare interface SplitViewSettings {
-  title?: string;
-  size?: number;
   collapsed?: boolean;
+  size?: number;
+  title?: string;
 }
 
-export declare enum SplitViewEvents {
-  'expand',
-  'collapse',
-  'resize',
-  'close'
-}
+export type SplitViewEvents = 'close' | 'collapse' | 'expand' | 'resize';
 
 export declare interface SplitViewInstance {
   collapse: () => void;
-  expand: () => void;
-  setSize: (value: number) => void;
-  on: (key: SplitViewEvents, callback: () => void) => string;
   exists: () => boolean;
+  expand: () => void;
   getSize: () => number;
   isCollapsed: () => boolean;
   isExpanded: () => boolean;
+  on: (key: SplitViewEvents, callback: () => void) => string;
+  setSize: (value: number) => void;
 }
 
 export declare interface DrawerSettings {
-  header?: any;
-  size?: 'l' | 'm' | 's' | 'xs';
   backdrop?: boolean;
+  header?: any;
   overlap?: boolean;
+  size?: 'l' | 'm' | 's' | 'xs';
 }
 
 export declare interface AlertSettings {
-  text?: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+  closeAfter?: number;
   links?: {
     [key: string]: { text: string; url?: string; dismissKey?: string };
   };
-  closeAfter?: number;
+  text?: string;
+  type: 'info' | 'success' | 'warning' | 'error';
 }
 
 export declare interface NodeParams {
@@ -227,7 +222,11 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
-  openAsModal: (nodepath: string, modalSettings?: ModalSettings, onCloseCallback?: Function) => void;
+  openAsModal: (
+    nodepath: string,
+    modalSettings?: ModalSettings,
+    onCloseCallback?: Function
+  ) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is 40, which means 40% height of the split view.
@@ -244,7 +243,10 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().openAsSplitView('projects/pr1/users', {title:'Users', size:'40'});
    */
-  openAsSplitView: (path: string, splitViewSettings?: SplitViewSettings) => SplitViewInstance;
+  openAsSplitView: (
+    path: string,
+    splitViewSettings?: SplitViewSettings
+  ) => SplitViewInstance;
 
   /**
    * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
@@ -403,7 +405,10 @@ export declare interface Options {
  * @param {String} literal The literal to process.
  * @returns {String} Returns the processed literal.
  */
-export declare const html: (strings: TemplateStringsArray, ...keys: unknown[]) => string;
+export declare const html: (
+  strings: TemplateStringsArray,
+  ...keys: unknown[]
+) => string;
 
 export interface LuigiClient {
   /**

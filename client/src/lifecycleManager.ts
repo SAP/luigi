@@ -1,3 +1,14 @@
+import {
+  AuthData,
+  ClientPermissions,
+  Context,
+  CoreSearchParams,
+  InternalContext,
+  InternalMessageData,
+  NodeParams,
+  PathParams,
+  UserSettings
+} from '../luigi-client';
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
 
@@ -6,16 +17,36 @@ import { helpers } from './helpers';
  * @name Lifecycle
  */
 class LifecycleManager extends LuigiClientBase {
+  currentContext!: InternalContext;
+  private authData: AuthData;
+  private defaultContextKeys: string[];
+  private luigiInitialized: boolean;
+  private _onContextUpdatedFns: Record<any, any>;
+  private _onInactiveFns: Record<any, any>;
+  private _onInitFns: Record<any, any>;
+
   /** @private */
   constructor() {
     super();
+
     this.luigiInitialized = false;
-    this.defaultContextKeys = ['context', 'internal', 'nodeParams', 'pathParams', 'searchParams'];
+    this.defaultContextKeys = [
+      'context',
+      'internal',
+      'nodeParams',
+      'pathParams',
+      'searchParams'
+    ];
+
     this.setCurrentContext(
-      this.defaultContextKeys.reduce(function(acc, key) {
-        acc[key] = {};
-        return acc;
-      }, {})
+      this.defaultContextKeys.reduce(
+        (acc: Record<string, any>, key: string) => {
+          acc[key] = {};
+
+          return acc;
+        },
+        {}
+      )
     );
 
     this._onContextUpdatedFns = {};
@@ -33,7 +64,7 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  _isDeferInitDefined() {
+  _isDeferInitDefined(): boolean {
     return window.document.head.hasAttribute('defer-luigi-init');
   }
 
@@ -45,7 +76,7 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const init = LuigiClient.isLuigiClientInitialized()
    */
-  isLuigiClientInitialized() {
+  isLuigiClientInitialized(): boolean {
     return this.luigiInitialized;
   }
 
@@ -56,69 +87,91 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.luigiClientInit()
    */
-  luigiClientInit() {
+  luigiClientInit(): void {
     if (this.luigiInitialized) {
       console.warn('Luigi Client has been already initialized');
       return;
     }
+
     /**
      * Save context data every time navigation to a different node happens
      * @private
      */
-    const setContext = rawData => {
+    const setContext = (rawData: any) => {
       for (let index = 0; index < this.defaultContextKeys.length; index++) {
-        let key = this.defaultContextKeys[index];
+        let key: string = this.defaultContextKeys[index];
+
         try {
           if (typeof rawData[key] === 'string') {
             rawData[key] = JSON.parse(rawData[key]);
           }
-        } catch (e) {
-          console.info('unable to parse luigi context data for', key, rawData[key], e);
+        } catch (error) {
+          console.info(
+            'unable to parse luigi context data for',
+            key,
+            rawData[key],
+            error
+          );
         }
       }
       this.setCurrentContext(rawData);
     };
 
-    const setAuthData = eventPayload => {
+    const setAuthData = (eventPayload: any) => {
       if (eventPayload) {
         this.authData = eventPayload;
       }
     };
 
-    helpers.addEventListener('luigi.init', e => {
-      setContext(e.data);
-      setAuthData(e.data.authData);
-      helpers.setLuigiCoreDomain(e.origin);
+    helpers.addEventListener('luigi.init', (event: any) => {
+      setContext(event.data);
+      setAuthData(event.data.authData);
+      helpers.setLuigiCoreDomain(event.origin);
       this.luigiInitialized = true;
-      this._notifyInit(e.origin);
+      this._notifyInit(event.origin);
       helpers.sendPostMessageToLuigiCore({ msg: 'luigi.init.ok' });
     });
 
-    helpers.addEventListener('luigi-client.inactive-microfrontend', e => {
-      this._notifyInactive(e.origin);
+    helpers.addEventListener(
+      'luigi-client.inactive-microfrontend',
+      (event: any) => {
+        this._notifyInactive(event.origin);
+      }
+    );
+
+    helpers.addEventListener('luigi.auth.tokenIssued', (event: any) => {
+      setAuthData(event.data.authData);
     });
 
-    helpers.addEventListener('luigi.auth.tokenIssued', e => {
-      setAuthData(e.data.authData);
-    });
+    helpers.addEventListener('luigi.navigate', (event: any) => {
+      setContext(event.data);
 
-    helpers.addEventListener('luigi.navigate', e => {
-      setContext(e.data);
-      if (!this.currentContext.internal.isNavigateBack && !this.currentContext.withoutSync) {
-        const previousHash = window.location.hash;
-        history.replaceState({ luigiInduced: true }, '', e.data.viewUrl);
-        window.dispatchEvent(new PopStateEvent('popstate', { state: 'luiginavigation' }));
+      if (
+        !(this.currentContext.internal as Record<string, any>)[
+          'isNavigateBack'
+        ] &&
+        !this.currentContext['withoutSync']
+      ) {
+        const previousHash: string = window.location.hash;
+
+        history.replaceState({ luigiInduced: true }, '', event.data.viewUrl);
+        window.dispatchEvent(
+          new PopStateEvent('popstate', { state: 'luiginavigation' })
+        );
+
         if (window.location.hash !== previousHash) {
           window.dispatchEvent(new HashChangeEvent('hashchange'));
         }
       }
+
       // pass additional data to context to enable micro frontend developer to act on internal routing change
-      if (this.currentContext.withoutSync) {
-        Object.assign(this.currentContext.context, {
-          viewUrl: e.data.viewUrl ? e.data.viewUrl : undefined,
-          pathParams: e.data.pathParams ? e.data.pathParams : undefined
+      if (this.currentContext['withoutSync']) {
+        Object.assign(this.currentContext.context as Context, {
+          viewUrl: event.data.viewUrl ? event.data.viewUrl : undefined,
+          pathParams: event.data.pathParams ? event.data.pathParams : undefined
         });
       }
+
       // execute the context change listener if set by the micro frontend
       this._notifyUpdate();
       helpers.sendPostMessageToLuigiCore({ msg: 'luigi.navigate.ok' });
@@ -143,7 +196,11 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  _callAllFns(objWithFns, payload, origin) {
+  _callAllFns(
+    objWithFns: Record<string, any>,
+    payload: Context | null,
+    origin?: string
+  ): void {
     for (let id in objWithFns) {
       if (objWithFns.hasOwnProperty(id) && helpers.isFunction(objWithFns[id])) {
         objWithFns[id](payload, origin);
@@ -156,8 +213,12 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  _notifyInit(origin) {
-    this._callAllFns(this._onInitFns, this.currentContext.context, origin);
+  _notifyInit(origin: string) {
+    this._callAllFns(
+      this._onInitFns,
+      this.currentContext.context as Context,
+      origin
+    );
   }
 
   /**
@@ -166,7 +227,10 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   _notifyUpdate() {
-    this._callAllFns(this._onContextUpdatedFns, this.currentContext.context);
+    this._callAllFns(
+      this._onContextUpdatedFns,
+      this.currentContext.context as Context
+    );
   }
 
   /**
@@ -174,15 +238,15 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  _notifyInactive() {
-    this._callAllFns(this._onInactiveFns);
+  _notifyInactive(origin: any) {
+    this._callAllFns(this._onInactiveFns, null, origin);
   }
 
   /**
    * @private
    * @memberof Lifecycle
    */
-  setCurrentContext(value) {
+  setCurrentContext(value: InternalContext) {
     this.currentContext = value;
   }
 
@@ -193,12 +257,18 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
    */
-  addInitListener(initFn) {
-    const id = helpers.getRandomId();
-    this._onInitFns[id] = initFn;
+  addInitListener(initFn: (context: Context, origin?: string) => void): number {
+    const id: number = helpers.getRandomId();
+
+    this._onInitFns[`${id}`] = initFn;
+
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
-      initFn(this.currentContext.context, helpers.getLuigiCoreDomain());
+      initFn(
+        this.currentContext.context as Context,
+        helpers.getLuigiCoreDomain()
+      );
     }
+
     return id;
   }
 
@@ -215,11 +285,13 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.removeInitListener(initListenerId)
    */
-  removeInitListener(id) {
+  removeInitListener(id: string): boolean {
     if (this._onInitFns[id]) {
       this._onInitFns[id] = undefined;
+
       return true;
     }
+
     return false;
   }
 
@@ -230,13 +302,18 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const updateListenerId = LuigiClient.addContextUpdateListener((context) => storeContextToMF(context))
    */
-  addContextUpdateListener(contextUpdatedFn) {
-    const id = helpers.getRandomId();
-    this._onContextUpdatedFns[id] = contextUpdatedFn;
+  addContextUpdateListener(
+    contextUpdatedFn: (context: Context) => void
+  ): string {
+    const id: number = helpers.getRandomId();
+
+    this._onContextUpdatedFns[`${id}`] = contextUpdatedFn;
+
     if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
-      contextUpdatedFn(this.currentContext.context);
+      contextUpdatedFn(this.currentContext.context as Context);
     }
-    return id;
+
+    return `${id}`;
   }
 
   /**
@@ -246,11 +323,13 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.removeContextUpdateListener(updateListenerId)
    */
-  removeContextUpdateListener(id) {
+  removeContextUpdateListener(id: string): boolean {
     if (this._onContextUpdatedFns[id]) {
       this._onContextUpdatedFns[id] = undefined;
+
       return true;
     }
+
     return false;
   }
 
@@ -268,10 +347,12 @@ class LifecycleManager extends LuigiClientBase {
    * LuigiClient.addInactiveListener(() => mfIsInactive = true)
    * const inactiveListenerId = LuigiClient.addInactiveListener(() => mfIsInactive = true)
    */
-  addInactiveListener(inactiveFn) {
-    const id = helpers.getRandomId();
-    this._onInactiveFns[id] = inactiveFn;
-    return id;
+  addInactiveListener(inactiveFn: () => void): string {
+    const id: number = helpers.getRandomId();
+
+    this._onInactiveFns[`${id}`] = inactiveFn;
+
+    return `${id}`;
   }
 
   /**
@@ -281,11 +362,13 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.removeInactiveListener(inactiveListenerId)
    */
-  removeInactiveListener(id) {
+  removeInactiveListener(id: string): boolean {
     if (this._onInactiveFns[id]) {
       this._onInactiveFns[id] = undefined;
+
       return true;
     }
+
     return false;
   }
 
@@ -298,10 +381,16 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const customMsgId = LuigiClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
    */
-  addCustomMessageListener(customMessageId, customMessageListener) {
-    return helpers.addEventListener(customMessageId, (customMessage, listenerId) => {
-      return customMessageListener(customMessage, listenerId);
-    });
+  addCustomMessageListener(
+    customMessageId: string,
+    customMessageListener: (customMessage: Object, listenerId: string) => void
+  ): string {
+    return helpers.addEventListener(
+      customMessageId,
+      (customMessage: Object, listenerId: string) => {
+        return customMessageListener(customMessage, listenerId);
+      }
+    );
   }
 
   /**
@@ -319,7 +408,7 @@ class LifecycleManager extends LuigiClientBase {
    * @since 0.6.2
    * LuigiClient.removeCustomMessageListener(customMsgId)
    */
-  removeCustomMessageListener(id) {
+  removeCustomMessageListener(id: string): boolean {
     return helpers.removeEventListener(id);
   }
 
@@ -330,8 +419,8 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const accessToken = LuigiClient.getToken()
    */
-  getToken() {
-    return this.authData.accessToken;
+  getToken(): AuthData['accessToken'] {
+    return this.authData['accessToken'];
   }
 
   /**
@@ -341,7 +430,7 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const context = LuigiClient.getContext()
    */
-  getContext() {
+  getContext(): Context {
     return this.getEventData();
   }
 
@@ -351,8 +440,8 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    * @deprecated
    */
-  getEventData() {
-    return this.currentContext.context;
+  getEventData(): Context {
+    return this.currentContext.context as Context;
   }
 
   /**
@@ -363,8 +452,10 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
    */
-  getActiveFeatureToggles() {
-    return this.currentContext.internal.activeFeatureToggleList;
+  getActiveFeatureToggles(): string[] {
+    return (this.currentContext.internal as Record<string, any>)[
+      'activeFeatureToggleList'
+    ];
   }
 
   /**
@@ -375,7 +466,7 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.addNodeParams({luigi:'rocks'}, true);
    */
-  addNodeParams(params, keepBrowserHistory = true) {
+  addNodeParams(params: NodeParams, keepBrowserHistory = true): void {
     if (params) {
       helpers.sendPostMessageToLuigiCore({
         msg: 'luigi.addNodeParams',
@@ -397,9 +488,11 @@ class LifecycleManager extends LuigiClientBase {
    * const nodeParams = LuigiClient.getNodeParams()
    * const nodeParams = LuigiClient.getNodeParams(true)
    */
-  getNodeParams(shouldDesanitise = false) {
+  getNodeParams(shouldDesanitise = false): NodeParams {
     return shouldDesanitise
-      ? helpers.deSanitizeParamsMap(this.currentContext.nodeParams)
+      ? helpers.deSanitizeParamsMap(
+          this.currentContext.nodeParams as NodeParams
+        )
       : this.currentContext.nodeParams;
   }
 
@@ -414,8 +507,8 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const pathParams = LuigiClient.getPathParams()
    */
-  getPathParams() {
-    return this.currentContext.pathParams;
+  getPathParams(): PathParams {
+    return this.currentContext.pathParams as PathParams;
   }
 
   /**
@@ -425,20 +518,22 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.getCoreSearchParams();
    */
-  getCoreSearchParams() {
-    return this.currentContext.searchParams || {};
+  getCoreSearchParams(): CoreSearchParams {
+    return this.currentContext['searchParams'] || {};
   }
 
   /**
    * Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using {@link navigation-parameters-reference.md#clientpermissionsurlparameters clientPermissions.urlParameters}.
-
    * @param {Object} searchParams
    * @param {boolean} keepBrowserHistory
    * @memberof Lifecycle
    * @example
    * LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
    */
-  addCoreSearchParams(searchParams, keepBrowserHistory = true) {
+  addCoreSearchParams(
+    searchParams: CoreSearchParams,
+    keepBrowserHistory = true
+  ): void {
     if (searchParams) {
       helpers.sendPostMessageToLuigiCore({
         msg: 'luigi.addSearchParams',
@@ -455,8 +550,12 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const permissions = LuigiClient.getClientPermissions()
    */
-  getClientPermissions() {
-    return this.currentContext.internal.clientPermissions || {};
+  getClientPermissions(): ClientPermissions {
+    return (
+      (this.currentContext.internal as Record<string, any>)[
+        'clientPermissions'
+      ] || {}
+    );
   }
 
   /**
@@ -467,7 +566,7 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.setTargetOrigin(window.location.origin)
    */
-  setTargetOrigin(origin) {
+  setTargetOrigin(origin: string): void {
     helpers.setTargetOrigin(origin);
   }
 
@@ -482,8 +581,11 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    * @since 0.6.2
    */
-  sendCustomMessage(message) {
-    const customMessageInternal = helpers.convertCustomMessageUserToInternal(message);
+  sendCustomMessage(message: Object) {
+    const customMessageInternal: InternalMessageData = helpers.convertCustomMessageUserToInternal(
+      message
+    );
+
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }
 
@@ -495,8 +597,11 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const userSettings = LuigiClient.getUserSettings()
    */
-  getUserSettings() {
-    return this.currentContext.internal.userSettings || {};
+  getUserSettings(): UserSettings {
+    return (
+      (this.currentContext.internal as Record<string, any>)['userSettings'] ||
+      {}
+    );
   }
 
   /**
@@ -507,8 +612,10 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.getAnchor();
    */
-  getAnchor() {
-    return this.currentContext.internal.anchor || '';
+  getAnchor(): string {
+    return (
+      (this.currentContext.internal as Record<string, any>)['anchor'] || ''
+    );
   }
 
   /**
@@ -519,7 +626,7 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * LuigiClient.setAnchor('luigi');
    */
-  setAnchor(anchor) {
+  setAnchor(anchor: string): void {
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.setAnchor',
       anchor
@@ -533,11 +640,12 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    * @example LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
    */
-  setViewGroupData(data) {
+  setViewGroupData(data: Object): void {
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.setVGData',
       data
     });
   }
 }
+
 export const lifecycleManager = new LifecycleManager();

@@ -1,5 +1,4 @@
 // Type definitions for Luigi Client
-
 export as namespace LuigiClient;
 
 export declare interface AuthData {
@@ -10,65 +9,71 @@ export declare interface AuthData {
 }
 
 export declare interface ConfirmationModalSettings {
-  type?: string;
-  header?: string;
   body?: string;
   buttonConfirm?: string | boolean;
   buttonDismiss?: string;
+  header?: string;
+  type?: string;
 }
 
 export declare interface ModalSettings {
-  title?: string;
-  size?: 'fullscreen' | 'l' | 'm' | 's';
-  width?: string;
-  height?: string;
   closebtn_data_testid?: string;
+  height?: string;
+  size?: 'fullscreen' | 'l' | 'm' | 's';
+  title?: string;
+  width?: string;
 }
 
 export declare interface SplitViewSettings {
-  title?: string;
-  size?: number;
   collapsed?: boolean;
+  size?: number;
+  title?: string;
 }
 
-export enum SplitViewEvents {
-  'expand',
-  'collapse',
-  'resize',
-  'close'
-}
+export type SplitViewEvents = 'close' | 'collapse' | 'expand' | 'resize';
 
 export declare interface SplitViewInstance {
   collapse: () => void;
-  expand: () => void;
-  setSize: (value: number) => void;
-  on: (key: SplitViewEvents, callback: () => void) => string; //
   exists: () => boolean;
+  expand: () => void;
   getSize: () => number;
   isCollapsed: () => boolean;
   isExpanded: () => boolean;
+  on: (key: SplitViewEvents, callback: () => void) => string;
+  setSize: (value: number) => void;
 }
 
 export declare interface DrawerSettings {
-  header?: any;
-  size?: 'l' | 'm' | 's' | 'xs';
   backdrop?: boolean;
+  header?: any;
   overlap?: boolean;
+  size?: 'l' | 'm' | 's' | 'xs';
+}
+
+export declare interface NodeParams {
+  [key: string]: string;
+}
+
+export declare interface PathParams {
+  [key: string]: string;
 }
 
 export declare interface Context {
+  parentNavigationContext?: string[];
+  [key: string]: any;
+}
+
+export declare interface InternalContext {
+  anchor?: string;
   authData?: AuthData;
-  context?: { parentNavigationContext?: string[] };
+  context?: Context;
   internal?: {
     userSettings?: getUserSettings;
+    [key: string]: any;
   };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
-  anchor?: string;
   [key: string]: any;
-}
-export declare interface NodeParams {
-  [key: string]: string;
 }
 
 export declare interface ClientPermissions {
@@ -76,16 +81,12 @@ export declare interface ClientPermissions {
 }
 
 export declare interface AlertSettings {
-  text?: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+  closeAfter?: number;
   links?: {
     [key: string]: { text: string; url?: string; dismissKey?: string };
   };
-  closeAfter?: number;
-}
-
-export declare interface PathParams {
-  [key: string]: string;
+  text?: string;
+  type: 'info' | 'success' | 'warning' | 'error';
 }
 
 export declare interface CoreSearchParams {
@@ -98,6 +99,21 @@ export declare interface RouteChangingOptions {
 
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
+}
+
+export declare interface CustomMessageData {
+  customMessage: Record<string, any>;
+  listenerId: string;
+}
+
+export declare interface InternalMessageData {
+  data: any;
+  msg: string;
+}
+
+export declare interface PostMessageData {
+  errorObj: Partial<ErrorEvent>;
+  msg: string;
 }
 
 export declare interface UxManager {
@@ -345,7 +361,12 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    * LuigiClient.linkManager().navigate('#?intent=Sales-order?id=13') // intent navigation
    */
-  navigate: (path: string, sessionId?: string, preserveView?: boolean, modalSettings?: ModalSettings) => void;
+  navigate: (
+    path: string,
+    sessionId?: string,
+    preserveView?: boolean,
+    modalSettings?: ModalSettings
+  ) => void;
 
   /**
    * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
@@ -426,7 +447,10 @@ export declare interface LinkManager {
    *     console.log(res.data) //=> {foo: 'bar'}
    *  });
    */
-  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => Promise<void>;
+  openAsModal: (
+    nodepath: string,
+    modalSettings?: ModalSettings
+  ) => Promise<void>;
 
   /**
    * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
@@ -441,7 +465,10 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
    */
-  updateModalSettings: (updatedModalSettings: Object, addHistoryEntry?: boolean) => void;
+  updateModalSettings: (
+    updatedModalSettings: Object,
+    addHistoryEntry?: boolean
+  ) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
@@ -457,7 +484,10 @@ export declare interface LinkManager {
    * @example
    * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
    */
-  openAsSplitView: (path: string, splitViewSettings?: SplitViewSettings) => SplitViewInstance;
+  openAsSplitView: (
+    path: string,
+    splitViewSettings?: SplitViewSettings
+  ) => SplitViewInstance;
 
   /**
    * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
@@ -491,7 +521,11 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
    */
-  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry?: boolean) => void;
+  updateModalPathInternalNavigation: (
+    path: string,
+    modalSettings?: Object,
+    addHistoryEntry?: boolean
+  ) => void;
 
   /**
    * Enables navigating to a new tab.
@@ -587,7 +621,7 @@ export declare interface StorageManager {
    * @example
    * LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are : '+keys));
    */
-  getAllKeys: () => Promise<String[]>;
+  getAllKeys: () => Promise<string[]>;
 }
 
 /**
@@ -595,8 +629,12 @@ export declare interface StorageManager {
  * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
  * @memberof Lifecycle
  */
-export function addInitListener(initFn: (context: Context, origin?: string) => void): number;
-export type addInitListener = (initFn: (context: Context, origin?: string) => void) => number;
+export function addInitListener(
+  initFn: (context: Context, origin?: string) => void
+): number;
+export type addInitListener = (
+  initFn: (context: Context, origin?: string) => void
+) => number;
 
 /**
  * Callback of the addInitListener
@@ -609,16 +647,20 @@ export type addInitListener = (initFn: (context: Context, origin?: string) => vo
  * @param {string} id the id that was returned by the `addInitListener` function.
  * @memberof Lifecycle
  */
-export function removeInitListener(id: number): boolean;
-export type removeInitListener = (id: number) => boolean;
+export function removeInitListener(id: string): boolean;
+export type removeInitListener = (id: string) => boolean;
 
 /**
  * Registers a listener called with the context object when the URL is changed. For example, you can use this when changing environments in a context switcher in order for the micro frontend to do an API call to the environment picked.
  * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
  * @memberof Lifecycle
  */
-export function addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string;
-export type addContextUpdateListener = (contextUpdatedFn: (context: Context) => void) => string;
+export function addContextUpdateListener(
+  contextUpdatedFn: (context: Context) => void
+): string;
+export type addContextUpdateListener = (
+  contextUpdatedFn: (context: Context) => void
+) => string;
 
 /**
  * Removes a context update listener.
@@ -705,6 +747,7 @@ export type getEventData = () => Context;
  */
 export function getContext(): Context;
 export type getContext = () => Context;
+
 /**
  * Sets node parameters in Luigi Core. The parameters will be added to the URL.
  * @param {Object} params
@@ -713,8 +756,14 @@ export type getContext = () => Context;
  * LuigiClient.addNodeParams({luigi:'rocks'});
  * LuigiClient.addNodeParams({luigi:'rocks', false});
  */
-export function addNodeParams(params: NodeParams, keepBrowserHistory: Boolean): void;
-export type addNodeParams = (params: NodeParams, keepBrowserHistory: Boolean) => void;
+export function addNodeParams(
+  params: NodeParams,
+  keepBrowserHistory: boolean
+): void;
+export type addNodeParams = (
+  params: NodeParams,
+  keepBrowserHistory: boolean
+) => void;
 
 /**
  * Returns the node parameters of the active URL.
@@ -735,8 +784,8 @@ export type getNodeParams = (shouldDesanitise?: boolean) => NodeParams;
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
  * @memberof Lifecycle
  */
-export function getActiveFeatureToggles(): Array<String>;
-export type getActiveFeatureToggles = () => Array<String>;
+export function getActiveFeatureToggles(): string[];
+export type getActiveFeatureToggles = () => string[];
 
 /**
  * Returns the dynamic path parameters of the active URL.
@@ -757,8 +806,8 @@ export type getPathParams = () => PathParams;
  * @example
  * LuigiClient.getAnchor();
  */
-export function getAnchor(): String;
-export type getAnchor = () => String;
+export function getAnchor(): string;
+export type getAnchor = () => string;
 
 /**
  * Sets the anchor of active URL.
@@ -767,8 +816,8 @@ export type getAnchor = () => String;
  * @example
  * LuigiClient.setAnchor('luigi');
  */
-export function setAnchor(anchor: String): void;
-export type setAnchor = (anchor: String) => void;
+export function setAnchor(anchor: string): void;
+export type setAnchor = (anchor: string) => void;
 
 /**
  * Allows you to change node labels within the same {@link navigation-advanced.md#view-groups view group}, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
@@ -799,8 +848,14 @@ export type getCoreSearchParams = () => CoreSearchParams;
  * LuigiClient.addCoreSearchParams({luigi:'rocks'});
  * LuigiClient.addCoreSearchParams({luigi:'rocks', false});
  */
-export function addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: Boolean): void;
-export type addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: Boolean) => void;
+export function addCoreSearchParams(
+  searchParams: CoreSearchParams,
+  keepBrowserHistory: boolean
+): void;
+export type addCoreSearchParams = (
+  searchParams: CoreSearchParams,
+  keepBrowserHistory: boolean
+) => void;
 
 /**
  * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
@@ -857,6 +912,7 @@ export type uxManager = () => UxManager;
  */
 export function storageManager(): StorageManager;
 export type storageManager = () => StorageManager;
+
 /**
  * Returns the current user settings.
  * @returns {Object} current user settings
