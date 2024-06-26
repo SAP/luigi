@@ -17,40 +17,53 @@ export default class extends HTMLElement {
     templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
 
     const addNodeParamsBtn = document.createElement('template');
-    addNodeParamsBtn.innerHTML = '<button id="addNodeParams">add node params</button>';
+    addNodeParamsBtn.innerHTML =
+      '<button id="addNodeParams">add node params</button>';
 
     const getNodeParamsBtn = document.createElement('template');
-    getNodeParamsBtn.innerHTML = '<button id="getNodeParams">get node params</button>';
+    getNodeParamsBtn.innerHTML =
+      '<button id="getNodeParams">get node params</button>';
 
     const setAnchorBtn = document.createElement('template');
     setAnchorBtn.innerHTML = '<button id="setAnchor">setAnchor</button>';
 
     const getCoreSearchParamsBtn = document.createElement('template');
-    getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
+    getCoreSearchParamsBtn.innerHTML =
+      '<button id="coreSearchParams">getCoreSearchParams</button>';
 
     const getPathParamsBtn = document.createElement('template');
-    getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
+    getPathParamsBtn.innerHTML =
+      '<button id="getPathParams">getPathParams</button>';
 
     const getClientPermissionsBtn = document.createElement('template');
-    getClientPermissionsBtn.innerHTML = '<button id="getClientPermissions">getClientPermissions</button>';
+    getClientPermissionsBtn.innerHTML =
+      '<button id="getClientPermissions">getClientPermissions</button>';
 
     const empty = document.createElement('template');
     empty.innerHTML = `<section><p>Test-----!</p><br/><br/></section>`;
 
     const getUserSettingsBtn = document.createElement('template');
-    getUserSettingsBtn.innerHTML = '<button id="getUserSettings">getUserSettings</button>';
+    getUserSettingsBtn.innerHTML =
+      '<button id="getUserSettings">getUserSettings</button>';
 
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
     const setViewGroupDataBtn = document.createElement('template');
-    setViewGroupDataBtn.innerHTML = '<button id="setViewGroupData">setViewGroupData</button>';
+    setViewGroupDataBtn.innerHTML =
+      '<button id="setViewGroupData">setViewGroupData</button>';
 
     const getDirtyStatusBtn = document.createElement('template');
-    getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
+    getDirtyStatusBtn.innerHTML =
+      '<button id="getDirtyStatus">getDirtyStatus</button>';
 
     const updateContextBtn = document.createElement('template');
-    updateContextBtn.innerHTML = '<button id="updateContext">updateContext</button>';
+    updateContextBtn.innerHTML =
+      '<button id="updateContext">updateContext</button>';
+
+    const getCurrentRouteBtn = document.createElement('template');
+    getCurrentRouteBtn.innerHTML =
+      '<button id="getCurrentRoute">getCurrentRoute</button>';
 
     const uxManagerMultipleRequestsBtn = document.createElement('template');
     uxManagerMultipleRequestsBtn.innerHTML = `<button id="uxManagerManyRequests">uxManager().closeUserSettings,
@@ -62,7 +75,9 @@ export default class extends HTMLElement {
     hideAppLoadingIndicator,
     </button>`;
 
-    const linkManagerChainedFunctionsRequestsBtn = document.createElement('template');
+    const linkManagerChainedFunctionsRequestsBtn = document.createElement(
+      'template'
+    );
     linkManagerChainedFunctionsRequestsBtn.innerHTML = `<button id="linkManagerChainRequests">
     linkManager().fromClosestContext,
     fromContext,
@@ -77,7 +92,9 @@ export default class extends HTMLElement {
     openAsSplitView,
     </button>`;
 
-    const linkManagerUpdateTopPathExistsBackBtn = document.createElement('template');
+    const linkManagerUpdateTopPathExistsBackBtn = document.createElement(
+      'template'
+    );
     linkManagerUpdateTopPathExistsBackBtn.innerHTML = `<button id="linkManagerUpdateTopPathExistsBack">linkManager().
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
@@ -92,18 +109,31 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(
+      getCoreSearchParamsBtn.content.cloneNode(true)
+    );
     this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(
+      getClientPermissionsBtn.content.cloneNode(true)
+    );
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(updateContextBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
-    this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(
+      uxManagerMultipleRequestsBtn.content.cloneNode(true)
+    );
+    this._shadowRoot.appendChild(
+      linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true)
+    );
+    this._shadowRoot.appendChild(
+      linkManagerOpenAsRequestsBtn.content.cloneNode(true)
+    );
+    this._shadowRoot.appendChild(
+      linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true)
+    );
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
@@ -112,18 +142,26 @@ export default class extends HTMLElement {
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.getCurrentLocale()=' + this.LuigiClient.getCurrentLocale(),
+          text:
+            'LuigiClient.getCurrentLocale()=' +
+            this.LuigiClient.getCurrentLocale(),
           type: 'info'
         });
 
         const featureToggles = this.LuigiClient.getActiveFeatureToggles();
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.getActiveFeatureToggles()=' + featureToggles + ',' + featureToggles.length,
+          text:
+            'LuigiClient.getActiveFeatureToggles()=' +
+            featureToggles +
+            ',' +
+            featureToggles.length,
           type: 'info'
         });
 
         this.LuigiClient.uxManager().showAlert({
-          text: 'LuigiClient.uxManager().getCurrentTheme()=' + this.LuigiClient.uxManager().getCurrentTheme(),
+          text:
+            'LuigiClient.uxManager().getCurrentTheme()=' +
+            this.LuigiClient.uxManager().getCurrentTheme(),
           type: 'info'
         });
       }
@@ -157,7 +195,9 @@ export default class extends HTMLElement {
       }
     });
 
-    this.$coreSearchParamsBtn = this._shadowRoot.querySelector('#coreSearchParams');
+    this.$coreSearchParamsBtn = this._shadowRoot.querySelector(
+      '#coreSearchParams'
+    );
     this.$coreSearchParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         alert(JSON.stringify(this.LuigiClient.getCoreSearchParams()));
@@ -171,14 +211,18 @@ export default class extends HTMLElement {
       }
     });
 
-    this.$getClientPermissionsBtn = this._shadowRoot.querySelector('#getClientPermissions');
+    this.$getClientPermissionsBtn = this._shadowRoot.querySelector(
+      '#getClientPermissions'
+    );
     this.$getClientPermissionsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         alert(JSON.stringify(this.LuigiClient.getClientPermissions()));
       }
     });
 
-    this.$getUserSettingsBtn = this._shadowRoot.querySelector('#getUserSettings');
+    this.$getUserSettingsBtn = this._shadowRoot.querySelector(
+      '#getUserSettings'
+    );
     this.$getUserSettingsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         let userSettings = this.LuigiClient.getUserSettings();
@@ -215,7 +259,9 @@ export default class extends HTMLElement {
       });
     });
 
-    this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
+    this.$uxManagerManyRequests = this._shadowRoot.querySelector(
+      '#uxManagerManyRequests'
+    );
     this.$uxManagerManyRequests.addEventListener('click', () => {
       this.LuigiClient.uxManager().closeUserSettings();
       this.LuigiClient.uxManager().openUserSettings();
@@ -224,12 +270,16 @@ export default class extends HTMLElement {
       this.LuigiClient.uxManager().removeBackdrop();
       this.LuigiClient.uxManager().hideAppLoadingIndicator();
       this.LuigiClient.uxManager().showAlert({
-        text: 'LuigiClient.uxManager().getDocumentTitle()=' + this.LuigiClient.uxManager().getDocumentTitle(),
+        text:
+          'LuigiClient.uxManager().getDocumentTitle()=' +
+          this.LuigiClient.uxManager().getDocumentTitle(),
         type: 'info'
       });
     });
 
-    this.$linkManagerChainRequests = this._shadowRoot.querySelector('#linkManagerChainRequests');
+    this.$linkManagerChainRequests = this._shadowRoot.querySelector(
+      '#linkManagerChainRequests'
+    );
     this.$linkManagerChainRequests.addEventListener('click', () => {
       this.LuigiClient.linkManager()
         .fromContext({ ctx: 123 })
@@ -245,14 +295,24 @@ export default class extends HTMLElement {
         .navigate('hello-world-wc');
     });
 
-    this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
+    this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector(
+      '#linkManagerOpenAsRequests'
+    );
     this.$linkManagerOpenAsRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', { size: 's' });
-      this.LuigiClient.linkManager().openAsModal('hello-world-wc', { size: 'm' });
-      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', { size: 'l' });
+      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', {
+        size: 's'
+      });
+      this.LuigiClient.linkManager().openAsModal('hello-world-wc', {
+        size: 'm'
+      });
+      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', {
+        size: 'l'
+      });
     });
 
-    this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector('#linkManagerUpdateTopPathExistsBack');
+    this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector(
+      '#linkManagerUpdateTopPathExistsBack'
+    );
     this.$linkManagerUpdateTopPathExistsBack.addEventListener('click', () => {
       this.LuigiClient.linkManager().updateTopNavigation();
       this.LuigiClient.linkManager()
@@ -271,9 +331,21 @@ export default class extends HTMLElement {
       this.LuigiClient.linkManager().goBack();
     });
 
-    this.$setViewGroupData = this._shadowRoot.querySelector('#setViewGroupData');
+    this.$setViewGroupData = this._shadowRoot.querySelector(
+      '#setViewGroupData'
+    );
     this.$setViewGroupData.addEventListener('click', () => {
       this.LuigiClient.setViewGroupData({ vg: 'some data' });
+    });
+
+    this.$getCurrentRoute = this._shadowRoot.querySelector('#getCurrentRoute');
+    this.$getCurrentRoute.addEventListener('click', () => {
+      this.LuigiClient.linkManager()
+        .getCurrentRoute()
+        .then(result => {
+          console.log(result);
+          alert('current route: ' + result);
+        });
     });
   }
 

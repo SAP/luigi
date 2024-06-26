@@ -121,6 +121,10 @@
         luigiContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
           console.log('Set View Group Data Request received', event.detail, event);
         });
+
+        luigiContainer.addEventListener(MFEventID.GET_CURRENT_ROUTE_REQUEST, event => {
+          event.callback(window.location.pathname);
+        });
       });
 
       // update container context

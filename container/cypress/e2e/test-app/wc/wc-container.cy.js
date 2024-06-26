@@ -16,9 +16,15 @@ describe('Web Container Test', () => {
         .contains('Click me')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getCurrentLocale()=en');
-          expect(stub.getCall(1)).to.be.calledWith('LuigiClient.getActiveFeatureToggles()=ft1,ft2,2');
-          expect(stub.getCall(2)).to.be.calledWith('LuigiClient.uxManager().getCurrentTheme()=sap_fiori_3');
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.getCurrentLocale()=en'
+          );
+          expect(stub.getCall(1)).to.be.calledWith(
+            'LuigiClient.getActiveFeatureToggles()=ft1,ft2,2'
+          );
+          expect(stub.getCall(2)).to.be.calledWith(
+            'LuigiClient.uxManager().getCurrentTheme()=sap_fiori_3'
+          );
         });
     });
 
@@ -54,7 +60,9 @@ describe('Web Container Test', () => {
         .contains('getClientPermissions')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('{"permission":"testPermission"}');
+          expect(stub.getCall(0)).to.be.calledWith(
+            '{"permission":"testPermission"}'
+          );
         });
     });
 
@@ -66,7 +74,9 @@ describe('Web Container Test', () => {
         .contains('getUserSettings')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getUserSettings()={"language":"de","date":""}');
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.getUserSettings()={"language":"de","date":""}'
+          );
         });
     });
 
@@ -78,7 +88,23 @@ describe('Web Container Test', () => {
         .contains('getAnchor')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testanchor"');
+          expect(stub.getCall(0)).to.be.calledWith(
+            'LuigiClient.getAnchor()="testanchor"'
+          );
+        });
+    });
+
+    it('LuigiClient API getCurrentRoute for LuigiContainer', () => {
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+      cy.get('[data-test-id="luigi-client-api-test-01"]')
+        .shadow()
+        .contains('getCurrentRoute')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith(
+            'current route: /wc/clientAPI.html'
+          );
         });
     });
 
@@ -94,7 +120,9 @@ describe('Web Container Test', () => {
             .contains('updateContext')
             .click()
             .then(() => {
-              expect(stub.getCall(0)).to.be.calledWith('WC.ctx={"newContextData":"some data"}');
+              expect(stub.getCall(0)).to.be.calledWith(
+                'WC.ctx={"newContextData":"some data"}'
+              );
             });
         });
     });
