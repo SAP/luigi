@@ -17,7 +17,6 @@ meta -->
 # Luigi Compound Container API
 
 This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container 
-The difference between Luigi Compound Container and Luigi Compound Container Light is that the light variant will not use the shadow DOM for rendering.
 
 ## API Reference
 
@@ -53,8 +52,6 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 ### noShadow
 
 If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
-NOTE: If the Luigi compound container is created dynamically, the `noShadow` property will not work because of the limitation of the `document.createElement()` functionality.
-Instead you should use `luigi-compound-container-light` (e.g. document.createElement('luigi-compound-container-light')) and the `noShadow` property is no longer needed.
 
 Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 

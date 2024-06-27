@@ -173,22 +173,16 @@ describe('create luigi-compound-container dynamically', () => {
 
     cy.get('luigi-compound-container')
       .shadow()
-      .then($container => {
-        cy.wrap($container)
-          .find(
-            'luigi-wc-68747470733a2f2f6c75696769776562636f6d706f6e656e74732e6769746c61622e696f2f6e6573746564322e6a73'
-          )
-          .should('not.exist');
-      });
+      .should('not.exist');
   });
-  it('luigi compound container light with no shadow dom', () => {
+  it('luigi compound container with no shadow dom', () => {
     const scriptCode = `
         <script>
             const content = document.querySelector('.content');
-            const wc = document.createElement('luigi-compound-container-light');
+            const wc = document.createElement('luigi-compound-container');
             wc.context = { title: 'Nested' }
             wc.viewurl = 'https://luigiwebcomponents.gitlab.io/nested2.js';
-
+            wc.noShadow = true;
             wc.compoundConfig = {
                 eventListeners: [
                     {
@@ -255,7 +249,7 @@ describe('create luigi-compound-container dynamically', () => {
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', scriptCode);
-    cy.get('luigi-compound-container-light')
+    cy.get('luigi-compound-container')
       .shadow()
       .should('not.exist');
   });

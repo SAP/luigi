@@ -1,6 +1,7 @@
 <svelte:options
   customElement={{
     tag: null,
+    shadow: 'none',
     props: {
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
@@ -43,10 +44,6 @@
       };
       return class extends customElementConstructor {
         updateContext = notInitFn('updateContext');
-        attachShadow(settings) {
-          if (this.getNoShadow()) return this;
-          return super.attachShadow(settings);
-        }
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
@@ -121,9 +118,15 @@
       viewUrl: viewurl,
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     }; // TODO: fill with sth
-    const elRoot = thisComponent.getNoShadow() ? thisComponent : mainComponent;
-    elRoot.innerHTML = '';
-    webcomponentService.renderWebComponentCompound(node, elRoot, ctx).then(compCnt => {
+    if(!thisComponent.getNoShadow()){
+      mainComponent.innerHTML=''
+      const shadow = thisComponent.attachShadow({ mode: "open"});
+      shadow.append(mainComponent);
+    }else{
+      //removing mainComponent
+      thisComponent.innerHTML = '';
+    }
+    webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {
       eventBusElement = compCnt as HTMLElement;
       if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
         thisComponent.initialized = true;

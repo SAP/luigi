@@ -1,6 +1,7 @@
 <svelte:options
   customElement={{
     tag: null,
+    shadow: 'none',
     props: {
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
@@ -33,18 +34,13 @@
         sendCustomMessage = notInitFn('sendCustomMessage');
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
-        attachShadow(settings) {
-          if (this.getNoShadow()) {
-            return this;}
-          return super.attachShadow(settings);
-        }
         attributeChangedCallback(name, oldValue, newValue) {
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
         };
         getNoShadow(){
-          return this.hasAttribute('no-shadow') || this.noShadow;
+          return this.hasAttribute('no-shadow') || this.noShadow
         };
       };
     }
@@ -119,7 +115,7 @@
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
         ContainerAPI.sendCustomMessage(
           id,
-          noShadow ? thisComponent : mainComponent,
+          thisComponent.getNoShadow() ? thisComponent : mainComponent,
           !!webcomponent,
           iframeHandle,
           data
@@ -127,7 +123,7 @@
       };
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
-        if (webcomponent) {
+         if (webcomponent) {
           (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
@@ -143,15 +139,28 @@
 
       const ctx = GenericHelperFunctions.resolveContext(context);
       if (webcomponent && webcomponent != 'false') {
-        const elRoot = thisComponent.getNoShadow() ? thisComponent : mainComponent;
-        elRoot.innerHTML = '';
+        if(!thisComponent.getNoShadow()){
+          mainComponent.innerHTML=''
+          const shadow = thisComponent.attachShadow({ mode: "open"});
+          shadow.append(mainComponent);
+        }else{
+          //removing mainComponent
+          thisComponent.innerHTML = '';
+        }
         const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
           viewurl,
-          elRoot,
+          thisComponent.getNoShadow() ? thisComponent : mainComponent,
           ctx,
           typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
         );
+      }else{
+        if(!thisComponent.getNoShadow()){
+          //removeing mainComponent
+          thisComponent.innerHTML='';
+          const shadow = thisComponent.attachShadow({ mode: "open"});
+          shadow.append(mainComponent);
+        }
       }
       if (skipInitCheck) {
         thisComponent.initialized = true;
@@ -172,10 +181,7 @@
   };
 
   onMount(async () => {
-    const thisComponent: any =
-      mainComponent.getRootNode() === document
-        ? mainComponent.parentNode
-        : (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any = mainComponent.parentNode;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
       initialize(thisComponent);
@@ -191,6 +197,18 @@
 <main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
     {#if !webcomponent || webcomponent === 'false'}
+    <style>
+      main.lui-isolated,
+      .lui-isolated iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    
+      main.lui-isolated {
+        line-height: 0;
+      }
+    </style>
       <iframe
         bind:this={iframeHandle.iframe}
         src={viewurl}
@@ -201,16 +219,3 @@
     {/if}
   {/if}
 </main>
-
-<style>
-  main,
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-
-  main.lui-isolated {
-    line-height: 0;
-  }
-</style>

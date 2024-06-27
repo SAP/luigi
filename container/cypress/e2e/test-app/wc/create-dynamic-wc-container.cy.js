@@ -73,9 +73,6 @@ describe('Create luigi-container dynamically', () => {
     cy.get('.content').invoke('append', htmlCode);
     cy.get('[data-test-id="luigi-container"]')
       .shadow()
-      .find(
-        'luigi-wc-687474703a2f2f6c6f63616c686f73743a383038302f68656c6c6f576f726c64574353656c66526567697374657265642e6a73'
-      )
       .should('not.exist');
   });
 
@@ -85,16 +82,17 @@ describe('Create luigi-container dynamically', () => {
       const lc = document.querySelector('#lc');
       lc.viewurl = "./wc/helloWorldWC.js";
       lc.webcomponent = true;
+      lc.noShadow = true;
     `;
     const htmlCode = `
-      <luigi-container-light data-test-id="luigi-container-light" id="lc"></luigi-container-light>
+      <luigi-container data-test-id="luigi-container" id="lc"></luigi-container>
       <script>${scriptCode}</script>
     `;
     const stub = cy.stub();
     cy.on('window:alert', stub);
     cy.visit(tetsPage);
     cy.get('.content').invoke('append', htmlCode);
-    cy.get('[data-test-id="luigi-container-light"]')
+    cy.get('[data-test-id="luigi-container"]')
       .shadow()
       .should('not.exist');
   });
