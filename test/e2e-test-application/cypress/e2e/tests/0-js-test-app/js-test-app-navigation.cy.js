@@ -681,4 +681,91 @@ describe('JS-TEST-APP', () => {
       cy.get('.fd-app__sidebar').contains('Section one');
     });
   });
+  describe('getCurrentRoute', () => {
+    let newConfig;
+    beforeEach(() => {
+      newConfig = structuredClone(defaultLuigiConfig);
+      newConfig.navigation.nodes[0].navigationContext = 'home';
+      newConfig.navigation.nodes[0].children.push({
+        pathSegment: 'multipurpose',
+        label: 'Multipurpose',
+        viewUrl: '/examples/microfrontends/multipurpose.html',
+        children: [
+          {
+            pathSegment: 'wc',
+            label: 'WC',
+            viewUrl: '/examples/microfrontends/helloWorldWC.js',
+            webcomponent: true
+          }
+        ]
+      });
+    });
+    it('getCurrentRoute from closestContext', () => {
+      cy.visitTestAppLoggedIn('/home/multipurpose/wc', newConfig);
+      cy.expectPathToBe('/home/multipurpose/wc');
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+      )
+        .shadow()
+        .contains('getCurrentRouteFromClosestContext')
+        .click();
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+      )
+        .shadow()
+        .contains('/multipurpose/wc');
+    });
+    it('getCurrentRoute from context', () => {
+      cy.visitTestAppLoggedIn('/home/multipurpose/wc', newConfig);
+      cy.expectPathToBe('/home/multipurpose/wc');
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+      )
+        .shadow()
+        .contains('getCurrentRouteFromContext')
+        .click();
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+      )
+        .shadow()
+        .contains('/multipurpose/wc');
+    });
+    it('getCurrentRoute from parent', () => {
+      cy.visitTestAppLoggedIn('/home/multipurpose/wc', newConfig);
+      cy.expectPathToBe('/home/multipurpose/wc');
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+      )
+        .shadow()
+        .contains('getCurrentRouteFromParent')
+        .click();
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73'
+      )
+        .shadow()
+        .contains('/wc');
+    });
+    it('getCurrentRoute from virtualTreeRoot', () => {
+      newConfig.navigation.nodes[0].children.push({
+        pathSegment: 'multipurpose2',
+        label: 'Multipurpose2',
+        viewUrl: '/examples/microfrontends/helloWorldWC.js#',
+        webcomponent: true,
+        virtualTree: true
+      });
+      cy.visitTestAppLoggedIn('/home/multipurpose2/wc/test', newConfig);
+      cy.expectPathToBe('/home/multipurpose2/wc/test');
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73232f3a7669727475616c5365676d656e745f312f3a7669727475616c5365676d656e745f32'
+      )
+        .shadow()
+        .contains('getCurrentRouteFromVirtualTree')
+        .click();
+      cy.get(
+        'luigi-wc-687474703a2f2f6c6f63616c686f73743a343530302f6578616d706c65732f6d6963726f66726f6e74656e64732f68656c6c6f576f726c6457432e6a73232f3a7669727475616c5365676d656e745f312f3a7669727475616c5365676d656e745f32'
+      )
+        .shadow()
+        .contains('/wc/test');
+    });
+  });
 });
