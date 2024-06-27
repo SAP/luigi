@@ -911,7 +911,7 @@
                 tabindex="0"
                 on:click={displayMoreButtonMenu}
                 on:keypress={event => {
-                  (event.code === 'Enter' || event.code === 'Space') && displayMoreButtonMenu();
+                  (event.code === 'Enter' || event.code === 'Space') && displayMoreButtonMenu(event);
                 }}
               >
                 <span class="fd-navigation__icon sap-icon--overflow" role="presentation" aria-hidden="true" />
