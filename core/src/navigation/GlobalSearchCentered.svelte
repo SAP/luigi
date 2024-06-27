@@ -10,11 +10,6 @@
   export let luigiCustomSearchItemRenderer__slotContainer;
   export let globalSearchConfig;
   const dispatch = createEventDispatcher();
-  const searchApiObj = {
-    fireItemSelected: item => {
-      search.searchProvider.onSearchResultItemSelected(item);
-    }
-  };
   let cancelBtn = TOP_NAV_DEFAULTS.globalSearchCenteredCancelButton;
   export let isSearchFieldVisible;
   let search = {};

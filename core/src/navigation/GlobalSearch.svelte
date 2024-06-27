@@ -10,11 +10,6 @@
   export let globalSearchConfig;
 
   const dispatch = createEventDispatcher();
-  const searchApiObj = {
-    fireItemSelected: item => {
-      globalSearchHelper.onSearchResultItemSelected(item);
-    }
-  };
   let search = {};
   let globalSearchHelper;
 
