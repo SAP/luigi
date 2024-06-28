@@ -135,6 +135,15 @@ describe('JS-TEST-APP', () => {
         });
       });
 
+      it('navigateToIntent', () => {
+        cy.visitTestApp('/', newConfig);
+        cy.get('#app[configversion="normal-navigation"]');
+        cy.window().then(win => {
+          win.Luigi.navigation().navigateToIntent('Sales-setting');
+          cy.expectPathToBe('/#?intent=Sales-setting');
+        });
+      });
+
       it('hideShellbar', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="normal-navigation"]');
