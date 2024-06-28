@@ -180,7 +180,7 @@ describe('createClientAPI', () => {
         fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
-        link: `##?intent=${slug}`,
+        link: `#?intent=${slug}`,
         nodeParams: {}
       };
 

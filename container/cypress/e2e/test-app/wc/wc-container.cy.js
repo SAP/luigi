@@ -105,7 +105,7 @@ describe('Web Container Test', () => {
         .contains('navigateToIntent')
         .click()
         .then(() => {
-          expect(stub.getCall(0)).to.be.calledWith('navigated to: #?intent=Sales-setting');
+          expect(stub.getCall(0)).to.be.calledWith('navigated to: #?intent=Sales-settings');
         });
     });
   });

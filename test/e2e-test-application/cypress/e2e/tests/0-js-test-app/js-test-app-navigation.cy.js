@@ -139,8 +139,10 @@ describe('JS-TEST-APP', () => {
         cy.visitTestApp('/', newConfig);
         cy.get('#app[configversion="normal-navigation"]');
         cy.window().then(win => {
-          win.Luigi.navigation().navigateToIntent('Sales-setting');
-          cy.expectPathToBe('/#?intent=Sales-setting');
+          win.Luigi.navigation().navigate('/home').then(() => {
+            win.Luigi.navigation().navigateToIntent('Sales-setting');
+            cy.expectPathToBe('/home/two/#?intent=Sales-setting');
+          });
         });
       });
 
