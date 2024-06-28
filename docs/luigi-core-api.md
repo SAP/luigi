@@ -1122,7 +1122,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getCurrentTheme
 
-Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before.
+Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
 
 ##### Examples
 
