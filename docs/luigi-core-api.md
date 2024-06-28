@@ -603,6 +603,10 @@ Luigi.navigation().navigateToIntent('Sales-settings')
 Luigi.navigation().navigateToIntent('Sales-settings', {project: 'pr1'})
 ```
 
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 #### openAsModal
 
 Opens a view in a modal. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
@@ -1118,7 +1122,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getCurrentTheme
 
-Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
+Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before.
 
 ##### Examples
 
