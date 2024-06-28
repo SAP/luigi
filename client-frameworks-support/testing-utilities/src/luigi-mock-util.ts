@@ -1,4 +1,5 @@
 export class LuigiMockUtil {
+  private visualizationContainerId = 'luigi-debug-vis-cnt';
   private messages: any[];
   private browser: any;
   private win: any
@@ -10,21 +11,13 @@ export class LuigiMockUtil {
   }
 
   /**
-   * Returns the global window object.
-   * @returns the glboal win object
-   */
-  private getGlobalThis(): any {
-    return this.win || globalThis;
-  }
-
-  /**
    * Parses the elements added by LuigiMockModule into the DOM and assigns them to the local this.messages variable
    *  @returns {Promise<void>} - A Promise that resolves when parsing is complete.
    */
   async parseLuigiMockedMessages(): Promise<void> {
     const window = this.getGlobalThis();
     const getTextNodeValues = (): any[] => {
-      const debugCtn = window.getElementById('luigi-debug-vis-cnt');
+      const debugCtn = window.getElementById(this.visualizationContainerId);
 
       return Array.from(debugCtn?.childNodes || []).map((item: any) => item.textContent || '');
     };
@@ -207,9 +200,24 @@ export class LuigiMockUtil {
   }
 
   /**
-   * Return list of messages, representing message elements added in the DOM for testing.
+   * Returns ID of Luigi visualization container added in the DOM for testing.
+   */
+  getVisualizationContainerId(): string {
+    return this.visualizationContainerId;
+  }
+
+  /**
+   * Returns list of messages, representing message elements added in the DOM for testing.
    */
   getMSG(): any[] {
     return this.messages;
+  }
+
+  /**
+   * Returns the global window object.
+   * @returns the global win object
+   */
+  private getGlobalThis(): any {
+    return this.win || globalThis;
   }
 }

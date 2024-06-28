@@ -107,10 +107,11 @@ describe('Another test using cypress', () => {
   });
 
   it('should mock context update', () => {
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     luigiMockUtil.mockContext(context);
-    cy.get('#luigi-debug-vis-cnt').contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
+    cy.get('#' + visualizationContainerId).contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
   });
 });
 ```
@@ -138,12 +139,13 @@ describe('Another test using nightwatch', function () {
   });
 
   it('should mock context update', async () => {
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     await luigiMockUtil.mockContext(context);
-    // Wait until '#luigi-debug-vis-cnt' element is present
-    await browser.waitForElementPresent('#luigi-debug-vis-cnt', undefined, undefined, false, () => {
-      const wrapper = browser.expect.element('#luigi-debug-vis-cnt');
+    // Wait until Luigi visualization container is present
+    await browser.waitForElementPresent('#' + visualizationContainerId, undefined, undefined, false, () => {
+      const wrapper = browser.expect.element('#' + visualizationContainerId);
 
       wrapper.to.be.present;
       wrapper.text.to.contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
@@ -184,13 +186,14 @@ describe('Another test using webdriverio', () => {
   it('should mock context update', async () => {
     luigiMockUtil = new LuigiMockUtil(browser);
 
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     await browser.url(baseUrl);
     await luigiMockUtil.mockContext(context);
-    // Wait until '#luigi-debug-vis-cnt' element is present
+    // Wait until Luigi visualization container is present
     await browser.setTimeout(defaultTimeout);
-    await expect($('#luigi-debug-vis-cnt')).toHaveHTML(expect.stringContaining('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}'));
+    await expect($('#' + visualizationContainerId)).toHaveHTML(expect.stringContaining('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}'));
   });
 });
 ```
@@ -247,13 +250,14 @@ describe('Another test using puppeteer ->', () => {
   });
 
   it('should mock context update', async () => {
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     await luigiMockUtil.mockContext(context);
-    // Wait until '#luigi-debug-vis-cnt' element is present
-    await page.waitForSelector('#luigi-debug-vis-cnt').then(async () => {
+    // Wait until Luigi visualization container is present
+    await page.waitForSelector('#' + visualizationContainerId).then(async () => {
       const result = await page
-        .locator('#luigi-debug-vis-cnt div:nth-child(1)')
+        .locator(`#${visualizationContainerId} div:nth-child(1)`)
         .map(div => div.innerText)
         .wait();
 
@@ -267,5 +271,6 @@ describe('Another test using puppeteer ->', () => {
 - **mockContext**: Mocks the context by sending Luigi context messages with the desired mocked context as parameter.
 - **mockPathExists**: This method serves as a mock for the Luigi Client `pathExists()` function. It is used in e2e tests when component being tested utilizes a call to `LuigiClient.linkManager().pathExists()`
 - **modalOpenedWithTitle**: Checks on the printed DOM Luigi message responses for a modal with given title being opened. In such a case, a message would be printed containing a `modal.title`. Returns `false` if such element was not found.
+- **getVisualizationContainerId**: Returns ID of Luigi visualization container added in the DOM for testing.
 - **getMSG**: Returns list of messages, representing message elements added in the DOM for testing.
 - **parseLuigiMockedMessages**: Parses the elements added by LuigiMockModule into the DOM and assigns them to the local messages variable
