@@ -108,7 +108,7 @@ const groupFilesByExtension = files => {
 const prettifyFile = (file, config) => {
   try {
     const text = fs.readFileSync(file).toString();
-    if (prettier.check(text, config)) {
+    if (prettier.check(text, config) || config?.excludedFiles?.includes(file)) {
       return;
     }
 
