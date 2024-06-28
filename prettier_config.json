@@ -20,6 +20,7 @@
       "printWidth": 90
    },
    "svelte": {
+      "excludedFiles": ["container/src/LuigiContainer.svelte" , "container/src/LuigiCompoundContainer.svelte"],
       "parser": "svelte",
       "plugins": ["prettier-plugin-svelte"],
       "pluginSearchDirs": ["."],
