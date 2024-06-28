@@ -31,7 +31,7 @@
   }
 
   function onKeyUp(event) {
-    globalSearchHelper.onKeyUp(event);
+    globalSearchHelper.onKeyUp(event, displaySearchResult);
   }
 
   function handleKeydown(result, event) {

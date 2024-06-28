@@ -50,7 +50,7 @@
   }
 
   function onKeyUp({ keyCode }) {
-    globalSearchHelper.onKeyUp(keyCode);
+    globalSearchHelper.onKeyUp(keyCode, displaySearchResult);
   }
 
   function searchBtnClicked() {

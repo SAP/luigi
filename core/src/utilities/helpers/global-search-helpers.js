@@ -64,7 +64,7 @@ export class GlobalSearchHelperClass {
     return '';
   }
 
-  onKeyUp({ keyCode }) {
+  onKeyUp({ keyCode }, displaySearchResult) {
     if (this.search && this.search.searchProvider) {
       if (GenericHelpers.isFunction(this.search.searchProvider.onEnter) && keyCode === KEYCODE_ENTER) {
         this.search.searchProvider.onEnter();
