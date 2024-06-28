@@ -587,6 +587,22 @@ Luigi.navigation().navigate('users/groups/stakeholders')
 Luigi.navigation().navigate('/settings', null, true) // preserve view
 ```
 
+#### navigateToIntent
+
+Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing parameters.
+
+##### Parameters
+
+-   `semanticSlug` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** concatenation of semantic object and action connected with a dash (-)
+-   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed (optional, default '{}')
+
+##### Examples
+
+```javascript
+Luigi.navigation().navigateToIntent('Sales-settings')
+Luigi.navigation().navigateToIntent('Sales-settings', {project: 'pr1'})
+```
+
 #### openAsModal
 
 Opens a view in a modal. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
@@ -1102,7 +1118,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getCurrentTheme
 
-Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before.
+Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
 
 ##### Examples
 

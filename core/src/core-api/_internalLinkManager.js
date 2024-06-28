@@ -54,6 +54,30 @@ export class linkManager extends LuigiCoreAPIBase {
     return remotePromise;
   }
 
+  navigateToIntent(semanticSlug, params = {}) {
+    let newPath = '#?intent=';
+
+    newPath += semanticSlug;
+
+    if (!Object.keys(params)?.length) {
+      return this.navigate(newPath);
+    }
+
+    const paramList = Object.entries(params);
+
+    // append parameters to the path if any
+    if (paramList.length > 0) {
+      newPath += '?';
+      for (const [key, value] of paramList) {
+        newPath += key + '=' + value + '&';
+      }
+      // trim potential excessive ampersand & at the end
+      newPath = newPath.slice(0, -1);
+    }
+
+    return this.navigate(newPath);
+  }
+
   /**
    * This function navigates to a modal after adding the onClosePromise that handles the callback for when the modal is closed.
    * @param {string} path the navigation path to open in the modal

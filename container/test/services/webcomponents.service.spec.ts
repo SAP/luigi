@@ -162,7 +162,31 @@ describe('createClientAPI', () => {
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
+
+    it('test linkManager navigateToIntent', () => {
+      const slug = 'Sales-settings';
+
+      // mock and spy on functions
+      service.containerService.dispatch = jest.fn();
+      const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      clientAPI.linkManager().navigateToIntent(slug);
+
+      // assert
+      const expectedPayload = {
+        fromClosestContext: false,
+        fromParent: false,
+        fromContext: null,
+        fromVirtualTreeRoot: false,
+        link: `##?intent=${slug}`,
+        nodeParams: {}
+      };
+
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
+    });
+
     it('test linkManager: openAsDrawer', () => {
       const route = '/test/route'
   

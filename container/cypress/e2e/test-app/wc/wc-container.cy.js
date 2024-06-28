@@ -84,6 +84,7 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testanchor"');
         });
     });
+
     it('LuigiClient API getCurrentRoute for LuigiContainer', () => {
       const stub = cy.stub();
       cy.on('window:alert', stub);
@@ -93,6 +94,18 @@ describe('Web Container Test', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('current route: /wc/clientAPI.html');
+        });
+    });
+
+    it('LuigiClient API navigateToIntent for LuigiContainer', () => {
+      const stub = cy.stub();
+      cy.on('window:alert', stub);
+      cy.get('[data-test-id="luigi-client-api-test-01"]')
+        .shadow()
+        .contains('navigateToIntent')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('navigated to: #?intent=Sales-setting');
         });
     });
   });
