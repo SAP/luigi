@@ -1,9 +1,11 @@
 <svelte:options
   customElement={{
     tag: null,
+    shadow: 'none',
     props: {
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
       context: { type: 'String', reflect: false, attribute: 'context' },
       label: { type: 'String', reflect: false, attribute: 'label' },
       webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
@@ -43,6 +45,9 @@
             }
           }
         };
+        getNoShadow(){
+          return this.hasAttribute('no-shadow') || this.noShadow
+        };
       };
     }
   }}
@@ -62,6 +67,7 @@
   export let label: string;
   export let webcomponent: any;
   export let deferInit: boolean;
+  export let noShadow: Boolean;
   export let locale: string;
   export let theme: string;
   export let activeFeatureToggleList: string[];
@@ -75,7 +81,6 @@
   export let documentTitle: string;
   export let allowRules: string[];
   export let sandboxRules: string[];
-
 
   export let userSettings: any;
   export let anchor: string;
@@ -117,7 +122,7 @@
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
         ContainerAPI.sendCustomMessage(
           id,
-          mainComponent,
+          thisComponent.getNoShadow() ? thisComponent : mainComponent,
           !!webcomponent,
           iframeHandle,
           data
@@ -125,8 +130,8 @@
       };
 
       thisComponent.updateContext = (contextObj: any, internal?: any) => {
-        if (webcomponent) {
-          mainComponent._luigi_mfe_webcomponent.context = contextObj;
+         if (webcomponent) {
+          (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
         } else {
           ContainerAPI.updateContext(contextObj, internal, iframeHandle);
         }
@@ -140,18 +145,29 @@
       webcomponentService.thisComponent = thisComponent;
 
       const ctx = GenericHelperFunctions.resolveContext(context);
-      if (webcomponent && webcomponent != "false") {
-        mainComponent.innerHTML = '';
-        const webComponentValue =
-          GenericHelperFunctions.checkWebcomponentValue(webcomponent);
+      if (webcomponent && webcomponent != 'false') {
+        if(!thisComponent.getNoShadow()){
+          mainComponent.innerHTML=''
+          const shadow = thisComponent.attachShadow({ mode: "open"});
+          shadow.append(mainComponent);
+        }else{
+          //removing mainComponent
+          thisComponent.innerHTML = '';
+        }
+        const webComponentValue = GenericHelperFunctions.checkWebcomponentValue(webcomponent);
         webcomponentService.renderWebComponent(
           viewurl,
-          mainComponent,
+          thisComponent.getNoShadow() ? thisComponent : mainComponent,
           ctx,
-          typeof webComponentValue === 'object'
-            ? { webcomponent: webComponentValue }
-            : {},
+          typeof webComponentValue === 'object' ? { webcomponent: webComponentValue } : {}
         );
+      }else{
+        if(!thisComponent.getNoShadow()){
+          //removeing mainComponent
+          thisComponent.innerHTML='';
+          const shadow = thisComponent.attachShadow({ mode: "open"});
+          shadow.append(mainComponent);
+        }
       }
       if (skipInitCheck) {
         thisComponent.initialized = true;
@@ -159,11 +175,8 @@
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
         });
       } else if (webcomponent) {
-        mainComponent.addEventListener('wc_ready', () => {
-          if (
-            !(mainComponent as any)._luigi_mfe_webcomponent
-              ?.deferLuigiClientWCInit
-          ) {
+        (thisComponent.getNoShadow() ? thisComponent : mainComponent).addEventListener('wc_ready', () => {
+          if (!(thisComponent.getNoShadow() ? thisComponent : (mainComponent as any))._luigi_mfe_webcomponent?.deferLuigiClientWCInit) {
             thisComponent.initialized = true;
             webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
           }
@@ -175,7 +188,7 @@
   };
 
   onMount(async () => {
-    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any = mainComponent.parentNode;
     thisComponent.iframeHandle = iframeHandle;
     thisComponent.init = () => {
       initialize(thisComponent);
@@ -188,12 +201,21 @@
   onDestroy(async () => {});
 </script>
 
-<main
-  bind:this={mainComponent}
-  class={webcomponent ? undefined : 'lui-isolated'}
->
+<main bind:this={mainComponent} class={webcomponent ? undefined : 'lui-isolated'}>
   {#if containerInitialized}
-    {#if !webcomponent || webcomponent === "false"}
+    {#if !webcomponent || webcomponent === 'false'}
+    <style>
+      main.lui-isolated,
+      .lui-isolated iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    
+      main.lui-isolated {
+        line-height: 0;
+      }
+    </style>
       <iframe
         bind:this={iframeHandle.iframe}
         src={viewurl}
@@ -204,16 +226,3 @@
     {/if}
   {/if}
 </main>
-
-<style>
-  main,
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-
-  main.lui-isolated {
-    line-height: 0;
-  }
-</style>

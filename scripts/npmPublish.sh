@@ -79,7 +79,8 @@ function publishPackage {
 
     npm publish $BASE_DIR/../$PUBLISH_FOLDER --access public
     npm dist-tag add $NAME@$VERSION next
-    if [[ $VERSION != *"rc."* ]] && [[ $VERSION != *"next."* ]]; then
+    if [[ $VERSION != *"rc"* ]] && [[ $VERSION != *"next."* ]]; then
+      echo "Tag $NAME@$VERSION with latest and next on npm"
       npm dist-tag add $NAME@$VERSION latest
       M_TAG=`echo $VERSION | cut -d "." -f 1,2 | tr . -`
       npm dist-tag add $NAME@$VERSION v$M_TAG

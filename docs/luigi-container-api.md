@@ -16,7 +16,7 @@ meta -->
 
 # Luigi Container API
 
-This document outlines the parameters provided by the Luigi Container. 
+This document outlines the parameters provided by the Luigi Container.
 
 ## API Reference
 
@@ -130,6 +130,16 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 **Meta**
 
 -   **since**: 1.0.0
+
+### noShadow
+
+If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 ### searchParams
 

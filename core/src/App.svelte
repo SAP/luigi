@@ -1103,7 +1103,7 @@
    * @param params {Object} navigation options
    * @returns {string} the path built
    */
-  const buildPathForGetCurrentRoute = params => {
+  export const buildPathForGetCurrentRoute = params => {
     let localNavPath = navigationPath;
     if (currentNode) {
       let parent = currentNode.parent;
