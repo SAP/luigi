@@ -8,13 +8,12 @@
   export let luigiCustomSearchRenderer__slot;
   export let luigiCustomSearchItemRenderer__slotContainer;
   export let globalSearchConfig;
-
   const dispatch = createEventDispatcher();
   let search = {};
   let globalSearchHelper;
 
   onMount(async () => {
-    globalSearchHelper.prepareSearchPlaceholder(inputElem);
+    globalSearchHelper.setSearchPlaceholder(inputElem);
     globalSearchHelper.getCustomRenderer();
   });
 
@@ -35,7 +34,7 @@
   }
 
   function handleKeydown(result, event) {
-    globalSearchHelper.handleKeydown(result, event, luigiCustomSearchItemRenderer__slotContainer);
+    globalSearchHelper.handleKeydown(result, event, inputElem, luigiCustomSearchItemRenderer__slotContainer);
   }
 
   export function onActionClick(searchResultItem) {

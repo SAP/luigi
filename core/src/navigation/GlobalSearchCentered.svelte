@@ -20,7 +20,7 @@
   onMount(async () => {
     search = globalSearchConfig;
     cancelBtn = search.globalSearchCenteredCancelButton ? search.globalSearchCenteredCancelButton : cancelBtn;
-    globalSearchHelper.prepareSearchPlaceholder(inputElem);
+    globalSearchHelper.setSearchPlaceholder(inputElem);
     globalSearchHelper.getCustomRenderer();
     globalSearchHelper.handleVisibilityGlobalSearch();
     const globalSearchCtn = document.querySelector('.lui-global-search');
@@ -74,7 +74,7 @@
   }
 
   function handleKeydown(result, event) {
-    globalSearchHelper.handleKeydown(result, event, luigiCustomSearchItemRenderer__slotContainer);
+    globalSearchHelper.handleKeydown(result, event, inputElem, luigiCustomSearchItemRenderer__slotContainer);
   }
 
   export function onActionClick(searchResultItem) {
