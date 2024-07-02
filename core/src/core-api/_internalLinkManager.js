@@ -68,14 +68,16 @@ export class linkManager extends LuigiCoreAPIBase {
     // append parameters to the path if any
     if (paramList.length > 0) {
       newPath += '?';
+
       for (const [key, value] of paramList) {
         newPath += key + '=' + value + '&';
       }
+
       // trim potential excessive ampersand & at the end
       newPath = newPath.slice(0, -1);
     }
 
-    return this.navigate(newPath);
+    this.navigate(newPath);
   }
 
   /**
