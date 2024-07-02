@@ -8,6 +8,7 @@ export class GlobalSearchHelperClass {
   search;
   isCustomSearchRenderer;
   isCustomSearchResultItemRenderer;
+  luigiCustomSearchItemRenderer__slotContainer;
 
   constructor(search, dispatcher) {
     this.search = search;
@@ -22,6 +23,10 @@ export class GlobalSearchHelperClass {
     );
   }
 
+  updateLuigiCustomSearchItemRenderer__slotContainer(updatedSlotContainer) {
+    this.luigiCustomSearchItemRenderer__slotContainer = updatedSlotContainer;
+  }
+
   handleVisibilityGlobalSearch() {
     if (!document.querySelector('.lui-global-search')) return;
     const globalSearchCtn = document.querySelector('.lui-global-search');
@@ -29,7 +34,7 @@ export class GlobalSearchHelperClass {
     globalSearchCtn.classList.toggle('lui-global-search-toggle', condition);
   }
 
-  prepareSearchPlaceholder(inputElement) {
+  setSearchPlaceholder(inputElement) {
     const placeHolder = this.getSearchPlaceholder();
     if (placeHolder) {
       inputElement.placeholder = placeHolder;
@@ -84,7 +89,7 @@ export class GlobalSearchHelperClass {
   }
 
   calcSearchResultItemSelected(direction) {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = this.luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let { childNodes, nextSibling, previousSibling } = renderedSearchResultItems[index];
@@ -108,8 +113,8 @@ export class GlobalSearchHelperClass {
     }
   }
 
-  clearAriaSelected(luigiCustomSearchItemRenderer__slotContainer) {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
+  clearAriaSelected() {
+    let renderedSearchResultItems = this.luigiCustomSearchItemRenderer__slotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
@@ -132,24 +137,25 @@ export class GlobalSearchHelperClass {
     }
   }
 
-  handleKeydown(result, { keyCode }, luigiCustomSearchItemRenderer__slotContainer) {
+  handleKeydown(result, { keyCode }, inputElement, luigiCustomSearchItemRenderer__slotContainer) {
+    this.updateLuigiCustomSearchItemRenderer__slotContainer(luigiCustomSearchItemRenderer__slotContainer);
     if (keyCode === KEYCODE_ENTER) {
       this.search.searchProvider.onSearchResultItemSelected(result, this.search);
     }
     if (keyCode === KEYCODE_ARROW_UP || keyCode === KEYCODE_ARROW_DOWN) {
       this.calcSearchResultItemSelected(keyCode);
     } else if (GenericHelpers.isFunction(this.search.searchProvider.onEscape) && keyCode === KEYCODE_ESC) {
-      this.clearAriaSelected(luigiCustomSearchItemRenderer__slotContainer);
+      this.clearAriaSelected(this.luigiCustomSearchItemRenderer__slotContainer);
       setTimeout(() => {
-        inputElem.focus();
+        this.setFocusOnGlobalSearchFieldDesktop(inputElement);
       });
       this.search.searchProvider.onEscape();
     }
   }
 
-  setFocusOnGlobalSearchFieldDesktop(inputElem) {
-    if (inputElem) {
-      inputElem.focus();
+  setFocusOnGlobalSearchFieldDesktop(inputElement) {
+    if (inputElement) {
+      inputElement.focus();
     }
   }
 
@@ -165,7 +171,7 @@ export class GlobalSearchHelperClass {
   toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, luigiCustomSearchRenderer__slot) {
     if (!isSearchFieldVisible)
       setTimeout(() => {
-        this.setFocusOnGlobalSearchFieldDesktop(inputElem);
+        this.setFocusOnGlobalSearchFieldDesktop();
       });
     else {
       displaySearchResult = false;
@@ -187,5 +193,3 @@ export class GlobalSearchHelperClass {
     }
   }
 }
-
-export const GlobalSearchHelper = new GlobalSearchHelperClass();
