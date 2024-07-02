@@ -59,22 +59,20 @@ export class linkManager extends LuigiCoreAPIBase {
 
     newPath += semanticSlug;
 
-    if (!Object.keys(params)?.length) {
-      return this.navigate(newPath);
-    }
+    if (Object.keys(params)?.length) {
+      const paramList = Object.entries(params);
 
-    const paramList = Object.entries(params);
+      // append parameters to the path if any
+      if (paramList.length > 0) {
+        newPath += '?';
 
-    // append parameters to the path if any
-    if (paramList.length > 0) {
-      newPath += '?';
+        for (const [key, value] of paramList) {
+          newPath += key + '=' + value + '&';
+        }
 
-      for (const [key, value] of paramList) {
-        newPath += key + '=' + value + '&';
+        // trim potential excessive ampersand & at the end
+        newPath = newPath.slice(0, -1);
       }
-
-      // trim potential excessive ampersand & at the end
-      newPath = newPath.slice(0, -1);
     }
 
     this.navigate(newPath);
