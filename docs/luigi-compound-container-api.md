@@ -49,6 +49,16 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 -   **since**: 1.0.0
 
+### noShadow
+
+If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXTRELEASE
+
 ### searchParams
 
 The search parameters to be passed to the compound micro frontend.
