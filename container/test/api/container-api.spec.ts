@@ -61,6 +61,75 @@ describe('Container Service', () => {
         });
     });
 
+    describe('updateAuthData', () => {
+        let containerAPI = new ContainerAPIFunctions();
+
+        it('iframeHandle exists, authData exists', () => {
+            // mock and spy
+            const authData = { someData: 'mytoken'};
+            const iframeHandle = {
+                data: 'test'
+            };
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const spy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+
+            // act
+            containerAPI.updateAuthData(iframeHandle, authData);
+
+            // assert
+            expect(spy).toHaveBeenCalledWith(iframeHandle, {authData}, LuigiInternalMessageID.AUTH_SET_TOKEN)
+        });
+
+        it('iframeHandle undefined, authData exists', () => {
+             // mock and spy
+             const authData = undefined;
+             const iframeHandle = undefined;
+             containerService.sendCustomMessageToIframe = jest.fn();
+             const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+             const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
+ 
+             // act
+             containerAPI.updateAuthData(iframeHandle, authData);
+ 
+             // assert
+             expect(sendCustomMSGSpy).not.toHaveBeenCalled();
+             expect(consoleWarnSpy).toHaveBeenCalledWith('Attempting to update auth data on inexisting iframe or authData')
+        });
+
+
+        it('iframeHandle exists, authData undefined', () => {
+             // mock and spy
+             const authData = undefined;
+             const iframeHandle = undefined;
+             containerService.sendCustomMessageToIframe = jest.fn();
+             const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+             const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
+ 
+             // act
+             containerAPI.updateAuthData(iframeHandle, authData);
+ 
+             // assert
+             expect(sendCustomMSGSpy).not.toHaveBeenCalled();
+             expect(consoleWarnSpy).toHaveBeenCalledWith('Attempting to update auth data on inexisting iframe or authData')
+        });
+
+        it('iframeHandle undefined, authData undefined', () => {
+            // mock and spy
+            const authData = undefined;
+            const iframeHandle = undefined;
+            containerService.sendCustomMessageToIframe = jest.fn();
+            const sendCustomMSGSpy = jest.spyOn(containerService, 'sendCustomMessageToIframe');
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(jest.fn());
+
+            // act
+            containerAPI.updateAuthData(iframeHandle, authData);
+
+            // assert
+            expect(sendCustomMSGSpy).not.toHaveBeenCalled();
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Attempting to update auth data on inexisting iframe or authData')
+        });
+    });
+
     describe('closeAlert', () => {
         let containerAPI = new ContainerAPIFunctions();
 
@@ -79,7 +148,6 @@ describe('Container Service', () => {
             expect(spy).toHaveBeenCalledWith(iframeHandle, { id, dismissKey }, LuigiInternalMessageID.ALERT_CLOSED)
         });
     });
-
 
     describe('sendCustomMessage', () => {
         let containerAPI = new ContainerAPIFunctions();

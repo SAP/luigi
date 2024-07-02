@@ -106,7 +106,8 @@ export class ContainerService {
                   {
                     msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
                     context: targetCnt.context || {},
-                    internal: {}
+                    internal: {},
+                    authData: targetCnt.authData || {},
                   },
                   '*'
                 );
