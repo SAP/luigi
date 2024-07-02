@@ -4,11 +4,11 @@
  * @returns {string|undefined} The modified allow rules joined as a single string, or undefined if allowRules is falsy.
  */
 export const getAllowRules = (allowRules: string[]) => {
-    if (!allowRules) return undefined;
-    const rules = allowRules;
-    rules.forEach((rule, index) => {
-        rules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');
-        rules[index] = (allowRules[index] as any).replaceAll('"', "'");
-    });
-    return rules.join(' ');
+  if (!allowRules) return undefined;
+  const rules = allowRules;
+  rules.forEach((rule, index) => {
+    rules[index] = rule + (rule.indexOf(';') != -1 ? '' : ';');
+    rules[index] = (allowRules[index] as any).replaceAll('"', "'");
+  });
+  return rules.join(' ');
 };

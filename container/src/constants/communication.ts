@@ -99,10 +99,10 @@ export namespace Events {
    */
   export const SET_DIRTY_STATUS_REQUEST = 'set-dirty-status-request';
 
- /**
+  /**
    * A message emitted from the micro frontend when a request to set the view group data
    */
- export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
+  export const SET_VIEW_GROUP_DATA_REQUEST = 'set-viewgroup-data-request';
 
   /**
    * A message emitted from the micro frontend when a request to set the document title
@@ -110,12 +110,12 @@ export namespace Events {
   export const SET_DOCUMENT_TITLE_REQUEST = 'set-document-title-request';
 
   /**
-   * A message emitted from the micro frontend when a request to open user settings 
+   * A message emitted from the micro frontend when a request to open user settings
    */
   export const OPEN_USER_SETTINGS_REQUEST = 'open-user-settings-request';
 
   /**
-   * A message emitted from the micro frontend when a request to close user settings 
+   * A message emitted from the micro frontend when a request to close user settings
    */
   export const CLOSE_USER_SETTINGS_REQUEST = 'close-user-settings-request';
 

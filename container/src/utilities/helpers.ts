@@ -30,22 +30,18 @@ export class GenericHelpersClass {
     } else if (typeof webcomponent === 'boolean' || typeof webcomponent === 'object') {
       return webcomponent;
     } else {
-      console.warn('Webcomponent value has a wrong type.')
+      console.warn('Webcomponent value has a wrong type.');
     }
   }
 
   /**
-  * Resolves the context to an object. If the context is a string, it attempts to parse
-  * it as JSON. If parsing fails JSON parse error will be thrown.
-  * @param {object | string} context - The context to be resolved.
-  * @returns {object} The resolved context as an object.
-  */
+   * Resolves the context to an object. If the context is a string, it attempts to parse
+   * it as JSON. If parsing fails JSON parse error will be thrown.
+   * @param {object | string} context - The context to be resolved.
+   * @returns {object} The resolved context as an object.
+   */
   resolveContext(context: object | string): object {
-    return context
-      ? typeof context === 'string'
-        ? JSON.parse(context)
-        : context
-      : {};
+    return context ? (typeof context === 'string' ? JSON.parse(context) : context) : {};
   }
 }
 

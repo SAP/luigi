@@ -1,7 +1,7 @@
 export class LuigiMockUtil {
   private messages: any[];
   private browser: any;
-  private win: any
+  private win: any;
 
   constructor(browser: any, win?: any) {
     this.messages = [];
@@ -54,7 +54,7 @@ export class LuigiMockUtil {
             return undefined;
           }
         })
-        .filter((item) => item !== undefined);
+        .filter(item => item !== undefined);
     } catch (error) {
       console.debug('Failed to parse luigi mocked messages: ', error);
     }
@@ -110,13 +110,13 @@ export class LuigiMockUtil {
    */
   mockPathExists = (path: string, exists: boolean): void => {
     const window = this.getGlobalThis();
-    const mockContext: Record<string, boolean | string> = {path, exists};
+    const mockContext: Record<string, boolean | string> = { path, exists };
     /**
-    * Sets the path exists mock data in sessionStorage.
-    * @param {string} path - The path for which mock data is to be set.
-    * @param {boolean} exists - Boolean indicating whether the path exists.
-    * @returns {Object} - Object indicating session storage item.
-    */
+     * Sets the path exists mock data in sessionStorage.
+     * @param {string} path - The path for which mock data is to be set.
+     * @param {boolean} exists - Boolean indicating whether the path exists.
+     * @returns {Object} - Object indicating session storage item.
+     */
     const setPathExistsMockData = (context: Record<string, boolean | string>): Record<string, any> => {
       window.sessionStorage.clear();
 

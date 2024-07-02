@@ -26,7 +26,7 @@ export class DynamicComponent implements OnInit, OnDestroy {
 
   private lcSubscription: Subscription = new Subscription();
 
-  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) { }
+  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.lcSubscription.add(
