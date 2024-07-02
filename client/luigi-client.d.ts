@@ -56,19 +56,28 @@ export declare interface DrawerSettings {
   overlap?: boolean;
 }
 
+export declare interface NodeParams {
+  [key: string]: string;
+}
+
+export declare interface PathParams {
+  [key: string]: string;
+}
+
 export declare interface Context {
+  parentNavigationContext?: string[];
+  [key: string]: any;
+}
+
+export declare interface InternalContext {
+  anchor?: string;
   authData?: AuthData;
-  context?: { parentNavigationContext?: string[] };
+  context?: Context;
   internal?: {
     userSettings?: getUserSettings;
   };
   nodeParams?: NodeParams;
   pathParams?: PathParams;
-  anchor?: string;
-  [key: string]: any;
-}
-export declare interface NodeParams {
-  [key: string]: string;
 }
 
 export declare interface ClientPermissions {
@@ -82,10 +91,6 @@ export declare interface AlertSettings {
     [key: string]: { text: string; url?: string; dismissKey?: string };
   };
   closeAfter?: number;
-}
-
-export declare interface PathParams {
-  [key: string]: string;
 }
 
 export declare interface CoreSearchParams {
