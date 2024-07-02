@@ -100,17 +100,18 @@ describe('Another test using cypress', () => {
     cy.getAllSessionStorage().then((result: any) => {
       expect(result).to.deep.equal({
         "http://localhost:4200": {
-          luigiMockData: '{"pathExists":{"/test":false}}'
+          [luigiMockUtil.getSessionStorageItemName()]: luigiMockUtil.getMockedPathExistsOutput()
         },
       });
     })
   });
 
   it('should mock context update', () => {
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     luigiMockUtil.mockContext(context);
-    cy.get('#luigi-debug-vis-cnt').contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
+    cy.get('#' + visualizationContainerId).contains(luigiMockUtil.getMockedContextOutput(context));
   });
 });
 ```
@@ -123,6 +124,7 @@ import { LuigiMockUtil } from '@luigi-project/testing-utilities';
 
 describe('Another test using nightwatch', function () {
   const luigiMockUtil: LuigiMockUtil = new LuigiMockUtil(browser);
+  const luigiStorageItemName = luigiMockUtil.getSessionStorageItemName();
 
   before((browser) => browser.navigateTo('http://localhost:4200'));
 
@@ -131,22 +133,23 @@ describe('Another test using nightwatch', function () {
     await browser.expect.element('.pathExists').to.be.present;
     await browser.element('.pathExists').click().then(() => {
       luigiMockUtil.mockPathExists('/test', false);
-      browser.execute(() => window.sessionStorage.getItem('luigiMockData'), [], function (result) {
-        expect(result.value).to.contains('{"pathExists":{"/test":false}}');
+      browser.execute((name) => window.sessionStorage.getItem(name), [luigiStorageItemName], function (result) {
+        expect(result.value).to.contains(luigiMockUtil.getMockedPathExistsOutput('/test', false));
       });
     });
   });
 
   it('should mock context update', async () => {
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     await luigiMockUtil.mockContext(context);
-    // Wait until '#luigi-debug-vis-cnt' element is present
-    await browser.waitForElementPresent('#luigi-debug-vis-cnt', undefined, undefined, false, () => {
-      const wrapper = browser.expect.element('#luigi-debug-vis-cnt');
+    // Wait until Luigi visualization container is present
+    await browser.waitForElementPresent('#' + visualizationContainerId, undefined, undefined, false, () => {
+      const wrapper = browser.expect.element('#' + visualizationContainerId);
 
       wrapper.to.be.present;
-      wrapper.text.to.contains('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
+      wrapper.text.to.contains(luigiMockUtil.getMockedContextOutput(context));
     });
   });
 
@@ -176,21 +179,23 @@ describe('Another test using webdriverio', () => {
     // Wait until session storage item is set
     await browser.setTimeout(defaultTimeout);
 
-    const result = await browser.execute(() => window.sessionStorage.getItem('luigiMockData'));
+    const luigiStorageItemName = luigiMockUtil.getSessionStorageItemName();
+    const result = await browser.execute((name) => window.sessionStorage.getItem(name), luigiStorageItemName);
 
-    await expect(result).toEqual('{"pathExists":{"/test":false}}');
+    await expect(result).toEqual(luigiMockUtil.getMockedPathExistsOutput());
   });
 
   it('should mock context update', async () => {
     luigiMockUtil = new LuigiMockUtil(browser);
 
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     await browser.url(baseUrl);
     await luigiMockUtil.mockContext(context);
-    // Wait until '#luigi-debug-vis-cnt' element is present
+    // Wait until Luigi visualization container is present
     await browser.setTimeout(defaultTimeout);
-    await expect($('#luigi-debug-vis-cnt')).toHaveHTML(expect.stringContaining('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}'));
+    await expect($('#' + visualizationContainerId)).toHaveHTML(expect.stringContaining(luigiMockUtil.getMockedContextOutput(context)));
   });
 });
 ```
@@ -239,25 +244,27 @@ describe('Another test using puppeteer ->', () => {
         // Wait until session storage item is set
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        const result = await page.evaluate(() => window.sessionStorage.getItem('luigiMockData'));
+        const luigiStorageItemName = luigiMockUtil.getSessionStorageItemName();
+        const result = await page.evaluate((name) => window.sessionStorage.getItem(name), luigiStorageItemName);
 
-        await expect(result).toContain('{"pathExists":{"/test":false}}');
+        await expect(result).toContain(luigiMockUtil.getMockedPathExistsOutput());
       });
     });
   });
 
   it('should mock context update', async () => {
+    const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
     const context = {ctxKey: 'ctxValue'};
 
     await luigiMockUtil.mockContext(context);
-    // Wait until '#luigi-debug-vis-cnt' element is present
-    await page.waitForSelector('#luigi-debug-vis-cnt').then(async () => {
+    // Wait until Luigi visualization container is present
+    await page.waitForSelector('#' + visualizationContainerId).then(async () => {
       const result = await page
-        .locator('#luigi-debug-vis-cnt div:nth-child(1)')
+        .locator(`#${visualizationContainerId} div:nth-child(1)`)
         .map(div => div.innerText)
         .wait();
 
-      expect(result).toContain('{"msg":"luigi.get-context","context":{"ctxKey":"ctxValue"}}');
+      expect(result).toContain(luigiMockUtil.getMockedContextOutput(context));
     });
   });
 });
@@ -265,7 +272,11 @@ describe('Another test using puppeteer ->', () => {
 
 ## Functions provided
 - **mockContext**: Mocks the context by sending Luigi context messages with the desired mocked context as parameter.
-- **mockPathExists**: This method serves as a mock for the Luigi Client `pathExists()` function. It is used in e2e tests when component being tested utilizes a call to `LuigiClient.linkManager().pathExists()`
+- **mockPathExists**: This method serves as a mock for the Luigi Client `pathExists()` function. It is used in e2e tests when component being tested utilizes a call to `LuigiClient.linkManager().pathExists()`.
 - **modalOpenedWithTitle**: Checks on the printed DOM Luigi message responses for a modal with given title being opened. In such a case, a message would be printed containing a `modal.title`. Returns `false` if such element was not found.
+- **getMockedContextOutput**: Returns output of 'mockContext' method with given data.
+- **getMockedPathExistsOutput**: Returns output of 'mockPathExists' method with given arguments.
+- **getSessionStorageItemName**: Returns name of session storage item used for testing.
+- **getVisualizationContainerId**: Returns ID of Luigi visualization container added in the DOM for testing.
 - **getMSG**: Returns list of messages, representing message elements added in the DOM for testing.
-- **parseLuigiMockedMessages**: Parses the elements added by LuigiMockModule into the DOM and assigns them to the local messages variable
+- **parseLuigiMockedMessages**: Parses the elements added by LuigiMockModule into the DOM and assigns them to the local messages variable.

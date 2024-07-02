@@ -147,17 +147,20 @@ export class LuigiMockEngine {
    * which holds data that is useful for e2e testing.
    */
   public static visualize(data: string): void {
-    let luigiVisualizationContainer: Element | null = document.querySelector('#luigi-debug-vis-cnt');
+    const visualizationContainerId = 'luigi-debug-vis-cnt';
+    const dataWrapper: HTMLDivElement = document.createElement('div');
+    let luigiVisualizationContainer: Element | null = document.querySelector('#' + visualizationContainerId);
+
     // Construct element structure if not already constructed
     if (!luigiVisualizationContainer) {
       luigiVisualizationContainer = document.createElement('div');
-      luigiVisualizationContainer.setAttribute('id', 'luigi-debug-vis-cnt');
+      luigiVisualizationContainer.setAttribute('id', visualizationContainerId);
       // Hide the added DOM element to avoid interferring/overlapping with other elements during testing.
       luigiVisualizationContainer.setAttribute('style', 'display:none');
       document.body.appendChild(luigiVisualizationContainer);
     }
-    const line: HTMLDivElement = document.createElement('div');
-    line.textContent = data;
-    luigiVisualizationContainer.appendChild(line);
+
+    dataWrapper.textContent = data;
+    luigiVisualizationContainer.appendChild(dataWrapper);
   }
 }

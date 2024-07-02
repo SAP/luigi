@@ -1,4 +1,6 @@
 export class LuigiMockUtil {
+  private sessionStorageItemName = 'luigiMockData';
+  private visualizationContainerId = 'luigi-debug-vis-cnt';
   private messages: any[];
   private browser: any;
   private win: any
@@ -10,21 +12,13 @@ export class LuigiMockUtil {
   }
 
   /**
-   * Returns the global window object.
-   * @returns the glboal win object
-   */
-  private getGlobalThis(): any {
-    return this.win || globalThis;
-  }
-
-  /**
    * Parses the elements added by LuigiMockModule into the DOM and assigns them to the local this.messages variable
    *  @returns {Promise<void>} - A Promise that resolves when parsing is complete.
    */
   async parseLuigiMockedMessages(): Promise<void> {
     const window = this.getGlobalThis();
     const getTextNodeValues = (): any[] => {
-      const debugCtn = window.getElementById('luigi-debug-vis-cnt');
+      const debugCtn = window.getElementById(this.visualizationContainerId);
 
       return Array.from(debugCtn?.childNodes || []).map((item: any) => item.textContent || '');
     };
@@ -64,7 +58,7 @@ export class LuigiMockUtil {
    * Mocks the context by sending luigi context messages with the desired mocked context as parameter.
    * @param mockContext an object representing the context to be mocked
    */
-  mockContext = (mockContext: Record<string, any>): void => {
+  mockContext(mockContext: Record<string, any>): void {
     const window = this.getGlobalThis();
     const postMessageToLuigi = (context: Record<string, any>): Record<string, any> => {
       window.postMessage({ msg: 'luigi.get-context', context }, '*');
@@ -90,7 +84,7 @@ export class LuigiMockUtil {
     } catch (error) {
       console.debug('Failed to mock context: ', error);
     }
-  };
+  }
 
   /**
    * This method serves as a mock for the luigi client pathExists() function.
@@ -108,7 +102,7 @@ export class LuigiMockUtil {
    * await mockPathExists('pathToCheck', false);
    *
    */
-  mockPathExists = (path: string, exists: boolean): void => {
+  mockPathExists(path: string, exists: boolean): void {
     const window = this.getGlobalThis();
     const mockContext: Record<string, boolean | string> = {path, exists};
     /**
@@ -126,7 +120,7 @@ export class LuigiMockUtil {
         }
       };
 
-      window.sessionStorage.setItem('luigiMockData', JSON.stringify(pathExistsMockData));
+      window.sessionStorage.setItem(this.sessionStorageItemName, JSON.stringify(pathExistsMockData));
 
       return { ...pathExistsMockData, sessionItem: 'isStored' };
     };
@@ -149,7 +143,7 @@ export class LuigiMockUtil {
     } catch (error) {
       console.debug('Failed to mock path exists: ', error);
     }
-  };
+  }
 
   /**
    * Checks on the printed DOM Luigi message responses for a modal with given title
@@ -207,9 +201,45 @@ export class LuigiMockUtil {
   }
 
   /**
-   * Return list of messages, representing message elements added in the DOM for testing.
+   * Returns output of 'mockContext' method with given data.
+   */
+  getMockedContextOutput(context: Record<string, any>): string {
+    return `{"msg":"luigi.get-context","context":${JSON.stringify(context)}}`;
+  }
+
+  /**
+   * Returns output of 'mockPathExists' method with given arguments.
+   */
+  getMockedPathExistsOutput(path: string, exists: boolean): string {
+    return `{"pathExists":{"${path}":${exists}}}`;
+  }
+
+  /**
+   * Returns name of session storage item used for testing.
+   */
+  getSessionStorageItemName(): string {
+    return this.sessionStorageItemName;
+  }
+
+  /**
+   * Returns ID of Luigi visualization container added in the DOM for testing.
+   */
+  getVisualizationContainerId(): string {
+    return this.visualizationContainerId;
+  }
+
+  /**
+   * Returns list of messages, representing message elements added in the DOM for testing.
    */
   getMSG(): any[] {
     return this.messages;
+  }
+
+  /**
+   * Returns the global window object.
+   * @returns the global win object
+   */
+  private getGlobalThis(): any {
+    return this.win || globalThis;
   }
 }
