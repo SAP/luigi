@@ -11,7 +11,7 @@ import { isEqual } from 'lodash';
 
 class RoutingClass {
   getNodePath(node, params) {
-    return node ? RoutingHelpers.buildRoute(node, node.pathSegment ? '/' + node.pathSegment : '', params) : '';
+    return RoutingHelpers.getNodePath(node, params);
   }
 
   normalizePath(path) {

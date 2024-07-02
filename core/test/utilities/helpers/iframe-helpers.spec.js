@@ -142,6 +142,76 @@ describe('Iframe-helpers', () => {
     });
   });
 
+  describe('isSameUrl', () => {
+    it('should return false when iframe is not set', () => {
+      const config = { iframe: null };
+
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        viewGroup: 'test',
+        previousNodeValues: { viewUrl: null, viewGroup: null }
+      });
+
+      const result = IframeHelpers.isSameUrl(config, component);
+
+      assert.equal(result, false);
+    });
+
+    it('should return false when iframe is set and previousUrl is different than nextUrl', () => {
+      const config = {
+        iframe: {
+          src: 'http://url.com/index.html!#/prevUrl'
+        }
+      };
+
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        viewGroup: 'test',
+        previousNodeValues: { viewUrl: config.iframe.src, viewGroup: null }
+      });
+
+      const result = IframeHelpers.isSameUrl(config, component);
+
+      assert.equal(result, false);
+    });
+
+    it('should return false when iframe is set and previousUrl equals nextUrl, but viewGroup is defined', () => {
+      const config = {
+        iframe: {
+          src: 'http://otherurl.de/app.html!#/someUrl'
+        }
+      };
+
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        viewGroup: 'test',
+        previousNodeValues: { viewUrl: config.iframe.src, viewGroup: null }
+      });
+
+      const result = IframeHelpers.isSameUrl(config, component);
+
+      assert.equal(result, false);
+    });
+
+    it('should return true when iframe is set and previousUrl equals nextUrl and viewGroup is not defined', () => {
+      const config = {
+        iframe: {
+          src: 'http://otherurl.de/app.html!#/someUrl'
+        }
+      };
+
+      component.set({
+        viewUrl: 'http://otherurl.de/app.html!#/someUrl',
+        viewGroup: null,
+        previousNodeValues: { viewUrl: config.iframe.src, viewGroup: null }
+      });
+
+      const result = IframeHelpers.isSameUrl(config, component);
+
+      assert.equal(result, true);
+    });
+  });
+
   describe('canReuseIframe', () => {
     const config = {
       iframe: {

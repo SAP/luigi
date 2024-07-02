@@ -1,10 +1,9 @@
 // Helper methods for 'navigation.js' file. They don't require any method from 'navigation.js` but are required by them.
+import { reject, get } from 'lodash';
 import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../core-api';
-import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
-import { reject, get } from 'lodash';
-import { IframeHelpers } from './';
+import { AuthHelpers, GenericHelpers, IframeHelpers, RoutingHelpers } from './';
 
 class NavigationHelpersClass {
   constructor() {
@@ -105,13 +104,8 @@ class NavigationHelpersClass {
     return context;
   }
 
-  // TODO: use one extracted generic helper function here and in routing.js
   getNodePath(node) {
-    if (node.parent) {
-      return this.getNodePath(node.parent) + '/' + node.pathSegment;
-    } else {
-      return node.pathSegment;
-    }
+    return RoutingHelpers.getNodePath(node, null);
   }
 
   groupNodesBy(nodes, property, useVirtualGroups) {

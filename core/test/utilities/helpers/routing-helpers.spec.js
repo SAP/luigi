@@ -503,6 +503,34 @@ describe('Routing-helpers', () => {
       sinon.assert.calledOnce(RoutingHelpers.getRouteLink);
     });
   });
+
+  describe('getNodePath', () => {
+    const node = {
+      label: 'AAA',
+      pathSegment: 'projects',
+      viewUrl: '/aaa.html'
+    };
+    const params = '~test=true&foo=bar';
+
+    it('should not fail if node is not defined', () => {
+      const result = Routing.getNodePath(undefined, params);
+
+      assert.equal(result, '');
+    });
+
+    it('should not fail if params are not defined', () => {
+      const result = Routing.getNodePath(node, undefined);
+
+      assert.equal(result, '/projects');
+    });
+
+    it('should return node path with params', () => {
+      const result = Routing.getNodePath(node, params);
+
+      assert.equal(result, '/projects?~test=true&foo=bar');
+    });
+  });
+
   describe('getLastNodeObject', () => {
     let mockPathData;
 

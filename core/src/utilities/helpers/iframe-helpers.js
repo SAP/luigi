@@ -53,19 +53,18 @@ class IframeHelpersClass {
     });
   }
 
-  isSameDomain(config, component) {
-    //TODO rename to reflect the fact that it checks for URL till hash (which is more than just domain)
-    if (config.iframe) {
-      const componentData = component.get();
-      const previousUrl = GenericHelpers.getUrlWithoutHash(componentData.previousNodeValues.viewUrl);
-      const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
-      const previousViewGroup = componentData.previousNodeValues.viewGroup;
-      const nextViewGroup = componentData.viewGroup;
-      if (previousUrl === nextUrl && !previousViewGroup && !nextViewGroup) {
-        return true;
-      }
+  isSameUrl(config, component) {
+    if (!config.iframe) {
+      return false;
     }
-    return false;
+
+    const componentData = component.get();
+    const previousUrl = GenericHelpers.getUrlWithoutHash(componentData.previousNodeValues.viewUrl);
+    const nextUrl = GenericHelpers.getUrlWithoutHash(componentData.viewUrl);
+    const previousViewGroup = componentData.previousNodeValues.viewGroup;
+    const nextViewGroup = componentData.viewGroup;
+
+    return !!(previousUrl === nextUrl && !previousViewGroup && !nextViewGroup);
   }
 
   isSameViewGroup(config, component) {
@@ -87,7 +86,7 @@ class IframeHelpersClass {
   }
 
   canReuseIframe(config, component) {
-    return this.isSameDomain(config, component) || this.isSameViewGroup(config, component);
+    return this.isSameUrl(config, component) || this.isSameViewGroup(config, component);
   }
 
   getLocation(url) {

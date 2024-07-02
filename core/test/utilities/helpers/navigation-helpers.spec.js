@@ -1,12 +1,11 @@
-/* eslint-disable camelcase */
-//TODO: make some tests here
+import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../../src/core-api';
+import { Navigation } from '../../../src/navigation/services/navigation';
+import { Routing } from '../../../src/services';
+import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
+
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { AuthHelpers, NavigationHelpers, RoutingHelpers } from '../../../src/utilities/helpers';
-import { LuigiAuth, LuigiConfig, LuigiFeatureToggles, LuigiI18N } from '../../../src/core-api';
-import { Routing } from '../../../src/services/routing';
-import { Navigation } from '../../../src/navigation/services/navigation';
 
 describe('Navigation-helpers', () => {
   describe('isNodeAccessPermitted', () => {
@@ -228,14 +227,25 @@ describe('Navigation-helpers', () => {
     });
   });
 
-  it('getNodePath', () => {
-    const node = {
-      parent: {
-        pathSegment: 'parent'
-      },
-      pathSegment: 'pathSegment'
-    };
-    assert.equal(NavigationHelpers.getNodePath(node), 'parent/pathSegment', 'path should match');
+  describe('getNodePath', () => {
+    it('should return path built without parent segment', () => {
+      const node = {
+        pathSegment: 'pathSegment'
+      };
+
+      assert.equal(NavigationHelpers.getNodePath(node), '/pathSegment', 'path should match');
+    });
+
+    it('should return path built from both parent and child segment', () => {
+      const node = {
+        parent: {
+          pathSegment: 'parent'
+        },
+        pathSegment: 'pathSegment'
+      };
+
+      assert.equal(NavigationHelpers.getNodePath(node), '/parent/pathSegment', 'path should match');
+    });
   });
 
   describe('handleUnresponsiveClient', () => {
@@ -1004,6 +1014,132 @@ describe('Navigation-helpers', () => {
       let sideNavAccordionMode = NavigationHelpers.getSideNavAccordionMode(selectedNode);
       sinon.assert.calledOnceWithExactly(LuigiConfig.getConfigBooleanValue, 'navigation.defaults.sideNavAccordionMode');
       assert.equal(sideNavAccordionMode, true);
+    });
+  });
+
+  describe('getProductSwitcherConfig', () => {
+    beforeEach(() => {
+      sinon.stub(LuigiConfig, 'getConfigValue');
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+    it('should return product switcher config', () => {
+      const mockedConfig = {
+        icon: 'grid',
+        label: 'Products',
+        columns: 'auto',
+        items: () => {
+          return [{}, {}, {}];
+        }
+      };
+
+      LuigiConfig.getConfigValue.returns(mockedConfig);
+
+      const result = NavigationHelpers.getProductSwitcherConfig();
+
+      assert.deepEqual(result, mockedConfig);
+    });
+  });
+
+  describe('applyContext', () => {
+    it('should return provided context when no additional data is present', () => {
+      const mockedContext = { data: 'store' };
+      const result = NavigationHelpers.applyContext(mockedContext, null, null);
+
+      assert.deepEqual(result, mockedContext);
+    });
+
+    it('should return provided context when additional data is present', () => {
+      const mockedContext = { data: 'store' };
+      const mockedAddition = { foo: 'bar' };
+      const result = NavigationHelpers.applyContext(mockedContext, mockedAddition, null);
+
+      assert.deepEqual(result, { ...mockedContext, ...mockedAddition });
+    });
+  });
+
+  describe('stripNode', () => {
+    it('should return stripped node', () => {
+      const mockedNode = { children: [], data: 'store', navHeader: {}, parent: {} };
+      const result = NavigationHelpers.stripNode(mockedNode);
+
+      assert.deepEqual(result, { data: 'store' });
+    });
+  });
+
+  describe('getParentNode', () => {
+    it('should return node parent when it is present', () => {
+      const mockedNode = { children: [], data: 'store', navHeader: {}, parent: {} };
+      const mockedPathData = [
+        {
+          navigationPath: [
+            {
+              pathSegment: 'groups',
+              children: [
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ]
+            }
+          ],
+          context: {}
+        }
+      ];
+      const result = NavigationHelpers.getParentNode(mockedNode, mockedPathData);
+
+      assert.deepEqual(result, {});
+    });
+
+    it('should return path data item when node parent is not present', () => {
+      const mockedNode = { children: [], data: 'store', navHeader: {}, parent: null };
+      const mockedPathData = [
+        {
+          navigationPath: [
+            {
+              pathSegment: 'groups',
+              children: [
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ]
+            }
+          ],
+          context: {}
+        },
+        mockedNode
+      ];
+      const result = NavigationHelpers.getParentNode(mockedNode, mockedPathData);
+
+      assert.deepEqual(result, mockedPathData[0]);
+    });
+  });
+
+  describe('getTestId', () => {
+    it('should return node testId when it is present', () => {
+      const mockedNode = { children: [], label: null, pathSegment: null, testId: 'ab_cd' };
+      const result = NavigationHelpers.getTestId(mockedNode);
+
+      assert.equal(result, 'ab_cd');
+    });
+
+    it('should return generated testId when it is not present in node', () => {
+      const mockedNode = { children: [], label: 'cd', pathSegment: 'ab', testId: null };
+      const result = NavigationHelpers.getTestId(mockedNode);
+
+      assert.equal(result, 'ab_cd');
     });
   });
 });
