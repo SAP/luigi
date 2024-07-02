@@ -1073,24 +1073,26 @@ describe('Navigation-helpers', () => {
   describe('getParentNode', () => {
     it('should return node parent when it is present', () => {
       const mockedNode = { children: [], data: 'store', navHeader: {}, parent: {} };
-      const mockedPathData = [{
-        navigationPath: [
-          {
-            pathSegment: 'groups',
-            children: [
-              {
-                pathSegment: 'stakeholders',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
-              },
-              {
-                pathSegment: 'customers',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
-              }
-            ]
-          }
-        ],
-        context: {}
-      }];
+      const mockedPathData = [
+        {
+          navigationPath: [
+            {
+              pathSegment: 'groups',
+              children: [
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ]
+            }
+          ],
+          context: {}
+        }
+      ];
       const result = NavigationHelpers.getParentNode(mockedNode, mockedPathData);
 
       assert.deepEqual(result, {});
@@ -1098,24 +1100,27 @@ describe('Navigation-helpers', () => {
 
     it('should return path data item when node parent is not present', () => {
       const mockedNode = { children: [], data: 'store', navHeader: {}, parent: null };
-      const mockedPathData = [{
-        navigationPath: [
-          {
-            pathSegment: 'groups',
-            children: [
-              {
-                pathSegment: 'stakeholders',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
-              },
-              {
-                pathSegment: 'customers',
-                viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
-              }
-            ]
-          }
-        ],
-        context: {}
-      }, mockedNode];
+      const mockedPathData = [
+        {
+          navigationPath: [
+            {
+              pathSegment: 'groups',
+              children: [
+                {
+                  pathSegment: 'stakeholders',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/stakeholders'
+                },
+                {
+                  pathSegment: 'customers',
+                  viewUrl: '/sampleapp.html#/projects/1/users/groups/customers'
+                }
+              ]
+            }
+          ],
+          context: {}
+        },
+        mockedNode
+      ];
       const result = NavigationHelpers.getParentNode(mockedNode, mockedPathData);
 
       assert.deepEqual(result, mockedPathData[0]);
