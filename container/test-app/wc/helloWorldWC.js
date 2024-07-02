@@ -79,6 +79,9 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
+    const navigateToIntentBtn = document.createElement('template');
+    navigateToIntentBtn.innerHTML = '<button id="navigateToIntent">navigateToIntent</button>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -101,6 +104,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(navigateToIntentBtn.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
@@ -273,6 +277,14 @@ export default class extends HTMLElement {
           console.log(result);
           alert('current route: ' + result);
         });
+    });
+
+    this.$navigateToIntent = this._shadowRoot.querySelector('#navigateToIntent');
+    this.$navigateToIntent.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.linkManager().navigateToIntent('Sales-settings');
+        alert('navigated to: #?intent=Sales-settings');
+      }
     });
   }
 
