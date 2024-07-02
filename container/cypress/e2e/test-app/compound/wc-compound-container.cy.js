@@ -28,5 +28,13 @@ describe('Compound Container Tests', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testAnchorCompound"');
         });
     });
+    it('defer-init flag for LuigiCompoundContainer', () => {
+      // the initialized webcomponent has id="defer-init-flag"
+      cy.get('#defer-init-flag').should('not.exist');
+      // click button that calls container.init()
+      cy.get('#init-button').click();
+
+      cy.get('#defer-init-flag').should('exist');
+    });
   });
 });
