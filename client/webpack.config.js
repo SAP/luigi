@@ -1,30 +1,29 @@
 const path = require('path');
-const { readFileSync } = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    luigiClient: './src/luigi-client.js'
+    'luigi-client': './src/luigi-client.ts',
+    'luigi-element': './src/luigi-element.ts'
   },
-
   output: {
-    filename: 'luigi-client.js',
+    filename: '[name].js',
     libraryExport: 'default',
-    library: 'LuigiClient',
     libraryTarget: 'umd',
     path: path.join(path.resolve(__dirname), 'public')
   },
-
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'ts-loader'
       }
     ]
   },
-
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
   plugins: [
     new CopyWebpackPlugin([
       {
@@ -33,10 +32,6 @@ module.exports = {
       },
       {
         from: 'luigi-element.d.ts',
-        to: '.'
-      },
-      {
-        from: 'src/luigi-element.js',
         to: '.'
       }
     ])
