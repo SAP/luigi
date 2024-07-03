@@ -101,18 +101,9 @@ export declare interface UserSettings {
   [key: string]: number | string | boolean;
 }
 
-export declare interface CustomMessageData {
-  customMessage: Record<string, any>;
-  listenerId: string;
-}
-
 export declare interface InternalMessageData {
-  data: any;
-  msg: string;
-}
-
-export declare interface PostMessageData {
-  errorObj: Partial<ErrorEvent>;
+  data?: any;
+  errorObj?: Partial<ErrorEvent>;
   msg: string;
 }
 

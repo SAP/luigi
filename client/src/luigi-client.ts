@@ -3,10 +3,10 @@ import {
   ClientPermissions,
   CoreSearchParams,
   InternalContext,
+  InternalMessageData,
   LinkManager,
   NodeParams,
   PathParams,
-  PostMessageData,
   StorageManager,
   UserSettings,
   UxManager
@@ -39,7 +39,7 @@ class LuigiClient {
         window.addEventListener(
           'error',
           ({ filename, message, lineno, colno, error }: ErrorEvent) => {
-            const msg: PostMessageData = {
+            const msg: InternalMessageData = {
               errorObj: { filename, message, lineno, colno, error },
               msg: 'luigi-runtime-error-handling'
             };
