@@ -51,8 +51,8 @@
       ]
     };
     const deferInitContainer = document.getElementById('defer-init-test');
-    const button = document.getElementById("init-button");
-    button.addEventListener("click", function() {
+    const initButton = document.getElementById("init-button");
+    initButton.addEventListener("click", function() {
       deferInitContainer.init();
     });
     deferInitContainer.compoundConfig = {

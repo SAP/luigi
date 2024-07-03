@@ -27,6 +27,7 @@
         dirty-status="true"
         document-title="Perfect Title"
       ></luigi-container>
+
       <!-- Luigi Container to test defer-init flag-->
       <button id="init-button">container.init()</button>
       <luigi-container
@@ -54,8 +55,8 @@
       import "../bundle.js"
       import MFEventID from '../bundle.js';
       const deferInitContainer = document.getElementById("defer-init-test");
-      const button = document.getElementById("init-button");
-      button.addEventListener("click", function() {
+      const initButton = document.getElementById("init-button");
+      initButton.addEventListener("click", function() {
         deferInitContainer.init();
       });
 

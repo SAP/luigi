@@ -6,10 +6,13 @@
   </head>
 
   <body>
+    <!-- simple iframe container scenario-->
     <luigi-container
     id="iframe-container"
     viewURL="./microfrontend.html"
     ></luigi-container>
+    
+    <!-- defer-init scenario iframe container-->
     <button id="init-button">container.init()</button>
     <luigi-container
     id="defer-init-test"
@@ -22,10 +25,10 @@
     // simple Luigi Container package bundle import
     import '../bundle.js';
 
-    const container = document.getElementById("defer-init-test");
-    const button = document.getElementById("init-button");
-    button.addEventListener("click", function() {
-      container.init();
+    const deferInitContainer = document.getElementById("defer-init-test");
+    const initButton = document.getElementById("init-button");
+    initButton.addEventListener("click", function() {
+      deferInitContainer.init();
     });
   </script>
 </html>

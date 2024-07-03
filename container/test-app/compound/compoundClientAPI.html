@@ -29,9 +29,11 @@
         client-permissions='{"permission": "testPermission"}'
         user-settings='{"language":"it", "date":""}'
         anchor="testAnchorCompound"
-        defer-init="true"
+        defer-init="false"
         webcomponent="true"
       ></luigi-compound-container>
+
+      <!-- defer-init scenario wc container-->
       <button id="init-button">container.init()</button>
       <luigi-compound-container
         id="defer-init-test"
@@ -213,8 +215,8 @@
       });
 
       const deferInitContainer = document.getElementById('defer-init-test');
-      const button = document.getElementById("init-button");
-      button.addEventListener("click", function() {
+      const initButton = document.getElementById("init-button");
+      initButton.addEventListener("click", function() {
         deferInitContainer.init();
       });
       deferInitContainer.compoundConfig = {
