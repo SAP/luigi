@@ -1,6 +1,6 @@
 describe('Web Container Test', () => {
   describe('LuigiClient API LuigiContainer', () => {
-    const container = '[data-test-id="luigi-client-api-test-01"]';
+    const containerSelector = '[data-test-id="luigi-client-api-test-01"]';
     let stub;
 
     beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Web Container Test', () => {
     it('getCurrentLocale, getActiveFeatureToggles, getCurrentTheme', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('Click me')
         .click()
@@ -25,7 +25,7 @@ describe('Web Container Test', () => {
     it('getCoreSearchParams', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('getCoreSearchParams')
         .click()
@@ -37,7 +37,7 @@ describe('Web Container Test', () => {
     it('getPathParams', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('getPathParams')
         .click()
@@ -49,7 +49,7 @@ describe('Web Container Test', () => {
     it('getClientPermissions', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('getClientPermissions')
         .click()
@@ -61,7 +61,7 @@ describe('Web Container Test', () => {
     it('LuigiClient API getUserSettings for LuigiContainer', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('getUserSettings')
         .click()
@@ -73,7 +73,7 @@ describe('Web Container Test', () => {
     it('LuigiClient API getAnchor for LuigiContainer', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('getAnchor')
         .click()
@@ -85,7 +85,7 @@ describe('Web Container Test', () => {
     it('LuigiClient API getCurrentRoute for LuigiContainer', () => {
       const stub = cy.stub();
       cy.on('window:alert', stub);
-      cy.get('[data-test-id="luigi-client-api-test-01"]')
+      cy.get(containerSelector)
         .shadow()
         .contains('getCurrentRoute')
         .click()
@@ -101,7 +101,7 @@ describe('Web Container Test', () => {
       cy.get('#luigi-update-context')
         .click()
         .then(() => {
-          cy.get(container)
+          cy.get(containerSelector)
             .shadow()
             .contains('updateContext')
             .click()

@@ -1,6 +1,6 @@
 describe('Compound Container Tests', () => {
   describe('LuigiClient API - LuigiCompoundContainer', () => {
-    const container = '[data-test-id="luigi-client-api-test-compound-01"]';
+    const containerSelector = '[data-test-id="luigi-client-api-test-compound-01"]';
     let stub;
 
     beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API getUserSettings for LuigiCompoundContainer', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('getUserSettings')
         .click()
@@ -23,7 +23,7 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API getAnchor for LuigiCompoundContainer', () => {
       cy.on('window:alert', stub);
 
-      cy.get(container)
+      cy.get(containerSelector)
         .shadow()
         .contains('getAnchor')
         .click()

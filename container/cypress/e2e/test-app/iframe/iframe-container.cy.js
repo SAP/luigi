@@ -1,5 +1,5 @@
 describe('Iframe Container Test', () => {
-  const container = '[data-test-id="iframe-based-container-test"]';
+  const containerSelector = '[data-test-id="iframe-based-container-test"]';
   let stub;
 
   beforeEach(() => {
@@ -8,7 +8,7 @@ describe('Iframe Container Test', () => {
   });
 
   it('navigation sent', () => {
-    cy.get(container)
+    cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
@@ -26,7 +26,7 @@ describe('Iframe Container Test', () => {
   it('custom message sent', () => {
     cy.on('window:alert', stub);
 
-    cy.get(container)
+    cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
@@ -49,7 +49,7 @@ describe('Iframe Container Test', () => {
     cy.get('#update-ctx')
       .click()
       .then(() => {
-        cy.get(container)
+        cy.get(containerSelector)
           .shadow()
           .get('iframe')
           .then(iframe => {
