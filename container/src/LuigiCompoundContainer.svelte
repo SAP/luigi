@@ -108,17 +108,7 @@
       return;
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      if ((thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.nodeName === 'DIV') {
-        // handle multiple webcomponents on page
-        const wrappers = (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.querySelectorAll('div[style^="grid-row"]');
-        wrappers?.forEach((item) => {
-          if (item._luigi_mfe_webcomponent) {
-            item._luigi_mfe_webcomponent.context = contextObj;
-          }
-        });
-      } else {
-        (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
-      }
+      (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;

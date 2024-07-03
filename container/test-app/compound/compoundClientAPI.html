@@ -18,8 +18,6 @@
       This page is used to test Compound-Container Luigi CLient API functionalities for
       web component based microfrontend
     </h3>
-    <button id="luigi-update-context" type="button">Update context</button>
-
     <div style="border:solid 1px blue">
       <luigi-compound-container
         data-test-id="luigi-client-api-test-compound-01"
@@ -205,11 +203,6 @@
       // setViewGroup Data listener
       compoundContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
         console.log('Set View Group Data Request received', event.detail, event);
-      });
-
-      // update container context
-      document.querySelector('#luigi-update-context').addEventListener('click', () => {
-        compoundContainer.updateContext({ newContextData: 'some data' });
       });
     </script>
   </body>

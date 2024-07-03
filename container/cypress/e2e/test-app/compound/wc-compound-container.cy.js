@@ -31,22 +31,5 @@ describe('Compound Container Tests', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testAnchorCompound"');
         });
     });
-
-    it('LuigiClient API updateContext', () => {
-      cy.on('window:alert', stub);
-
-      cy.wait(500);
-      cy.get('#luigi-update-context')
-        .click()
-        .then(() => {
-          cy.get(container)
-            .shadow()
-            .contains('updateContext')
-            .click()
-            .then(() => {
-              expect(stub.getCall(0)).to.be.calledWith('compoundWC.ctx={"newContextData":"some data"}');
-            });
-        });
-    });
   });
 });
