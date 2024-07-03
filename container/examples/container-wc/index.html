@@ -5,37 +5,18 @@
     <title>Luigi Webcomponent Container</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
   </head>
-  <body>
-    <!-- base scenario wc container-->
-    <luigi-container
-    id="wc-container"
-    data-test-id="luigi-client-api-test-01"
-    viewURL="./container-wc/myWebComponent.js"
-    webcomponent="true"
-    context='{"content":" -- some content --"}'
-    ></luigi-container>
-
-    <!-- defer-init scenario wc container-->
-    <button id="init-button">container.init()</button>
-    <luigi-container
-      id="defer-init-test"
-      data-test-id="luigi-client-api-test-01"
-      viewURL="./container-wc/myWebComponent.js"
-      webcomponent="true"
-      context='{"content":" -- defer-init test --"}'
-      defer-init="true"
-    ></luigi-container>
-  </body>
 
   <script type="module">
     // simple Luigi Container package bundle import
     import '../bundle.js';
-
-    const deferInitContainer = document.getElementById("defer-init-test");
-    const initButton = document.getElementById("init-button");
-    initButton.addEventListener("click", function() {
-      deferInitContainer.init();
-    });
   </script>
 
+  <body>
+    <luigi-container
+      data-test-id="luigi-client-api-test-01"
+      viewURL="./container-wc/myWebComponent.js"
+      webcomponent="true"
+      context='{"content":" -- some content --"}'
+    ></luigi-container>
+  </body>
 </html>
