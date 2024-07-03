@@ -656,6 +656,10 @@ runTimeErrorHandler: {
 - **description**: refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this parameter is defined, **pathSegment** is ignored.
 
 ### loadingIndicator.enabled
+
+<!-- add-attribute:class:warning -->
+> **NOTE**: For iframe integration of views, which don't have Luigi Client, loading indicator should be disabled.
+
 - **type**: boolean
 - **description**: shows a loading indicator when switching between micro frontends. If you have a fast micro frontend, you can disable this feature to prevent flickering of the loading indicator.
 - **default**: `true`
