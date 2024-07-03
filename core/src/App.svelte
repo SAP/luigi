@@ -100,7 +100,7 @@
   let contextRequested = false;
   let loadingIndicatorTimeout;
   let btpToolLayout =
-    LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') &&
+    LuigiConfig.getConfigValue('settings.btpToolLayout') &&
     GenericHelpers.requestExperimentalFeature('btpToolLayout', true);
 
   export let isSearchFieldVisible;
