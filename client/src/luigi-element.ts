@@ -1,7 +1,9 @@
+import { Options } from '../luigi-element';
+
 /**
  * Base class for Luigi web component micro frontends.
  */
-export class LuigiElement extends HTMLElement {
+class LuigiElement extends HTMLElement {
   private deferLuigiClientWCInit: boolean;
   private LuigiClient!: any;
   private luigiConfig!: Record<string, any>;
@@ -9,17 +11,17 @@ export class LuigiElement extends HTMLElement {
   private __initialized: boolean;
   private __lui_ctx!: Record<string, any>;
 
-  constructor(options: Record<string, any>) {
+  constructor(options: Options) {
     super();
 
-    const openShadow: boolean = options['openShadow'] || false;
+    const openShadow: boolean = options.openShadow || false;
 
     this._shadowRoot = this.attachShadow({
       mode: openShadow ? 'open' : 'closed',
       delegatesFocus: false
     });
     this.__initialized = false;
-    this.deferLuigiClientWCInit = options['deferLuigiClientWCInit'] || false;
+    this.deferLuigiClientWCInit = options.deferLuigiClientWCInit || false;
   }
 
   /**
@@ -162,25 +164,27 @@ export class LuigiElement extends HTMLElement {
   attributeChangedCallback(name?: string, oldVal?: any, newVal?: any): void {
     this.update();
   }
+
+  /**
+   * Html string processing according to luigi functionality.
+   * Also useful in combination with LitElement VS Code plugins.
+   *
+   * @param {String} literal The literal to process.
+   * @returns {String} Returns the processed literal.
+   */
+  html(literal: string, ...keys: any[]): string {
+    let html: string = '';
+
+    [...literal].forEach((el: string, index: number) => {
+      html += el;
+
+      if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
+        html += keys[index];
+      }
+    });
+
+    return html.replace(/\$\_/gi, 'this.getRootNode().$_');
+  }
 }
 
-/**
- * Html string processing according to luigi functionality.
- * Also useful in combination with LitElement VS Code plugins.
- *
- * @param {String} literal The literal to process.
- * @returns {String} Returns the processed literal.
- */
-export function html(literal: string, ...keys: any[]): string {
-  let html: string = '';
-
-  [...literal].forEach((el: string, index: number) => {
-    html += el;
-
-    if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
-      html += keys[index];
-    }
-  });
-
-  return html.replace(/\$\_/gi, 'this.getRootNode().$_');
-}
+export default LuigiElement;

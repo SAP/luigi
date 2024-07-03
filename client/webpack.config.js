@@ -8,8 +8,10 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    libraryExport: 'default',
-    libraryTarget: 'umd',
+    library: {
+      export: 'default',
+      type: 'umd'
+    },
     path: path.join(path.resolve(__dirname), 'public')
   },
   module: {
