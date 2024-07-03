@@ -14,15 +14,15 @@
     <button id="init-button">container.init() defer-init enabled</button>
 
     <div style="border:solid 1px blue; height: 400px">
+      <!-- Luigi Container to test general functionality-->
       <luigi-container
-      style="height: fit-content;"
+        style="height: fit-content;"
         data-test-id="iframe-based-container-test"
         viewURL="./microfrontend.html"
         context='{"title": "Projects", "content":" "}'
       ></luigi-container>
 
       <!-- Luigi Container to test defer-init flag-->
-     
       <luigi-container
         id="defer-init-test"
         data-test-id="defer-init-container"
