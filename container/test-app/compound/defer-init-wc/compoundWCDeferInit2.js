@@ -1,5 +1,5 @@
 /**
- * This class is used to test LuigiClient webcomponent based functionality
+ * This class is used to test Compound Container defer-init functionality
  */
 export default class extends HTMLElement {
   constructor() {
