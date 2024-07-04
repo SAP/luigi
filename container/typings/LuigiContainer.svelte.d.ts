@@ -39,9 +39,8 @@ export default class LuigiContainer extends HTMLElement {
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
    * @param {string} string must be a stringified boolean or JSON object from type `WebComponentSettings`.
-   * @since 1.0.0
-   * @description
-   * @
+   * 
+   * </br></br>
    * <blockquote class="warning">
    * <p>
    * <strong>Note:</strong> If you have to use the mechanism of `selfRegistered`, we recommend using the following code in your web component:
@@ -50,6 +49,9 @@ export default class LuigiContainer extends HTMLElement {
    * <pre><code>
    * window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), <YOUR_WEBCOMPONENT_CLASS>);
    * </code></pre>
+   * The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
+   * </br>
+   * @since 1.0.0
    */
   webcomponent: boolean | WebComponentSettings | string;
 
