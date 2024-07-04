@@ -40,6 +40,16 @@ export default class LuigiContainer extends HTMLElement {
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
    * @param {string} string must be a stringified boolean or JSON object from type `WebComponentSettings`.
    * @since 1.0.0
+   * @description
+   * @
+   * <blockquote class="warning">
+   * <p>
+   * <strong>Note:</strong> If you have to use the mechanism of `selfRegistered`, we recommend using the following code in your web component:
+   * </p>
+   * </blockquote>
+   * <pre><code>
+   * window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), <YOUR_WEBCOMPONENT_CLASS>);
+   * </code></pre>
    */
   webcomponent: boolean | WebComponentSettings | string;
 

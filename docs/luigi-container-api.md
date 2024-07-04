@@ -64,8 +64,6 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ### webcomponent
 
-Predicate that sets whether the microfrontend is to be rendered in a web component or not. It can also be an object with the following attributes:
-
 Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean) | WebComponentSettings | [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))
 
 #### Parameters
