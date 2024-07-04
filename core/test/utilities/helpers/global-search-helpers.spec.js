@@ -166,12 +166,7 @@ describe('Global-search-helpers', () => {
     function assertMethodCalledWithArgs(method, args) {
       const methodStub = sinon.stub(globalSearchHelpers, method);
 
-      globalSearchHelpers.handleKeydown(
-        args.result,
-        args.event,
-        inputElement,
-        customSearchItemRendererSlotContainer
-      );
+      globalSearchHelpers.handleKeydown(args.result, args.event, inputElement, customSearchItemRendererSlotContainer);
 
       assert.isTrue(methodStub.calledOnce, `${method} should be called once`);
       assert.isTrue(methodStub.calledWith(...args.expectedArgs), `${method} should be called with correct arguments`);
