@@ -181,7 +181,7 @@ class LuigiUX {
    * Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
    * @memberof UX
    * @returns {string} theme id
-   * @since NEXTRELEASE
+   * @since 2.14.0
    * @example
    * Luigi.ux().getCurrentTheme()
    */
