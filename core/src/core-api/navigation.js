@@ -146,7 +146,7 @@ class LuigiNavigationManager {
    * Enables navigating to sibling nodes without knowing the absolute path.
    * @memberof LuigiNavigation
    * @returns {linkManager} link manager instance
-   * @since NEXTRELEASE
+   * @since 2.14.0
    * @example
    * Luigi.navigation().fromParent().navigate('/sibling')
    */
@@ -158,7 +158,7 @@ class LuigiNavigationManager {
    * Gets the Luigi route associated with the current micro frontend.
    * @memberof LuigiNavigation
    * @returns a String value specifying the current Luigi route
-   * @since NEXTRELEASE
+   * @since 2.14.0
    * @example
    * Luigi.navigation().getCurrentRoute();
    * Luigi.navigation().fromContext('project').getCurrentRoute();
