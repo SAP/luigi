@@ -8,7 +8,7 @@ export class GlobalSearchHelperClass {
   search;
   isCustomSearchRenderer;
   isCustomSearchResultItemRenderer;
-  luigiCustomSearchItemRenderer__slotContainer;
+  customSearchItemRendererSlotContainer;
 
   constructor(search, dispatcher) {
     this.search = search;
@@ -23,8 +23,8 @@ export class GlobalSearchHelperClass {
     );
   }
 
-  updateLuigiCustomSearchItemRenderer__slotContainer(updatedSlotContainer) {
-    this.luigiCustomSearchItemRenderer__slotContainer = updatedSlotContainer;
+  updatecustomSearchItemRendererSlotContainer(updatedSlotContainer) {
+    this.customSearchItemRendererSlotContainer = updatedSlotContainer;
   }
 
   handleVisibilityGlobalSearch() {
@@ -89,7 +89,7 @@ export class GlobalSearchHelperClass {
   }
 
   calcSearchResultItemSelected(direction) {
-    let renderedSearchResultItems = this.luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = this.customSearchItemRendererSlotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let { childNodes, nextSibling, previousSibling } = renderedSearchResultItems[index];
@@ -114,7 +114,7 @@ export class GlobalSearchHelperClass {
   }
 
   clearAriaSelected() {
-    let renderedSearchResultItems = this.luigiCustomSearchItemRenderer__slotContainer.children;
+    let renderedSearchResultItems = this.customSearchItemRendererSlotContainer.children;
     if (renderedSearchResultItems) {
       for (let index = 0; index < renderedSearchResultItems.length; index++) {
         let element = renderedSearchResultItems[index];
@@ -137,15 +137,15 @@ export class GlobalSearchHelperClass {
     }
   }
 
-  handleKeydown(result, { keyCode }, inputElement, luigiCustomSearchItemRenderer__slotContainer) {
-    this.updateLuigiCustomSearchItemRenderer__slotContainer(luigiCustomSearchItemRenderer__slotContainer);
+  handleKeydown(result, { keyCode }, inputElement, customSearchItemRendererSlotContainer) {
+    this.updatecustomSearchItemRendererSlotContainer(customSearchItemRendererSlotContainer);
     if (keyCode === KEYCODE_ENTER) {
       this.search.searchProvider.onSearchResultItemSelected(result, this.search);
     }
     if (keyCode === KEYCODE_ARROW_UP || keyCode === KEYCODE_ARROW_DOWN) {
       this.calcSearchResultItemSelected(keyCode);
     } else if (GenericHelpers.isFunction(this.search.searchProvider.onEscape) && keyCode === KEYCODE_ESC) {
-      this.clearAriaSelected(this.luigiCustomSearchItemRenderer__slotContainer);
+      this.clearAriaSelected(this.customSearchItemRendererSlotContainer);
       setTimeout(() => {
         this.setFocusOnGlobalSearchFieldDesktop(inputElement);
       });
@@ -168,7 +168,7 @@ export class GlobalSearchHelperClass {
     }
   }
 
-  toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, luigiCustomSearchRenderer__slot) {
+  toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, customSearchItemRendererSlot) {
     if (!isSearchFieldVisible)
       setTimeout(() => {
         this.setFocusOnGlobalSearchFieldDesktop();
@@ -180,7 +180,7 @@ export class GlobalSearchHelperClass {
     this.dispatch('toggleSearch', {
       isSearchFieldVisible,
       inputElem,
-      luigiCustomSearchRenderer__slot
+      customSearchItemRendererSlot
     });
 
     if (

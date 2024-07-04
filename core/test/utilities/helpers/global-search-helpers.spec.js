@@ -142,7 +142,7 @@ describe('Global-search-helpers', () => {
   describe('handleKeydown', () => {
     let search;
     let inputElement;
-    let luigiCustomSearchItemRenderer__slotContainer;
+    let customSearchItemRendererSlotContainer;
     let globalSearchHelpers;
     let clock;
 
@@ -154,7 +154,7 @@ describe('Global-search-helpers', () => {
         }
       };
       inputElement = document.createElement('input');
-      luigiCustomSearchItemRenderer__slotContainer = document.createElement('div');
+      customSearchItemRendererSlotContainer = document.createElement('div');
       globalSearchHelpers = new GlobalSearchHelperClass(search);
       clock = sinon.useFakeTimers();
     });
@@ -170,7 +170,7 @@ describe('Global-search-helpers', () => {
         args.result,
         args.event,
         inputElement,
-        luigiCustomSearchItemRenderer__slotContainer
+        customSearchItemRendererSlotContainer
       );
 
       assert.isTrue(methodStub.calledOnce, `${method} should be called once`);
@@ -183,7 +183,7 @@ describe('Global-search-helpers', () => {
       const result = {};
       const event = { keyCode: KEYCODE_ENTER };
 
-      globalSearchHelpers.handleKeydown(result, event, inputElement, luigiCustomSearchItemRenderer__slotContainer);
+      globalSearchHelpers.handleKeydown(result, event, inputElement, customSearchItemRendererSlotContainer);
 
       assert.isTrue(search.searchProvider.onSearchResultItemSelected.calledOnce);
       assert.isTrue(search.searchProvider.onSearchResultItemSelected.calledWith(result, search));
@@ -216,7 +216,7 @@ describe('Global-search-helpers', () => {
         'setFocusOnGlobalSearchFieldDesktop'
       );
 
-      globalSearchHelpers.handleKeydown(null, event, inputElement, luigiCustomSearchItemRenderer__slotContainer);
+      globalSearchHelpers.handleKeydown(null, event, inputElement, customSearchItemRendererSlotContainer);
       clock.tick(0);
 
       assert.isTrue(search.searchProvider.onEscape.calledOnce);
@@ -253,7 +253,7 @@ describe('Global-search-helpers', () => {
       const isSearchFieldVisible = false;
       const displaySearchResult = true;
       const inputElem = document.createElement('input');
-      const luigiCustomSearchRenderer__slot = document.createElement('div');
+      const customSearchItemRendererSlot = document.createElement('div');
 
       const setFocusSpy = sinon.spy(globalSearchHelpers, 'setFocusOnGlobalSearchFieldDesktop');
 
@@ -261,7 +261,7 @@ describe('Global-search-helpers', () => {
         isSearchFieldVisible,
         displaySearchResult,
         inputElem,
-        luigiCustomSearchRenderer__slot
+        customSearchItemRendererSlot
       );
 
       clock.tick(0);
@@ -273,13 +273,13 @@ describe('Global-search-helpers', () => {
       const isSearchFieldVisible = true;
       const displaySearchResult = true;
       const inputElem = document.createElement('input');
-      const luigiCustomSearchRenderer__slot = document.createElement('div');
+      const customSearchItemRendererSlot = document.createElement('div');
 
       globalSearchHelpers.toggleSearch(
         isSearchFieldVisible,
         displaySearchResult,
         inputElem,
-        luigiCustomSearchRenderer__slot
+        customSearchItemRendererSlot
       );
 
       assert.isTrue(dispatchSpy.calledOnce);
@@ -287,7 +287,7 @@ describe('Global-search-helpers', () => {
         dispatchSpy.calledWith('toggleSearch', {
           isSearchFieldVisible,
           inputElem,
-          luigiCustomSearchRenderer__slot
+          customSearchItemRendererSlot
         })
       );
     });
@@ -296,13 +296,13 @@ describe('Global-search-helpers', () => {
       const isSearchFieldVisible = true;
       const displaySearchResult = true;
       const inputElem = document.createElement('input');
-      const luigiCustomSearchRenderer__slot = document.createElement('div');
+      const customSearchItemRendererSlot = document.createElement('div');
 
       globalSearchHelpers.toggleSearch(
         isSearchFieldVisible,
         displaySearchResult,
         inputElem,
-        luigiCustomSearchRenderer__slot
+        customSearchItemRendererSlot
       );
 
       assert.isTrue(search.searchProvider.toggleSearch.calledOnce);

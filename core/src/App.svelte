@@ -105,7 +105,7 @@
 
   export let isSearchFieldVisible;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
+  export let customSearchItemRendererSlot;
   export let displaySearchResult;
   export let searchResult;
   export let storedUserSettings;
@@ -556,7 +556,7 @@
               searchProvider.onSearchResultItemSelected(item);
             }
           };
-          searchProvider.customSearchResultRenderer(arr, luigiCustomSearchRenderer__slot, searchApiObj);
+          searchProvider.customSearchResultRenderer(arr, customSearchItemRendererSlot, searchApiObj);
         } else {
           displaySearchResult = true;
           searchResult = arr;
@@ -571,9 +571,9 @@
     if (checkSearchProvider(searchProvider)) {
       displaySearchResult = false;
       searchResult = [];
-      if (luigiCustomSearchRenderer__slot) {
-        while (luigiCustomSearchRenderer__slot.lastElementChild) {
-          luigiCustomSearchRenderer__slot.removeChild(luigiCustomSearchRenderer__slot.lastElementChild);
+      if (customSearchItemRendererSlot) {
+        while (customSearchItemRendererSlot.lastElementChild) {
+          customSearchItemRendererSlot.removeChild(customSearchItemRendererSlot.lastElementChild);
         }
       }
     }
@@ -1880,7 +1880,7 @@
                 bind:displaySearchResult
                 bind:searchResult
                 bind:inputElem
-                bind:luigiCustomSearchRenderer__slot
+                bind:customSearchItemRendererSlot
                 {burgerTooltip}
               />
             {/if}
@@ -2003,7 +2003,7 @@
         bind:displaySearchResult
         bind:searchResult
         bind:inputElem
-        bind:luigiCustomSearchRenderer__slot
+        bind:customSearchItemRendererSlot
         {burgerTooltip}
       />
     {/if}

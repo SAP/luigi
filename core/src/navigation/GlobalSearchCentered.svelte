@@ -6,8 +6,8 @@
   export let searchResult = [];
   export let displaySearchResult;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
-  export let luigiCustomSearchItemRenderer__slotContainer;
+  export let customSearchItemRendererSlot;
+  export let customSearchItemRendererSlotContainer;
   export let globalSearchConfig;
   const dispatch = createEventDispatcher();
   let cancelBtn = TOP_NAV_DEFAULTS.globalSearchCenteredCancelButton;
@@ -74,7 +74,7 @@
   }
 
   function handleKeydown(result, event) {
-    globalSearchHelper.handleKeydown(result, event, inputElem, luigiCustomSearchItemRenderer__slotContainer);
+    globalSearchHelper.handleKeydown(result, event, inputElem, customSearchItemRendererSlotContainer);
   }
 
   export function onActionClick(searchResultItem) {
@@ -86,7 +86,7 @@
       isSearchFieldVisible,
       displaySearchResult,
       inputElem,
-      luigiCustomSearchRenderer__slot
+      customSearchItemRendererSlot
     );
   }
 </script>
@@ -157,7 +157,7 @@
         >
           <nav class="fd-menu">
             {#if searchResult}
-              <ul class="fd-menu__list fd-menu__list--top" bind:this={luigiCustomSearchItemRenderer__slotContainer}>
+              <ul class="fd-menu__list fd-menu__list--top" bind:this={customSearchItemRendererSlotContainer}>
                 {#each searchResult as result, index}
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
@@ -176,7 +176,7 @@
                         </div>
                       </a>
                     {:else}
-                      {@html renderCustomSearchItem(result, luigiCustomSearchItemRenderer__slotContainer, index)}
+                      {@html renderCustomSearchItem(result, customSearchItemRendererSlotContainer, index)}
                     {/if}
                   </li>
                 {/each}
@@ -185,7 +185,7 @@
           </nav>
         </div>
       {:else}
-        <div bind:this={luigiCustomSearchRenderer__slot} />
+        <div bind:this={customSearchItemRendererSlot} />
       {/if}
     </div>
   </div>
