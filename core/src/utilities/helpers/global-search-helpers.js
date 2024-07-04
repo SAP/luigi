@@ -138,7 +138,7 @@ export class GlobalSearchHelperClass {
   }
 
   handleKeydown(result, { keyCode }, inputElement, customSearchItemRendererSlotContainer) {
-    this.updatecustomSearchItemRendererSlotContainer(customSearchItemRendererSlotContainer);
+    this.updateCustomSearchItemRendererSlotContainer(customSearchItemRendererSlotContainer);
     if (keyCode === KEYCODE_ENTER) {
       this.search.searchProvider.onSearchResultItemSelected(result, this.search);
     }
