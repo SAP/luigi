@@ -43,7 +43,7 @@ describe('Iframe Container Test', () => {
       });
   });
 
-  it('updateContext', () => {
+  it('update context', () => {
     cy.on('window:alert', stub);
 
     cy.get('#update-ctx')
@@ -64,6 +64,30 @@ describe('Iframe Container Test', () => {
                   'Custom message recieved: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
                 );
               });
+          });
+      });
+  });
+
+  it('set auth token', () => {
+    cy.on('window:alert', stub);
+
+    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
+
+    cy.get('button[id="update-token"]').click();
+
+    cy.get('[data-test-id="iframe-based-container-test"]')
+      .shadow()
+      .get('iframe')
+      .then(iframe => {
+        const $body = iframe.contents().find('body');
+        cy.wrap($body)
+          .contains('test get token')
+          .click()
+          .then(() => {
+            cy.wrap(stub).should(
+              'have.been.calledWith',
+              'Custom message recieved: {"id":"token.updated","_metaData":{},"data":{"value":"updated token"}}'
+            );
           });
       });
   });
