@@ -36,6 +36,7 @@ runApp() {
 cd $BASE_DIR/../client-frameworks-support/testing-utilities/test
 #Run acutal test
 PORT=8181
+npm install
 runApp $PORT
 npm run e2e:run
 killWebserver $PORT

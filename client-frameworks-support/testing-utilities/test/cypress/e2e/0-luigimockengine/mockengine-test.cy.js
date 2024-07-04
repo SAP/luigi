@@ -1,12 +1,8 @@
 const containerSelector = '[id^="luigi-debug-vis-cnt"]';
 
 describe('Luigi Mock Engine', () => {
-  beforeEach(() => {
-    cy.visit('http://localhost:8181/', {
-      onBeforeLoad: (win) => {
-        win.parent = win;
-      }
-    });
+  before(() => {
+    cy.visit('http://localhost:8181/');
   });
 
   /**
