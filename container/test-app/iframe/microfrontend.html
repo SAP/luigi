@@ -59,6 +59,7 @@
       <button onclick="testCheckPathExists()">test check path exists</button>
       <button onclick="testSetDirtyStatus()">test set dirty status</button>
       <button onclick="testShowAlert()">test show alert</button>
+      <button onclick="testGetToken()">test get token</button>
     </div>
     <script>
       // List of onclick handlers for client calls
@@ -149,6 +150,14 @@
         LuigiClient.uxManager().setDirtyStatus(true);
       }
 
+      function testGetToken() {
+        // send back message with get Token value
+        LuigiClient.sendCustomMessage({
+          id: 'token.updated',
+          value: LuigiClient.getToken()
+        });
+      }
+
       function testShowAlert() {
         let dt = new Date();
         let time = dt.getMilliseconds() + '';
@@ -203,6 +212,12 @@
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
+      LuigiClient.addCustomMessageListener('update', data => {
+        console.log('Custom Message Received inside iframe Container', data);
+        document.getElementById('content').innerHTML =
+          'Received Custom Message: ' + data.milliseconds;
+      });
+
       LuigiClient.addCustomMessageListener('update', data => {
         console.log('Custom Message Received inside iframe Container', data);
         document.getElementById('content').innerHTML =
