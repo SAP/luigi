@@ -23,7 +23,7 @@ export class GlobalSearchHelperClass {
     );
   }
 
-  updatecustomSearchItemRendererSlotContainer(updatedSlotContainer) {
+  updateCustomSearchItemRendererSlotContainer(updatedSlotContainer) {
     this.customSearchItemRendererSlotContainer = updatedSlotContainer;
   }
 
