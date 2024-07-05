@@ -29,6 +29,8 @@ echo "Angular App"
 cd $NG_EXAMPLE
 npm install
 killWebserver 4200
+npm run build
+sleep 5
 runWebserver 4200 dist /luigi-core/luigi.js
 WS_NG_PID=$PID
 
