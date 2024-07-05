@@ -18,7 +18,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   public currentRouteFromClosestContext: string;
   public currentRouteFromParent: string;
 
-  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) { }
+  constructor(private luigiService: LuigiContextService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.lcSubscription = this.luigiService.contextObservable().subscribe((ctx: IContextMessage) => {
