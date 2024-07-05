@@ -138,6 +138,7 @@ describe('Navigation', () => {
           cy.wrap(result).contains('Global Settings');
         });
       });
+      // TODO - verify this test case as popover is not scrollable anymore
       xit('scrollable dropdown in tabNav', () => {
         cy.viewport(1000, 300);
         cy.get('[data-testid="tabnavheader_tabnavheader"]').click();
