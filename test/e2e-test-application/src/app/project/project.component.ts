@@ -140,7 +140,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     };
 
     if (Object.prototype.toString.call(linkManager().openAsModal) === '[object Promise]') {
-      linkManager().openAsModal(modalPath, modalSettings).then(() => resolvePromise());
+      (linkManager().openAsModal(modalPath, modalSettings) as Promise<void>).then(() => resolvePromise());
     } else {
       linkManager().openAsModal(modalPath, modalSettings);
       setTimeout(() => resolvePromise(), 500);
