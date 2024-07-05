@@ -25,6 +25,20 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.14.0] (2024-07-03)
+
+#### :rocket: Added
+* [#3787](https://github.com/SAP/luigi/pull/3787) Add support for Nightwatch, WebdriverIO and Puppeteer for testing-utilities ([@walmazacn](https://github.com/walmazacn))
+* [#3780](https://github.com/SAP/luigi/pull/3780) Get current route ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3774](https://github.com/SAP/luigi/pull/3774) Add getCurrentTheme wc clientAPI ([@JohannesDoberer](https://github.com/JohannesDoberer))
+* [#3748](https://github.com/SAP/luigi/pull/3748) Fiddle theming example ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+#### :bug: Fixed
+* [#3727](https://github.com/SAP/luigi/pull/3727) Fix top nav children not rendered ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
 ## [v2.13.0] (2024-05-23)
 
 #### :rocket: Added
@@ -1798,3 +1812,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.11.0]: https://github.com/SAP/luigi/compare/v2.10.0...v2.11.0
 [v2.12.0]: https://github.com/SAP/luigi/compare/v2.11.0...v2.12.0
 [v2.13.0]: https://github.com/SAP/luigi/compare/v2.12.0...v2.13.0
+[v2.14.0]: https://github.com/SAP/luigi/compare/v2.13.0...v2.14.0

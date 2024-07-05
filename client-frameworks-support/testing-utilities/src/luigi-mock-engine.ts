@@ -30,7 +30,7 @@ export class LuigiMockEngine {
         }
 
         (window as any).luigiMockEnvironment = {
-          msgListener: function (e: any) {
+          msgListener: function(e: any) {
             if (e.data.msg && (e.data.msg.startsWith('luigi.') || e.data.msg === 'storage')) {
               if (e.data.msg === 'luigi.get-context') {
                 window.postMessage(
@@ -132,7 +132,7 @@ export class LuigiMockEngine {
               window.postMessage(response, '*');
             },
             // storage
-            storage: () => { }
+            storage: () => {}
           }
         };
 

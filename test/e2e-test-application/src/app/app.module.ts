@@ -63,4 +63,4 @@ import { ViewGroupComponent } from './project/view-group/view-group.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -716,7 +716,7 @@ Returns **linkManager** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.14.0
 
 #### getCurrentRoute
 
@@ -734,7 +734,7 @@ Returns **any** a String value specifying the current Luigi route
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.14.0
 
 #### withParams
 
@@ -1102,7 +1102,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### getCurrentTheme
 
-Retrieves the current active theme. Falls back to **defaultTheme** if none explicitly specified before.
+Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
 
 ##### Examples
 
@@ -1114,7 +1114,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.14.0
 
 ## Luigi.globalSearch()
 
