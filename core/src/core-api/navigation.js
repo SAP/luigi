@@ -53,6 +53,7 @@ class LuigiNavigationManager {
    * @memberof LuigiNavigation
    * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-)
    * @param {Object} params an object representing all the parameters passed (optional, default '{}')
+   * @since NEXTRELEASE
    * @example
    * Luigi.navigation().navigateToIntent('Sales-settings')
    * Luigi.navigation().navigateToIntent('Sales-settings', {project: 'pr1'})
