@@ -112,4 +112,9 @@ export namespace LuigiInternalMessageID {
    * A message emmitted from the Microfrontend when a request to set the 'dirty status' (ex: avoid closing if usaved changes) is sent
    */
   export const SET_DIRTY_STATUS_REQUEST = 'luigi.set-page-dirty';
+
+  /**
+   * A message emmitted from the Microfrontend when a request to set the 'token auth' is sent
+   */
+    export const AUTH_SET_TOKEN = 'luigi.auth.tokenIssued';
 }

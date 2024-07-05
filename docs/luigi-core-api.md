@@ -716,7 +716,7 @@ Returns **linkManager** link manager instance
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.14.0
 
 #### getCurrentRoute
 
@@ -734,7 +734,7 @@ Returns **any** a String value specifying the current Luigi route
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.14.0
 
 #### withParams
 
@@ -1114,7 +1114,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
--   **since**: NEXTRELEASE
+-   **since**: 2.14.0
 
 ## Luigi.globalSearch()
 
