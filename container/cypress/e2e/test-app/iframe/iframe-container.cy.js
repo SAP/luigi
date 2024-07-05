@@ -58,6 +58,7 @@ describe('Iframe Container Test', () => {
             .should('exist');
         });
     });
+  });
 
   it('set auth token', () => {
     const stub = cy.stub();
