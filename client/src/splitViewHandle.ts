@@ -13,12 +13,7 @@ import { helpers } from './helpers';
   */
 export class splitViewHandle extends LuigiClientBase {
   private splitView: Record<string, any>;
-  private validSplitViewEvents: string[] = [
-    'close',
-    'collapse',
-    'expand',
-    'resize'
-  ];
+  private validSplitViewEvents: string[] = ['close', 'collapse', 'expand', 'resize'];
 
   /**
    * @private
@@ -35,15 +30,12 @@ export class splitViewHandle extends LuigiClientBase {
     Object.assign(this.splitView, settings);
 
     const removeSplitViewListeners = (): void => {
-      this.splitView['listeners'].forEach((id: string) =>
-        helpers.removeEventListener(id)
-      );
+      this.splitView['listeners'].forEach((id: string) => helpers.removeEventListener(id));
     };
 
     this.splitView['listeners'] = [
-      helpers.addEventListener(
-        `luigi.navigation.splitview.internal`,
-        (event: any): void => Object.assign(this.splitView, event.data.data)
+      helpers.addEventListener(`luigi.navigation.splitview.internal`, (event: any): void =>
+        Object.assign(this.splitView, event.data.data)
       )
     ];
     this.on('resize', (newSize: any) => (this.splitView['size'] = newSize));
@@ -109,24 +101,17 @@ export class splitViewHandle extends LuigiClientBase {
    * const listenerId = splitViewHandle.on('resize', () => {});
    * const listenerId = splitViewHandle.on('close', () => {});
    **/
-  on(
-    name: SplitViewEvents,
-    callback: (param: number | undefined) => void
-  ): boolean | string {
+  on(name: SplitViewEvents, callback: (param: number | undefined) => void): boolean | string {
     if (!this.validSplitViewEvents.includes(name)) {
       console.warn(name + ' is not a valid split view event');
       return false;
     }
 
-    const id: string = helpers.addEventListener(
-      `luigi.navigation.splitview.${name}.ok`,
-      (event: any) => {
-        const filterParam: number | undefined =
-          typeof event.data.data == 'number' ? event.data.data : undefined;
+    const id: string = helpers.addEventListener(`luigi.navigation.splitview.${name}.ok`, (event: any) => {
+      const filterParam: number | undefined = typeof event.data.data == 'number' ? event.data.data : undefined;
 
-        callback(filterParam);
-      }
-    );
+      callback(filterParam);
+    });
 
     this.splitView['listeners'].push(id);
 

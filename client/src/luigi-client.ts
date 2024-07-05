@@ -24,36 +24,24 @@ import { uxManager } from './uxManager';
 class LuigiClient {
   constructor() {
     if (window !== window.top) {
-      if (
-        window.document.head.getAttribute('disable-luigi-history-handling') !==
-        'true'
-      ) {
+      if (window.document.head.getAttribute('disable-luigi-history-handling') !== 'true') {
         history.pushState = history.replaceState.bind(history);
       }
 
-      if (
-        window.document.head.getAttribute(
-          'disable-luigi-runtime-error-handling'
-        ) !== 'true'
-      ) {
-        window.addEventListener(
-          'error',
-          ({ filename, message, lineno, colno, error }: ErrorEvent) => {
-            const msg: InternalMessageData = {
-              errorObj: { filename, message, lineno, colno, error },
-              msg: 'luigi-runtime-error-handling'
-            };
+      if (window.document.head.getAttribute('disable-luigi-runtime-error-handling') !== 'true') {
+        window.addEventListener('error', ({ filename, message, lineno, colno, error }: ErrorEvent) => {
+          const msg: InternalMessageData = {
+            errorObj: { filename, message, lineno, colno, error },
+            msg: 'luigi-runtime-error-handling'
+          };
 
-            helpers.sendPostMessageToLuigiCore(msg);
-          }
-        );
+          helpers.sendPostMessageToLuigiCore(msg);
+        });
       }
     }
   }
 
-  addInitListener(
-    initFn: (context: InternalContext, origin?: string) => void
-  ): number {
+  addInitListener(initFn: (context: InternalContext, origin?: string) => void): number {
     return lifecycleManager.addInitListener(initFn);
   }
 
@@ -61,9 +49,7 @@ class LuigiClient {
     return lifecycleManager.removeInitListener(id);
   }
 
-  addContextUpdateListener(
-    contextUpdatedFn: (context: InternalContext) => void
-  ): string {
+  addContextUpdateListener(contextUpdatedFn: (context: InternalContext) => void): string {
     return lifecycleManager.addContextUpdateListener(contextUpdatedFn);
   }
 
@@ -103,14 +89,8 @@ class LuigiClient {
     return lifecycleManager.getCoreSearchParams();
   }
 
-  addCoreSearchParams(
-    searchParams: CoreSearchParams,
-    keepBrowserHistory: boolean
-  ): void {
-    return lifecycleManager.addCoreSearchParams(
-      searchParams,
-      keepBrowserHistory
-    );
+  addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: boolean): void {
+    return lifecycleManager.addCoreSearchParams(searchParams, keepBrowserHistory);
   }
 
   getClientPermissions(): ClientPermissions {
@@ -121,10 +101,7 @@ class LuigiClient {
     return lifecycleManager.sendCustomMessage(message);
   }
 
-  addCustomMessageListener(
-    messageId: string,
-    listener: (customMessage: Object, listenerId: string) => void
-  ): string {
+  addCustomMessageListener(messageId: string, listener: (customMessage: Object, listenerId: string) => void): string {
     return lifecycleManager.addCustomMessageListener(messageId, listener);
   }
 

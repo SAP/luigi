@@ -13,10 +13,7 @@ class Helpers {
       }
 
       if (evt.data.msg === 'custom') {
-        const message: Record<
-          string,
-          any
-        > = this.convertCustomMessageInternalToUser(evt.data);
+        const message: Record<string, any> = this.convertCustomMessageInternalToUser(evt.data);
 
         this.listeners
           .filter(listener => listener.name === message['id'])
@@ -31,24 +28,18 @@ class Helpers {
     window.addEventListener('message', helperListener);
   }
 
-  convertCustomMessageInternalToUser(
-    internalMessage: InternalMessageData
-  ): Record<string, any> {
+  convertCustomMessageInternalToUser(internalMessage: InternalMessageData): Record<string, any> {
     return internalMessage.data as Record<string, any>;
   }
 
-  convertCustomMessageUserToInternal(
-    message: Record<string, any>
-  ): InternalMessageData {
+  convertCustomMessageUserToInternal(message: Record<string, any>): InternalMessageData {
     return {
       msg: 'custom',
       data: message
     };
   }
 
-  convertStorageMessageToInternal(
-    message: Record<string, any>
-  ): InternalMessageData {
+  convertStorageMessageToInternal(message: Record<string, any>): InternalMessageData {
     return {
       msg: 'storage',
       data: message
@@ -64,10 +55,7 @@ class Helpers {
    * @param {function} eventFn callback function
    * @returns {string} listener id
    */
-  addEventListener(
-    name: string,
-    eventFn: (event: any, listener?: any) => void
-  ): string {
+  addEventListener(name: string, eventFn: (event: any, listener?: any) => void): string {
     const listenerId: number = this.getRandomId();
 
     this.listeners.push({
@@ -86,14 +74,10 @@ class Helpers {
    * @returns {boolean}
    */
   removeEventListener(id: string): boolean {
-    const listenerExists: boolean = this.listeners.find(
-      listener => listener.listenerId === id
-    );
+    const listenerExists: boolean = this.listeners.find(listener => listener.listenerId === id);
 
     if (listenerExists) {
-      this.listeners = this.listeners.filter(
-        listener => listener.listenerId !== id
-      );
+      this.listeners = this.listeners.filter(listener => listener.listenerId !== id);
 
       return true;
     }
@@ -108,9 +92,7 @@ class Helpers {
    */
   getRandomId(): number {
     // window.msCrypto for IE 11
-    return (window.crypto || (window as any).msCrypto).getRandomValues(
-      new Uint32Array(1)
-    )[0];
+    return (window.crypto || (window as any).msCrypto).getRandomValues(new Uint32Array(1))[0];
   }
 
   /**
@@ -154,14 +136,7 @@ class Helpers {
       try {
         window.parent.postMessage(msg, this.origin);
       } catch (error) {
-        console.warn(
-          'Unable to post message ' +
-            msg +
-            ' to Luigi Core from origin ' +
-            this.origin +
-            ': ' +
-            error
-        );
+        console.warn('Unable to post message ' + msg + ' to Luigi Core from origin ' + this.origin + ': ' + error);
       }
     } else {
       console.warn(
@@ -181,9 +156,7 @@ class Helpers {
 
   deSanitizeParamsMap(paramsMap: Record<string, any>) {
     return Object.entries(paramsMap).reduce<any>((sanitizedMap, paramPair) => {
-      sanitizedMap[
-        this.deSanitizeParam(paramPair[0] as string)
-      ] = this.deSanitizeParam(paramPair[1] as string);
+      sanitizedMap[this.deSanitizeParam(paramPair[0] as string)] = this.deSanitizeParam(paramPair[1] as string);
 
       return sanitizedMap;
     }, {});

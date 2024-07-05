@@ -18,9 +18,7 @@ class StorageManager extends LuigiClientBase {
     super();
 
     this.storageEventProcessor = new StorageEventProcessor();
-    helpers.addEventListener('storage', (event: any) =>
-      this.storageEventProcessor.processEvent(event)
-    );
+    helpers.addEventListener('storage', (event: any) => this.storageEventProcessor.processEvent(event));
   }
 
   /**
@@ -124,9 +122,7 @@ class StorageEventProcessor {
       const data: Record<string, any> = event.data.data;
 
       if (!pendingOperation.has(data['id'])) {
-        console.log(
-          'Impossible to find Promise method for message ' + data['id']
-        );
+        console.log('Impossible to find Promise method for message ' + data['id']);
         return;
       }
 
@@ -162,23 +158,14 @@ class StorageEventProcessor {
     return result;
   }
 
-  execute(
-    resolve: (value?: any) => void,
-    reject: () => void,
-    operation: any,
-    params: any
-  ): void {
+  execute(resolve: (value?: any) => void, reject: () => void, operation: any, params: any): void {
     let id: number = helpers.getRandomId();
 
     this.createPendingOperation(id, resolve, reject);
     this.sendMessage(id, operation, params);
   }
 
-  createPendingOperation(
-    id: number,
-    resolve: (value?: any) => void,
-    reject: () => void
-  ): void {
+  createPendingOperation(id: number, resolve: (value?: any) => void, reject: () => void): void {
     pendingOperation.set(id, {
       resolve,
       reject

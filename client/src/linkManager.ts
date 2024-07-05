@@ -101,10 +101,7 @@ export class linkManager extends LuigiClientBase {
 
     const relativePath: boolean = path[0] !== '/';
 
-    if (
-      path === '/' &&
-      (modalSettings || splitViewSettings || drawerSettings)
-    ) {
+    if (path === '/' && (modalSettings || splitViewSettings || drawerSettings)) {
       console.warn('Navigation with an absolute path prevented.');
       return;
     }
@@ -135,15 +132,9 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
    */
-  updateModalPathInternalNavigation(
-    path: string,
-    modalSettings = {},
-    addHistoryEntry = false
-  ): void {
+  updateModalPathInternalNavigation(path: string, modalSettings = {}, addHistoryEntry = false): void {
     if (!path) {
-      console.warn(
-        'Updating path of the modal upon internal navigation prevented. No path specified.'
-      );
+      console.warn('Updating path of the modal upon internal navigation prevented. No path specified.');
       return;
     }
 
@@ -216,19 +207,16 @@ export class linkManager extends LuigiClientBase {
    *  });
    */
   openAsModal(path: string, modalSettings = {}): Promise<void> {
-    helpers.addEventListener(
-      'luigi.navigation.modal.close',
-      (event: any, listenerId: string) => {
-        const promise = this.getPromise('modal');
+    helpers.addEventListener('luigi.navigation.modal.close', (event: any, listenerId: string) => {
+      const promise = this.getPromise('modal');
 
-        if (promise) {
-          promise.resolveFn(event.data);
-          this.setPromise('modal', undefined);
-        }
-
-        helpers.removeEventListener(listenerId);
+      if (promise) {
+        promise.resolveFn(event.data);
+        this.setPromise('modal', undefined);
       }
-    );
+
+      helpers.removeEventListener(listenerId);
+    });
 
     const modalPromise: Record<string, any> = {};
 
@@ -256,10 +244,7 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
    */
-  updateModalSettings(
-    updatedModalSettings = {},
-    addHistoryEntry = false
-  ): void {
+  updateModalSettings(updatedModalSettings = {}, addHistoryEntry = false): void {
     const message: Record<string, any> = {
       msg: 'luigi.navigation.updateModalSettings',
       updatedModalSettings,
@@ -286,9 +271,7 @@ export class linkManager extends LuigiClientBase {
   openAsSplitView(path: string, splitViewSettings = {}): SplitViewInstance {
     this.navigate(path, '0', true, undefined, splitViewSettings);
 
-    return (new splitViewHandle(
-      splitViewSettings
-    ) as unknown) as SplitViewInstance;
+    return (new splitViewHandle(splitViewSettings) as unknown) as SplitViewInstance;
   }
 
   /**
@@ -319,22 +302,15 @@ export class linkManager extends LuigiClientBase {
    */
   fromContext(navigationContext: string): this {
     const navigationContextInParent: boolean =
-      (lifecycleManager.currentContext.context as Context)[
-        'parentNavigationContexts'
-      ] &&
-      (lifecycleManager.currentContext.context as Context)[
-        'parentNavigationContexts'
-      ]?.indexOf(navigationContext) !== -1;
+      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts'] &&
+      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts']?.indexOf(navigationContext) !==
+        -1;
 
     if (navigationContextInParent) {
       this.options['fromContext'] = navigationContext;
     } else {
       this.options['errorSkipNavigation'] = true;
-      console.error(
-        'Navigation not possible, navigationContext ' +
-          navigationContext +
-          ' not found.'
-      );
+      console.error('Navigation not possible, navigationContext ' + navigationContext + ' not found.');
     }
 
     return this;
@@ -349,20 +325,14 @@ export class linkManager extends LuigiClientBase {
    */
   fromClosestContext(): this {
     const hasParentNavigationContext: boolean =
-      (lifecycleManager.currentContext.context as Context)[
-        'parentNavigationContexts'
-      ] &&
-      (lifecycleManager.currentContext.context as Context)[
-        'parentNavigationContexts'
-      ]?.length > 0;
+      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts'] &&
+      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts']?.length > 0;
 
     if (hasParentNavigationContext) {
       this.options['fromContext'] = null;
       this.options['fromClosestContext'] = true;
     } else {
-      console.error(
-        'Navigation not possible, no parent navigationContext found.'
-      );
+      console.error('Navigation not possible, no parent navigationContext found.');
     }
 
     return this;
@@ -470,23 +440,20 @@ export class linkManager extends LuigiClientBase {
     this.setPromise('pathExistsPromises', pathExistsPromises);
 
     // register event listener, which will be cleaned up after this usage
-    helpers.addEventListener(
-      'luigi.navigation.pathExists.answer',
-      (event, listenerId) => {
-        const data = event.data.data;
-        const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
+    helpers.addEventListener('luigi.navigation.pathExists.answer', (event, listenerId) => {
+      const data = event.data.data;
+      const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
 
-        if (data.correlationId === currentId) {
-          if (pathExistsPromises[data.correlationId]) {
-            pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
-            delete pathExistsPromises[data.correlationId];
-            this.setPromise('pathExistsPromises', pathExistsPromises);
-          }
-
-          helpers.removeEventListener(listenerId);
+      if (data.correlationId === currentId) {
+        if (pathExistsPromises[data.correlationId]) {
+          pathExistsPromises[data.correlationId].resolveFn(data.pathExists);
+          delete pathExistsPromises[data.correlationId];
+          this.setPromise('pathExistsPromises', pathExistsPromises);
         }
+
+        helpers.removeEventListener(listenerId);
       }
-    );
+    });
 
     const pathExistsMsg: InternalMessageData = {
       msg: 'luigi.navigation.pathExists',
@@ -510,12 +477,8 @@ export class linkManager extends LuigiClientBase {
    */
   hasBack(): boolean {
     return (
-      !!(lifecycleManager.currentContext.internal as Record<string, any>)[
-        'modal'
-      ] ||
-      (lifecycleManager.currentContext.internal as Record<string, any>)[
-        'viewStackSize'
-      ] !== 0
+      !!(lifecycleManager.currentContext.internal as Record<string, any>)['modal'] ||
+      (lifecycleManager.currentContext.internal as Record<string, any>)['viewStackSize'] !== 0
     );
   }
 
@@ -596,25 +559,22 @@ export class linkManager extends LuigiClientBase {
 
     this.setPromise('getCurrentRoute', currentRoutePromise);
 
-    helpers.addEventListener(
-      'luigi.navigation.currentRoute.answer',
-      (event, listenerId) => {
-        const data = event.data.data;
-        const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
+    helpers.addEventListener('luigi.navigation.currentRoute.answer', (event, listenerId) => {
+      const data = event.data.data;
+      const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
 
-        if (data.correlationId === currentId) {
-          if (currentRoutePromise[data.correlationId]) {
-            currentRoutePromise[data.correlationId].resolveFn(data.route);
-            delete currentRoutePromise[data.correlationId];
-            this.setPromise('getCurrentRoute', currentRoutePromise);
-          }
-
-          helpers.removeEventListener(listenerId);
+      if (data.correlationId === currentId) {
+        if (currentRoutePromise[data.correlationId]) {
+          currentRoutePromise[data.correlationId].resolveFn(data.route);
+          delete currentRoutePromise[data.correlationId];
+          this.setPromise('getCurrentRoute', currentRoutePromise);
         }
 
         helpers.removeEventListener(listenerId);
       }
-    );
+
+      helpers.removeEventListener(listenerId);
+    });
 
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.navigation.currentRoute',

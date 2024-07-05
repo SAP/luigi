@@ -13,13 +13,8 @@ class UxManager extends LuigiClientBase {
     super();
 
     helpers.addEventListener('luigi.current-locale-changed', (event: any) => {
-      if (
-        event.data.currentLocale &&
-        lifecycleManager.currentContext?.internal
-      ) {
-        (lifecycleManager.currentContext.internal as Record<string, any>)[
-          'currentLocale'
-        ] = event.data.currentLocale;
+      if (event.data.currentLocale && lifecycleManager.currentContext?.internal) {
+        (lifecycleManager.currentContext.internal as Record<string, any>)['currentLocale'] = event.data.currentLocale;
         lifecycleManager._notifyUpdate();
       }
     });
@@ -104,13 +99,10 @@ class UxManager extends LuigiClientBase {
    *  });
    */
   showConfirmationModal(settings: ConfirmationModalSettings): Promise<void> {
-    helpers.addEventListener(
-      'luigi.ux.confirmationModal.hide',
-      (event, listenerId) => {
-        this.hideConfirmationModal(event.data.data);
-        helpers.removeEventListener(listenerId);
-      }
-    );
+    helpers.addEventListener('luigi.ux.confirmationModal.hide', (event, listenerId) => {
+      this.hideConfirmationModal(event.data.data);
+      helpers.removeEventListener(listenerId);
+    });
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.ux.confirmationModal.show',
       data: { settings }
@@ -190,9 +182,7 @@ class UxManager extends LuigiClientBase {
     });
 
     if (settings?.closeAfter && settings?.closeAfter < 100) {
-      console.warn(
-        `Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`
-      );
+      console.warn(`Message with id='${settings.id}' has too small 'closeAfter' value. It needs to be at least 100ms.`);
       settings.closeAfter = undefined;
     }
 
@@ -235,9 +225,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   getCurrentLocale(): string {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)[
-      'currentLocale'
-    ];
+    return (lifecycleManager.currentContext?.internal as Record<string, any>)['currentLocale'];
   }
 
   /**
@@ -266,9 +254,7 @@ class UxManager extends LuigiClientBase {
    * @since 0.6.0
    */
   isSplitView(): boolean {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)[
-      'splitView'
-    ];
+    return (lifecycleManager.currentContext?.internal as Record<string, any>)['splitView'];
   }
 
   /**
@@ -278,9 +264,7 @@ class UxManager extends LuigiClientBase {
    * @since 0.6.0
    */
   isModal(): boolean {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)[
-      'modal'
-    ];
+    return (lifecycleManager.currentContext?.internal as Record<string, any>)['modal'];
   }
 
   /**
@@ -290,9 +274,7 @@ class UxManager extends LuigiClientBase {
    * @since 1.26.0
    */
   isDrawer(): boolean {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)[
-      'drawer'
-    ];
+    return (lifecycleManager.currentContext?.internal as Record<string, any>)['drawer'];
   }
 
   /**
@@ -301,9 +283,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   getCurrentTheme(): any {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)[
-      'currentTheme'
-    ];
+    return (lifecycleManager.currentContext?.internal as Record<string, any>)['currentTheme'];
   }
 
   /**
@@ -314,11 +294,7 @@ class UxManager extends LuigiClientBase {
    * @example LuigiClient.uxManager().getCSSVariables();
    */
   getCSSVariables(): Object {
-    return (
-      (lifecycleManager.currentContext?.internal as Record<string, any>)[
-        'cssVariables'
-      ] || {}
-    );
+    return (lifecycleManager.currentContext?.internal as Record<string, any>)['cssVariables'] || {};
   }
 
   /**
@@ -328,16 +304,11 @@ class UxManager extends LuigiClientBase {
    * @example LuigiClient.uxManager().applyCSS();
    */
   applyCSS(): void {
-    document
-      .querySelectorAll('head style[luigi-injected]')
-      .forEach(luigiInjectedStyleTag => {
-        luigiInjectedStyleTag.remove();
-      });
+    document.querySelectorAll('head style[luigi-injected]').forEach(luigiInjectedStyleTag => {
+      luigiInjectedStyleTag.remove();
+    });
 
-    const vars = (lifecycleManager.currentContext?.internal as Record<
-      string,
-      any
-    >)['cssVariables'];
+    const vars = (lifecycleManager.currentContext?.internal as Record<string, any>)['cssVariables'];
 
     if (vars) {
       let cssString = ':root {\n';
@@ -345,8 +316,7 @@ class UxManager extends LuigiClientBase {
       Object.keys(vars).forEach(key => {
         const val = vars[key];
 
-        cssString +=
-          (key.startsWith('--') ? '' : '--') + key + ':' + val + ';\n';
+        cssString += (key.startsWith('--') ? '' : '--') + key + ':' + val + ';\n';
       });
       cssString += '}';
 
