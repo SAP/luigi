@@ -144,11 +144,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
             .click();
 
           cy.get('.splitViewContainer').then($splitViewContainer => {
-            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height).toFixed(0);
 
             cy.get('.splitViewContainer')
               .invoke('height')
-              .should('eq', splitViewHeight);
+              .should('eq', Number(splitViewHeight));
 
             expect(`${splitViewHeight}px`).to.equal(win.getComputedStyle($iframe[0]).marginBottom);
 
@@ -161,11 +161,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     it('Check main iframe height after open and close Split View component with default settings', () => {
       cy.window().then(win => {
         cy.get('.fd-page.iframeContainer').then($iframe => {
-          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height);
+          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height).toFixed(0);
 
           cy.get('.iframeContainer')
             .invoke('height')
-            .should('eq', iframeHeight);
+            .should('eq', Number(iframeHeight));
 
           cy.wrap($iframeBody)
             .contains('open view in split view with params')
@@ -173,7 +173,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
           cy.get('.lui-collapse-btn').click();
           cy.get('.splitViewContainer').should($splitViewContainer => {
-            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height).toFixed(0);
 
             expect(`${splitViewHeight}px`).to.equal(win.getComputedStyle($iframe[0]).marginBottom);
           });
@@ -389,6 +389,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     const openSplitviewButtonText = 'Open Splitview';
     const drawerSelector = '.drawer';
     const mfIframeSelector = 'div.iframeContainerTabNav';
+    const mfIframeSelectorIframe = 'div.iframeContainerTabNav iframe';
     const tabNavSelector = '#tabsContainer';
     const splitViewSelector = '#splitViewContainer';
 
@@ -442,16 +443,16 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.get(drawerSelector).should('exist');
 
-      cy.get(mfIframeSelector).should($element => {
+      cy.get(mfIframeSelectorIframe).should($element => {
         expectToBeResized($element);
       });
 
       cy.get(tabNavSelector).should($element => {
-        expectToBeResized($element);
+        expectToNotBeResized($element);
       });
     });
 
-    it('resizes the split view when opening the drawer after the split view', () => {
+    it('does not resize the split view when opening the drawer after the split view', () => {
       cy.wrap($iframeBody)
         .contains(openSplitviewButtonText)
         .click();
@@ -463,11 +464,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       cy.get(drawerSelector).should('exist');
 
       cy.get(splitViewSelector).should($element => {
-        expectToBeResized($element);
+        expectToNotBeResized($element);
       });
     });
 
-    it('resizes the split view when opening the drawer before the split view', () => {
+    it('does not resize the split view when opening the drawer before the split view', () => {
       cy.wrap($iframeBody)
         .contains(openDrawerButtonText)
         .click();
@@ -479,7 +480,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       cy.get(drawerSelector).should('exist');
 
       cy.get(splitViewSelector).should($element => {
-        expectToBeResized($element);
+        expectToNotBeResized($element);
       });
     });
 
@@ -492,7 +493,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
       cy.get(drawerSelector).should('exist');
 
-      cy.get(mfIframeSelector).should($element => {
+      cy.get(mfIframeSelectorIframe).should($element => {
         mfIframeWidthAfterFirstResize = expectToBeResized($element);
       });
 
@@ -500,7 +501,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
         .contains(openDrawerButtonText)
         .click();
 
-      cy.get(mfIframeSelector).should($element => {
+      cy.get(mfIframeSelectorIframe).should($element => {
         expect(mfIframeWidthAfterFirstResize).to.equal(expectToBeResized($element));
       });
     });

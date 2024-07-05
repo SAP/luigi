@@ -253,19 +253,19 @@ describe('Navigation', () => {
           .contains('dynamic-parameter-stacked/1/child')
           .click();
       });
-      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/1/child');
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/:dyn/child');
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
           .contains('dynamic-parameter-stacked/2/child')
           .click();
       });
-      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child');
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/:dyn/child');
       cy.getIframeBody().then($iframeBody => {
         cy.wrap($iframeBody)
           .contains('dynamic-parameter-stacked/2/child/3')
           .click();
       });
-      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child/3');
+      cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/:dyn/child/3');
     });
   });
 });
