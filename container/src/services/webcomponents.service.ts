@@ -100,12 +100,12 @@ export class WebComponentService {
             const options = { fromContext, fromClosestContext, fromVirtualTreeRoot, fromParent, nodeParams, ...settings };
             this.dispatchLuigiEvent(Events.NAVIGATION_REQUEST, { link: route , ...options});
           },
-          navigateToIntent: (semanticSlug: string, params = {}, settings = {}): void => {
+          navigateToIntent: (semanticSlug: string, params = {}): void => {
             let newPath = '#?intent=';
 
             newPath += semanticSlug;
 
-            if (Object.keys(params)?.length) {
+            if (params && Object.keys(params)?.length) {
               const paramList = Object.entries(params);
 
               // append parameters to the path if any
@@ -121,7 +121,7 @@ export class WebComponentService {
               }
             }
 
-            linkManagerInstance.navigate(newPath , settings);
+            linkManagerInstance.navigate(newPath);
           },
           fromClosestContext: () => {
             fromClosestContext = true;

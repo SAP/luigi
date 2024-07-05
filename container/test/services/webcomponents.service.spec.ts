@@ -163,8 +163,27 @@ describe('createClientAPI', () => {
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
 
-    it('test linkManager navigateToIntent', () => {
-      const slug = 'Sales-settings';
+    it.each([
+      { slug: null, params: null },
+      { slug: 'Sales-settings', params: null },
+      { slug: null, params: { project: 'pr2', user: 'john' } },
+      { slug: 'Sales-settings', params: { project: 'pr2', user: 'john' } }
+    ])('test linkManager navigateToIntent', (data) => {
+      let payloadLink = `#?intent=${data.slug}`;
+
+      if (data.params && Object.keys(data.params)?.length) {
+        const paramList = Object.entries(data.params);
+
+        if (paramList.length > 0) {
+          payloadLink += '?';
+
+          for (const [key, value] of paramList) {
+            payloadLink += key + '=' + value + '&';
+          }
+
+          payloadLink = payloadLink.slice(0, -1);
+        }
+      }
 
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
@@ -172,7 +191,7 @@ describe('createClientAPI', () => {
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().navigateToIntent(slug);
+      clientAPI.linkManager().navigateToIntent(data.slug, data.params);
 
       // assert
       const expectedPayload = {
@@ -180,7 +199,7 @@ describe('createClientAPI', () => {
         fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
-        link: `#?intent=${slug}`,
+        link: payloadLink,
         nodeParams: {}
       };
 

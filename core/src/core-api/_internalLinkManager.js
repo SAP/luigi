@@ -54,12 +54,26 @@ export class linkManager extends LuigiCoreAPIBase {
     return remotePromise;
   }
 
+  /**
+   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
+   * parameters.
+   * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
+   * input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
+   * Consequently, the following calls shall have the exact same effect:
+   * - linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * - linkManager().navigate('/#?intent=Sales-settings?project=pr2&user=john')
+   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+   * @param {Object} params an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`.
+   * @example
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+   * LuigiClient.linkManager().navigateToIntent('Sales-settings')
+   */
   navigateToIntent(semanticSlug, params = {}) {
     let newPath = '#?intent=';
 
     newPath += semanticSlug;
 
-    if (Object.keys(params)?.length) {
+    if (params && Object.keys(params)?.length) {
       const paramList = Object.entries(params);
 
       // append parameters to the path if any
