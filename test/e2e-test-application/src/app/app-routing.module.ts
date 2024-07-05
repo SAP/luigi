@@ -142,7 +142,7 @@ const routes: Routes = [
       {
         path: ':dyn',
         component: NavSyncComponent,
-        data: { luigiRoute: '/dynamic-parameter-flat/:dyn', fromContext: 'navSync' },
+        data: { luigiRoute: '/dynamic-parameter-flat/:dyn', fromContext: 'navSync' }
       }
     ]
   },
@@ -164,14 +164,14 @@ const routes: Routes = [
               {
                 path: ':dyn2',
                 component: NavSyncComponent,
-                data: { luigiRoute: '/dynamic-parameter-stacked/:dyn/child/:dyn2', fromContext: 'navSync' },
-              },
+                data: { luigiRoute: '/dynamic-parameter-stacked/:dyn/child/:dyn2', fromContext: 'navSync' }
+              }
             ]
-          },
+          }
         ]
       }
     ]
-  },
+  }
 ];
 
 @NgModule({
