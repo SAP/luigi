@@ -189,7 +189,7 @@ export default class luigiExampleWC extends HTMLElement {
         body: 'Are you sure you want to do this?',
         buttonConfirm: 'Yes',
         buttonDismiss: 'No'
-      });
+      }).then(() => console.log('Yes clicked')).catch(() => console.log('No clicked'));
       event.stopPropagation();
     });
   }
