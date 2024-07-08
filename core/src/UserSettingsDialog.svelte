@@ -1,11 +1,5 @@
 <script>
-  import {
-    createEventDispatcher,
-    onMount,
-    onDestroy,
-    beforeUpdate,
-    getContext
-  } from 'svelte';
+  import { createEventDispatcher, onMount, onDestroy, beforeUpdate, getContext } from 'svelte';
   import {
     NavigationHelpers,
     GenericHelpers,
@@ -20,9 +14,7 @@
   import { LuigiConfig } from './core-api';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
   import { KEYCODE_ESC, KEYCODE_ENTER, KEYCODE_SPACE, KEYCODE_HOME, KEYCODE_END } from './utilities/keycode.js';
-  export let schemaObj;
   export let userSettingGroups;
-
 
   const dispatch = createEventDispatcher();
   let userSettingGroup;
@@ -47,24 +39,17 @@
   });
 
   onMount(() => {
-    const usLocalizationConfig = LuigiConfig.getConfigValue(
-      'userSettings.userSettingsDialog'
-    );
+    const usLocalizationConfig = LuigiConfig.getConfigValue('userSettings.userSettingsDialog');
     const usLocalization = usLocalizationConfig
       ? usLocalizationConfig
       : LuigiConfig.getConfigValue('settings.userSettings.userSettingsDialog');
     if (usLocalization) {
-      dialogHeader = usLocalization.dialogHeader
-        ? usLocalization.dialogHeader
-        : dialogHeader;
+      dialogHeader = usLocalization.dialogHeader ? usLocalization.dialogHeader : dialogHeader;
       saveBtn = usLocalization.saveBtn ? usLocalization.saveBtn : saveBtn;
       dismissBtn = usLocalization.dismissBtn ? usLocalization.dismissBtn : dismissBtn;
     }
 
-    key =
-      Object.keys(userSettingGroups[0]).length > 0
-        ? Object.keys(userSettingGroups[0])[0]
-        : undefined;
+    key = Object.keys(userSettingGroups[0]).length > 0 ? Object.keys(userSettingGroups[0])[0] : undefined;
 
     EventListenerHelpers.addEventListener('message', e => {
       const iframe = IframeHelpers.getValidMessageSource(e);
@@ -94,10 +79,7 @@
       .then(storedUserSettingsData => {
         previousUserSettings = JSON.parse(JSON.stringify(storedUserSettingsData));
         if (storedUserSettingsData === null) {
-          storedUserSettings = prepareUserSettingsObj(
-            JSON.parse(JSON.stringify(userSettingGroups)),
-            {}
-          );
+          storedUserSettings = prepareUserSettingsObj(JSON.parse(JSON.stringify(userSettingGroups)), {});
         } else {
           storedUserSettings = prepareUserSettingsObj(
             JSON.parse(JSON.stringify(userSettingGroups)),
@@ -136,9 +118,7 @@
   }
 
   function errorHandling(selectedUserSettingGroupData) {
-    userSettingsGroupTitle = selectedUserSettingGroupData.title
-      ? selectedUserSettingGroupData.title
-      : '';
+    userSettingsGroupTitle = selectedUserSettingGroupData.title ? selectedUserSettingGroupData.title : '';
     if (!GenericHelpers.isObject(selectedUserSettingGroupData.settings)) {
       return;
     }
@@ -146,14 +126,10 @@
       let property = selectedUserSettingGroupData.settings[key];
       if (property.type === 'enum') {
         if (!Array.isArray(property.options)) {
-          console.error(
-            `There is no options array for '${key}' defined in the Luigi userSettings config.`
-          );
+          console.error(`There is no options array for '${key}' defined in the Luigi userSettings config.`);
         }
       } else if (property.type === undefined) {
-        console.error(
-          `There is no data type defined for '${key}' in the Luigi userSettings config.`
-        );
+        console.error(`There is no data type defined for '${key}' in the Luigi userSettings config.`);
       }
     }
   }
@@ -173,14 +149,9 @@
         closeNavOnCategoryClickMobile();
       }
     } else {
-      const firstListItem = document.querySelectorAll(
-        '.lui-us-list .lui-us-navlist__item'
-      )[0];
+      const firstListItem = document.querySelectorAll('.lui-us-list .lui-us-navlist__item')[0];
       firstListItem.classList.add('is-selected');
-      if (
-        window.innerWidth !== 0 &&
-        window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth
-      ) {
+      if (window.innerWidth !== 0 && window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
         handleSaveBtnVisibility();
       }
     }
@@ -196,10 +167,7 @@
         const viewUrl = ViewUrlDecorator.hasDecorators()
           ? ViewUrlDecorator.applyDecorators(selectedUserSettingGroupData.viewUrl)
           : selectedUserSettingGroupData.viewUrl;
-        let iframe = UserSettingsHelper.createIframe(
-          viewUrl,
-          selectedUserSettingGroupKey
-        );
+        let iframe = UserSettingsHelper.createIframe(viewUrl, selectedUserSettingGroupKey);
         customIframes[selectedUserSettingGroupKey] = iframe;
       }
 
@@ -240,15 +208,7 @@
 
   function closest(element, selector, max) {
     if (element && max > 0) {
-      if (GenericHelpers.isIE()) {
-        return element.msMatchesSelector(selector)
-          ? element
-          : closest(element.parentNode, selector, max - 1);
-      } else {
-        return element.matches(selector)
-          ? element
-          : closest(element.parentNode, selector, max - 1);
-      }
+      return element.matches(selector) ? element : closest(element.parentNode, selector, max - 1);
     } else {
       return undefined;
     }
@@ -267,9 +227,7 @@
   }
 
   function toggleNavMobile() {
-    document
-      .querySelector('.lui-usersettings-dialog')
-      .classList.toggle('usersettings-leftNavVisible');
+    document.querySelector('.lui-usersettings-dialog').classList.toggle('usersettings-leftNavVisible');
     if (window.innerWidth !== 0 && window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth) {
       handleSaveBtnVisibility();
     }
@@ -286,15 +244,11 @@
   let previousWindowWidth;
   const onResize = () => {
     const isMobileToDesktop =
-      window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth &&
-      previousWindowWidth < CSS_BREAKPOINTS.desktopMinWidth;
+      window.innerWidth >= CSS_BREAKPOINTS.desktopMinWidth && previousWindowWidth < CSS_BREAKPOINTS.desktopMinWidth;
     const isDesktopToMobile =
-      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth &&
-      previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
+      window.innerWidth < CSS_BREAKPOINTS.desktopMinWidth && previousWindowWidth >= CSS_BREAKPOINTS.desktopMinWidth;
     if (isDesktopToMobile) {
-      document
-        .querySelector('.lui-usersettings-dialog')
-        .classList.toggle('usersettings-leftNavVisible');
+      document.querySelector('.lui-usersettings-dialog').classList.toggle('usersettings-leftNavVisible');
       if (!document.querySelector('.usersettings-leftNavVisible')) {
         document.querySelector('.confirm-button').style.display = 'none';
       } else {
@@ -315,14 +269,13 @@
     previousWindowWidth = window.innerWidth;
   };
 
-
   export function handleKeyUp(event, index) {
     let luiNavListItemArray = document.querySelectorAll('.lui-us-list .lui-us-navlist__item');
     if (event.keyCode === KEYCODE_ENTER || event.keyCode === KEYCODE_SPACE) {
       luiNavListItemArray[index].click();
     }
     if (event.keyCode === KEYCODE_END) {
-      luiNavListItemArray[Object.keys(userSettingGroups).length-1].focus();
+      luiNavListItemArray[Object.keys(userSettingGroups).length - 1].focus();
     }
     if (event.keyCode === KEYCODE_HOME) {
       luiNavListItemArray[0].focus();
@@ -339,6 +292,7 @@
 </script>
 
 <svelte:window on:resize={onResize} on:keydown={handleKeyDown} />
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div class="fd-dialog fd-dialog--active lui-usersettings-dialog" tabindex="0">
   <div
     class="fd-dialog__content lui-usersettings-dialog-size"
@@ -350,62 +304,37 @@
       <div class="lui-usersettings-left-nav">
         <div class="fd-side-nav">
           <div class="fd-side-nav__group-header">
-            <h2 class="fd-title fd-title--h5" id="dialog-title-2">
-              {$getTranslation(dialogHeader)}
-            </h2>
+            <h2 class="fd-title fd-title--h5" id="dialog-title-2">{$getTranslation(dialogHeader)}</h2>
           </div>
-          <div
-            class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation"
-          >
-            <ul
-              class="fd-list fd-list--byline fd-list--navigation lui-us-list"
-              role="list"
-            >
+          <div class="fd-side-nav__main-navigation lui-fd-side-nav__main-navigation">
+            <ul class="fd-list fd-list--byline fd-list--navigation lui-us-list">
               {#each Object.entries(userSettingGroups) as [key, userSettingGroup], index}
                 {#each Object.entries(userSettingGroup) as userSettingsGroupProperty}
                   <li
-                    role="listitem"
                     class="fd-list__item fd-list__item--link lui-us-navlist__item"
                     data-testid="us-navigation-item"
-                    on:click|preventDefault={() =>
-                      openEditor(userSettingsGroupProperty, event)}
+                    on:click|preventDefault={() => openEditor(userSettingsGroupProperty, event)}
                     on:keydown={event => handleKeyUp(event, [index])}
                     tabindex="0"
                   >
+                    <!-- svelte-ignore a11y-invalid-attribute -->
                     <a tabindex="-1" class="fd-list__link" href="#">
                       {#if userSettingsGroupProperty[1].icon}
                         {#if hasOpenUIicon(userSettingsGroupProperty[1])}
                           <span class="fd-list__thumbnail">
-                            <i
-                              role="presentation"
-                              class={getSapIconStr(
-                                userSettingsGroupProperty[1].icon
-                              )}
-                            />
+                            <i role="presentation" class={getSapIconStr(userSettingsGroupProperty[1].icon)} />
                           </span>
                         {:else}
                           <span
-                            class={userSettingsGroupProperty[1]
-                              .iconClassAttribute ||
-                              'fd-image--s fd-list__thumbnail'}
-                            aria-label={userSettingsGroupProperty[1].altText
-                              ? userSettingsGroupProperty[1].altText
-                              : ''}
-                            style="background-image:url('{userSettingsGroupProperty[1]
-                              .icon}'); background-size:cover;"
+                            class={userSettingsGroupProperty[1].iconClassAttribute || 'fd-image--s fd-list__thumbnail'}
+                            aria-label={userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}
+                            style="background-image:url('{userSettingsGroupProperty[1].icon}'); background-size:cover;"
                           />
                           {#if userSettingsGroupProperty[1].initials}
                             <span
-                              class={userSettingsGroupProperty[1]
-                                .iconClassAttribute + ' lui-profile-initials' ||
-                                'fd-image--s fd-list__thumbnail'}
-                              aria-label={userSettingsGroupProperty[1].altText
-                                ? userSettingsGroupProperty[1].altText
-                                : ''}
-                              >{userSettingsGroupProperty[1].initials
-                                ? userSettingsGroupProperty[1].initials
-                                : ''}</span
-                            >
+                              class={userSettingsGroupProperty[1].iconClassAttribute + ' lui-profile-initials' || 'fd-image--s fd-list__thumbnail'}
+                              aria-label={userSettingsGroupProperty[1].altText ? userSettingsGroupProperty[1].altText : ''}
+                            >{userSettingsGroupProperty[1].initials ? userSettingsGroupProperty[1].initials : ''}</span>
                           {/if}
                         {/if}
                         <i role="presentation" class="sap-icon" />
@@ -413,18 +342,10 @@
 
                       <div class="fd-list__content">
                         <div class="fd-list__title">
-                          {$getTranslation(
-                            userSettingsGroupProperty[1].label
-                              ? userSettingsGroupProperty[1].label
-                              : ''
-                          )}
+                          {$getTranslation(userSettingsGroupProperty[1].label ? userSettingsGroupProperty[1].label : '')}
                         </div>
                         <div class="fd-list__byline">
-                          {$getTranslation(
-                            userSettingsGroupProperty[1].sublabel
-                              ? userSettingsGroupProperty[1].sublabel
-                              : ''
-                          )}
+                          {$getTranslation(userSettingsGroupProperty[1].sublabel ? userSettingsGroupProperty[1].sublabel : '')}
                         </div>
                       </div>
                     </a>
@@ -442,9 +363,7 @@
         >
           <i class="sap-icon--navigation-left-arrow" />
         </button>
-        <h2 class="fd-title fd-title--h5">
-          {$getTranslation(userSettingsGroupTitle)}
-        </h2>
+        <h2 class="fd-title fd-title--h5">{$getTranslation(userSettingsGroupTitle)}</h2>
       </div>
 
       <div class="lui-usersettings-content">
@@ -571,6 +490,7 @@
     height: 100%;
     overflow: visible;
     -webkit-overflow-scrolling: touch;
+    line-height: 0;
   }
 
   .iframeUserSettingsCtn :global(iframe) {
@@ -614,10 +534,7 @@
   .lui-profile-initials {
     position: absolute;
     z-index: 1;
-    background-color: var(
-      --fdAvatar_BackgroundColor,
-      var(--sapAccentColor6, #286eb4)
-    );
+    background-color: var(--fdAvatar_BackgroundColor, var(--sapAccentColor6, #286eb4));
   }
 
   /*Fiori 3 guidlines*/

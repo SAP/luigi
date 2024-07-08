@@ -13,6 +13,8 @@ export declare interface ModalSettings {
   size?: 'fullscreen' | 'l' | 'm' | 's';
   width?: string;
   height?: string;
+  keepPrevious?: boolean;
+  closebtn_data_testid?: string;
 }
 
 export declare interface SplitViewSettings {
@@ -111,7 +113,7 @@ export declare interface UxManager {
    * @param {string} [settings.buttonDismiss="No"] the label for the modal dismiss button
    * @returns {promise} which is resolved when accepting the confirmation modal and rejected when dismissing it
    * @example
-   * import LuigiClient from '@kyma-project/luigi-client';
+   * import LuigiClient from '@luigi-project/client';
    * const settings = {
    *  header: "Confirmation",
    *  body: "Are you sure you want to do this?",
@@ -185,8 +187,10 @@ export declare interface LinkManager {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
@@ -215,9 +219,11 @@ export declare interface LinkManager {
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-   * @param {Function} onCloseCallback callback function called upon closing the openened modal
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
+   * @param {Function} onCloseCallback callback function called upon closing the opened modal
    * @example
    * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
    */
@@ -383,6 +389,11 @@ export declare interface Options {
    *if `true` shadowRoot mode is "open" otherwise shadowRoot mode is "closed".
    */
   openShadow: boolean;
+
+  /**
+   * if `true` LuigiClient initialization will be defered, until `LuigiClient.luigiClientInit()` will be called.
+   */
+  deferLuigiClientWCInit: boolean;
 }
 
 /**
@@ -409,4 +420,49 @@ export interface LuigiClient {
   linkManager: () => LinkManager;
   uxManager: () => UxManager;
   publishEvent: (event: Event) => void;
+  /**
+   * Sets node parameters in Luigi Core. The parameters will be added to the URL.
+   * @param {Object} params
+   * @param {boolean} keepBrowserHistory
+   * @memberof LuigiClient
+   */
+  addNodeParams: (params: Object, keepBrowserHistory: boolean) => void;
+  /**
+   * Returns the node parameters of the active URL.
+   * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
+   * <!-- add-attribute:class:warning -->
+   * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+   * @param {boolean} shouldDesanitise defines whether the specially encoded characters should be desanitised
+   * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
+   * @memberof LuigiClient
+   */
+  getNodeParams: (shouldDesanitise: boolean) => Object;
+  /**
+   * Sends anchor to Luigi Core. The anchor will be added to the URL.
+   * @param {string} anchor
+   * @memberof LuigiClient
+   */
+  setAnchor: (anchor: string) => void;
+  /**
+   * Retrieves the search params from the active URL
+   * @returns {Object} containing the search params
+   * @memberof LuigiClient
+   */
+  getCoreSearchParams: () => Object;
+  /**
+   * Returns the dynamic path parameters of the active URL.
+   * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
+   * All path parameters in the current navigation path (as defined by the active URL) are returned.
+   * <!-- add-attribute:class:warning -->
+   * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
+   * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
+   * @memberof LuigiClient
+   */
+  getPathParams: () => Object;
+  /**
+   * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
+   * @returns {Object} client permissions as specified in the navigation node
+   * @memberof LuigiClient
+   */
+  getClientPermissions(): () => Object;
 }

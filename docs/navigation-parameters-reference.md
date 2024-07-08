@@ -51,7 +51,8 @@ You can configure the way Luigi tackles routing in your application in the `rout
 
 ### pageNotFoundHandler
 - **type**: any
-- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar. 
+- **description**: defines custom behavior when a `404` error occurs.  Luigi handles it by default. Leave its body empty if you have an external `404` handling. You can return an Object with **redirectTo** and  **keepURL** as parameters. You can use the **redirectTo** parameter if you want Luigi to redirect to a specific navigation path after execution. Setting the **keepURL** parameter to `true` will keep the erroneous URL onto the browser's address bar.
+If you don't want Luigi to handle the page not found error, because you've implemented your own function for this purpose, you can return an Object with  **ignoreLuigiErrorHandling** set to `true`. 
 - **attributes**:
   - **wrongPath** (string): the path that the user tried navigating to.
   - **wasAnyPathFitted** (bool): it is true if Luigi managed to fit a valid path which means **wrongPath** was only partially wrong. Otherwise it is false.
@@ -185,6 +186,48 @@ Check our [Advanced Scenarios](advanced-scenarios.md) page for an example.
 - **type**: function
 - **description**: allows you to invoke and execute a specific function on the global level when a request to navigate to the node occurs. The function receives two node objects as input parameters: the previous node and current node, as described in the configuration.
 
+### nodes
+- **type**: array | object
+- **description**: You can define navigation nodes using the `nodes:` attribute. First-level nodes are also referred to as "root nodes". Second-level nodes can be defined inside a [children](#children) array below the root node. 
+
+In addition to an array, `nodes:` can also be defined as a single node object which then serves as the root node. 
+In this case, the root node should not have a [pathSegment](#pathsegment) defined, because it is accessible through the empty path. If you define a `pathSegment` anyway, you should see a warning about this in the console. 
+
+- **example**: 
+```js
+// Nodes array 
+navigation: {
+  nodes:[{
+      pathSegment: 'home'
+      label: 'Root node',
+      viewUrl: 'home.html',
+      children: [
+        {
+          pathSegment: 'sample1',
+          label: 'Sample',
+          viewUrl: 'sample1.html'
+        }
+      ]
+  }]
+}
+
+// Root node as an object
+navigation: {
+  nodes:{
+      label: 'Root node',
+      viewUrl: 'home.html',
+      children: [
+        {
+          pathSegment: 'sample1',
+          label: 'Sample',
+          viewUrl: 'sample1.html'
+        }
+      ]
+  }
+}
+...
+```
+
 ### preloadViewGroups
 - **type**: boolean
 - **description**: allows deactivating the default preloading of [view groups](navigation-advanced.md#view-groups) iframes.
@@ -209,6 +252,10 @@ settings: {
   - **preloadUrl**(string): needs to be an absolute URL of a micro frontend belonging to a view group. It cannot be an URL of a node. It is recommended that you use a dedicated small, visually empty view, which imports Luigi Client and is fine with getting an empty context, for example, without an access token. The **preloadUrl** parameter
  is also required for view group caching in case you need a view group iframe to refresh whenever you navigate back to it.
   - **loadOnStartup**(boolean): when set to `true`, it loads the respective view group with the respective **preloadUrl** in the background as soon as the app first starts. 
+
+### globalContext
+- **type**: object
+- **description**: contains key-object pairs which are inherited from all node contexts.
 
 
 ## Node parameters
@@ -246,6 +293,7 @@ Node parameters are all the parameters that can be added to an individual naviga
 ### children
 - **type**: array | function
 - **description**:  in this element, you can specify children nodes. All children nodes will have the same parent prefix URL.
+You can also return a Promise that resolves to an array of nodes. Which can be useful if the child nodes aren't available immediately and need to get fetched asynchronously.
 For example, if you look at our [Fiddle showcase](https://fiddle.luigi-project.io/), you will see that home node has different children: this hierarchy will be reflected in children URLs.
 ```javascript
 navigation: {
@@ -272,9 +320,27 @@ navigation: {
             loadingIndicator: {
                 enabled: false
             },
-            viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
+            viewUrl: 'https://sdk.openui5.org/test-resources/sap/m/demokit/cart/webapp/index.html'
         }]
     ...
+    }]
+}
+
+// Example of Children as a Promise
+navigation: {
+  nodes: [{
+    ...,
+    children:  () => {
+      return new Promise((resolve, reject) => {
+        fetch('/node/endpoint').then((...)=>{
+        ...
+          resolve(nodes);
+        });
+      })
+    },
+    ...
+  }]
+}
 ```
 
 ### clientPermissions.changeCurrentLocale
@@ -344,6 +410,30 @@ Web components can communicate over an event bus.
               - **gap**: represents the css `grid-gap`, e.g. `auto`.
               - **min-width** min width
               - **max-width** max width
+  - **lazyLoadingOptions**
+    - **type**: object
+    - **description**: allows enabling lazy loading for compound or nested web components
+    - **attributes**
+      - **enabled**
+        - **type**: boolean
+        - **default**: false
+        - **description**: This will activate lazy loading. In that case, an [intersection observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) will be used to attach and render only children that are within a defined part of the brower's [viewport](https://developer.mozilla.org/en-US/docs/Glossary/Viewport). The empty containers for all children will be added but the intersection observer makes sure that web components will only be added to the containers that are inside that defined part of the viewport.
+      - **intersectionRootMargin**
+        - **type**: string
+        - **default**: "0px"
+        - **description**: This allows setting the [`rootMargin` option for the intersection observer](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#rootmargin). In short, this allows configuring that child web components are instantiated before or after their containers enter the viewport.
+      - **temporaryContainerHeight**
+        - **type**: string
+        - **default**: "500px"
+        - **description**: When lazy loading is active, the containers for all children will be created with a fixed, temporary height. That is because otherwise, when adding the empty containers for all children, all containers would have a height of 0. All containers would be visible so that all web components would be added right away. In other words, this would break lazy loading.
+
+          This attribute must be a valid CSS height string. Its value will be used for the default temporary height for all children. Individual children can override this default with their own value, see below.
+
+          After the web component of a child is rendered and attached to its container, the temporary height will be removed from the container.
+      - **noTemporaryContainerHeight**
+        - **type**: boolean
+        - **default**: false
+        - **description**: When implementing a custom renderer for a compound web component, the standard behavior of lazy loading of setting and removing temporary heights to the child containers may conflict with the custom renderer. In that case, setting this attribute to `true` will turn off that behavior. In that case, the custom renderer methods and the code of the child web components must ensure that not all child containers are visible right away. Note that the intersection observer will still be in effect: child web components will only be instantiated and added to their containers when the containers are visible in the defined part of the viewport.
   - **children**
     - **type**: array
     - **description**: Array of web component nodes.
@@ -351,7 +441,25 @@ Web components can communicate over an event bus.
       - **id**: unique `id` of the web component.
       - **viewUrl**: URL which points to the web component `.js` file. If you are using [localization](https://docs.luigi-project.io/docs/i18n) and translating your page into different languages, you can also add a **{i18n.currentLocale}** parameter to the viewUrl part of your configuration.
       - **context**: object, which you can pass to the web component.
-      - **layoutConfig**: config object to define the position of an item in a grid. The properties are `row` and `column` and get the same values as in the CSS grid standard. If you want to use the mechanism of nested web components, you can define a `slot` property with the slot name instead of the config object. In that case this web component node will be plugged in the parent web component.
+      - **layoutConfig**:
+        - **type**: object
+        - **attributes**
+          - **row**
+            - **type**: string
+            - **default**: "auto"
+            - **description**: Sets the `grid-row` value in the [CSS grid standard](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout). Use it to define the position of the child item in the grid.
+          - **column**
+            - **type**: string
+            - **default**: "auto"
+            - **description**: Sets the `grid-column` value in the [CSS grid standard](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout). Use it to define the position of the child item in the grid.
+          - **slot**
+            - **type**: string
+            - **default**: ""
+            - **description**: If you want to use the mechanism of nested web components, you can use this instead of `row` and `column` to define the slot into which to render this child. In that case this web component node will be plugged in that slot of the parent web component.
+          - **temporaryContainerHeight**
+            - **type**: string
+            - **default**: undefined
+            - **description**: If lazy loading is active for this compound web component then setting this attribute will define the temporary container height for this individual child. It will override the general default value of `temporaryContainerHeight` that is set for the overall compound.
       - **eventListeners**
         - **type**: array
         - **description**: array of events.
@@ -548,6 +656,10 @@ runTimeErrorHandler: {
 - **description**: refers to an absolute path in the navigation structure or a relative path to a grandchild of the current path. If this parameter is defined, **pathSegment** is ignored.
 
 ### loadingIndicator.enabled
+
+<!-- add-attribute:class:warning -->
+> **NOTE**: For iframe integration of views, which don't have Luigi Client, loading indicator should be disabled.
+
 - **type**: boolean
 - **description**: shows a loading indicator when switching between micro frontends. If you have a fast micro frontend, you can disable this feature to prevent flickering of the loading indicator.
 - **default**: `true`
@@ -605,6 +717,18 @@ runTimeErrorHandler: {
   - A static **pathSegment** of value `settings` results in `example.com/settings`.
   - A dynamic **pathSegment** is prefixed with a colon and can load any value. Find out more about dynamic paths in Luigi [here](navigation-advanced.md#dynamically-changeable-paths).
 
+### showBreadcrumbs
+- - **type**: boolean
+- **description**: if a breadcrumbs configuration is set, the breadcrumbs will show for all nodes by default. This property allows you to disable breadcrumbs for any particular node by setting it to `false` for that node. See the [advanced navigation](navigation-advanced.md#breadcrumbs) document for more information.
+- - **example**:
+```javascript
+navigation: {
+  nodes: [{
+    pathSegment: 'home',
+    showBreadcrumbs: false, 
+...
+```
+
 ### sideNavAccordionMode
 - **type**: boolean
 - **description**: overrides the default behaviour of categories whether multiple categories can be collapsed. When set to `true`, only one category is collapsed. The navigation is similar to an accordion; when the user clicks another category the previously collapsed category is closed and the new one is opened. Note that this will be applied to its direct children.
@@ -612,7 +736,7 @@ runTimeErrorHandler: {
 
 ### statusBadge
 - **type**: object
-- **description**: Allows you to set a status badge for this node. The status badge is a small label next to the title of the node, based on the Fundamental Styles [object status](https://sap.github.io/fundamental-styles/?path=/docs/components-object-status--clickable-object-status).
+- **description**: Allows you to set a status badge for this node. The status badge is a small label next to the title of the node, based on the Fundamental Styles [object status](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-object-status--docs).
 - **attributes**:
   - **label**: string specifying the text displayed on the status badge.
   - **type**: string. Allowed values are `negative`, `positive`, `critical`, `informative`, or `neutral`. The default is `neutral`.
@@ -633,9 +757,11 @@ runTimeErrorHandler: {
 
 ### tabNav
 - **type**: boolean or Object
-- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
-- **since**: v0.7.0
-In the case the node has only one child, it's possible to configure if the horizontal navigation bar will be hidden automatically or not. To do so, the `tabNav` property must be an object with the property `{hideTabNavAutomatically:true|false}`.
+- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes, you will get a drop-down menu in the horizontal navigation. Set to `true` to show the horizontal navigation, or use the extra attributes for more customization. (**since**: v0.7.0)
+- **attributes**:
+  - **hideTabNavAutomatically**: boolean. In the case the node has only one child, it's possible to configure whether the horizontal navigation bar will be hidden automatically or not. Set this attribute to `true` to hide the horizontal navigation bar and `false` otherwise. ( **since**: v2.0.0 )
+  - **showAsTabHeader**: boolean. If this attribute is set on the node, it will be considered as a horizontal navigation header micro frontend. The node should be [webcomponent-based](web-component.md) and it should have nested children to show on the horizontal navigation bar. (**since**: 2.2.0 )
+
 - **example**:
 ```js
 // Without hiding tab nav automatically 
@@ -645,14 +771,22 @@ In the case the node has only one child, it's possible to configure if the horiz
  children: [
   ...
                 
-//With hiding tab nav automatically if node has only one child               
+// With hiding tab nav automatically if node has only one child               
   pathSegment: 'example',
   label: 'Example',
   tabNav: { hideTabNavAutomatically: true },
   children: [
   ...
+
+  // showing horizontal navigation header micro frontend       
+  pathSegment: 'header',
+  label: 'Header Micro frontend',
+  viewUrl: '/tabHeader.js'
+  webcomponent: true,
+  tabNav: { showAsTabHeader : true },
+  children: [
+  ...
 ```
-- **since**: NEXTRELEASE
 
 ### testId
 - **type**: string
@@ -666,6 +800,47 @@ In the case the node has only one child, it's possible to configure if the horiz
 ```javascript
 tooltipText: 'Useful links'
 ```
+
+### topNav
+- **type**: boolean
+- **description** children of the root node will not be rendered in the top navigation if this value is set to `false`. Instead, the children will be rendered in the left navigation (default) or in the horizontal navigation ([tabNav](#tabNav)) if this is configured on the node. This feature only works if the [nodes](#nodes) property is an object instead of an array. In that case, the root node will not be reflected in the URL.
+- **default**: The default is `true`, meaning that children of the root node show in the top navigation.
+- **example**:
+```javascript
+navigation: {
+  nodes: {
+    pathSegment: "",
+    hideFromNav: true,
+    tabNav: true,
+    topNav: false,
+    hideSideNav: true,
+    viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+    context: {
+        title: 'root'
+    },
+    children: [
+    {
+      pathSegment: "SampleApp1",
+      label: "SampleApp1",
+      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+      context: {
+          title: 'Sample app 1',
+          content: 'Sample app 1'
+      }
+    },
+    {
+      pathSegment: "SampleApp2",
+      label: "SampleApp2",
+      viewUrl: 'https://fiddle.luigi-project.io/examples/microfrontends/multipurpose.html',
+      context: {
+          title: 'Sample app 2',
+          content: 'Sample app 2'
+      }
+    }]
+  }
+}
+```
+- **since**: 2.7.0
 
 ### userSettingsGroup
 - - **type**: string
@@ -762,12 +937,17 @@ settings: {
 - **type**: boolean OR object
 - **description**: mark a node as web component either by setting this attribute to `true` or defining an object with the attributes described below. In the latter case, the `viewUrl` attribute of the node must point to the web component `.js` file.
 - **attributes**:
-  - **id**: unique id of the web component
   - **type**: string, like `module`.
   - **selfRegistered**: if it is `true`, the web component bundle will be added via script tag.
   - **tagName**: tag name where web component is added to DOM.
 - **since**: 1.7.0
 
+<!-- add-attribute:class:warning -->
+>**NOTE:** If you have to use the mechanism of `selfRegistered`, we recommend using the following code in your web component:
+```javascript
+window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), <YOUR_WEBCOMPONENT_CLASS>);
+```
+The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
 
 
 ## Context switcher

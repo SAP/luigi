@@ -1,7 +1,6 @@
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-import { afterEach } from 'mocha';
 
 import { SplitViewSvc } from '../../src/services';
 import { GenericHelpers, IframeHelpers, RoutingHelpers } from '../../src/utilities/helpers';
@@ -163,15 +162,19 @@ describe('SplitViewSvc', () => {
       };
 
       const shellbarHeight = 30;
-      LuigiElements.getShellbar.returns({
-        clientHeight: shellbarHeight
-      });
+      GenericHelpers.getShellbarHeight.returns(shellbarHeight);
 
       GenericHelpers.computePxFromPercent.onFirstCall().returns(400); // 40% of 1000px
 
       sinon.stub(SplitViewSvc, 'enforceTresholds').returns(mockCalculated);
 
       SplitViewSvc.splitViewValues = {};
+
+      IframeHelpers.getIframeContainer.returns({
+        getBoundingClientRect: () => {
+          return { top: shellbarHeight };
+        }
+      });
 
       // then
       SplitViewSvc.calculateAndSetSplitViewValues(40, mockValues);

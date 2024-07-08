@@ -7,6 +7,7 @@ import { Iframe } from './';
 import { NAVIGATION_DEFAULTS } from './../utilities/luigi-config-defaults';
 import { NodeDataManagementStorage } from './node-data-management';
 import { WebComponentService } from './web-components';
+import { isEqual } from 'lodash';
 
 class RoutingClass {
   getNodePath(node, params) {
@@ -83,18 +84,13 @@ class RoutingClass {
     // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#Browser_compatibility
     // https://developer.mozilla.org/en-US/docs/Web/API/Event#Browser_compatibility
     // https://developer.mozilla.org/en-US/docs/Web/API/Event/createEvent
-    let event;
-    if (GenericHelpers.isIE()) {
-      event = new Event('popstate', { bubbles: true, cancelable: true });
-    } else {
-      const eventDetail = {
-        detail: {
-          preventContextUpdate,
-          withoutSync: !navSync
-        }
-      };
-      event = new CustomEvent('popstate', eventDetail);
-    }
+    const eventDetail = {
+      detail: {
+        preventContextUpdate,
+        withoutSync: !navSync
+      }
+    };
+    const event = new CustomEvent('popstate', eventDetail);
 
     window.dispatchEvent(event);
   }
@@ -102,7 +98,7 @@ class RoutingClass {
   getWindowPath() {
     return LuigiConfig.getConfigValue('routing.useHashRouting')
       ? GenericHelpers.getPathWithoutHash(window.location.hash)
-      : window.location.pathname.concat(window.location.search);
+      : window.location.pathname + window.location.search;
   }
 
   buildFromRelativePath(node) {
@@ -202,18 +198,14 @@ class RoutingClass {
 
     // pretend the url hasn't been changed by browser default behaviour
     oldUrl && history.pushState(window.state, '', oldUrl);
-
-    return component
-      .getUnsavedChangesModalPromise()
-      .then(
-        // resolve unsaved changes promise
-        () => {
-          this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
-        },
-        // user clicks no, do nothing, reject promise
-        () => {}
-      )
-      .catch(() => {});
+    return component.getUnsavedChangesModalPromise().then(
+      // resolve unsaved changes promise
+      () => {
+        this.resolveUnsavedChanges(path, component, iframeElement, config, newUrl);
+      },
+      // user clicks no, do nothing, reject promise
+      () => {}
+    );
   }
 
   /**
@@ -288,7 +280,7 @@ class RoutingClass {
    * @param {Object} config the configuration of application
    */
   async handlePageNotFound(nodeObject, viewUrl, pathData, path, component, pathUrlRaw, config) {
-    if (!viewUrl && !nodeObject.compound) {
+    if ((!viewUrl && !nodeObject.compound) || (nodeObject.tabNav && nodeObject.tabNav.showAsTabHeader)) {
       const defaultChildNode = await RoutingHelpers.getDefaultChildNode(pathData, async (node, ctx) => {
         return await Navigation.getChildren(node, ctx);
       });
@@ -299,8 +291,7 @@ class RoutingClass {
         this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, {
           keepBrowserHistory: false
         });
-        // reset comp data
-        component.set({ navigationPath: [] });
+        return false;
       } else {
         if (defaultChildNode && pathData.navigationPath.length > 1) {
           //last path segment was invalid but a default node could be in its place
@@ -334,14 +325,15 @@ class RoutingClass {
 
   /**
    * Deal with route changing scenario.
-   * @param {string} path the path of the view to open
+   * @param {string} rawPath the path of the view to open
    * @param {Object} component the settings/functions of component (need refactoring)
    * @param {Object} iframeElement dom element of iframe
    * @param {Object} config the configuration of application
    * @param {boolean} withoutSync disables the navigation handling for a single navigation request.
    * @param {boolean} preventContextUpdate make no context update being triggered. default is false.
    */
-  async handleRouteChange(path, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+  async handleRouteChange(rawPath, component, iframeElement, config, withoutSync, preventContextUpdate = false) {
+    const path = rawPath || '';
     // Handle intent navigation with new tab scenario.
     if (path.external) {
       this.navigateToExternalLink({
@@ -374,7 +366,7 @@ class RoutingClass {
       const hideNav = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
       const params = RoutingHelpers.parseParams(pathUrlRaw.split('?')[1]);
       const nodeParams = RoutingHelpers.getNodeParams(params);
-      const viewGroup = RoutingHelpers.findViewGroup(nodeObject);
+      const viewGroup = NavigationHelpers.findViewGroup(nodeObject);
       const urlParamsRaw = decodeURIComponent(pathUrlRaw.split('?')[1] || '');
       const currentNode =
         pathData.navigationPath && pathData.navigationPath.length > 0
@@ -391,6 +383,11 @@ class RoutingClass {
           tabNavInherited = false;
           break;
         } else if (GenericHelpers.isObject(cnode.tabNav)) {
+          // show tab navigation if showAsTabHeader alone is set, skip remaining logic
+          if (cnode.tabNav.showAsTabHeader) {
+            tabNavInherited = true;
+            break;
+          }
           if ('hideTabNavAutomatically' in cnode.tabNav && cnode.children) {
             if (cnode.tabNav.hideTabNavAutomatically === true && cnode.children.length === 1) {
               tabNavInherited = false;
@@ -403,7 +400,7 @@ class RoutingClass {
             console.warn('tabNav:{hideTabNavAutomatically:true|false} is not configured correctly.');
           }
         }
-        cnode = cnode.parent;
+        cnode = NavigationHelpers.getParentNode(cnode, pathData.navigationPath);
       }
 
       let cNode2 = currentNode;
@@ -418,7 +415,7 @@ class RoutingClass {
             hideSideNavInherited = false;
             break;
           }
-          cNode2 = cNode2.parent;
+          cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
         }
       }
 
@@ -464,7 +461,6 @@ class RoutingClass {
           }
         }
       }
-
       if (nodeObject.compound) {
         Iframe.switchActiveIframe(iframeElement, undefined, false);
         if (iContainer) {
@@ -478,8 +474,11 @@ class RoutingClass {
         }
         this.navigateWebComponent(component, nodeObject);
       } else {
+        const wc_container = document.querySelector('.wcContainer');
+        if (wc_container) wc_container.configChangedRequest = false;
         if (iContainer) {
           iContainer.classList.remove('lui-webComponent');
+          this.removeLastChildFromWCContainer();
         }
 
         if (!preventContextUpdate) {
@@ -505,6 +504,11 @@ class RoutingClass {
         }
       }
 
+      const tabHeaderCnt = document.querySelector('.lui-tab-header');
+      if (tabHeaderCnt) {
+        tabHeaderCnt.dispatchEvent(new Event('lui_ctx_update'));
+      }
+
       Navigation.onNodeChange(previousCompData.currentNode, currentNode);
     } catch (err) {
       console.info('Could not handle route change', err);
@@ -516,7 +520,7 @@ class RoutingClass {
     if (additionalModalPath) {
       const modalParams = RoutingHelpers.getModalParamsFromPath();
       const { nodeObject } = await Navigation.extractDataFromPath(additionalModalPath);
-      LuigiNavigation.openAsModal(additionalModalPath, nodeObject.openNodeInModal || modalParams);
+      LuigiNavigation.openAsModal(additionalModalPath, modalParams || nodeObject.openNodeInModal);
     }
   }
 
@@ -591,7 +595,11 @@ class RoutingClass {
 
   async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false, config = {}) {
     const redirectResult = RoutingHelpers.getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched);
+    if (redirectResult.ignoreLuigiErrorHandling) {
+      return;
+    }
     const redirectPathFromNotFoundHandler = redirectResult.path;
+
     if (redirectPathFromNotFoundHandler) {
       if (redirectResult.keepURL) {
         this.handleRouteChange(redirectPathFromNotFoundHandler, component, IframeHelpers.getIframeContainer(), config);
@@ -613,34 +621,78 @@ class RoutingClass {
   }
 
   navigateToExternalLink(externalLink, node, pathParams) {
-    const updatedExternalLink = {
-      ...NAVIGATION_DEFAULTS.externalLink,
-      ...externalLink
-    };
     if (node) {
+      const updatedExternalLink = {
+        ...NAVIGATION_DEFAULTS.externalLink,
+        ...(node?.externalLink || {})
+      };
       updatedExternalLink.url = RoutingHelpers.calculateNodeHref(node, pathParams);
+      window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
+    } else if (GenericHelpers.isObject(externalLink)) {
+      window.open(externalLink.url, externalLink.sameWindow ? '_self' : '_blank').focus();
     }
-    window.open(updatedExternalLink.url, updatedExternalLink.sameWindow ? '_self' : '_blank').focus();
+  }
+
+  /**
+   * This function returns a generated unique web component id (tagname) based on the viewUrl provided as string.
+   * If a `tagName` is specified in the web component configuration object at the node, the function will return that `tagName`.
+   * @param {Object} navNode
+   * @returns specified tagName or a unique web component id as string
+   */
+  getGeneratedWCId(navNode) {
+    const { viewUrl, context } = navNode;
+    if (viewUrl) {
+      const i18nViewUrl = RoutingHelpers.substituteViewUrl(viewUrl, { context });
+      return navNode.webcomponent && navNode.webcomponent.tagName
+        ? navNode.webcomponent.tagName
+        : WebComponentService.generateWCId(i18nViewUrl);
+    }
   }
 
   navigateWebComponent(component, navNode) {
-    const wc_container = this.removeLastChildFromWCContainer();
-    if (!wc_container) return;
+    let wc_container = document.querySelector('.wcContainer');
+    let wc_containerNode = wc_container._luigi_node;
+    const wc_id = this.getGeneratedWCId(navNode);
 
     const componentData = component.get();
-    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData.context, navNode);
+    // if true, do only a context update and not rerender the wc
+    if (navNode === wc_containerNode && !wc_container.configChangedRequest) {
+      const wc = document.querySelector(wc_id);
+      wc.context = componentData.context;
+      if (wc.extendedContext) {
+        wc.extendedContext.nodeParams = componentData.nodeParams;
+      }
+      return;
+    }
+    wc_container.configChangedRequest = false;
+    wc_container = this.removeLastChildFromWCContainer();
+    if (!wc_container) return;
+
+    WebComponentService.renderWebComponent(componentData.viewUrl, wc_container, componentData, navNode);
   }
 
   navigateWebComponentCompound(component, navNode) {
-    const wc_container = this.removeLastChildFromWCContainer();
+    const wc_container = document.querySelector('.wcContainer');
     if (!wc_container) return;
 
     const componentData = component.get();
+
+    if (
+      wc_container._luigi_node === navNode &&
+      isEqual(wc_container._luigi_pathParams, componentData.pathParams) &&
+      !wc_container.configChangedRequest
+    ) {
+      return;
+    }
+    wc_container.configChangedRequest = false;
     const { compound } = navNode;
+    this.removeLastChildFromWCContainer();
+
     if (compound && compound.children) {
       compound.children = compound.children.filter(c => NavigationHelpers.checkVisibleForFeatureToggles(c));
     }
-    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData.context);
+    WebComponentService.renderWebComponentCompound(navNode, wc_container, componentData);
+    wc_container._luigi_pathParams = componentData.pathParams;
   }
 
   removeLastChildFromWCContainer() {
@@ -649,6 +701,7 @@ class RoutingClass {
     while (wc_container.lastChild) {
       wc_container.lastChild.remove();
     }
+    wc_container._luigi_node = undefined;
     return wc_container;
   }
 

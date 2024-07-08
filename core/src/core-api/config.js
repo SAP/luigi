@@ -1,4 +1,11 @@
-import { AsyncHelpers, EventListenerHelpers, GenericHelpers, StateHelpers } from '../utilities/helpers';
+import {
+  AsyncHelpers,
+  EventListenerHelpers,
+  GenericHelpers,
+  StateHelpers,
+  IframeHelpers,
+  RoutingHelpers
+} from '../utilities/helpers';
 import { LuigiAuth, LuigiElements } from '.';
 import { AuthLayerSvc, LifecycleHooks } from '../services';
 import { NodeDataManagementStorage } from '../services/node-data-management.js';
@@ -222,7 +229,7 @@ class LuigiConfig {
 
   /**
    * Reads the user settings object.
-   * You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
+   * You can choose a custom storage to read the user settings by implementing the `userSettings.readUserSettings` function in the settings section of the Luigi configuration.
    * By default, the user settings will be read from the **localStorage**
    * @memberof Configuration
    * @returns {promise} a promise when a custom `readUserSettings` function in the settings.userSettings section of the Luigi configuration is implemented. It resolves a stored user settings object. If the promise is rejected the user settings dialog will also closed if the error object has a `closeDialog` property, e.g `reject({ closeDialog: true, message: 'some error' })`. In addition a custom error message can be logged to the browser console.
@@ -305,6 +312,65 @@ class LuigiConfig {
     };
 
     clearTitleResolverCache(this.getConfig().navigation.nodes);
+  }
+
+  /**
+   * Set the global context object and triggers the corresponding update.
+   * @memberof Configuration
+   * @param {Object} ctx The context object to set
+   * @param {boolean} preventUpdate If true, no view update is triggered. Default is false.
+   * @since 2.5.0
+   */
+  setGlobalContext(ctx, preventUpdate) {
+    if (this.config && this.config.navigation) {
+      this.config.navigation.globalContext = ctx;
+      if (!preventUpdate) {
+        this.configChanged('navigation');
+      }
+    }
+  }
+
+  /**
+   * Get the global context object.
+   * @memberof Configuration
+   * @since 2.5.0
+   */
+  getGlobalContext() {
+    return this.config?.navigation?.globalContext || {};
+  }
+
+  /**
+   * Updates the context values for visible iframes and LUI web components.
+   * Note: the updated context values are not persisted. The developers have to do it on their own.
+   * @param {Object} ctx - The context to be updated.
+   * @memberof Configuration
+   * @since 2.13.0
+   */
+  updateContextValues(ctx) {
+    const visibleIframes = IframeHelpers.getMicrofrontendIframes();
+    if (visibleIframes && visibleIframes.length > 0) {
+      visibleIframes.forEach(iframe => {
+        // luigi configuration data about the mf which is rendered in the iframe
+        if (iframe.luigi) {
+          IframeHelpers.sendMessageToIframe(iframe, {
+            msg: 'luigi.navigate',
+            context: JSON.stringify(Object.assign({}, JSON.parse(iframe.luigi._lastUpdatedMessage.context), ctx)),
+            nodeParams: iframe.luigi._lastUpdatedMessage.nodeParams,
+            pathParams: JSON.stringify(Object.assign({}, iframe.luigi.pathParams)),
+            searchParams: JSON.stringify(
+              Object.assign({}, RoutingHelpers.prepareSearchParamsForClient(iframe.luigi.currentNode))
+            ),
+            internal: IframeHelpers.applyCoreStateData(JSON.parse(iframe.luigi._lastUpdatedMessage.internal))
+          });
+        }
+      });
+    }
+    if (document.querySelector('.wcContainer')) {
+      let luiWebComponents = document.querySelectorAll('[lui_web_component=true]');
+      luiWebComponents.forEach(luiWebComponent => {
+        luiWebComponent.context = Object.assign({}, luiWebComponent.context, ctx);
+      });
+    }
   }
 }
 

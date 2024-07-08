@@ -1,24 +1,28 @@
 {
+   "name": "luigi",
    "private": true,
    "scripts": {
+      "bootstrap": "node bootstrap.js && node symbolic-link.js",
+      "bundle": "node bundle.js",
+      "symbolink": "node symbolic-link.js",
+      "bundlesize": "node bundle-size.js",
       "test:compatibility": "./scripts/testCompatibility.sh",
       "code-quality": "node code_quality.js -- mode=pre_commit",
       "code-quality-prettier": "node code_quality.js -- mode=pre_commit_prettier",
       "code-quality-eslint": "node code_quality.js -- mode=pre_commit__eslint",
       "full-code-quality": "node code_quality.js -- mode=full",
-      "full-code-quality-prettier": "node code_quality.js -- mode=full_prettier sourcePaths=core/src,client/src,test/e2e-test-application/e2e,test/e2e-test-application/src",
+      "full-code-quality-prettier": "node code_quality.js -- mode=full_prettier sourcePaths=core/src,client/src,client-frameworks-support,test/e2e-test-application/cypress/e2e,test/e2e-test-application/src,container/cypress/e2e,container/test-app,container/examples,container/src",
       "full-code-quality-eslint": "node code_quality.js -- mode=full_eslint",
       "full-code-quality-eslint-core": "node code_quality.js -- mode=full_eslint sourcePaths=core/src,core/test report=core_full_eslint_report.html",
       "full-code-quality-eslint-client": "node code_quality.js -- mode=full_eslint sourcePaths=client/src report=client_full_eslint_report.html",
-      "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/e2e/tests report=e2e-test_full_eslint_report.html",
-      "change-node-version": "node ./scripts/change.node.version.js"
+      "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/cypress/e2e/tests report=e2e-test_full_eslint_report.html"
    },
    "devDependencies": {
       "@starptech/prettyhtml": "^0.10.0",
       "@typescript-eslint/eslint-plugin": "^4.9.0",
       "@typescript-eslint/parser": "^4.9.0",
       "ansi_up": "^5.0.0",
-      "cypress": "^5.3.0",
+      "cypress": "^12.17.0",
       "diff": ">=3.5.0",
       "eslint": "^7.14.0",
       "eslint-config-standard": "^16.0.2",
@@ -30,13 +34,13 @@
       "husky": "^4.3.5",
       "ini": ">=1.3.6",
       "json-schema": ">=0.4.0",
-      "lerna": "^3.22.1",
-      "lerna-changelog": "^1.0.1",
+      "lerna-changelog": "^2.2.0",
       "lodash": ">=4.17.13",
       "lodash.template": ">=4.5.0",
       "meow": "8.1.2",
       "mixin-deep": ">=1.3.2",
-      "prettier": "^1.15.3",
+      "prettier": "^1.19.1",
+      "prettier-plugin-svelte": "^1.4.2",
       "set-value": ">=2.0.1",
       "simple-git": "^3.3.0",
       "sirv-cli": "^0.4.4",
@@ -59,12 +63,13 @@
    },
    "husky": {
       "hooks": {
-         "pre-commit": "npm run code-quality && ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh &&  ./scripts/hooks/prevent-illegal-characters.sh"
+         "pre-commit": "git diff --quiet HEAD -- container || npm run lint --prefix=container && npm run code-quality ./scripts/hooks/remove-test-prefixes.sh && ./scripts/hooks/generate-docu.sh &&  ./scripts/hooks/prevent-illegal-characters.sh"
       }
    },
    "codeQuality": {
-      "usePrettier": true,
-      "useEslint": false,
-      "eslintStopCommit": true
+      "usePrettier": true
+   },
+   "engines": {
+      "node": ">=18"
    }
 }

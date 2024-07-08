@@ -1,7 +1,7 @@
+import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
-import { NodeDataManagementStorage } from '../../src/services/node-data-management';
 
 describe('NodeDataManagementStorage', function() {
   const getNodeMock = () => ({
@@ -43,7 +43,7 @@ describe('NodeDataManagementStorage', function() {
     });
   });
   describe('getChildren', function() {
-    this.afterEach(() => {
+    afterEach(() => {
       NodeDataManagementStorage.deleteCache();
     });
     it('get children from cache', () => {
@@ -76,10 +76,7 @@ describe('NodeDataManagementStorage', function() {
 
   describe('set, get and has rootNode', () => {
     let rootNode = {
-      children: [
-        { pathSegment: 'Overview' },
-        { pathSegment: 'projects', children: [{ pathSegment: 'pr1' }] }
-      ]
+      children: [{ pathSegment: 'Overview' }, { pathSegment: 'projects', children: [{ pathSegment: 'pr1' }] }]
     };
     afterEach(() => {
       NodeDataManagementStorage.deleteCache();
@@ -88,9 +85,7 @@ describe('NodeDataManagementStorage', function() {
       expect(NodeDataManagementStorage.dataManagement.size).to.equal(0);
       NodeDataManagementStorage.setRootNode(rootNode);
       expect(NodeDataManagementStorage.dataManagement.size).to.equal(1);
-      let rootNodeFromCache = NodeDataManagementStorage.dataManagement.get(
-        '_luigiRootNode'
-      ).node;
+      let rootNodeFromCache = NodeDataManagementStorage.dataManagement.get('_luigiRootNode').node;
       expect(rootNodeFromCache).to.deep.equal(rootNode);
     });
     it('get stored rootNode from cache using getRootNode', () => {

@@ -15,6 +15,7 @@ export class linkManager extends LuigiCoreAPIBase {
       nodeParams: {},
       errorSkipNavigation: false,
       fromContext: null,
+      fromParent: false,
       fromClosestContext: false,
       relative: false,
       link: ''
@@ -67,11 +68,11 @@ export class linkManager extends LuigiCoreAPIBase {
       });
       modalSettings.onClosePromiseId = onClosePromise.id;
     }
-    this.navigate(path, true, modalSettings);
+    return this.navigate(path, true, modalSettings);
   }
 
   openAsDrawer(path, drawerSettings = {}) {
-    this.navigate(path, true, undefined, undefined, drawerSettings);
+    return this.navigate(path, true, undefined, undefined, drawerSettings);
   }
 
   openAsSplitView(path, splitViewSettings = {}) {
@@ -87,6 +88,7 @@ export class linkManager extends LuigiCoreAPIBase {
   fromClosestContext() {
     this.options.fromContext = null;
     this.options.fromClosestContext = true;
+    this.options.fromParent = false;
     return this;
   }
 
@@ -94,6 +96,15 @@ export class linkManager extends LuigiCoreAPIBase {
     this.options.fromContext = null;
     this.options.fromClosestContext = false;
     this.options.fromVirtualTreeRoot = true;
+    this.options.fromParent = false;
+    return this;
+  }
+
+  fromParent() {
+    this.options.fromContext = null;
+    this.options.fromClosestContext = false;
+    this.options.fromVirtualTreeRoot = false;
+    this.options.fromParent = true;
     return this;
   }
 
@@ -123,6 +134,14 @@ export class linkManager extends LuigiCoreAPIBase {
       msg: 'luigi.navigation.back',
       goBackContext: goBackValue && JSON.stringify(goBackValue)
     });
+  }
+
+  /**
+   * Retrieves the current route.
+   * @returns The current route by invoking the buildPathForGetCurrentRoute method from App.svelte, which is assigned to the _app property of the Luigi object.
+   */
+  getCurrentRoute() {
+    return Luigi._app.ctx[Luigi._app.props.buildPathForGetCurrentRoute](this.options);
   }
 
   sendPostMessageToLuigiCore(msg) {

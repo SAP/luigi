@@ -23,10 +23,7 @@
   export let options = null;
   let alwaysShowDropdown = true;
   $: renderAsDropdown =
-    alwaysShowDropdown ||
-    (actions && actions.length > 0) ||
-    (options && options.length > 1) ||
-    !selectedOption;
+    alwaysShowDropdown || (actions && actions.length > 0) || (options && options.length > 1) || !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
   export let pathParams;
@@ -41,38 +38,31 @@
   let getTranslation = getContext('getTranslation');
   let prevContextSwitcherToggle = false;
   let selectedNodePath;
-  let addNavHrefForAnchor;
+  export let addNavHrefForAnchor;
+  let isContextSwitcherDropdownShown;
 
   onMount(async () => {
     StateHelpers.doOnStoreChange(
       store,
       async () => {
-        const contextSwitcherConfig = LuigiConfig.getConfigValue(
-          'navigation.contextSwitcher'
-        );
+        const contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
         contextSwitcherEnabled = !!contextSwitcherConfig;
         if (!contextSwitcherEnabled) {
           return;
         }
 
-        customOptionsRenderer = GenericHelpers.isFunction(
-          contextSwitcherConfig.customOptionsRenderer
-        )
+        customOptionsRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
           ? contextSwitcherConfig.customOptionsRenderer
           : undefined;
 
-        customSelectedOptionRenderer = GenericHelpers.isFunction(
-          contextSwitcherConfig.customSelectedOptionRenderer
-        )
+        customSelectedOptionRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customSelectedOptionRenderer)
           ? contextSwitcherConfig.customSelectedOptionRenderer
           : undefined;
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {
           alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
-          actions = await LuigiConfig.getConfigValueAsync(
-            'navigation.contextSwitcher.actions'
-          );
+          actions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.actions');
           const currentPath = Routing.getCurrentPath();
 
           fallbackLabelResolver = contextSwitcherConfig.fallbackLabelResolver;
@@ -83,12 +73,7 @@
           if (!contextSwitcherConfig.lazyloadOptions) {
             await fetchOptions();
           }
-          if (
-            ContextSwitcherHelpers.isContextSwitcherDetailsView(
-              currentPath,
-              contextSwitcherConfig.parentNodePath
-            )
-          ) {
+          if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
             await setSelectedContext(currentPath);
           }
         }
@@ -114,6 +99,7 @@
       prevContextSwitcherToggle = contextSwitcherToggle;
       fetchOptions();
     }
+    isContextSwitcherDropdownShown = dropDownStates.contextSwitcherPopover || false;
   });
 
   function getNodeName(label, config, id) {
@@ -121,12 +107,6 @@
       return Promise.resolve(label);
     }
     return ContextSwitcherHelpers.getFallbackLabel(config, id);
-  }
-
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 
   function getRouteLink(node) {
@@ -141,22 +121,14 @@
     const parentNodePath = conf.parentNodePath;
     const fallbackLabelResolver = conf.fallbackLabelResolver;
     const currentPath = Routing.getCurrentPath();
-    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
-      currentPath,
-      options,
-      parentNodePath
-    );
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(currentPath, options, parentNodePath);
     selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
       currentPath,
       options,
       parentNodePath,
       fallbackLabelResolver
     );
-    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
-      currentPath,
-      options,
-      parentNodePath
-    );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(currentPath, options, parentNodePath);
     preserveSubPathOnSwitch = conf.preserveSubPathOnSwitch;
   }
 
@@ -164,22 +136,14 @@
     const conf = config || {};
     const parentNodePath = conf.parentNodePath;
     const fallbackLabelResolver = conf.fallbackLabelResolver;
-    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
-      currentPath,
-      options,
-      parentNodePath
-    );
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(currentPath, options, parentNodePath);
     selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
       currentPath,
       options,
       parentNodePath,
       fallbackLabelResolver
     );
-    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
-      currentPath,
-      options,
-      parentNodePath
-    );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(currentPath, options, parentNodePath);
   }
 
   export async function onActionClick(event) {
@@ -201,26 +165,30 @@
   }
 
   export function goToPath(path) {
-    getUnsavedChangesModalPromise().then(() => {
-      Routing.navigateTo(path);
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        Routing.navigateTo(path);
+      },
+      () => {}
+    );
   }
 
   export function goToOption(event) {
     let option = event.detail.option;
     let selectedOption = event.detail.selectedOption;
-    getUnsavedChangesModalPromise().then(() => {
-      if (preserveSubPathOnSwitch && selectedOption) {
-        Routing.navigateTo(
-          ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption)
-        );
-      } else {
-        Routing.navigateTo(option.link);
-      }
-      if (isMobile) {
-        dispatch('toggleDropdownState');
-      }
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        if (preserveSubPathOnSwitch && selectedOption) {
+          Routing.navigateTo(ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption));
+        } else {
+          Routing.navigateTo(option.link);
+        }
+        if (isMobile) {
+          dispatch('toggleDropdownState');
+        }
+      },
+      () => {}
+    );
   }
 
   export function toggleDropdownState() {
@@ -238,10 +206,11 @@
   {#if !isMobile}
     <div class="fd-shellbar__action fd-shellbar__action--desktop">
       <div class="fd-popover fd-popover--right">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
           {#if addNavHrefForAnchor && selectedOption !== config.defaultLabel}
             <a
-              href={selectedNodePath}
+              href={selectedOption ? getRouteLink(selectedOption) : undefined}
               class="fd-button fd-button--transparent fd-shellbar__button fd-button--menu fd-shellbar__button--menu lui-ctx-switch-menu"
               aria-expanded={dropDownStates.contextSwitcherPopover || false}
               aria-haspopup="true"
@@ -255,11 +224,7 @@
               {#if selectedOption && customSelectedOptionRenderer}
                 {@html customSelectedOptionRenderer(selectedOption)}
               {:else}
-                {#if !selectedLabel}
-                  {$getTranslation(config.defaultLabel)}
-                {:else}
-                  {selectedLabel}
-                {/if}
+                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{:else}{selectedLabel}{/if}
                 <i class="sap-icon--megamenu fd-shellbar__button--icon" />
               {/if}
             </a>
@@ -278,8 +243,7 @@
               {#if selectedOption && customSelectedOptionRenderer}
                 {@html customSelectedOptionRenderer(selectedOption)}
               {:else}
-                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
-                {:else}{selectedLabel}{/if}
+                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{:else}{selectedLabel}{/if}
                 <i class="sap-icon--megamenu fd-shellbar__button--icon" />
               {/if}
             </button>
@@ -300,9 +264,9 @@
             {selectedOption}
             {getNodeName}
             {getRouteLink}
-            {getTestId}
             {getTranslation}
             {isMobile}
+            {isContextSwitcherDropdownShown}
             on:onActionClick={onActionClick}
             on:goToOption={goToOption}
           />
@@ -312,10 +276,8 @@
   {/if}
   <!-- MOBILE VERSION (fullscreen dialog): -->
   {#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
-    <div
-      class="fd-dialog fd-dialog--active"
-      on:click|stopPropagation={() => {}}
-    >
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <div class="fd-dialog fd-dialog--active" on:click|stopPropagation={() => {}}>
       <div
         class="fd-dialog__content fd-dialog__content--mobile"
         role="dialog"
@@ -326,10 +288,8 @@
           <div class="fd-bar__left">
             <div class="fd-bar__element">
               <h2 class="fd-title fd-title--h5" id="dialog-title-3">
-                {#if !selectedLabel}
-                  {$getTranslation(config.defaultLabel)}
-                {/if}
-                {#if selectedLabel} {selectedLabel} {/if}
+                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if}
+                {#if selectedLabel}{selectedLabel}{/if}
               </h2>
             </div>
           </div>
@@ -344,9 +304,9 @@
             {selectedOption}
             {getNodeName}
             {getRouteLink}
-            {getTestId}
             {getTranslation}
             {isMobile}
+            {isContextSwitcherDropdownShown}
             on:onActionClick={onActionClick}
             on:goToOption={goToOption}
           />
@@ -369,7 +329,7 @@
   {/if}
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .lui-ctx-switch-menu {
     max-width: 30vw;
     color: var(--sapShell_TextColor, #fff);
@@ -398,18 +358,6 @@
   }
 
   .fd-popover {
-    #context_menu_middle {
-      max-height: 50vh;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .fd-button--secondary,
-    .fd-menu__link {
-      max-width: 300px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
     .fd-popover__body {
       right: 0;
     }

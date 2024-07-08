@@ -20,6 +20,7 @@ Read about the versions of Luigi in this document.
 
 - [Changelog](#changelog)
 - [Luigi 1.x upgrades](#luigi-1x-upgrades)
+- [Luigi 2.x upgrades](#luigi-2x-upgrades)
 - [Docs for earlier versions](#docs-for-earlier-versions)
 
 ## Changelog
@@ -30,9 +31,7 @@ Our [changelog](https://bit.ly/2W47Ewv) contains information on all the updates 
 
 Luigi versions 1.0 and above differ from earlier versions in some important ways. Luigi npm packages (previously under `kyma-project`) are under a new npm org. The new packages are:
 - @luigi-project/client
-- @luigi-project/client-ie11
 - @luigi-project/core
-- @luigi-project/core-ie11
 - @luigi-project/plugin-auth-oauth2
 - @luigi-project/plugin-auth-oidc
 
@@ -48,37 +47,12 @@ Additionally, you need to copy callback assets to your Core application.
 
 To install the plugins, follow these installation guides:
 
-- [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oauth2)
-- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc)
+- [OAuth2 Implicit Grant](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oauth2)
+- [OpenID Connect (OIDC)](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc)
+- [OpenID Connect (OIDC) with PKCE](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce)
 
 <!-- add-attribute:class:warning -->
 > **NOTE:** If you already had a custom provider defined, you only need to rename the provider key to `idpProvider`.
-
-### Internet Explorer 11 (IE11)
-
-IE11-related content is now in a separate package.
-
-If you want to support IE11, install the client in your project using npm:
-```bash
-npm install @luigi-project/client-ie11
-npm install @luigi-project/core-ie11
-```
-
-Import the client in places where you want to use it, depending on the environment of your choice:
-```javascript
-var LuigiClient = require('@luigi-project/client-ie11');
-var LuigiCore = require('@luigi-project/core-ie11');
-```
-or
-```javascript
-import LuigiClient from '@luigi-project/client-ie11';
-import LuigiCore from '@luigi-project/core-ie11';
-```
-or, if you are not using any bundler, Luigi is still available as a global object:
-```javascript
-window.LuigiClient
-window.Luigi
-```
 
 ### Fundamental Library Styles
 
@@ -86,17 +60,32 @@ Following an upgrade from SAP Fundamentals to Fundamental Library Styles, there 
 
 Within Luigi, we renamed the `lui-tendant-menu__control` class to `lui-ctx-switch-menu`.
 
-With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/components/side-navigation.html).
+With Luigi version v1.3.0, the new v0.10.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi side navigation. You can see the updated layout [here](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-deprecated-components-side-navigation--docs).
 
 With Luigi v1.4.0, the new v0.11.0 of Fundamental Library Styles were included. As a result, there were breaking changes to the Luigi Alerts. The classes `fd-overlay fd-overlay--message-strip` were removed from Fundamental Library Styles and we added a new class `luigi-alert--overlay` to keep the same look and feel as in the past. You can see all breaking changes of Fundamental Library Styles [here](https://github.com/SAP/fundamental-styles/wiki/Breaking-Changes#0110).
 
 With Luigi v1.9.0, the new v0.14.0 of Fundamental Library Styles were included. Its previous v0.12.0 led to having breaking changes in the Luigi left side navigation and the shellbar. All icons were moved out from pseudo-classes into a dedicated tag `<i class="sap-icon sap-icon--{modifier}"></i>` under the button. You can see all breaking changes of Fundamental Library Styles v0.12.0 [here](https://github.com/SAP/fundamental-styles/releases?after=v0.12.1-rc.7).
 
-With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles were included. It led to having breaking changes in the Luigi Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accesibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/components-dialog--default-dialog) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/components-shellbar--primary)
+With Luigi v1.13.0, the new v0.17.0 of Fundamental Library Styles were included. It led to having breaking changes in the Luigi Dialog/Modal layout and Shellbar Counter. New HTML attributes were added to those components to increase accessibility. You can see the new layout of these components here: [Dialog](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-dialog--docs) and [Shellbar Counter](https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-counter--docs)
 
-In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recommended to add ```@font-face``` from [Fundamental Styles](https://sap.github.io/fundamental-styles/?path=/docs/introduction-overview--page#project-configuration) project configuration, to your custom styles.
+In order to use TNT icons or businessSuiteInAppSymbols icons suite, it is recommended to add ```@font-face``` from [Fundamental Styles](https://sap.github.io/fundamental-styles/?path=/docs/docs-introduction--docs) project configuration, to your custom styles.
 <!-- accordion:end -->
 
+## Luigi 2.x upgrades
+
+Luigi v2.0 introduced two new important changes in regards to previous versions.
+
+<!-- accordion:start -->
+
+### Internet Explorer 11 (IE11)
+
+As of Luigi v2.0, **Internet Explorer 11 is no longer supported**. Luigi is compatible with all other modern browsers. We recommend that you switch to another web browser such as Chrome or Edge. If you still need to use IE11, you can use Luigi versions lower than 2.0, all of which can be found on our [GitHub repository](https://github.com/SAP/luigi/releases).
+
+### Update to Angular 14 and 15
+
+With Luigi 2.0, we are updating to a newer version of Angular. This means that **Angular v.13 and below are no longer supported**. The [Luigi Angular support library](https://docs.luigi-project.io/docs/framework-support-libraries) can now be used with Angular 14 or 15 instead. You can read about how to update your Angular version [here](https://angular.io/guide/updating).
+
+<!-- accordion:end -->
 
 ## Docs for earlier versions
 

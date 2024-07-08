@@ -1,7 +1,13 @@
 let defaultConfig = `
 
 Luigi.setConfig({
-    navigation: { 
+    navigation: {
+            profile: {
+                logout: {
+                    label: "End session",
+                    icon: "sys-cancel",
+                },
+            },
             validWebcomponentUrls:['.*?'],
             nodes: [{ 
                 pathSegment: 'home', 
@@ -61,11 +67,13 @@ Luigi.setConfig({
                     loadingIndicator: {
                         enabled: false
                     },
-                    viewUrl: 'https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html'
+                    viewUrl: 'https://sdk.openui5.org/test-resources/sap/m/demokit/cart/webapp/index.html'
                 },{ 
                     pathSegment: 'wc1', 
                     label: 'WC Editable List', 
-                    loadingIndicator: { enabled: false },
+                    loadingIndicator: {
+                        enabled: false
+                    },
                     category: {
                         label: 'Web Component',
                         icon: 'cloud',
@@ -84,7 +92,6 @@ Luigi.setConfig({
                     viewUrl: '/wc/luigiExampleWC.js',
                     webcomponent: true,
                     openNodeInModal: false
-               
                 },
                 { 
                     pathSegment: 'wc3', 
@@ -96,8 +103,30 @@ Luigi.setConfig({
                     viewUrl: '/wc/ui5/ui5example.js',
                     webcomponent: true,
                     openNodeInModal: false
-               
-                }
+                },{
+                    pathSegment: 'wc4',
+                    label: 'WC Compound Example',
+                    category:  'Web Component',
+                    viewUrl: '/examples/microfrontends/compound/nested-wc.js',
+                    webcomponent: true,
+                    openNodeInModal: false,
+                        compound: {
+                          children: [
+                            {
+                              viewUrl: '/examples/microfrontends/compound/w1.js',
+                              layoutConfig: {
+                                slot: "slot-1"
+                              }
+                            },
+                            {
+                              viewUrl: '/examples/microfrontends/compound/w2.js',
+                              layoutConfig: {
+                                slot: "slot-2"
+                              }
+                            }
+                          ]
+                        }
+                  }
                 ] 
             },{ 
                 pathSegment: 'foo', 
@@ -141,7 +170,7 @@ Luigi.setConfig({
             }],
             productSwitcher: {
                 items: [{
-                    icon: 'https://raw.githubusercontent.com/SAP/luigi/master/website/landingpage/public/assets/img/logos/sap.svg',
+                    icon: 'https://raw.githubusercontent.com/SAP/luigi/main/website/landingpage/public/assets/img/logos/sap.svg',
                     label: 'SAP homepage',
                     externalLink: {
                       url: 'https://www.sap.com',
@@ -182,17 +211,109 @@ Luigi.setConfig({
         routing: { 
             useHashRouting: true 
         }, 
+        lifecycleHooks: {
+            luigiAfterInit: () => {
+                console.log('Luigi initialized.');
+            }
+        },
         settings: { 
             responsiveNavigation: 'semiCollapsible',
             header: { 
-                logo: 'img/luigi.png', 
+                logo: 'img/luigi.svg', 
                 title: 'Luigi Fiddle'
             },
             burgerTooltip: {
                 navExpanded: 'Collapse navigation',
                 navCollapsed: 'Expand navigation'
+            },
+            theming: {
+                useFioriScrollbars: true,
+                themes:
+                  [
+                    { id: 'sap_fiori_3', name: 'Quartz light' },
+                    { id: 'sap_fiori_3_dark', name: 'Quartz dark' },
+                    { id: 'sap_fiori_3_hcw', name: 'High Contrast White' },
+                    { id: 'sap_fiori_3_hcb', name: 'High Contrast Black' },
+                    { id: 'sap_horizon', name: 'Morning Horizon' },
+                    { id: 'sap_horizon_dark', name: 'Evening Horizon' }
+                  ],
+                defaultTheme: 'sap_horizon',
+                nodeViewURLDecorator: {
+                  queryStringParameter: {
+                    keyName: 'sap-theme'
+                    // // optional
+                    // value: themeId => {
+                    //   return themeId;
+                    // }
+                  }
+                }
+            }
+        },
+        userSettings: {
+            userSettingGroups: {
+                theme: {
+                    label: 'Theming',
+                    title: 'Theming',
+                    icon: 'lightbulb',
+                    settings: {
+                        theme: {
+                            type: 'enum',
+                            label: 'Theming',
+                            options: [
+                                { value: 'sap_fiori_3', label: 'Quartz light' },
+                                { value: 'sap_fiori_3_dark', label: 'Quartz dark' },
+                                { value: 'sap_fiori_3_hcw', label: 'High Contrast White' },
+                                { value: 'sap_fiori_3_hcb', label: 'High Contrast Black' },
+                                { value: 'sap_horizon', label: 'Morning Horizon' },
+                                { value: 'sap_horizon_dark', label: 'Evening Horizon' }
+                            ]
+                        }
+                    }
+                }
+            },
+            storeUserSettings: (obj, previous) => {
+                return new Promise((resolve, reject) => {
+                    if (JSON.stringify(obj) !== JSON.stringify(previous)) {
+                        let theme = obj.theme.theme;
+                        sessionStorage.setItem('myUserSettings', JSON.stringify(obj));
+                        setTheme(theme);
+                        Luigi.theming().setCurrentTheme(theme);
+                        Luigi.configChanged();
+                        resolve();
+                    }
+                });
+            },
+            readUserSettings: () => {
+                return new Promise((resolve, reject) => {
+                    try {
+                        if (sessionStorage.getItem('myUserSettings')) {
+                            let theme = JSON.parse(sessionStorage.getItem('myUserSettings')).theme.theme;
+                            if (theme !== Luigi.theming().getCurrentTheme()) {
+                               setTheme(theme);
+                               Luigi.theming().setCurrentTheme(theme);
+                               Luigi.configChanged();
+                            }
+                        }
+                        resolve(JSON.parse(sessionStorage.getItem('myUserSettings')));
+                    }catch {
+                        reject({ closeDialog: true, message: 'some error' });
+                    }
+                })
             }
         }
-    });    
+    });
+    function setTheme(theme){
+        const themeUrl = 'https://cdn.jsdelivr.net/npm/@sap-theming/theming-base-content@11.1.48/content/Base/baseLib/' + theme + '/css_variables.css';
+        const themeTag = document.querySelector('#_theme');
+        if (themeTag) {
+            document.head.removeChild(themeTag);
+        }
+    
+        const link = document.createElement('link');
+        link.id = '_theme';
+        link.href = themeUrl;
+        link.rel = 'stylesheet';
+        document.head.appendChild(link);
+    }    
 `;
 export default defaultConfig;

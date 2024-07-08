@@ -52,8 +52,16 @@ const routes: Routes = [
     component: DynamicComponent
   },
   { path: 'projects/:projectId/developers', component: DevelopersComponent },
-  { path: 'internal/virtualTree', component: SettingsComponent },
-  { path: 'projects/:projectId/developers/internal/virtualTree', component: SettingsComponent },
+  {
+    path: 'internal/virtualTree',
+    component: SettingsComponent,
+    data: { fromVirtualTreeRoot: true }
+  },
+  {
+    path: 'projects/:projectId/developers/internal/virtualTree',
+    component: SettingsComponent,
+    data: { fromVirtualTreeRoot: true }
+  },
 
   { path: 'projects/:projectId/drawer', component: DrawerComponent },
   { path: 'projects/:projectId/settings', component: SettingsComponent },
@@ -119,16 +127,55 @@ const routes: Routes = [
   },
   {
     path: 'nav-sync-example/:dyn',
-    component: NavSyncComponent
+    component: NavSyncComponent,
+    data: { luigiRoute: ':dyn', fromContext: true }
   },
   {
     path: 'view-group/:vg',
     component: ViewGroupComponent
+  },
+  {
+    path: 'dynamic-parameter-flat',
+    component: NavSyncComponent,
+    data: { luigiRoute: '/dynamic-parameter-flat', fromContext: 'navSync' },
+    children: [
+      {
+        path: ':dyn',
+        component: NavSyncComponent,
+        data: { luigiRoute: '/dynamic-parameter-flat/:dyn', fromContext: 'navSync' }
+      }
+    ]
+  },
+  {
+    path: 'dynamic-parameter-stacked',
+    component: NavSyncComponent,
+    data: { luigiRoute: '/dynamic-parameter-stacked', fromContext: 'navSync' },
+    children: [
+      {
+        path: ':dyn',
+        component: NavSyncComponent,
+        data: { luigiRoute: '/dynamic-parameter-stacked/:dyn', fromContext: 'navSync' },
+        children: [
+          {
+            path: 'child',
+            component: NavSyncComponent,
+            data: { luigiRoute: '/dynamic-parameter-stacked/:dyn/child', fromContext: 'navSync' },
+            children: [
+              {
+                path: ':dyn2',
+                component: NavSyncComponent,
+                data: { luigiRoute: '/dynamic-parameter-stacked/:dyn/child/:dyn2', fromContext: 'navSync' }
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true, relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

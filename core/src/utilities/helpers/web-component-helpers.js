@@ -174,3 +174,24 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId, wcEle
     });
   }
 };
+
+/**
+ * Desanitization of an object
+ * @param {Object} paramsMap
+ * @returns
+ */
+export const deSanitizeParamsMap = paramsMap => {
+  return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
+    sanitizedMap[deSanitizeParam(paramPair[0])] = deSanitizeParam(paramPair[1]);
+    return sanitizedMap;
+  }, {});
+};
+
+const deSanitizeParam = (param = '') => {
+  return String(param)
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'")
+    .replaceAll('&sol;', '/');
+};

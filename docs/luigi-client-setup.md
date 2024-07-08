@@ -67,7 +67,7 @@ import LuigiClient from '@luigi-project/client';
 ### Next.JS
 
 <!-- add-attribute:class:success -->
-> **TIP:** You can find an Next.JS example using Luigi Client [here](https://github.com/SAP/luigi/blob/master/core/examples/luigi-example-next/pages/sample1.js).
+> **TIP:** You can find an Next.JS example using Luigi Client [here](https://github.com/SAP/luigi/blob/main/core/examples/luigi-example-next/pages/sample1.js).
 
 1. Add this line to the imports section of the `src/App.js` file:
 
@@ -103,9 +103,9 @@ This section contains additional instructions and guidelines you can use to work
 
 ### Luigi Client API
 
-In the [Luigi Client API](/docs/luigi-client-api.md), you will find functions that will allow you to configure your micro frontend in the context of the main Luigi Core app.
+In the [Luigi Client API](luigi-client-api.md), you will find functions that will allow you to configure your micro frontend in the context of the main Luigi Core app.
 
-For example, if you want to use the function `addInitListener` in order to display a Luigi [alert](/docs/luigi-client-api.md#showalert) in the micro frontend, it can look like this: 
+For example, if you want to use the function `addInitListener` in order to display a Luigi [alert](luigi-client-api.md#showalert) in the micro frontend, it can look like this: 
 
 ```js
 useEffect(() => {

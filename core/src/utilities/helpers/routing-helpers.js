@@ -93,26 +93,6 @@ class RoutingHelpersClass {
     return result;
   }
 
-  findViewGroup(node, originalNode) {
-    if (node.viewGroup) {
-      if (originalNode && originalNode !== node) {
-        if (
-          node.viewUrl &&
-          originalNode.viewUrl &&
-          IframeHelpers.getLocation(node.viewUrl) === IframeHelpers.getLocation(originalNode.viewUrl)
-        ) {
-          return node.viewGroup;
-        }
-
-        return undefined;
-      } else {
-        return node.viewGroup;
-      }
-    } else if (node.parent) {
-      return this.findViewGroup(node.parent, originalNode || node);
-    }
-  }
-
   getContentViewParamPrefix() {
     let prefix = LuigiConfig.getConfigValue('routing.nodeParamPrefix');
     if (prefix === false) {
@@ -585,10 +565,11 @@ class RoutingHelpersClass {
     if (typeof pageNotFoundHandler === 'function') {
       // custom 404 handler is provided, use it
       const result = pageNotFoundHandler(notFoundPath, isAnyPathMatched);
-      if (result && result.redirectTo) {
+      if (result && (result.redirectTo || result.ignoreLuigiErrorHandling)) {
         return {
           path: result.redirectTo,
-          keepURL: result.keepURL
+          keepURL: result.keepURL,
+          ignoreLuigiErrorHandling: result.ignoreLuigiErrorHandling
         };
       }
     }

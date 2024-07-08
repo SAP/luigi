@@ -1,0 +1,41 @@
+on: 
+  workflow_dispatch:
+    inputs:
+      NIGHTLY_VERSION: 
+        type: string
+        required: true
+        description: e.g. 2.0.0-rc1
+        default: 2.0.0-rc1
+name: Publish RC Release   
+env:
+  NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
+  NIGHTLY_VERSION: ${{ inputs.NIGHTLY_VERSION }}
+
+jobs:
+  prepare: 
+    uses: ./.github/workflows/prepare.yml
+    secrets: inherit
+    with:
+      buildcache_key: buildcache-rc-${{ github.ref }}
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: github.repository == 'SAP/luigi'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.14.0'
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/tmp_build
+            ~/cypress-binary-cache
+          key: buildcache-rc-${{ github.ref }}
+      - run: cp -r ~/tmp_build/* .
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+      - run: cd ./scripts && npm ci
+      - run: cd ./scripts && NIGHTLY=true npm run release
+      - run: cd ./scripts && npm run publish:nightly
+      - run: echo "" > ~/.npmrc

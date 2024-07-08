@@ -18,8 +18,8 @@ meta -->
 
 ## Overview
 
-This [authorization plugin](https://github.com/SAP/luigi/tree/master/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/master/core) with an OpenID Connect authorization provider.
-Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow.
+This [authorization plugin](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc) contains a library that allows your application to extend the [Luigi framework](https://github.com/SAP/luigi/tree/main/core) with an OpenID Connect authorization provider.
+Further configuration details can be found in the [main documentation](https://docs.luigi-project.io/docs/authorization-configuration#openid-connect-configuration). We support Authorization Code with PKCE and Implicit Grant flow. If you don't need Implict flow please use [OIDC plugin with PKCE](https://github.com/SAP/luigi/tree/main/plugins/auth/public/auth-oidc-pkce) instead of this one.
 
 ## Installation
 
@@ -79,7 +79,6 @@ Respectively from `oidc-client` library you need:
 and from our library `@luigi-project/plugin-auth-oidc` you need:
 - `plugin.js`
 - `silent-callback.html`
-- `plugin-ie11.js` (for IE11 only)
 which all reside under `node_modules/@luigi-project/plugin-auth-oidc/plugin.js`.
 
 The above mentioned files should be copied to `assets/auth-oidc` as the default location.
@@ -101,10 +100,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
          to: 'assets/auth-oidc'
      },
      {
-         from: 'node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js',
-         to: 'assets/auth-oidc'
-     },
-     {
          from: 'node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html',
          to: 'assets/auth-oidc'
      },
@@ -122,7 +117,7 @@ If your application does not use webpack or you installed Luigi without a framew
 ```javascript
 "buildConfig": "webpack --entry ./src/luigi-config/luigi-config.es6.js --output-path ./public/assets --output-filename luigi-config.js --mode production",
 "build": "npm run buildConfig && npm run copyCallbackOIdc",
-"copyCallbackOidc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html node_modules/@luigi-project/plugin-auth-oidc/plugin.js node_modules/@luigi-project/plugin-auth-oidc/plugin-ie11.js node_modules/oidc-client/dist/oidc-client.min.js public/assets/auth-oidc"
+"copyCallbackOidc": "copyfiles -f node_modules/@luigi-project/plugin-auth-oidc/silent-callback.html node_modules/@luigi-project/plugin-auth-oidc/plugin.js node_modules/oidc-client/dist/oidc-client.min.js public/assets/auth-oidc"
 ```
 
 Running `npm run build` should then suffice to bundle the config and also copy the callback file.

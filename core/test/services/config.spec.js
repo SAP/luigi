@@ -1,11 +1,10 @@
+import set from 'set-value';
+import { LuigiConfig } from '../../src/core-api';
+import { AsyncHelpers, GenericHelpers } from './../../src/utilities/helpers';
+
 const chai = require('chai');
 const assert = chai.assert;
 const sinon = require('sinon');
-const expect = chai.expect;
-const spy = sinon.spy;
-
-import { LuigiConfig } from '../../src/core-api';
-import { AsyncHelpers, GenericHelpers } from './../../src/utilities/helpers';
 
 describe('Config', () => {
   describe('getConfigBooleanValue', () => {
@@ -105,17 +104,25 @@ describe('Config', () => {
   });
 
   describe('User settings', () => {
-    before(() => {
-      global['localStorage'] = {
+    let localStorageSpy;
+
+    beforeAll(() => {
+      const lsMock = {
         getItem: sinon.stub(),
         setItem: sinon.stub()
       };
+      localStorageSpy = jest.spyOn(global, 'localStorage', 'get');
+      localStorageSpy.mockImplementation(() => {
+        return lsMock;
+      });
+    });
+    afterAll(() => {
+      localStorageSpy.mockRestore();
     });
     afterEach(() => {
       sinon.restore();
       sinon.reset();
     });
-    const key = 'myStorageKey';
     const userSettingsObj = {
       userSettings: {
         userSettingGroups: {}

@@ -31,7 +31,7 @@ export class DefaultCompoundRenderer {
  * Compound Renderer for custom rendering as defined in luigi config.
  */
 export class CustomCompoundRenderer extends DefaultCompoundRenderer {
-  superRenderer: DefaultCompoundRenderer | CustomCompoundRenderer | GridCompoundRenderer;
+  superRenderer: DefaultCompoundRenderer;
 
   constructor(rendererObj) {
     super(rendererObj || { use: {} });
@@ -106,7 +106,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
       });
     }
 
-    compoundCnt.innerHTML = /*html*/ `
+    compoundCnt.innerHTML = /* html */ `
         <style scoped>
           .${containerClass} {
             display: grid;
@@ -179,3 +179,25 @@ export const registerEventListeners = (eventbusListeners, navNode, nodeId: strin
     });
   }
 };
+
+/**
+ * Desanitization of an object
+ * @param {Object} paramsMap
+ * @returns
+ */
+export const deSanitizeParamsMap = paramsMap => {
+  return Object.entries(paramsMap).reduce((sanitizedMap, paramPair) => {
+    sanitizedMap[deSanitizeParam(paramPair[0])] = deSanitizeParam(paramPair[1]);
+    return sanitizedMap;
+  }, {});
+};
+
+function deSanitizeParam(param: any) {
+  const desani = (String as any)(param)
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'")
+    .replaceAll('&sol;', '/');
+  return desani;
+}

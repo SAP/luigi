@@ -1,0 +1,16 @@
+on: workflow_dispatch
+name: Publish Create React App (CRA) template
+env:
+  NPM_LUI_AUTH_TOKEN: ${{ secrets.NPM_LUI_AUTH_TOKEN }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.14.0'
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_LUI_AUTH_TOKEN" > ~/.npmrc
+      - run: bash ./scripts/npmPublish.sh cra-release

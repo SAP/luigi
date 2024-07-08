@@ -136,7 +136,7 @@ There are a few options to do that at the moment:
        */
       function init() {
         // react on route changes
-        window.onhashchange = updateNav; // there will be an abstraction on luigi side in the future, independend from routing strategy
+        window.onhashchange = updateNav; // there will be an abstraction on luigi side in the future, independent from routing strategy
 
         // building up static root nodes in header
         window.linkEl = document.querySelector(".links");
@@ -481,7 +481,7 @@ There are a few options to do that at the moment:
                     enabled: false,
                   },
                   viewUrl:
-                    "https://sapui5.netweaver.ondemand.com/test-resources/sap/m/demokit/cart/webapp/index.html",
+                    "https://sdk.openui5.org/test-resources/sap/m/demokit/cart/webapp/index.html",
                 },
               ],
             },
@@ -530,7 +530,7 @@ There are a few options to do that at the moment:
                   label: "Fundamental Icons",
                   externalLink: {
                     url:
-                      "https://sap.github.io/fundamental-styles/components/icon.html",
+                      "https://sap.github.io/fundamental-styles/?path=/docs/sap-fiori-components-icons-sap-icons--docs",
                   },
                 },
               ],
@@ -593,13 +593,17 @@ To hide the top navigation, you can use custom CSS, for example:
 
 ### Can I have more than 2 levels in the Luigi side navigation?/Can navigation nodes have grandchildren?
 
-Curerntly, it is not possible for Luigi navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.luigi-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
+Currently, it is not possible for Luigi navigation nodes to have more than one level of children. However, the [tab navigation](https://docs.luigi-project.io/docs/navigation-advanced?section=tab-navigation) can be used to place additional nodes on the page.
 
 <!-- accordion:end -->
 
 ## Navigation and routing questions
 
 <!-- accordion:start -->
+
+### How can I preserve my micro frontend's routing when using Luigi?
+
+You can use [Luigi Client API](luigi-client-setup.md) in your micro frontend to achieve this without having to change your micro frontend's internal routing strategy. In addition you can tell Luigi to not interfere with the micro frontend's internal routing by using the `virtualTree` option on the micro frontend's node. You can find more information about it [here](microfrontend-routing.md).
 
 ### What is the proper way for Luigi Core to react to navigation from Luigi Client?
 
@@ -621,7 +625,7 @@ Yes, currently this is possible via [splitView](https://docs.luigi-project.io/do
 
 ### Can I place a micro frontend within another micro frontend?
 
-Yes, Luigi's [Web Component](https://docs.luigi-project.io/docs/web-component) feature allows you to create [compound micro frontends](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=webcomponent).
+Yes, you can use [Web Components](https://docs.luigi-project.io/docs/web-component) in Luigi in order to achieve that. After creating a web component, you first need to enable it on the node level using the [webcomponent](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=webcomponent) Luigi parameter. Then, you can use the [compound](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) feature to define a custom layout or configure nested web components.
 
 ### How can I implement a custom home page or login page for Luigi?
 
@@ -704,6 +708,6 @@ One way would be to bind the Luigi app root to a specific [dom element](https://
 
 ### Where can I find the source code for Luigi Fiddle?
 
-Luigi is an open-source project. You can find the source code on our [GitHub repository](https://github.com/SAP/luigi/tree/master/website/fiddle).
+Luigi is an open-source project. You can find the source code on our [GitHub repository](https://github.com/SAP/luigi/tree/main/website/fiddle).
 
 <!-- accordion:end -->

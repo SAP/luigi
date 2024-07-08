@@ -1,22 +1,31 @@
 <script>
-  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { Navigation } from './services/navigation';
-  import { NavigationHelpers, RoutingHelpers } from '../utilities/helpers';
+  import { afterUpdate, beforeUpdate, createEventDispatcher, getContext, onDestroy, onMount } from 'svelte';
   import { LuigiConfig } from '../core-api';
+  import { GenericHelpers, NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
+  import StatusBadge from './StatusBadge.svelte';
+  import TabHeader from './TabHeader.svelte';
+  import { Navigation } from './services/navigation';
 
   export let children;
   export let pathData;
   export let pathParams;
-  let previousPathData;
   export let hideNavComponent;
   export let virtualGroupPrefix = NavigationHelpers.virtualGroupPrefix;
-  let selectedNode;
   export let selectedNodeForTabNav;
   export let dropDownStates = {};
   export let isMoreBtnExpanded = false;
   export let resizeTabNavToggle;
+
+  let selectedNode;
+  let previousPathData;
   let previousResizeTabNavToggle;
   let getTranslation = getContext('getTranslation');
+  let store = getContext('store');
+  let resizeObserver;
+  let tabsContainer;
+  let tabsContainerHeader;
+  let moreButton;
+  let moreLink;
 
   //TODO refactor
   const __this = {
@@ -51,12 +60,13 @@
 
   const dispatch = createEventDispatcher();
 
+  function getNodeLabel(node) {
+    return NavigationHelpers.getNodeLabel(node);
+  }
+
   const setTabNavData = async () => {
     const componentData = __this.get();
-    const tabNavData = await Navigation.getTabNavData(
-      { ...componentData },
-      componentData
-    );
+    const tabNavData = await Navigation.getTabNavData({ ...componentData }, componentData);
     if (!tabNavData) {
       return;
     }
@@ -66,57 +76,125 @@
     setTimeout(calcTabsContainer);
   };
 
+  /**
+   * Adjusts the visibility of tab elements based on available space in the tabs container.
+   * Hides overflowing tabs and shows a 'more' button if necessary.
+   */
   const calcTabsContainer = () => {
-    clearTapNav();
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
-    let morebtn = document.getElementsByClassName('luigi-tabsMoreButton')[0];
-    let moreLink = document.getElementsByClassName('luigi__more')[0];
-    let tabsContainerOffsetWidth;
-    let totalTabsSize = 0;
-    let hasMoreBtnElements = false;
-    let componentData = __this.get();
-    let style;
-    let margin;
-    moreLink && moreLink.setAttribute('aria-selected', 'false');
-    if (tabsContainer) {
-      tabsContainerOffsetWidth = tabsContainer.offsetWidth;
-      let tabs = [...tabsContainer.children];
-      tabs.forEach(element => {
-        style = element.currentStyle || window.getComputedStyle(element);
-        margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
-        totalTabsSize += element.offsetWidth + margin;
-        let uid = element.getAttribute('uid');
-        if (totalTabsSize >= tabsContainerOffsetWidth) {
-          element.classList.add('hide_element');
-          if (element.getAttribute('isSelected') === 'true') {
-            moreLink.setAttribute('aria-selected', 'true');
+    // Clear the tab navigation
+    clearTabNav();
+
+    // Check if necessary elements exist
+    if (tabsContainerHeader && moreButton && moreLink) {
+      // Reset 'more' link to inactive state
+      moreLink.classList.remove('is-active');
+
+      // Calculate available space for tab items
+      const tabsContainerHeaderStyles = getComputedStyle(tabsContainerHeader);
+      const availableSpaceForTabItems =
+        tabsContainerHeader.offsetWidth -
+        moreButton.offsetWidth -
+        parseFloat(tabsContainerHeaderStyles.paddingLeft) -
+        parseFloat(tabsContainerHeaderStyles.paddingRight);
+
+      // Initialize variables
+      let totalTabsSize = 0;
+      let hasMoreBtnElements = false;
+
+      // Iterate through tab elements
+      [...tabsContainerHeader.children].forEach(tabElement => {
+        // Get unique identifier for the tab
+        const uid = tabElement.getAttribute('uid');
+        if (!uid) {
+          return; // Skip if no UID
+        }
+
+        // Calculate total width of tab including margins
+        const style = getComputedStyle(tabElement);
+        const margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+        totalTabsSize += tabElement.offsetWidth + margin;
+
+        // Check if tab overflows available space
+        if (totalTabsSize >= availableSpaceForTabItems) {
+          tabElement.classList.add('hide_element');
+          // Check if hidden tab is selected, show 'more' link
+          if (tabElement.getAttribute('isSelected') === 'true') {
+            moreLink.classList.add('is-active');
           }
-          document
-            .querySelector('li[uid="' + uid + '"]')
-            .classList.remove('hide_element');
+          // Show tab in 'more' dropdown
+          document.querySelector('li[uid="' + uid + '"]').classList.remove('hide_element');
           hasMoreBtnElements = true;
         } else {
+          // Hide tab from 'more' dropdown
           document.querySelector('li[uid="' + uid + '"]').classList.add('hide_element');
         }
       });
-      !hasMoreBtnElements
-        ? morebtn.classList.add('hide_element')
-        : morebtn.classList.remove('hide_element');
+
+      // Show/hide 'more' button based on presence of overflow tabs
+      hasMoreBtnElements ? moreButton.classList.remove('hide_element') : moreButton.classList.add('hide_element');
     }
   };
 
-  const clearTapNav = () => {
-    let tabsContainer = document.getElementsByClassName('luigi-tabsContainer')[0];
-    if (tabsContainer !== undefined) {
-      const tabs = [...tabsContainer.children];
+  /**
+   * Clears the tab navigation by removing the 'hide_element' class from all tab elements.
+   */
+  const clearTabNav = () => {
+    // Check if tabs container header exists
+    if (tabsContainerHeader !== undefined) {
+      // Get all tab elements
+      const tabs = [...tabsContainerHeader.children];
+
+      // Remove 'hide_element' class from each tab element
       tabs.forEach(element => {
         element.classList.remove('hide_element');
       });
     }
   };
 
+  /**
+   * This function attaches on Svelte's ResizeObserver to detect the height of the component so that the 'top' distance property
+   * is changed according to the variable horizontal tabnav web component height.
+   */
+  const handleHorizontalNavHeightChange = () => {
+    resizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        document.documentElement.style.setProperty(
+          '--luigi__horizontal-nav--live-height',
+          entry.contentRect.height + 'px'
+        );
+      }
+    });
+    setTimeout(() => {
+      if (tabsContainer) {
+        resizeObserver.observe(tabsContainer);
+      }
+    });
+  };
+
+  /**
+   * This function resets ResizeObserver's affected property to 0 and it is used to reset the state upon destroying of the TabNav component.
+   */
+  const resetResizeObserver = () => {
+    if (resizeObserver) {
+      resizeObserver.disconnect();
+    }
+  };
+
   onMount(() => {
     hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    handleHorizontalNavHeightChange();
+    StateHelpers.doOnStoreChange(
+      store,
+      () => {
+        setTabNavData();
+      },
+      ['navigation.viewgroupdata']
+    );
+  });
+
+  onDestroy(() => {
+    resetResizeObserver();
+    document.documentElement.style.removeProperty('--luigi__horizontal-nav--live-height');
   });
 
   // [svelte-upgrade warning]
@@ -126,12 +204,22 @@
     if (!previousPathData || previousPathData != pathData) {
       setTabNavData();
     }
-    if (
-      previousResizeTabNavToggle === undefined ||
-      previousResizeTabNavToggle !== resizeTabNavToggle
-    ) {
+    if (previousResizeTabNavToggle === undefined || previousResizeTabNavToggle !== resizeTabNavToggle) {
       previousResizeTabNavToggle = resizeTabNavToggle;
       setTabNavData();
+    }
+  });
+
+  afterUpdate(() => {
+    resetResizeObserver();
+    if (!resizeObserver) {
+      handleHorizontalNavHeightChange();
+    } else {
+      setTimeout(() => {
+        if (tabsContainer) {
+          resizeObserver.observe(tabsContainer);
+        }
+      });
     }
   });
 
@@ -147,8 +235,7 @@
     return (
       selectedNodeForTabNav &&
       selectedNodeForTabNav.category &&
-      (selectedNodeForTabNav.category === key ||
-        selectedNodeForTabNav.category.label === key)
+      (selectedNodeForTabNav.category === key || selectedNodeForTabNav.category.label === key)
     );
   }
 
@@ -177,231 +264,370 @@
   }
 
   export function onResize() {
-    clearTapNav();
+    clearTabNav();
     calcTabsContainer();
   }
   export function toggleMoreBtn() {
     isMoreBtnExpanded = !isMoreBtnExpanded;
   }
+
+  /**
+   * Checks if the provided key corresponds to a single tab item.
+   * Info: Nodes are grouped in Category or non - category groups for the tab nav logic.
+   * A Category node group object usually has the Category Name as a key
+   * A non-Category node usually would have an undefined key or a virtualGroupPrefix
+   * @param {string} key - The key to check.
+   * @returns {boolean} Returns true if the key is 'undefined' or starts with the virtualGroupPrefix; otherwise, returns false.
+   */
+  function isSingleTabItem(key, nodes) {
+    const isKeyUndefined = key === 'undefined';
+    const isVirtualGroupPrefix = key.indexOf(virtualGroupPrefix) === 0;
+    if (isKeyUndefined || isVirtualGroupPrefix) {
+      return true;
+    }
+    if (isHiddenAndOnlySubCategoryNode(nodes)) {
+      return true;
+    }
+  }
+
+  /**
+   * Checks if any of the nodes is a tab item with sub-items.
+   * @param {Array<Object>} nodes - An array of nodes to check.
+   * @returns {boolean} Returns true if any node has a label and is not hidden from navigation; otherwise, returns false.
+   */
+  function isTabItemWithSubItems(nodes) {
+    return nodes.some(node => !node.hideFromNav && node.label);
+  }
+
+  /**
+   * Checks if for the given nodes list there is a category that has a subcategory node which is hidden.
+   * In this case the category node should be shown as a single tab item and not a category on the tabnav view
+   * @param nodes list of nodes to check in the same level
+   * @returns {boolean} true if only one hidden item found.
+   */
+  function isHiddenAndOnlySubCategoryNode(nodes) {
+    // reference node = a subcategory node
+    const referenceNode = nodes.find(node => GenericHelpers.isObject(node.category));
+    if (!referenceNode) {
+      return;
+    }
+    const referenceCategoryName = referenceNode.category.label || referenceNode.category.id;
+
+    const isOnlyOtherCategoryNodeHidden =
+      nodes.filter(node => node.category === referenceCategoryName && node.hideFromNav === true).length === 1;
+
+    return isOnlyOtherCategoryNodeHidden;
+  }
+
+  /**
+   * Finds the node in the provided array of nodes to navigate to based on the category's navigateOnClick property.
+   * Search based on navigateOnClick set to true or a string representing the desired pathSegment to navigate to.
+   * @param {Array<Object>} nodes - An array of nodes to search.
+   * @returns {Object|undefined} Returns the first node with a truthy navigateOnClick property, or undefined if not found.
+   */
+  function getNodeToNavigateTo(nodes) {
+    const referenceNode = nodes.find(node => node.category?.navigateOnClick);
+    if (!referenceNode) {
+      return;
+    }
+    const navigateOnClick = referenceNode.category.navigateOnClick;
+    if (navigateOnClick === true) {
+      return referenceNode;
+    }
+    // return node which has same pathSegment as the navigateOnClick value
+    return nodes.find(node => node.pathSegment === navigateOnClick);
+  }
+
+  /**
+   * Checks if any of the nodes is a tab item with multiple clickable areas.
+   * @param {Array<Object>} nodes - An array of nodes to check.
+   * @returns {boolean} Returns true if any node has a category with a truthy navigateOnClick property; otherwise, returns false.
+   */
+  function isMultiClickAreaTabItem(nodes) {
+    return !!getNodeToNavigateTo(nodes);
+  }
 </script>
 
-<svelte:window
-  on:click={closeAllDropdowns}
-  on:blur={closeAllDropdowns}
-  on:resize={onResize}
-/>
-{#if children && pathData.length > 1}
-  <nav
-    class="fd-tabs fd-tabs--l"
-    role="tablist"
-    id="tabsContainer"
-    on:toggleDropdownState={event => toggleDropdownState(event.name)}
-  >
-    <div class="tabsContainerWrapper">
-      <div class="tabsContainer luigi-tabsContainer">
+<svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} on:resize={onResize} />
+{#if children && pathData.length > 0 && (pathData[0].topNav === false || pathData.length > 1)}
+  <div id="tabsContainer" bind:this={tabsContainer}>
+    {#if selectedNode.parent && selectedNode.parent.tabNav && selectedNode.parent.tabNav.showAsTabHeader}
+      <TabHeader node={selectedNode.parent} />
+    {/if}
+    <nav
+      class="fd-icon-tab-bar fd-icon-tab-bar--lg"
+      role="tablist"
+      on:toggleDropdownState={event => toggleDropdownState(event.name)}
+    >
+      <div
+        class="tabsContainerHeader luigi-tabsContainerHeader fd-icon-tab-bar__header"
+        role="tablist"
+        bind:this={tabsContainerHeader}
+      >
         {#each Object.entries(children) as [key, nodes], index}
-          {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+          {#if isSingleTabItem(key, nodes)}
             {#each nodes as node, index2}
               {#if !node.hideFromNav}
                 {#if node.label}
-                  <span
-                    class="fd-tabs__item {node === selectedNodeForTabNav
-                      ? 'is-selected'
-                      : ''}"
-                    uid="{index}-{index2}"
-                    isSelected={node === selectedNodeForTabNav}
-                  >
+                  <!-- prettier-ignore -->
+                  {@const isSelected = node === selectedNodeForTabNav}
+                  <span role="presentation" class="fd-icon-tab-bar__item" uid="{index}-{index2}" {isSelected}>
                     <a
-                      class="fd-tabs__link"
-                      href={getRouteLink(node)}
                       role="tab"
-                      aria-selected={node === selectedNodeForTabNav}
+                      class="fd-icon-tab-bar__tab"
+                      href={getRouteLink(node)}
+                      data-testid={NavigationHelpers.getTestId(node)}
+                      aria-selected={isSelected}
                       on:click|preventDefault={() => handleClick(node)}
                     >
-                      <span class="fd-tabs__tag"
-                        >{$getTranslation(node.label)}</span
-                      >
+                      <span class="fd-icon-tab-bar__tag">{getNodeLabel(node)}
+                        <StatusBadge {node} /></span>
                     </a>
                   </span>
                 {/if}
               {/if}
             {/each}
-          {:else}
-            <span
-              class="fd-tabs__item"
-              uid="{index}-0"
-              on:click={event => event.stopPropagation()}
-              isSelected={isSelectedCat(key, selectedNodeForTabNav)}
-            >
-              <div class="fd-popover">
-                <div class="fd-popover__control">
-                  <a
-                    class="fd-tabs__link has-child"
-                    aria-expanded="false"
-                    role="tab"
-                    on:click|preventDefault={() => toggleDropdownState(key)}
-                    aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
-                  >
-                    <span class="label fd-tabs__tag"
-                      >{$getTranslation(key)}</span
-                    >
-                    <span class="sap-icon--dropdown luigi-icon--dropdown" />
-                  </a>
-                </div>
-                <div
-                  class="fd-popover__body fd-popover__body--no-arrow"
-                  aria-hidden={!dropDownStates[key]}
+          {:else if isTabItemWithSubItems(nodes)}
+            <!-- prettier-ignore -->
+            {@const uid = `${index}-0`}
+            <!-- prettier-ignore -->
+            {@const popoverId = `lui-${uid}-popover`}
+
+            {#if isMultiClickAreaTabItem(nodes)}
+              <!-- prettier-ignore -->
+              {@const nodeToNavigateTo = getNodeToNavigateTo(nodes)}
+              <span
+                {uid}
+                role="presentation"
+                class="fd-icon-tab-bar__item fd-icon-tab-bar__item--multi-click"
+                on:click={event => event.stopPropagation()}
+              >
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <a
+                  role="tab"
+                  class="fd-icon-tab-bar__tab"
+                  tabindex="0"
+                  aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+                  href={getRouteLink(nodeToNavigateTo)}
+                  on:click|preventDefault={() => handleClick(nodeToNavigateTo)}
                 >
-                  <nav class="fd-menu">
-                    <ul class="fd-menu__list fd-menu__list--no-shadow">
+                  <span class="fd-icon-tab-bar__tag">{$getTranslation(key)}</span>
+                </a>
+                <div class="fd-popover fd-icon-tab-bar__popover">
+                  <div class="fd-popover__control">
+                    <div class="fd-icon-tab-bar__button-container">
+                      <button
+                        class="fd-button fd-button--transparent fd-icon-tab-bar__button"
+                        aria-controls={popoverId}
+                        aria-expanded={!!dropDownStates[key]}
+                        aria-haspopup="true"
+                        aria-label="open menu button"
+                        on:click|preventDefault={() => toggleDropdownState(key)}
+                      >
+                        <i class="sap-icon--slim-arrow-down" />
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    aria-hidden={!dropDownStates[key]}
+                    id={popoverId}
+                  >
+                    <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
+                      {#each nodes as node}
+                        {#if !node.hideFromNav && node.label}
+                          <li
+                            tabindex="-1"
+                            aria-level="1"
+                            class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item"
+                          >
+                            <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                            <!-- svelte-ignore a11y-missing-attribute -->
+                            <a
+                              tabindex="0"
+                              class="fd-list__link fd-icon-tab-bar__list-link"
+                              href={getRouteLink(node)}
+                              aria-selected={node === selectedNodeForTabNav}
+                              on:click|preventDefault={() => handleClick(node)}
+                            >
+                              <span class="fd-list__title">{getNodeLabel(node)}</span>
+                            </a>
+                          </li>
+                        {/if}
+                      {/each}
+                    </ul>
+                  </div>
+                </div>
+              </span>
+            {:else}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <span
+                class="fd-icon-tab-bar__item fd-icon-tab-bar__item--single-click"
+                {uid}
+                on:click={event => event.stopPropagation()}
+                isSelected={isSelectedCat(key, selectedNodeForTabNav)}
+              >
+                <div class="fd-popover">
+                  <div class="fd-popover__control">
+                    <!-- svelte-ignore a11y-missing-attribute -->
+                    <a
+                      class="fd-icon-tab-bar__tab"
+                      aria-expanded="false"
+                      role="tab"
+                      on:click|preventDefault={() => toggleDropdownState(key)}
+                      aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+                    >
+                      <div class="fd-icon-tab-bar__tab-container">
+                        <span class="fd-icon-tab-bar__tag">{$getTranslation(key)}</span>
+                        <span class="fd-icon-tab-bar__arrow">
+                          <i class="sap-icon--slim-arrow-down" role="presentation" />
+                        </span>
+                      </div>
+                    </a>
+                  </div>
+                  <div
+                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    aria-hidden={!dropDownStates[key]}
+                  >
+                    <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
                       {#each nodes as node}
                         {#if !node.hideFromNav}
                           {#if node.label}
-                            <li class="fd-menu__item">
+                            <li class="fd-list__item fd-list__item--link fd-icon-tab-bar__list-item">
                               <a
                                 href={getRouteLink(node)}
-                                class="fd-menu__link"
-                                on:click|preventDefault={() =>
-                                  handleClick(node)}
+                                class="fd-list__link fd-icon-tab-bar__list-link"
+                                data-testid={NavigationHelpers.getTestId(node)}
+                                on:click|preventDefault={() => handleClick(node)}
                                 aria-selected={node === selectedNodeForTabNav}
                               >
-                                <span class="fd-menu__title"
-                                  >{$getTranslation(node.label)}</span
-                                >
+                                <span class="fd-list__title">{getNodeLabel(node)}
+                                  <StatusBadge {node} /></span>
                               </a>
                             </li>
                           {/if}
                         {/if}
                       {/each}
                     </ul>
-                  </nav>
+                  </div>
                 </div>
-              </div>
-            </span>
+              </span>
+            {/if}
           {/if}
         {/each}
-      </div>
-    </div>
-
-    <div class="luigi-tabsMoreButton">
-      <span class="fd-tabs__item" on:click={event => event.stopPropagation()}>
-        <div class="fd-popover fd-popover--right">
-          <a
-            class="fd-tabs__link fd-popover__control has-child luigi__more"
-            aria-expanded="false"
-            role="tab"
-            on:click|preventDefault={toggleMoreBtn}
-          >
-            <span class="label fd-tabs__tag">More</span>
-            <span class="sap-icon--dropdown luigi-icon--dropdown" />
-          </a>
-          <div
-            class="fd-popover__body fd-popover__body--right fd-popover__body--no-arrow"
-            aria-hidden={!isMoreBtnExpanded}
-          >
-            <ul
-              class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only"
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <span
+          class="luigi-tabsMoreButton fd-icon-tab-bar__item fd-icon-tab-bar__item--overflow"
+          on:click={event => event.stopPropagation()}
+          bind:this={moreButton}
+        >
+          <div class="fd-popover">
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <div class="fd-popover__control has-child luigi__more" aria-expanded="false" role="tab">
+              <button class="fd-icon-tab-bar__overflow" on:click|preventDefault={toggleMoreBtn} bind:this={moreLink}>
+                <span class="label fd-icon-tab-bar__overflow-text">More</span>
+                <span class="sap-icon--slim-arrow-down" />
+              </button>
+            </div>
+            <div
+              class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+              aria-hidden={!isMoreBtnExpanded}
             >
-              {#each Object.entries(children) as [key, nodes], index}
-                {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
-                  {#each nodes as node, index2}
-                    <li class="fd-nested-list__item" uid="{index}-{index2}">
-                      <a
-                        href={getRouteLink(node)}
-                        class="fd-nested-list__link"
-                        on:click|preventDefault={() => handleClick(node)}
-                        aria-selected={node === selectedNodeForTabNav}
-                      >
-                        <span class="fd-nested-list__title"
-                          >{$getTranslation(node.label)}</span
+              <ul class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only">
+                {#each Object.entries(children) as [key, nodes], index}
+                  {#if key === 'undefined' || key.indexOf(virtualGroupPrefix) === 0}
+                    {#each nodes as node, index2}
+                      <li class="fd-nested-list__item" uid="{index}-{index2}">
+                        <a
+                          href={getRouteLink(node)}
+                          class="fd-nested-list__link"
+                          data-testid={NavigationHelpers.getTestId(node)}
+                          on:click|preventDefault={() => handleClick(node)}
+                          aria-selected={node === selectedNodeForTabNav}
                         >
-                      </a>
+                          <span class="fd-nested-list__title">{getNodeLabel(node)}
+                            <StatusBadge {node} /></span>
+                        </a>
+                      </li>
+                    {/each}
+                  {:else}
+                    <li class="fd-nested-list__item" uid="{index}-0">
+                      <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+                      <div class="fd-nested-list__content has-child" tabindex="0">
+                        <!-- svelte-ignore a11y-invalid-attribute -->
+                        <a
+                          href="javascript:void(null)"
+                          tabindex="-1"
+                          class="fd-nested-list__link"
+                          id="tabnav_list_level1_{index}"
+                          aria-haspopup="true"
+                          aria-expanded={dropDownStates[key + index]}
+                          aria-selected={isSelectedCat(key, selectedNodeForTabNav)}
+                          on:click|preventDefault={() => toggleDropdownState(key + index)}
+                        >
+                          <span class="fd-nested-list__title">{$getTranslation(key)}</span>
+                        </a>
+                        <button
+                          class="fd-button fd-nested-list__button"
+                          href="#"
+                          tabindex="-1"
+                          aria-label="Expand submenu"
+                          aria-haspopup="true"
+                          aria-expanded={dropDownStates[key + index]}
+                          on:click|preventDefault={() => toggleDropdownState(key + index)}
+                        >
+                          <i
+                            class={dropDownStates[key + index] ? 'sap-icon--navigation-down-arrow' : 'sap-icon--navigation-right-arrow'}
+                            role="presentation"
+                          />
+                        </button>
+                      </div>
+                      <ul class="fd-nested-list level-2" aria-hidden={!dropDownStates[key + index]}>
+                        {#each nodes as node}
+                          {#if node.label}
+                            <li class="fd-nested-list__item" aria-labelledby="tabnav_list_level1_{index}">
+                              <a
+                                class="fd-nested-list__link"
+                                href={getRouteLink(node)}
+                                data-testid={NavigationHelpers.getTestId(node)}
+                                on:click|preventDefault={() => handleClick(node)}
+                                aria-selected={node === selectedNodeForTabNav}
+                              >
+                                <span class="fd-nested-list__title">{getNodeLabel(node)}
+                                  <StatusBadge {node} />
+                                </span>
+                              </a>
+                            </li>
+                          {/if}
+                        {/each}
+                      </ul>
                     </li>
-                  {/each}
-                {:else}
-                  <li class="fd-nested-list__item" uid="{index}-0">
-                    <div class="fd-nested-list__content has-child" tabindex="0">
-                      <a
-                        href="javascript:void(null)"
-                        tabindex="-1"
-                        class="fd-nested-list__link"
-                        id="tabnav_list_level1_{index}"
-                        aria-haspopup="true"
-                        aria-expanded={dropDownStates[key + index]}
-                        aria-selected={isSelectedCat(
-                          key,
-                          selectedNodeForTabNav
-                        )}
-                        on:click|preventDefault={() =>
-                          toggleDropdownState(key + index)}
-                      >
-                        <span class="fd-nested-list__title"
-                          >{$getTranslation(key)}</span
-                        >
-                      </a>
-                      <button
-                        class="fd-button fd-nested-list__button"
-                        href="#"
-                        tabindex="-1"
-                        aria-label="Expand submenu"
-                        aria-haspopup="true"
-                        aria-expanded={dropDownStates[key + index]}
-                        on:click|preventDefault={() =>
-                          toggleDropdownState(key + index)}
-                      >
-                        <i
-                          class={dropDownStates[key + index]
-                            ? 'sap-icon--navigation-down-arrow'
-                            : 'sap-icon--navigation-right-arrow'}
-                          role="presentation"
-                        />
-                      </button>
-                    </div>
-                    <ul
-                      class="fd-nested-list level-2"
-                      aria-hidden={!dropDownStates[key + index]}
-                    >
-                      {#each nodes as node}
-                        <li
-                          class="fd-nested-list__item"
-                          aria-labelledby="tabnav_list_level1_{index}"
-                        >
-                          <a
-                            class="fd-nested-list__link"
-                            href={getRouteLink(node)}
-                            on:click|preventDefault={() => handleClick(node)}
-                            aria-selected={node === selectedNodeForTabNav}
-                          >
-                            <span class="fd-nested-list__title"
-                              >{$getTranslation(node.label)}</span
-                            >
-                          </a>
-                        </li>
-                      {/each}
-                    </ul>
-                  </li>
-                {/if}
-              {/each}
-            </ul>
+                  {/if}
+                {/each}
+              </ul>
+            </div>
           </div>
-        </div>
-      </span>
-    </div>
-  </nav>
+        </span>
+      </div>
+    </nav>
+  </div>
 {/if}
 
-<style type="text/scss">
-  @import 'styles/mixins';
-  @import 'styles/variables';
-
-  .tabsContainer {
+<style lang="scss">
+  .tabsContainerHeader {
     width: 100%;
-  }
 
-  .tabsContainerWrapper {
-    flex-grow: 1;
-    flex-basis: auto;
-    flex-shrink: 1;
+    /** 
+      This override fixes an issue in fd that causes the link of an item with multi-click area in the icon tab bar
+      to "steal" the focus so that the button of that item is not clickable anymore. Issue found in fd-styles v 0.33.2. 
+      The problematic style is:
+          .fd-icon-tab-bar__tab:focus { z-index: 5; }
+      This alone does not cause the issue but in combination with the fact that the link of the item has padding that stretches
+      over the button. But the z-index seems to be the main issue.
+     */
+    .fd-icon-tab-bar__item.fd-icon-tab-bar__item--multi-click a.fd-icon-tab-bar__tab:focus {
+      z-index: initial;
+    }
   }
 
   .luigi-tabsMoreButton {
@@ -412,66 +638,69 @@
         padding-top: 4px;
         padding-bottom: 4px;
 
-        .fd-nested-list__item:last-child {
-          .fd-nested-list__content {
-            border-bottom: none;
+        .fd-nested-list__item {
+          &:last-child {
+            .fd-nested-list__content {
+              border-bottom: none;
+            }
+          }
+
+          :global(.hide_element) {
+            display: none;
           }
         }
-      }
-    }
-    :global(&.hide_element) {
-      display: none;
-    }
-
-    .fd-nested-list__item {
-      :global(&.hide_element) {
-        display: none;
-      }
-    }
-    .fd-tabs__link {
-      padding-right: 0;
-
-      &.has-child {
-        .luigi-icon--dropdown {
-          right: 0;
+        .fd-nested-list__title {
+          display: inline-block;
+          height: auto;
         }
       }
+    }
+
+    :global(.hide_element) {
+      display: none;
     }
   }
 
-  .fd-tabs {
-    flex-wrap: nowrap;
-    align-items: stretch;
-    @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.05));
-    border: none;
-    position: absolute;
+  .lui-breadcrumb .luigi-tabsContainerHeader .fd-popover__body {
+    max-height: calc(
+      100vh -
+        calc(
+          var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
+            var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+        )
+    );
+    overflow-y: auto;
+  }
+
+  .luigi-tabsContainerHeader .fd-popover__body {
+    max-height: calc(
+      100vh -
+        calc(
+          var(--luigi__shellbar--height) +
+            var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+        )
+    );
+    overflow-y: auto;
+  }
+
+  :global(.fd-tool-layout .lui-main-content) {
+    #tabsContainer {
+      left: 0;
+    }
+  }
+
+  #tabsContainer {
     right: 0;
     left: var(--luigi__left-sidenav--width);
+    border: none;
+    position: absolute;
 
     @media (max-width: 599px) {
       left: 0;
     }
 
-    &__item {
-      white-space: nowrap;
-      display: inline-block;
-
-      :global(&.hide_element) {
-        display: none;
-      }
-    }
-
-    &__link {
-      &.has-child {
-        .label {
-          padding-right: 17px;
-        }
-        .luigi-icon--dropdown {
-          position: absolute;
-          top: 0.4em;
-          right: 14px;
-        }
-      }
+    :global(.hide_element) {
+      display: none;
     }
   }
 </style>

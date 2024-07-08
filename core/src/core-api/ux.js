@@ -166,6 +166,28 @@ class LuigiUX {
   removeBackdrop() {
     new linkManager().sendPostMessageToLuigiCore({ msg: 'luigi.remove-backdrop' });
   }
+
+  /**
+   * Returns the dirty status, which is set by the Client via [setDirtyStatus](luigi-client-api.md#setdirtystatus). By default, the dirty status is `false`.
+   * @memberof UX
+   * @returns {boolean}
+   * @since 2.1.0
+   */
+  getDirtyStatus() {
+    return Luigi.getDirtyStatus();
+  }
+
+  /**
+   * Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
+   * @memberof UX
+   * @returns {string} theme id
+   * @since 2.14.0
+   * @example
+   * Luigi.ux().getCurrentTheme()
+   */
+  getCurrentTheme() {
+    return Luigi.theming().getCurrentTheme();
+  }
 }
 
 export const ux = new LuigiUX();

@@ -26,6 +26,7 @@ This document shows you how to configure the following Luigi features:
 * [Product switcher](#product-switcher) 
 * [App switcher](#app-switcher) 
 * [Tab navigation](#tab-navigation)
+* [Breadcrumbs](#breadcrumbs)
 * [Additional options](#additional-options)
 
 ## View groups
@@ -301,7 +302,7 @@ The purpose of contexts is to send objects to the micro frontend. You can do thi
 
 ## Profile
 
-![Profile](assets/profile.jpg)
+![Profile](/assets/profile.jpg)
 
 The profile is a drop-down list in the top navigation that allows you to override the logout item content if authorization is already configured. You can also add links to Luigi navigation nodes.
 
@@ -320,13 +321,13 @@ profile: {
 ```
 
 
-## Context switcher
+## Context switcher
 
-![Context switcher](assets/context-switcher.jpg)
+![Context switcher](/assets/context-switcher.jpg)
 
 The context switcher is a drop-down element in the top navigation. It allows you to switch between a curated list of navigation elements such as Environments. To do so, add the **contextSwitcher** property to the navigation object. Find all the parameters you can use to configure it [here](navigation-parameters-reference.md#context-switcher).
 
- Example:
+Example:
 
 ```javascript
 contextSwitcher: {
@@ -354,9 +355,9 @@ contextSwitcher: {
 },
 ```
 
-## Product switcher
+## Product switcher
 
-![Product switcher](assets/product-switcher.jpg)
+![Product switcher](/assets/product-switcher.jpg)
 
 The product switcher is window in top the navigation which allows you to switch between navigation elements displayed there. To add it to your application, include the **productSwitcher** property in your **navigation** object. You may also add any of the parameters listed [here](navigation-parameters-reference.md#product-switcher).
 
@@ -386,9 +387,9 @@ productSwitcher: {
 },
 ```
 
-## App switcher
+## App switcher
 
-![App switcher](assets/app-switcher.jpg)
+![App switcher](/assets/app-switcher.jpg)
 
 The app switcher is a dropdown at the top of the navigation which allows you to switch between applications. To use it, you need to:
 1. Define a [header object](general-settings.md#headerlogo) in the `settings:` section of your Luigi configuration.
@@ -418,14 +419,17 @@ appSwitcher = {
 
 ## Tab navigation
 
-![Tab navigation](assets/tabnav.jpg)
+![Tab navigation](/assets/tabnav.jpg)
 
 Tab-style navigation in Luigi can be displayed directly above the micro frontend area, providing you with additional menu options. When you put tab navigation nodes into a [category](navigation-configuration.md#category), they will be rendered in a drop-down. Add this parameter to your configuration to create tab navigation nodes:
 
 ### tabNav
 - **type**: boolean or Object
-- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes you will get a drop-down menu in the horizontal navigation.
-In the case the node has only one child, it's possible to configure if the horizontal navigation bar will be hidden automatically or not. To do so, the `tabNav` property must be an object with the property `{hideTabNavAutomatically:true|false}`.
+- **description**: renders the children of the node as a horizontal navigation bar. Sub-children are not supported. When you categorize nodes, you will get a drop-down menu in the horizontal navigation. Set to `true` to show the horizontal navigation, or use the extra attributes for more customization. (**since**: v0.7.0)
+- **attributes**:
+  - **hideTabNavAutomatically**: boolean. In the case the node has only one child, it's possible to configure whether the horizontal navigation bar will be hidden automatically or not. Set this attribute to `true` to hide the horizontal navigation bar and `false` otherwise. ( **since**: v2.0.0 )
+  - **showAsTabHeader**: boolean. If this attribute is set on the node, it will be considered as a horizontal navigation header micro frontend. The node should be [webcomponent-based](web-component.md) and it should have nested children to show on the horizontal navigation bar. (**since**: 2.2.0 )
+
 - **example**:
 ```js
 // Without hiding tab nav automatically 
@@ -435,14 +439,135 @@ In the case the node has only one child, it's possible to configure if the horiz
  children: [
   ...
                 
-//With hiding tab nav automatically if node has only one child              
+// With hiding tab nav automatically if node has only one child               
   pathSegment: 'example',
   label: 'Example',
   tabNav: { hideTabNavAutomatically: true },
   children: [
   ...
+
+  // showing horizontal navigation header micro frontend       
+  pathSegment: 'header',
+  label: 'Header Micro frontend',
+  viewUrl: '/tabHeader.js'
+  webcomponent: true,
+  tabNav: { showAsTabHeader : true },
+  children: [
+  ...
 ```
 
+## Breadcrumbs
+
+
+
+Luigi allows you to add [breadcrumbs](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Breadcrumb_Navigation) to your application. You need to create your own custom code implementing breadcrumbs. Once the breadcrumbs config is set, it is enabled by default for all nodes. If you wish to disable it for a particular node, you need to set [showBreadcrumbs](navigation-parameters-reference.md#showbreadcrumbs) to false for that node.  
+
+In your custom code, you can choose any look and style for the breadcrumbs as well as define what should happen upon clicking them. However, the code should follow this general pattern and return the variable `breadcrumbs`: 
+
+```js
+ navigation.breadcrumbs = {
+            pendingItemLabel: "not loaded yet", // string used as fallback if node label is not yet resolved
+            omitRoot: false,  // if set to true, the root node in breadcrumb hierarchy is omitted 
+            clearBeforeRender: true, // if set to true, the containerElement will be cleared first, before being rendered. If set to false, handling of the clear before render needs to be handled by your side 
+            autoHide: true, // hide breadcrumbs when navigating to root node
+            renderer: (containerElement, nodeItems, clickHandler)  => {
+                  // containerElement - refers to HTML element that contains the breadcrumb structure to which you can append your own customised elements
+                  // nodeItems : [{
+                       label: label of node,
+                       node: navigation node,
+                       route: node route,
+                       pending: indicates whether node label resolving state is pending or not
+                  }]
+                  // clickHandler(node) , can be called per node, to navigate to that node
+            }
+      }
+```
+
+Below is an example of a simple `breadcrumbsConfig`:
+
+<!-- accordion:start -->
+
+### Click to expand
+
+```js
+navigation.breadcrumbs = {
+      clearBeforeRender: true,
+      renderer: (el, items, clickHandler) => {
+        el.classList.add('myBreadcrumb');
+        let breadcrumbs = document.createElement('ol');
+        breadcrumbs.setAttribute('style', 'top: 0;position: absolute;left: 0;');
+        items.forEach((item, index) => {
+          if (item.label) {
+            let itemCmp = document.createElement('li');
+            itemCmp.setAttribute('style', 'display:inline; margin: 0 10px;');
+            itemCmp.setAttribute('data-testid', `breadcrumb_${item.label}_index${index}`);
+            itemCmp.innerHTML = item.label;
+            itemCmp._item = item;
+            breadcrumbs.appendChild(itemCmp);
+          }
+        });
+        breadcrumbs.addEventListener('click', event => {
+          console.log('event detail', event);
+          event.preventDefault();
+          clickHandler(event.detail.item._item);
+        });
+        el.appendChild(breadcrumbs);
+        return breadcrumbs;
+      }
+    };
+```
+<!-- accordion:end -->
+
+Below is another example which uses UI5 Web Components breadcrumbs: 
+
+<!-- accordion:start -->
+
+### Click to expand
+
+```js
+config.navigation.breadcrumbs = {
+            autoHide: true,
+            omitRoot: false,
+            pendingItemLabel: '...',
+            renderer: (el, items, clickHandler) => {
+              el.classList.add('dxp-breadcrumb');
+              const ui5breadcrumbs =
+                el.querySelector('ui5-breadcrumbs') ||
+                document.createElement('ui5-breadcrumbs');
+              ui5breadcrumbs.innerHTML = '';
+              items.forEach((item, index) => {
+                const label = item.label;
+                
+                if (label && !label.startsWith(':virtualSegment_')) {
+                  const itemCmp = document.createElement(
+                    'ui5-breadcrumbs-item'
+                  );
+                  itemCmp.setAttribute('href', item.route);
+                  itemCmp.innerHTML = label;
+                  itemCmp._item = item;
+                  ui5breadcrumbs.appendChild(itemCmp);
+                }
+              });
+              ui5breadcrumbs.addEventListener('item-click', (event) => {
+                if (
+                  !(
+                    event.detail.ctrlKey ||
+                    event.detail.altKey ||
+                    event.detail.shiftKey ||
+                    event.detail.metaKey
+                  )
+                ) {
+                  event.preventDefault();
+                  clickHandler(event.detail.item._item);
+                }
+              });
+              el.appendChild(ui5breadcrumbs);
+
+              return ui5breadcrumbs;
+            },
+          };
+```
+<!-- accordion:end -->
 
 ## Additional options
 

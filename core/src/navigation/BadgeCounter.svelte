@@ -7,20 +7,20 @@
     {#if count > 0}
       <span
         class="fd-counter fd-counter--notification fd-shellbar__counter--notification"
-        aria-label={node.badgeCounter.label}>{count}</span
-      >
+        aria-label={node.badgeCounter.label}
+      >{count}</span>
     {/if}
   {/await}
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   :global(.fd-shellbar__action) {
     .fd-shellbar__counter--notification {
       top: 0;
       color: var(--sapContent_BadgeTextColor, #fff);
     }
 
-    .fd-menu .fd-top-nav__icon {
+    :global(.fd-menu .fd-top-nav__icon) {
       position: relative;
       margin-right: 8px;
       min-width: 16px;
@@ -33,8 +33,8 @@
       }
     }
 
-    .fd-product-switch__body--mobile {
-      .lui-product-switch__icon {
+    :global(.fd-product-switch__body--mobile) {
+      :global(.lui-product-switch__icon) {
         position: relative;
 
         .fd-shellbar__counter--notification {
@@ -45,7 +45,8 @@
     }
   }
 
-  :global(.fd-nested-list__link) {
+  :global(.fd-nested-list__link),
+  :global(.fd-navigation__link) {
     .fd-counter--notification {
       transform: translate(0px, 0px) !important;
       margin-left: auto;

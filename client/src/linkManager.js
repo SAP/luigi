@@ -44,8 +44,10 @@ export class linkManager extends LuigiClientBase {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
@@ -159,29 +161,54 @@ export class linkManager extends LuigiClientBase {
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
+   * @returns {promise} which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
    * @example
-   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'}).then((res) => {
+   *     // Logic to execute when the modal will be closed
+   *     console.log(res.data) //=> {foo: 'bar'}
+   *  });
    */
   openAsModal(path, modalSettings = {}) {
+    helpers.addEventListener('luigi.navigation.modal.close', (e, listenerId) => {
+      const promise = this.getPromise('modal');
+      if (promise) {
+        promise.resolveFn(e.data);
+        this.setPromise('modal', undefined);
+      }
+      helpers.removeEventListener(listenerId);
+    });
+    const modalPromise = {};
+    modalPromise.promise = new Promise((resolve, reject) => {
+      modalPromise.resolveFn = resolve;
+      modalPromise.rejectFn = reject;
+    });
+    this.setPromise('modal', modalPromise);
     this.navigate(path, 0, true, modalSettings);
+    return modalPromise.promise;
   }
 
   /**
-   * Update current title and size of a modal.
+   * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
+   * In addition, you can specify if a new history entry will be created with the updated URL.
    * @memberof linkManager
    * @param {Object} updatedModalSettings possibility to update the active modal.
    * @param {Object} updatedModalSettings.title update the `title` of the active modal.
    * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @param {string} updatedModalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} updatedModalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} addHistoryEntry adds an entry in the history, by default it's `false`.
    * @example
    * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
    */
-  updateModalSettings(updatedModalSettings = {}) {
+  updateModalSettings(updatedModalSettings = {}, addHistoryEntry = false) {
     const message = {
       msg: 'luigi.navigation.updateModalSettings',
-      updatedModalSettings
+      updatedModalSettings,
+      addHistoryEntry
     };
     helpers.sendPostMessageToLuigiCore(message);
   }
@@ -252,8 +279,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext() {
-    const hasParentNavigationContext =
-      this.currentContext && this.currentContext.context.parentNavigationContexts.length > 0;
+    const hasParentNavigationContext = this.currentContext?.context.parentNavigationContexts.length > 0;
     if (hasParentNavigationContext) {
       this.options.fromContext = null;
       this.options.fromClosestContext = true;

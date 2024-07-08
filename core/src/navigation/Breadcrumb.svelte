@@ -1,11 +1,7 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiConfig, LuigiI18N } from '../core-api';
-  import {
-    NavigationHelpers,
-    RoutingHelpers,
-    StateHelpers
-  } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import { Navigation } from './services/navigation';
 
@@ -20,8 +16,6 @@
   let store = getContext('store');
 
   export let showBreadcrumb;
-  export let hideNavComponent;
-  export let responsiveNavSetting;
   let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
 
   const setNavData = async () => {
@@ -84,8 +78,7 @@
               if (node.titleResolver) {
                 items.push({
                   label:
-                    node.titleResolver.prerenderFallback &&
-                    node.titleResolver.fallbackTitle
+                    node.titleResolver.prerenderFallback && node.titleResolver.fallbackTitle
                       ? LuigiI18N.getTranslation(node.titleResolver.fallbackTitle)
                       : breadcrumbConfig.pendingItemLabel || '',
                   node: node,
@@ -184,8 +177,7 @@
 
 <div class="lui-breadcrumb-container" bind:this={breadcrumbContainer} />
 
-<style type="text/scss">
-  @import 'styles/variables';
+<style lang="scss">
   .lui-breadcrumb-container {
     position: absolute;
     right: 0;
@@ -193,6 +185,15 @@
     height: var(--luigi__breadcrumb--height);
     left: 0;
     display: none;
+  }
+
+  :global(.fd-tool-layout) .lui-breadcrumb-container.lui-breadcrumb-container {
+    background: transparent;
+    box-shadow: none;
+    top: 0;
+    left: unset;
+    right: unset;
+    width: 100%;
   }
 
   :global(.lui-breadcrumb) .lui-breadcrumb-container {

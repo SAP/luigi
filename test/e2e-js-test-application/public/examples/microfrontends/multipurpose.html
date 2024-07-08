@@ -33,10 +33,14 @@
       #textCnt.visible {
         visibility: visible;
       }
+
+      .transferVars {
+        color: var(--sapTextColor);
+      }
     </style>
   </head>
 
-  <body style="-webkit-font-smoothing: antialiased; color: #515559;">
+  <body style="-webkit-font-smoothing: antialiased;">
     <div id="routeCnt"></div>
     <div id="imgCnt"></div>
     <div id="textCnt">
@@ -44,6 +48,20 @@
       <p id="content">Some content</p>
       <button id="anothermfBtn" class="goToAnotherMf" onclick="goToAnotherMf()">
         open US
+      </button>
+      <button id="vgDataUpdate" onclick="vgDataUpdate()">Set view group data</button>
+      <button class="transferVars" onclick="applyCSS()">ApplyCSS</button>
+      <button
+        class="updateModalSettingsBtn"
+        onclick="LuigiClient.linkManager().updateModalSettings({ 'title': 'test' });"
+      >
+        updateModalSettings
+      </button>
+      <button
+        class="openSplitView"
+        onclick="LuigiClient.linkManager().openAsSplitView('/home/one');"
+      >
+        Open <code>/home/one</code> as split view
       </button>
     </div>
 
@@ -94,6 +112,12 @@
         }
         document.getElementById('textCnt').classList.add('visible');
       }
+      function vgDataUpdate() {
+        LuigiClient.setViewGroupData({
+          foo: 'Luigi rocks',
+          bar: '(' + Math.round(Math.random() * 100) + ')'
+        });
+      }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
 
@@ -101,6 +125,10 @@
       setTimeout(function() {
         document.getElementById('textCnt').classList.add('visible');
       }, 3000);
+
+      function applyCSS() {
+        LuigiClient.uxManager().applyCSS();
+      }
     </script>
   </body>
 </html>

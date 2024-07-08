@@ -84,8 +84,10 @@ class SplitViewSvcClass {
       WebComponentService.renderWebComponent(
         lastNode.viewUrl,
         document.querySelector('.iframeSplitViewCnt'),
-        pathData.context,
-        lastNode
+        { context: pathData.context },
+        lastNode,
+        undefined,
+        true
       );
       const wcInfo = {
         splitViewWC: document.querySelector('.iframeSplitViewCnt'),
@@ -168,7 +170,7 @@ class SplitViewSvcClass {
   calculateAndSetSplitViewValues(percentBottom, values) {
     const newBottom =
       parseInt(GenericHelpers.computePxFromPercent(values.rightContentHeight, 100 - percentBottom)) +
-      LuigiElements.getShellbar().clientHeight;
+      IframeHelpers.getIframeContainer().getBoundingClientRect().top;
 
     this.splitViewValues = this.enforceTresholds(newBottom, values.innerHeight - newBottom, values);
   }
@@ -217,18 +219,21 @@ class SplitViewSvcClass {
         .getUnsavedChangesModalPromise(
           comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
-        .then(() => {
-          if (comp.get().mfSplitView) {
-            comp.get().mfSplitView.displayed = false;
-            comp.get().mfSplitView.collapsed = false;
-            comp.set({ mfSplitView: comp.get().mfSplitView });
-          }
-          comp.dispatch('statusChanged', {
-            displayed: false
-          });
-          IframeHelpers.getIframeContainer().style.marginBottom = '';
-          SplitViewSvc.sendMessageToClients('close.ok');
-        });
+        .then(
+          () => {
+            if (comp.get().mfSplitView) {
+              comp.get().mfSplitView.displayed = false;
+              comp.get().mfSplitView.collapsed = false;
+              comp.set({ mfSplitView: comp.get().mfSplitView });
+            }
+            comp.dispatch('statusChanged', {
+              displayed: false
+            });
+            IframeHelpers.getIframeContainer().style.marginBottom = '';
+            SplitViewSvc.sendMessageToClients('close.ok');
+          },
+          () => {}
+        );
     } else if (comp.get().mfSplitView.displayed) {
       comp.get().mfSplitView.displayed = false;
       comp.set({ mfSplitView: comp.get().mfSplitView });
@@ -261,20 +266,23 @@ class SplitViewSvcClass {
         .getUnsavedChangesModalPromise(
           comp.get().splitViewWC ? comp.get().splitViewWC : comp.get().splitViewIframe.contentWindow
         )
-        .then(() => {
-          this.sendMessageToClients('internal', {
-            exists: true,
-            size: this.splitViewValues.percent,
-            collapsed: true
-          });
-          this.sendMessageToClients('collapse.ok');
-          comp.dispatch('statusChanged', {
-            displayed: true,
-            collapsed: true
-          });
-          this.getContainer().style.top = '';
-          IframeHelpers.getIframeContainer().style.marginBottom = '';
-        });
+        .then(
+          () => {
+            this.sendMessageToClients('internal', {
+              exists: true,
+              size: this.splitViewValues.percent,
+              collapsed: true
+            });
+            this.sendMessageToClients('collapse.ok');
+            comp.dispatch('statusChanged', {
+              displayed: true,
+              collapsed: true
+            });
+            this.getContainer().style.top = '';
+            IframeHelpers.getIframeContainer().style.marginBottom = '';
+          },
+          () => {}
+        );
     }
   }
 

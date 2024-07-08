@@ -1,11 +1,11 @@
+import { Navigation } from '../../src/navigation/services/navigation';
+import { RoutingHelpers, GenericHelpers, NavigationHelpers } from '../../src/utilities/helpers';
+import { NodeDataManagementStorage } from '../../src/services/node-data-management';
+import { LuigiConfig } from '../../src/core-api';
 const chai = require('chai');
 const expect = chai.expect;
 const assert = chai.assert;
 const sinon = require('sinon');
-import { Navigation } from '../../src/navigation/services/navigation';
-import { RoutingHelpers, GenericHelpers } from '../../src/utilities/helpers';
-import { NodeDataManagementStorage } from '../../src/services/node-data-management';
-import { LuigiConfig } from '../../src/core-api';
 
 const sampleNavPromise = new Promise(function(resolve) {
   const lazyLoadedChildrenNodesProviderFn = () => {
@@ -54,9 +54,9 @@ const sampleNavPromise = new Promise(function(resolve) {
 });
 
 describe('Navigation', function() {
-  this.retries(2);
+  jest.retryTimes(2);
 
-  before(() => {
+  beforeAll(() => {
     function mockStorage() {
       return {
         getItem: function(key) {
@@ -67,7 +67,7 @@ describe('Navigation', function() {
       };
     }
 
-    global['localStorage'] = mockStorage();
+    global.localStorage = mockStorage();
   });
   beforeEach(() => {
     Navigation._rootNodeProviderUsed = undefined;
@@ -130,8 +130,45 @@ describe('Navigation', function() {
         'Nav path expected to have a variable from activated node "a1" in the context'
       );
     });
+    it('should have globalContext inherited', async () => {
+      window.Luigi._store = {
+        fire: () => {}
+      };
+      LuigiConfig.config = {
+        navigation: {
+          globalContext: {
+            staticGlobalVar: true
+          }
+        }
+      };
+      let navPath = await Navigation.getNavigationPath(sampleNavPromise, 'aaa/a1');
+      assert.propertyVal(
+        navPath.context,
+        'varA',
+        'tets',
+        'Nav path expected to have a variable from activated node "aaa" in the context'
+      );
+      assert.propertyVal(
+        navPath.context,
+        'varA1',
+        'maskopatol',
+        'Nav path expected to have a variable from activated node "a1" in the context'
+      );
+      assert.equal(navPath.context.staticGlobalVar, true, 'staticGlobalVar expected to be true');
+      assert.equal(navPath.context.globalVar, undefined, 'globalVar expected to be undefined');
+      assert.equal(
+        LuigiConfig.getGlobalContext().staticGlobalVar,
+        true,
+        'globalContext expected to be initialized correctly'
+      );
+
+      // set global ctx
+      LuigiConfig.setGlobalContext({ globalVar: 'Rocky 1860' });
+      navPath = await Navigation.getNavigationPath(sampleNavPromise, 'aaa/a1');
+      assert.equal(navPath.context.staticGlobalVar, undefined, 'staticGlobalVar expected to be undefined');
+      assert.equal(navPath.context.globalVar, 'Rocky 1860', 'globalVar expected to be set');
+    });
     it('should load lazy-loaded children nodes only on activation', async () => {
-      expect(NodeDataManagementStorage.hasChildren(activatedNodeWithLazyLoadedChildren)).to.be.false;
       const navPath = await Navigation.getNavigationPath(sampleNavPromise, 'bbb');
       assert.equal(navPath.navigationPath.length, 2, '2 nodes active : root node + "bbb" node');
       const activatedNodeWithLazyLoadedChildren = navPath.navigationPath[1];
@@ -187,7 +224,7 @@ describe('Navigation', function() {
       expect(children).to.deep.equal(nodeWithChildrenProvider.children());
     });
     it('uses navigationPermissionChecker and returns correct amount of children', async () => {
-      //given
+      // given
       LuigiConfig.config = {
         navigation: {
           nodeAccessibilityResolver: (nodeToCheckPermissionFor, currentNode, currentContext) => {
@@ -256,7 +293,7 @@ describe('Navigation', function() {
   });
 
   describe('buildNode', () => {
-    //need to add more cases
+    // need to add more cases
     const nodeNamesInCurrentPath = 'projects';
     const nodesInCurrentPath = [
       {
@@ -412,7 +449,7 @@ describe('Navigation', function() {
   describe('getNodes', () => {
     let children;
     let pathData;
-    before(() => {
+    beforeAll(() => {
       children = [];
       pathData = [];
     });
@@ -487,7 +524,7 @@ describe('Navigation', function() {
   describe('getGroupedChildren', () => {
     let children;
     let current;
-    before(() => {
+    beforeAll(() => {
       children = [];
       current = [];
     });
@@ -525,7 +562,7 @@ describe('Navigation', function() {
 
       await Navigation.getChildren(current.pathData[1], {
         children: current.pathData[1].children
-      }); //store in cache
+      }); // store in cache
       const result = Navigation.getGroupedChildren(children, current).children;
       expect(result.___0[0].pathSegment).to.be.equal('category');
     });
@@ -583,7 +620,7 @@ describe('Navigation', function() {
   });
   describe('getTruncatedChildren', () => {
     let children;
-    before(() => {
+    beforeAll(() => {
       children = [];
     });
     afterEach(() => {
@@ -984,6 +1021,56 @@ describe('Navigation', function() {
       Navigation.buildVirtualTree(mockNode, mockNodeNames, pathParams);
 
       assert.deepEqual(expected, mockNode);
+    });
+  });
+
+  describe('expandCategoriesByNavigationFn', () => {
+    let sortedChildren;
+    beforeEach(() => {
+      sinon.stub(NavigationHelpers, 'storeExpandedState');
+      sortedChildren = {
+        test: [
+          {
+            category: { label: 'test', collapsible: true },
+            label: 'mf1',
+            pathSegment: 'mf1',
+            viewUrl: '/microfrontend.html'
+          },
+          {
+            category: 'test',
+            label: 'mf2',
+            pathSegment: 'mf2',
+            viewUrl: '/microfrontend.html'
+          },
+          {
+            label: 'mf3',
+            pathSegment: 'mf3',
+            viewUrl: '/microfrontend.html'
+          }
+        ]
+      };
+    });
+    afterEach(() => {
+      sinon.restore();
+    });
+    it('expandCategoriesByNavigationFn will be called', () => {
+      sortedChildren.test['metaInfo'] = {
+        categoryUid: 'simple:test',
+        collapsible: true,
+        label: 'test',
+        order: 0
+      };
+      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[1], false);
+      sinon.assert.called(NavigationHelpers.storeExpandedState);
+    });
+    it('expandCategoriesByNavigationFn not called', () => {
+      sortedChildren.test['metaInfo'] = {
+        label: '___2',
+        _fromString: true,
+        order: 2
+      };
+      Navigation.expandCategoriesByNavigationFn(sortedChildren, sortedChildren.test[2], false);
+      sinon.assert.notCalled(NavigationHelpers.storeExpandedState);
     });
   });
 });

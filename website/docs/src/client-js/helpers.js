@@ -1,1 +1,0 @@
-export const isSearchBot = /docsearch|algolia|bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);

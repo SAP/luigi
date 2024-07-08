@@ -151,7 +151,7 @@ class LifecycleManager extends LuigiClientBase {
     }
     if (luigiCookie === 'luigiCookie=true') {
       luigiCookieKey = luigiCookie.split('=')[0];
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     }
     document.cookie = 'luigiCookie=true; SameSite=None; Secure';
     cookies = document.cookie;
@@ -163,7 +163,7 @@ class LifecycleManager extends LuigiClientBase {
     }
     if (luigiCookie === 'luigiCookie=true') {
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
-      document.cookie = luigiCookieKey + '=; Max-Age=-99999999;';
+      document.cookie = luigiCookieKey + '=; Max-Age=-99999999; SameSite=None; Secure';
     } else {
       tpc = 'disabled';
       window.parent.postMessage({ msg: 'luigi.third-party-cookie', tpc }, '*');
@@ -557,6 +557,20 @@ class LifecycleManager extends LuigiClientBase {
     helpers.sendPostMessageToLuigiCore({
       msg: 'luigi.setAnchor',
       anchor
+    });
+  }
+
+  /**
+   * This function allows you to change node labels within the same {@link navigation-advanced.md#view-groups view group}, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+   * @since 2.2.0
+   * @param {Object} data a data object containing the view group name and desired label
+   * @memberof Lifecycle
+   * @example LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
+   */
+  setViewGroupData(data) {
+    helpers.sendPostMessageToLuigiCore({
+      msg: 'luigi.setVGData',
+      data
     });
   }
 }

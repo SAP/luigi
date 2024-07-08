@@ -1,10 +1,5 @@
 <script>
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext,
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
 
   const dispatch = createEventDispatcher();
 
@@ -15,12 +10,10 @@
     info: 'information',
     success: 'success',
     warning: 'warning',
-    error: 'error',
+    error: 'error'
   };
   let alertElement;
-  const getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  const getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   const handleNavigation = getContext('handleNavigation');
 
   beforeUpdate(() => {
@@ -33,17 +26,13 @@
       return;
     }
 
-    const processedAlerts = alertQueue.map((alert) => {
+    const processedAlerts = alertQueue.map(alert => {
       const { text, links, closeAfter } = alert.settings;
-      const processedData = EscapingHelpers.processTextAndLinks(
-        text,
-        links,
-        alert.settings.id
-      );
+      const processedData = EscapingHelpers.processTextAndLinks(text, links, alert.settings.id);
 
       setTimeout(() => {
         // this needs to be done after links are rendered
-        processedData.links.forEach((link) => {
+        processedData.links.forEach(link => {
           addClickListener(link, alert.settings.id);
         });
       });
@@ -58,13 +47,13 @@
               console.debug('Alert already dismissed: ', el);
             }
           },
-          element: el,
+          element: el
         });
       }
 
       return {
         settings: { ...alert.settings, text: processedData.sanitizedText },
-        dataSanitized: true,
+        dataSanitized: true
       };
     });
     processedAlerts.processed = true;
@@ -80,23 +69,26 @@
       if (linkElem.dismissListener) {
         linkElem.removeEventListener('click', linkElem.dismissListener);
       }
-      const listener = (event) => {
+      const listener = event => {
         if (link.url) {
           const isRelative = !link.url.startsWith('/');
           event.stopPropagation();
-          getUnsavedChangesModalPromise().then(() => {
-            const data = {
-              params: {
-                link: link.url,
-                relative: isRelative,
-              },
-            };
-            handleNavigation(data);
-          });
+          getUnsavedChangesModalPromise().then(
+            () => {
+              const data = {
+                params: {
+                  link: link.url,
+                  relative: isRelative
+                }
+              };
+              handleNavigation(data);
+            },
+            () => {}
+          );
         } else if (link.dismissKey) {
           dispatch('alertDismiss', {
             id: alertId,
-            dismissKey: link.dismissKey,
+            dismissKey: link.dismissKey
           });
         }
       };
@@ -108,16 +100,10 @@
   }
 </script>
 
-<div
-  class="fd-shell__overlay luigi-alert--overlay"
-  aria-hidden="false"
-  bind:this={alertElement}
->
+<div class="fd-shell__overlay luigi-alert--overlay" aria-hidden="false" bind:this={alertElement}>
   {#each alertQueue as al}
     <div
-      class="fd-message-strip fd-message-strip--{alertTypeMap[
-        al.settings.type
-      ]} fd-message-strip--dismissible"
+      class="fd-message-strip fd-message-strip--{alertTypeMap[al.settings.type]} fd-message-strip--dismissible"
       role="alert"
       id="j2ALl423"
       data-testid="luigi-alert"
@@ -138,7 +124,7 @@
   {/each}
 </div>
 
-<style type="text/scss">
+<style lang="scss">
   .luigi-alert--overlay {
     position: absolute;
     z-index: 1100;
@@ -146,7 +132,7 @@
     left: 50%;
     -webkit-transform: translate(-50%);
     transform: translate(-50%);
-    margin-top: 28px;
+    margin-top: calc(var(--luigi__shellbar--height) - 0.625rem);
     .fd-message-strip:not(:first-child) {
       margin-top: 8px;
     }

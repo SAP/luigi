@@ -7,7 +7,6 @@
 
   export let label;
   export let nodes;
-  export let getTestId;
   export let hasOpenUIicon;
   export let getNodeLabel;
   export let getNodeSubtitle;
@@ -24,6 +23,7 @@
   }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="fd-dialog fd-dialog--active" on:click|stopPropagation={() => {}}>
   <div
     class="fd-dialog__content fd-dialog__content--mobile"
@@ -34,9 +34,7 @@
     <div class="fd-dialog__header fd-bar fd-bar--header">
       <div class="fd-bar__left">
         <div class="fd-bar__element">
-          <h2 class="fd-title fd-title--h5" id="dialog-title-4">
-            {label}
-          </h2>
+          <h2 class="fd-title fd-title--h5" id="dialog-title-4">{label}</h2>
         </div>
       </div>
     </div>
@@ -45,40 +43,27 @@
         <ul class="fd-product-switch__list">
           {#if nodes}
             {#each nodes as node}
-              <li
-                class="fd-product-switch__item {noSubTitle == 'true'
-                  ? 'y-has-no-subtitle'
-                  : ''} {node.selected ? 'selected' : ''}"
-                on:click={() => onActionClick(node)}
-                data-e2e="mobile-topnav-item"
-                data-testid={getTestId(node)}
-              >
-                <div class="lui-product-switch__icon">
-                  {#if hasOpenUIicon(node)}
-                    <i
-                      class="sap-icon {node.icon && hasOpenUIicon(node)
-                        ? getSapIconStr(node.icon)
-                        : ''}"
-                    />
-                  {:else}
-                    <img
-                      src={node.icon}
-                      alt={node.altText ? node.altText : ''}
-                    />
-                  {/if}
-                  <BadgeCounter {node} />
-                </div>
-                <div class="fd-product-switch__text">
-                  <div class="fd-product-switch__title">
-                    {getNodeLabel(node)}
+              {#if node.label}
+                <li
+                  class="fd-product-switch__item {noSubTitle == 'true' ? 'y-has-no-subtitle' : ''} {node.selected ? 'selected' : ''}"
+                  on:click={() => onActionClick(node)}
+                  data-e2e="mobile-topnav-item"
+                  data-testid={NavigationHelpers.getTestId(node)}
+                >
+                  <div class="lui-product-switch__icon">
+                    {#if hasOpenUIicon(node)}
+                      <i class="sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : ''}" />
+                    {:else}<img src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
+                    <BadgeCounter {node} />
                   </div>
-                  {#if getNodeSubtitle(node)}
-                    <div class="fd-product-switch__subtitle">
-                      {getNodeSubtitle(node)}
-                    </div>
-                  {/if}
-                </div>
-              </li>
+                  <div class="fd-product-switch__text">
+                    <div class="fd-product-switch__title">{getNodeLabel(node)}</div>
+                    {#if getNodeSubtitle(node)}
+                      <div class="fd-product-switch__subtitle">{getNodeSubtitle(node)}</div>
+                    {/if}
+                  </div>
+                </li>
+              {/if}
             {/each}
           {/if}
         </ul>
@@ -100,13 +85,7 @@
   </div>
 </div>
 
-<style type="text/scss">
-  /* TODO remove after update to fundamental 0.9 */
-  .fd-product-switch__item.selected .fd-product-switch__title:before,
-  .fd-product-switch__item.selected .fd-product-switch__title:after {
-    content: none !important;
-  }
-
+<style lang="scss">
   @media (max-width: 1023px) {
     .fd-product-switch__body--mobile {
       //required after FD Styles v.14 to align different sizes of icon/images on mobile for product switcher

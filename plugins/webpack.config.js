@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const glob = require('glob');
 const merge = require('lodash.merge');
 
@@ -13,7 +12,6 @@ const config = {
     acc[entry] = path;
     return acc;
   }, {}),
-
   output: {
     filename: './[name]/plugin.js',
     libraryExport: 'default',
@@ -21,7 +19,6 @@ const config = {
     libraryTarget: 'umd',
     path: path.join(path.resolve(__dirname), 'auth', 'public')
   },
-
   module: {
     rules: [
       {
@@ -33,6 +30,9 @@ const config = {
         }
       }
     ]
+  },
+  stats: {
+    errorDetails: true
   }
 };
 

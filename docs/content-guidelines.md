@@ -49,9 +49,9 @@ Documentation on the Luigi website follows the structure below. When adding a ne
 
 ### Examples
 
-- [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
-- [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
-- [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
+- [Angular](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-angular)
+- [Vue](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-vue)
+- [React](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-react)
 
 ## Metadata
 
@@ -122,7 +122,7 @@ For an example, you can look at the already existing functions, in this case [fr
    */
 ```
 
-2. Save and commit your changes. If you have run `npm install` in the root folder (as indicated in the [contributing guidelines](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md)), documentation should be automatically generated and added to the `luigi-core-api.md` or `luigi-client-api.md` file on push to your branch origin. If not, you can run `lerna run docu` manually.
+2. Save and commit your changes. If you have run `npm install` in the root folder (as indicated in the [contributing guidelines](https://github.com/SAP/luigi/blob/main/CONTRIBUTING.md)), documentation should be automatically generated and added to the `luigi-core-api.md` or `luigi-client-api.md` file on push to your branch origin. If not, you can run `npm run --prefix=scripts docu` manually.
 
 
 ## Audience and language

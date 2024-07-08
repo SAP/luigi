@@ -22,6 +22,7 @@ export declare interface ModalSettings {
   size?: 'fullscreen' | 'l' | 'm' | 's';
   width?: string;
   height?: string;
+  closebtn_data_testid?: string;
 }
 
 export declare interface SplitViewSettings {
@@ -245,6 +246,23 @@ export declare interface UxManager {
    * @since 1.26.0
    */
   isDrawer: () => boolean;
+
+  /**
+   * Gets the CSS variables from Luigi Core with their key and value.
+   * @returns {Object} CSS variables with their key and value.
+   * @memberof uxManager
+   * @since 2.3.0
+   * @example LuigiClient.uxManager().getCSSVariables();
+   */
+  getCSSVariables: () => Object;
+
+  /**
+   * Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
+   * @memberof uxManager
+   * @since 2.3.0
+   * @example LuigiClient.uxManager().applyCSS();
+   */
+  applyCSS: () => void;
 }
 
 export declare interface LinkManager {
@@ -313,6 +331,10 @@ export declare interface LinkManager {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
@@ -393,22 +415,33 @@ export declare interface LinkManager {
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
    * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
+   * @returns {promise} which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
    * @example
-   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
+   * LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'}).then((res) => {
+   *     // Logic to execute when the modal will be closed
+   *     console.log(res.data) //=> {foo: 'bar'}
+   *  });
    */
-  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => void;
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => Promise<void>;
 
   /**
-   * Update current title and size of a modal.
+   * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
+   * In addition, you can specify if a new history entry will be created with the updated URL.
    * @memberof linkManager
    * @param {Object} updatedModalSettings possibility to update the active modal.
-   * @param {Object} updatedModalSettings.title update the `title` of the active modal.
-   * @param {Object} updatedModalSettings.size update the `size` of the active modal.
+   * @param {string} updatedModalSettings.title update the `title` of the active modal.
+   * @param {string} updatedModalSettings.size update the `size` of the active modal.
+   * @param {string} updatedModalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} updatedModalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} addHistoryEntry adds an entry in the history, by default it's `false`.
    * @example
    * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
    */
-  updateModalSettings: (updatedModalSettings: Object) => void;
+  updateModalSettings: (updatedModalSettings: Object, addHistoryEntry?: boolean) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
@@ -736,6 +769,16 @@ export type getAnchor = () => String;
  */
 export function setAnchor(anchor: String): void;
 export type setAnchor = (anchor: String) => void;
+
+/**
+ * Allows you to change node labels within the same {@link navigation-advanced.md#view-groups view group}, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+ * @param {Object} value a data object containing the view group name and desired label
+ * @memberof Lifecycle
+ * @example
+ * LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
+ */
+export function setViewGroupData(value: Object): void;
+export type setViewGroupData = (value: Object) => void;
 
 /**
  * Read search query parameters which are sent from Luigi core

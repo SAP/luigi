@@ -1,12 +1,7 @@
 <script>
   import BadgeCounter from './navigation/BadgeCounter.svelte';
   import MobileTopNav from './navigation/MobileTopNavDropDown.svelte';
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext,
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { Routing } from './services/routing';
   import { Navigation } from './navigation/services/navigation';
   import { NavigationHelpers } from './utilities/helpers';
@@ -19,11 +14,9 @@
   export let children;
   export let node;
   let pathParams;
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
-  let addNavHrefForAnchor;
+  export let addNavHrefForAnchor;
   const getNodeSubtitle = () => {};
 
   //TODO refactor
@@ -31,13 +24,13 @@
     return {
       get: () => {
         return {
-          pathParams,
+          pathParams
         };
       },
-      set: (obj) => {
+      set: obj => {
         if (obj) {
         }
-      },
+      }
     };
   };
 
@@ -56,17 +49,17 @@
   // [svelte-upgrade suggestion]
   // review these functions and remove unnecessary 'export' keywords
   export function onActionClick(node) {
-    getUnsavedChangesModalPromise().then(() => {
-      if (node.openNodeInModal) {
-        const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
-        openViewInModal(
-          route,
-          node.openNodeInModal === true ? {} : node.openNodeInModal
-        );
-      } else {
-        Routing.handleRouteClick(node, getComponentWrapper());
-      }
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        if (node.openNodeInModal) {
+          const route = RoutingHelpers.buildRoute(node, `/${node.pathSegment}`);
+          openViewInModal(route, node.openNodeInModal === true ? {} : node.openNodeInModal);
+        } else {
+          Routing.handleRouteClick(node, getComponentWrapper());
+        }
+      },
+      () => {}
+    );
     closeSubNav();
   }
 
@@ -97,12 +90,6 @@
     return LuigiI18N.getTranslation(node.label);
   }
 
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
-  }
-
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
   }
@@ -114,33 +101,30 @@
     <ul class="fd-menu__list fd-menu__list--top fd-menu__list--no-shadow">
       {#if children}
         {#each children as node}
-          <li
-            class="fd-menu__item"
-            on:click={() => onActionClick(node)}
-            data-testid={getTestId(node)}
-          >
-            <a
-              href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
-              on:click={(event) => {
-                NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
-              }}
-              class="fd-menu__link"
+          {#if node.label}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <li
+              class="fd-menu__item"
+              on:click={() => onActionClick(node)}
+              data-testid={NavigationHelpers.getTestId(node)}
             >
-              <span class="fd-top-nav__icon">
-                {#if node.icon && hasOpenUIicon(node)}
-                  <i class="sap-icon {getSapIconStr(node.icon)}" />
-                {:else}
-                  <img
-                    class="sap-icon"
-                    src={node.icon}
-                    alt={node.altText ? node.altText : ''}
-                  />
-                {/if}
-                <BadgeCounter {node} />
-              </span>
-              <span class="fd-menu__title">{getNodeLabel(node)}</span>
-            </a>
-          </li>
+              <a
+                href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
+                on:click={event => {
+                  NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
+                }}
+                class="fd-menu__link"
+              >
+                <span class="fd-top-nav__icon">
+                  {#if node.icon && hasOpenUIicon(node)}
+                    <i class="sap-icon {getSapIconStr(node.icon)}" />
+                  {:else}<img class="sap-icon" src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
+                  <BadgeCounter {node} />
+                </span>
+                <span class="fd-menu__title">{getNodeLabel(node)}</span>
+              </a>
+            </li>
+          {/if}
         {/each}
       {/if}
     </ul>
@@ -155,12 +139,11 @@
     {hasOpenUIicon}
     {getNodeLabel}
     {getNodeSubtitle}
-    {getTestId}
     noSubTitle="true"
   />
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     img {
       max-width: 16px;

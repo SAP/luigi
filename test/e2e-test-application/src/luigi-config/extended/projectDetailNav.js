@@ -168,6 +168,7 @@ export const projectDetailNavStructure = projectId => [
       count: () => Math.floor(Math.random() * 100)
     },
     context: {
+      test: 'test',
       label: 'VirtualTree - add segments to the url',
       links: false
     },
@@ -197,13 +198,16 @@ export const projectDetailNavStructure = projectId => [
     pathSegment: 'modal-with-callback',
     label: 'Modal with Callback',
     onNodeActivation: () => {
-      Luigi.navigation().openAsModal('/projects/pr2/settings', {
-        title: 'Modal with callback function',
-        size: 'm',
-      },
+      Luigi.navigation().openAsModal(
+        '/projects/pr2/settings',
+        {
+          title: 'Modal with callback function',
+          size: 'm'
+        },
         () => {
           alert('Callback called');
-        })
+        }
+      );
     }
   },
   {
@@ -239,7 +243,10 @@ export const projectDetailNavStructure = projectId => [
             buttonConfirm: 'Yes',
             buttonDismiss: 'No'
           };
-          return Luigi.showConfirmationModal(settings).then(() => true, () => false);
+          return Luigi.showConfirmationModal(settings).then(
+            () => true,
+            () => false
+          );
         }
       }
     ]
@@ -326,6 +333,9 @@ export const projectDetailNavStructure = projectId => [
     statusBadge: {
       label: '',
       type: 'critical'
+    },
+    clientPermissions: {
+      changeCurrentLocale: false
     }
   },
   {
@@ -339,7 +349,15 @@ export const projectDetailNavStructure = projectId => [
       title: 'Hello WebComponent!'
     },
     viewUrl: '/assets/helloWorldWC.js?{i18n.currentLocale}',
-    webcomponent: true
+    webcomponent: true,
+    clientPermissions: {
+      changeCurrentLocale: true,
+      urlParameters: {
+        testParam: {
+          read: true
+        }
+      }
+    }
   },
   {
     pathSegment: 'misc2-isolated',
@@ -461,11 +479,51 @@ export const projectDetailNavStructure = projectId => [
     label: 'Nav Sync',
     icon: 'synchronize',
     navigationContext: 'navSync',
-    children: ['one', 'two', 'three', 'four'].map(seg => ({
-      label: seg,
-      pathSegment: seg,
-      viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
-    }))
+    children: [
+      ...['one', 'two', 'three', 'four'].map(seg => ({
+        label: seg,
+        pathSegment: seg,
+        viewUrl: '/sampleapp.html#/nav-sync-example/' + seg
+      })),
+      {
+        label: 'Flat Dynamic Parameter',
+        pathSegment: 'dynamic-parameter-flat',
+        viewUrl: '/sampleapp.html#/dynamic-parameter-flat',
+        children: [
+          {
+            pathSegment: ':dynamic',
+            label: 'Dynamic Parameter',
+            viewUrl: '/sampleapp.html#/dynamic-parameter-flat/:dynamic'
+          }
+        ]
+      },
+      {
+        label: 'Stacked Dynamic Parameter',
+        pathSegment: 'dynamic-parameter-stacked',
+        viewUrl: '/sampleapp.html#/dynamic-parameter-stacked',
+        children: [
+          {
+            pathSegment: ':dynamic1',
+            label: 'Dynamic Parameter',
+            viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1',
+            children: [
+              {
+                pathSegment: 'child',
+                label: 'Child',
+                viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1/child',
+                children: [
+                  {
+                    pathSegment: ':dynamic2',
+                    label: 'Dynamic Parameter 2',
+                    viewUrl: '/sampleapp.html#/dynamic-parameter-stacked/:dynamic1/child/:dynamic2'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     label: 'Open Github in new tab',
@@ -614,5 +672,41 @@ export const projectDetailNavStructure = projectId => [
         }
       }
     ]
+  },
+  {
+    category: {
+      label: 'Lazy Loading',
+      icon: 'away'
+    },
+    pathSegment: 'lazygrid',
+    label: 'Grid Compound',
+    compound: {
+      lazyLoadingOptions: {
+        enabled: true,
+        temporaryContainerHeight: '600px'
+      },
+      renderer: {
+        use: 'grid',
+        config: {
+          columns: '1fr'
+        }
+      },
+      children: [
+        {
+          id: 'compoundItem1',
+          viewUrl: '/assets/wc_grid_text.js',
+          context: {
+            text: 'Start'
+          }
+        },
+        {
+          id: 'compoundItem2',
+          viewUrl: '/assets/wc_grid_text.js',
+          context: {
+            s: '00:00'
+          }
+        }
+      ]
+    }
   }
 ];

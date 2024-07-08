@@ -1,12 +1,7 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiConfig, LuigiI18N } from '../core-api';
-  import {
-    NavigationHelpers,
-    RoutingHelpers,
-    StateHelpers,
-    GenericHelpers
-  } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers, StateHelpers, GenericHelpers } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
 
@@ -38,10 +33,12 @@
       store,
       () => {
         hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-        responsiveNavSetting = LuigiConfig.getConfigValue(
-          'settings.responsiveNavigation'
-        );
+        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
         showGlobalNav =
+          !(
+            LuigiConfig.getConfigValue('settings.btpToolLayout') &&
+            GenericHelpers.requestExperimentalFeature('btpToolLayout', false)
+          ) &&
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
         document.body.classList.toggle('lui-global-nav-visible', showGlobalNav);
@@ -67,12 +64,6 @@
 
   function getNodeLabel(node) {
     return LuigiI18N.getTranslation(node.label);
-  }
-
-  function getTestId(node) {
-    return node.testId
-      ? node.testId
-      : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 
   function getRouteLink(node) {
@@ -104,20 +95,18 @@
   <div class="lui-globalnav">
     <nav class="fd-side-nav fd-side-nav--condensed">
       <div class="fd-side-nav__main-navigation">
-        {#if children && pathData.length > 0}
+        {#if children && pathData.length >= 0}
           <ul class="fd-nested-list">
             {#each children as node, i}
               {#if node.globalNav === true && !node.separator}
                 <li
-                  class="fd-nested-list__item {node === selectedNode
-                    ? 'is-selected'
-                    : ''}"
-                  data-testid={getTestId(node)}
+                  class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
+                  data-testid={NavigationHelpers.getTestId(node)}
                 >
                   <a
                     href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
                     title={$getTranslation(node.label)}
-                    on:click={(event) => {
+                    on:click={event => {
                       NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                     }}
                     role="button"
@@ -126,11 +115,7 @@
                     <div class="lui-fd-nested-list__content">
                       {#if node.icon}
                         {#if hasOpenUIicon(node)}
-                          <span
-                            class="lui-text fd-top-nav__icon {getSapIconStr(
-                              node.icon
-                            )}"
-                          />
+                          <span class="lui-text fd-top-nav__icon {getSapIconStr(node.icon)}" />
                         {:else}
                           <img
                             class="fd-top-nav__icon nav-icon"
@@ -152,31 +137,20 @@
         {/if}
       </div>
       <div class="fd-side-nav__utility" aria-label="Utility Menu">
-        {#if children && pathData.length > 0}
+        {#if children && pathData.length >= 0}
           <ul class="fd-nested-list">
             {#each children as node, i}
               {#if node.globalNav === 'bottom' && !node.separator}
                 <li
-                  class="fd-nested-list__item {node === selectedNode
-                    ? 'is-selected'
-                    : ''}"
-                  data-testid={getTestId(node)}
+                  class="fd-nested-list__item {node === selectedNode ? 'is-selected' : ''}"
+                  data-testid={NavigationHelpers.getTestId(node)}
                 >
-                  <a
-                    href={addNavHrefForAnchor ? getRouteLink(node) : undefined}
-                    title={$getTranslation(node.label)}
-                  >
-                    <div
-                      class="lui-fd-nested-list__content"
-                      on:click|preventDefault={() => handleClick(node)}
-                    >
+                  <a href={addNavHrefForAnchor ? getRouteLink(node) : undefined} title={$getTranslation(node.label)}>
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <div class="lui-fd-nested-list__content" on:click|preventDefault={() => handleClick(node)}>
                       {#if node.icon}
                         {#if hasOpenUIicon(node)}
-                          <span
-                            class="lui-text fd-top-nav__icon {getSapIconStr(
-                              node.icon
-                            )}"
-                          />
+                          <span class="lui-text fd-top-nav__icon {getSapIconStr(node.icon)}" />
                         {:else}
                           <img
                             class="fd-top-nav__icon nav-icon"
@@ -201,8 +175,7 @@
   </div>
 {/if}
 
-<style type="text/scss">
-  @import 'styles/variables';
+<style lang="scss">
   .lui-globalnav {
     position: fixed;
     width: $globalNavWidth;
@@ -295,7 +268,7 @@
       height: 100%;
       &:focus {
         outline: var(--sapContent_FocusWidth) var(--sapContent_FocusStyle) var(--fdShellbar_Button_Outline_Color);
-        outline-offset: var(--fdButton_Outline_Offset);
+        outline-offset: -0.325rem;
       }
     }
   }

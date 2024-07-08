@@ -177,7 +177,7 @@ Luigi.unload()
 #### readUserSettings
 
 Reads the user settings object.
-You can choose a custom storage to read the user settings by implementing the `userSetting.readUserSettings` function in the settings section of the Luigi configuration.
+You can choose a custom storage to read the user settings by implementing the `userSettings.readUserSettings` function in the settings section of the Luigi configuration.
 By default, the user settings will be read from the **localStorage**
 
 ##### Examples
@@ -242,6 +242,40 @@ Luigi.clearNavigationCache();
 **Meta**
 
 -   **since**: 1.19.0
+
+#### setGlobalContext
+
+Set the global context object and triggers the corresponding update.
+
+##### Parameters
+
+-   `ctx` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context object to set
+-   `preventUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** If true, no view update is triggered. Default is false.
+
+**Meta**
+
+-   **since**: 2.5.0
+
+#### getGlobalContext
+
+Get the global context object.
+
+**Meta**
+
+-   **since**: 2.5.0
+
+#### updateContextValues
+
+Updates the context values for visible iframes and LUI web components.
+Note: the updated context values are not persisted. The developers have to do it on their own.
+
+##### Parameters
+
+-   `ctx` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context to be updated.
+
+**Meta**
+
+-   **since**: 2.13.0
 
 ## Luigi.elements()
 
@@ -532,8 +566,10 @@ Navigates to the given path in the application. It contains either a full absolu
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"fullscreen"` \| `"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
-    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+    -   `modalSettings.closebtn_data_testid` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
 -   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
     -   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
     -   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
@@ -561,8 +597,10 @@ Opens a view in a modal. You can specify the modal's title and size. If you do n
 -   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size
     -   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
     -   `modalSettings.size` **(`"fullscreen"` \| `"l"` \| `"m"` \| `"s"`)** size of the modal (optional, default `"l"`)
-    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+    -   `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+    -   `modalSettings.closebtn_data_testid` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
 -   `onCloseCallback` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** callback function called upon closing the opened modal
 
 ##### Examples
@@ -663,6 +701,40 @@ Returns **linkManager** link manager instance
 **Meta**
 
 -   **since**: 1.0.1
+
+#### fromParent
+
+Enables navigating to sibling nodes without knowing the absolute path.
+
+##### Examples
+
+```javascript
+Luigi.navigation().fromParent().navigate('/sibling')
+```
+
+Returns **linkManager** link manager instance
+
+**Meta**
+
+-   **since**: 2.14.0
+
+#### getCurrentRoute
+
+Gets the Luigi route associated with the current micro frontend.
+
+##### Examples
+
+```javascript
+Luigi.navigation().getCurrentRoute();
+Luigi.navigation().fromContext('project').getCurrentRoute();
+Luigi.navigation().fromVirtualTreeRoot().getCurrentRoute();
+```
+
+Returns **any** a String value specifying the current Luigi route
+
+**Meta**
+
+-   **since**: 2.14.0
 
 #### withParams
 
@@ -1018,6 +1090,32 @@ Close user settings dialog
 
 -   **since**: 1.7.1
 
+#### getDirtyStatus
+
+Returns the dirty status, which is set by the Client via [setDirtyStatus](luigi-client-api.md#setdirtystatus). By default, the dirty status is `false`.
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+**Meta**
+
+-   **since**: 2.1.0
+
+#### getCurrentTheme
+
+Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
+
+##### Examples
+
+```javascript
+Luigi.ux().getCurrentTheme()
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** theme id
+
+**Meta**
+
+-   **since**: 2.14.0
+
 ## Luigi.globalSearch()
 
 <!-- Generated by documentation.js. Update this documentation by updating the source code. -->
@@ -1262,6 +1360,25 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 **Meta**
 
 -   **since**: 1.4.0
+
+#### getCSSVariables
+
+Returns CSS variables with key value from Luigi if `@luigi-project/core/luigi_theme-vars.js` is included in the `index.html` and `settings.theming.variables==='fiori'` is defined in the [settings](general-settings.md) section.
+It's also possible to define your own variables file which can be declared in `settings.theming.variables.file` in the [settings](general-settings.md) section.
+The variables should be defined in a JSON file which starts with a `root` key.
+When you configure you own file, you can also implement exception handling by using the function `settings.theming.variables.errorHandling` which gets the error object as argument.
+
+##### Examples
+
+```javascript
+Luigi.theming().getCSSVariables();
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** CSS variables with their value.
+
+**Meta**
+
+-   **since**: 2.3.0
 
 ## Luigi.featureToggles()
 

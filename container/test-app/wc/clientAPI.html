@@ -1,0 +1,154 @@
+<html>
+  <head>
+    <script type="module">
+      import '../bundle.js';
+    </script>
+  </head>
+  <body>
+    <h3>
+      This page is used to test Container Luigi CLient API functionalities for web
+      component based microfrontend
+    </h3>
+    <div style="height: fit-content;">
+      <div style="border: 1px solid blue">
+        <!-- Luigi Container to test general functionalities, params etc-->
+        <luigi-container
+          data-test-id="luigi-client-api-test-01"
+          viewURL="./wc/helloWorldWC.js"
+          webcomponent="true"
+          context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
+          locale="en"
+          theme="sap_fiori_3"
+          active-feature-toggle-list='["ft1","ft2"]'
+          node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
+          search-params='{"test":"searchParam1"}'
+          path-params='{"path":"param"}'
+          client-permissions='{"permission": "testPermission"}'
+          user-settings='{"language": "de", "date":""}'
+          anchor="testanchor"
+          dirty-status="true"
+          document-title="Perfect Title"
+        ></luigi-container>
+      </div>
+
+      <button id="init-button" style="margin: 25px 0 15px">
+        container.init() to initialize defered container
+      </button>
+      <div style="border: 1px solid red">
+        <!-- Luigi Container to test defer-init flag-->
+
+        <luigi-container
+          id="defer-init-test"
+          data-test-id="defer-init-container"
+          viewURL="./wc/myWebComponent.js"
+          webcomponent="true"
+          context='{"content":" -- defer-init test --"}'
+          defer-init="true"
+        ></luigi-container>
+      </div>
+
+      <!-- Used for testing dynamic compound container creation -->
+      <div class="content"></div>
+
+      <!-- TODO: Add logic test for selfRegistered container -->
+      <!-- <luigi-container
+        data-test-id="luigi-client-api-test-02"
+        viewURL="./helloWorldWCSelfRegistered.js"
+        webcomponent='{"selfRegistered": "true"}'
+    ></luigi-container> -->
+    </div>
+
+    <script type="module">
+      import '../bundle.js';
+      import MFEventID from '../bundle.js';
+      const deferInitContainer = document.getElementById('defer-init-test');
+      const initButton = document.getElementById('init-button');
+      initButton.addEventListener('click', function() {
+        deferInitContainer.init();
+      });
+
+      [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
+        luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
+          console.log(event.detail);
+          window.location.hash = event.detail.link;
+        });
+        luigiContainer.addEventListener(MFEventID.ALERT_REQUEST, event => {
+          console.log(event.detail);
+          alert(event.detail.text);
+        });
+        luigiContainer.addEventListener(
+          MFEventID.SHOW_CONFIRMATION_MODAL_REQUEST,
+          event => {
+            console.log(event.detail);
+            const val = confirm(event.detail.body);
+            // send back to mf alert.answer with data
+            window.postMessage('alert.answer', data);
+            event.luigiCallback(val);
+          }
+        );
+        luigiContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, event => {
+          console.log('Custom Event', event);
+          if (event.detail.id !== 'timer') {
+            alert(event.detail.id);
+          }
+        });
+
+        luigiContainer.addEventListener(
+          MFEventID.RUNTIME_ERROR_HANDLING_REQUEST,
+          event => {
+            console.log(event.detail);
+          }
+        );
+        luigiContainer.addEventListener(MFEventID.ADD_NODE_PARAMS_REQUEST, event => {
+          const params = event.detail.params;
+          console.log('params', params);
+        });
+        luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
+          console.log('anhor', event.detail);
+        });
+
+        // uxManager(). closeUserSettings openUserSettings collapseLeftSideNav
+        // setDocumentTitle removeBackdrop hideAppLoadingIndicator
+        luigiContainer.addEventListener(MFEventID.CLOSE_USER_SETTINGS_REQUEST, event => {
+          console.log('Close User Settings Request received', event.detail);
+        });
+        luigiContainer.addEventListener(MFEventID.OPEN_USER_SETTINGS_REQUEST, event => {
+          console.log('Open User Settings Request received', event.detail);
+        });
+        luigiContainer.addEventListener(MFEventID.COLLAPSE_LEFT_NAV_REQUEST, event => {
+          console.log('Collapse Left Side Nav Request received', event.detail);
+        });
+        luigiContainer.addEventListener(MFEventID.SET_DOCUMENT_TITLE_REQUEST, event => {
+          console.log('Set Document Title Request received', event.detail);
+        });
+        luigiContainer.addEventListener(MFEventID.REMOVE_BACKDROP_REQUEST, event => {
+          console.log('Remove Backdrop Request received', event.detail);
+        });
+        luigiContainer.addEventListener(
+          MFEventID.HIDE_LOADING_INDICATOR_REQUEST,
+          event => {
+            console.log('Hide Loading Indicator Request received', event.detail);
+          }
+        );
+
+        // linkManager listeners:
+        // path exists
+        luigiContainer.addEventListener(MFEventID.PATH_EXISTS_REQUEST, event => {
+          console.log('Remove Backdrop Request received', event.detail, event);
+          // send back result with defined 'callback'
+          // event: MFEventID.PathExistsEvent can be used as an event type to get the callback function
+          event.callback(true);
+        });
+
+        // setViewGroup Data listener
+        luigiContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
+          console.log('Set View Group Data Request received', event.detail, event);
+        });
+
+        luigiContainer.addEventListener(MFEventID.GET_CURRENT_ROUTE_REQUEST, event => {
+          event.callback(window.location.pathname);
+        });
+      });
+    </script>
+  </body>
+</html>

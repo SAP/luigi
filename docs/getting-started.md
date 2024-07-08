@@ -43,7 +43,7 @@ Some benefits of a micro frontend architecture include:
 
 ### Main features
 
-<img src="https://github.com/SAP/luigi/blob/master/docs/assets/luigi-overview-diagram.jpg?raw=true" alt="Graphic showing main Luigi components" width="600"/>
+<img src="https://github.com/SAP/luigi/blob/main/docs/assets/luigi-overview-diagram.jpg?raw=true" alt="Graphic showing main Luigi components" width="600"/>
 
 Luigi consists of two main parts:
 
@@ -54,26 +54,18 @@ Luigi consists of two main parts:
 * [General settings](general-settings.md) - other settings that can be configured in Luigi, such as HTML attributes, third-party cookie configuration and more.
 * [API](luigi-core-api.md) - functions to help with almost every part of your app: navigation, authorization, adding a [search box](luigi-core-api.md#globalsearch), configuring a light/dark [theme](luigi-core-api.md#theming) and others.
 
+<!-- add-attribute:class:success -->
+>**NOTE:** You can also use [Luigi Container](luigi-container.md) to embed a Luigi micro frontend into any existing application without it being a Luigi Core app. 
+
 **Luigi Client** - refers to Luigi options related to micro frontends:
 * [API](luigi-client-api.md)  - diverse API functions which can be used on the micro frontend side.
 * [Communication](communication.md)  - sending messages between the micro frontend and the main application (Luigi Core module).
 
 ## Quick setup
 
-If you want to begin developing your own app with Luigi, start here:
-
 ### Luigi Core
 
-Follow these steps to create a global user interface and host a **full web application** in Luigi:
-
-1. Set up a Luigi Core application on one of the following frameworks:
-  * [No framework](application-setup.md#application-setup-without-a-framework)
-  * [Angular](application-setup.md#application-setup-for-angular)
-  * [SAPUI5/OpenUI5](application-setup.md#application-setup-for-sapui5openui5)
-  * [VUE.JS](application-setup.md#application-setup-for-vuejs)
-  * [React](application-setup.md#application-setup-for-react)
-
-2. Configure the application according to your needs. For example, you can begin by configuring the [basic navigation](navigation-configuration.md) of your application.
+You can find Luigi setup examples for different frameworks [here](application-setup.md). 
 
 ### Luigi Client
 
@@ -165,13 +157,13 @@ The [Luigi Fiddle](https://fiddle.luigi-project.io/) website is a sandbox playgr
 ### "Hello World" examples
 
 In the **Examples** section of our documentation, you can find links to several "Hello World" example applications which can help you explore Luigi's functions:
-* [Angular](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-angular)
-* [React](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-react)
-* [Vue](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-vue)
-* [OpenUI5](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-openui5)
-* [Svelte](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-svelte)
-* [Plain JavaScript](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-js)
-* [NextJS](https://github.com/SAP/luigi/tree/master/core/examples/luigi-example-next)
+* [Angular](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-angular)
+* [React](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-react)
+* [Vue](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-vue)
+* [OpenUI5](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-openui5)
+* [Svelte](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-svelte)
+* [Plain JavaScript](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-js)
+* [NextJS](https://github.com/SAP/luigi/tree/main/core/examples/luigi-example-next)
 
 You can install them by following the instructions in the `README` file of each example.
 
@@ -187,9 +179,9 @@ Alternatively, the tutorial app can be installed directly by following the `READ
 
 ### e2e example
 
-This example application was created for testing purposes and it includes all possible Luigi features in one place. It is useful if you want to explore our framework in more detail or [contribute](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md) to the Luigi project.
+This example application was created for testing purposes and it includes all possible Luigi features in one place. It is useful if you want to explore our framework in more detail or [contribute](https://github.com/SAP/luigi/blob/main/CONTRIBUTING.md) to the Luigi project.
 
-You can find the e2e test application and instructions on how to install it [here](https://github.com/SAP/luigi/tree/master/test/e2e-test-application#luigi-sample-and-e2e-test-application-written-in-angular).
+You can find the e2e test application and instructions on how to install it [here](https://github.com/SAP/luigi/tree/main/test/e2e-test-application#luigi-sample-and-e2e-test-application-written-in-angular).
 
 ### Advanced scenarios
 
@@ -203,4 +195,4 @@ In the [expert scenarios](advanced-scenarios.md) section of the documentation, y
 
 * [Slack Channel](https://luigi-project.slack.com) - get Luigi updates, contact the Luigi team on Slack, and explore previous discussions.
 
-* [GitHub contribution](https://github.com/SAP/luigi) - if you have a specific improvement idea or want to contribute to Luigi, you can create an [issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) and [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Please follow our [contribution guidelines](https://github.com/SAP/luigi/blob/master/CONTRIBUTING.md) when doing so.
+* [GitHub contribution](https://github.com/SAP/luigi) - if you have a specific improvement idea or want to contribute to Luigi, you can create an [issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) and [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests). Please follow our [contribution guidelines](https://github.com/SAP/luigi/blob/main/CONTRIBUTING.md) when doing so.

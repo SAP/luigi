@@ -35,7 +35,7 @@ There are three main elements to Luigi:
 3. Main content window which renders the micro frontend.
 
 
-![Navigation layout](assets/navigation-structure.jpg)
+![Navigation layout](/assets/navigation-structure.jpg)
 
 
 ## First steps
@@ -155,10 +155,10 @@ To define all subsequent nodes, use the category label:
 {
   category: 'Links',
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.luigi-project.io/docs/navigation-configuration',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the Luigi navigation doc',
 },
 ...
 ```
@@ -177,16 +177,16 @@ This is an example of what a node with a category including an id, label and ico
 ...
 ```
 
-To define all subsequent nodes, use the category label:
+To define all subsequent nodes, use the category id:
 
 ```javascript
 {
   category: 'anyId',
   externalLink: {
-    url: 'http://www.luigi-project.io',
+    url: 'http://www.luigi-project.io/docs/navigation-configuration',
     sameWindow: false
   },
-  label: 'Click here to visit the Luigi homepage',
+  label: 'Click here to visit the Luigi navigation doc',
 },
 ...
 ```

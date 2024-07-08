@@ -28,18 +28,17 @@ runWebserver() {
   local PORT=$1
   local FOLDER=$2
   local TESTPATH=$3
-
   PATH="$PATH:$LUIGI_BASE_DIR/node_modules/.bin"
-  WS=`command -v sirv`
-  if [ ! -x $WS ] || [ "$WS" == "" ] ; then
-    echoe "Installing webserver"
-    npm i -g sirv-cli
-  fi
+
+  echoe "Installing webserver"
+  npm i -g sirv-cli
+
+
 
   echo ""
   echo "Starting webserver on port $PORT"
 
-  sirv start $FOLDER --single --cors --port $PORT --quiet &
+  sirv $FOLDER --single --cors --port $PORT --quiet &
   PID=$!
 
   echo "Webserver running with PID $PID"
@@ -74,7 +73,9 @@ killWebserver() {
   fi
 
   if [ ! -z "$SPAPID" ]; then
-    # echoe "Cleanup: Stopping webserver on port $PORT"
     kill -9 $SPAPID
+    echoe "Cleanup: webserver stopped"
+  else
+    echoe "Cleanup: webserver was not running"
   fi
 }

@@ -4,6 +4,7 @@ import { AuthHelpers, GenericHelpers, RoutingHelpers } from './';
 import { Navigation } from '../../navigation/services/navigation';
 import { Routing } from '../../services/routing';
 import { reject, get } from 'lodash';
+import { IframeHelpers } from './';
 
 class NavigationHelpersClass {
   constructor() {
@@ -171,12 +172,11 @@ class NavigationHelpersClass {
           ? (arr.metaInfo.titleCollapseButton = category.titleCollapseButton)
           : (arr.metaInfo.titleCollapseButton = defaultTooltipForExpandCollapseCategories.titleCollapseButton);
       }
-      if (!arr.metaInfo.categoryUid && key && arr.metaInfo.collapsible) {
+      if (!arr.metaInfo.categoryUid && key) {
         arr.metaInfo.categoryUid = node.parent ? this.getNodePath(node.parent) + ':' + key : key;
       }
-      if (!node.hideFromNav) {
-        arr.push(node);
-      }
+      // Previously we skipped pushing hideFromNav nodes, but we need them now for TabNav logic
+      arr.push(node);
     });
     Object.keys(result).forEach(category => {
       const metaInfo = result[category].metaInfo;
@@ -211,7 +211,7 @@ class NavigationHelpersClass {
   }
 
   async generateTopNavNodes(pathData) {
-    const rawChildren = await Navigation.getFilteredChildren(pathData[0]);
+    const rawChildren = pathData[0].topNav === false ? [] : await Navigation.getFilteredChildren(pathData[0]);
     let selectedNode = null;
     let visibleNodeCount = 0;
     let globalNavNodeCount = 0;
@@ -275,6 +275,11 @@ class NavigationHelpersClass {
         badgeCountsToSumUp.push(badgeCount);
       }
     }
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].isCat) {
+        children[i].visibleChildren = (await Navigation.getChildren(children[i])) || [];
+      }
+    }
     const tnd = {
       children,
       selectedNode,
@@ -292,6 +297,22 @@ class NavigationHelpersClass {
       };
     }
     return tnd;
+  }
+
+  /**
+   * Returns if sideNavAccordionMode is true or false
+   * @param {*} selectedNode
+   * @returns if sideNavAccordionMode is true or false
+   */
+  getSideNavAccordionMode(selectedNode) {
+    let sideNavAccordionModeOverride =
+      (selectedNode && selectedNode.sideNavAccordionMode) ||
+      (selectedNode && selectedNode.parent && selectedNode.parent.sideNavAccordionMode);
+    if (typeof sideNavAccordionModeOverride !== 'undefined') {
+      return sideNavAccordionModeOverride;
+    } else {
+      return LuigiConfig.getConfigBooleanValue('navigation.defaults.sideNavAccordionMode');
+    }
   }
 
   loadExpandedCategories() {
@@ -507,6 +528,91 @@ class NavigationHelpersClass {
       event.stopPropagation();
       return false;
     }
+  }
+
+  /**
+   * Replace the node label with the live custom data from the view group settings.
+   * @param {Object} node
+   * @returns node label
+   */
+  getNodeLabel(node) {
+    let label = LuigiI18N.getTranslation(node.label);
+    const vg = this.findViewGroup(node);
+
+    if (vg) {
+      const vgSettings = this.getViewGroupSettings(vg) || {};
+      let cdata = { ...(vgSettings.customData || {}), ...(vgSettings._liveCustomData || {}) };
+      label = GenericHelpers.replaceVars(label, cdata, 'viewGroupData.');
+    }
+
+    return label;
+  }
+
+  getParentNode(node, pathData) {
+    let res = node.parent;
+    if (!res && pathData.length > 0 && pathData[1] === node) {
+      res = pathData[0];
+    }
+    return res;
+  }
+
+  /**
+   * Returns the whole viewgroup settings from config.
+   * @returns {Object} viewgroup settings from config
+   */
+  getAllViewGroupSettings() {
+    return LuigiConfig.getConfigValue('navigation.viewGroupSettings');
+  }
+
+  /**
+   * Retrieves the settings for a specific view group.
+   * @param {string} viewGroup - The name of the view group for which settings are to be retrieved.
+   * @returns {Object} The settings for the specified view group. If the view group is not found, an empty object is returned.
+   */
+  getViewGroupSettings(viewGroup) {
+    const viewGroupSettings = this.getAllViewGroupSettings();
+    if (viewGroup && viewGroupSettings && viewGroupSettings[viewGroup]) {
+      return viewGroupSettings[viewGroup];
+    } else {
+      return {};
+    }
+  }
+
+  /**
+   * Recursively finds the view group associated with a given node in a hierarchical structure.
+   * @param {Object} node - The current node being examined.
+   * @param {Object} [originalNode] - The original node from which the search started.
+   * @returns {string | undefined} The view group associated with the node, or undefined if not found.
+   */
+  findViewGroup(node, originalNode) {
+    if (node.viewGroup) {
+      if (originalNode && originalNode !== node) {
+        if (
+          node.viewUrl &&
+          originalNode.viewUrl &&
+          IframeHelpers.getLocation(node.viewUrl) === IframeHelpers.getLocation(originalNode.viewUrl)
+        ) {
+          return node.viewGroup;
+        }
+
+        return undefined;
+      } else {
+        return node.viewGroup;
+      }
+    } else if (node.parent) {
+      return this.findViewGroup(node.parent, originalNode || node);
+    }
+  }
+
+  /**
+   * Generates the test ID of a navigation node.
+   * If the node has a test ID, it returns the test ID.
+   * Otherwise, it prepares a test ID using the node's path segment and label.
+   * @param node - The navigation node.
+   * @returns The test ID of the navigation node.
+   */
+  getTestId(node) {
+    return node.testId ? node.testId : NavigationHelpers.prepareForTests(node.pathSegment, node.label);
   }
 }
 

@@ -5,10 +5,27 @@ export default class extends HTMLElement {
     template.innerHTML = `<section><p>Hello World!</p></section>`;
 
     const templateBtn = document.createElement('template');
-    templateBtn.innerHTML = '<button>Click me!</button>';
+    templateBtn.innerHTML = '<button id="clickme">Click me!</button>';
 
     const empty = document.createElement('template');
     empty.innerHTML = `<section><p>Test!</p><br/><br/></section>`;
+
+    const setAnchorBtn = document.createElement('template');
+    setAnchorBtn.innerHTML = `<button id="setAnchor">setAnchor</button>`;
+    const getNodeParamsBtn = document.createElement('template');
+    getNodeParamsBtn.innerHTML = `<button id="getNodeParams">getNodeParams</button>`;
+
+    const addNodeParamsBtn = document.createElement('template');
+    addNodeParamsBtn.innerHTML = `<button id="addNodeParams">addNodeParams</button>`;
+
+    const getCoreSearchParamsBtn = document.createElement('template');
+    getCoreSearchParamsBtn.innerHTML = '<button id="coreSearchParams">getCoreSearchParams</button>';
+
+    const getPathParamsBtn = document.createElement('template');
+    getPathParamsBtn.innerHTML = '<button id="getPathParams">getPathParams</button>';
+
+    const getClientPermissionsBtn = document.createElement('template');
+    getClientPermissionsBtn.innerHTML = '<button id="getClientPermissions">getClientPermissions</button>';
 
     this._shadowRoot = this.attachShadow({
       mode: 'open',
@@ -16,13 +33,19 @@ export default class extends HTMLElement {
     });
     this._shadowRoot.appendChild(template.content.cloneNode(true));
     this._shadowRoot.appendChild(templateBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(setAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getNodeParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(addNodeParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getCoreSearchParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getPathParamsBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
 
     for (let index = 0; index < 20; index++) {
       this._shadowRoot.appendChild(empty.content.cloneNode(true));
     }
 
     this.$paragraph = this._shadowRoot.querySelector('p');
-    this.$button = this._shadowRoot.querySelector('button');
+    this.$button = this._shadowRoot.querySelector('#clickme');
     this.$button.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.uxManager().showAlert({
@@ -41,6 +64,41 @@ export default class extends HTMLElement {
           text: 'Active feature toggles: ' + this.LuigiClient.getActiveFeatureToggles(),
           type: 'info'
         });
+      }
+    });
+
+    this.$button2 = this._shadowRoot.querySelector('#setAnchor');
+    this.$button2.addEventListener('click', () => {
+      this.LuigiClient.setAnchor('LuigiRocks');
+    });
+    this.$button3 = this._shadowRoot.querySelector('#getNodeParams');
+    this.$button3.addEventListener('click', () => {
+      let nodeParams = this.LuigiClient.getNodeParams();
+      alert(JSON.stringify(nodeParams));
+    });
+    this.$button4 = this._shadowRoot.querySelector('#addNodeParams');
+    this.$button4.addEventListener('click', () => {
+      this.LuigiClient.addNodeParams({ Luigi: 'rocks' });
+    });
+
+    this.$coreSearchParamsBtn = this._shadowRoot.querySelector('#coreSearchParams');
+    this.$coreSearchParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getCoreSearchParams()));
+      }
+    });
+
+    this.$getPathParamsBtn = this._shadowRoot.querySelector('#getPathParams');
+    this.$getPathParamsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getPathParams()));
+      }
+    });
+
+    this.$getClientPermissionsBtn = this._shadowRoot.querySelector('#getClientPermissions');
+    this.$getClientPermissionsBtn.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        alert(JSON.stringify(this.LuigiClient.getClientPermissions()));
       }
     });
   }

@@ -2,13 +2,7 @@
   import { AuthLayerSvc } from './services';
   import { createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiUX } from './core-api';
-  import {
-    AuthHelpers,
-    GenericHelpers,
-    NavigationHelpers,
-    StateHelpers,
-    RoutingHelpers,
-  } from './utilities/helpers';
+  import { AuthHelpers, GenericHelpers, NavigationHelpers, StateHelpers, RoutingHelpers } from './utilities/helpers';
   import { AuthStoreSvc, Routing } from './services';
   import { TOP_NAV_DEFAULTS } from './utilities/luigi-config-defaults';
   import { KEYCODE_ENTER, KEYCODE_SPACE } from './utilities/keycode.js';
@@ -29,9 +23,7 @@
   let profileLogoutFnDefined;
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise'
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let openViewInModal = getContext('openViewInModal');
   let initialsOfUser;
 
@@ -44,10 +36,10 @@
     }
     setProfileNavData();
 
-    AuthLayerSvc.getLoggedInStore().subscribe((loggedIn) => {
+    AuthLayerSvc.getLoggedInStore().subscribe(loggedIn => {
       isLoggedIn = loggedIn;
     });
-    AuthLayerSvc.getUserInfoStore().subscribe((uInfo) => {
+    AuthLayerSvc.getUserInfoStore().subscribe(uInfo => {
       userInfo = uInfo;
       dispatch('userInfoUpdated', userInfo);
     });
@@ -66,9 +58,7 @@
   }
 
   function getTestId(profileItem) {
-    return profileItem.testId
-      ? profileItem.testId
-      : NavigationHelpers.prepareForTests(profileItem.label);
+    return profileItem.testId ? profileItem.testId : NavigationHelpers.prepareForTests(profileItem.label);
   }
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node);
@@ -81,43 +71,32 @@
       StateHelpers.doOnStoreChange(
         store,
         async () => {
-          const logoutItem = await LuigiConfig.getConfigValueAsync(
-            'navigation.profile.logout'
-          );
+          const logoutItem = await LuigiConfig.getConfigValueAsync('navigation.profile.logout');
           //check if the User Settings schema exist
-          const userSettingsConfig = await LuigiConfig.getConfigValueAsync(
-            'userSettings'
-          );
+          const userSettingsConfig = await LuigiConfig.getConfigValueAsync('userSettings');
           const userSettings = userSettingsConfig
             ? userSettingsConfig
             : await LuigiConfig.getConfigValueAsync('settings.userSettings');
           hasUserSettings = Boolean(userSettings);
           //check if Settings dropdown is enabled for navigation in Shellbar
           const profileNavData = {
-            items:
-              (await LuigiConfig.getConfigValueAsync(
-                'navigation.profile.items'
-              )) || [],
+            items: (await LuigiConfig.getConfigValueAsync('navigation.profile.items')) || []
           };
           if (hasUserSettings) {
-            const userSettingsProfileMenuEntry =
-              userSettings.userSettingsProfileMenuEntry;
+            const userSettingsProfileMenuEntry = userSettings.userSettingsProfileMenuEntry;
             profileNavData['settings'] = {
               ...TOP_NAV_DEFAULTS.userSettingsProfileMenuEntry,
-              ...userSettingsProfileMenuEntry,
+              ...userSettingsProfileMenuEntry
             };
           }
           profileNavData['logout'] = {
             ...TOP_NAV_DEFAULTS.logout,
-            ...logoutItem,
+            ...logoutItem
           };
           isProfileLogoutItem = Boolean(logoutItem);
           profileLogoutFnDefined = false;
           AuthLayerSvc.setProfileLogoutFn(null);
-          if (
-            logoutItem &&
-            GenericHelpers.isFunction(logoutItem.customLogoutFn)
-          ) {
+          if (logoutItem && GenericHelpers.isFunction(logoutItem.customLogoutFn)) {
             // TODO: PROFNAVLOGOUT: three smiliar implementations.
             // TODO: whats the difference between this profileLogoutFn, profileNav, auth-layer
             profileLogoutFnDefined = true;
@@ -132,9 +111,7 @@
   }
 
   export async function setProfileUserData() {
-    const uInfo = await LuigiConfig.getConfigValueAsync(
-      'navigation.profile.staticUserInfoFn'
-    );
+    const uInfo = await LuigiConfig.getConfigValueAsync('navigation.profile.staticUserInfoFn');
     if (uInfo) {
       AuthLayerSvc.setUserInfo(userInfo);
       userInfo = uInfo;
@@ -143,32 +120,35 @@
   }
 
   export function onActionClick(item) {
-    getUnsavedChangesModalPromise().then(() => {
-      if (item.openNodeInModal) {
-        const route = RoutingHelpers.buildRoute(item, `${item.link}`);
-        openViewInModal(
-          route,
-          item.openNodeInModal === true ? {} : item.openNodeInModal
-        );
-      } else {
-        Routing.navigateToLink(item);
-      }
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        if (item.openNodeInModal) {
+          const route = RoutingHelpers.buildRoute(item, `${item.link}`);
+          openViewInModal(route, item.openNodeInModal === true ? {} : item.openNodeInModal);
+        } else {
+          Routing.navigateToLink(item);
+        }
+      },
+      () => {}
+    );
     dispatch('toggleDropdownState');
   }
 
   export function onLogoutClick() {
-    getUnsavedChangesModalPromise().then(() => {
-      if (isAuthorizationEnabled) {
-        logout();
-      } else if (isProfileLogoutItem && profileLogoutFnDefined) {
-        // TODO: PROFNAVLOGOUT: check if auth-layer logout _profileLogoutFn is a duplicate
-        // TODO: PROFNAVLOGOUT: three smiliar implementations. profilen
-        profileNav.logout.customLogoutFn();
-      } else {
-        console.error('No IDP provider or profile.customLogoutFn is defined.');
-      }
-    });
+    getUnsavedChangesModalPromise().then(
+      () => {
+        if (isAuthorizationEnabled) {
+          logout();
+        } else if (isProfileLogoutItem && profileLogoutFnDefined) {
+          // TODO: PROFNAVLOGOUT: check if auth-layer logout _profileLogoutFn is a duplicate
+          // TODO: PROFNAVLOGOUT: three smiliar implementations. profilen
+          profileNav.logout.customLogoutFn();
+        } else {
+          console.error('No IDP provider or profile.customLogoutFn is defined.');
+        }
+      },
+      () => {}
+    );
   }
 
   export function onUserSettingsClick() {
@@ -200,29 +180,23 @@
             id="username"
             class="lui-username fd-has-type-1"
             data-testid="luigi-topnav-profile-username"
-            >{userInfo.name ? userInfo.name : userInfo.email}</span
-          >
+          >{userInfo.name ? userInfo.name : userInfo.email}</span>
         </li>
       {/if}
       {#each profileNav.items as profileItem}
-        <li
-          class="fd-menu__item"
-          on:click={() => onActionClick(profileItem)}
-          data-testid={getTestId(profileItem)}
-        >
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <li class="fd-menu__item" on:click={() => onActionClick(profileItem)} data-testid={getTestId(profileItem)}>
           <a
             class="fd-menu__link"
             data-testid="luigi-topnav-profile-item"
             href={addNavHrefForAnchor ? getRouteLink(profileItem) : undefined}
-            on:click={(event) => {
+            on:click={event => {
               NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event);
             }}
           >
             {#if profileItem.icon}
               {#if hasOpenUIicon(profileItem)}
-                <span
-                  class="fd-top-nav__icon {getSapIconStr(profileItem.icon)}"
-                />
+                <span class="fd-top-nav__icon {getSapIconStr(profileItem.icon)}" />
               {:else}
                 <img
                   class="fd-top-nav__icon nav-icon"
@@ -231,9 +205,7 @@
                 />
               {/if}
             {/if}
-            <span class="fd-menu__title"
-              >{$getTranslation(profileItem.label)}</span
-            >
+            <span class="fd-menu__title">{$getTranslation(profileItem.label)}</span>
           </a>
         </li>
       {/each}
@@ -242,75 +214,51 @@
           tabindex="-1"
           class="fd-menu__item lui-anchor-node"
           on:click|preventDefault={onUserSettingsClick}
-          on:keyup={(event) => handleKeyUp(event)}
+          on:keyup={event => handleKeyUp(event)}
           data-testid={getTestId(profileNav.settings)}
         >
-          <a
-            tabindex="0"
-            title="User Settings"
-            class="fd-menu__link"
-            data-testid="settings-link"
-          >
+          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          <!-- svelte-ignore a11y-missing-attribute -->
+          <a tabindex="0" title="User Settings" class="fd-menu__link" data-testid="settings-link">
             {#if profileNav.settings.icon}
               {#if hasOpenUIicon(profileNav.settings)}
-                <i
-                  class="fd-top-nav__icon {getSapIconStr(
-                    profileNav.settings.icon
-                  )}"
-                />
+                <i class="fd-top-nav__icon {getSapIconStr(profileNav.settings.icon)}" />
               {:else}
                 <img
                   class="fd-top-nav__icon nav-icon"
                   src={profileNav.settings.icon}
-                  alt={profileNav.settings.altText
-                    ? profileNav.settings.altText
-                    : ''}
+                  alt={profileNav.settings.altText ? profileNav.settings.altText : ''}
                 />
               {/if}
             {/if}
-            <span class="fd-menu__title"
-              >{$getTranslation(profileNav.settings.label)}</span
-            >
+            <span class="fd-menu__title">{$getTranslation(profileNav.settings.label)}</span>
           </a>
         </li>
       {/if}
       {#if isAuthorizationEnabled || isProfileLogoutItem}
         {#if isLoggedIn || (!isAuthorizationEnabled && isProfileLogoutItem)}
-          <li
-            class="fd-menu__item"
-            on:click={onLogoutClick}
-            data-testid={getTestId(profileNav.logout)}
-          >
-            <button
-              title="Logout"
-              class="fd-menu__link lui-logout-btn"
-              data-testid="logout-btn"
-            >
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <li class="fd-menu__item" on:click={onLogoutClick} data-testid={getTestId(profileNav.logout)}>
+            <button title="Logout" class="fd-menu__link lui-logout-btn" data-testid="logout-btn">
               {#if profileNav.logout.icon}
                 {#if hasOpenUIicon(profileNav.logout)}
-                  <i
-                    class="fd-top-nav__icon {getSapIconStr(
-                      profileNav.logout.icon
-                    )}"
-                  />
+                  <i class="fd-top-nav__icon {getSapIconStr(profileNav.logout.icon)}" />
                 {:else}
                   <img
                     class="fd-top-nav__icon nav-icon"
                     src={profileNav.logout.icon}
-                    alt={profileNav.logout.altText
-                      ? profileNav.logout.altText
-                      : ''}
+                    alt={profileNav.logout.altText ? profileNav.logout.altText : ''}
                   />
                 {/if}
               {/if}
-              <span class="fd-menu__title"
-                >{$getTranslation(profileNav.logout.label)}</span
-              >
+              <span class="fd-menu__title">{$getTranslation(profileNav.logout.label)}</span>
             </button>
           </li>
         {/if}
         {#if isAuthorizationEnabled && !isLoggedIn}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
           <li class="fd-menu__item" on:click={startAuthorization}>
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a aria-label="Login" class="fd-menu__link" data-testid="login-btn">
               <span class="fd-menu__title">Login</span>
             </a>
@@ -321,7 +269,7 @@
   </nav>
 {/if}
 
-<style type="text/scss">
+<style lang="scss">
   .fd-top-nav__icon {
     display: inline-block;
     vertical-align: middle;
@@ -352,7 +300,7 @@
     overflow-y: auto;
   }
 
-  .lui-profile-simple-menu .lui-logout-btn{
+  .lui-profile-simple-menu .lui-logout-btn {
     text-align: left;
   }
 

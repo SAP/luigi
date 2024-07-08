@@ -131,38 +131,6 @@ describe('Iframe', () => {
     });
   });
 
-  describe('getViewGroupSettings', () => {
-    let viewGroupSettings;
-    beforeEach(() => {
-      viewGroupSettings = {
-        ham: {
-          preloadUrl: 'ham.html'
-        },
-        cheese: {
-          preloadUrl: 'cheese.html'
-        },
-        ananas: {
-          preloadUrl: 'ananas.html'
-        }
-      };
-      sinon.stub(Iframe, 'getAllViewGroupSettings').callsFake(() => {
-        return viewGroupSettings;
-      });
-      afterEach(() => {
-        sinon.restore();
-      });
-    });
-    it('return viewgroup from viewgroup settings', () => {
-      assert.deepEqual(Iframe.getViewGroupSettings('ananas'), {
-        preloadUrl: 'ananas.html'
-      });
-    });
-    it('no view group found in viewgroup settings', () => {
-      assert.deepEqual(Iframe.getViewGroupSettings(''), {});
-      assert.deepEqual(Iframe.getViewGroupSettings('somethingElse'), {});
-    });
-  });
-
   describe('create new iframe with different viewgroup and dont delete the previous one (cache)', () => {
     it('navigate', async () => {
       sinon.stub(IframeHelpers, 'getMainIframes').callsFake(() => [

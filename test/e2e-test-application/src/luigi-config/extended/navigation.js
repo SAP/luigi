@@ -66,6 +66,83 @@ class Navigation {
     },
 
     {
+      pathSegment: 'tabnavheader',
+      label: 'Tab Nav Header',
+      viewUrl: '/assets/tabHeader.js',
+      icon: 'home',
+      webcomponent: true,
+      tabNav: {
+        showAsTabHeader: true
+      },
+      children: [
+        {
+          pathSegment: 'header1',
+          label: 'Header 1',
+          viewUrl: '/sampleapp.html#/settings'
+        },
+        {
+          pathSegment: 'header2',
+          label: 'Header 2',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav1',
+          category: { label: 'Header 3' },
+          label: 'TabNav 1',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav2',
+          category: { label: 'Header 3' },
+          label: 'TabNav 2',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav2',
+          category: { label: 'Header 3' },
+          label: 'TabNav 2',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav3',
+          category: { label: 'Header 3' },
+          label: 'TabNav 3',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav4',
+          category: { label: 'Header 3' },
+          label: 'TabNav 4',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav5',
+          category: { label: 'Header 3' },
+          label: 'TabNav 5',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav6',
+          category: { label: 'Header 3' },
+          label: 'TabNav 6',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav7',
+          category: { label: 'Header 3' },
+          label: 'TabNav 7',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {
+          pathSegment: 'tabNav8',
+          category: { label: 'Header 3' },
+          label: 'TabNav 8',
+          viewUrl: '/sampleapp.html#/overview'
+        },
+        {}
+      ]
+    },
+    {
       pathSegment: 'view-groups',
       label: 'View Groups',
       children: [

@@ -6,7 +6,7 @@ class LuigiNavigationManager {
    * Use these functions for navigation-related features.
    * @name LuigiNavigation
    */
-  constructor() { }
+  constructor() {}
 
   /**
    * Refreshes top navigation badge counters by rendering the navigation again.
@@ -27,8 +27,10 @@ class LuigiNavigationManager {
    * @param {Object} modalSettings opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
    * @param {Object} splitViewSettings opens a view in a split view. Use these settings to configure the split view's behaviour
    * @param {string} splitViewSettings.title split view title. By default, it is the node label. If there is no label, it is left empty
    * @param {number} [splitViewSettings.size=40] height of the split view in percent
@@ -53,8 +55,10 @@ class LuigiNavigationManager {
    * @param {Object} [modalSettings] opens a view in a modal. Use these settings to configure the modal's title and size
    * @param {string} modalSettings.title modal title. By default, it is the node label. If there is no label, it is left empty
    * @param {('fullscreen'|'l'|'m'|'s')} [modalSettings.size="l"] size of the modal
-   * @param {string} modalSettings.width lets you specify a precise width for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-   * @param {string} modalSettings.height lets you specify a precise height for the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.width updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {string} modalSettings.height updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+   * @param {boolean} modalSettings.keepPrevious Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+   * @param {string} modalSettings.closebtn_data_testid lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
    * @param {Function} onCloseCallback callback function called upon closing the opened modal
    * @example
    * Luigi.navigation().openAsModal('projects/pr1/users', {title:'Users', size:'m'});
@@ -136,6 +140,32 @@ class LuigiNavigationManager {
    */
   fromVirtualTreeRoot() {
     return new linkManager().fromVirtualTreeRoot();
+  }
+
+  /**
+   * Enables navigating to sibling nodes without knowing the absolute path.
+   * @memberof LuigiNavigation
+   * @returns {linkManager} link manager instance
+   * @since 2.14.0
+   * @example
+   * Luigi.navigation().fromParent().navigate('/sibling')
+   */
+  fromParent() {
+    return new linkManager().fromParent();
+  }
+
+  /**
+   * Gets the Luigi route associated with the current micro frontend.
+   * @memberof LuigiNavigation
+   * @returns a String value specifying the current Luigi route
+   * @since 2.14.0
+   * @example
+   * Luigi.navigation().getCurrentRoute();
+   * Luigi.navigation().fromContext('project').getCurrentRoute();
+   * Luigi.navigation().fromVirtualTreeRoot().getCurrentRoute();
+   */
+  getCurrentRoute() {
+    return new linkManager().getCurrentRoute();
   }
 
   /**
