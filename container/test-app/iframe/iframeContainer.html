@@ -11,20 +11,34 @@
     </h3>
     <button id="btn-1">Send Custom Message to iFrame Container</button>
     <button id="update-ctx">Update Ctx</button>
+    <button id="init-button">container.init() defer-init enabled</button>
     <button id="update-token">Update Access Token</button>
 
-    <div style="border:solid 1px blue">
+    <div style="border:solid 1px blue; height: 400px">
+      <!-- Luigi Container to test general functionality-->
       <luigi-container
         data-test-id="iframe-based-container-test"
         viewURL="./microfrontend.html"
         context='{"title": "Projects", "content":" "}'
         auth-data='{ "accessToken": "my-token" }'
-      >
-      </luigi-container>
+      ></luigi-container>
+
+      <!-- Luigi Container to test defer-init flag-->
+      <luigi-container
+        id="defer-init-test"
+        data-test-id="defer-init-container"
+        viewURL="./microfrontend-defer-init.html"
+        defer-init="true"
+      ></luigi-container>
     </div>
 
     <script type="module">
       import Events from '../bundle.js';
+      const deferInitContainer = document.getElementById("defer-init-test");
+      const initButton = document.getElementById("init-button");
+      initButton.addEventListener("click", function() {
+        deferInitContainer.init();
+      });
 
       const luigiContainer = document.querySelector('luigi-container');
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
