@@ -48,7 +48,7 @@
   export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
+  export let customSearchItemRendererSlot;
   export let displaySearchResult;
   export let searchResult;
   export let burgerTooltip;
@@ -208,7 +208,7 @@
     dispatch('toggleSearch', {
       isSearchFieldVisible,
       inputElem,
-      luigiCustomSearchRenderer__slot
+      customSearchItemRendererSlot
     });
   }
 
@@ -304,7 +304,7 @@
           bind:searchResult
           bind:displaySearchResult
           bind:inputElem
-          bind:luigiCustomSearchRenderer__slot
+          bind:customSearchItemRendererSlot
           on:closeSearchResult
         />
       </div>
@@ -319,7 +319,7 @@
             bind:searchResult
             bind:displaySearchResult
             bind:inputElem
-            bind:luigiCustomSearchRenderer__slot
+            bind:customSearchItemRendererSlot
             on:closeSearchResult
             {globalSearchConfig}
           />
