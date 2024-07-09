@@ -64,8 +64,8 @@ describe('Iframe Container Test', () => {
                   'Custom message recieved: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
                 );
               });
-        });
-    });
+          });
+      });
   });
   it('defer-init flag for iframe container', () => {
     cy.get('#defer-init-test').then(iframe => {
