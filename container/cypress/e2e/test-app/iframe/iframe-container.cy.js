@@ -1,10 +1,14 @@
 describe('Iframe Container Test', () => {
+  const containerSelector = '[data-test-id="iframe-based-container-test"]';
+  let stub;
+
   beforeEach(() => {
     cy.visit('http://localhost:8080/iframe/iframeContainer.html');
+    stub = cy.stub();
   });
 
   it('navigation sent', () => {
-    cy.get('[data-test-id="iframe-based-container-test"]')
+    cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
@@ -20,10 +24,9 @@ describe('Iframe Container Test', () => {
   });
 
   it('custom message sent', () => {
-    const stub = cy.stub();
     cy.on('window:alert', stub);
 
-    cy.get('[data-test-id="iframe-based-container-test"]')
+    cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
@@ -40,6 +43,30 @@ describe('Iframe Container Test', () => {
       });
   });
 
+  it('update context', () => {
+    cy.on('window:alert', stub);
+
+    cy.get('#update-ctx')
+      .click()
+      .then(() => {
+        cy.get(containerSelector)
+          .shadow()
+          .get('iframe')
+          .then(iframe => {
+            const $body = iframe.contents().find('body');
+
+            cy.wrap($body)
+              .contains('Get Context')
+              .click()
+              .then(() => {
+                cy.wrap(stub).should(
+                  'have.been.calledWith',
+                  'Custom message recieved: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
+                );
+              });
+          });
+      });
+  });
   it('defer-init flag for iframe container', () => {
     cy.get('#defer-init-test').then(iframe => {
       const $body = iframe.contents().find('main');
@@ -61,7 +88,6 @@ describe('Iframe Container Test', () => {
   });
 
   it('set auth token', () => {
-    const stub = cy.stub();
     cy.on('window:alert', stub);
 
     cy.visit('http://localhost:8080/iframe/iframeContainer.html');
