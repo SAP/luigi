@@ -1,10 +1,12 @@
 <svelte:options
   customElement={{
     tag: null,
+    shadow: 'none',
     props: {
       viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
       deferInit: { type: 'Boolean', attribute: 'defer-init' },
       context: { type: 'String', reflect: false, attribute: 'context' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
       compoundConfig: {
         type: 'Object',
         reflect: false,
@@ -47,6 +49,9 @@
             this.updateContext(JSON.parse(newValue));
           }
         }
+        getNoShadow(){
+          return this.hasAttribute('no-shadow') || this.noShadow;
+        }
       };
     },
   }}
@@ -63,6 +68,7 @@
   export let webcomponent: any;
   export let context: string;
   export let deferInit: boolean;
+  export let noShadow: boolean;
   export let compoundConfig: any;
   export let nodeParams: any;
   export let searchParams: any;
@@ -89,10 +95,11 @@
       pathParams &&
       clientPermissions &&
       userSettings &&
-      anchor && 
+      anchor &&
       dirtyStatus &&
       hasBack &&
-      documentTitle
+      documentTitle &&
+      noShadow
     );
   };
 
@@ -101,7 +108,7 @@
       return;
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      mainComponent._luigi_mfe_webcomponent.context = contextObj;
+      (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;
@@ -109,32 +116,34 @@
     const node = {
       compound: compoundConfig,
       viewUrl: viewurl,
-      webcomponent:
-        GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true,
+      webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     }; // TODO: fill with sth
-    webcomponentService
-      .renderWebComponentCompound(node, mainComponent, ctx)
-      .then((compCnt) => {
-        eventBusElement = compCnt as HTMLElement;
-        if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
-          thisComponent.initialized = true;
-          setTimeout(() => {
-            webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-          });
-        } else if (
-          (eventBusElement as any).LuigiClient &&
-          !(eventBusElement as any).deferLuigiClientWCInit
-        ) {
-          thisComponent.initialized = true;
+    if(!thisComponent.getNoShadow()){
+      mainComponent.innerHTML=''
+      const shadow = thisComponent.attachShadow({ mode: "open"});
+      shadow.append(mainComponent);
+    }else{
+      //removing mainComponent
+      thisComponent.innerHTML = '';
+    }
+    webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {
+      eventBusElement = compCnt as HTMLElement;
+      if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
+        thisComponent.initialized = true;
+        setTimeout(() => {
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
-        }
-      });
+        });
+      } else if ((eventBusElement as any).LuigiClient && !(eventBusElement as any).deferLuigiClientWCInit) {
+        thisComponent.initialized = true;
+        webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
+      }
+    });
     containerInitialized = true;
     thisComponent.containerInitialized = true;
   };
 
   onMount(async () => {
-    const thisComponent: any = (mainComponent.getRootNode() as ShadowRoot).host;
+    const thisComponent: any = mainComponent.getRootNode() === document ? mainComponent.parentNode : (mainComponent.getRootNode() as ShadowRoot).host;
 
     thisComponent.init = () => {
       initialize(thisComponent);

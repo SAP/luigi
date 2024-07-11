@@ -1,132 +1,56 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
-  import { LuigiI18N } from '../core-api';
-  import { GenericHelpers, GlobalSearchHelper } from '../utilities/helpers';
-  import { Routing } from '../services/routing';
-  import {
-    KEYCODE_ARROW_UP,
-    KEYCODE_ARROW_DOWN,
-    KEYCODE_ENTER,
-    KEYCODE_ESC
-  } from '../utilities/keycode.js';
+  import { GenericHelpers } from '../utilities/helpers';
+  import { GlobalSearchHelperClass } from '../utilities/helpers/global-search-helpers';
   import { TOP_NAV_DEFAULTS } from '../utilities/luigi-config-defaults';
   export let searchResult = [];
   export let displaySearchResult;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
-  export let luigiCustomSearchItemRenderer__slotContainer;
+  export let customSearchItemRendererSlot;
+  export let customSearchItemRendererSlotContainer;
   export let globalSearchConfig;
   const dispatch = createEventDispatcher();
-  const searchApiObj = {
-    fireItemSelected: item => {
-      search.searchProvider.onSearchResultItemSelected(item);
-    }
-  };
   let cancelBtn = TOP_NAV_DEFAULTS.globalSearchCenteredCancelButton;
   export let isSearchFieldVisible;
   let search = {};
-  let isCustomSearchRenderer;
-  let isCustomSearchResultItemRenderer;
   let displayClearSearchFieldBtn = false;
   let getTranslation = getContext('getTranslation');
+  let globalSearchHelper;
 
   onMount(async () => {
     search = globalSearchConfig;
-    cancelBtn = search.globalSearchCenteredCancelButton
-      ? search.globalSearchCenteredCancelButton
-      : cancelBtn;
-    let inputElement = inputElem;
-    const placeHolder = getSearchPlaceholder(search.searchProvider);
-    if (placeHolder) {
-      inputElement.placeholder = placeHolder;
-    }
-    getCustomRenderer();
-    GlobalSearchHelper.handleVisibilityGlobalSearch();
+    cancelBtn = search.globalSearchCenteredCancelButton ? search.globalSearchCenteredCancelButton : cancelBtn;
+    globalSearchHelper.setSearchPlaceholder(inputElem);
+    globalSearchHelper.getCustomRenderer();
+    globalSearchHelper.handleVisibilityGlobalSearch();
     const globalSearchCtn = document.querySelector('.lui-global-search');
     if (globalSearchCtn) {
-      const resizeObserver = new ResizeObserver(entries => {
-        GlobalSearchHelper.handleVisibilityGlobalSearch();
+      const resizeObserver = new ResizeObserver(() => {
+        globalSearchHelper.handleVisibilityGlobalSearch();
       });
-
       resizeObserver.observe(globalSearchCtn);
     }
   });
 
   beforeUpdate(() => {
     search = globalSearchConfig;
-    getCustomRenderer();
+    if (!globalSearchHelper) {
+      globalSearchHelper = new GlobalSearchHelperClass(search, dispatch);
+    }
+    globalSearchHelper.getCustomRenderer();
     renderClearBtn();
   });
 
-  function getCustomRenderer() {
-    isCustomSearchRenderer = search.searchProvider && GenericHelpers.isFunction(
-      search.searchProvider.customSearchResultRenderer
-    );
-    isCustomSearchResultItemRenderer = search.searchProvider && GenericHelpers.isFunction(
-      search.searchProvider.customSearchResultItemRenderer
-    );
-  }
-
-  function getSearchPlaceholder(searchProvider) {
-    if (!searchProvider || !searchProvider.inputPlaceholder) {
-      return undefined;
-    }
-    const currentLocale = LuigiI18N.getCurrentLocale();
-    if (GenericHelpers.isFunction(searchProvider.inputPlaceholder)) {
-      return searchProvider.inputPlaceholder();
-    }
-    if (typeof searchProvider.inputPlaceholder === 'string') {
-      const translated = LuigiI18N.getTranslation(searchProvider.inputPlaceholder);
-      if (!!translated && translated.trim().length > 0) {
-        return translated;
-      }
-      return searchProvider.inputPlaceholder;
-    }
-    if (typeof searchProvider.inputPlaceholder === 'object') {
-      return searchProvider.inputPlaceholder[currentLocale];
-    }
-  }
-
   function renderCustomSearchItem(item, slotContainer, index) {
-    setTimeout(() => {
-      search.searchProvider.customSearchResultItemRenderer(
-        item,
-        slotContainer.children[index],
-        searchApiObj
-      );
-    });
-    return '';
+    globalSearchHelper.renderCustomSearchItem(item, slotContainer, index);
   }
 
   function closeSearchResult() {
-    dispatch('closeSearchResult');
+    globalSearchHelper.closeSearchResult();
   }
 
   function onKeyUp({ keyCode }) {
-    if (search) {
-      if (
-        GenericHelpers.isFunction(search.searchProvider.onEnter) &&
-        keyCode === KEYCODE_ENTER
-      ) {
-        search.searchProvider.onEnter();
-      } else if (
-        GenericHelpers.isFunction(search.searchProvider.onEscape) &&
-        keyCode === KEYCODE_ESC
-      ) {
-        search.searchProvider.onEscape();
-      } else if (keyCode === KEYCODE_ARROW_DOWN) {
-        if (displaySearchResult) {
-          document
-            .querySelector('.luigi-search-result-item__0')
-            .childNodes[0].setAttribute('aria-selected', 'true');
-          document.querySelector('.luigi-search-result-item__0').focus();
-        }
-      } else if (GenericHelpers.isFunction(search.searchProvider.onInput)) {
-        search.searchProvider.onInput();
-      }
-    } else {
-      console.warn('GlobalSearchCentered is not available.');
-    }
+    globalSearchHelper.onKeyUp(keyCode, displaySearchResult);
   }
 
   function searchBtnClicked() {
@@ -136,9 +60,7 @@
   }
 
   function renderClearBtn() {
-    inputElem && inputElem.value
-      ? (displayClearSearchFieldBtn = true)
-      : (displayClearSearchFieldBtn = false);
+    inputElem && inputElem.value ? (displayClearSearchFieldBtn = true) : (displayClearSearchFieldBtn = false);
   }
 
   function clearSearchField() {
@@ -147,120 +69,26 @@
     displayClearSearchFieldBtn = false;
   }
 
-  function calcSearchResultItemSelected(direction) {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
-    if (renderedSearchResultItems) {
-      for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let { childNodes, nextSibling, previousSibling } = renderedSearchResultItems[
-          index
-        ];
-        let nodeSibling;
-        if (childNodes[0].getAttribute('aria-selected') === 'true') {
-          if (direction === KEYCODE_ARROW_DOWN) {
-            nodeSibling =
-              nextSibling !== null ? nextSibling : renderedSearchResultItems[0];
-          }
-          if (direction === KEYCODE_ARROW_UP) {
-            nodeSibling =
-              previousSibling !== null
-                ? previousSibling
-                : renderedSearchResultItems[renderedSearchResultItems.length - 1];
-          }
-          childNodes[0].setAttribute('aria-selected', 'false');
-          nodeSibling.childNodes[0].setAttribute('aria-selected', 'true');
-          nodeSibling.focus();
-          break;
-        }
-      }
-    }
-  }
-
-  function clearAriaSelected() {
-    let renderedSearchResultItems = luigiCustomSearchItemRenderer__slotContainer.children;
-    if (renderedSearchResultItems) {
-      for (let index = 0; index < renderedSearchResultItems.length; index++) {
-        let element = renderedSearchResultItems[index];
-        if (element.childNodes[0].getAttribute('aria-selected') === 'true') {
-          element.childNodes[0].setAttribute('aria-selected', 'false');
-        }
-      }
-    }
-  }
-
   function onSearchResultItemSelected(searchResultItem) {
-    if (
-      search &&
-      GenericHelpers.isFunction(search.searchProvider.onSearchResultItemSelected)
-    ) {
-      search.searchProvider.onSearchResultItemSelected(searchResultItem);
-    } else if (
-      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
-      event.keyCode === KEYCODE_ESC
-    ) {
-      search.searchProvider.onEscape();
-    }
+    globalSearchHelper.onSearchResultItemSelected(searchResultItem);
   }
 
-  function handleKeydown(result, { keyCode }) {
-    if (keyCode === KEYCODE_ENTER) {
-      search.searchProvider.onSearchResultItemSelected(result);
-    }
-    if (keyCode === KEYCODE_ARROW_UP || keyCode === KEYCODE_ARROW_DOWN) {
-      calcSearchResultItemSelected(keyCode);
-    } else if (
-      GenericHelpers.isFunction(search.searchProvider.onEscape) &&
-      keyCode === KEYCODE_ESC
-    ) {
-      clearAriaSelected();
-      setTimeout(() => {
-        inputElem.focus();
-      });
-      search.searchProvider.onEscape();
-    }
+  function handleKeydown(result, event) {
+    globalSearchHelper.handleKeydown(result, event, inputElem, customSearchItemRendererSlotContainer);
   }
 
   export function onActionClick(searchResultItem) {
-    let node = searchResultItem.pathObject;
-    if (node.externalLink) {
-      Routing.navigateToLink(node);
-    } else {
-      dispatch('handleSearchNavigation', { node });
-    }
-  }
-
-  function setFocusOnGlobalSearchFieldDesktop() {
-    if (inputElem) {
-      inputElem.focus();
-    }
+    globalSearchHelper.onActionClick(searchResultItem);
   }
 
   export function toggleSearch() {
-    if (!isSearchFieldVisible)
-      setTimeout(() => {
-        setFocusOnGlobalSearchFieldDesktop();
-      });
-    else {
-      displaySearchResult = false;
-    }
-    dispatch('toggleSearch', {
-      isSearchFieldVisible,
-      inputElem,
-      luigiCustomSearchRenderer__slot
-    });
-
-    if (GenericHelpers.isFunction(search.searchProvider.toggleSearch)) {
-      const fieldVisible =
-        isSearchFieldVisible === undefined ? true : !isSearchFieldVisible;
-      search.searchProvider.toggleSearch(inputElem, fieldVisible);
-    }
+    globalSearchHelper.toggleSearch(isSearchFieldVisible, displaySearchResult, inputElem, customSearchItemRendererSlot);
   }
 </script>
 
 <svelte:window on:click={closeSearchResult} on:blur={closeSearchResult} />
 <div
-  class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible
-    ? 'lui-global-search-mobile--active'
-    : ''}"
+  class="fd-shellbar__action lui-global-search-input {isSearchFieldVisible ? 'lui-global-search-mobile--active' : ''}"
 >
   <div class="fd-popover">
     <div
@@ -269,14 +97,13 @@
       aria-hidden={!isSearchFieldVisible}
       aria-haspopup="true"
     >
-      <div
-        class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn fd-shellbar__search-field"
-      >
+      <div class="fd-input-group fd-shellbar__input-group luigi-search-input-ctn fd-shellbar__search-field">
         {#if search && search.disableInputHandlers}
           <input
             type="text"
             class="fd-input fd-input-group__input fd-shellbar__input-group-input luigi-search__input fd-shellbar__search-field-input"
-            data-testid="luigi-search-input__no-handlers" onfocus="event.target.parentNode.classList.add('is-focus')"
+            data-testid="luigi-search-input__no-handlers"
+            onfocus="event.target.parentNode.classList.add('is-focus')"
             onblur="event.target.parentNode.classList.remove('is-focus')"
             placeholder=" "
           />
@@ -301,7 +128,7 @@
               class="fd-shellbar__button fd-button fd-button--transparent"
               on:click={clearSearchField}
             >
-              <i class="sap-icon--decline"></i>
+              <i class="sap-icon--decline" />
             </button>
           </div>
           <div
@@ -312,54 +139,39 @@
               class="fd-shellbar__button fd-button fd-button--transparent"
               on:click={searchBtnClicked}
             >
-              <i class="sap-icon--search"></i>
+              <i class="sap-icon--search" />
             </button>
           </div>
-          <div class="fd-shellbar__search-field-helper"></div>
+          <div class="fd-shellbar__search-field-helper" />
         {/if}
       </div>
-      {#if !isCustomSearchRenderer}
+      {#if !globalSearchHelper.isCustomSearchRenderer}
         <div
           class="fd-popover__body fd-popover__body--right luigi-search-popover__body"
           aria-hidden={!displaySearchResult}
         >
           <nav class="fd-menu">
             {#if searchResult}
-              <ul
-                class="fd-menu__list fd-menu__list--top"
-                bind:this={luigiCustomSearchItemRenderer__slotContainer}
-              >
+              <ul class="fd-menu__list fd-menu__list--top" bind:this={customSearchItemRendererSlotContainer}>
                 {#each searchResult as result, index}
                   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                   <li
                     class="fd-menu__item luigi-search-result-item__{index}"
-                    on:click={event =>
-                      onSearchResultItemSelected(result, event)}
+                    on:click={event => onSearchResultItemSelected(result, event)}
                     on:keyup={event => handleKeydown(result, event)}
                     tabindex="0"
                   >
-                    {#if !isCustomSearchResultItemRenderer}
+                    {#if !globalSearchHelper.isCustomSearchResultItemRenderer}
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
                       <!-- svelte-ignore a11y-missing-attribute -->
-                      <a
-                        class="fd-menu__link"
-                        on:click|preventDefault={() => {}}
-                      >
+                      <a class="fd-menu__link" on:click|preventDefault={() => {}}>
                         <div class="fd-product-switch__text">
-                          <div class="fd-product-switch__title">
-                            {result.label}
-                          </div>
-                          <div class="fd-product-switch__subtitle">
-                            {result.description}
-                          </div>
+                          <div class="fd-product-switch__title">{result.label}</div>
+                          <div class="fd-product-switch__subtitle">{result.description}</div>
                         </div>
                       </a>
                     {:else}
-                      {@html renderCustomSearchItem(
-                        result,
-                        luigiCustomSearchItemRenderer__slotContainer,
-                        index
-                      )}
+                      {@html renderCustomSearchItem(result, customSearchItemRendererSlotContainer, index)}
                     {/if}
                   </li>
                 {/each}
@@ -368,7 +180,7 @@
           </nav>
         </div>
       {:else}
-        <div bind:this={luigiCustomSearchRenderer__slot} />
+        <div bind:this={customSearchItemRendererSlot} />
       {/if}
     </div>
   </div>
@@ -391,9 +203,7 @@
 {/if}
 {#if isSearchFieldVisible}
   <div
-    class="fd-shellbar__group lui-global-search-cancel-btn {isSearchFieldVisible
-      ? 'lui-global-search-cancel-btn--active'
-      : ''}"
+    class="fd-shellbar__group lui-global-search-cancel-btn {isSearchFieldVisible ? 'lui-global-search-cancel-btn--active' : ''}"
   >
     <button
       class="fd-button fd-button--transparent fd-shellbar__button"
@@ -414,7 +224,6 @@
       outline: none;
     }
   }
-
 
   .lui-clear-search {
     top: -1px;

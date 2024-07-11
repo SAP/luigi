@@ -1,11 +1,7 @@
 <script>
   import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiConfig, LuigiI18N } from '../core-api';
-  import {
-    NavigationHelpers,
-    RoutingHelpers,
-    StateHelpers
-  } from '../utilities/helpers';
+  import { NavigationHelpers, RoutingHelpers, StateHelpers } from '../utilities/helpers';
   import { Routing } from '../services/routing';
   import { Navigation } from './services/navigation';
 
@@ -82,8 +78,7 @@
               if (node.titleResolver) {
                 items.push({
                   label:
-                    node.titleResolver.prerenderFallback &&
-                    node.titleResolver.fallbackTitle
+                    node.titleResolver.prerenderFallback && node.titleResolver.fallbackTitle
                       ? LuigiI18N.getTranslation(node.titleResolver.fallbackTitle)
                       : breadcrumbConfig.pendingItemLabel || '',
                   node: node,
@@ -192,7 +187,7 @@
     display: none;
   }
 
-  :global(.fd-tool-layout) .lui-breadcrumb-container.lui-breadcrumb-container {    
+  :global(.fd-tool-layout) .lui-breadcrumb-container.lui-breadcrumb-container {
     background: transparent;
     box-shadow: none;
     top: 0;

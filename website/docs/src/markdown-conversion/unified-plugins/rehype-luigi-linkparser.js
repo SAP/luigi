@@ -48,6 +48,7 @@ export default function luigiLinkParser(options) {
         // current page anchor link
         node.properties['href'] = prependForExport() + '/docs/' + settings.shortName + parsed.hash.toLowerCase();
         node.properties['onclick'] = 'navigateInternal(event, this)';
+        node.properties['data-linktype'] = 'internal';
       } else if (
         parsed.pathname &&
         !parsed.protocol &&

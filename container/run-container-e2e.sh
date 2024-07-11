@@ -8,21 +8,37 @@ source $BASE_DIR/../scripts/shared/bashHelpers.sh
 echo ""
 echo "Container Test App"
 cd "$BASE_DIR"
-killWebserver 8080
-npm run start &
+
+# Test-APP runs on 8080
+killWebserver 8080 || true
+
+# simple 'examples' app runs on 2222 port
+killWebserver 2222 || true
+
+# Start the first server for 'examples' app in the background (&=background)
+npm run start-examples-test &
 WS_FID_PID=$!
 
-sleep 10
+
+# Start the second server for 'test-app' in the background
+npm run start &
+EXAMPLES_FID_PID=$!
+
+# sleep for 3 seconds to wait for both servers to be fired up
+sleep 3
 
 if [ "$USE_CYPRESS_DASHBOARD" == "true" ]; then
-  echo "Running tests in parallel with recording"
+  echo "Running tests with recording"
+  echo "Check the link https://dashboard.cypress.io/#/projects/czq7qc for the recording"
   # obtain the key here: https://dashboard.cypress.io/#/projects/czq7qc/settings
-  npm run cypress-headless -- --record --parallel --key 4bf20f87-8352-47d5-aefa-1e684fab69cf
+  npm run cypress-headless -- --record --key $CYPRESS_DASHBOARD_RECORD_KEY
 else
-  echo "Running tests without parallelization"
+  echo "Running tests without recording"
   npm run cypress-headless
 fi
 
-RV=$?
 kill $WS_FID_PID
-exit $RV
+kill $EXAMPLES_FID_PID
+
+exit $?
+

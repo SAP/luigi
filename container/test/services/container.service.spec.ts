@@ -87,7 +87,7 @@ describe('getContainerManager messageListener', () => {
      cw.postMessage = postMessageMock;
 
     // Define the message to send and target Origin
-    const message = {"context": {}, "internal": {}, "msg": "luigi.init"};
+    const message = {"context": {}, "internal": {}, "msg": "luigi.init", "authData":{}};
     const targetOrigin = "*";
 
     // Call the method that should trigger postMessage
@@ -345,7 +345,7 @@ describe('getContainerManager messageListener', () => {
       }
     };
     cm.messageListener(event);
-    expect(consoleWarnSpy).toHaveBeenCalledWith('Functionality not yet implemented: ','no-func');
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
 });

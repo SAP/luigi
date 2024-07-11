@@ -291,8 +291,7 @@ class RoutingClass {
         this.navigateTo(`${trimmedPathUrl ? `/${trimmedPathUrl}` : ''}/${defaultChildNode}`, {
           keepBrowserHistory: false
         });
-        // reset comp data
-        component.set({ navigationPath: [] });
+        return false;
       } else {
         if (defaultChildNode && pathData.navigationPath.length > 1) {
           //last path segment was invalid but a default node could be in its place
@@ -596,7 +595,11 @@ class RoutingClass {
 
   async showPageNotFoundError(component, pathToRedirect, notFoundPath, isAnyPathMatched = false, config = {}) {
     const redirectResult = RoutingHelpers.getPageNotFoundRedirectResult(notFoundPath, isAnyPathMatched);
+    if (redirectResult.ignoreLuigiErrorHandling) {
+      return;
+    }
     const redirectPathFromNotFoundHandler = redirectResult.path;
+
     if (redirectPathFromNotFoundHandler) {
       if (redirectResult.keepURL) {
         this.handleRouteChange(redirectPathFromNotFoundHandler, component, IframeHelpers.getIframeContainer(), config);

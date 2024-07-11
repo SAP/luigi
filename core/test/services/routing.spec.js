@@ -1170,6 +1170,7 @@ describe('Routing', function() {
       sinon.stub(RoutingHelpers, 'showRouteNotFoundAlert');
       sinon.stub(LuigiI18N, 'getTranslation');
       sinon.stub(component, 'showAlert');
+      sinon.stub(Routing, 'handleRouteChange');
     });
 
     it('navigate to redirect path', async () => {
@@ -1193,6 +1194,20 @@ describe('Routing', function() {
       Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
 
       sinon.assert.calledWithExactly(Routing.navigateTo, pathToRedirect2);
+    });
+    it('do nothing if ignoreLuigiErrorHandling is implmented by the custom handler', () => {
+      const custom = {
+        handler: () => {
+          return {
+            ignoreLuigiErrorHandling: true
+          };
+        }
+      };
+      LuigiConfig.getConfigValue.returns(custom.handler);
+      Routing.showPageNotFoundError(component, pathToRedirect, notFoundPath);
+      sinon.assert.notCalled(Routing.handleRouteChange);
+      sinon.assert.notCalled(Routing.navigateTo);
+      sinon.assert.notCalled(RoutingHelpers.showRouteNotFoundAlert);
     });
   });
   describe('dynamicNode', () => {
