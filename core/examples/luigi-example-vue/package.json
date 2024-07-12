@@ -3,19 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.47",
-    "vue-router": "^4.1.6",
-    "@luigi-project/client": "^2.0.1",
-    "@luigi-project/core": "^2.0.1"
+    "@luigi-project/client": "^2.14.0",
+    "vue": "^3.4.31",
+    "vue-router": "^4.4.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "copy-webpack-plugin": "11.0.0"
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.3"
   },
   "browserslist": [
     "> 1%",
