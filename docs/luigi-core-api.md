@@ -702,6 +702,40 @@ Returns **linkManager** link manager instance
 
 -   **since**: 1.0.1
 
+#### fromParent
+
+Enables navigating to sibling nodes without knowing the absolute path.
+
+##### Examples
+
+```javascript
+Luigi.navigation().fromParent().navigate('/sibling')
+```
+
+Returns **linkManager** link manager instance
+
+**Meta**
+
+-   **since**: 2.14.0
+
+#### getCurrentRoute
+
+Gets the Luigi route associated with the current micro frontend.
+
+##### Examples
+
+```javascript
+Luigi.navigation().getCurrentRoute();
+Luigi.navigation().fromContext('project').getCurrentRoute();
+Luigi.navigation().fromVirtualTreeRoot().getCurrentRoute();
+```
+
+Returns **any** a String value specifying the current Luigi route
+
+**Meta**
+
+-   **since**: 2.14.0
+
 #### withParams
 
 Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
@@ -1065,6 +1099,22 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 **Meta**
 
 -   **since**: 2.1.0
+
+#### getCurrentTheme
+
+Returns the current active theme. Falls back to **defaultTheme** if one wasn't explicitly specified before.
+
+##### Examples
+
+```javascript
+Luigi.ux().getCurrentTheme()
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** theme id
+
+**Meta**
+
+-   **since**: 2.14.0
 
 ## Luigi.globalSearch()
 

@@ -10,15 +10,15 @@ describe('trivial functions', () => {
   });
 
   it('checkWCUrl', () => {
-   const returnVal = service.checkWCUrl('http://localhost:4200/foo/bar');
+    const returnVal = service.checkWCUrl('http://localhost:4200/foo/bar');
     expect(returnVal).toEqual(true);
   });
 
   it('processViewUrl', () => {
     const viewUrl = 'http://localhost:4200/foo/bar';
     const returnVal = service.processViewUrl(viewUrl);
-     expect(returnVal).toEqual(viewUrl);
-   });
+    expect(returnVal).toEqual(viewUrl);
+  });
 });
 
 describe('attachWC', () => {
@@ -36,7 +36,7 @@ describe('attachWC', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks();
   });
 
   it('wc_container contains wcItemPlaceholder and nodeId is provided', () => {
@@ -78,7 +78,7 @@ describe('attachWC', () => {
 
   it('nodeId not provided', () => {
     const innerWCElement = document.createElement(wc_id);
-    
+
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
     wc_container.replaceChild = jest.fn();
@@ -93,11 +93,11 @@ describe('attachWC', () => {
 
   it('_luigi_node provided', () => {
     const innerWCElement = document.createElement(wc_id);
-    
+
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
     wc_container.replaceChild = jest.fn();
-    (wc_container as any)._luigi_node = {test: 'node'};
+    (wc_container as any)._luigi_node = { test: 'node' };
 
     // Act
     service.attachWC(wc_id, wcItemPlaceholder, wc_container, null, viewUrl, undefined);
@@ -108,7 +108,6 @@ describe('attachWC', () => {
 
     expect(dispatchEventSpy).toHaveBeenCalledWith(new Event('wc_ready'));
   });
-
 });
 
 describe('dispatchLuigiEvent', () => {
@@ -136,260 +135,339 @@ describe('createClientAPI', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks();
   });
 
   describe('linkManager', () => {
     it('test linkManager navigate', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.linkManager().navigate(route);
-  
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
-        link: "/test/route",
-        nodeParams: {}  
+        link: '/test/route',
+        nodeParams: {}
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
+
     it('test linkManager: openAsDrawer', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().openAsDrawer(route, {size: 's'});
-  
+      clientAPI.linkManager().openAsDrawer(route, { size: 's' });
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
-        link: "/test/route",
+        link: '/test/route',
         nodeParams: {},
         drawer: {
           size: 's'
-        } 
+        }
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
+
     it('test linkManager: openAsModal', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().openAsModal(route, {size: 's'});
-  
+      clientAPI.linkManager().openAsModal(route, { size: 's' });
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
-        link: "/test/route",
+        link: '/test/route',
         nodeParams: {},
         modal: {
           size: 's'
-        } 
+        }
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
-    
+
     it('test linkManager: openAsSplitView', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().openAsSplitView(route, {size: 's'});
-  
+      clientAPI.linkManager().openAsSplitView(route, { size: 's' });
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
-        link: "/test/route",
+        link: '/test/route',
         nodeParams: {},
         splitView: {
           size: 's'
-        } 
+        }
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
-  
-  
+
     it('test linkManager fromClosestContext', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().fromClosestContext().navigate(route);
-  
+      clientAPI
+        .linkManager()
+        .fromClosestContext()
+        .navigate(route);
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: true,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: false,
-        link: "/test/route",
-        nodeParams: {}  
+        link: '/test/route',
+        nodeParams: {}
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
+
     it('test linkManager fromContext', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().fromContext({test: 'data'}).navigate(route);
-  
+      clientAPI
+        .linkManager()
+        .fromContext({ test: 'data' })
+        .navigate(route);
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: false,
-        fromContext: {test: 'data'},
+        fromParent: false,
+        fromContext: { test: 'data' },
         fromVirtualTreeRoot: false,
-        link: "/test/route",
-        nodeParams: {}  
+        link: '/test/route',
+        nodeParams: {}
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
+
     it('test linkManager fromVirtualTreeRoot', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().fromVirtualTreeRoot().navigate(route);
-  
+      clientAPI
+        .linkManager()
+        .fromVirtualTreeRoot()
+        .navigate(route);
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: false,
+        fromParent: false,
         fromContext: null,
         fromVirtualTreeRoot: true,
-        link: "/test/route",
-        nodeParams: {}  
+        link: '/test/route',
+        nodeParams: {}
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
+
+    it('test linkManager currentRoute', () => {
+      // Mock and spy on functions
+      service.containerService.dispatch = jest.fn((event, component, options, callback) => {
+        callback('/current/route');
+      });
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      const currentRoutePromise = clientAPI.linkManager().getCurrentRoute();
+
+      // assert
+      const expectedPayload = {
+        fromClosestContext: false,
+        fromParent: false,
+        fromContext: null,
+        fromVirtualTreeRoot: false,
+        nodeParams: {}
+      };
+      return currentRoutePromise.then(result => {
+        expect(service.containerService.dispatch).toHaveBeenCalledWith(
+          Events.GET_CURRENT_ROUTE_REQUEST,
+          service.thisComponent,
+          expectedPayload,
+          expect.any(Function),
+          'callback'
+        );
+        expect(result).toBe('/current/route');
+      });
+    });
+
+    it('test linkManager currentRoute from parent', () => {
+      // Mock and spy on functions
+      service.containerService.dispatch = jest.fn((event, component, options, callback) => {
+        callback('/route');
+      });
+
+      // act
+      const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+      const currentRoutePromise = clientAPI
+        .linkManager()
+        .fromParent()
+        .getCurrentRoute();
+
+      // assert
+      const expectedPayload = {
+        fromClosestContext: false,
+        fromParent: true,
+        fromContext: null,
+        fromVirtualTreeRoot: false,
+        nodeParams: {}
+      };
+      return currentRoutePromise.then(result => {
+        expect(service.containerService.dispatch).toHaveBeenCalledWith(
+          Events.GET_CURRENT_ROUTE_REQUEST,
+          service.thisComponent,
+          expectedPayload,
+          expect.any(Function),
+          'callback'
+        );
+        expect(result).toBe('/route');
+      });
+    });
+
     it('test linkManager withParams', () => {
-      const route = '/test/route'
-  
+      const route = '/test/route';
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().withParams({params: 'some params'}).navigate(route);
-  
+      clientAPI
+        .linkManager()
+        .withParams({ params: 'some params' })
+        .navigate(route);
+
       // assert
-      const expectedPayload = { 
+      const expectedPayload = {
         fromClosestContext: false,
         fromContext: null,
+        fromParent: false,
         fromVirtualTreeRoot: false,
-        link: "/test/route",
-        nodeParams: {params: 'some params'}  
+        link: '/test/route',
+        nodeParams: { params: 'some params' }
       };
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.NAVIGATION_REQUEST, expectedPayload);
     });
-  
+
     it('test linkManager updateTopNavigation', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.linkManager().updateTopNavigation();
-  
+
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.UPDATE_TOP_NAVIGATION_REQUEST, {});
     });
-    
+
     it('test linkManager goBack', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-      clientAPI.linkManager().goBack({ctx: 'context'});
-  
-      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.GO_BACK_REQUEST, {ctx: 'context'});
+      clientAPI.linkManager().goBack({ ctx: 'context' });
+
+      expect(dispatchEventSpy).toHaveBeenCalledWith(Events.GO_BACK_REQUEST, { ctx: 'context' });
     });
-  
+
     it('test linkManager hasBack set to default false', () => {
-      // since the hasBack functionality is not relevant to container but we need to keep 
+      // since the hasBack functionality is not relevant to container but we need to keep
       // container - core wc client api in sync, leaving it as a default false functionality
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
       service.thisComponent.hasBack = true;
-      
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const hasBack = clientAPI.linkManager().hasBack();
-  
+
       // assert
       expect(hasBack).toEqual(false);
     });
-  
+
     it('test linkManager hasBack not set', () => {
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
-      
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const hasBack = clientAPI.linkManager().hasBack();
-  
+
       // assert
       expect(hasBack).toEqual(false);
     });
-  
-    
+
     it('test linkManager pathExists: should resolve with true if path exists', () => {
       // Mock and spy on functions
       service.containerService.dispatch = jest.fn((event, component, options, callback) => {
         callback(true);
       });
-  
+
       // Call the function and get the Promise
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const pathExistsPromise = clientAPI.linkManager().pathExists();
-  
+
       // Simulate asynchronous behavior
       return pathExistsPromise.then(result => {
         // Check if the dispatch function was called with the correct arguments
@@ -404,74 +482,74 @@ describe('createClientAPI', () => {
         expect(result).toBe(true);
       });
     });
-  
+
     it('test linkManager pathExists: should reject with false if path does not exist', () => {
       // Mock and spy on functions
       service.containerService.dispatch = jest.fn((event, component, options, callback) => {
         callback(false);
       });
-  
+
       // Call the function and get the Promise
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const pathExistsPromise = clientAPI.linkManager().pathExists();
-  
+
       // Simulate asynchronous behavior
-      return pathExistsPromise.then(result => {
-       
-      }).catch((error)=>{
-         // Check if the dispatch function was called with the correct arguments
-         expect(service.containerService.dispatch).toHaveBeenCalledWith(
-          Events.PATH_EXISTS_REQUEST,
-          service.thisComponent,
-          {},
-          expect.any(Function),
-          'callback'
-        );
-        expect(error).toBe(false);
-      });
+      return pathExistsPromise
+        .then(result => {})
+        .catch(error => {
+          // Check if the dispatch function was called with the correct arguments
+          expect(service.containerService.dispatch).toHaveBeenCalledWith(
+            Events.PATH_EXISTS_REQUEST,
+            service.thisComponent,
+            {},
+            expect.any(Function),
+            'callback'
+          );
+          expect(error).toBe(false);
+        });
     });
   });
 
   describe('uxManager', () => {
     it('test uxManager showAlert', () => {
       const alertSettings = {
-          text: "Some alert text",
-          type: 'info',
-      }
-  
+        text: 'Some alert text',
+        type: 'info'
+      };
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.uxManager().showAlert(alertSettings);
-  
+
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ALERT_REQUEST, alertSettings);
     });
-  
+
     it('test uxManager getCurrentTheme', () => {
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
       service.thisComponent.theme = 'my-theme';
-      
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const receivedTheme = clientAPI.uxManager().getCurrentTheme();
-  
+
       // assert
       expect(receivedTheme).toEqual('my-theme');
     });
-  
+
     it('test uxManager getCurrentTheme UNDEFINED', () => {
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
-      
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const receivedTheme = clientAPI.uxManager().getCurrentTheme();
-  
+
       // assert
       expect(receivedTheme).toEqual(undefined);
     });
@@ -490,7 +568,7 @@ describe('createClientAPI', () => {
       const confirmationModalPromise = clientAPI.uxManager().showConfirmationModal(settings);
 
       // assert
-      return confirmationModalPromise.then((result) => {
+      return confirmationModalPromise.then(result => {
         expect(service.containerService.dispatch).toHaveBeenCalledWith(
           Events.SHOW_CONFIRMATION_MODAL_REQUEST,
           service.thisComponent,
@@ -521,74 +599,71 @@ describe('createClientAPI', () => {
     it('test uxManager closeUserSettings', () => {
       service.thisComponent = document.createElement('div');
       const userSettings = {
-        user: "Some user data"
-      }
+        user: 'Some user data'
+      };
       service.thisComponent.userSettings = userSettings;
-  
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.uxManager().closeUserSettings(userSettings);
-  
+
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.CLOSE_USER_SETTINGS_REQUEST, userSettings);
     });
 
-
     it('test uxManager openUserSettings', () => {
       service.thisComponent = document.createElement('div');
       const userSettings = {
-        user: "Some open user settings data"
-      }
+        user: 'Some open user settings data'
+      };
       service.thisComponent.userSettings = userSettings;
-  
+
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.uxManager().openUserSettings(userSettings);
-  
+
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.OPEN_USER_SETTINGS_REQUEST, userSettings);
     });
 
-    
-    it('test uxManager collapseLeftSideNav', () => {  
+    it('test uxManager collapseLeftSideNav', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.uxManager().collapseLeftSideNav();
-  
+
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.COLLAPSE_LEFT_NAV_REQUEST, {});
     });
 
-    it('test uxManager setDocumentTitle', () => {  
+    it('test uxManager setDocumentTitle', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.uxManager().setDocumentTitle('TITLE');
-  
+
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.SET_DOCUMENT_TITLE_REQUEST, 'TITLE');
     });
 
-    
     it('test uxManager getDocumentTitle', () => {
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
-      service.thisComponent.documentTitle = 'Title'
+      service.thisComponent.documentTitle = 'Title';
 
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
@@ -614,7 +689,7 @@ describe('createClientAPI', () => {
     it('test uxManager getDirtyStatus', () => {
       // mock and spy on data/functions
       service.thisComponent = document.createElement('div');
-      
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       const result = clientAPI.uxManager().getDirtyStatus();
@@ -622,39 +697,38 @@ describe('createClientAPI', () => {
       // assert
       expect(result).toEqual(false);
     });
-  
-    it('test uxManager removeBackdrop', () => {  
+
+    it('test uxManager removeBackdrop', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.uxManager().removeBackdrop();
-  
+
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.REMOVE_BACKDROP_REQUEST, {});
     });
-        
-    it('test uxManager hideAppLoadingIndicator', () => {  
+
+    it('test uxManager hideAppLoadingIndicator', () => {
       // mock and spy on functions
       service.containerService.dispatch = jest.fn();
       const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-  
+
       // act
       const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
       clientAPI.uxManager().hideAppLoadingIndicator();
-  
+
       // assert
       expect(dispatchEventSpy).toHaveBeenCalledWith(Events.HIDE_LOADING_INDICATOR_REQUEST, {});
     });
-
   });
 
   it('test getCurrentLocale set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.locale = 'en'
+    service.thisComponent.locale = 'en';
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
@@ -667,7 +741,7 @@ describe('createClientAPI', () => {
   it('test getCurrentLocale attribute NOT set', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    
+
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     const result = clientAPI.getCurrentLocale();
@@ -679,20 +753,20 @@ describe('createClientAPI', () => {
   it('test getActiveFeatureToggles set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.activeFeatureToggleList = ['ft1','ft2'];
+    service.thisComponent.activeFeatureToggleList = ['ft1', 'ft2'];
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     const result = clientAPI.getActiveFeatureToggles();
 
     // assert
-    expect(result).toEqual(['ft1','ft2']);
+    expect(result).toEqual(['ft1', 'ft2']);
   });
 
   it('test getActiveFeatureToggles attribute NOT set', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    
+
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     const result = clientAPI.getActiveFeatureToggles();
@@ -708,13 +782,13 @@ describe('createClientAPI', () => {
         onPublishEvent: () => {}
       }
     };
-    const eventBusPublishEventSpy = jest.spyOn( eventBusElement.eventBus, 'onPublishEvent');
+    const eventBusPublishEventSpy = jest.spyOn(eventBusElement.eventBus, 'onPublishEvent');
     const dispatchSpy = jest.spyOn(service.containerService, 'dispatch').mockImplementation(() => {});
-    const customEvent = new CustomEvent('test-event', { detail: 1 })
+    const customEvent = new CustomEvent('test-event', { detail: 1 });
     const node_id = 'nodeId';
     const wc_id = 'wc_id';
 
-    // act 
+    // act
     const clientAPI = service.createClientAPI(eventBusElement, node_id, wc_id, 'component');
     clientAPI.publishEvent(customEvent);
     const expectedPayload = {
@@ -744,11 +818,11 @@ describe('createClientAPI', () => {
       data: 1
     };
     const dispatchSpy = jest.spyOn(service.containerService, 'dispatch').mockImplementation(() => {});
-    
+
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     clientAPI.publishEvent(new CustomEvent('test-event', { detail: 1 }));
-    
+
     // assert
     expect(dispatchSpy).toHaveBeenCalledWith(Events.CUSTOM_MESSAGE, undefined, expectedPayload, undefined);
   });
@@ -773,7 +847,7 @@ describe('createClientAPI', () => {
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
-    const data = {vg: 'some data'}
+    const data = { vg: 'some data' };
     clientAPI.setViewGroupData(data);
 
     // assert
@@ -784,15 +858,15 @@ describe('createClientAPI', () => {
     // mock and spy on functions
     service.containerService.dispatch = jest.fn();
     const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-    const params = {luigi: 'rocks'}
+    const params = { luigi: 'rocks' };
     const keepBrowserHistory = true;
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
-    clientAPI.addNodeParams( params, keepBrowserHistory);
+    clientAPI.addNodeParams(params, keepBrowserHistory);
 
     // assert
-    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, {params, keepBrowserHistory});
+    expect(dispatchEventSpy).toHaveBeenCalledWith(Events.ADD_NODE_PARAMS_REQUEST, { params, keepBrowserHistory });
   });
 
   it('test addNodeParams isSpecial TRUE', () => {
@@ -811,7 +885,7 @@ describe('createClientAPI', () => {
   it('test getNodeParams isSpecial TRUE', () => {
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', true);
-   
+
     // assert
     expect(clientAPI.getNodeParams()).toEqual({});
   });
@@ -820,8 +894,8 @@ describe('createClientAPI', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
     // const paramsRaw = { "test": "sum 2+2 &lt; 3+5 and 5 &gt; 1" };
-    const paramsObject = { "test": 'sum 2+2 &lt; 3+5 and 5 &gt; 1' };
-    const paramsResult = { "test": 'sum 2+2 < 3+5 and 5 > 1' };
+    const paramsObject = { test: 'sum 2+2 &lt; 3+5 and 5 &gt; 1' };
+    const paramsResult = { test: 'sum 2+2 < 3+5 and 5 > 1' };
 
     service.thisComponent.nodeParams = paramsObject;
     const deSanitizeParamsMapSpy = jest.spyOn(helperFunctions, 'deSanitizeParamsMap');
@@ -831,14 +905,14 @@ describe('createClientAPI', () => {
     const result = clientAPI.getNodeParams(true);
 
     // assert
-    expect(deSanitizeParamsMapSpy).toHaveBeenCalledWith(paramsObject)
+    expect(deSanitizeParamsMapSpy).toHaveBeenCalledWith(paramsObject);
     expect(result).toEqual(paramsResult);
   });
 
   it('test getNodeParams isSpecial FALSE, shouldDesanitise false', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const params = { "test": 'luigi &lt;' };
+    const params = { test: 'luigi &lt;' };
 
     service.thisComponent.nodeParams = params;
     const deSanitizeParamsMapSpy = jest.spyOn(helperFunctions, 'deSanitizeParamsMap');
@@ -848,7 +922,7 @@ describe('createClientAPI', () => {
     const result = clientAPI.getNodeParams(false);
 
     // assert
-    expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled()
+    expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled();
     expect(result).toEqual(params);
   });
 
@@ -864,15 +938,15 @@ describe('createClientAPI', () => {
     const result = clientAPI.getNodeParams(false);
 
     // assert
-    expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled()
-    expect(result).toEqual({}); 
+    expect(deSanitizeParamsMapSpy).not.toHaveBeenCalled();
+    expect(result).toEqual({});
   });
 
   it('test setAnchor isSpecial FALSE', () => {
     // mock and spy on functions
     service.containerService.dispatch = jest.fn();
     const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-    const anchor = 'some-anchor'
+    const anchor = 'some-anchor';
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
@@ -886,7 +960,7 @@ describe('createClientAPI', () => {
     // mock and spy on functions
     service.containerService.dispatch = jest.fn();
     const dispatchEventSpy = jest.spyOn(service, 'dispatchLuigiEvent');
-    const anchor = 'some-anchor'
+    const anchor = 'some-anchor';
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', true);
@@ -899,20 +973,20 @@ describe('createClientAPI', () => {
   it('test getAnchor set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    service.thisComponent.anchor = "home";
+    service.thisComponent.anchor = 'home';
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     const result = clientAPI.getAnchor();
 
     // assert
-    expect(result).toEqual("home");
+    expect(result).toEqual('home');
   });
 
   it('test getAnchor attribute NOT set', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    
+
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
     const result = clientAPI.getAnchor();
@@ -924,7 +998,7 @@ describe('createClientAPI', () => {
   it('test getCoreSearchParams WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsObject = { "test": "sum 2+2 = 4" };
+    const paramsObject = { test: 'sum 2+2 = 4' };
     service.thisComponent.searchParams = paramsObject;
 
     // act
@@ -950,7 +1024,7 @@ describe('createClientAPI', () => {
   it('test getPathParams WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsObject = { "pathParam": "sum 2+2 = 4" };
+    const paramsObject = { pathParam: 'sum 2+2 = 4' };
     service.thisComponent.pathParams = paramsObject;
 
     // act
@@ -970,14 +1044,13 @@ describe('createClientAPI', () => {
     const result = clientAPI.getPathParams();
 
     // assert
-    expect(result).toEqual({}); 
+    expect(result).toEqual({});
   });
 
-  
   it('test getClientPermissions WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsObject = { "permissions": "lots of permission" };
+    const paramsObject = { permissions: 'lots of permission' };
     service.thisComponent.clientPermissions = paramsObject;
 
     // act
@@ -1003,8 +1076,8 @@ describe('createClientAPI', () => {
   it('test getUserSettings WITH attribute', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
-    const paramsObject = { "permissions": "lots of permission" };
-    service.thisComponent.userSettings =  paramsObject;
+    const paramsObject = { permissions: 'lots of permission' };
+    service.thisComponent.userSettings = paramsObject;
 
     // act
     const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
@@ -1040,13 +1113,13 @@ describe('initWC', () => {
     service = new WebComponentService();
   });
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should set context and LuigiClient if wc.__postProcess is not defined', () => {
     // Arrange
     const wc = { context: null, LuigiClient: null };
-    const spyClientAPI = jest.spyOn(service, 'createClientAPI')
+    const spyClientAPI = jest.spyOn(service, 'createClientAPI');
 
     // Act
     service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
@@ -1054,7 +1127,7 @@ describe('initWC', () => {
     // Assert
     expect(wc.context).toEqual(ctx);
     expect(wc.LuigiClient).toBeDefined();
-    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isCompoundChild)
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId, wc_id, wc, isCompoundChild);
   });
 
   it('should call wc.__postProcess if wc.__postProcess is defined', () => {
@@ -1062,24 +1135,24 @@ describe('initWC', () => {
     const wc = { __postProcess: jest.fn() };
 
     const clientAPIReturnVal = {
-      getCurrentLocale: () =>{}
-    }
+      getCurrentLocale: () => {}
+    };
     const spyClientAPI = jest.spyOn(service, 'createClientAPI').mockReturnValue(clientAPIReturnVal);
-  
-    const baseURIMocked ='https://example.com/some-page/1'
+
+    const baseURIMocked = 'https://example.com/some-page/1';
     jest.spyOn(document, 'baseURI', 'get').mockReturnValue(baseURIMocked);
     const documentOrigin = 'https://example.com/some-page';
     const urlSpyMockData = {
       origin: documentOrigin,
-      pathname: '/another-page',
-    }
-    const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation((url) => (urlSpyMockData));
+      pathname: '/another-page'
+    };
+    const urlSpy = jest.spyOn(global as any, 'URL').mockImplementation(url => urlSpyMockData);
 
     // Act
     service.initWC(wc, wc_id, eventBusElement, viewUrl, ctx, nodeId, isCompoundChild);
 
     // Assert
-    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId,wc_id,wc,isCompoundChild);
+    expect(spyClientAPI).toHaveBeenCalledWith(eventBusElement, nodeId, wc_id, wc, isCompoundChild);
     expect(wc.__postProcess).toHaveBeenCalledWith(ctx, clientAPIReturnVal, documentOrigin + '/another-page');
     expect(urlSpy).toHaveBeenCalledTimes(4);
     expect(urlSpy).toHaveBeenNthCalledWith(1, baseURIMocked);
@@ -1087,8 +1160,6 @@ describe('initWC', () => {
     expect(urlSpy).toHaveBeenNthCalledWith(3, documentOrigin, baseURIMocked);
     expect(urlSpy).toHaveBeenNthCalledWith(4, './', urlSpyMockData);
   });
-
-  
 });
 
 describe('generateWCId function', () => {
@@ -1102,7 +1173,7 @@ describe('generateWCId function', () => {
   it('should generate an ID for a simple view URL', () => {
     const URLReturn = '/mocked-URL-return-path';
     jest.spyOn(global as any, 'URL').mockImplementation((viewUrl, base) => ({
-        href: URLReturn,
+      href: URLReturn
     }));
     const viewUrl = 'https://example.com/page1';
     const expectedId = 'luigi-wc-2f6d6f636b65642d55524c2d72657475726e2d70617468';
@@ -1115,7 +1186,7 @@ describe('generateWCId function', () => {
     const viewUrl = 'https://example.com/page?name=John&age=30';
     const URLReturn = '/mocked-URL-return-path';
     jest.spyOn(global as any, 'URL').mockImplementation((viewUrl, base) => ({
-        href: URLReturn,
+      href: URLReturn
     }));
     const expectedId = 'luigi-wc-2f6d6f636b65642d55524c2d72657475726e2d70617468';
     const result = service.generateWCId(viewUrl);
@@ -1126,8 +1197,8 @@ describe('generateWCId function', () => {
   it('should generate an ID for an empty view URL', () => {
     const viewUrl = '';
     const URLReturn = '/mocked-URL-return-path';
-   jest.spyOn(global as any, 'URL').mockImplementation((viewUrl, base) => ({
-        href: URLReturn,
+    jest.spyOn(global as any, 'URL').mockImplementation((viewUrl, base) => ({
+      href: URLReturn
     }));
     const expectedId = 'luigi-wc-2f6d6f636b65642d55524c2d72657475726e2d70617468';
     const result = service.generateWCId(viewUrl);
@@ -1138,13 +1209,13 @@ describe('generateWCId function', () => {
 describe('renderWebComponentCompound', () => {
   let service;
   beforeEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks();
 
-    service = new WebComponentService()
+    service = new WebComponentService();
   });
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks();
   });
 
   it('resolved', async () => {
@@ -1159,10 +1230,10 @@ describe('renderWebComponentCompound', () => {
 
     const navNode = {
       webcomponent: true,
-      viewUrl :'viewURL-1'
+      viewUrl: 'viewURL-1'
     };
     const wc_container = document.createElement('div');
-    const context = {}
+    const context = {};
 
     // Call the function
     await service.renderWebComponentCompound(navNode, wc_container, context);
@@ -1181,13 +1252,9 @@ describe('renderWebComponentCompound', () => {
     service.renderWebComponent = jest.fn();
 
     const compoundCntReturn = document.createElement('div');
-    service.createCompoundContainerAsync = jest.fn((renderer, context, navNode) =>
-      Promise.resolve(
-        compoundCntReturn
-      )
-    );
+    service.createCompoundContainerAsync = jest.fn((renderer, context, navNode) => Promise.resolve(compoundCntReturn));
 
-    const renderer =  helperFunctions.resolveRenderer({})
+    const renderer = helperFunctions.resolveRenderer({});
     const navNode = {
       compound: {
         renderer: renderer,
@@ -1198,18 +1265,20 @@ describe('renderWebComponentCompound', () => {
         ]
       }
     };
-    navNode.compound.renderer.createCompoundItemContainer = jest.fn()
+    navNode.compound.renderer.createCompoundItemContainer = jest.fn();
 
     const wc_container = document.createElement('div');
-    const context = {}
-    const customEvent = new CustomEvent('test-event', { detail: 1 })
-    const srcNodeId = 'srcNodeID001'
-    const wc_id = 'some0id'
+    const context = {};
+    const customEvent = new CustomEvent('test-event', { detail: 1 });
+    const srcNodeId = 'srcNodeID001';
+    const wc_id = 'some0id';
 
     console.debug = jest.fn();
-    const compountCreateSpy = jest.spyOn(helperFunctions.DefaultCompoundRenderer.prototype, 'createCompoundItemContainer');
+    const compountCreateSpy = jest.spyOn(
+      helperFunctions.DefaultCompoundRenderer.prototype,
+      'createCompoundItemContainer'
+    );
     const attachCompoundItemSpy = jest.spyOn(helperFunctions.DefaultCompoundRenderer.prototype, 'attachCompoundItem');
-
 
     // Call the function
     let compoundReturn = await service.renderWebComponentCompound(navNode, wc_container, context);
@@ -1223,7 +1292,7 @@ describe('renderWebComponentCompound', () => {
     expect(attachCompoundItemSpy).toHaveBeenCalled();
   });
 
-  it('rejected',  () => {
+  it('rejected', () => {
     jest.spyOn(helperFunctions, 'resolveRenderer');
     service.createCompoundContainerAsync = jest.fn();
     service.renderWebComponent = jest.fn();
@@ -1234,7 +1303,7 @@ describe('renderWebComponentCompound', () => {
 
     const navNode = {};
     const wc_container = document.createElement('div');
-    const context = {}
+    const context = {};
     service.containerService = new ContainerService();
     service.containerService.dispatch = jest.fn();
 
@@ -1258,18 +1327,18 @@ describe('createCompoundContainerAsync', () => {
 
   afterEach(() => {
     jest.clearAllMocks(); // Clear mock function call history after each test
-    jest.resetAllMocks()
+    jest.clearAllMocks();
   });
 
   it('should resolve with a web component when renderer has a viewUrl', async () => {
     // Arrange
     const renderer = {
-      viewUrl: 'https://example.com/webcomponent',
+      viewUrl: 'https://example.com/webcomponent'
     };
-    const ctx = {}
+    const ctx = {};
     const mockGeneratedWCId = 'mocked-wc-id';
     const mockWebComponent = document.createElement(mockGeneratedWCId);
-    const navNode = {}
+    const navNode = {};
 
     service.initWC = jest.fn();
     service.registerWCFromUrl = jest.fn().mockResolvedValue(mockWebComponent);
@@ -1277,13 +1346,20 @@ describe('createCompoundContainerAsync', () => {
     service.containerService.dispatch = jest.fn();
 
     // Act and Assert
-    const result = await service.createCompoundContainerAsync(renderer, ctx, navNode)
+    const result = await service.createCompoundContainerAsync(renderer, ctx, navNode);
     expect(result).toEqual(mockWebComponent);
 
     // Additional Assertions
     expect(service.generateWCId).toHaveBeenCalledWith(renderer.viewUrl);
     expect(service.registerWCFromUrl).toHaveBeenCalledWith(renderer.viewUrl, mockGeneratedWCId);
-    expect(service.initWC).toHaveBeenCalledWith(mockWebComponent, mockGeneratedWCId, mockWebComponent, renderer.viewUrl, ctx, '_root');
+    expect(service.initWC).toHaveBeenCalledWith(
+      mockWebComponent,
+      mockGeneratedWCId,
+      mockWebComponent,
+      renderer.viewUrl,
+      ctx,
+      '_root'
+    );
   });
 
   // TODO: NEEDS changing TRY/CATCH not rejecting properly
@@ -1292,7 +1368,7 @@ describe('createCompoundContainerAsync', () => {
   //   const renderer = {
   //     viewUrl: 'https://example.com/webcomponent',
   //   };
-  //   const ctx = {};    
+  //   const ctx = {};
   //   const mockGeneratedWCId = 'mocked-wc-id';
   //   const mockWebComponent = document.createElement(mockGeneratedWCId);
   //   const rejectVal = 'Rejected Reason...';
@@ -1318,12 +1394,14 @@ describe('createCompoundContainerAsync', () => {
   it('should resolve with a compound container when renderer has no viewUrl', async () => {
     // Arrange
     const renderer = {
-      createCompoundContainer: jest.fn(),
+      createCompoundContainer: jest.fn()
     };
     const ctx = {};
 
     // Act and Assert
-    await expect(service.createCompoundContainerAsync(renderer, ctx)).resolves.toEqual(renderer.createCompoundContainer());
+    await expect(service.createCompoundContainerAsync(renderer, ctx)).resolves.toEqual(
+      renderer.createCompoundContainer()
+    );
   });
 });
 
@@ -1336,8 +1414,7 @@ describe('registerWCFromUrl', () => {
 
   afterEach(() => {
     jest.clearAllMocks(); // Clear mock function call history after each test
-    jest.resetAllMocks();
-
+    jest.clearAllMocks();
   });
 
   it('should successfully register a web component customElements get = UNDEFINED', async () => {
@@ -1346,12 +1423,12 @@ describe('registerWCFromUrl', () => {
     const wc_id = 'custom-element-id';
 
     // Mock the dynamicImport function to return a module with a valid
-    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined)
+    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn((viewUrl) =>
+    service.dynamicImport = jest.fn(viewUrl =>
       Promise.resolve({
         default: class InValidWebComponent {},
-        valid: class ValidWebComponent extends HTMLElement{},
+        valid: class ValidWebComponent extends HTMLElement {}
       })
     );
     window.customElements.define = jest.fn();
@@ -1363,7 +1440,7 @@ describe('registerWCFromUrl', () => {
     expect(result).toBe(1); // Registration successful
     expect(service.dynamicImport).toHaveBeenCalledWith('valid-view-url');
     expect(service.dynamicImport).resolves;
-    expect(spy).toHaveBeenCalled()
+    expect(spy).toHaveBeenCalled();
     expect(window.customElements.define).toHaveBeenCalled();
     // expect(window.customElements.define).toHaveBeenCalledWith('custom-element-id', expect.any(Function));
   });
@@ -1374,12 +1451,12 @@ describe('registerWCFromUrl', () => {
     const wc_id = 'custom-element-id';
 
     // Mock the dynamicImport function to return a module with a valid
-    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined)
+    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn((viewUrl) =>
+    service.dynamicImport = jest.fn(viewUrl =>
       Promise.resolve({
         default: class InValidWebComponent {},
-        valid: class ValidWebComponent extends HTMLElement{},
+        valid: class ValidWebComponent extends HTMLElement {}
       })
     );
     window.customElements.define = jest.fn().mockImplementation(() => {
@@ -1394,23 +1471,21 @@ describe('registerWCFromUrl', () => {
       expect(error.message).toBe('Registration error');
       expect(service.dynamicImport).toHaveBeenCalledWith('valid-view-url');
       expect(service.dynamicImport).rejects;
-      expect(spy).toHaveBeenCalled()
+      expect(spy).toHaveBeenCalled();
       expect(window.customElements.define).toHaveBeenCalled();
       expect(window.customElements.define).toHaveBeenCalledWith('custom-element-id', expect.any(Function));
     }
-   });
+  });
 
-   it('should fail with dynamicReport error', async () => {
+  it('should fail with dynamicReport error', async () => {
     // Arrange
     const viewUrl = 'valid-view-url';
     const wc_id = 'custom-element-id';
 
     // Mock the dynamicImport function to return a module with a valid
-    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined)
+    const spy = jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
 
-    service.dynamicImport = jest.fn((viewUrl) =>
-      Promise.reject(new Error('Dynamic import error'))
-    );
+    service.dynamicImport = jest.fn(viewUrl => Promise.reject(new Error('Dynamic import error')));
 
     // act
     let result;
@@ -1440,24 +1515,19 @@ describe('registerWCFromUrl', () => {
 });
 
 describe('includeSelfRegisteredWCFromUrl', () => {
-  let originalCustomElements;
   let originalLuigi;
   let service;
 
   beforeEach(() => {
     service = new WebComponentService();
-     // Store the original values of customElements and Luigi
-     originalCustomElements = window.customElements;
-     originalLuigi = (window as any).Luigi;
+    // Store the original values of customElements and Luigi
+    originalLuigi = (window as any).Luigi;
   });
 
   afterEach(() => {
     // Restore the original values after each test
-    window.customElements = originalCustomElements;
     (window as any).Luigi = originalLuigi;
     jest.clearAllMocks(); // Clear mock function call history after each test
-    jest.resetAllMocks();
-
   });
 
   it('should modify document body with script tag', () => {
@@ -1472,8 +1542,8 @@ describe('includeSelfRegisteredWCFromUrl', () => {
     // Mock customElements.define to capture the arguments passed
     window.customElements.define = jest.fn();
     const containerManagerSpy = jest.spyOn(service.containerService, 'getContainerManager');
-    const gwID =  jest.spyOn(service, 'generateWCId').mockReturnValue('my-wc-id');
-    const mockedElement = document.createElement('div')
+    const gwID = jest.spyOn(service, 'generateWCId').mockReturnValue('my-wc-id');
+    const mockedElement = document.createElement('div');
     const mockedSrc = 'src';
 
     // Act
@@ -1481,7 +1551,7 @@ describe('includeSelfRegisteredWCFromUrl', () => {
     (window as any).Luigi._registerWebcomponent(mockedSrc, mockedElement);
 
     const resultingScript = document.body.getElementsByTagName('script')[0];
-    resultingScript.dispatchEvent(new Event('load'))
+    resultingScript.dispatchEvent(new Event('load'));
 
     // Assert
     expect(containerManagerSpy).toHaveBeenCalled();
@@ -1510,28 +1580,25 @@ describe('includeSelfRegisteredWCFromUrl', () => {
   });
 });
 
-
 describe('renderWebComponent', () => {
-  let originalCustomElements;
   let originalLuigi;
-  let originalWindowCustomElements;
   let originalLuigiWCFn;
   let service;
   let mockedViewURL;
   let wc_container;
   let context;
-  let node ;
+  let node;
   let wcItemPlaceholder;
   const wc_id = 'my-custom-element';
-  let spyAttachWc ;
+  let spyAttachWc;
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
 
     service = new WebComponentService();
 
     // Mock necessary functions and objects
-    mockedViewURL = 'mocked-view-url'
+    mockedViewURL = 'mocked-view-url';
     jest.spyOn(service, 'processViewUrl').mockReturnValue(mockedViewURL);
     spyAttachWc = jest.spyOn(service, 'attachWC').mockImplementation(jest.fn());
     wc_container = document.createElement('div');
@@ -1539,28 +1606,23 @@ describe('renderWebComponent', () => {
     node = { webcomponent: { tagName: wc_id } };
     wcItemPlaceholder = document.createElement('div');
     wc_container.appendChild(wcItemPlaceholder);
-    
-    // Store the original values of customElements, Luigi, and window.customElements
-    originalCustomElements = window.customElements;
+
+    // Store the original values of Luigi
     originalLuigi = (window as any).Luigi;
-    originalWindowCustomElements = window.customElements;
     originalLuigiWCFn = (window as any).lugiWCFn;
-    
   });
 
   afterEach(() => {
     // Restore the original values after each test
-    window.customElements = originalCustomElements;
     (window as any).Luigi = originalLuigi;
-    window.customElements = originalWindowCustomElements;
     (window as any).lugiWCFn = originalLuigiWCFn;
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should call attachWC if customeElements get returns valid value', () => {
     // Mock necessary functions and objects
     const mockCustomElementConstructor = class MockCustomElement extends HTMLElement {};
-    jest.spyOn(window.customElements, 'get').mockReturnValue(mockCustomElementConstructor); 
+    jest.spyOn(window.customElements, 'get').mockReturnValue(mockCustomElementConstructor);
 
     // Call the function to be tested
     service.renderWebComponent(mockedViewURL, wc_container, context, node);
@@ -1574,7 +1636,7 @@ describe('renderWebComponent', () => {
     jest.spyOn(window.customElements, 'get').mockReturnValue(undefined);
     const mockedFn = (url, id, placeholder, callsAttachWC) => {
       callsAttachWC();
-    }
+    };
     (window as any).luigiWCFn = jest.fn().mockImplementation(mockedFn);
 
     // Call the function to be tested
@@ -1582,8 +1644,13 @@ describe('renderWebComponent', () => {
     (window as any).luigiWCFn(mockedViewURL, wc_id, wcItemPlaceholder, jest.fn());
 
     // Assert that the web component was attached
-    expect((window as any).luigiWCFn).toHaveBeenCalledWith(mockedViewURL, wc_id, wcItemPlaceholder, expect.any(Function));
-    expect(spyAttachWc).toHaveBeenCalled()
+    expect((window as any).luigiWCFn).toHaveBeenCalledWith(
+      mockedViewURL,
+      wc_id,
+      wcItemPlaceholder,
+      expect.any(Function)
+    );
+    expect(spyAttachWc).toHaveBeenCalled();
   });
 
   it('should call includeSelfRegisteredWCFromUrl when selfRegistered = TRUE', () => {
@@ -1596,18 +1663,18 @@ describe('renderWebComponent', () => {
       webcomponent: {
         selfRegistered: true
       }
-    }
+    };
     const mockedFn = (node, url, callsAttachWC) => {
       callsAttachWC();
-    }
-    const spyIncludeSRWU = jest.spyOn(service, 'includeSelfRegisteredWCFromUrl').mockImplementation(mockedFn)
- 
+    };
+    const spyIncludeSRWU = jest.spyOn(service, 'includeSelfRegisteredWCFromUrl').mockImplementation(mockedFn);
+
     // Call the function to be tested
     service.renderWebComponent(mockedViewURL, wc_container, context, node);
 
     // Assert that the web component was attached
     expect(spyIncludeSRWU).toHaveBeenCalled();
-    expect(spyAttachWc).toHaveBeenCalled()
+    expect(spyAttachWc).toHaveBeenCalled();
   });
 
   it('should call attachWC inside when selfRegistered = TRUE', () => {
@@ -1620,10 +1687,8 @@ describe('renderWebComponent', () => {
       webcomponent: {
         selfRegistered: false
       }
-    }
-    service.registerWCFromUrl = jest.fn((viewUrl) =>
-      Promise.resolve()
-    );
+    };
+    service.registerWCFromUrl = jest.fn(viewUrl => Promise.resolve());
 
     // Call the function to be tested
     service.renderWebComponent(mockedViewURL, wc_container, context, node);
@@ -1649,7 +1714,7 @@ describe('renderWebComponent', () => {
 
     // act
     await service.renderWebComponent(mockedViewURL, wc_container, context, node);
-      
+
     // assert
     expect(service.registerWCFromUrl).toHaveBeenCalled();
   });

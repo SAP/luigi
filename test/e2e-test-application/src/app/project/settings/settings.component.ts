@@ -38,7 +38,7 @@ export class SettingsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private luigiService: LuigiContextService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {

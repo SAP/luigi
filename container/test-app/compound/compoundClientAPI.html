@@ -18,6 +18,8 @@
       This page is used to test Compound-Container Luigi CLient API functionalities for
       web component based microfrontend
     </h3>
+    <!-- base scenario compound container-->
+    <span>Below is a compound container example for testing functionality</span>
     <div style="border:solid 1px blue">
       <luigi-compound-container
         data-test-id="luigi-client-api-test-compound-01"
@@ -31,6 +33,19 @@
         anchor="testAnchorCompound"
         defer-init="false"
         webcomponent="true"
+      ></luigi-compound-container>
+    </div>
+
+    <!-- defer-init scenario wc container-->
+    <button id="init-button" style="margin: 25px 0 10px;">
+      container.init() - click to initialize defered compound wc
+    </button>
+    <div style="border:solid 1px red; height: 100px;">
+      <luigi-compound-container
+        id="defer-init-test"
+        webcomponent="true"
+        context='{"content":" -- defer-init test --"}'
+        defer-init="true"
       ></luigi-compound-container>
 
       <!-- Used for testing dynamic compound container creation -->
@@ -164,7 +179,7 @@
         console.log('params', params);
       });
       compoundContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
-        console.log('anhor', event.detail);
+        console.log('anchor', event.detail);
       });
 
       // uxManager(). closeUserSettings openUserSettings collapseLeftSideNav
@@ -204,6 +219,29 @@
       compoundContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
         console.log('Set View Group Data Request received', event.detail, event);
       });
+
+      const deferInitContainer = document.getElementById('defer-init-test');
+      const initButton = document.getElementById('init-button');
+      initButton.addEventListener('click', function() {
+        deferInitContainer.init();
+      });
+      deferInitContainer.compoundConfig = {
+        renderer: {
+          use: 'grid',
+          config: {
+            columns: '1fr 1fr',
+            gap: '20px'
+          }
+        },
+        children: [
+          {
+            viewUrl: './compound/defer-init-wc/compoundWCDeferInit1.js'
+          },
+          {
+            viewUrl: './compound/defer-init-wc/compoundWCDeferInit2.js'
+          }
+        ]
+      };
     </script>
   </body>
 </html>

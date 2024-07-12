@@ -143,6 +143,32 @@ class LuigiNavigationManager {
   }
 
   /**
+   * Enables navigating to sibling nodes without knowing the absolute path.
+   * @memberof LuigiNavigation
+   * @returns {linkManager} link manager instance
+   * @since 2.14.0
+   * @example
+   * Luigi.navigation().fromParent().navigate('/sibling')
+   */
+  fromParent() {
+    return new linkManager().fromParent();
+  }
+
+  /**
+   * Gets the Luigi route associated with the current micro frontend.
+   * @memberof LuigiNavigation
+   * @returns a String value specifying the current Luigi route
+   * @since 2.14.0
+   * @example
+   * Luigi.navigation().getCurrentRoute();
+   * Luigi.navigation().fromContext('project').getCurrentRoute();
+   * Luigi.navigation().fromVirtualTreeRoot().getCurrentRoute();
+   */
+  getCurrentRoute() {
+    return new linkManager().getCurrentRoute();
+  }
+
+  /**
    * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof LuigiNavigation
    * @param {Object} nodeParams
