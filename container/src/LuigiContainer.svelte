@@ -44,10 +44,10 @@
               ContainerAPI.updateAuthData(this.iframeHandle, JSON.parse(newValue));
             }
           }
-        };
+        }
         getNoShadow(){
           return this.hasAttribute('no-shadow') || this.noShadow
-        };
+        }
       };
     }
   }}
@@ -113,7 +113,8 @@
       hasBack &&
       documentTitle &&
       allowRules &&
-      sandboxRules
+      sandboxRules &&
+      noShadow
     );
   };
 

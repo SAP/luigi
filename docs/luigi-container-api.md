@@ -209,7 +209,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### sandboxRules
 
@@ -220,7 +220,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### documentTitle
 
@@ -230,7 +230,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### hasBack
 
@@ -241,7 +241,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### dirtyStatus
 
@@ -252,7 +252,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### updateContext
 
@@ -341,4 +341,4 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
