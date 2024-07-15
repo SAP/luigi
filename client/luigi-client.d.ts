@@ -17,8 +17,8 @@ export declare interface ConfirmationModalSettings {
 }
 
 export declare interface ModalSettings {
-  closebtn_data_testid?: string;
   height?: string;
+  keepPrevious?: boolean;
   size?: 'fullscreen' | 'l' | 'm' | 's';
   title?: string;
   width?: string;
