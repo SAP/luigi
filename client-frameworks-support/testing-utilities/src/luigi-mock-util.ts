@@ -211,14 +211,18 @@ export class LuigiMockUtil {
    * Returns output of 'mockPathExists' method with given arguments.
    */
   getMockedPathExistsOutput(path: string, exists: boolean): string {
-    return `{"pathExists":{"${path}":${exists}}}`;
+    return JSON.stringify({[this.sessionStorageItemName]: {pathExists: {[path]: exists}}}).slice(1, -1);
   }
 
   /**
-   * Returns name of session storage item used for testing.
+   * Returns parsed session storage data used for testing.
    */
-  getSessionStorageItemName(): string {
-    return this.sessionStorageItemName;
+  getCleanSessionStorageData(data: any): string {
+    if (typeof data === 'string') {
+      data = JSON.parse(data);
+    }
+
+    return JSON.stringify(data).replace(/\\/g, '').replace(/"{/g, '{').replace(/}"/g, '}');
   }
 
   /**

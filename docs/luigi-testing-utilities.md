@@ -97,13 +97,11 @@ describe('Another test using cypress', () => {
     cy.get('.pathExists').click().then(() => {
       luigiMockUtil.mockPathExists('/test', false);
     });
-    cy.getAllSessionStorage().then((result: any) => {
-      expect(result).to.deep.equal({
-        "http://localhost:4200": {
-          [luigiMockUtil.getSessionStorageItemName()]: luigiMockUtil.getMockedPathExistsOutput()
-        },
-      });
-    })
+    cy.getAllSessionStorage().then((storage: any) => {
+      const result = luigiMockUtil.getCleanSessionStorageData(storage);
+
+      expect(result).to.contains(luigiMockUtil.getMockedPathExistsOutput('/test', false));
+    });
   });
 
   it('should mock context update', () => {
@@ -124,7 +122,6 @@ import { LuigiMockUtil } from '@luigi-project/testing-utilities';
 
 describe('Another test using nightwatch', function () {
   const luigiMockUtil: LuigiMockUtil = new LuigiMockUtil(browser);
-  const luigiStorageItemName = luigiMockUtil.getSessionStorageItemName();
 
   before((browser) => browser.navigateTo('http://localhost:4200'));
 
@@ -133,8 +130,10 @@ describe('Another test using nightwatch', function () {
     await browser.expect.element('.pathExists').to.be.present;
     await browser.element('.pathExists').click().then(() => {
       luigiMockUtil.mockPathExists('/test', false);
-      browser.execute((name) => window.sessionStorage.getItem(name), [luigiStorageItemName], function (result) {
-        expect(result.value).to.contains(luigiMockUtil.getMockedPathExistsOutput('/test', false));
+      browser.execute(() => window.sessionStorage, [], function (storage) {
+        const result = luigiMockUtil.getCleanSessionStorageData(storage.value);
+
+        expect(result).to.contains(luigiMockUtil.getMockedPathExistsOutput('/test', false));
       });
     });
   });
@@ -179,10 +178,10 @@ describe('Another test using webdriverio', () => {
     // Wait until session storage item is set
     await browser.setTimeout(defaultTimeout);
 
-    const luigiStorageItemName = luigiMockUtil.getSessionStorageItemName();
-    const result = await browser.execute((name) => window.sessionStorage.getItem(name), luigiStorageItemName);
+    const storage = await browser.execute(() => window.sessionStorage);
+    const result = await luigiMockUtil.getCleanSessionStorageData(storage);
 
-    await expect(result).toEqual(luigiMockUtil.getMockedPathExistsOutput());
+    await expect(result).toContain(luigiMockUtil.getMockedPathExistsOutput('/test', false));
   });
 
   it('should mock context update', async () => {
@@ -244,10 +243,10 @@ describe('Another test using puppeteer ->', () => {
         // Wait until session storage item is set
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        const luigiStorageItemName = luigiMockUtil.getSessionStorageItemName();
-        const result = await page.evaluate((name) => window.sessionStorage.getItem(name), luigiStorageItemName);
+        const storage = await page.evaluate(() => JSON.stringify(window.sessionStorage));
+        const result = await luigiMockUtil.getCleanSessionStorageData(storage);
 
-        await expect(result).toContain(luigiMockUtil.getMockedPathExistsOutput());
+        await expect(result).toContain(luigiMockUtil.getMockedPathExistsOutput('/test', false));
       });
     });
   });
@@ -276,7 +275,7 @@ describe('Another test using puppeteer ->', () => {
 - **modalOpenedWithTitle**: Checks on the printed DOM Luigi message responses for a modal with given title being opened. In such a case, a message would be printed containing a `modal.title`. Returns `false` if such element was not found.
 - **getMockedContextOutput**: Returns output of 'mockContext' method with given data.
 - **getMockedPathExistsOutput**: Returns output of 'mockPathExists' method with given arguments.
-- **getSessionStorageItemName**: Returns name of session storage item used for testing.
+- **getCleanSessionStorageData**: Returns parsed session storage data used for testing.
 - **getVisualizationContainerId**: Returns ID of Luigi visualization container added in the DOM for testing.
 - **getMSG**: Returns list of messages, representing message elements added in the DOM for testing.
 - **parseLuigiMockedMessages**: Parses the elements added by LuigiMockModule into the DOM and assigns them to the local messages variable.
