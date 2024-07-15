@@ -48,10 +48,10 @@
           if (this.containerInitialized && name === 'context') {
             this.updateContext(JSON.parse(newValue));
           }
-        };
+        }
         getNoShadow(){
           return this.hasAttribute('no-shadow') || this.noShadow;
-        };
+        }
       };
     },
   }}
@@ -98,7 +98,7 @@
       anchor &&
       dirtyStatus &&
       hasBack &&
-      documentTitle && 
+      documentTitle &&
       noShadow
     );
   };
