@@ -1,5 +1,3 @@
-import { SplitViewEvents } from './luigi-client.model';
-
 // Type definitions for Luigi Client
 export as namespace LuigiClient;
 
@@ -31,6 +29,8 @@ export declare interface SplitViewSettings {
   size?: number;
   title?: string;
 }
+
+export type SplitViewEvents = 'close' | 'collapse' | 'expand' | 'resize';
 
 export declare interface SplitViewInstance {
   collapse: () => void;
