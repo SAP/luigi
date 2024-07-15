@@ -1,13 +1,9 @@
+<!-- This microfrontend HTML file is used to test a variety of functionality -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <title></title>
     <meta charset="utf-8" />
-    <link
-      href="https://fiddle.luigi-project.io/vendor/fundamental-styles/dist/fundamental-styles.css"
-      rel="stylesheet"
-    />
-    <!-- <link href="https://fiddle.luigi-project.io/styles/styles.css" rel="stylesheet" /> -->
     <script src="https://fiddle.luigi-project.io/vendor/luigi-client/luigi-client.js"></script>
     <style>
       html,
@@ -103,9 +99,10 @@
       }
 
       function testGetContext() {
-        alert(
-          'LuigiClient.getContext()() called' + JSON.stringify(LuigiClient.getContext())
-        );
+        LuigiClient.sendCustomMessage({
+          id: 'my.contextMessage',
+          ...LuigiClient.getContext()
+        });
       }
 
       function testSetCurrentLocale() {

@@ -4,6 +4,9 @@
 export default class extends HTMLElement {
   constructor() {
     super();
+
+    this.ctx = {};
+
     const template = document.createElement('template');
     template.innerHTML = `<section><p>Hello World!</p></section>`;
 
@@ -262,7 +265,12 @@ export default class extends HTMLElement {
     });
   }
 
+  get context() {
+    return this.ctx;
+  }
+
   set context(ctx) {
+    this.ctx = ctx;
     this.$paragraph.innerHTML = ctx.title;
   }
 }

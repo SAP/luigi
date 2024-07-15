@@ -9,25 +9,46 @@
       This page is used to test Container Luigi CLient API functionalities for web
       component based microfrontend
     </h3>
-    <div style="height: fit-content; border:solid 1px blue">
-      <luigi-container
-        data-test-id="luigi-client-api-test-01"
-        viewURL="./wc/helloWorldWC.js"
-        webcomponent="true"
-        context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
-        locale="en"
-        theme="sap_fiori_3"
-        active-feature-toggle-list='["ft1","ft2"]'
-        node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
-        search-params='{"test":"searchParam1"}'
-        path-params='{"path":"param"}'
-        client-permissions='{"permission": "testPermission"}'
-        user-settings='{"language": "de", "date":""}'
-        anchor="testanchor"
-        dirty-status="true"
-        document-title="Perfect Title"
-      ></luigi-container>
+    <button id="luigi-update-context" type="button">Update context</button>
 
+    <div style="height: fit-content;">
+      <div style="border: 1px solid blue">
+        <!-- Luigi Container to test general functionalities, params etc-->
+        <luigi-container
+          data-test-id="luigi-client-api-test-01"
+          viewURL="./wc/helloWorldWC.js"
+          webcomponent="true"
+          context='{"label": "Hello World WC", "title":"Hello World WC:  Testing Container Web Component Features"}'
+          locale="en"
+          theme="sap_fiori_3"
+          active-feature-toggle-list='["ft1","ft2"]'
+          node-params='{"Luigi":"rocks from attri &<strong>asdf<strong> bute"}'
+          search-params='{"test":"searchParam1"}'
+          path-params='{"path":"param"}'
+          client-permissions='{"permission": "testPermission"}'
+          user-settings='{"language": "de", "date":""}'
+          anchor="testanchor"
+          dirty-status="true"
+          document-title="Perfect Title"
+        ></luigi-container>
+      </div>
+
+      <button id="init-button" style="margin: 25px 0 15px">
+        container.init() to initialize defered container
+      </button>
+      <div style="border: 1px solid red">
+        <!-- Luigi Container to test defer-init flag-->
+
+        <luigi-container
+          id="defer-init-test"
+          data-test-id="defer-init-container"
+          viewURL="./wc/myWebComponent.js"
+          webcomponent="true"
+          context='{"content":" -- defer-init test --"}'
+          defer-init="true"
+        ></luigi-container>
+      </div>
+      
       <!-- Used for testing dynamic compound container creation -->
       <div class="content"></div>
 
@@ -40,7 +61,13 @@
     </div>
 
     <script type="module">
+      import '../bundle.js';
       import MFEventID from '../bundle.js';
+      const deferInitContainer = document.getElementById('defer-init-test');
+      const initButton = document.getElementById('init-button');
+      initButton.addEventListener('click', function() {
+        deferInitContainer.init();
+      });
 
       [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
         luigiContainer.addEventListener(MFEventID.NAVIGATION_REQUEST, event => {
@@ -79,7 +106,7 @@
           console.log('params', params);
         });
         luigiContainer.addEventListener(MFEventID.SET_ANCHOR_LINK_REQUEST, event => {
-          console.log('anhor', event.detail);
+          console.log('anchor', event.detail);
         });
 
         // uxManager(). closeUserSettings openUserSettings collapseLeftSideNav
@@ -123,6 +150,13 @@
         luigiContainer.addEventListener(MFEventID.GET_CURRENT_ROUTE_REQUEST, event => {
           event.callback(window.location.pathname);
         });
+      });
+
+      // update container context
+      document.querySelector('#luigi-update-context').addEventListener('click', () => {
+        document
+          .querySelector('[data-test-id="luigi-client-api-test-01"]')
+          .updateContext({ newContextData: 'some data' });
       });
     </script>
   </body>
