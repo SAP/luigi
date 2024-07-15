@@ -134,6 +134,7 @@ class LuigiElement extends HTMLElement {
    *
    * @see ParentNode.querySelector
    */
+  // prettier-ignore
   override querySelector(selector: string): HTMLElement | null {
     return this._shadowRoot.querySelector(selector);
   }

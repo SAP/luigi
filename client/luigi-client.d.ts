@@ -341,12 +341,7 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
    * LuigiClient.linkManager().navigate('#?intent=Sales-order?id=13') // intent navigation
    */
-  navigate: (
-    path: string,
-    sessionId?: string,
-    preserveView?: boolean,
-    modalSettings?: ModalSettings
-  ) => void;
+  navigate: (path: string, sessionId?: string, preserveView?: boolean, modalSettings?: ModalSettings) => void;
 
   /**
    * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
@@ -427,10 +422,7 @@ export declare interface LinkManager {
    *     console.log(res.data) //=> {foo: 'bar'}
    *  });
    */
-  openAsModal: (
-    nodepath: string,
-    modalSettings?: ModalSettings
-  ) => Promise<void>;
+  openAsModal: (nodepath: string, modalSettings?: ModalSettings) => Promise<void>;
 
   /**
    * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
@@ -445,10 +437,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
    */
-  updateModalSettings: (
-    updatedModalSettings: Object,
-    addHistoryEntry?: boolean
-  ) => void;
+  updateModalSettings: (updatedModalSettings: Object, addHistoryEntry?: boolean) => void;
 
   /**
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
@@ -464,10 +453,7 @@ export declare interface LinkManager {
    * @example
    * const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
    */
-  openAsSplitView: (
-    path: string,
-    splitViewSettings?: SplitViewSettings
-  ) => SplitViewInstance;
+  openAsSplitView: (path: string, splitViewSettings?: SplitViewSettings) => SplitViewInstance;
 
   /**
    * Opens a view in a drawer. You can specify if the drawer has a header, if a backdrop is active in the background and configure the size of the drawer. By default the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is by default set to `s` which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
@@ -501,11 +487,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().withoutSync().updateModalPathInternalNavigation('/projects/xy/foobar');
    */
-  updateModalPathInternalNavigation: (
-    path: string,
-    modalSettings?: Object,
-    addHistoryEntry?: boolean
-  ) => void;
+  updateModalPathInternalNavigation: (path: string, modalSettings?: Object, addHistoryEntry?: boolean) => void;
 
   /**
    * Enables navigating to a new tab.
@@ -609,12 +591,8 @@ export declare interface StorageManager {
  * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
  * @memberof Lifecycle
  */
-export function addInitListener(
-  initFn: (context: Context, origin?: string) => void
-): number;
-export type addInitListener = (
-  initFn: (context: Context, origin?: string) => void
-) => number;
+export function addInitListener(initFn: (context: Context, origin?: string) => void): number;
+export type addInitListener = (initFn: (context: Context, origin?: string) => void) => number;
 
 /**
  * Callback of the addInitListener
@@ -635,12 +613,8 @@ export type removeInitListener = (id: string) => boolean;
  * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
  * @memberof Lifecycle
  */
-export function addContextUpdateListener(
-  contextUpdatedFn: (context: Context) => void
-): string;
-export type addContextUpdateListener = (
-  contextUpdatedFn: (context: Context) => void
-) => string;
+export function addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string;
+export type addContextUpdateListener = (contextUpdatedFn: (context: Context) => void) => string;
 
 /**
  * Removes a context update listener.
@@ -736,14 +710,8 @@ export type getContext = () => Context;
  * LuigiClient.addNodeParams({luigi:'rocks'});
  * LuigiClient.addNodeParams({luigi:'rocks', false});
  */
-export function addNodeParams(
-  params: NodeParams,
-  keepBrowserHistory: boolean
-): void;
-export type addNodeParams = (
-  params: NodeParams,
-  keepBrowserHistory: boolean
-) => void;
+export function addNodeParams(params: NodeParams, keepBrowserHistory: boolean): void;
+export type addNodeParams = (params: NodeParams, keepBrowserHistory: boolean) => void;
 
 /**
  * Returns the node parameters of the active URL.
@@ -828,14 +796,8 @@ export type getCoreSearchParams = () => CoreSearchParams;
  * LuigiClient.addCoreSearchParams({luigi:'rocks'});
  * LuigiClient.addCoreSearchParams({luigi:'rocks', false});
  */
-export function addCoreSearchParams(
-  searchParams: CoreSearchParams,
-  keepBrowserHistory: boolean
-): void;
-export type addCoreSearchParams = (
-  searchParams: CoreSearchParams,
-  keepBrowserHistory: boolean
-) => void;
+export function addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: boolean): void;
+export type addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: boolean) => void;
 
 /**
  * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).

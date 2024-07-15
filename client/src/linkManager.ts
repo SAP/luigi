@@ -299,8 +299,9 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
   fromContext(navigationContext: string): this {
-    const navigationContextInParent: boolean =
-      !!(this.currentContext?.context?.parentNavigationContext?.indexOf(navigationContext) !== -1);
+    const navigationContextInParent: boolean = !!(
+      this.currentContext?.context?.parentNavigationContext?.indexOf(navigationContext) !== -1
+    );
 
     if (navigationContextInParent) {
       this.options['fromContext'] = navigationContext;
@@ -320,8 +321,7 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext(): this {
-    const hasParentNavigationContext: boolean =
-      !!this.currentContext.context?.parentNavigationContext?.length;
+    const hasParentNavigationContext: boolean = !!this.currentContext.context?.parentNavigationContext?.length;
 
     if (hasParentNavigationContext) {
       this.options['fromContext'] = null;
