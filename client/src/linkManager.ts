@@ -1,8 +1,6 @@
 import {
   Context,
   DrawerSettings,
-  InternalContext,
-  InternalMessageData,
   ModalSettings,
   NodeParams,
   RouteChangingOptions,
@@ -11,7 +9,6 @@ import {
 } from '../luigi-client';
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
-import { lifecycleManager } from './lifecycleManager';
 import { splitViewHandle } from './splitViewHandle';
 
 /**
@@ -22,6 +19,7 @@ import { splitViewHandle } from './splitViewHandle';
   * @name linkManager
   */
 export class linkManager extends LuigiClientBase {
+  currentContext!: Context;
   private options: Record<string, any>;
 
   /**
@@ -302,9 +300,7 @@ export class linkManager extends LuigiClientBase {
    */
   fromContext(navigationContext: string): this {
     const navigationContextInParent: boolean =
-      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts'] &&
-      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts']?.indexOf(navigationContext) !==
-        -1;
+      !!(this.currentContext?.context?.parentNavigationContext?.indexOf(navigationContext) !== -1);
 
     if (navigationContextInParent) {
       this.options['fromContext'] = navigationContext;
@@ -325,8 +321,7 @@ export class linkManager extends LuigiClientBase {
    */
   fromClosestContext(): this {
     const hasParentNavigationContext: boolean =
-      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts'] &&
-      (lifecycleManager.currentContext.context as Context)['parentNavigationContexts']?.length > 0;
+      !!this.currentContext.context?.parentNavigationContext?.length;
 
     if (hasParentNavigationContext) {
       this.options['fromContext'] = null;
@@ -455,7 +450,7 @@ export class linkManager extends LuigiClientBase {
       }
     });
 
-    const pathExistsMsg: InternalMessageData = {
+    const pathExistsMsg: Record<string, any> = {
       msg: 'luigi.navigation.pathExists',
       data: Object.assign(this.options, {
         id: currentId,
@@ -477,8 +472,8 @@ export class linkManager extends LuigiClientBase {
    */
   hasBack(): boolean {
     return (
-      !!(lifecycleManager.currentContext.internal as Record<string, any>)['modal'] ||
-      (lifecycleManager.currentContext.internal as Record<string, any>)['viewStackSize'] !== 0
+      !!(this.currentContext.internal as Record<string, any>)['modal'] ||
+      (this.currentContext.internal as Record<string, any>)['viewStackSize'] !== 0
     );
   }
 

@@ -1,3 +1,5 @@
+import { SplitViewEvents } from './luigi-client.model';
+
 // Type definitions for Luigi Client
 export as namespace LuigiClient;
 
@@ -30,8 +32,6 @@ export declare interface SplitViewSettings {
   title?: string;
 }
 
-export type SplitViewEvents = 'close' | 'collapse' | 'expand' | 'resize';
-
 export declare interface SplitViewInstance {
   collapse: () => void;
   exists: () => boolean;
@@ -59,14 +59,9 @@ export declare interface PathParams {
 }
 
 export declare interface Context {
-  parentNavigationContext?: string[];
-  [key: string]: any;
-}
-
-export declare interface InternalContext {
   anchor?: string;
   authData?: AuthData;
-  context?: Context;
+  context?: { parentNavigationContext?: string[] };
   internal?: {
     userSettings?: getUserSettings;
     [key: string]: any;
@@ -99,12 +94,6 @@ export declare interface RouteChangingOptions {
 
 export declare interface UserSettings {
   [key: string]: number | string | boolean;
-}
-
-export declare interface InternalMessageData {
-  data?: any;
-  errorObj?: Partial<ErrorEvent>;
-  msg: string;
 }
 
 export declare interface UxManager {

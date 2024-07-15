@@ -1,5 +1,3 @@
-import { InternalMessageData } from '../luigi-client';
-
 /** @private */
 class Helpers {
   listeners: any[] = [];
@@ -28,18 +26,18 @@ class Helpers {
     window.addEventListener('message', helperListener);
   }
 
-  convertCustomMessageInternalToUser(internalMessage: InternalMessageData): Record<string, any> {
-    return internalMessage.data as Record<string, any>;
+  convertCustomMessageInternalToUser(internalMessage: Record<string, any>): Record<string, any> {
+    return internalMessage['data'] as Record<string, any>;
   }
 
-  convertCustomMessageUserToInternal(message: Record<string, any>): InternalMessageData {
+  convertCustomMessageUserToInternal(message: Record<string, any>): Record<string, any> {
     return {
       msg: 'custom',
       data: message
     };
   }
 
-  convertStorageMessageToInternal(message: Record<string, any>): InternalMessageData {
+  convertStorageMessageToInternal(message: Record<string, any>): Record<string, any> {
     return {
       msg: 'storage',
       data: message

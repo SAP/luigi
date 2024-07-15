@@ -1,9 +1,8 @@
 import {
   AuthData,
   ClientPermissions,
+  Context,
   CoreSearchParams,
-  InternalContext,
-  InternalMessageData,
   LinkManager,
   NodeParams,
   PathParams,
@@ -30,7 +29,7 @@ class LuigiClient {
 
       if (window.document.head.getAttribute('disable-luigi-runtime-error-handling') !== 'true') {
         window.addEventListener('error', ({ filename, message, lineno, colno, error }: ErrorEvent) => {
-          const msg: InternalMessageData = {
+          const msg: Record<string, any> = {
             errorObj: { filename, message, lineno, colno, error },
             msg: 'luigi-runtime-error-handling'
           };
@@ -41,7 +40,7 @@ class LuigiClient {
     }
   }
 
-  addInitListener(initFn: (context: InternalContext, origin?: string) => void): number {
+  addInitListener(initFn: (context: Context, origin?: string) => void): number {
     return lifecycleManager.addInitListener(initFn);
   }
 
@@ -49,7 +48,7 @@ class LuigiClient {
     return lifecycleManager.removeInitListener(id);
   }
 
-  addContextUpdateListener(contextUpdatedFn: (context: InternalContext) => void): string {
+  addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string {
     return lifecycleManager.addContextUpdateListener(contextUpdatedFn);
   }
 
@@ -61,11 +60,11 @@ class LuigiClient {
     return lifecycleManager.getToken();
   }
 
-  getEventData(): InternalContext {
+  getEventData(): Context {
     return lifecycleManager.getEventData();
   }
 
-  getContext(): InternalContext {
+  getContext(): Context {
     return lifecycleManager.getContext();
   }
 

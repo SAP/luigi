@@ -1,4 +1,4 @@
-import { SplitViewEvents } from '../luigi-client';
+import { SplitViewEvents } from '../luigi-client.model';
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
 
@@ -13,7 +13,7 @@ import { helpers } from './helpers';
   */
 export class splitViewHandle extends LuigiClientBase {
   private splitView: Record<string, any>;
-  private validSplitViewEvents: string[] = ['close', 'collapse', 'expand', 'resize'];
+  private validSplitViewEvents: Array<keyof typeof SplitViewEvents> = ['close', 'collapse', 'expand', 'resize'];
 
   /**
    * @private
@@ -101,7 +101,7 @@ export class splitViewHandle extends LuigiClientBase {
    * const listenerId = splitViewHandle.on('resize', () => {});
    * const listenerId = splitViewHandle.on('close', () => {});
    **/
-  on(name: SplitViewEvents, callback: (param: number | undefined) => void): boolean | string {
+  on(name: keyof typeof SplitViewEvents, callback: (param: number | undefined) => void): boolean | string {
     if (!this.validSplitViewEvents.includes(name)) {
       console.warn(name + ' is not a valid split view event');
       return false;

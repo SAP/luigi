@@ -3,8 +3,6 @@ import {
   ClientPermissions,
   Context,
   CoreSearchParams,
-  InternalContext,
-  InternalMessageData,
   NodeParams,
   PathParams,
   UserSettings
@@ -17,7 +15,7 @@ import { helpers } from './helpers';
  * @name Lifecycle
  */
 class LifecycleManager extends LuigiClientBase {
-  currentContext!: InternalContext;
+  currentContext!: Context;
   private authData: AuthData;
   private defaultContextKeys: string[];
   private luigiInitialized: boolean;
@@ -145,7 +143,7 @@ class LifecycleManager extends LuigiClientBase {
 
       // pass additional data to context to enable micro frontend developer to act on internal routing change
       if (this.currentContext['withoutSync']) {
-        Object.assign(this.currentContext.context as Context, {
+        Object.assign(this.currentContext.context as Record<string, any>, {
           viewUrl: event.data.viewUrl ? event.data.viewUrl : undefined,
           pathParams: event.data.pathParams ? event.data.pathParams : undefined
         });
@@ -228,7 +226,7 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   _notifyInit(origin: string) {
-    this._callAllFns(this._onInitFns, this.currentContext.context as Context, origin);
+    this._callAllFns(this._onInitFns, this.currentContext.context as Record<string, any>, origin);
   }
 
   /**
@@ -237,7 +235,7 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    */
   _notifyUpdate() {
-    this._callAllFns(this._onContextUpdatedFns, this.currentContext.context as Context);
+    this._callAllFns(this._onContextUpdatedFns, this.currentContext.context as Record<string, any>);
   }
 
   /**
@@ -253,7 +251,7 @@ class LifecycleManager extends LuigiClientBase {
    * @private
    * @memberof Lifecycle
    */
-  setCurrentContext(value: InternalContext) {
+  setCurrentContext(value: Context) {
     this.currentContext = value;
   }
 
@@ -270,7 +268,7 @@ class LifecycleManager extends LuigiClientBase {
     this._onInitFns[`${id}`] = initFn;
 
     if (this.luigiInitialized && helpers.isFunction(initFn)) {
-      initFn(this.currentContext.context as Context, helpers.getLuigiCoreDomain());
+      initFn(this.currentContext.context as Record<string, any>, helpers.getLuigiCoreDomain());
     }
 
     return id;
@@ -312,7 +310,7 @@ class LifecycleManager extends LuigiClientBase {
     this._onContextUpdatedFns[`${id}`] = contextUpdatedFn;
 
     if (this.luigiInitialized && helpers.isFunction(contextUpdatedFn)) {
-      contextUpdatedFn(this.currentContext.context as Context);
+      contextUpdatedFn(this.currentContext.context as Record<string, any>);
     }
 
     return `${id}`;
@@ -429,7 +427,7 @@ class LifecycleManager extends LuigiClientBase {
    * @example
    * const context = LuigiClient.getContext()
    */
-  getContext(): Context {
+  getContext(): Record<string, any> {
     return this.getEventData();
   }
 
@@ -439,8 +437,8 @@ class LifecycleManager extends LuigiClientBase {
    * @memberof Lifecycle
    * @deprecated
    */
-  getEventData(): Context {
-    return this.currentContext.context as Context;
+  getEventData(): Record<string, any> {
+    return this.currentContext.context as Record<string, any>;
   }
 
   /**
@@ -570,7 +568,7 @@ class LifecycleManager extends LuigiClientBase {
    * @since 0.6.2
    */
   sendCustomMessage(message: Object) {
-    const customMessageInternal: InternalMessageData = helpers.convertCustomMessageUserToInternal(message);
+    const customMessageInternal: Record<string, any> = helpers.convertCustomMessageUserToInternal(message);
 
     helpers.sendPostMessageToLuigiCore(customMessageInternal);
   }

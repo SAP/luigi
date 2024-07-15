@@ -172,10 +172,10 @@ class LuigiElement extends HTMLElement {
    * @param {String} literal The literal to process.
    * @returns {String} Returns the processed literal.
    */
-  html(literal: string, ...keys: any[]): string {
+  html(literal: TemplateStringsArray, ...keys: unknown[]): string {
     let html: string = '';
 
-    [...literal].forEach((el: string, index: number) => {
+    literal.forEach((el: string, index: number) => {
       html += el;
 
       if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
