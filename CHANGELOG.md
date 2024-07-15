@@ -25,6 +25,16 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.14.1] (2024-07-11)
+
+#### :bug: Fixed
+* [#3812](https://github.com/SAP/luigi/pull/3812) keepPrevious in client ts declaration ([@JohannesDoberer](https://github.com/JohannesDoberer))
+
+
+
+
+
+
 ## [v2.14.0] (2024-07-03)
 
 #### :rocket: Added
@@ -1813,3 +1823,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.12.0]: https://github.com/SAP/luigi/compare/v2.11.0...v2.12.0
 [v2.13.0]: https://github.com/SAP/luigi/compare/v2.12.0...v2.13.0
 [v2.14.0]: https://github.com/SAP/luigi/compare/v2.13.0...v2.14.0
+[v2.14.1]: https://github.com/SAP/luigi/compare/v2.14.0...v2.14.1

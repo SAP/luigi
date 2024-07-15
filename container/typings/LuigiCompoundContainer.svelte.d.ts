@@ -68,21 +68,21 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The document title value to be passed to the compound micro frontend.
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   documentTitle: string;
 
   /**
    * The hasBack value to be passed to the compound micro frontend.
    * It indicates that there is one or more preserved views. Useful when you need to show a back button. 
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   hasBack: string;
 
   /**
    * The dirty status value to be passed to the compound micro frontend.
    * It's used to indicate that there are unsaved changes when navigating away.
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   dirtyStatus: boolean;
 
