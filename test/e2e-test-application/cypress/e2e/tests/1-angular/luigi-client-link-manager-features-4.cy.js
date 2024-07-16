@@ -484,7 +484,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
 
-    it('resizes several times if the drawer is opened several times', () => {
+    it('does not resize several times if the drawer is opened several times', () => {
       let mfIframeWidthAfterFirstResize;
 
       cy.wrap($iframeBody)
