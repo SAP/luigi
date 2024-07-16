@@ -42,6 +42,7 @@ describe('Context switcher', () => {
       .and('contain', 'Project 5');
 
     cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
+    cy.get('[data-testid=luigi-alert]').find('.fd-message-strip__icon-container span').should('have.class', 'sap-icon--message-information');
 
     cy.get('[data-testid=luigi-alert]').should('contain', 'Project 5 created.');
 

@@ -24,6 +24,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .click();
 
       cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--success');
+      cy.get('[data-testid=luigi-alert]').find('.fd-message-strip__icon-container span').should('have.class', 'sap-icon--message-success');
 
       cy.get('[data-testid=luigi-alert-dismiss]').click();
       cy.get('[data-testid=luigi-alert]').should('not.exist');
@@ -39,6 +40,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .click();
 
       cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--information');
+      cy.get('[data-testid=luigi-alert]').find('.fd-message-strip__icon-container span').should('have.class', 'sap-icon--message-information');
     });
 
     it('hides Alert after specified time', () => {
@@ -133,6 +135,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
         .click({ force: true });
 
       cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--warning');
+      cy.get('[data-testid=luigi-alert]').find('.fd-message-strip__icon-container span').should('have.class', 'sap-icon--message-warning');
 
       cy.get('*[id$=_link_relativePath]').click();
       cy.expectPathToBe('/projects/pr1');
@@ -171,6 +174,7 @@ describe('Luigi Client UX Alerts + Localization', () => {
       cy.get('[data-testid=luigi-alert]')
         .should('have.class', 'fd-message-strip--error')
         .should('contain', "<b onmouseover=alert('Wufff!')>click me!</b>");
+      cy.get('[data-testid=luigi-alert]').find('.fd-message-strip__icon-container span').should('have.class', 'sap-icon--message-error');
 
       cy.get('[data-testid=luigi-alert]')
         .find('a')
