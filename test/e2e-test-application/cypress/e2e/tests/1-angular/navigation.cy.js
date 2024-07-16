@@ -349,7 +349,9 @@ describe('Navigation', () => {
       cy.visit('/projects/pr2/emptyViewUrl');
 
       cy.get('[data-testid=luigi-alert]').should('have.class', 'fd-message-strip--error');
-      cy.get('[data-testid=luigi-alert]').find('.fd-message-strip__icon-container span').should('have.class', 'sap-icon--message-error');
+      cy.get('[data-testid=luigi-alert]')
+        .find('.fd-message-strip__icon-container span')
+        .should('have.class', 'sap-icon--message-error');
       cy.expectPathToBe('/overview');
     });
   });
