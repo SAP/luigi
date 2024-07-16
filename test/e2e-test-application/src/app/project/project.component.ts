@@ -135,16 +135,10 @@ export class ProjectComponent implements OnInit, OnDestroy {
       size: 'm',
       title: 'microfrontend in a modal'
     };
-    const resolvePromise = () => {
-      document.getElementById('promiseTest').innerHTML = 'promise resolved!';
-    };
 
-    if (Object.prototype.toString.call(linkManager().openAsModal) === '[object Promise]') {
-      ((linkManager().openAsModal(modalPath, modalSettings) as unknown) as Promise<void>).then(() => resolvePromise());
-    } else {
-      linkManager().openAsModal(modalPath, modalSettings);
-      setTimeout(() => resolvePromise(), 500);
-    }
+    linkManager().openAsModal(modalPath, modalSettings).then(() => {
+      document.getElementById('promiseTest').innerHTML = 'promise resolved!';
+    });
   }
 
   showConfirmationModal() {

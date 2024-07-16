@@ -392,7 +392,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     const tabNavSelector = '#tabsContainer';
     const splitViewSelector = '#splitViewContainer';
 
-    function isResizedStatus($element, isResized) {
+    function isResizedStatus ($element, isResized) {
       const resizedWidthRegex = /^calc\(/;
       const elementWidth = $element[0].style.width;
 
@@ -401,14 +401,15 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       } else {
         expect(elementWidth).to.not.match(resizedWidthRegex);
       }
+
       return elementWidth;
     }
 
-    function expectToBeResized($element) {
+    function expectToBeResized ($element) {
       return isResizedStatus($element, true);
     }
 
-    function expectToNotBeResized($element) {
+    function expectToNotBeResized ($element) {
       return isResizedStatus($element, false);
     }
 
@@ -451,7 +452,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
 
-    it('does not resize the split view when opening the drawer after the split view', () => {
+    it('resizes the split view when opening the drawer after the split view', () => {
       cy.wrap($iframeBody)
         .contains(openSplitviewButtonText)
         .click();
@@ -467,7 +468,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
 
-    it('does not resize the split view when opening the drawer before the split view', () => {
+    it('resizes the split view when opening the drawer before the split view', () => {
       cy.wrap($iframeBody)
         .contains(openDrawerButtonText)
         .click();
@@ -483,7 +484,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       });
     });
 
-    it('does not resize several times if the drawer is opened several times', () => {
+    it('resizes several times if the drawer is opened several times', () => {
       let mfIframeWidthAfterFirstResize;
 
       cy.wrap($iframeBody)
