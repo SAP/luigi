@@ -101,20 +101,20 @@ describe('Navigation', () => {
 
         cy.expectPathToBe('/projects/tabNav');
 
-        cy.get('.fd-tabs')
+        cy.get('.fd-icon-tab-bar')
           .contains('Node with node activation hook')
           .click();
         cy.expectPathToBe('/projects/tabNav/on-node-activation');
 
-        cy.get('.fd-tabs')
+        cy.get('.fd-icon-tab-bar')
           .contains('Settings')
           .click();
-        cy.get('.fd-tabs')
+        cy.get('.fd-icon-tab-bar')
           .contains('Project Settings')
           .click();
         cy.expectPathToBe('/projects/tabNav/settings');
 
-        cy.get('.fd-tabs')
+        cy.get('.fd-icon-tab-bar')
           .contains('More')
           .click();
 
@@ -138,14 +138,14 @@ describe('Navigation', () => {
           cy.wrap(result).contains('Global Settings');
         });
       });
-      // TODO - verify this test case as popover is not scrollable anymore
-      xit('scrollable dropdown in tabNav', () => {
+
+      it('scrollable dropdown in tabNav', () => {
         cy.viewport(1000, 300);
         cy.get('[data-testid="tabnavheader_tabnavheader"]').click();
-        cy.get('.luigi-tabsContainer')
+        cy.get('.tabsContainerHeader')
           .contains('Header 3')
           .click();
-        cy.get('.luigi-tabsContainer .fd-popover__body').as('popoverBody');
+        cy.get('.tabsContainerHeader .fd-icon-tab-bar__item--single-click .fd-popover__body').as('popoverBody');
         cy.get('@popoverBody').then($div => {
           const hasScrollbar = $div[0].scrollHeight > $div[0].clientHeight;
           expect(hasScrollbar).to.be.true;
@@ -153,7 +153,6 @@ describe('Navigation', () => {
         cy.get('@popoverBody')
           .contains('TabNav 8')
           .should('be.not.visible');
-
         cy.get('@popoverBody').scrollTo('bottom');
         cy.get('@popoverBody')
           .contains('TabNav 8')
@@ -174,17 +173,17 @@ describe('Navigation', () => {
         cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
         cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
         cy.get('[data-testid="tabnav_horizontalnavigationexample"]').should('have.class', 'is-selected');
-        cy.get('.fd-tabs').contains('User Management');
-        cy.get('.fd-tabs__item')
+        cy.get('.fd-icon-tab-bar').contains('User Management');
+        cy.get('.fd-icon-tab-bar__item')
           .contains('Node with node activation hook')
           .should('not.visible');
-        cy.get('.fd-tabs').contains('More');
+        cy.get('.fd-icon-tab-bar').contains('More');
       });
 
       it('Test activated node on moible with keep selected context', () => {
         cy.visit('/projects/tabNav/avengers/captain-america/super-power');
-        cy.get('.luigi__more').should('have.attr', 'aria-selected', 'true');
-        cy.get('.luigi__more').click();
+        cy.get('.luigi-tabsMoreButton button').should('have.class', 'is-active');
+        cy.get('.luigi-tabsMoreButton').click();
         cy.get('.fd-nested-list__title')
           .contains('Keep Selected Example')
           .parent()
@@ -193,8 +192,8 @@ describe('Navigation', () => {
 
       it('recalc of tab nav by using resizing', () => {
         cy.visit('/projects/tabNav');
-        cy.get('.fd-tabs').within(() => {
-          cy.get('.fd-tabs__item')
+        cy.get('.fd-icon-tab-bar').within(() => {
+          cy.get('.fd-icon-tab-bar__item')
             .contains('User Management')
             .should('be.visible');
           cy.get('.fd-nested-list__item')
@@ -205,18 +204,18 @@ describe('Navigation', () => {
             .should('not.be.visible');
         });
         cy.viewport(900, 750);
-        cy.get('.fd-tabs').within(() => {
-          cy.get('.fd-tabs__item')
+        cy.get('.fd-icon-tab-bar').within(() => {
+          cy.get('.fd-icon-tab-bar__item')
             .contains('Settings')
             .should('be.visible');
-          cy.get('.fd-tabs__item')
+          cy.get('.fd-icon-tab-bar__item')
             .contains('Settings')
             .click();
           cy.get('.fd-popover')
             .contains('Project Settings')
             .click();
           cy.expectPathToBe('/projects/tabNav/settings');
-          cy.get('.fd-tabs__item')
+          cy.get('.fd-icon-tab-bar__item')
             .contains('Settings')
             .should('have.attr', 'aria-selected', 'true');
         });
@@ -235,7 +234,7 @@ describe('Navigation', () => {
           cy.get('.fd-nested-list__item')
             .contains('Miscellaneous 2')
             .should('not.exist');
-          cy.get('.luigi__more').click();
+          cy.get('.luigi-tabsMoreButton').click();
           cy.get('.fd-nested-list__item')
             .contains('Miscellaneous2')
             .should('be.visible');
