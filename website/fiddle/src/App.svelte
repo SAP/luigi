@@ -1,15 +1,80 @@
+<svelte:window on:click={closeDropdowns} on:blur={closeDropdowns}/>
 <script>
   import luigiCorePkgInfo from '../node_modules/@luigi-project/core/package.json';
   import defaultConfig from './defaultConfig.js';
   import { onMount } from 'svelte';
 
   export let luigiVersion = luigiCorePkgInfo.version;
+  export let customVersion;
+
+  export let versions;
+  export let showVersions;
 
   let defaultConfigString = defaultConfig;
   let configString = defaultConfigString;
 
   function exec(jsString) {
     return eval(jsString);
+  }
+
+  function closeDropdowns() {
+    showVersions = false;
+  }
+
+  async function injectLuigiAssets() {
+    let coreBasePath = '/vendor/luigi-core';
+    let oidcBasePath = '/vendor/plugin-auth-oidc';
+    let oauth2BasePath = '/vendor/plugin-auth-oauth2';
+    let horizonStandard = true;
+
+    customVersion = localStorage.getItem('luigi-version');
+    if(customVersion) {
+      const cdnBase = 'https://www.unpkg.com/@luigi-project/';
+      coreBasePath = cdnBase + 'core@' + customVersion;
+      oidcBasePath = cdnBase + 'plugin-auth-oidc@' + customVersion;
+      oauth2BasePath = cdnBase + 'plugin-auth-oauth2@' + customVersion;
+
+      luigiVersion = customVersion;
+      const v_info = customVersion.split('.');
+      if (v_info[0] < 2 || (v_info[0] === '2' && v_info[1] < 10)) {
+        horizonStandard = false;
+      }
+      document.body.classList.add('lui-v' + v_info[0] + '_' + v_info[1]);
+    }
+
+    const style = document.createElement('link');
+    style.setAttribute('rel', 'stylesheet');
+    style.setAttribute('href', coreBasePath + (horizonStandard ? '/luigi_horizon.css' : '/luigi.css'));
+    document.head.appendChild(style);
+    
+    const core = document.createElement('script');
+    core.setAttribute('src', coreBasePath + '/luigi.js');
+    document.head.appendChild(core);
+    return new Promise((resolve) => {
+      window.loadInterval = setInterval(() => {
+        if(window.Luigi) {
+          clearInterval(window.loadInterval);
+          const s_oidc = document.createElement('script');
+          s_oidc.setAttribute('src', oidcBasePath + '/plugin.js');
+          document.head.appendChild(s_oidc);
+          const s_oauth = document.createElement('script');
+          s_oauth.setAttribute('src', oauth2BasePath + '/plugin.js');
+          document.head.appendChild(s_oauth);
+
+          window.loadInterval = setInterval(() => {
+            if(
+              window['LuigiPlugin-auth-oauth2'] &&
+              window['LuigiPlugin-auth-oidc']
+            ) {
+              clearInterval(window.loadInterval);
+              window.LuigiAuthOAuth2 = window['LuigiPlugin-auth-oauth2'];
+              window.LuigiAuthOIDC = window['LuigiPlugin-auth-oidc'];
+              resolve('resolved');
+            }
+        }, 100);
+        }
+      }, 100);
+    });
   }
 
   function reloadConfig() {
@@ -79,9 +144,34 @@
     }
   }
 
+  async function chooseVersion() {
+    showVersions = true;
+    if(!versions) {
+      const response = await fetch('https://registry.npmjs.org/@luigi-project/core');
+      const entries = await response.json();
+      versions = [...new Set(Object.values(entries['dist-tags']) || [])].sort((a, b) => {
+        const a_parts = a.split('.');
+        const b_parts = b.split('.');
+        return (a_parts[0] * 10000 + a_parts[1] * 1) - (b_parts[0] * 10000 + b_parts[1] * 1);
+      });
+      versions.push('Reset...');
+    }
+  }
+
+  function switchVersion(version) {
+    if(version === 'Reset...') {
+      localStorage.removeItem('luigi-version');
+    } else {
+      localStorage.setItem('luigi-version', version);
+    }
+    window.location.reload();
+  }
+
   onMount(async () => {
-	window.editor = ace.edit('editor');
-	window.editorTA = document.getElementById('editorTA');
+    await injectLuigiAssets();
+
+    window.editor = ace.edit('editor');
+    window.editorTA = document.getElementById('editorTA');
     editor.session.setMode('ace/mode/javascript');
     reloadConfig();
   });
@@ -131,7 +221,7 @@
     bottom: 0;
     height: 49px;
     width: 100%;
-    z-index: 1;
+    z-index: 100000000000;
     display: none;
   }
 
@@ -152,17 +242,49 @@
   .editor_container {
     visibility: hidden;
     z-index: -1;
-    width: 100%;
-    height: 100%;
+  }
+
+  :global(body.lui-v1_0) .editor_container .fd-dialog__content {
+    background: white;
+    padding: .5rem;
+    border-radius: 1rem;
+  }
+
+  :global(body.lui-v1_0) .editor_container .fd-dialog__body {
+    border: 1px solid #3c4553;
   }
 
   :global(.editorVisible) .editor_container {
     visibility: visible;
     z-index: 2;
   }
+  
+  .editor_container .fd-dialog {
+    display: none;
+  }
 
-  :global(.editorVisible) .fd-dialog {
+  :global(.editorVisible) .editor_container .fd-dialog {
     display: flex;
+    position: fixed;
+    z-index: 1000;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .6);
+  }
+  
+  .editor_container .fd-bar__right {
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
   }
 
   #editor, #editorTA {
@@ -222,6 +344,78 @@
       display: none;
     }
   }
+
+  .lui-version-chooser {
+    position: absolute;
+    bottom: 2rem;
+    max-width: 300px;
+    max-height: 50vh;
+    background: #3c4553;
+    display: block;
+    border: 1px solid #2deb8a;
+    border-radius: 1rem;
+    color: white;
+    left: 0;
+    overflow: auto;
+    text-align: left;
+    padding: 5px;
+    padding-right: 10px;
+  }
+
+  
+  .fiddle_spinner {
+    color: white
+  }
+  .fiddle_spinner,
+  .fiddle_spinner div {
+    box-sizing: border-box;
+  }
+  .fiddle_spinner {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+  .fiddle_spinner div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    margin: 8px;
+    border: 8px solid currentColor;
+    border-radius: 50%;
+    animation: fiddle_spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: currentColor transparent transparent transparent;
+  }
+  .fiddle_spinner div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .fiddle_spinner div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .fiddle_spinner div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes fiddle_spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .fiddle-toolbar .fd-action-bar__header {
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .fiddle-toolbar .fd-button {
+    position: relative;
+    overflow: visible;
+  }
 </style>
 
 <div class="editor_container">
@@ -263,7 +457,29 @@
     <div class="fd-action-bar__header">
       <div class="title-wrapper">
         <img alt="Luigi" src="./img/luigi.png" />
-        <span class="lui-mobile-hide">powered by Luigi v{luigiVersion}</span>
+        <span class="lui-mobile-hide">powered by Luigi 
+          <button class="fd-button fd-button--compact btn-primary" on:click|preventDefault|stopPropagation={chooseVersion}>
+            <span class="lui-mobile-hide">v{luigiVersion + (customVersion ? ' (CDN)' : '')}
+              {#if showVersions}
+              <div class="lui-version-chooser">
+                {#if !versions}                
+                <div class="fiddle_spinner"><div></div><div></div><div></div><div></div></div>
+                {/if}
+                {#each (versions || []) as version}
+                  <a
+                    class="fd-link"
+                    href="#top"
+                    target="_blank"
+                    rel="noreferrer"
+                    on:click={switchVersion(version)}>
+                    {version}                    
+                  </a><br>
+                {/each}
+              </div>
+              {/if}
+            </span>
+          </button>
+        </span>
         <span>
           <a
             class="fd-link"

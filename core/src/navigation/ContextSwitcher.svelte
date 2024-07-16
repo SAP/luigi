@@ -1,10 +1,5 @@
 <script>
-  import {
-    createEventDispatcher,
-    onMount,
-    getContext,
-    beforeUpdate,
-  } from 'svelte';
+  import { createEventDispatcher, onMount, getContext, beforeUpdate } from 'svelte';
   import { ContextSwitcherHelpers } from './services/context-switcher';
   import ContextSwitcherNav from './ContextSwitcherNav.svelte';
   import { LuigiConfig } from '../core-api';
@@ -15,7 +10,7 @@
     StateHelpers,
     NavigationHelpers,
     GenericHelpers,
-    EventListenerHelpers,
+    EventListenerHelpers
   } from '../utilities/helpers';
 
   const dispatch = createEventDispatcher();
@@ -28,10 +23,7 @@
   export let options = null;
   let alwaysShowDropdown = true;
   $: renderAsDropdown =
-    alwaysShowDropdown ||
-    (actions && actions.length > 0) ||
-    (options && options.length > 1) ||
-    !selectedOption;
+    alwaysShowDropdown || (actions && actions.length > 0) || (options && options.length > 1) || !selectedOption;
   export let selectedOption;
   export let fallbackLabelResolver = null;
   export let pathParams;
@@ -41,9 +33,7 @@
   export let contextSwitcherToggle = false;
   export let defaultLabel;
   let preserveSubPathOnSwitch;
-  let getUnsavedChangesModalPromise = getContext(
-    'getUnsavedChangesModalPromise',
-  );
+  let getUnsavedChangesModalPromise = getContext('getUnsavedChangesModalPromise');
   let store = getContext('store');
   let getTranslation = getContext('getTranslation');
   let prevContextSwitcherToggle = false;
@@ -55,33 +45,24 @@
     StateHelpers.doOnStoreChange(
       store,
       async () => {
-        const contextSwitcherConfig = LuigiConfig.getConfigValue(
-          'navigation.contextSwitcher',
-        );
+        const contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
         contextSwitcherEnabled = !!contextSwitcherConfig;
         if (!contextSwitcherEnabled) {
           return;
         }
 
-        customOptionsRenderer = GenericHelpers.isFunction(
-          contextSwitcherConfig.customOptionsRenderer,
-        )
+        customOptionsRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customOptionsRenderer)
           ? contextSwitcherConfig.customOptionsRenderer
           : undefined;
 
-        customSelectedOptionRenderer = GenericHelpers.isFunction(
-          contextSwitcherConfig.customSelectedOptionRenderer,
-        )
+        customSelectedOptionRenderer = GenericHelpers.isFunction(contextSwitcherConfig.customSelectedOptionRenderer)
           ? contextSwitcherConfig.customSelectedOptionRenderer
           : undefined;
         config = contextSwitcherConfig;
         options = undefined;
         if (contextSwitcherConfig) {
-          alwaysShowDropdown =
-            contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
-          actions = await LuigiConfig.getConfigValueAsync(
-            'navigation.contextSwitcher.actions',
-          );
+          alwaysShowDropdown = contextSwitcherConfig.alwaysShowDropdown !== false; // default is true
+          actions = await LuigiConfig.getConfigValueAsync('navigation.contextSwitcher.actions');
           const currentPath = Routing.getCurrentPath();
 
           fallbackLabelResolver = contextSwitcherConfig.fallbackLabelResolver;
@@ -92,22 +73,17 @@
           if (!contextSwitcherConfig.lazyloadOptions) {
             await fetchOptions();
           }
-          if (
-            ContextSwitcherHelpers.isContextSwitcherDetailsView(
-              currentPath,
-              contextSwitcherConfig.parentNodePath,
-            )
-          ) {
+          if (ContextSwitcherHelpers.isContextSwitcherDetailsView(currentPath, contextSwitcherConfig.parentNodePath)) {
             await setSelectedContext(currentPath);
           }
         }
       },
-      ['navigation.contextSwitcher'],
+      ['navigation.contextSwitcher']
     );
 
-    RoutingHelpers.addRouteChangeListener((path) => setSelectedContext(path));
+    RoutingHelpers.addRouteChangeListener(path => setSelectedContext(path));
 
-    EventListenerHelpers.addEventListener('message', (e) => {
+    EventListenerHelpers.addEventListener('message', e => {
       if (!IframeHelpers.getValidMessageSource(e)) return;
       if (e.data && e.data.msg === 'luigi.refresh-context-switcher') {
         options = null;
@@ -123,8 +99,7 @@
       prevContextSwitcherToggle = contextSwitcherToggle;
       fetchOptions();
     }
-    isContextSwitcherDropdownShown =
-      dropDownStates.contextSwitcherPopover || false;
+    isContextSwitcherDropdownShown = dropDownStates.contextSwitcherPopover || false;
   });
 
   function getNodeName(label, config, id) {
@@ -146,22 +121,14 @@
     const parentNodePath = conf.parentNodePath;
     const fallbackLabelResolver = conf.fallbackLabelResolver;
     const currentPath = Routing.getCurrentPath();
-    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
-      currentPath,
-      options,
-      parentNodePath,
-    );
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(currentPath, options, parentNodePath);
     selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
       currentPath,
       options,
       parentNodePath,
-      fallbackLabelResolver,
+      fallbackLabelResolver
     );
-    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
-      currentPath,
-      options,
-      parentNodePath,
-    );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(currentPath, options, parentNodePath);
     preserveSubPathOnSwitch = conf.preserveSubPathOnSwitch;
   }
 
@@ -169,22 +136,14 @@
     const conf = config || {};
     const parentNodePath = conf.parentNodePath;
     const fallbackLabelResolver = conf.fallbackLabelResolver;
-    selectedOption = await ContextSwitcherHelpers.getSelectedOption(
-      currentPath,
-      options,
-      parentNodePath,
-    );
+    selectedOption = await ContextSwitcherHelpers.getSelectedOption(currentPath, options, parentNodePath);
     selectedLabel = await ContextSwitcherHelpers.getSelectedLabel(
       currentPath,
       options,
       parentNodePath,
-      fallbackLabelResolver,
+      fallbackLabelResolver
     );
-    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(
-      currentPath,
-      options,
-      parentNodePath,
-    );
+    selectedNodePath = await ContextSwitcherHelpers.getSelectedNode(currentPath, options, parentNodePath);
   }
 
   export async function onActionClick(event) {
@@ -210,7 +169,7 @@
       () => {
         Routing.navigateTo(path);
       },
-      () => {},
+      () => {}
     );
   }
 
@@ -220,12 +179,7 @@
     getUnsavedChangesModalPromise().then(
       () => {
         if (preserveSubPathOnSwitch && selectedOption) {
-          Routing.navigateTo(
-            ContextSwitcherHelpers.getNodePathFromCurrentPath(
-              option,
-              selectedOption,
-            ),
-          );
+          Routing.navigateTo(ContextSwitcherHelpers.getNodePathFromCurrentPath(option, selectedOption));
         } else {
           Routing.navigateTo(option.link);
         }
@@ -233,7 +187,7 @@
           dispatch('toggleDropdownState');
         }
       },
-      () => {},
+      () => {}
     );
   }
 
@@ -270,11 +224,7 @@
               {#if selectedOption && customSelectedOptionRenderer}
                 {@html customSelectedOptionRenderer(selectedOption)}
               {:else}
-                {#if !selectedLabel}
-                  {$getTranslation(config.defaultLabel)}
-                {:else}
-                  {selectedLabel}
-                {/if}
+                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{:else}{selectedLabel}{/if}
                 <i class="sap-icon--megamenu fd-shellbar__button--icon" />
               {/if}
             </a>
@@ -293,8 +243,7 @@
               {#if selectedOption && customSelectedOptionRenderer}
                 {@html customSelectedOptionRenderer(selectedOption)}
               {:else}
-                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}
-                {:else}{selectedLabel}{/if}
+                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{:else}{selectedLabel}{/if}
                 <i class="sap-icon--megamenu fd-shellbar__button--icon" />
               {/if}
             </button>
@@ -328,10 +277,7 @@
   <!-- MOBILE VERSION (fullscreen dialog): -->
   {#if isMobile && dropDownStates.contextSwitcherPopover && renderAsDropdown}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div
-      class="fd-dialog fd-dialog--active"
-      on:click|stopPropagation={() => {}}
-    >
+    <div class="fd-dialog fd-dialog--active" on:click|stopPropagation={() => {}}>
       <div
         class="fd-dialog__content fd-dialog__content--mobile"
         role="dialog"
@@ -342,12 +288,8 @@
           <div class="fd-bar__left">
             <div class="fd-bar__element">
               <h2 class="fd-title fd-title--h5" id="dialog-title-3">
-                {#if !selectedLabel}
-                  {$getTranslation(config.defaultLabel)}
-                {/if}
-                {#if selectedLabel}
-                  {selectedLabel}
-                {/if}
+                {#if !selectedLabel}{$getTranslation(config.defaultLabel)}{/if}
+                {#if selectedLabel}{selectedLabel}{/if}
               </h2>
             </div>
           </div>

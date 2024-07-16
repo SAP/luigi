@@ -1,0 +1,14 @@
+# DXP component metadata file
+
+kind: Component
+metadata:
+  displayName: Luigi Container
+  description: Library for lightweight integration of Luigi micro frontends
+  labels:
+    language: typescript
+  tags:
+    - luigi
+spec:
+  type:
+    name: ui
+    lifecycle: production

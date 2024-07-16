@@ -152,6 +152,76 @@ describe('Luigi client linkManager', () => {
     });
   });
 
+  describe('linkManager OpenAsModal() promise functionality', () => {
+    let $iframeBody;
+    beforeEach(() => {
+      // "clear" variables to make sure they are not reused and throw error in case something goes wrong
+      $iframeBody = undefined;
+      cy.visitLoggedIn('/projects/pr2');
+      cy.getIframeBody().then(result => {
+        $iframeBody = result;
+      });
+    });
+    it('Open and Close Modal with Close Button', () => {
+      cy.wrap($iframeBody)
+        .find('[data-testid=open-modal-on-close-promise]')
+        .click()
+        .then(() => {
+          cy.get('[data-testid=lui-modal-index-0]') // X-button
+          .click()
+        })
+      cy.wrap($iframeBody).should('contain', 'promise resolved!');
+    });
+    it('Open and Close Modal With Esc Key', () => {
+      cy.wrap($iframeBody)
+        .find('[data-testid=open-modal-on-close-promise]')
+        .click();
+      cy.get('body').trigger('keydown', { keyCode: 27});  // Esc
+      cy.wrap($iframeBody).should('contain', 'promise resolved!');
+    });
+    it('Open and Close Modal With linkManager.goBack()', () => {
+      cy.wrap($iframeBody)
+        .find('[data-testid=open-modal-on-close-promise]')
+        .click();
+      cy.get('[data-testid=modal-mf] iframe')
+        .iframe()
+        .then($modal => {
+          cy.wrap($modal)
+            .contains('Click here') // linkManager().goBack()
+            .click();
+        });
+      cy.wrap($iframeBody).should('contain', 'promise resolved!');
+    });
+    it('Open and Close Modal With linkManager().navigate()', () => {
+      cy.wrap($iframeBody)
+        .find('[data-testid=open-modal-on-close-promise]')
+        .click();
+      cy.get('[data-testid=modal-mf] iframe')
+        .eq(0)
+        .iframe()
+        .then($modal => {
+          cy.wrap($modal)
+            .contains('absolute: to /projects/pr2') // linkManager().navigate('/projects/pr2')
+            .click();
+        });
+      cy.wrap($iframeBody).should('contain', 'promise resolved!');
+    });
+    it('Open and Close Modal With uxManager().closeCurrentModal()', () => {
+      cy.wrap($iframeBody)
+        .find('[data-testid=open-modal-on-close-promise]')
+        .click();
+      cy.get('[data-testid=modal-mf] iframe')
+        .eq(0)
+        .iframe()
+        .then($modal => {
+          cy.wrap($modal)
+            .contains('Close modal') // uxManager().closeCurrentModal()
+            .click();
+        });
+      cy.wrap($iframeBody).should('contain', 'promise resolved!');
+    });
+  });
+  
   describe('linkManager wrong paths navigation', () => {
     let $iframeBody;
     beforeEach(() => {

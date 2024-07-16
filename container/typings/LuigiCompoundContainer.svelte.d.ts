@@ -6,13 +6,13 @@ export declare interface WebComponentSettings {
 
 export default class LuigiCompoundContainer extends HTMLElement {
   /**
-   * The URL used for the renderer
+   * The URL used for the renderer.
    */
   viewurl: string;
 
   /**
    * The configuration for the compound microfrontend
-   * Take a look at https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound
+   * Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details. 
    * @since 1.0.0
    * 
    */
@@ -23,6 +23,12 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @since 1.0.0
    */
   deferInit: boolean;
+
+  /**
+   * If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
+   * @since NEXTRELEASE
+   */
+  noShadow: boolean;
 
   /**
    * The search parameters to be passed to the compound micro frontend.
@@ -62,21 +68,21 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The document title value to be passed to the compound micro frontend.
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   documentTitle: string;
 
   /**
    * The hasBack value to be passed to the compound micro frontend.
    * It indicates that there is one or more preserved views. Useful when you need to show a back button. 
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   hasBack: string;
 
   /**
    * The dirty status value to be passed to the compound micro frontend.
    * It's used to indicate that there are unsaved changes when navigating away.
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   dirtyStatus: boolean;
 

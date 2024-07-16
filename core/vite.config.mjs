@@ -15,7 +15,7 @@ const luigiPlugin = () => {
       });
 
       const jsFile = bundle['luigi.js'];
-      jsFile.code = jsFile.code.replace('__luigi_dyn_import', 'import');
+      jsFile.code = jsFile.code.replace('__luigi_dyn_import_____________(', 'import(/* webpackIgnore: true */');
 
       const fdFioriCSS = bundle['fd_fiori.css'];
       const fdHorizonCSS = bundle['fd_horizon.css'];
@@ -44,7 +44,7 @@ export default defineConfig({
   base: '',
   build: {
     sourcemap: true,
-    chunkSizeWarningLimit: 530,
+    chunkSizeWarningLimit: 650,
     rollupOptions: {
       input: ['src/main.js', 'src/styles/fd_horizon.scss', 'src/styles/fd_fiori.scss'],
       output: {

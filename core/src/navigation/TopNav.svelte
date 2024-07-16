@@ -9,12 +9,7 @@
   import GlobalSearch from './GlobalSearch.svelte';
   import GlobalSearchCentered from './GlobalSearchCentered.svelte';
   import TopNavNode from './TopNavNode.svelte';
-  import {
-    beforeUpdate,
-    createEventDispatcher,
-    onMount,
-    getContext,
-  } from 'svelte';
+  import { beforeUpdate, createEventDispatcher, onMount, getContext } from 'svelte';
   import { LuigiAuth, LuigiConfig, LuigiI18N } from '../core-api';
   import {
     AuthHelpers,
@@ -22,7 +17,7 @@
     RoutingHelpers,
     StateHelpers,
     EventListenerHelpers,
-    GenericHelpers,
+    GenericHelpers
   } from '../utilities/helpers';
   import { SemiCollapsibleNavigation } from './services/semi-collapsed-navigation';
 
@@ -53,7 +48,7 @@
   export let isGlobalSearchCentered;
   export let isSearchFieldVisible;
   export let inputElem;
-  export let luigiCustomSearchRenderer__slot;
+  export let customSearchItemRendererSlot;
   export let displaySearchResult;
   export let searchResult;
   export let burgerTooltip;
@@ -63,14 +58,10 @@
   let contextSwitcherToggle = false;
   let selectedLabel;
   let defaultLabelContextSwitcher;
-  let contextSwitcherConfig = LuigiConfig.getConfigValue(
-    'navigation.contextSwitcher'
-  );
-  export let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue(
-    'navigation.addNavHrefs'
-  );
+  let contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
+  export let addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
   const setTopNavData = async () => {
-    if (pathData && 0 < pathData.length) { 
+    if (pathData && 0 < pathData.length) {
       const tnd = await NavigationHelpers.generateTopNavNodes(pathData);
       children = tnd.children;
       selectedNode = tnd.selectedNode;
@@ -91,44 +82,24 @@
       store,
       () => {
         authorizationEnabled = LuigiAuth.isAuthorizationEnabled();
-        profileItemsAvailable =
-          LuigiConfig.getConfigValue('navigation.profile');
-        autologinEnabled = !Boolean(
-          LuigiConfig.getConfigValue('auth.disableAutoLogin')
-        );
-        isProductSwitcherAvailable = LuigiConfig.getConfigValue(
-          'navigation.productSwitcher'
-        );
-        hideNavComponent = LuigiConfig.getConfigBooleanValue(
-          'settings.hideNavigation'
-        );
-        responsiveNavSetting = LuigiConfig.getConfigValue(
-          'settings.responsiveNavigation'
-        );
-        profileTypeSettings = LuigiConfig.getConfigValue(
-          'settings.profileType'
-        );
-        responsiveShellbarPadding = LuigiConfig.getConfigValue(
-          'settings.header.responsiveShellbarPaddings'
-        );
+        profileItemsAvailable = LuigiConfig.getConfigValue('navigation.profile');
+        autologinEnabled = !Boolean(LuigiConfig.getConfigValue('auth.disableAutoLogin'));
+        isProductSwitcherAvailable = LuigiConfig.getConfigValue('navigation.productSwitcher');
+        hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+        responsiveNavSetting = LuigiConfig.getConfigValue('settings.responsiveNavigation');
+        profileTypeSettings = LuigiConfig.getConfigValue('settings.profileType');
+        responsiveShellbarPadding = LuigiConfig.getConfigValue('settings.header.responsiveShellbarPaddings');
         productSwitcherConfig = NavigationHelpers.getProductSwitcherConfig();
         globalSearchConfig = LuigiConfig.getConfigValue('globalSearch');
         isGlobalSearchCentered =
           globalSearchConfig &&
           globalSearchConfig.searchFieldCentered &&
-          GenericHelpers.requestExperimentalFeature(
-            'globalSearchCentered',
-            true
-          );
+          GenericHelpers.requestExperimentalFeature('globalSearchCentered', true);
         showGlobalNav =
           LuigiConfig.getConfigBooleanValue('settings.globalSideNavigation') &&
           GenericHelpers.requestExperimentalFeature('globalNav', true);
-        addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue(
-          'navigation.addNavHrefs'
-        );
-        contextSwitcherConfig = LuigiConfig.getConfigValue(
-          'navigation.contextSwitcher'
-        );
+        addNavHrefForAnchor = LuigiConfig.getConfigBooleanValue('navigation.addNavHrefs');
+        contextSwitcherConfig = LuigiConfig.getConfigValue('navigation.contextSwitcher');
       },
       ['navigation']
     );
@@ -141,7 +112,7 @@
       ['navigation.viewgroupdata']
     );
 
-    EventListenerHelpers.addEventListener('message', (e) => {
+    EventListenerHelpers.addEventListener('message', e => {
       if ('luigi.navigation.update-badge-counters' === e.data.msg) {
         setTopNavData();
       }
@@ -156,9 +127,7 @@
   });
 
   export let showTopNav;
-  $: showTopNav =
-    (authorizationEnabled && (!autologinEnabled || isLoggedIn)) ||
-    !authorizationEnabled;
+  $: showTopNav = (authorizationEnabled && (!autologinEnabled || isLoggedIn)) || !authorizationEnabled;
 
   function getSapIconStr(iconString) {
     return NavigationHelpers.renderIconClassName(iconString);
@@ -168,9 +137,9 @@
     return NavigationHelpers.isOpenUIiconName(node.icon);
   }
 
-  const getNodeLabel = (node) => {
+  const getNodeLabel = node => {
     return NavigationHelpers.getNodeLabel(node);
-  }
+  };
 
   function getRouteLink(node) {
     return RoutingHelpers.getNodeHref(node, pathParams);
@@ -239,7 +208,7 @@
     dispatch('toggleSearch', {
       isSearchFieldVisible,
       inputElem,
-      luigiCustomSearchRenderer__slot,
+      customSearchItemRendererSlot
     });
   }
 
@@ -247,7 +216,7 @@
     const ddStates = dropDownStates || {};
     const keys = Object.keys(ddStates);
     if (keys && keys.length > 0) {
-      keys.forEach((k) => {
+      keys.forEach(k => {
         ddStates[k] = false;
         dropDownStates = ddStates;
       });
@@ -255,10 +224,7 @@
   }
 
   function burgerClickHandler() {
-    if (
-      responsiveNavSetting === 'simple' ||
-      responsiveNavSetting === 'simpleMobileOnly'
-    ) {
+    if (responsiveNavSetting === 'simple' || responsiveNavSetting === 'simpleMobileOnly') {
       simpleNav();
     } else {
       semicollapsedNav();
@@ -270,18 +236,13 @@
     if (!NavigationHelpers.getBurgerTooltipConfig()) {
       return;
     }
-    const [collapseNavTooltip, expandNavTooltip] =
-      NavigationHelpers.getBurgerTooltipConfig();
+    const [collapseNavTooltip, expandNavTooltip] = NavigationHelpers.getBurgerTooltipConfig();
     if (collapseNavTooltip && expandNavTooltip) {
       if (document.body.classList.contains('lui-simpleSlideInNav')) {
-        burgerTooltip = document.body.classList.contains('lui-leftNavToggle')
-          ? collapseNavTooltip
-          : expandNavTooltip;
+        burgerTooltip = document.body.classList.contains('lui-leftNavToggle') ? collapseNavTooltip : expandNavTooltip;
       }
       if (document.body.classList.contains('lui-semiCollapsible')) {
-        burgerTooltip = document.body.classList.contains('semiCollapsed')
-          ? collapseNavTooltip
-          : expandNavTooltip;
+        burgerTooltip = document.body.classList.contains('semiCollapsed') ? collapseNavTooltip : expandNavTooltip;
       }
     }
   }
@@ -310,9 +271,7 @@
 {#if showTopNav}
   <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
   <div
-    class="fd-shellbar {responsiveShellbarPadding
-      ? 'fd-shellbar--responsive-paddings'
-      : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''}"
+    class="fd-shellbar {responsiveShellbarPadding ? 'fd-shellbar--responsive-paddings' : ''} lui-shellbar-wrapper {hideNavComponent ? 'hideNavComponent' : ''}"
     tabindex="0"
   >
     <div class="fd-shellbar__group fd-shellbar__group--product">
@@ -345,14 +304,12 @@
           bind:searchResult
           bind:displaySearchResult
           bind:inputElem
-          bind:luigiCustomSearchRenderer__slot
+          bind:customSearchItemRendererSlot
           on:closeSearchResult
         />
       </div>
     {/if}
-    <div
-      class="fd-shellbar__group fd-shellbar__group--actions lui-shellbar_group--actions"
-    >
+    <div class="fd-shellbar__group fd-shellbar__group--actions lui-shellbar_group--actions">
       {#if !authorizationEnabled || isLoggedIn}
         {#if globalSearchConfig && !isGlobalSearchCentered}
           <GlobalSearch
@@ -362,15 +319,14 @@
             bind:searchResult
             bind:displaySearchResult
             bind:inputElem
-            bind:luigiCustomSearchRenderer__slot
+            bind:customSearchItemRendererSlot
             on:closeSearchResult
             {globalSearchConfig}
           />
         {/if}
         <ContextSwitcher
           bind:dropDownStates
-          on:toggleDropdownState={() =>
-            toggleDropdownState('contextSwitcherPopover')}
+          on:toggleDropdownState={() => toggleDropdownState('contextSwitcherPopover')}
           isMobile={false}
           {addNavHrefForAnchor}
         />
@@ -381,28 +337,17 @@
             {#if !(node.hideFromNav || (showGlobalNav && node.globalNav))}
               {#if node.isCat}
                 {#if node.visibleChildren.filter(node => !node.hideFromNav && node.label).length > 0}
-                  <div
-                    class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
-                  >
+                  <div class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop">
                     <div class="fd-popover fd-popover--right">
                       <!-- svelte-ignore a11y-click-events-have-key-events -->
-                      <div
-                        class="fd-popover__control"
-                        on:click|stopPropagation={() => {}}
-                      >
+                      <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                         <button
                           title={resolveTooltipText(node, getNodeLabel(node))}
-                          class="fd-shellbar__button fd-button fd-button--transparent {node ===
-                          selectedNode
-                            ? 'is-selected'
-                            : ''}"
+                          class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode ? 'is-selected' : ''}"
                           aria-controls="dropDownPopover-{i}"
-                          aria-expanded={dropDownStates[
-                            `dropDownPopover-${i}`
-                          ] || false}
+                          aria-expanded={dropDownStates[`dropDownPopover-${i}`] || false}
                           aria-haspopup="true"
-                          on:click={() =>
-                            toggleDropdownState(`dropDownPopover-${i}`)}
+                          on:click={() => toggleDropdownState(`dropDownPopover-${i}`)}
                           data-testid={NavigationHelpers.getTestId(node)}
                         >
                           <TopNavNode bind:node />
@@ -411,39 +356,25 @@
                       </div>
                       <div
                         class="fd-popover__body fd-popover__body--right"
-                        aria-hidden={!(
-                          dropDownStates[`dropDownPopover-${i}`] || false
-                        )}
+                        aria-hidden={!(dropDownStates[`dropDownPopover-${i}`] || false)}
                         id="dropDownPopover-{i}"
                       >
-                        <TopNavDropDown
-                          {node}
-                          isMobile={false}
-                          {pathParams}
-                          {addNavHrefForAnchor}
-                        />
+                        <TopNavDropDown {node} isMobile={false} {pathParams} {addNavHrefForAnchor} />
                       </div>
                     </div>
                   </div>
                 {/if}
               {:else}
-                <div
-                  class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop"
-                >
+                <div class="fd-shellbar__action fd-shellbar__action--hide fd-shellbar__action--desktop">
                   {#if addNavHrefForAnchor}
                     <a
                       href={getRouteLink(node)}
-                      class="fd-shellbar__button fd-button fd-button--transparent {node ===
-                      selectedNode
-                        ? 'is-selected'
-                        : ''}"
+                      class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode ? 'is-selected' : ''}"
                       title={resolveTooltipText(node, getNodeLabel(node))}
                       aria-expanded="false"
                       aria-haspopup="true"
                       on:click={event => {
-                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(
-                          event
-                        ) && handleClick(node);
+                        NavigationHelpers.handleNavAnchorClickedWithoutMetaKey(event) && handleClick(node);
                       }}
                       data-testid={NavigationHelpers.getTestId(node)}
                     >
@@ -453,10 +384,7 @@
                   {:else}
                     <button
                       title={resolveTooltipText(node, getNodeLabel(node))}
-                      class="fd-shellbar__button fd-button fd-button--transparent {node ===
-                      selectedNode
-                        ? 'is-selected'
-                        : ''}"
+                      class="fd-shellbar__button fd-button fd-button--transparent {node === selectedNode ? 'is-selected' : ''}"
                       aria-expanded="false"
                       aria-haspopup="true"
                       on:click={() => handleClick(node)}
@@ -485,16 +413,8 @@
             <div class="fd-shellbar-collapse">
               <div class="fd-popover fd-popover--right">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <div
-                  class="fd-popover__control"
-                  on:click|stopPropagation={() => {}}
-                >
-                  <div
-                    class="fd-shellbar-collapse--control"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    role="button"
-                  >
+                <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
+                  <div class="fd-shellbar-collapse--control" aria-expanded="false" aria-haspopup="true" role="button">
                     <button
                       class="fd-shellbar__button fd-button fd-button--transparent"
                       aria-controls="overflowPopover"
@@ -522,14 +442,11 @@
                           <a
                             class="fd-menu__link"
                             on:click|stopPropagation={() => {
-                              toggleSearch(),
-                                toggleDropdownState('overflowPopover');
+                              toggleSearch(), toggleDropdownState('overflowPopover');
                             }}
                             data-testid="luigi-search-btn-mobile"
                           >
-                            <i
-                              class="sap-icon sap-icon--search fd-top-nav__icon"
-                            />
+                            <i class="sap-icon sap-icon--search fd-top-nav__icon" />
                             <span class="fd-menu__title">Search</span>
                           </a>
                         </li>
@@ -538,21 +455,13 @@
                         <li class="fd-menu__item">
                           <!-- svelte-ignore a11y-click-events-have-key-events -->
                           <!-- svelte-ignore a11y-missing-attribute -->
-                          <a
-                            class="fd-menu__link"
-                            on:click|stopPropagation={openMobileContextSwitcher}
-                          >
+                          <a class="fd-menu__link" on:click|stopPropagation={openMobileContextSwitcher}>
                             <i
-                              class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon &&
-                              hasOpenUIicon(contextSwitcherConfig)
-                                ? getSapIconStr(contextSwitcherConfig.icon)
-                                : 'sap-icon--switch-views'}"
+                              class="sap-icon fd-top-nav__icon {contextSwitcherConfig.icon && hasOpenUIicon(contextSwitcherConfig) ? getSapIconStr(contextSwitcherConfig.icon) : 'sap-icon--switch-views'}"
                             />
-                            <span class="fd-menu__title"
-                              >{selectedLabel
-                                ? selectedLabel
-                                : defaultLabelContextSwitcher}</span
-                            >
+                            <span
+                              class="fd-menu__title"
+                            >{selectedLabel ? selectedLabel : defaultLabelContextSwitcher}</span>
                           </a>
                         </li>
                       {/if}
@@ -563,64 +472,39 @@
                               <li class="fd-menu__item">
                                 <a
                                   href={getRouteLink(node)}
-                                  class="fd-menu__link {node === selectedNode
-                                    ? 'is-selected'
-                                    : ''}"
-                                  on:click|preventDefault={() =>
-                                    handleClick(node)}
+                                  class="fd-menu__link {node === selectedNode ? 'is-selected' : ''}"
+                                  on:click|preventDefault={() => handleClick(node)}
                                   data-testid="{NavigationHelpers.getTestId(node)}-mobile"
                                 >
                                   <span
-                                    class="fd-top-nav__icon sap-icon {node.icon &&
-                                    hasOpenUIicon(node)
-                                      ? getSapIconStr(node.icon)
-                                      : ''}"
+                                    class="fd-top-nav__icon sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : ''}"
                                   >
                                     {#if !hasOpenUIicon(node)}
-                                      <img
-                                        src={node.icon}
-                                        alt={node.altText ? node.altText : ''}
-                                      />
+                                      <img src={node.icon} alt={node.altText ? node.altText : ''} />
                                     {/if}
                                     <BadgeCounter {node} />
                                   </span>
-                                  <span class="fd-menu__title"
-                                    >{getNodeLabel(node)}</span
-                                  >
+                                  <span class="fd-menu__title">{getNodeLabel(node)}</span>
                                 </a>
                               </li>
                             {:else if node.visibleChildren.filter(node => !node.hideFromNav && node.label).length > 0}
                               <li class="fd-menu__item">
                                 <a
                                   href={getRouteLink(node)}
-                                  title={resolveTooltipText(
-                                    node,
-                                    getNodeLabel(node)
-                                  )}
+                                  title={resolveTooltipText(node, getNodeLabel(node))}
                                   class="fd-menu__link"
-                                  on:click|preventDefault={() =>
-                                    openMobileTopNavDropDown(node)}
+                                  on:click|preventDefault={() => openMobileTopNavDropDown(node)}
                                   data-e2e="mobile-topnav-dropdown-category"
                                 >
                                   <span class="fd-top-nav__icon">
                                     {#if hasOpenUIicon(node)}
                                       <i
-                                        class="sap-icon {node.icon &&
-                                        hasOpenUIicon(node)
-                                          ? getSapIconStr(node.icon)
-                                          : ''}"
+                                        class="sap-icon {node.icon && hasOpenUIicon(node) ? getSapIconStr(node.icon) : ''}"
                                       />
-                                    {:else}
-                                      <img
-                                        src={node.icon}
-                                        alt={node.altText ? node.altText : ''}
-                                      />
-                                    {/if}
+                                    {:else}<img src={node.icon} alt={node.altText ? node.altText : ''} />{/if}
                                     <BadgeCounter {node} />
                                   </span>
-                                  <span class="fd-list__title"
-                                    >{getNodeLabel(node)}</span
-                                  >
+                                  <span class="fd-list__title">{getNodeLabel(node)}</span>
                                 </a>
                               </li>
                             {/if}
@@ -638,23 +522,17 @@
                           >
                             {#if hasOpenUIicon(productSwitcherConfig) || !productSwitcherConfig.icon}
                               <i
-                                class="fd-top-nav__icon sap-icon {getSapIconStr(
-                                  productSwitcherConfig.icon || 'grid'
-                                )}"
+                                class="fd-top-nav__icon sap-icon {getSapIconStr(productSwitcherConfig.icon || 'grid')}"
                               />
                             {:else}
                               <span class="fd-top-nav__icon sap-icon">
                                 <img
                                   src={productSwitcherConfig.icon}
-                                  alt={productSwitcherConfig.altText
-                                    ? productSwitcherConfig.altText
-                                    : ''}
+                                  alt={productSwitcherConfig.altText ? productSwitcherConfig.altText : ''}
                                 />
                               </span>
                             {/if}
-                            <span class="fd-menu__title"
-                              >{productSwitcherConfig.label}</span
-                            >
+                            <span class="fd-menu__title">{productSwitcherConfig.label}</span>
                           </a>
                         </li>
                       {/if}
@@ -664,8 +542,7 @@
                 {#if isProductSwitcherAvailable}
                   <ProductSwitcher
                     bind:dropDownStates
-                    on:toggleDropdownState={() =>
-                      toggleDropdownState('productSwitcherPopover')}
+                    on:toggleDropdownState={() => toggleDropdownState('productSwitcherPopover')}
                     isMobile={true}
                   />
                 {/if}
@@ -680,8 +557,7 @@
                 {#if !authorizationEnabled || isLoggedIn}
                   <ContextSwitcher
                     bind:dropDownStates
-                    on:toggleDropdownState={() =>
-                      toggleDropdownState('contextSwitcherPopover')}
+                    on:toggleDropdownState={() => toggleDropdownState('contextSwitcherPopover')}
                     isMobile={true}
                     {contextSwitcherToggle}
                     bind:selectedLabel
@@ -695,17 +571,11 @@
       {/if}
       <!-- closes {#if children && pathData.length > 0} -->
       {#if authorizationEnabled || profileItemsAvailable}
-        <div
-          class="fd-shellbar__action fd-shellbar__action--show-always"
-          data-testid="luigi-topnav-profile"
-        >
+        <div class="fd-shellbar__action fd-shellbar__action--show-always" data-testid="luigi-topnav-profile">
           {#if profileTypeSettings === 'Fiori3' && GenericHelpers.requestExperimentalFeature('profileMenuFiori3', true)}
             <div class="fd-popover fd-popover--right fd-user-menu">
               <!-- svelte-ignore a11y-click-events-have-key-events -->
-              <div
-                class="fd-popover__control"
-                on:click|stopPropagation={() => {}}
-              >
+              <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
                 {#if userInfo.picture}
                   <button
                     class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--thumbnail"
@@ -738,8 +608,7 @@
                 id="profilePopover"
               >
                 <Authorization
-                  on:toggleDropdownState={() =>
-                    toggleDropdownState('profilePopover')}
+                  on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
                   on:userInfoUpdated={userInfoUpdate}
                   {addNavHrefForAnchor}
                 />
@@ -749,15 +618,8 @@
             <div class="fd-user-menu">
               <div class="fd-popover">
                 <!-- svelte-ignore a11y-click-events-have-key-events -->
-                <div
-                  class="fd-popover__control"
-                  on:click|stopPropagation={() => {}}
-                >
-                  <div
-                    class={userInfo.picture
-                      ? 'fd-shellbar__button--user-menu'
-                      : ''}
-                  >
+                <div class="fd-popover__control" on:click|stopPropagation={() => {}}>
+                  <div class={userInfo.picture ? 'fd-shellbar__button--user-menu' : ''}>
                     <button
                       class="fd-button fd-button--transparent fd-shellbar__button"
                       aria-expanded={dropDownStates.profilePopover || false}
@@ -775,9 +637,7 @@
                         />
                       {:else}
                         <i
-                          class="sap-icon {!userInfo.picture
-                            ? 'sap-icon--customer'
-                            : 'fd-identifier fd-identifier--xs fd-identifier--circle'}"
+                          class="sap-icon {!userInfo.picture ? 'sap-icon--customer' : 'fd-identifier fd-identifier--xs fd-identifier--circle'}"
                         />
                       {/if}
                     </button>
@@ -789,8 +649,7 @@
                   id="profilePopover"
                 >
                   <AuthorizationSimpleProfileMenu
-                    on:toggleDropdownState={() =>
-                      toggleDropdownState('profilePopover')}
+                    on:toggleDropdownState={() => toggleDropdownState('profilePopover')}
                     on:userInfoUpdated={userInfoUpdate}
                     {addNavHrefForAnchor}
                   />
@@ -803,8 +662,7 @@
       {#if isProductSwitcherAvailable}
         <ProductSwitcher
           bind:dropDownStates
-          on:toggleDropdownState={() =>
-            toggleDropdownState('productSwitcherPopover')}
+          on:toggleDropdownState={() => toggleDropdownState('productSwitcherPopover')}
           isMobile={false}
           {addNavHrefForAnchor}
         />

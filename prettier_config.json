@@ -6,7 +6,7 @@
       "singleQuote": true,
       "printWidth": 120
    },
-   "ts_disabled": {
+   "ts": {
       "parser": "typescript",
       "trailingComma": "none",
       "tabWidth": 2,
@@ -18,5 +18,20 @@
       "tabWidth": 2,
       "singleQuote": true,
       "printWidth": 90
+   },
+   "svelte": {
+      "excludedFiles": ["container/src/LuigiContainer.svelte" , "container/src/LuigiCompoundContainer.svelte"],
+      "parser": "svelte",
+      "plugins": ["prettier-plugin-svelte"],
+      "pluginSearchDirs": ["."],
+      "printWidth": 120,
+      "singleQuote": true,
+      "svelteAllowShorthand": true,
+      "svelteBracketNewLine": true,
+      "svelteIndentScriptAndStyle": true,
+      "svelteSortOrder": "scripts-markup-styles",
+      "svelteStrictMode": false,
+      "tabWidth": 2,
+      "trailingComma": "none"
    }
 }

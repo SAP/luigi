@@ -156,6 +156,9 @@ class LuigiI18NManager {
    * findInterpolations('Environment {num}', {num: 1})
    */
   findInterpolations(value, interpolations) {
+    if (typeof value !== 'string' || !value.trim()) {
+      return value;
+    }
     Object.keys(interpolations).forEach(item => {
       value = value.replace(
         new RegExp('{' + EscapingHelpers.escapeKeyForRegexp(item) + '}', 'gi'),

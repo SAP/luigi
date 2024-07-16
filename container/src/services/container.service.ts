@@ -10,7 +10,7 @@ export class ContainerService {
    * @param {HTMLElement} component - The HTML element to check for visibility.
    * @returns {boolean} Returns true if the element is visible, otherwise false.
    */
-  isVisible (component: HTMLElement): boolean {
+  isVisible(component: HTMLElement): boolean {
     return !!(component.offsetWidth || component.offsetHeight || component.getClientRects().length);
   }
 
@@ -20,7 +20,7 @@ export class ContainerService {
    * @param msg the message to be sent
    * @param msgName the optional message name
    */
-  sendCustomMessageToIframe (iframeHandle: any, msg: any, msgName?: string) {
+  sendCustomMessageToIframe(iframeHandle: any, msg: any, msgName?: string) {
     const messageName = msgName || 'custom';
     if (iframeHandle.iframe.contentWindow) {
       const iframeUrl = new URL(iframeHandle.iframe.src);
@@ -40,7 +40,7 @@ export class ContainerService {
    * @param {Function} callback
    * @param {string} callbackName
    */
-  dispatch (msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
+  dispatch(msg: string, targetCnt: HTMLElement, data: any, callback?: Function, callbackName?: string): void {
     const customEvent = new CustomEvent(msg, { detail: data });
     if (callback && GenericHelperFunctions.isFunction(callback) && callbackName) {
       (customEvent as any)[callbackName] = data => {
@@ -56,7 +56,7 @@ export class ContainerService {
    * @param event The event object representing the source of the container.
     @returns {Object| undefined} The target container object or undefined if not found.
    */
-  getTargetContainer (event) {
+  getTargetContainer(event) {
     let cnt;
     globalThis.__luigi_container_manager.container.forEach(element => {
       if (element.iframeHandle?.iframe && element.iframeHandle.iframe.contentWindow === event.source) {
@@ -69,11 +69,11 @@ export class ContainerService {
 
   /**
    * Initializes the Luigi Container Manager responsible for managing communication
-   * between microfrontends and dispatching events accordingly. Also adds 'message' listener to the window object with 
+   * between microfrontends and dispatching events accordingly. Also adds 'message' listener to the window object with
    * the defined messageListener list
    * @returns __luigi_container_manager which has the added container array and message listeners
    */
-  getContainerManager () {
+  getContainerManager() {
     if (!globalThis.__luigi_container_manager) {
       globalThis.__luigi_container_manager = {
         container: [],
@@ -106,7 +106,8 @@ export class ContainerService {
                   {
                     msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
                     context: targetCnt.context || {},
-                    internal: {}
+                    internal: {},
+                    authData: targetCnt.authData || {},
                   },
                   '*'
                 );
@@ -176,9 +177,6 @@ export class ContainerService {
               case LuigiInternalMessageID.SET_DIRTY_STATUS_REQUEST:
                 this.dispatch(Events.SET_DIRTY_STATUS_REQUEST, targetCnt, event);
                 break;
-              default:
-                console.warn('Functionality not yet implemented: ', msg);
-                break;
             }
           }
         }
@@ -193,7 +191,7 @@ export class ContainerService {
    *
    * @param {HTMLElement} thisComponent - The HTML element that represents the current rendered container (thisComponent)
    */
-  registerContainer (thisComponent: HTMLElement): void {
+  registerContainer(thisComponent: HTMLElement): void {
     this.getContainerManager().container.push(thisComponent);
   }
 }

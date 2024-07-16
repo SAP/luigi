@@ -39,6 +39,18 @@ export default class LuigiContainer extends HTMLElement {
    * @param {boolean} WebComponentSettings.selfRegistered: if it is true, the web component bundle will be added via script tag.
    * @param {string} WebComponentSettings.tagName: tag name where web component is added to DOM.
    * @param {string} string must be a stringified boolean or JSON object from type `WebComponentSettings`.
+   * 
+   * </br></br>
+   * <blockquote class="warning">
+   * <p>
+   * <strong>Note:</strong> If you have to use the mechanism of `selfRegistered`, we recommend using the following code in your web component:
+   * </p>
+   * </blockquote>
+   * <pre><code>
+   * window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), <YOUR_WEBCOMPONENT_CLASS>);
+   * </code></pre>
+   * The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
+   * </br>
    * @since 1.0.0
    */
   webcomponent: boolean | WebComponentSettings | string;
@@ -74,6 +86,12 @@ export default class LuigiContainer extends HTMLElement {
   nodeParams: Object;
 
   /**
+   * If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
+   * @since NEXTRELEASE
+   */
+  noShadow: boolean;
+
+  /**
    * The search parameters to be passed to the web-component-based micro frontend.
    * @since 1.0.0
    */
@@ -106,34 +124,34 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
    * You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
-   * @since NEXT_RELEASE 
+   * @since NEXT_RELEASE_CONTAINER 
    */
   allowRules: string[];
 
   /**
    * The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
    * You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
-   * @since NEXT_RELEASE 
+   * @since NEXT_RELEASE_CONTAINER 
    */
   sandboxRules: string[];
 
   /**
    * The document title value to be passed to the web-component-based micro frontend.
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   documentTitle: string;
 
   /**
    * The hasBack value to be passed to the web-component-based micro frontend.
    * It indicates that there is one or more preserved views. Useful when you need to show a back button. 
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   hasBack: string;
 
   /**
    * The dirty status value to be passed to the web-component-based micro frontend.
    * It's used to indicate that there are unsaved changes when navigating away.
-   * @since NEXT_RELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   dirtyStatus: boolean;
 
@@ -178,4 +196,10 @@ export default class LuigiContainer extends HTMLElement {
    * @since 1.0.0
    */
   init(): void;
+
+  /**
+   * The authData value to be passed to the iframe-based micro frontend.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+    authData: Object;
 }

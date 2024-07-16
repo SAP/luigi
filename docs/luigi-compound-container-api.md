@@ -24,14 +24,14 @@ This document outlines the parameters provided by the Luigi Compound Container. 
 
 ### viewurl
 
-The URL used for the renderer
+The URL used for the renderer.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 ### compoundConfig
 
 The configuration for the compound microfrontend
-Take a look at <https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound>
+Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
@@ -48,6 +48,16 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 **Meta**
 
 -   **since**: 1.0.0
+
+### noShadow
+
+If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+-   **since**: NEXTRELEASE
 
 ### searchParams
 
@@ -117,7 +127,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### hasBack
 
@@ -128,7 +138,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### dirtyStatus
 
@@ -139,7 +149,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+-   **since**: NEXT_RELEASE_CONTAINER
 
 ### webcomponent
 
