@@ -184,12 +184,15 @@ export default class luigiExampleWC extends HTMLElement {
   addConfirmationModal() {
     const button = this.shadowRoot.querySelector('#bConModal');
     button.addEventListener('click', event => {
-      this.LuigiClient.uxManager().showConfirmationModal({
-        header: 'Confirmation',
-        body: 'Are you sure you want to do this?',
-        buttonConfirm: 'Yes',
-        buttonDismiss: 'No'
-      });
+      this.LuigiClient.uxManager()
+        .showConfirmationModal({
+          header: 'Confirmation',
+          body: 'Are you sure you want to do this?',
+          buttonConfirm: 'Yes',
+          buttonDismiss: 'No'
+        })
+        .then(() => console.log('Yes clicked'))
+        .catch(() => console.log('No clicked'));
       event.stopPropagation();
     });
   }
