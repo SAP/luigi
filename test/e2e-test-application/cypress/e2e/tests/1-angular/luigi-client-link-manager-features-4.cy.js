@@ -392,7 +392,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     const tabNavSelector = '#tabsContainer';
     const splitViewSelector = '#splitViewContainer';
 
-    function isResizedStatus ($element, isResized) {
+    function isResizedStatus($element, isResized) {
       const resizedWidthRegex = /^calc\(/;
       const elementWidth = $element[0].style.width;
 
@@ -405,11 +405,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       return elementWidth;
     }
 
-    function expectToBeResized ($element) {
+    function expectToBeResized($element) {
       return isResizedStatus($element, true);
     }
 
-    function expectToNotBeResized ($element) {
+    function expectToNotBeResized($element) {
       return isResizedStatus($element, false);
     }
 

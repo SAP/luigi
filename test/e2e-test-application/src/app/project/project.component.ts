@@ -136,9 +136,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
       title: 'microfrontend in a modal'
     };
 
-    linkManager().openAsModal(modalPath, modalSettings).then(() => {
-      document.getElementById('promiseTest').innerHTML = 'promise resolved!';
-    });
+    linkManager()
+      .openAsModal(modalPath, modalSettings)
+      .then(() => {
+        document.getElementById('promiseTest').innerHTML = 'promise resolved!';
+      });
   }
 
   showConfirmationModal() {
