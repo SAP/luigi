@@ -211,7 +211,7 @@ export class LuigiMockUtil {
    * Returns output of 'mockPathExists' method with given arguments.
    */
   getMockedPathExistsOutput(path: string, exists: boolean): string {
-    return JSON.stringify({[this.sessionStorageItemName]: {pathExists: {[path]: exists}}}).slice(1, -1);
+    return JSON.stringify({ [this.sessionStorageItemName]: { pathExists: { [path]: exists } } }).slice(1, -1);
   }
 
   /**
@@ -222,7 +222,10 @@ export class LuigiMockUtil {
       data = JSON.parse(data);
     }
 
-    return JSON.stringify(data).replace(/\\/g, '').replace(/"{/g, '{').replace(/}"/g, '}');
+    return JSON.stringify(data)
+      .replace(/\\/g, '')
+      .replace(/"{/g, '{')
+      .replace(/}"/g, '}');
   }
 
   /**
