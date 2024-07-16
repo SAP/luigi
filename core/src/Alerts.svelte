@@ -109,7 +109,12 @@
       data-testid="luigi-alert"
     >
       <div class="fd-message-strip__icon-container" aria-hidden="true">
-        <span class="sap-icon sap-icon--message-{alertTypeMap[al.settings.type]}" focusable="false" role="presentation" aria-hidden="true"></span>
+        <span
+          class="sap-icon sap-icon--message-{alertTypeMap[al.settings.type]}"
+          focusable="false"
+          role="presentation"
+          aria-hidden="true"
+        />
       </div>
       <p class="fd-message-strip__text">
         {@html al.dataSanitized ? al.settings.text : ''}
