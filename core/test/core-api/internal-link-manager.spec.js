@@ -1,9 +1,7 @@
+import { linkManager } from '../../src/core-api/_internalLinkManager';
 import { GenericHelpers } from '../../src/utilities/helpers';
 
 const sinon = require('sinon');
-
-import { linkManager } from '../../src/core-api/_internalLinkManager';
-
 let lm;
 
 describe('linkManager', function() {
@@ -108,6 +106,63 @@ describe('linkManager', function() {
       };
 
       lm.navigate(path, true, modalSettings, splitViewSettings, drawerSettings);
+      lm.sendPostMessageToLuigiCore.calledOnceWithExactly(navigationOpenMsg);
+    });
+  });
+
+  describe('navigateToIntent', () => {
+    beforeEach(() => {
+      sinon.stub(lm, 'sendPostMessageToLuigiCore');
+      console.warn = sinon.spy();
+    });
+
+    it.each([
+      { slug: null, params: null },
+      { slug: 'Sales-settings', params: null },
+      { slug: null, params: { project: 'pr2', user: 'john' } },
+      { slug: 'Sales-settings', params: { project: 'pr2', user: 'john' } }
+    ])('should call sendPostMessageToLuigiCore', (data) => {
+      const options = {
+        preserveView: false,
+        nodeParams: {},
+        errorSkipNavigation: false,
+        fromContext: null,
+        fromClosestContext: false,
+        relative: false,
+        link: ''
+      };
+      const modalSettings = { modalSetting: 'modalValue' };
+      const splitViewSettings = { splitViewSetting: 'splitViewValue' };
+      const drawerSettings = { drawerSetting: 'drawerValue' };
+      const relativePath = !!(data.slug && data.slug[0] !== '/');
+      let payloadLink = `#?intent=${data.slug}`;
+
+      if (data.params && Object.keys(data.params)?.length) {
+        const paramList = Object.entries(data.params);
+
+        if (paramList.length > 0) {
+          payloadLink += '?';
+
+          for (const [key, value] of paramList) {
+            payloadLink += key + '=' + value + '&';
+          }
+
+          payloadLink = payloadLink.slice(0, -1);
+        }
+      }
+
+      const navigationOpenMsg = {
+        msg: 'luigi.navigation.open',
+        params: Object.assign(options, {
+          link: payloadLink,
+          relative: relativePath,
+          modal: modalSettings,
+          splitView: splitViewSettings,
+          drawer: drawerSettings
+        })
+      };
+
+      lm.navigateToIntent(data.slug, data.params);
       lm.sendPostMessageToLuigiCore.calledOnceWithExactly(navigationOpenMsg);
     });
   });

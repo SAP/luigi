@@ -163,12 +163,12 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().navigateToIntent('Sales-settings')
    */
   navigateToIntent(semanticSlug: string, params = {}): void {
-    let newPath: string = '#?intent=';
+    let newPath = '#?intent=';
 
     newPath += semanticSlug;
 
-    if (params) {
-      const paramList: any[] = Object.entries(params);
+    if (params && Object.keys(params)?.length) {
+      const paramList: [string, unknown][] = Object.entries(params);
 
       // append parameters to the path if any
       if (paramList.length > 0) {
