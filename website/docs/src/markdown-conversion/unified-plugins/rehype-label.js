@@ -19,7 +19,7 @@ export default function addLabelTag() {
       type: 'element',
       tagName: 'span',
       properties: { className: `label-${className}` },
-      children: [{ type: 'text', value: labelText }],
+      children: [{ type: 'text', value: labelText }]
     };
 
     parent.children.splice(index, 1, labelNode);
