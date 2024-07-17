@@ -120,6 +120,8 @@ LuigiClient.removeContextUpdateListener(updateListenerId)
 ```
 
 #### addInactiveListener
+<!-- label-info: Test  -->
+<!-- label-danger: Test example 2 -->
 
 Registers a listener called upon micro frontend inactivity. This happens when a new micro frontend gets shown while keeping the old one cached.
 Gets called when:

@@ -37,7 +37,11 @@ body {
     //Content styles
 
     .headingWrapper {
-        h1:hover, h2:hover, h3:hover, h4:hover {
+
+        h1:hover,
+        h2:hover,
+        h3:hover,
+        h4:hover {
             .icon-link:after {
                 content: '#';
                 margin-left: 1rem;
@@ -119,6 +123,7 @@ body {
             padding-left: 10px;
         }
     }
+
     &.page-luigi-container-api,
     &.page-luigi-compound-container-api {
         h3 {
@@ -555,4 +560,28 @@ body {
         border-radius: 6px;
         margin-right: 10px;
     }
+
+    @mixin label {
+        padding: 5px;
+        margin: 5px;
+        font-size: 14px;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .label {
+        &-info {
+            @include label;
+            background-color: rgb(122, 108, 202);
+
+        }
+
+        &-danger {
+            @include label;
+            background-color: rgb(219, 64, 137);
+
+        }
+    }
+
+    
 }
