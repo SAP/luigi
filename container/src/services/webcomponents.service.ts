@@ -110,6 +110,29 @@ export class WebComponentService {
               ...options
             });
           },
+          navigateToIntent: (semanticSlug: string, params = {}): void => {
+            let newPath = '#?intent=';
+
+            newPath += semanticSlug;
+
+            if (params && Object.keys(params)?.length) {
+              const paramList = Object.entries(params);
+
+              // append parameters to the path if any
+              if (paramList.length > 0) {
+                newPath += '?';
+
+                for (const [key, value] of paramList) {
+                  newPath += key + '=' + value + '&';
+                }
+
+                // trim potential excessive ampersand & at the end
+                newPath = newPath.slice(0, -1);
+              }
+            }
+
+            linkManagerInstance.navigate(newPath);
+          },
           fromClosestContext: () => {
             fromClosestContext = true;
             return linkManagerInstance;
