@@ -5,7 +5,7 @@ export default function addLabelTag() {
     visit(tree, ['comment'], (node, index, parent) => {
       const trimmedValue = node.value.trim();
       const match = trimmedValue.match(/^label-(\w+):\s*(.*)$/);
-      
+
       if (match) {
         const className = match[1];
         const labelText = match[2];
