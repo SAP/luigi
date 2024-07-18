@@ -30,10 +30,10 @@
     "publish:nightly": "babel-node tools/publish-nightly.js"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/cli": "^7.24.8",
+    "@babel/core": "^7.24.9",
+    "@babel/node": "^7.24.8",
+    "@babel/preset-env": "^7.24.8",
     "async-request": "^1.2.0",
     "lodash": "^4.17.21",
     "cli-color": "^2.0.0",
