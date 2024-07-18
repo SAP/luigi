@@ -562,26 +562,23 @@ body {
     }
 
     @mixin label {
-        padding: 5px;
-        margin: 5px;
-        font-size: 14px;
-        color: white;
+        display: inline-block;
+        padding: 0 6px;
+        margin: 2px 10px 16px 0;
+        font-size: 12px;
+        color: rgb(18, 143, 55);
         border-radius: 5px;
     }
 
-    .label {
-        &-info {
-            @include label;
-            background-color: rgb(122, 108, 202);
-
-        }
-
-        &-danger {
-            @include label;
-            background-color: rgb(219, 64, 137);
-
-        }
+    .label-wrapper {
+        margin-top: -6px;
     }
 
-    
+    .label {
+        &-success {
+            @include label;
+            color: rgb(18, 143, 55);
+            background-color: rgba(45, 235, 138, 0.08);
+        }
+    }
 }

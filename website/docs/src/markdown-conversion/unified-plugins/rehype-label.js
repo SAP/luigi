@@ -22,6 +22,13 @@ export default function addLabelTag() {
       children: [{ type: 'text', value: labelText }]
     };
 
-    parent.children.splice(index, 1, labelNode);
+    const divNode = {
+      type: 'element',
+      tagName: 'div',
+      properties: { className: `label-wrapper` },
+      children: [labelNode]
+    };
+
+    parent.children.splice(index, 1, divNode);
   }
 }
