@@ -1,1 +1,1 @@
-/luigi-cdn https://www.unpkg.com/@luigi-project 200
+/luigi-cdn/* https://www.unpkg.com/@luigi-project/:splat 200
