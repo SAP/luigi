@@ -22,6 +22,7 @@ export declare interface ModalSettings {
   size?: 'fullscreen' | 'l' | 'm' | 's';
   width?: string;
   height?: string;
+  keepPrevious?: boolean;
   closebtn_data_testid?: string;
 }
 
