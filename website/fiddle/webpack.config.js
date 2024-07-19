@@ -77,7 +77,7 @@ module.exports = {
       '/luigi-cdn': {
         target: 'https://www.unpkg.com',
         changeOrigin: true,
-        pathRewrite: { '^/luigi-cdn': '/@luigi-project' },
+        pathRewrite: { '^/luigi-cdn': '/@luigi-project' }
       }
     }
   }
