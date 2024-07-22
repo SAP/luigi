@@ -181,11 +181,13 @@ const _luigiClient = new LuigiClient();
 
 export default _luigiClient;
 
-export const addInitListener = (initFn: (context: Context, origin?: string) => void): number => _luigiClient.addInitListener(initFn);
+export const addInitListener = (initFn: (context: Context, origin?: string) => void): number =>
+  _luigiClient.addInitListener(initFn);
 
 export const removeInitListener = (id: string): boolean => _luigiClient.removeInitListener(id);
 
-export const addContextUpdateListener = (contextUpdatedFn: (context: Context) => void): string => _luigiClient.addContextUpdateListener(contextUpdatedFn);
+export const addContextUpdateListener = (contextUpdatedFn: (context: Context) => void): string =>
+  _luigiClient.addContextUpdateListener(contextUpdatedFn);
 
 export const removeContextUpdateListener = (id: string): boolean => _luigiClient.removeContextUpdateListener(id);
 
@@ -206,7 +208,8 @@ export const getEventData = (): Context => _luigiClient.getEventData();
 
 export const getContext = (): Context => _luigiClient.getContext();
 
-export const addNodeParams = (params: NodeParams, keepBrowserHistory: boolean): void => _luigiClient.addNodeParams(params, keepBrowserHistory);
+export const addNodeParams = (params: NodeParams, keepBrowserHistory: boolean): void =>
+  _luigiClient.addNodeParams(params, keepBrowserHistory);
 
 export const getNodeParams = (shouldDesanitise?: boolean): NodeParams => _luigiClient.getNodeParams(shouldDesanitise);
 
@@ -222,7 +225,8 @@ export const setViewGroupData = (value: Object): void => _luigiClient.setViewGro
 
 export const getCoreSearchParams = (): CoreSearchParams => _luigiClient.getCoreSearchParams();
 
-export const addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: boolean): void => _luigiClient.addCoreSearchParams(searchParams, keepBrowserHistory);
+export const addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: boolean): void =>
+  _luigiClient.addCoreSearchParams(searchParams, keepBrowserHistory);
 
 export const getClientPermissions = (): ClientPermissions => _luigiClient.getClientPermissions();
 
