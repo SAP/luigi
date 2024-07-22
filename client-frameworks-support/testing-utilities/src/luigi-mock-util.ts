@@ -202,6 +202,8 @@ export class LuigiMockUtil {
 
   /**
    * Returns output of 'mockContext' method with given data.
+   * @param {Object} context - Object representing the context to be mocked.
+   * @returns {string} - Stringified output of 'mockContext' method.
    */
   getMockedContextOutput(context: Record<string, any>): string {
     return `{"msg":"luigi.get-context","context":${JSON.stringify(context)}}`;
@@ -209,6 +211,9 @@ export class LuigiMockUtil {
 
   /**
    * Returns output of 'mockPathExists' method with given arguments.
+   * @param {string} path - The path for which mock data is to be set.
+   * @param {boolean} exists - Boolean indicating whether the path exists.
+   * @returns {string} - Stringified output of 'mockPathExists' method.
    */
   getMockedPathExistsOutput(path: string, exists: boolean): string {
     return JSON.stringify({ [this.sessionStorageItemName]: { pathExists: { [path]: exists } } }).slice(1, -1);
@@ -216,6 +221,8 @@ export class LuigiMockUtil {
 
   /**
    * Returns parsed session storage data used for testing.
+   * @param {Object} data - Object or string representing the data to be cleaned.
+   * @returns {string} - Stringified session storage data.
    */
   getCleanSessionStorageData(data: any): string {
     if (typeof data === 'string') {
@@ -230,6 +237,7 @@ export class LuigiMockUtil {
 
   /**
    * Returns ID of Luigi visualization container added in the DOM for testing.
+   * @returns {string} - ID of Luigi visualization container.
    */
   getVisualizationContainerId(): string {
     return this.visualizationContainerId;
@@ -237,6 +245,7 @@ export class LuigiMockUtil {
 
   /**
    * Returns list of messages, representing message elements added in the DOM for testing.
+   * @returns {Array} - Array of message elements.
    */
   getMSG(): any[] {
     return this.messages;
