@@ -887,8 +887,7 @@ Property values for token replacement in the localization key will be taken from
 
 <!-- add-attribute:class:success -->
 
-> **TIP**: Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization.
-> Take a look at our [i18n](i18n.md) section for an implementation suggestion.
+> **TIP**: Be aware that this function is not asynchronous and therefore the translation table must be existing already at initialization. Take a look at our [i18n](i18n.md) section for an implementation suggestion.
 
 ##### Parameters
 
@@ -1396,7 +1395,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 #### getCSSVariables
 
 Returns CSS variables with key value from Luigi if `@luigi-project/core/luigi_theme-vars.js` is included in the `index.html` and `settings.theming.variables==='fiori'` is defined in the [settings](general-settings.md) section.
-It's also possible to define your own variables file which can be declared in `settings.theming.variables.file` in the {@link general-settings.md settings} section.
+It's also possible to define your own variables file which can be declared in `settings.theming.variables.file` in the [settings](general-settings.md) section.
 The variables should be defined in a JSON file which starts with a `root` key.
 When you configure you own file, you can also implement exception handling by using the function `settings.theming.variables.errorHandling` which gets the error object as argument.
 
