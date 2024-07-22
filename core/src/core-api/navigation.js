@@ -49,6 +49,20 @@ class LuigiNavigationManager {
   }
 
   /**
+   * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing parameters.
+   * @memberof LuigiNavigation
+   * @param {string} semanticSlug concatenation of semantic object and action connected with a dash (-)
+   * @param {Object} params an object representing all the parameters passed (optional, default '{}')
+   * @since NEXTRELEASE
+   * @example
+   * Luigi.navigation().navigateToIntent('Sales-settings')
+   * Luigi.navigation().navigateToIntent('Sales-settings', {project: 'pr1'})
+   */
+  navigateToIntent(semanticSlug, params) {
+    return new linkManager().navigateToIntent(semanticSlug, params);
+  }
+
+  /**
    * Opens a view in a modal. You can specify the modal's title and size. If you do not specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof LuigiNavigation
    * @param {string} path navigation path

@@ -81,25 +81,37 @@ describe('Web Container Test', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testanchor"');
         });
     });
-    
+
     it('defer-init flag for webcomponent container', () => {
       // the initialized webcomponent has id="defer-init-flag"
       cy.get('#defer-init-flag').should('not.exist');
       // click button that calls container.init()
       cy.get('#init-button').click();
-  
+
       cy.get('#defer-init-flag').should('exist');
     });
-    
+
     it('LuigiClient API getCurrentRoute for LuigiContainer', () => {
-      const stub = cy.stub();
       cy.on('window:alert', stub);
+
       cy.get(containerSelector)
         .shadow()
         .contains('getCurrentRoute')
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('current route: /wc/clientAPI.html');
+        });
+    });
+
+    it('LuigiClient API navigateToIntent for LuigiContainer', () => {
+      cy.on('window:alert', stub);
+
+      cy.get('[data-test-id="luigi-client-api-test-01"]')
+        .shadow()
+        .contains('navigateToIntent')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('navigated to: #?intent=Sales-settings');
         });
     });
 

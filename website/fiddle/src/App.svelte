@@ -29,7 +29,7 @@
 
     customVersion = localStorage.getItem('luigi-version');
     if(customVersion) {
-      const cdnBase = 'https://www.unpkg.com/@luigi-project/';
+      const cdnBase = '/luigi-cdn/';
       coreBasePath = cdnBase + 'core@' + customVersion;
       oidcBasePath = cdnBase + 'plugin-auth-oidc@' + customVersion;
       oauth2BasePath = cdnBase + 'plugin-auth-oauth2@' + customVersion;
