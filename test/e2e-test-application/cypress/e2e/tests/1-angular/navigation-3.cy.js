@@ -138,7 +138,6 @@ describe('Navigation', () => {
           cy.wrap(result).contains('Global Settings');
         });
       });
-
       it('scrollable dropdown in tabNav', () => {
         cy.viewport(1000, 300);
         cy.get('[data-testid="tabnavheader_tabnavheader"]').click();
@@ -153,6 +152,7 @@ describe('Navigation', () => {
         cy.get('@popoverBody')
           .contains('TabNav 8')
           .should('be.not.visible');
+
         cy.get('@popoverBody').scrollTo('bottom');
         cy.get('@popoverBody')
           .contains('TabNav 8')
@@ -182,8 +182,8 @@ describe('Navigation', () => {
 
       it('Test activated node on moible with keep selected context', () => {
         cy.visit('/projects/tabNav/avengers/captain-america/super-power');
-        cy.get('.luigi-tabsMoreButton button').should('have.class', 'is-active');
-        cy.get('.luigi-tabsMoreButton').click();
+        cy.get('.fd-icon-tab-bar__overflow').should('have.class', 'is-active');
+        cy.get('.fd-icon-tab-bar__overflow').click();
         cy.get('.fd-nested-list__title')
           .contains('Keep Selected Example')
           .parent()
@@ -192,19 +192,19 @@ describe('Navigation', () => {
 
       it('recalc of tab nav by using resizing', () => {
         cy.visit('/projects/tabNav');
-        cy.get('.fd-icon-tab-bar').within(() => {
+        cy.get('.luigi-tabsContainerHeader').within(() => {
           cy.get('.fd-icon-tab-bar__item')
             .contains('User Management')
             .should('be.visible');
-          cy.get('.fd-nested-list__item')
+          cy.get('.fd-icon-tab-bar__item')
             .contains('Node with node activation hook')
             .should('not.be.visible');
-          cy.get('.fd-nested-list__item')
+          cy.get('.fd-icon-tab-bar__item')
             .contains('Settings')
             .should('not.be.visible');
         });
         cy.viewport(900, 750);
-        cy.get('.fd-icon-tab-bar').within(() => {
+        cy.get('.luigi-tabsContainerHeader').within(() => {
           cy.get('.fd-icon-tab-bar__item')
             .contains('Settings')
             .should('be.visible');
@@ -231,11 +231,11 @@ describe('Navigation', () => {
           cy.get('[data-testid="projects_projects-mobile"]').click();
           cy.get('.fd-side-nav').contains('Horizontal Navigation Example');
           cy.get('[data-testid="tabnav_horizontalnavigationexample"]').click();
-          cy.get('.fd-nested-list__item')
+          cy.get('.fd-icon-tab-bar__item')
             .contains('Miscellaneous 2')
             .should('not.exist');
-          cy.get('.luigi-tabsMoreButton').click();
-          cy.get('.fd-nested-list__item')
+          cy.get('[data-testid="semiCollapsibleButton"]').click();
+          cy.get('.fd-icon-tab-bar__item')
             .contains('Miscellaneous2')
             .should('be.visible');
         });

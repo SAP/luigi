@@ -1,12 +1,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "declaration": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "lib": ["ES2022", "dom"],
-    "module": "ES2022",
+    "lib": ["ES2021", "dom"],
+    "module": "commonjs",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -17,7 +19,8 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "ES2022",
+    "target": "ES5",
     "useDefineForClassFields": false
-  }
+  },
+  "exclude": ["node_modules"]
 }

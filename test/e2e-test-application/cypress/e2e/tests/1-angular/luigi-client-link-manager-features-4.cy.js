@@ -144,11 +144,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
             .click();
 
           cy.get('.splitViewContainer').then($splitViewContainer => {
-            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height).toFixed(0);
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
 
             cy.get('.splitViewContainer')
               .invoke('height')
-              .should('eq', Number(splitViewHeight));
+              .should('eq', splitViewHeight);
 
             expect(`${splitViewHeight}px`).to.equal(win.getComputedStyle($iframe[0]).marginBottom);
 
@@ -161,11 +161,11 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
     it('Check main iframe height after open and close Split View component with default settings', () => {
       cy.window().then(win => {
         cy.get('.fd-page.iframeContainer').then($iframe => {
-          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height).toFixed(0);
+          const iframeHeight = parseFloat(win.getComputedStyle($iframe[0]).height);
 
           cy.get('.iframeContainer')
             .invoke('height')
-            .should('eq', Number(iframeHeight));
+            .should('eq', iframeHeight);
 
           cy.wrap($iframeBody)
             .contains('open view in split view with params')
@@ -173,7 +173,7 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
 
           cy.get('.lui-collapse-btn').click();
           cy.get('.splitViewContainer').should($splitViewContainer => {
-            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height).toFixed(0);
+            const splitViewHeight = parseFloat(win.getComputedStyle($splitViewContainer[0]).height);
 
             expect(`${splitViewHeight}px`).to.equal(win.getComputedStyle($iframe[0]).marginBottom);
           });
@@ -401,7 +401,6 @@ describe('Luigi Client linkManager Webcomponent, Drawer', () => {
       } else {
         expect(elementWidth).to.not.match(resizedWidthRegex);
       }
-
       return elementWidth;
     }
 

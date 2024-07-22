@@ -1,6 +1,11 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const fileMap = {
+  'luigi-client': 'LuigiClient',
+  'luigi-element': 'LuigiElement'
+};
+
 module.exports = {
   entry: {
     'luigi-client': './src/luigi-client.ts',
@@ -10,6 +15,7 @@ module.exports = {
     filename: '[name].js',
     library: {
       export: 'default',
+      name: fileMap['[name]'],
       type: 'umd'
     },
     path: path.join(path.resolve(__dirname), 'public')

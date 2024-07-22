@@ -7,8 +7,7 @@ import {
   getClientPermissions,
   addContextUpdateListener,
   removeContextUpdateListener,
-  storageManager,
-  ModalSettings
+  storageManager
 } from '@luigi-project/client';
 import { LuigiContextService, IContextMessage } from '@luigi-project/client-support-angular';
 import { NgForm } from '@angular/forms';
@@ -130,14 +129,11 @@ export class ProjectComponent implements OnInit, OnDestroy {
   }
 
   openAsModal() {
-    const modalPath = '/projects/pr2/settings';
-    const modalSettings: ModalSettings = {
-      size: 'm',
-      title: 'microfrontend in a modal'
-    };
-
     linkManager()
-      .openAsModal(modalPath, modalSettings)
+      .openAsModal('/projects/pr2/settings', {
+        title: 'microfrontend in a modal',
+        size: 'm'
+      })
       .then(() => {
         document.getElementById('promiseTest').innerHTML = 'promise resolved!';
       });
