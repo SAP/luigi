@@ -243,6 +243,19 @@ class RoutingHelpersClass {
     return undefined;
   }
 
+  /**
+   * Returns the path from the passed node and params
+   * @param {*} node
+   * @param {*} params
+   */
+  getNodePath(node, params) {
+    if (!node || params) {
+      return node ? this.buildRoute(node, node.pathSegment ? '/' + node.pathSegment : '', params) : '';
+    } else {
+      return `${node.parent ? this.getNodePath(node.parent) : ''}/${node.pathSegment}`;
+    }
+  }
+
   substituteDynamicParamsInObject(object, paramMap, paramPrefix = ':', contains = false) {
     return Object.entries(object)
       .map(([key, value]) => {
