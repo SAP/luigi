@@ -44,7 +44,7 @@ describe('Compound Container Tests', () => {
             .contains('updateContext')
             .click()
             .then(() => {
-              expect(stub.getCall(0)).to.be.calledWith('compoundWC.ctx={"newContextData":"some data"}');
+              expect(stub.getCall(0)).to.be.calledWith('compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}');
             });
         });
     });
