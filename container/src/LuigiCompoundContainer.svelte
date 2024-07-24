@@ -108,7 +108,19 @@
       return;
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+      if ((thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.nodeName === 'DIV') {
+        // update compound children context
+        const wrappers = (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.querySelectorAll('.lui-compoundItemCnt');
+        wrappers?.forEach((item) => {
+          if (item._luigi_mfe_webcomponent) {
+            const ctx = item._luigi_mfe_webcomponent.context || {};
+
+            item._luigi_mfe_webcomponent.context = Object.assign(ctx, contextObj);
+          }
+        });
+      } else {
+        (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+      }
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;
@@ -118,12 +130,12 @@
       viewUrl: viewurl,
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
     }; // TODO: fill with sth
-    if(!thisComponent.getNoShadow()){
+    if (!thisComponent.getNoShadow()) {
       mainComponent.innerHTML=''
       const shadow = thisComponent.attachShadow({ mode: "open"});
       shadow.append(mainComponent);
-    }else{
-      //removing mainComponent
+    } else {
+      // removing mainComponent
       thisComponent.innerHTML = '';
     }
     webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {
