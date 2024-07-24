@@ -15,11 +15,13 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "outDir": "./public/",
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
     "target": "ES5",
+    "types": ["./luigi-client.d.ts", "./luigi-element.d.ts"],
     "useDefineForClassFields": false
   },
   "exclude": ["node_modules"]

@@ -61,7 +61,7 @@ export declare interface PathParams {
 export declare interface Context {
   anchor?: string;
   authData?: AuthData;
-  context?: { parentNavigationContext?: string[] };
+  context?: { parentNavigationContexts?: string[] };
   internal?: {
     userSettings?: getUserSettings;
     [key: string]: any;
@@ -269,7 +269,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
-  fromClosestContext: () => this;
+  fromClosestContext: () => LinkManager;
 
   /**
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
@@ -279,7 +279,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
-  fromContext: (navigationContext: string) => this;
+  fromContext: (navigationContext: string) => LinkManager;
 
   /**
    * Enables navigating to sibling nodes without knowing the absolute path
@@ -289,7 +289,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().fromParent().navigate('/sibling')
    */
-  fromParent: () => this;
+  fromParent: () => LinkManager;
 
   /**
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
@@ -299,7 +299,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
    */
-  fromVirtualTreeRoot: () => this;
+  fromVirtualTreeRoot: () => LinkManager;
 
   /**
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
@@ -387,7 +387,7 @@ export declare interface LinkManager {
    * // Can be chained with context setting functions such as:
    * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
-  withParams: (nodeParams: NodeParams) => this;
+  withParams: (nodeParams: NodeParams) => LinkManager;
 
   /**
    * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
@@ -402,7 +402,7 @@ export declare interface LinkManager {
    * { preventContextUpdate:true, preventHistoryEntry: true }
    * ).navigate('/overview')
    */
-  withOptions: (options: RouteChangingOptions) => this;
+  withOptions: (options: RouteChangingOptions) => LinkManager;
 
   /**
    * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
@@ -479,7 +479,7 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
-  withoutSync: () => this;
+  withoutSync: () => LinkManager;
 
   /**
    * Updates path of the modalPathParam when internal navigation occurs
@@ -495,7 +495,7 @@ export declare interface LinkManager {
    * @example
    * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
-  newTab: () => this;
+  newTab: () => LinkManager;
 
   /**
    * Keeps the URL's query parameters for a navigation request.
@@ -505,7 +505,7 @@ export declare interface LinkManager {
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
    */
-  preserveQueryParams: (preserve: boolean) => this;
+  preserveQueryParams: (preserve: boolean) => LinkManager;
 
   /**
    * Gets the luigi route associated with the current micro frontend.
@@ -880,3 +880,36 @@ export type isLuigiClientInitialized = () => boolean;
  */
 export function luigiClientInit(): void;
 export type luigiClientInit = () => void;
+
+declare class LuigiClient {
+  addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string;
+  addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: boolean): void;
+  addCustomMessageListener(messageId: string, listener: (customMessage: Object, listenerId: string) => void): string;
+  addInactiveListener(inactiveFn: () => void): string;
+  addInitListener(initFn: (context: Context, origin?: string) => void): number;
+  addNodeParams(params: NodeParams, keepBrowserHistory: boolean): void;
+  getActiveFeatureToggles(): string[];
+  getAnchor(): string;
+  getClientPermissions(): ClientPermissions;
+  getContext(): Context;
+  getCoreSearchParams(): CoreSearchParams;
+  getEventData(): Context;
+  getNodeParams(shouldDesanitise?: boolean): NodeParams;
+  getPathParams(): PathParams;
+  getToken(): AuthData['accessToken'];
+  getUserSettings(): UserSettings;
+  isLuigiClientInitialized(): boolean;
+  lifecycleManager(): any;
+  linkManager(): LinkManager;
+  luigiClientInit(): void;
+  removeContextUpdateListener(id: string): boolean;
+  removeCustomMessageListener(listenerId: string): boolean;
+  removeInactiveListener(listenerId: string): boolean;
+  removeInitListener(id: string): boolean;
+  sendCustomMessage(message: Object): void;
+  setAnchor(value: string): void;
+  setTargetOrigin(origin: string): void;
+  setViewGroupData(value: Object): void;
+  storageManager(): StorageManager;
+  uxManager(): UxManager;
+}

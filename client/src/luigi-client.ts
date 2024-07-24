@@ -11,10 +11,10 @@ import {
   UxManager
 } from '../luigi-client';
 import { helpers } from './helpers';
-import { lifecycleManager } from './lifecycleManager';
-import { linkManager } from './linkManager';
-import { storageManager } from './storageManager';
-import { uxManager } from './uxManager';
+import _lifecycleManager from './lifecycleManager';
+import _linkManager from './linkManager';
+import _storageManager from './storageManager';
+import _uxManager from './uxManager';
 
 /**
  * @name LuigiClient
@@ -41,145 +41,139 @@ class LuigiClient {
   }
 
   addInitListener(initFn: (context: Context, origin?: string) => void): number {
-    return lifecycleManager.addInitListener(initFn);
+    return _lifecycleManager.addInitListener(initFn);
   }
 
   removeInitListener(id: string): boolean {
-    return lifecycleManager.removeInitListener(id);
+    return _lifecycleManager.removeInitListener(id);
   }
 
   addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string {
-    return lifecycleManager.addContextUpdateListener(contextUpdatedFn);
+    return _lifecycleManager.addContextUpdateListener(contextUpdatedFn);
   }
 
   removeContextUpdateListener(id: string): boolean {
-    return lifecycleManager.removeContextUpdateListener(id);
+    return _lifecycleManager.removeContextUpdateListener(id);
   }
 
   getToken(): AuthData['accessToken'] {
-    return lifecycleManager.getToken();
+    return _lifecycleManager.getToken();
   }
 
   getEventData(): Context {
-    return lifecycleManager.getEventData();
+    return _lifecycleManager.getEventData();
   }
 
   getContext(): Context {
-    return lifecycleManager.getContext();
+    return _lifecycleManager.getContext();
   }
 
   addNodeParams(params: NodeParams, keepBrowserHistory: boolean): void {
-    return lifecycleManager.addNodeParams(params, keepBrowserHistory);
+    return _lifecycleManager.addNodeParams(params, keepBrowserHistory);
   }
 
   getNodeParams(shouldDesanitise?: boolean): NodeParams {
-    return lifecycleManager.getNodeParams(shouldDesanitise);
+    return _lifecycleManager.getNodeParams(shouldDesanitise);
   }
 
   getActiveFeatureToggles(): string[] {
-    return lifecycleManager.getActiveFeatureToggles();
+    return _lifecycleManager.getActiveFeatureToggles();
   }
 
   getPathParams(): PathParams {
-    return lifecycleManager.getPathParams();
+    return _lifecycleManager.getPathParams();
   }
 
   getCoreSearchParams(): CoreSearchParams {
-    return lifecycleManager.getCoreSearchParams();
+    return _lifecycleManager.getCoreSearchParams();
   }
 
   addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: boolean): void {
-    return lifecycleManager.addCoreSearchParams(searchParams, keepBrowserHistory);
+    return _lifecycleManager.addCoreSearchParams(searchParams, keepBrowserHistory);
   }
 
   getClientPermissions(): ClientPermissions {
-    return lifecycleManager.getClientPermissions();
+    return _lifecycleManager.getClientPermissions();
   }
 
   sendCustomMessage(message: Object): void {
-    return lifecycleManager.sendCustomMessage(message);
+    return _lifecycleManager.sendCustomMessage(message);
   }
 
   addCustomMessageListener(messageId: string, listener: (customMessage: Object, listenerId: string) => void): string {
-    return lifecycleManager.addCustomMessageListener(messageId, listener);
+    return _lifecycleManager.addCustomMessageListener(messageId, listener);
   }
 
   removeCustomMessageListener(listenerId: string): boolean {
-    return lifecycleManager.removeCustomMessageListener(listenerId);
+    return _lifecycleManager.removeCustomMessageListener(listenerId);
   }
 
   addInactiveListener(inactiveFn: () => void): string {
-    return lifecycleManager.addInactiveListener(inactiveFn);
+    return _lifecycleManager.addInactiveListener(inactiveFn);
   }
 
   removeInactiveListener(listenerId: string): boolean {
-    return lifecycleManager.removeInactiveListener(listenerId);
+    return _lifecycleManager.removeInactiveListener(listenerId);
   }
 
   setTargetOrigin(origin: string): void {
-    return lifecycleManager.setTargetOrigin(origin);
+    return _lifecycleManager.setTargetOrigin(origin);
   }
 
   getUserSettings(): UserSettings {
-    return lifecycleManager.getUserSettings();
+    return _lifecycleManager.getUserSettings();
   }
 
   isLuigiClientInitialized(): boolean {
-    return lifecycleManager.isLuigiClientInitialized();
+    return _lifecycleManager.isLuigiClientInitialized();
   }
 
   luigiClientInit(): void {
-    return lifecycleManager.luigiClientInit();
+    return _lifecycleManager.luigiClientInit();
   }
 
   getAnchor(): string {
-    return lifecycleManager.getAnchor();
+    return _lifecycleManager.getAnchor();
   }
 
   setAnchor(value: string): void {
-    return lifecycleManager.setAnchor(value);
+    return _lifecycleManager.setAnchor(value);
   }
 
   setViewGroupData(value: Object): void {
-    return lifecycleManager.setViewGroupData(value);
+    return _lifecycleManager.setViewGroupData(value);
   }
 
   /**
    * @private
    */
   linkManager(): LinkManager {
-    return new linkManager({
-      currentContext: lifecycleManager.currentContext
-    });
+    return _linkManager;
   }
 
   /**
    * @private
    */
   uxManager(): UxManager {
-    return uxManager;
+    return _uxManager;
   }
 
   /**
    * @private
    */
   lifecycleManager(): any {
-    return lifecycleManager;
+    return _lifecycleManager;
   }
 
   /**
    * @private
    */
   storageManager(): StorageManager {
-    return storageManager;
+    return _storageManager;
   }
 }
 
 const _luigiClient = new LuigiClient();
-
-(window as any).LuigiClient = _luigiClient;
-
-export default _luigiClient;
 
 export const addInitListener = (initFn: (context: Context, origin?: string) => void): number =>
   _luigiClient.addInitListener(initFn);
@@ -239,3 +233,17 @@ export const getUserSettings = (): UserSettings => _luigiClient.getUserSettings(
 export const isLuigiClientInitialized = (): boolean => _luigiClient.isLuigiClientInitialized();
 
 export const luigiClientInit = (): void => _luigiClient.luigiClientInit();
+
+export const linkManager = (): LinkManager => _linkManager;
+
+export const uxManager = (): UxManager => _uxManager;
+
+export const storageManager = (): StorageManager => _storageManager;
+
+_luigiClient.linkManager = (): LinkManager => _linkManager;
+_luigiClient.uxManager = (): UxManager => _uxManager;
+_luigiClient.storageManager = (): StorageManager => _storageManager;
+
+(window as any).LuigiClient = _luigiClient;
+
+export default _luigiClient;

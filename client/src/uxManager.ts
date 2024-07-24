@@ -1,7 +1,7 @@
 import { AlertSettings, ConfirmationModalSettings } from '../luigi-client';
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
-import { lifecycleManager } from './lifecycleManager';
+import _lifecycleManager from './lifecycleManager';
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
@@ -13,9 +13,9 @@ class UxManager extends LuigiClientBase {
     super();
 
     helpers.addEventListener('luigi.current-locale-changed', (event: any) => {
-      if (event.data.currentLocale && lifecycleManager.currentContext?.internal) {
-        (lifecycleManager.currentContext.internal as Record<string, any>)['currentLocale'] = event.data.currentLocale;
-        lifecycleManager._notifyUpdate();
+      if (event.data.currentLocale && _lifecycleManager.currentContext?.internal) {
+        (_lifecycleManager.currentContext.internal as Record<string, any>)['currentLocale'] = event.data.currentLocale;
+        _lifecycleManager._notifyUpdate();
       }
     });
   }
@@ -225,7 +225,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   getCurrentLocale(): string {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)['currentLocale'];
+    return (_lifecycleManager.currentContext?.internal as Record<string, any>)['currentLocale'];
   }
 
   /**
@@ -254,7 +254,7 @@ class UxManager extends LuigiClientBase {
    * @since 0.6.0
    */
   isSplitView(): boolean {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)['splitView'];
+    return (_lifecycleManager.currentContext?.internal as Record<string, any>)['splitView'];
   }
 
   /**
@@ -264,7 +264,7 @@ class UxManager extends LuigiClientBase {
    * @since 0.6.0
    */
   isModal(): boolean {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)['modal'];
+    return (_lifecycleManager.currentContext?.internal as Record<string, any>)['modal'];
   }
 
   /**
@@ -274,7 +274,7 @@ class UxManager extends LuigiClientBase {
    * @since 1.26.0
    */
   isDrawer(): boolean {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)['drawer'];
+    return (_lifecycleManager.currentContext?.internal as Record<string, any>)['drawer'];
   }
 
   /**
@@ -283,7 +283,7 @@ class UxManager extends LuigiClientBase {
    * @memberof uxManager
    */
   getCurrentTheme(): any {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)['currentTheme'];
+    return (_lifecycleManager.currentContext?.internal as Record<string, any>)['currentTheme'];
   }
 
   /**
@@ -294,7 +294,7 @@ class UxManager extends LuigiClientBase {
    * @example LuigiClient.uxManager().getCSSVariables();
    */
   getCSSVariables(): Object {
-    return (lifecycleManager.currentContext?.internal as Record<string, any>)['cssVariables'] || {};
+    return (_lifecycleManager.currentContext?.internal as Record<string, any>)['cssVariables'] || {};
   }
 
   /**
@@ -308,7 +308,7 @@ class UxManager extends LuigiClientBase {
       luigiInjectedStyleTag.remove();
     });
 
-    const vars = (lifecycleManager.currentContext?.internal as Record<string, any>)['cssVariables'];
+    const vars = (_lifecycleManager.currentContext?.internal as Record<string, any>)['cssVariables'];
 
     if (vars) {
       let cssString = ':root {\n';
@@ -329,4 +329,6 @@ class UxManager extends LuigiClientBase {
   }
 }
 
-export const uxManager = new UxManager();
+const _uxManager = new UxManager();
+
+export default _uxManager;

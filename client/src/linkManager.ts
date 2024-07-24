@@ -9,6 +9,7 @@ import {
 } from '../luigi-client';
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
+import _lifecycleManager from './lifecycleManager';
 import { splitViewHandle } from './splitViewHandle';
 
 /**
@@ -18,14 +19,14 @@ import { splitViewHandle } from './splitViewHandle';
   - Keep the navigation state in Luigi.
   * @name linkManager
   */
-export class linkManager extends LuigiClientBase {
+class LinkManager extends LuigiClientBase {
   currentContext!: Context;
   private options: Record<string, any>;
 
   /**
    * @private
    */
-  constructor(values: Record<string, any>) {
+  constructor(values: Record<string, any>, options?: Record<string, any>) {
     super();
 
     Object.assign(this, values);
@@ -46,6 +47,10 @@ export class linkManager extends LuigiClientBase {
       preventHistoryEntry: false,
       relative: false
     };
+
+    if (options) {
+      Object.assign(this.options, options);
+    }
   }
 
   /**
@@ -298,9 +303,9 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().fromContext('project').navigate('/settings')
    */
-  fromContext(navigationContext: string): this {
+  fromContext(navigationContext: string): LinkManager {
     const navigationContextInParent: boolean = !!(
-      this.currentContext?.context?.parentNavigationContext?.indexOf(navigationContext) !== -1
+      _lifecycleManager.currentContext?.context?.parentNavigationContexts?.indexOf(navigationContext) !== -1
     );
 
     if (navigationContextInParent) {
@@ -310,7 +315,7 @@ export class linkManager extends LuigiClientBase {
       console.error('Navigation not possible, navigationContext ' + navigationContext + ' not found.');
     }
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -320,8 +325,8 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
-  fromClosestContext(): this {
-    const hasParentNavigationContext: boolean = !!this.currentContext.context?.parentNavigationContext?.length;
+  fromClosestContext(): LinkManager {
+    const hasParentNavigationContext: boolean = !!_lifecycleManager.currentContext.context?.parentNavigationContexts?.length;
 
     if (hasParentNavigationContext) {
       this.options['fromContext'] = null;
@@ -330,7 +335,7 @@ export class linkManager extends LuigiClientBase {
       console.error('Navigation not possible, no parent navigationContext found.');
     }
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -341,12 +346,12 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
    */
-  fromVirtualTreeRoot(): this {
+  fromVirtualTreeRoot(): LinkManager {
     this.options['fromContext'] = null;
     this.options['fromClosestContext'] = false;
     this.options['fromVirtualTreeRoot'] = true;
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -357,10 +362,10 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().fromParent().navigate('/sibling')
    */
-  fromParent(): this {
+  fromParent(): LinkManager {
     this.options['fromParent'] = true;
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -374,12 +379,12 @@ export class linkManager extends LuigiClientBase {
    * // Can be chained with context setting functions such as:
    * LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
    */
-  withParams(nodeParams: NodeParams): this {
+  withParams(nodeParams: NodeParams): LinkManager {
     if (nodeParams) {
       Object.assign(this.options['nodeParams'], nodeParams);
     }
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -395,8 +400,8 @@ export class linkManager extends LuigiClientBase {
    * { preventContextUpdate:true, preventHistoryEntry: true }
    * ).navigate('/overview')
    */
-  withOptions(options: RouteChangingOptions): this {
-    if (!helpers.isObject(options)) return this;
+  withOptions(options: RouteChangingOptions): LinkManager {
+    if (!helpers.isObject(options)) return new LinkManager({ currentContext: _lifecycleManager.currentContext });
 
     if (options['preventHistoryEntry'] !== undefined) {
       this.options['preventHistoryEntry'] = options['preventHistoryEntry'];
@@ -406,7 +411,7 @@ export class linkManager extends LuigiClientBase {
       this.options['preventContextUpdate'] = options['preventContextUpdate'];
     }
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /** @lends linkManager */
@@ -428,9 +433,11 @@ export class linkManager extends LuigiClientBase {
     const currentId: number = helpers.getRandomId();
     const pathExistsPromises = this.getPromise('pathExistsPromises') || {};
 
-    pathExistsPromises[`${currentId}`] = {
-      resolveFn: () => {},
-      then: (resolveFn: () => void) => (resolveFn = resolveFn)
+    pathExistsPromises[currentId] = {
+      resolveFn: function() {},
+      then: function(resolveFn: () => void) {
+        this.resolveFn = resolveFn;
+      }
     };
     this.setPromise('pathExistsPromises', pathExistsPromises);
 
@@ -462,7 +469,7 @@ export class linkManager extends LuigiClientBase {
 
     helpers.sendPostMessageToLuigiCore(pathExistsMsg);
 
-    return pathExistsPromises[`${currentId}`];
+    return pathExistsPromises[currentId];
   }
 
   /**
@@ -472,8 +479,8 @@ export class linkManager extends LuigiClientBase {
    */
   hasBack(): boolean {
     return (
-      !!(this.currentContext.internal as Record<string, any>)['modal'] ||
-      (this.currentContext.internal as Record<string, any>)['viewStackSize'] !== 0
+      !!(_lifecycleManager.currentContext.internal as Record<string, any>)['modal'] ||
+      (_lifecycleManager.currentContext.internal as Record<string, any>)['viewStackSize'] !== 0
     );
   }
 
@@ -501,10 +508,10 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
    */
-  withoutSync(): this {
+  withoutSync(): LinkManager {
     this.options['withoutSync'] = true;
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -513,10 +520,10 @@ export class linkManager extends LuigiClientBase {
    * @example
    * LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
    */
-  newTab(): this {
+  newTab(): LinkManager {
     this.options['newTab'] = true;
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -527,10 +534,10 @@ export class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
    * LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
    */
-  preserveQueryParams(preserve = false): this {
+  preserveQueryParams(preserve = false): LinkManager {
     this.options['preserveQueryParams'] = preserve;
 
-    return this;
+    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -547,9 +554,11 @@ export class linkManager extends LuigiClientBase {
 
     const currentRoutePromise = this.getPromise('getCurrentRoute') || {};
 
-    currentRoutePromise[`${currentId}`] = {
-      resolveFn: () => {},
-      then: (resolveFn: () => void) => (resolveFn = resolveFn)
+    currentRoutePromise[currentId] = {
+      resolveFn: function() {},
+      then: function(resolveFn: () => void) {
+        this.resolveFn = resolveFn;
+      }
     };
 
     this.setPromise('getCurrentRoute', currentRoutePromise);
@@ -581,3 +590,9 @@ export class linkManager extends LuigiClientBase {
     return currentRoutePromise[currentId];
   }
 }
+
+const _linkManager = new LinkManager({
+  currentContext: _lifecycleManager.currentContext
+});
+
+export default _linkManager;
