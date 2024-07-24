@@ -39,7 +39,7 @@ describe('Compound Container Tests', () => {
       cy.get('#luigi-update-context')
         .click()
         .then(() => {
-          cy.get(container)
+          cy.get(containerSelector)
             .shadow()
             .contains('updateContext')
             .click()
