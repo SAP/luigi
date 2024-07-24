@@ -87,7 +87,7 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
-   * @since NEXTRELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   noShadow: boolean;
 
