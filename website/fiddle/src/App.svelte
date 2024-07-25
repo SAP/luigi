@@ -268,10 +268,8 @@
     position: fixed;
     z-index: 1000;
     -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
     top: 0;
     left: 0;
@@ -283,7 +281,6 @@
   .editor_container .fd-bar__right {
     display: flex;
     -webkit-box-pack: end;
-    -ms-flex-pack: end;
     justify-content: flex-end;
   }
 

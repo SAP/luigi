@@ -198,7 +198,6 @@
         width: 0; /* chrome, safari */
       }
       scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE 10+ */
 
       .fd-side-nav__utility {
         margin-top: 0;
