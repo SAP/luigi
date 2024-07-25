@@ -16,7 +16,7 @@ meta -->
 
 # Luigi Compound Container API
 
-This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container 
+This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container
 
 ## API Reference
 
@@ -37,7 +37,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### deferInit
 
@@ -47,7 +47,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### noShadow
 
@@ -57,7 +57,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### searchParams
 
@@ -67,7 +67,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### pathParams
 
@@ -77,7 +77,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### context
 
@@ -87,7 +87,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### clientPermissions
 
@@ -97,7 +97,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### userSettings
 
@@ -107,7 +107,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### anchor
 
@@ -117,7 +117,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### documentTitle
 
@@ -127,7 +127,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### hasBack
 
@@ -138,7 +138,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### dirtyStatus
 
@@ -149,7 +149,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### webcomponent
 
@@ -159,15 +159,16 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 #### Parameters
 
--   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
-    -   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
-    -   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
-    -   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
--   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified JSON object from type `WebComponentSettings`.
+*   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
+
+    *   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
+    *   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
+    *   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
+*   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified JSON object from type `WebComponentSettings`.
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### updateContext
 
@@ -175,7 +176,7 @@ Function that updates the context of the compound microfrontend.
 
 #### Parameters
 
--   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
+*   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
 
 #### Examples
 
@@ -187,7 +188,7 @@ Returns **void**
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### init
 
@@ -197,4 +198,4 @@ Returns **void**
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
