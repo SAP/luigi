@@ -12,9 +12,9 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The configuration for the compound microfrontend
-   * Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details. 
+   * Take a look at the [compound parameter](https://docs.luigi-project.io/docs/navigation-parameters-reference/?section=compound) for details.
    * @since 1.0.0
-   * 
+   *
    */
   compoundConfig: Object;
 
@@ -26,7 +26,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
-   * @since NEXTRELEASE
+   * @since NEXT_RELEASE_CONTAINER
    */
   noShadow: boolean;
 
@@ -74,7 +74,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The hasBack value to be passed to the compound micro frontend.
-   * It indicates that there is one or more preserved views. Useful when you need to show a back button. 
+   * It indicates that there is one or more preserved views. Useful when you need to show a back button.
    * @since NEXT_RELEASE_CONTAINER
    */
   hasBack: string;
@@ -100,7 +100,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   /**
    * Function that updates the context of the compound microfrontend.
    * @param contextObj The context data
-   * 
+   *
    * @example
    * containerElement.updateContext({newContextData: 'some data'})
    * @since 1.0.0
