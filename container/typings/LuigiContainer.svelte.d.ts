@@ -7,14 +7,12 @@ export declare interface WebComponentSettings {
 export default class LuigiContainer extends HTMLElement {
   /**
    * The URL of the microfrontend to be rendered
-   *
    * @since 1.0.0
    */
   viewurl: string;
 
   /**
    * If set to true defers from initializing the microfronted automatically. In that case init() can be used
-   *
    * @since 1.0.0
    */
   deferInit: boolean;
@@ -159,7 +157,6 @@ export default class LuigiContainer extends HTMLElement {
    * Function that updates the context of the microfrontend
    * @param {Object} contextObj The context data
    * @param {Object} internal internal luigi legacy data used for iframes
-   *
    * @example
    * containerElement.updateContext({newContextData: 'some data'})
    * @since 1.0.0
@@ -170,7 +167,6 @@ export default class LuigiContainer extends HTMLElement {
    * Send a custom message to the microfronted
    * @param id a string containing the message id
    * @param data data to be sent alongside the custom message
-   *
    * @example
    * containerElement.sendCustomMessage('my-message-id', {dataToSend: 'some data'})
    * @since 1.0.0
@@ -181,7 +177,6 @@ export default class LuigiContainer extends HTMLElement {
    * A function that notifies the microfrontend that the opened alert has been closed
    * @param id the id of the opened alert
    * @param dismissKey the key specifying which dismiss link was clicked on the alert message
-   *
    * @example
    * containerElement.closeAlert('my-alert-id', 'my-dismiss-key')
    * @since 1.0.0
@@ -190,7 +185,6 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * Manually triggers the micro frontend rendering process when using defer-init attribute
-   *
    * @example
    * containerElement.init()
    * @since 1.0.0
