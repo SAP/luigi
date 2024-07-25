@@ -85,7 +85,7 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * If set to true, the Luigi container webcomponent will not use the shadow DOM for rendering.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.2.0
    */
   noShadow: boolean;
 
@@ -122,34 +122,34 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
    * You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.2.0
    */
   allowRules: string[];
 
   /**
    * The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
    * You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.2.0
    */
   sandboxRules: string[];
 
   /**
    * The document title value to be passed to the web-component-based micro frontend.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.2.0
    */
   documentTitle: string;
 
   /**
    * The hasBack value to be passed to the web-component-based micro frontend.
    * It indicates that there is one or more preserved views. Useful when you need to show a back button.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.2.0
    */
   hasBack: string;
 
   /**
    * The dirty status value to be passed to the web-component-based micro frontend.
    * It's used to indicate that there are unsaved changes when navigating away.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.2.0
    */
   dirtyStatus: boolean;
 
@@ -193,7 +193,7 @@ export default class LuigiContainer extends HTMLElement {
 
   /**
    * The authData value to be passed to the iframe-based micro frontend.
-   * @since NEXT_RELEASE_CONTAINER
+   * @since 1.2.0
    */
   authData: Object;
 }
