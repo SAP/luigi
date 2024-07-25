@@ -57,7 +57,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
-*   **since**: NEXTRELEASE
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### searchParams
 
