@@ -66,6 +66,9 @@
   function addClickListener(link, alertId) {
     try {
       const linkElem = document.getElementById(link.elemId);
+      if (!linkElem) {
+        return;
+      }
       if (linkElem.dismissListener) {
         linkElem.removeEventListener('click', linkElem.dismissListener);
       }
