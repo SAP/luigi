@@ -100,7 +100,6 @@ export default class LuigiCompoundContainer extends HTMLElement {
   /**
    * Function that updates the context of the compound microfrontend.
    * @param contextObj The context data
-   *
    * @example
    * containerElement.updateContext({newContextData: 'some data'})
    * @since 1.0.0
