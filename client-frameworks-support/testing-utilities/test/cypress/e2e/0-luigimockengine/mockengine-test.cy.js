@@ -1,6 +1,6 @@
-const containerSelector = '[id^="luigi-debug-vis-cnt"]';
-
 describe('Luigi Mock Engine', () => {
+  const visualizationContainer = '[id^="luigi-debug-vis-cnt"]';
+
   before(() => {
     cy.visit('http://localhost:8181/');
   });
@@ -12,7 +12,7 @@ describe('Luigi Mock Engine', () => {
     it('Check LuigiClient.uxManager().alert', () => {
       cy.get('[id^=uxbutton1]').click();
 
-      cy.get(containerSelector)
+      cy.get(visualizationContainer)
         .children()
         .contains('"msg":"luigi.ux.alert.show"');
     });
@@ -20,7 +20,7 @@ describe('Luigi Mock Engine', () => {
     it('Check LuigiClient.uxManager().confirmModal', () => {
       cy.get('[id^=uxbutton2]').click();
 
-      cy.get(containerSelector)
+      cy.get(visualizationContainer)
         .children()
         .contains('"msg":"luigi.ux.confirmationModal.show"');
     });
@@ -28,7 +28,7 @@ describe('Luigi Mock Engine', () => {
     it('Check LuigiClient.uxManager().loadIndicator', () => {
       cy.get('[id^=uxbutton3]').click();
 
-      cy.get(containerSelector)
+      cy.get(visualizationContainer)
         .children()
         .contains('"msg":"luigi.show-loading-indicator"');
     });
@@ -36,7 +36,7 @@ describe('Luigi Mock Engine', () => {
     it('Check LuigiClient.uxManager().setCurrentLocale', () => {
       cy.get('[id^=uxbutton4]').click();
 
-      cy.get(containerSelector)
+      cy.get(visualizationContainer)
         .children()
         .contains('"msg":"luigi.current-locale-changed"');
     });
@@ -49,7 +49,7 @@ describe('Luigi Mock Engine', () => {
     it('Check LuigiClient.linkManager().openAsModal', () => {
       cy.get('[id^=button1]').click();
 
-      cy.get(containerSelector)
+      cy.get(visualizationContainer)
         .children()
         .contains('"msg":"luigi.navigate.ok"');
     });
@@ -57,19 +57,19 @@ describe('Luigi Mock Engine', () => {
     it('Check LuigiClient.linkManager().split', () => {
       cy.get('[id^=button2]').click();
 
-      cy.get(containerSelector).contains('"msg":"luigi.navigate.ok"');
+      cy.get(visualizationContainer).contains('"msg":"luigi.navigate.ok"');
     });
 
     it('Check LuigiClient.linkManager().drawer', () => {
       cy.get('[id^=button3]').click();
 
-      cy.get(containerSelector).contains('"msg":"luigi.navigate.ok"');
+      cy.get(visualizationContainer).contains('"msg":"luigi.navigate.ok"');
     });
 
     it('Check LuigiClient.linkManager().pathExists', () => {
       cy.get('[id^=button4]').click();
 
-      cy.get(containerSelector).contains('"msg":"luigi.navigation.pathExists.answer"');
+      cy.get(visualizationContainer).contains('"msg":"luigi.navigation.pathExists.answer"');
     });
   });
 });
