@@ -40,23 +40,23 @@ export default function addLabelTag() {
    * @param {string} labelText - The text content of the label.
    *
    * @example
-   * // Input Node:
-   * // { type: 'comment', value: ' label-info: This is an info label ' }
-   * //
-   * // Output Node:
-   * // {
-   * //   type: 'element',
-   * //   tagName: 'div',
-   * //   properties: { className: 'label-wrapper' },
-   * //   children: [
-   * //     {
-   * //       type: 'element',
-   * //       tagName: 'span',
-   * //       properties: { className: 'label-info' },
-   * //       children: [{ type: 'text', value: 'This is an info label' }]
-   * //     }
-   * //   ]
-   * // }
+   *    Input Node:
+   *    { type: 'comment', value: ' label-info: This is an info label ' }
+   *   
+   *    Output Node:
+   *    {
+   *      type: 'element',
+   *      tagName: 'div',
+   *      properties: { className: 'label-wrapper' },
+   *      children: [
+   *        {
+   *          type: 'element',
+   *          tagName: 'span',
+   *          properties: { className: 'label-info' },
+   *          children: [{ type: 'text', value: 'This is an info label' }]
+   *        }
+   *      ]
+   *    }
    */
   function transformToLabel(node, index, parent, className, labelText) {
     const labelNode = {
