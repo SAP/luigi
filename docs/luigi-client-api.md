@@ -119,7 +119,7 @@ Removes a context update listener.
 LuigiClient.removeContextUpdateListener(updateListenerId)
 ```
 
-#### addInactiveListener 
+#### addInactiveListener
 
 Registers a listener called upon micro frontend inactivity. This happens when a new micro frontend gets shown while keeping the old one cached.
 Gets called when:
@@ -223,6 +223,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 
 #### getActiveFeatureToggles
+
 <!-- label-success: Web Component API  -->
 
 Returns a list of active feature toggles
@@ -240,6 +241,7 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 -   **since**: 1.4.0
 
 #### addNodeParams
+
 <!-- label-success: Web Component API  -->
 
 Sets node parameters in Luigi Core. The parameters will be added to the URL.
@@ -256,6 +258,7 @@ LuigiClient.addNodeParams({luigi:'rocks'}, true);
 ```
 
 #### getNodeParams
+
 <!-- label-success: Web Component API  -->
 
 Returns the node parameters of the active URL.
@@ -279,6 +282,7 @@ const nodeParams = LuigiClient.getNodeParams(true)
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
 
 #### getPathParams
+
 <!-- label-success: Web Component API  -->
 
 Returns the dynamic path parameters of the active URL.
@@ -298,7 +302,6 @@ const pathParams = LuigiClient.getPathParams()
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
 
 #### getCoreSearchParams
-<!-- label-success: Web Component API  -->
 
 Read search query parameters which are sent from Luigi Core
 
@@ -311,6 +314,8 @@ LuigiClient.getCoreSearchParams();
 Returns **any** Core search query parameters
 
 #### addCoreSearchParams
+
+<!-- label-success: Web Component API  -->
 
 Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using [clientPermissions.urlParameters](navigation-parameters-reference.md#clientpermissionsurlparameters).
 
@@ -326,6 +331,7 @@ LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
 ```
 
 #### getClientPermissions
+
 <!-- label-success: Web Component API  -->
 
 Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
@@ -378,6 +384,7 @@ LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataO
 -   **since**: 0.6.2
 
 #### getUserSettings
+
 <!-- label-success: Web Component API  -->
 
 Returns the current user settings based on the selected node.
@@ -395,6 +402,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 -   **since**: 1.7.1
 
 #### getAnchor
+
 <!-- label-success: Web Component API  -->
 
 Returns the current anchor based on active URL.
@@ -412,6 +420,7 @@ Returns **any** anchor of URL
 -   **since**: 1.21.0
 
 #### setAnchor
+
 <!-- label-success: Web Component API  -->
 
 Sends anchor to Luigi Core. The anchor will be added to the URL.
@@ -431,6 +440,7 @@ LuigiClient.setAnchor('luigi');
 -   **since**: 1.21.0
 
 #### setViewGroupData
+
 <!-- label-success: Web Component API  -->
 
 This function allows you to change node labels within the same [view group](navigation-advanced.md#view-groups), e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
@@ -482,6 +492,7 @@ The Link Manager allows you to navigate to another route. Use it instead of an i
 -   Keep the navigation state in Luigi.
 
 #### navigateToIntent
+
 <!-- label-success: Web Component API  -->
 
 Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
@@ -506,6 +517,7 @@ LuigiClient.linkManager().navigateToIntent('Sales-settings')
 ```
 
 #### withoutSync
+
 <!-- label-success: Web Component API  -->
 
 Disables the navigation handling for a single navigation request.
@@ -538,6 +550,7 @@ LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 -   **since**: 1.16.0
 
 #### preserveQueryParams
+
 <!-- label-success: Web Component API  -->
 
 Keeps the URL's query parameters for a navigation request.
@@ -558,6 +571,7 @@ LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foob
 -   **since**: 1.19.0
 
 #### getCurrentRoute
+
 <!-- label-success: Web Component API  -->
 
 Gets the luigi route associated with the current micro frontend.
@@ -577,6 +591,7 @@ Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 -   **since**: 1.23.0
 
 #### navigate
+
 <!-- label-success: Web Component API  -->
 
 Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
@@ -612,6 +627,7 @@ LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navig
 ```
 
 #### updateModalPathInternalNavigation
+
 <!-- label-success: Web Component API  -->
 
 Updates path of the modalPathParam when internal navigation occurs.
@@ -633,6 +649,7 @@ LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
 -   **since**: 1.21.0
 
 #### openAsModal
+
 <!-- label-success: Web Component API  -->
 
 Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
@@ -660,6 +677,7 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
 
 #### updateModalSettings
+
 <!-- label-success: Web Component API  -->
 
 Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
@@ -681,9 +699,10 @@ LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
 ```
 
 #### openAsSplitView
-<!-- label-success: Web Component API  -->
 
 -   **See: [splitView](#splitview) for further documentation about the returned instance**
+
+<!-- label-success: Web Component API  -->
 
 Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
 
@@ -708,6 +727,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 -   **since**: 0.6.0
 
 #### openAsDrawer
+
 <!-- label-success: Web Component API  -->
 
 Opens a view in a drawer. You can specify the size of the drawer, whether the drawer has a header, and whether a backdrop is active in the background. By default, the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is set to `s` by default, which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
@@ -733,6 +753,7 @@ LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My
 -   **since**: 1.6.0
 
 #### fromContext
+
 <!-- label-success: Web Component API  -->
 
 Sets the current navigation context to that of a specific parent node which has the [navigationContext](navigation-configuration.md) field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
@@ -762,6 +783,7 @@ LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakehold
 Returns **[linkManager](#linkmanager)** link manager instance
 
 #### fromVirtualTreeRoot
+
 <!-- label-success: Web Component API  -->
 
 Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
@@ -779,6 +801,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 -   **since**: 1.0.1
 
 #### fromParent
+
 <!-- label-success: Web Component API  -->
 
 Enables navigating to sibling nodes without knowing the absolute path.
@@ -796,6 +819,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 -   **since**: 1.0.1
 
 #### withParams
+
 <!-- label-success: Web Component API  -->
 
 Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
@@ -816,6 +840,7 @@ LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).na
 Returns **[linkManager](#linkmanager)** link manager instance
 
 #### withOptions
+
 <!-- label-success: Web Component API  -->
 
 Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
@@ -841,6 +866,7 @@ Returns **[linkManager](#linkmanager)** link manager instance
 -   **since**: 1.25.0
 
 #### pathExists
+
 <!-- label-success: Web Component API  -->
 
 Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
@@ -864,6 +890,7 @@ let pathExists;
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a Boolean variable specifying whether the path exists or not
 
 #### hasBack
+
 <!-- label-success: Web Component API  -->
 
 Checks if there is one or more preserved views. You can use it to show a **back** button.
@@ -871,6 +898,7 @@ Checks if there is one or more preserved views. You can use it to show a **back*
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if there is a preserved view you can return to
 
 #### goBack
+
 <!-- label-success: Web Component API  -->
 
 Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
@@ -1070,31 +1098,37 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 Use the UX Manager to manage the appearance features in Luigi.
 
 #### showLoadingIndicator
+
 <!-- label-success: Web Component API  -->
 
 Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the [loadingIndicator.enabled](navigation-parameters-reference.md#node-parameters) setting.
 
 #### hideLoadingIndicator
+
 <!-- label-success: Web Component API  -->
 
 Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-parameters-reference.md#node-parameters) node configuration.
 
 #### closeCurrentModal
+
 <!-- label-success: Web Component API  -->
 
 Closes the currently opened micro frontend modal.
 
 #### addBackdrop
+
 <!-- label-success: Web Component API  -->
 
 Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
 
 #### removeBackdrop
+
 <!-- label-success: Web Component API  -->
 
 Removes the backdrop.
 
 #### setDirtyStatus
+
 <!-- label-success: Web Component API  -->
 
 This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms. If you use `withoutSync()` together with `setDirtyStatus()`, this is a special case in which the dirty state logic needs to be handled by the micro frontend. For example, if the user navigates with an Angular router, which would trigger `withoutSync()`, Angular needs to take care about dirty state, prevent the navigation and ask for permission to navigate away, through `uxManager().showConfirmationModal(settings)`.
@@ -1104,6 +1138,7 @@ This method informs the main application that there are unsaved changes in the c
 -   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
 
 #### showConfirmationModal
+
 <!-- label-success: Web Component API  -->
 
 Shows a confirmation modal.
@@ -1139,6 +1174,7 @@ LuigiClient
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
 
 #### showAlert
+
 <!-- label-success: Web Component API  -->
 
 Shows an alert.
@@ -1181,6 +1217,7 @@ LuigiClient
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed
 
 #### getCurrentLocale
+
 <!-- label-success: Web Component API  -->
 
 Gets the current locale.
@@ -1188,7 +1225,9 @@ Gets the current locale.
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current locale
 
 #### setCurrentLocale
+
 <!-- label-success: Web Component API  -->
+
 Sets current locale to the specified one.
 
 **NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See [Node parameters](navigation-parameters-reference.md).)
@@ -1198,7 +1237,9 @@ Sets current locale to the specified one.
 -   `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
 
 #### isSplitView
+
 <!-- label-success: Web Component API  -->
+
 Checks if the current micro frontend is displayed inside a split view
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a split view
@@ -1208,7 +1249,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 -   **since**: 0.6.0
 
 #### isModal
-<!-- label-success: Web Component API  -->
+
 Checks if the current micro frontend is displayed inside a modal
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a modal
@@ -1218,7 +1259,9 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 -   **since**: 0.6.0
 
 #### isDrawer
+
 <!-- label-success: Web Component API  -->
+
 Checks if the current micro frontend is displayed inside a drawer
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicating if it is loaded inside a drawer
@@ -1228,13 +1271,17 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 -   **since**: 1.26.0
 
 #### getCurrentTheme
+
 <!-- label-success: Web Component API  -->
+
 Gets the current theme.
 
 Returns **any** current themeObj
 
 #### getCSSVariables
+
 <!-- label-success: Web Component API  -->
+
 Gets the CSS variables from Luigi Core with their key and value.
 
 ##### Examples
@@ -1250,7 +1297,9 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 -   **since**: 2.3.0
 
 #### applyCSS
+
 <!-- label-success: Web Component API  -->
+
 Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
 
 ##### Examples
