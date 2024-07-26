@@ -8,13 +8,13 @@ import { visit } from 'unist-util-visit';
  * @returns {function} Transformer function for the Markdown AST.
  *
  * @example
- * // Input:
- * // <!-- label-info: This is an info label -->
- * //
- * // Output:
- * // <div class="label-wrapper">
- * //   <span class="label-info">This is an info label</span>
- * // </div>
+ *    Input:
+ *    <!-- label-info: This is an info label -->
+ *   
+ *    Output:
+ *    <div class="label-wrapper">
+ *      <span class="label-info">This is an info label</span>
+ *    </div>
  */
 export default function addLabelTag() {
   return function transformer(tree) {
