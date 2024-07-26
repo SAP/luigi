@@ -57,7 +57,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.2.0
 
 ### searchParams
 
@@ -127,7 +127,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.2.0
 
 ### hasBack
 
@@ -138,7 +138,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.2.0
 
 ### dirtyStatus
 
@@ -149,7 +149,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.2.0
 
 ### webcomponent
 
