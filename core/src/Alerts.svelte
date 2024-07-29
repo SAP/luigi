@@ -66,6 +66,9 @@
   function addClickListener(link, alertId) {
     try {
       const linkElem = document.getElementById(link.elemId);
+      if (!linkElem) {
+        return;
+      }
       if (linkElem.dismissListener) {
         linkElem.removeEventListener('click', linkElem.dismissListener);
       }
@@ -108,6 +111,14 @@
       id="j2ALl423"
       data-testid="luigi-alert"
     >
+      <div class="fd-message-strip__icon-container" aria-hidden="true">
+        <span
+          class="sap-icon sap-icon--message-{alertTypeMap[al.settings.type]}"
+          focusable="false"
+          role="presentation"
+          aria-hidden="true"
+        />
+      </div>
       <p class="fd-message-strip__text">
         {@html al.dataSanitized ? al.settings.text : ''}
       </p>

@@ -3,7 +3,7 @@ import { containerService } from '../services/container.service';
 
 export class ContainerAPIFunctions {
   /**
-   * Updates the context of the microfrontend by sending a message to the iframe or webcomponent that sets the context of the microfrontend
+   * Updates the context of the microfrontend by sending a message to the iframe that sets the context of the microfrontend
    * @param contextObj The context data
    * @param internal internal luigi legacy data
    * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
@@ -17,12 +17,29 @@ export class ContainerAPIFunctions {
           context: contextObj,
           internal: internalParameter,
           // set withoutSync to true for the container case to avoid browser history changes from luigi client
-          withoutSync: true
+          withoutSync: true,
         },
         LuigiInternalMessageID.SEND_CONTEXT_OBJECT
       );
     } else {
       console.warn('Attempting to update context on inexisting iframe');
+    }
+  };
+
+  /**
+   * Updates the auth data of the microfrontend by sending a message to the iframe that sets the authData of the microfrontend
+   * @param iframeHandle a reference to the iframe that is needed to send a message to it internally
+   * @param authData the authData object being sent to the microfrontend
+   */
+  updateAuthData = (iframeHandle: any, authData: any) => {
+    if (iframeHandle && authData) {
+      containerService.sendCustomMessageToIframe(
+        iframeHandle,
+        {authData},
+        LuigiInternalMessageID.AUTH_SET_TOKEN
+      );
+    } else {
+      console.warn('Attempting to update auth data on inexisting iframe or authData');
     }
   };
 

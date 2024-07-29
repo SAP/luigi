@@ -22,6 +22,7 @@ export declare interface ModalSettings {
   size?: 'fullscreen' | 'l' | 'm' | 's';
   width?: string;
   height?: string;
+  keepPrevious?: boolean;
   closebtn_data_testid?: string;
 }
 
@@ -159,7 +160,7 @@ export declare interface UxManager {
    * @example
    * import LuigiClient from '@luigi-project/client';
    * const settings = {
-   *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+   *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject} or {neverShowItAgain}",
    *  type: 'info',
    *  links: {
    *    goToHome: { text: 'homepage', url: '/overview' },

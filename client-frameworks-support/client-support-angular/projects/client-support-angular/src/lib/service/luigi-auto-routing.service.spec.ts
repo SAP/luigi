@@ -15,7 +15,7 @@ describe('LuigiAutoRoutingService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [LuigiContextService, LuigiAutoRoutingService],
-      imports: [RouterTestingModule.withRoutes([]), LuigiAngularSupportModule],
+      imports: [RouterTestingModule.withRoutes([]), LuigiAngularSupportModule]
     });
 
     service = TestBed.inject(LuigiAutoRoutingService);
@@ -66,10 +66,7 @@ describe('LuigiAutoRoutingService', () => {
 
   describe('doSubscription', () => {
     it('doSubscription should take a NavigationEnd event and not do anything if the navigation was to no route with Luigi data', () => {
-      const doSubscriptionSpy = spyOn(
-        LuigiAutoRoutingService.prototype,
-        'doSubscription'
-      ).and.callThrough();
+      const doSubscriptionSpy = spyOn(LuigiAutoRoutingService.prototype, 'doSubscription').and.callThrough();
       const navigateSpy = jasmine.createSpy('navigate');
       const linkManagerSpy = spyOn(Client, 'linkManager').and.returnValue({
         withoutSync: () => navigateSpy,

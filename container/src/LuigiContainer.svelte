@@ -23,7 +23,8 @@
       hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
       documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
       allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' },
-      sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' }
+      sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' },
+      authData: { type: 'Object', reflect: false, attribute: 'auth-data' }
     },
     extend: customElementConstructor => {
       let notInitFn = name => {
@@ -35,13 +36,18 @@
         updateContext = notInitFn('updateContext');
         closeAlert = notInitFn('closeAlert');
         attributeChangedCallback(name, oldValue, newValue) {
-          if (this.containerInitialized && name === 'context') {
-            this.updateContext(JSON.parse(newValue));
+          if (this.containerInitialized) {
+            if (name === 'context') {
+              this.updateContext(JSON.parse(newValue));
+            }
+            if (name === 'auth-data') {
+              ContainerAPI.updateAuthData(this.iframeHandle, JSON.parse(newValue));
+            }
           }
-        };
+        }
         getNoShadow(){
           return this.hasAttribute('no-shadow') || this.noShadow
-        };
+        }
       };
     }
   }}
@@ -78,6 +84,7 @@
 
   export let userSettings: any;
   export let anchor: string;
+  export let authData: any;
 
   const iframeHandle:
     | {
@@ -106,7 +113,8 @@
       hasBack &&
       documentTitle &&
       allowRules &&
-      sandboxRules
+      sandboxRules &&
+      noShadow
     );
   };
 

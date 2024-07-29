@@ -30,7 +30,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### deferInit
 
@@ -40,7 +40,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### context
 
@@ -50,7 +50,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### label
 
@@ -60,7 +60,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### webcomponent
 
@@ -70,16 +70,26 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 #### Parameters
 
--   `specifies` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if a microfrontend is a webcomponent or not without any other settings.
--   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** specifies that the microfrontend is a webcomponent with addtional settings.
-    -   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
-    -   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
-    -   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
--   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified boolean or JSON object from type `WebComponentSettings`.
+*   `specifies` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** if a microfrontend is a webcomponent or not without any other settings.
+*   `WebComponentSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** specifies that the microfrontend is a webcomponent with addtional settings.
+
+    *   `WebComponentSettings.type` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : string, like module.
+    *   `WebComponentSettings.selfRegistered` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** : if it is true, the web component bundle will be added via script tag.
+    *   `WebComponentSettings.tagName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** : tag name where web component is added to DOM.
+*   `string` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** must be a stringified boolean or JSON object from type `WebComponentSettings`.</br></br><blockquote class="warning">
+    <p>
+    <strong>Note:</strong> If you have to use the mechanism of `selfRegistered`, we recommend using the following code in your web component:
+    </p>
+    </blockquote>
+    <pre><code>
+    window.Luigi._registerWebcomponent(new URL(document.currentScript?.getAttribute('src'), location), <YOUR_WEBCOMPONENT_CLASS>);
+    </code></pre>
+    The advantage of this line of code is: you don't have to specify a tag name, thus avoiding the duplication of self-defined tag names.
+    </br>
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### locale
 
@@ -89,7 +99,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### theme
 
@@ -99,17 +109,17 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### activeFeatureToggleList
 
 The list of active feature toggles to be passed to the web-component-based micro frontend
 
-Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### skipInitCheck
 
@@ -119,7 +129,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### nodeParams
 
@@ -129,7 +139,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### noShadow
 
@@ -139,7 +149,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: NEXTRELEASE
+*   **since**: 1.2.0
 
 ### searchParams
 
@@ -149,7 +159,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### pathParams
 
@@ -159,7 +169,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### clientPermissions
 
@@ -169,7 +179,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### userSettings
 
@@ -179,7 +189,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### anchor
 
@@ -189,29 +199,29 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### allowRules
 
 The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
-You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
+You can use one or more rules by adding them to the array, for example allowRules: \["microphone", "camera"].
 
-Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+*   **since**: 1.2.0
 
 ### sandboxRules
 
 The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
-You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
+You can use one or more rules by adding them to the array, for example sandboxRules: \["allow-scripts", "allow-same-origin"].
 
-Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+*   **since**: 1.2.0
 
 ### documentTitle
 
@@ -221,7 +231,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+*   **since**: 1.2.0
 
 ### hasBack
 
@@ -232,7 +242,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+*   **since**: 1.2.0
 
 ### dirtyStatus
 
@@ -243,7 +253,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 **Meta**
 
--   **since**: NEXT_RELEASE
+*   **since**: 1.2.0
 
 ### updateContext
 
@@ -251,8 +261,8 @@ Function that updates the context of the microfrontend
 
 #### Parameters
 
--   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
--   `internal` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** internal luigi legacy data used for iframes
+*   `contextObj` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The context data
+*   `internal` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** internal luigi legacy data used for iframes
 
 #### Examples
 
@@ -264,7 +274,7 @@ Returns **void**
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### sendCustomMessage
 
@@ -272,8 +282,8 @@ Send a custom message to the microfronted
 
 #### Parameters
 
--   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
--   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data to be sent alongside the custom message
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
+*   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** data to be sent alongside the custom message
 
 #### Examples
 
@@ -285,7 +295,7 @@ Returns **void**
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### closeAlert
 
@@ -293,8 +303,8 @@ A function that notifies the microfrontend that the opened alert has been closed
 
 #### Parameters
 
--   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
--   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the key specifying which dismiss link was clicked on the alert message
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id of the opened alert
+*   `dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the key specifying which dismiss link was clicked on the alert message
 
 #### Examples
 
@@ -306,7 +316,7 @@ Returns **void**
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
 
 ### init
 
@@ -322,4 +332,14 @@ Returns **void**
 
 **Meta**
 
--   **since**: 1.0.0
+*   **since**: 1.0.0
+
+### authData
+
+The authData value to be passed to the iframe-based micro frontend.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+*   **since**: 1.2.0

@@ -6,7 +6,7 @@ import {
   NavigationEnd,
   ParamMap,
   Router,
-  convertToParamMap,
+  convertToParamMap
 } from '@angular/router';
 import { linkManager, uxManager, isLuigiClientInitialized } from '@luigi-project/client';
 import { OperatorFunction } from 'rxjs';
@@ -123,9 +123,7 @@ export class LuigiAutoRoutingService {
     }
   }
 
-  getResolvedLuigiRoute(
-    current: ActivatedRouteSnapshot
-  ): string | undefined {
+  getResolvedLuigiRoute(current: ActivatedRouteSnapshot): string | undefined {
     let route: string | undefined = current.data.luigiRoute;
     const allParams = this.getAllParamsFromParents(current);
 

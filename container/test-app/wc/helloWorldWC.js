@@ -4,6 +4,9 @@
 export default class extends HTMLElement {
   constructor() {
     super();
+
+    this.ctx = {};
+
     const template = document.createElement('template');
     template.innerHTML = `<section><p>Hello World!</p></section>`;
 
@@ -46,6 +49,9 @@ export default class extends HTMLElement {
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
+    const updateContextBtn = document.createElement('template');
+    updateContextBtn.innerHTML = '<button id="updateContext">updateContext</button>';
+
     const getCurrentRouteBtn = document.createElement('template');
     getCurrentRouteBtn.innerHTML = '<button id="getCurrentRoute">getCurrentRoute</button>';
 
@@ -79,6 +85,9 @@ export default class extends HTMLElement {
     hasBack(), updateTopNavigation(), goBack(), pathExists()
     </button>`;
 
+    const navigateToIntentBtn = document.createElement('template');
+    navigateToIntentBtn.innerHTML = '<button id="navigateToIntent">navigateToIntent</button>';
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -95,12 +104,14 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(updateContextBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerUpdateTopPathExistsBackBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(setViewGroupDataBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(navigateToIntentBtn.content.cloneNode(true));
 
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
@@ -204,6 +215,14 @@ export default class extends HTMLElement {
       });
     });
 
+    this.$updateContextBtn = this._shadowRoot.querySelector('#updateContext');
+    this.$updateContextBtn.addEventListener('click', () => {
+      this.LuigiClient.uxManager().showAlert({
+        text: `WC.ctx=${JSON.stringify(this.ctx)}`,
+        type: 'info'
+      });
+    });
+
     this.$uxManagerManyRequests = this._shadowRoot.querySelector('#uxManagerManyRequests');
     this.$uxManagerManyRequests.addEventListener('click', () => {
       this.LuigiClient.uxManager().closeUserSettings();
@@ -236,9 +255,15 @@ export default class extends HTMLElement {
 
     this.$linkManagerOpenAsRequests = this._shadowRoot.querySelector('#linkManagerOpenAsRequests');
     this.$linkManagerOpenAsRequests.addEventListener('click', () => {
-      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', { size: 's' });
-      this.LuigiClient.linkManager().openAsModal('hello-world-wc', { size: 'm' });
-      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', { size: 'l' });
+      this.LuigiClient.linkManager().openAsDrawer('hello-world-wc', {
+        size: 's'
+      });
+      this.LuigiClient.linkManager().openAsModal('hello-world-wc', {
+        size: 'm'
+      });
+      this.LuigiClient.linkManager().openAsSplitView('hello-world-wc', {
+        size: 'l'
+      });
     });
 
     this.$linkManagerUpdateTopPathExistsBack = this._shadowRoot.querySelector('#linkManagerUpdateTopPathExistsBack');
@@ -274,9 +299,22 @@ export default class extends HTMLElement {
           alert('current route: ' + result);
         });
     });
+
+    this.$navigateToIntent = this._shadowRoot.querySelector('#navigateToIntent');
+    this.$navigateToIntent.addEventListener('click', () => {
+      if (this.LuigiClient) {
+        this.LuigiClient.linkManager().navigateToIntent('Sales-settings');
+        alert('navigated to: #?intent=Sales-settings');
+      }
+    });
+  }
+
+  get context() {
+    return this.ctx;
   }
 
   set context(ctx) {
+    this.ctx = ctx;
     this.$paragraph.innerHTML = ctx.title;
   }
 }
