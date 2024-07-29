@@ -1,8 +1,10 @@
+import type { Luigi } from "./luigi";
+
 export class Navigation {
-    luigi: any;
+    luigi: Luigi;
     hashRouting: boolean = false;
 
-    constructor(luigi: any) {
+    constructor(luigi: Luigi) {
         this.luigi = luigi;
         this.hashRouting = luigi.getConfig().routing?.useHashRouting;
     }
