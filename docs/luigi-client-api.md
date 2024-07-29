@@ -182,10 +182,15 @@ Removes a custom message listener.
 
 *   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
 
+##### Examples
+
+```javascript
+LuigiClient.removeCustomMessageListener(customMsgId)
+```
+
 **Meta**
 
 *   **since**: 0.6.2
-    LuigiClient.removeCustomMessageListener(customMsgId)
 
 #### getToken
 

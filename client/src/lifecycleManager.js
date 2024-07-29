@@ -351,6 +351,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {string} id the id that was returned by the `addInitListener` function
    * @memberof Lifecycle
    * @since 0.6.2
+   * @example
    * LuigiClient.removeCustomMessageListener(customMsgId)
    */
   removeCustomMessageListener(id) {
