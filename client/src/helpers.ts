@@ -89,8 +89,7 @@ class Helpers {
    * @returns {number}
    */
   getRandomId(): number {
-    // window.msCrypto for IE 11
-    return (window.crypto || (window as any).msCrypto).getRandomValues(new Uint32Array(1))[0];
+    return window.crypto.getRandomValues(new Uint32Array(1))[0];
   }
 
   /**

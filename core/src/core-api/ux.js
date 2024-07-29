@@ -42,7 +42,7 @@ class LuigiUX {
    * @since 0.6.4
    * @example
    * const settings = {
-   *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+   *  text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject} or {neverShowItAgain}",
    *  type: 'info',
    *  links: {
    *    goToHome: { text: 'homepage', url: '/overview' },

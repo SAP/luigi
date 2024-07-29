@@ -10,8 +10,7 @@ class GenericHelpersClass {
    * @private
    */
   getRandomId /* istanbul ignore next */() {
-    // window.msCrypto for IE 11
-    return (window.crypto || window.msCrypto).getRandomValues(new Uint32Array(1))[0];
+    return window.crypto.getRandomValues(new Uint32Array(1))[0];
   }
 
   /**
