@@ -998,7 +998,7 @@ Shows an alert.
 
 ```javascript
 const settings = {
- text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject}",
+ text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject} or {neverShowItAgain}",
  type: 'info',
  links: {
    goToHome: { text: 'homepage', url: '/overview' },
