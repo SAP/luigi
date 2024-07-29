@@ -7,10 +7,7 @@ class HelpersClass {
    * @private
    */
   getRandomId() {
-    // window.msCrypto for IE 11
-    return (window.crypto || window.msCrypto).getRandomValues(
-      new Uint32Array(1)
-    )[0];
+    return window.crypto.getRandomValues(new Uint32Array(1))[0];
   }
 
   isFunction(anyParam) {
@@ -19,12 +16,6 @@ class HelpersClass {
 
   isPromise(anyParam) {
     return anyParam && this.isFunction(anyParam.then);
-  }
-
-  isIE() {
-    const ua = navigator.userAgent;
-    /* MSIE used to detect old browsers and Trident used to newer ones*/
-    return Boolean(ua.includes('MSIE ') || ua.includes('Trident/'));
   }
 
   /**
