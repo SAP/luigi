@@ -1295,7 +1295,6 @@
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
-    -ms-user-select: none;
   }
 
   :global(html.luigi-app-in-custom-container) {

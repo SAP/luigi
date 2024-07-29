@@ -62,14 +62,6 @@
     color: #aaa
 }
 
-.searchbox__input:-ms-input-placeholder {
-    color: #aaa
-}
-
-.searchbox__input::-ms-input-placeholder {
-    color: #aaa
-}
-
 .searchbox__input::placeholder {
     color: #aaa
 }
@@ -89,7 +81,6 @@
     font-size: inherit;
     -webkit-user-select: none;
     -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     right: inherit;
     left: 0
@@ -132,7 +123,6 @@
     font-size: inherit;
     -webkit-user-select: none;
     -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     fill: rgba(0, 0, 0, .5)
 }
