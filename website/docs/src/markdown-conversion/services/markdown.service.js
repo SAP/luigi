@@ -17,6 +17,7 @@ import wrapAccordion from '../unified-plugins/rehype-accordion.js';
 import luigiNavigationBuilder from '../unified-plugins/remark-generate-luigi-navigation.js';
 import addKeyWords from '../unified-plugins/rehype-add-keywords.js';
 import oldVersions from '../unified-plugins/rehype-luigi-oldVersions.js';
+import addLabelTag from '../unified-plugins/rehype-label.js';
 
 // import highlight from 'rehype-highlight' // syntax highlight code blocks with lowlight: https://github.com/wooorm/lowlight
 import rehypeSection from '@agentofuser/rehype-section';
@@ -43,6 +44,7 @@ class MarkdownService {
         .use(oldVersions)
         .use(format)
         .use(html)
+        .use(addLabelTag)
         .use(section) // section should be the last one
         .process(String(value), function(err, file) {
           if (err) {
