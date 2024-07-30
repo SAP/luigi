@@ -108,18 +108,16 @@
       return;
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      if ((thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent?.nodeName === 'DIV') {
-        // update compound children context
-        const wrappers = (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.querySelectorAll('.lui-compoundItemCnt');
-        wrappers?.forEach((item) => {
-          if (item._luigi_mfe_webcomponent) {
-            const ctx = item._luigi_mfe_webcomponent.context || {};
+      const rootElement = thisComponent.getNoShadow() ? thisComponent : mainComponent;
+      rootElement._luigi_mfe_webcomponent.context = contextObj;
 
-            item._luigi_mfe_webcomponent.context = Object.assign(ctx, contextObj);
-          }
+      const compoundChildrenQueryElement = rootElement._luigi_mfe_webcomponent;
+      if (compoundChildrenQueryElement) {
+        const compoundChildren = compoundChildrenQueryElement.querySelectorAll('[lui_web_component]');
+        compoundChildren?.forEach((item) => {
+            const ctx = item.context || {};
+            item.context = Object.assign(ctx, contextObj);
         });
-      } else {
-        (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
       }
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
