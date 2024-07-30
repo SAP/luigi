@@ -269,6 +269,50 @@ describe('Another test using puppeteer ->', () => {
 });
 ```
 
+### Example how to use the library with Playwright
+
+```javascript
+import { test, expect } from '@playwright/test'; // <-- target e2e testing library
+import { LuigiMockUtil } from '@luigi-project/testing-utilities';
+
+let luigiMockUtil: LuigiMockUtil;
+
+test.beforeEach(async ({ page }) => {
+  luigiMockUtil = new LuigiMockUtil(page);
+
+  await page.goto('http://localhost:4200');
+});
+
+test.afterEach(async ({ page }) => {
+  await page?.close();
+});
+
+test('should mock path exists', async ({ page }) => {
+  // Be sure '.pathExists' element is present
+  await page.locator('.pathExists').click().then(async () => {
+    await luigiMockUtil.mockPathExists('/test', false);
+    // Wait until session storage item is set
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const storage = await page.evaluate(() => JSON.stringify(window.sessionStorage));
+    const result = await luigiMockUtil.getCleanSessionStorageData(storage);
+
+    await expect(result).toContain(luigiMockUtil.getMockedPathExistsOutput('/test', false));
+  });
+});
+
+test('should mock context update', async ({ page }) => {
+  const visualizationContainerId = luigiMockUtil.getVisualizationContainerId();
+  const context = {ctxKey: 'ctxValue'};
+
+  await luigiMockUtil.mockContext(context);
+
+  const container = page.locator(`#${visualizationContainerId} div:nth-child(1)`);
+
+  await expect(container).toHaveText(luigiMockUtil.getMockedContextOutput(context));
+});
+```
+
 ## Functions provided
 - **mockContext**: Mocks the context by sending Luigi context messages with the desired mocked context as parameter.
 - **mockPathExists**: This method serves as a mock for the Luigi Client `pathExists()` function. It is used in e2e tests when component being tested utilizes a call to `LuigiClient.linkManager().pathExists()`.
