@@ -42,6 +42,7 @@ describe('attachWC', () => {
   it('wc_container contains wcItemPlaceholder and nodeId is provided', () => {
     const innerWCElement = document.createElement(wc_id);
     innerWCElement.setAttribute('nodeId', nodeId);
+    innerWCElement.setAttribute('lui_web_component', 'true');
 
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
@@ -78,6 +79,7 @@ describe('attachWC', () => {
 
   it('nodeId not provided', () => {
     const innerWCElement = document.createElement(wc_id);
+    innerWCElement.setAttribute('lui_web_component', 'true');
 
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
@@ -93,6 +95,7 @@ describe('attachWC', () => {
 
   it('_luigi_node provided', () => {
     const innerWCElement = document.createElement(wc_id);
+    innerWCElement.setAttribute('lui_web_component', 'true');
 
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
@@ -1381,6 +1384,7 @@ describe('createCompoundContainerAsync', () => {
     const ctx = {};
     const mockGeneratedWCId = 'mocked-wc-id';
     const mockWebComponent = document.createElement(mockGeneratedWCId);
+    mockWebComponent.setAttribute('lui_web_component', 'true');
     const navNode = {};
 
     service.initWC = jest.fn();
