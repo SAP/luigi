@@ -170,7 +170,7 @@ describe('createClientAPI', () => {
       { slug: 'Sales-settings', params: null },
       { slug: null, params: { project: 'pr2', user: 'john' } },
       { slug: 'Sales-settings', params: { project: 'pr2', user: 'john' } }
-    ])('test linkManager navigateToIntent', (data) => {
+    ])('test linkManager navigateToIntent', data => {
       let payloadLink = `#?intent=${data.slug}`;
 
       if (data.params && Object.keys(data.params)?.length) {
