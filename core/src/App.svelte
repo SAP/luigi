@@ -2171,7 +2171,7 @@
   /** Tool layout fd styles adjustments */
 
   .fd-tool-layout--sticky .fd-tool-layout__content-container {
-    overflow:initial;
+    overflow: initial;
   }
   .fd-tool-layout--sticky .fd-tool-layout__navigation-container {
     overflow: visible;
