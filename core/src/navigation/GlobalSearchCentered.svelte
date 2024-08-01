@@ -49,8 +49,8 @@
     globalSearchHelper.closeSearchResult();
   }
 
-  function onKeyUp({ keyCode }) {
-    globalSearchHelper.onKeyUp(keyCode, displaySearchResult);
+  function onKeyUp(event) {
+    globalSearchHelper.onKeyUp(event, displaySearchResult);
   }
 
   function searchBtnClicked() {
