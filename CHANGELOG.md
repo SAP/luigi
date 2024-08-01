@@ -25,6 +25,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.14.2] (2024-08-01)
+
+#### :bug: Fixed
+* [#3839](https://github.com/SAP/luigi/pull/3839) fix wrong argument for onkeyup ([@hardl](https://github.com/hardl))
+
+
+
+
+
 ## [v2.14.1] (2024-07-11)
 
 #### :bug: Fixed
@@ -1824,3 +1833,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.13.0]: https://github.com/SAP/luigi/compare/v2.12.0...v2.13.0
 [v2.14.0]: https://github.com/SAP/luigi/compare/v2.13.0...v2.14.0
 [v2.14.1]: https://github.com/SAP/luigi/compare/v2.14.0...v2.14.1
+[v2.14.2]: https://github.com/SAP/luigi/compare/v2.14.1...v2.14.2
