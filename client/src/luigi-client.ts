@@ -10,240 +10,81 @@ import {
   UserSettings,
   UxManager
 } from '../luigi-client';
-import { helpers } from './helpers';
-import _lifecycleManager from './lifecycleManager';
-import _linkManager from './linkManager';
-import _storageManager from './storageManager';
-import _uxManager from './uxManager';
+import _clientBuilder from './clientBuilder';
 
 /**
  * @name LuigiClient
  * @private
  */
-class LuigiClient {
-  constructor() {
-    if (window !== window.top) {
-      if (window.document.head.getAttribute('disable-luigi-history-handling') !== 'true') {
-        history.pushState = history.replaceState.bind(history);
-      }
+namespace LuigiClient {
+  export const addInitListener = (initFn: (context: Context, origin?: string) => void): number =>
+    _clientBuilder.addInitListener(initFn as any);
 
-      if (window.document.head.getAttribute('disable-luigi-runtime-error-handling') !== 'true') {
-        window.addEventListener('error', ({ filename, message, lineno, colno, error }: ErrorEvent) => {
-          const msg: Record<string, any> = {
-            errorObj: { filename, message, lineno, colno, error },
-            msg: 'luigi-runtime-error-handling'
-          };
+  export const removeInitListener = (id: string): boolean => _clientBuilder.removeInitListener(id);
 
-          helpers.sendPostMessageToLuigiCore(msg);
-        });
-      }
-    }
-  }
+  export const addContextUpdateListener = (contextUpdatedFn: (context: Context) => void): string =>
+    _clientBuilder.addContextUpdateListener(contextUpdatedFn as any);
 
-  addInitListener(initFn: (context: Context, origin?: string) => void): number {
-    return _lifecycleManager.addInitListener(initFn);
-  }
+  export const removeContextUpdateListener = (id: string): boolean => _clientBuilder.removeContextUpdateListener(id);
 
-  removeInitListener(id: string): boolean {
-    return _lifecycleManager.removeInitListener(id);
-  }
+  export const addInactiveListener = (inactiveFn: () => void): string => _clientBuilder.addInactiveListener(inactiveFn);
 
-  addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string {
-    return _lifecycleManager.addContextUpdateListener(contextUpdatedFn);
-  }
+  export const removeInactiveListener = (id: string): boolean => _clientBuilder.removeInactiveListener(id);
 
-  removeContextUpdateListener(id: string): boolean {
-    return _lifecycleManager.removeContextUpdateListener(id);
-  }
+  export const addCustomMessageListener = (
+    customMessageId: string,
+    customMessageListener: (customMessage: Object, listenerId: string) => void
+  ): string => _clientBuilder.addCustomMessageListener(customMessageId, customMessageListener);
 
-  getToken(): AuthData['accessToken'] {
-    return _lifecycleManager.getToken();
-  }
+  export const removeCustomMessageListener = (id: string): boolean => _clientBuilder.removeCustomMessageListener(id);
 
-  getEventData(): Context {
-    return _lifecycleManager.getEventData();
-  }
+  export const getToken = (): AuthData['accessToken'] => _clientBuilder.getToken();
 
-  getContext(): Context {
-    return _lifecycleManager.getContext();
-  }
+  export const getEventData = (): Context => _clientBuilder.getEventData();
 
-  addNodeParams(params: NodeParams, keepBrowserHistory: boolean): void {
-    return _lifecycleManager.addNodeParams(params, keepBrowserHistory);
-  }
+  export const getContext = (): Context => _clientBuilder.getContext();
 
-  getNodeParams(shouldDesanitise?: boolean): NodeParams {
-    return _lifecycleManager.getNodeParams(shouldDesanitise);
-  }
+  export const addNodeParams = (params: NodeParams, keepBrowserHistory: boolean): void =>
+    _clientBuilder.addNodeParams(params, keepBrowserHistory);
 
-  getActiveFeatureToggles(): string[] {
-    return _lifecycleManager.getActiveFeatureToggles();
-  }
+  export const getNodeParams = (shouldDesanitise?: boolean): NodeParams => _clientBuilder.getNodeParams(shouldDesanitise);
 
-  getPathParams(): PathParams {
-    return _lifecycleManager.getPathParams();
-  }
+  export const getActiveFeatureToggles = (): string[] => _clientBuilder.getActiveFeatureToggles();
 
-  getCoreSearchParams(): CoreSearchParams {
-    return _lifecycleManager.getCoreSearchParams();
-  }
+  export const getPathParams = (): PathParams => _clientBuilder.getPathParams();
 
-  addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: boolean): void {
-    return _lifecycleManager.addCoreSearchParams(searchParams, keepBrowserHistory);
-  }
+  export const getAnchor = (): string => _clientBuilder.getAnchor();
 
-  getClientPermissions(): ClientPermissions {
-    return _lifecycleManager.getClientPermissions();
-  }
+  export const setAnchor = (anchor: string): void => _clientBuilder.setAnchor(anchor);
 
-  sendCustomMessage(message: Object): void {
-    return _lifecycleManager.sendCustomMessage(message);
-  }
+  export const setViewGroupData = (value: Object): void => _clientBuilder.setViewGroupData(value);
 
-  addCustomMessageListener(messageId: string, listener: (customMessage: Object, listenerId: string) => void): string {
-    return _lifecycleManager.addCustomMessageListener(messageId, listener);
-  }
+  export const getCoreSearchParams = (): CoreSearchParams => _clientBuilder.getCoreSearchParams();
 
-  removeCustomMessageListener(listenerId: string): boolean {
-    return _lifecycleManager.removeCustomMessageListener(listenerId);
-  }
+  export const addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: boolean): void =>
+    _clientBuilder.addCoreSearchParams(searchParams, keepBrowserHistory);
 
-  addInactiveListener(inactiveFn: () => void): string {
-    return _lifecycleManager.addInactiveListener(inactiveFn);
-  }
+  export const getClientPermissions = (): ClientPermissions => _clientBuilder.getClientPermissions();
 
-  removeInactiveListener(listenerId: string): boolean {
-    return _lifecycleManager.removeInactiveListener(listenerId);
-  }
+  export const setTargetOrigin = (targetOrigin: string): void => _clientBuilder.setTargetOrigin(targetOrigin);
 
-  setTargetOrigin(origin: string): void {
-    return _lifecycleManager.setTargetOrigin(origin);
-  }
+  export const sendCustomMessage = (message: object): void => _clientBuilder.sendCustomMessage(message);
 
-  getUserSettings(): UserSettings {
-    return _lifecycleManager.getUserSettings();
-  }
+  export const getUserSettings = (): UserSettings => _clientBuilder.getUserSettings();
 
-  isLuigiClientInitialized(): boolean {
-    return _lifecycleManager.isLuigiClientInitialized();
-  }
+  export const isLuigiClientInitialized = (): boolean => _clientBuilder.isLuigiClientInitialized();
 
-  luigiClientInit(): void {
-    return _lifecycleManager.luigiClientInit();
-  }
+  export const luigiClientInit = (): void => _clientBuilder.luigiClientInit();
 
-  getAnchor(): string {
-    return _lifecycleManager.getAnchor();
-  }
+  export const lifecycleManager = (): any => _clientBuilder.lifecycleManager();
 
-  setAnchor(value: string): void {
-    return _lifecycleManager.setAnchor(value);
-  }
+  export const linkManager = (): LinkManager => _clientBuilder.linkManager();
 
-  setViewGroupData(value: Object): void {
-    return _lifecycleManager.setViewGroupData(value);
-  }
+  export const uxManager = (): UxManager => _clientBuilder.uxManager();
 
-  /**
-   * @private
-   */
-  linkManager(): LinkManager {
-    return _linkManager;
-  }
-
-  /**
-   * @private
-   */
-  uxManager(): UxManager {
-    return _uxManager;
-  }
-
-  /**
-   * @private
-   */
-  lifecycleManager(): any {
-    return _lifecycleManager;
-  }
-
-  /**
-   * @private
-   */
-  storageManager(): StorageManager {
-    return _storageManager;
-  }
+  export const storageManager = (): StorageManager => _clientBuilder.storageManager();
 }
 
-const _luigiClient = new LuigiClient();
+(window as any).LuigiClient = LuigiClient || {};
 
-export const addInitListener = (initFn: (context: Context, origin?: string) => void): number =>
-  _luigiClient.addInitListener(initFn);
-
-export const removeInitListener = (id: string): boolean => _luigiClient.removeInitListener(id);
-
-export const addContextUpdateListener = (contextUpdatedFn: (context: Context) => void): string =>
-  _luigiClient.addContextUpdateListener(contextUpdatedFn);
-
-export const removeContextUpdateListener = (id: string): boolean => _luigiClient.removeContextUpdateListener(id);
-
-export const addInactiveListener = (inactiveFn: () => void): string => _luigiClient.addInactiveListener(inactiveFn);
-
-export const removeInactiveListener = (id: string): boolean => _luigiClient.removeInactiveListener(id);
-
-export const addCustomMessageListener = (
-  customMessageId: string,
-  customMessageListener: (customMessage: Object, listenerId: string) => void
-): string => _luigiClient.addCustomMessageListener(customMessageId, customMessageListener);
-
-export const removeCustomMessageListener = (id: string): boolean => _luigiClient.removeCustomMessageListener(id);
-
-export const getToken = (): AuthData['accessToken'] => _luigiClient.getToken();
-
-export const getEventData = (): Context => _luigiClient.getEventData();
-
-export const getContext = (): Context => _luigiClient.getContext();
-
-export const addNodeParams = (params: NodeParams, keepBrowserHistory: boolean): void =>
-  _luigiClient.addNodeParams(params, keepBrowserHistory);
-
-export const getNodeParams = (shouldDesanitise?: boolean): NodeParams => _luigiClient.getNodeParams(shouldDesanitise);
-
-export const getActiveFeatureToggles = (): string[] => _luigiClient.getActiveFeatureToggles();
-
-export const getPathParams = (): PathParams => _luigiClient.getPathParams();
-
-export const getAnchor = (): string => _luigiClient.getAnchor();
-
-export const setAnchor = (anchor: string): void => _luigiClient.setAnchor(anchor);
-
-export const setViewGroupData = (value: Object): void => _luigiClient.setViewGroupData(value);
-
-export const getCoreSearchParams = (): CoreSearchParams => _luigiClient.getCoreSearchParams();
-
-export const addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHistory: boolean): void =>
-  _luigiClient.addCoreSearchParams(searchParams, keepBrowserHistory);
-
-export const getClientPermissions = (): ClientPermissions => _luigiClient.getClientPermissions();
-
-export const setTargetOrigin = (targetOrigin: string): void => _luigiClient.setTargetOrigin(targetOrigin);
-
-export const sendCustomMessage = (message: object): void => _luigiClient.sendCustomMessage(message);
-
-export const getUserSettings = (): UserSettings => _luigiClient.getUserSettings();
-
-export const isLuigiClientInitialized = (): boolean => _luigiClient.isLuigiClientInitialized();
-
-export const luigiClientInit = (): void => _luigiClient.luigiClientInit();
-
-export const linkManager = (): LinkManager => _linkManager;
-
-export const uxManager = (): UxManager => _uxManager;
-
-export const storageManager = (): StorageManager => _storageManager;
-
-_luigiClient.linkManager = (): LinkManager => _linkManager;
-_luigiClient.uxManager = (): UxManager => _uxManager;
-_luigiClient.storageManager = (): StorageManager => _storageManager;
-
-(window as any).LuigiClient = _luigiClient;
-
-export default _luigiClient;
+export default _clientBuilder;

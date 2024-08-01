@@ -20,7 +20,7 @@
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
-    "target": "ES5",
+    "target": "ES6",
     "types": ["./luigi-client.d.ts", "./luigi-element.d.ts"],
     "useDefineForClassFields": false
   },

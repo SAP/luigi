@@ -13,7 +13,7 @@ import { helpers } from './helpers';
 
 /**
  * Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
- * @name Lifecycle
+ * @name LifecycleManager
  */
 class LifecycleManager extends LuigiClientBase {
   currentContext!: Context;
@@ -641,4 +641,4 @@ class LifecycleManager extends LuigiClientBase {
 
 const _lifecycleManager = new LifecycleManager();
 
-export default _lifecycleManager;
+export default _lifecycleManager

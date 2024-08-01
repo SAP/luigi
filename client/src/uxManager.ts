@@ -5,7 +5,7 @@ import _lifecycleManager from './lifecycleManager';
 
 /**
  * Use the UX Manager to manage the appearance features in Luigi.
- * @name uxManager
+ * @name UxManager
  */
 class UxManager extends LuigiClientBase {
   /** @private */

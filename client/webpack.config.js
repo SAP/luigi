@@ -33,16 +33,18 @@ module.exports = {
     extensions: ['.ts', '.js']
   },
   plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: 'luigi-client.d.ts',
-        to: '.'
-      },
-      {
-        from: 'luigi-element.d.ts',
-        to: '.'
-      }
-    ])
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'luigi-client.d.ts',
+          to: '.'
+        },
+        {
+          from: 'luigi-element.d.ts',
+          to: '.'
+        }
+      ]
+    })
   ],
   devtool: 'source-map',
   stats: {

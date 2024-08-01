@@ -880,36 +880,3 @@ export type isLuigiClientInitialized = () => boolean;
  */
 export function luigiClientInit(): void;
 export type luigiClientInit = () => void;
-
-declare class LuigiClient {
-  addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string;
-  addCoreSearchParams(searchParams: CoreSearchParams, keepBrowserHistory: boolean): void;
-  addCustomMessageListener(messageId: string, listener: (customMessage: Object, listenerId: string) => void): string;
-  addInactiveListener(inactiveFn: () => void): string;
-  addInitListener(initFn: (context: Context, origin?: string) => void): number;
-  addNodeParams(params: NodeParams, keepBrowserHistory: boolean): void;
-  getActiveFeatureToggles(): string[];
-  getAnchor(): string;
-  getClientPermissions(): ClientPermissions;
-  getContext(): Context;
-  getCoreSearchParams(): CoreSearchParams;
-  getEventData(): Context;
-  getNodeParams(shouldDesanitise?: boolean): NodeParams;
-  getPathParams(): PathParams;
-  getToken(): AuthData['accessToken'];
-  getUserSettings(): UserSettings;
-  isLuigiClientInitialized(): boolean;
-  lifecycleManager(): any;
-  linkManager(): LinkManager;
-  luigiClientInit(): void;
-  removeContextUpdateListener(id: string): boolean;
-  removeCustomMessageListener(listenerId: string): boolean;
-  removeInactiveListener(listenerId: string): boolean;
-  removeInitListener(id: string): boolean;
-  sendCustomMessage(message: Object): void;
-  setAnchor(value: string): void;
-  setTargetOrigin(origin: string): void;
-  setViewGroupData(value: Object): void;
-  storageManager(): StorageManager;
-  uxManager(): UxManager;
-}

@@ -1,6 +1,7 @@
 import {
   Context,
   DrawerSettings,
+  LinkManager,
   ModalSettings,
   NodeParams,
   RouteChangingOptions,
@@ -19,7 +20,7 @@ import { splitViewHandle } from './splitViewHandle';
   - Keep the navigation state in Luigi.
   * @name linkManager
   */
-class LinkManager extends LuigiClientBase {
+class linkManager extends LuigiClientBase {
   currentContext!: Context;
   private options: Record<string, any>;
 
@@ -323,7 +324,7 @@ class LinkManager extends LuigiClientBase {
       console.error('Navigation not possible, navigationContext ' + navigationContext + ' not found.');
     }
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -334,7 +335,7 @@ class LinkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext(): LinkManager {
-    const hasParentNavigationContext: boolean = !!_lifecycleManager.currentContext.context?.parentNavigationContexts?.length;
+    const hasParentNavigationContext: boolean = !!_lifecycleManager.currentContext?.context?.parentNavigationContexts?.length;
 
     if (hasParentNavigationContext) {
       this.options['fromContext'] = null;
@@ -343,7 +344,7 @@ class LinkManager extends LuigiClientBase {
       console.error('Navigation not possible, no parent navigationContext found.');
     }
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -360,7 +361,7 @@ class LinkManager extends LuigiClientBase {
     this.options['fromClosestContext'] = false;
     this.options['fromVirtualTreeRoot'] = true;
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -375,7 +376,7 @@ class LinkManager extends LuigiClientBase {
   fromParent(): LinkManager {
     this.options['fromParent'] = true;
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -395,7 +396,7 @@ class LinkManager extends LuigiClientBase {
       Object.assign(this.options['nodeParams'], nodeParams);
     }
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -413,7 +414,7 @@ class LinkManager extends LuigiClientBase {
    * ).navigate('/overview')
    */
   withOptions(options: RouteChangingOptions): LinkManager {
-    if (!helpers.isObject(options)) return new LinkManager({ currentContext: _lifecycleManager.currentContext });
+    if (!helpers.isObject(options)) return new linkManager({ currentContext: _lifecycleManager.currentContext });
 
     if (options['preventHistoryEntry'] !== undefined) {
       this.options['preventHistoryEntry'] = options['preventHistoryEntry'];
@@ -423,7 +424,7 @@ class LinkManager extends LuigiClientBase {
       this.options['preventContextUpdate'] = options['preventContextUpdate'];
     }
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /** @lends linkManager */
@@ -493,8 +494,8 @@ class LinkManager extends LuigiClientBase {
    */
   hasBack(): boolean {
     return (
-      !!(_lifecycleManager.currentContext.internal as Record<string, any>)['modal'] ||
-      (_lifecycleManager.currentContext.internal as Record<string, any>)['viewStackSize'] !== 0
+      !!(_lifecycleManager.currentContext?.internal as Record<string, any>)['modal'] ||
+      (_lifecycleManager.currentContext?.internal as Record<string, any>)['viewStackSize'] !== 0
     );
   }
 
@@ -527,7 +528,7 @@ class LinkManager extends LuigiClientBase {
   withoutSync(): LinkManager {
     this.options['withoutSync'] = true;
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -539,7 +540,7 @@ class LinkManager extends LuigiClientBase {
   newTab(): LinkManager {
     this.options['newTab'] = true;
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -554,7 +555,7 @@ class LinkManager extends LuigiClientBase {
   preserveQueryParams(preserve = false): LinkManager {
     this.options['preserveQueryParams'] = preserve;
 
-    return new LinkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
+    return new linkManager({ currentContext: _lifecycleManager.currentContext }, structuredClone(this.options));
   }
 
   /**
@@ -609,7 +610,7 @@ class LinkManager extends LuigiClientBase {
   }
 }
 
-const _linkManager = new LinkManager({
+const _linkManager = new linkManager({
   currentContext: _lifecycleManager.currentContext
 });
 
