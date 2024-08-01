@@ -641,4 +641,4 @@ class LifecycleManager extends LuigiClientBase {
 
 const _lifecycleManager = new LifecycleManager();
 
-export default _lifecycleManager
+export default _lifecycleManager;

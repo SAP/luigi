@@ -239,7 +239,7 @@ class linkManager extends LuigiClientBase {
     return modalPromise['promise'];
   }
 
- /**
+  /**
    * <!-- label-success: Web Component API  -->
    * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
    * In addition, you can specify if a new history entry will be created with the updated URL.
@@ -335,7 +335,8 @@ class linkManager extends LuigiClientBase {
    * LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
    */
   fromClosestContext(): LinkManager {
-    const hasParentNavigationContext: boolean = !!_lifecycleManager.currentContext?.context?.parentNavigationContexts?.length;
+    const hasParentNavigationContext: boolean = !!_lifecycleManager.currentContext?.context?.parentNavigationContexts
+      ?.length;
 
     if (hasParentNavigationContext) {
       this.options['fromContext'] = null;

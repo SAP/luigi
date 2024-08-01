@@ -187,4 +187,3 @@ class StorageEventProcessor {
 const _storageManager = new StorageManager();
 
 export default _storageManager;
-

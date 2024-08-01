@@ -47,7 +47,8 @@ namespace LuigiClient {
   export const addNodeParams = (params: NodeParams, keepBrowserHistory: boolean): void =>
     _clientBuilder.addNodeParams(params, keepBrowserHistory);
 
-  export const getNodeParams = (shouldDesanitise?: boolean): NodeParams => _clientBuilder.getNodeParams(shouldDesanitise);
+  export const getNodeParams = (shouldDesanitise?: boolean): NodeParams =>
+    _clientBuilder.getNodeParams(shouldDesanitise);
 
   export const getActiveFeatureToggles = (): string[] => _clientBuilder.getActiveFeatureToggles();
 
