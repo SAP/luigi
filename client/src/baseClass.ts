@@ -1,8 +1,9 @@
 /**
+ * @name LuigiClientBase
  * @private
  * @abstract
  */
-export class LuigiClientBase {
+export abstract class LuigiClientBase {
   private promises: Record<string, any>;
 
   /**

@@ -1,4 +1,7 @@
-/** @private */
+/**
+ * @name Helpers
+ * @private
+ */
 class Helpers {
   listeners: any[] = [];
   origin: string = '';
