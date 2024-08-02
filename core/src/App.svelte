@@ -2118,6 +2118,11 @@
   :global(.lui-breadcrumb #tabsContainer) {
     top: calc(var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height));
   }
+
+  :global(.lui-breadcrumb .fd-tool-layout #tabsContainer) {
+    top: 0;
+  }
+
   :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
     top: calc(
       var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
@@ -2171,7 +2176,7 @@
   /** Tool layout fd styles adjustments */
 
   .fd-tool-layout--sticky .fd-tool-layout__content-container {
-    overflow: initial;
+    overflow: auto;
   }
   .fd-tool-layout--sticky .fd-tool-layout__navigation-container {
     overflow: visible;
@@ -2233,6 +2238,12 @@
 
   :global(.no-top-nav .iframeContainer.iframeContainerTabNav) {
     top: calc(var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height)));
+  }
+
+  :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height)
+    );
   }
 
   :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
