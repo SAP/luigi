@@ -18,7 +18,8 @@ module.exports = {
       name: fileMap['[name]'],
       type: 'umd'
     },
-    path: path.join(path.resolve(__dirname), 'public')
+    path: path.join(path.resolve(__dirname), 'public'),
+    umdNamedDefine: true
   },
   module: {
     rules: [
