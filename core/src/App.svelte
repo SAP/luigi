@@ -2241,9 +2241,7 @@
   }
 
   :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
-    top: calc(
-      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height)
-    );
+    top: calc(var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height));
   }
 
   :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
