@@ -30,6 +30,13 @@
         viewURL="./microfrontend-defer-init.html"
         defer-init="true"
       ></luigi-container>
+
+      <!-- Luigi Container to test sandbox rules -->
+      <luigi-container
+        id="sandbox-rules-test"
+        viewURL="./microfrontend-sandbox-rules.html"
+        sandboxRules='["allow-scripts", "allow-same-origin"]'
+      ></luigi-container>
     </div>
 
     <script type="module">

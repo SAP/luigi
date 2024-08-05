@@ -109,6 +109,7 @@
       clientPermissions &&
       userSettings &&
       anchor &&
+      authData &&
       dirtyStatus &&
       hasBack &&
       documentTitle &&
@@ -120,6 +121,10 @@
 
   const initialize = (thisComponent: any) => {
     if (!containerInitialized) {
+      if (!sandboxRules && thisComponent.getAttribute('sandboxRules')) {
+        sandboxRules = JSON.parse(thisComponent.getAttribute('sandboxRules'));
+      }
+
       thisComponent.sendCustomMessage = (id: string, data?: any) => {
         ContainerAPI.sendCustomMessage(
           id,

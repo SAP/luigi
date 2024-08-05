@@ -67,6 +67,7 @@ describe('Iframe Container Test', () => {
           });
       });
   });
+
   it('defer-init flag for iframe container', () => {
     cy.get('#defer-init-test').then(iframe => {
       const $body = iframe.contents().find('main');
@@ -90,11 +91,9 @@ describe('Iframe Container Test', () => {
   it('set auth token', () => {
     cy.on('window:alert', stub);
 
-    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
-
     cy.get('button[id="update-token"]').click();
 
-    cy.get('[data-test-id="iframe-based-container-test"]')
+    cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
@@ -108,6 +107,17 @@ describe('Iframe Container Test', () => {
               'Custom message recieved: {"id":"token.updated","_metaData":{},"data":{"value":"updated token"}}'
             );
           });
+      });
+  });
+
+  it('set sandbox rules', () => {
+    cy.get('#sandbox-rules-test')
+      .shadow()
+      .get('iframe')
+      .then(elements => {
+        cy.get(elements.last())
+          .invoke('attr', 'sandbox')
+          .should('eq', 'allow-scripts allow-same-origin')
       });
   });
 });
