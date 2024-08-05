@@ -117,7 +117,7 @@ describe('Iframe Container Test', () => {
       .then(elements => {
         cy.get(elements.last())
           .invoke('attr', 'sandbox')
-          .should('eq', 'allow-scripts allow-same-origin')
+          .should('eq', 'allow-scripts allow-same-origin');
       });
   });
 });
