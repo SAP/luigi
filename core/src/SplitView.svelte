@@ -367,9 +367,7 @@
     border-radius: 4px;
     cursor: pointer;
     &:focus {
-      -webkit-box-shadow: 0 0 0 1px #fafafa;
       box-shadow: 0 0 0 1px #fafafa;
-      -webkit-box-shadow: 0 0 0 1px var(--fd-color-action-focus);
       box-shadow: 0 0 0 1px var(--fd-color-action-focus);
     }
     &:hover {
