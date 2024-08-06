@@ -59,7 +59,6 @@
 <style lang="scss">
   .fd-navigation__link {
     -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
   }
 
