@@ -175,15 +175,15 @@ export class LuigiElement extends HTMLElement {
  * @returns {String} Returns the processed literal.
  */
 export function html(literal: TemplateStringsArray, ...keys: unknown[]): string {
- let html: string = '';
+  let html: string = '';
 
- literal.forEach((el: string, index: number) => {
-   html += el;
+  literal?.forEach((el: string, index: number) => {
+    html += el;
 
-   if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
-     html += keys[index];
-   }
- });
+    if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
+      html += keys[index];
+    }
+  });
 
- return html.replace(/\$\_/gi, 'this.getRootNode().$_');
+  return html.replace(/\$\_/gi, 'this.getRootNode().$_');
 }

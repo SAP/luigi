@@ -8,7 +8,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "lib": ["ES2021", "dom"],
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
