@@ -125,6 +125,7 @@ export class GridCompoundRenderer extends DefaultCompoundRenderer {
     const config = layoutConfig || {};
     const compoundItemCnt = document.createElement('div');
     compoundItemCnt.setAttribute('style', `grid-row: ${config.row || 'auto'}; grid-column: ${config.column || 'auto'}`);
+    compoundItemCnt.classList.add('lui-compoundItemCnt');
     return compoundItemCnt;
   }
 }
