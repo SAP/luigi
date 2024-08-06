@@ -109,6 +109,7 @@
       clientPermissions &&
       userSettings &&
       anchor &&
+      authData &&
       dirtyStatus &&
       hasBack &&
       documentTitle &&
