@@ -413,7 +413,6 @@
     display: inline-block;
     border: 2px solid #2deb8a;
     border-radius: 8px;
-    -webkit-box-shadow: 0 8px 24px -17px #000101;
     box-shadow: 0 8px 24px -17px #000101;
     background-color: #2deb8a;
     font-size: 12px;
@@ -421,7 +420,6 @@
     font-family: 'Open Sans', sans-serif;
     color: #29303a;
     cursor: pointer;
-    -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
   }
 
