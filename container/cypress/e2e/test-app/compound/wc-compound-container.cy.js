@@ -31,6 +31,24 @@ describe('Compound Container Tests', () => {
           expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getAnchor()="testAnchorCompound"');
         });
     });
+
+    it('LuigiClient API updateContext', () => {
+      cy.on('window:alert', stub);
+
+      cy.wait(500);
+      cy.get('#luigi-update-context')
+        .click()
+        .then(() => {
+          cy.get(containerSelector)
+            .shadow()
+            .contains('updateContext')
+            .click()
+            .then(() => {
+              expect(stub.getCall(0)).to.be.calledWith('compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}');
+            });
+        });
+    });
+
     it('defer-init flag for LuigiCompoundContainer', () => {
       // the initialized webcomponent has id="defer-init-flag"
       cy.get('#defer-init-flag').should('not.exist');

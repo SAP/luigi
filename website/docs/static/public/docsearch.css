@@ -35,8 +35,6 @@
     vertical-align: middle;
     white-space: normal;
     font-size: 12px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none
 }
 
@@ -80,7 +78,6 @@
     text-align: center;
     font-size: inherit;
     -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
     right: inherit;
     left: 0
@@ -122,7 +119,6 @@
     padding: 0;
     font-size: inherit;
     -webkit-user-select: none;
-    -moz-user-select: none;
     user-select: none;
     fill: rgba(0, 0, 0, .5)
 }
@@ -144,35 +140,17 @@
 
 .searchbox__input:valid~.searchbox__reset {
     display: block;
-    -webkit-animation-name: sbx-reset-in;
     animation-name: sbx-reset-in;
-    -webkit-animation-duration: .15s;
     animation-duration: .15s
-}
-
-@-webkit-keyframes sbx-reset-in {
-    0% {
-        -webkit-transform: translate3d(-20%, 0, 0);
-        transform: translate3d(-20%, 0, 0);
-        opacity: 0
-    }
-
-    to {
-        -webkit-transform: none;
-        transform: none;
-        opacity: 1
-    }
 }
 
 @keyframes sbx-reset-in {
     0% {
-        -webkit-transform: translate3d(-20%, 0, 0);
         transform: translate3d(-20%, 0, 0);
         opacity: 0
     }
 
     to {
-        -webkit-transform: none;
         transform: none;
         opacity: 1
     }
@@ -223,7 +201,6 @@
     top: -7px;
     border-top: 1px solid #d9d9d9;
     border-right: 1px solid #d9d9d9;
-    -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     border-radius: 2px
 }
