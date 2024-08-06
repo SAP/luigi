@@ -204,9 +204,15 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 ### allowRules
 
 The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
-You can use one or more rules by adding them to the array, for example allowRules: \["microphone", "camera"].
+You can use one or more rules by adding them to the array.
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+#### Examples
+
+```html
+<luigi-container viewUrl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
+```
 
 **Meta**
 
@@ -215,9 +221,15 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 ### sandboxRules
 
 The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
-You can use one or more rules by adding them to the array, for example sandboxRules: \["allow-scripts", "allow-same-origin"].
+You can use one or more rules by adding them to the array.
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+#### Examples
+
+```html
+<luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+```
 
 **Meta**
 
