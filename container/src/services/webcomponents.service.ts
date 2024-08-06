@@ -52,6 +52,7 @@ export class WebComponentService {
       if (nodeId) {
         wc.setAttribute('nodeId', nodeId);
       }
+      wc.setAttribute('lui_web_component', 'true');
 
       this.initWC(wc, wc_id, wc_container, viewUrl, ctx, nodeId, isCompoundChild);
       wc_container.replaceChild(wc, wcItemPlaceholder);
@@ -572,6 +573,7 @@ export class WebComponentService {
           if (navNode.webcomponent && navNode.webcomponent.selfRegistered) {
             this.includeSelfRegisteredWCFromUrl(navNode, renderer.viewUrl, () => {
               const wc = document.createElement(wc_id);
+              wc.setAttribute('lui_web_component', true);
               this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
               resolve(wc);
             });
@@ -579,6 +581,7 @@ export class WebComponentService {
             this.registerWCFromUrl(renderer.viewUrl, wc_id)
               .then(() => {
                 const wc = document.createElement(wc_id);
+                wc.setAttribute('lui_web_component', true);
                 this.initWC(wc, wc_id, wc, renderer.viewUrl, ctx, '_root');
                 resolve(wc);
               })

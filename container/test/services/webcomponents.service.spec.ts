@@ -42,6 +42,7 @@ describe('attachWC', () => {
   it('wc_container contains wcItemPlaceholder and nodeId is provided', () => {
     const innerWCElement = document.createElement(wc_id);
     innerWCElement.setAttribute('nodeId', nodeId);
+    innerWCElement.setAttribute('lui_web_component', 'true');
 
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
@@ -78,6 +79,7 @@ describe('attachWC', () => {
 
   it('nodeId not provided', () => {
     const innerWCElement = document.createElement(wc_id);
+    innerWCElement.setAttribute('lui_web_component', 'true');
 
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
@@ -93,6 +95,7 @@ describe('attachWC', () => {
 
   it('_luigi_node provided', () => {
     const innerWCElement = document.createElement(wc_id);
+    innerWCElement.setAttribute('lui_web_component', 'true');
 
     // Mock methods to spy on them
     const dispatchEventSpy = jest.spyOn(wc_container, 'dispatchEvent');
@@ -167,7 +170,7 @@ describe('createClientAPI', () => {
       { slug: 'Sales-settings', params: null },
       { slug: null, params: { project: 'pr2', user: 'john' } },
       { slug: 'Sales-settings', params: { project: 'pr2', user: 'john' } }
-    ])('test linkManager navigateToIntent', (data) => {
+    ])('test linkManager navigateToIntent', data => {
       let payloadLink = `#?intent=${data.slug}`;
 
       if (data.params && Object.keys(data.params)?.length) {
@@ -1381,6 +1384,7 @@ describe('createCompoundContainerAsync', () => {
     const ctx = {};
     const mockGeneratedWCId = 'mocked-wc-id';
     const mockWebComponent = document.createElement(mockGeneratedWCId);
+    mockWebComponent.setAttribute('lui_web_component', 'true');
     const navNode = {};
 
     service.initWC = jest.fn();
