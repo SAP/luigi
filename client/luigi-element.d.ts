@@ -417,7 +417,7 @@ export interface LuigiClient {
   getClientPermissions(): () => Object;
 }
 
-declare class LuigiElement extends HTMLElement {
+export declare class LuigiElement extends HTMLElement {
   private deferLuigiClientWCInit;
   private LuigiClient;
   private luigiConfig;
@@ -481,15 +481,4 @@ declare class LuigiElement extends HTMLElement {
    * @private
    */
   attributeChangedCallback(name?: string, oldVal?: any, newVal?: any): void;
-
-  /**
-   * Html string processing according to luigi functionality.
-   * Also useful in combination with LitElement VS Code plugins.
-   *
-   * @param {String} literal The literal to process.
-   * @returns {String} Returns the processed literal.
-   */
-  html(literal: TemplateStringsArray, ...keys: unknown[]): string;
 }
-
-export default LuigiElement;

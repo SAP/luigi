@@ -1,54 +1,88 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const fileMap = {
-  'luigi-client': 'LuigiClient',
-  'luigi-element': 'LuigiElement'
-};
-
-module.exports = {
-  entry: {
-    'luigi-client': './src/luigi-client.ts',
-    'luigi-element': './src/luigi-element.ts'
-  },
-  output: {
-    filename: '[name].js',
-    library: {
-      export: 'default',
-      name: fileMap['[name]'],
-      type: 'umd'
+module.exports = [
+  {
+    devtool: 'source-map',
+    entry: {
+      'luigi-client': './src/luigi-client.ts'
     },
-    path: path.join(path.resolve(__dirname), 'public'),
-    umdNamedDefine: true
-  },
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        loader: 'ts-loader'
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.ts', '.js']
-  },
-  plugins: [
-    new CopyWebpackPlugin({
-      patterns: [
+    module: {
+      rules: [
         {
-          from: 'luigi-client.d.ts',
-          to: '.'
-        },
-        {
-          from: 'luigi-element.d.ts',
-          to: '.'
+          exclude: /node_modules/,
+          loader: 'ts-loader',
+          test: /\.ts$/
         }
       ]
-    })
-  ],
-  devtool: 'source-map',
-  stats: {
-    errorDetails: true
+    },
+    output: {
+      filename: '[name].js',
+      library: {
+        export: 'default',
+        type: 'umd'
+      },
+      path: path.join(path.resolve(__dirname), 'public'),
+      umdNamedDefine: true,
+      uniqueName: 'LuigiClient'
+    },
+    plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: 'luigi-client.d.ts',
+            to: '.'
+          }
+        ]
+      })
+    ],
+    resolve: {
+      extensions: ['.ts', '.js']
+    },
+    stats: {
+      errorDetails: true
+    }
+  },
+  {
+    devtool: 'source-map',
+    entry: {
+      'luigi-element': './src/luigi-element.ts'
+    },
+    experiments: {
+      outputModule: true
+    },
+    module: {
+      rules: [
+        {
+          exclude: /node_modules/,
+          loader: 'ts-loader',
+          test: /\.ts$/
+        }
+      ]
+    },
+    output: {
+      filename: '[name].js',
+      library: {
+        type: 'module'
+      },
+      path: path.join(path.resolve(__dirname), 'public'),
+      uniqueName: 'LuigiElement'
+    },
+    plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: 'luigi-element.d.ts',
+            to: '.'
+          }
+        ]
+      })
+    ],
+    resolve: {
+      extensions: ['.ts', '.js']
+    },
+    stats: {
+      errorDetails: true
+    }
   }
-};
+];

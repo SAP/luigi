@@ -3,7 +3,7 @@ import { Options } from '../luigi-element';
 /**
  * Base class for Luigi web component micro frontends.
  */
-class LuigiElement extends HTMLElement {
+export class LuigiElement extends HTMLElement {
   private deferLuigiClientWCInit: boolean;
   private LuigiClient!: any;
   private luigiConfig!: Record<string, any>;
@@ -165,27 +165,25 @@ class LuigiElement extends HTMLElement {
   attributeChangedCallback(name?: string, oldVal?: any, newVal?: any): void {
     this.update();
   }
-
-  /**
-   * Html string processing according to luigi functionality.
-   * Also useful in combination with LitElement VS Code plugins.
-   *
-   * @param {String} literal The literal to process.
-   * @returns {String} Returns the processed literal.
-   */
-  html(literal: TemplateStringsArray, ...keys: unknown[]): string {
-    let html: string = '';
-
-    literal.forEach((el: string, index: number) => {
-      html += el;
-
-      if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
-        html += keys[index];
-      }
-    });
-
-    return html.replace(/\$\_/gi, 'this.getRootNode().$_');
-  }
 }
 
-export default LuigiElement;
+/**
+ * Html string processing according to luigi functionality.
+ * Also useful in combination with LitElement VS Code plugins.
+ *
+ * @param {String} literal The literal to process.
+ * @returns {String} Returns the processed literal.
+ */
+export function html(literal: TemplateStringsArray, ...keys: unknown[]): string {
+ let html: string = '';
+
+ literal.forEach((el: string, index: number) => {
+   html += el;
+
+   if (index < keys.length && keys[index] !== undefined && keys[index] !== null) {
+     html += keys[index];
+   }
+ });
+
+ return html.replace(/\$\_/gi, 'this.getRootNode().$_');
+}
