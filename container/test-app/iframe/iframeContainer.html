@@ -48,7 +48,9 @@
         deferInitContainer.init();
       });
 
-      const luigiContainer = document.querySelector('[data-test-id="iframe-based-container-test"]');
+      const luigiContainer = document.querySelector(
+        '[data-test-id="iframe-based-container-test"]'
+      );
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
