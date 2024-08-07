@@ -41,7 +41,6 @@ describe('Iframe Container Test', () => {
   });
 
   it('set sandbox rules by attribute', () => {
-    cy.get('#init-button').click();
     cy.get('#sandbox-rules-test')
       .shadow()
       .get('iframe')
