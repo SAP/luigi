@@ -11,9 +11,7 @@
     </h3>
     <button id="btn-1">Send Custom Message to iFrame Container</button>
     <button id="update-ctx">Update Ctx</button>
-    <button id="init-button">container.init() defer-init enabled</button>
     <button id="update-token">Update Access Token</button>
-    <button id="sandbox-rules">Set sandboxRules</button>
 
     <div style="border:solid 1px blue; height: 400px">
       <!-- Luigi Container to test general functionality-->
@@ -23,30 +21,10 @@
         context='{"title": "Projects", "content":" "}'
         auth-data='{ "accessToken": "my-token" }'
       ></luigi-container>
-
-      <!-- Luigi Container to test defer-init flag-->
-      <luigi-container
-        id="defer-init-test"
-        data-test-id="defer-init-container"
-        viewURL="./microfrontend-defer-init.html"
-        defer-init="true"
-      ></luigi-container>
-
-      <!-- Luigi Container to test sandbox rules -->
-      <luigi-container
-        id="sandbox-rules-test"
-        viewURL="./microfrontend-sandbox-rules.html"
-        sandbox-rules='["allow-scripts", "allow-same-origin"]'
-      ></luigi-container>
     </div>
 
     <script type="module">
       import Events from '../bundle.js';
-      const deferInitContainer = document.getElementById('defer-init-test');
-      const initButton = document.getElementById('init-button');
-      initButton.addEventListener('click', function() {
-        deferInitContainer.init();
-      });
 
       const luigiContainer = document.querySelector(
         '[data-test-id="iframe-based-container-test"]'
@@ -65,7 +43,6 @@
       const sendCustomMessageBtn = document.getElementById('btn-1');
       const updateContextButton = document.getElementById('update-ctx');
       const updateAccessTokenButton = document.getElementById('update-token');
-      const sandboxRulesButton = document.getElementById('sandbox-rules');
 
       // for testing send Custom message functionality
       sendCustomMessageBtn.addEventListener('click', () => {
@@ -80,10 +57,6 @@
 
       updateAccessTokenButton.addEventListener('click', () => {
         luigiContainer.setAttribute('auth-data', '{"accessToken": "updated token"}');
-      });
-
-      sandboxRulesButton.addEventListener('click', () => {
-        luigiContainer.sandboxRules = ['allow-modals', 'allow-popups'];
       });
 
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {

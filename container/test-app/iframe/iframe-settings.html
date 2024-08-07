@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <script type="module">
+      import '../bundle.js';
+    </script>
+  </head>
+  <body>
+    <h3>
+      This page is used to test Container Luigi CLient API functionalities for web
+      component based microfrontend
+    </h3>
+    <button id="init-button">container.init() defer-init enabled</button>
+    <button id="sandbox-rules">Set sandboxRules</button>
+
+    <!-- Luigi Container to test defer-init flag-->
+    <luigi-container
+      id="defer-init-test"
+      data-test-id="defer-init-container"
+      viewURL="./microfrontend-defer-init.html"
+      defer-init="true"
+    ></luigi-container>
+
+    <!-- Luigi Container to test sandbox rules -->
+    <luigi-container
+      id="sandbox-rules-test"
+      viewURL="./microfrontend-sandbox-rules.html"
+      sandbox-rules='["allow-scripts", "allow-same-origin"]'
+    ></luigi-container>
+
+    <script type="module">
+      import Events from '../bundle.js';
+
+      const deferInitContainer = document.getElementById('defer-init-test');
+      const initButton = document.getElementById('init-button');
+
+      initButton.addEventListener('click', function() {
+        deferInitContainer.init();
+      });
+
+      const sandboxRulesButton = document.getElementById('sandbox-rules');
+
+      sandboxRulesButton.addEventListener('click', () => {
+        deferInitContainer.sandboxRules = ['allow-modals', 'allow-popups'];
+      });
+    </script>
+  </body>
+</html>
