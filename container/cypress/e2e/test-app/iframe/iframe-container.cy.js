@@ -110,7 +110,20 @@ describe('Iframe Container Test', () => {
       });
   });
 
-  it('set sandbox rules', () => {
+  it('set sandbox rules by property', () => {
+    cy.get('button[id="sandbox-rules"]').click();
+
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then(elements => {
+        cy.get(elements.first())
+          .invoke('attr', 'sandbox')
+          .should('eq', 'allow-modals allow-popups');
+      });
+  });
+
+  it('set sandbox rules by attribute', () => {
     cy.get('#sandbox-rules-test')
       .shadow()
       .get('iframe')

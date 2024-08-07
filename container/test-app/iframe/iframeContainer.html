@@ -13,6 +13,7 @@
     <button id="update-ctx">Update Ctx</button>
     <button id="init-button">container.init() defer-init enabled</button>
     <button id="update-token">Update Access Token</button>
+    <button id="sandbox-rules">Set sandboxRules</button>
 
     <div style="border:solid 1px blue; height: 400px">
       <!-- Luigi Container to test general functionality-->
@@ -47,7 +48,7 @@
         deferInitContainer.init();
       });
 
-      const luigiContainer = document.querySelector('luigi-container');
+      const luigiContainer = document.querySelector('[data-test-id="iframe-based-container-test"]');
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
@@ -62,6 +63,7 @@
       const sendCustomMessageBtn = document.getElementById('btn-1');
       const updateContextButton = document.getElementById('update-ctx');
       const updateAccessTokenButton = document.getElementById('update-token');
+      const sandboxRulesButton = document.getElementById('sandbox-rules');
 
       // for testing send Custom message functionality
       sendCustomMessageBtn.addEventListener('click', () => {
@@ -76,6 +78,10 @@
 
       updateAccessTokenButton.addEventListener('click', () => {
         luigiContainer.setAttribute('auth-data', '{"accessToken": "updated token"}');
+      });
+
+      sandboxRulesButton.addEventListener('click', () => {
+        luigiContainer.sandboxRules = ['allow-modals', 'allow-popups'];
       });
 
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
