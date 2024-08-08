@@ -213,6 +213,9 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 ```html
 <luigi-container viewUrl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
 ```
+```javascript
+luigiContainer.allowRules = ['microphone', 'camera'];
+```
 
 **Meta**
 
@@ -229,6 +232,9 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 ```html
 <luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+```
+```javascript
+luigiContainer.sandboxRules = ['allow-modals', 'allow-popups'];
 ```
 
 **Meta**
