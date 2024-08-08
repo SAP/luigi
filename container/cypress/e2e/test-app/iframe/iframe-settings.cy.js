@@ -56,14 +56,13 @@ describe('Iframe Settings Test', () => {
       cy.get('#init-button').click();
       cy.get('#set-allow-rules-button').click();
       cy.get('#defer-init-test')
-      .find('iframe')
-      .last()
-      .invoke('attr', 'allow')
-      .should('eq', 'microphone; camera \'none\'; geolocation \'self\' https://a.example.com https://b.example.com;');
+        .find('iframe')
+        .last()
+        .invoke('attr', 'allow')
+        .should('eq', "microphone; camera 'none'; geolocation 'self' https://a.example.com https://b.example.com;");
     });
 
     it('set allow rules by attribute', () => {
-      cy.get('#init-button').click();
       cy.get('#allow-rules-test')
         .shadow()
         .find('iframe')

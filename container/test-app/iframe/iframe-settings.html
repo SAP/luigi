@@ -61,10 +61,12 @@
       const setAllowRulesButton = document.getElementById('set-allow-rules-button');
 
       initButton.addEventListener('click', () => {
-        deferInitContainer.allowRules = ['microphone', 'camera \'none\'', 'geolocation \'self\' https://a.example.com https://b.example.com'];
+        deferInitContainer.allowRules = [
+          'microphone',
+          "camera 'none'",
+          "geolocation 'self' https://a.example.com https://b.example.com"
+        ];
       });
-
-
     </script>
   </body>
 </html>
