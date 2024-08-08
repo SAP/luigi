@@ -115,7 +115,6 @@ export class ContainerService {
               case LuigiInternalMessageID.NAVIGATION_REQUEST:
                 this.dispatch(Events.NAVIGATION_REQUEST, targetCnt, event.data.params);
                 break;
-              // TODO 1: handle alerts with ids on next iteration
               case LuigiInternalMessageID.ALERT_REQUEST:
                 this.dispatch(Events.ALERT_REQUEST, targetCnt, event);
                 break;
