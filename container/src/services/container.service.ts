@@ -107,7 +107,7 @@ export class ContainerService {
                     msg: LuigiInternalMessageID.SEND_CONTEXT_HANDSHAKE,
                     context: targetCnt.context || {},
                     internal: {},
-                    authData: targetCnt.authData || {},
+                    authData: targetCnt.authData || {}
                   },
                   '*'
                 );
@@ -163,7 +163,6 @@ export class ContainerService {
               case LuigiInternalMessageID.GET_CURRENT_ROUTE_REQUEST:
                 this.dispatch(Events.GET_CURRENT_ROUTE_REQUEST, targetCnt, event);
                 break;
-              // TODO: discuss if actually needed as the only scenario is when microfrontend initially starts
               case LuigiInternalMessageID.NAVIGATION_COMPLETED_REPORT:
                 this.dispatch(Events.NAVIGATION_COMPLETED_REPORT, targetCnt, event);
                 break;
