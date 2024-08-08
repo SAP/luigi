@@ -746,7 +746,6 @@
         msg: 'luigi.ux.alert.hide',
         id,
         dismissKey
-        //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
     } else if (alert.promise) {
