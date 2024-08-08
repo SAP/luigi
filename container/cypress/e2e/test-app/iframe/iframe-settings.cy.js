@@ -1,4 +1,4 @@
-describe('Iframe Container Test', () => {
+describe('Iframe Settings Test', () => {
   let stub;
 
   beforeEach(() => {
@@ -43,11 +43,33 @@ describe('Iframe Container Test', () => {
   it('set sandbox rules by attribute', () => {
     cy.get('#sandbox-rules-test')
       .shadow()
-      .get('iframe')
+      .find('iframe')
       .then(elements => {
         cy.get(elements.last())
           .invoke('attr', 'sandbox')
           .should('eq', 'allow-scripts allow-same-origin');
       });
+  });
+
+  describe('Allow Rules Test', () => {
+    it('set allow rules by property', () => {
+      cy.get('#init-button').click();
+      cy.get('#set-allow-rules-button').click();
+      cy.get('#defer-init-test')
+      .find('iframe')
+      .last()
+      .invoke('attr', 'allow')
+      .should('eq', 'microphone; camera \'none\'; geolocation \'self\' https://a.example.com https://b.example.com;');
+    });
+
+    it('set allow rules by attribute', () => {
+      cy.get('#init-button').click();
+      cy.get('#allow-rules-test')
+        .shadow()
+        .find('iframe')
+        .last()
+        .invoke('attr', 'allow')
+        .should('eq', 'fullscreen; microphone;');
+    });
   });
 });
