@@ -522,6 +522,11 @@ export const projectDetailNavStructure = projectId => [
             ]
           }
         ]
+      },
+      {
+        label: 'Auto routing',
+        pathSegment: 'auto-routing',
+        viewUrl: '/sampleapp.html#/auto-routing'
       }
     ]
   },

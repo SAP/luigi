@@ -17,6 +17,11 @@ class Routing {
    */
   nodeParamPrefix = '~';
   disableBrowserHistory = false;
+  /**
+   * showModalPathInUrl
+   * Default: false. Set to true to show modal paths in the URL.
+   */
+  showModalPathInUrl = false;
 
   /**
    * skipRoutingForUrlPatterns

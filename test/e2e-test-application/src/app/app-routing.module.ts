@@ -135,6 +135,11 @@ const routes: Routes = [
     component: ViewGroupComponent
   },
   {
+    path: 'auto-routing',
+    component: NavSyncComponent,
+    data: { luigiRoute: '/auto-routing', fromContext: true, updateModalDataPath: true, addHistoryEntry: true }
+  },
+  {
     path: 'dynamic-parameter-flat',
     component: NavSyncComponent,
     data: { luigiRoute: '/dynamic-parameter-flat', fromContext: 'navSync' },

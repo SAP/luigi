@@ -1,6 +1,7 @@
-import { Subscription } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { linkManager } from '@luigi-project/client';
+import { Subscription } from 'rxjs';
 
 /**
  * This component is using Angular router to navigate between routes
@@ -16,6 +17,7 @@ export class NavSyncComponent implements OnInit, OnDestroy {
   currentSegment: String;
   nextSegment: String;
   subs: Subscription = new Subscription();
+  linkManager = linkManager;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -30,8 +32,19 @@ export class NavSyncComponent implements OnInit, OnDestroy {
         err => {}
       )
     );
+    this.updateLuigiConfig(true);
   }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
+    this.updateLuigiConfig(false);
+  }
+
+  private updateLuigiConfig(value: boolean) {
+    if (!(window.parent as any)?.Luigi) {
+      return;
+    }
+
+    (window.parent as any).Luigi.config.routing.showModalPathInUrl = value;
   }
 }
