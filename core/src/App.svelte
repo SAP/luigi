@@ -375,13 +375,18 @@
     RoutingHelpers.addRouteChangeListener((path, eventDetail) => {
       const { withoutSync, preventContextUpdate } = eventDetail || {};
       const pv = preservedViews;
+
       // TODO: check if bookmarkable modal is interferring here
       if (!isValidBackRoute(pv, path)) {
         preservedViews = [];
         Iframe.removeInactiveIframes(node);
       }
-      for (let i = mfModalList.length; i--; ) {
-        closeModal(i);
+
+      if (!mfModalList.some((item) => item.modalWC && item.mfModal?.displayed)) {
+        // close all modals as we are navigating away here
+        for (let i = mfModalList.length; i--; ) {
+          closeModal(i);
+        }
       }
 
       // remove backdrop
@@ -934,6 +939,7 @@
     };
     const targetModal = mfModalList[index];
     const rp = GenericHelpers.getRemotePromise(targetModal.mfModal.settings.onClosePromiseId);
+
     if (targetModal && targetModal.modalIframe) {
       getUnsavedChangesModalPromise(targetModal.modalIframe.contentWindow).then(
         () => {
@@ -1406,10 +1412,12 @@
                   rejectRemotePromise();
                 });
               // close all modals to allow navigation to the non-special view
-              mfModalList.forEach((m, index) => {
-                // close modals
-                closeModal(index);
-              });
+              let mfModalListLength = mfModalList.length;
+              while (mfModalListLength) {
+                mfModalListLength--;
+                // close modal
+                closeModal(mfModalListLength);
+              }
 
               closeSplitView();
               closeDrawer();
