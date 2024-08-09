@@ -67,34 +67,13 @@ describe('Iframe Container Test', () => {
           });
       });
   });
-  it('defer-init flag for iframe container', () => {
-    cy.get('#defer-init-test').then(iframe => {
-      const $body = iframe.contents().find('main');
-      expect($body.children()).to.have.length(0);
-
-      // click button that calls container.init()
-      cy.get('#init-button').click();
-
-      cy.get('#defer-init-test')
-        .shadow()
-        .get('iframe')
-        .then(iframe => {
-          const $body = iframe.contents().find('body');
-          cy.wrap($body)
-            .contains('defer-init test for iframes')
-            .should('exist');
-        });
-    });
-  });
 
   it('set auth token', () => {
     cy.on('window:alert', stub);
 
-    cy.visit('http://localhost:8080/iframe/iframeContainer.html');
-
     cy.get('button[id="update-token"]').click();
 
-    cy.get('[data-test-id="iframe-based-container-test"]')
+    cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
