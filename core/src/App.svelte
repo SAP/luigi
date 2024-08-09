@@ -2118,6 +2118,11 @@
   :global(.lui-breadcrumb #tabsContainer) {
     top: calc(var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height));
   }
+
+  :global(.lui-breadcrumb .fd-tool-layout #tabsContainer) {
+    top: 0;
+  }
+
   :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
     top: calc(
       var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
@@ -2233,6 +2238,17 @@
 
   :global(.no-top-nav .iframeContainer.iframeContainerTabNav) {
     top: calc(var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height)));
+  }
+
+  :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
+    top: calc(var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height));
+  }
+
+  :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
+    top: calc(
+      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
+        var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+    );
   }
 
   .iframeContainer:focus {
