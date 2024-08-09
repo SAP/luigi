@@ -6,12 +6,11 @@
   </head>
   <body>
     <h3>
-      This page is used to test Container Luigi CLient API functionalities for web
-      component based microfrontend
+      This page is used to test Container Luigi CLient API functionalities for iframe
+      based microfrontend
     </h3>
     <button id="btn-1">Send Custom Message to iFrame Container</button>
     <button id="update-ctx">Update Ctx</button>
-    <button id="init-button">container.init() defer-init enabled</button>
     <button id="update-token">Update Access Token</button>
 
     <div style="border:solid 1px blue; height: 400px">
@@ -22,25 +21,14 @@
         context='{"title": "Projects", "content":" "}'
         auth-data='{ "accessToken": "my-token" }'
       ></luigi-container>
-
-      <!-- Luigi Container to test defer-init flag-->
-      <luigi-container
-        id="defer-init-test"
-        data-test-id="defer-init-container"
-        viewURL="./microfrontend-defer-init.html"
-        defer-init="true"
-      ></luigi-container>
     </div>
 
     <script type="module">
       import Events from '../bundle.js';
-      const deferInitContainer = document.getElementById("defer-init-test");
-      const initButton = document.getElementById("init-button");
-      initButton.addEventListener("click", function() {
-        deferInitContainer.init();
-      });
 
-      const luigiContainer = document.querySelector('luigi-container');
+      const luigiContainer = document.querySelector(
+        '[data-test-id="iframe-based-container-test"]'
+      );
       luigiContainer.addEventListener(Events.NAVIGATION_REQUEST, event => {
         console.log(event.detail);
         window.location.hash = event.detail.link;
