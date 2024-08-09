@@ -234,12 +234,6 @@ function addToChangelog(versionText, changelog, lastline) {
   } // end if changelog
 
   /**
-   * REPLACE VERSION IN FILES
-   */
-  // TODO: disabled due to runtime errors and added as console log
-  // replaceInAllFiles('NEXTRELEASE', `${input.version}`);
-
-  /**
    * UPDATE PACKAGE-LOCKS
    * Skip when running in ci for nightly.
    */
