@@ -346,11 +346,6 @@ describe('JS-TEST-APP 2', () => {
           .openAsModal('/home/one');
       });
 
-      // TODO - Accessing LuigiCLient directly results in flaky behavoir, skip for now
-      // cy.getModalWindow().then(win => {
-      //   assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
-      // });
-
       cy.expectPathToBe('/home');
       cy.location().should(location => {
         expect(location.search).to.eq('?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
