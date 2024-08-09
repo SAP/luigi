@@ -119,19 +119,6 @@ function addToChangelog(versionText, changelog, lastline) {
   logHeadline('Appended changelog');
 }
 
-// function replaceInAllFiles(search, replace) {
-//   try {
-//     // TODO: Getting errors while it is working fine from command line. Seems node cannot handle pipes while evaluating commands.
-//     require('child_process').execSync(
-//       `cd ${__dirname} && ./replaceInAllFiles.sh "${search}" "${replace}"`,
-//       { stdio: [0, 1, 2] }
-//     );
-//     logHeadline('\nReplaced version in files.');
-//   } catch (error) {
-//     logError('Replace error:', error);
-//   }
-// }
-
 /**
  * PROMPT
  */
