@@ -18,12 +18,12 @@ meta -->
 
 This document outlines the features provided by the Luigi Client API. It covers these topics:
 
-*   [Lifecycle](#lifecycle) - functions that define the lifecycle of different Luigi elements
-*   [Callbacks](#lifecycleinitlistenercallback) - callback functions for initListener and customMessageListener
-*   [Link manager](#linkmanager) - you can use the linkManager instead of an internal router
-*   [Split view](#splitview) - allows you to open a micro frontend in the lower part of the content area in a "split screen" view
-*   [uxManager](#uxmanager) - functions related to user interface
-*   [storageManager](#storagemanager) - Storage Manager API to store/retrieve objects from Luigi Core local storage
+- [Lifecycle](#lifecycle) - functions that define the lifecycle of different Luigi elements
+- [Callbacks](#lifecycleinitlistenercallback) - callback functions for initListener and customMessageListener
+- [Link manager](#linkmanager) - you can use the linkManager instead of an internal router
+- [Split view](#splitview) - allows you to open a micro frontend in the lower part of the content area in a "split screen" view
+- [uxManager](#uxmanager) - functions related to user interface
+- [storageManager](#storagemanager) - Storage Manager API to store/retrieve objects from Luigi Core local storage
 
 ## API Reference
 
@@ -40,14 +40,14 @@ Check if LuigiClient is initialized
 ##### Examples
 
 ```javascript
-const init = LuigiClient.isLuigiClientInitialized()
+const init = LuigiClient.isLuigiClientInitialized();
 ```
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** client initialized state
 
 **Meta**
 
-*   **since**: 1.12.0
+- **since**: 1.12.0
 
 #### luigiClientInit
 
@@ -56,12 +56,12 @@ Starts the handshake with Luigi Core and thereafter results in initialization of
 ##### Examples
 
 ```javascript
-LuigiClient.luigiClientInit()
+LuigiClient.luigiClientInit();
 ```
 
 **Meta**
 
-*   **since**: 1.12.0
+- **since**: 1.12.0
 
 #### addInitListener
 
@@ -69,12 +69,14 @@ Registers a listener called with the context object and the Luigi Core domain as
 
 ##### Parameters
 
-*   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters
+- `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters
 
 ##### Examples
 
 ```javascript
-const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
+const initListenerId = LuigiClient.addInitListener(context =>
+  storeContextToMF(context)
+);
 ```
 
 #### removeInitListener
@@ -83,12 +85,12 @@ Removes an init listener.
 
 ##### Parameters
 
-*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function.
+- `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function.
 
 ##### Examples
 
 ```javascript
-LuigiClient.removeInitListener(initListenerId)
+LuigiClient.removeInitListener(initListenerId);
 ```
 
 #### addContextUpdateListener
@@ -97,12 +99,14 @@ Registers a listener called with the context object when the URL is changed. For
 
 ##### Parameters
 
-*   `contextUpdatedFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time Luigi context changes
+- `contextUpdatedFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time Luigi context changes
 
 ##### Examples
 
 ```javascript
-const updateListenerId = LuigiClient.addContextUpdateListener((context) => storeContextToMF(context))
+const updateListenerId = LuigiClient.addContextUpdateListener(context =>
+  storeContextToMF(context)
+);
 ```
 
 #### removeContextUpdateListener
@@ -111,12 +115,12 @@ Removes a context update listener.
 
 ##### Parameters
 
-*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
+- `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
 
 ##### Examples
 
 ```javascript
-LuigiClient.removeContextUpdateListener(updateListenerId)
+LuigiClient.removeContextUpdateListener(updateListenerId);
 ```
 
 #### addInactiveListener
@@ -124,21 +128,23 @@ LuigiClient.removeContextUpdateListener(updateListenerId)
 Registers a listener called upon micro frontend inactivity. This happens when a new micro frontend gets shown while keeping the old one cached.
 Gets called when:
 
-*   navigating with **preserveView**
-*   navigating from or to a **viewGroup**
+- navigating with **preserveView**
+- navigating from or to a **viewGroup**
 
 Does not get called when navigating normally, or when `openAsModal` or `openAsSplitView` are used.
 Once the micro frontend turns back into active state, the `addContextUpdateListener` receives an updated context.
 
 ##### Parameters
 
-*   `inactiveFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time a micro frontend turns into an inactive state
+- `inactiveFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time a micro frontend turns into an inactive state
 
 ##### Examples
 
 ```javascript
-LuigiClient.addInactiveListener(() => mfIsInactive = true)
-const inactiveListenerId = LuigiClient.addInactiveListener(() => mfIsInactive = true)
+LuigiClient.addInactiveListener(() => (mfIsInactive = true));
+const inactiveListenerId = LuigiClient.addInactiveListener(
+  () => (mfIsInactive = true)
+);
 ```
 
 #### removeInactiveListener
@@ -147,12 +153,12 @@ Removes a listener for inactive micro frontends.
 
 ##### Parameters
 
-*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInactiveListener` function
+- `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInactiveListener` function
 
 ##### Examples
 
 ```javascript
-LuigiClient.removeInactiveListener(inactiveListenerId)
+LuigiClient.removeInactiveListener(inactiveListenerId);
 ```
 
 #### addCustomMessageListener
@@ -161,18 +167,21 @@ Registers a listener called when the micro frontend receives a custom message.
 
 ##### Parameters
 
-*   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
-*   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event
+- `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
+- `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event
 
 ##### Examples
 
 ```javascript
-const customMsgId = LuigiClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
+const customMsgId = LuigiClient.addCustomMessageListener(
+  'myapp.project-updated',
+  data => doSomething(data)
+);
 ```
 
 **Meta**
 
-*   **since**: 0.6.2
+- **since**: 0.6.2
 
 #### removeCustomMessageListener
 
@@ -180,17 +189,17 @@ Removes a custom message listener.
 
 ##### Parameters
 
-*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
+- `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
 
 ##### Examples
 
 ```javascript
-LuigiClient.removeCustomMessageListener(customMsgId)
+LuigiClient.removeCustomMessageListener(customMsgId);
 ```
 
 **Meta**
 
-*   **since**: 0.6.2
+- **since**: 0.6.2
 
 #### getToken
 
@@ -199,7 +208,7 @@ Returns the currently valid access token.
 ##### Examples
 
 ```javascript
-const accessToken = LuigiClient.getToken()
+const accessToken = LuigiClient.getToken();
 ```
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current access token
@@ -211,7 +220,7 @@ Returns the context object. Typically it is not required as the [addContextUpdat
 ##### Examples
 
 ```javascript
-const context = LuigiClient.getContext()
+const context = LuigiClient.getContext();
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
@@ -224,7 +233,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
-*   **deprecated**: This is deprecated.
+- **deprecated**: This is deprecated.
 
 #### getActiveFeatureToggles
 
@@ -235,14 +244,14 @@ Returns a list of active feature toggles
 ##### Examples
 
 ```javascript
-const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
+const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles();
 ```
 
 Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** a list of feature toggle names
 
 **Meta**
 
-*   **since**: 1.4.0
+- **since**: 1.4.0
 
 #### addNodeParams
 
@@ -252,13 +261,13 @@ Sets node parameters in Luigi Core. The parameters will be added to the URL.
 
 ##### Parameters
 
-*   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-*   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
+- `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
+- `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** (optional, default `true`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.addNodeParams({luigi:'rocks'}, true);
+LuigiClient.addNodeParams({ luigi: 'rocks' }, true);
 ```
 
 #### getNodeParams
@@ -274,13 +283,13 @@ Node parameters are defined like URL query parameters but with a specific prefix
 
 ##### Parameters
 
-*   `shouldDesanitise` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** defines whether the specially encoded characters should be desanitised (optional, default `false`)
+- `shouldDesanitise` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** defines whether the specially encoded characters should be desanitised (optional, default `false`)
 
 ##### Examples
 
 ```javascript
-const nodeParams = LuigiClient.getNodeParams()
-const nodeParams = LuigiClient.getNodeParams(true)
+const nodeParams = LuigiClient.getNodeParams();
+const nodeParams = LuigiClient.getNodeParams(true);
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
@@ -300,10 +309,10 @@ All path parameters in the current navigation path (as defined by the active URL
 ##### Examples
 
 ```javascript
-const pathParams = LuigiClient.getPathParams()
+const pathParams = LuigiClient.getPathParams();
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `  {productId: 1234, ...} `
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `{productId: 1234, ...}`
 
 #### getCoreSearchParams
 
@@ -325,13 +334,13 @@ Sends search query parameters to Luigi Core. The search parameters will be added
 
 ##### Parameters
 
-*   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-*   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
+- `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
+- `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** (optional, default `true`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
+LuigiClient.addCoreSearchParams({ luigi: 'rocks' }, false);
 ```
 
 #### getClientPermissions
@@ -343,7 +352,7 @@ Returns the current client permissions as specified in the navigation node or an
 ##### Examples
 
 ```javascript
-const permissions = LuigiClient.getClientPermissions()
+const permissions = LuigiClient.getClientPermissions();
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node
@@ -354,17 +363,17 @@ When the micro frontend is not embedded in the Luigi Core application and there 
 
 ##### Parameters
 
-*   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** target origin
+- `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** target origin
 
 ##### Examples
 
 ```javascript
-LuigiClient.setTargetOrigin(window.location.origin)
+LuigiClient.setTargetOrigin(window.location.origin);
 ```
 
 **Meta**
 
-*   **since**: 0.7.3
+- **since**: 0.7.3
 
 #### sendCustomMessage
 
@@ -372,21 +381,24 @@ Sends a custom message to the Luigi Core application.
 
 ##### Parameters
 
-*   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side
+- `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side
 
-    *   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
-    *   `message.MY_DATA_FIELD` **any** any other message data field
+  - `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
+  - `message.MY_DATA_FIELD` **any** any other message data field
 
 ##### Examples
 
 ```javascript
-LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
-LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj})
+LuigiClient.sendCustomMessage({ id: 'environment.created', production: false });
+LuigiClient.sendCustomMessage({
+  id: 'environment.created',
+  data: environmentDataObj
+});
 ```
 
 **Meta**
 
-*   **since**: 0.6.2
+- **since**: 0.6.2
 
 #### getUserSettings
 
@@ -397,14 +409,14 @@ Returns the current user settings based on the selected node.
 ##### Examples
 
 ```javascript
-const userSettings = LuigiClient.getUserSettings()
+const userSettings = LuigiClient.getUserSettings();
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current user settings
 
 **Meta**
 
-*   **since**: 1.7.1
+- **since**: 1.7.1
 
 #### getAnchor
 
@@ -422,7 +434,7 @@ Returns **any** anchor of URL
 
 **Meta**
 
-*   **since**: 1.21.0
+- **since**: 1.21.0
 
 #### setAnchor
 
@@ -432,7 +444,7 @@ Sends anchor to Luigi Core. The anchor will be added to the URL.
 
 ##### Parameters
 
-*   `anchor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+- `anchor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 ##### Examples
 
@@ -442,7 +454,7 @@ LuigiClient.setAnchor('luigi');
 
 **Meta**
 
-*   **since**: 1.21.0
+- **since**: 1.21.0
 
 #### setViewGroupData
 
@@ -452,17 +464,17 @@ This function allows you to change node labels within the same [view group](navi
 
 ##### Parameters
 
-*   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a data object containing the view group name and desired label
+- `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a data object containing the view group name and desired label
 
 ##### Examples
 
 ```javascript
-LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
+LuigiClient.setViewGroupData({ vg1: ' Luigi rocks!' });
 ```
 
 **Meta**
 
-*   **since**: 2.2.0
+- **since**: 2.2.0
 
 ### Lifecycle~initListenerCallback
 
@@ -472,8 +484,8 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 
 #### Parameters
 
-*   `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
-*   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
+- `context` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+- `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Luigi Core URL
 
 ### Lifecycle~customMessageListenerCallback
 
@@ -483,19 +495,20 @@ Type: [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Sta
 
 #### Parameters
 
-*   `customMessage` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom message object
+- `customMessage` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** custom message object
 
-    *   `customMessage.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** message id
-    *   `customMessage.MY_DATA_FIELD` **any** any other message data field
-*   `listenerId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom message listener id to be used for unsubscription
+  - `customMessage.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** message id
+  - `customMessage.MY_DATA_FIELD` **any** any other message data field
+
+- `listenerId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** custom message listener id to be used for unsubscription
 
 ### linkManager
 
 The Link Manager allows you to navigate to another route. Use it instead of an internal router to:
 
-*   Provide routing inside micro frontends.
-*   Reflect the route.
-*   Keep the navigation state in Luigi.
+- Provide routing inside micro frontends.
+- Reflect the route.
+- Keep the navigation state in Luigi.
 
 #### navigateToIntent
 
@@ -507,19 +520,22 @@ This method internally generates a URL of the form `#?intent=<semantic object>-<
 input arguments. This then follows a call to the original `linkManager.navigate(...)` function.
 Consequently, the following calls shall have the exact same effect:
 
-*   linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
-*   linkManager().navigate('/#?intent=Sales-settings?project=pr2\&user=john')
+- linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
+- linkManager().navigate('/#?intent=Sales-settings?project=pr2\&user=john')
 
 ##### Parameters
 
-*   `semanticSlug` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
-*   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`. (optional, default `{}`)
+- `semanticSlug` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** concatenation of semantic object and action connected with a dash (-), i.e.: `<semanticObject>-<action>`
+- `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object representing all the parameters passed, i.e.: `{param1: '1', param2: 2, param3: 'value3'}`. (optional, default `{}`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().navigateToIntent('Sales-settings', {project: 'pr2', user: 'john'})
-LuigiClient.linkManager().navigateToIntent('Sales-settings')
+LuigiClient.linkManager().navigateToIntent('Sales-settings', {
+  project: 'pr2',
+  user: 'john'
+});
+LuigiClient.linkManager().navigateToIntent('Sales-settings');
 ```
 
 #### withoutSync
@@ -533,13 +549,18 @@ Used for auto-navigation.
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().withoutSync().navigate('/projects/xy/foobar');
-LuigiClient.linkManager().withoutSync().fromClosestContext().navigate('settings');
+LuigiClient.linkManager()
+  .withoutSync()
+  .navigate('/projects/xy/foobar');
+LuigiClient.linkManager()
+  .withoutSync()
+  .fromClosestContext()
+  .navigate('settings');
 ```
 
 **Meta**
 
-*   **since**: 0.7.7
+- **since**: 0.7.7
 
 #### newTab
 
@@ -548,12 +569,14 @@ Enables navigating to a new tab.
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
+LuigiClient.linkManager()
+  .newTab()
+  .navigate('/projects/xy/foobar');
 ```
 
 **Meta**
 
-*   **since**: 1.16.0
+- **since**: 1.16.0
 
 #### preserveQueryParams
 
@@ -563,18 +586,22 @@ Keeps the URL's query parameters for a navigation request.
 
 ##### Parameters
 
-*   `preserve` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation. (optional, default `false`)
+- `preserve` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation. (optional, default `false`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().preserveQueryParams(true).navigate('/projects/xy/foobar');
-LuigiClient.linkManager().preserveQueryParams(false).navigate('/projects/xy/foobar');
+LuigiClient.linkManager()
+  .preserveQueryParams(true)
+  .navigate('/projects/xy/foobar');
+LuigiClient.linkManager()
+  .preserveQueryParams(false)
+  .navigate('/projects/xy/foobar');
 ```
 
 **Meta**
 
-*   **since**: 1.19.0
+- **since**: 1.19.0
 
 #### getCurrentRoute
 
@@ -586,15 +613,19 @@ Gets the luigi route associated with the current micro frontend.
 
 ```javascript
 LuigiClient.linkManager().getCurrentRoute();
-LuigiClient.linkManager().fromContext('project').getCurrentRoute();
-LuigiClient.linkManager().fromVirtualTreeRoot().getCurrentRoute();
+LuigiClient.linkManager()
+  .fromContext('project')
+  .getCurrentRoute();
+LuigiClient.linkManager()
+  .fromVirtualTreeRoot()
+  .getCurrentRoute();
 ```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a String value specifying the current luigi route
 
 **Meta**
 
-*   **since**: 1.23.0
+- **since**: 1.23.0
 
 #### navigate
 
@@ -604,35 +635,37 @@ Navigates to the given path in the application hosted by Luigi. It contains eith
 
 ##### Parameters
 
-*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
-*   `sessionId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current Luigi **sessionId**
-*   `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard [navigate()](#navigate) function instead of [goBack()](#goBack)
-*   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path to be navigated to
+- `sessionId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current Luigi **sessionId**
+- `preserveView` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** preserve a view by setting it to `true`. It keeps the current view opened in the background and opens the new route in a new frame. Use the [goBack()](#goBack) function to navigate back. You can use this feature across different levels. Preserved views are discarded as soon as you use the standard [navigate()](#navigate) function instead of [goBack()](#goBack)
+- `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a modal. Use these settings to configure the modal's title and size
 
-    *   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
-    *   `modalSettings.size` **(`"fullscreen"` | `"l"` | `"m"` | `"s"`)** size of the modal (optional, default `"l"`)
-    *   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-    *   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-    *   `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
-    *   `modalSettings.closebtn_data_testid` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
-*   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
+  - `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
+  - `modalSettings.size` **(`"fullscreen"` | `"l"` | `"m"` | `"s"`)** size of the modal (optional, default `"l"`)
+  - `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+  - `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+  - `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+  - `modalSettings.closebtn_data_testid` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
 
-    *   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
-    *   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
-    *   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates split view but leaves it closed initially (optional, default `false`)
-*   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+- `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour
 
-    *   `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
-    *   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
-    *   `drawerSettings.size` **(`"l"` | `"m"` | `"s"` | `"xs"`)** size of the drawer (optional, default `"s"`)
+  - `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+  - `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+  - `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** creates split view but leaves it closed initially (optional, default `false`)
+
+- `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size.
+
+  - `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title. An 'x' icon is displayed to close the drawer view.
+  - `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+  - `drawerSettings.size` **(`"l"` | `"m"` | `"s"` | `"xs"`)** size of the drawer (optional, default `"s"`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().navigate('/overview')
-LuigiClient.linkManager().navigate('users/groups/stakeholders')
-LuigiClient.linkManager().navigate('/settings', null, true) // preserve view
-LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navigation
+LuigiClient.linkManager().navigate('/overview');
+LuigiClient.linkManager().navigate('users/groups/stakeholders');
+LuigiClient.linkManager().navigate('/settings', null, true); // preserve view
+LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13'); // intent navigation
 ```
 
 #### updateModalPathInternalNavigation
@@ -643,45 +676,47 @@ Updates path of the modalPathParam when internal navigation occurs.
 
 ##### Parameters
 
-*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
-*   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
-*   `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history (optional, default `false`)
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+- `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
+- `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history (optional, default `false`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend')
+LuigiClient.linkManager().updateModalPathInternalNavigation('microfrontend');
 ```
 
 **Meta**
 
-*   **since**: 1.21.0
+- **since**: 1.21.0
 
 #### openAsModal
 
 <!-- label-success: Web Component API  -->
 
-Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
+Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
 
 ##### Parameters
 
-*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
-*   `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+- `modalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** opens a view in a modal. Use these settings to configure the modal's title and size (optional, default `{}`)
 
-    *   `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
-    *   `modalSettings.size` **(`"fullscreen"` | `"l"` | `"m"` | `"s"`)** size of the modal (optional, default `"l"`)
-    *   `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-    *   `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-    *   `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
-    *   `modalSettings.closebtn_data_testid` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
+  - `modalSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** modal title. By default, it is the node label. If there is no label, it is left empty
+  - `modalSettings.size` **(`"fullscreen"` | `"l"` | `"m"` | `"s"`)** size of the modal (optional, default `"l"`)
+  - `modalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+  - `modalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+  - `modalSettings.keepPrevious` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Lets you open multiple modals. Keeps the previously opened modal and allows to open another modal on top of the previous one. By default the previous modals are discarded.
+  - `modalSettings.closebtn_data_testid` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** lets you specify a `data_testid` for the close button. Default value is `lui-modal-index-0`. If multiple modals are opened the index will be increased per modal.
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size:'m'}).then((res) => {
+LuigiClient.linkManager()
+  .openAsModal('projects/pr1/users', { title: 'Users', size: 'm' })
+  .then(res => {
     // Logic to execute when the modal will be closed
-    console.log(res.data) //=> {foo: 'bar'}
- });
+    console.log(res.data); //=> {foo: 'bar'}
+  });
 ```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
@@ -695,23 +730,27 @@ In addition, you can specify if a new history entry will be created with the upd
 
 ##### Parameters
 
-*   `updatedModalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** possibility to update the active modal. (optional, default `{}`)
+- `updatedModalSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** possibility to update the active modal. (optional, default `{}`)
 
-    *   `updatedModalSettings.title` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `title` of the active modal.
-    *   `updatedModalSettings.size` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `size` of the active modal.
-    *   `updatedModalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-    *   `updatedModalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
-*   `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history, by default it's `false`. (optional, default `false`)
+  - `updatedModalSettings.title` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `title` of the active modal.
+  - `updatedModalSettings.size` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** update the `size` of the active modal.
+  - `updatedModalSettings.width` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `width` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+  - `updatedModalSettings.height` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** updates the `height` of the modal. Allowed units are 'px', '%', 'rem', 'em', 'vh' and 'vw'.
+
+- `addHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** adds an entry in the history, by default it's `false`. (optional, default `false`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().updateModalSettings({title:'LuigiModal', size:'l'});
+LuigiClient.linkManager().updateModalSettings({
+  title: 'LuigiModal',
+  size: 'l'
+});
 ```
 
 #### openAsSplitView
 
-*   **See**: [splitView](#splitview) for further documentation about the returned instance
+- **See**: [splitView](#splitview) for further documentation about the returned instance
 
 <!-- label-success: Web Component API  -->
 
@@ -719,24 +758,27 @@ Opens a view in a split view. You can specify the split view's title and size. I
 
 ##### Parameters
 
-*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
-*   `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour (optional, default `{}`)
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+- `splitViewSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a split view. Use these settings to configure the split view's behaviour (optional, default `{}`)
 
-    *   `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
-    *   `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
-    *   `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
+  - `splitViewSettings.title` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** split view title. By default, it is the node label. If there is no label, it is left empty
+  - `splitViewSettings.size` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height of the split view in percent (optional, default `40`)
+  - `splitViewSettings.collapsed` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** opens split view in collapsed state (optional, default `false`)
 
 ##### Examples
 
 ```javascript
-const splitViewHandle = LuigiClient.linkManager().openAsSplitView('projects/pr1/logs', {title: 'Logs', size: 40, collapsed: true});
+const splitViewHandle = LuigiClient.linkManager().openAsSplitView(
+  'projects/pr1/logs',
+  { title: 'Logs', size: 40, collapsed: true }
+);
 ```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** instance of the SplitView. It provides Event listeners and you can use the available functions to control its behavior.
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### openAsDrawer
 
@@ -746,24 +788,32 @@ Opens a view in a drawer. You can specify the size of the drawer, whether the dr
 
 ##### Parameters
 
-*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
-*   `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size. (optional, default `{}`)
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** navigation path
+- `drawerSettings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** opens a view in a drawer. Use these settings to configure if the drawer has a header, backdrop and size. (optional, default `{}`)
 
-    *   `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title.  An 'x' icon is displayed to close the drawer view.
-    *   `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
-    *   `drawerSettings.size` **(`"l"` | `"m"` | `"s"` | `"xs"`)** size of the drawer (optional, default `"s"`)
-    *   `drawerSettings.overlap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** enable resizing of main microfrontend iFrame after drawer open (optional, default `true`)
+  - `drawerSettings.header` **any** By default, the header is visible. The default title is the node label, but the header could also be an object with a `title` attribute allowing you to specify your own title. An 'x' icon is displayed to close the drawer view.
+  - `drawerSettings.backdrop` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true` the rest of the screen has a backdrop.
+  - `drawerSettings.size` **(`"l"` | `"m"` | `"s"` | `"xs"`)** size of the drawer (optional, default `"s"`)
+  - `drawerSettings.overlap` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** enable resizing of main microfrontend iFrame after drawer open (optional, default `true`)
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:true, backdrop:true, size:'s'});
-LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {header:{title:'My drawer component'}, backdrop:true, size:'xs'});
+LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {
+  header: true,
+  backdrop: true,
+  size: 's'
+});
+LuigiClient.linkManager().openAsDrawer('projects/pr1/drawer', {
+  header: { title: 'My drawer component' },
+  backdrop: true,
+  size: 'xs'
+});
 ```
 
 **Meta**
 
-*   **since**: 1.6.0
+- **since**: 1.6.0
 
 #### fromContext
 
@@ -773,12 +823,14 @@ Sets the current navigation context to that of a specific parent node which has 
 
 ##### Parameters
 
-*   `navigationContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+- `navigationContext` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().fromContext('project').navigate('/settings')
+LuigiClient.linkManager()
+  .fromContext('project')
+  .navigate('/settings');
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
@@ -790,7 +842,9 @@ Sets the current navigation context which is then used by the `navigate` functio
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().fromClosestContext().navigate('/users/groups/stakeholders')
+LuigiClient.linkManager()
+  .fromClosestContext()
+  .navigate('/users/groups/stakeholders');
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
@@ -804,14 +858,16 @@ Sets the current navigation base to the parent node that is defined as virtualTr
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().fromVirtualTreeRoot().navigate('/users/groups/stakeholders')
+LuigiClient.linkManager()
+  .fromVirtualTreeRoot()
+  .navigate('/users/groups/stakeholders');
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
-*   **since**: 1.0.1
+- **since**: 1.0.1
 
 #### fromParent
 
@@ -822,14 +878,16 @@ Enables navigating to sibling nodes without knowing the absolute path.
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().fromParent().navigate('/sibling')
+LuigiClient.linkManager()
+  .fromParent()
+  .navigate('/sibling');
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
-*   **since**: 1.0.1
+- **since**: 1.0.1
 
 #### withParams
 
@@ -839,15 +897,20 @@ Sends node parameters to the route. The parameters are used by the `navigate` fu
 
 ##### Parameters
 
-*   `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+- `nodeParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().withParams({foo: "bar"}).navigate("path")
+LuigiClient.linkManager()
+  .withParams({ foo: 'bar' })
+  .navigate('path');
 
 // Can be chained with context setting functions such as:
-LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).navigate("path")
+LuigiClient.linkManager()
+  .fromContext('currentTeam')
+  .withParams({ foo: 'bar' })
+  .navigate('path');
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
@@ -860,24 +923,24 @@ Sets options to customise route changing behaviour. The parameters are used by t
 
 ##### Parameters
 
-*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** navigation options
+- `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** navigation options
 
-    *   `options.preventHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
-    *   `options.preventContextUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
+  - `options.preventHistoryEntry` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no browser history being kept.
+  - `options.preventContextUpdate` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** By default, it is set to `false`. If it is set to `true`, there is no context update being triggered.
 
 ##### Examples
 
 ```javascript
-LuigiClient.linkManager().withOptions(
-{ preventContextUpdate:true, preventHistoryEntry: true }
-).navigate('/overview')
+LuigiClient.linkManager()
+  .withOptions({ preventContextUpdate: true, preventHistoryEntry: true })
+  .navigate('/overview');
 ```
 
 Returns **[linkManager](#linkmanager)** link manager instance
 
 **Meta**
 
-*   **since**: 1.25.0
+- **since**: 1.25.0
 
 #### pathExists
 
@@ -887,18 +950,15 @@ Checks if the path you can navigate to exists in the main application. For examp
 
 ##### Parameters
 
-*   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path which existence you want to check
+- `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** path which existence you want to check
 
 ##### Examples
 
 ```javascript
 let pathExists;
- LuigiClient
- .linkManager()
- .pathExists('projects/pr2')
- .then(
-   (pathExists) => {  }
- );
+LuigiClient.linkManager()
+  .pathExists('projects/pr2')
+  .then(pathExists => {});
 ```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** a promise which resolves to a Boolean variable specifying whether the path exists or not
@@ -919,7 +979,7 @@ Discards the active view and navigates back to the last visited view. Works with
 
 ##### Parameters
 
-*   `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views
+- `goBackValue` **any** data that is passed in the **goBackContext** field to the last visited view when using preserved views
 
 ##### Examples
 
@@ -938,7 +998,7 @@ When you call `handle.collapse()`, the split view gets destroyed. It recreates w
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### collapse
 
@@ -952,7 +1012,7 @@ splitViewHandle.collapse();
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### expand
 
@@ -966,7 +1026,7 @@ splitViewHandle.expand();
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### close
 
@@ -980,7 +1040,7 @@ splitViewHandle.close();
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### setSize
 
@@ -988,7 +1048,7 @@ Sets the height of the split view
 
 ##### Parameters
 
-*   `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
+- `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
 
 ##### Examples
 
@@ -998,7 +1058,7 @@ splitViewHandle.setSize(60);
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### on
 
@@ -1006,8 +1066,8 @@ Registers a listener for split view events
 
 ##### Parameters
 
-*   `name` **(`"expand"` | `"collapse"` | `"resize"` | `"close"`)** event name
-*   `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event gets triggered by Luigi
+- `name` **(`"expand"` | `"collapse"` | `"resize"` | `"close"`)** event name
+- `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event gets triggered by Luigi
 
 ##### Examples
 
@@ -1023,7 +1083,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### removeEventListener
 
@@ -1031,7 +1091,7 @@ Unregisters a split view listener
 
 ##### Parameters
 
-*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+- `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
 
 ##### Examples
 
@@ -1041,7 +1101,7 @@ splitViewHandle.removeEventListener(listenerId);
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### exists
 
@@ -1057,7 +1117,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### getSize
 
@@ -1073,7 +1133,7 @@ Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### isCollapsed
 
@@ -1089,7 +1149,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### isExpanded
 
@@ -1105,7 +1165,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 ### uxManager
 
@@ -1149,7 +1209,7 @@ This method informs the main application that there are unsaved changes in the c
 
 ##### Parameters
 
-*   `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
+- `isDirty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** indicates if there are any unsaved changes on the current page or in the component
 
 #### showConfirmationModal
 
@@ -1159,31 +1219,30 @@ Shows a confirmation modal.
 
 ##### Parameters
 
-*   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
+- `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
 
-    *   `settings.type` **(`"confirmation"` | `"success"` | `"warning"` | `"error"` | `"information"`)** the content of the modal type. (Optional)
-    *   `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
-    *   `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body. It supports HTML formatting elements such as `<br>`, `<b>`, `<strong>`, `<i>`, `<em>`, `<mark>`, `<small>`, `<del>`, `<ins>`, `<sub>`, `<sup>`. (optional, default `"Are you sure you want to do this?"`)
-    *   `settings.buttonConfirm` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | `false`)** the label for the modal confirmation button. If set to `false`, the button will not be shown. (optional, default `"Yes"`)
-    *   `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
+  - `settings.type` **(`"confirmation"` | `"success"` | `"warning"` | `"error"` | `"information"`)** the content of the modal type. (Optional)
+  - `settings.header` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal header (optional, default `"Confirmation"`)
+  - `settings.body` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the modal body. It supports HTML formatting elements such as `<br>`, `<b>`, `<strong>`, `<i>`, `<em>`, `<mark>`, `<small>`, `<del>`, `<ins>`, `<sub>`, `<sup>`. (optional, default `"Are you sure you want to do this?"`)
+  - `settings.buttonConfirm` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) | `false`)** the label for the modal confirmation button. If set to `false`, the button will not be shown. (optional, default `"Yes"`)
+  - `settings.buttonDismiss` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the label for the modal dismiss button (optional, default `"No"`)
 
 ##### Examples
 
 ```javascript
 import LuigiClient from '@luigi-project/client';
 const settings = {
- type: "confirmation",
- header: "Confirmation",
- body: "Are you sure you want to do this?",
- buttonConfirm: "Yes",
- buttonDismiss: "No"
-}
-LuigiClient
- .uxManager()
- .showConfirmationModal(settings)
- .then(() => {
+  type: 'confirmation',
+  header: 'Confirmation',
+  body: 'Are you sure you want to do this?',
+  buttonConfirm: 'Yes',
+  buttonDismiss: 'No'
+};
+LuigiClient.uxManager()
+  .showConfirmationModal(settings)
+  .then(() => {
     // Logic to execute when the confirmation modal is dismissed
- });
+  });
 ```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when accepting the confirmation modal and rejected when dismissing it
@@ -1196,40 +1255,44 @@ Shows an alert.
 
 ##### Parameters
 
-*   `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
+- `settings` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** the settings for the alert
 
-    *   `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
-    *   `settings.type` **(`"info"` | `"success"` | `"warning"` | `"error"`)** sets the type of alert
-    *   `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
+  - `settings.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the content of the alert. To add a link to the content, you have to set up the link in the `links` object. The key(s) in the `links` object must be used in the text to reference the links, wrapped in curly brackets with no spaces. If you don't specify any text, the alert is not displayed
+  - `settings.type` **(`"info"` | `"success"` | `"warning"` | `"error"`)** sets the type of alert
+  - `settings.links` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** provides links data
 
-        *   `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
+    - `settings.links.LINK_KEY` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** object containing the data for a particular link. To properly render the link in the alert message refer to the description of the **settings.text** parameter
 
-            *   `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
-            *   `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
-            *   `settings.links.LINK_KEY.dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** dismissKey which represents the key of the link.
-    *   `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
+      - `settings.links.LINK_KEY.text` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** text which replaces the link identifier in the alert content
+      - `settings.links.LINK_KEY.url` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** URL to navigate when you click the link. Currently, only internal links are supported in the form of relative or absolute paths
+      - `settings.links.LINK_KEY.dismissKey` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** dismissKey which represents the key of the link.
+
+  - `settings.closeAfter` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** (optional) time in milliseconds that tells Luigi when to close the Alert automatically. If not provided, the Alert will stay on until closed manually. It has to be greater than `100`
 
 ##### Examples
 
 ```javascript
 import LuigiClient from '@luigi-project/client';
 const settings = {
- text: "Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject} or {neverShowItAgain}",
- type: 'info',
- links: {
-   goToHome: { text: 'homepage', url: '/overview' },
-   goToOtherProject: { text: 'other project', url: '/projects/pr2' },
-   relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
-   neverShowItAgain: { text: 'Never show it again', dismissKey: 'neverShowItAgain' }
- },
- closeAfter: 3000
-}
-LuigiClient
- .uxManager()
- .showAlert(settings)
- .then(() => {
+  text:
+    'Ut enim ad minim veniam, {goToHome} quis nostrud exercitation ullamco {relativePath}. Duis aute irure dolor {goToOtherProject} or {neverShowItAgain}',
+  type: 'info',
+  links: {
+    goToHome: { text: 'homepage', url: '/overview' },
+    goToOtherProject: { text: 'other project', url: '/projects/pr2' },
+    relativePath: { text: 'relative hide side nav', url: 'hideSideNav' },
+    neverShowItAgain: {
+      text: 'Never show it again',
+      dismissKey: 'neverShowItAgain'
+    }
+  },
+  closeAfter: 3000
+};
+LuigiClient.uxManager()
+  .showAlert(settings)
+  .then(() => {
     // Logic to execute when the alert is dismissed
- });
+  });
 ```
 
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when the alert is dismissed
@@ -1252,7 +1315,7 @@ Sets current locale to the specified one.
 
 ##### Parameters
 
-*   `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
+- `locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** locale to be set as the current locale
 
 #### isSplitView
 
@@ -1264,7 +1327,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### isModal
 
@@ -1274,7 +1337,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
-*   **since**: 0.6.0
+- **since**: 0.6.0
 
 #### isDrawer
 
@@ -1286,7 +1349,7 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
-*   **since**: 1.26.0
+- **since**: 1.26.0
 
 #### getCurrentTheme
 
@@ -1312,7 +1375,7 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 **Meta**
 
-*   **since**: 2.3.0
+- **since**: 2.3.0
 
 #### applyCSS
 
@@ -1328,7 +1391,7 @@ LuigiClient.uxManager().applyCSS();
 
 **Meta**
 
-*   **since**: 2.3.0
+- **since**: 2.3.0
 
 ### storageManager
 
@@ -1342,20 +1405,22 @@ Stores an item for a specific key.
 
 ##### Parameters
 
-*   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key used to identify the value
-*   `value` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** item to store; object must be stringifyable
+- `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key used to identify the value
+- `value` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** item to store; object must be stringifyable
 
 ##### Examples
 
 ```javascript
-LuigiClient.storageManager().setItem('keyExample','valueExample').then(() => console.log('Value stored'))
+LuigiClient.storageManager()
+  .setItem('keyExample', 'valueExample')
+  .then(() => console.log('Value stored'));
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<void>** resolves an empty value when the storage operation is over. It will launch an error if storage is not supported, the value cannot be stringified, or if you are using a Luigi reserved key.
 
 **Meta**
 
-*   **since**: 1.6.0
+- **since**: 1.6.0
 
 #### getItem
 
@@ -1363,19 +1428,21 @@ Retrieves an item for a specific key.
 
 ##### Parameters
 
-*   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the value
+- `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the value
 
 ##### Examples
 
 ```javascript
-LuigiClient.storageManager().getItem('keyExample').then((value) => console.log);
+LuigiClient.storageManager()
+  .getItem('keyExample')
+  .then(value => console.log);
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** resolves an item retrieved from storage. It will launch an error if storage is not supported.
 
 **Meta**
 
-*   **since**: 1.6.0
+- **since**: 1.6.0
 
 #### removeItem
 
@@ -1383,7 +1450,7 @@ Removes an item for a specific key.
 
 ##### Parameters
 
-*   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the value
+- `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** used to identify the value
 
 ##### Examples
 
@@ -1395,7 +1462,7 @@ Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 **Meta**
 
-*   **since**: 1.6.0
+- **since**: 1.6.0
 
 #### clear
 
@@ -1404,14 +1471,16 @@ Clears all the storage key/values.
 ##### Examples
 
 ```javascript
-LuigiClient.storageManager().clear().then(() => console.log('storage cleared'))
+LuigiClient.storageManager()
+  .clear()
+  .then(() => console.log('storage cleared'));
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)\<void>** resolves when storage clear is over.
 
 **Meta**
 
-*   **since**: 1.6.0
+- **since**: 1.6.0
 
 #### has
 
@@ -1419,19 +1488,21 @@ Checks if a key is present in storage.
 
 ##### Parameters
 
-*   `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key in the storage
+- `key` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** key in the storage
 
 ##### Examples
 
 ```javascript
-LuigiClient.storageManager().has(key).then((present) => console.log('item is present '+present))
+LuigiClient.storageManager()
+  .has(key)
+  .then(present => console.log('item is present ' + present));
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)>** `true` if key is present, `false` if it is not
 
 **Meta**
 
-*   **since**: 1.6.0
+- **since**: 1.6.0
 
 #### getAllKeys
 
@@ -1440,11 +1511,13 @@ Gets all the keys used in the storage.
 ##### Examples
 
 ```javascript
-LuigiClient.storageManager().getAllKeys().then((keys) => console.log('keys are '+keys))
+LuigiClient.storageManager()
+  .getAllKeys()
+  .then(keys => console.log('keys are ' + keys));
 ```
 
 Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)<[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>>** keys currently present in the storage
 
 **Meta**
 
-*   **since**: 1.6.0
+- **since**: 1.6.0

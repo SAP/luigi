@@ -18,16 +18,16 @@
     "bundle": "npm run build",
     "dev": "rollup -c -w",
     "copyBundle": "cp public/bundle.js public/bundle.js.map test-app/ && cp public/bundle.js public/bundle.js.map  examples/ || COPY public\\* test-app\\",
-    "copyLuigiElement": "cp ../client/src/luigi-element.js test-app/compound",
+    "copyLuigiElement": "cp ../client/public/luigi-element.js test-app/compound",
     "serve": "npm run build && npm run copyLuigiElement && npm run copyBundle && sirv -D -c test-app --no-clear",
     "bundle:watch": "chokidar \"src/**/*.*\" -c \"npm run build && npm run copyBundle\"",
     "start": "concurrently -k \"npm run serve\" \"npm run bundle:watch\"",
-    "start-examples":"npm run copyBundle && sirv -D -c examples --no-clear",
-    "start-examples-test":"npm run copyBundle && sirv -D -c examples --no-clear --port 2222",
+    "start-examples": "npm run copyBundle && sirv -D -c examples --no-clear",
+    "start-examples-test": "npm run copyBundle && sirv -D -c examples --no-clear --port 2222",
     "cypress-headless": "cypress run -c video=false",
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
     "prepare-release": "node prepareNextRelease.js",
-    "sync-event-typings":"cp src/constants/communication.ts typings/constants/events.d.ts"
+    "sync-event-typings": "cp src/constants/communication.ts typings/constants/events.d.ts"
   },
   "devDependencies": {
     "@babel/node": "7.22.10",
