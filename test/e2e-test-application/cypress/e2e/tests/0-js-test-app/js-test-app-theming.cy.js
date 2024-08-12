@@ -324,11 +324,6 @@ describe('JS-TEST-APP 2', () => {
           .openAsModal('/home/one');
       });
 
-      // TODO - Accessing LuigiCLient directly results in flaky behavoir, skip for now
-      // cy.getModalWindow().then(win => {
-      //   assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
-      // });
-
       cy.expectPathToBe('/home?mymodal=' + encodeURIComponent('/home/one?~mp=one'));
     });
 
@@ -345,11 +340,6 @@ describe('JS-TEST-APP 2', () => {
           .withParams({ mp: 'one' })
           .openAsModal('/home/one');
       });
-
-      // TODO - Accessing LuigiCLient directly results in flaky behavoir, skip for now
-      // cy.getModalWindow().then(win => {
-      //   assert.deepEqual(win.LuigiClient.getNodeParams(), { mp: 'one' });
-      // });
 
       cy.expectPathToBe('/home');
       cy.location().should(location => {
