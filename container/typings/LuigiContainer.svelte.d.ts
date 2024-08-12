@@ -122,6 +122,8 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of rules for the content in the iframe, managed by the HTML `allow` attribute.
    * You can use one or more rules by adding them to the array, for example allowRules: ["microphone", "camera"].
+   * @example <luigi-container viewUrl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
+   * @example containerElement.allowRules = ['microphone', 'camera']
    * @since 1.2.0
    */
   allowRules: string[];
@@ -129,6 +131,8 @@ export default class LuigiContainer extends HTMLElement {
   /**
    * The list of rules for the content in the iframe, managed by the HTML `sandbox` attribute.
    * You can use one or more rules by adding them to the array, for example sandboxRules: ["allow-scripts", "allow-same-origin"].
+   * @example <luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+   * @example containerElement.sandboxRules = ['allow-modals', 'allow-popups']
    * @since 1.2.0
    */
   sandboxRules: string[];
