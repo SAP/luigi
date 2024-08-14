@@ -685,8 +685,8 @@
 
   //open and extend the popover of the last two tabs to the left
   div.luigi-tabsContainerHeader span.fd-icon-tab-bar__item--single-click:nth-last-child(2) .fd-popover__body,
-  div.luigi-tabsContainerHeader span.fd-icon-tab-bar__item--single-click:nth-last-child(3) .fd-popover__body{
-    right:0;
+  div.luigi-tabsContainerHeader span.fd-icon-tab-bar__item--single-click:nth-last-child(3) .fd-popover__body {
+    right: 0;
     left: auto;
   }
 

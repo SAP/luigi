@@ -36,7 +36,7 @@
           }
         });
         //Added this class to detect if breadcrumb + fd-tool-layout + tabNavHeader is active and set the correct top value
-        document.querySelector('.iframeContainerTabNav').classList.add('lui-tab-header__active')
+        document.querySelector('.iframeContainerTabNav').classList.add('lui-tab-header__active');
       } else {
         console.warn(
           'Horizontal navigation custom header microfrontend requires a webcomponent type node and tabNav.showAsTabHeader property set.'
