@@ -208,6 +208,16 @@ You can use one or more rules by adding them to the array, for example allowRule
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
 
+#### Examples
+
+```javascript
+<luigi-container viewUrl="/index.html" allow-rules='["microphone", "camera"]'></luigi-container>
+```
+
+```javascript
+containerElement.allowRules = ['microphone', 'camera']
+```
+
 **Meta**
 
 *   **since**: 1.2.0
@@ -218,6 +228,16 @@ The list of rules for the content in the iframe, managed by the HTML `sandbox` a
 You can use one or more rules by adding them to the array, for example sandboxRules: \["allow-scripts", "allow-same-origin"].
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+#### Examples
+
+```javascript
+<luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+```
+
+```javascript
+containerElement.sandboxRules = ['allow-modals', 'allow-popups']
+```
 
 **Meta**
 
