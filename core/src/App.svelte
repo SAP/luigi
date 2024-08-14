@@ -2240,14 +2240,13 @@
   }
 
   :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
-    top: calc(var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height));
+    top: var(--luigi__shellbar--height);
   }
 
-  :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
-    top: calc(
-      var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
-        var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
-    );
+  :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav.lui-tab-header__active )
+  {
+    top: var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height))
+    
   }
 
   .iframeContainer:focus {

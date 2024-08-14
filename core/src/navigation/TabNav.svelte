@@ -429,7 +429,7 @@
                     </div>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body fd-icon-tab-bar__popover-body"
                     aria-hidden={!dropDownStates[key]}
                     id={popoverId}
                   >
@@ -486,7 +486,7 @@
                     </a>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body fd-icon-tab-bar__popover-body test"
                     aria-hidden={!dropDownStates[key]}
                   >
                     <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
@@ -530,7 +530,7 @@
               </button>
             </div>
             <div
-              class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+              class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body test3"
               aria-hidden={!isMoreBtnExpanded}
             >
               <ul class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only">
@@ -681,6 +681,13 @@
         )
     );
     overflow-y: auto;
+  }
+
+  //open and extend the popover of the last two tabs to the left
+  div.luigi-tabsContainerHeader span.fd-icon-tab-bar__item--single-click:nth-last-child(2) .fd-popover__body,
+  div.luigi-tabsContainerHeader span.fd-icon-tab-bar__item--single-click:nth-last-child(3) .fd-popover__body{
+    right:0;
+    left: auto;
   }
 
   :global(.fd-tool-layout .lui-main-content) {
