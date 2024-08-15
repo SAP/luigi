@@ -16,7 +16,16 @@ meta -->
 
 # Luigi Container API
 
-This document outlines the parameters provided by the Luigi Container.
+This document outlines the parameters provided by the Luigi Container. They can be set as HTML attributes or through the Container object's property in JS. The properties use pascalCase and the attributes use dashes. For example you can set the sandbox rules in either of these two equivalent ways:
+
+```js
+myContainer.sandboxRules = ["allow-scripts", "allow-same-origin"]
+```
+
+```HTML
+<luigi-container viewUrl="/index.html" sandbox-rules='["allow-scripts", "allow-same-origin"]'></luigi-container>
+```
+
 
 ## API Reference
 
