@@ -16,7 +16,7 @@ meta -->
 
 # Luigi Compound Container API
 
-This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container. They can be set as HTML attributes or through the Container object's property in JS. The properties use pascalCase and the attributes use dashes. For example you can set the sandbox rules in either of these two equivalent ways:
+This document outlines the parameters provided by the Luigi Compound Container. Luigi Compound Container provides the possibility to insert multiple webcomponent-based microfrontends in one container. The properties can be set as HTML attributes or through the Container object's property in JS. The properties use pascalCase and the attributes use dashes. For example you can set the sandbox rules in either of these two equivalent ways:
 
 ```js
 myContainer.sandboxRules = ["allow-scripts", "allow-same-origin"]
