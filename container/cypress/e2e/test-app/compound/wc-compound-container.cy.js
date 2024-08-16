@@ -120,7 +120,9 @@ describe('Compound Container Tests', () => {
             .contains('retrieveContextValue')
             .click()
             .then(() => {
-              expect(stub.getCall(0)).to.be.calledWith('compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}');
+              expect(stub.getCall(0)).to.be.calledWith(
+                'compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}'
+              );
             });
         });
     });
