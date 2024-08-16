@@ -8,7 +8,7 @@ describe('Compound Container Tests', () => {
       stub = cy.stub();
     });
 
-    it('LuigiClient API getUserSettings for LuigiCompoundContainer', () => {
+    it('LuigiClient API - getUserSettings', () => {
       cy.on('window:alert', stub);
 
       cy.get(containerSelector)
@@ -20,7 +20,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it('LuigiClient API getAnchor for LuigiCompoundContainer', () => {
+    it('LuigiClient API - getAnchor', () => {
       cy.on('window:alert', stub);
 
       cy.get(containerSelector)
@@ -32,7 +32,83 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it('LuigiClient API updateContext', () => {
+    it.only('LuigiClient API - getDirtyStatus', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getDirtyStatus')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.uxManager().getDirtyStatus()=false');
+        });
+    });
+
+    it.only('LuigiClient API - getClientPermissions', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getClientPermissions')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('{"permission":"testPermission"}');
+        });
+    });
+
+    it.only('LuigiClient API - getNodeParams', () => {
+      cy.on('window:alert', stub);
+
+      // getNodeParams is not available for compound children, so default behavior should be to return empty {}
+      cy.get(containerSelector)
+        .shadow()
+        .contains('get node params')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getNodeParams()={}');
+        });
+    });
+
+    it.only('LuigiClient API - getPathParams', () => {
+      cy.on('window:alert', stub);
+
+      // getNodeParams is not available for compound children, so default behavior should be to return empty {}
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getPathParams')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('{"path":"param"}');
+        });
+    });
+
+    it.only('LuigiClient API - setViewGroupData', () => {
+      cy.on('window:alert', stub);
+
+      // getNodeParams is not available for compound children, so default behavior should be to return empty {}
+      cy.get(containerSelector)
+        .shadow()
+        .contains('setViewGroupData')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('{"vg":"some data"}');
+        });
+    });
+
+    it.only('LuigiClient API - getCoreSearchParams', () => {
+      cy.on('window:alert', stub);
+
+      // getNodeParams is not available for compound children, so default behavior should be to return empty {}
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getCoreSearchParams')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('{"test":"searchParam1"}');
+        });
+    });
+
+    it.only('LuigiClient API updateContext', () => {
       cy.on('window:alert', stub);
 
       cy.wait(500);
@@ -41,7 +117,7 @@ describe('Compound Container Tests', () => {
         .then(() => {
           cy.get(containerSelector)
             .shadow()
-            .contains('updateContext')
+            .contains('retrieveContextValue')
             .click()
             .then(() => {
               expect(stub.getCall(0)).to.be.calledWith('compoundWC.ctx={"label":"Dashboard","title":"Some input","instant":true,"newContextData":"some data"}');
