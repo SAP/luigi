@@ -559,7 +559,7 @@
               </button>
             </div>
             <div
-              class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body test3"
+              class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
               aria-hidden={!isMoreBtnExpanded}
             >
               <ul class="fd-nested-list fd-nested-list--compact fd-nested-list--text-only">
