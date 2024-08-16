@@ -353,7 +353,7 @@
    * @param popoverElement
    */
   function hasSpaceOnRight(popoverElement) {
-    if(!popoverElement)return;
+    if (!popoverElement) return;
     const rect = popoverElement.getBoundingClientRect();
 
     const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
@@ -364,11 +364,13 @@
   /**
    * Add/remove class to render popover to the right side or not.
    */
-  function renderPopoverRightSide(){
-    const luigiTabsContainer = document.querySelectorAll('.luigi-tabsContainerHeader .fd-icon-tab-bar__item--single-click .fd-popover__body');
+  function renderPopoverRightSide() {
+    const luigiTabsContainer = document.querySelectorAll(
+      '.luigi-tabsContainerHeader .fd-icon-tab-bar__item--single-click .fd-popover__body'
+    );
     luigiTabsContainer.forEach(child => {
       child.classList.remove('fd-popover__body--right');
-      if(!hasSpaceOnRight(child)){
+      if (!hasSpaceOnRight(child)) {
         child.classList.add('fd-popover__body--right');
       }
     });
@@ -709,7 +711,6 @@
     );
     overflow-y: auto;
   }
-
 
   :global(.fd-tool-layout .lui-main-content) {
     #tabsContainer {
