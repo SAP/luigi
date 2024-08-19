@@ -164,8 +164,7 @@
           entry.contentRect.height + 'px'
         );
       }
-      if(isBtpToolLayoutActive)
-        renderPopoverRightSide();
+      if (isBtpToolLayoutActive) renderPopoverRightSide();
     });
     setTimeout(() => {
       if (tabsContainer) {
@@ -185,7 +184,9 @@
 
   onMount(() => {
     hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
-    isBtpToolLayoutActive = LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') && LuigiConfig.getConfigBooleanValue('settings.experimental.btpToolLayout');
+    isBtpToolLayoutActive =
+      LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') &&
+      LuigiConfig.getConfigBooleanValue('settings.experimental.btpToolLayout');
     handleHorizontalNavHeightChange();
     StateHelpers.doOnStoreChange(
       store,
@@ -461,7 +462,7 @@
                     </div>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive?'fd-popover__body--right':''} fd-icon-tab-bar__popover-body "
+                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive ? 'fd-popover__body--right' : ''} fd-icon-tab-bar__popover-body "
                     aria-hidden={!dropDownStates[key]}
                     id={popoverId}
                   >
@@ -518,7 +519,7 @@
                     </a>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive?'fd-popover__body--right':''} fd-icon-tab-bar__popover-body"
+                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive ? 'fd-popover__body--right' : ''} fd-icon-tab-bar__popover-body"
                     aria-hidden={!dropDownStates[key]}
                   >
                     <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
