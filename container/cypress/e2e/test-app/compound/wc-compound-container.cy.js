@@ -32,7 +32,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it.only('LuigiClient API - getDirtyStatus', () => {
+    it('LuigiClient API - getDirtyStatus', () => {
       cy.on('window:alert', stub);
 
       cy.get(containerSelector)
@@ -44,7 +44,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it.only('LuigiClient API - getClientPermissions', () => {
+    it('LuigiClient API - getClientPermissions', () => {
       cy.on('window:alert', stub);
 
       cy.get(containerSelector)
@@ -56,7 +56,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it.only('LuigiClient API - getNodeParams', () => {
+    it('LuigiClient API - getNodeParams', () => {
       cy.on('window:alert', stub);
 
       // getNodeParams is not available for compound children, so default behavior should be to return empty {}
@@ -69,7 +69,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it.only('LuigiClient API - getPathParams', () => {
+    it('LuigiClient API - getPathParams', () => {
       cy.on('window:alert', stub);
 
       // getNodeParams is not available for compound children, so default behavior should be to return empty {}
@@ -82,7 +82,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it.only('LuigiClient API - setViewGroupData', () => {
+    it('LuigiClient API - setViewGroupData', () => {
       cy.on('window:alert', stub);
 
       // getNodeParams is not available for compound children, so default behavior should be to return empty {}
@@ -95,7 +95,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it.only('LuigiClient API - getCoreSearchParams', () => {
+    it('LuigiClient API - getCoreSearchParams', () => {
       cy.on('window:alert', stub);
 
       // getNodeParams is not available for compound children, so default behavior should be to return empty {}
@@ -108,7 +108,7 @@ describe('Compound Container Tests', () => {
         });
     });
 
-    it.only('LuigiClient API updateContext', () => {
+    it('LuigiClient API updateContext', () => {
       cy.on('window:alert', stub);
 
       cy.wait(500);
