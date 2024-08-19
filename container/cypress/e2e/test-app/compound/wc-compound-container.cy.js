@@ -72,7 +72,6 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API - getPathParams', () => {
       cy.on('window:alert', stub);
 
-      // getNodeParams is not available for compound children, so default behavior should be to return empty {}
       cy.get(containerSelector)
         .shadow()
         .contains('getPathParams')
@@ -85,7 +84,6 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API - setViewGroupData', () => {
       cy.on('window:alert', stub);
 
-      // getNodeParams is not available for compound children, so default behavior should be to return empty {}
       cy.get(containerSelector)
         .shadow()
         .contains('setViewGroupData')
@@ -98,7 +96,6 @@ describe('Compound Container Tests', () => {
     it('LuigiClient API - getCoreSearchParams', () => {
       cy.on('window:alert', stub);
 
-      // getNodeParams is not available for compound children, so default behavior should be to return empty {}
       cy.get(containerSelector)
         .shadow()
         .contains('getCoreSearchParams')
