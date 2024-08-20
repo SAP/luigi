@@ -10,11 +10,16 @@
       component based microfrontend
     </h3>
     <button id="luigi-update-context" type="button">Update context</button>
+    <button id="init-button" style="margin: 25px 0 15px">
+      container.init() to initialize defered container
+    </button>
+    <button id="sendCustomMessageBtn" style="margin: 25px 0 15px">sendCustomMessage</button>
 
     <div style="height: fit-content;">
       <div style="border: 1px solid blue">
         <!-- Luigi Container to test general functionalities, params etc-->
         <luigi-container
+          id="test-id"
           data-test-id="luigi-client-api-test-01"
           viewURL="./wc/helloWorldWC.js"
           webcomponent="true"
@@ -33,9 +38,6 @@
         ></luigi-container>
       </div>
 
-      <button id="init-button" style="margin: 25px 0 15px">
-        container.init() to initialize defered container
-      </button>
       <div style="border: 1px solid red">
         <!-- Luigi Container to test defer-init flag-->
 
@@ -67,6 +69,12 @@
       const initButton = document.getElementById('init-button');
       initButton.addEventListener('click', function() {
         deferInitContainer.init();
+      });
+      // document.querySelector('luigi-container');
+      const container = document.getElementById('test-id'); // document.querySelector('luigi-container');          // document.getElementById("test-id");
+      const sendCustomMsgBtn = document.getElementById('sendCustomMessageBtn');
+      sendCustomMsgBtn.addEventListener('click', () => {
+        container.sendCustomMessage('custom-message-id', {dataToSend: 'cool custom Message'});
       });
 
       [...document.querySelectorAll('luigi-container')].forEach(luigiContainer => {
