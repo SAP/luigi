@@ -308,7 +308,6 @@ export default class extends HTMLElement {
     this.$navigateToIntent = this._shadowRoot.querySelector('#navigateToIntent');
     this.$navigateToIntent.addEventListener('click', () => {
       if (this.LuigiClient) {
-        console.log(this.LuigiClient)
         this.LuigiClient.linkManager().navigateToIntent('Sales-settings');
         alert('navigated to: #?intent=Sales-settings');
       }

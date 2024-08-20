@@ -71,7 +71,7 @@
         deferInitContainer.init();
       });
       // document.querySelector('luigi-container');
-      const container = document.getElementById('test-id'); // document.querySelector('luigi-container');          // document.getElementById("test-id");
+      const container = document.getElementById('test-id');
       const sendCustomMsgBtn = document.getElementById('sendCustomMessageBtn');
       sendCustomMsgBtn.addEventListener('click', () => {
         container.sendCustomMessage('custom-message-id', {dataToSend: 'cool custom Message'});
