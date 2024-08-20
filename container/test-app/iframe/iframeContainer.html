@@ -46,9 +46,7 @@
 
       // for testing send Custom message functionality
       sendCustomMessageBtn.addEventListener('click', () => {
-        luigiContainer.sendCustomMessage('update', {
-          milliseconds: new Date().getMilliseconds()
-        });
+        luigiContainer.sendCustomMessage('update', {dataToSend: 'some data'});
       });
 
       updateContextButton.addEventListener('click', () => {
