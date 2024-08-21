@@ -27,6 +27,620 @@ This document outlines the features provided by the Luigi Client API. It covers 
 
 ## API Reference
 
+### Lifecycle
+
+Use the functions and parameters to define the Lifecycle of listeners, navigation nodes, and Event data.
+
+#### isLuigiClientInitialized
+
+Check if LuigiClient is initialized
+
+##### Examples
+
+```javascript
+const init = LuigiClient.isLuigiClientInitialized()
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** client initialized state
+
+**Meta**
+
+*   **since**: 1.12.0
+
+#### luigiClientInit
+
+Starts the handshake with Luigi Core and thereafter results in initialization of Luigi Client. It is always ran by default when importing the Luigi Client package in your micro frontend. Note that when using `defer-luigi-init` to defer default initialization, you will need to initialize the handshake using this function manually wherever needed.
+
+##### Examples
+
+```javascript
+LuigiClient.luigiClientInit()
+```
+
+**Meta**
+
+*   **since**: 1.12.0
+
+#### addInitListener
+
+Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
+
+##### Parameters
+
+*   `initFn` **[Lifecycle~initListenerCallback](#lifecycleinitlistenercallback)** the function that is called once Luigi is initialized, receives current context and origin as parameters
+
+##### Examples
+
+```javascript
+const initListenerId = LuigiClient.addInitListener((context) => storeContextToMF(context))
+```
+
+#### removeInitListener
+
+Removes an init listener.
+
+##### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function.
+
+##### Examples
+
+```javascript
+LuigiClient.removeInitListener(initListenerId)
+```
+
+#### addContextUpdateListener
+
+Registers a listener called with the context object when the URL is changed. For example, you can use this when changing environments in a context switcher in order for the micro frontend to do an API call to the environment picked.
+
+##### Parameters
+
+*   `contextUpdatedFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time Luigi context changes
+
+##### Examples
+
+```javascript
+const updateListenerId = LuigiClient.addContextUpdateListener((context) => storeContextToMF(context))
+```
+
+#### removeContextUpdateListener
+
+Removes a context update listener.
+
+##### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addContextUpdateListener` function
+
+##### Examples
+
+```javascript
+LuigiClient.removeContextUpdateListener(updateListenerId)
+```
+
+#### addInactiveListener
+
+Registers a listener called upon micro frontend inactivity. This happens when a new micro frontend gets shown while keeping the old one cached.
+Gets called when:
+
+*   navigating with **preserveView**
+*   navigating from or to a **viewGroup**
+
+Does not get called when navigating normally, or when `openAsModal` or `openAsSplitView` are used.
+Once the micro frontend turns back into active state, the `addContextUpdateListener` receives an updated context.
+
+##### Parameters
+
+*   `inactiveFn` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** the listener function called each time a micro frontend turns into an inactive state
+
+##### Examples
+
+```javascript
+LuigiClient.addInactiveListener(() => mfIsInactive = true)
+const inactiveListenerId = LuigiClient.addInactiveListener(() => mfIsInactive = true)
+```
+
+#### removeInactiveListener
+
+Removes a listener for inactive micro frontends.
+
+##### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInactiveListener` function
+
+##### Examples
+
+```javascript
+LuigiClient.removeInactiveListener(inactiveListenerId)
+```
+
+#### addCustomMessageListener
+
+Registers a listener called when the micro frontend receives a custom message.
+
+##### Parameters
+
+*   `customMessageId` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the custom message id
+*   `customMessageListener` **[Lifecycle~customMessageListenerCallback](#lifecyclecustommessagelistenercallback)** the function that is called when the micro frontend receives the corresponding event
+
+##### Examples
+
+```javascript
+const customMsgId = LuigiClient.addCustomMessageListener('myapp.project-updated', (data) => doSomething(data))
+```
+
+**Meta**
+
+*   **since**: 0.6.2
+
+#### removeCustomMessageListener
+
+Removes a custom message listener.
+
+##### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** the id that was returned by the `addInitListener` function
+
+##### Examples
+
+```javascript
+LuigiClient.removeCustomMessageListener(customMsgId)
+```
+
+**Meta**
+
+*   **since**: 0.6.2
+
+#### getToken
+
+Returns the currently valid access token.
+
+##### Examples
+
+```javascript
+const accessToken = LuigiClient.getToken()
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** current access token
+
+#### getContext
+
+Returns the context object. Typically it is not required as the [addContextUpdateListener()](#addContextUpdateListener) receives the same values.
+
+##### Examples
+
+```javascript
+const context = LuigiClient.getContext()
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+
+#### getEventData
+
+Returns the context object. It is an alias function for getContext().
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current context data
+
+**Meta**
+
+*   **deprecated**: This is deprecated.
+
+#### getActiveFeatureToggles
+
+<!-- label-success: Web Component API  -->
+
+Returns a list of active feature toggles
+
+##### Examples
+
+```javascript
+const activeFeatureToggleList = LuigiClient.getActiveFeatureToggles()
+```
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** a list of feature toggle names
+
+**Meta**
+
+*   **since**: 1.4.0
+
+#### addNodeParams
+
+<!-- label-success: Web Component API  -->
+
+Sets node parameters in Luigi Core. The parameters will be added to the URL.
+
+##### Parameters
+
+*   `params` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+*   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
+
+##### Examples
+
+```javascript
+LuigiClient.addNodeParams({luigi:'rocks'}, true);
+```
+
+#### getNodeParams
+
+<!-- label-success: Web Component API  -->
+
+Returns the node parameters of the active URL.
+Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
+
+<!-- add-attribute:class:warning -->
+
+> **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
+
+##### Parameters
+
+*   `shouldDesanitise` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** defines whether the specially encoded characters should be desanitised (optional, default `false`)
+
+##### Examples
+
+```javascript
+const nodeParams = LuigiClient.getNodeParams()
+const nodeParams = LuigiClient.getNodeParams(true)
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
+
+#### getPathParams
+
+<!-- label-success: Web Component API  -->
+
+Returns the dynamic path parameters of the active URL.
+Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
+All path parameters in the current navigation path (as defined by the active URL) are returned.
+
+<!-- add-attribute:class:warning -->
+
+> **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
+
+##### Examples
+
+```javascript
+const pathParams = LuigiClient.getPathParams()
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example `  {productId: 1234, ...} `
+
+#### getCoreSearchParams
+
+Read search query parameters which are sent from Luigi Core
+
+##### Examples
+
+```javascript
+LuigiClient.getCoreSearchParams();
+```
+
+Returns **any** Core search query parameters
+
+#### addCoreSearchParams
+
+<!-- label-success: Web Component API  -->
+
+Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using [clientPermissions.urlParameters](navigation-parameters-reference.md#clientpermissionsurlparameters).
+
+##### Parameters
+
+*   `searchParams` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+*   `keepBrowserHistory` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**  (optional, default `true`)
+
+##### Examples
+
+```javascript
+LuigiClient.addCoreSearchParams({luigi:'rocks'}, false);
+```
+
+#### getClientPermissions
+
+<!-- label-success: Web Component API  -->
+
+Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
+
+##### Examples
+
+```javascript
+const permissions = LuigiClient.getClientPermissions()
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** client permissions as specified in the navigation node
+
+#### setTargetOrigin
+
+When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client. Typically used only in custom micro-frontend frameworks that are compatible with LuigiClient API.
+
+##### Parameters
+
+*   `origin` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** target origin
+
+##### Examples
+
+```javascript
+LuigiClient.setTargetOrigin(window.location.origin)
+```
+
+**Meta**
+
+*   **since**: 0.7.3
+
+#### sendCustomMessage
+
+Sends a custom message to the Luigi Core application.
+
+##### Parameters
+
+*   `message` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** an object containing data to be sent to the Luigi Core to process it further. This object is set as an input parameter of the custom message listener on the Luigi Core side
+
+    *   `message.id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a string containing the message id
+    *   `message.MY_DATA_FIELD` **any** any other message data field
+
+##### Examples
+
+```javascript
+LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
+LuigiClient.sendCustomMessage({id: 'environment.created', data: environmentDataObj})
+```
+
+**Meta**
+
+*   **since**: 0.6.2
+
+#### getUserSettings
+
+<!-- label-success: Web Component API  -->
+
+Returns the current user settings based on the selected node.
+
+##### Examples
+
+```javascript
+const userSettings = LuigiClient.getUserSettings()
+```
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** current user settings
+
+**Meta**
+
+*   **since**: 1.7.1
+
+#### getAnchor
+
+<!-- label-success: Web Component API  -->
+
+Returns the current anchor based on active URL.
+
+##### Examples
+
+```javascript
+LuigiClient.getAnchor();
+```
+
+Returns **any** anchor of URL
+
+**Meta**
+
+*   **since**: 1.21.0
+
+#### setAnchor
+
+<!-- label-success: Web Component API  -->
+
+Sends anchor to Luigi Core. The anchor will be added to the URL.
+
+##### Parameters
+
+*   `anchor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+##### Examples
+
+```javascript
+LuigiClient.setAnchor('luigi');
+```
+
+**Meta**
+
+*   **since**: 1.21.0
+
+#### setViewGroupData
+
+<!-- label-success: Web Component API  -->
+
+This function allows you to change node labels within the same [view group](navigation-advanced.md#view-groups), e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
+
+##### Parameters
+
+*   `data` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** a data object containing the view group name and desired label
+
+##### Examples
+
+```javascript
+LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
+```
+
+**Meta**
+
+*   **since**: 2.2.0
+
+### splitView
+
+Split view
+Allows to open a micro frontend in a split screen in the lower part of the content area. Open it by calling `const splitViewHandle = LuigiClient.linkManager().openAsSplitView`.
+At a given time, you can open only one split view. It closes automatically when you navigate to a different route.
+When you call `handle.collapse()`, the split view gets destroyed. It recreates when you use `handle.expand()`.
+`openAsSplitView` returns an instance of the split view handle. The functions, actions, and event handlers listed below allow you to control and manage the split view.
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### collapse
+
+Collapses the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.collapse();
+```
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### expand
+
+Expands the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.expand();
+```
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### close
+
+Closes and destroys the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.close();
+```
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### setSize
+
+Sets the height of the split view
+
+##### Parameters
+
+*   `value` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** lower height in percent
+
+##### Examples
+
+```javascript
+splitViewHandle.setSize(60);
+```
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### on
+
+Registers a listener for split view events
+
+##### Parameters
+
+*   `name` **(`"expand"` | `"collapse"` | `"resize"` | `"close"`)** event name
+*   `callback` **[function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** gets called when this event gets triggered by Luigi
+
+##### Examples
+
+```javascript
+const listenerId = splitViewHandle.on('expand', () => {});
+const listenerId = splitViewHandle.on('collapse', () => {});
+const listenerId = splitViewHandle.on('resize', () => {});
+const listenerId = splitViewHandle.on('close', () => {});
+*
+```
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### removeEventListener
+
+Unregisters a split view listener
+
+##### Parameters
+
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** listener id
+
+##### Examples
+
+```javascript
+splitViewHandle.removeEventListener(listenerId);
+```
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### exists
+
+Gets the split view status
+
+##### Examples
+
+```javascript
+splitViewHandle.exists();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if a split view is loaded
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### getSize
+
+Reads the size of the split view
+
+##### Examples
+
+```javascript
+splitViewHandle.getSize();
+```
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** height in percent
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### isCollapsed
+
+Reads the collapse status
+
+##### Examples
+
+```javascript
+splitViewHandle.isCollapsed();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently collapsed
+
+**Meta**
+
+*   **since**: 0.6.0
+
+#### isExpanded
+
+Reads the expand status
+
+##### Examples
+
+```javascript
+splitViewHandle.isExpanded();
+```
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if the split view is currently expanded
+
+**Meta**
+
+*   **since**: 0.6.0
+
 <!-- Generated by documentation.js. Update this documentation by updating the source code. -->
 
 ### uxManager
