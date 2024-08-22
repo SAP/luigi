@@ -48,7 +48,7 @@ function getCurrentDate() {
 /*
   Update package.json with new version
 */
-function updateVersionInPgkJson(version){
+function updateVersionInPgkJson(version) {
   packageJson.version = version;
   fs.writeFileSync('./public/package.json', JSON.stringify(packageJson, null, 4));
   logSuccess('Updated container/public/package.json');
@@ -77,8 +77,8 @@ async function prepareRelease() {
       rl.close();
       return;
     }
-    
-    updateVersionInPgkJson(version)
+
+    updateVersionInPgkJson(version);
 
     try {
       const { data: pulls } = await repo.listPullRequests({ state: 'closed' });
