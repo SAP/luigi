@@ -26,7 +26,7 @@
     "start-examples-test":"npm run copyBundle && sirv -D -c examples --no-clear --port 2222",
     "cypress-headless": "cypress run -c video=false",
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
-    "release":"node generate-changelog.js",
+    "release":"node release-cli.js",
     "replace-version-in-docu": "node prepareNextRelease.js",
     "sync-event-typings":"cp src/constants/communication.ts typings/constants/events.d.ts"
   },

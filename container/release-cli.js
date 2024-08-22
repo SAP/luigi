@@ -13,18 +13,18 @@ const logWarning = str => console.log(color.yellow.bold(str));
 const logSuccess = str => console.log(color.green.bold(str));
 const logError = str => console.log(color.redBright.bold(str));
 
-async function getLastContainerTag() {
+async function getContainerReleases() {
   try {
     const { data: releases } = await repo.listReleases();
     const containerReleases = [];
     releases.forEach(release => {
-      if (release.tag_name.startsWith('container/')) {
+      if (release.tag_name.startsWith('container/v')) {
         containerReleases.push(release);
       }
     });
     return containerReleases;
   } catch (error) {
-    console.error('Fehler beim Abrufen des letzten "container/v"-Tags:', error.message);
+    console.error('Can not fetch container releases.', error.message);
     return null;
   }
 }
@@ -45,15 +45,27 @@ function getCurrentDate() {
   return `${year}-${month}-${day}`;
 }
 
+/*
+  Update package.json with new version
+*/
+function updateVersionInPgkJson(version){
+  packageJson.version = version;
+  fs.writeFileSync('./public/package.json', JSON.stringify(packageJson, null, 4));
+  logSuccess('Updated container/public/package.json');
+}
+
+/*
+  Update package.json and add changes to changelog
+*/
 async function prepareRelease() {
-  const lastContainerRelease = await getLastContainerTag();
+  const lastContainerRelease = (await getContainerReleases())[0];
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });
 
   const question = color.bold.cyan(
-    `Version you want to release (current version ${lastContainerRelease[0].tag_name.replace('container/v', '')})? `
+    `Version you want to release (current version ${lastContainerRelease.tag_name.replace('container/v', '')})? `
   );
   rl.question(question, async version => {
     if (packageJson.version >= version) {
@@ -65,9 +77,8 @@ async function prepareRelease() {
       rl.close();
       return;
     }
-    packageJson.version = version;
-    fs.writeFileSync('./public/package.json', JSON.stringify(packageJson, null, 4));
-    logSuccess('Updated container/public/package.json');
+    
+    updateVersionInPgkJson(version)
 
     try {
       const { data: pulls } = await repo.listPullRequests({ state: 'closed' });
@@ -77,7 +88,7 @@ async function prepareRelease() {
       pulls.forEach(pr => {
         const labels = pr.labels.map(label => label.name);
         if (labels.includes('container')) {
-          if (pr.merged_at > lastContainerRelease[0].published_at) {
+          if (pr.merged_at > lastContainerRelease.published_at) {
             if (labels.includes('bug')) {
               bugPulls.push(pr);
             } else if (labels.includes('enhancement')) {
@@ -104,7 +115,7 @@ async function prepareRelease() {
       existingChangelog = existingChangelog.replace(/^([^\n]*\n){3}/, '');
       fs.writeFileSync(changelogPath, existingChangelog, 'utf-8');
 
-      const lastline = `[v${version}]: https://github.com/SAP/luigi/compare/${lastContainerRelease[0].tag_name}...container/v${version}`;
+      const lastline = `[v${version}]: https://github.com/SAP/luigi/compare/${lastContainerRelease.tag_name}...container/v${version}`;
       const newChangelog = `# Changelog\n\n\n## [v${version}] (${getCurrentDate()})\n\n#### :rocket: Added\n\n${containerEnhancementChanges}\n\n#### :bug: Fixed${containerBugChanges}\n\n${containerNoLabelChanges}\n\n\n\n\n\n${existingChangelog}\n${lastline}`;
 
       fs.writeFileSync(changelogPath, newChangelog);

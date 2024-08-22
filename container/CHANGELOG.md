@@ -1,9 +1,6 @@
 # Changelog
 
 
-## [v1.2.0] (2024-07-25)
-
-#### :rocket: Added
 * [#3797](https://github.com/SAP/luigi/pull/3797) Adds navigateToIntent to wc client api ([@walmazacn](https://github.com/walmazacn))
 * [#3785](https://github.com/SAP/luigi/pull/3785) Add getToken function support to Luigi Container ([@ndricimrr](https://github.com/ndricimrr))
 * [#3780](https://github.com/SAP/luigi/pull/3780) Add getCurrentRoute function support to Luigi Container ([@JohannesDoberer](https://github.com/JohannesDoberer))
