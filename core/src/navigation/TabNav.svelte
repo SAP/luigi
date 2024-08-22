@@ -26,6 +26,7 @@
   let tabsContainerHeader;
   let moreButton;
   let moreLink;
+  let isBtpToolLayoutActive;
 
   //TODO refactor
   const __this = {
@@ -163,6 +164,7 @@
           entry.contentRect.height + 'px'
         );
       }
+      if (isBtpToolLayoutActive) renderPopoverRightSide();
     });
     setTimeout(() => {
       if (tabsContainer) {
@@ -182,6 +184,9 @@
 
   onMount(() => {
     hideNavComponent = LuigiConfig.getConfigBooleanValue('settings.hideNavigation');
+    isBtpToolLayoutActive =
+      LuigiConfig.getConfigBooleanValue('settings.btpToolLayout') &&
+      LuigiConfig.getConfigBooleanValue('settings.experimental.btpToolLayout');
     handleHorizontalNavHeightChange();
     StateHelpers.doOnStoreChange(
       store,
@@ -346,6 +351,34 @@
   function isMultiClickAreaTabItem(nodes) {
     return !!getNodeToNavigateTo(nodes);
   }
+
+  /**
+   * Checks if the popover element has enough space to the right side to see the whole content of the popover.
+   * @param popoverElement
+   */
+  function hasSpaceOnRight(popoverElement) {
+    if (!popoverElement) return;
+    const rect = popoverElement.getBoundingClientRect();
+
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    const popoverRightEdge = rect.left + rect.width;
+    return popoverRightEdge <= viewportWidth;
+  }
+
+  /**
+   * Add/remove class to render popover to the right side or not.
+   */
+  function renderPopoverRightSide() {
+    const luigiTabsContainer = document.querySelectorAll(
+      '.luigi-tabsContainerHeader .fd-icon-tab-bar__item--single-click .fd-popover__body'
+    );
+    luigiTabsContainer.forEach(child => {
+      child.classList.remove('fd-popover__body--right');
+      if (!hasSpaceOnRight(child)) {
+        child.classList.add('fd-popover__body--right');
+      }
+    });
+  }
 </script>
 
 <svelte:window on:click={closeAllDropdowns} on:blur={closeAllDropdowns} on:resize={onResize} />
@@ -429,7 +462,7 @@
                     </div>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive ? 'fd-popover__body--right' : ''} fd-icon-tab-bar__popover-body "
                     aria-hidden={!dropDownStates[key]}
                     id={popoverId}
                   >
@@ -486,7 +519,7 @@
                     </a>
                   </div>
                   <div
-                    class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--right fd-icon-tab-bar__popover-body"
+                    class="fd-popover__body fd-popover__body--no-arrow {!isBtpToolLayoutActive ? 'fd-popover__body--right' : ''} fd-icon-tab-bar__popover-body"
                     aria-hidden={!dropDownStates[key]}
                   >
                     <ul class="fd-list fd-list--navigation fd-list--no-border fd-icon-tab-bar__list">
