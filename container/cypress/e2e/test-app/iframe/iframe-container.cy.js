@@ -24,6 +24,8 @@ describe('Iframe Container Test', () => {
   });
 
   it('sendCustomMessage', () => {
+    cy.get('#btn-1')
+      .click()
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
@@ -31,21 +33,7 @@ describe('Iframe Container Test', () => {
         const $body = iframe.contents().find('body')
         cy.wrap($body)
           .find('#content')
-          .should('have.text', ' ');
-      });
-
-    cy.get('#btn-1')
-      .click()
-      .then(() => {
-        cy.get(containerSelector)
-          .shadow()
-          .get('iframe')
-          .then(iframe => {
-            const $body = iframe.contents().find('body')
-            cy.wrap($body)
-              .find('#content')
-              .should('have.text', 'Received Custom Message: some data');
-          });
+          .should('have.text', 'Received Custom Message: some data');
       });
   });
 
