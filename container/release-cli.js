@@ -36,7 +36,7 @@ async function getContainerReleases() {
 /**
  * Get the current Date and return it in a yyy-mm-dd format for the header of a release in the changelog
  * @returns string with current date
-*/
+ */
 function getCurrentDate() {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -65,14 +65,16 @@ function updateVersionInPgkJson(version) {
 
 /**
  * Formats a list of pull requests into a Markdown-compatible string.
- * Each pull request is converted into a string containing the PR number, 
+ * Each pull request is converted into a string containing the PR number,
  * title, and user information, all formatted as a Markdown list item.
  *
  * @param {Array} pullRequests - An array of pull request objects.
  * @returns {string} A formatted string with each pull request as a Markdown list item.
  */
-function formatPullRequests(pullRequests){
-  return pullRequests.map(pr => `- [#${pr.number}](${pr.html_url}) ${pr.title} ([@${pr.user.login}](${pr.user.html_url}))`).join('\n');
+function formatPullRequests(pullRequests) {
+  return pullRequests
+    .map(pr => `- [#${pr.number}](${pr.html_url}) ${pr.title} ([@${pr.user.login}](${pr.user.html_url}))`)
+    .join('\n');
 }
 
 /**
@@ -80,7 +82,7 @@ function formatPullRequests(pullRequests){
  *
  * @param {Array<Object>} pullRequests - An array of pull request objects to be categorized based on the label.
  * @param {Object} lastContainerRelease - An object representing the last container release.
- * 
+ *
  * @returns {Object} An object containing four arrays that categorize the pull requests:
  *   - `breakingPulls`: An array of pull requests labeled as "breaking" changes.
  *   - `enhancementPulls`: An array of pull requests labeled as "enhancement".
@@ -97,7 +99,7 @@ function categorizePullRequests(pullRequests, lastContainerRelease) {
 
   pullRequests.forEach(pr => {
     const labels = pr.labels.map(label => label.name);
-    
+
     if (labels.includes('container') && pr.merged_at > lastContainerRelease.published_at) {
       if (labels.includes('breaking')) {
         categorizedPulls.breakingPulls.push(pr);
@@ -142,50 +144,54 @@ async function prepareRelease() {
 
     try {
       const { data: pullRequests } = await repo.listPullRequests({ state: 'closed' });
-      const {breakingPulls, enhancementPulls, bugPulls, noLabelPulls} = categorizePullRequests(pullRequests, lastContainerRelease);
+      const { breakingPulls, enhancementPulls, bugPulls, noLabelPulls } = categorizePullRequests(
+        pullRequests,
+        lastContainerRelease
+      );
       const containerBreakingChanges = formatPullRequests(breakingPulls);
       const containerEnhancementChanges = formatPullRequests(enhancementPulls);
       const containerBugChanges = formatPullRequests(bugPulls);
       const containerNoLabelChanges = formatPullRequests(noLabelPulls);
 
       const changelogPath = './CHANGELOG.md';
-      
 
       //Add compare link to the end of the file
       const lastline = `\n[v${version}]: https://github.com/SAP/luigi/compare/${lastContainerRelease.tag_name}...container/v${version}`;
-      fs.appendFile(changelogPath, lastline, 'utf8', (err) => {
+      fs.appendFile(changelogPath, lastline, 'utf8', err => {
         if (err) {
-            logError('Cannot write compare link to the last line:', err);
-            return;
+          logError('Cannot write compare link to the last line:', err);
+          return;
         }
       });
 
       //Add the new release entry to the changelog after the comment (in the changelog)
-      const newChangelog = `\n\n## [v${version}] (${getCurrentDate()})\n\n${containerBreakingChanges ? `#### ":boom: Breaking Change"\n${containerBreakingChanges}\n\n` : ''}${containerEnhancementChanges ? `#### :rocket: Added\n\n${containerEnhancementChanges}\n\n` : ''}${containerBugChanges ? `#### :bug: Fixed\n\n${containerBugChanges}\n\n`:''}${containerNoLabelChanges ? `#### :internal: Issue with no label\n\n${containerNoLabelChanges}\n`:''}`;
+      const newChangelog = `\n\n## [v${version}] (${getCurrentDate()})\n\n${
+        containerBreakingChanges ? `#### ":boom: Breaking Change"\n${containerBreakingChanges}\n\n` : ''
+      }${containerEnhancementChanges ? `#### :rocket: Added\n\n${containerEnhancementChanges}\n\n` : ''}${
+        containerBugChanges ? `#### :bug: Fixed\n\n${containerBugChanges}\n\n` : ''
+      }${containerNoLabelChanges ? `#### :internal: Issue with no label\n\n${containerNoLabelChanges}\n` : ''}`;
       fs.readFile(changelogPath, 'utf8', (err, data) => {
         if (err) {
-            logError('Cannot read file when trying to add release to changelog file:', err);
-            return;
+          logError('Cannot read file when trying to add release to changelog file:', err);
+          return;
         }
-    
+
         const searchText = '<!--Generate the changelog using release cli. -->';
-        
-        //Find searchText and add after the searchText the new release to the changelog 
+
+        //Find searchText and add after the searchText the new release to the changelog
         if (data.includes(searchText)) {
-            const newData = data.replace(searchText, `${searchText}\n\n${newChangelog}`);
-            fs.writeFile(changelogPath, newData, 'utf8', (err) => {
-                if (err) {
-                    console.error('Cannot write data to file:', err);
-                    return;
-                }
-            });
+          const newData = data.replace(searchText, `${searchText}\n\n${newChangelog}`);
+          fs.writeFile(changelogPath, newData, 'utf8', err => {
+            if (err) {
+              console.error('Cannot write data to file:', err);
+              return;
+            }
+          });
         } else {
-            console.log('The searchText (comment) was not found in CHANGELOG file.');
-            return;
+          console.log('The searchText (comment) was not found in CHANGELOG file.');
+          return;
         }
       });
-
-
 
       logSuccess('Changelog updated successfully!');
 
