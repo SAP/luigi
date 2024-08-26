@@ -131,16 +131,18 @@ describe('Web Container Test', () => {
             });
         });
     });
-    
     it('sendCustomMessage', () => {
+      cy.get(containerSelector)
+        .shadow()
+        .find('#customMessageDiv')
+        .should('have.text', 'Received Custom Message: ');
+
       cy.get('#sendCustomMessageBtn')
         .click()
-        .then(() => {
-          cy.get(containerSelector)
-          .shadow()
-          .find('#customMessageDiv')
-          .should('have.text', 'Received Custom Message: cool custom Message');
+      cy.get(containerSelector)
+        .shadow()
+        .find('#customMessageDiv')
+        .should('have.text', 'Received Custom Message: cool custom Message');
         });
-    });
   });
 });
