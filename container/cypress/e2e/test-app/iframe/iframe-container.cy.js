@@ -23,6 +23,20 @@ describe('Iframe Container Test', () => {
       });
   });
 
+  it('sendCustomMessage', () => {
+    cy.get('#btn-1')
+      .click()
+    cy.get(containerSelector)
+      .shadow()
+      .get('iframe')
+      .then(iframe => {
+        const $body = iframe.contents().find('body')
+        cy.wrap($body)
+          .find('#content')
+          .should('have.text', 'Received Custom Message: some data');
+      });
+  });
+
   it('custom message sent', () => {
     cy.on('window:alert', stub);
 
@@ -37,7 +51,7 @@ describe('Iframe Container Test', () => {
           .then(() => {
             cy.wrap(stub).should(
               'have.been.calledWith',
-              'Custom message recieved: {"id":"my.customMessage","_metaData":{},"data":{"bar":"foo"}}'
+              'Custom message received: {"id":"my.customMessage","_metaData":{},"data":{"bar":"foo"}}'
             );
           });
       });
@@ -61,7 +75,7 @@ describe('Iframe Container Test', () => {
               .then(() => {
                 cy.wrap(stub).should(
                   'have.been.calledWith',
-                  'Custom message recieved: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
+                  'Custom message received: {"id":"my.contextMessage","_metaData":{},"data":{"myContext":"some context data"}}'
                 );
               });
           });
@@ -84,7 +98,7 @@ describe('Iframe Container Test', () => {
           .then(() => {
             cy.wrap(stub).should(
               'have.been.calledWith',
-              'Custom message recieved: {"id":"token.updated","_metaData":{},"data":{"value":"updated token"}}'
+              'Custom message received: {"id":"token.updated","_metaData":{},"data":{"value":"updated token"}}'
             );
           });
       });
