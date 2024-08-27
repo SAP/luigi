@@ -73,7 +73,7 @@ function updateVersionInPgkJson(version) {
  */
 function formatPullRequests(pullRequests) {
   return pullRequests
-    .map(pr => `- [#${pr.number}](${pr.html_url}) ${pr.title} ([@${pr.user.login}](${pr.user.html_url}))`)
+    .map(pr => `* [#${pr.number}](${pr.html_url}) ${pr.title} ([@${pr.user.login}](${pr.user.html_url}))`)
     .join('\n');
 }
 
@@ -157,7 +157,11 @@ async function prepareRelease() {
 
       //Add compare link to the end of the file
       const lastline = `\n[v${version}]: https://github.com/SAP/luigi/compare/${lastContainerRelease.tag_name}...container/v${version}`;
-      fs.appendFile(changelogPath, lastline, 'utf8', err => {
+
+      //read file before append last line to file, otherwise it will not be written
+      fs.readFileSync(changelogPath, 'utf8');
+      fs.appendFileSync(changelogPath, lastline, 'utf8', err => {
+        console.log('Append lastline to Changelog', lastline);
         if (err) {
           logError('Cannot write compare link to the last line:', err);
           return;
