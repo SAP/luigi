@@ -25,7 +25,5 @@
 * [#3600](https://github.com/SAP/luigi/pull/3600) Avoid browser history change from luigi client on context update ([@JohannesDoberer](https://github.com/JohannesDoberer))
 
 
+[v1.1.0]: https://github.com/SAP/luigi/compare/container/v1.0.0...container/v1.1.0
 [v1.2.0]: https://github.com/SAP/luigi/compare/container/v1.1.0...container/v1.2.0
-[v1.2.0]: https://github.com/SAP/luigi/compare/container/v1.0.0...container/v1.1.0[v1.3.0]: https://github.com/SAP/luigi/compare/container/v1.2.0...container/v1.3.0
-[v1.3.0]: https://github.com/SAP/luigi/compare/container/v1.2.0...container/v1.3.0
-[v1.4.0]: https://github.com/SAP/luigi/compare/container/v1.2.0...container/v1.4.0
