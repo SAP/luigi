@@ -73,7 +73,7 @@ function updateVersionInPgkJson(version) {
  */
 function formatPullRequests(pullRequests) {
   return pullRequests
-    .map(pr => `- [#${pr.number}](${pr.html_url}) ${pr.title} ([@${pr.user.login}](${pr.user.html_url}))`)
+    .map(pr => `* [#${pr.number}](${pr.html_url}) ${pr.title} ([@${pr.user.login}](${pr.user.html_url}))`)
     .join('\n');
 }
 

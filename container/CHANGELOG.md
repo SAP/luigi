@@ -8,7 +8,7 @@
 
 #### :rocket: Added
 
-- [#3831](https://github.com/SAP/luigi/pull/3831) Improves context updating method ([@walmazacn](https://github.com/walmazacn))
+* [#3831](https://github.com/SAP/luigi/pull/3831) Improves context updating method ([@walmazacn](https://github.com/walmazacn))
 
 
 
