@@ -28,7 +28,7 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 ## [v2.15.0] (2024-08-28)
 
 #### :rocket: Added
-* [#3870](https://github.com/SAP/luigi/pull/3870) Updates peer dependencies ([@walmazacn](https://github.com/walmazacn))
+* [#3870](https://github.com/SAP/luigi/pull/3870) Angular 18 support for client-support-angular library ([@walmazacn](https://github.com/walmazacn))
 
 
 
