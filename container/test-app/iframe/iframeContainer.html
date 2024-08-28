@@ -35,7 +35,7 @@
       });
 
       luigiContainer.addEventListener(Events.CUSTOM_MESSAGE, event => {
-        alert('Custom message recieved: ' + JSON.stringify(event.detail));
+        alert('Custom message received: ' + JSON.stringify(event.detail));
       });
 
       var alertSettings;
@@ -46,9 +46,7 @@
 
       // for testing send Custom message functionality
       sendCustomMessageBtn.addEventListener('click', () => {
-        luigiContainer.sendCustomMessage('update', {
-          milliseconds: new Date().getMilliseconds()
-        });
+        luigiContainer.sendCustomMessage('update', {dataToSend: 'some data'});
       });
 
       updateContextButton.addEventListener('click', () => {
@@ -91,7 +89,7 @@
 
       luigiContainer.addEventListener(Events.ALERT_REQUEST, event => {
         console.log('params:', Events.ALERT_REQUEST, event);
-        alert('show-alert-request message recieved: ' + JSON.stringify(event.detail));
+        alert('show-alert-request message received: ' + JSON.stringify(event.detail));
         console.log(event.detail.data.data);
         alertSettings = event.detail.data.data;
         showAnAlert(alertSettings);
@@ -100,28 +98,28 @@
       luigiContainer.addEventListener(Events.ADD_SEARCH_PARAMS_REQUEST, event => {
         console.log('params:', Events.ADD_SEARCH_PARAMS_REQUEST, event);
         alert(
-          'add-search-params-request message recieved: ' + JSON.stringify(event.detail)
+          'add-search-params-request message received: ' + JSON.stringify(event.detail)
         );
       });
 
       luigiContainer.addEventListener(Events.ADD_NODE_PARAMS_REQUEST, event => {
         console.log(Events.ADD_NODE_PARAMS_REQUEST, event);
         alert(
-          'add-node-params-request message recieved: ' + JSON.stringify(event.detail)
+          'add-node-params-request message received: ' + JSON.stringify(event.detail)
         );
       });
 
       luigiContainer.addEventListener(Events.SHOW_CONFIRMATION_MODAL_REQUEST, event => {
         console.log(Events.SHOW_CONFIRMATION_MODAL_REQUEST, event);
         alert(
-          'show-confirmation-modal message recieved: ' + JSON.stringify(event.detail)
+          'show-confirmation-modal message received: ' + JSON.stringify(event.detail)
         );
       });
 
       luigiContainer.addEventListener(Events.SHOW_LOADING_INDICATOR_REQUEST, event => {
         console.log(Events.SHOW_LOADING_INDICATOR_REQUEST, event);
         alert(
-          'show-loading-indicator-request message recieved: ' +
+          'show-loading-indicator-request message received: ' +
             JSON.stringify(event.detail.data)
         );
       });
@@ -129,7 +127,7 @@
       luigiContainer.addEventListener(Events.HIDE_LOADING_INDICATOR_REQUEST, event => {
         console.log(Events.HIDE_LOADING_INDICATOR_REQUEST, event);
         alert(
-          'hide-loading-indicator-request message recieved: ' +
+          'hide-loading-indicator-request message received: ' +
             JSON.stringify(event.detail.data)
         );
       });
@@ -139,7 +137,7 @@
         console.log(Events.SET_CURRENT_LOCALE_REQUEST, event);
         alert(
           Events.SET_CURRENT_LOCALE_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -148,7 +146,7 @@
         console.log(Events.LOCAL_STORAGE_SET_REQUEST, event);
         alert(
           Events.LOCAL_STORAGE_SET_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -157,7 +155,7 @@
         console.log(Events.RUNTIME_ERROR_HANDLING_REQUEST, event);
         alert(
           Events.RUNTIME_ERROR_HANDLING_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -166,7 +164,7 @@
         console.log(Events.SET_ANCHOR_LINK_REQUEST, event);
         alert(
           Events.SET_ANCHOR_LINK_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -175,7 +173,7 @@
         console.log(Events.SET_THIRD_PARTY_COOKIES_REQUEST, event);
         alert(
           Events.SET_THIRD_PARTY_COOKIES_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data.data)
+          'message received: ' + JSON.stringify(event.detail.data.data)
         );
       });
 
@@ -184,7 +182,7 @@
         console.log(Events.BACK_NAVIGATION_REQUEST, event);
         alert(
           Events.BACK_NAVIGATION_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -193,7 +191,7 @@
         console.log(Events.GET_CURRENT_ROUTE_REQUEST, event);
         alert(
           Events.GET_CURRENT_ROUTE_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -202,7 +200,7 @@
         console.log(Events.NAVIGATION_COMPLETED_REPORT, event);
         alert(
           Events.NAVIGATION_COMPLETED_REPORT,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -211,7 +209,7 @@
         console.log(Events.UPDATE_MODAL_PATH_DATA_REQUEST, event);
         alert(
           Events.UPDATE_MODAL_PATH_DATA_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -220,7 +218,7 @@
         console.log(Events.CHECK_PATH_EXISTS_REQUEST, event);
         alert(
           Events.CHECK_PATH_EXISTS_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
 
@@ -229,7 +227,7 @@
         console.log(Events.SET_DIRTY_STATUS_REQUEST, event);
         alert(
           Events.SET_DIRTY_STATUS_REQUEST,
-          'message recieved: ' + JSON.stringify(event.detail.data)
+          'message received: ' + JSON.stringify(event.detail.data)
         );
       });
     </script>
