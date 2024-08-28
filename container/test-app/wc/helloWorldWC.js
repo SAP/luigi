@@ -90,7 +90,6 @@ export default class extends HTMLElement {
 
     const customMessageDiv = document.createElement('template');
     customMessageDiv.innerHTML = '<div id="customMessageDiv">Received Custom Message: </div>';
-    
 
     this._shadowRoot = this.attachShadow({
       mode: 'open',
@@ -313,13 +312,12 @@ export default class extends HTMLElement {
       }
     });
 
-    this.addEventListener('custom-message-id', (event) => {
-      console.log('custom message received: ', event.detail)
+    this.addEventListener('custom-message-id', event => {
+      console.log('custom message received: ', event.detail);
       const customMessageDiv = this._shadowRoot.querySelector('#customMessageDiv');
       customMessageDiv.textContent = `Received Custom Message: ${event.detail.dataToSend}`;
-      customMessageDiv.style = "color: red;";
-    })
-    
+      customMessageDiv.style = 'color: red;';
+    });
   }
 
   get context() {

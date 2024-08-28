@@ -24,13 +24,12 @@ describe('Iframe Container Test', () => {
   });
 
   it('sendCustomMessage', () => {
-    cy.get('#btn-1')
-      .click()
+    cy.get('#btn-1').click();
     cy.get(containerSelector)
       .shadow()
       .get('iframe')
       .then(iframe => {
-        const $body = iframe.contents().find('body')
+        const $body = iframe.contents().find('body');
         cy.wrap($body)
           .find('#content')
           .should('have.text', 'Received Custom Message: some data');
