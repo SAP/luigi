@@ -25,6 +25,15 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 -->
 
 
+## [v2.15.0] (2024-08-28)
+
+#### :rocket: Added
+* [#3870](https://github.com/SAP/luigi/pull/3870) Angular 18 support for client-support-angular library ([@walmazacn](https://github.com/walmazacn))
+
+
+
+
+
 ## [v2.14.3] (2024-08-22)
 
 #### :bug: Fixed
@@ -1844,3 +1853,4 @@ The lerna-changelog tool detects changes based on PR labels and maps them to sec
 [v2.14.1]: https://github.com/SAP/luigi/compare/v2.14.0...v2.14.1
 [v2.14.2]: https://github.com/SAP/luigi/compare/v2.14.1...v2.14.2
 [v2.14.3]: https://github.com/SAP/luigi/compare/v2.14.2...v2.14.3
+[v2.15.0]: https://github.com/SAP/luigi/compare/v2.14.3...v2.15.0
