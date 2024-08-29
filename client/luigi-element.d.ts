@@ -419,6 +419,12 @@ export interface LuigiClient {
   getCurrentLocale: () => string;
   linkManager: () => LinkManager;
   uxManager: () => UxManager;
+  /**
+   * Published an event that can be listened to on the other end
+   * @param event event to be published
+   * @returns 
+   * @memberof LuigiClient
+   */
   publishEvent: (event: Event) => void;
   /**
    * Sets node parameters in Luigi Core. The parameters will be added to the URL.
