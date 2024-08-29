@@ -213,16 +213,10 @@
       }
       LuigiClient.addInitListener(updateFn);
       LuigiClient.addContextUpdateListener(updateFn);
-      LuigiClient.addCustomMessageListener('update', data => {
-        console.log('Custom Message Received inside iframe Container', data);
+      LuigiClient.addCustomMessageListener('update', msg => {
+        console.log('Custom Message Received inside iframe Container', msg);
         document.getElementById('content').innerHTML =
-          'Received Custom Message: ' + data.milliseconds;
-      });
-
-      LuigiClient.addCustomMessageListener('update', data => {
-        console.log('Custom Message Received inside iframe Container', data);
-        document.getElementById('content').innerHTML =
-          'Received Custom Message: ' + data.milliseconds;
+          'Received Custom Message: ' + msg.dataToSend;
       });
 
       // fallback visibility if no initlistener called for 3 seconds

@@ -16,7 +16,7 @@
   <body>
     <h3>
       This page is used to test Compound-Container Luigi CLient API functionalities for
-      web component based microfrontend
+      compound web component based microfrontend
     </h3>
     <button id="luigi-update-context" type="button">Update context</button>
 
@@ -220,6 +220,7 @@
       // setViewGroup Data listener
       compoundContainer.addEventListener(MFEventID.SET_VIEW_GROUP_DATA_REQUEST, event => {
         console.log('Set View Group Data Request received', event.detail, event);
+        alert(JSON.stringify(event.detail));
       });
 
       const deferInitContainer = document.getElementById('defer-init-test');

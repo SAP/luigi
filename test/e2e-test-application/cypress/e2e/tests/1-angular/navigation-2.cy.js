@@ -267,5 +267,21 @@ describe('Navigation', () => {
       });
       cy.expectPathToBe('/projects/pr2/nav-sync/dynamic-parameter-stacked/2/child/3');
     });
+
+    it('Auto routing in a modal', () => {
+      cy.get('.fd-app__sidebar')
+        .contains('Auto routing')
+        .click();
+      cy.getIframeBody().then($iframeBody => {
+        cy.wrap($iframeBody)
+          .contains('Test auto routing in a modal')
+          .click();
+      });
+      cy.location().should(location => {
+        const actualPath = location.pathname + location.search;
+        const pathToCheck = '/projects/pr2/nav-sync/auto-routing?modal=%2Fprojects%2Fpr1%2Fsettings';
+        expect(actualPath).to.eq(pathToCheck);
+      });
+    });
   });
 });

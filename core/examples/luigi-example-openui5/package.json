@@ -14,7 +14,7 @@
     "@luigi-project/core": "^2.14.0"
   },
   "devDependencies": {
-    "@ui5/cli": "^3.11.0",
-    "local-web-server": "^5.3.3"
+    "@ui5/cli": "^3.11.1",
+    "local-web-server": "^5.4.0"
   }
 }

@@ -127,7 +127,7 @@
       compound: compoundConfig,
       viewUrl: viewurl,
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
-    }; // TODO: fill with sth
+    };
     if (!thisComponent.getNoShadow()) {
       mainComponent.innerHTML=''
       const shadow = thisComponent.attachShadow({ mode: "open"});

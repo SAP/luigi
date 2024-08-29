@@ -751,7 +751,6 @@
         msg: 'luigi.ux.alert.hide',
         id,
         dismissKey
-        //TODO: update docu for this param
       };
       IframeHelpers.sendMessageToIframe(iframe, message);
     } else if (alert.promise) {
@@ -2126,6 +2125,11 @@
   :global(.lui-breadcrumb #tabsContainer) {
     top: calc(var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height));
   }
+
+  :global(.lui-breadcrumb .fd-tool-layout #tabsContainer) {
+    top: 0;
+  }
+
   :global(.lui-breadcrumb .iframeContainer.iframeContainerTabNav) {
     top: calc(
       var(--luigi__shellbar--height) + var(--luigi__breadcrumb--height) +
@@ -2241,6 +2245,14 @@
 
   :global(.no-top-nav .iframeContainer.iframeContainerTabNav) {
     top: calc(var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height)));
+  }
+
+  :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav) {
+    top: var(--luigi__shellbar--height);
+  }
+
+  :global(.lui-breadcrumb .fd-tool-layout .iframeContainer.iframeContainerTabNav.lui-tab-header__active) {
+    top: var(--luigi__horizontal-nav--live-height, var(--luigi__horizontal-nav--height));
   }
 
   .iframeContainer:focus {
