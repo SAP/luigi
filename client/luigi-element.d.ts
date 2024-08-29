@@ -422,7 +422,7 @@ export interface LuigiClient {
   /**
    * Published an event that can be listened to on the other end
    * @param event event to be published
-   * @returns 
+   * @returns
    * @memberof LuigiClient
    */
   publishEvent: (event: Event) => void;
