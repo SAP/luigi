@@ -589,7 +589,7 @@ export declare interface StorageManager {
 /**
  * Registers a listener called with the context object and the Luigi Core domain as soon as Luigi is instantiated. Defer your application bootstrap if you depend on authentication data coming from Luigi.
  * @param {Lifecycle~initListenerCallback} initFn the function that is called once Luigi is initialized, receives current context and origin as parameters
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function addInitListener(initFn: (context: Context, origin?: string) => void): number;
 export type addInitListener = (initFn: (context: Context, origin?: string) => void) => number;
@@ -603,7 +603,7 @@ export type addInitListener = (initFn: (context: Context, origin?: string) => vo
 /**
  * Removes an init listener.
  * @param {string} id the id that was returned by the `addInitListener` function.
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function removeInitListener(id: string): boolean;
 export type removeInitListener = (id: string) => boolean;
@@ -611,7 +611,7 @@ export type removeInitListener = (id: string) => boolean;
 /**
  * Registers a listener called with the context object when the URL is changed. For example, you can use this when changing environments in a context switcher in order for the micro frontend to do an API call to the environment picked.
  * @param {function} contextUpdatedFn the listener function called each time Luigi context changes
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function addContextUpdateListener(contextUpdatedFn: (context: Context) => void): string;
 export type addContextUpdateListener = (contextUpdatedFn: (context: Context) => void) => string;
@@ -619,7 +619,7 @@ export type addContextUpdateListener = (contextUpdatedFn: (context: Context) => 
 /**
  * Removes a context update listener.
  * @param {string} id the id that was returned by the `addContextUpdateListener` function
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function removeContextUpdateListener(id: string): boolean;
 export type removeContextUpdateListener = (id: string) => boolean;
@@ -632,7 +632,7 @@ export type removeContextUpdateListener = (id: string) => boolean;
  *
  * Does not get called when navigating normally, or when `openAsModal` or `openAsSplitView` are used.
  * @param {function} inactiveFn the listener function called each time a micro frontend turns into an inactive state
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function addInactiveListener(inactiveFn: () => void): string;
 export type addInactiveListener = (inactiveFn: () => void) => string;
@@ -640,7 +640,7 @@ export type addInactiveListener = (inactiveFn: () => void) => string;
 /**
  * Removes a listener for inactive micro frontends.
  * @param {string} id the id that was returned by the `addInactiveListener` function
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function removeInactiveListener(id: string): boolean;
 export type removeInactiveListener = (id: string) => boolean;
@@ -649,7 +649,7 @@ export type removeInactiveListener = (id: string) => boolean;
  * Registers a listener called when the micro frontend receives a custom message.
  * @param {string} customMessageId the custom message id
  * @param {Lifecycle~customMessageListenerCallback} customMessageListener the function that is called when the micro frontend receives the corresponding event
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @since 0.6.2
  */
 export function addCustomMessageListener(
@@ -672,7 +672,7 @@ export type addCustomMessageListener = (
 /**
  * Removes a custom message listener.
  * @param {string} id the id that was returned by the `addInitListener` function
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @since 0.6.2
  */
 export function removeCustomMessageListener(id: string): boolean;
@@ -681,7 +681,7 @@ export type removeCustomMessageListener = (id: string) => boolean;
 /**
  * Returns the currently valid access token.
  * @returns {string} current access token
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function getToken(): AuthData['accessToken'];
 export type getToken = () => AuthData['accessToken'];
@@ -689,7 +689,7 @@ export type getToken = () => AuthData['accessToken'];
 /**
  * Returns the context object. Typically it is not required as the {@link #addContextUpdateListener addContextUpdateListener()} receives the same values.
  * @returns {Object} current context data
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function getEventData(): Context;
 export type getEventData = () => Context;
@@ -697,7 +697,7 @@ export type getEventData = () => Context;
 /**
  * Returns the context object. It is an alias function for getEventData().
  * @returns {Object} current context data
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function getContext(): Context;
 export type getContext = () => Context;
@@ -705,7 +705,7 @@ export type getContext = () => Context;
 /**
  * Sets node parameters in Luigi Core. The parameters will be added to the URL.
  * @param {Object} params
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @example
  * LuigiClient.addNodeParams({luigi:'rocks'});
  * LuigiClient.addNodeParams({luigi:'rocks', false});
@@ -720,7 +720,7 @@ export type addNodeParams = (params: NodeParams, keepBrowserHistory: boolean) =>
  * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in node parameters are HTML-encoded.
  * @param {boolean} shouldDesanitise defines whether the specially encoded characters should be desanitised
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @example
  * const nodeParams = LuigiClient.getNodeParams()
  * const nodeParams = LuigiClient.getNodeParams(true)
@@ -730,7 +730,7 @@ export type getNodeParams = (shouldDesanitise?: boolean) => NodeParams;
 
 /**
  * @returns {Object} node parameters, where the object property name is the node parameter name without the prefix, and its value is the value of the node parameter. For example `{sort: 'asc', page: 3}`
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function getActiveFeatureToggles(): string[];
 export type getActiveFeatureToggles = () => string[];
@@ -742,7 +742,7 @@ export type getActiveFeatureToggles = () => string[];
  * <!-- add-attribute:class:warning -->
  * > **NOTE:** some special characters (`<`, `>`, `"`, `'`, `/`) in path parameters are HTML-encoded.
  * @returns {Object} path parameters, where the object property name is the path parameter name without the prefix, and its value is the actual value of the path parameter. For example ` {productId: 1234, ...}`
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function getPathParams(): PathParams;
 export type getPathParams = () => PathParams;
@@ -750,7 +750,7 @@ export type getPathParams = () => PathParams;
 /**
  * Returns the anchor of active URL.
  * @returns {String} the anchor string
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @example
  * LuigiClient.getAnchor();
  */
@@ -760,7 +760,7 @@ export type getAnchor = () => string;
 /**
  * Sets the anchor of active URL.
  * @param {string} anchor
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @example
  * LuigiClient.setAnchor('luigi');
  */
@@ -770,7 +770,7 @@ export type setAnchor = (anchor: string) => void;
 /**
  * Allows you to change node labels within the same {@link navigation-advanced.md#view-groups view group}, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
  * @param {Object} value a data object containing the view group name and desired label
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @example
  * LuigiClient.setViewGroupData({'vg1':' Luigi rocks!'})
  */
@@ -779,7 +779,7 @@ export type setViewGroupData = (value: Object) => void;
 
 /**
  * Read search query parameters which are sent from Luigi core
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @returns core search query parameters
  * @example
  * LuigiClient.getCoreSearchParams();
@@ -791,7 +791,7 @@ export type getCoreSearchParams = () => CoreSearchParams;
  * Sends search query parameters to Luigi core. If it is allowed on node level it will be added to url.
  * @param {Object} searchParams
  * @param {boolean} keepBrowserHistory
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @example
  * LuigiClient.addCoreSearchParams({luigi:'rocks'});
  * LuigiClient.addCoreSearchParams({luigi:'rocks', false});
@@ -802,7 +802,7 @@ export type addCoreSearchParams = (searchParams: CoreSearchParams, keepBrowserHi
 /**
  * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
  * @returns {Object} client permissions as specified in the navigation node
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function getClientPermissions(): ClientPermissions;
 export type getClientPermissions = () => ClientPermissions;
@@ -810,7 +810,7 @@ export type getClientPermissions = () => ClientPermissions;
 /**
  * When the micro frontend is not embedded in the Luigi Core application and there is no init handshake you can set the target origin that is used in postMessage function calls by Luigi Client.
  * @param {string} origin target origin
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @since 0.7.3
  */
 export function setTargetOrigin(targetOrigin: string): void;
@@ -824,7 +824,7 @@ export type setTargetOrigin = (targetOrigin: string) => void;
  * @example
  * import LuigiClient from '@luigi-project/client';
  * LuigiClient.sendCustomMessage({id: 'environment.created', production: false})
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  * @since 0.6.2
  */
 export function sendCustomMessage(message: object): void;
@@ -859,7 +859,7 @@ export type storageManager = () => StorageManager;
  * Returns the current user settings.
  * @returns {Object} current user settings
  * @since 1.7.1
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function getUserSettings(): UserSettings;
 export type getUserSettings = () => UserSettings;
@@ -868,7 +868,7 @@ export type getUserSettings = () => UserSettings;
  * Check if LuigiClient is initialized
  * @returns {boolean} client initialized state
  * @since 1.12.0
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function isLuigiClientInitialized(): boolean;
 export type isLuigiClientInitialized = () => boolean;
@@ -876,7 +876,7 @@ export type isLuigiClientInitialized = () => boolean;
 /**
  * Starts the handshake with Luigi Core and thereafter resulting in initialization of Luigi Client. It is always ran by default when importing luigi-client package in your micro frontend. Note that when using 'defer-luigi-init' to defer default initialization you will need to initialize the handshake using this function manually wherever needed.
  * @since 1.12.0
- * @memberof Lifecycle
+ * @memberof lifecycleManager
  */
 export function luigiClientInit(): void;
 export type luigiClientInit = () => void;

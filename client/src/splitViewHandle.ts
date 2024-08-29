@@ -44,7 +44,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Collapses the split view
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @since 0.6.0
    * @example
    * splitViewHandle.collapse();
@@ -55,7 +55,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Expands the split view
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @since 0.6.0
    * @example
    * splitViewHandle.expand();
@@ -67,7 +67,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Closes and destroys the split view
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @since 0.6.0
    * @example
    * splitViewHandle.close();
@@ -78,7 +78,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Sets the height of the split view
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @param {number} value lower height in percent
    * @since 0.6.0
    * @example
@@ -90,7 +90,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Registers a listener for split view events
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @param {('expand'|'collapse'|'resize'|'close')} name event name
    * @param {function} callback gets called when this event gets triggered by Luigi
    * @returns {string} listener id
@@ -120,7 +120,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Unregisters a split view listener
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @param {string} id listener id
    * @returns {boolean}
    * @since 0.6.0
@@ -133,7 +133,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Gets the split view status
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @returns {boolean} true if a split view is loaded
    * @since 0.6.0
    * @example
@@ -145,7 +145,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Reads the size of the split view
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @returns {number} height in percent
    * @since 0.6.0
    * @example
@@ -157,7 +157,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Reads the collapse status
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @returns {boolean} true if the split view is currently collapsed
    * @since 0.6.0
    * @example
@@ -169,7 +169,7 @@ export class splitViewHandle extends LuigiClientBase {
 
   /**
    * Reads the expand status
-   * @memberof splitView
+   * @memberof splitViewHandle
    * @returns {boolean} true if the split view is currently expanded
    * @since 0.6.0
    * @example
