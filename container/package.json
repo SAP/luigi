@@ -28,7 +28,8 @@
     "cypress-browser": "cypress open --e2e --browser chrome -c video=false",
     "release":"node release-cli.js",
     "replace-version-in-docu": "node prepareNextRelease.js",
-    "sync-event-typings":"cp src/constants/communication.ts typings/constants/events.d.ts"
+    "sync-event-typings":"cp src/constants/communication.ts typings/constants/events.d.ts",
+    "generate-cem": "custom-elements-manifest analyze --globs './src/*.svelte' --outdir './public'"
   },
   "devDependencies": {
     "@babel/node": "7.22.10",
@@ -60,7 +61,8 @@
     "tslib": "2.6.1",
     "typescript": "5.1.6",
     "cli-color": "^2.0.4",
-    "github-api": "^3.4.0"
+    "github-api": "^3.4.0",
+    "@custom-elements-manifest/analyzer":"0.10.3"
   },
   "engines": {
     "node": ">=18.19.1"
