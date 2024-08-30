@@ -127,7 +127,10 @@ async function prepareRelease() {
   });
 
   const question = color.bold.cyan(
-    `Version you want to release (current version ${lastUI5SupportLibRelease.tag_name.replace('client-support-ui5/v', '')})? `
+    `Version you want to release (current version ${lastUI5SupportLibRelease.tag_name.replace(
+      'client-support-ui5/v',
+      ''
+    )})? `
   );
   rl.question(question, async version => {
     if (packageJson.version >= version) {
