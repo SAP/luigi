@@ -63,12 +63,11 @@
       });
 
       compoundContainer.eventBus = {
-              onPublishEvent: (a,b,c)=>{
-                console.log('On Publish eent called', a,b,c)
-              } 
-            }
+        onPublishEvent: (a, b, c) => {
+          console.log('On Publish eent called', a, b, c);
+        }
+      };
       compoundContainer.compoundConfig = {
-       
         renderer: {
           use: 'grid',
           config: {
@@ -96,7 +95,7 @@
               title: 'My Awesome Grid 0001',
               description: 'Really awesome'
             },
-         
+
             layoutConfig: {
               row: '1',
               column: '1 / -1'
@@ -107,7 +106,7 @@
                 name: 'sendInput',
                 action: 'update',
                 dataConverter: data => {
-                  console.log('data converter called on data', data)
+                  console.log('data converter called on data', data);
                   return 'new text: ' + data;
                 }
               }
