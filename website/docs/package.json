@@ -50,14 +50,14 @@
 		"@luigi-project/client": "^2.2.0",
 		"@luigi-project/core": "^2.0.1",
 		"esbuild": "^0.18.20",
-		"hast-util-has-property": "^2.0.1",
+		"hast-util-has-property": "3.0.0",
 		"lodash.orderby": "^4.6.0",
-		"rehype-raw": "^6.1.1",
-		"remark-frontmatter": "^4.0.1",
-		"remark-parse": "^10.0.1",
-		"remark-rehype": "^10.1.0",
+		"rehype-raw": "^7.0.0",
+		"remark-frontmatter": "^5.0.0",
+		"remark-parse": "^11.0.0",
+		"remark-rehype": "^11.1.0",
 		"unified": "^11.0.5",
-		"unist-util-visit": "^4.1.2"
+		"unist-util-visit": "^5.0.0"
 	},
 	"engines": {
 		"node": ">=18.19.1"
