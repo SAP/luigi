@@ -129,12 +129,11 @@ export default class extends HTMLElement {
       }
     });
 
-
     this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
 
-         this.LuigiClient.publishEvent(new CustomEvent('sendInput', { 'detail': 'Wow, my very own Event!' }));
+        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'Wow, my very own Event!' }));
       }
     });
 
