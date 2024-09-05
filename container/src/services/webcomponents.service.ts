@@ -638,7 +638,6 @@ export class WebComponentService {
               const listeners = ebListeners[srcNodeId + '.' + event.type] || [];
               listeners.push(...(ebListeners['*.' + event.type] || []));
 
-              console.log('Test on publish');
               listeners.forEach(listenerInfo => {
                 const target =
                   listenerInfo.wcElement || compoundCnt.querySelector('[nodeId=' + listenerInfo.wcElementId + ']');

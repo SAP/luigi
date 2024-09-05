@@ -132,7 +132,7 @@ export default class extends HTMLElement {
     this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
     this.$publishEventBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My Own event data' }));
+        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My own event data' }));
       }
     });
 
