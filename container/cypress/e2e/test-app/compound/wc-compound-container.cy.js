@@ -137,7 +137,7 @@ describe('Compound Container Tests', () => {
       cy.on('window:alert', stub);
 
       // Set up a spy on console.log
-      cy.window().then((win) => {
+      cy.window().then(win => {
         cy.spy(win.console, 'log').as('consoleLogSpy');
       });
 
@@ -147,7 +147,10 @@ describe('Compound Container Tests', () => {
         .click()
         .then(() => {
           expect(stub.getCall(0)).to.be.calledWith('sendInput');
-          cy.get('@consoleLogSpy').should('be.calledWith', 'dataConverter(): Received Custom Message from "input1" MF My own event data');
+          cy.get('@consoleLogSpy').should(
+            'be.calledWith',
+            'dataConverter(): Received Custom Message from "input1" MF My own event data'
+          );
         });
     });
   });
