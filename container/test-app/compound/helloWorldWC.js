@@ -14,7 +14,7 @@ export default class extends HTMLElement {
     templateBtn.innerHTML = '<button id="aButton">Click me!</button>';
 
     const templateBtn2 = document.createElement('template');
-    templateBtn2.innerHTML = '<button class="button2">Publish event</button>';
+    templateBtn2.innerHTML = '<button id="publishEvent">Publish event</button>';
 
     const addNodeParamsBtn = document.createElement('template');
     addNodeParamsBtn.innerHTML = '<button id="addNodeParams">add node params</button>';
@@ -129,22 +129,21 @@ export default class extends HTMLElement {
       }
     });
 
-    this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
+    this.$publishEventBtn = this._shadowRoot.querySelector('#publishEvent');
+    this.$publishEventBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
-        this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
-
-        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'Wow, my very own Event!' }));
+        this.LuigiClient.publishEvent(new CustomEvent('sendInput', { detail: 'My Own event data' }));
       }
     });
 
-    this.$button2 = this._shadowRoot.querySelector('#addNodeParams');
-    this.$button2.addEventListener('click', () => {
+    this.$addNodeParamsBtn = this._shadowRoot.querySelector('#addNodeParams');
+    this.$addNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         this.LuigiClient.addNodeParams({ Luigi: 'rocks' }, true);
       }
     });
-    this.$button3 = this._shadowRoot.querySelector('#getNodeParams');
-    this.$button3.addEventListener('click', () => {
+    this.$getNodeParamsBtn = this._shadowRoot.querySelector('#getNodeParams');
+    this.$getNodeParamsBtn.addEventListener('click', () => {
       if (this.LuigiClient) {
         let nodeParams = this.LuigiClient.getNodeParams(false);
         this.LuigiClient.uxManager().showAlert({
