@@ -143,7 +143,7 @@ export default class extends HTMLElement {
     });
     this._shadowRoot.querySelector('.button2').addEventListener('click', () => {
       if (this.LuigiClient) {
-        this.LuigiClient.publishEvent(new CustomEvent('btnClick'));
+        this.LuigiClient.publishEvent(new CustomEvent('sendMSG', {detail: 'My Custom Message from Microfrontend'}));
       }
     });
 

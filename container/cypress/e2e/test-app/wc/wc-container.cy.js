@@ -143,6 +143,18 @@ describe('Web Container Test', () => {
         .shadow()
         .find('#customMessageDiv')
         .should('have.text', 'Received Custom Message: cool custom Message');
+      });
+
+      it('receive custom message from WC', () => {
+        cy.on('window:alert', stub);
+
+        cy.get('[data-test-id="luigi-client-api-test-01"]')
+          .shadow()
+          .contains('Publish event')
+          .click()
+          .then(() => {
+            expect(stub.getCall(0)).to.be.calledWith('My Custom Message from Microfrontend');
+          });
         });
   });
 });

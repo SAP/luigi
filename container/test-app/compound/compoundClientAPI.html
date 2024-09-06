@@ -60,14 +60,9 @@
       const compoundContainer = document.getElementById('dashboard');
 
       compoundContainer.addEventListener(MFEventID.CUSTOM_MESSAGE, e => {
-        // console.log('CUSTOM_MESSAGE Listener picked up: ', e.detail);
+        console.log('CUSTOM_MESSAGE Listener picked up: ', e.detail);
       });
 
-      compoundContainer.eventBus = {
-        onPublishEvent: (a, b, c) => {
-          console.log('On Publish eent called', a, b, c);
-        }
-      };
       compoundContainer.compoundConfig = {
         renderer: {
           use: 'grid',
@@ -93,10 +88,9 @@
           {
             viewUrl: 'https://luigiwebcomponents.gitlab.io/layouts/panelHeader.js',
             context: {
-              title: 'My Awesome Grid 0001',
+              title: 'My Awesome Grid 001',
               description: 'Really awesome'
             },
-
             layoutConfig: {
               row: '1',
               column: '1 / -1'
