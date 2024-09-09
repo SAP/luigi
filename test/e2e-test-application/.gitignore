@@ -45,6 +45,7 @@ testem.log
 Thumbs.db
 
 cypress/downloads
+cypress/e2e/videos
 
 # config
 /src/assets/devconfig.js
