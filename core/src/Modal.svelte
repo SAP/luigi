@@ -321,6 +321,7 @@
             {/if}
           </div>
         </div>
+        {#if settings.hideXBtn !== true}
         <div class="fd-bar__right">
           <div class="fd-bar__element">
             <button
@@ -333,6 +334,7 @@
             </button>
           </div>
         </div>
+        {/if}
       </div>
     {/if}
     <div class="fd-dialog__body">
