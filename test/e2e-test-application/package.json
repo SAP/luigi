@@ -9,7 +9,7 @@
     "e2e:open:angular": "cypress open --browser chrome --e2e --config-file cypress/config/e2e-angular-app.config.js",
     "e2e:open:external": "cypress open  --browser chrome --e2e --config-file cypress/config/externalmf.config.js",
     "e2e:open:js": "cypress open --browser chrome --e2e --config-file cypress/config/e2e-js-app.config.js",
-    "e2e:run:angular": "cypress run --config-file cypress/config/e2e-angular-app.config.js --browser chrome -c video=false",
+    "e2e:run:angular": "cypress run --config-file cypress/config/e2e-angular-app.config.js --browser chrome -c video=true",
     "e2e:run:js": "cypress run  --config-file cypress/config/e2e-js-app.config.js --browser chrome -c video=false",
     "e2e:run:external": "cypress run --config-file cypress/config/externalmf.config.js --browser chrome -c video=false",
     "buildConfig": "webpack --config webpack-generateConfig.config",
