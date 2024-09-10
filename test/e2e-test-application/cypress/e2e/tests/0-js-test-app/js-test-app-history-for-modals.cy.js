@@ -86,6 +86,15 @@ describe('JS-TEST-APP', () => {
         });
       });
 
+      afterEach(() => {
+        cy.visit('http://localhost:4500/', {
+          onBeforeLoad: win => {
+            win.localStorage.clear();
+            win.sessionStorage.clear();
+          }
+        });
+      });
+
       it('Path routing, open modal and close via [x]', () => {
         cy.vistTestAppPathRouting('', newConfig);
         cy.get('#app[configversion="js-test-app-history-handling-modals-1"]');
@@ -197,6 +206,15 @@ describe('JS-TEST-APP', () => {
           label: 'Modal MF',
           viewUrl: '/examples/microfrontends/multipurpose.html',
           openNodeInModal: true
+        });
+      });
+
+      afterEach(() => {
+        cy.visit('http://localhost:4500/', {
+          onBeforeLoad: win => {
+            win.localStorage.clear();
+            win.sessionStorage.clear();
+          }
         });
       });
 
