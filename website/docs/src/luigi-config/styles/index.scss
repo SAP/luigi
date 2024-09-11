@@ -442,6 +442,10 @@ $side-nav-width-mobile: 260px;
   .fd-nested-list__item {
     background: none;
   }
+  
+  .fd-nested-list__title:first-child {
+    padding-left: 40px;
+  }
 
   .fd-nested-list__link {
     font-size: 15px;
