@@ -363,12 +363,12 @@
 
 <style lang="scss">
   :global(.lui-breadcrumb) .drawer-dialog {
-    top: calc(#{$topNavHeight} + var(--luigi__breadcrumb--height));
+    top: calc(#{$combinedLayoutGap} + #{$topNavHeight} + var(--luigi__breadcrumb--height));
   }
 
   .drawer-dialog {
     position: absolute;
-    top: $topNavHeight;
+    top: calc(#{$combinedLayoutGap} + #{$topNavHeight});
     bottom: 0;
     width: 25%;
     z-index: 3;
