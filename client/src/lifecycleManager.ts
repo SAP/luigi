@@ -7,7 +7,7 @@ import {
   PathParams,
   UserSettings
 } from '../luigi-client';
-import * as pack from '../public/package.json';
+import packageInfo from '../public/package.json';
 import { LuigiClientBase } from './baseClass';
 import { helpers } from './helpers';
 
@@ -162,7 +162,7 @@ class LifecycleManager extends LuigiClientBase {
     window.parent.postMessage(
       {
         msg: 'luigi.get-context',
-        clientVersion: pack.version
+        clientVersion: packageInfo.version
       },
       '*'
     );
