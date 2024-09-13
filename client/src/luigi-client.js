@@ -71,6 +71,9 @@ class LuigiClient {
   sendCustomMessage(message) {
     return lifecycleManager.sendCustomMessage(message);
   }
+  publishEvent(event) {
+    return lifecycleManager.publishEvent(event);
+  }
   addCustomMessageListener(messageId, listener) {
     return lifecycleManager.addCustomMessageListener(messageId, listener);
   }
@@ -104,7 +107,6 @@ class LuigiClient {
   setViewGroupData(value) {
     return lifecycleManager.setViewGroupData(value);
   }
-
 
   /**
    * @private
