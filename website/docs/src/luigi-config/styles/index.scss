@@ -289,12 +289,12 @@ $side-nav-width-mobile: 260px;
 
 
       .fd-top-nav__icon {
+        line-height: 0;
+        margin-top: -3rem;
+        
         &:before {
           margin-top: 0 !important;
         }
-
-        line-height: 0;
-        margin-top: -3rem;
       }
 
       &:hover,
