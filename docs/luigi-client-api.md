@@ -35,7 +35,7 @@ Use the functions and parameters to define the Lifecycle of listeners, navigatio
 
 #### publishEvent
 
-<!-- label-success: Only available for Web Component based microfrontend -->
+<!-- label-success: Web Component API ONLY -->
 
 Publish an event that can be listened to from the container host.
 
@@ -376,6 +376,8 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 #### getCoreSearchParams
 
+<!-- label-success: Web Component API  -->
+
 Read search query parameters which are sent from Luigi Core
 
 ##### Examples
@@ -387,8 +389,6 @@ LuigiClient.getCoreSearchParams();
 Returns **any** Core search query parameters
 
 #### addCoreSearchParams
-
-<!-- label-success: Web Component API  -->
 
 Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using [clientPermissions.urlParameters](navigation-parameters-reference.md#clientpermissionsurlparameters).
 
@@ -593,8 +593,6 @@ LuigiClient.linkManager().navigateToIntent('Sales-settings')
 
 #### withoutSync
 
-<!-- label-success: Web Component API  -->
-
 Disables the navigation handling for a single navigation request.
 It prevents Luigi Core from handling the URL change after `navigate()`.
 Used for auto-navigation.
@@ -625,8 +623,6 @@ LuigiClient.linkManager().newTab().navigate('/projects/xy/foobar');
 *   **since**: 1.16.0
 
 #### preserveQueryParams
-
-<!-- label-success: Web Component API  -->
 
 Keeps the URL's query parameters for a navigation request.
 
@@ -706,8 +702,6 @@ LuigiClient.linkManager().navigate('#?Intent=Sales-order?id=13') // intent navig
 
 #### updateModalPathInternalNavigation
 
-<!-- label-success: Web Component API  -->
-
 Updates path of the modalPathParam when internal navigation occurs.
 
 ##### Parameters
@@ -756,8 +750,6 @@ LuigiClient.linkManager().openAsModal('projects/pr1/users', {title:'Users', size
 Returns **[promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)** which is resolved when closing the modal. By using LuigiClient.linkManager().goBack({ foo: 'bar' }) to close the modal you have access to the `goBackContext` when the promise will be resolved.
 
 #### updateModalSettings
-
-<!-- label-success: Web Component API  -->
 
 Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
 In addition, you can specify if a new history entry will be created with the updated URL.
@@ -854,6 +846,8 @@ Returns **[linkManager](#linkmanager)** link manager instance
 
 #### fromClosestContext
 
+<!-- label-success: Web Component API  -->
+
 Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
 
 ##### Examples
@@ -922,8 +916,6 @@ LuigiClient.linkManager().fromContext("currentTeam").withParams({foo: "bar"}).na
 Returns **[linkManager](#linkmanager)** link manager instance
 
 #### withOptions
-
-<!-- label-success: Web Component API  -->
 
 Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
 
@@ -1182,37 +1174,25 @@ Use the UX Manager to manage the appearance features in Luigi.
 
 #### showLoadingIndicator
 
-<!-- label-success: Web Component API  -->
-
 Adds a backdrop with a loading indicator for the micro frontend frame. This overrides the [loadingIndicator.enabled](navigation-parameters-reference.md#node-parameters) setting.
 
 #### hideLoadingIndicator
-
-<!-- label-success: Web Component API  -->
 
 Removes the loading indicator. Use it after calling [showLoadingIndicator()](#showLoadingIndicator) or to hide the indicator when you use the [loadingIndicator.hideAutomatically: false](navigation-parameters-reference.md#node-parameters) node configuration.
 
 #### closeCurrentModal
 
-<!-- label-success: Web Component API  -->
-
 Closes the currently opened micro frontend modal.
 
 #### addBackdrop
-
-<!-- label-success: Web Component API  -->
 
 Adds a backdrop to block the top and side navigation. It is based on the Fundamental UI Modal, which you can use in your micro frontend to achieve the same behavior.
 
 #### removeBackdrop
 
-<!-- label-success: Web Component API  -->
-
 Removes the backdrop.
 
 #### setDirtyStatus
-
-<!-- label-success: Web Component API  -->
 
 This method informs the main application that there are unsaved changes in the current view in the iframe. It can be used to prevent navigation away from the current view, for example with form fields which were edited but not submitted. However, this functionality is not restricted to forms. If you use `withoutSync()` together with `setDirtyStatus()`, this is a special case in which the dirty state logic needs to be handled by the micro frontend. For example, if the user navigates with an Angular router, which would trigger `withoutSync()`, Angular needs to take care about dirty state, prevent the navigation and ask for permission to navigate away, through `uxManager().showConfirmationModal(settings)`.
 

@@ -23,6 +23,20 @@
       document.body.classList.add(
         'page-' + location.pathname.substring(location.pathname.lastIndexOf('/') + 1)
       );
+
+      // Modify WC API docu labels manually for added clarity thorugh title attribute
+      document.addEventListener("DOMContentLoaded", function() {
+        var allLabels = document.querySelectorAll(".label-success");
+
+        allLabels.forEach((label)=>{
+          if (label.innerHTML === "Web Component API"){
+            label.setAttribute("title", "This API function is available for Web Component based Microfrontend also.");
+          } else if (label.innerHTML === "Web Component API ONLY"){
+            label.setAttribute("title", "This API function is ONLY available for Web Component based Microfrontend.");
+          }
+        })
+      });
+
     </script>
   </body>
 </html>
