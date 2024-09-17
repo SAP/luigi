@@ -218,14 +218,6 @@ export default class ResultRender {
     }
     return results;
   }
-  createAttribute(type, attributes){
-    let elem =  document.createElement(type);
-    if (!attributes){
-      return elem;
-    }
-    Object.keys(attributes).forEach(key => elem.setAttribute(key, attributes[key]))
-    return elem;
-  }
 }
 
 

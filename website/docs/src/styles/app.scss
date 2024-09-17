@@ -194,6 +194,9 @@ body {
         }
 
         li {
+            position: relative;
+            padding-left: 20px;
+            
             list-style: none;
 
             &:before {
@@ -209,8 +212,6 @@ body {
                 top: 12px;
             }
 
-            position: relative;
-            padding-left: 20px;
         }
     }
 
@@ -336,7 +337,6 @@ body {
         display: block;
         width: 1px;
         min-width: 100%;
-        *width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         border: 1px solid $powder-blue;

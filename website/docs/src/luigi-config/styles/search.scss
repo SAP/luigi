@@ -45,7 +45,7 @@ $fd-search-closed-control-body-width: 220px;
     }
   }
 }
-@media screen and (max-width: $desktopMinWidth - 1px) {
+@media screen and (max-width: ($desktopMinWidth - 1px)) {
 
   .algolia-autocomplete {
     
