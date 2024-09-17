@@ -160,6 +160,7 @@
     GenericHelpers.requestExperimentalFeature('btpToolLayout', false);
   let btpNavTopCnt;
   let toolLayoutSubCatDelimiter = LuigiConfig.getConfigValue('settings.btpToolLayout.subCategoryDelimiter') || '::';
+  let navHeaderContainer;
 
   const getNodeLabel = node => {
     return NavigationHelpers.getNodeLabel(node);
@@ -248,6 +249,18 @@
     }
   };
 
+  const handleNavHeaderRenderer = () => {
+    const clickHandler = (node) => handleClick(node);
+
+    if (navHeader?.renderer && navHeaderContainer) {
+      if (navHeader.clearBeforeRender) {
+        navHeaderContainer.innerHTML = '';
+      }
+
+      navHeader.renderer(navHeaderContainer, navParentNode, clickHandler);
+    }
+  };
+
   afterUpdate(() => {
     if (!window.Luigi.__btpNavTopCntRszObs) {
       let updateTimeout;
@@ -269,6 +282,7 @@
     } else {
       resetNavEntries();
     }
+    handleNavHeaderRenderer();
   });
 
   beforeUpdate(() => {
@@ -589,7 +603,7 @@
     style="width: var(--luigi__left-sidenav--width); height: 100%;"
   >
     {#if navHeader}
-      <div class="lui-nav-title">
+      <div class="lui-nav-title" bind:this={navHeaderContainer}>
         <ul class="fd-nested-list">
           <li class="fd-nested-list__item">
             <!-- svelte-ignore a11y-missing-attribute -->
@@ -933,7 +947,7 @@
     class="fd-app__sidebar fd-navigation {hideNavComponent ? 'hideNavComponent' : ''} {footerText || semiCollapsibleButton ? 'hasFooter' : ''} {footerText && !semiCollapsibleButton ? 'hasOnlyFooterText' : ''}"
   >
     {#if navHeader}
-      <div class="lui-nav-title">
+      <div class="lui-nav-title" bind:this={navHeaderContainer}>
         <ul class="fd-nested-list">
           <li class="fd-nested-list__item">
             <!-- svelte-ignore a11y-missing-attribute -->
