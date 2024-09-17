@@ -250,7 +250,7 @@
   };
 
   const handleNavHeaderRenderer = () => {
-    const clickHandler = (node) => handleClick(node);
+    const clickHandler = node => handleClick(node);
 
     if (navHeader?.renderer && navHeaderContainer) {
       if (navHeader.clearBeforeRender) {
