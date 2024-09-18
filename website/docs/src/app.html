@@ -29,10 +29,10 @@
         var allLabels = document.querySelectorAll('.label-success');
 
         allLabels.forEach(label => {
-          if (label.innerHTML === 'Web Component API') {
+          if (label.innerHTML === 'Web App API only') {
             label.setAttribute(
               'title',
-              'This API function is available for Web Component based Microfrontend also.'
+              'This API function is not available on Luigi Container and WC based microfrontends'
             );
           } else if (label.innerHTML === 'Web Component API ONLY') {
             label.setAttribute(

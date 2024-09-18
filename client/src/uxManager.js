@@ -71,7 +71,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Shows a confirmation modal.
    * @memberof uxManager
    * @param {Object} settings the settings of the confirmation modal. If you don't provide any value for any of the fields, a default value is used
@@ -130,7 +129,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Shows an alert.
    * @memberof uxManager
    * @param {Object} settings the settings for the alert
@@ -209,7 +207,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Gets the current locale.
    * @returns {string} current locale
    * @memberof uxManager
@@ -219,7 +216,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Sets current locale to the specified one.
    *
    * **NOTE:** this must be explicitly allowed on the navigation node level by setting `clientPermissions.changeCurrentLocale` to `true`. (See {@link navigation-parameters-reference.md Node parameters}.)
@@ -239,7 +236,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Checks if the current micro frontend is displayed inside a split view
    * @returns {boolean} indicating if it is loaded inside a split view
    * @memberof uxManager
@@ -250,6 +247,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web App API only  -->
    * Checks if the current micro frontend is displayed inside a modal
    * @returns {boolean} indicating if it is loaded inside a modal
    * @memberof uxManager
@@ -260,7 +258,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Checks if the current micro frontend is displayed inside a drawer
    * @returns {boolean} indicating if it is loaded inside a drawer
    * @memberof uxManager
@@ -271,7 +269,6 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Gets the current theme.
    * @returns {*} current themeObj
    * @memberof uxManager
@@ -281,7 +278,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Gets the CSS variables from Luigi Core with their key and value.
    * @returns {Object} CSS variables with their key and value.
    * @memberof uxManager
@@ -293,7 +290,7 @@ class UxManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
+   * <!-- label-success: Web App API only  -->
    * Adds the CSS variables from Luigi Core in a <style> tag to the document <head> section.
    * @memberof uxManager
    * @since 2.3.0

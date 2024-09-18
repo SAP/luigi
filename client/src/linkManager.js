@@ -36,7 +36,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Navigates to the given path in the application hosted by Luigi. It contains either a full absolute path or a relative path without a leading slash that uses the active route as a base. This is the standard navigation.
    * @memberof linkManager
    * @param {string} path path to be navigated to
@@ -124,7 +123,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Offers an alternative way of navigating with intents. This involves specifying a semanticSlug and an object containing
    * parameters.
    * This method internally generates a URL of the form `#?intent=<semantic object>-<action>?<param_name>=<param_value>` through the given
@@ -157,7 +155,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Opens a view in a modal. You can specify the modal's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty.  The default size of the modal is `l`, which means 80%. You can also use `m` (60%) and `s` (40%) to set the modal size. Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager
    * @param {string} path navigation path
@@ -195,6 +192,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web App API only  -->
    * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
    * In addition, you can specify if a new history entry will be created with the updated URL.
    * @memberof linkManager
@@ -217,7 +215,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Opens a view in a split view. You can specify the split view's title and size. If you don't specify the title, it is the node label. If there is no node label, the title remains empty. The default size of the split view is `40`, which means 40% height of the split view.
    * @memberof linkManager
    * @param {string} path navigation path
@@ -237,7 +234,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Opens a view in a drawer. You can specify the size of the drawer, whether the drawer has a header, and whether a backdrop is active in the background. By default, the header is shown. The backdrop is not visible and has to be activated. The size of the drawer is set to `s` by default, which means 25% of the micro frontend size. You can also use `l`(75%), `m`(50%) or `xs`(15.5%). Optionally, use it in combination with any of the navigation functions.
    * @memberof linkManager
    * @param {string} path navigation path
@@ -256,7 +252,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Sets the current navigation context to that of a specific parent node which has the {@link navigation-configuration.md navigationContext} field declared in the navigation configuration. This navigation context is then used by the `navigate` function.
    * @memberof linkManager
    * @param {string} navigationContext
@@ -278,7 +273,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
@@ -297,7 +291,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Sets the current navigation base to the parent node that is defined as virtualTree. This method works only when the currently active micro frontend is inside a virtualTree.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
@@ -313,7 +306,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Enables navigating to sibling nodes without knowing the absolute path.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
@@ -327,7 +319,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Sends node parameters to the route. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof linkManager
    * @param {Object} nodeParams
@@ -346,6 +337,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web App API only  -->
    * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof linkManager
    * @param {Object} options navigation options
@@ -374,7 +366,6 @@ export class linkManager extends LuigiClientBase {
 
   /** @lends linkManager */
   /**
-   * <!-- label-success: Web Component API  -->
    * Checks if the path you can navigate to exists in the main application. For example, you can use this helper method conditionally to display a DOM element like a button.
    * @memberof linkManager
    * @param {string} path path which existence you want to check
@@ -430,7 +421,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Checks if there is one or more preserved views. You can use it to show a **back** button.
    * @memberof linkManager
    * @returns {boolean} indicating if there is a preserved view you can return to
@@ -440,7 +430,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Discards the active view and navigates back to the last visited view. Works with preserved views, and also acts as the substitute of the browser **back** button. **goBackContext** is only available when using preserved views.
    * @memberof linkManager
    * @param {any} goBackValue data that is passed in the **goBackContext** field to the last visited view when using preserved views
@@ -456,6 +445,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web App API only  -->
    * Disables the navigation handling for a single navigation request.
    * It prevents Luigi Core from handling the URL change after `navigate()`.
    * Used for auto-navigation.
@@ -470,6 +460,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web App API only  -->
    * Enables navigating to a new tab.
    * @since 1.16.0
    * @example
@@ -481,6 +472,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web App API only  -->
    * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
    * @since 1.19.0
@@ -494,7 +486,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Gets the luigi route associated with the current micro frontend.
    * @returns {promise} a promise which resolves to a String value specifying the current luigi route
    * @since 1.23.0

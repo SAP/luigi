@@ -547,8 +547,6 @@ Use these functions for navigation-related features.
 
 #### updateTopNavigation
 
-<!-- label-success: Web Component API  -->
-
 Refreshes top navigation badge counters by rendering the navigation again.
 
 ##### Examples
