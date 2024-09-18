@@ -97,7 +97,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Updates path of the modalPathParam when internal navigation occurs.
    * @memberof linkManager
    * @param {string} path
@@ -195,8 +194,7 @@ export class linkManager extends LuigiClientBase {
     return modalPromise.promise;
   }
 
- /**
-   * <!-- label-success: Web Component API  -->
+  /**
    * Updates the current title and size of a modal. If `routing.showModalPathInUrl` is set to `true`, the URL will be updated with the modal settings data.
    * In addition, you can specify if a new history entry will be created with the updated URL.
    * @memberof linkManager
@@ -280,6 +278,7 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Sets the current navigation context which is then used by the `navigate` function. This has to be a parent navigation context, it is not possible to use the child navigation contexts.
    * @memberof linkManager
    * @returns {linkManager} link manager instance
@@ -347,7 +346,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Sets options to customise route changing behaviour. The parameters are used by the `navigate` function. Use it optionally in combination with any of the navigation functions and receive it as part of the context object in Luigi Client.
    * @memberof linkManager
    * @param {Object} options navigation options
@@ -458,7 +456,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Disables the navigation handling for a single navigation request.
    * It prevents Luigi Core from handling the URL change after `navigate()`.
    * Used for auto-navigation.
@@ -484,7 +481,6 @@ export class linkManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Keeps the URL's query parameters for a navigation request.
    * @param {boolean} preserve By default, it is set to `false`. If it is set to `true`, the URL's query parameters will be kept after navigation.
    * @since 1.19.0

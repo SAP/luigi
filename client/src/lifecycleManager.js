@@ -458,6 +458,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Read search query parameters which are sent from Luigi Core
    * @memberof Lifecycle
    * @returns Core search query parameters
@@ -469,7 +470,6 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
-   * <!-- label-success: Web Component API  -->
    * Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using {@link navigation-parameters-reference.md#clientpermissionsurlparameters clientPermissions.urlParameters}.
 
    * @param {Object} searchParams
