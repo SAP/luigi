@@ -250,7 +250,11 @@
   };
 
   const handleNavHeaderRenderer = () => {
-    const clickHandler = node => handleClick(node);
+    const clickHandler = node => {
+      if (node) {
+        handleClick(node);
+      }
+    };
 
     if (navHeader?.renderer && navHeaderContainer) {
       if (navHeader.clearBeforeRender) {
@@ -604,34 +608,36 @@
   >
     {#if navHeader}
       <div class="lui-nav-title" bind:this={navHeaderContainer}>
-        <ul class="fd-nested-list">
-          <li class="fd-nested-list__item">
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <a class="fd-nested-list__link" title={resolveTooltipText(navHeader, $getTranslation(navHeader.label))}>
-              {#if navHeader.icon}
-                {#if isOpenUIiconName(navHeader.icon)}
-                  <i
-                    class="lui-header-icon fd-nested-list__icon sap-icon {getSapIconStr(navHeader.icon)}"
-                    role="presentation"
-                  />
-                {:else}
-                  <span class="fd-nested-list__icon sap-icon">
-                    <img src={navHeader.icon} alt={navHeader.altText ? navHeader.altText : ''} />
-                  </span>
+        {#if !navHeader.renderer}
+          <ul class="fd-nested-list">
+            <li class="fd-nested-list__item">
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a class="fd-nested-list__link" title={resolveTooltipText(navHeader, $getTranslation(navHeader.label))}>
+                {#if navHeader.icon}
+                  {#if isOpenUIiconName(navHeader.icon)}
+                    <i
+                      class="lui-header-icon fd-nested-list__icon sap-icon {getSapIconStr(navHeader.icon)}"
+                      role="presentation"
+                    />
+                  {:else}
+                    <span class="fd-nested-list__icon sap-icon">
+                      <img src={navHeader.icon} alt={navHeader.altText ? navHeader.altText : ''} />
+                    </span>
+                  {/if}
                 {/if}
-              {/if}
-              <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
-              {#if navHeader.showUpLink}
-                <i
-                  class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
-                  role="presentation"
-                  title={$getTranslation('luigi.navigation.up')}
-                  on:click|preventDefault={handleUp}
-                />
-              {/if}
-            </a>
-          </li>
-        </ul>
+                <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
+                {#if navHeader.showUpLink}
+                  <i
+                    class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
+                    role="presentation"
+                    title={$getTranslation('luigi.navigation.up')}
+                    on:click|preventDefault={handleUp}
+                  />
+                {/if}
+              </a>
+            </li>
+          </ul>
+        {/if}
       </div>
     {/if}
 
@@ -948,34 +954,36 @@
   >
     {#if navHeader}
       <div class="lui-nav-title" bind:this={navHeaderContainer}>
-        <ul class="fd-nested-list">
-          <li class="fd-nested-list__item">
-            <!-- svelte-ignore a11y-missing-attribute -->
-            <a class="fd-nested-list__link" title={resolveTooltipText(navHeader, $getTranslation(navHeader.label))}>
-              {#if navHeader.icon}
-                {#if isOpenUIiconName(navHeader.icon)}
-                  <i
-                    class="lui-header-icon fd-nested-list__icon sap-icon {getSapIconStr(navHeader.icon)}"
-                    role="presentation"
-                  />
-                {:else}
-                  <span class="fd-nested-list__icon sap-icon">
-                    <img src={navHeader.icon} alt={navHeader.altText ? navHeader.altText : ''} />
-                  </span>
+        {#if !navHeader.renderer}
+          <ul class="fd-nested-list">
+            <li class="fd-nested-list__item">
+              <!-- svelte-ignore a11y-missing-attribute -->
+              <a class="fd-nested-list__link" title={resolveTooltipText(navHeader, $getTranslation(navHeader.label))}>
+                {#if navHeader.icon}
+                  {#if isOpenUIiconName(navHeader.icon)}
+                    <i
+                      class="lui-header-icon fd-nested-list__icon sap-icon {getSapIconStr(navHeader.icon)}"
+                      role="presentation"
+                    />
+                  {:else}
+                    <span class="fd-nested-list__icon sap-icon">
+                      <img src={navHeader.icon} alt={navHeader.altText ? navHeader.altText : ''} />
+                    </span>
+                  {/if}
                 {/if}
-              {/if}
-              <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
-              {#if navHeader.showUpLink}
-                <i
-                  class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
-                  role="presentation"
-                  title={$getTranslation('luigi.navigation.up')}
-                  on:click|preventDefault={handleUp}
-                />
-              {/if}
-            </a>
-          </li>
-        </ul>
+                <span class="fd-nested-list__title"> {$getTranslation(navHeader.label)} </span>
+                {#if navHeader.showUpLink}
+                  <i
+                    class="lui-nav-up fd-nested-list__icon sap-icon sap-icon--navigation-up-arrow"
+                    role="presentation"
+                    title={$getTranslation('luigi.navigation.up')}
+                    on:click|preventDefault={handleUp}
+                  />
+                {/if}
+              </a>
+            </li>
+          </ul>
+        {/if}
       </div>
     {/if}
     <nav
