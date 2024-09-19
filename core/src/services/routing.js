@@ -404,6 +404,20 @@ class RoutingClass {
       }
 
       let cNode2 = currentNode;
+      let hideGlobalSearchInherited = nodeObject.hideGlobalSearch;
+      if (hideGlobalSearchInherited === undefined) {
+        while (cNode2) {
+          if (cNode2.tabNav && cNode2.hideGlobalSearch === true) {
+            hideGlobalSearchInherited = true;
+            break;
+          }
+          if (cNode2.hideGlobalSearch === false) {
+            hideGlobalSearchInherited = false;
+            break;
+          }
+          cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
+        }
+      }
       let hideSideNavInherited = nodeObject.hideSideNav;
       if (hideSideNavInherited === undefined) {
         while (cNode2) {
@@ -434,6 +448,7 @@ class RoutingClass {
         navigationPath: pathData.navigationPath,
         context: ctx,
         pathParams: pathData.pathParams,
+        hideGlobalSearch: hideGlobalSearchInherited || false,
         hideSideNav: hideSideNavInherited || false,
         isolateView: nodeObject.isolateView || false,
         tabNav: tabNavInherited
