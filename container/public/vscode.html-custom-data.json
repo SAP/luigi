@@ -27,7 +27,7 @@
             },
             {
                 "name": "webcomponent",
-                "description": ""
+                "description": "Predicate that sets whether the microfrontend is to be rendered in a web component or not. Either a stringified boolean or json valid object."
             },
             {
                 "name": "locale",
