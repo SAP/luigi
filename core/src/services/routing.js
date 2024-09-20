@@ -406,31 +406,15 @@ class RoutingClass {
       let cNode2 = currentNode;
       let hideGlobalSearchInherited = nodeObject.hideGlobalSearch;
       if (hideGlobalSearchInherited === undefined) {
-        while (cNode2) {
-          if (cNode2.tabNav && cNode2.hideGlobalSearch === true) {
-            hideGlobalSearchInherited = true;
-            break;
-          }
-          if (cNode2.hideGlobalSearch === false) {
-            hideGlobalSearchInherited = false;
-            break;
-          }
+        hideGlobalSearchInherited = RoutingHelpers.handleInheritedProperty(cNode2, 'hideGlobalSearch', () => {
           cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
-        }
+        });
       }
       let hideSideNavInherited = nodeObject.hideSideNav;
       if (hideSideNavInherited === undefined) {
-        while (cNode2) {
-          if (cNode2.tabNav && cNode2.hideSideNav === true) {
-            hideSideNavInherited = true;
-            break;
-          }
-          if (cNode2.hideSideNav === false) {
-            hideSideNavInherited = false;
-            break;
-          }
+        hideSideNavInherited = RoutingHelpers.handleInheritedProperty(cNode2, 'hideSideNav', () => {
           cNode2 = NavigationHelpers.getParentNode(cNode2, pathData.navigationPath);
-        }
+        });
       }
 
       const ctx = RoutingHelpers.substituteDynamicParamsInObject(
