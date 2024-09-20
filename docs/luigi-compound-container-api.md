@@ -49,6 +49,16 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 *   **since**: 1.0.0
 
+### nodeParams
+
+The parameters to be passed to the compound micro frontend.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+*   **since**: 1.4.0
+
 ### noShadow
 
 If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.

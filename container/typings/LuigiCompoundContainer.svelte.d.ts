@@ -25,6 +25,12 @@ export default class LuigiCompoundContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
+   * The parameters to be passed to the compound micro frontend.
+   * @since 1.4.0
+   */
+  nodeParams: Object;
+
+  /**
    * If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
    * @since 1.2.0
    */
