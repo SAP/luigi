@@ -98,6 +98,12 @@ export default class LuigiCompoundContainer extends HTMLElement {
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
+   * The locale to be passed to the compound micro frontend
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  locale: string;
+
+  /**
    * Function that updates the context of the compound microfrontend.
    * @param contextObj The context data
    * @example

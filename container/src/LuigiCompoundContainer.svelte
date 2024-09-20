@@ -33,6 +33,7 @@
       dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
       hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
       documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -79,6 +80,7 @@
   export let dirtyStatus: boolean;
   export let hasBack: boolean;
   export let documentTitle: string;
+  export let locale: string;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -90,6 +92,7 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
+      locale &&
       nodeParams &&
       searchParams &&
       pathParams &&
