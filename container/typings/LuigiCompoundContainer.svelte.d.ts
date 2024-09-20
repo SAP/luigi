@@ -26,7 +26,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
 
   /**
    * The parameters to be passed to the compound micro frontend.
-   * @since 1.4.0
+   * @since NEXT_RELEASE_CONTAINER
    */
   nodeParams: Object;
 

@@ -57,7 +57,7 @@ Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Meta**
 
-*   **since**: 1.4.0
+*   **since**: NEXT_RELEASE_CONTAINER
 
 ### noShadow
 
