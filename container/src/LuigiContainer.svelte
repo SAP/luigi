@@ -3,28 +3,28 @@
     tag: null,
     shadow: 'none',
     props: {
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-      deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
-      context: { type: 'String', reflect: false, attribute: 'context' },
-      label: { type: 'String', reflect: false, attribute: 'label' },
-      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' },
-      locale: { type: 'String', reflect: false, attribute: 'locale' },
-      theme: { type: 'String', reflect: false, attribute: 'theme' },
       activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
-      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
-      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
-      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
-      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
-      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
-      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
-      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
-      documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
       allowRules: { type: 'Array', reflect: false, attribute: 'allow-rules' },
+      anchor: { type: 'String', reflect: false, attribute: 'anchor' },
+      authData: { type: 'Object', reflect: false, attribute: 'auth-data' },
+      clientPermissions: { type: 'Object', reflect: false, attribute: 'client-permissions' },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
+      dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status' },
+      documentTitle: { type: 'String', reflect: false, attribute: 'document-title' },
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back' },
+      label: { type: 'String', reflect: false, attribute: 'label' },
+      locale: { type: 'String', reflect: false, attribute: 'locale' },
+      noShadow: { type: 'Boolean', attribute: 'no-shadow' },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
       sandboxRules: { type: 'Array', reflect: false, attribute: 'sandbox-rules' },
-      authData: { type: 'Object', reflect: false, attribute: 'auth-data' }
+      searchParams: { type: 'Object', reflect: false, attribute: 'search-params' },
+      skipInitCheck: { type: 'Boolean', reflect: false, attribute: 'skip-init-check' },
+      theme: { type: 'String', reflect: false, attribute: 'theme' },
+      userSettings: { type: 'Object', reflect: false, attribute: 'user-settings' },
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
+      webcomponent: { type: 'String', reflect: false, attribute: 'webcomponent' }
     },
     extend: customElementConstructor => {
       let notInitFn = name => {
@@ -100,22 +100,22 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
-      locale &&
-      theme &&
       activeFeatureToggleList &&
-      nodeParams &&
-      searchParams &&
-      pathParams &&
-      clientPermissions &&
-      userSettings &&
+      allowRules &&
       anchor &&
       authData &&
+      clientPermissions &&
       dirtyStatus &&
-      hasBack &&
       documentTitle &&
-      allowRules &&
+      hasBack &&
+      locale &&
+      noShadow &&
+      nodeParams &&
+      pathParams &&
       sandboxRules &&
-      noShadow
+      searchParams &&
+      theme &&
+      userSettings
     );
   };
 

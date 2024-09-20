@@ -269,6 +269,11 @@ export class WebComponentService {
           }
         };
       },
+      getContext: (): Object => {
+        return {
+          authData: this.thisComponent.authData
+        };
+      },
       getCurrentLocale: (): string | undefined => {
         return this.thisComponent.locale;
       },

@@ -199,3 +199,13 @@ Returns **void**
 **Meta**
 
 *   **since**: 1.0.0
+
+### authData
+
+The authData value to be passed to the compound microfrontend.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+**Meta**
+
+*   **since**: 1.4.0

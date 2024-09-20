@@ -771,6 +771,19 @@ describe('createClientAPI', () => {
     });
   });
 
+  it('test getContext set value', () => {
+    // mock and spy on data/functions
+    service.thisComponent = document.createElement('div');
+    service.thisComponent.authData = '{"accessToken":"my-token", "idToken":"12345"}';
+
+    // act
+    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component');
+    const result = clientAPI.getContext();
+
+    // assert
+    expect(result.authData).toEqual('{"accessToken":"my-token", "idToken":"12345"}');
+  });
+
   it('test getCurrentLocale set value', () => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');

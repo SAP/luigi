@@ -132,5 +132,21 @@ describe('Compound Container Tests', () => {
 
       cy.get('#defer-init-flag').should('exist');
     });
+
+    describe('LuigiClient API - getContext', () => {
+      it('should get auth data', () => {
+        const expectedResult = `authData={"accessToken":"my-token","idToken":"12345"}`;
+
+        cy.on('window:alert', stub);
+
+        cy.get(containerSelector)
+          .shadow()
+          .contains('getAuthData')
+          .click()
+          .then(() => {
+            expect(stub.getCall(0)).to.be.calledWith(expectedResult);
+          });
+      });
+    });
   });
 });

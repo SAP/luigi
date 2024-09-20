@@ -111,4 +111,10 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @since 1.0.0
    */
   init(): void;
+
+  /**
+   * The authData value to be passed to the compound microfrontend.
+   * @since 1.4.0
+   */
+  authData: Object;
 }
