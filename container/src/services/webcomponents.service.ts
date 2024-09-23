@@ -332,6 +332,9 @@ export class WebComponentService {
       getUserSettings: (): Object => {
         return this.thisComponent.userSettings || {};
       },
+      getSkipInitCheck: (): boolean => {
+        return !!this.thisComponent.skipInitCheck;
+      },
       setViewGroupData: data => {
         this.dispatchLuigiEvent(Events.SET_VIEW_GROUP_DATA_REQUEST, data);
       }

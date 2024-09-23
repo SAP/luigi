@@ -43,6 +43,9 @@ export default class extends HTMLElement {
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
+    const getSkipInitCheckBtn = document.createElement('template');
+    getSkipInitCheckBtn.innerHTML = '<button id="getSkipInitCheck">getSkipInitCheck</button>';
+
     const setViewGroupDataBtn = document.createElement('template');
     setViewGroupDataBtn.innerHTML = '<button id="setViewGroupData">setViewGroupData</button>';
 
@@ -97,6 +100,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getSkipInitCheckBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
@@ -188,11 +192,22 @@ export default class extends HTMLElement {
         });
       }
     });
+
     this.$getAnchorBtn = this._shadowRoot.querySelector('#getAnchor');
     this.$getAnchorBtn.addEventListener('click', () => {
       let getAnchor = this.LuigiClient.getAnchor();
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.getAnchor()=' + JSON.stringify(getAnchor),
+        type: 'info'
+      });
+    });
+
+    this.$getSkipInitCheckBtn = this._shadowRoot.querySelector('#getSkipInitCheck');
+    this.$getSkipInitCheckBtn.addEventListener('click', () => {
+      const skipInitCheck = this.LuigiClient.getSkipInitCheck();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getSkipInitCheck()=' + JSON.stringify(skipInitCheck),
         type: 'info'
       });
     });

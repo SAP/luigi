@@ -98,6 +98,12 @@ export default class LuigiCompoundContainer extends HTMLElement {
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
+   * If set to true, skips handshake and ready event is fired immediately.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  skipInitCheck: boolean;
+
+  /**
    * Function that updates the context of the compound microfrontend.
    * @param contextObj The context data
    * @example

@@ -105,6 +105,18 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('LuigiClient API - getSkipInitCheck', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getSkipInitCheck')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getSkipInitCheck()=true');
+        });
+    });
+
     it('LuigiClient API updateContext', () => {
       cy.on('window:alert', stub);
 

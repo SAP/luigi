@@ -170,6 +170,16 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 *   **since**: 1.0.0
 
+### skipInitCheck
+
+If set to true, skips handshake and ready event is fired immediately.
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
 ### updateContext
 
 Function that updates the context of the compound microfrontend.
