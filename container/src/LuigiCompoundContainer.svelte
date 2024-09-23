@@ -65,22 +65,22 @@
   import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
 
-  export let viewurl: string;
-  export let webcomponent: any;
+  export let anchor: string;
+  export let authData: any;
+  export let clientPermissions: any;
+  export let compoundConfig: any;
   export let context: string;
   export let deferInit: boolean;
-  export let noShadow: boolean;
-  export let compoundConfig: any;
-  export let nodeParams: any;
-  export let searchParams: any;
-  export let pathParams: any;
-  export let clientPermissions: any;
-  export let userSettings: any;
-  export let anchor: string;
   export let dirtyStatus: boolean;
-  export let hasBack: boolean;
   export let documentTitle: string;
-  export let authData: any;
+  export let hasBack: boolean;
+  export let noShadow: boolean;
+  export let nodeParams: any;
+  export let pathParams: any;
+  export let searchParams: any;
+  export let userSettings: any;
+  export let viewurl: string;
+  export let webcomponent: any;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;

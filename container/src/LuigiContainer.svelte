@@ -62,29 +62,28 @@
   import { GenericHelperFunctions } from './utilities/helpers';
   import { getAllowRules } from './services/iframe-helpers';
 
-  export let viewurl: string;
-  export let context: string;
-  export let label: string;
-  export let webcomponent: any;
-  export let deferInit: boolean;
-  export let noShadow: Boolean;
-  export let locale: string;
-  export let theme: string;
   export let activeFeatureToggleList: string[];
-  export let skipInitCheck: boolean;
-  export let nodeParams: any;
-  export let searchParams: any;
-  export let pathParams: any;
-  export let clientPermissions: any;
-  export let dirtyStatus: boolean;
-  export let hasBack: boolean;
-  export let documentTitle: string;
   export let allowRules: string[];
-  export let sandboxRules: string[];
-
-  export let userSettings: any;
   export let anchor: string;
   export let authData: any;
+  export let clientPermissions: any;
+  export let context: string;
+  export let deferInit: boolean;
+  export let dirtyStatus: boolean;
+  export let documentTitle: string;
+  export let hasBack: boolean;
+  export let label: string;
+  export let locale: string;
+  export let noShadow: Boolean;
+  export let nodeParams: any;
+  export let pathParams: any;
+  export let sandboxRules: string[];
+  export let searchParams: any;
+  export let skipInitCheck: boolean;
+  export let theme: string;
+  export let userSettings: any;
+  export let viewurl: string;
+  export let webcomponent: any;
 
   const iframeHandle:
     | {
@@ -114,6 +113,7 @@
       pathParams &&
       sandboxRules &&
       searchParams &&
+      skipInitCheck &&
       theme &&
       userSettings
     );
@@ -213,7 +213,7 @@
         height: 100%;
         border: none;
       }
-    
+
       main.lui-isolated {
         line-height: 0;
       }
