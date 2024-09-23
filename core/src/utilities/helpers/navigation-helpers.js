@@ -9,6 +9,7 @@ class NavigationHelpersClass {
   constructor() {
     this.EXP_CAT_KEY = 'luigi.preferences.navigation.expandedCategories';
     this.COL_NAV_KEY = 'luigi.preferences.navigation.collapsedNavigation';
+    this.COLLAPSED_SUPER_CATEGORIES_KEY = 'luigi.preferences.navigation.collapsedSuperCategories';
     this.virtualGroupPrefix = '___';
   }
 
@@ -320,6 +321,24 @@ class NavigationHelpersClass {
       }
     }
     return expandedList;
+  }
+  storeCollapsedSuperCategoriesState(key, value) {
+    let collapsedList = JSON.parse(localStorage.getItem(this.COLLAPSED_SUPER_CATEGORIES_KEY)) || [];
+
+    if (value) {
+        collapsedList = collapsedList.filter(item => item !== key);
+    } else {
+        if (!collapsedList.includes(key)) {
+            collapsedList.push(key);
+        }
+    }
+
+    localStorage.setItem(this.COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(collapsedList));
+  }
+
+  isCollapsedSuperCategory(key) {
+    const collapsedList = JSON.parse(localStorage.getItem(this.COLLAPSED_SUPER_CATEGORIES_KEY)) || [];
+    return collapsedList.includes(key);
   }
 
   storeExpandedState(key, value, replace = false) {

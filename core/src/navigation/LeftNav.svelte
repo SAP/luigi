@@ -307,6 +307,9 @@
               entries: [isGroup ? ['undefined', entry[1]] : entry]
             };
             converted.push(categoryById[catId]);
+            if (!NavigationHelpers.isCollapsedSuperCategory(catId) && isGroup) {
+              setExpandedState(entry[1], true);
+            }
           }
         }
       });
