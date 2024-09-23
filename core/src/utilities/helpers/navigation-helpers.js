@@ -322,7 +322,7 @@ class NavigationHelpersClass {
     }
     return expandedList;
   }
-  
+
   storeCollapsedSuperCategoriesState(key, value) {
     let collapsedList = JSON.parse(localStorage.getItem(this.COLLAPSED_SUPER_CATEGORIES_KEY)) || [];
 
