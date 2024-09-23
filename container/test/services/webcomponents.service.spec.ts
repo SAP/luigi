@@ -1145,7 +1145,7 @@ describe('createClientAPI', () => {
     expect(result).toEqual({});
   });
 
-  it.each([true, false])('test getSkipInitCheck attribute', (value) => {
+  it.each([true, false])('test getSkipInitCheck attribute', value => {
     // mock and spy on data/functions
     service.thisComponent = document.createElement('div');
     service.thisComponent.skipInitCheck = value;
