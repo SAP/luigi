@@ -3,36 +3,36 @@
     tag: null,
     shadow: 'none',
     props: {
-      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' },
-      deferInit: { type: 'Boolean', attribute: 'defer-init' },
-      context: { type: 'String', reflect: false, attribute: 'context' },
-      noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
-      compoundConfig: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'compound-config',
-      },
-      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
-      userSettings: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'user-settings',
-      },
       anchor: { type: 'String', reflect: false, attribute: 'anchor' },
-      searchParams: {
-        type: 'Object',
-        reflect: false,
-        attribute: 'search-params',
-      },
-      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
       clientPermissions: {
         type: 'Object',
         reflect: false,
         attribute: 'client-permissions',
       },
+      compoundConfig: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'compound-config',
+      },
+      context: { type: 'String', reflect: false, attribute: 'context' },
+      deferInit: { type: 'Boolean', attribute: 'defer-init' },
       dirtyStatus: { type: 'Boolean', reflect: false, attribute: 'dirty-status'},
-      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
       documentTitle: {type: 'String', reflect: false, attribute: 'document-title'},
+      hasBack: { type: 'Boolean', reflect: false, attribute: 'has-back'},
+      noShadow: { type: 'Boolean', attribute: 'no-shadow', reflect: false },
+      nodeParams: { type: 'Object', reflect: false, attribute: 'node-params' },
+      pathParams: { type: 'Object', reflect: false, attribute: 'path-params' },
+      searchParams: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'search-params',
+      },
+      userSettings: {
+        type: 'Object',
+        reflect: false,
+        attribute: 'user-settings',
+      },
+      viewurl: { type: 'String', reflect: false, attribute: 'viewurl' }
     },
     extend: (customElementConstructor) => {
       let notInitFn = (name) => {
@@ -64,21 +64,21 @@
   import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
 
-  export let viewurl: string;
-  export let webcomponent: any;
+  export let anchor: string;
+  export let clientPermissions: any;
+  export let compoundConfig: any;
   export let context: string;
   export let deferInit: boolean;
-  export let noShadow: boolean;
-  export let compoundConfig: any;
-  export let nodeParams: any;
-  export let searchParams: any;
-  export let pathParams: any;
-  export let clientPermissions: any;
-  export let userSettings: any;
-  export let anchor: string;
   export let dirtyStatus: boolean;
-  export let hasBack: boolean;
   export let documentTitle: string;
+  export let hasBack: boolean;
+  export let noShadow: boolean;
+  export let nodeParams: any;
+  export let pathParams: any;
+  export let searchParams: any;
+  export let userSettings: any;
+  export let viewurl: string;
+  export let webcomponent: any;
 
   let containerInitialized = false;
   let mainComponent: HTMLElement;
@@ -90,16 +90,16 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
-      nodeParams &&
-      searchParams &&
-      pathParams &&
-      clientPermissions &&
-      userSettings &&
       anchor &&
+      clientPermissions &&
       dirtyStatus &&
-      hasBack &&
       documentTitle &&
-      noShadow
+      hasBack &&
+      noShadow &&
+      nodeParams &&
+      pathParams &&
+      searchParams &&
+      userSettings
     );
   };
 
