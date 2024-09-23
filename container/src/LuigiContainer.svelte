@@ -113,6 +113,7 @@
       pathParams &&
       sandboxRules &&
       searchParams &&
+      skipInitCheck &&
       theme &&
       userSettings
     );
@@ -212,7 +213,7 @@
         height: 100%;
         border: none;
       }
-    
+
       main.lui-isolated {
         line-height: 0;
       }
