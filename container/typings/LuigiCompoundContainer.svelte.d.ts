@@ -98,7 +98,7 @@ export default class LuigiCompoundContainer extends HTMLElement {
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
-   * The list of active feature toggles to be passed to the web-component-based micro frontend
+   * The list of active feature toggles to be passed to the compound microfrontend.
    * @since NEXT_RELEASE_CONTAINER
    */
   activeFeatureToggleList: string[];
