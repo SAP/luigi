@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <script type="module">
+      import '../bundle.js';
+    </script>
+  </head>
+  <body>
+    <h3>
+      This page is used to test Container Luigi CLient API functionalities for web
+      component based microfrontend
+    </h3>
+    <button id="init-button">container.init() defer-init enabled</button>
+    <button id="sandbox-rules">Set sandboxRules</button>
+    <button id="set-allow-rules-button">Set allowRules</button>
+
+    <!-- Luigi Container to test defer-init flag-->
+    <div style="border: solid 1px red; height: 100px">
+      <luigi-container
+        id="defer-init-test"
+        data-test-id="defer-init-container"
+        viewURL="./microfrontend-defer-init.html"
+        defer-init="true"
+      ></luigi-container>
+    </div>
+
+    <!-- Luigi Container to test sandbox rules -->
+    <div style="border: solid 1px red; height: 100px">
+      <luigi-container
+        id="sandbox-rules-test"
+        viewURL="./microfrontend-sandbox-rules.html"
+        sandbox-rules='["allow-scripts", "allow-same-origin"]'
+      ></luigi-container>
+    </div>
+
+    <!-- Luigi Container to test allow rules  -->
+    <div style="border: solid 1px red; height: 100px">
+      <luigi-container
+        id="allow-rules-test"
+        viewURL="./microfrontend-allow-rules.html"
+        allow-rules='["fullscreen", "microphone"]'
+      ></luigi-container>
+    </div>
+
+    <script type="module">
+      import Events from '../bundle.js';
+
+      const deferInitContainer = document.getElementById('defer-init-test');
+      const initButton = document.getElementById('init-button');
+
+      initButton.addEventListener('click', function() {
+        deferInitContainer.init();
+      });
+
+      const sandboxRulesButton = document.getElementById('sandbox-rules');
+
+      sandboxRulesButton.addEventListener('click', () => {
+        deferInitContainer.sandboxRules = ['allow-modals', 'allow-popups'];
+      });
+
+      const allowRulesContainer = document.getElementById('allow-rules-test');
+      const setAllowRulesButton = document.getElementById('set-allow-rules-button');
+
+      initButton.addEventListener('click', () => {
+        deferInitContainer.allowRules = [
+          'microphone',
+          "camera 'none'",
+          "geolocation 'self' https://a.example.com https://b.example.com"
+        ];
+      });
+    </script>
+  </body>
+</html>

@@ -60,7 +60,7 @@ Luigi.setConfig({
 ```
 
 If you want to use the silent token renewal feature, the `silent-callback.html` needs to be copied to a folder in your Luigi Core installation,
-which is the return path for the IdP provider, configured through the `redirect_uri` setting. The default location of `redirect_uri` is `/assets/auth-oidc-pkce/silent-callback.html`.
+which is the return path for the IdP provider, configured through the `silent_redirect_uri` setting. The default location of `silent_redirect_uri` is `/assets/auth-oidc-pkce/silent-callback.html`.
 
 Next, you must install `oidc-client-ts` in your project as a dev dependency:
 

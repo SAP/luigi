@@ -108,7 +108,17 @@
       return;
     }
     thisComponent.updateContext = (contextObj: any, internal?: any) => {
-      (thisComponent.getNoShadow() ? thisComponent : mainComponent)._luigi_mfe_webcomponent.context = contextObj;
+      const rootElement = thisComponent.getNoShadow() ? thisComponent : mainComponent;
+      rootElement._luigi_mfe_webcomponent.context = contextObj;
+
+      const compoundChildrenQueryElement = rootElement._luigi_mfe_webcomponent;
+      if (compoundChildrenQueryElement) {
+        const compoundChildren = compoundChildrenQueryElement.querySelectorAll('[lui_web_component]');
+        compoundChildren?.forEach((item) => {
+            const ctx = item.context || {};
+            item.context = Object.assign(ctx, contextObj);
+        });
+      }
     };
     const ctx = GenericHelperFunctions.resolveContext(context);
     deferInit = false;
@@ -117,13 +127,13 @@
       compound: compoundConfig,
       viewUrl: viewurl,
       webcomponent: GenericHelperFunctions.checkWebcomponentValue(webcomponent) || true
-    }; // TODO: fill with sth
-    if(!thisComponent.getNoShadow()){
+    };
+    if (!thisComponent.getNoShadow()) {
       mainComponent.innerHTML=''
       const shadow = thisComponent.attachShadow({ mode: "open"});
       shadow.append(mainComponent);
-    }else{
-      //removing mainComponent
+    } else {
+      // removing mainComponent
       thisComponent.innerHTML = '';
     }
     webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {

@@ -36,7 +36,7 @@ const replaceVersionInFolder = folderPath => {
         let fileContent = fs.readFileSync(filePath, 'utf8');
 
         // Check if the file contains the keyword
-        if (fileContent.includes('NEXT_RELEASE_CONTAINER_CONTAINER')) {
+        if (fileContent.includes('NEXT_RELEASE_CONTAINER')) {
           // Replace NEXT_RELEASE_CONTAINER with the actual version
           fileContent = fileContent.replace(/NEXT_RELEASE_CONTAINER/g, version);
 

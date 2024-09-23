@@ -1,4 +1,3 @@
-<svelte:window on:click={closeDropdowns} on:blur={closeDropdowns}/>
 <script>
   import luigiCorePkgInfo from '../node_modules/@luigi-project/core/package.json';
   import defaultConfig from './defaultConfig.js';
@@ -28,7 +27,7 @@
     let horizonStandard = true;
 
     customVersion = localStorage.getItem('luigi-version');
-    if(customVersion) {
+    if (customVersion) {
       const cdnBase = '/luigi-cdn/';
       coreBasePath = cdnBase + 'core@' + customVersion;
       oidcBasePath = cdnBase + 'plugin-auth-oidc@' + customVersion;
@@ -46,13 +45,13 @@
     style.setAttribute('rel', 'stylesheet');
     style.setAttribute('href', coreBasePath + (horizonStandard ? '/luigi_horizon.css' : '/luigi.css'));
     document.head.appendChild(style);
-    
+
     const core = document.createElement('script');
     core.setAttribute('src', coreBasePath + '/luigi.js');
     document.head.appendChild(core);
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       window.loadInterval = setInterval(() => {
-        if(window.Luigi) {
+        if (window.Luigi) {
           clearInterval(window.loadInterval);
           const s_oidc = document.createElement('script');
           s_oidc.setAttribute('src', oidcBasePath + '/plugin.js');
@@ -62,32 +61,29 @@
           document.head.appendChild(s_oauth);
 
           window.loadInterval = setInterval(() => {
-            if(
-              window['LuigiPlugin-auth-oauth2'] &&
-              window['LuigiPlugin-auth-oidc']
-            ) {
+            if (window['LuigiPlugin-auth-oauth2'] && window['LuigiPlugin-auth-oidc']) {
               clearInterval(window.loadInterval);
               window.LuigiAuthOAuth2 = window['LuigiPlugin-auth-oauth2'];
               window.LuigiAuthOIDC = window['LuigiPlugin-auth-oidc'];
               resolve('resolved');
             }
-        }, 100);
+          }, 100);
         }
       }, 100);
     });
   }
 
   function reloadConfig() {
-      let customConfig = sessionStorage.getItem('fiddle');
-      let customConfigPreviousSession = localStorage.getItem('fiddle');
+    let customConfig = sessionStorage.getItem('fiddle');
+    let customConfigPreviousSession = localStorage.getItem('fiddle');
 
-      // check if config saved from a previous session
-      if(!customConfig && customConfigPreviousSession) {
-        if (confirm('We found a fiddle from a previous session. Do you want to restore it?')) {
-          customConfig = customConfigPreviousSession;
-          sessionStorage.setItem('fiddle', customConfig);
-        }
+    // check if config saved from a previous session
+    if (!customConfig && customConfigPreviousSession) {
+      if (confirm('We found a fiddle from a previous session. Do you want to restore it?')) {
+        customConfig = customConfigPreviousSession;
+        sessionStorage.setItem('fiddle', customConfig);
       }
+    }
 
     // try to execyte custom configuration or defaut
     try {
@@ -122,14 +118,14 @@
   }
 
   function resetConfig() {
-	window.editor.setValue(defaultConfigString);
+    window.editor.setValue(defaultConfigString);
     window.editorTA.textContent = defaultConfigString;
     window.editor.clearSelection();
   }
 
-   function openConfig() {
-	window.editor.setValue(configString);
-	window.editorTA.textContent = configString;
+  function openConfig() {
+    window.editor.setValue(configString);
+    window.editorTA.textContent = configString;
     window.editor.clearSelection();
     document.body.classList.add('editorVisible');
   }
@@ -146,20 +142,20 @@
 
   async function chooseVersion() {
     showVersions = true;
-    if(!versions) {
+    if (!versions) {
       const response = await fetch('https://registry.npmjs.org/@luigi-project/core');
       const entries = await response.json();
       versions = [...new Set(Object.values(entries['dist-tags']) || [])].sort((a, b) => {
         const a_parts = a.split('.');
         const b_parts = b.split('.');
-        return (a_parts[0] * 10000 + a_parts[1] * 1) - (b_parts[0] * 10000 + b_parts[1] * 1);
+        return a_parts[0] * 10000 + a_parts[1] * 1 - (b_parts[0] * 10000 + b_parts[1] * 1);
       });
       versions.push('Reset...');
     }
   }
 
   function switchVersion(version) {
-    if(version === 'Reset...') {
+    if (version === 'Reset...') {
       localStorage.removeItem('luigi-version');
     } else {
       localStorage.setItem('luigi-version', version);
@@ -177,6 +173,110 @@
   });
 </script>
 
+<svelte:window on:click={closeDropdowns} on:blur={closeDropdowns} />
+<div class="editor_container">
+  <div class="fd-dialog" role="dialog">
+    <div class="fd-dialog__content" role="document" style="width:80%; max-width:80%;">
+      <header class="fd-dialog__header fd-bar fd-bar--header">
+        <div class="fd-bar__left">
+          <div class="fd-bar__element">
+            <h3 class="fd-dialog__title">Luigi Config</h3>
+          </div>
+        </div>
+      </header>
+      <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
+        <div id="editor" class="lui-mobile-hide" />
+        <textarea id="editorTA" class="lui-mobile-show" />
+      </div>
+      <footer class="fd-dialog__footer fd-bar fd-bar--footer">
+        <div class="fd-bar__right">
+          <div class="fd-bar__element">
+            <button
+              class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+              on:click={resetConfig}
+            >Reset</button>
+          </div>
+          <div class="fd-bar__element lui-mobile-hide">
+            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfig}>Apply</button>
+          </div>
+          <div class="fd-bar__element lui-mobile-show">
+            <button
+              class="fd-dialog__decisive-button fd-button fd-button--compact"
+              on:click={saveConfigTA}
+            >Apply</button>
+          </div>
+          <div class="fd-bar__element">
+            <button
+              class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact"
+              on:click={closeConfig}
+            >Cancel</button>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="fiddle-toolbar">
+  <div class="fd-action-bar">
+    <div class="fd-action-bar__header">
+      <div class="title-wrapper">
+        <img alt="Luigi" src="./img/luigi.png" />
+        <span class="lui-mobile-hide">powered by Luigi
+          <button
+            class="fd-button fd-button--compact btn-primary"
+            on:click|preventDefault|stopPropagation={chooseVersion}
+          >
+            <span class="lui-mobile-hide">v{luigiVersion + (customVersion ? ' (CDN)' : '')}
+              {#if showVersions}
+                <div class="lui-version-chooser">
+                  {#if !versions}
+                    <div class="fiddle_spinner">
+                      <div />
+                      <div />
+                      <div />
+                      <div />
+                    </div>
+                  {/if}
+                  {#each versions || [] as version}
+                    <a class="fd-link" href="#top" target="_blank" rel="noreferrer" on:click={switchVersion(version)}>
+                      {version}
+                    </a><br />
+                  {/each}
+                </div>
+              {/if}
+            </span>
+          </button>
+        </span>
+        <span>
+          <a class="fd-link" href="https://www.sap.com/about/legal/privacy.html" target="_blank" rel="noreferrer">
+            Privacy Policy &nbsp&nbsp
+          </a>
+          <a class="fd-link" href="https://www.sap.com/about/legal/impressum.html" target="_blank" rel="noreferrer">
+            Legal
+          </a>
+        </span>
+      </div>
+
+      <div class="fd-action-bar__actions">
+        <button class="fd-button fd-button--standard btn-primary" on:click={clearAll}>
+          <span class="lui-mobile-hide">Clear All</span>
+          <span class="lui-mobile-show sap-icon--delete" />
+        </button>
+        <span class="lui-sep" />
+        <button class="fd-button fd-button--standard btn-primary" on:click={openConfig}>
+          <span class="lui-mobile-hide">Modify Config</span>
+          <span class="lui-mobile-show sap-icon--edit" />
+        </button>
+        <button class="fd-button fd-button--standard btn-primary" on:click={hide}>
+          <span class="lui-mobile-hide">Hide</span>
+          <span class="lui-mobile-show sap-icon--hide" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <style>
   :global(.show-bar) .fiddle-toolbar {
     display: block;
@@ -189,7 +289,7 @@
   }
 
   :global(body) {
-    font-family: var(--sapFontFamily, "72", "72full", Arial, Helvetica, sans-serif);
+    font-family: var(--sapFontFamily, '72', '72full', Arial, Helvetica, sans-serif);
   }
 
   :global(#ext-cookiebar) {
@@ -198,7 +298,7 @@
     top: 0;
     left: 0;
     padding: 10px 5px;
-    background: rgba(0,0,0,.6);
+    background: rgba(0, 0, 0, 0.6);
     font-size: 12px;
     color: white;
     text-align: center;
@@ -246,7 +346,7 @@
 
   :global(body.lui-v1_0) .editor_container .fd-dialog__content {
     background: white;
-    padding: .5rem;
+    padding: 0.5rem;
     border-radius: 1rem;
   }
 
@@ -258,7 +358,7 @@
     visibility: visible;
     z-index: 2;
   }
-  
+
   .editor_container .fd-dialog {
     display: none;
   }
@@ -268,33 +368,31 @@
     position: fixed;
     z-index: 1000;
     -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, 0.6);
   }
-  
+
   .editor_container .fd-bar__right {
     display: flex;
     -webkit-box-pack: end;
-    -ms-flex-pack: end;
     justify-content: flex-end;
   }
 
-  #editor, #editorTA {
+  #editor,
+  #editorTA {
     width: 100%;
     height: calc(100vh - 300px);
   }
 
   #editorTA {
-	  font-family: monospace;
-	  padding: 0;
+    font-family: monospace;
+    padding: 0;
   }
 
   .fd-action-bar__header {
@@ -315,7 +413,6 @@
     display: inline-block;
     border: 2px solid #2deb8a;
     border-radius: 8px;
-    -webkit-box-shadow: 0 8px 24px -17px #000101;
     box-shadow: 0 8px 24px -17px #000101;
     background-color: #2deb8a;
     font-size: 12px;
@@ -323,7 +420,6 @@
     font-family: 'Open Sans', sans-serif;
     color: #29303a;
     cursor: pointer;
-    -webkit-transition: all 0.2s ease;
     transition: all 0.2s ease;
   }
 
@@ -362,9 +458,8 @@
     padding-right: 10px;
   }
 
-  
   .fiddle_spinner {
-    color: white
+    color: white;
   }
   .fiddle_spinner,
   .fiddle_spinner div {
@@ -417,102 +512,3 @@
     overflow: visible;
   }
 </style>
-
-<div class="editor_container">
-  <div class="fd-dialog" role="dialog">
-    <div class="fd-dialog__content" role="document"  style="width:80%; max-width:80%;">
-      <header class="fd-dialog__header fd-bar fd-bar--header">
-        <div class="fd-bar__left">
-          <div class="fd-bar__element">
-            <h3 class="fd-dialog__title">Luigi Config</h3>
-          </div>
-        </div>
-      </header>
-      <div class="fd-dialog__body fd-dialog__body--no-vertical-padding">
-        <div id="editor" class="lui-mobile-hide"/>
-		    <textarea id="editorTA" class="lui-mobile-show"/>
-      </div>
-      <footer class="fd-dialog__footer fd-bar fd-bar--footer">
-        <div class="fd-bar__right">
-          <div class="fd-bar__element">
-            <button class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact" on:click={resetConfig}>Reset</button>
-          </div>
-          <div class="fd-bar__element lui-mobile-hide">
-            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfig}>Apply</button>
-          </div>
-          <div class="fd-bar__element lui-mobile-show">
-            <button class="fd-dialog__decisive-button fd-button fd-button--compact" on:click={saveConfigTA}>Apply</button>
-          </div>
-          <div class="fd-bar__element">
-            <button class="fd-dialog__decisive-button fd-button fd-button--transparent fd-button--compact" on:click={closeConfig}>Cancel</button>
-          </div>
-        </div>
-      </footer>
-    </div>
-  </div>
-</div>
-
-<div class="fiddle-toolbar">
-  <div class="fd-action-bar">
-    <div class="fd-action-bar__header">
-      <div class="title-wrapper">
-        <img alt="Luigi" src="./img/luigi.png" />
-        <span class="lui-mobile-hide">powered by Luigi 
-          <button class="fd-button fd-button--compact btn-primary" on:click|preventDefault|stopPropagation={chooseVersion}>
-            <span class="lui-mobile-hide">v{luigiVersion + (customVersion ? ' (CDN)' : '')}
-              {#if showVersions}
-              <div class="lui-version-chooser">
-                {#if !versions}                
-                <div class="fiddle_spinner"><div></div><div></div><div></div><div></div></div>
-                {/if}
-                {#each (versions || []) as version}
-                  <a
-                    class="fd-link"
-                    href="#top"
-                    target="_blank"
-                    rel="noreferrer"
-                    on:click={switchVersion(version)}>
-                    {version}                    
-                  </a><br>
-                {/each}
-              </div>
-              {/if}
-            </span>
-          </button>
-        </span>
-        <span>
-          <a
-            class="fd-link"
-            href="https://www.sap.com/about/legal/privacy.html"
-            target="_blank"
-            rel="noreferrer">
-            Privacy Policy &nbsp&nbsp
-          </a>
-          <a
-            class="fd-link"
-            href="https://www.sap.com/about/legal/impressum.html"
-            target="_blank"
-            rel="noreferrer">
-            Legal
-          </a>
-        </span>
-      </div>
-
-      <div class="fd-action-bar__actions">
-        <button class="fd-button fd-button--standard btn-primary" on:click={clearAll}>
-          <span class="lui-mobile-hide">Clear All</span>
-          <span class="lui-mobile-show sap-icon--delete" />
-        </button>
-        <span class="lui-sep" />
-        <button class="fd-button fd-button--standard btn-primary" on:click={openConfig}>
-          <span class="lui-mobile-hide">Modify Config</span>
-          <span class="lui-mobile-show sap-icon--edit" />
-        </button>
-        <button class="fd-button fd-button--standard btn-primary" on:click={hide}>
-          <span class="lui-mobile-hide">Hide</span>
-          <span class="lui-mobile-show sap-icon--hide" />
-        </button>
-      </div>
-    </div>
-  </div>
-</div>

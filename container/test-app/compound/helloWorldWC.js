@@ -49,6 +49,9 @@ export default class extends HTMLElement {
     const getDirtyStatusBtn = document.createElement('template');
     getDirtyStatusBtn.innerHTML = '<button id="getDirtyStatus">getDirtyStatus</button>';
 
+    const retrieveContextValueBtn = document.createElement('template');
+    retrieveContextValueBtn.innerHTML = '<button id="retrieveContextValue">retrieveContextValue</button>';
+
     const uxManagerMultipleRequestsBtn = document.createElement('template');
     uxManagerMultipleRequestsBtn.innerHTML = `<button id="uxManagerManyRequests">uxManager().closeUserSettings,
     openUserSettings,
@@ -95,6 +98,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(uxManagerMultipleRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerChainedFunctionsRequestsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(linkManagerOpenAsRequestsBtn.content.cloneNode(true));
@@ -199,6 +203,14 @@ export default class extends HTMLElement {
       console.log('getDirtyStatus', dirtyStatus);
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.uxManager().getDirtyStatus()=' + dirtyStatus,
+        type: 'info'
+      });
+    });
+
+    this.$retrieveContextValueBtn = this._shadowRoot.querySelector('#retrieveContextValue');
+    this.$retrieveContextValueBtn.addEventListener('click', () => {
+      this.LuigiClient.uxManager().showAlert({
+        text: `compoundWC.ctx=${JSON.stringify(this.ctx)}`,
         type: 'info'
       });
     });

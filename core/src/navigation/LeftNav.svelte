@@ -1293,9 +1293,7 @@
     cursor: pointer;
     outline-offset: -1px;
     user-select: none;
-    -moz-user-select: none;
     -webkit-user-select: none;
-    -ms-user-select: none;
   }
 
   :global(html.luigi-app-in-custom-container) {
@@ -1668,15 +1666,6 @@
       animation-fill-mode: forwards;
       .lui-flyout-sublist__title {
         background: var(--sapList_Background, #fff);
-      }
-
-      @-webkit-keyframes flyoutAnimation {
-        0% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
       }
 
       @keyframes flyoutAnimation {

@@ -66,6 +66,9 @@
   function addClickListener(link, alertId) {
     try {
       const linkElem = document.getElementById(link.elemId);
+      if (!linkElem) {
+        return;
+      }
       if (linkElem.dismissListener) {
         linkElem.removeEventListener('click', linkElem.dismissListener);
       }
@@ -138,7 +141,6 @@
     z-index: 1100;
     flex-direction: column;
     left: 50%;
-    -webkit-transform: translate(-50%);
     transform: translate(-50%);
     margin-top: calc(var(--luigi__shellbar--height) - 0.625rem);
     .fd-message-strip:not(:first-child) {
@@ -151,7 +153,6 @@
       line-height: 1.42857;
       color: #0a6ed1;
       color: var(--sapLinkColor, #0a6ed1);
-      -webkit-transition: all 125ms ease-in;
       transition: all 125ms ease-in;
       text-decoration: none;
 

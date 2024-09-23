@@ -88,6 +88,10 @@ export default class extends HTMLElement {
     const navigateToIntentBtn = document.createElement('template');
     navigateToIntentBtn.innerHTML = '<button id="navigateToIntent">navigateToIntent</button>';
 
+    const customMessageDiv = document.createElement('template');
+    customMessageDiv.innerHTML = '<div id="customMessageDiv">Received Custom Message: </div>';
+    
+
     this._shadowRoot = this.attachShadow({
       mode: 'open',
       delegatesFocus: false
@@ -113,6 +117,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getCurrentRouteBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(navigateToIntentBtn.content.cloneNode(true));
 
+    this._shadowRoot.appendChild(customMessageDiv.content.cloneNode(true));
     this._shadowRoot.appendChild(empty.content.cloneNode(true));
 
     this.$paragraph = this._shadowRoot.querySelector('p');
@@ -307,6 +312,14 @@ export default class extends HTMLElement {
         alert('navigated to: #?intent=Sales-settings');
       }
     });
+
+    this.addEventListener('custom-message-id', (event) => {
+      console.log('custom message received: ', event.detail)
+      const customMessageDiv = this._shadowRoot.querySelector('#customMessageDiv');
+      customMessageDiv.textContent = `Received Custom Message: ${event.detail.dataToSend}`;
+      customMessageDiv.style = "color: red;";
+    })
+    
   }
 
   get context() {
