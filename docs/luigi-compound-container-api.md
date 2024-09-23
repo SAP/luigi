@@ -170,6 +170,16 @@ Type: ([boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 *   **since**: 1.0.0
 
+### activeFeatureToggleList
+
+The list of active feature toggles to be passed to the web-component-based micro frontend
+
+Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)<[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+
+**Meta**
+
+*   **since**: NEXT_RELEASE_CONTAINER
+
 ### updateContext
 
 Function that updates the context of the compound microfrontend.
