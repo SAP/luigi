@@ -133,7 +133,7 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### nodeParams
 
-The parameters to be passed to the web-component-based micro frontend. Will not be passed to the compound children.
+The parameters to be passed to the web-component-based micro frontend.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 

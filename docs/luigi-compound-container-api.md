@@ -51,13 +51,13 @@ Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glob
 
 ### nodeParams
 
-The parameters to be passed to the compound micro frontend.
+The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
 
 Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 **Meta**
 
-*   **since**: NEXT_RELEASE_CONTAINER
+*   **since**: 1.0.0
 
 ### noShadow
 

@@ -25,8 +25,8 @@ export default class LuigiCompoundContainer extends HTMLElement {
   deferInit: boolean;
 
   /**
-   * The parameters to be passed to the compound micro frontend.
-   * @since NEXT_RELEASE_CONTAINER
+   * The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
+   * @since 1.0.0
    */
   nodeParams: Object;
 
