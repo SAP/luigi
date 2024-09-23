@@ -322,15 +322,16 @@ class NavigationHelpersClass {
     }
     return expandedList;
   }
+  
   storeCollapsedSuperCategoriesState(key, value) {
     let collapsedList = JSON.parse(localStorage.getItem(this.COLLAPSED_SUPER_CATEGORIES_KEY)) || [];
 
     if (value) {
-        collapsedList = collapsedList.filter(item => item !== key);
+      collapsedList = collapsedList.filter(item => item !== key);
     } else {
-        if (!collapsedList.includes(key)) {
-            collapsedList.push(key);
-        }
+      if (!collapsedList.includes(key)) {
+        collapsedList.push(key);
+      }
     }
 
     localStorage.setItem(this.COLLAPSED_SUPER_CATEGORIES_KEY, JSON.stringify(collapsedList));
