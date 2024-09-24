@@ -43,6 +43,9 @@ export default class extends HTMLElement {
     const getAnchorBtn = document.createElement('template');
     getAnchorBtn.innerHTML = '<button id="getAnchor">getAnchor</button>';
 
+    const getFeatureToggleListBtn = document.createElement('template');
+    getFeatureToggleListBtn.innerHTML = '<button id="getFeatureToggleList">getFeatureToggleList</button>';
+
     const getThemeBtn = document.createElement('template');
     getThemeBtn.innerHTML = '<button id="getTheme">getTheme</button>';
 
@@ -100,6 +103,7 @@ export default class extends HTMLElement {
     this._shadowRoot.appendChild(getClientPermissionsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getUserSettingsBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getAnchorBtn.content.cloneNode(true));
+    this._shadowRoot.appendChild(getFeatureToggleListBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getThemeBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(getDirtyStatusBtn.content.cloneNode(true));
     this._shadowRoot.appendChild(retrieveContextValueBtn.content.cloneNode(true));
@@ -198,6 +202,16 @@ export default class extends HTMLElement {
       let getAnchor = this.LuigiClient.getAnchor();
       this.LuigiClient.uxManager().showAlert({
         text: 'LuigiClient.getAnchor()=' + JSON.stringify(getAnchor),
+        type: 'info'
+      });
+    });
+
+    this.$getFeatureToggleListBtn = this._shadowRoot.querySelector('#getFeatureToggleList');
+    this.$getFeatureToggleListBtn.addEventListener('click', () => {
+      const activeFeatureToggleList = this.LuigiClient.getActiveFeatureToggles();
+
+      this.LuigiClient.uxManager().showAlert({
+        text: 'LuigiClient.getActiveFeatureToggles()=' + JSON.stringify(activeFeatureToggleList),
         type: 'info'
       });
     });

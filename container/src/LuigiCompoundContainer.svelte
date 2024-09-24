@@ -3,6 +3,7 @@
     tag: null,
     shadow: 'none',
     props: {
+      activeFeatureToggleList: { type: 'Array', reflect: false, attribute: 'active-feature-toggle-list' },
       anchor: { type: 'String', reflect: false, attribute: 'anchor' },
       clientPermissions: {
         type: 'Object',
@@ -65,6 +66,7 @@
   import { Events } from './constants/communication';
   import { GenericHelperFunctions } from './utilities/helpers';
 
+  export let activeFeatureToggleList: string[];
   export let anchor: string;
   export let clientPermissions: any;
   export let compoundConfig: any;
@@ -92,6 +94,7 @@
   // Only needed for get rid of "unused export property" svelte compiler warnings
   export const unwarn = () => {
     return (
+      activeFeatureToggleList &&
       anchor &&
       clientPermissions &&
       dirtyStatus &&
