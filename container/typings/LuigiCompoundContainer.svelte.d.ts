@@ -104,6 +104,12 @@ export default class LuigiCompoundContainer extends HTMLElement {
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
+   * The theme to be passed to the compound microfrontend.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  theme: string;
+
+  /**
    * Function that updates the context of the compound microfrontend.
    * @param contextObj The context data
    * @example

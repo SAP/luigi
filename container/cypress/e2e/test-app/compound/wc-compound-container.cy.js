@@ -105,6 +105,18 @@ describe('Compound Container Tests', () => {
         });
     });
 
+    it('LuigiClient API - getCurrentTheme', () => {
+      cy.on('window:alert', stub);
+
+      cy.get(containerSelector)
+        .shadow()
+        .contains('getTheme')
+        .click()
+        .then(() => {
+          expect(stub.getCall(0)).to.be.calledWith('LuigiClient.getCurrentTheme()="sap_fiori_3"');
+        });
+    });
+
     it('LuigiClient API updateContext', () => {
       cy.on('window:alert', stub);
 

@@ -27,6 +27,7 @@
         reflect: false,
         attribute: 'search-params',
       },
+      theme: { type: 'String', reflect: false, attribute: 'theme' },
       userSettings: {
         type: 'Object',
         reflect: false,
@@ -76,6 +77,7 @@
   export let nodeParams: any;
   export let pathParams: any;
   export let searchParams: any;
+  export let theme: string;
   export let userSettings: any;
   export let viewurl: string;
   export let webcomponent: any;
@@ -99,6 +101,7 @@
       nodeParams &&
       pathParams &&
       searchParams &&
+      theme &&
       userSettings
     );
   };
