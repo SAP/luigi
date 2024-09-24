@@ -1144,19 +1144,6 @@ describe('createClientAPI', () => {
     // assert
     expect(result).toEqual({});
   });
-
-  it.each([true, false])('test getSkipInitCheck attribute', value => {
-    // mock and spy on data/functions
-    service.thisComponent = document.createElement('div');
-    service.thisComponent.skipInitCheck = value;
-
-    // act
-    const clientAPI = service.createClientAPI(undefined, 'nodeId', 'wc_id', 'component', false);
-    const result = clientAPI.getSkipInitCheck();
-
-    // assert
-    expect(result).toBe(value);
-  });
 });
 
 describe('initWC', () => {

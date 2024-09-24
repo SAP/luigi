@@ -147,7 +147,7 @@
     }
     webcomponentService.renderWebComponentCompound(node, thisComponent.getNoShadow() ? thisComponent : mainComponent, ctx).then(compCnt => {
       eventBusElement = compCnt as HTMLElement;
-      if (thisComponent.hasAttribute('skip-init-check') || !node.viewUrl) {
+      if (skipInitCheck || !node.viewUrl) {
         thisComponent.initialized = true;
         setTimeout(() => {
           webcomponentService.dispatchLuigiEvent(Events.INITIALIZED, {});
