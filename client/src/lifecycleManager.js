@@ -317,6 +317,7 @@ class LifecycleManager extends LuigiClientBase {
    * @param {string} id the id that was returned by the `addInitListener` function
    * @memberof Lifecycle
    * @since 0.6.2
+   * @example
    * LuigiClient.removeCustomMessageListener(customMsgId)
    */
   removeCustomMessageListener(id) {
@@ -356,6 +357,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Returns a list of active feature toggles
    * @returns {Array} a list of feature toggle names
    * @memberof Lifecycle
@@ -368,6 +370,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Sets node parameters in Luigi Core. The parameters will be added to the URL.
    * @param {Object} params
    * @param {boolean} keepBrowserHistory
@@ -386,6 +389,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Returns the node parameters of the active URL.
    * Node parameters are defined like URL query parameters but with a specific prefix allowing Luigi to pass them to the micro frontend view. The default prefix is **~** and you can use it in the following way: `https://my.luigi.app/home/products?~sort=asc&~page=3`.
    * <!-- add-attribute:class:warning -->
@@ -404,6 +408,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Returns the dynamic path parameters of the active URL.
    * Path parameters are defined by navigation nodes with a dynamic **pathSegment** value starting with **:**, such as **productId**.
    * All path parameters in the current navigation path (as defined by the active URL) are returned.
@@ -430,6 +435,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Sends search query parameters to Luigi Core. The search parameters will be added to the URL if they are first allowed on a node level using {@link navigation-parameters-reference.md#clientpermissionsurlparameters clientPermissions.urlParameters}.
 
    * @param {Object} searchParams
@@ -449,6 +455,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Returns the current client permissions as specified in the navigation node or an empty object. For details, see [Node parameters](navigation-parameters-reference.md).
    * @returns {Object} client permissions as specified in the navigation node
    * @memberof Lifecycle
@@ -488,6 +495,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Returns the current user settings based on the selected node.
    * @returns {Object} current user settings
    * @since 1.7.1
@@ -500,6 +508,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Returns the current anchor based on active URL.
    * @memberof Lifecycle
    * @since 1.21.0
@@ -512,6 +521,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * Sends anchor to Luigi Core. The anchor will be added to the URL.
    * @param {string} anchor
    * @since 1.21.0
@@ -527,6 +537,7 @@ class LifecycleManager extends LuigiClientBase {
   }
 
   /**
+   * <!-- label-success: Web Component API  -->
    * This function allows you to change node labels within the same {@link navigation-advanced.md#view-groups view group}, e.g. in your node config: `label: 'my Node {viewGroupData.vg1}'`.
    * @since 2.2.0
    * @param {Object} data a data object containing the view group name and desired label

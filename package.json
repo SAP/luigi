@@ -18,11 +18,9 @@
       "full-code-quality-eslint-e2e-tests": "node code_quality.js -- mode=full_eslint sourcePaths=test/e2e-test-application/cypress/e2e/tests report=e2e-test_full_eslint_report.html"
    },
    "devDependencies": {
-      "@starptech/prettyhtml": "^0.10.0",
       "@typescript-eslint/eslint-plugin": "^4.9.0",
       "@typescript-eslint/parser": "^4.9.0",
       "ansi_up": "^5.0.0",
-      "cypress": "^12.17.0",
       "diff": ">=3.5.0",
       "eslint": "^7.14.0",
       "eslint-config-standard": "^16.0.2",
@@ -32,19 +30,10 @@
       "eslint-plugin-promise": "^4.2.1",
       "git-changed-files": "^1.0.0",
       "husky": "^4.3.5",
-      "ini": ">=1.3.6",
-      "json-schema": ">=0.4.0",
       "lerna-changelog": "^2.2.0",
-      "lodash": ">=4.17.13",
-      "lodash.template": ">=4.5.0",
-      "meow": "8.1.2",
-      "mixin-deep": ">=1.3.2",
       "prettier": "^1.19.1",
       "prettier-plugin-svelte": "^1.4.2",
-      "set-value": ">=2.0.1",
-      "simple-git": "^3.3.0",
-      "sirv-cli": "^0.4.4",
-      "ssri": ">=6.0.2",
+      "sirv-cli": "^2.0.0",
       "trim": ">=0.0.3"
    },
    "prettier": {
@@ -70,6 +59,6 @@
       "usePrettier": true
    },
    "engines": {
-      "node": ">=18"
+      "node": ">=18.19.1"
    }
 }

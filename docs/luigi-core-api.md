@@ -608,7 +608,7 @@ Luigi.navigation().navigateToIntent('Sales-settings', {project: 'pr1'})
 
 **Meta**
 
-*   **since**: NEXTRELEASE
+*   **since**: 2.14.2
 
 #### openAsModal
 
