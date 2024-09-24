@@ -23,6 +23,19 @@ export default class LuigiCompoundContainer extends HTMLElement {
    * @since 1.0.0
    */
   deferInit: boolean;
+  
+  /**  
+   *
+   * The locale to be passed to the compound micro frontend
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  locale: string;
+
+  /**
+   * The parameters to be passed to the compound micro frontend. Will not be passed to the compound children.
+   * @since 1.0.0
+   */
+  nodeParams: Object;
 
   /**
    * If set to true, the Luigi compound container webcomponent will not use the shadow DOM for rendering.
@@ -98,10 +111,16 @@ export default class LuigiCompoundContainer extends HTMLElement {
   webcomponent: boolean | WebComponentSettings | string;
 
   /**
-   * The locale to be passed to the compound micro frontend
+   * The list of active feature toggles to be passed to the compound microfrontend.
    * @since NEXT_RELEASE_CONTAINER
    */
-  locale: string;
+  activeFeatureToggleList: string[];
+
+  /**
+   * The theme to be passed to the compound microfrontend.
+   * @since NEXT_RELEASE_CONTAINER
+   */
+  theme: string;
 
   /**
    * Function that updates the context of the compound microfrontend.
